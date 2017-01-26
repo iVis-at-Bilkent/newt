@@ -5,7 +5,7 @@ body {
     padding: 0px; 
 }
 
-.open > .dropdown-menu {
+.sbgn-nav-menu .open > .dropdown-menu {
     animation-name: slidenavAnimation;
     animation-duration:.3s;
     animation-iteration-count: 1;
@@ -41,7 +41,7 @@ body {
     }
 }
 
-.nav-menu {
+.sbgn-nav-menu {
     border: 1px solid #ddd;
     border-radius: 0.25em;
     margin: auto;
@@ -49,36 +49,21 @@ body {
     width: 1000px;
 }
 
-/*.nav li.dropdown ul.dropdown-menu li:HOVER ul {
-    display:block; 
-    position:absolute; 
-    left:100%;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-}*/
-/*.nav li.dropdown ul.dropdown-menu ul {
-    display: none;
-    float:right;
-    position: relative;
-    top: auto;
-    margin-top: -30px;
-}*/
-.dropdown .dropdown-menu{
+.sbgn-nav-menu .dropdown .dropdown-menu{
     z-index:3000;
 }
 
-.navbar .nav li.dropdown.open > .dropdown-toggle,
-.navbar .nav li.dropdown.active > .dropdown-toggle,
-.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+.sbgn-nav-menu .navbar .nav li.dropdown.open > .dropdown-toggle,
+.sbgn-nav-menu .navbar .nav li.dropdown.active > .dropdown-toggle,
+.sbgn-nav-menu .navbar .nav li.dropdown.open.active > .dropdown-toggle {
     color: #555555;
     background-color: #0B9BCD;
     text-shadow: none !important;
 }
 
-.dropdown-menu li > a:hover,
-.dropdown-menu li > a:focus,
-.dropdown-submenu:hover > a {
+.sbgn-nav-menu .dropdown-menu li > a:hover,
+.sbgn-nav-menu .dropdown-menu li > a:focus,
+.sbgn-nav-menu .dropdown-submenu:hover > a {
     color: #ffffff;
     text-decoration: none;
     background-color: #0B9BCD;
@@ -87,8 +72,8 @@ body {
     filter: none;
 }
 
-.dropdown-menu .active > a,
-.dropdown-menu .active > a:hover {
+.sbgn-nav-menu .dropdown-menu .active > a,
+.sbgn-nav-menu .dropdown-menu .active > a:hover {
     color: #ffffff;
     text-decoration: none;
     background-color: #0B9BCD;
@@ -96,7 +81,63 @@ body {
     filter: none;
 }
 
-.right-caret {
+/*Adjust font-size of a tags inside .sbgn-nav-menu*/
+.sbgn-nav-menu a {
+    font-size: 12px;
+}
+
+/*bootstrap.css is no more supporting dropdown submenus handle it here start*/
+.dropdown-submenu {
+    position:relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top:0;
+    left:100%;
+    margin-top:-6px;
+    margin-left:-1px;
+    -webkit-border-radius:0 6px 6px 6px;
+    -moz-border-radius:0 6px 6px 6px;
+    border-radius:0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display:block;
+}
+
+.dropdown-submenu>a:after {
+    display:block;
+    content:" ";
+    float:right;
+    width:0;
+    height:0;
+    border-color:transparent;
+    border-style:solid;
+    border-width:5px 0 5px 5px;
+    border-left-color:#cccccc;
+    margin-top:5px;
+    margin-right:-10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color:#ffffff;
+}
+
+.dropdown-submenu.pull-left {
+    float:none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left:-100%;
+    margin-left:10px;
+    -webkit-border-radius:6px 0 6px 6px;
+    -moz-border-radius:6px 0 6px 6px;
+    border-radius:6px 0 6px 6px;
+}
+
+/*bootstrap.css is no more supporting dropdown submenus handle it here end*/
+
+.sbgn-nav-menu .right-caret {
     border-bottom: 4px solid transparent;
     border-top: 4px solid transparent;
     border-left: 4px solid #000000;
@@ -107,26 +148,8 @@ body {
     width: 0;
 }
 
-.ui-cytoscape-panzoom {
-    z-index: 1000;
-}
-
-.ui-widget-header {
-    background: #0B9BCD;
-    border: 1px solid #0B9BCD !important;
-}
-
-.ui-dialog {
-    z-index : 2000 !important;
-    border: 2px solid #0B9BCD !important;
-}
-
-.ui-widget-header .ui-icon {
-    background-image: url(images/ui-icons_0B9BCD_256x240.png);
-}
-
-#fancybox-wrap {
-    z-index : 4000 !important;
+.cy-panzoom {
+    z-index: 1000 !important;
 }
 
 .qtip-bootstrap .qtip-titlebar{
@@ -149,24 +172,7 @@ body {
 }
 
 .target-cursor {
-    cursor: url(../app/img/drag-target.cur), pointer!important;
-}
-
-#sbgn-inspector-and-canvas {
-    margin: auto;
-    overflow: auto !important;
-}
-
-#sbgn-inspector {
-    margin: auto;
-    border: 1px solid #ddd;
-    height: 680px;
-    width: 200px;
-    overflow: auto !important;
-    border-radius: 0.25em;
-    /*padding-left: 2px;*/
-    padding-right: 2px;
-    /*float: right;*/
+    cursor: url(../../sampleapp-images/drag-target.cur), pointer!important;
 }
 
 .inside-menu {
@@ -218,6 +224,32 @@ body {
     width: 1000px;
     overflow: visible !important;
     font-size: 12px !important;
+    min-height: 0px;
+}
+
+@media (max-width: 767px) {
+    .sbgn-nav-bar {
+        max-height: 42px;
+    }
+    
+    .sbgn-nav-bar .navbar-nav {
+        margin: 0px;
+    }
+}
+
+.sbgn-nav-bar li.dropdown {
+    float: left;
+}
+
+.sbgn-nav-bar .dropdown-menu {
+    position: absolute !important;
+    background-color: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.14902) !important;
+}
+
+.sbgn-nav-menu .navbar-nav > li > a {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 
 .sbgn-frame {
@@ -225,8 +257,12 @@ body {
     padding-bottom : 10px;
 }
 
+.sbgn-frame td {
+    padding-bottom: 2px;
+}
+
 .marg {
-    margin-bottom : -6px;
+    margin-bottom : -2px;
 }
 
 .sbgn-text {
@@ -260,42 +296,6 @@ body {
     font-size: 12px !important; 
 }
 
-.selectedType {
-    /*box-shadow: 10px 10px 5px #888888;*/
-    border-style: solid;
-    border-color: #0B9BCD;
-    border-width: 2px;
-    border-radius: 5px;
-}
-
-.selectedTypeSustainable > .btn-selectedTypeSustainable {
-  background-color: #cccccc;
-  *background-color: #bfbfbf;
-  background-image: -moz-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#d9d9d9), to(#cccccc));
-  background-image: -webkit-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: -o-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: linear-gradient(to bottom, #d9d9d9, #cccccc);
-  background-repeat: repeat-x;
-}
-
-.selectedMenuItem {
-    background-color: gray;
-}
-
-.selectedDDItem {
-    background-color: gray;
-}
-
-.sbgn-select-img {
-    margin-left: 2px;
-    margin-right: 5px;
-}
-
-.hidden-element {
-    display:none !important;
-}
-
 .sbgn-toolbar-element {
     margin-left: 4px;
     margin-right: 0px;
@@ -315,55 +315,6 @@ img.sbgn-toolbar-element:hover {
     filter: alpha(opacity=100);
 }
 
-#node-list-set-mode-btn:focus {
-    outline: none;
-}
-
-#edge-list-set-mode-btn:focus {
-    outline: none;
-}
-
-#node-list-dd-button:focus {
-    outline: none;
-}
-
-#edge-list-dd-button:focus {
-    outline: none;
-}
-
-#align-button:focus {
-    outline: none;
-}
-
-#align-dd-button:focus {
-    outline: none;
-}
-
-#node-label-textbox {
-    position: absolute;
-    top: 150px;
-    left: 150px;
-    z-index: 100;
-    display: none;
-    width: 100px;
-}
-
-.dd-list-href {
-    padding-left: 0px !important; 
-}
-
-#node-list-menu {
-    width: 180px;
-}
-
-#edge-list-menu {
-    width: 185px;
-}
-
-#align-menu {
-    width: 200px;
-}
-
 .menu-break-small {
     min-width: 4px !important;
 }
@@ -376,27 +327,15 @@ input {
     font-size: 12px !important;
 }
 
-button {
+button:not(.close) {
     font-size: 12px !important;
-}
-
-.ui-datepicker .ui-datepicker-title select {
-    font-size: 12px;
-}
-
-.ui-widget .ui-widget {
-    font-size: 12px;
-}
-
-.ui-widget button {
-    font-size: 12px;
 }
 
 option {
     font-size: 12px;
 }
 
-#sbgn-properties-template td {
+#general-properties-template td {
     width: 100%;
 }
 
@@ -438,10 +377,8 @@ menu:not([title]):before{
     content:"\2630";
 }
 
-.inspector-input-box{
-    padding-bottom: 0.5px !important;
-    padding-top: 0.5px !important;
-    margin-bottom: 2px !important;
+.sbgn-legend {
+    padding: 5px;
 }
 
 .dialog-table * {
@@ -456,34 +393,18 @@ menu:not([title]):before{
     padding-top: 2px !important;
 }
 
-.customized-context-menus-menu-item {
-    width: 175px !important;
+.sbgn-modal-dialog .modal-header {
+    background-color: #0B9BCD !important;
+    color: #ffffff !important;
 }
 
-.accordion-toggle:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content:"\25B3"; 
-    float: right;     
+.sbgn-modal-dialog .modal-footer button {
+    border: #0B9BCD !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-radius: calc !important;
 }
 
-.accordion-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    content:"\25BD";
-}
-
-hr.inspector-divider {
-    padding: 0px !important;
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
-    width: 100% !important;
-}
-
-.sbgn-label-font {
-    font-size: 11px !important;
-    /*font-weight: bold;*/
-}
-
-#biogene-template-div th {
-    text-align: right;
+.sbgn-modal-dialog .modal-content {
+    overflow:hidden !important;
 }
