@@ -1,3 +1,4 @@
+var chise = require('chise');
 var sbgnviz = require('sbgnviz');
 var filesaverjs = require('filesaverjs');
 window.jQuery = window.$ = require('jQuery'); // jQuery should be global because jQuery.qtip extension is not compatible with commonjs
@@ -38,8 +39,9 @@ var libs = {};
 libs.filesaverjs = filesaverjs;
 libs.jQuery = jQuery;
 libs.cytoscape = cytoscape;
+libs.sbgnviz = sbgnviz;
 
-sbgnviz({
+chise({
   networkContainerSelector: '#sbgn-network-container',
   imgPath: 'node_modules/sbgnviz/src/img',
   // whether to fit label to nodes
