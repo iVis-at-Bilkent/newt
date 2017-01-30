@@ -82,7 +82,7 @@ var appUtilities = {
       return;
     }
     
-    var qtipContent = sbgnviz.getQtipContent(node);
+    var qtipContent = chise.getQtipContent(node);
     
     if (!qtipContent) {
       return;

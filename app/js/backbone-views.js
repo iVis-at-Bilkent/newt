@@ -200,7 +200,7 @@ var LayoutPropertiesView = Backbone.View.extend({
     gravityCompound: 1.0,
     gravityRange: 3.8,
     stop: function () {
-      sbgnviz.endSpinner('layout-spinner');
+      chise.endSpinner('layout-spinner');
     }
   },
   currentLayoutProperties: null,
@@ -224,12 +224,12 @@ var LayoutPropertiesView = Backbone.View.extend({
     // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
     // in dialog, in layout options we use a function using these values
     options.tilingPaddingVertical = function () {
-      return sbgnviz.calculatePaddings(verticalPaddingPercent);
+      return chise.calculatePaddings(verticalPaddingPercent);
     };
     options.tilingPaddingHorizontal = function () {
-      return sbgnviz.calculatePaddings(horizontalPaddingPercent);
+      return chise.calculatePaddings(horizontalPaddingPercent);
     };
-    sbgnviz.performLayout(options, notUndoable);
+    chise.performLayout(options, notUndoable);
   },
   render: function () {
     var self = this;
@@ -309,7 +309,7 @@ var GeneralPropertiesView = Backbone.View.extend({
       self.currentSBGNProperties.animateOnDrawingChanges =
               document.getElementById("animate-on-drawing-changes").checked;
 
-      sbgnviz.refreshPaddings(true); // Refresh paddings and force paddings to be recalculated
+      chise.refreshPaddings(true); // Refresh paddings and force paddings to be recalculated
       cy.style().update();
       
       $(self.el).modal('toggle');
@@ -393,15 +393,15 @@ var PathsBetweenQueryView = Backbone.View.extend({
       filename = filename + '_PATHSBETWEEN.sbgnml';
       setFileContent(filename);
 
-      sbgnviz.startSpinner('paths-between-spinner');
+      chise.startSpinner('paths-between-spinner');
 
       queryURL = queryURL + sources;
       $.ajax({
         url: queryURL,
         type: 'GET',
         success: function (data) {
-          sbgnviz.updateGraph(sbgnviz.convertSbgnmlToJson(data));
-          sbgnviz.endSpinner('paths-between-spinner');
+          chise.updateGraph(chise.convertSbgnmlToJson(data));
+          chise.endSpinner('paths-between-spinner');
         }
       });
 

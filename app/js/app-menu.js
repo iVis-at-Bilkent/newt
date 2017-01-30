@@ -9,7 +9,7 @@ module.exports = function () {
   var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView;
 
   function loadSample(filename) {
-    return sbgnviz.loadSample(filename, 'app/samples/');
+    return chise.loadSample(filename, 'app/samples/');
   }
 
   $(document).ready(function ()
@@ -52,7 +52,7 @@ module.exports = function () {
     $("#file-input").change(function () {
       if ($(this).val() != "") {
         var file = this.files[0];
-        sbgnviz.loadSBGNMLFile(file);
+        chise.loadSBGNMLFile(file);
         $(this).val("");
       }
     });
@@ -98,28 +98,28 @@ module.exports = function () {
     }
 
     $("#hide-selected, #hide-selected-icon").click(function(e) {
-      sbgnviz.hideNodesSmart(cy.nodes(":selected"));
+      chise.hideNodesSmart(cy.nodes(":selected"));
     });
     
     $("#show-selected, #show-selected-icon").click(function(e) {
-      sbgnviz.showNodesSmart(cy.nodes(":selected"));
+      chise.showNodesSmart(cy.nodes(":selected"));
     });
 
     $("#show-all").click(function (e) {
-      sbgnviz.showAll();
+      chise.showAll();
     });
 
     $("#delete-selected-smart, #delete-selected-smart-icon").click(function (e) {
-      sbgnviz.deleteNodesSmart(cy.nodes(':selected'));
+      chise.deleteNodesSmart(cy.nodes(':selected'));
     });
 
     $("#highlight-neighbors-of-selected, #highlight-neighbors-of-selected-icon").click(function (e) {
-      sbgnviz.highlightNeighbours(cy.nodes(':selected'));
+      chise.highlightNeighbours(cy.nodes(':selected'));
     });
 
     $("#search-by-label-icon").click(function (e) {
       var label = $("#search-by-label-text-box").val().toLowerCase();
-      sbgnviz.searchByLabel(label);
+      chise.searchByLabel(label);
     });
 
     $("#search-by-label-text-box").keydown(function (e) {
@@ -133,11 +133,11 @@ module.exports = function () {
     });
 
     $("#highlight-processes-of-selected").click(function (e) {
-      sbgnviz.highlightProcesses(cy.nodes(':selected'));
+      chise.highlightProcesses(cy.nodes(':selected'));
     });
 
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
-      sbgnviz.removeHighlights();
+      chise.removeHighlights();
     });
 
     $("#layout-properties, #layout-properties-icon").click(function (e) {
@@ -145,7 +145,7 @@ module.exports = function () {
     });
 
     $("#delete-selected-simple, #delete-selected-simple-icon").click(function (e) {
-      sbgnviz.deleteElesSimple(cy.elements(':selected'));
+      chise.deleteElesSimple(cy.elements(':selected'));
     });
 
     $("#general-properties, #properties-icon").click(function (e) {
@@ -157,31 +157,31 @@ module.exports = function () {
     });
 
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
-      sbgnviz.collapseNodes(cy.nodes(":selected"));
+      chise.collapseNodes(cy.nodes(":selected"));
     });
 
     $("#expand-selected,#expand-selected-icon").click(function (e) {
-      sbgnviz.expandNodes(cy.nodes(":selected"));
+      chise.expandNodes(cy.nodes(":selected"));
     });
 
     $("#collapse-complexes").click(function (e) {
-      sbgnviz.collapseComplexes();
+      chise.collapseComplexes();
     });
     $("#expand-complexes").click(function (e) {
-      sbgnviz.expandComplexes();
+      chise.expandComplexes();
     });
 
     $("#collapse-all").click(function (e) {
-      sbgnviz.collapseAll();
+      chise.collapseAll();
     });
 
     $("#expand-all").click(function (e) {
-      sbgnviz.expandAll();
+      chise.expandAll();
     });
 
     $("#perform-layout, #perform-layout-icon").click(function (e) {
       // TODO think whether here is the right place to start the spinner
-      sbgnviz.startSpinner("layout-spinner"); 
+      chise.startSpinner("layout-spinner"); 
       
       // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
       // If it is 'during' use it as is 
@@ -203,17 +203,17 @@ module.exports = function () {
     });
 
     $("#save-as-png").click(function (evt) {
-      sbgnviz.saveAsPng(); // the default filename is 'network.png'
+      chise.saveAsPng(); // the default filename is 'network.png'
     });
 
     $("#save-as-jpg").click(function (evt) {
-      sbgnviz.saveAsJpg(); // the default filename is 'network.jpg'
+      chise.saveAsJpg(); // the default filename is 'network.jpg'
     });
 
     //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
     $("#save-as-sbgnml, #save-icon").click(function (evt) {
       var filename = document.getElementById('file-name').innerHTML;
-      sbgnviz.saveAsSbgnml(filename);
+      chise.saveAsSbgnml(filename);
     });
 
     appUtilities.sbgnNetworkContainer.on("click", ".biogene-info .expandable", function (evt) {
