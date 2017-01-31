@@ -6,7 +6,7 @@ var appUtilities = require('./app-utilities');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView;
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView;
 
   function loadSample(filename) {
     return chise.loadSample(filename, 'app/samples/');
@@ -22,6 +22,7 @@ module.exports = function () {
     layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
+    promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
 
     toolbarButtonsAndMenu();
 
@@ -44,6 +45,30 @@ module.exports = function () {
   });
 
   function toolbarButtonsAndMenu() {
+
+    $("#new-file, #new-file-icon").click(function () {
+      var createNewFile = function () {
+        appUtilities.setFileContent("new_file.sbgnml");
+
+//        (new SBGNContainer({
+//          el: '#sbgn-network-container',
+//          model: {
+//            cytoscapeJsGraph: {
+//              nodes: [],
+//              edges: []
+//            }
+//          }
+//        })).render();
+        chise.updateGraph({
+          nodes: [],
+          edges: []
+        });
+
+        appUtilities.resetUndoRedoButtons();
+      };
+
+      promptSaveView.render(createNewFile);
+    });
 
     $("#load-file, #load-file-icon").click(function () {
       $("#file-input").trigger('click');

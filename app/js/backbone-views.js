@@ -416,9 +416,42 @@ var PathsBetweenQueryView = Backbone.View.extend({
   }
 });
 
+var PromptSaveView = Backbone.View.extend({
+  
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-save-template").html());
+  },
+  render: function (afterFunction) {
+    var self = this;
+    self.template = _.template($("#prompt-save-template").html());
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-save-accept").on("click", "#prompt-save-accept", function (evt) {
+      $("#save-as-sbgnml").trigger('click');
+      afterFunction();
+      $(self.el).modal('toggle');
+    });
+    
+    $(document).off("click", "#prompt-save-reject").on("click", "#prompt-save-reject", function (evt) {
+      afterFunction();
+      $(self.el).modal('toggle');
+    });
+    
+    $(document).off("click", "#prompt-save-cancel").on("click", "#prompt-save-cancel", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
   GeneralPropertiesView: GeneralPropertiesView,
-  PathsBetweenQueryView: PathsBetweenQueryView
+  PathsBetweenQueryView: PathsBetweenQueryView,
+  PromptSaveView: PromptSaveView
 };

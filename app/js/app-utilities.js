@@ -5,6 +5,7 @@ var appUtilities = {
   layoutPropertiesView: undefined,
   generalPropertiesView: undefined,
   pathsBetweenQueryView: undefined,
+  promptSaveView: undefined,
   getLayoutProperties: function() {
     if (this.layoutPropertiesView === undefined) {
       return undefined;
