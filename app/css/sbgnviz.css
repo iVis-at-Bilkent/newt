@@ -408,3 +408,59 @@ menu:not([title]):before{
 .sbgn-modal-dialog .modal-content {
     overflow:hidden !important;
 }
+
+/* Related to mode handler*/
+.selected-mode {
+    /*box-shadow: 10px 10px 5px #888888;*/
+    border-style: solid;
+    border-color: #0B9BCD;
+    border-width: 2px;
+    border-radius: 5px;
+}
+
+.selected-mode-sustainable > .btn-selected-mode-sustainable {
+  background-color: #cccccc;
+  *background-color: #bfbfbf;
+  background-image: -moz-linear-gradient(top, #d9d9d9, #cccccc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#d9d9d9), to(#cccccc));
+  background-image: -webkit-linear-gradient(top, #d9d9d9, #cccccc);
+  background-image: -o-linear-gradient(top, #d9d9d9, #cccccc);
+  background-image: linear-gradient(to bottom, #d9d9d9, #cccccc);
+  background-repeat: repeat-x;
+}
+
+.selected-menu-item {
+    background-color: gray;
+}
+
+.selected-dd-item {
+    background-color: gray;
+}
+
+#node-dd-list-set-mode-btn:focus {
+    outline: none;
+}
+
+#edge-dd-list-set-mode-btn:focus {
+    outline: none;
+}
+
+#node-dd-list-dd-button:focus {
+    outline: none;
+}
+
+#edge-dd-list-dd-button:focus {
+    outline: none;
+}
+
+.dd-list-href {
+    padding-left: 0px !important; 
+}
+
+#node-dd-list-menu {
+    width: 180px;
+}
+
+#edge-dd-list-menu {
+    width: 185px;
+}

@@ -21,6 +21,7 @@ var cyContextMenus = require('cytoscape-context-menus');
 var cyExpandCollapse = require('cytoscape-expand-collapse');
 var cyEdgeBendEditing = require('cytoscape-edge-bend-editing');
 var cyViewUtilities = require('cytoscape-view-utilities');
+var cyEdgehandles = require('cytoscape-edgehandles');
 
 // Register cy extensions
 cyPanzoom( cytoscape, $ );
@@ -32,6 +33,7 @@ cyContextMenus( cytoscape, $ );
 cyExpandCollapse( cytoscape, $ );
 cyEdgeBendEditing( cytoscape, $ );
 cyViewUtilities( cytoscape, $ );
+cyEdgehandles( cytoscape );
 
 // Libraries to pass sbgnviz
 var libs = {};

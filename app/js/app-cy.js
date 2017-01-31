@@ -1,6 +1,7 @@
 var jQuery = $ = require('jQuery');
 var appUtilities = require('./app-utilities');
 var bioGeneQtip = require('./biogene-qtip');
+var modeHandler = require('./app-mode-handler');
 
 module.exports = function () {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -149,6 +150,33 @@ module.exports = function () {
         }
       }
     });
+    
+    //For adding edges interactively
+//    cy.edgehandles({
+//      complete: function (sourceNode, targetNodes, addedEntities) {
+//        // fired when edgehandles is done and entities are added
+//        var param = {};
+//        var source = sourceNode.id();
+//        var target = targetNodes[0].id();
+//        var edgeclass = modeHandler.elementsHTMLNameToName[modeHandler.selectedEdgeType];
+//
+//        chise.addEdge(source, target, edgeclass);
+//        
+//        // If not in sustain mode set selection mode
+//        if (!modeHandler.sustainMode) {
+//          modeHandler.setSelectionMode();
+//        }
+//
+//        cy.edges()[cy.edges().length - 1].select();
+//      },
+//      loopAllowed: function( node ) {
+//        // for the specified node, return whether edges from itself to itself are allowed
+//        return false;
+//      },
+//      toggleOffOnLeave: false
+//    });
+
+    cy.edgehandles('drawoff');
 
     var panProps = ({
       fitPadding: 10,
@@ -199,6 +227,22 @@ module.exports = function () {
 
     cy.on('tap', function (event) {
       $('input').blur();
+      
+      // If add node mode is active create a node on tap
+      if (modeHandler.mode == "add-node-mode") {
+        var cyPosX = event.cyPosition.x;
+        var cyPosY = event.cyPosition.y;
+        var sbgnclass = modeHandler.elementsHTMLNameToName[modeHandler.selectedNodeType];
+
+        chise.addNode(cyPosX, cyPosY, sbgnclass);
+        
+        // If not in sustainable mode set selection mode
+        if (!modeHandler.sustainMode) {
+          modeHandler.setSelectionMode();
+        }
+
+        cy.nodes()[cy.nodes().length - 1].select();
+      }
     });
 
     cy.on('tap', 'node', function (event) {

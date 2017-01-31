@@ -1,6 +1,7 @@
 var jQuery = $ = require('jQuery');
 var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
+var modeHandler = require('./app-mode-handler');
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function () {
@@ -25,6 +26,7 @@ module.exports = function () {
     promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
 
     toolbarButtonsAndMenu();
+    modeHandler.initilize();
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
     // wait until it is resized before loading the default sample. As the current solution we set a 100 ms 
@@ -49,22 +51,15 @@ module.exports = function () {
     $("#new-file, #new-file-icon").click(function () {
       var createNewFile = function () {
         appUtilities.setFileContent("new_file.sbgnml");
-
-//        (new SBGNContainer({
-//          el: '#sbgn-network-container',
-//          model: {
-//            cytoscapeJsGraph: {
-//              nodes: [],
-//              edges: []
-//            }
-//          }
-//        })).render();
+        
         chise.updateGraph({
           nodes: [],
           edges: []
         });
-
+        
+        // TODO call these on update graph end event
         appUtilities.resetUndoRedoButtons();
+        modeHandler.setSelectionMode();
       };
 
       promptSaveView.render(createNewFile);
@@ -239,6 +234,75 @@ module.exports = function () {
     $("#save-as-sbgnml, #save-icon").click(function (evt) {
       var filename = document.getElementById('file-name').innerHTML;
       chise.saveAsSbgnml(filename);
+    });
+    
+    // Mode handler related menu items
+    $('.add-node-menu-item').click(function (e) {
+      if (!modeHandler.mode != "add-node-mode") {
+        modeHandler.setAddNodeMode();
+      }
+      var value = $(this).attr('name');
+      modeHandler.selectedNodeType = value;
+      modeHandler.setSelectedIndexOfSelector("add-node-mode", value);
+      modeHandler.setSelectedMenuItem("add-node-mode", value);
+    });
+
+    $('.add-edge-menu-item').click(function (e) {
+      if (!modeHandler.mode != "add-edge-mode") {
+        modeHandler.setAddEdgeMode();
+      }
+      var value = $(this).attr('name');
+      modeHandler.selectedEdgeType = value;
+      modeHandler.setSelectedIndexOfSelector("add-edge-mode", value);
+      modeHandler.setSelectedMenuItem("add-edge-mode", value);
+    });
+
+    $('.node-dd-list-menu-item').click(function (e) {
+      if (!modeHandler.mode != "add-node-mode") {
+        modeHandler.setAddNodeMode();
+      }
+      var value = $('img', this).attr('value');
+      modeHandler.selectedNodeType = value;
+      modeHandler.setSelectedIndexOfSelector("add-node-mode", value);
+      modeHandler.setSelectedMenuItem("add-node-mode", value);
+    });
+
+    $('.edge-dd-list-menu-item').click(function (e) {
+      if (!modeHandler.mode != "add-edge-mode") {
+        modeHandler.setAddEdgeMode();
+      }
+      var value = $('img', this).attr('value');
+      modeHandler.selectedEdgeType = value;
+      modeHandler.setSelectedIndexOfSelector("add-edge-mode", value);
+      modeHandler.setSelectedMenuItem("add-edge-mode", value);
+    });
+
+    $('#node-dd-list-set-mode-btn').click(function (e) {
+      if (modeHandler.mode != "add-node-mode") {
+        modeHandler.setAddNodeMode();
+      }
+      else {
+        modeHandler.sustainMode = !modeHandler.sustainMode;
+        $('#node-dd-list').toggleClass('selected-mode-sustainable');
+      }
+    });
+
+    $('#edge-dd-list-set-mode-btn').click(function (e) {
+      if (modeHandler.mode != "add-edge-mode") {
+        modeHandler.setAddEdgeMode();
+      }
+      else {
+        modeHandler.sustainMode = !modeHandler.sustainMode;
+        $('#edge-dd-list').toggleClass('selected-mode-sustainable');
+      }
+    });
+
+    $('#select-icon').click(function (e) {
+      modeHandler.setSelectionMode();
+    });
+
+    $('#select-edit').click(function (e) {
+      modeHandler.setSelectionMode();
     });
 
     appUtilities.sbgnNetworkContainer.on("click", ".biogene-info .expandable", function (evt) {
