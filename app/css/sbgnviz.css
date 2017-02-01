@@ -409,7 +409,6 @@ menu:not([title]):before{
     overflow:hidden !important;
 }
 
-/* Related to mode handler*/
 .selected-mode {
     /*box-shadow: 10px 10px 5px #888888;*/
     border-style: solid;
@@ -450,6 +449,14 @@ menu:not([title]):before{
 }
 
 #edge-dd-list-dd-button:focus {
+    outline: none;
+}
+
+#align-button:focus {
+    outline: none;
+}
+
+#align-dd-button:focus {
     outline: none;
 }
 
