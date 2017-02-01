@@ -152,29 +152,38 @@ module.exports = function () {
     });
     
     //For adding edges interactively
-//    cy.edgehandles({
-//      complete: function (sourceNode, targetNodes, addedEntities) {
-//        // fired when edgehandles is done and entities are added
-//        var param = {};
-//        var source = sourceNode.id();
-//        var target = targetNodes[0].id();
-//        var edgeclass = modeHandler.elementsHTMLNameToName[modeHandler.selectedEdgeType];
-//
-//        chise.addEdge(source, target, edgeclass);
-//        
-//        // If not in sustain mode set selection mode
-//        if (!modeHandler.sustainMode) {
-//          modeHandler.setSelectionMode();
-//        }
-//
-//        cy.edges()[cy.edges().length - 1].select();
-//      },
-//      loopAllowed: function( node ) {
-//        // for the specified node, return whether edges from itself to itself are allowed
-//        return false;
-//      },
-//      toggleOffOnLeave: false
-//    });
+    cy.edgehandles({
+      // fired when edgehandles is done and entities are added
+      complete: function (sourceNode, targetNodes, addedEntities) {
+        if (!targetNodes) {
+          return;
+        }
+        
+        // We need to remove interactively added entities because we should add the edge with the chise api
+        addedEntities.remove();
+        
+        // fired when edgehandles is done and entities are added
+        var param = {};
+        var source = sourceNode.id();
+        var target = targetNodes[0].id();
+        var edgeclass = modeHandler.elementsHTMLNameToName[modeHandler.selectedEdgeType];
+
+        chise.addEdge(source, target, edgeclass);
+        
+        // If not in sustain mode set selection mode
+        if (!modeHandler.sustainMode) {
+          modeHandler.setSelectionMode();
+        }
+
+        cy.edges()[cy.edges().length - 1].select();
+      },
+      loopAllowed: function( node ) {
+        // for the specified node, return whether edges from itself to itself are allowed
+        return false;
+      },
+      toggleOffOnLeave: true, // whether an edge is cancelled by leaving a node (true), or whether you need to go over again to cancel (false; allows multiple edges in one pass)
+      handleSize: 0 // the size of the edge handle put on nodes (Note that it is 0 because we do not want to see the handle)
+    });
 
     cy.edgehandles('drawoff');
 

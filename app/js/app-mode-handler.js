@@ -58,7 +58,7 @@ var modeHandler = {
       cy.autolock(true);
       cy.autounselectify(true);
 
-//      cy.edgehandles('drawoff');
+      cy.edgehandles('drawoff');
     }
     
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
@@ -81,7 +81,7 @@ var modeHandler = {
       cy.autolock(true);
       cy.autounselectify(true);
 
-//      cy.edgehandles('drawon');
+      cy.edgehandles('drawon');
     }
     
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
@@ -101,7 +101,7 @@ var modeHandler = {
       cy.autolock(false);
       cy.autounselectify(false);
 
-//      cy.edgehandles('drawoff');
+      cy.edgehandles('drawoff');
     }
     
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
