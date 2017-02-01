@@ -448,10 +448,176 @@ var PromptSaveView = Backbone.View.extend({
   }
 });
 
+var ReactionTemplateView = Backbone.View.extend({
+  defaultTemplateParameters: {
+    templateType: "association",
+    macromoleculeList: ["", ""],
+    templateReactionEnableComplexName: true,
+    templateReactionComplexName: "",
+    getMacromoleculesHtml: function(){
+      var html = "<table>";
+      for( var i = 0; i < this.macromoleculeList.length; i++){
+        html += "<tr><td>"
+            + "<input type='text' class='template-reaction-textbox input-small layout-text' name='"
+            + i + "'" + " value='" + this.macromoleculeList[i] + "'></input>"
+            + "</td><td><img style='padding-bottom: 8px;' class='template-reaction-delete-button' width='12px' height='12px' name='" + i + "' src='app/img/delete.png'/></td></tr>";
+      }
+
+      html += "<tr><td><img id='template-reaction-add-button' src='app/img/add.png'/></td></tr></table>";
+      return html;
+    },
+    getComplexHtml: function(){
+      var html = "<table>"
+          + "<tr><td><input type='checkbox' class='input-small layout-text' id='template-reaction-enable-complex-name'";
+
+      if(this.templateReactionEnableComplexName){
+        html += " checked ";
+      }
+
+      html += "/>"
+          + "</td><td><input type='text' class='input-small layout-text' id='template-reaction-complex-name' value='"
+          + this.templateReactionComplexName + "'";
+
+      if(!this.templateReactionEnableComplexName){
+        html += " disabled ";
+      }
+
+      html += "></input>"
+          + "</td></tr></table>";
+
+      return html;
+    },
+    getInputHtml: function(){
+      if(this.templateType === 'association') {
+        return this.getMacromoleculesHtml();
+      }
+      else if(this.templateType === 'dissociation'){
+        return this.getComplexHtml();
+      }
+    },
+    getOutputHtml: function(){
+      if(this.templateType === 'association') {
+        return this.getComplexHtml();
+      }
+      else if(this.templateType === 'dissociation'){
+        return this.getMacromoleculesHtml();
+      }
+    }
+  },
+  currentTemplateParameters: undefined,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#reaction-template-template").html());
+    self.template = self.template(self.currentTemplateParameters);
+  },
+  copyProperties: function () {
+    this.currentTemplateParameters = jQuery.extend(true, [], this.defaultTemplateParameters);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#reaction-template-template").html());
+    self.template = self.template(self.currentTemplateParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+
+    $(document).off('change', '#reaction-template-type-select').on('change', '#reaction-template-type-select', function (e) {
+      var optionSelected = $("option:selected", this);
+      var valueSelected = this.value;
+      self.currentTemplateParameters.templateType = valueSelected;
+
+      self.template = _.template($("#reaction-template-template").html());
+      self.template = self.template(self.currentTemplateParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+    });
+
+    $(document).off("change", "#template-reaction-enable-complex-name").on("change", "#template-reaction-enable-complex-name", function(e){
+      self.currentTemplateParameters.templateReactionEnableComplexName =
+          !self.currentTemplateParameters.templateReactionEnableComplexName;
+      self.template = _.template($("#reaction-template-template").html());
+      self.template = self.template(self.currentTemplateParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+    });
+
+    $(document).off("change", "#template-reaction-complex-name").on("change", "#template-reaction-complex-name", function(e){
+      self.currentTemplateParameters.templateReactionComplexName = $(this).val();
+      self.template = _.template($("#reaction-template-template").html());
+      self.template = self.template(self.currentTemplateParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+    });
+
+    $(document).off("click", "#template-reaction-add-button").on("click", "#template-reaction-add-button", function (event) {
+      self.currentTemplateParameters.macromoleculeList.push("");
+
+      self.template = _.template($("#reaction-template-template").html());
+      self.template = self.template(self.currentTemplateParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+    });
+
+    $(document).off("change", ".template-reaction-textbox").on('change', ".template-reaction-textbox", function () {
+      var index = parseInt($(this).attr('name'));
+      var value = $(this).val();
+      self.currentTemplateParameters.macromoleculeList[index] = value;
+
+      self.template = _.template($("#reaction-template-template").html());
+      self.template = self.template(self.currentTemplateParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+    });
+
+    $(document).off("click", ".template-reaction-delete-button").on("click", ".template-reaction-delete-button", function (event) {
+      if(self.currentTemplateParameters.macromoleculeList.length <= 2){
+        return;
+      }
+
+      var index = parseInt($(this).attr('name'));
+      self.currentTemplateParameters.macromoleculeList.splice(index, 1);
+
+      self.template = _.template($("#reaction-template-template").html());
+      self.template = self.template(self.currentTemplateParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+    });
+
+    $(document).off("click", "#create-template").on("click", "#create-template", function (evt) {
+
+      var templateType = self.currentTemplateParameters.templateType;
+      var macromoleculeList = jQuery.extend(true, [], self.currentTemplateParameters.macromoleculeList);
+      var complexName = self.currentTemplateParameters.templateReactionEnableComplexName?self.currentTemplateParameters.templateReactionComplexName:undefined;
+      var tilingPaddingVertical = chise.calculatePaddings(appUtilities.getLayoutProperties().tilingPaddingVertical);
+      var tilingPaddingHorizontal = chise.calculatePaddings(appUtilities.getLayoutProperties().tilingPaddingHorizontal);
+   
+      chise.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+
+      self.copyProperties();
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#cancel-template").on("click", "#cancel-template", function (evt) {
+      self.copyProperties();
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
-  PromptSaveView: PromptSaveView
+  PromptSaveView: PromptSaveView,
+  ReactionTemplateView: ReactionTemplateView
 };

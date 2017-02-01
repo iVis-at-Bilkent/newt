@@ -396,6 +396,10 @@
         <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- sbgn properties table will be shown here-->
         </div>
+        
+        <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- paths between query table will be shown here -->
+        </div>
 
         <div id="box">
         </div>
@@ -772,7 +776,7 @@
         </script>
         
         <script type="text/template" id="prompt-save-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 350px;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -796,6 +800,61 @@
                         <button id="prompt-save-accept" class="btn btn-default" >Save</button>
                         <button id="prompt-save-reject" class="btn btn-default">Don't Save</button>
                         <button id="prompt-save-cancel" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+        
+        <script type="text/template" id="reaction-template-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Template</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table dialog-table">
+
+                        <tr>
+                        <td style="padding-bottom: 10px;" align="right" valign="middle">
+                        <span class="add-on layout-text"> <b> Type </b> </span>
+                        </td>
+
+                        <td>
+                        <select id="reaction-template-type-select" class='input-medium layout-text' name="reaction-template-type">
+                        <option id="reaction-template-type-association" value="association" <% if (templateType == 'association'){ %> selected<%}%> > Association </option>
+                        <option id="reaction-template-type-dissociation" value="dissociation" <% if (templateType == 'dissociation'){ %> selected<%}%> > Dissociation </option>
+                        </select>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td align="center" valign="middle" style="margin-left: 5px;">
+                        <span class="add-on layout-text"> <b> Input </b> </span>
+                        </td>
+
+                        <td align="center" valign="middle" style="margin-right: 5px;">
+                        <span class="add-on layout-text"> <b> Output </b> </span>
+                        </td>
+                        </tr>
+
+
+                        <tr>
+                        <td>
+                        <%= getInputHtml() %>
+                        </td>
+
+                        <td>
+                        <%= getOutputHtml() %>
+                        </td>
+
+                        </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="create-template" class="btn btn-default" >Create</button>
+                        <button id="cancel-template" class="btn btn-default">Cancel</button>
                     </div>
                 </div>
             </div>

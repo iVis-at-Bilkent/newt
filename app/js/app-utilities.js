@@ -6,6 +6,7 @@ var appUtilities = {
   generalPropertiesView: undefined,
   pathsBetweenQueryView: undefined,
   promptSaveView: undefined,
+  reactionTemplateView: undefined,
   getLayoutProperties: function() {
     if (this.layoutPropertiesView === undefined) {
       return undefined;

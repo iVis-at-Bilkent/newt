@@ -7,7 +7,7 @@ var modeHandler = require('./app-mode-handler');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView;
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView;
 
   function loadSample(filename) {
     return chise.loadSample(filename, 'app/samples/');
@@ -24,6 +24,7 @@ module.exports = function () {
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
     promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
+    reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
 
     toolbarButtonsAndMenu();
     modeHandler.initilize();
@@ -239,6 +240,10 @@ module.exports = function () {
     
     $("#add-compartment-for-selected").click(function (e) {
       chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
+    });
+    
+    $("#create-reaction-template").click(function (e) {
+      reactionTemplateView.render();
     });
     
     $("#clone-selected").click(function (e) {
