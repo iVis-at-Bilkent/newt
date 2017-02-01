@@ -241,6 +241,10 @@ module.exports = function () {
       chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
     });
     
+    $("#clone-selected").click(function (e) {
+      chise.cloneElements(cy.nodes(':selected'));
+    });
+    
     // Mode handler related menu items
     $('.add-node-menu-item').click(function (e) {
       if (!modeHandler.mode != "add-node-mode") {
