@@ -44,6 +44,7 @@ module.exports = function () {
   
   $(document).on('updateGraphEnd', function(event) {
     appUtilities.resetUndoRedoButtons();
+    modeHandler.setSelectionMode();
   });
 
   function toolbarButtonsAndMenu() {
@@ -56,10 +57,6 @@ module.exports = function () {
           nodes: [],
           edges: []
         });
-        
-        // TODO call these on update graph end event
-        appUtilities.resetUndoRedoButtons();
-        modeHandler.setSelectionMode();
       };
 
       promptSaveView.render(createNewFile);
