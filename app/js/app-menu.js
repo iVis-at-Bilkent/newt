@@ -233,6 +233,14 @@ module.exports = function () {
       chise.saveAsSbgnml(filename);
     });
     
+    $("#add-complex-for-selected").click(function (e) {
+      chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
+    });
+    
+    $("#add-compartment-for-selected").click(function (e) {
+      chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
+    });
+    
     // Mode handler related menu items
     $('.add-node-menu-item').click(function (e) {
       if (!modeHandler.mode != "add-node-mode") {
