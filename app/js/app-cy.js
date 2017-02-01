@@ -186,6 +186,19 @@ module.exports = function () {
     });
 
     cy.edgehandles('drawoff');
+    
+    cy.gridGuide({
+//      drawGrid: sbgnStyleRules['show-grid'],
+//      snapToGrid: sbgnStyleRules['snap-to-grid'],
+//      discreteDrag: sbgnStyleRules['discrete-drag'],
+//      gridSpacing: sbgnStyleRules['grid-size'],
+//      resize: sbgnStyleRules['auto-resize-nodes'],
+//      guidelines: sbgnStyleRules['show-alignment-guidelines'],
+//      guidelinesTolerance: sbgnStyleRules['guideline-tolerance'],
+//      guidelinesStyle: {
+//        strokeStyle: sbgnStyleRules['guideline-color']
+//      }
+    });
 
     var panProps = ({
       fitPadding: 10,
