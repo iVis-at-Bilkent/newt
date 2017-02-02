@@ -250,6 +250,30 @@ module.exports = function () {
       chise.cloneElements(cy.nodes(':selected'));
     });
     
+    $('#align-horizontal-top,#align-horizontal-top-icon').click(function (e) {
+      chise.align(cy.nodes(":selected"), "top", "none"); // TODO set alignTo parameter to first selected node when we are ready
+    });
+
+    $('#align-horizontal-middle,#align-horizontal-middle-icon').click(function (e) {
+      chise.align(cy.nodes(":selected"), "center", "none"); // TODO set alignTo parameter to first selected node when we are ready
+    });
+
+    $('#align-horizontal-bottom,#align-horizontal-bottom-icon').click(function (e) {
+      chise.align(cy.nodes(":selected"), "bottom", "none"); // TODO set alignTo parameter to first selected node when we are ready
+    });
+
+    $('#align-vertical-left,#align-vertical-left-icon').click(function (e) {
+      chise.align(cy.nodes(":selected"), "none", "left"); // TODO set alignTo parameter to first selected node when we are ready
+    });
+
+    $('#align-vertical-center,#align-vertical-center-icon').click(function (e) {
+      chise.align(cy.nodes(":selected"), "none", "center"); // TODO set alignTo parameter to first selected node when we are ready
+    });
+
+    $('#align-vertical-right,#align-vertical-right-icon').click(function (e) {
+      chise.align(cy.nodes(":selected"), "none", "right"); // TODO set alignTo parameter to first selected node when we are ready
+    });
+    
     // Mode handler related menu items
     $('.add-node-menu-item').click(function (e) {
       if (!modeHandler.mode != "add-node-mode") {
