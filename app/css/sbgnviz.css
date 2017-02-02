@@ -471,3 +471,7 @@ menu:not([title]):before{
 #edge-dd-list-menu {
     width: 185px;
 }
+
+.target-cursor {
+    cursor: url(../../app/img/drag-target.cur), pointer!important;
+}

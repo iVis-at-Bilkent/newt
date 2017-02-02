@@ -7,6 +7,23 @@ module.exports = function () {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
   var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
+  
+  // Enable drag and drop mode
+  function enableDragAndDropMode() {
+    appUtilities.dragAndDropModeEnabled = true;
+    $("#sbgn-network-container canvas").addClass("target-cursor");
+    cy.autolock(true);
+    cy.autounselectify(true);
+  }
+
+  // Disable drag and drop mode
+  function disableDragAndDropMode() {
+    appUtilities.dragAndDropModeEnabled = null;
+    appUtilities.nodesToDragAndDrop = null;
+    $("#sbgn-network-container canvas").removeClass("target-cursor");
+    cy.autolock(false);
+    cy.autounselectify(false);
+  }
 
   $(document).ready(function ()
   {
@@ -16,6 +33,18 @@ module.exports = function () {
       cytoscapeExtensionsAndContextMenu();
       bindCyEvents();
     });
+  });
+  
+  // Listen ctrl key up and down events here
+  // TODO handle these with mouse trap when it is registered (Trigger an event from moustrap and listen it here).
+  $(document).keydown(function (e) {
+    if (e.ctrlKey || e.metaKey) {
+      appUtilities.ctrlKeyDown = true;
+    }
+  });
+  $(document).keyup(function (e) {
+    appUtilities.ctrlKeyDown = null;
+    disableDragAndDropMode();
   });
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -227,6 +256,38 @@ module.exports = function () {
 
     cy.on("afterRedo", function (actionName, args) {
       refreshUndoRedoButtonsStatus();
+    });
+    
+    cy.on("mousedown", "node", function (event) {
+      var self = this;
+      if (modeHandler.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
+        enableDragAndDropMode();
+        appUtilities.nodesToDragAndDrop = self.union(cy.nodes(':selected'));
+        appUtilities.dragAndDropStartPosition = event.cyPosition;
+      }
+    });
+    
+    cy.on("mouseup", function (event) {
+      var self = event.cyTarget;
+      if (appUtilities.dragAndDropModeEnabled) {
+        var newParent;
+        if (self != cy) {
+          newParent = self;
+
+          if (newParent.data("class") != "complex" && newParent.data("class") != "compartment") {
+            newParent = newParent.parent()[0];
+          }
+        }
+        var nodes = appUtilities.nodesToDragAndDrop;
+
+        disableDragAndDropMode();
+
+        chise.changeParent(nodes, newParent, event.cyPosition.x - appUtilities.dragAndDropStartPosition.x, 
+                              event.cyPosition.y - appUtilities.dragAndDropStartPosition.y);
+
+        appUtilities.dragAndDropStartPosition = null;
+        appUtilities.nodesToDragAndDrop = null;
+      }
     });
 
     cy.on('mouseover', 'node', function (event) {
