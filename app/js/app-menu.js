@@ -7,7 +7,7 @@ var modeHandler = require('./app-mode-handler');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView;
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView, gridPropertiesView;
 
   function loadSample(filename) {
     return chise.loadSample(filename, 'app/samples/');
@@ -25,6 +25,7 @@ module.exports = function () {
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
     promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
     reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
+    gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
 
     toolbarButtonsAndMenu();
     modeHandler.initilize();
@@ -173,6 +174,10 @@ module.exports = function () {
     $("#query-pathsbetween").click(function (e) {
       pathsBetweenQueryView.render();
     });
+    
+    $("#grid-properties").click(function (e) {
+      gridPropertiesView.render();
+    });
 
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
       chise.collapseNodes(cy.nodes(":selected"));
@@ -204,9 +209,9 @@ module.exports = function () {
       // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
       // If it is 'during' use it as is 
       var preferences = {
-        animate: appUtilities.getGeneralProperties().animateOnDrawingChanges ? 'end' : false
+        animate: appUtilities.currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
       };
-      if (appUtilities.getLayoutProperties().animate == 'during') {
+      if (appUtilities.currentLayoutProperties.animate == 'during') {
         delete preferences.animate;
       }
       layoutPropertiesView.applyLayout(preferences);

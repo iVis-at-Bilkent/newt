@@ -217,6 +217,7 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li><a href="#" id="grid-properties">Grid...</a></li>
                             </ul>
                         </li>
                         
@@ -454,6 +455,10 @@
         
         <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- paths between query table will be shown here -->
+        </div>
+        
+        <div id="grid-properties-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- grid properties table will be shown here -->
         </div>
 
         <div id="box">
@@ -914,6 +919,101 @@
                 </div>
             </div>
         </script>
+        
+        <script type="text/template" id="grid-properties-template">
+        <div class="modal-dialog modal-sm sbgn-modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Grid Properties</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table dialog-table">
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Show Grid </span>
+                                </td>
+
+                                <td>
+                                    <input id="show-grid" type="checkbox" class="input-small layout-text" <% if (showGrid){ %> checked<%}%>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Snap to Grid </span>
+                                </td>
+
+                                <td>
+                                    <input id="snap-to-grid" type="checkbox" class="input-small layout-text" <% if (snapToGrid){ %> checked<%}%>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Grid Size </span>
+                                </td>
+
+                                <td>
+                                    <input id="grid-size" type="text" min="5" class="input-small layout-text integer-input" value= <%= gridSize %> >
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Discrete Drag </span>
+                                </td>
+
+                                <td>
+                                    <input id="discrete-drag" type="checkbox" class="input-small layout-text" <% if (discreteDrag){ %> checked<%}%>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Auto  Resize Nodes </span>
+                                </td>
+
+                                <td>
+                                    <input id="auto-resize-nodes" type="checkbox" class="input-small layout-text" <% if (autoResizeNodes){ %> checked<%}%>>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Show Alignment Guidelines </span>
+                                </td>
+
+                                <td>
+                                    <input id="show-alignment-guidelines" type="checkbox" class="input-small layout-text" <% if (showAlignmentGuidelines){ %> checked<%}%>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Guideline Tolerance </span>
+                                </td>
+
+                                <td>
+                                    <input id="guideline-tolerance" type="text" min="0" class="input-small layout-text float-input" value= <%= guidelineTolerance %> >
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Guideline Color </span>
+                                </td>
+
+                                <td>
+                                    <input id="guideline-color" type="color" class="input-small layout-text" value= <%= guidelineColor %> >
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+                     <button id="save-grid" class="btn btn-default" >Save</button>
+                    <button id="default-grid" class="btn btn-default">Default</button>
+                </div>
+            </div>
+        </div>
+</script>
 
         <!-- BioGeneView template for backbone.js -->
         <script type="text/template" id="biogene-template">

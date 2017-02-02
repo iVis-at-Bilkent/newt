@@ -181,44 +181,21 @@ var BioGeneView = Backbone.View.extend({
  * SBGN Layout view for the Sample Application.
  */
 var LayoutPropertiesView = Backbone.View.extend({
-  defaultLayoutProperties: {
-    name: 'cose-bilkent',
-    nodeRepulsion: 4500,
-    idealEdgeLength: 50,
-    edgeElasticity: 0.45,
-    nestingFactor: 0.1,
-    gravity: 0.25,
-    numIter: 2500,
-    tile: true,
-    animationEasing: 'cubic-bezier(0.19, 1, 0.22, 1)',
-    animate: 'end',
-    animationDuration: 1000,
-    randomize: true,
-    tilingPaddingVertical: 20,
-    tilingPaddingHorizontal: 20,
-    gravityRangeCompound: 1.5,
-    gravityCompound: 1.0,
-    gravityRange: 3.8,
-    stop: function () {
-      chise.endSpinner('layout-spinner');
-    }
-  },
-  currentLayoutProperties: null,
   initialize: function () {
     var self = this;
     self.copyProperties();
 
     self.template = _.template($("#layout-settings-template").html());
-    self.template = self.template(self.currentLayoutProperties);
+    self.template = self.template(appUtilities.currentLayoutProperties);
   },
   copyProperties: function () {
-    this.currentLayoutProperties = _.clone(this.defaultLayoutProperties);
+    appUtilities.currentLayoutProperties = _.clone(appUtilities.defaultLayoutProperties);
   },
   applyLayout: function (preferences, notUndoable) {
     if (preferences === undefined) {
       preferences = {};
     }
-    var options = $.extend({}, this.currentLayoutProperties, preferences);
+    var options = $.extend({}, appUtilities.currentLayoutProperties, preferences);
     var verticalPaddingPercent = options.tilingPaddingVertical;
     var horizontalPaddingPercent = options.tilingPaddingHorizontal;
     // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
@@ -235,26 +212,26 @@ var LayoutPropertiesView = Backbone.View.extend({
     var self = this;
 
     self.template = _.template($("#layout-settings-template").html());
-    self.template = self.template(self.currentLayoutProperties);
+    self.template = self.template(appUtilities.currentLayoutProperties);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
 
     $(document).off("click", "#save-layout").on("click", "#save-layout", function (evt) {
-      self.currentLayoutProperties.nodeRepulsion = Number(document.getElementById("node-repulsion").value);
-      self.currentLayoutProperties.idealEdgeLength = Number(document.getElementById("ideal-edge-length").value);
-      self.currentLayoutProperties.edgeElasticity = Number(document.getElementById("edge-elasticity").value);
-      self.currentLayoutProperties.nestingFactor = Number(document.getElementById("nesting-factor").value);
-      self.currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
-      self.currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
-      self.currentLayoutProperties.tile = document.getElementById("tile").checked;
-      self.currentLayoutProperties.animate = document.getElementById("animate").checked ? 'during' : 'end';
-      self.currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
-      self.currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
-      self.currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
-      self.currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
-      self.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
-      self.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
+      appUtilities.currentLayoutProperties.nodeRepulsion = Number(document.getElementById("node-repulsion").value);
+      appUtilities.currentLayoutProperties.idealEdgeLength = Number(document.getElementById("ideal-edge-length").value);
+      appUtilities.currentLayoutProperties.edgeElasticity = Number(document.getElementById("edge-elasticity").value);
+      appUtilities.currentLayoutProperties.nestingFactor = Number(document.getElementById("nesting-factor").value);
+      appUtilities.currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
+      appUtilities.currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
+      appUtilities.currentLayoutProperties.tile = document.getElementById("tile").checked;
+      appUtilities.currentLayoutProperties.animate = document.getElementById("animate").checked ? 'during' : 'end';
+      appUtilities.currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
+      appUtilities.currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
+      appUtilities.currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
+      appUtilities.currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
+      appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
+      appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
     
       $(self.el).modal('toggle');
     });
@@ -263,7 +240,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       self.copyProperties();
 
       self.template = _.template($("#layout-settings-template").html());
-      self.template = self.template(self.currentLayoutProperties);
+      self.template = self.template(appUtilities.currentLayoutProperties);
       $(self.el).html(self.template);
     });
 
@@ -275,38 +252,30 @@ var LayoutPropertiesView = Backbone.View.extend({
  * SBGN Properties view for the Sample Application.
  */
 var GeneralPropertiesView = Backbone.View.extend({
-  defaultSBGNProperties: {
-    compoundPadding: 10,
-    dynamicLabelSize: 'regular',
-    fitLabelsToNodes: false,
-    rearrangeAfterExpandCollapse: true,
-    animateOnDrawingChanges: true
-  },
-  currentSBGNProperties: null,
   initialize: function () {
     var self = this;
     self.copyProperties();
     self.template = _.template($("#general-properties-template").html());
-    self.template = self.template(self.currentSBGNProperties);
+    self.template = self.template(appUtilities.currentGeneralProperties);
   },
   copyProperties: function () {
-    this.currentSBGNProperties = _.clone(this.defaultSBGNProperties);
+    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
   },
   render: function () {
     var self = this;
     self.template = _.template($("#general-properties-template").html());
-    self.template = self.template(self.currentSBGNProperties);
+    self.template = self.template(appUtilities.currentGeneralProperties);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
 
     $(document).off("click", "#save-sbgn").on("click", "#save-sbgn", function (evt) {
-      self.currentSBGNProperties.compoundPadding = Number(document.getElementById("compound-padding").value);
-      self.currentSBGNProperties.dynamicLabelSize = $('select[name="dynamic-label-size"] option:selected').val();
-      self.currentSBGNProperties.fitLabelsToNodes = document.getElementById("fit-labels-to-nodes").checked;
-      self.currentSBGNProperties.rearrangeAfterExpandCollapse =
+      appUtilities.currentGeneralProperties.compoundPadding = Number(document.getElementById("compound-padding").value);
+      appUtilities.currentGeneralProperties.dynamicLabelSize = $('select[name="dynamic-label-size"] option:selected').val();
+      appUtilities.currentGeneralProperties.fitLabelsToNodes = document.getElementById("fit-labels-to-nodes").checked;
+      appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse =
               document.getElementById("rearrange-after-expand-collapse").checked;
-      self.currentSBGNProperties.animateOnDrawingChanges =
+      appUtilities.currentGeneralProperties.animateOnDrawingChanges =
               document.getElementById("animate-on-drawing-changes").checked;
 
       chise.refreshPaddings(true); // Refresh paddings and force paddings to be recalculated
@@ -318,7 +287,7 @@ var GeneralPropertiesView = Backbone.View.extend({
     $(document).off("click", "#default-sbgn").on("click", "#default-sbgn", function (evt) {
       self.copyProperties();
       self.template = _.template($("#general-properties-template").html());
-      self.template = self.template(self.currentSBGNProperties);
+      self.template = self.template(appUtilities.currentGeneralProperties);
       $(self.el).html(self.template);
     });
 
@@ -595,8 +564,8 @@ var ReactionTemplateView = Backbone.View.extend({
       var templateType = self.currentTemplateParameters.templateType;
       var macromoleculeList = jQuery.extend(true, [], self.currentTemplateParameters.macromoleculeList);
       var complexName = self.currentTemplateParameters.templateReactionEnableComplexName?self.currentTemplateParameters.templateReactionComplexName:undefined;
-      var tilingPaddingVertical = chise.calculatePaddings(appUtilities.getLayoutProperties().tilingPaddingVertical);
-      var tilingPaddingHorizontal = chise.calculatePaddings(appUtilities.getLayoutProperties().tilingPaddingHorizontal);
+      var tilingPaddingVertical = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingVertical);
+      var tilingPaddingHorizontal = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingHorizontal);
    
       chise.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
@@ -613,11 +582,67 @@ var ReactionTemplateView = Backbone.View.extend({
   }
 });
 
+var GridPropertiesView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#grid-properties-template").html());
+    self.template = self.template(appUtilities.currentGridProperties);
+  },
+  copyProperties: function () {
+    appUtilities.currentGridProperties = _.clone(appUtilities.defaultGridProperties);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#grid-properties-template").html());
+    self.template = self.template(appUtilities.currentGridProperties);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+
+    $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
+      appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;
+      appUtilities.currentGridProperties.snapToGrid = document.getElementById("snap-to-grid").checked;
+      appUtilities.currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
+      appUtilities.currentGridProperties.discreteDrag = document.getElementById("discrete-drag").checked;
+      appUtilities.currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
+      appUtilities.currentGridProperties.showAlignmentGuidelines = document.getElementById("show-alignment-guidelines").checked;
+      appUtilities.currentGridProperties.guidelineTolerance = Number(document.getElementById("guideline-tolerance").value);
+      appUtilities.currentGridProperties.guidelineColor = document.getElementById("guideline-color").value;
+
+      cy.gridGuide({
+        drawGrid: appUtilities.currentGridProperties.showGrid,
+        snapToGrid: appUtilities.currentGridProperties.snapToGrid,
+        gridSpacing: appUtilities.currentGridProperties.gridSize,
+        discreteDrag: appUtilities.currentGridProperties.discreteDrag,
+        resize: appUtilities.currentGridProperties.autoResizeNodes,
+        guidelines: appUtilities.currentGridProperties.showAlignmentGuidelines,
+        guidelinesTolerance: appUtilities.currentGridProperties.guidelineTolerance,
+        guidelinesStyle: {
+          strokeStyle: appUtilities.currentGridProperties.guidelineColor
+        }
+      });
+      
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#default-grid").on("click", "#default-grid", function (evt) {
+      self.copyProperties();
+      self.template = _.template($("#grid-properties-template").html());
+      self.template = self.template(appUtilities.currentGridProperties);
+      $(self.el).html(self.template);
+    });
+
+    return this;
+  }
+});
+
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PromptSaveView: PromptSaveView,
-  ReactionTemplateView: ReactionTemplateView
+  ReactionTemplateView: ReactionTemplateView,
+  GridPropertiesView: GridPropertiesView
 };
