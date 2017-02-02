@@ -66,7 +66,7 @@ appUtilities.triggerIncrementalLayout = function () {
     animate: this.currentGeneralProperties.animateOnDrawingChanges ? 'end' : false,
     fit: false
   };
-  if (this.layoutPropertiesView.currentLayoutProperties.animate === 'during') {
+  if (this.currentLayoutProperties.animate === 'during') {
     delete preferences.animate;
   }
 
