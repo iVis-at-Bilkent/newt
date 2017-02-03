@@ -93,24 +93,29 @@ appUtilities.getExpandCollapseOptions = function () {
 };
 
 appUtilities.dynamicResize = function () {
-  var win = $(window);//$(this); //this = window
+  var win = $(window);
 
   var windowWidth = win.width();
   var windowHeight = win.height();
+
   var canvasWidth = 1000;
   var canvasHeight = 680;
+
   if (windowWidth > canvasWidth)
   {
-    var w = windowWidth * 0.9;
-    $("#sbgn-network-container").width(w);
+    $("#sbgn-network-container").width(windowWidth * 0.9 * 0.8);
+    $("#sbgn-inspector").width(windowWidth * 0.9 * 0.2);
+    var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
     $(".navbar").width(w);
+//    $("#sbgn-info-content").width(windowWidth * 0.85);
     $("#sbgn-toolbar").width(w);
   }
 
   if (windowHeight > canvasHeight)
   {
     $("#sbgn-network-container").height(windowHeight * 0.85);
+    $("#sbgn-inspector").height(windowHeight * 0.85);
   }
 };
 

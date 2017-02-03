@@ -171,6 +171,23 @@ body {
     /*float: left;*/
 }
 
+#sbgn-inspector-and-canvas {
+    margin: auto;
+    overflow: auto !important;
+}
+
+#sbgn-inspector {
+    margin: auto;
+    border: 1px solid #ddd;
+    height: 680px;
+    width: 200px;
+    overflow: auto !important;
+    border-radius: 0.25em;
+    /*padding-left: 2px;*/
+    padding-right: 2px;
+    /*float: right;*/
+}
+
 .target-cursor {
     cursor: url(../../sampleapp-images/drag-target.cur), pointer!important;
 }
