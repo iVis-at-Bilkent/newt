@@ -2,6 +2,7 @@ var jQuery = $ = require('jQuery');
 var appUtilities = require('./app-utilities');
 var bioGeneQtip = require('./biogene-qtip');
 var modeHandler = require('./app-mode-handler');
+var inspectorUtilities = require('./inspector-utilities');
 
 module.exports = function () {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -344,6 +345,15 @@ module.exports = function () {
       }
 
       nodeQtipFunction(node);
+    });
+    
+    // TODO see the effects of these on performance
+    cy.on('select', 'node', function() {
+      inspectorUtilities.handleSBGNInspector();
+    });
+    
+    cy.on('unselect', 'node', function() {
+      inspectorUtilities.handleSBGNInspector();
     });
   }
 };
