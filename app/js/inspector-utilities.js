@@ -194,7 +194,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         ele.height();
       });
       
-      if (chise.elementUtilities.allCanHaveSBGNLabel(selectedEles)) {
+      if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Label</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.25 + "px;' value='" + sbgnlabel
               + "'/>" + "</td></tr>";
@@ -265,16 +265,16 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "<input id='inspector-background-opacity' class='inspector-input-box' type='range' step='0.01' min='0' max='1' style='width: " + buttonwidth + "px;' value='" + parseFloat(backgroundOpacity)
               + "'/>" + "</td></tr>"; 
       
-      if (chise.elementUtilities.allCanHaveSBGNLabel(selectedEles)) {
+      if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Font</font>" + "</td><td style='padding-left: 5px;'>"
               + "<label id='inspector-font' class='inspector-input-box' style='width: " + buttonwidth + "px;'>"
               + "..." + "<label/>" + "</td></tr>"; 
       }
       
-      commonStateAndInfos = chise.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "statesandinfos", "data");
+      commonStateAndInfos = chise.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
       
       if(commonStateAndInfos){
-        if (chise.elementUtilities.allCanHaveStateVariable(selectedEles)) {
+        if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveStateVariable)) {
           fillStateAndInfos = true;
           
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
@@ -291,12 +291,15 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
       }
       
-      commonIsMultimer = chise.elementUtilities.getCommonIsMultimer(selectedEles);
-      commonIsCloned = chise.elementUtilities.getCommonIsCloned(selectedEles);
-//      multimerCheck = ( commonIsMultimer !== null ) && chise.elementUtilities.allCanBeMultimer(selectedEles);
-//      clonedCheck = ( commonIsCloned !== null ) && chise.elementUtilities.allCanBeCloned(selectedEles);
-      multimerCheck = chise.elementUtilities.allCanBeMultimer(selectedEles);
-      clonedCheck = chise.elementUtilities.allCanBeCloned(selectedEles);
+      commonIsMultimer = chise.elementUtilities.getCommonProperty(selectedEles, function(ele){
+        return ele.data('class').endsWith(' multimer');
+      });
+      commonIsCloned = chise.elementUtilities.getCommonProperty(selectedEles, function(ele){
+        return ele.data('clonemarker') === true;
+      });
+      
+      multimerCheck = chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canBeMultimer);
+      clonedCheck = chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canBeCloned);
       
       multimerCheck = multimerCheck?multimerCheck:false;
       clonedCheck = clonedCheck?clonedCheck:false;
@@ -318,10 +321,10 @@ inspectorUtilities.handleSBGNInspector = function () {
     else {
       type = "edge";
       
-      var commonLineColor = chise.elementUtilities.getCommonLineColor(selectedEles);
+      var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "line-color", "css");
       commonLineColor = commonLineColor?commonLineColor:'#FFFFFF';
       
-      var commonLineWidth = chise.elementUtilities.getCommonLineWidth(selectedEles);
+      var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "css");
       
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Color</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
@@ -337,7 +340,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       html += "/>" + "</td></tr>";
       
       if (chise.elementUtilities.canHaveSBGNCardinality(selectedEles)) {
-        var cardinality = chise.elementUtilities.getCommonSBGNCardinality(selectedEles);
+        var cardinality = chise.elementUtilities.getCommonProperty(selectedEles, "cardinality", "data");
         commonSBGNCardinality = cardinality;
         
         if (cardinality <= 0) {
