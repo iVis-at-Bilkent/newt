@@ -62,13 +62,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       w: 53,
       h: 18
     };
-    var param = {
-      obj: obj,
-      nodes: nodes,
-      width: width
-    };
     
-    cy.undoRedo().do("addStateOrInfoBox", param);
+    chise.addStateOrInfoBox(nodes, obj);
   });
 
   $("#inspector-add-unit-of-information").click(function () {
@@ -81,13 +76,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       w: 53,
       h: 18
     };
-    var param = {
-      obj: obj,
-      nodes: nodes,
-      width: width
-    };
     
-    cy.undoRedo().do("addStateOrInfoBox", param);
+    chise.addStateOrInfoBox(nodes, obj);
   });
 }
 
@@ -114,7 +104,9 @@ inspectorUtilities.handleSBGNInspector = function () {
       sbgnlabel = "";
     }
 
-    var classInfo = chise.elementUtilities.getCommonProperty(selectedEles, "class", "data");
+    var classInfo = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+      return ele.data('class').replace(' multimer', '');
+    }) || "";
     if (classInfo == 'and' || classInfo == 'or' || classInfo == 'not') {
       classInfo = classInfo.toUpperCase();
     }
@@ -449,23 +441,11 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-is-multimer').on('click', function () {
-        var param = {
-          status: $('#inspector-is-multimer').prop('checked'),
-          nodes: selectedEles,
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("setMultimerStatus", param);
+        chise.setMultimerStatus(selectedEles, $('#inspector-is-multimer').prop('checked'));
       });
 
       $('#inspector-is-clone-marker').on('click', function () {
-        var param = {
-          status: $('#inspector-is-clone-marker').prop('checked'),
-          nodes: selectedEles,
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("setCloneMarkerStatus", param);
+        chise.setCloneMarkerStatus(selectedEles, $('#inspector-is-clone-marker').prop('checked'));
       });
 
       $("#inspector-border-color").on('change', function () {
@@ -473,46 +453,19 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-label").on('change', function () {
-        var param = {
-          nodes: selectedEles,
-          label: $(this).val(),
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("changeNodeLabel", param);
+        chise.changeNodeLabel(selectedEles, $(this).val());
       });
 
       $("#inspector-background-opacity").on('change', function () {
-        var param = {
-          eles: selectedEles,
-          value: $("#inspector-background-opacity").val(),
-          name: "background-opacity",
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("changeCss", param);
+        chise.changeCss(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
       });
 
       $("#inspector-fill-color").on('change', function () {
-        var param = {
-          eles: selectedEles,
-          value: $("#inspector-fill-color").val(),
-          name: "background-color",
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("changeCss", param);
+        chise.changeCss(selectedEles, "background-color", $("#inspector-fill-color").val());
       });
 
       $("#inspector-border-width").change( function () {
-        var param = {
-          eles: selectedEles,
-          value: $("#inspector-border-width").val(),
-          name: "border-width",
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("changeCss", param);
+        chise.changeCss(selectedEles, "border-width", $("#inspector-border-width").val());
       });
       
       // TODO handle this when we are ready for it
@@ -531,14 +484,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-line-color").on('change', function () {
-        var param = {
-          eles: selectedEles,
-          value: $("#inspector-line-color").val(),
-          name: "line-color",
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("changeCss", param);
+        chise.changeCss(selectedEles, "line-color", $("#inspector-line-color").val());
       });
 
       $("#inspector-cardinality").change( function () {
@@ -551,14 +497,8 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
           data = 0;
         }
-        var param = {
-          eles: selectedEles,
-          value: data,
-          name: "cardinality",
-          firstTime: true
-        };
         
-        cy.undoRedo().do("changeData", param);
+        chise.changeData(selectedEles, "cardinality", data);
       });
 
       $("#inspector-width").change( function () {
@@ -569,7 +509,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           firstTime: true
         };
         
-        cy.undoRedo().do("changeCss", param);
+        chise.changeCss(selectedEles, "width", $("#inspector-width").val());
       });
     }
   }

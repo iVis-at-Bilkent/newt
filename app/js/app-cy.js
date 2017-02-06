@@ -348,11 +348,11 @@ module.exports = function () {
     });
     
     // TODO see the effects of these on performance
-    cy.on('select', 'node', function() {
+    cy.on('select', function() {
       inspectorUtilities.handleSBGNInspector();
     });
     
-    cy.on('unselect', 'node', function() {
+    cy.on('unselect', function() {
       inspectorUtilities.handleSBGNInspector();
     });
   }
