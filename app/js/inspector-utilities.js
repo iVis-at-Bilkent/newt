@@ -21,7 +21,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + "<span width='" + width / 5 + "'px>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
                 + width / 2.5 + "px;' value='" + (state.state.variable || '')
-                + "'/><img width='12px' height='12px' class='inspector-delete-state-and-info inspector-input-box' src='app/img/delete.png'></img></div>");
+                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box' src='app/img/delete.png'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
@@ -35,31 +35,20 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         var total = width / 1.25;
         $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                 + total + "px;' value='" + (state.label.text || '')
-                + "'/><img width='12px' height='12px' class='inspector-delete-state-and-info' src='app/img/delete.png'></img></div>");
+                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box' src='app/img/delete.png'></img></div>");
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val());
         });
       }
+      
+      $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
+        chise.removeStateOrInfoBox(nodes, i);
+      });
     })(i);
   }
   $("#inspector-state-variables").append("<img id='inspector-add-state-variable' src='app/img/add.png'/>");
   $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png'/>");
-
-  $(".inspector-delete-state-and-info").each(function(index, value){
-    (function(index){
-      var self = $(this);
-      self.unbind('click').click(function (event) {
-        var param = {
-          index: index,
-          nodes: nodes,
-          width: width
-        };
-
-        cy.undoRedo().do("removeStateOrInfoBox", param);
-      });
-    })(index);
-  });
 
   $("#inspector-add-state-variable").click(function () {
     var obj = {};
