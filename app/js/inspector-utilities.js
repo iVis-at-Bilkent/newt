@@ -13,69 +13,53 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-unit-of-informations").html("");
   
   for (var i = 0; i < stateAndInfos.length; i++) {
-    var state = stateAndInfos[i];
-    if (state.clazz == "state variable") {
-      $("#inspector-state-variables").append("<div><input type='text' class='inspector-state-variable-value inspector-input-box' style='width: "
-              + width / 5 + "px;' value='" + (state.state.value || '') + "'/>"
-              + "<span width='" + width / 5 + "'px>@</span>"
-              + "<input type='text' class='inspector-state-variable-variable inspector-input-box' style='width: "
-              + width / 2.5 + "px;' value='" + (state.state.variable || '')
-              + "'/><img width='12px' height='12px' class='inspector-delete-state-and-info inspector-input-box' src='app/img/delete.png'></img></div>");
+    (function(i){
+      var state = stateAndInfos[i];
+      if (state.clazz == "state variable") {
+        $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
+                + width / 5 + "px;' value='" + (state.state.value || '') + "'/>"
+                + "<span width='" + width / 5 + "'px>@</span>"
+                + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
+                + width / 2.5 + "px;' value='" + (state.state.variable || '')
+                + "'/><img width='12px' height='12px' class='inspector-delete-state-and-info inspector-input-box' src='app/img/delete.png'></img></div>");
 
-      $(".inspector-state-variable-value").unbind('change').on('change', function () {
-        var param = {
-          index: i + 0,
-          value: $(this).val(),
-          type: 'value',
-          nodes: nodes,
-          width: width
-        };
-        
-        cy.undoRedo().do("changeStateOrInfoBox", param);
-      });
+        $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
+          chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
+        });
 
-      $(".inspector-state-variable-variable").unbind('change').on('change', function () {
-        var param = {
-          index: i + 0,
-          value: $(this).val(),
-          type: 'variable',
-          nodes: nodes,
-          width: width
-        };
-        
-        cy.undoRedo().do("changeStateOrInfoBox", param);
-      });
-    }
-    else if (state.clazz == "unit of information") {
-      var total = width / 1.25;
-      $("#inspector-unit-of-informations").append("<div><input type='text' class='inspector-unit-of-information-label inspector-input-box' style='width: "
-              + total + "px;' value='" + (state.label.text || '')
-              + "'/><img width='12px' height='12px' class='inspector-delete-state-and-info' src='app/img/delete.png'></img></div>");
+        $("#inspector-state-variable-variable" + i).unbind('change').on('change', function () {
+          chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
+        });
+      }
+      else if (state.clazz == "unit of information") {
+        var total = width / 1.25;
+        $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
+                + total + "px;' value='" + (state.label.text || '')
+                + "'/><img width='12px' height='12px' class='inspector-delete-state-and-info' src='app/img/delete.png'></img></div>");
 
-      $(".inspector-unit-of-information-label").unbind('change').on('change', function () {
-        var param = {
-          index: i + 0,
-          value: $(this).val(),
-          nodes: nodes,
-          width: width
-        };
-        
-        cy.undoRedo().do("changeUnitOfInformation", param);
-      });
-    }
-
-    $(".inspector-delete-state-and-info").unbind('click').click(function (event) {
-      var param = {
-        index: i + 0,
-        nodes: nodes,
-        width: width
-      };
-      
-      cy.undoRedo().do("removeStateOrInfoBox", param);
-    });
+        $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
+          chise.changeStateOrInfoBox(nodes, i, $(this).val());
+        });
+      }
+    })(i);
   }
   $("#inspector-state-variables").append("<img id='inspector-add-state-variable' src='app/img/add.png'/>");
   $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png'/>");
+
+  $(".inspector-delete-state-and-info").each(function(index, value){
+    (function(index){
+      var self = $(this);
+      self.unbind('click').click(function (event) {
+        var param = {
+          index: index,
+          nodes: nodes,
+          width: width
+        };
+
+        cy.undoRedo().do("removeStateOrInfoBox", param);
+      });
+    })(index);
+  });
 
   $("#inspector-add-state-variable").click(function () {
     var obj = {};
@@ -384,9 +368,9 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
     
     $("#sbgn-inspector").html(html);
-    if(selectedEles.length === 1) {
-      fillBioGeneContainer(selectedEles[0]);
-    }
+//    if(selectedEles.length === 1) {
+//      fillBioGeneContainer(selectedEles[0]);
+//    }
 
     if (type == "node") {
       if (fillStateAndInfos) {
@@ -496,14 +480,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-border-color").on('change', function () {
-        var param = {
-          eles: selectedEles,
-          value: $("#inspector-border-color").val(),
-          name: "border-color",
-          firstTime: true
-        };
-        
-        cy.undoRedo().do("changeCss", param);
+        chise.changeCss(selectedEles, "border-color", $("#inspector-border-color").val());
       });
 
       $("#inspector-label").on('change', function () {
