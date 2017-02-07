@@ -1,3 +1,8 @@
+/*
+ * 
+ * Common utilities for sample application. Includes functions and variables.
+ * You can directly utilize this object also you can use this object to set a variable in a file and access it in another file.
+ */
 var jQuery = $ = require('jQuery');
 
 var appUtilities = {};
@@ -174,6 +179,29 @@ appUtilities.refreshUndoRedoButtonsStatus = function () {
 appUtilities.resetUndoRedoButtons = function () {
   $("#undo-last-action").parent("li").addClass("disabled");
   $("#redo-last-action").parent("li").addClass("disabled");
+};
+
+/*
+ * Set elements data according to their unselected line-color and border-color.
+ * This is needed for inspector because when elements are selected their border-color and line-color changes,
+ * so we need to keep their original values in data.
+ */
+appUtilities.setElementsData = function(eles) {
+  cy.startBatch();
+  if (!eles) {
+    eles = cy.elements();
+  }
+  var nodes = eles.nodes();
+  var edges = eles.edges();
+
+  nodes.each(function(i, ele) {
+    ele.data('borderColor', ele.css('border-color'));
+  });
+
+  edges.each(function(i, ele) {
+    ele.data('lineColor', ele.css('line-color'));
+  });
+  cy.endBatch();
 };
 
 module.exports = appUtilities;

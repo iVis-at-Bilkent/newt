@@ -140,7 +140,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     if (allNodes) {
       type = "node";
       
-      var borderColor = chise.elementUtilities.getCommonProperty(selectedEles, "border-color", "css");
+      var borderColor = chise.elementUtilities.getCommonProperty(selectedEles, "borderColor", "data");
       borderColor = borderColor?borderColor:'#FFFFFF';
       
       var backgroundColor = chise.elementUtilities.getCommonProperty(selectedEles, "background-color", "css");
@@ -286,7 +286,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     else {
       type = "edge";
       
-      var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "line-color", "css");
+      var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "lineColor", "data");
       commonLineColor = commonLineColor?commonLineColor:'#FFFFFF';
       
       var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "css");
@@ -449,7 +449,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-border-color").on('change', function () {
-        chise.changeCss(selectedEles, "border-color", $("#inspector-border-color").val());
+        chise.changeData(selectedEles, "borderColor", $("#inspector-border-color").val());
       });
 
       $("#inspector-label").on('change', function () {
@@ -484,7 +484,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-line-color").on('change', function () {
-        chise.changeCss(selectedEles, "line-color", $("#inspector-line-color").val());
+        chise.changeData(selectedEles, "lineColor", $("#inspector-line-color").val());
       });
 
       $("#inspector-cardinality").change( function () {

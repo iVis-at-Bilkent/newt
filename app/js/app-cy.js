@@ -47,7 +47,7 @@ module.exports = function () {
     appUtilities.ctrlKeyDown = null;
     disableDragAndDropMode();
   });
-
+  
   function cytoscapeExtensionsAndContextMenu() {
     cy.expandCollapse(getExpandCollapseOptions());
 
@@ -354,6 +354,16 @@ module.exports = function () {
     
     cy.on('unselect', function() {
       inspectorUtilities.handleSBGNInspector();
+    });
+    
+    cy.on('add', function(event) {
+      // When the graph is being updated we should not set the elements data
+      // We postpone it to 'updateGraphEnd' event
+      if (appUtilities.updatingGraph) {
+        return;
+      }
+      var ele = event.cyTarget;
+      appUtilities.setElementsData(ele);
     });
   }
 };
