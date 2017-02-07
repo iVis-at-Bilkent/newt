@@ -333,7 +333,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     html += "<hr class='inspector-divider' style='border-width: 3px;'>";
     
     if (selectedEles.length === 1) {
-      var geneClass = selectedEles[0]._private.data.sbgnclass;
+      var geneClass = selectedEles[0]._private.data.class;
       
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
@@ -369,18 +369,18 @@ inspectorUtilities.handleSBGNInspector = function () {
       $('#inspector-set-as-default-button').on('click', function () {
         var multimer;
         var selected = selectedEles[0];
-        var sbgnclass = selected.data('sbgnclass');
+        var sbgnclass = selected.data('class');
         if (sbgnclass.endsWith(' multimer')) {
           sbgnclass = sbgnclass.replace(' multimer', '');
           multimer = true;
         }
-        if (chise.elementUtilities.defaultSizes[sbgnclass] == null) {
-          chise.elementUtilities.defaultSizes[sbgnclass] = {};
+        if (chise.elementUtilities.defaultProperties[sbgnclass] == null) {
+          chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
-        var defaults = chise.elementUtilities.defaultSizes[sbgnclass];
+        var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
         defaults.width = selected.width();
         defaults.height = selected.height();
-        defaults.sbgnclonemarker = selected._private.data.sbgnclonemarker;
+        defaults.clonemarker = selected._private.data.clonemarker;
         defaults.multimer = multimer;
         defaults['border-width'] = selected.css('border-width');
         defaults['border-color'] = selected.data('borderColor');
@@ -475,12 +475,12 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
     else {
       $('#inspector-set-as-default-button').on('click', function () {
-        if (chise.elementUtilities.defaultSizes[selected.data('sbgnclass')] == null) {
-          chise.elementUtilities.defaultSizes[selected.data('sbgnclass')] = {};
+        if (chise.elementUtilities.defaultProperties[selectedEles.data('class')] == null) {
+          chise.elementUtilities.defaultProperties[selectedEles.data('class')] = {};
         }
-        var defaults = chise.elementUtilities.defaultSizes[selected.data('sbgnclass')];
-        defaults['line-color'] = selected.data('lineColor');
-        defaults['width'] = selected.css('width');
+        var defaults = chise.elementUtilities.defaultProperties[selectedEles.data('class')];
+        defaults['line-color'] = selectedEles.data('lineColor');
+        defaults['width'] = selectedEles.css('width');
       });
 
       $("#inspector-line-color").on('change', function () {

@@ -81,6 +81,12 @@ module.exports = function () {
     .style({
       'line-color': function(ele) {
         return ele.data('lineColor');
+      },
+      'source-arrow-color': function(ele) {
+        return ele.data('lineColor');
+      },
+      'target-arrow-color': function(ele) {
+        return ele.data('lineColor');
       }
     })
     .selector("node:selected")
