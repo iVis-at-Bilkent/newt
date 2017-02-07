@@ -470,6 +470,10 @@
         <div id="grid-properties-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- grid properties table will be shown here -->
         </div>
+        
+        <div id="font-properties-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- sbgn properties table will be shown here -->
+        </div>
 
         <div id="box">
         </div>
@@ -931,7 +935,7 @@
         </script>
         
         <script type="text/template" id="grid-properties-template">
-        <div class="modal-dialog modal-sm sbgn-modal-dialog">
+            <div class="modal-dialog modal-sm sbgn-modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1016,14 +1020,82 @@
                                 <td></td>
                             </tr>
                         </table>
-                </div>
-                <div class="modal-footer" style="text-align: center">
-                     <button id="save-grid" class="btn btn-default" >Save</button>
-                    <button id="default-grid" class="btn btn-default">Default</button>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                         <button id="save-grid" class="btn btn-default" >Save</button>
+                        <button id="default-grid" class="btn btn-default">Default</button>
+                    </div>
                 </div>
             </div>
-        </div>
-</script>
+        </script>
+        
+        <script type="text/template" id="font-properties-template">
+            <div class="modal-dialog modal-sm sbgn-modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Font Properties</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Font Family </span>
+                                </td>
+
+                                <td>
+                                    <%= getFontFamilyHtml() %>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Font Size </span>
+                                </td>
+                                <td>
+                                    <input id="font-properties-font-size" type="text" min="1" class="input-small layout-text integer-input" value= <%= fontSize %> >
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Font Weight </span>
+                                </td>
+
+                                <td>
+                                    <select id="font-properties-select-font-weight" class='input-medium layout-text' name="font-weight-select">
+                                        <option id="font-properties-font-weight-none" value="" <% if (fontWeight == ''){ %> selected<%}%> >  </option>
+                                        <option id="font-properties-font-weight-lighter" value="lighter" <% if (fontWeight == 'lighter'){ %> selected<%}%> > Lighter </option>
+                                        <option id="font-properties-font-weight-normal" value="normal" <% if (fontWeight == 'normal'){ %> selected<%}%> > Normal </option>
+                                        <option id="font-properties-font-weight-bold" value="bold" <% if (fontWeight == 'bold'){ %> selected<%}%> > Bold </option>
+                                        <option id="font-properties-font-weight-bolder" value="bolder" <% if (fontWeight == 'bolder'){ %> selected<%}%> > Bolder </option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text"> Font Type </span>
+                                </td>
+
+                                <td>
+                                    <select id="font-properties-select-font-style" class='input-medium layout-text' name="font-style-select">
+                                        <option id="font-properties-font-style-none" value="" <% if (fontStyle == ''){ %> selected<%}%> >  </option>
+                                        <option id="font-properties-font-style-normal" value="normal" <% if (fontStyle == 'normal'){ %> selected<%}%> > Normal </option>
+                                        <option id="font-properties-font-style-italic" value="italic" <% if (fontStyle == 'italic'){ %> selected<%}%> > Italic </option>
+                                        <option id="font-properties-font-style-oblique" value="oblique" <% if (fontStyle == 'oblique'){ %> selected<%}%> > Oblique </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="set-font-properties" class="btn btn-default" >Set</button>
+                    </div>
+                </div>
+            </div>
+        </script>
 
         <!-- BioGeneView template for backbone.js -->
         <script type="text/template" id="biogene-template">

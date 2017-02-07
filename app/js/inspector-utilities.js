@@ -1,11 +1,5 @@
+var appUtilities = require('./app-utilities');
 var inspectorUtilities = {};
-// Define inspectorUtilities.fontProperties on document ready
-// TODO handle this when we are ready for it
-//$(document).ready(function () {
-//  inspectorUtilities.fontProperties = new FontProperties({
-//    el: '#font-properties-table'
-//  });
-//});
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
   //first empty the state variables and infos data in inspector
@@ -458,10 +452,10 @@ inspectorUtilities.handleSBGNInspector = function () {
         chise.changeCss(selectedEles, "border-width", $("#inspector-border-width").val());
       });
       
-      // TODO handle this when we are ready for it
-//      $("#inspector-font").on('click', function () {
-//        inspectorUtilities.fontProperties.render(selectedEles);
-//      });
+      // Open font properties dialog
+      $("#inspector-font").on('click', function () {
+        appUtilities.fontPropertiesView.render(selectedEles);
+      });
     }
     else {
       $('#inspector-set-as-default-button').on('click', function () {

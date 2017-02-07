@@ -7,7 +7,7 @@ var modeHandler = require('./app-mode-handler');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView, gridPropertiesView;
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView, gridPropertiesView, fontPropertiesView;
 
   function loadSample(filename) {
     return chise.loadSample(filename, 'app/samples/');
@@ -26,6 +26,7 @@ module.exports = function () {
     promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
     reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
     gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
+    fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
 
     toolbarButtonsAndMenu();
     modeHandler.initilize();
