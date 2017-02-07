@@ -152,11 +152,11 @@ inspectorUtilities.handleSBGNInspector = function () {
       backgroundOpacity = backgroundOpacity?backgroundOpacity:0.5;
       
       var nodeWidth = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
-        ele.width();
+        return ele.width();
       });
 
       var nodeHeight = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
-        ele.height();
+        return ele.height();
       });
       
       if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
@@ -296,7 +296,7 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "'/>" + "</td></tr>";
 
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
+              + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
       
       if(commonLineWidth){
         html += " value='" + parseFloat(commonLineWidth) + "'";
@@ -405,16 +405,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
         
         var useAspectRatio = window.nodeResizeUseAspectRatio;
-
-        var param = {
-          nodes: selectedEles,
-          width: w,
-          height: h,
-          useAspectRatio: useAspectRatio,
-          performOperation: true
-        };
         
-        cy.undoRedo().do("resizeNodes", param);
+        chise.resizeNodes(selectedEles, w, h, useAspectRatio);
       });
 
       $('#inspector-node-sizes-aspect-ratio').on('click', function() {
@@ -436,8 +428,6 @@ inspectorUtilities.handleSBGNInspector = function () {
         
         $(this).attr('src', 'app/img/' + imageName);
         $(this).attr('title', title);
-        
-        cy.style().update();
       });
 
       $('#inspector-is-multimer').on('click', function () {
@@ -501,15 +491,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         chise.changeData(selectedEles, "cardinality", data);
       });
 
-      $("#inspector-width").change( function () {
-        var param = {
-          eles: selectedEles,
-          value: $("#inspector-width").val(),
-          name: "width",
-          firstTime: true
-        };
-        
-        chise.changeCss(selectedEles, "width", $("#inspector-width").val());
+      $("#inspector-edge-width").change( function () {
+        chise.changeCss(selectedEles, "width", $("#inspector-edge-width").val());
       });
     }
   }
