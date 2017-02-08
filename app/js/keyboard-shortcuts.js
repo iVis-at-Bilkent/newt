@@ -1,6 +1,7 @@
 var Mousetrap = require('mousetrap');
+var appUtilities = require('./app-utilities');
 
-module.exports = function() {
+module.exports = function () {
   var mt = new Mousetrap();
 
   mt.bind(["ctrl+z", "command+z"], function () {
@@ -22,11 +23,11 @@ module.exports = function() {
   mt.bind(["del"], function () {
     chise.deleteElesSimple(cy.elements(':selected'));
   });
-  /*  mt.bind(["ctrl", "command"], function () {
-   window.ctrlKeyDown = true;
-   }, "keydown");
-   mt.bind(["ctrl", "command"], function () {
-   window.ctrlKeyDown = null;
-   disableDragAndDropMode();
-   }, "keyup");*/
+  mt.bind(["ctrl", "command"], function () {
+    appUtilities.ctrlKeyDown = true;
+  }, "keydown");
+  mt.bind(["ctrl", "command"], function () {
+    appUtilities.ctrlKeyDown = null;
+    appUtilities.disableDragAndDropMode();
+  }, "keyup");
 };

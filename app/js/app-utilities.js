@@ -210,4 +210,21 @@ appUtilities.setElementsData = function(eles) {
   cy.endBatch();
 };
 
+// Enable drag and drop mode
+appUtilities.enableDragAndDropMode = function() {
+  appUtilities.dragAndDropModeEnabled = true;
+  $("#sbgn-network-container canvas").addClass("target-cursor");
+  cy.autolock(true);
+  cy.autounselectify(true);
+};
+
+// Disable drag and drop mode
+appUtilities.disableDragAndDropMode = function() {
+  appUtilities.dragAndDropModeEnabled = null;
+  appUtilities.nodesToDragAndDrop = null;
+  $("#sbgn-network-container canvas").removeClass("target-cursor");
+  cy.autolock(false);
+  cy.autounselectify(false);
+};
+
 module.exports = appUtilities;
