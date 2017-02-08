@@ -5,7 +5,6 @@ module.exports = function () {
   var mt = new Mousetrap();
 
   mt.bind(["ctrl+z", "command+z"], function () {
-    console.log('undo called');
     cy.undoRedo().undo();
   });
   mt.bind(["ctrl+y", "command+y"], function () {
@@ -19,9 +18,17 @@ module.exports = function () {
   });
   mt.bind(["ctrl+a", "command+a"], function () {
     cy.elements().select();
+    
+    // return false to prevent default browser behavior
+    // and stop event from bubbling
+    return false;
   });
   mt.bind(["del"], function () {
     chise.deleteElesSimple(cy.elements(':selected'));
+    
+    // return false to prevent default browser behavior
+    // and stop event from bubbling
+    return false;
   });
   mt.bind(["ctrl", "command"], function () {
     appUtilities.ctrlKeyDown = true;
