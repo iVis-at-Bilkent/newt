@@ -25,6 +25,7 @@
     "cytoscape-edgehandles": "~2.9.0",
     "filesaverjs": "~0.2.2",
     "mousetrap": "^1.6.0",
+    "ocanvas": "^2.8.5",
     "backbone": "1.3.3",
     "underscore": "1.8.3",
     "cytoscape": "iVis-at-Bilkent/cytoscape.js#unstable",
@@ -36,6 +37,8 @@
     "cytoscape-view-utilities": "^2.0.0",
     "cytoscape-context-menus": "^2.0.3",
     "cytoscape-grid-guide": "^1.0.4",
+    "cytoscape-autopan-on-drag": "^2.0.1",
+    "cytoscape-node-resize": "^2.0.0",
     "sbgnviz": "~3.4.0",
     "chise": "iVis-at-Bilkent/chise.js#revise-file-structure"
   },
