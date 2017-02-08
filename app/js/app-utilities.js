@@ -195,11 +195,17 @@ appUtilities.setElementsData = function(eles) {
   var edges = eles.edges();
 
   nodes.each(function(i, ele) {
-    ele.data('borderColor', ele.css('border-color'));
+    // This data may be set already (This happens usually in cloning or copy-pasting elements)
+    if (!ele.data('borderColor')) {
+      ele.data('borderColor', ele.css('border-color'));
+    }
   });
 
   edges.each(function(i, ele) {
-    ele.data('lineColor', ele.css('line-color'));
+    // This data may be set already (This happens usually in cloning or copy-pasting elements)
+    if (ele.data('lineColor')) {
+      ele.data('lineColor', ele.css('line-color'));
+    }
   });
   cy.endBatch();
 };

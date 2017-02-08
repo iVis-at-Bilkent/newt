@@ -2,6 +2,7 @@ var jQuery = $ = require('jQuery');
 var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
+var keyboardShortcuts = require('./keyboard-shortcuts');
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function () {
@@ -37,6 +38,7 @@ module.exports = function () {
     // TODO search for a better way.
     setTimeout(function(){
       loadSample('neuronal_muscle_signalling.xml');
+      keyboardShortcuts();
     }, 100);
   });
   
