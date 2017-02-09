@@ -38,6 +38,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chise.removeStateOrInfoBox(nodes, i);
+        inspectorUtilities.handleSBGNInspector();
       });
     })(i);
   }
@@ -58,6 +59,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     };
     
     chise.addStateOrInfoBox(nodes, obj);
+    inspectorUtilities.handleSBGNInspector();
   });
 
   $("#inspector-add-unit-of-information").click(function () {
@@ -72,6 +74,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     };
     
     chise.addStateOrInfoBox(nodes, obj);
+    inspectorUtilities.handleSBGNInspector();
   });
 }
 

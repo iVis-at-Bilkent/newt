@@ -271,11 +271,13 @@ module.exports = function () {
     cy.on("afterUndo", function (actionName, args) {
       refreshUndoRedoButtonsStatus();
       cy.style().update();
+      inspectorUtilities.handleSBGNInspector();
     });
 
     cy.on("afterRedo", function (actionName, args) {
       refreshUndoRedoButtonsStatus();
       cy.style().update();
+      inspectorUtilities.handleSBGNInspector();
     });
     
     cy.on("mousedown", "node", function (event) {
