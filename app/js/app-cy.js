@@ -368,7 +368,9 @@ module.exports = function () {
       nodeQtipFunction(node);
     });
     
-    // TODO see the effects of these on performance
+    // When we select/unselect many elements in one operation these 'select' / 'unselect' events called may times
+    // and unfortunetaly the inspector is refreshed many times. This seriously decreases the performance. To handle this
+    // problem we call the method used to refresh the inspector in setTimeout()
     cy.on('select', function() {
       setTimeout(inspectorUtilities.handleSBGNInspector, 0);
     });
