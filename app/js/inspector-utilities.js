@@ -1,5 +1,6 @@
 var appUtilities = require('./app-utilities');
 var inspectorUtilities = {};
+var fillBioGeneContainer = require('./fill-biogene-container');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
   //first empty the state variables and infos data in inspector
@@ -346,9 +347,9 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
     
     $("#sbgn-inspector").html(html);
-//    if(selectedEles.length === 1) {
-//      fillBioGeneContainer(selectedEles[0]);
-//    }
+    if(selectedEles.length === 1) {
+      fillBioGeneContainer(selectedEles[0]);
+    }
 
     if (type == "node") {
       if (fillStateAndInfos) {

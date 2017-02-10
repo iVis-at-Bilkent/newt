@@ -1,6 +1,5 @@
 var jQuery = $ = require('jQuery');
 var appUtilities = require('./app-utilities');
-var bioGeneQtip = require('./biogene-qtip');
 var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 
@@ -112,14 +111,6 @@ module.exports = function () {
           $("#perform-layout").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
-      },
-      {
-        id: 'ctx-menu-biogene-properties',
-        title: 'BioGene Properties',
-        selector: 'node[class="macromolecule"],[class="nucleic acid feature"],[class="unspecified entity"]',
-        onClickFunction: function (event) {
-          bioGeneQtip(event.cyTarget);
-        }
       }
     ]);
 
