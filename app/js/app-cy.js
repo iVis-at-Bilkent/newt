@@ -2,6 +2,7 @@ var jQuery = $ = require('jQuery');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
+var _ = require('underscore');
 
 module.exports = function () {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -359,15 +360,19 @@ module.exports = function () {
       nodeQtipFunction(node);
     });
     
+    var handleInspectorThrottled = _.throttle(function() {
+      inspectorUtilities.handleSBGNInspector();
+    }, 200);
+    
     // When we select/unselect many elements in one operation these 'select' / 'unselect' events called may times
     // and unfortunetaly the inspector is refreshed many times. This seriously decreases the performance. To handle this
-    // problem we call the method used to refresh the inspector in setTimeout()
+    // problem we call the method used to refresh the inspector in a throttled way and decrease the number of calls.
     cy.on('select', function() {
-      setTimeout(inspectorUtilities.handleSBGNInspector, 0);
+      handleInspectorThrottled();
     });
     
     cy.on('unselect', function() {
-      setTimeout(inspectorUtilities.handleSBGNInspector, 0);
+      handleInspectorThrottled();
     });
     
     /*
