@@ -379,6 +379,21 @@ module.exports = function () {
       setTimeout(inspectorUtilities.handleSBGNInspector, 0);
     });
     
+    /*
+     * Set/unset the first selected node on select/unselect node events to align w.r.t that node when needed
+     */
+    cy.on('select', 'node', function() {
+      if (!appUtilities.firstSelectedNode) {
+        appUtilities.firstSelectedNode = this;
+      }
+    });
+    
+    cy.on('unselect', 'node', function() {
+      if (appUtilities.firstSelectedNode && appUtilities.firstSelectedNode.id() === this.id()) {
+        appUtilities.firstSelectedNode = undefined;
+      }
+    });
+    
     cy.on('add', function(event) {
       // When the graph is being updated we should not set the elements data
       // We postpone it to 'updateGraphEnd' event
