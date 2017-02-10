@@ -370,11 +370,11 @@ module.exports = function () {
     
     // TODO see the effects of these on performance
     cy.on('select', function() {
-      inspectorUtilities.handleSBGNInspector();
+      setTimeout(inspectorUtilities.handleSBGNInspector, 0);
     });
     
     cy.on('unselect', function() {
-      inspectorUtilities.handleSBGNInspector();
+      setTimeout(inspectorUtilities.handleSBGNInspector, 0);
     });
     
     cy.on('add', function(event) {

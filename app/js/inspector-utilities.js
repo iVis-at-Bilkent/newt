@@ -352,7 +352,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     if (type == "node") {
       if (fillStateAndInfos) {
-        this.fillInspectorStateAndInfos(selectedEles, commonStateAndInfos, width);
+        inspectorUtilities.fillInspectorStateAndInfos(selectedEles, commonStateAndInfos, width);
       }
 
       if (multimerCheck && commonIsMultimer) {
