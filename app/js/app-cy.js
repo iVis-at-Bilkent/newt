@@ -112,6 +112,29 @@ module.exports = function () {
           $("#perform-layout").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
+      },
+      {
+        id: 'ctx-menu-select-all-object-of-this-type',
+        title: 'Select Objects of This Type',
+        selector: 'node, edge',
+        onClickFunction: function (event) {
+          var cyTarget = event.cyTarget;
+          var sbgnclass = cyTarget.data('class');
+
+          cy.elements().unselect();
+          cy.elements('[class="' + sbgnclass + '"]').select();
+        }
+      },
+      {
+        id: 'ctx-menu-show-hidden-neighbors',
+        title: 'Show Hidden Neighbors',
+        selector: 'node',
+        onClickFunction: function (event) {
+          var cyTarget = event.cyTarget;
+          // TODO showHiddenNeighbors of selected here
+          console.log('supposed to show hidden neighbours here'); 
+//          showHiddenNeighbors(cyTarget);
+        }
       }
     ]);
 
