@@ -3,6 +3,7 @@ var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
+var _ = require('underscore');
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function () {
@@ -18,7 +19,7 @@ module.exports = function () {
   {
     console.log('init the sbgnviz template/page');
     
-    $(window).on('resize', dynamicResize);
+    $(window).on('resize', _.debounce(dynamicResize, 100));
     dynamicResize();
 
     layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
