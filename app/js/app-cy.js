@@ -131,9 +131,8 @@ module.exports = function () {
         selector: 'node',
         onClickFunction: function (event) {
           var cyTarget = event.cyTarget;
-          // TODO showHiddenNeighbors of selected here
-          console.log('supposed to show hidden neighbours here'); 
-//          showHiddenNeighbors(cyTarget);
+          appUtilities.showAndPerformIncrementalLayout(cyTarget);
+//          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       }
     ]);

@@ -227,4 +227,13 @@ appUtilities.disableDragAndDropMode = function() {
   cy.autounselectify(false);
 };
 
+// Show given eles and perform incremental layout afterward
+appUtilities.showAndPerformIncrementalLayout = function(eles) {
+  var extendedList = chise.elementUtilities.extendNodeList(eles).filter(':hidden');
+  if (extendedList.length === 0) {
+    return;
+  }
+  chise.showAndPerformLayout(extendedList, this.triggerIncrementalLayout.bind(this));
+};
+
 module.exports = appUtilities;

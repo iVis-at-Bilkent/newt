@@ -181,6 +181,10 @@ module.exports = function () {
     $("#show-selected, #show-selected-icon").click(function(e) {
       chise.showNodesSmart(cy.nodes(":selected"));
     });
+    
+    $("#show-hidden-neighbors-of-selected").click(function(e) {
+      appUtilities.showAndPerformIncrementalLayout(cy.elements(':selected'));
+    });
 
     $("#show-all").click(function (e) {
       chise.showAll();
