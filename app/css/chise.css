@@ -492,3 +492,16 @@ menu:not([title]):before{
 .target-cursor {
     cursor: url(../../app/img/drag-target.cur), pointer!important;
 }
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content:"\25B3"; 
+    float: right; 
+    cursor: pointer;
+}
+
+.accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content:"\25BD";
+}

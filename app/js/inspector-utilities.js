@@ -230,7 +230,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       
       if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Font</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<label id='inspector-font' class='inspector-input-box' style='width: " + buttonwidth + "px;'>"
+              + "<label id='inspector-font' class='inspector-input-box' style='cursor: pointer;width: " + buttonwidth + "px;'>"
               + "..." + "<label/>" + "</td></tr>"; 
       }
       
