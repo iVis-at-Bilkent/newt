@@ -489,6 +489,25 @@ menu:not([title]):before{
     width: 185px;
 }
 
+.sbgn-dd-list {
+    height: 30px;
+}
+
+.sbgn-dd-list > button {
+    height: 26px;
+    background-color: rgb(245, 245, 245);
+    border-color: rgba(0, 0, 0, 0.14902) rgba(0, 0, 0, 0.14902) rgba(0, 0, 0, 0.247059);
+    position:relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sbgn-dd-list > button > div {
+    position:relative;
+    top: 6px;
+    transform: translateY(-50%);
+}
+
 .target-cursor {
     cursor: url(../../app/img/drag-target.cur), pointer!important;
 }
