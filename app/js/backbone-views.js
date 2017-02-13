@@ -715,10 +715,11 @@ var FontPropertiesView = Backbone.View.extend({
     var self = this;
     var commonProperties = {};
     
+    // Get common properties. Note that we check the data field for labelsize property and css field for other properties.
     var commonFontSize = chise.elementUtilities.getCommonProperty(eles, "labelsize", "data");
-    var commonFontWeight = chise.elementUtilities.getCommonProperty(eles, "fontweight", "data");
-    var commonFontFamily = chise.elementUtilities.getCommonProperty(eles, "fontfamily", "data");
-    var commonFontStyle = chise.elementUtilities.getCommonProperty(eles, "fontstyle", "data");
+    var commonFontWeight = chise.elementUtilities.getCommonProperty(eles, "font-weight", "css");
+    var commonFontFamily = chise.elementUtilities.getCommonProperty(eles, "font-family", "css");
+    var commonFontStyle = chise.elementUtilities.getCommonProperty(eles, "font-style", "css");
     
     if( commonFontSize != null ) {
       commonProperties.fontSize = commonFontSize;
@@ -760,15 +761,15 @@ var FontPropertiesView = Backbone.View.extend({
       }
       
       if ( fontfamily != '' ) {
-        data.fontfamily = fontfamily;
+        data['font-family'] = fontfamily;
       }
       
       if ( fontweight != '' ) {
-        data.fontweight = fontweight;
+        data['font-weight'] = fontweight;
       }
       
       if ( fontstyle != '' ) {
-        data.fontstyle = fontstyle;
+        data['font-style'] = fontstyle;
       }
       
       var keys = Object.keys(data);
@@ -777,13 +778,16 @@ var FontPropertiesView = Backbone.View.extend({
         return;
       }
       
-      var validAction = false;
+      var validAction = false; // If there is nothing to change the action is not valid
       
       for ( var i = 0; i < eles.length; i++ ) {
         var ele = eles[i];
         
         keys.forEach(function(key, idx) {
-          if ( data[key] != ele.data(key) ) {
+          // If there is some property to change signal that the action is valid.
+          // Note that we check the data field for labelsize property and css field for other properties.
+          if ( ( key === 'labelsize' && data[key] != ele.data(key) ) 
+                  || ( key !== 'labelsize' && data[key] != ele.css(key) ) ) {
             validAction = true;
           }
         }); 

@@ -352,6 +352,32 @@ option {
     font-size: 12px;
 }
 
+input, select{
+    padding-left: 4px;
+    border: 1px solid rgb(204, 204, 204);
+    height: 23px;
+}
+
+input, select, textarea {
+    border-radius: 4px;
+}
+
+input[type="file"], input[type="image"], input[type="submit"], input[type="reset"], input[type="button"], input[type="radio"], input[type="checkbox"] {
+    width: auto;
+}
+
+inputinput[type="radio"], input[type="checkbox"] {
+    height: auto;
+}
+
+.input-small {
+    width: 90px;
+}
+
+.table-condensed th, .table-condensed td {
+    padding: 4px 5px;
+}
+
 #general-properties-template td {
     width: 100%;
 }
@@ -533,3 +559,27 @@ menu:not([title]):before{
     /* symbol for "collapsed" panels */
     content:"\25BD";
 }
+<<<<<<< HEAD
+=======
+
+.sbgn-label-font {
+    font-size: 11px !important;
+}
+
+.inspector-input-box{
+    margin-bottom: 2px !important;
+    font-size: 12px !important;
+    color: #555555;
+    vertical-align: middle;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-bottom: 0.5px;
+    padding-top: 0.5px;
+}
+
+hr.inspector-divider {
+    padding: 0px !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    width: 100% !important;
+}
+>>>>>>> 5424401051a4e13310dafc92aaacf82af12f0949

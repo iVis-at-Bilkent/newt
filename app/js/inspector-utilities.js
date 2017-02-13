@@ -230,7 +230,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       
       if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Font</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<label id='inspector-font' class='inspector-input-box' style='cursor: pointer;width: " + buttonwidth + "px;'>"
+              + "<label id='inspector-font' style='cursor: pointer;width: " + buttonwidth + "px;'>"
               + "..." + "<label/>" + "</td></tr>"; 
       }
       
@@ -386,9 +386,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 //        defaults['font-size'] = selected.css('font-size');
         defaults['background-opacity'] = selected.css('background-opacity');
         defaults.labelsize = selected.data('labelsize');
-        defaults.fontfamily = selected.data('fontfamily');
-        defaults.fontweight = selected.data('fontweight');
-        defaults.fontstyle = selected.data('fontstyle');
+        defaults['font-family'] = selected.css('font-family');
+        defaults['font-weight'] = selected.css('font-weight');
+        defaults['font-style'] = selected.css('font-style');
       });
 
       $("#inspector-node-width, #inspector-node-height").change( function () {
