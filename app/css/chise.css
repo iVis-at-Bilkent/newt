@@ -559,8 +559,6 @@ menu:not([title]):before{
     /* symbol for "collapsed" panels */
     content:"\25BD";
 }
-<<<<<<< HEAD
-=======
 
 .sbgn-label-font {
     font-size: 11px !important;
@@ -582,4 +580,3 @@ hr.inspector-divider {
     margin-bottom: 5px !important;
     width: 100% !important;
 }
->>>>>>> 5424401051a4e13310dafc92aaacf82af12f0949
