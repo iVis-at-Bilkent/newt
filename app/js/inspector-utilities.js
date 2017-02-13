@@ -386,9 +386,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 //        defaults['font-size'] = selected.css('font-size');
         defaults['background-opacity'] = selected.css('background-opacity');
         defaults.labelsize = selected.data('labelsize');
-        defaults.fontfamily = selected.data('fontfamily');
-        defaults.fontweight = selected.data('fontweight');
-        defaults.fontstyle = selected.data('fontstyle');
+        defaults['font-family'] = selected.css('font-family');
+        defaults['font-weight'] = selected.css('font-weight');
+        defaults['font-style'] = selected.csss('font-style');
       });
 
       $("#inspector-node-width, #inspector-node-height").change( function () {
