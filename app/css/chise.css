@@ -410,6 +410,13 @@ menu:not([title]):before{
     padding-top: 2px !important;
 }
 
+.property-table {
+	margin: 20px;
+	border: 1px solid black;
+	display: inline-block;
+	vertical-align: top;
+}
+
 .sbgn-modal-dialog .modal-header {
     background-color: #0B9BCD !important;
     color: #ffffff !important;
@@ -425,6 +432,8 @@ menu:not([title]):before{
 .sbgn-modal-dialog .modal-content {
     overflow:hidden !important;
 }
+
+
 
 .selected-mode {
     /*box-shadow: 10px 10px 5px #888888;*/

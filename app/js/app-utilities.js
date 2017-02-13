@@ -38,9 +38,12 @@ appUtilities.defaultGridProperties = {
   discreteDrag: false,
   gridSize: 20,
   autoResizeNodes: false,
-  showAlignmentGuidelines: true,
+  showGeometricGuidelines: true,
+  showDistributionGuidelines: true,
   guidelineTolerance: 2.0,
-  guidelineColor: "#0B9BCD"
+  guidelineColor: "#0B9BCD",
+  horizontalGuidelineColor: "#ff0000",
+  verticalGuidelineColor: "#00ff00"
 };
 
 appUtilities.currentGridProperties = jQuery.extend(true, {}, appUtilities.defaultGridProperties);

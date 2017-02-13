@@ -606,9 +606,12 @@ var GridPropertiesView = Backbone.View.extend({
       appUtilities.currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
       appUtilities.currentGridProperties.discreteDrag = document.getElementById("discrete-drag").checked;
       appUtilities.currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
-      appUtilities.currentGridProperties.showAlignmentGuidelines = document.getElementById("show-alignment-guidelines").checked;
+      appUtilities.currentGridProperties.showGeometricGuidelines = document.getElementById("show-geometric-guidelines").checked;
+      appUtilities.currentGridProperties.showDistributionGuidelines = document.getElementById("show-distribution-guidelines").checked;
       appUtilities.currentGridProperties.guidelineTolerance = Number(document.getElementById("guideline-tolerance").value);
-      appUtilities.currentGridProperties.guidelineColor = document.getElementById("guideline-color").value;
+      appUtilities.currentGridProperties.guidelineColor = document.getElementById("geometric-guideline-color").value;
+      appUtilities.currentGridProperties.horizontalGuidelineColor = document.getElementById("horizontal-guideline-color").value;
+      appUtilities.currentGridProperties.verticalGuidelineColor = document.getElementById("vertical-guideline-color").value;
 
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
@@ -616,10 +619,13 @@ var GridPropertiesView = Backbone.View.extend({
         gridSpacing: appUtilities.currentGridProperties.gridSize,
         discreteDrag: appUtilities.currentGridProperties.discreteDrag,
         resize: appUtilities.currentGridProperties.autoResizeNodes,
-        guidelines: appUtilities.currentGridProperties.showAlignmentGuidelines,
+        geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
+        distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
         guidelinesTolerance: appUtilities.currentGridProperties.guidelineTolerance,
         guidelinesStyle: {
-          strokeStyle: appUtilities.currentGridProperties.guidelineColor
+          strokeStyle: appUtilities.currentGridProperties.guidelineColor,
+		  horizontalDistColor: appUtilities.currentGridProperties.horizontalGuidelineColor,
+		  verticalDistColor: appUtilities.currentGridProperties.verticalGuidelineColor
         }
       });
       

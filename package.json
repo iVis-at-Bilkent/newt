@@ -36,7 +36,7 @@
     "cytoscape-edge-bend-editing": "^1.4.0",
     "cytoscape-view-utilities": "^2.0.0",
     "cytoscape-context-menus": "^2.0.3",
-    "cytoscape-grid-guide": "^1.0.4",
+    "cytoscape-grid-guide": "iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-autopan-on-drag": "^2.0.1",
     "cytoscape-node-resize": "^2.0.0",
     "sbgnviz": "~3.4.0",
