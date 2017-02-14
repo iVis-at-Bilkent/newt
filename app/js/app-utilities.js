@@ -44,7 +44,7 @@ appUtilities.defaultGridProperties = {
   guidelineColor: "#0B9BCD",
   horizontalGuidelineColor: "#ff0000",
   verticalGuidelineColor: "#00ff00",
-  distributionAlignmentRange: 100
+  distributionAlignmentRange: 300
 };
 
 appUtilities.currentGridProperties = jQuery.extend(true, {}, appUtilities.defaultGridProperties);
