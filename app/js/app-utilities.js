@@ -53,7 +53,8 @@ appUtilities.defaultGeneralProperties = {
   dynamicLabelSize: 'regular',
   fitLabelsToNodes: false,
   rearrangeAfterExpandCollapse: true,
-  animateOnDrawingChanges: true
+  animateOnDrawingChanges: true,
+  adjustNodeLabelFontSizeAutomatically: false
 };
 
 appUtilities.currentGeneralProperties = jQuery.extend(true, {}, appUtilities.defaultGeneralProperties);

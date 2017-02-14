@@ -68,7 +68,7 @@ chise({
   // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
   // instead of doing it.
   adjustNodeLabelFontSizeAutomatically: function() {
-    return false;
+    return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
   },
   undoable: true
 }, libs);

@@ -277,6 +277,8 @@ var GeneralPropertiesView = Backbone.View.extend({
               document.getElementById("rearrange-after-expand-collapse").checked;
       appUtilities.currentGeneralProperties.animateOnDrawingChanges =
               document.getElementById("animate-on-drawing-changes").checked;
+      appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
+          document.getElementById("adjust-node-label-font-size-automatically").checked;
 
       chise.refreshPaddings(true); // Refresh paddings and force paddings to be recalculated
       cy.style().update();
