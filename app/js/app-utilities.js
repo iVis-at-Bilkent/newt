@@ -3,7 +3,7 @@
  * Common utilities for sample application. Includes functions and variables.
  * You can directly utilize this object also you can use this object to set a variable in a file and access it in another file.
  */
-var jQuery = $ = require('jQuery');
+var jquery = $ = require('jquery');
 
 var appUtilities = {};
 
@@ -30,7 +30,7 @@ appUtilities.defaultLayoutProperties = {
   }
 };
 
-appUtilities.currentLayoutProperties = jQuery.extend(true, {}, appUtilities.defaultLayoutProperties);
+appUtilities.currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
 
 appUtilities.defaultGridProperties = {
   showGrid: false,
@@ -47,7 +47,7 @@ appUtilities.defaultGridProperties = {
   distributionAlignmentRange: 300
 };
 
-appUtilities.currentGridProperties = jQuery.extend(true, {}, appUtilities.defaultGridProperties);
+appUtilities.currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
 
 appUtilities.defaultGeneralProperties = {
   compoundPadding: 10,
@@ -58,7 +58,7 @@ appUtilities.defaultGeneralProperties = {
   adjustNodeLabelFontSizeAutomatically: false
 };
 
-appUtilities.currentGeneralProperties = jQuery.extend(true, {}, appUtilities.defaultGeneralProperties);
+appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
 
 appUtilities.setFileContent = function (fileName) {
   var span = document.getElementById('file-name');

@@ -1,4 +1,4 @@
-var jQuery = $ = require('jQuery');
+var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -483,7 +483,7 @@ var ReactionTemplateView = Backbone.View.extend({
     self.template = self.template(self.currentTemplateParameters);
   },
   copyProperties: function () {
-    this.currentTemplateParameters = jQuery.extend(true, [], this.defaultTemplateParameters);
+    this.currentTemplateParameters = jquery.extend(true, [], this.defaultTemplateParameters);
   },
   render: function () {
     var self = this;
@@ -564,7 +564,7 @@ var ReactionTemplateView = Backbone.View.extend({
     $(document).off("click", "#create-template").on("click", "#create-template", function (evt) {
 
       var templateType = self.currentTemplateParameters.templateType;
-      var macromoleculeList = jQuery.extend(true, [], self.currentTemplateParameters.macromoleculeList);
+      var macromoleculeList = jquery.extend(true, [], self.currentTemplateParameters.macromoleculeList);
       var complexName = self.currentTemplateParameters.templateReactionEnableComplexName?self.currentTemplateParameters.templateReactionComplexName:undefined;
       var tilingPaddingVertical = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingHorizontal);

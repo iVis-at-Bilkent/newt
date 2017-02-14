@@ -1,7 +1,7 @@
 var chise = require('chise');
 var sbgnviz = require('sbgnviz');
 var filesaverjs = require('filesaverjs');
-window.jQuery = window.$ = require('jQuery'); // jQuery should be global because jQuery.qtip extension is not compatible with commonjs
+window.jquery = window.$ = require('jquery'); // jquery should be global because jquery.qtip extension is not compatible with commonjs
 var cytoscape = require('cytoscape');
 
 require('jquery-expander')($);
@@ -45,7 +45,7 @@ cyNodeResize( cytoscape, $ );
 var libs = {};
 
 libs.filesaverjs = filesaverjs;
-libs.jQuery = jQuery;
+libs.jquery = jquery;
 libs.cytoscape = cytoscape;
 libs.sbgnviz = sbgnviz;
 

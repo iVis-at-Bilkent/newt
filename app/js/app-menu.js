@@ -1,4 +1,4 @@
-var jQuery = $ = require('jQuery');
+var jquery = $ = require('jquery');
 var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');

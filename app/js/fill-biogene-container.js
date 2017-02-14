@@ -1,4 +1,4 @@
-var jQuery = $ = require('jQuery');
+var jquery = $ = require('jquery');
 var _ = require('underscore');
 var BioGeneView = require('./backbone-views').BioGeneView;
 
