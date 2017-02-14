@@ -165,7 +165,13 @@ module.exports = function () {
             return ele.css('opacity');
           }
         }
-      }
+      },
+      neighbor: function(node){ //select and return process-based neighbors
+        node.select();
+        var neighbors = chise.elementUtilities.extendNodeList(node);   
+        return neighbors;
+      },
+      neighborSelectTime: 1000 //ms 
     });
     
     cy.nodeResize({
