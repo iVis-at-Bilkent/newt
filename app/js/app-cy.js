@@ -372,8 +372,21 @@ module.exports = function () {
       }
     });
 
+    var tappedBefore;
+
     cy.on('tap', 'node', function (event) {
       var node = this;
+      
+      var tappedNow = node;
+      setTimeout(function () {
+        tappedBefore = null;
+      }, 300);
+      if (tappedBefore && tappedBefore.id() === tappedNow.id()) {
+        tappedNow.trigger('doubleTap');
+        tappedBefore = null;
+      } else {
+        tappedBefore = tappedNow;
+      }
 
       $(".qtip").remove();
 
@@ -386,6 +399,36 @@ module.exports = function () {
       }
 
       nodeQtipFunction(node);
+    });
+    
+    cy.on('doubleTap', 'node', function (event) {
+      if (modeHandler.mode == 'selection-mode') {
+        var node = this;
+
+        if (!chise.elementUtilities.canHaveSBGNLabel(node)) {
+          return;
+        }
+        
+        var nodeLabelTextbox = $("#node-label-textbox");
+        var containerPos = $(cy.container()).position();
+        var left = containerPos.left + this.renderedPosition().x;
+        left -= nodeLabelTextbox.width() / 2;
+        left = left.toString() + 'px';
+        var top = containerPos.top + this.renderedPosition().y;
+        top -= nodeLabelTextbox.height() / 2;
+        top = top.toString() + 'px';
+
+        nodeLabelTextbox.css('left', left);
+        nodeLabelTextbox.css('top', top);
+        nodeLabelTextbox.show();
+        var sbgnlabel = this.data('label');
+        if (sbgnlabel == null) {
+          sbgnlabel = "";
+        }
+        nodeLabelTextbox.val(sbgnlabel);
+        nodeLabelTextbox.data('node', this);
+        nodeLabelTextbox.focus();
+      }
     });
     
     var handleInspectorThrottled = _.throttle(function() {

@@ -580,3 +580,12 @@ hr.inspector-divider {
     margin-bottom: 5px !important;
     width: 100% !important;
 }
+
+#node-label-textbox {
+    position: absolute;
+    top: 150px;
+    left: 150px;
+    z-index: 100;
+    display: none;
+    width: 100px;
+}

@@ -3,6 +3,7 @@ var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
+var inspectorUtilities = require('./inspector-utilities');
 var _ = require('underscore');
 
 // Handle sbgnviz menu functions which are to be triggered on events
@@ -108,6 +109,23 @@ module.exports = function () {
   });
 
   function toolbarButtonsAndMenu() {
+    
+    $("#node-label-textbox").keydown(function (e) {
+      if (e.which === 13) {
+        $("#node-label-textbox").blur();
+      }
+    });
+    
+    $("#node-label-textbox").blur(function () {
+      $("#node-label-textbox").hide();
+      $("#node-label-textbox").data('node', undefined);
+    });
+
+    $("#node-label-textbox").on('change', function () {
+      var node = $(this).data('node');
+      chise.changeNodeLabel(node, $(this).val());
+      inspectorUtilities.handleSBGNInspector();
+    });
 
     $("#new-file, #new-file-icon").click(function () {
       var createNewFile = function () {
