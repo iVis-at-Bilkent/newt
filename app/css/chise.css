@@ -363,15 +363,27 @@ input, select, textarea {
 }
 
 input[type="file"], input[type="image"], input[type="submit"], input[type="reset"], input[type="button"], input[type="radio"], input[type="checkbox"] {
-    width: auto;
+    width: auto !important;
 }
 
-inputinput[type="radio"], input[type="checkbox"] {
+input[type="radio"], input[type="checkbox"] {
     height: auto;
 }
 
-.input-small {
-    width: 90px;
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    background-color: #ffffff;
+}
+
+.sbgn-input-small {
+    width: 50px !important;
+}
+
+.sbgn-input-medium {
+    width: 90px !important;
+}
+
+.sbgn-input-large {
+    width: 110px !important;
 }
 
 .table-condensed th, .table-condensed td {

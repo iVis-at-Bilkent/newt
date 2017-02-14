@@ -601,7 +601,7 @@
             <span class="add-on layout-text"> Node Repulsion </span>
             </td>
             <td>
-            <input id="node-repulsion" type="text" min="0" class="input-small layout-text float-input" value= <%= nodeRepulsion %> >
+            <input id="node-repulsion" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= nodeRepulsion %> >
             </td>
             </tr>
 
@@ -610,7 +610,7 @@
             <span class="add-on layout-text"> Ideal Edge Length </span>
             </td>
             <td>
-            <input id="ideal-edge-length" type="text" min="5" class="input-small layout-text float-input" value= <%= idealEdgeLength %> >
+            <input id="ideal-edge-length" type="text" min="5" class="sbgn-input-small layout-text float-input" value= <%= idealEdgeLength %> >
             </td>
             </tr>
 
@@ -619,7 +619,7 @@
             <span class="add-on layout-text"> Edge Elasticity </span>
             </td>
             <td>
-            <input id="edge-elasticity" type="text" min="0" class="input-small layout-text float-input" value= <%= edgeElasticity %> >
+            <input id="edge-elasticity" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= edgeElasticity %> >
             </td>
             </tr>
 
@@ -628,7 +628,7 @@
             <span class="add-on layout-text"> Nesting Factor </span>
             </td>
             <td>
-            <input id="nesting-factor" type="text" min="0" class="input-small layout-text float-input" value= <%= nestingFactor %> >
+            <input id="nesting-factor" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= nestingFactor %> >
             </td>
             </tr>
 
@@ -637,7 +637,7 @@
             <span class="add-on layout-text"> Gravity </span>
             </td>
             <td>
-            <input id="gravity" type="text" min="0" class="input-small layout-text float-input" value= <%= gravity %> >
+            <input id="gravity" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= gravity %> >
             </td>
             </tr>
 
@@ -646,7 +646,7 @@
             <span class="add-on layout-text"> Gravity Range   </span>
             </td>
             <td>
-            <input id="gravity-range" type="text" min="0" class="input-small layout-text float-input" value= <%= gravityRange %> >
+            <input id="gravity-range" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= gravityRange %> >
             </td>
             </tr>
 
@@ -655,7 +655,7 @@
             <span class="add-on layout-text"> Compound Gravity  </span>
             </td>
             <td>
-            <input id="gravity-compound" type="text" min="0" class="input-small layout-text float-input" value= <%= gravityCompound %> >
+            <input id="gravity-compound" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= gravityCompound %> >
             </td>
             </tr>
 
@@ -664,7 +664,7 @@
             <span class="add-on layout-text"> Compound Gravity Range </span>
             </td>
             <td>
-            <input id="gravity-range-compound" type="text" min="0" class="input-small layout-text float-input" value= <%= gravityRangeCompound %> >
+            <input id="gravity-range-compound" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= gravityRangeCompound %> >
             </td>
             </tr>
 
@@ -673,7 +673,7 @@
             <span class="add-on layout-text"> Number of Iterations </span>
             </td>
             <td>
-            <input id="num-iter" type="text" min="0" class="input-small layout-text integer-input" value= <%= numIter %> >
+            <input id="num-iter" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= numIter %> >
             </td>
             </tr>
 
@@ -682,7 +682,7 @@
             <span class="add-on layout-text"> Tiling Vertical Padding </span>
             </td>
             <td>
-            <input id="tiling-padding-vertical" type="text" min="0" class="input-small layout-text integer-input" value= <%= tilingPaddingVertical %> >
+            <input id="tiling-padding-vertical" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingVertical %> >
             </td>
             </tr>
 
@@ -691,7 +691,7 @@
             <span class="add-on layout-text"> Tiling Horizontal Padding </span>
             </td>
             <td>
-            <input id="tiling-padding-horizontal" type="text" min="0" class="input-small layout-text integer-input" value= <%= tilingPaddingHorizontal %> >
+            <input id="tiling-padding-horizontal" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingHorizontal %> >
             </td>
             </tr>
 
@@ -701,7 +701,7 @@
             </td>
 
             <td>
-            <input id="tile" type="checkbox" class="input-small layout-text" <% if (tile){ %> checked<%}%>>
+            <input id="tile" type="checkbox" class="layout-text" <% if (tile){ %> checked<%}%>>
             </td>
             </tr>
 
@@ -711,7 +711,7 @@
             </td>
 
             <td>
-            <input id="animate" type="checkbox" class="input-small layout-text" <% if (animate === 'during'){ %> checked<%}%>>
+            <input id="animate" type="checkbox" class="layout-text" <% if (animate === 'during'){ %> checked<%}%>>
             </td>
             </tr>
             <tr>
@@ -720,7 +720,7 @@
             </td>
 
             <td>
-            <input id="incremental" type="checkbox" class="input-small layout-text" <% if (!randomize){ %> checked<%}%>>
+            <input id="incremental" type="checkbox" class="layout-text" <% if (!randomize){ %> checked<%}%>>
             </td>
             </tr>
             </table>
@@ -748,7 +748,7 @@
             </td>
 
             <td>
-            <input id="compound-padding" type="text" class="input-small layout-text integer-input" min="0" max="100" value= <%= compoundPadding %> >
+            <input id="compound-padding" type="text" class="sbgn-input-small layout-text integer-input" min="0" max="100" value= <%= compoundPadding %> >
             </td>
             <td>%</td>
             </tr>
@@ -759,7 +759,7 @@
             </td>
 
             <td>
-            <select id="dynamic-label-size-select" name="dynamic-label-size">
+            <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
             <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
             <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
             <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
@@ -773,7 +773,7 @@
             </td>
 
             <td>
-            <input id="fit-labels-to-nodes" type="checkbox" class="input-small layout-text" <% if (fitLabelsToNodes){ %> checked<%}%>>
+            <input id="fit-labels-to-nodes" type="checkbox" class="layout-text" <% if (fitLabelsToNodes){ %> checked<%}%>>
             </td>
             </tr>
 
@@ -783,7 +783,7 @@
             </td>
 
             <td>
-            <input id="rearrange-after-expand-collapse" type="checkbox" class="input-small layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
+            <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
             </td>
             </tr>
 
@@ -793,7 +793,7 @@
             </td>
 
             <td>
-            <input id="animate-on-drawing-changes" type="checkbox" class="input-small layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
+            <input id="animate-on-drawing-changes" type="checkbox" class="layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
             </td>
             </tr>
 
@@ -803,7 +803,7 @@
             </td>
 
             <td>
-            <input id="adjust-node-label-font-size-automatically" type="checkbox" class="input-small layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
+            <input id="adjust-node-label-font-size-automatically" type="checkbox" class="layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
             </td>
             </tr>
             </table>
@@ -842,7 +842,7 @@
             <caption style="text-align: left;">Stop Distance</caption>
             <tr>
             <td colspan=2>Length limit</td>
-            <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+            <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
             </tr>
             </table>
             </td>
@@ -889,7 +889,7 @@
         </script>
 
         <script type="text/template" id="reaction-template-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
+            <div class="modal-dialog modal-sm sbgn-modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -904,7 +904,7 @@
             </td>
 
             <td>
-            <select id="reaction-template-type-select" class='input-medium layout-text' name="reaction-template-type">
+            <select id="reaction-template-type-select" class='sbgn-input-medium layout-text' name="reaction-template-type">
             <option id="reaction-template-type-association" value="association" <% if (templateType == 'association'){ %> selected<%}%> > Association </option>
             <option id="reaction-template-type-dissociation" value="dissociation" <% if (templateType == 'dissociation'){ %> selected<%}%> > Dissociation </option>
             </select>
@@ -954,15 +954,15 @@
             <table class="table-condensed layout-table dialog-table">
             <tr>
             <td>
-            <input id="show-grid" type="checkbox" class="input-small layout-text" <% if (showGrid){ %> checked<%}%>>
+            <input id="show-grid" type="checkbox" class="layout-text" <% if (showGrid){ %> checked<%}%>>
             <span class="add-on layout-text"> Show Grid </span>
             </td>
             <td>
             <span class="add-on layout-text"> Grid Size </span>
-            <input id="grid-size" type="text" min="5" class="input-small layout-text integer-input" value= <%= gridSize %> >
+            <input id="grid-size" type="text" min="5" class="sbgn-input-small layout-text integer-input" value= <%= gridSize %> >
             </td>
             <td>
-            <input id="auto-resize-nodes" type="checkbox" class="input-small layout-text" <% if (autoResizeNodes){ %> checked<%}%>>
+            <input id="auto-resize-nodes" type="checkbox" class="layout-text" <% if (autoResizeNodes){ %> checked<%}%>>
             <span class="add-on layout-text"> Auto  Resize Nodes </span>
             </td>
             </tr>
@@ -975,7 +975,7 @@
             </td>
 
             <td>
-            <input id="show-geometric-guidelines" type="checkbox" class="input-small layout-text" <% if (showGeometricGuidelines){ %> checked<%}%>>
+            <input id="show-geometric-guidelines" type="checkbox" class="layout-text" <% if (showGeometricGuidelines){ %> checked<%}%>>
             </td>
             </tr>
             <tr>
@@ -984,7 +984,7 @@
             </td>
 
             <td>
-            <input id="show-distribution-guidelines" type="checkbox" class="input-small layout-text" <% if (showDistributionGuidelines){ %> checked<%}%>>
+            <input id="show-distribution-guidelines" type="checkbox" class="layout-text" <% if (showDistributionGuidelines){ %> checked<%}%>>
             </td>
             </tr>
             <tr>
@@ -993,7 +993,7 @@
             </td>
 
             <td>
-            <input id="guideline-tolerance" type="text" min="0" class="input-small layout-text float-input" value= <%= guidelineTolerance %> >
+            <input id="guideline-tolerance" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= guidelineTolerance %> >
             </td>
             <td></td>
             </tr>
@@ -1003,7 +1003,7 @@
             </td>
 
             <td>
-            <input id="geometric-guideline-color" type="color" class="input-small layout-text" value= <%= guidelineColor %> >
+            <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
             </td>
             <td></td>
             </tr>
@@ -1014,7 +1014,7 @@
             </td>
 
             <td>
-            <input id="horizontal-guideline-color" type="color" class="input-small layout-text" value= <%= horizontalGuidelineColor %> >
+            <input id="horizontal-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= horizontalGuidelineColor %> >
             </td>
             <td></td>
             </tr>
@@ -1025,7 +1025,7 @@
             </td>
 
             <td>
-            <input id="vertical-guideline-color" type="color" class="input-small layout-text" value= <%= verticalGuidelineColor %> >
+            <input id="vertical-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= verticalGuidelineColor %> >
             </td>
             <td></td>
             </tr>
@@ -1034,13 +1034,13 @@
             <tr> <th> Snap Policy </th> </tr>
             <tr>
             <td>
-            <input id="discrete-drag" type="checkbox" class="input-small layout-text" <% if (discreteDrag){ %> checked<%}%>>
+            <input id="discrete-drag" type="checkbox" class="layout-text" <% if (discreteDrag){ %> checked<%}%>>
             <span class="add-on layout-text"> Discrete Drag </span>
             </td>
             </tr>
             <tr>
             <td>
-            <input id="snap-to-grid" type="checkbox" class="input-small layout-text" <% if (snapToGrid){ %> checked<%}%>>
+            <input id="snap-to-grid" type="checkbox" class="layout-text" <% if (snapToGrid){ %> checked<%}%>>
             <span class="add-on layout-text"> Snap to Grid </span>
             </td>
             </tr>
@@ -1079,7 +1079,7 @@
             <span class="add-on layout-text"> Font Size </span>
             </td>
             <td>
-            <input id="font-properties-font-size" type="text" min="1" class="input-small layout-text integer-input" value= <%= fontSize %> >
+            <input id="font-properties-font-size" type="text" min="1" class="sbgn-input-small layout-text integer-input" value= <%= fontSize %> >
             </td>
             </tr>
 

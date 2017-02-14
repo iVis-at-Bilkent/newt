@@ -429,7 +429,7 @@ var ReactionTemplateView = Backbone.View.extend({
       var html = "<table>";
       for( var i = 0; i < this.macromoleculeList.length; i++){
         html += "<tr><td>"
-            + "<input type='text' class='template-reaction-textbox input-small layout-text' name='"
+            + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
             + i + "'" + " value='" + this.macromoleculeList[i] + "'></input>"
             + "</td><td><img style='padding-bottom: 8px;' class='template-reaction-delete-button' width='12px' height='12px' name='" + i + "' src='app/img/delete.png'/></td></tr>";
       }
@@ -439,14 +439,14 @@ var ReactionTemplateView = Backbone.View.extend({
     },
     getComplexHtml: function(){
       var html = "<table>"
-          + "<tr><td><input type='checkbox' class='input-small layout-text' id='template-reaction-enable-complex-name'";
+          + "<tr><td><input type='checkbox' class='sbgn-input-medium layout-text' id='template-reaction-enable-complex-name'";
 
       if(this.templateReactionEnableComplexName){
         html += " checked ";
       }
 
       html += "/>"
-          + "</td><td><input type='text' class='input-small layout-text' id='template-reaction-complex-name' value='"
+          + "</td><td><input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value='"
           + this.templateReactionComplexName + "'";
 
       if(!this.templateReactionEnableComplexName){
