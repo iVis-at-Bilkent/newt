@@ -945,19 +945,19 @@
 
         <script type="text/template" id="grid-properties-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 700px;">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 584px;">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Grid Properties</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 10px;">
             <table class="table-condensed layout-table dialog-table">
             <tr>
-            <td>
+            <td style="padding-right: 20px;">
             <input id="show-grid" type="checkbox" class="layout-text" <% if (showGrid){ %> checked<%}%>>
             <span class="add-on layout-text"> Show Grid </span>
             </td>
-            <td>
+            <td style="padding-right: 25px;">
             <span class="add-on layout-text"> Grid Size </span>
             <input id="grid-size" type="text" min="5" class="sbgn-input-small layout-text integer-input" value= <%= gridSize %> >
             </td>
@@ -967,7 +967,7 @@
             </td>
             </tr>
             </table>
-            <table class="table-condensed layout-table dialog-table property-table">
+            <table class="table-condensed layout-table dialog-table property-table" style="margin-left: 5px;">
             <tr> <th> Alignment Guidelines </th> </tr>
             <tr>
             <td>
@@ -1032,7 +1032,7 @@
             
             </tr>
             </table>
-            <table class="table-condensed layout-table dialog-table property-table"> 
+            <table class="table-condensed layout-table dialog-table property-table" style="margin-right: 5px;"> 
             <tr> <th> Snap Policy </th> </tr>
             <tr>
             <td>
