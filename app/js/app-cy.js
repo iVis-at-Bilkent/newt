@@ -265,7 +265,8 @@ module.exports = function () {
       guidelines: gridProperties.showAlignmentGuidelines,
       guidelinesTolerance: gridProperties.guidelineTolerance,
       guidelinesStyle: {
-        strokeStyle: gridProperties.guidelineColor
+        strokeStyle: gridProperties.guidelineColor,
+        range: gridProperties.distributionAlignmentRange
       }
     });
 

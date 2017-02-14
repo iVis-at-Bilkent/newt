@@ -944,7 +944,7 @@
         </script>
 
         <script type="text/template" id="grid-properties-template">
-            <div class="modal-dialog  sbgn-modal-dialog">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 700px;">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -977,7 +977,14 @@
             <td>
             <input id="show-geometric-guidelines" type="checkbox" class="layout-text" <% if (showGeometricGuidelines){ %> checked<%}%>>
             </td>
+            <td>
+            Color
+            </td>
+            <td>
+            <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
+            </td>
             </tr>
+    
             <tr>
             <td>
             <span class="add-on layout-text"> Distribution Guidelines </span>
@@ -986,48 +993,43 @@
             <td>
             <input id="show-distribution-guidelines" type="checkbox" class="layout-text" <% if (showDistributionGuidelines){ %> checked<%}%>>
             </td>
-            </tr>
-            <tr>
             <td>
-            <span class="add-on layout-text"> Guideline Tolerance </span>
-            </td>
-
-            <td>
-            <input id="guideline-tolerance" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= guidelineTolerance %> >
-            </td>
-            <td></td>
-            </tr>
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Guideline Color </span>
-            </td>
-
-            <td>
-            <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
-            </td>
-            <td></td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Horizontal Guideline Color </span>
+            <span class="add-on layout-text"> Horizontal </span>
             </td>
 
             <td>
             <input id="horizontal-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= horizontalGuidelineColor %> >
             </td>
-            <td></td>
-            </tr>
-
-            <tr>
             <td>
-            <span class="add-on layout-text"> Vertical Guideline Color </span>
+            <span class="add-on layout-text"> Vertical </span>
             </td>
 
             <td>
             <input id="vertical-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= verticalGuidelineColor %> >
             </td>
+            </tr>
+    
+            <tr>
             <td></td>
+            <td></td>
+            <td>
+            <span class="add-on layout-text"> Range </span>
+            </td>
+
+            <td>
+            <input id="distribution-alignment-range" type="text" class="sbgn-input-small layout-text float-input" value= <%= distributionAlignmentRange %> >
+            </td>
+    
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Guideline Tolerance </span>
+            </td>
+    
+            <td>
+            <input id="guideline-tolerance" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= guidelineTolerance %> >
+            </td>
+            </tr>
+            
             </tr>
             </table>
             <table class="table-condensed layout-table dialog-table property-table"> 
