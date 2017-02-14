@@ -1,7 +1,7 @@
 var chise = require('chise');
 var sbgnviz = require('sbgnviz');
 var filesaverjs = require('filesaverjs');
-window.jquery = window.$ = require('jquery'); // jquery should be global because jquery.qtip extension is not compatible with commonjs
+window.jQuery = window.jquery = window.$ = require('jquery'); // jquery should be global because jquery.qtip extension is not compatible with commonjs
 var cytoscape = require('cytoscape');
 
 require('jquery-expander')($);
