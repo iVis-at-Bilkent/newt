@@ -944,13 +944,13 @@
         </script>
 
         <script type="text/template" id="grid-properties-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="width: 584px;">
+            <div class="modal-dialog sbgn-modal-dialog">
 			<div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Grid Properties</h4>
             </div>
-            <div class="modal-body" style="padding: 10px;">
+            <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
             <tr>
             <td style="padding-right: 20px;">
@@ -967,20 +967,20 @@
             </td>
             </tr>
             </table>
-            <table class="table-condensed layout-table dialog-table property-table" style="margin-left: 5px;">
+            <table class="table-condensed layout-table dialog-table property-table" style="border-collapse: collapse; border-spacing: 0px 0px;">
             <tr> <th> Alignment Guidelines </th> </tr>
             <tr>
-            <td>
+            <td style="padding-bottom: 20px !important;">
             <span class="add-on layout-text"> Geometric Guidelines </span>
             </td>
 
-            <td>
+            <td style="padding-bottom: 20px !important;">
             <input id="show-geometric-guidelines" type="checkbox" class="layout-text" <% if (showGeometricGuidelines){ %> checked<%}%>>
             </td>
-            <td>
+            <td style="padding-bottom: 20px !important;">
             Color
             </td>
-            <td>
+            <td style="padding-bottom: 20px !important;">
             <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
             </td>
             </tr>
@@ -1032,7 +1032,7 @@
             
             </tr>
             </table>
-            <table class="table-condensed layout-table dialog-table property-table" style="margin-right: 5px;"> 
+            <table class="table-condensed layout-table dialog-table property-table" style="border-collapse: collapse; border-spacing: 0px 0px;"> 
             <tr> <th> Snap Policy </th> </tr>
             <tr>
             <td>

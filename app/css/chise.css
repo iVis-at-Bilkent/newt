@@ -450,7 +450,7 @@ menu:not([title]):before{
 
 .property-table {
 	margin: 0px;
-	border: 1px solid #0B9BCD;
+	border: 1px solid rgb(204, 204, 204);
 	display: inline-block;
 	vertical-align: top;
 }
