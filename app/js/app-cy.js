@@ -264,8 +264,12 @@ module.exports = function () {
       resize: gridProperties.autoResizeNodes,
       guidelines: gridProperties.showAlignmentGuidelines,
       guidelinesTolerance: gridProperties.guidelineTolerance,
+      geometricGuideline: gridProperties.showGeometricGuidelines,
+      distributionGuidelines: gridProperties.showDistributionGuidelines,
       guidelinesStyle: {
         strokeStyle: gridProperties.guidelineColor,
+        horizontalDistColor: gridProperties.horizontalGuidelineColor,
+        verticalDistColor: gridProperties.verticalGuidelineColor,
         range: gridProperties.distributionAlignmentRange
       }
     });
