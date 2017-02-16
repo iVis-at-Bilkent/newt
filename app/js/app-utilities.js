@@ -234,10 +234,7 @@ appUtilities.disableDragAndDropMode = function() {
 
 // Show given eles and perform incremental layout afterward
 appUtilities.showAndPerformIncrementalLayout = function(eles) {
-  var extendedList = chise.elementUtilities.extendNodeList(eles).filter(':hidden');
-  if (extendedList.length === 0) {
-    return;
-  }
+  var extendedList = chise.elementUtilities.extendNodeList(eles);
   chise.showAndPerformLayout(extendedList, this.triggerIncrementalLayout.bind(this));
 };
 
