@@ -40,7 +40,7 @@
     "cytoscape-autopan-on-drag": "^2.0.1",
     "cytoscape-node-resize": "iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
     "sbgnviz": "~3.4.0",
-    "chise": "iVis-at-Bilkent/chise.js#revise-file-structure"
+    "chise": "iVis-at-Bilkent/chise.js#unstable"
   },
   "devDependencies": {
     "express": "4.14.0",
