@@ -614,6 +614,7 @@ var GridPropertiesView = Backbone.View.extend({
       appUtilities.currentGridProperties.guidelineColor = document.getElementById("geometric-guideline-color").value;
       appUtilities.currentGridProperties.horizontalGuidelineColor = document.getElementById("horizontal-guideline-color").value;
       appUtilities.currentGridProperties.verticalGuidelineColor = document.getElementById("vertical-guideline-color").value;
+      appUtilities.currentGridProperties.geometricAlignmentRange = Number(document.getElementById("geometric-alignment-range").value);
       appUtilities.currentGridProperties.distributionAlignmentRange = Number(document.getElementById("distribution-alignment-range").value);
 
       cy.gridGuide({
@@ -629,6 +630,7 @@ var GridPropertiesView = Backbone.View.extend({
           strokeStyle: appUtilities.currentGridProperties.guidelineColor,
 		  horizontalDistColor: appUtilities.currentGridProperties.horizontalGuidelineColor,
 		  verticalDistColor: appUtilities.currentGridProperties.verticalGuidelineColor,
+          geometricGuidelineRange: appUtilities.currentGridProperties.geometricAlignmentRange,
           range: appUtilities.currentGridProperties.distributionAlignmentRange
         }
       });

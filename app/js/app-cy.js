@@ -270,6 +270,7 @@ module.exports = function () {
         strokeStyle: gridProperties.guidelineColor,
         horizontalDistColor: gridProperties.horizontalGuidelineColor,
         verticalDistColor: gridProperties.verticalGuidelineColor,
+        geometricGuidelineRange: gridProperties.geometricAlignmentRange,
         range: gridProperties.distributionAlignmentRange
       }
     });

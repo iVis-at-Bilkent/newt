@@ -44,6 +44,7 @@ appUtilities.defaultGridProperties = {
   guidelineColor: "#0B9BCD",
   horizontalGuidelineColor: "#ff0000",
   verticalGuidelineColor: "#00ff00",
+  geometricAlignmentRange: 450,
   distributionAlignmentRange: 300
 };
 
