@@ -70,7 +70,10 @@ chise({
   adjustNodeLabelFontSizeAutomatically: function() {
     return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
   },
-  undoable: true
+  undoable: true,
+  undoableDrag: function() {
+    return appUtilities.ctrlKeyDown !== true;
+  }
 }, libs);
 
 appCy();
