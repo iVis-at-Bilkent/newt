@@ -290,17 +290,17 @@ module.exports = function () {
   }
 
   function bindCyEvents() {
-    cy.on("afterDo", function (actionName, args) {
+    cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
     });
 
-    cy.on("afterUndo", function (actionName, args) {
+    cy.on("afterUndo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
     });
 
-    cy.on("afterRedo", function (actionName, args) {
+    cy.on("afterRedo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
