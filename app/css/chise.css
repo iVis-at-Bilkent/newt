@@ -559,17 +559,36 @@ menu:not([title]):before{
     cursor: url(../../app/img/drag-target.cur), pointer!important;
 }
 
-.accordion-toggle:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content:"\25B3"; 
-    float: right; 
+.panel-heading {
     cursor: pointer;
+    height: 17px;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
 }
 
-.accordion-toggle.collapsed:after {
+.panel-title {
+    font-size: 12px;
+    color: black; 
+    font-weight: bold;
+}
+
+.accordion-toggle {
+    /* symbol for "opening" panels */
+    height: auto;
+}
+
+/* CSS Method for adding Font Awesome Chevron Icons */
+ .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family:'FontAwesome';
+    content:"\f077";
+    float: right;
+    color: inherit;
+}
+.panel-heading.collapsed .accordion-toggle:after {
     /* symbol for "collapsed" panels */
-    content:"\25BD";
+    content:"\f078";
 }
 
 .sbgn-label-font {

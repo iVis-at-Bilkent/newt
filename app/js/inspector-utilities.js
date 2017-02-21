@@ -336,7 +336,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
     
-          html += "<div style='align: center;text-align: center;'><a style='color: black; font-weight: bold;' class='accordion-toggle collapsed' data-toggle='collapse' data-target='#biogene-collapsable'>Properties from EntrezGene</a></div>"
+          html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#biogene-collapsable'><p class='panel-title accordion-toggle'>Properties from EntrezGene</p></div>"
     
           html += "<div style='margin-top: 5px;align: center;text-align: center;' id='biogene-collapsable' class='collapse'>";
           html += "<div style='padding-left: 3px;' id='biogene-title'></div>";
