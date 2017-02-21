@@ -163,6 +163,7 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "'/>" + "</td></tr>";
       }
       
+      // if at least one node is not a non-resizable parent node
       if( selectedEles.filter(':parent').length != selectedEles.length ) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
                 + "<input id='inspector-node-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
@@ -405,6 +406,24 @@ inspectorUtilities.handleSBGNInspector = function () {
         var useAspectRatio = appUtilities.nodeResizeUseAspectRatio;
         
         chise.resizeNodes(selectedEles, w, h, useAspectRatio);
+
+        // if aspect ratio used, must correctly update the other side length
+        if(useAspectRatio){
+          if( $(this).attr('id') === 'inspector-node-width' ) {
+            var nodeHeight = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+              return ele.height();
+            });
+            $("#inspector-node-height").val(nodeHeight);
+          }
+          else {
+            var nodeWidth = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+              return ele.width();
+            });
+            $("#inspector-node-width").val(nodeWidth);
+          }
+        }
+
+
       });
 
       $('#inspector-node-sizes-aspect-ratio').on('click', function() {
