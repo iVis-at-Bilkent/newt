@@ -321,13 +321,13 @@ body {
     cursor: pointer; 
 }
 
-img.sbgn-toolbar-element {
+img.sbgn-toolbar-element, .element-palette img {
     opacity: 0.8;
     filter: alpha(opacity=80);
 }
 
 
-img.sbgn-toolbar-element:hover {
+img.sbgn-toolbar-element:hover, .element-palette img:hover {
     opacity: 1.0;
     filter: alpha(opacity=100);
 }
@@ -481,7 +481,7 @@ menu:not([title]):before{
     border-radius: 5px;
 }
 
-.selected-mode-sustainable > .btn-selected-mode-sustainable {
+.selected-mode-sustainable {
   background-color: #cccccc;
   *background-color: #bfbfbf;
   background-image: -moz-linear-gradient(top, #d9d9d9, #cccccc);
@@ -490,30 +490,6 @@ menu:not([title]):before{
   background-image: -o-linear-gradient(top, #d9d9d9, #cccccc);
   background-image: linear-gradient(to bottom, #d9d9d9, #cccccc);
   background-repeat: repeat-x;
-}
-
-.selected-menu-item {
-    background-color: gray;
-}
-
-.selected-dd-item {
-    background-color: gray;
-}
-
-#node-dd-list-set-mode-btn:focus {
-    outline: none;
-}
-
-#edge-dd-list-set-mode-btn:focus {
-    outline: none;
-}
-
-#node-dd-list-dd-button:focus {
-    outline: none;
-}
-
-#edge-dd-list-dd-button:focus {
-    outline: none;
 }
 
 #align-button:focus {
@@ -526,14 +502,6 @@ menu:not([title]):before{
 
 .dd-list-href {
     padding-left: 0px !important; 
-}
-
-#node-dd-list-menu {
-    width: 180px;
-}
-
-#edge-dd-list-menu {
-    width: 185px;
 }
 
 .sbgn-dd-list {
@@ -619,4 +587,30 @@ hr.inspector-divider {
     z-index: 100;
     display: none;
     width: 100px;
+}
+
+.element-palette img {
+    padding: 1px;
+    cursor: pointer;
+}
+
+.element-palette td {
+    padding: 4px;
+}
+
+.element-palette div {
+    width: 30px;
+    height: 30px;
+}
+
+.dashed-border {
+    border-style: dashed;
+}
+
+#add-node-mode-icon {
+    padding: auto;
+}
+
+#add-edge-mode-icon {
+    padding: auto;
 }

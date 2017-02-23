@@ -233,7 +233,7 @@ module.exports = function () {
         var param = {};
         var source = sourceNode.id();
         var target = targetNodes[0].id();
-        var edgeclass = modeHandler.elementsHTMLNameToName[modeHandler.selectedEdgeType];
+        var edgeclass = modeHandler.selectedEdgeType;
 
         chise.addEdge(source, target, edgeclass);
         
@@ -365,7 +365,7 @@ module.exports = function () {
       if (modeHandler.mode == "add-node-mode") {
         var cyPosX = event.cyPosition.x;
         var cyPosY = event.cyPosition.y;
-        var sbgnclass = modeHandler.elementsHTMLNameToName[modeHandler.selectedNodeType];
+        var sbgnclass = modeHandler.selectedNodeType;
 
         chise.addNode(cyPosX, cyPosY, sbgnclass);
         

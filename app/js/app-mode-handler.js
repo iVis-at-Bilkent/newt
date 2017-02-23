@@ -3,55 +3,40 @@ var modeHandler = {
   sustainMode: false,
   selectedNodeType: "macromolecule",
   selectedEdgeType: "consumption",
-  elementsHTMLNameToName: {
-    //nodes
-    "macromolecule": "macromolecule",
-    "simple-chemical": "simple chemical",
-    "complex": "complex",
-    "process": "process",
-    "omitted-process": "omitted process",
-    "uncertain-process": "uncertain process",
-    "association": "association",
-    "dissociation": "dissociation",
-    "phenotype": "phenotype",
-    "compartment": "compartment",
-    "unspecified-entity": "unspecified entity",
-    "nucleic-acid-feature": "nucleic acid feature",
-    "source-and-sink": "source and sink",
-    "perturbing-agent": "perturbing agent",
-    "tag": "tag",
-    "and": "and",
-    "or": "or",
-    "not": "not",
-    //edges
-    "consumption": "consumption",
-    "production": "production",
-    "modulation": "modulation",
-    "stimulation": "stimulation",
-    "catalysis": "catalysis",
-    "inhibition": "inhibition",
-    "necessary-stimulation": "necessary stimulation",
-    "logic-arc": "logic arc",
-    "equivalence-arc": "equivalence arc"
-  },
+  // Initilize mode handler
   initilize: function () {
-    $('#select-icon').addClass('selected-mode');
-    $("#first-sbgn-select-node-item").addClass("selected-dd-item");
-    $("#first-sbgn-select-edge-item").addClass("selected-dd-item");
-    this.setSelectedMenuItem("selection-mode");
+    $('#select-mode-icon').addClass('selected-mode'); // Initial mode is selection mode.
+    // Node/edge palettes should be initialized with the first members of them and they should have dashed borders.
+    $('.node-palette img').addClass('dashed-border');
+    $('.edge-palette img').addClass('dashed-border');
+    $('.node-palette img').first().addClass('selected-mode');
+    $('.edge-palette img').first().addClass('selected-mode');
   },
-  setAddNodeMode: function () {
+  // Set the current mode to add node mode, if nodeType is specified than switch the current node type to the given value,
+  // if the nodeType will remain same, add node mode is already enabled and sustain mode is not set before, then set the sustain mode
+  // so that users will be able to add the current node type in a sustainable way.
+  setAddNodeMode: function (nodeType) {
+    var typeChange = nodeType && nodeType != modeHandler.selectedNodeType; // See if the type will change
+    
+    // Handle sustainable mode
+    $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
+    if (!typeChange && modeHandler.mode == "add-node-mode" && !modeHandler.sustainMode) {
+      modeHandler.sustainMode = true;
+      $('#add-node-mode-icon').addClass('selected-mode-sustainable');
+    }
+    else {
+      modeHandler.sustainMode = false;
+    }
+    
     if (modeHandler.mode != "add-node-mode") {
-      $('#node-dd-list').addClass('selected-mode');
-
       cy.elements().unselect();
-
-      modeHandler.setSelectedMenuItem("add-node-mode", modeHandler.selectedNodeType);
       modeHandler.mode = "add-node-mode";
 
-      $('#select-icon').removeClass('selected-mode');
-
-      $('#edge-dd-list').removeClass('selected-mode');
+      $('#select-mode-icon').removeClass('selected-mode');
+      $('#add-edge-mode-icon').removeClass('selected-mode');
+      $('#add-node-mode-icon').addClass('selected-mode');
+      $('.node-palette img').removeClass('dashed-border');
+      $('.edge-palette img').addClass('dashed-border');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -61,20 +46,36 @@ var modeHandler = {
       cy.edgehandles('drawoff');
     }
     
-    $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
-    modeHandler.sustainMode = false;
+    // Check if there is a needed type change if there is perform it.
+    if ( typeChange ) {
+      modeHandler.selectedNodeType = nodeType;
+    }
   },
-  setAddEdgeMode: function () {
+  // Set the current mode to add edge mode, if edgeType is specified than switch the current edge type to the given value,
+  // if the edgeType will remain same, add edge mode is already enabled and sustain mode is not set before, then set the sustain mode
+  // so that users will be able to add the current edge type in a sustainable way.
+  setAddEdgeMode: function (edgeType) {
+    var typeChange = edgeType && edgeType != modeHandler.selectedEdgeType; // See if the type will change
+    
+    // Handle sustainable mode
+    $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
+    if (!typeChange && modeHandler.mode == "add-edge-mode" && !modeHandler.sustainMode) {
+      modeHandler.sustainMode = true;
+      $('#add-edge-mode-icon').addClass('selected-mode-sustainable');
+    }
+    else {
+      modeHandler.sustainMode = false;
+    }
+    
     if (modeHandler.mode != "add-edge-mode") {
-      $('#edge-dd-list').addClass('selected-mode');
-      
       cy.elements().unselect();
-      
-      modeHandler.setSelectedMenuItem("add-edge-mode", modeHandler.selectedEdgeType);
       modeHandler.mode = "add-edge-mode";
 
-      $('#select-icon').removeClass('selected-mode');
-      $('#node-dd-list').removeClass('selected-mode');
+      $('#select-mode-icon').removeClass('selected-mode');
+      $('#add-edge-mode-icon').addClass('selected-mode');
+      $('#add-node-mode-icon').removeClass('selected-mode');
+      $('.node-palette img').addClass('dashed-border');
+      $('.edge-palette img').removeClass('dashed-border');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -84,16 +85,19 @@ var modeHandler = {
       cy.edgehandles('drawon');
     }
     
-    $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
-    modeHandler.sustainMode = false;
+    // Check if there is a needed type change if there is perform it.
+    if ( typeChange ) {
+      modeHandler.selectedEdgeType = edgeType;
+    }
   },
+  // Set selection mode, disables sustainable mode.
   setSelectionMode: function () {
     if (modeHandler.mode != "selection-mode") {
-      $('#select-icon').addClass('selected-mode');
-      modeHandler.setSelectedMenuItem("selection-mode");
-
-      $('#edge-dd-list').removeClass('selected-mode');
-      $('#node-dd-list').removeClass('selected-mode');
+      $('#select-mode-icon').addClass('selected-mode');
+      $('#add-edge-mode-icon').removeClass('selected-mode');
+      $('#add-node-mode-icon').removeClass('selected-mode');
+      $('.node-palette img').addClass('dashed-border');
+      $('.edge-palette img').addClass('dashed-border');
 
       modeHandler.autoEnableMenuItems(true);
 
@@ -141,56 +145,6 @@ var modeHandler = {
       $("#neighbors-of-selected").parent("li").addClass("disabled");
       $("#processes-of-selected").parent("li").addClass("disabled");
       $("#remove-highlights").parent("li").addClass("disabled");
-    }
-  },
-  setSelectedIndexOfSelector: function (mode, value) {
-    if(mode == "add-node-mode"){
-      $(".selected-mode").removeClass("selected-mode");
-      $("#node-dd-list").addClass("selected-mode");
-      $("#node-dd-list li").removeClass("selected-dd-item");;
-      var ele = $("#node-dd-list [value=" + value + "]");
-      var text = $(ele).parent('a').text();
-      var src = $(ele).attr('src');
-      $("#node-dd-list-set-mode-btn").attr("title", "Create a new " + text);
-//      $('#sbgn-selected-node-text').text(text);
-      $('#sbgn-selected-node-img').attr('src', src);
-      $(ele).parent('a').parent('li').addClass("selected-dd-item");
-    }
-    else if(mode == "add-edge-mode"){
-      $(".selected-mode").removeClass("selected-mode");
-      $("#edge-dd-list").addClass("selected-mode");
-      $("#edge-dd-list li").removeClass("selected-dd-item");
-      var ele = $("#edge-dd-list [value=" + value + "]");
-      var text = $(ele).parent('a').text();
-      var src = $(ele).attr('src');
-      $("#edge-dd-list-set-mode-btn").attr("title", "Create a new " + text);
-//      $('#sbgn-selected-edge-text').text(text);
-      $('#sbgn-selected-edge-img').attr('src', src);
-      $(ele).parent('a').parent('li').addClass("selected-dd-item");
-    }
-  },
-  
-  setSelectedMenuItem: function (mode, name) {
-    $(".selected-menu-item").removeClass("selected-menu-item");
-
-    if (mode == "selection-mode") {
-      $('#select-edit').addClass('selected-menu-item');
-    }
-    else if (mode == "add-node-mode") {
-      $('#add-node-menu-option').addClass('selected-menu-item');
-      var menuItem = $("#add-node-submenu [name=" + name + "]");
-      menuItem.addClass("selected-menu-item");
-      if (menuItem.hasClass("process-type")) {
-        $('#process-menu-option').addClass("selected-menu-item");
-      }
-      if (menuItem.hasClass("logical-operator-type")) {
-        $('#logical-operator-menu-option').addClass("selected-menu-item");
-      }
-    }
-    else if (mode == "add-edge-mode") {
-      $('#add-edge-menu-option').addClass('selected-menu-item');
-      var menuItem = $("#add-edge-submenu [name=" + name + "]");
-      menuItem.addClass("selected-menu-item");
     }
   }
 };

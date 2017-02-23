@@ -83,7 +83,7 @@ inspectorUtilities.handleSBGNInspector = function () {
   var selectedEles = cy.elements(":selected");
   
   if(selectedEles.length == 0){
-    $("#sbgn-inspector").html("");
+    $("#sbgn-inspector-style").html("");
     return;
   }
   
@@ -347,7 +347,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
     }
     
-    $("#sbgn-inspector").html(html);
+    $("#sbgn-inspector-style").html(html);
     if(selectedEles.length === 1) {
       fillBioGeneContainer(selectedEles[0]);
     }
@@ -514,7 +514,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
   }
   else {
-    $("#sbgn-inspector").html("");
+    $("#sbgn-inspector-style").html("");
   }
 };
 

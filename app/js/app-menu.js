@@ -367,72 +367,45 @@ module.exports = function () {
      */
     
     // Mode handler related menu items
-    $('.add-node-menu-item').click(function (e) {
-      if (!modeHandler.mode != "add-node-mode") {
-        modeHandler.setAddNodeMode();
-      }
-      var value = $(this).attr('name');
-      modeHandler.selectedNodeType = value;
-      modeHandler.setSelectedIndexOfSelector("add-node-mode", value);
-      modeHandler.setSelectedMenuItem("add-node-mode", value);
+    
+    // Listen to click event on img tags under a node palette
+    $(document).on('click', '.node-palette img', function (e) {
+      $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
+      $(this).addClass('selected-mode'); // Make clicked element selected
+      var elementType = $(this).attr('value').replace('-', ' '); // Html values includes '-' instead of ' '
+      modeHandler.setAddNodeMode(elementType); // Set add node mode and set selected node type
+      
+      // Update the some attributes of add node mode icon
+      var src = $(this).attr('src');
+      var title = $(this).attr('title');
+      $('#add-node-mode-icon img').attr('src', src);
+      $('#add-node-mode-icon img').attr('title', title);
+    });
+    
+    // Listen to click event on img tags under an edge palette
+    $(document).on('click', '.edge-palette img', function (e) {
+      $('.edge-palette img').removeClass('selected-mode');// Make any image inside edge palettes non selected
+      $(this).addClass('selected-mode'); // Make clicked element selected
+      var elementType = $(this).attr('value').replace('-', ' '); // Html values includes '-' instead of ' '
+      modeHandler.setAddEdgeMode(elementType); // Set add edge mode and set selected edge type
+      
+      // Update the some attributes of add edge mode icon
+      var src = $(this).attr('src');
+      var title = $(this).attr('title');
+      $('#add-edge-mode-icon img').attr('src', src);
+      $('#add-edge-mode-icon img').attr('title', title);
     });
 
-    $('.add-edge-menu-item').click(function (e) {
-      if (!modeHandler.mode != "add-edge-mode") {
-        modeHandler.setAddEdgeMode();
-      }
-      var value = $(this).attr('name');
-      modeHandler.selectedEdgeType = value;
-      modeHandler.setSelectedIndexOfSelector("add-edge-mode", value);
-      modeHandler.setSelectedMenuItem("add-edge-mode", value);
-    });
-
-    $('.node-dd-list-menu-item').click(function (e) {
-      if (!modeHandler.mode != "add-node-mode") {
-        modeHandler.setAddNodeMode();
-      }
-      var value = $('img', this).attr('value');
-      modeHandler.selectedNodeType = value;
-      modeHandler.setSelectedIndexOfSelector("add-node-mode", value);
-      modeHandler.setSelectedMenuItem("add-node-mode", value);
-    });
-
-    $('.edge-dd-list-menu-item').click(function (e) {
-      if (!modeHandler.mode != "add-edge-mode") {
-        modeHandler.setAddEdgeMode();
-      }
-      var value = $('img', this).attr('value');
-      modeHandler.selectedEdgeType = value;
-      modeHandler.setSelectedIndexOfSelector("add-edge-mode", value);
-      modeHandler.setSelectedMenuItem("add-edge-mode", value);
-    });
-
-    $('#node-dd-list-set-mode-btn').click(function (e) {
-      if (modeHandler.mode != "add-node-mode") {
-        modeHandler.setAddNodeMode();
-      }
-      else {
-        modeHandler.sustainMode = !modeHandler.sustainMode;
-        $('#node-dd-list').toggleClass('selected-mode-sustainable');
-      }
-    });
-
-    $('#edge-dd-list-set-mode-btn').click(function (e) {
-      if (modeHandler.mode != "add-edge-mode") {
-        modeHandler.setAddEdgeMode();
-      }
-      else {
-        modeHandler.sustainMode = !modeHandler.sustainMode;
-        $('#edge-dd-list').toggleClass('selected-mode-sustainable');
-      }
-    });
-
-    $('#select-icon').click(function (e) {
+    $('#select-mode-icon').click(function (e) {
       modeHandler.setSelectionMode();
     });
-
-    $('#select-edit').click(function (e) {
-      modeHandler.setSelectionMode();
+    
+    $('#add-node-mode-icon').click(function (e) {
+      modeHandler.setAddNodeMode();
+    });
+    
+    $('#add-edge-mode-icon').click(function (e) {
+      modeHandler.setAddEdgeMode();
     });
 
     appUtilities.sbgnNetworkContainer.on("click", ".biogene-info .expandable", function (evt) {
