@@ -56,7 +56,8 @@ appUtilities.defaultGeneralProperties = {
   fitLabelsToNodes: false,
   rearrangeAfterExpandCollapse: true,
   animateOnDrawingChanges: true,
-  adjustNodeLabelFontSizeAutomatically: false
+  adjustNodeLabelFontSizeAutomatically: false,
+  mapColorScheme: 'black_white'
 };
 
 appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
@@ -238,5 +239,342 @@ appUtilities.showAndPerformIncrementalLayout = function(eles) {
   var extendedList = chise.elementUtilities.extendNodeList(eles);
   chise.showAndPerformLayout(extendedList, this.triggerIncrementalLayout.bind(this));
 };
+
+appUtilities.mapColorSchemes = mapColorSchemes = {
+  'black_white': {
+    'name': 'Black and white',
+    'values': {
+      'unspecified entity': '#ffffff',
+      'simple chemical': '#ffffff',
+      'macromolecule': '#ffffff',
+      'nucleic acid feature': '#ffffff',
+      'perturbing agent': '#ffffff',
+      'source and sink': '#ffffff',
+      'complex': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#ffffff',
+      'tag': '#ffffff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#ffffff'
+    }
+  },
+  'greyscale': {
+    'name': 'Greyscale',
+    'values': {
+      'unspecified entity': '#ffffff',
+      'simple chemical': '#bdbdbd',
+      'macromolecule': '#bdbdbd',
+      'nucleic acid feature': '#bdbdbd',
+      'perturbing agent': '#bdbdbd',
+      'source and sink': '#ffffff',
+      'complex': '#d9d9d9',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#ffffff',
+      'tag': '#ffffff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f0f0f0'
+    }
+  },
+  'inverse_greyscale': {
+    'name': 'Inverse greyscale',
+    'values': {
+      'unspecified entity': '#f0f0f0',
+      'simple chemical': '#f0f0f0',
+      'macromolecule': '#f0f0f0',
+      'nucleic acid feature': '#f0f0f0',
+      'perturbing agent': '#f0f0f0',
+      'source and sink': '#f0f0f0',
+      'complex': '#d9d9d9',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f0f0f0',
+      'tag': '#f0f0f0',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#bdbdbd'
+    }
+  },
+  'blue_scale': {
+    'name': 'Blue scale',
+    'values': {
+      'unspecified entity': '#9ecae1',
+      'simple chemical': '#9ecae1',
+      'macromolecule': '#9ecae1',
+      'nucleic acid feature': '#9ecae1',
+      'perturbing agent': '#9ecae1',
+      'source and sink': '#9ecae1',
+      'complex': '#c6dbef',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#9ecae1',
+      'tag': '#9ecae1',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#eff3ff'
+    }
+  },
+  'inverse_blue_scale': {
+    'name': 'Inverse blue scale',
+    'values': {
+      'unspecified entity': '#eff3ff',
+      'simple chemical': '#eff3ff',
+      'macromolecule': '#eff3ff',
+      'nucleic acid feature': '#eff3ff',
+      'perturbing agent': '#eff3ff',
+      'source and sink': '#eff3ff',
+      'complex': '#c6dbef',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#eff3ff',
+      'tag': '#eff3ff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#9ecae1'
+    }
+  },
+  'opposed_red_blue': {
+    'name': 'Red blue',
+    'values': {
+      'unspecified entity': '#f7f7f7',
+      'simple chemical': '#fddbc7',
+      'macromolecule': '#92c5de',
+      'nucleic acid feature': '#f4a582',
+      'perturbing agent': '#f7f7f7',
+      'source and sink': '#f7f7f7',
+      'complex': '#d1e5f0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f7f7f7',
+      'tag': '#f7f7f7',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f7f7f7'
+    }
+  },
+  'opposed_red_blue2': {
+    'name': 'Red blue 2',
+    'values': {
+      'unspecified entity': '#f7f7f7',
+      'simple chemical': '#d1e5f0',
+      'macromolecule': '#f4a582',
+      'nucleic acid feature': '#92c5de',
+      'perturbing agent': '#f7f7f7',
+      'source and sink': '#f7f7f7',
+      'complex': '#fddbc7',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f7f7f7',
+      'tag': '#f7f7f7',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f7f7f7'
+    }
+  },
+  'opposed_green_brown': {
+    'name': 'Green brown',
+    'values': {
+      'unspecified entity': '#f5f5f5',
+      'simple chemical': '#f6e8c3',
+      'macromolecule': '#80cdc1',
+      'nucleic acid feature': '#dfc27d',
+      'perturbing agent': '#f5f5f5',
+      'source and sink': '#f5f5f5',
+      'complex': '#c7eae5',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f5f5f5',
+      'tag': '#f5f5f5',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f5f5f5'
+    }
+  },
+  'opposed_green_brown2': {
+    'name': 'Green brown 2',
+    'values': {
+      'unspecified entity': '#f5f5f5',
+      'simple chemical': '#c7eae5',
+      'macromolecule': '#dfc27d',
+      'nucleic acid feature': '#80cdc1',
+      'perturbing agent': '#f5f5f5',
+      'source and sink': '#f5f5f5',
+      'complex': '#f6e8c3',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f5f5f5',
+      'tag': '#f5f5f5',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and operator': '#ffffff',
+      'or operator': '#ffffff',
+      'not operator': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f5f5f5'
+    }
+  }
+}
+// set multimers to be the same as their original elements
+// just to avoid typing it manually in the mapColorSchemes dictionary
+for(var scheme in mapColorSchemes){
+  mapColorSchemes[scheme]['values']['nucleic acid feature multimer'] = mapColorSchemes[scheme]['values']['nucleic acid feature'];
+  mapColorSchemes[scheme]['values']['macromolecule multimer'] = mapColorSchemes[scheme]['values']['macromolecule'];
+  mapColorSchemes[scheme]['values']['simple chemical multimer'] = mapColorSchemes[scheme]['values']['simple chemical'];
+  mapColorSchemes[scheme]['values']['complex multimer'] = mapColorSchemes[scheme]['values']['complex'];
+}
+
+// change the global style of the map
+appUtilities.applyMapColorScheme = function() {
+  console.log("Change map color scheme");
+  var eles = cy.nodes();
+  for( var i = 0; i < eles.length; i++ ){
+    nodeType = eles[i].data().class;
+    eles[i].style('background-color', mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeType]);
+    eles[i].style('background-opacity', 1);
+  }
+}
 
 module.exports = appUtilities;

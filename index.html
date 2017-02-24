@@ -760,6 +760,21 @@
             <input id="adjust-node-label-font-size-automatically" type="checkbox" class="layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
             </td>
             </tr>
+
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Map color scheme </span>
+            </td>
+
+            <td>
+            <select id="map-color-scheme-select"  class="sbgn-input-medium" name="map-color-scheme">
+            <% var i=0; for( var scheme_id in mapColorSchemes) { %>
+                <option id="map-color-scheme_<%= i %>" value="<%= scheme_id %>" <% if (mapColorScheme == scheme_id){ %> selected<%}%> > <%= mapColorSchemes[scheme_id]['name'] %> </option>
+            <% i++;} %>
+            </select>
+            </td>
+            </tr>
+
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
