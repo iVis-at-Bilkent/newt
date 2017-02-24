@@ -603,14 +603,6 @@ hr.inspector-divider {
     height: 30px;
 }
 
-.dashed-border {
-    border-style: dashed;
-}
-
-#add-node-mode-icon {
-    padding: auto;
-}
-
-#add-edge-mode-icon {
-    padding: auto;
+.inactive-palette-element {
+    border-style: dotted;
 }

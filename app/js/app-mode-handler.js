@@ -7,8 +7,8 @@ var modeHandler = {
   initilize: function () {
     $('#select-mode-icon').addClass('selected-mode'); // Initial mode is selection mode.
     // Node/edge palettes should be initialized with the first members of them and they should have dashed borders.
-    $('.node-palette img').addClass('dashed-border');
-    $('.edge-palette img').addClass('dashed-border');
+    $('.node-palette img').addClass('inactive-palette-element');
+    $('.edge-palette img').addClass('inactive-palette-element');
     $('.node-palette img').first().addClass('selected-mode');
     $('.edge-palette img').first().addClass('selected-mode');
   },
@@ -35,8 +35,8 @@ var modeHandler = {
       $('#select-mode-icon').removeClass('selected-mode');
       $('#add-edge-mode-icon').removeClass('selected-mode');
       $('#add-node-mode-icon').addClass('selected-mode');
-      $('.node-palette img').removeClass('dashed-border');
-      $('.edge-palette img').addClass('dashed-border');
+      $('.node-palette img').removeClass('inactive-palette-element');
+      $('.edge-palette img').addClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -74,8 +74,8 @@ var modeHandler = {
       $('#select-mode-icon').removeClass('selected-mode');
       $('#add-edge-mode-icon').addClass('selected-mode');
       $('#add-node-mode-icon').removeClass('selected-mode');
-      $('.node-palette img').addClass('dashed-border');
-      $('.edge-palette img').removeClass('dashed-border');
+      $('.node-palette img').addClass('inactive-palette-element');
+      $('.edge-palette img').removeClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -96,8 +96,8 @@ var modeHandler = {
       $('#select-mode-icon').addClass('selected-mode');
       $('#add-edge-mode-icon').removeClass('selected-mode');
       $('#add-node-mode-icon').removeClass('selected-mode');
-      $('.node-palette img').addClass('dashed-border');
-      $('.edge-palette img').addClass('dashed-border');
+      $('.node-palette img').addClass('inactive-palette-element');
+      $('.edge-palette img').addClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(true);
 
