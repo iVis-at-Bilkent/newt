@@ -7,10 +7,10 @@ var modeHandler = {
   initilize: function () {
     $('#select-mode-icon').addClass('selected-mode'); // Initial mode is selection mode.
     // Node/edge palettes should be initialized with the first members of them and they should have dashed borders.
-    $('.node-palette img').addClass('inactive-palette-element');
-    $('.edge-palette img').addClass('inactive-palette-element');
-    $('.node-palette img').first().addClass('selected-mode');
-    $('.edge-palette img').first().addClass('selected-mode');
+    $('.node-palette img').parent().addClass('inactive-palette-element');
+    $('.edge-palette img').parent().addClass('inactive-palette-element');
+    $('.node-palette img').first().parent().addClass('selected-mode');
+    $('.edge-palette img').first().parent().addClass('selected-mode');
   },
   // Set the current mode to add node mode, if nodeType is specified than switch the current node type to the given value,
   // if the nodeType will remain same, add node mode is already enabled and sustain mode is not set before, then set the sustain mode
@@ -22,7 +22,8 @@ var modeHandler = {
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
     if (!typeChange && modeHandler.mode == "add-node-mode" && !modeHandler.sustainMode) {
       modeHandler.sustainMode = true;
-      $('#add-node-mode-icon').addClass('selected-mode-sustainable');
+      $('#add-node-mode-icon').parent().addClass('selected-mode-sustainable');
+      $('.node-palette .selected-mode').addClass('selected-mode-sustainable');
     }
     else {
       modeHandler.sustainMode = false;
@@ -33,10 +34,10 @@ var modeHandler = {
       modeHandler.mode = "add-node-mode";
 
       $('#select-mode-icon').removeClass('selected-mode');
-      $('#add-edge-mode-icon').removeClass('selected-mode');
-      $('#add-node-mode-icon').addClass('selected-mode');
-      $('.node-palette img').removeClass('inactive-palette-element');
-      $('.edge-palette img').addClass('inactive-palette-element');
+      $('#add-edge-mode-icon').parent().removeClass('selected-mode');
+      $('#add-node-mode-icon').parent().addClass('selected-mode');
+      $('.node-palette img').parent().removeClass('inactive-palette-element');
+      $('.edge-palette img').parent().addClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -61,7 +62,8 @@ var modeHandler = {
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
     if (!typeChange && modeHandler.mode == "add-edge-mode" && !modeHandler.sustainMode) {
       modeHandler.sustainMode = true;
-      $('#add-edge-mode-icon').addClass('selected-mode-sustainable');
+      $('#add-edge-mode-icon').parent().addClass('selected-mode-sustainable');
+      $('.edge-palette .selected-mode').addClass('selected-mode-sustainable');
     }
     else {
       modeHandler.sustainMode = false;
@@ -72,10 +74,10 @@ var modeHandler = {
       modeHandler.mode = "add-edge-mode";
 
       $('#select-mode-icon').removeClass('selected-mode');
-      $('#add-edge-mode-icon').addClass('selected-mode');
-      $('#add-node-mode-icon').removeClass('selected-mode');
-      $('.node-palette img').addClass('inactive-palette-element');
-      $('.edge-palette img').removeClass('inactive-palette-element');
+      $('#add-edge-mode-icon').parent().addClass('selected-mode');
+      $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('.node-palette img').parent().addClass('inactive-palette-element');
+      $('.edge-palette img').parent().removeClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -94,10 +96,10 @@ var modeHandler = {
   setSelectionMode: function () {
     if (modeHandler.mode != "selection-mode") {
       $('#select-mode-icon').addClass('selected-mode');
-      $('#add-edge-mode-icon').removeClass('selected-mode');
-      $('#add-node-mode-icon').removeClass('selected-mode');
-      $('.node-palette img').addClass('inactive-palette-element');
-      $('.edge-palette img').addClass('inactive-palette-element');
+      $('#add-edge-mode-icon').parent().removeClass('selected-mode');
+      $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('.node-palette img').parent().addClass('inactive-palette-element');
+      $('.edge-palette img').parent().addClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(true);
 

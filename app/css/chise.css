@@ -595,14 +595,14 @@ hr.inspector-divider {
 }
 
 .element-palette td {
-    padding: 4px;
+    padding: 3px;
 }
 
 .element-palette div {
-    width: 30px;
+    width: 36px;
     height: 30px;
 }
 
-.inactive-palette-element {
+.selected-mode.inactive-palette-element {
     border-style: dotted;
 }

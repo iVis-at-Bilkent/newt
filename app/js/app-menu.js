@@ -370,30 +370,30 @@ module.exports = function () {
     
     // Listen to click event on img tags under a node palette
     $(document).on('click', '.node-palette img', function (e) {
-      $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
-      $(this).addClass('selected-mode'); // Make clicked element selected
+      $('.node-palette img').parent().removeClass('selected-mode'); // Make any image inside node palettes non selected
+      $(this).parent().addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
       modeHandler.setAddNodeMode(elementType); // Set add node mode and set selected node type
       
       // Update the some attributes of add node mode icon
       var src = $(this).attr('src');
       var title = "Create a new " + $(this).attr('title');
-      $('#add-node-mode-icon img').attr('src', src);
-      $('#add-node-mode-icon img').attr('title', title);
+      $('#add-node-mode-icon').attr('src', src);
+      $('#add-node-mode-icon').attr('title', title);
     });
     
     // Listen to click event on img tags under an edge palette
     $(document).on('click', '.edge-palette img', function (e) {
-      $('.edge-palette img').removeClass('selected-mode');// Make any image inside edge palettes non selected
-      $(this).addClass('selected-mode'); // Make clicked element selected
-      var elementType = $(this).attr('value').replace('-/gi', ' '); // Html values includes '-' instead of ' '
+      $('.edge-palette img').parent().removeClass('selected-mode');// Make any image inside edge palettes non selected
+      $(this).parent().addClass('selected-mode'); // Make clicked element selected
+      var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
       modeHandler.setAddEdgeMode(elementType); // Set add edge mode and set selected edge type
       
       // Update the some attributes of add edge mode icon
       var src = $(this).attr('src');
       var title = "Create a new " + $(this).attr('title');
-      $('#add-edge-mode-icon img').attr('src', src);
-      $('#add-edge-mode-icon img').attr('title', title);
+      $('#add-edge-mode-icon').attr('src', src);
+      $('#add-edge-mode-icon').attr('title', title);
     });
 
     $('#select-mode-icon').click(function (e) {
