@@ -57,7 +57,7 @@ appUtilities.defaultGeneralProperties = {
   rearrangeAfterExpandCollapse: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
-  mapColorScheme: 'black_white'
+  mapColorScheme: 'opposed_red_blue'
 };
 
 appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
@@ -566,14 +566,27 @@ for(var scheme in mapColorSchemes){
   mapColorSchemes[scheme]['values']['complex multimer'] = mapColorSchemes[scheme]['values']['complex'];
 }
 
-// change the global style of the map
+// change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function() {
   console.log("Change map color scheme");
+
+  // edit style of the current map elements
   var eles = cy.nodes();
   for( var i = 0; i < eles.length; i++ ){
-    nodeType = eles[i].data().class;
-    eles[i].style('background-color', mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeType]);
+    nodeClass = eles[i].data().class;
+    classBgColor = mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+    eles[i].style('background-color', classBgColor);
     eles[i].style('background-opacity', 1);
+  }
+
+  // set to be the default as well
+  for(var nodeClass in mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values']){
+    classBgColor = mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+    // nodeClass may not be defined in the defaultProperties (for edges, for example)
+    if(nodeClass in chise.elementUtilities.defaultProperties){
+      chise.elementUtilities.defaultProperties[nodeClass]['background-color'] = classBgColor;
+      chise.elementUtilities.defaultProperties[nodeClass]['background-opacity'] = 1;
+    }
   }
 }
 
