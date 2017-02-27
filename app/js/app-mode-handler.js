@@ -1,7 +1,7 @@
 var modeHandler = {
   mode: "selection-mode",
   sustainMode: false,
-  selectedNodeType: "macromolecule",
+  selectedNodeType: "unspecified entity",
   selectedEdgeType: "consumption",
   // Initilize mode handler
   initilize: function () {
