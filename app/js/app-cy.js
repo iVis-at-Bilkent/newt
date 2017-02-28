@@ -266,11 +266,17 @@ module.exports = function () {
       guidelines: gridProperties.showAlignmentGuidelines,
       guidelinesTolerance: gridProperties.guidelineTolerance,
       geometricGuideline: gridProperties.showGeometricGuidelines,
+      initPosAlignment: gridProperties.showInitPosAlignment,
       distributionGuidelines: gridProperties.showDistributionGuidelines,
+	  snapToAlignmentLocation: gridProperties.snapToAlignmentLocation,
       guidelinesStyle: {
+		initPosAlignmentLine: gridProperties.initPosAlignmentLine,
+		lineDash: gridProperties.lineDash,
+		horizontalDistLine: gridProperties.horizontalDistLine,
         strokeStyle: gridProperties.guidelineColor,
         horizontalDistColor: gridProperties.horizontalGuidelineColor,
         verticalDistColor: gridProperties.verticalGuidelineColor,
+		initPosAlignmentColor: gridProperties.initPosAlignmentColor,
         geometricGuidelineRange: gridProperties.geometricAlignmentRange,
         range: gridProperties.distributionAlignmentRange
       }

@@ -449,10 +449,9 @@ menu:not([title]):before{
 }
 
 .property-table {
-	margin: 0px;
+	margin: 2px;
 	border: 1px solid rgb(204, 204, 204);
-	display: inline-block;
-	vertical-align: top;
+	display: block;
 }
 
 .sbgn-modal-dialog .modal-header {

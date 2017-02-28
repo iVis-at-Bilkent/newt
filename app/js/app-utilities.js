@@ -33,17 +33,21 @@ appUtilities.defaultLayoutProperties = {
 appUtilities.currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
 
 appUtilities.defaultGridProperties = {
+	initPosAlignmentLine: [0, 0],
   showGrid: false,
   snapToGrid: false,
+  snapToAlignmentLocation: false,
   discreteDrag: false,
   gridSize: 20,
   autoResizeNodes: false,
   showGeometricGuidelines: false,
+  showInitPosAlignment: false,
   showDistributionGuidelines: false,
   guidelineTolerance: 2.0,
   guidelineColor: "#0B9BCD",
   horizontalGuidelineColor: "#ff0000",
   verticalGuidelineColor: "#00ff00",
+  initPosAlignmentColor: "#0000ff",
   geometricAlignmentRange: 450,
   distributionAlignmentRange: 300
 };

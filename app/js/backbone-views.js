@@ -607,31 +607,46 @@ var GridPropertiesView = Backbone.View.extend({
     $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
       appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;
       appUtilities.currentGridProperties.snapToGrid = document.getElementById("snap-to-grid").checked;
+      appUtilities.currentGridProperties.snapToAlignmentLocation = document.getElementById("snap-to-alignment-location").checked;
       appUtilities.currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
       appUtilities.currentGridProperties.discreteDrag = document.getElementById("discrete-drag").checked;
       appUtilities.currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
       appUtilities.currentGridProperties.showGeometricGuidelines = document.getElementById("show-geometric-guidelines").checked;
       appUtilities.currentGridProperties.showDistributionGuidelines = document.getElementById("show-distribution-guidelines").checked;
+      appUtilities.currentGridProperties.showInitPosAlignment = document.getElementById("show-init-Pos-Alignment").checked;
       appUtilities.currentGridProperties.guidelineTolerance = Number(document.getElementById("guideline-tolerance").value);
       appUtilities.currentGridProperties.guidelineColor = document.getElementById("geometric-guideline-color").value;
       appUtilities.currentGridProperties.horizontalGuidelineColor = document.getElementById("horizontal-guideline-color").value;
       appUtilities.currentGridProperties.verticalGuidelineColor = document.getElementById("vertical-guideline-color").value;
+      appUtilities.currentGridProperties.initPosAlignmentColor = document.getElementById("init-Pos-Alignment-Color").value;
       appUtilities.currentGridProperties.geometricAlignmentRange = Number(document.getElementById("geometric-alignment-range").value);
       appUtilities.currentGridProperties.distributionAlignmentRange = Number(document.getElementById("distribution-alignment-range").value);
 
+	  // Line styles for guidelines
+      appUtilities.currentGeneralProperties.initPosAlignmentLine = $('select[name="init-Pos-Alignment-Line"] option:selected').val().split(',').map(Number);
+      appUtilities.currentGeneralProperties.lineDash = $('select[name="geometric-Alignment-Line"] option:selected').val().split(',').map(Number);
+      appUtilities.currentGeneralProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
+      appUtilities.currentGeneralProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
         snapToGrid: appUtilities.currentGridProperties.snapToGrid,
+		snapToAlignmentLocation: appUtilities.currentGridProperties.snapToAlignmentLocation,
         gridSpacing: appUtilities.currentGridProperties.gridSize,
         discreteDrag: appUtilities.currentGridProperties.discreteDrag,
         resize: appUtilities.currentGridProperties.autoResizeNodes,
         geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
         distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
+        initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
         guidelinesTolerance: appUtilities.currentGridProperties.guidelineTolerance,
         guidelinesStyle: {
+		  initPosAlignmentLine: appUtilities.currentGeneralProperties.initPosAlignmentLine,
+		  lineDash: appUtilities.currentGeneralProperties.lineDash,
+		  horizontalDistLine: appUtilities.currentGeneralProperties.horizontalDistLine,
+		  verticalDistLine: appUtilities.currentGeneralProperties.verticalDistLine,
           strokeStyle: appUtilities.currentGridProperties.guidelineColor,
 		  horizontalDistColor: appUtilities.currentGridProperties.horizontalGuidelineColor,
 		  verticalDistColor: appUtilities.currentGridProperties.verticalGuidelineColor,
+		  initPosAlignmentColor: appUtilities.currentGridProperties.initPosAlignmentColor,
           geometricGuidelineRange: appUtilities.currentGridProperties.geometricAlignmentRange,
           range: appUtilities.currentGridProperties.distributionAlignmentRange
         }

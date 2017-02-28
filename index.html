@@ -913,7 +913,7 @@
         </script>
 
         <script type="text/template" id="grid-properties-template">
-            <div class="modal-dialog sbgn-modal-dialog">
+            <div class="modal-dialog sbgn-modal-dialog" style="min-width: 666px;">
 			<div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -936,8 +936,47 @@
             </td>
             </tr>
             </table>
+            <table class="table-condensed layout-table dialog-table property-table" style="border-collapse: collapse; border-spacing: 0px 0px;"> 
+			<tr> <th> Snap Policy </th> </tr>
+			<tr>
+            <td>
+            <input id="discrete-drag" type="checkbox" class="layout-text" <% if (discreteDrag){ %> checked<%}%>>
+            <span class="add-on layout-text"> Discrete Drag </span>
+            </td>
+            <td>
+            <input id="snap-to-grid" type="checkbox" class="layout-text" <% if (snapToGrid){ %> checked<%}%>>
+            <span class="add-on layout-text"> Snap to Grid </span>
+            </td>
+            <td>
+            <input id="snap-to-alignment-location" type="checkbox" class="layout-text" <% if (snapToAlignmentLocation){ %> checked<%}%>>
+            <span class="add-on layout-text"> Snap to Alignment Location </span>
+            </td>
+            </tr>
+            </table>
             <table class="table-condensed layout-table dialog-table property-table" style="border-collapse: collapse; border-spacing: 0px 0px;">
             <tr> <th> Alignment Guidelines </th> </tr>
+			<tr>
+			<td style="padding-bottom: 20px !important;">
+			<span class="add-on layout-text"> Guideline to Reference Point </span>
+            </td>
+            <td style="padding-bottom: 20px !important;">
+            <input id="show-init-Pos-Alignment" type="checkbox" class="layout-text" <% if (showInitPosAlignment){ %> checked<%}%>>
+            </td>
+            <td style="padding-bottom: 20px !important;">
+            Color
+            </td>
+            <td style="padding-bottom: 20px !important;">
+            <input id="init-Pos-Alignment-Color" type="color" class="sbgn-input-small layout-text" value= <%= initPosAlignmentColor %> >
+            </td>
+
+			<td style="padding-bottom: 20px !important;">
+			<select id="dynamic-label-size-select" name="init-Pos-Alignment-Line">
+			  <option value="0,0"> Solid </option>
+		   	  <option value="3,5"> Dashed </option>
+			</select>
+			</td>
+			</tr>
+
             <tr>
             <td style="padding-bottom: 20px !important;">
             <span class="add-on layout-text"> Geometric Guidelines </span>
@@ -952,6 +991,12 @@
             <td style="padding-bottom: 20px !important;">
             <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
             </td>
+			<td style="padding-bottom: 20px !important;">
+			<select name="geometric-Alignment-Line">
+			  <option value="0,0">Solid</option>
+			  <option value="3, 5">Dashed</option>
+			</select>
+			</td>
             <td style="padding-bottom: 20px !important;">
             <span class="add-on layout-text"> Range </span>
             </td>
@@ -977,6 +1022,12 @@
             <td>
             <input id="horizontal-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= horizontalGuidelineColor %> >
             </td>
+			<td>
+			<select name="horizontal-Dist-Alignment-Line">
+			  <option value="0,0">Solid</option>
+			  <option value="3, 5">Dashed</option>
+			</select>
+			</td>
             <td>
             <span class="add-on layout-text"> Vertical </span>
             </td>
@@ -984,6 +1035,12 @@
             <td>
             <input id="vertical-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= verticalGuidelineColor %> >
             </td>
+			<td>
+			<select name="vertical-Dist-Alignment-Line">
+			  <option value="0,0">Solid</option>
+			  <option value="3, 5">Dashed</option>
+			</select>
+			</td>
             </tr>
     
             <tr>
@@ -1007,21 +1064,6 @@
             </td>
             </tr>
             
-            </tr>
-            </table>
-            <table class="table-condensed layout-table dialog-table property-table" style="border-collapse: collapse; border-spacing: 0px 0px; float: right;"> 
-            <tr> <th> Snap Policy </th> </tr>
-            <tr>
-            <td>
-            <input id="discrete-drag" type="checkbox" class="layout-text" <% if (discreteDrag){ %> checked<%}%>>
-            <span class="add-on layout-text"> Discrete Drag </span>
-            </td>
-            </tr>
-            <tr>
-            <td>
-            <input id="snap-to-grid" type="checkbox" class="layout-text" <% if (snapToGrid){ %> checked<%}%>>
-            <span class="add-on layout-text"> Snap to Grid </span>
-            </td>
             </tr>
             </table>
             </div>
