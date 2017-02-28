@@ -343,11 +343,11 @@ inspectorUtilities.handleSBGNInspector = function () {
     $("#sbgn-inspector-style-properties-panel").html(html);
     
     if (selectedEles.length === 1) {
-      html = "";
       var geneClass = selectedEles[0]._private.data.class;
       
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
+          html = "";
     
           html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#biogene-collapsable'><p class='panel-title accordion-toggle'>Properties from EntrezGene</p></div>"
     
@@ -356,11 +356,11 @@ inspectorUtilities.handleSBGNInspector = function () {
           html += "<div id='biogene-container'></div>";
           html += "</div>";
 //          html += "<hr class='inspector-divider'>";
+          
+          $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-entrezgene-panel" class="panel" ></div>');
+          $("#sbgn-inspector-style-entrezgene-panel").html(html);
+          fillBioGeneContainer(selectedEles[0]);
       }
-      
-      $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-entrezgene-panel" class="panel" ></div>');
-      $("#sbgn-inspector-style-entrezgene-panel").html(html);
-      fillBioGeneContainer(selectedEles[0]);
     }
 
     if (type == "node") {
