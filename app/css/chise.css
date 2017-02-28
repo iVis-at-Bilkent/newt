@@ -605,8 +605,6 @@ hr.inspector-divider {
 .selected-mode.inactive-palette-element {
     border-style: dotted;
 }
-<<<<<<< HEAD
-=======
 
 .chise-tab a {
     color: #555;
@@ -615,4 +613,3 @@ hr.inspector-divider {
 .chise-tab.active {
     font-weight: bold;
 }
->>>>>>> 4993b66e6110cb6a56d8e4028e30c64ae3b34751
