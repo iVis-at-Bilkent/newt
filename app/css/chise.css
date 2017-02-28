@@ -533,12 +533,12 @@ menu:not([title]):before{
     margin: 0px;
     padding: 0px;
     text-align: center;
+    background-color: gray;
 }
 
 .panel-title {
     font-size: 12px;
-    color: black; 
-    font-weight: bold;
+    color: black;
 }
 
 .accordion-toggle {
@@ -605,4 +605,12 @@ hr.inspector-divider {
 
 .selected-mode.inactive-palette-element {
     border-style: dotted;
+}
+
+.chise-tab a {
+    color: #555;
+}
+
+.chise-tab.active {
+    font-weight: bold;
 }
