@@ -82,8 +82,9 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 inspectorUtilities.handleSBGNInspector = function () {
   var selectedEles = cy.elements(":selected");
   
+  $("#sbgn-inspector-style-panel-group").html("");
+  
   if(selectedEles.length == 0){
-    $("#sbgn-inspector-style").html("");
     return;
   }
   
@@ -125,7 +126,13 @@ inspectorUtilities.handleSBGNInspector = function () {
       buttonwidth = 50;
     }
 
-    var html = "<div width='100%' style='text-align: center; color: black; font-weight: bold; margin-bottom: 5px;'>" + title + "</div><table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
+    var html = "";
+    
+    html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#inspector-style-properties-toggle'><p class='panel-title accordion-toggle'>" + title + "</p></div>"
+    
+    html += "<div id='inspector-style-properties-toggle' class='panel-collapse collapse in'>";
+    html += "<div class='panel-body'>";
+    html += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
     var type;
     var fillStateAndInfos;
     var multimerCheck;
@@ -321,7 +328,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
     }
-    html += "</table>";
+    html += "</table></div>";
     
     if(selectedEles.length == 1){
       var setAsDefaultTitle = "Set as Default for " + classInfo;
@@ -330,26 +337,30 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
     
     html += "<hr class='inspector-divider' style='border-width: 3px;'>";
+    html += "</div>";
+    
+    $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
+    $("#sbgn-inspector-style-properties-panel").html(html);
     
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
       
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
+          html = "";
     
           html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#biogene-collapsable'><p class='panel-title accordion-toggle'>Properties from EntrezGene</p></div>"
     
-          html += "<div style='margin-top: 5px;align: center;text-align: center;' id='biogene-collapsable' class='collapse'>";
-          html += "<div style='padding-left: 3px;' id='biogene-title'></div>";
+          html += "<div style='margin-top: 5px;align: center;text-align: center;' id='biogene-collapsable' class='panel-collapse collapse'>";
+          html += "<div class='panel-body' style='padding-left: 3px;' id='biogene-title'></div>";
           html += "<div id='biogene-container'></div>";
           html += "</div>";
-          html += "<hr class='inspector-divider'>";
+//          html += "<hr class='inspector-divider'>";
+          
+          $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-entrezgene-panel" class="panel" ></div>');
+          $("#sbgn-inspector-style-entrezgene-panel").html(html);
+          fillBioGeneContainer(selectedEles[0]);
       }
-    }
-    
-    $("#sbgn-inspector-style").html(html);
-    if(selectedEles.length === 1) {
-      fillBioGeneContainer(selectedEles[0]);
     }
 
     if (type == "node") {
@@ -512,9 +523,6 @@ inspectorUtilities.handleSBGNInspector = function () {
         chise.changeCss(selectedEles, "width", $("#inspector-edge-width").val());
       });
     }
-  }
-  else {
-    $("#sbgn-inspector-style").html("");
   }
 };
 
