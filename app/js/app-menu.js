@@ -10,7 +10,7 @@ var _ = require('underscore');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView, gridPropertiesView, fontPropertiesView;
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function loadSample(filename) {
     return chise.loadSample(filename, 'app/samples/');
@@ -27,6 +27,7 @@ module.exports = function () {
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
     promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
+    fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
     reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
     gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
     fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
@@ -141,7 +142,10 @@ module.exports = function () {
     });
 
     $("#load-file, #load-file-icon").click(function () {
-      $("#file-input").trigger('click');
+      var loadFile = function () {
+        $("#file-input").trigger('click');
+      }
+      promptSaveView.render(loadFile);
     });
 
     $("#file-input").change(function () {
@@ -315,8 +319,9 @@ module.exports = function () {
 
     //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
     $("#save-as-sbgnml, #save-icon").click(function (evt) {
-      var filename = document.getElementById('file-name').innerHTML;
-      chise.saveAsSbgnml(filename);
+      //var filename = document.getElementById('file-name').innerHTML;
+      //chise.saveAsSbgnml(filename);
+      fileSaveView.render();
     });
     
     $("#add-complex-for-selected").click(function (e) {

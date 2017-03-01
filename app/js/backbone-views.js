@@ -421,6 +421,36 @@ var PromptSaveView = Backbone.View.extend({
   }
 });
 
+var FileSaveView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#file-save-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#file-save-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    var filename = document.getElementById('file-name').innerHTML;
+    $("#file-save-filename").val(filename);
+
+
+    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
+      filename = $("#file-save-filename").val();
+      chise.saveAsSbgnml(filename);
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#file-save-cancel").on("click", "#file-save-cancel", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   defaultTemplateParameters: {
     templateType: "association",
@@ -840,6 +870,7 @@ module.exports = {
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PromptSaveView: PromptSaveView,
+  FileSaveView: FileSaveView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView
