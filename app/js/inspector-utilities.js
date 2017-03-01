@@ -128,7 +128,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     var html = "";
     
-    html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#inspector-style-properties-toggle'><p class='panel-title accordion-toggle'>" + title + "</p></div>"
+    html += "<div  class='panel-heading' data-toggle='collapse' data-target='#inspector-style-properties-toggle'><p class='panel-title accordion-toggle'>" + title + "</p></div>"
     
     html += "<div id='inspector-style-properties-toggle' class='panel-collapse collapse in'>";
     html += "<div class='panel-body'>";
