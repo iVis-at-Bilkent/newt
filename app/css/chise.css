@@ -532,7 +532,7 @@ menu:not([title]):before{
     margin: 0px;
     padding: 0px;
     text-align: center;
-    background-color: gray;
+    background-color: rgb(195,195,195);
 }
 
 .panel-title {
