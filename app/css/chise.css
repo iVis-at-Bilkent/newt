@@ -604,6 +604,11 @@ hr.inspector-divider {
 
 .selected-mode.inactive-palette-element {
     border-style: dotted;
+    border-width: 1px;
+}
+
+.selected-mode.inactive-palette-element img{
+    padding: 2px;
 }
 
 .chise-tab a {
