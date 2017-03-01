@@ -532,7 +532,7 @@ menu:not([title]):before{
     margin: 0px;
     padding: 0px;
     text-align: center;
-    background-color: rgb(195,195,195);
+    background-color: #eee;
 }
 
 .panel-title {
@@ -551,6 +551,7 @@ menu:not([title]):before{
     font-family:'FontAwesome';
     content:"\f077";
     float: right;
+    padding-right: 2px;
     color: inherit;
 }
 .panel-heading.collapsed .accordion-toggle:after {

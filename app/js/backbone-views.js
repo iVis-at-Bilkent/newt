@@ -623,10 +623,10 @@ var GridPropertiesView = Backbone.View.extend({
       appUtilities.currentGridProperties.distributionAlignmentRange = Number(document.getElementById("distribution-alignment-range").value);
 
 	  // Line styles for guidelines
-      appUtilities.currentGeneralProperties.initPosAlignmentLine = $('select[name="init-Pos-Alignment-Line"] option:selected').val().split(',').map(Number);
-      appUtilities.currentGeneralProperties.lineDash = $('select[name="geometric-Alignment-Line"] option:selected').val().split(',').map(Number);
-      appUtilities.currentGeneralProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
-      appUtilities.currentGeneralProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
+      appUtilities.currentGridProperties.initPosAlignmentLine = $('select[name="init-Pos-Alignment-Line"] option:selected').val().split(',').map(Number);
+      appUtilities.currentGridProperties.lineDash = $('select[id="geometric-Alignment-Line"] option:selected').val().split(',').map(Number),
+      appUtilities.currentGridProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
+      appUtilities.currentGridProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
         snapToGrid: appUtilities.currentGridProperties.snapToGrid,
@@ -639,10 +639,10 @@ var GridPropertiesView = Backbone.View.extend({
         initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
         guidelinesTolerance: appUtilities.currentGridProperties.guidelineTolerance,
         guidelinesStyle: {
-		  initPosAlignmentLine: appUtilities.currentGeneralProperties.initPosAlignmentLine,
-		  lineDash: appUtilities.currentGeneralProperties.lineDash,
-		  horizontalDistLine: appUtilities.currentGeneralProperties.horizontalDistLine,
-		  verticalDistLine: appUtilities.currentGeneralProperties.verticalDistLine,
+		  initPosAlignmentLine: appUtilities.currentGridProperties.initPosAlignmentLine,
+		  lineDash: appUtilities.currentGridProperties.lineDash,
+		  horizontalDistLine: appUtilities.currentGridProperties.horizontalDistLine,
+		  verticalDistLine: appUtilities.currentGridProperties.verticalDistLine,
           strokeStyle: appUtilities.currentGridProperties.guidelineColor,
 		  horizontalDistColor: appUtilities.currentGridProperties.horizontalGuidelineColor,
 		  verticalDistColor: appUtilities.currentGridProperties.verticalGuidelineColor,

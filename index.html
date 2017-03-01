@@ -915,7 +915,7 @@
         </script>
 
         <script type="text/template" id="grid-properties-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="min-width: 666px;">
+            <div class="modal-dialog sbgn-modal-dialog">
 			<div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -942,15 +942,19 @@
 			<tr> <th> Snap Policy </th> </tr>
 			<tr>
             <td>
-            <input id="discrete-drag" type="checkbox" class="layout-text" <% if (discreteDrag){ %> checked<%}%>>
+            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!discreteDrag && !snapToGrid && ! snapToAlignmentLocation){ %> checked<%}%>>
+            <span class="add-on layout-text"> No Snap </span>
+            </td>
+            <td>
+            <input id="discrete-drag" type="radio" name="snap-policy" class="layout-text" <% if (discreteDrag){ %> checked<%}%>>
             <span class="add-on layout-text"> Discrete Drag </span>
             </td>
             <td>
-            <input id="snap-to-grid" type="checkbox" class="layout-text" <% if (snapToGrid){ %> checked<%}%>>
+            <input id="snap-to-grid" type="radio" name="snap-policy" class="layout-text" <% if (snapToGrid){ %> checked<%}%>>
             <span class="add-on layout-text"> Snap to Grid </span>
             </td>
             <td>
-            <input id="snap-to-alignment-location" type="checkbox" class="layout-text" <% if (snapToAlignmentLocation){ %> checked<%}%>>
+            <input id="snap-to-alignment-location" type="radio" name="snap-policy" class="layout-text" <% if (snapToAlignmentLocation){ %> checked<%}%>>
             <span class="add-on layout-text"> Snap to Alignment Location </span>
             </td>
             </tr>
@@ -959,22 +963,22 @@
             <tr> <th> Alignment Guidelines </th> </tr>
 			<tr>
 			<td style="padding-bottom: 20px !important;">
-			<span class="add-on layout-text"> Guideline to Reference Point </span>
+			<span class="add-on layout-text"> Reference Guideline</span>
             </td>
             <td style="padding-bottom: 20px !important;">
             <input id="show-init-Pos-Alignment" type="checkbox" class="layout-text" <% if (showInitPosAlignment){ %> checked<%}%>>
             </td>
             <td style="padding-bottom: 20px !important;">
-            Color
+            Style
             </td>
             <td style="padding-bottom: 20px !important;">
             <input id="init-Pos-Alignment-Color" type="color" class="sbgn-input-small layout-text" value= <%= initPosAlignmentColor %> >
             </td>
 
 			<td style="padding-bottom: 20px !important;">
-			<select id="dynamic-label-size-select" name="init-Pos-Alignment-Line">
-			  <option value="0,0"> Solid </option>
-		   	  <option value="3,5"> Dashed </option>
+			<select name="init-Pos-Alignment-Line">
+			  <option value="0,0" <% if (initPosAlignmentLine[0] == 0 && initPosAlignmentLine[1] == 0){ %> selected<% }%> > Solid </option>
+		   	  <option value="3,5" <% if (initPosAlignmentLine[0] != 0 || initPosAlignmentLine[1] != 0){ %> selected<% }%> > Dashed </option>
 			</select>
 			</td>
 			</tr>
@@ -988,15 +992,15 @@
             <input id="show-geometric-guidelines" type="checkbox" class="layout-text" <% if (showGeometricGuidelines){ %> checked<%}%>>
             </td>
             <td style="padding-bottom: 20px !important;">
-            Color
+            Style
             </td>
             <td style="padding-bottom: 20px !important;">
             <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
             </td>
 			<td style="padding-bottom: 20px !important;">
-			<select name="geometric-Alignment-Line">
-			  <option value="0,0">Solid</option>
-			  <option value="3, 5">Dashed</option>
+			<select id="geometric-Alignment-Line">
+			  <option value="0,0" <% if (lineDash[0] == 0 && lineDash[1] == 0){ %> selected<% }%> > Solid </option>
+		   	  <option value="3,5" <% if (lineDash[0] != 0 || lineDash[1] != 0){ %> selected<% }%> > Dashed </option>
 			</select>
 			</td>
             <td style="padding-bottom: 20px !important;">
@@ -1010,11 +1014,11 @@
             </tr>
     
             <tr>
-            <td>
+            <td rowspan="2">
             <span class="add-on layout-text"> Distribution Guidelines </span>
             </td>
 
-            <td>
+            <td rowspan="2">
             <input id="show-distribution-guidelines" type="checkbox" class="layout-text" <% if (showDistributionGuidelines){ %> checked<%}%>>
             </td>
             <td>
@@ -1026,10 +1030,20 @@
             </td>
 			<td>
 			<select name="horizontal-Dist-Alignment-Line">
-			  <option value="0,0">Solid</option>
-			  <option value="3, 5">Dashed</option>
+			  <option value="0,0" <% if (horizontalDistLine[0] == 0 && horizontalDistLine[1] == 0){ %> selected<% }%> > Solid </option>
+		   	  <option value="3,5" <% if (horizontalDistLine[0] != 0 || horizontalDistLine[1] != 0){ %> selected<% }%> > Dashed </option>
 			</select>
 			</td>
+            <td rowspan="2">
+            <span class="add-on layout-text"> Range </span>
+            </td>
+
+            <td rowspan="2">
+            <input id="distribution-alignment-range" type="text" class="sbgn-input-small layout-text float-input" value= <%= distributionAlignmentRange %> >
+            </td>
+            </tr>
+    
+            <tr>
             <td>
             <span class="add-on layout-text"> Vertical </span>
             </td>
@@ -1039,29 +1053,17 @@
             </td>
 			<td>
 			<select name="vertical-Dist-Alignment-Line">
-			  <option value="0,0">Solid</option>
-			  <option value="3, 5">Dashed</option>
+			  <option value="0,0" <% if (verticalDistLine[0] == 0 && verticalDistLine[1] == 0){ %> selected<% }%> > Solid </option>
+		   	  <option value="3,5" <% if (verticalDistLine[0] != 0 || verticalDistLine[1] != 0){ %> selected<% }%> > Dashed </option>
 			</select>
 			</td>
-            </tr>
     
             <tr>
-            <td></td>
-            <td></td>
-            <td>
-            <span class="add-on layout-text"> Range </span>
-            </td>
-
-            <td>
-            <input id="distribution-alignment-range" type="text" class="sbgn-input-small layout-text float-input" value= <%= distributionAlignmentRange %> >
-            </td>
-    
-            <tr>
-            <td>
+            <td style="padding-top: 20px !important;">
             <span class="add-on layout-text"> Guideline Tolerance </span>
             </td>
     
-            <td>
+            <td style="padding-top: 20px !important;">
             <input id="guideline-tolerance" type="text" min="0" class="sbgn-input-small layout-text float-input" value= <%= guidelineTolerance %> >
             </td>
             </tr>
