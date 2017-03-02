@@ -603,6 +603,13 @@ var GridPropertiesView = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
+	
+	// Enable Show Grid when Snap to Grid is enabled
+	$(document).ready(function(){
+	  $("#snap-to-grid").change(function(){
+		$("#show-grid").prop('checked', true);
+	  });
+	});
 
     $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
       appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;

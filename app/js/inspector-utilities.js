@@ -55,8 +55,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       variable: ""
     };
     obj.bbox = {
-      w: 53,
-      h: 18
+      w: 30,
+      h: 12
     };
     
     chise.addStateOrInfoBox(nodes, obj);
@@ -70,8 +70,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       text: ""
     };
     obj.bbox = {
-      w: 53,
-      h: 18
+      w: 30,
+      h: 12
     };
     
     chise.addStateOrInfoBox(nodes, obj);
