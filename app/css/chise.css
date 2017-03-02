@@ -86,6 +86,10 @@ body {
     font-size: 12px;
 }
 
+.sbgn-nav-menu li.dropdown.open > a.dropdown-toggle {
+    color: #ffffff !important;
+}
+
 /*bootstrap.css is no more supporting dropdown submenus handle it here start*/
 .dropdown-submenu {
     position:relative;
@@ -242,6 +246,7 @@ body {
     overflow: visible !important;
     font-size: 12px !important;
     min-height: 0px;
+    background-color: #eee;
 }
 
 @media (max-width: 767px) {
@@ -618,4 +623,8 @@ hr.inspector-divider {
 
 .chise-tab.active {
     font-weight: bold;
+}
+
+.chise-tab.active a {
+    background: #eee !important;
 }
