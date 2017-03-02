@@ -598,11 +598,19 @@ var GridPropertiesView = Backbone.View.extend({
   },
   render: function () {
     var self = this;
+	var previousSnapToGridState = false;
     self.template = _.template($("#grid-properties-template").html());
     self.template = self.template(appUtilities.currentGridProperties);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
+	
+	// Enable Show Grid when Snap to Grid is enabled
+	$(document).ready(function(){
+	  $("#snap-to-grid").change(function(){
+		$("#show-grid").prop('checked', true);
+	  });
+	});
 
     $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
       appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;
@@ -627,6 +635,7 @@ var GridPropertiesView = Backbone.View.extend({
       appUtilities.currentGridProperties.lineDash = $('select[id="geometric-Alignment-Line"] option:selected').val().split(',').map(Number),
       appUtilities.currentGridProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
       appUtilities.currentGridProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
+	  console.log("ll");
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
         snapToGrid: appUtilities.currentGridProperties.snapToGrid,
