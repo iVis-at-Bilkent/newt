@@ -453,6 +453,11 @@ module.exports = function () {
     // problem we call the method used to refresh the inspector in a throttled way and decrease the number of calls.
     cy.on('select', function() {
       handleInspectorThrottled();
+      
+      // Go to inspector style/properties tab when a node is selected
+      if (!$('#inspector-style-tab').hasClass('active')) {
+        $('#inspector-style-tab a').tab('show');
+      }
     });
     
     cy.on('unselect', function() {

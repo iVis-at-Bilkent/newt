@@ -88,7 +88,6 @@ body {
 
 .sbgn-nav-menu li.dropdown.open > a.dropdown-toggle {
     color: #ffffff !important;
-    font-weight: bold !important;
 }
 
 /*bootstrap.css is no more supporting dropdown submenus handle it here start*/
@@ -251,11 +250,7 @@ body {
 }
 
 .sbgn-nav-bar .navbar-nav > li > a {
-    color: black;
-}
-
-.sbgn-nav-bar .navbar-nav > li > a:hover {
-    font-weight: bold;
+    color: #666666;
 }
 
 @media (max-width: 767px) {
@@ -555,7 +550,7 @@ menu:not([title]):before{
 }
 
 .panel {
-    border: 0px;
+    border: 1px solid transparent;
 }
 
 .accordion-toggle {
@@ -569,7 +564,7 @@ menu:not([title]):before{
     font-family:'FontAwesome';
     content:"\f077";
     float: right;
-    padding-right: 2px;
+    padding-right: 4px;
     color: inherit;
 }
 .panel-heading.collapsed .accordion-toggle:after {

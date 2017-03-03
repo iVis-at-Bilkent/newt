@@ -406,10 +406,20 @@ module.exports = function () {
     
     $('#add-node-mode-icon').click(function (e) {
       modeHandler.setAddNodeMode();
+      
+      // Go to inspector palette tab when the icon is clicked
+      if (!$('#inspector-palette-tab').hasClass('active')) {
+        $('#inspector-palette-tab a').tab('show');
+      }
     });
     
     $('#add-edge-mode-icon').click(function (e) {
       modeHandler.setAddEdgeMode();
+      
+      // Go to inspector palette tab when the icon is clicked
+      if (!$('#inspector-palette-tab').hasClass('active')) {
+        $('#inspector-palette-tab a').tab('show');
+      }
     });
 
     appUtilities.sbgnNetworkContainer.on("click", ".biogene-info .expandable", function (evt) {
