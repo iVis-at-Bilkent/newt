@@ -336,7 +336,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             + ">" + setAsDefaultTitle + "</button></div>";
     }
     
-    html += "<hr class='inspector-divider' style='border-width: 3px;'>";
+//    html += "<hr class='inspector-divider' style='border-width: 3px;'>";
     html += "</div>";
     
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
