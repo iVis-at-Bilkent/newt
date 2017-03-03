@@ -439,11 +439,37 @@ var FileSaveView = Backbone.View.extend({
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
       filename = $("#file-save-filename").val();
+      appUtilities.setFileContent(filename);
       chise.saveAsSbgnml(filename);
       $(self.el).modal('toggle');
     });
 
     $(document).off("click", "#file-save-cancel").on("click", "#file-save-cancel", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
+var PromptConfirmationView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-confirmation-template").html());
+  },
+  render: function (afterFunction) {
+    var self = this;
+    self.template = _.template($("#prompt-confirmation-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-confirmation-accept").on("click", "#prompt-confirmation-accept", function (evt) { 
+      afterFunction();
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#prompt-confirmation-cancel").on("click", "#prompt-confirmation-cancel", function (evt) {
       $(self.el).modal('toggle');
     });
 
@@ -871,6 +897,7 @@ module.exports = {
   PathsBetweenQueryView: PathsBetweenQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
+  PromptConfirmationView: PromptConfirmationView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView

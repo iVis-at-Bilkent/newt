@@ -10,7 +10,8 @@ var _ = require('underscore');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, promptConfirmationView,
+        reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function loadSample(filename) {
     return chise.loadSample(filename, 'app/samples/');
@@ -28,6 +29,7 @@ module.exports = function () {
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
     promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'});
     fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
+    promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
     reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
     gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
     fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
@@ -142,10 +144,7 @@ module.exports = function () {
     });
 
     $("#load-file, #load-file-icon").click(function () {
-      var loadFile = function () {
-        $("#file-input").trigger('click');
-      }
-      promptSaveView.render(loadFile);
+      $("#file-input").trigger('click');
     });
 
     $("#file-input").change(function () {
@@ -191,7 +190,7 @@ module.exports = function () {
     for ( var selector in selectorToSampleFileName ) {
       (function(selector){
         $(selector).click(function (e) {
-          loadSample(selectorToSampleFileName[selector]);
+          promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
         });
       })(selector);
     }

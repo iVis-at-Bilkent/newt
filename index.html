@@ -425,6 +425,10 @@
             <!-- save dialog will be shown here-->
         </div>
 
+        <div id="prompt-confirmation-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- confirmation dialog will be shown here-->
+        </div>
+
         <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- paths between query table will be shown here -->
         </div>
@@ -873,9 +877,12 @@
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
             <tr>
-            <th style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text"> Do you want to save any change(s) to the map? </span>
-            </th>
+            <td style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text"> Filename </span>
+            </td>
+            <td>
+            <input id="file-save-filename" type="text" />
+            </td>
             </tr>
 
             <tr id="file-save-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
@@ -885,9 +892,37 @@
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
-            <input id="file-save-filename" type="text" />
-            <button id="file-save-accept" class="btn btn-default" >Save</button>
+            <button id="file-save-accept" class="btn btn-default">Save</button>
             <button id="file-save-cancel" class="btn btn-default">Cancel</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="prompt-confirmation-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 350px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table">
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text"> You are about to close the map. All unsaved changes will be lost. Do you want to continue ? </span>
+            </th>
+            </tr>
+
+            <tr id="prompt-confirmation-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-confirmation-accept" class="btn btn-default">Yes</button>
+            <button id="prompt-confirmation-cancel" class="btn btn-default">No</button>
             </div>
             </div>
             </div>
