@@ -389,6 +389,13 @@ var PathsBetweenQueryView = Backbone.View.extend({
   }
 });
 
+/*
+  There was a side effect of using this modal prompt when clicking on New.
+  If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
+  but the map was already wiped at this point, so after setting the filename and clicking on save
+  the user would end up saving an empty map.
+  So this PromptSaveView isn't used for now, replaced by PromptConfirmationView.
+*/
 var PromptSaveView = Backbone.View.extend({
   
   initialize: function () {
@@ -421,6 +428,9 @@ var PromptSaveView = Backbone.View.extend({
   }
 });
 
+/*
+  Ask for filename before saving and triggering the actual browser download popup.
+*/
 var FileSaveView = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -452,6 +462,9 @@ var FileSaveView = Backbone.View.extend({
   }
 });
 
+/*
+  Simple Yes/No confirmation modal box. See PromptSaveView.
+*/
 var PromptConfirmationView = Backbone.View.extend({
   initialize: function () {
     var self = this;
