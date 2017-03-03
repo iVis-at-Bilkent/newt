@@ -39,7 +39,7 @@
     "cytoscape-grid-guide": "iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-autopan-on-drag": "^2.0.1",
     "cytoscape-node-resize": "iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
-    "sbgnviz": "~3.4.0",
+    "sbgnviz": "iVis-at-Bilkent/sbgnviz.js#unstable",
     "chise": "iVis-at-Bilkent/chise.js#unstable"
   },
   "devDependencies": {
