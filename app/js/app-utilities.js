@@ -560,16 +560,16 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 
 // change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function() {
-  var ur = cy.undoRedo();
   eles = cy.nodes();
-  idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values']);
+  currentScheme = appUtilities.currentGeneralProperties.mapColorScheme;
+  idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[currentScheme]['values']);
 
   // edit style of the current map elements
-  ur.do('changeCss', {'eles': eles, 'name': 'background-color', 'valueMap': idMap});
+  chise.changeCss(eles, 'background-color', idMap);
 
   // set to be the default as well
-  for(var nodeClass in mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values']){
-    classBgColor = mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+  for(var nodeClass in mapColorSchemes[currentScheme]['values']){
+    classBgColor = mapColorSchemes[currentScheme]['values'][nodeClass];
     // nodeClass may not be defined in the defaultProperties (for edges, for example)
     if(nodeClass in chise.elementUtilities.defaultProperties){
       chise.elementUtilities.defaultProperties[nodeClass]['background-color'] = classBgColor;
