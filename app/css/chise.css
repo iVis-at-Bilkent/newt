@@ -227,17 +227,26 @@ body {
     /*overflow: auto !important;*/
 }
 
-.sbgn-label{
+.newt-logo{
+    padding-left: 15px;
+    padding-right: 5px;
+    margin-top: 8px;
     float:left;
-    text-align: right;
     color: #0B9BCD !important;
+}
+
+#about-newt-version {
+    color: #d67614 !important;
 }
 
 .input-file{
     float:right;
     text-align: right;
-    color: #d67614 !important;
+    color: #0B9BCD !important;
     font-size: 12px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-right: 15px;
 }
 
 .sbgn-nav-bar {
@@ -246,11 +255,14 @@ body {
     overflow: visible !important;
     font-size: 12px !important;
     min-height: 0px;
-    background-color: #eee;
 }
 
 .sbgn-nav-bar .navbar-nav > li > a {
-    color: #666666;
+    color: #000000;
+}
+
+.sbgn-nav-bar .navbar-nav > li > a:hover {
+    color: #000000;
 }
 
 @media (max-width: 767px) {
@@ -468,12 +480,12 @@ menu:not([title]):before{
     color: #ffffff !important;
 }
 
-.sbgn-modal-dialog .modal-footer button {
-    border: #0B9BCD !important;
+/*.sbgn-modal-dialog .modal-footer button {
+    border-color: #0B9BCD !important;
     border-style: solid !important;
     border-width: 1px !important;
     border-radius: calc !important;
-}
+}*/
 
 .sbgn-modal-dialog .modal-content {
     overflow:hidden !important;
@@ -490,14 +502,13 @@ menu:not([title]):before{
 }
 
 .selected-mode-sustainable {
-  background-color: #cccccc;
-  *background-color: #bfbfbf;
-  background-image: -moz-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#d9d9d9), to(#cccccc));
-  background-image: -webkit-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: -o-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: linear-gradient(to bottom, #d9d9d9, #cccccc);
-  background-repeat: repeat-x;
+  background-color: #d9d9d9;
+  *background-color: #ffffff;
+  background-image: -moz-linear-gradient(top, #ffffff, #d9d9d9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#d9d9d9));
+  background-image: -webkit-linear-gradient(top, #ffffff, #d9d9d9);
+  background-image: -o-linear-gradient(top, #ffffff, #d9d9d9);
+  background-image: linear-gradient(to bottom, #ffffff, #d9d9d9);
 }
 
 #align-button:focus {
@@ -518,7 +529,7 @@ menu:not([title]):before{
 
 .sbgn-dd-list > button {
     height: 26px;
-    background-color: rgb(245, 245, 245);
+    background-color: transparent;
     border-color: rgba(0, 0, 0, 0.14902) rgba(0, 0, 0, 0.14902) rgba(0, 0, 0, 0.247059);
     position:relative;
     top: 50%;
@@ -546,7 +557,7 @@ menu:not([title]):before{
 
 .panel-title {
     font-size: 12px;
-    color: black;
+    color: #555;
 }
 
 .panel {
@@ -629,10 +640,17 @@ hr.inspector-divider {
     color: #555;
 }
 
-.chise-tab.active {
+/*.chise-tab.active {
     font-weight: bold;
-}
+}*/
 
 .chise-tab.active a {
     background: #eee !important;
+}
+
+.btn-default {
+    border-color: #0B9BCD !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-radius: calc !important;
 }
