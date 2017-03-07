@@ -243,7 +243,6 @@ module.exports = function () {
           modeHandler.setSelectionMode();
         }
 
-        cy.edges()[cy.edges().length - 1].select();
       },
       loopAllowed: function( node ) {
         // for the specified node, return whether edges from itself to itself are allowed
@@ -381,7 +380,6 @@ module.exports = function () {
           modeHandler.setSelectionMode();
         }
 
-        cy.nodes()[cy.nodes().length - 1].select();
       }
     });
 

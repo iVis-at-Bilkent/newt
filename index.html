@@ -712,9 +712,8 @@
             </td>
 
             <td>
-            <input id="compound-padding" type="text" class="sbgn-input-small layout-text integer-input" min="0" max="100" value= <%= compoundPadding %> >
+            <input id="compound-padding" type="text" class="sbgn-input-small layout-text integer-input" min="0" max="100" value= <%= compoundPadding %> > %
             </td>
-            <td>%</td>
             </tr>
 
             <tr>
@@ -773,11 +772,11 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Map color scheme </span>
+            <span class="add-on layout-text"> Map Color Scheme </span>
             </td>
 
             <td>
-            <select id="map-color-scheme-select"  class="sbgn-input-medium" name="map-color-scheme">
+            <select id="map-color-scheme-select" name="map-color-scheme">
             <% var i=0; for( var scheme_id in mapColorSchemes) { %>
                 <option id="map-color-scheme_<%= i %>" value="<%= scheme_id %>" <% if (mapColorScheme == scheme_id){ %> selected<%}%> > <%= mapColorSchemes[scheme_id]['name'] %> </option>
             <% i++;} %>
@@ -910,7 +909,7 @@
             <table class="table-condensed layout-table dialog-table">
             <tr>
             <th style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text"> You are about to close the map. All unsaved changes will be lost. Do you want to continue ? </span>
+            <span class="add-on layout-text">All unsaved changes will be lost. Do you want to continue?</span>
             </th>
             </tr>
 
