@@ -227,17 +227,19 @@ body {
     /*overflow: auto !important;*/
 }
 
-.sbgn-label{
+.newt-logo{
+    margin-top: 8px;
     float:left;
-    text-align: right;
     color: #0B9BCD !important;
 }
 
 .input-file{
     float:right;
     text-align: right;
-    color: #d67614 !important;
+    color: #0B9BCD !important;
     font-size: 12px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 
 .sbgn-nav-bar {
@@ -250,7 +252,11 @@ body {
 }
 
 .sbgn-nav-bar .navbar-nav > li > a {
-    color: #666666;
+    color: #000000;
+}
+
+.sbgn-nav-bar .navbar-nav > li > a:hover {
+    color: #000000;
 }
 
 @media (max-width: 767px) {
@@ -490,13 +496,13 @@ menu:not([title]):before{
 }
 
 .selected-mode-sustainable {
-  background-color: #cccccc;
-  *background-color: #bfbfbf;
-  background-image: -moz-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#d9d9d9), to(#cccccc));
-  background-image: -webkit-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: -o-linear-gradient(top, #d9d9d9, #cccccc);
-  background-image: linear-gradient(to bottom, #d9d9d9, #cccccc);
+  background-color: #d9d9d9;
+  *background-color: #e6e6e6;
+  background-image: -moz-linear-gradient(top, #e6e6e6, #d9d9d9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e6e6e6), to(#d9d9d9));
+  background-image: -webkit-linear-gradient(top, #e6e6e6, #d9d9d9);
+  background-image: -o-linear-gradient(top, #e6e6e6, #d9d9d9);
+  background-image: linear-gradient(to bottom, #e6e6e6, #d9d9d9);
   background-repeat: repeat-x;
 }
 
@@ -518,7 +524,7 @@ menu:not([title]):before{
 
 .sbgn-dd-list > button {
     height: 26px;
-    background-color: rgb(245, 245, 245);
+    background-color: transparent;
     border-color: rgba(0, 0, 0, 0.14902) rgba(0, 0, 0, 0.14902) rgba(0, 0, 0, 0.247059);
     position:relative;
     top: 50%;
@@ -546,7 +552,7 @@ menu:not([title]):before{
 
 .panel-title {
     font-size: 12px;
-    color: black;
+    color: #555;
 }
 
 .panel {
@@ -629,9 +635,9 @@ hr.inspector-divider {
     color: #555;
 }
 
-.chise-tab.active {
+/*.chise-tab.active {
     font-weight: bold;
-}
+}*/
 
 .chise-tab.active a {
     background: #eee !important;

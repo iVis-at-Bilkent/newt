@@ -332,7 +332,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     
     if(selectedEles.length == 1){
       var setAsDefaultTitle = "Set as Default for " + classInfo;
-      html += "<div style='text-align: center; margin-top: 5px;'><button style='align: center;' id='inspector-set-as-default-button'"
+      html += "<div style='text-align: center; margin-top: 5px;'><button class='btn btn-default' style='align: center;' id='inspector-set-as-default-button'"
             + ">" + setAsDefaultTitle + "</button></div>";
     }
     
