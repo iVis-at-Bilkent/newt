@@ -195,6 +195,18 @@ module.exports = function () {
       })(selector);
     }
 
+    $("#select-all").click(function(e) {
+      cy.elements().select();
+    });
+
+    $("#select-all-nodes").click(function(e) {
+      cy.nodes().select();
+    });
+
+    $("#select-all-edges").click(function(e) {
+      cy.edges().select();
+    });
+
     $("#hide-selected, #hide-selected-icon").click(function(e) {
       chise.hideNodesSmart(cy.nodes(":selected"));
     });
