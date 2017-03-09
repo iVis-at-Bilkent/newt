@@ -42,7 +42,7 @@ appUtilities.defaultGridProperties = {
   showGeometricGuidelines: false,
   showInitPosAlignment: false,
   showDistributionGuidelines: false,
-  guidelineTolerance: 2.0,
+  guidelineTolerance: 4.0,
   guidelineColor: "#0B9BCD",
   horizontalGuidelineColor: "#0B9BCD",
   verticalGuidelineColor: "#0B9BCD",
@@ -50,9 +50,9 @@ appUtilities.defaultGridProperties = {
   geometricAlignmentRange: 450,
   distributionAlignmentRange: 300,
   initPosAlignmentLine: [0, 0],
-  lineDash: [0, 0],
-  horizontalDistLine: [3, 5],
-  verticalDistLine: [3, 5],
+  lineDash: [3, 5],
+  horizontalDistLine: [0, 0],
+  verticalDistLine: [0, 0],
 };
 
 appUtilities.currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
