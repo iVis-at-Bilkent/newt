@@ -536,7 +536,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'compartment': '#f5f5f5'
     }
   }
-}
+};
 // set multimers to be the same as their original elements
 // just to avoid typing it manually in the mapColorSchemes dictionary
 for(var scheme in mapColorSchemes){
@@ -556,7 +556,7 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
     result[ele.id()] = classMap[ele.data().class];
   }
   return result;
-}
+};
 
 // change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function() {
@@ -575,6 +575,6 @@ appUtilities.applyMapColorScheme = function() {
       chise.elementUtilities.defaultProperties[nodeClass]['background-color'] = classBgColor;
     }
   }
-}
+};
 
 module.exports = appUtilities;
