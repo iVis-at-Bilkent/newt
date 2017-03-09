@@ -388,19 +388,23 @@ inspectorUtilities.handleSBGNInspector = function () {
           chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
         var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
-        defaults.width = selected.width();
-        defaults.height = selected.height();
-        defaults.clonemarker = selected._private.data.clonemarker;
-        defaults.multimer = multimer;
-        defaults['border-width'] = selected.css('border-width');
-        defaults['border-color'] = selected.data('borderColor');
-        defaults['background-color'] = selected.css('background-color');
+
+        var ur = cy.undoRedo();
+        var actions = [];
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.css('border-width')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('borderColor')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.css('background-color')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.css('background-opacity')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'labelsize', value: selected.data('labelsize')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.css('font-family')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.css('font-weight')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.css('font-style')}});
+        ur.do("batch", actions);
 //        defaults['font-size'] = selected.css('font-size');
-        defaults['background-opacity'] = selected.css('background-opacity');
-        defaults.labelsize = selected.data('labelsize');
-        defaults['font-family'] = selected.css('font-family');
-        defaults['font-weight'] = selected.css('font-weight');
-        defaults['font-style'] = selected.css('font-style');
       });
 
       $("#inspector-node-width, #inspector-node-height").change( function () {
@@ -493,12 +497,19 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
     else {
       $('#inspector-set-as-default-button').on('click', function () {
-        if (chise.elementUtilities.defaultProperties[selectedEles.data('class')] == null) {
-          chise.elementUtilities.defaultProperties[selectedEles.data('class')] = {};
+        var sbgnclass = selectedEles.data('class');
+        if (chise.elementUtilities.defaultProperties[sbgnclass] == null) {
+          chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
-        var defaults = chise.elementUtilities.defaultProperties[selectedEles.data('class')];
-        defaults['line-color'] = selectedEles.data('lineColor');
-        defaults['width'] = selectedEles.css('width');
+        var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
+
+        var ur = cy.undoRedo();
+        var actions = [];
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.css('width')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('lineColor')}});
+        ur.do("batch", actions);
+        //defaults['line-color'] = selectedEles.data('lineColor');
+        //defaults['width'] = selectedEles.css('width');
       });
 
       $("#inspector-line-color").on('change', function () {
