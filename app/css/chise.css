@@ -511,6 +511,16 @@ menu:not([title]):before{
   background-image: linear-gradient(to bottom, #ffffff, #d9d9d9);
 }
 
+.toggle-mode-sustainable {
+  background-color: #d9d9d9;
+  *background-color: #ffffff;
+  background-image: -moz-linear-gradient(top, #ffffff, #d9d9d9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#d9d9d9));
+  background-image: -webkit-linear-gradient(top, #ffffff, #d9d9d9);
+  background-image: -o-linear-gradient(top, #ffffff, #d9d9d9);
+  background-image: linear-gradient(to bottom, #ffffff, #d9d9d9);
+}
+
 #align-button:focus {
     outline: none;
 }

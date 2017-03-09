@@ -288,6 +288,55 @@ module.exports = function () {
     $("#expand-complexes").click(function (e) {
       chise.expandComplexes();
     });
+    // Enable Show Grid when Snap to Grid is enabled
+    var toggleShowGridEnableSnap = false;
+    $("#toggle-grid-snapping-icon").click(function(){
+      if (toggleEnableGuidelineAndSnap){
+        $("#toggle-guidelines-snapping-icon").click();
+      }
+      toggleShowGridEnableSnap = !toggleShowGridEnableSnap;
+      appUtilities.currentGridProperties.showGrid = toggleShowGridEnableSnap;
+      appUtilities.currentGridProperties.snapToGrid = toggleShowGridEnableSnap; 
+
+      cy.gridGuide({
+        drawGrid: appUtilities.currentGridProperties.showGrid,
+        snapToGrid: appUtilities.currentGridProperties.snapToGrid,
+      });
+
+      if (toggleShowGridEnableSnap){
+        $('#toggle-grid-snapping-icon').addClass('toggle-mode-sustainable');
+      }
+      else{
+         $('#toggle-grid-snapping-icon').removeClass('toggle-mode-sustainable');
+      }
+    });
+
+    // Enable Show Grid when Snap to Grid is enabled
+    var toggleEnableGuidelineAndSnap = false;
+    $("#toggle-guidelines-snapping-icon").click(function(){
+      if (toggleShowGridEnableSnap){
+        $("#toggle-grid-snapping-icon").click();
+      }
+      toggleEnableGuidelineAndSnap = !toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.showInitPosAlignment = toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.snapToAlignmentLocation = toggleEnableGuidelineAndSnap;
+
+      cy.gridGuide({
+        geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
+        initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
+        distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
+        snapToAlignmentLocation: appUtilities.currentGridProperties.snapToAlignmentLocation,
+      });
+
+      if (toggleEnableGuidelineAndSnap){
+        $('#toggle-guidelines-snapping-icon').addClass('toggle-mode-sustainable');
+      }
+      else{
+        $('#toggle-guidelines-snapping-icon').removeClass('toggle-mode-sustainable');
+      }
+    });
 
     $("#collapse-all").click(function (e) {
       chise.collapseAll();
