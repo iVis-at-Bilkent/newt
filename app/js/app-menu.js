@@ -196,14 +196,17 @@ module.exports = function () {
     }
 
     $("#select-all").click(function(e) {
+      cy.elements().unselect();
       cy.elements().select();
     });
 
     $("#select-all-nodes").click(function(e) {
+      cy.elements().unselect();
       cy.nodes().select();
     });
 
     $("#select-all-edges").click(function(e) {
+      cy.elements().unselect();
       cy.edges().select();
     });
 
