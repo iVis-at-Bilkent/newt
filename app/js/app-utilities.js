@@ -564,17 +564,20 @@ appUtilities.applyMapColorScheme = function() {
   currentScheme = appUtilities.currentGeneralProperties.mapColorScheme;
   idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[currentScheme]['values']);
 
+  var actions = [];
   // edit style of the current map elements
-  chise.changeCss(eles, 'background-color', idMap);
+  actions.push({name: "changeCss", param: {eles: eles, name: 'background-color', valueMap: idMap}});
 
   // set to be the default as well
   for(var nodeClass in mapColorSchemes[currentScheme]['values']){
     classBgColor = mapColorSchemes[currentScheme]['values'][nodeClass];
     // nodeClass may not be defined in the defaultProperties (for edges, for example)
     if(nodeClass in chise.elementUtilities.defaultProperties){
-      chise.elementUtilities.defaultProperties[nodeClass]['background-color'] = classBgColor;
+      actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
     }
   }
+  cy.undoRedo().do("batch", actions);
+
 };
 
 module.exports = appUtilities;
