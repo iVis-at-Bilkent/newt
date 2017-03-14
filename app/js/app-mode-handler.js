@@ -5,7 +5,7 @@ var modeHandler = {
   selectedEdgeType: "consumption",
   // Initilize mode handler
   initilize: function () {
-    $('#select-mode-icon').addClass('selected-mode'); // Initial mode is selection mode.
+    $('#select-mode-icon').parent().addClass('selected-mode'); // Initial mode is selection mode.
     // Node/edge palettes should be initialized with the first members of them and they should have dashed borders.
     $('.node-palette img').parent().addClass('inactive-palette-element');
     $('.edge-palette img').parent().addClass('inactive-palette-element');
@@ -33,7 +33,7 @@ var modeHandler = {
       cy.elements().unselect();
       modeHandler.mode = "add-node-mode";
 
-      $('#select-mode-icon').removeClass('selected-mode');
+      $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().addClass('selected-mode');
       $('.node-palette img').parent().removeClass('inactive-palette-element');
@@ -73,7 +73,7 @@ var modeHandler = {
       cy.elements().unselect();
       modeHandler.mode = "add-edge-mode";
 
-      $('#select-mode-icon').removeClass('selected-mode');
+      $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().addClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').parent().addClass('inactive-palette-element');
@@ -95,7 +95,7 @@ var modeHandler = {
   // Set selection mode, disables sustainable mode.
   setSelectionMode: function () {
     if (modeHandler.mode != "selection-mode") {
-      $('#select-mode-icon').addClass('selected-mode');
+      $('#select-mode-icon').parent().addClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').parent().addClass('inactive-palette-element');
