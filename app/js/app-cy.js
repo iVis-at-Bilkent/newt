@@ -231,7 +231,7 @@ module.exports = function () {
         addedEntities.remove();
         
         /*
-         * If in add edge mode create an edge, else if in add node mode and selected node type is a PN create a process with convenient edges
+         * If in add edge mode create an edge
          */
         if (modeHandler.mode === 'add-edge-mode') {
           // fired when edgehandles is done and entities are added
@@ -240,14 +240,6 @@ module.exports = function () {
           var edgeclass = modeHandler.selectedEdgeType;
 
           chise.addEdge(source, target, edgeclass);
-        }
-        else if (modeHandler.mode === 'add-node-mode' && chise.elementUtilities.isPNClass(modeHandler.selectedNodeType)) {
-          var source = sourceNode;
-          var target = targetNodes[0];
-          var processType = modeHandler.selectedNodeType;
-          
-          console.log('add process with edges');
-          chise.addProcessWithConvenientEdges(source, target, processType);
         }
         
         // If not in sustain mode set selection mode
@@ -377,27 +369,41 @@ module.exports = function () {
     });
     
     // Indicates whether creating a process with convenient edges
-    var creatingConvenientProcess;
+    var convenientProcessSource;
     
     // If mouesdown in add-node-mode and selected node type is a PN draw on edge handles and mark that creating a convenient process
     cy.on('mousedown', 'node', function() {
       var node = this;
-      if (modeHandler.mode === 'add-node-mode' && chise.elementUtilities.isPNClass(modeHandler.selectedNodeType) && !creatingConvenientProcess) {
-        creatingConvenientProcess = true;
+      if (modeHandler.mode === 'add-node-mode' && chise.elementUtilities.isPNClass(modeHandler.selectedNodeType) && chise.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+        convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
     });
 
-    cy.on('tap', function (event) {
+    cy.on('tapend', function (event) {
       $('input').blur();
       
-      // If add node mode is active and not creating a convenient process create a node on tap
-      if (modeHandler.mode === "add-node-mode" && !creatingConvenientProcess) {
-        var cyPosX = event.cyPosition.x;
-        var cyPosY = event.cyPosition.y;
-        var sbgnclass = modeHandler.selectedNodeType;
+      var cyTarget = event.cyTarget;
+      
+      // If in add node mode do the followings conditionally,
+      // If selected node type is a PN create a process and source and target nodes are EPNs with convenient edges,
+      // else just create a new node with the current selected node type
+      if (modeHandler.mode === "add-node-mode") {
+        var nodeType = modeHandler.selectedNodeType;
 
-        chise.addNode(cyPosX, cyPosY, sbgnclass);
+        if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode() 
+                && chise.elementUtilities.isPNClass(nodeType)
+                && chise.elementUtilities.isEPNClass(cyTarget) 
+                && chise.elementUtilities.isEPNClass(convenientProcessSource) ) {
+
+          chise.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+        }
+        else {
+          var cyPosX = event.cyPosition.x;
+          var cyPosY = event.cyPosition.y;
+
+          chise.addNode(cyPosX, cyPosY, nodeType);
+        }
         
         // If not in sustainable mode set selection mode
         if (!modeHandler.sustainMode) {
@@ -406,9 +412,9 @@ module.exports = function () {
       }
       
       // Signal that creation of convenient process is finished 
-      if (creatingConvenientProcess) {
+      if (convenientProcessSource) {
         // After tap is performed drawoff edgehandles
-        creatingConvenientProcess = undefined;
+        convenientProcessSource = undefined;
         cy.edgehandles('drawoff');
       }
       
