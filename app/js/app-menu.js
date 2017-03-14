@@ -291,7 +291,7 @@ module.exports = function () {
     $("#expand-complexes").click(function (e) {
       chise.expandComplexes();
     });
-    // Enable Show Grid when Snap to Grid is enabled
+    // Toggle show grid and snap to grid
     var toggleShowGridEnableSnap = false;
     $("#toggle-grid-snapping-icon").click(function(){
       if (toggleEnableGuidelineAndSnap){
@@ -314,7 +314,7 @@ module.exports = function () {
       }
     });
 
-    // Enable Show Grid when Snap to Grid is enabled
+    // Toggle guidelines and snap to alignment location
     var toggleEnableGuidelineAndSnap = false;
     $("#toggle-guidelines-snapping-icon").click(function(){
       if (toggleShowGridEnableSnap){
@@ -322,7 +322,6 @@ module.exports = function () {
       }
       toggleEnableGuidelineAndSnap = !toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.showInitPosAlignment = toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.snapToAlignmentLocation = toggleEnableGuidelineAndSnap;
 
