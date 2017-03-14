@@ -654,3 +654,8 @@ hr.inspector-divider {
     border-width: 1px !important;
     border-radius: calc !important;
 }
+
+#sbgn-toolbar img {
+    width: 24px;
+    height: 24px;
+}
