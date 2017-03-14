@@ -401,8 +401,19 @@ module.exports = function () {
         else {
           var cyPosX = event.cyPosition.x;
           var cyPosY = event.cyPosition.y;
+          
+          var parentId;
+          
+          if (cyTarget.isNode && cyTarget.isNode()) {
+            if (cyTarget.isParent()) {
+              parentId = cyTarget.id();
+            }
+            else {
+              parentId = cyTarget.data('parent');
+            }
+          }
 
-          chise.addNode(cyPosX, cyPosY, nodeType);
+          chise.addNode(cyPosX, cyPosY, nodeType, undefined, parentId);
         }
         
         // If not in sustainable mode set selection mode
