@@ -272,6 +272,7 @@ module.exports = function () {
       initPosAlignment: gridProperties.showInitPosAlignment,
       distributionGuidelines: gridProperties.showDistributionGuidelines,
 	  snapToAlignmentLocation: gridProperties.snapToAlignmentLocation,
+      lineWidth: gridProperties.lineWidth,
       guidelinesStyle: {
 		initPosAlignmentLine: gridProperties.initPosAlignmentLine,
 		lineDash: gridProperties.lineDash,
