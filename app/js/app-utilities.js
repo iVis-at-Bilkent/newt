@@ -42,6 +42,7 @@ appUtilities.defaultGridProperties = {
   showGeometricGuidelines: false,
   showInitPosAlignment: false,
   showDistributionGuidelines: false,
+  lineWidth: 0.75,
   guidelineTolerance: 3.0,
   guidelineColor: "#0B9BCD",
   horizontalGuidelineColor: "#0B9BCD",
