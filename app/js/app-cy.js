@@ -502,12 +502,19 @@ module.exports = function () {
       
       // Go to inspector style/properties tab when a node is selected
       if (!$('#inspector-style-tab').hasClass('active')) {
-        $('#inspector-style-tab a').tab('show');
+        $('#inspector-style-tab a').trigger('click');
       }
     });
     
     cy.on('unselect', function() {
       handleInspectorThrottled();
+
+      // switch to palette tab if nothing remains selected
+      if (cy.elements(':selected').length == 0){
+        if (!$('#inspector-palette-tab').hasClass('active')) {
+          $('#inspector-palette-tab a').trigger('click');
+        }
+      }
     });
     
     /*
