@@ -1,41 +1,97 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="485.215px" height="485.215px" viewBox="0 0 485.215 485.215" style="enable-background:new 0 0 485.215 485.215;"
-	 xml:space="preserve">
-<g>
-	<path d="M227.443,113.724c74.421,0,140.283,35.892,181.773,91.155l75.999-75.994v242.606H242.592l82.523-82.532
-		c-21.921-66.52-84.465-114.584-158.326-114.584C74.659,174.375,0,249.064,0,341.17C0,215.541,101.817,113.724,227.443,113.724z"/>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Capa_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 63.019 63.019"
+   xml:space="preserve"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="_redo.svg"
+   style="enable-background:new 0 0 63.019 63.019;"><metadata
+     id="metadata72"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs70" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview68"
+     showgrid="false"
+     inkscape:zoom="3.7449023"
+     inkscape:cx="38.275934"
+     inkscape:cy="21.589327"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Capa_1" /><g
+     id="g3"
+     transform="matrix(-0.88891765,0.45806705,0.45806705,0.88891765,46.961083,-8.5299048)"
+     style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"><g
+       id="g5"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"><path
+         id="path-1"
+         d="m 22.26,56.156 c -1.217,0 -2.36,-0.473 -3.22,-1.33 -0.028,-0.03 -0.056,-0.06 -0.083,-0.091 L 0.356,32.824 c -0.378,-0.446 -0.463,-1.071 -0.218,-1.601 0.245,-0.53 0.776,-0.87 1.361,-0.87 l 12.663,0 C 14.928,16.859 25.432,6.864 39.159,6.864 c 10.732,0 20.221,6.776 23.687,16.888 0.11,0.209 0.173,0.648 0.173,0.901 0,0.828 -0.671,1.7 -1.5,1.7 -0.005,0 -0.012,0 -0.02,0 -0.298,0 -0.596,-0.289 -0.854,-0.467 -3.6,-2.494 -7.934,-3.912 -12.533,-3.912 -6.88,0 -13.159,3.024 -17.269,8.379 l 12.233,0 c 0.584,0 1.116,0.34 1.361,0.87 0.245,0.531 0.16,1.156 -0.219,1.602 L 25.617,54.707 c -0.025,0.031 -0.053,0.061 -0.081,0.089 -0.876,0.877 -2.04,1.36 -3.276,1.36 z m -1.062,-3.417 c 0.589,0.552 1.584,0.535 2.179,-0.029 l 16.454,-19.357 -11.807,0 c -0.538,0 -1.036,-0.289 -1.303,-0.756 -0.267,-0.468 -0.263,-1.043 0.011,-1.507 4.516,-7.649 12.509,-12.217 21.38,-12.217 3.595,0 7.053,0.715 10.201,2.092 -3.86,-6.777 -11.11,-11.101 -19.154,-11.101 -12.73,0 -22,9.25 -22.041,21.994 -0.003,0.826 -0.674,1.495 -1.5,1.495 l -10.877,0 16.457,19.386 z"
+         inkscape:connector-curvature="0"
+         style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /></g><g
+       id="g8"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g10"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g12"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g14"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g16"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g18"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g20"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g22"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g24"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g26"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g28"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g30"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g32"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g34"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><g
+       id="g36"
+       style="stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /></g><g
+     id="g38" /><g
+     id="g40" /><g
+     id="g42" /><g
+     id="g44" /><g
+     id="g46" /><g
+     id="g48" /><g
+     id="g50" /><g
+     id="g52" /><g
+     id="g54" /><g
+     id="g56" /><g
+     id="g58" /><g
+     id="g60" /><g
+     id="g62" /><g
+     id="g64" /><g
+     id="g66" /></svg>
