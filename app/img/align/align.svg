@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 240 240" style="enable-background:new 0 0 240 240;" xml:space="preserve">
+	 width="475.508px" height="475.508px" viewBox="0 0 475.508 475.508" style="enable-background:new 0 0 475.508 475.508;"
+	 xml:space="preserve">
 <g>
-	<polygon points="186.996,66.996 186.996,173.004 240,120 	"/>
-	<polygon points="53.004,173.004 53.004,66.996 0,120 	"/>
-	<polygon points="66.996,53.004 173.004,53.004 120,0 	"/>
-	<polygon points="120,240 173.004,186.996 66.996,186.996 	"/>
-	<circle cx="120" cy="120" r="30"/>
+	<g>
+		<g>
+			<path d="M475.508,149.852H0V63.343h475.508V149.852L475.508,149.852z M15.143,134.708h445.222V78.486H15.143V134.708z"/>
+		</g>
+		<g>
+			<path d="M475.508,281.008H0V194.5h475.508V281.008L475.508,281.008z M15.143,265.865h445.222v-56.222H15.143V265.865z"/>
+		</g>
+		<g>
+			<path d="M475.508,412.165H0v-86.509h475.508V412.165L475.508,412.165z M15.143,397.021h445.222V340.8H15.143V397.021z"/>
+		</g>
+	</g>
 </g>
 <g>
 </g>
