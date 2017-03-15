@@ -347,6 +347,25 @@ module.exports = function () {
         appUtilities.dragAndDropStartPosition = null;
         appUtilities.nodesToDragAndDrop = null;
       }
+
+      // make palette tab active if no element is selected
+      // cannot be done on unselect event because it causes conflict with the select trigger
+      // when nodes are selected one after another
+      // after tests, seems better to do it here
+      if (cy.elements(':selected').length == 0){
+        // edge case when the properties tab is already selected (and shown empty)
+        // and an element is selected, the property tab gets shown and the palette tab is concatenated after it
+        // we need to wait a bit before triggering the following, and check again if everything is unselected
+        // that is really dirty...
+        setTimeout(function () {
+          if (cy.elements(':selected').length == 0){
+            if (!$('#inspector-palette-tab').hasClass('active')) {
+              $('#inspector-palette-tab a').tab('show');
+              $('#inspector-style-tab a').blur();
+            }
+          }
+        }, 20);
+      }
     });
 
     cy.on('mouseover', 'node', function (event) {
@@ -500,10 +519,10 @@ module.exports = function () {
     // problem we call the method used to refresh the inspector in a throttled way and decrease the number of calls.
     cy.on('select', function() {
       handleInspectorThrottled();
-      
       // Go to inspector style/properties tab when a node is selected
       if (!$('#inspector-style-tab').hasClass('active')) {
         $('#inspector-style-tab a').tab('show');
+        $('#inspector-palette-tab a').blur();
       }
     });
     
