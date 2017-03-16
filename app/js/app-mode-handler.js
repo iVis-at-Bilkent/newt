@@ -1,16 +1,23 @@
 var modeHandler = {
   mode: "selection-mode",
   sustainMode: false,
-  selectedNodeType: "unspecified entity",
+  selectedNodeType: "macromolecule",
   selectedEdgeType: "consumption",
   // Initilize mode handler
   initilize: function () {
     $('#select-mode-icon').parent().addClass('selected-mode'); // Initial mode is selection mode.
-    // Node/edge palettes should be initialized with the first members of them and they should have dashed borders.
     $('.node-palette img').parent().addClass('inactive-palette-element');
     $('.edge-palette img').parent().addClass('inactive-palette-element');
-    $('.node-palette img').first().parent().addClass('selected-mode');
-    $('.edge-palette img').first().parent().addClass('selected-mode');
+    // Node/edge palettes should be initialized according to default selectedNodeType and selectedEdgeType
+    var defaultNodeImg = $('.node-palette img[value="'+this.selectedNodeType+'"]');
+    var defaultEdgeImg = $('.edge-palette img[value="'+this.selectedEdgeType+'"]');
+    defaultNodeImg.parent().addClass('selected-mode');
+    defaultEdgeImg.parent().addClass('selected-mode');
+    // also set the icons in toolbar accordingly
+    $('#add-node-mode-icon').attr('src', defaultNodeImg.attr('src'));
+    $('#add-node-mode-icon').attr('title', "Create a new " + defaultNodeImg.attr('title'));
+    $('#add-edge-mode-icon').attr('src', defaultEdgeImg.attr('src'));
+    $('#add-edge-mode-icon').attr('title', "Create a new " + defaultEdgeImg.attr('title'));
   },
   // Set the current mode to add node mode, if nodeType is specified than switch the current node type to the given value,
   // if the nodeType will remain same, add node mode is already enabled and sustain mode is not set before, then set the sustain mode
