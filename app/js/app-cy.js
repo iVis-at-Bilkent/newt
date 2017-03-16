@@ -411,7 +411,8 @@ module.exports = function () {
       if (modeHandler.mode === "add-node-mode") {
         var nodeType = modeHandler.selectedNodeType;
 
-        if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode() 
+        if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
+                && cyTarget.id() !== convenientProcessSource.id()
                 && chise.elementUtilities.isPNClass(nodeType)
                 && chise.elementUtilities.isEPNClass(cyTarget) 
                 && chise.elementUtilities.isEPNClass(convenientProcessSource) ) {
