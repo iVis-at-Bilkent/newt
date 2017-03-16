@@ -240,11 +240,11 @@ module.exports = function () {
           var edgeclass = modeHandler.selectedEdgeType;
 
           chise.addEdge(source, target, edgeclass);
-        }
-        
-        // If not in sustain mode set selection mode
-        if (!modeHandler.sustainMode) {
-          modeHandler.setSelectionMode();
+          
+          // If not in sustain mode set selection mode
+          if (!modeHandler.sustainMode) {
+            modeHandler.setSelectionMode();
+          }
         }
 
       },
