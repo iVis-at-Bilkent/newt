@@ -633,7 +633,7 @@ hr.inspector-divider {
 }
 
 .selected-mode.inactive-palette-element img{
-    padding: 2px;
+    margin: 1px;
 }
 
 .chise-tab a {
@@ -657,4 +657,9 @@ hr.inspector-divider {
 
 #sbgn-toolbar img {
     height: 24px;
+}
+
+.element-palette img {
+    width: 32px;
+    height: 26px;
 }
