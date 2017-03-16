@@ -10,7 +10,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="60"
-   height="60"
+   height="48"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -70,9 +70,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="58.210101"
-     inkscape:cy="37.384891"
+     inkscape:zoom="11.2"
+     inkscape:cx="42.379297"
+     inkscape:cy="25.85492"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -93,7 +93,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -101,20 +101,20 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-275.2906,-255.82635)">
+     transform="translate(-275.2906,-267.82635)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:none"
-       d="m 275.2906,285.12126 36.25,0"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:none"
+       d="m 275.35374,291.82635 34.19643,0"
        id="path3787-4"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="38.150002"
        inkscape:export-ydpi="38.150002"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-1.6852382"
+       inkscape:transform-center-x="-1.5897698"
        inkscape:transform-center-y="-62.257366" />
     <path
        sodipodi:type="star"
-       style="opacity:0.98999999;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.15549934;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.98999999;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.24301779;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4229"
        sodipodi:sides="4"
        sodipodi:cx="233.50488"
@@ -127,6 +127,6 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 236.36203,273.32636 -5,0.71429 -0.71429,-5 5,-0.71429 z"
-       transform="matrix(1.9251851,2.413052,-2.4112215,1.743416,526.0539,-751.12382)" />
+       transform="matrix(2.103974,2.7279254,-2.6351478,1.97091,543.47237,-879.63583)" />
   </g>
 </svg>
