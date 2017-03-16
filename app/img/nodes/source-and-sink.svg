@@ -169,7 +169,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="89.008495"
+     inkscape:cx="62.312066"
      inkscape:cy="25.461321"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -191,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -222,20 +222,24 @@
          id="tspan6009"
          x="187.14285"
          y="363.07648" /></text>
-    <ellipse
-       ry="19.980717"
-       rx="19.980715"
-       cy="373.69437"
-       cx="41.827393"
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1-7"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 21.830347,393.69141 c 39.99408,-39.99409 39.99408,-39.99409 39.99408,-39.99409"
-       id="path3945"
-       inkscape:connector-curvature="0" />
+    <g
+       id="g4223"
+       transform="translate(-0.29998398,-0.06329346)">
+      <ellipse
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         id="path3815-1-7"
+         style="fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         cx="41.841652"
+         cy="373.68011"
+         rx="20.003744"
+         ry="20.003746" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3945"
+         d="M 22.357998,393.16377 C 61.325305,354.19645 61.325305,354.19645 61.325305,354.19645"
+         style="fill:none;stroke:#000000;stroke-width:3.99236345;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
   </g>
 </svg>

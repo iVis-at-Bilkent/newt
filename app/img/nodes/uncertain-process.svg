@@ -170,7 +170,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="17.84269"
+     inkscape:cx="-19.911762"
      inkscape:cy="15.461071"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -192,7 +192,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -201,36 +201,28 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-484.31778,-214.19089)">
-    <g
-       id="g4282"
-       transform="translate(-0.63134535,-0.25253814)">
-      <rect
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
-         inkscape:export-ydpi="53.959999"
-         inkscape:export-xdpi="53.959999"
-         ry="0"
-         y="221.12843"
-         x="498.01816"
-         height="35.628139"
-         width="35.628143"
-         id="rect2985-08-1"
-         style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <g
-         transform="matrix(1.5849539,0,0,1.5849539,-289.48995,-142.59035)"
-         id="g4650">
-        <path
-           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 504.39456,234.66423 c 0,0 1.80642,-0.86357 2.77792,-0.88388 0.95958,-0.0201 2.04968,0.13241 2.77792,0.75761 0.62905,0.54005 1.02898,1.44399 1.01015,2.27285 -0.0192,0.84682 -0.5831,1.63151 -1.13642,2.27284 -0.67124,0.778 -2.08145,0.84107 -2.52539,1.76777 -0.27337,0.57064 -0.25254,2.39911 -0.25254,2.39911"
-           id="path4635"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="csssssc" />
-        <circle
-           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="path4637"
-           cx="507.12442"
-           cy="247.46552"
-           r="0.69999999" />
-      </g>
-    </g>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect2985-08-1"
+       width="32.001091"
+       height="32.001595"
+       x="498.47998"
+       y="222.29689"
+       ry="0"
+       inkscape:export-xdpi="53.959999"
+       inkscape:export-ydpi="53.959999"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="506.76569"
+       y="247.33699"
+       id="text4230"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4232"
+         x="506.76569"
+         y="247.33699"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25px;font-family:Arial;-inkscape-font-specification:'Arial Bold'">?</tspan></text>
   </g>
 </svg>

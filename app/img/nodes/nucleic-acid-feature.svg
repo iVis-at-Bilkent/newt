@@ -169,8 +169,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.2"
-     inkscape:cx="56.086262"
-     inkscape:cy="32.85733"
+     inkscape:cx="42.738048"
+     inkscape:cy="22.143044"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -191,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -201,8 +201,8 @@
      id="layer1"
      transform="translate(-8.0141601,-302.43192)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 9.7667422,306.96416 0,24.18657 c 0,8.63542 6.1357608,15.59759 13.7839338,15.59759 l 28.906707,0 c 7.648149,0 13.814347,-6.96217 13.814347,-15.59759 l 0,-24.18657 -56.5049878,0 z"
+       style="fill:none;stroke:#000000;stroke-width:3.99296498;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 12.510644,306.4284 0,24.32207 c 0,8.68379 5.53875,15.68497 12.442754,15.68497 l 26.094075,0 c 6.903983,0 12.470207,-7.00118 12.470207,-15.68497 l 0,-24.32207 -51.007036,0 z"
        id="path3913"
        inkscape:connector-curvature="0"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\nucleicacidfeature.png"

@@ -168,9 +168,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.2"
-     inkscape:cx="39.353936"
-     inkscape:cy="12.24086"
+     inkscape:zoom="5.6"
+     inkscape:cx="-31.14931"
+     inkscape:cy="23.59258"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -191,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -223,13 +223,13 @@
          x="187.14285"
          y="363.07648" /></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2985-0"
-       width="56.464607"
-       height="44.564606"
-       x="8.3021965"
-       y="162.70518"
-       ry="21.544542"
+       width="51.007999"
+       height="40.007999"
+       x="11.010258"
+       y="164.96443"
+       ry="19.341675"
        inkscape:export-xdpi="53.959999"
        inkscape:export-ydpi="53.959999"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png" />

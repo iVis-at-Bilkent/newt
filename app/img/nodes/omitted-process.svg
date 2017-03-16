@@ -169,9 +169,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="17.84269"
-     inkscape:cy="15.461071"
+     inkscape:zoom="11.2"
+     inkscape:cx="-8.1282113"
+     inkscape:cy="19.109247"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -192,7 +192,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -202,29 +202,27 @@
      id="layer1"
      transform="translate(-484.31778,-214.19089)">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2985-08-1"
-       width="35.628143"
-       height="35.628139"
-       x="497.38681"
-       y="220.8759"
+       width="32.014332"
+       height="32.014332"
+       x="498.31061"
+       y="222.18372"
        ry="0"
        inkscape:export-xdpi="53.959999"
        inkscape:export-ydpi="53.959999"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <g
-       id="g4309"
-       transform="translate(0.06767027,-0.51995077)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path4292"
-         d="m 502.87934,230.3517 c 14.52094,17.80394 14.64721,17.80394 14.64721,17.80394"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path4292-5"
-         d="m 511.45407,230.3517 c 14.52094,17.80394 14.64721,17.80394 14.64721,17.80394"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges" />
-    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:17.5px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="507.37918"
+       y="248.12071"
+       id="text4278"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4280"
+         x="507.37918"
+         y="248.12071"
+         style="font-size:25px;letter-spacing:0.01px">\\</tspan></text>
   </g>
 </svg>

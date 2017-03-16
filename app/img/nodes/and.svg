@@ -169,7 +169,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="13.361764"
+     inkscape:cx="-40.031094"
      inkscape:cy="45.028668"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -191,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -200,33 +200,31 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-458.55017,-350.96411)">
-    <g
-       id="g4292"
-       transform="translate(1.8214286,-0.71428572)">
-      <ellipse
-         inkscape:export-ydpi="53.91"
-         inkscape:export-xdpi="53.91"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-         id="path3815-1"
-         style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         cx="486.9032"
-         cy="376.22208"
-         rx="17.506104"
-         ry="17.506105" />
-      <text
-         inkscape:export-ydpi="53.91"
-         inkscape:export-xdpi="53.91"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-         sodipodi:linespacing="125%"
-         id="text3817-6"
-         y="381.46527"
-         x="471.53177"
-         style="font-style:normal;font-weight:normal;font-size:14.42317104px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-         xml:space="preserve"><tspan
-           y="381.46527"
-           x="471.53177"
-           id="tspan3819-3"
-           sodipodi:role="line">AND</tspan></text>
-    </g>
+    <ellipse
+       ry="20.450665"
+       rx="20.450663"
+       cy="374.96411"
+       cx="488.55017"
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3815-1"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+       inkscape:export-xdpi="53.91"
+       inkscape:export-ydpi="53.91" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.25px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="471.20343"
+       y="381.22754"
+       id="text3817-6"
+       sodipodi:linespacing="0%"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+       inkscape:export-xdpi="53.91"
+       inkscape:export-ydpi="53.91"><tspan
+         sodipodi:role="line"
+         id="tspan3819-3"
+         x="471.20343"
+         y="381.22754"
+         dx="0"
+         style="font-size:17.5px;line-height:0%;letter-spacing:-1.20000005px">AND</tspan></text>
   </g>
 </svg>

@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="11.210169"
+     inkscape:cx="-7.6670568"
      inkscape:cy="18.866284"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,13 +59,13 @@
      id="layer1"
      transform="translate(-297.85716,-312.93362)">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:3.00000018;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:4.00000048;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2985"
-       width="56.370983"
-       height="44.510891"
-       x="299.7558"
-       y="314.77664"
-       ry="11.486664"
+       width="51.00798"
+       height="40.00798"
+       x="302.35315"
+       y="316.92963"
+       ry="10.324624"
        inkscape:export-xdpi="53.959999"
        inkscape:export-ydpi="53.959999"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
