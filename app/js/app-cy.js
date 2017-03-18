@@ -400,10 +400,26 @@ module.exports = function () {
       }
     });
 
-    cy.on('tapend', function (event) {
+    cy.on('tapend', function (event, relPos) {
+      relPos = relPos || false;
       $('input').blur();
+      var cyTarget;
+      if (relPos){ // drag and drop case
+        var nodesAtRelpos = chise.elementUtilities.getNodesAt(relPos);
+        if (nodesAtRelpos.length == 0) { // when element is placed in the background
+          cyTarget = cy;
+        }
+        else {
+          // take last node as the parent one, as it seems that cy is behaving like this
+          // caution, may not work some day, dirty hack
+          cyTarget = nodesAtRelpos.pop();
+        }
+        // also be aware that not everything in the event may be correctly defined here
+      }
+      else { // normal click case
+        cyTarget = event.cyTarget;
+      }
       
-      var cyTarget = event.cyTarget;
       
       // If in add node mode do the followings conditionally,
       // If selected node type is a PN create a process and source and target nodes are EPNs with convenient edges,
@@ -420,9 +436,19 @@ module.exports = function () {
           chise.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
         }
         else {
-          var cyPosX = event.cyPosition.x;
-          var cyPosY = event.cyPosition.y;
+          var cyPosX;
+          var cyPosY;
+          if (relPos) {
+            modelPos = chise.elementUtilities.convertToModelPosition(relPos);
+            cyPosX = modelPos.x;
+            cyPosY = modelPos.y;
+          }
+          else {
+            cyPosX = event.cyPosition.x;
+            cyPosY = event.cyPosition.y;
+          }
           
+
           var parentId;
           
           if (cyTarget.isNode && cyTarget.isNode()) {

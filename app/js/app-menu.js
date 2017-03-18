@@ -449,8 +449,11 @@ module.exports = function () {
     
     // Mode handler related menu items
     
-    // Listen to click event on img tags under a node palette
-    $(document).on('click', '.node-palette img', function (e) {
+    var dragAndDropPlacement = false;
+    // Listen to click event and possible drag and drop on img tags under a node palette
+    $(document).on('mousedown', '.node-palette img', function (e) {
+      e.preventDefault(); // needed for dragging, otherwise the mouse release event cannot be fired on another element
+      dragAndDropPlacement = true;
       $('.node-palette img').parent().removeClass('selected-mode'); // Make any image inside node palettes non selected
       $(this).parent().addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
@@ -464,7 +467,10 @@ module.exports = function () {
     });
     
     // Listen to click event on img tags under an edge palette
-    $(document).on('click', '.edge-palette img', function (e) {
+    $(document).on('mousedown', '.edge-palette img', function (e) {
+      // we don't want to have the icons following the mouse on drag (default browser behavior),
+      // this would confuse the user as edges are not draggable.
+      e.preventDefault();
       $('.edge-palette img').parent().removeClass('selected-mode');// Make any image inside edge palettes non selected
       $(this).parent().addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
@@ -475,6 +481,11 @@ module.exports = function () {
       var title = "Create a new " + $(this).attr('title');
       $('#add-edge-mode-icon').attr('src', src);
       $('#add-edge-mode-icon').attr('title', title);
+    });
+
+    // triggered when the user click on a node icon instead of dragging it
+    $(document).on('mouseup', '.node-palette img', function (e) {
+      dragAndDropPlacement = false;
     });
 
     $('#select-mode-icon').click(function (e) {
@@ -513,6 +524,20 @@ module.exports = function () {
       $(".biogene-info .expandable").expander(expanderOpts);
       expanderOpts.slicePoint = 2;
       expanderOpts.widow = 0;
+    });
+
+    // this is used to detect a drag and drop of nodes from the palette
+    // cy doesn't provide a clean way to handle events from the outside of cy
+    // so here we need to go through the container and fire events down the chain manually to cy
+    appUtilities.sbgnNetworkContainer.on("mouseup", function (evt) {
+      if (dragAndDropPlacement) {
+        var parentOffset = appUtilities.sbgnNetworkContainer.offset();
+        var relX = evt.pageX - parentOffset.left;
+        var relY = evt.pageY - parentOffset.top;
+        // the following event doesn't contain all the necessary information that cytoscape usually provide
+        // see: http://stackoverflow.com/questions/34409733/find-element-at-x-y-position-in-cytoscape-js
+        cy.trigger('tapend', {x: relX, y: relY});
+      }
     });
   }
 };
