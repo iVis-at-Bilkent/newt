@@ -145,7 +145,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     if (allNodes) {
       type = "node";
       
-      var borderColor = chise.elementUtilities.getCommonProperty(selectedEles, "borderColor", "data");
+      var borderColor = chise.elementUtilities.getCommonProperty(selectedEles, "border-color", "data");
       borderColor = borderColor?borderColor:'#FFFFFF';
       
       var backgroundColor = chise.elementUtilities.getCommonProperty(selectedEles, "background-color", "css");
@@ -292,10 +292,10 @@ inspectorUtilities.handleSBGNInspector = function () {
     else {
       type = "edge";
       
-      var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "lineColor", "data");
+      var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "line-color", "data");
       commonLineColor = commonLineColor?commonLineColor:'#FFFFFF';
       
-      var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "css");
+      var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "data");
       
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Color</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
@@ -471,7 +471,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-border-color").on('change', function () {
-        chise.changeData(selectedEles, "borderColor", $("#inspector-border-color").val());
+        chise.changeData(selectedEles, "border-color", $("#inspector-border-color").val());
       });
 
       $("#inspector-label").on('change', function () {
@@ -479,15 +479,15 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-background-opacity").on('change', function () {
-        chise.changeCss(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
+        chise.changeData(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
       });
 
       $("#inspector-fill-color").on('change', function () {
-        chise.changeCss(selectedEles, "background-color", $("#inspector-fill-color").val());
+        chise.changeData(selectedEles, "background-color", $("#inspector-fill-color").val());
       });
 
       $("#inspector-border-width").change( function () {
-        chise.changeCss(selectedEles, "border-width", $("#inspector-border-width").val());
+        chise.changeData(selectedEles, "border-width", $("#inspector-border-width").val());
       });
       
       // Open font properties dialog
@@ -513,7 +513,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-line-color").on('change', function () {
-        chise.changeData(selectedEles, "lineColor", $("#inspector-line-color").val());
+        chise.changeData(selectedEles, "line-color", $("#inspector-line-color").val());
       });
 
       $("#inspector-cardinality").change( function () {
@@ -531,7 +531,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-edge-width").change( function () {
-        chise.changeCss(selectedEles, "width", $("#inspector-edge-width").val());
+        chise.changeData(selectedEles, "width", $("#inspector-edge-width").val());
       });
     }
   }

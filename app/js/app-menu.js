@@ -59,63 +59,9 @@ module.exports = function () {
     }
   });
   
-   /*
-   * Listen updateGraphEnd event. 
-   * Signal that the graph is being updated.
-   */
-  $(document).on('updateGraphStart', function(event) {
-    appUtilities.updatingGraph = true;
-  });
-  
-  /*
-   * Listen updateGraphEnd event. 
-   * Reset undo-redo buttons, set selection mode, set elements initial data(init borderColor and lineColorFor more information
-   * please see the comments on appUtilities.setElementsData()) and signal that updating graph is finished.
-   */
   $(document).on('updateGraphEnd', function(event) {
     appUtilities.resetUndoRedoButtons();
     modeHandler.setSelectionMode();
-    appUtilities.setElementsData(cy.elements());
-    appUtilities.updatingGraph = false;
-  });
-  
-  /*
-   * Called just once when the update graph event ends. We need to customize stylesheet on this event.
-   * We need to set the border-color and line-color of the elements according to their data (For more information
-   * please see the comments on appUtilities.setElementsData()).
-   */
-  $(document).one('updateGraphEnd', function(event) {
-    cy.style()
-    .selector("node[borderColor]")
-    .style({
-      'border-color': function(ele) {
-        return ele.data('borderColor');
-      }
-    })
-    .selector("edge[lineColor]")
-    .style({
-      'line-color': function(ele) {
-        return ele.data('lineColor');
-      },
-      'source-arrow-color': function(ele) {
-        return ele.data('lineColor');
-      },
-      'target-arrow-color': function(ele) {
-        return ele.data('lineColor');
-      }
-    })
-    .selector("node:selected")
-    .style({
-      'border-color': '#d67614',
-      'target-arrow-color': '#000',
-      'text-outline-color': '#000'
-    })
-    .selector("edge:selected")
-    .style({
-      'line-color': '#d67614',
-      'source-arrow-color': '#d67614',
-      'target-arrow-color': '#d67614'
-    }).update();
   });
 
   function toolbarButtonsAndMenu() {

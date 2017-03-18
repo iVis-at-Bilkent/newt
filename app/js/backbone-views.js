@@ -815,10 +815,10 @@ var FontPropertiesView = Backbone.View.extend({
     var commonProperties = {};
     
     // Get common properties. Note that we check the data field for labelsize property and css field for other properties.
-    var commonFontSize = chise.elementUtilities.getCommonProperty(eles, "labelsize", "data");
-    var commonFontWeight = chise.elementUtilities.getCommonProperty(eles, "font-weight", "css");
-    var commonFontFamily = chise.elementUtilities.getCommonProperty(eles, "font-family", "css");
-    var commonFontStyle = chise.elementUtilities.getCommonProperty(eles, "font-style", "css");
+    var commonFontSize = parseInt(chise.elementUtilities.getCommonProperty(eles, "font-size", "data"));
+    var commonFontWeight = chise.elementUtilities.getCommonProperty(eles, "font-weight", "data");
+    var commonFontFamily = chise.elementUtilities.getCommonProperty(eles, "font-family", "data");
+    var commonFontStyle = chise.elementUtilities.getCommonProperty(eles, "font-style", "data");
     
     if( commonFontSize != null ) {
       commonProperties.fontSize = commonFontSize;
@@ -850,13 +850,13 @@ var FontPropertiesView = Backbone.View.extend({
     $(document).off("click", "#set-font-properties").on("click", "#set-font-properties", function (evt) {
       var data = {};
       
-      var labelsize = $('#font-properties-font-size').val();
+      var fontsize = $('#font-properties-font-size').val();
       var fontfamily = $('select[name="font-family-select"] option:selected').val();
       var fontweight = $('select[name="font-weight-select"] option:selected').val();
       var fontstyle = $('select[name="font-style-select"] option:selected').val();
       
-      if ( labelsize != '' ) {
-        data.labelsize = parseInt(labelsize);
+      if ( fontsize != '' ) {
+        data['font-size'] = parseInt(fontsize);
       }
       
       if ( fontfamily != '' ) {

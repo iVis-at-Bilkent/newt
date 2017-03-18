@@ -196,35 +196,6 @@ appUtilities.resetUndoRedoButtons = function () {
   $("#redo-last-action").parent("li").addClass("disabled");
 };
 
-/*
- * Set elements data according to their unselected line-color and border-color.
- * This is needed for inspector because when elements are selected their border-color and line-color changes,
- * so we need to keep their original values in data.
- */
-appUtilities.setElementsData = function(eles) {
-  cy.startBatch();
-  if (!eles) {
-    eles = cy.elements();
-  }
-  var nodes = eles.nodes();
-  var edges = eles.edges();
-
-  nodes.each(function(i, ele) {
-    // This data may be set already (This happens usually in cloning or copy-pasting elements)
-    if (!ele.data('borderColor')) {
-      ele.data('borderColor', ele.css('border-color'));
-    }
-  });
-
-  edges.each(function(i, ele) {
-    // This data may be set already (This happens usually in cloning or copy-pasting elements)
-    if (ele.data('lineColor')) {
-      ele.data('lineColor', ele.css('line-color'));
-    }
-  });
-  cy.endBatch();
-};
-
 // Enable drag and drop mode
 appUtilities.enableDragAndDropMode = function() {
   appUtilities.dragAndDropModeEnabled = true;
@@ -567,7 +538,7 @@ appUtilities.applyMapColorScheme = function() {
 
   var actions = [];
   // edit style of the current map elements
-  actions.push({name: "changeCss", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+  actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
 
   // set to be the default as well
   for(var nodeClass in mapColorSchemes[currentScheme]['values']){

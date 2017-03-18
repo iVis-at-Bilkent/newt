@@ -571,15 +571,5 @@ module.exports = function () {
         appUtilities.firstSelectedNode = undefined;
       }
     });
-    
-    cy.on('add', function(event) {
-      // When the graph is being updated we should not set the elements data
-      // We postpone it to 'updateGraphEnd' event
-      if (appUtilities.updatingGraph) {
-        return;
-      }
-      var ele = event.cyTarget;
-      appUtilities.setElementsData(ele);
-    });
   }
 };
