@@ -449,18 +449,28 @@ module.exports = function () {
           }
           
 
-          var parentId;
+          var parent, parentId, parentClass;
           
+          // If cyTarget is a node determine the parent of new node
           if (cyTarget.isNode && cyTarget.isNode()) {
-            if (cyTarget.isParent()) {
-              parentId = cyTarget.id();
+            if (cyTarget.data('class') === 'complex' || cyTarget.data('class') === 'compartment' ) {
+              parent = cyTarget;
             }
             else {
-              parentId = cyTarget.data('parent');
+              parent = cyTarget.parent()[0];
             }
           }
-
-          chise.addNode(cyPosX, cyPosY, nodeType, undefined, parentId);
+          
+          // If parent is defined get parentId and parentClass
+          if (parent) {
+            parentId = parent.id();
+            parentClass = parent.data('class');
+          }
+          
+          // If the parent class is valid for the node type then add the node
+          if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
+            chise.addNode(cyPosX, cyPosY, nodeType, undefined, parentId);
+          }
         }
         
         // If not in sustainable mode set selection mode
