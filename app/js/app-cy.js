@@ -476,6 +476,7 @@ module.exports = function () {
         cy.edgehandles('drawoff');
       }
       
+      appUtilities.removeDragImage();
     });
 
     var tappedBefore;

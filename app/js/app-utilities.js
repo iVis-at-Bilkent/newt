@@ -552,4 +552,23 @@ appUtilities.applyMapColorScheme = function() {
 
 };
 
+// the 3 following functions are related to the handling of the dynamic image
+// used during drag and drop of palette nodes
+appUtilities.dragImageMouseMoveHandler = function (e) {
+      $("#drag-image").css({left:e.pageX, top:e.pageY});
+    }
+
+appUtilities.addDragImage = function (img, width, height){
+  // see: http://stackoverflow.com/questions/38838508/make-a-dynamic-image-follow-mouse
+  $(document.body).append('<img id="drag-image" src="app/img/nodes/'+img+'" style="position: absolute;'+
+                                'width:'+width+'; height:'+height+';" >');
+  $(document).on("mousemove", appUtilities.dragImageMouseMoveHandler);
+
+}
+
+appUtilities.removeDragImage = function () {
+  $("#drag-image").remove();
+  $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
+}
+
 module.exports = appUtilities;

@@ -394,12 +394,14 @@ module.exports = function () {
      */
     
     // Mode handler related menu items
-    
+
     var dragAndDropPlacement = false;
     // Listen to click event and possible drag and drop on img tags under a node palette
     $(document).on('mousedown', '.node-palette img', function (e) {
       e.preventDefault(); // needed for dragging, otherwise the mouse release event cannot be fired on another element
       dragAndDropPlacement = true;
+      appUtilities.addDragImage($(this).attr('value')+".svg", $(this).css('width'), $(this).css('height'));
+
       $('.node-palette img').parent().removeClass('selected-mode'); // Make any image inside node palettes non selected
       $(this).parent().addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
@@ -429,9 +431,10 @@ module.exports = function () {
       $('#add-edge-mode-icon').attr('title', title);
     });
 
-    // triggered when the user click on a node icon instead of dragging it
-    $(document).on('mouseup', '.node-palette img', function (e) {
+    // cancel the possible dragging move
+    $(document).on('mouseup', function (e) {
       dragAndDropPlacement = false;
+      appUtilities.removeDragImage();
     });
 
     $('#select-mode-icon').click(function (e) {
