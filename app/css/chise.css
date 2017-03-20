@@ -342,13 +342,13 @@ body {
     cursor: pointer; 
 }
 
-img.sbgn-toolbar-element, .element-palette img {
+#sbgn-toolbar img, .element-palette img {
     opacity: 0.7;
     filter: alpha(opacity=70);
 }
 
 
-img.sbgn-toolbar-element:hover, .element-palette img:hover {
+#sbgn-toolbar img:hover, .element-palette img:hover {
     opacity: 1.0;
     filter: alpha(opacity=100);
 }
