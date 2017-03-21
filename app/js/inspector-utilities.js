@@ -148,12 +148,12 @@ inspectorUtilities.handleSBGNInspector = function () {
       var borderColor = chise.elementUtilities.getCommonProperty(selectedEles, "border-color", "data");
       borderColor = borderColor?borderColor:'#FFFFFF';
       
-      var backgroundColor = chise.elementUtilities.getCommonProperty(selectedEles, "background-color", "css");
+      var backgroundColor = chise.elementUtilities.getCommonProperty(selectedEles, "background-color", "data");
       backgroundColor = backgroundColor?backgroundColor:'#FFFFFF';
       
-      var borderWidth = chise.elementUtilities.getCommonProperty(selectedEles, "border-width", "css");
+      var borderWidth = chise.elementUtilities.getCommonProperty(selectedEles, "border-width", "data");
       
-      var backgroundOpacity = chise.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "css");
+      var backgroundOpacity = chise.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "data");
       backgroundOpacity = backgroundOpacity?backgroundOpacity:0.5;
       
       var nodeWidth = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
@@ -395,14 +395,14 @@ inspectorUtilities.handleSBGNInspector = function () {
         actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
         actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
         actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.css('border-width')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('borderColor')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.css('background-color')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.css('background-opacity')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'labelsize', value: selected.data('labelsize')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.css('font-family')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.css('font-weight')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.css('font-style')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
         ur.do("batch", actions);
 //        defaults['font-size'] = selected.css('font-size');
       });
@@ -505,8 +505,8 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         var ur = cy.undoRedo();
         var actions = [];
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.css('width')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('lineColor')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
+        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
         ur.do("batch", actions);
         //defaults['line-color'] = selectedEles.data('lineColor');
         //defaults['width'] = selectedEles.css('width');
