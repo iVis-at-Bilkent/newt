@@ -2,6 +2,7 @@ var jquery = $ = require('jquery');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
+var appUndoActions = require('./app-undo-actions');
 var _ = require('underscore');
 
 module.exports = function () {
@@ -17,8 +18,17 @@ module.exports = function () {
       cytoscapeExtensionsAndContextMenu();
       bindCyEvents();
       cy.style().selector('core').style({'active-bg-opacity': 0});
+      // If undo extension, register undo/redo actions
+      if (cy.undoRedo()) {
+        registerUndoRedoActions();
+      }
     });
   });
+
+  function registerUndoRedoActions() { // only if undoRedo is set
+    var ur = cy.undoRedo();
+    ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
+  }
   
   function cytoscapeExtensionsAndContextMenu() {
     cy.expandCollapse(getExpandCollapseOptions());
