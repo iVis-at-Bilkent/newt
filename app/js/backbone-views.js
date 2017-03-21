@@ -884,9 +884,7 @@ var FontPropertiesView = Backbone.View.extend({
         
         keys.forEach(function(key, idx) {
           // If there is some property to change signal that the action is valid.
-          // Note that we check the data field for labelsize property and css field for other properties.
-          if ( ( key === 'labelsize' && data[key] != ele.data(key) ) 
-                  || ( key !== 'labelsize' && data[key] != ele.css(key) ) ) {
+          if (data[key] != ele.data(key)){
             validAction = true;
           }
         }); 
@@ -897,6 +895,7 @@ var FontPropertiesView = Backbone.View.extend({
       }
       
       if ( validAction === false ) {
+        $(self.el).modal('toggle');
         return;
       }
       
