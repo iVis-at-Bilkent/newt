@@ -387,24 +387,39 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (chise.elementUtilities.defaultProperties[sbgnclass] == null) {
           chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
-        var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
 
-        var ur = cy.undoRedo();
-        var actions = [];
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
-        ur.do("batch", actions);
-//        defaults['font-size'] = selected.css('font-size');
+        if (cy.undoRedo()) {
+          var ur = cy.undoRedo();
+          var actions = [];
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
+          ur.do("batch", actions);
+        }
+        else {
+          var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
+          defaults['width'] = selected.width();
+          defaults['height'] = selected.height();
+          defaults['clonemarker'] = selected._private.data.clonemarker;
+          defaults['multimer'] = multimer;
+          defaults['border-width'] = selected.data('border-width');
+          defaults['border-color'] = selected.data('border-color');
+          defaults['background-color'] = selected.data('background-color');
+          defaults['background-opacity'] = selected.data('background-opacity');
+          defaults['font-size'] = selected.data('font-size');
+          defaults['font-family'] = selected.data('font-family');
+          defaults['font-weight'] = selected.data('font-weight');
+          defaults['font-style'] = selected.data('font-style');
+        }
       });
 
       $("#inspector-node-width, #inspector-node-height").change( function () {
@@ -501,15 +516,19 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (chise.elementUtilities.defaultProperties[sbgnclass] == null) {
           chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
-        var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
 
-        var ur = cy.undoRedo();
-        var actions = [];
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
-        actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
-        ur.do("batch", actions);
-        //defaults['line-color'] = selectedEles.data('lineColor');
-        //defaults['width'] = selectedEles.css('width');
+        if (cy.undoRedo()) {
+          var ur = cy.undoRedo();
+          var actions = [];
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
+          ur.do("batch", actions);
+        }
+        else {
+          var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
+          defaults['width'] = selectedEles.data('width');
+          defaults['line-color'] = selectedEles.data('line-color');
+        }
       });
 
       $("#inspector-line-color").on('change', function () {
