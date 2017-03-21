@@ -535,10 +535,14 @@ appUtilities.applyMapColorScheme = function() {
   eles = cy.nodes();
   currentScheme = appUtilities.currentGeneralProperties.mapColorScheme;
   idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[currentScheme]['values']);
+  collapsedChildren = appUtilities.getCollapsedChildren();
+  collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[currentScheme]['values']);
 
   var actions = [];
   // edit style of the current map elements
   actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+  // collapsed nodes' style should also be changed, special edge case
+  actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
 
   // set to be the default as well
   for(var nodeClass in mapColorSchemes[currentScheme]['values']){
@@ -556,19 +560,37 @@ appUtilities.applyMapColorScheme = function() {
 // used during drag and drop of palette nodes
 appUtilities.dragImageMouseMoveHandler = function (e) {
       $("#drag-image").css({left:e.pageX, top:e.pageY});
-    }
+}
 
 appUtilities.addDragImage = function (img, width, height){
   // see: http://stackoverflow.com/questions/38838508/make-a-dynamic-image-follow-mouse
   $(document.body).append('<img id="drag-image" src="app/img/nodes/'+img+'" style="position: absolute;'+
                                 'width:'+width+'; height:'+height+';" >');
   $(document).on("mousemove", appUtilities.dragImageMouseMoveHandler);
-
 }
 
 appUtilities.removeDragImage = function () {
   $("#drag-image").remove();
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
+}
+
+// get all the content (nodes only) of all collapsed nodes of the map
+// get things in a raw, dirty way (as collapsedChildren are not to be considered as normal nodes)
+appUtilities.getCollapsedChildren = function() {
+  expandableNodes = cy.expandCollapse().expandableNodes(); // nodes that are collapsed
+  var resultNodes = [];
+  for (var i=0; i<expandableNodes.length; i++) {
+    expandableNode = expandableNodes[i];
+    collapsedChildren = expandableNode._private.data['collapsedChildren'];
+    for(var j=0; j < collapsedChildren.length; j++){
+      collapsedChild = collapsedChildren[j];
+      if (collapsedChild._private.group != "nodes") {
+        continue;
+      }
+      resultNodes.push(collapsedChild);
+    }
+  }
+  return resultNodes;
 }
 
 module.exports = appUtilities;
