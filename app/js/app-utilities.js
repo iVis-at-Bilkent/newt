@@ -7,6 +7,10 @@ var jquery = $ = require('jquery');
 
 var appUtilities = {};
 
+// Configuration flag for whether the operations should be undoable.
+// It is to be checked and passed to extensions/libraries where applicable.
+appUtilities.undoable = true;
+
 appUtilities.defaultLayoutProperties = {
   name: 'cose-bilkent',
   nodeRepulsion: 4500,

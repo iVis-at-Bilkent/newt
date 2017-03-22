@@ -388,7 +388,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
 
-        if (cy.undoRedo()) {
+        if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
@@ -517,7 +517,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           chise.elementUtilities.defaultProperties[sbgnclass] = {};
         }
 
-        if (cy.undoRedo()) {
+        if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});

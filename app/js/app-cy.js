@@ -19,7 +19,7 @@ module.exports = function () {
       bindCyEvents();
       cy.style().selector('core').style({'active-bg-opacity': 0});
       // If undo extension, register undo/redo actions
-      if (cy.undoRedo()) {
+      if (appUtilities.undoable) {
         registerUndoRedoActions();
       }
     });
@@ -45,7 +45,7 @@ module.exports = function () {
         return ele.data('bendPointPositions');
       },
       // whether the bend editing operations are undoable (requires cytoscape-undo-redo.js)
-      undoable: true,
+      undoable: appUtilities.undoable,
       // title of remove bend point menu item
       removeBendMenuItemTitle: "Delete Bend Point",
       // whether to initilize bend points on creation of this extension automatically
@@ -153,7 +153,7 @@ module.exports = function () {
       clipboardSize: 5, // Size of clipboard. 0 means unlimited. If size is exceeded, first added item in clipboard will be removed.
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
-        undoable: true // and if undoRedo extension exists
+        undoable: appUtilities.undoable // and if undoRedo extension exists
       }
     });
 
@@ -188,7 +188,7 @@ module.exports = function () {
     
     cy.nodeResize({
       padding: 2, // spacing between node and grapples/rectangle
-      undoable: true, // and if cy.undoRedo exists
+      undoable: appUtilities.undoable, // and if cy.undoRedo exists
 
       grappleSize: 7, // size of square dots
       grappleColor: "#d67614", // color of grapples

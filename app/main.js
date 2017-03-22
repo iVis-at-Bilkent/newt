@@ -71,7 +71,7 @@ chise({
   adjustNodeLabelFontSizeAutomatically: function() {
     return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
   },
-  undoable: true,
+  undoable: appUtilities.undoable,
   undoableDrag: function() {
     return appUtilities.ctrlKeyDown !== true;
   }
