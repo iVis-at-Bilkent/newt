@@ -28,6 +28,7 @@ module.exports = function () {
   function registerUndoRedoActions() { // only if undoRedo is set
     var ur = cy.undoRedo();
     ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
+    ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
   }
   
   function cytoscapeExtensionsAndContextMenu() {
