@@ -40,7 +40,9 @@
     "cytoscape-autopan-on-drag": "^2.0.1",
     "cytoscape-node-resize": "iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
     "sbgnviz": "iVis-at-Bilkent/sbgnviz.js#unstable",
-    "chise": "iVis-at-Bilkent/chise.js#unstable"
+    "chise": "iVis-at-Bilkent/chise.js#unstable",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2"
   },
   "devDependencies": {
     "express": "4.14.0",
