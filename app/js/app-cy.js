@@ -401,6 +401,10 @@ module.exports = function () {
     
     // Indicates whether creating a process with convenient edges
     var convenientProcessSource;
+    // cyTarget will be selected after 'tap' event is ended by cy core. We do not want this behaviour.
+    // Therefore we need to set node to unselect on 'tapend' event (this may be changed as 'tap' event later),
+    //  which is to be unselected on 'select' event.
+    var nodeToUnselect;
     
     // If mouesdown in add-node-mode and selected node type is a PN draw on edge handles and mark that creating a convenient process
     cy.on('mousedown', 'node', function() {
@@ -470,6 +474,9 @@ module.exports = function () {
             else {
               parent = cyTarget.parent()[0];
             }
+            
+            // Set nodeToUnselect here
+            nodeToUnselect = cyTarget;
           }
           
           // If parent is defined get parentId and parentClass
@@ -585,6 +592,12 @@ module.exports = function () {
     cy.on('select', 'node', function() {
       if (!appUtilities.firstSelectedNode) {
         appUtilities.firstSelectedNode = this;
+      }
+      
+      // Unselect nodeToUnselect and then unset it here 
+      if (nodeToUnselect && nodeToUnselect.id() === this.id()) {
+        nodeToUnselect.unselect();
+        nodeToUnselect = undefined;
       }
     });
     
