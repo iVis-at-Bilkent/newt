@@ -279,10 +279,9 @@ var GeneralPropertiesView = Backbone.View.extend({
               document.getElementById("animate-on-drawing-changes").checked;
       appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
           document.getElementById("adjust-node-label-font-size-automatically").checked;
-      appUtilities.currentGeneralProperties.mapColorScheme = $('select[name="map-color-scheme"] option:selected').val();
 
       chise.refreshPaddings(true); // Refresh paddings and force paddings to be recalculated
-      appUtilities.applyMapColorScheme();
+      appUtilities.applyMapColorScheme($('select[name="map-color-scheme"] option:selected').val());
       cy.style().update();
       
       $(self.el).modal('toggle');

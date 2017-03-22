@@ -531,12 +531,11 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 };
 
 // change the global style of the map by applying the current color scheme
-appUtilities.applyMapColorScheme = function() {
+appUtilities.applyMapColorScheme = function(newColorScheme) {
   eles = cy.nodes();
-  currentScheme = appUtilities.currentGeneralProperties.mapColorScheme;
-  idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[currentScheme]['values']);
+  idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
   collapsedChildren = appUtilities.getCollapsedChildren();
-  collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[currentScheme]['values']);
+  collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
 
   var actions = [];
   // edit style of the current map elements
@@ -545,13 +544,21 @@ appUtilities.applyMapColorScheme = function() {
   actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
 
   // set to be the default as well
-  for(var nodeClass in mapColorSchemes[currentScheme]['values']){
-    classBgColor = mapColorSchemes[currentScheme]['values'][nodeClass];
+  for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
+    classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
     // nodeClass may not be defined in the defaultProperties (for edges, for example)
     if(nodeClass in chise.elementUtilities.defaultProperties){
       actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
     }
   }
+
+  // change the menu accordingly, so we can undo that also
+  actions.push({name: "changeMenu", param: {
+    property: "currentGeneralProperties.mapColorScheme",
+    id: "map-color-scheme-select",
+    type: "select",
+    value: newColorScheme
+  }});
   cy.undoRedo().do("batch", actions);
 
 };
