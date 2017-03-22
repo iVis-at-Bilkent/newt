@@ -242,6 +242,7 @@
 
         <div id="sbgn-toolbar" style="margin-top: 10px;">
             <table width="100%" height="100%" align="center" valign="center">
+            <tbody>
                 <tr>
                 <div class="inside-menu">
                     <img id="new-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/new.svg" title="New: Create a blank SBGN-PD map">
@@ -322,11 +323,12 @@
                     <img id="layout-properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
                 </div>
                 </tr>
-
+            </tbody>
             </table>
         </div>
 
         <table id="sbgn-inspector-and-canvas">
+        <tbody>
             <tr>
                 <td>
                     <div id="sbgn-network-container">
@@ -354,6 +356,7 @@
                                 <div id="expand-collapse-pd-nodes-palette" class="panel-collapse collapse in">
                                     <div class="panel-body">
                                         <table id="pd-node-palette" class="element-palette node-palette">
+                                        <tbody>
                                             <tr>
                                                 <td><div><img src="app/img/nodes/unspecified-entity.svg" value="unspecified-entity" title="Unspecified Entity"/></div></td>
                                                 <td><div><img src="app/img/nodes/simple-chemical.svg" value="simple-chemical" title="Simple Chemical"/></div></td>
@@ -378,6 +381,7 @@
                                                 <td><div><img src="app/img/nodes/or.svg" value="or" title="OR"/></div></td>
                                                 <td><div><img src="app/img/nodes/not.svg" value="not" title="NOT"/></div></td>
                                             </tr>
+                                        </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -391,6 +395,7 @@
                                 <div id="expand-collapse-pd-edges-palette" class="panel-collapse collapse in">
                                     <div class="panel-body">
                                         <table id="pd-edge-palette" class="element-palette edge-palette">
+                                        <tbody>
                                             <tr>
                                                 <td><div><img src="app/img/edges/consumption.svg" value="consumption" title="Consumption"/></div></td>
                                                 <td><div><img src="app/img/edges/production.svg" value="production" title="Production"/></div></td>
@@ -404,6 +409,7 @@
                                                 <td><div><img src="app/img/edges/consumption.svg" value="logic-arc" title="Logic Arc"/></div></td>
                                                 <td><div><img src="app/img/edges/consumption.svg" value="equivalence-arc" title="Equivalance Arc"/></div></td>
                                             </tr>
+                                        </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -414,6 +420,7 @@
                     </div>
                 </td>
             </tr>
+        </tbody>
         </table>
         
 
@@ -497,7 +504,7 @@
                             <h2 class="sbgn-text">About</h2>
 
                             <table width="100%" height="100%" align="center" valign="center">
-
+                            <tbody>
                                 <tr><td>
                                         <p id="about-newt-version" class="sbgn-text">Newt Editor version 0.1</p>
                                     </td></tr>
@@ -519,6 +526,7 @@
                                             <a href="https://github.com/iVis-at-Bilkent/chise.js" target="_blank">https://github.com/iVis-at-Bilkent/newt</a>
                                         </p>
                                     </td></tr>
+                            </tbody>
                             </table>
                         </div>
                     </div>
@@ -534,6 +542,7 @@
                             <h2 class="sbgn-text">Quick Help</h2>
                             <div class="quick-help-content">
                                 <table align="center" valign="center">
+                                <tbody>
                                     <tr>
                                         <td><b>File | Samples | &lt;sample file&gt;</b>:
                                             Load a sample model from file in SBGN-ML</td>
@@ -554,6 +563,7 @@
                                         <td><b>Ctrl + drag</b>:
                                             Transfer a node in and out of a compound node</td>
                                     </tr>
+                                </tbody>
                                 </table>
                             </div>
                         </div>
@@ -576,6 +586,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
+            <tbody>
             <tr>
             <td>
             <span class="add-on layout-text"> Node Repulsion </span>
@@ -703,6 +714,7 @@
             <input id="incremental" type="checkbox" class="layout-text" <% if (!randomize){ %> checked<%}%>>
             </td>
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -722,6 +734,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
+            <tbody>
             <tr>
             <td>
             <span class="add-on layout-text"> Compound Padding </span>
@@ -799,7 +812,7 @@
             </select>
             </td>
             </tr>
-
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -819,6 +832,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table">
+            <tbody>
             <tr>
             <th colspan=2 style="padding-left: 0px;" align="left">
             <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
@@ -833,15 +847,18 @@
 
             <td>
             <table frame="box" style="border-color: rgb(204, 204, 204)">
+            <tbody>
             <caption style="text-align: left;">Stop Distance</caption>
             <tr>
             <td colspan=2>Length limit</td>
             <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
             </tr>
+            </tbody>    
             </table>
             </td>
 
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -861,6 +878,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
+            <tbody>
             <tr>
             <th style="padding-left: 0px;" align="left">
             <span class="add-on layout-text"> Do you want to save any change(s) to the map? </span>
@@ -871,6 +889,7 @@
             <td>
             </td>
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -891,6 +910,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
             <tr>
             <td style="padding-left: 0px;" align="left">
             <span class="add-on layout-text"> Filename </span>
@@ -904,6 +924,7 @@
             <td>
             </td>
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -923,6 +944,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
             <tr>
             <th style="padding-left: 0px;" align="left">
             <span class="add-on layout-text">All unsaved changes will be lost. Do you want to continue?</span>
@@ -933,6 +955,7 @@
             <td>
             </td>
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -952,7 +975,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
-
+            <tbody>
             <tr>
             <td style="padding-bottom: 10px;" align="right" valign="middle">
             <span class="add-on layout-text"> <b> Type </b> </span>
@@ -987,7 +1010,7 @@
             </td>
 
             </tr>
-
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -1006,7 +1029,8 @@
             <h4 class="modal-title">Grid  and Guidelines Properties</h4>
             </div>
             <div class="modal-body">
-            <table class="table-condensed layout-table dialog-table property-table" style="padding-bottom: 4px;"> 
+            <table class="table-condensed layout-table dialog-table property-table" style="padding-bottom: 4px;">
+            <tbody>
 	    <tr> <th> Grid </th> </tr>
             <tr>
             <td style="padding-right: 20px;">
@@ -1022,8 +1046,10 @@
             <span class="add-on layout-text"> Auto  Resize Nodes </span>
             </td>
             </tr>
+            </tbody>
             </table>
             <table class="table-condensed layout-table dialog-table property-table" style="padding-bottom: 4px;"> 
+            <tbody>
 			<tr> <th> Snap Policy </th> </tr>
 			<tr>
             <td>
@@ -1043,8 +1069,10 @@
             <span class="add-on layout-text"> Snap to Alignment Location </span>
             </td>
             </tr>
+            </tbody>
             </table>
             <table class="table-condensed layout-table dialog-table property-table" style="padding-bottom: 4px !important;">
+            <tbody>
             <tr> <th colspan="100%"> Alignment Guidelines </th> </tr>
 			<tr>
 			<td style="padding-bottom: 20px !important; width: 140px;">
@@ -1154,6 +1182,7 @@
             </tr>
             
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -1173,7 +1202,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table">
-
+            <tbody>
             <tr>
             <td>
             <span class="add-on layout-text"> Font Family </span>
@@ -1223,6 +1252,7 @@
             </select>
             </td>
             </tr>
+            </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -1236,6 +1266,7 @@
         <script type="text/template" id="biogene-template">
             <div class='node-details-text'>
             <table class="table table-condensed table-striped" cellspacing="10">
+            <tbody>
             <tr class="biogene-info biogene-description node-details-summary">
             <th valign="top">Gene Summary:</th>
             <td colspan="2" class="expandable">
@@ -1279,6 +1310,7 @@
             </a>
             </td>
             </tr>
+            </tbody>
             </table>
             </div>
         </script>
