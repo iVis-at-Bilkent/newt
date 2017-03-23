@@ -280,7 +280,7 @@ var GeneralPropertiesView = Backbone.View.extend({
       appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
           document.getElementById("adjust-node-label-font-size-automatically").checked;
 
-      chise.refreshPaddings(true); // Refresh paddings and force paddings to be recalculated
+      chise.refreshPaddings(); // Refresh/recalculate paddings
       appUtilities.applyMapColorScheme($('select[name="map-color-scheme"] option:selected').val());
       cy.style().update();
       
