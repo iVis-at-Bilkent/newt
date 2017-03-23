@@ -536,10 +536,10 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 
 // change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function(newColorScheme) {
-  eles = cy.nodes();
-  idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
-  collapsedChildren = appUtilities.getCollapsedChildren();
-  collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
+  var eles = cy.nodes();
+  var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
+  var collapsedChildren = appUtilities.getCollapsedChildren();
+  var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
 
   var actions = [];
   // edit style of the current map elements
@@ -588,13 +588,13 @@ appUtilities.removeDragImage = function () {
 // get all the content (nodes only) of all collapsed nodes of the map
 // get things in a raw, dirty way (as collapsedChildren are not to be considered as normal nodes)
 appUtilities.getCollapsedChildren = function() {
-  expandableNodes = cy.expandCollapse().expandableNodes(); // nodes that are collapsed
+  var expandableNodes = cy.expandCollapse().expandableNodes();
   var resultNodes = [];
   for (var i=0; i<expandableNodes.length; i++) {
-    expandableNode = expandableNodes[i];
-    collapsedChildren = expandableNode._private.data['collapsedChildren'];
+    var expandableNode = expandableNodes[i];
+    var collapsedChildren = expandableNode._private.data['collapsedChildren'];
     for(var j=0; j < collapsedChildren.length; j++){
-      collapsedChild = collapsedChildren[j];
+      var collapsedChild = collapsedChildren[j];
       if (collapsedChild._private.group != "nodes") {
         continue;
       }
