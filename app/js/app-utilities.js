@@ -588,7 +588,7 @@ appUtilities.removeDragImage = function () {
 // get all the content (nodes only) of all collapsed nodes of the map
 // get things in a raw, dirty way (as collapsedChildren are not to be considered as normal nodes)
 appUtilities.getCollapsedChildren = function() {
-  var expandableNodes = cy.expandCollapse().expandableNodes();
+  var expandableNodes = cy.expandCollapse('get').expandableNodes();
   var resultNodes = [];
   for (var i=0; i<expandableNodes.length; i++) {
     var expandableNode = expandableNodes[i];
