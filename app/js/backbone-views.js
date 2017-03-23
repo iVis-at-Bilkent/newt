@@ -501,7 +501,7 @@ var ReactionTemplateView = Backbone.View.extend({
         html += "<tr><td>"
             + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
             + i + "'" + " value='" + this.macromoleculeList[i] + "'></input>"
-            + "</td><td><img style='padding-bottom: 8px;' class='template-reaction-delete-button' width='12px' height='12px' name='" + i + "' src='app/img/delete.png'/></td></tr>";
+            + "</td><td><img style='vertical-align: text-bottom; margin-bottom:2px; margin-top:2px;' class='template-reaction-delete-button' width='12px' height='12px' name='" + i + "' src='app/img/delete.png'/></td></tr>";
       }
 
       html += "<tr><td><img id='template-reaction-add-button' src='app/img/add.png'/></td></tr></table>";
