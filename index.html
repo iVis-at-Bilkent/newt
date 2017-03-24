@@ -166,6 +166,15 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Color Schemes
+                                        <!--<b class="right-caret"></b>-->
+                                    </a>
+                                    <ul id="color-scheme-menu" class="dropdown-menu">
+                                        <!-- template for color-scheme -->
+                                    </ul>
+                                </li>
                                 <li><a href="#" id="grid-properties" style="padding-right: 30px;">Grid and Guidelines...</a></li>
                             </ul>
                         </li>
@@ -757,6 +766,12 @@
             </div>
         </script>
 
+        <script type="text/template" id="color-scheme-menu-template">
+            <% var i=0; for( var scheme_id in mapColorSchemes) { %>
+                <li><a href="#" class="map-color-scheme" id="map-color-scheme_<%= scheme_id %>"><%= mapColorSchemes[scheme_id]['name'] %></a></li>
+            <% i++;} %>
+        </script>
+
         <script type="text/template" id="general-properties-template">
             <div class="modal-dialog modal-sm sbgn-modal-dialog">
             <div class="modal-content">
@@ -831,19 +846,6 @@
             </td>
             </tr>
 
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Map Color Scheme </span>
-            </td>
-
-            <td>
-            <select id="map-color-scheme-select" name="map-color-scheme">
-            <% var i=0; for( var scheme_id in mapColorSchemes) { %>
-                <option id="map-color-scheme_<%= i %>" value="<%= scheme_id %>" <% if (mapColorScheme == scheme_id){ %> selected<%}%> > <%= mapColorSchemes[scheme_id]['name'] %> </option>
-            <% i++;} %>
-            </select>
-            </td>
-            </tr>
             </tbody>
             </table>
             </div>

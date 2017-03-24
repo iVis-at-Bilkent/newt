@@ -248,6 +248,25 @@ var LayoutPropertiesView = Backbone.View.extend({
   }
 });
 
+
+var ColorSchemeMenuView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#color-scheme-menu-template").html());
+    $(document).on("click", "a.map-color-scheme", function (evt) {
+      var raw_id = $(this).attr('id');
+      var scheme_id = raw_id.replace("map-color-scheme_", "");
+      appUtilities.applyMapColorScheme(scheme_id);
+    });
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#color-scheme-menu-template").html());
+    $(self.el).html(self.template);
+    return this;
+  }
+});
+
 /**
  * SBGN Properties view for the Sample Application.
  */
@@ -281,7 +300,6 @@ var GeneralPropertiesView = Backbone.View.extend({
           document.getElementById("adjust-node-label-font-size-automatically").checked;
 
       chise.refreshPaddings(); // Refresh/recalculate paddings
-      appUtilities.applyMapColorScheme($('select[name="map-color-scheme"] option:selected').val());
       cy.style().update();
       
       $(self.el).modal('toggle');
@@ -1020,6 +1038,7 @@ var FontPropertiesView = Backbone.View.extend({
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
+  ColorSchemeMenuView: ColorSchemeMenuView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PromptSaveView: PromptSaveView,

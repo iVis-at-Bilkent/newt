@@ -556,13 +556,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
     }
   }
 
-  // change the menu accordingly, so we can undo that also
-  actions.push({name: "changeMenu", param: {
-    property: "currentGeneralProperties.mapColorScheme",
-    id: "map-color-scheme-select",
-    type: "select",
-    value: newColorScheme
-  }});
   cy.undoRedo().do("batch", actions);
 
 };
