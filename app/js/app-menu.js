@@ -66,6 +66,25 @@ module.exports = function () {
 
   function toolbarButtonsAndMenu() {
     
+    // menu behavior: on first click, triggers the other menus on hover.
+    var isMenuHoverMode = false;
+    $('ul.navbar-nav > li.dropdown').on('mouseenter', function(e){
+      if (isMenuHoverMode) {
+        if ($(this).is('.open')) {
+          return;
+        }
+        $(this).find('> a.dropdown-toggle').trigger('click');
+      }
+    });
+    $(document.body).on('click', function (e) {
+      if ($(e.target).is('ul.navbar-nav > li.dropdown > a.dropdown-toggle')) {
+        isMenuHoverMode = true;
+      }
+      else {
+        isMenuHoverMode = false;
+      }
+    });
+
     $("#node-label-textbox").keydown(function (e) {
       if (e.which === 13) {
         $("#node-label-textbox").blur();
