@@ -662,3 +662,7 @@ hr.inspector-divider {
 .element-palette img {
     height: 26px;
 }
+
+img#template-reaction-add-button:hover {
+    cursor: pointer;
+}

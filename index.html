@@ -1019,8 +1019,8 @@
 
             <td>
             <select id="reaction-template-type-select" class='sbgn-input-medium layout-text' name="reaction-template-type">
-            <option id="reaction-template-type-association" value="association" <% if (templateType == 'association'){ %> selected<%}%> > Association </option>
-            <option id="reaction-template-type-dissociation" value="dissociation" <% if (templateType == 'dissociation'){ %> selected<%}%> > Dissociation </option>
+            <option id="reaction-template-type-association" value="association" selected> Association </option>
+            <option id="reaction-template-type-dissociation" value="dissociation"> Dissociation </option>
             </select>
             </td>
             </tr>
@@ -1037,12 +1037,35 @@
 
 
             <tr>
+            <td id ='reaction-template-left-td'>
+            <table id='template-reaction-dissociated-table'>
+            <tr>
             <td>
-            <%= getInputHtml() %>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td><img style='vertical-align: text-bottom; margin-bottom:2px; margin-top:2px;' class='template-reaction-delete-button' width='12px' height='12px' name='1' src='app/img/delete.png'/>
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='2' value=''></input>
+            </td>
+            <td><img style='vertical-align: text-bottom; margin-bottom:2px; margin-top:2px;' class='template-reaction-delete-button' width='12px' height='12px' name='2' src='app/img/delete.png'/>
+            </td>
+            </tr>
+            <tr><td>
+            <img id='template-reaction-add-button' src='app/img/add.png'/>
+            </td></tr>
+            </table>
             </td>
 
+            <td id ='reaction-template-right-td'>
+            <table id='template-reaction-associated-table'>
+            <tr><td><!-- empty td to mirror the delete image and try to respect (unperfectly) the symmetry--></td>
             <td>
-            <%= getOutputHtml() %>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value='' ></input>
+            </td></tr>
+            </table>
             </td>
 
             </tr>

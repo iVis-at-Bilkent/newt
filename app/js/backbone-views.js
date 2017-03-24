@@ -490,6 +490,115 @@ var PromptConfirmationView = Backbone.View.extend({
 });
 
 var ReactionTemplateView = Backbone.View.extend({
+  addMacromolecule: function (i) {
+    var html = "<tr><td>"
+        + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
+        + i + "' value=''></input>"
+        + "</td><td><img style='vertical-align: text-bottom; margin-bottom:2px; margin-top:2px;' class='template-reaction-delete-button' width='12px' height='12px' name='" + i + "' src='app/img/delete.png'/></td></tr>";
+
+    $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    return html;
+  },
+  removeMacromolecule: function (i) {
+    $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+  },
+  switchInputOutput: function () {
+    var saveHtmlContent = $("#reaction-template-left-td").html();
+    $("#reaction-template-left-td").html($("#reaction-template-right-td").html());
+    $("#reaction-template-right-td").html(saveHtmlContent);
+  },
+  getAllParameters: function () {
+    var templateType = $('#reaction-template-type-select').val();
+    var templateReactionComplexName = $('#template-reaction-complex-name').val();
+    var macromoleculeList = $('#template-reaction-dissociated-table :input.template-reaction-textbox').map(function(){
+        return $(this).val()
+      }).toArray();
+    // enable complex name only if the user provided something
+    var templateReactionEnableComplexName = $.trim(templateReactionComplexName).length != 0;
+
+    return {
+      templateType: templateType,
+      templateReactionComplexName: templateReactionComplexName,
+      macromoleculeList: macromoleculeList,
+      templateReactionEnableComplexName: templateReactionEnableComplexName
+    }
+  },
+  disableDeleteButtonStyle: function () {
+    $("img.template-reaction-delete-button").css("opacity", 0.2);
+    $("img.template-reaction-delete-button").css("cursor", "default");
+  },
+  enableDeleteButtonStyle: function() {
+    $("img.template-reaction-delete-button").css("opacity",1);
+    $("img.template-reaction-delete-button").css("cursor", "pointer");
+  },
+  initialize: function() {
+    var self = this;
+    self.template = _.template($("#reaction-template-template").html());
+
+    $(document).on('change', '#reaction-template-type-select', function (e) {
+      var valueSelected = $(this).val();
+      self.switchInputOutput();
+    });
+
+    $(document).on("change", "#template-reaction-complex-name", function(e){
+      var value = $(this).val();
+      $(this).attr('value', value); // set the value in the html tag, so it is remembered when switched
+    });
+
+    $(document).on("click", "#template-reaction-add-button", function (event) {
+      // get the last input name and add 1
+      var nextIndex = parseInt($('#template-reaction-dissociated-table :input.template-reaction-textbox').last().attr('name')) + 1;
+      self.addMacromolecule(nextIndex);
+      self.enableDeleteButtonStyle();
+    });
+
+    $(document).on('change', ".template-reaction-textbox", function () {
+      var value = $(this).val();
+      $(this).attr('value', value); // set the value in the html tag, so it is remembered when switched
+    });
+
+    $(document).on("click", ".template-reaction-delete-button", function (event) {
+      if($('#template-reaction-dissociated-table :input.template-reaction-textbox').length <= 2){
+        return;
+      }
+      var index = parseInt($(this).attr('name'));
+      self.removeMacromolecule(index);
+      if($('#template-reaction-dissociated-table :input.template-reaction-textbox').length <= 2){
+        self.disableDeleteButtonStyle();
+      }
+    });
+
+    $(document).on("click", "#create-template", function (evt) {
+      var params = self.getAllParameters();
+
+      var templateType = params.templateType;
+      var macromoleculeList = params.macromoleculeList;
+      var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
+      var tilingPaddingVertical = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingVertical);
+      var tilingPaddingHorizontal = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingHorizontal);
+
+      chise.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+
+      $(self.el).modal('toggle');
+    });
+
+    $(document).on("click", "#cancel-template", function (evt) {
+      $(self.el).modal('toggle');
+    });
+  },
+  render: function() {
+    var self = this;
+    self.template = _.template($("#reaction-template-template").html());
+    $(self.el).html(self.template);
+    self.disableDeleteButtonStyle();
+
+    $(self.el).modal('show');
+
+    return this;
+  }
+});
+
+var ReactionTemplateView2 = Backbone.View.extend({
   defaultTemplateParameters: {
     templateType: "association",
     macromoleculeList: ["", ""],
