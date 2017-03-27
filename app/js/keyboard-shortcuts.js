@@ -23,7 +23,7 @@ module.exports = function () {
     // and stop event from bubbling
     return false;
   });
-  mt.bind(["del"], function () {
+  mt.bind(["del", "backspace"], function () {
     chise.deleteElesSimple(cy.elements(':selected'));
     
     // return false to prevent default browser behavior
