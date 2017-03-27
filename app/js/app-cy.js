@@ -179,11 +179,23 @@ module.exports = function () {
         }
       },
       neighbor: function(node){ //select and return process-based neighbors
-        node.select();
-        var neighbors = chise.elementUtilities.extendNodeList(node);   
-        return neighbors;
+        var nodesToSelect = node;
+        if(chise.elementUtilities.isPNClass(node) || chise.elementUtilities.isLogicalOperator(node)){
+            nodesToSelect = nodesToSelect.union(node.openNeighborhood());
+        }
+        node.openNeighborhood().forEach(function(ele){
+            if(chise.elementUtilities.isPNClass(ele) || chise.elementUtilities.isLogicalOperator(ele)){
+                nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
+                ele.openNeighborhood().forEach(function(ele2){
+                    if(chise.elementUtilities.isPNClass(ele2) || chise.elementUtilities.isLogicalOperator(ele2)){
+                        nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
+                    }
+                });
+            }
+        });
+        return nodesToSelect;
       },
-      neighborSelectTime: 1000 //ms 
+      neighborSelectTime: 500 //ms 
     });
     
     cy.nodeResize({
