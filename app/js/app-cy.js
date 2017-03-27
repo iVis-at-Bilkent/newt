@@ -230,7 +230,7 @@ module.exports = function () {
       cursors: {// See http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
         // May take any "cursor" css property
         default: "default", // to be set after resizing finished or mouseleave
-        inactive: "not-allowed",
+        inactive: "url('app/img/cancel.svg') 10 10, not-allowed",
         nw: "nw-resize",
         n: "n-resize",
         ne: "ne-resize",
