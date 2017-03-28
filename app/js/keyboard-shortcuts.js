@@ -1,5 +1,6 @@
 var Mousetrap = require('mousetrap');
 var appUtilities = require('./app-utilities');
+var modeHandler = require('./app-mode-handler');
 
 module.exports = function () {
   var mt = new Mousetrap();
@@ -37,4 +38,8 @@ module.exports = function () {
     appUtilities.ctrlKeyDown = null;
     appUtilities.disableDragAndDropMode();
   }, "keyup");
+  mt.bind(["esc"], function () {
+    modeHandler.setSelectionMode();
+    cy.elements().unselect();
+  });
 };
