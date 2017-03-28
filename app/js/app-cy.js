@@ -159,21 +159,27 @@ module.exports = function () {
 
     cy.viewUtilities({
       node: {
-        highlighted: {
-          'border-width': '10px'
-        }, // styles for when nodes are highlighted.
+        highlighted: { // styles for when nodes are highlighted.
+          'border-width': function(ele) {
+            return parseFloat(ele.data('border-width')) + 3;
+          }
+        }, 
         unhighlighted: {// styles for when nodes are unhighlighted.
           'opacity': function (ele) {
+            // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
             return ele.css('opacity');
           }
         }
       },
       edge: {
         highlighted: {
-          'width': '10px'
-        }, // styles for when edges are highlighted.
+          'width': function(ele) { // styles for when edges are highlighted.
+            return parseFloat(ele.data('width')) + 3;
+          }
+        }, 
         unhighlighted: {// styles for when edges are unhighlighted.
           'opacity': function (ele) {
+            // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
             return ele.css('opacity');
           }
         }
