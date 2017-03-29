@@ -14,6 +14,10 @@ module.exports = function () {
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function loadSample(filename) {
+    var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
+    $.get("/utilities", {fn: "validateSBGNML", xml: textXml}, function(data){
+      console.log("validation result", data);
+    });
     return chise.loadSample(filename, 'app/samples/');
   }
 
