@@ -15,7 +15,7 @@ module.exports = function () {
 
   function loadSample(filename) {
     var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
-    $.get("/utilities", {fn: "validateSBGNML", xml: textXml}, function(data){
+    $.get("/utilities/validateSBGNML", {sbgnml: textXml}, function(data){
       console.log("validation result", data);
     });
     return chise.loadSample(filename, 'app/samples/');

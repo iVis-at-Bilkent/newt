@@ -1,19 +1,44 @@
 var libxmljs = require('libxmljs');
 fs = require('fs');
 
-function validateSBGNML(sbgnml, res) {
-	//console.log("validating", sbgnml);
+/*
+	functions in this file all have to take the same arguments:
+	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
+	 - res: the response object that MUST be called threw res.send to send the result back
+	The only cases where res.send doesn't need to be used is in case of errors.
+	Then it is possible to throw the error and let it be handled by the server.js call.
+*/
 
-	fs.readFile('app/resources/libsbgn-0.3.xsd', 'utf8', function (err, data) {
-	  if (err) {
-	  	// res.send something in case of error
-	    return console.log(err);
-	  }
-	  var xsdDoc = libxmljs.parseXml(data);
-	  var xmlDoc = libxmljs.parseXml(sbgnml);
-	  if (!xmlDoc.validate(xsdDoc)) {
-	  	var errors = xmlDoc.validationErrors;
-	  	var errorList = [];
+exports.validateSBGNML = function (req, res) {
+	var sbgnml = req.query.sbgnml;
+
+	var xsdString;
+	try {
+		xsdString = fs.readFileSync('app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
+	}
+	catch (err) {
+		throw new Error("Failed to read xsd file " + err);
+	}
+
+	var xsdDoc;
+	try {
+		xsdDoc = libxmljs.parseXml(xsdString);
+	}
+	catch (err) {
+		throw new Error("libxmljs failed to parse xsd " + err);
+	}
+
+	var xmlDoc;
+	try {
+		xmlDoc = libxmljs.parseXml(sbgnml);
+	}
+	catch (err) {
+		throw new Error("libxmljs failed to parse xml " + err);
+	}
+
+	if (!xmlDoc.validate(xsdDoc)) {
+		var errors = xmlDoc.validationErrors;
+		var errorList = [];
 		for(var i=0; i < errors.length; i++) {
 			 // I can't understand the structure of this object. It's a mix of object with string in the middle....
 			var error = errors[i];
@@ -26,22 +51,8 @@ function validateSBGNML(sbgnml, res) {
 			errorList.push(newErrorObj);
 		}
 		res.send(errorList);
-	  }
-	  else {
-	  	res.send("validate OK");
-	  }
-	});
-}
-
-/*
-	processes all the ajax calls to this file
-	use the "fn" argument to determine which function to execute
-*/
-exports.processRequest = function(req, res) {
-	var fn = req.query.fn;
-	// need sanity check for fn, send bad request if not present
-	if (fn == "validateSBGNML") {
-		var xmlInput = req.query.xml;
-		validateSBGNML(xmlInput, res);
+	}
+	else {
+		res.send("validate OK");
 	}
 }
