@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<sbgn xmlns='http://sbgn.org/libsbgn/pd/0.1'>
+<sbgn xmlns='http://sbgn.org/libsbgn/0.3'>
 <map>
 <glyph id='glyph4' class='simple chemical' >
 <label text='ATP' />

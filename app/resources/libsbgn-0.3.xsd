@@ -1,0 +1,1125 @@
+<xsd:schema
+        targetNamespace="http://sbgn.org/libsbgn/0.3"
+        xmlns="http://sbgn.org/libsbgn/0.3"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:sbgn="http://sbgn.org/libsbgn/0.3"
+        elementFormDefault="qualified">
+    <xsd:annotation>
+        <xsd:documentation>
+            <p>
+                SBGN-ML is an XML implementation of the Systems Biology Graphical Notation.
+                For more information, please consult
+                <a href="https://github.com/sbgn/libsbgn">https://github.com/sbgn/libsbgn</a>.
+            </p>
+            <p>
+                Version: LibSBGN Milestone 3
+            </p>
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <!-- COMMON TYPES AND ELEMENTS - COMMON TYPES AND ELEMENTS - COMMON TYPES AND ELEMENTS -->
+
+    <!-- SBGNBase -->
+    <xsd:complexType name="SBGNBase" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                The SBGNBase type is the base type of all main components in SBGN.
+                It supports attaching notes and extensions to components, with
+                metadata and annotations encoded in the extension element.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="notes" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            <p>
+                                The notes element stores notes.
+                            </p>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:sequence>
+                        <xsd:any namespace="http://www.w3.org/1999/xhtml"
+                                 processContents="skip"
+                                 minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="extension" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            <p>
+                                The extension element stores extension information like
+                                render information, metadata or annotations.
+                            </p>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:sequence>
+                        <xsd:any processContents="skip"
+                                 minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- PointAttributes -->
+    <xsd:attributeGroup name="PointAttributes">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The PointAttributes group describes absolute 2D cartesian coordinates. Namely:
+                    <ul>
+                        <li>x (horizontal, from left to right),</li>
+                        <li>y (vertical, from top to bottom).</li>
+                    </ul>
+                </p>
+                <p>
+                    The origin is located in the top-left corner of the map.
+                    There is no unit:
+                    proportions must be preserved, but the maps can be drawn at any scale.
+                    In the test files examples, to obtain a drawing similar to the reference
+                    *.png file, values in the corresponding *.sbgn file should be read as pixels.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="x" type="xsd:float" use="required"/>
+        <xsd:attribute name="y" type="xsd:float" use="required"/>
+    </xsd:attributeGroup>
+
+    <!-- point -->
+    <xsd:element name="point">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The point element is characterized by PointAttributes,
+                    which describe absolute 2D cartesian coordinates. Namely:
+                    <ul>
+                        <li>x (horizontal, from left to right),</li>
+                        <li>y (vertical, from top to bottom).</li>
+                    </ul>
+                </p>
+                <p>
+                    The origin is located in the top-left corner of the map.
+                    There is no unit:
+                    proportions must be preserved, but the maps can be drawn at any scale.
+                    In the test files examples, to obtain a drawing similar to the reference
+                    *.png file, values in the corresponding *.sbgn file should be read as pixels.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:attributeGroup ref="sbgn:PointAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- bbox -->
+    <xsd:element name="bbox">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The bbox element describes a rectangle. This rectangle is defined by:
+                    <ul>
+                        <li>
+                            PointAttributes corresponding to the 2D coordinates of the top left
+                            corner,
+                        </li>
+                        <li>width and height attributes.</li>
+                    </ul>
+                </p>
+                <p>
+                    The rectangle corresponds to the outer bounding box of a shape.
+                    The shape itself can be irregular
+                    (for instance in the case of some compartments).
+                </p>
+                <p>
+                    In the case of process nodes,
+                    the bounding box only concerns the central glyph (square, or circle),
+                    the input/output ports are not included, and neither are the lines connecting
+                    them to the central glyph.
+                </p>
+                <p>
+                    A bbox is required for all glyphs, and is optional for labels.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:attributeGroup ref="sbgn:PointAttributes"/>
+                    <xsd:attribute name="w" type="xsd:float" use="required"/>
+                    <xsd:attribute name="h" type="xsd:float" use="required"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- label -->
+    <xsd:element name="label">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The label element describes the text accompanying a glyph.
+                    The text attribute is mandatory.
+                    Its position can be specified by a bbox (optional).
+                    Tools are free to display the text in any style (font, font-size, etc.)
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:sequence>
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The bbox element of a label is optional.
+                                    When no bbox is defined, the bbox of the parent glyph is
+                                    inherited.
+                                    The label should be drawn centered horizontally and vertically in the
+                                    bbox.
+                                </p>
+                                <p>
+                                    When the bbox is inherited, the label can freely spill outside (just
+                                    like it can spill outside its parent glyph).
+                                    An explicit bbox provides a stronger hint regarding what surface the
+                                    label should cover. It defines an upper boundary outside of which the
+                                    label should (ideally) not spill. It also represents a preferred size:
+                                    the surface covered by the label can be smaller, but should ideally be
+                                    as close as possible to the bbox.
+                                </p>
+                                <p>
+                                    In most glyphs (EPNs, unit of information, etc.), the label is supposed
+                                    to be centered, so the bbox is usually omitted (unless there's a
+                                    specific hint to be shared concerning the area the label should ideally
+                                    cover).
+                                    However, labels can be drawn anywhere inside compartments or complex, so
+                                    these should preferably have an explicit bbox.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:element ref="sbgn:bbox" minOccurs="0" maxOccurs="1"/>
+                    </xsd:sequence>
+                    <xsd:attribute name="text" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    Multi-line labels are allowed.
+                                    Line breaks are encoded as &amp;#xA; as specified by the
+                                    XML standard.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- HIGH LEVEL ELEMENTS - HIGH LEVEL ELEMENTS - HIGH LEVEL ELEMENTS - HIGH LEVEL ELEMENTS -->
+
+    <!-- sbgn  -->
+    <xsd:element name="sbgn">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The sbgn element is the root of any SBGNML document.
+                    Currently each document must contain exactly one map element.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:sequence>
+                        <xsd:element ref="sbgn:map" minOccurs="1" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- map -->
+    <xsd:element name="map">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The map element describes a single SBGN PD map.
+                    It contains a list of glyph elements and a list of arc elements.
+                    These lists can be of any size (possibly empty).
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:sequence>
+                        <xsd:element ref="sbgn:bbox" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The bbox element on a map is not mandatory, it allows the
+                                        application to define a canvas, and at the same time
+                                        define a whitespace margin around the glyphs.
+                                    </p>
+                                    <p>
+                                        If a bbox is defined on a map, all glyphs and arcs must be
+                                        inside this bbox, otherwise they could be
+                                        clipped off by applications.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element ref="sbgn:glyph" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element ref="sbgn:arc" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element ref="sbgn:arcgroup" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+
+                    <xsd:attribute name="version">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    Version of the map: URI identifier that gives the language, level and version
+                                    defined by SBGN.
+                                    Different languages/levels/versions have different restrictions on the usage of
+                                    sub-elements (that are not encoded in this schema
+                                    but must be validated with an external validator)
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:anyURI">
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.pd.level-1.version-1.3"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.pd.level-1.version-1.2"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.pd.level-1.version-1.1"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.pd.level-1.version-1.0"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.pd.level-1.version-1"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.er.level-1.version-2"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.er.level-1.version-1.2"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.er.level-1.version-1.1"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.er.level-1.version-1.0"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.er.level-1.version-1"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.af.level-1.version-1.2"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.af.level-1.version-1.0"/>
+                                <xsd:enumeration
+                                        value="http://identifiers.org/combine.specifications/sbgn.af.level-1.version-1"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                    <!-- DEPRECATED: Language attribute is deprecated in Milestone 3 -->
+                    <xsd:attribute name="language">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    Language of the map: one of three sublanguages defined by SBGN.
+                                    Different languages have different restrictions on the usage of sub-elements (that
+                                    are not encoded in this schema
+                                    but must be validated with an external validator)
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="entity relationship"/>
+                                <xsd:enumeration value="process description"/>
+                                <xsd:enumeration value="activity flow"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                    <!-- /DEPRECATED-->
+                    <xsd:attribute name="id" type="xsd:ID" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The xsd:ID type is an alphanumeric identifier, starting with a
+                                    letter.
+                                    It is recommended to generate meaningless IDs (e.g. "map1234")
+                                    and avoid IDs with a meaning (e.g. "MAPK cascade")
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- port -->
+    <xsd:element name="port">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The port element describes an anchor point to which arcs can refer
+                    as a source or target. It consists of:
+                    <ul>
+                        <li>absolute 2D cartesian coordinates (PointAttribute),</li>
+                        <li>a unique id attribute.</li>
+                    </ul>
+                </p>
+                <p>
+                    Two port elements are required for process nodes. They represent
+                    the extremity of the two "arms" which protrude on both sides of the
+                    core of the glyph (= square or circle shape).
+                    Other glyphs don't need ports (but can use them if desired).
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:attributeGroup ref="sbgn:PointAttributes"/>
+                    <xsd:attribute name="id" type="xsd:ID" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The xsd:ID type is an alphanumeric identifier, starting with a letter.
+                                    Port IDs often contain the ID of their glyph, followed by a
+                                    local port number (e.g. glyph4.1, glyph4.2, etc.)
+                                    However, this style convention is not mandatory,
+                                    and IDs should never be interpreted as carrying any meaning.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH GLYPH G -->
+
+    <!-- glyph -->
+    <xsd:element name="glyph">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The glyph element is:
+                    <ul>
+                        <li>either a stand-alone, high-level SBGN glyph
+                            (EPN, PN, compartment, etc),
+                        </li>
+                        <li>or a sub-glyph
+                            (state variable, unit of information, inside of a complex, ...)
+                        </li>
+                    </ul>
+                </p>
+                <p>
+                    In the first case, it appears directly in the glyph list of the map.
+                    In the second case, it is a child of another glyph element.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:sequence>
+                        <xsd:choice>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The text inside a glyph is described:
+                                        <ul>
+                                            <li>
+                                                either by a label element (optional)
+                                                [process nodes can't have one],
+                                            </li>
+                                            <li>
+                                                or by a state element (optional)
+                                                [for state variables only].
+                                            </li>
+                                        </ul>
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:element ref="sbgn:label" minOccurs="0" maxOccurs="1"/>
+                            <xsd:element name="state" minOccurs="0" maxOccurs="1">
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        <p>
+                                            The state element should only be used for state variables.
+                                            It replaces the label element used for other glyphs.
+                                            It describes the text to be drawn inside the state variable.
+                                        </p>
+                                        <p>
+                                            A state must have a value, a variable, or both.
+                                            If it has both, they are rendered as a concatenated string with
+                                            @ in between.
+                                        </p>
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexType>
+                                    <xsd:attribute name="value" type="xsd:string" use="optional">
+                                        <xsd:annotation>
+                                            <xsd:documentation>
+                                                <p>
+                                                    The value attribute represents the state of the
+                                                    variable. It can be:
+                                                    <ul>
+                                                        <li>
+                                                            either from a predefined set of string
+                                                            (P, S, etc.) which correspond to specific
+                                                            SBO terms (cf. SBGN specs),
+                                                        </li>
+                                                        <li>
+                                                            or any arbitrary string.
+                                                        </li>
+                                                    </ul>
+                                                </p>
+                                            </xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:attribute>
+                                    <xsd:attribute name="variable" type="xsd:string" use="optional">
+                                        <xsd:annotation>
+                                            <xsd:documentation>
+                                                <p>
+                                                    The variable attribute describes the site where the
+                                                    modification described by the value attribute occurs.
+                                                    It is:
+                                                    <ul>
+                                                        <li>
+                                                            optional when there is only one state variable
+                                                            on the parent EPN,
+                                                        </li>
+                                                        <li>
+                                                            required when there is more than one state
+                                                            variable the parent EPN.
+                                                        </li>
+                                                    </ul>
+                                                </p>
+                                            </xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:attribute>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:choice>
+
+                        <xsd:element name="clone" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The clone element (which is optional) means the glyph carries a
+                                        clone marker. It can contain an optional label.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element ref="sbgn:label" minOccurs="0" maxOccurs="1"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+
+                        <xsd:element name="callout" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The callout element is only used for glyphs with class annotation.
+                                        It contains the coordinate of the point where the annotation points to,
+                                        as well as a reference to the element that is pointed to.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element ref="sbgn:point" minOccurs="1" maxOccurs="1"/>
+                                </xsd:sequence>
+                                <xsd:attribute name="target" type="xsd:IDREF" use="optional"/>
+                            </xsd:complexType>
+                        </xsd:element>
+
+                        <xsd:element name="entity" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The entity is only used in activity flow diagrams.
+                                        It can only be used on a unit of information glyph
+                                        on a biological activity glyph, where it is compulsory.
+                                        It is used to indicate the shape of this unit of information.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:attribute name="name" use="required">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:enumeration value="unspecified entity"/>
+                                            <xsd:enumeration value="simple chemical"/>
+                                            <xsd:enumeration value="macromolecule"/>
+                                            <xsd:enumeration value="nucleic acid feature"/>
+                                            <xsd:enumeration value="complex"/>
+                                            <xsd:enumeration value="perturbation"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                            </xsd:complexType>
+                        </xsd:element>
+
+                        <xsd:element ref="sbgn:bbox" minOccurs="1" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The bbox element is mandatory and unique: exactly one per
+                                        glyph.
+                                        It defines the outer bounding box of the glyph.
+                                        The actual shape of the glyph can be irregular
+                                        (for instance in the case of some compartments)
+                                    </p>
+                                    <p>
+                                        In the case of process nodes, the bounding box only concerns the
+                                        central glyph (square, or circle):
+                                        the input/output ports are not included, and neither are the lines
+                                        connecting them to the central glyph.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+
+                        <xsd:element ref="sbgn:glyph" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        A glyph element can contain any number of children glyph
+                                        elements.
+                                        In practice, this should only happen in the following cases:
+                                        <ul>
+                                            <li>a compartment with unit of information children,</li>
+                                            <li>
+                                                an EPN with states variables and/or unit of information
+                                                children,
+                                            </li>
+                                            <li>
+                                                a complex, with state variables, unit of info, and/or EPN
+                                                children.
+                                            </li>
+                                        </ul>
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element ref="sbgn:port" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+
+                    <xsd:attribute name="class" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The class attribute defines the semantic of the glyph, and influences:
+                                    <ul>
+                                        <li>the way that glyph should be rendered,</li>
+                                        <li>the overall syntactic validity of the map.</li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    The various classes encompass the following PD SBGN elements:
+                                    <ul>
+                                        <li>Entity Pool Nodes (EPN),</li>
+                                        <li>Process Nodes (PN),</li>
+                                        <li>Logic Operator Nodes,</li>
+                                        <li>Sub-glyphs on Nodes (State Variable, Unit of Information),</li>
+                                        <li>Sub-glyphs on Arcs (Stoichiometry Label),</li>
+                                        <li>Other glyphs (Compartment, Submap, Tag, Terminal).</li>
+                                    </ul>
+                                    And the following ER SBGN elements
+                                    <ul>
+                                        <li>Entities (Entity, Outcome)</li>
+                                        <li>Other (Annotation, Phenotype)</li>
+                                        <li>Auxiliary on glyps (Existence, Location)</li>
+                                        <li>Auxiliary on arcs (Cardinality)</li>
+                                        <li>Delay operator</li>
+                                        <li>implicit xor</li>
+                                    </ul>
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <!-- Entity Pool Node classes (PD only) -->
+                                <xsd:enumeration value="unspecified entity"/>
+                                <xsd:enumeration value="simple chemical"/>
+                                <xsd:enumeration value="macromolecule"/>
+                                <xsd:enumeration value="nucleic acid feature"/>
+                                <xsd:enumeration value="simple chemical multimer"/>
+                                <xsd:enumeration value="macromolecule multimer"/>
+                                <xsd:enumeration value="nucleic acid feature multimer"/>
+                                <xsd:enumeration value="complex"/>
+                                <xsd:enumeration value="complex multimer"/>
+                                <xsd:enumeration value="source and sink"/>
+                                <!-- Activities (AF) -->
+                                <!-- perturbation is deprecated in AF as Activity Node in milestone 3. -->
+                                <xsd:enumeration value="perturbation"/>
+                                <xsd:enumeration value="biological activity"/>
+                                <!-- Entities (both PD and ER) -->
+                                <xsd:enumeration value="perturbing agent"/>
+                                <!-- Other (PD only) -->
+                                <xsd:enumeration value="compartment"/>
+                                <xsd:enumeration value="submap"/>
+                                <xsd:enumeration value="tag"/>
+                                <xsd:enumeration value="terminal"/>
+                                <!-- Process Node classes (PD only) -->
+                                <xsd:enumeration value="process"/>
+                                <xsd:enumeration value="omitted process"/>
+                                <xsd:enumeration value="uncertain process"/>
+                                <xsd:enumeration value="association"/>
+                                <xsd:enumeration value="dissociation"/>
+                                <!-- PD, ER and AF -->
+                                <xsd:enumeration value="phenotype"/>
+                                <!-- Logical Operator classes (PD, ER and AF) -->
+                                <xsd:enumeration value="and"/>
+                                <xsd:enumeration value="or"/>
+                                <xsd:enumeration value="not"/>
+                                <!-- Subglyph on glyph classes (both PD and ER) -->
+                                <xsd:enumeration value="state variable"/>
+                                <xsd:enumeration value="unit of information"/>
+
+                                <!-- Entities classes (ER) -->
+                                <xsd:enumeration value="entity"/>
+                                <xsd:enumeration value="outcome"/>
+                                <!-- Other (ER) -->
+
+                                <xsd:enumeration value="interaction"/>
+                                <xsd:enumeration value="influence target"/>
+                                <xsd:enumeration value="annotation"/>
+                                <xsd:enumeration value="variable value"/>
+                                <xsd:enumeration value="implicit xor"/>
+                                <!-- Logical Operator classes (ER and AF) -->
+                                <xsd:enumeration value="delay"/>
+                                <!-- Auxiliary on glyph classes -->
+                                <xsd:enumeration value="existence"/>
+                                <xsd:enumeration value="location"/>
+                                <!-- Auxiliary on arc classes -->
+                                <xsd:enumeration value="cardinality"/>
+                                <!-- used for cis / trans and stoichiometry -->
+                                <!-- NB Arc classes are in a separate enumeration -->
+
+                                <!-- The use of observable is deprecated in newer versions of SBGN.
+                                Because it occurs in older versions of the SBGN spec,
+                                we will keep it around indefinitely.
+                                !-->
+                                <xsd:enumeration value="observable"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+
+                    <xsd:attribute name="orientation" default="horizontal">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The orientation attribute is used to express how to draw asymmetric glyphs.
+                                    In PD, the orientation of Process Nodes is either horizontal or vertical.
+                                    It refers to an (imaginary) line connecting the two in/out sides of the PN.
+                                    In PD, the orientation of Tags and Terminals can be left, right, up or down.
+                                    It refers to the direction the arrow side of the glyph is pointing at.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <!-- horizontal / vertical are for process nodes -->
+                                <xsd:enumeration value="horizontal"/>
+                                <xsd:enumeration value="vertical"/>
+                                <!-- left / right / up / down are for tags and terminals -->
+                                <xsd:enumeration value="left"/>
+                                <xsd:enumeration value="right"/>
+                                <xsd:enumeration value="up"/>
+                                <xsd:enumeration value="down"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+
+                    <xsd:attribute name="id" type="xsd:ID" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The xsd:ID type is an alphanumeric identifier, starting with a
+                                    letter.
+                                    It is recommended to generate meaningless IDs (e.g. "glyph1234")
+                                    and avoid IDs with a meaning (e.g. "epn_ethanol")
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+
+                    <xsd:attribute name="compartmentRef" type="xsd:IDREF" use="optional">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    Reference to the ID of the compartment that this glyph
+                                    is part of. Only use
+                                    this if there is at least one explicit compartment
+                                    present in the diagram. Compartments are
+                                    only used in PD and AF, and thus this attribute as well.
+                                    For PD, this should be used only for EPN's.
+                                    For AF, this should be used only for Activity Nodes.
+                                </p>
+                                <p>
+                                    In case there are no compartments, entities that
+                                    can have a location, such as EPN's, are implicit
+                                    member of an invisible compartment that
+                                    encompasses the whole map. In that case, this
+                                    attribute must be omitted.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+
+                    <xsd:attribute name="compartmentOrder" type="xsd:float" use="optional">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The compartment order attribute can be used to define
+                                    a drawing order for compartments. It enables tools to
+                                    draw compartments in the correct order especially in
+                                    the case of overlapping compartments.
+                                    Compartments are only used in PD and AF, and thus
+                                    this attribute as well.
+                                </p>
+                                <p>
+                                    The attribute is of type float, the attribute value
+                                    has not to be unique. Compartments with higher compartment
+                                    order are drawn on top. The attribute is optional and should
+                                    only be used for compartments.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+
+                    <xsd:attribute name="mapRef" type="xsd:IDREF" use="optional">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    This attribute is only used on a submap glyph. It is required.
+                                </p>
+                                <p>
+                                    Reference to the ID of the map which provides the content of the submap.
+                                    If no map is available providing the content of the submap an omitted
+                                    process should be used instead of the submap.
+                                    Submaps are only used in PD and AF, and thus this attribute as well.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+
+                    <xsd:attribute name="tagRef" type="xsd:IDREF" use="optional">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    This attribute is only used on a terminal glyph. It is required.
+                                </p>
+                                <p>
+                                    Reference to the ID of a tag on a map providing the content of a submap.
+                                    The terminal glyph is defined as sub-glyph of this submap.
+                                    Submaps and therefore terminals are only used in PD and AF, and thus this attribute
+                                    as well.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP ARCGROUP -->
+
+    <xsd:element name="arcgroup">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The arc group describes a set of arcs and glyphs that together have a relation.
+                    For example
+                    <ul>
+                        <li>For ER: interaction arcs around an interaction glyph,</li>
+                        <li>...</li>
+                    </ul>
+                    Note that, in spite of the name, an arcgroup contains both arcs and glyphs.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:sequence>
+                        <xsd:element ref="sbgn:glyph" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        An arcgroup can contain glyphs. For example, in an interaction arcgroup, there
+                                        must be one interaction glyph.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element ref="sbgn:arc" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        An arcgroup can have multiple arcs. They are all assumed to form a single
+                                        hyperarc-like structure.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:attribute name="class" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The class attribute defines the semantic of the arcgroup.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <!-- ER only -->
+                                <xsd:enumeration value="interaction"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC ARC -->
+
+    <xsd:element name="arc">
+        <xsd:annotation>
+            <xsd:documentation>
+                <p>
+                    The arc element describes an SBGN arc between two SBGN nodes. It contains:
+                    <ul>
+                        <li>For PD: an optional stoichiometry marker,</li>
+                        <li>For ER: an optional cardinality marker,
+                            zero or more ports (influence targets), and zero or more outcomes,
+                        </li>
+                        <li>a mandatory source and target (glyph or port),</li>
+                        <li>a geometric description of its whole path, from start to end.</li>
+                    </ul>
+                    <p>
+                    </p>
+                    This path can involve any number of straight lines or quadratic/cubic Bezier
+                    curves.
+                </p>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="SBGNBase">
+                    <xsd:sequence>
+                        <xsd:element ref="sbgn:glyph" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        In PD, an arc can contain a single optional sub-glyph.
+                                        This glyph must be a stoichiometry marker
+                                        (square with a numeric label)
+                                    </p>
+                                    <p>
+                                        In ER, an arc can contain several sub-glyphs.
+                                        This can be zero or one cardinality glyphs
+                                        (e.g. cis or trans), plus zero to many
+                                        outcome glyphs (black dot)
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element ref="sbgn:port" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        Ports are only allowed in ER.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="start" minOccurs="1" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The start element represents the starting point of the arc's path.
+                                        It is unique and mandatory.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:attributeGroup ref="sbgn:PointAttributes"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="next" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The next element represents the next point in the arc's path.
+                                        Between the start and the end of the path, there can be any number
+                                        (even zero) of next elements (intermediate points). They are read
+                                        consecutively: start, next, next, ..., next, end.
+                                        When the path from the previous point to this point is not straight,
+                                        this element also contains a list of control points
+                                        (between 1 and 2) describing a Bezier curve (quadratic if 1 control
+                                        point, cubic if 2) between the previous point and this point.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:annotation>
+                                        <xsd:documentation>
+                                            <p>
+                                                List of control points, used when the path describes a
+                                                curve.
+                                                The number of points describes the degree of the Bezier
+                                                curve: linear (0), quadratic (1) or cubic (2)
+                                            </p>
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:element ref="sbgn:point" minOccurs="0" maxOccurs="2"/>
+                                </xsd:sequence>
+                                <xsd:attributeGroup ref="sbgn:PointAttributes"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="end" minOccurs="1" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    <p>
+                                        The end element represents the ending point of the arc's path.
+                                        It is unique and mandatory.
+                                        When the path from the previous point to this point is not straight,
+                                        this element also contains a list of control points
+                                        (between 1 and 2) describing a Bezier curve (quadratic if 1 control
+                                        point, cubic if 2) between the previous point and this point.
+                                    </p>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:annotation>
+                                        <xsd:documentation>
+                                            <p>
+                                                List of control points, used when the path describes a
+                                                curve.
+                                                The number of points describes the degree of the Bezier
+                                                curve: linear (0), quadratic (1) or cubic (2)
+                                            </p>
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:element ref="sbgn:point" minOccurs="0" maxOccurs="2"/>
+                                </xsd:sequence>
+                                <xsd:attributeGroup ref="sbgn:PointAttributes"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+
+                    <xsd:attribute name="class" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The class attribute defines the semantic of the arc, and influences:
+                                    <ul>
+                                        <li>the way that arc should be rendered,</li>
+                                        <li>the overall syntactic validity of the map.</li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    The various classes encompass all possible types of SBGN arcs:
+                                    <ul>
+                                        <li>production and consumption arcs,</li>
+                                        <li>all types of modification arcs,</li>
+                                        <li>logic arcs,</li>
+                                        <li>equivalence arcs.</li>
+                                    </ul>
+                                    To express a reversible reaction,
+                                    use production arcs on both sides of the Process Node.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <!-- PD only -->
+                                <xsd:enumeration value="production"/>
+                                <xsd:enumeration value="consumption"/>
+                                <xsd:enumeration value="catalysis"/>
+                                <!-- PD and ER -->
+                                <xsd:enumeration value="modulation"/>
+                                <xsd:enumeration value="stimulation"/>
+                                <xsd:enumeration value="inhibition"/>
+                                <!-- ER only -->
+                                <xsd:enumeration value="assignment"/>
+                                <xsd:enumeration value="interaction"/>
+                                <xsd:enumeration value="absolute inhibition"/>
+                                <xsd:enumeration value="absolute stimulation"/>
+                                <!-- AF only -->
+                                <xsd:enumeration value="positive influence"/>
+                                <xsd:enumeration value="negative influence"/>
+                                <xsd:enumeration value="unknown influence"/>
+                                <!-- PD and AF -->
+                                <xsd:enumeration value="equivalence arc"/>
+                                <!-- PD, ER and AF -->
+                                <xsd:enumeration value="necessary stimulation"/>
+                                <xsd:enumeration value="logic arc"/>
+                                <!-- NB Glyph classes are in a separate enumeration -->
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                    <xsd:attribute name="id" type="xsd:ID" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The xsd:ID type is an alphanumeric identifier,
+                                    starting with a letter.
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="source" type="xsd:IDREF" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The source attribute can refer:
+                                    <ul>
+                                        <li>either to the id of a glyph,</li>
+                                        <li>or to the id of a port on a glyph.</li>
+                                    </ul>
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="target" type="xsd:IDREF" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <p>
+                                    The target attribute can refer:
+                                    <ul>
+                                        <li>either to the id of a glyph,</li>
+                                        <li>or to the id of a port on a glyph.</li>
+                                    </ul>
+                                </p>
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

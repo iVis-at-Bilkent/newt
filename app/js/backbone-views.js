@@ -233,7 +233,9 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
     
+	
       $(self.el).modal('toggle');
+      $(document).trigger('saveLayout');
     });
 
     $(document).off("click", "#default-layout").on("click", "#default-layout", function (evt) {
@@ -303,6 +305,7 @@ var GeneralPropertiesView = Backbone.View.extend({
       cy.style().update();
       
       $(self.el).modal('toggle');
+      $(document).trigger('saveGeneralProperties');
     });
 
     $(document).off("click", "#default-sbgn").on("click", "#default-sbgn", function (evt) {
@@ -695,6 +698,7 @@ var GridPropertiesView = Backbone.View.extend({
       });
       
       $(self.el).modal('toggle');
+      $(document).trigger('saveGridProperties');
     });
 
     $(document).off("click", "#default-grid").on("click", "#default-grid", function (evt) {
@@ -868,7 +872,10 @@ var FontPropertiesView = Backbone.View.extend({
       chise.changeFontProperties(eles, data);
       
       self.copyProperties();
+	    
+     
       $(self.el).modal('toggle');
+	    $(document).trigger('saveFontProperties');
     });
 
     return this;
