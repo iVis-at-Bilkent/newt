@@ -538,7 +538,7 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 appUtilities.applyMapColorScheme = function(newColorScheme) {
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
-  var collapsedChildren = appUtilities.getCollapsedChildren();
+  var collapsedChildren = appUtilities.getCollapsedChildren("nodes");
   var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
 
   var actions = [];
@@ -564,37 +564,189 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
 // used during drag and drop of palette nodes
 appUtilities.dragImageMouseMoveHandler = function (e) {
       $("#drag-image").css({left:e.pageX, top:e.pageY});
-}
+};
 
 appUtilities.addDragImage = function (img, width, height){
   // see: http://stackoverflow.com/questions/38838508/make-a-dynamic-image-follow-mouse
   $(document.body).append('<img id="drag-image" src="app/img/nodes/'+img+'" style="position: absolute;'+
                                 'width:'+width+'; height:'+height+';" >');
   $(document).on("mousemove", appUtilities.dragImageMouseMoveHandler);
-}
+};
 
 appUtilities.removeDragImage = function () {
   $("#drag-image").remove();
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
-}
+};
 
 // get all the content (nodes only) of all collapsed nodes of the map
 // get things in a raw, dirty way (as collapsedChildren are not to be considered as normal nodes)
-appUtilities.getCollapsedChildren = function() {
+appUtilities.getCollapsedChildren = function(nodesOrEdges) {
   var expandableNodes = cy.expandCollapse('get').expandableNodes();
-  var resultNodes = [];
+  var resultEles = [];
   for (var i=0; i<expandableNodes.length; i++) {
     var expandableNode = expandableNodes[i];
     var collapsedChildren = expandableNode._private.data['collapsedChildren'];
     for(var j=0; j < collapsedChildren.length; j++){
       var collapsedChild = collapsedChildren[j];
-      if (collapsedChild._private.group != "nodes") {
+      if (collapsedChild._private.group != nodesOrEdges) {
         continue;
       }
-      resultNodes.push(collapsedChild);
+      resultEles.push(collapsedChild);
     }
   }
-  return resultNodes;
+  return resultEles;
+};
+
+/*
+  fetch all possible styles used in the graph
+  example: if a node is blue with thick border, and another blue with thin border -> 2 styles
+  return style [{
+    idList: list of the nodes ids have this style
+    properties:
+  }]
+*/
+appUtilities.getAllStyles = function () {
+  var collapsedChildrenNodes = appUtilities.getCollapsedChildren("nodes");
+  var nodes = cy.nodes().union(collapsedChildrenNodes);
+  var collapsedChildrenEdges = appUtilities.getCollapsedChildren("edges");
+  var edges = cy.edges().union(collapsedChildrenEdges);
+
+  var nodeProperties = ['background-color', 'background-opacity', 'border-color',
+  'border-width', 'font-size', 'font-weight', 'font-style', 'font-family'];
+  var edgeProperties = ['line-color', 'width'];
+
+  function getStyleHash (element, properties) {
+    var hash = "";
+    for(var i=0; i < properties.length; i++){
+      if (element.data().hasOwnProperty(properties[i])) {
+        hash += element.data(properties[i]).toString();
+      }
+      else {
+        hash += "";
+      }
+    }
+    return hash;
+  }
+
+  function getStyleProperties (element, properties) {
+    var props = {};
+    for(var i=0; i < properties.length; i++){
+      if (element.data().hasOwnProperty(properties[i])) {
+        props[properties[i]] = element.data(properties[i]);
+      }
+      else {
+        props[properties[i]] = "";
+      }
+    }
+    return props;
+  }
+
+  // populate the style structure for nodes
+  var styles = {}; // list of styleKey pointing to a list of properties and a list of nodes
+  for(var i=0; i<nodes.length; i++) {
+    var node = nodes[i];
+    var styleKey = "node"+getStyleHash(node, nodeProperties);
+    if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
+      var properties = getStyleProperties(node, nodeProperties);
+      styles[styleKey] = {
+        idList: [],
+        properties: properties
+      };
+    }
+    var currentNodeStyle = styles[styleKey];
+    // add current node id to this style
+    currentNodeStyle.idList.push(node.data('id'));
+  }
+
+  // populate the style structure for edges
+  for(var i=0; i<edges.length; i++) {
+    var edge = edges[i];
+    var styleKey = "edge"+getStyleHash(edge, edgeProperties);
+    if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
+      var properties = getStyleProperties(edge, edgeProperties);
+      styles[styleKey] = {
+        idList: [],
+        properties: properties
+      };
+    }
+    var currentEdgeStyle = styles[styleKey];
+    // add current node id to this style
+    currentEdgeStyle.idList.push(edge.data('id'));
+  }
+  return styles;
+};
+
+// see http://stackoverflow.com/a/3627747
+function rgb2hex(rgb) {
+    if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
+
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    function hex(x) {
+        return ("0" + parseInt(x).toString(16)).slice(-2);
+    }
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function expandShortHex(hex) {
+  if (hex.length < 6) {
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    longhex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return "#" + r + r + g + g + b + b;
+    });
+    return longhex;
+  }
+  else {
+    return hex
+  }
+}
+
+// accepts short or long hex or rgb color, return sbgnml compliant color value (= long hex)
+function getXmlValidColor(color) {
+  if (/^#[0-9A-F]{3,8}$/i.test(color)){ // color is hex
+    return expandShortHex(color);
+  }
+  else { // rgb case
+    return rgb2hex(color);
+  }
+}
+/*
+  get all the different color values used in the different styles
+  colors are fetched from those properties:
+   - background-color of nodes
+   - border-color of nodes
+   - line-color of edges
+   - background-color of the map
+  returns: object {
+    backgroundColor: map background
+    colorList: []
+  }
+*/
+appUtilities.getColorsFromStyles = function(styles) {
+  var usedColors = {};
+
+  // first get the general background color
+  var containerBgColor = $("#sbgn-network-container").css('background-color');
+  if (containerBgColor == "transparent") {
+    usedColors.backgroundColor = "#ffffff";
+  }
+  else {
+    usedColors.backgroundColor = getXmlValidColor(containerBgColor);
+  }
+
+  var colorHash = {};
+  for(var key in styles) {
+    if (styles[key].properties.hasOwnProperty('background-color')) {
+      colorHash[getXmlValidColor(styles[key].properties['background-color'])] = true;
+    }
+    if (styles[key].properties.hasOwnProperty('border-color')) {
+      colorHash[getXmlValidColor(styles[key].properties['border-color'])] = true;
+    }
+    if (styles[key].properties.hasOwnProperty('line-color')) {
+      colorHash[getXmlValidColor(styles[key].properties['line-color'])] = true;
+    }
+  }
+  usedColors.colorList = Object.keys(colorHash);
+  return usedColors;
 }
 
 module.exports = appUtilities;
