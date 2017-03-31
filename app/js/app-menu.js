@@ -13,7 +13,15 @@ module.exports = function () {
   var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, promptConfirmationView,
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
+  function validateSBGNML(xml) {
+    $.get("/utilities/validateSBGNML", {sbgnml: xml}, function(data){
+      console.log("validation result", data);
+    });
+  }
+
   function loadSample(filename) {
+    var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
+    validateSBGNML(textXml);
     return chise.loadSample(filename, 'app/samples/');
   }
 
@@ -131,7 +139,10 @@ module.exports = function () {
     $("#file-input").change(function () {
       if ($(this).val() != "") {
         var file = this.files[0];
-        chise.loadSBGNMLFile(file);
+        var loadCallback = function (text) {
+          validateSBGNML(text);
+        }
+        chise.loadSBGNMLFile(file, loadCallback);
         $(this).val("");
       }
     });

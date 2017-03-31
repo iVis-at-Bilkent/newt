@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<sbgn xmlns='http://sbgn.org/libsbgn/0.2'>
+<sbgn xmlns='http://sbgn.org/libsbgn/0.3'>
 <map language='process description'>
 <glyph id='82f19e9e-6aa2-42b3-8b5e-8cee17197085' class='compartment'  >
 <label text='synaptic button' />

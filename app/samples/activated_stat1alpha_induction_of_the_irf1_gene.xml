@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<sbgn xmlns='http://sbgn.org/libsbgn/pd/0.1'>
+<sbgn xmlns='http://sbgn.org/libsbgn/0.3'>
 <map>
 <glyph id='glyph8' class='source and sink' >
 <bbox y='571.1691314755299' x='352.15049199906457' w='60.0' h='60.0' />
