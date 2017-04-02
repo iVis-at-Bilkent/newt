@@ -469,12 +469,7 @@ var FileSaveView = Backbone.View.extend({
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
-      var styles = appUtilities.getAllStyles();
-      var colors = appUtilities.getColorsFromStyles(styles);
-      var renderInfo = {
-        styleDef: styles,
-        colorDef: colors
-      };
+      var renderInfo = appUtilities.getAllStyles();
       chise.saveAsSbgnml(filename, renderInfo);
       $(self.el).modal('toggle');
     });
