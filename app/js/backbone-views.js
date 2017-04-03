@@ -233,7 +233,9 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
     
+	
       $(self.el).modal('toggle');
+      $(document).trigger('saveLayout');
     });
 
     $(document).off("click", "#default-layout").on("click", "#default-layout", function (evt) {
@@ -303,6 +305,7 @@ var GeneralPropertiesView = Backbone.View.extend({
       cy.style().update();
       
       $(self.el).modal('toggle');
+      $(document).trigger('saveGeneralProperties');
     });
 
     $(document).off("click", "#default-sbgn").on("click", "#default-sbgn", function (evt) {
@@ -341,6 +344,14 @@ var PathsBetweenQueryView = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
+    
+    $("#query-pathsbetween-enable-shortest-k-alteration").change(function (e) {
+      if (document.getElementById("query-pathsbetween-enable-shortest-k-alteration").checked) {
+        $("#query-pathsbetween-shortest-k").prop("disabled", false);
+      } else {
+        $("#query-pathsbetween-shortest-k").prop("disabled", true);
+      }
+    });
 
     $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
 
@@ -396,79 +407,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
 
     return this;
   }
-});
-
-
-/**
- * Paths By URI Query view for the Sample Application.
- */
-var PathsByURIQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        URI: ""
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-pathsbyURI-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
-        var self = this;
-        self.template = _.template($("#query-pathsbyURI-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
-
-        $(self.el).modal('show');
-
-        $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
-
-            self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
-
-            if (self.currentQueryParameters.URI.length === 0) {
-                document.getElementById("query-pathsbyURI-gene-symbols").focus();
-                return;
-            }
-
-            var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
-                + self.currentQueryParameters.URI + "&format=SBGN";
-            /*var queryURL = "http://www.pathwaycommons.org/pc2/get?uri=http://identifiers.org/uniprot/"
-                + self.currentQueryParameters.URI + "&format=SBGN";*/
-            var filename = "";
-            var uri = self.currentQueryParameters.URI;
-
-            if (filename == '') {
-                filename = uri;
-            } else {
-                filename = filename + '_' + uri;
-            }
-
-            filename = filename + '_URI.sbgnml';
-            setFileContent(filename);
-
-            chise.startSpinner('paths-between-spinner');
-
-            $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    chise.updateGraph(chise.convertSbgnmlToJson(data));
-                    chise.endSpinner('paths-between-spinner');
-                }
-            });
-
-            $(self.el).modal('toggle');
-        });
-
-        $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
-            $(self.el).modal('toggle');
-        });
-
-        return this;
-    }
 });
 
 /*
@@ -528,11 +466,11 @@ var FileSaveView = Backbone.View.extend({
     var filename = document.getElementById('file-name').innerHTML;
     $("#file-save-filename").val(filename);
 
-
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
-      chise.saveAsSbgnml(filename);
+      var renderInfo = appUtilities.getAllStyles();
+      chise.saveAsSbgnml(filename, renderInfo);
       $(self.el).modal('toggle');
     });
 
@@ -755,6 +693,7 @@ var GridPropertiesView = Backbone.View.extend({
       });
       
       $(self.el).modal('toggle');
+      $(document).trigger('saveGridProperties');
     });
 
     $(document).off("click", "#default-grid").on("click", "#default-grid", function (evt) {
@@ -928,7 +867,10 @@ var FontPropertiesView = Backbone.View.extend({
       chise.changeFontProperties(eles, data);
       
       self.copyProperties();
+	    
+     
       $(self.el).modal('toggle');
+	    $(document).trigger('saveFontProperties');
     });
 
     return this;
@@ -941,7 +883,6 @@ module.exports = {
   ColorSchemeMenuView: ColorSchemeMenuView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
-  PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   PromptConfirmationView: PromptConfirmationView,
