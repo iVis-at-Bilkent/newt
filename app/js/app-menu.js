@@ -10,18 +10,10 @@ var _ = require('underscore');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, promptConfirmationView,
+  var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView, promptSaveView, promptConfirmationView,
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
-  function validateSBGNML(xml) {
-    $.get("/utilities/validateSBGNML", {sbgnml: xml}, function(data){
-      console.log("validation result", data);
-    });
-  }
-
   function loadSample(filename) {
-    var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
-    validateSBGNML(textXml);
     return chise.loadSample(filename, 'app/samples/');
   }
 
@@ -36,6 +28,7 @@ module.exports = function () {
     colorSchemeMenuView = appUtilities.colorSchemeMenuView = new BackboneViews.ColorSchemeMenuView({el: '#color-scheme-menu'});
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
+    pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
     //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
     fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
     promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
@@ -139,10 +132,7 @@ module.exports = function () {
     $("#file-input").change(function () {
       if ($(this).val() != "") {
         var file = this.files[0];
-        var loadCallback = function (text) {
-          validateSBGNML(text);
-        }
-        chise.loadSBGNMLFile(file, loadCallback);
+        chise.loadSBGNMLFile(file);
         $(this).val("");
       }
     });
@@ -263,6 +253,10 @@ module.exports = function () {
 
     $("#query-pathsbetween").click(function (e) {
       pathsBetweenQueryView.render();
+    });
+
+    $("#query-pathsbyURI").click(function (e) {
+      pathsByURIQueryView.render();
     });
     
     $("#grid-properties").click(function (e) {

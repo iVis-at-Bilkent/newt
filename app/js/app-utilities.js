@@ -538,7 +538,7 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 appUtilities.applyMapColorScheme = function(newColorScheme) {
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
-  var collapsedChildren = appUtilities.getCollapsedChildren("nodes");
+  var collapsedChildren = appUtilities.getCollapsedChildren();
   var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
 
   var actions = [];
@@ -564,248 +564,37 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
 // used during drag and drop of palette nodes
 appUtilities.dragImageMouseMoveHandler = function (e) {
       $("#drag-image").css({left:e.pageX, top:e.pageY});
-};
+}
 
 appUtilities.addDragImage = function (img, width, height){
   // see: http://stackoverflow.com/questions/38838508/make-a-dynamic-image-follow-mouse
   $(document.body).append('<img id="drag-image" src="app/img/nodes/'+img+'" style="position: absolute;'+
                                 'width:'+width+'; height:'+height+';" >');
   $(document).on("mousemove", appUtilities.dragImageMouseMoveHandler);
-};
+}
 
 appUtilities.removeDragImage = function () {
   $("#drag-image").remove();
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
-};
+}
 
 // get all the content (nodes only) of all collapsed nodes of the map
 // get things in a raw, dirty way (as collapsedChildren are not to be considered as normal nodes)
-appUtilities.getCollapsedChildren = function(nodesOrEdges) {
+appUtilities.getCollapsedChildren = function() {
   var expandableNodes = cy.expandCollapse('get').expandableNodes();
-  var resultEles = [];
+  var resultNodes = [];
   for (var i=0; i<expandableNodes.length; i++) {
     var expandableNode = expandableNodes[i];
     var collapsedChildren = expandableNode._private.data['collapsedChildren'];
     for(var j=0; j < collapsedChildren.length; j++){
       var collapsedChild = collapsedChildren[j];
-      if (collapsedChild._private.group != nodesOrEdges) {
+      if (collapsedChild._private.group != "nodes") {
         continue;
       }
-      resultEles.push(collapsedChild);
+      resultNodes.push(collapsedChild);
     }
   }
-  return resultEles;
-};
-
-/*
-  fetch all possible styles used in the graph
-  example: if a node is blue with thick border, and another blue with thin border -> 2 styles
-  return renderInfo {
-    colors: {
-      validXmlValue: id
-    },
-    styles: [{
-      idList: list of the nodes ids have this style
-      properties: {}
-    }]
-  }
-*/
-appUtilities.getAllStyles = function () {
-  var collapsedChildrenNodes = appUtilities.getCollapsedChildren("nodes");
-  var nodes = cy.nodes().union(collapsedChildrenNodes);
-  var collapsedChildrenEdges = appUtilities.getCollapsedChildren("edges");
-  var edges = cy.edges().union(collapsedChildrenEdges);
-
-  // first get all used colors, then deal with them and keep reference to them
-  var colorUsed = appUtilities.getColorsFromElements(nodes, edges);
-
-  var nodePropertiesToXml = {
-    'background-color': 'fill',
-    'background-opacity': 'background-opacity', // not an sbgnml XML attribute, but used with fill
-    'border-color': 'stroke',
-    'border-width': 'strokeWidth',
-    'font-size': 'fontSize',
-    'font-weight': 'fontWeight',
-    'font-style': 'fontStyle',
-    'font-family': 'fontFamily'
-  };
-  var edgePropertiesToXml = {
-    'line-color': 'stroke',
-    'width': 'strokeWidth'
-  };
-
-  function getStyleHash (element, properties) {
-    var hash = "";
-    for(var cssProp in properties){
-      if (element.data(cssProp)) {
-        hash += element.data(cssProp).toString();
-      }
-      else {
-        hash += "";
-      }
-    }
-    return hash;
-  }
-
-  function getStyleProperties (element, properties) {
-    var props = {};
-    for(var cssProp in properties){
-      if (element.data(cssProp)) {
-        //if it is a color property, replace it with corresponding id
-        if (cssProp == 'background-color' || cssProp == 'border-color' || cssProp == 'line-color') {
-          var validColor = appUtilities.elementValidColor(element, cssProp);
-          var colorID = colorUsed[validColor];
-          props[properties[cssProp]] = colorID;
-        }
-        else{
-          props[properties[cssProp]] = element.data(cssProp);
-        }
-      }
-    }
-    return props;
-  }
-
-  // populate the style structure for nodes
-  var styles = {}; // list of styleKey pointing to a list of properties and a list of nodes
-  for(var i=0; i<nodes.length; i++) {
-    var node = nodes[i];
-    var styleKey = "node"+getStyleHash(node, nodePropertiesToXml);
-    if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
-      var properties = getStyleProperties(node, nodePropertiesToXml);
-      styles[styleKey] = {
-        idList: [],
-        properties: properties
-      };
-    }
-    var currentNodeStyle = styles[styleKey];
-    // add current node id to this style
-    currentNodeStyle.idList.push(node.data('id'));
-  }
-
-  // populate the style structure for edges
-  for(var i=0; i<edges.length; i++) {
-    var edge = edges[i];
-    var styleKey = "edge"+getStyleHash(edge, edgePropertiesToXml);
-    if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
-      var properties = getStyleProperties(edge, edgePropertiesToXml);
-      styles[styleKey] = {
-        idList: [],
-        properties: properties
-      };
-    }
-    var currentEdgeStyle = styles[styleKey];
-    // add current node id to this style
-    currentEdgeStyle.idList.push(edge.data('id'));
-  }
-
-  var containerBgColor = $("#sbgn-network-container").css('background-color');
-  if (containerBgColor == "transparent") {
-    containerBgColor = "#ffffff";
-  }
-  else {
-    containerBgColor = getXmlValidColor(containerBgColor);
-  }
-
-  return {
-    colors: colorUsed,
-    background: containerBgColor,
-    styles: styles
-  };
-};
-
-// see http://stackoverflow.com/a/3627747
-function rgb2hex(rgb) {
-    if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
-
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-    function hex(x) {
-        return ("0" + parseInt(x).toString(16)).slice(-2);
-    }
-    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-}
-
-function expandShortHex(hex) {
-  if (hex.length < 6) {
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    longhex = hex.replace(shorthandRegex, function(m, r, g, b) {
-        return "#" + r + r + g + g + b + b;
-    });
-    return longhex;
-  }
-  else {
-    return hex
-  }
-}
-
-// accepts short or long hex or rgb color, return sbgnml compliant color value (= long hex)
-// can optionnally convert opacity value and return a 8 characer hex color
-function getXmlValidColor(color, opacity) {
-  var finalColor;
-  if (/^#[0-9A-F]{3,8}$/i.test(color)){ // color is hex
-    finalColor = expandShortHex(color);
-  }
-  else { // rgb case
-    finalColor = rgb2hex(color);
-  }
-  if (typeof opacity === 'undefined') {
-    return finalColor;
-  }
-  else { // append opacity as hex
-    // see http://stackoverflow.com/questions/2877322/convert-opacity-to-hex-in-javascript
-    return finalColor + Math.floor(opacity * 255).toString(16);
-  }
-}
-
-appUtilities.elementValidColor = function (ele, colorProperty) {
-  if (ele.data(colorProperty)) {
-    if (colorProperty == 'background-color') { // special case, take in count the opacity
-      if (ele.data('background-opacity')) {
-        return getXmlValidColor(ele.data('background-color'), ele.data('background-opacity'));
-      }
-      else {
-        return getXmlValidColor(ele.data('background-color'));
-      }
-    }
-    else { // general case
-      return getXmlValidColor(ele.data(colorProperty));
-    }
-  }
-  else { // element don't have that property
-    return undefined;
-  }
-};
-
-/*
-  returns: {
-    xmlValid: id
-  }
-*/
-appUtilities.getColorsFromElements = function (nodes, edges) {
-  var colorHash = {};
-  var colorID = 0;
-  for(var i=0; i<nodes.length; i++) {
-    var node = nodes[i];
-    var bgValidColor = appUtilities.elementValidColor(node, 'background-color');
-    if (!colorHash[bgValidColor]) {
-      colorID++;
-      colorHash[bgValidColor] = 'color_' + colorID;
-    }
-
-    var borderValidColor = appUtilities.elementValidColor(node, 'border-color');
-    if (!colorHash[borderValidColor]) {
-      colorID++;
-      colorHash[borderValidColor] = 'color_' + colorID;
-    }
-  }
-  for(var i=0; i<edges.length; i++) {
-    var edge = edges[i];
-    var lineValidColor = appUtilities.elementValidColor(edge, 'line-color');
-    if (!colorHash[lineValidColor]) {
-      colorID++;
-      colorHash[lineValidColor] = 'color_' + colorID;
-    }
-  }
-  return colorHash;
+  return resultNodes;
 }
 
 module.exports = appUtilities;
