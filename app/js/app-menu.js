@@ -42,7 +42,7 @@ module.exports = function () {
     colorSchemeMenuView = appUtilities.colorSchemeMenuView = new BackboneViews.ColorSchemeMenuView({el: '#color-scheme-menu'});
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
-    pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.pathsByURIQueryView({el: '#query-pathsbyURI-table'});
+    pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
     //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
     fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
     promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
