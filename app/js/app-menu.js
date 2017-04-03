@@ -14,8 +14,14 @@ module.exports = function () {
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
-    $.get("/utilities/validateSBGNML", {sbgnml: xml}, function(data){
-      console.log("validation result", data);
+    $.ajax({
+      type: 'get',
+      url: "/utilities/validateSBGNML",
+      data: {sbgnml: xml},
+      success: function(data){
+        console.log("validation result", data);
+      },
+      async: false
     });
   }
 
