@@ -344,14 +344,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
-    
-    $("#query-pathsbetween-enable-shortest-k-alteration").change(function (e) {
-      if (document.getElementById("query-pathsbetween-enable-shortest-k-alteration").checked) {
-        $("#query-pathsbetween-shortest-k").prop("disabled", false);
-      } else {
-        $("#query-pathsbetween-shortest-k").prop("disabled", true);
-      }
-    });
 
     $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
 
@@ -407,6 +399,78 @@ var PathsBetweenQueryView = Backbone.View.extend({
 
     return this;
   }
+});
+
+/**
+ * Paths By URI Query view for the Sample Application.
+ */
+var PathsByURIQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        URI: ""
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-pathsbyURI-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+        var self = this;
+        self.template = _.template($("#query-pathsbyURI-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+
+        $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
+
+            self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
+
+            if (self.currentQueryParameters.URI.length === 0) {
+                document.getElementById("query-pathsbyURI-gene-symbols").focus();
+                return;
+            }
+
+            var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
+                + self.currentQueryParameters.URI + "&format=SBGN";
+          /*var queryURL = "http://www.pathwaycommons.org/pc2/get?uri=http://identifiers.org/uniprot/"
+           + self.currentQueryParameters.URI + "&format=SBGN";*/
+            var filename = "";
+            var uri = self.currentQueryParameters.URI;
+
+            if (filename == '') {
+                filename = uri;
+            } else {
+                filename = filename + '_' + uri;
+            }
+
+            filename = filename + '_URI.sbgnml';
+            setFileContent(filename);
+
+            chise.startSpinner('paths-between-spinner');
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    chise.updateGraph(chise.convertSbgnmlToJson(data));
+                    chise.endSpinner('paths-between-spinner');
+                }
+            });
+
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
 });
 
 /*
@@ -883,6 +947,7 @@ module.exports = {
   ColorSchemeMenuView: ColorSchemeMenuView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
+  PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   PromptConfirmationView: PromptConfirmationView,

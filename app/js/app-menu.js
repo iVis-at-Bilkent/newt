@@ -10,7 +10,7 @@ var _ = require('underscore');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
   
-  var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, promptSaveView, promptConfirmationView,
+  var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
@@ -42,6 +42,7 @@ module.exports = function () {
     colorSchemeMenuView = appUtilities.colorSchemeMenuView = new BackboneViews.ColorSchemeMenuView({el: '#color-scheme-menu'});
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
+    pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.pathsByURIQueryView({el: '#query-pathsbyURI-table'});
     //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
     fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
     promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
@@ -269,6 +270,10 @@ module.exports = function () {
 
     $("#query-pathsbetween").click(function (e) {
       pathsBetweenQueryView.render();
+    });
+
+    $("#query-pathsbyURI").click(function (e) {
+        pathsByURIQueryView.render();
     });
     
     $("#grid-properties").click(function (e) {
