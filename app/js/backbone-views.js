@@ -322,6 +322,7 @@ var GeneralPropertiesView = Backbone.View.extend({
 /**
  * Paths Between Query view for the Sample Application.
  */
+//fixed
 var PathsBetweenQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
@@ -344,14 +345,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
-    
-    $("#query-pathsbetween-enable-shortest-k-alteration").change(function (e) {
-      if (document.getElementById("query-pathsbetween-enable-shortest-k-alteration").checked) {
-        $("#query-pathsbetween-shortest-k").prop("disabled", false);
-      } else {
-        $("#query-pathsbetween-shortest-k").prop("disabled", true);
-      }
-    });
+
 
     $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
 
