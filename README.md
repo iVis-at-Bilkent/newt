@@ -136,8 +136,8 @@ Thanks to JetBrains for an [Open Source License](https://www.jetbrains.com/buy/o
 
 ## Team
 
-  * [Metin Can Siper](https://github.com/metincansiper), [Selim Firat Yilmaz](https://github.com/mrsfy), [Ugur Dogrusoz](https://github.com/ugurdogrusoz), and [Alper Karacelik](https://github.com/alperkaracelik) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis)
+  * [Metin Can Siper](https://github.com/metincansiper), [Ilkin Safarli](https://github.com/kinimesi), [Hasan Balci](https://github.com/hasanbalci), [Leonard Dervishi](https://github.com/leonarddrv), [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), and [Ludovic Roy](https://github.com/royludo), [Alexander Mazein](https://github.com/amazein) of [EISBM](http://eisbm.org)
 
 #### Alumni
 
-  * Istemi Bahceci, Mecit Sari, Ayhun Tekat, M.Furkan Sahin
+  * Alper Karacelik, Selim Firat Yilmaz
