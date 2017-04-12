@@ -54,6 +54,7 @@ appUtilities.defaultGridProperties = {
   initPosAlignmentColor: "#0000ff",
   geometricAlignmentRange: 300,
   distributionAlignmentRange: 200,
+  minDistributionAlignmentRange: 15,
   initPosAlignmentLine: [0, 0],
   lineDash: [3, 5],
   horizontalDistLine: [0, 0],

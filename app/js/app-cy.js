@@ -300,18 +300,19 @@ module.exports = function () {
       geometricGuideline: gridProperties.showGeometricGuidelines,
       initPosAlignment: gridProperties.showInitPosAlignment,
       distributionGuidelines: gridProperties.showDistributionGuidelines,
-	  snapToAlignmentLocation: gridProperties.snapToAlignmentLocation,
+      snapToAlignmentLocation: gridProperties.snapToAlignmentLocation,
       lineWidth: gridProperties.lineWidth,
       guidelinesStyle: {
-		initPosAlignmentLine: gridProperties.initPosAlignmentLine,
-		lineDash: gridProperties.lineDash,
-		horizontalDistLine: gridProperties.horizontalDistLine,
+        initPosAlignmentLine: gridProperties.initPosAlignmentLine,
+        lineDash: gridProperties.lineDash,
+        horizontalDistLine: gridProperties.horizontalDistLine,
         strokeStyle: gridProperties.guidelineColor,
         horizontalDistColor: gridProperties.horizontalGuidelineColor,
         verticalDistColor: gridProperties.verticalGuidelineColor,
-		initPosAlignmentColor: gridProperties.initPosAlignmentColor,
+        initPosAlignmentColor: gridProperties.initPosAlignmentColor,
         geometricGuidelineRange: gridProperties.geometricAlignmentRange,
-        range: gridProperties.distributionAlignmentRange
+        range: gridProperties.distributionAlignmentRange,
+        minDistRange: gridProperties.minDistributionAlignmentRange
       }
     });
 
