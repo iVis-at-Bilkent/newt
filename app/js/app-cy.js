@@ -326,7 +326,7 @@ module.exports = function () {
       }
     });
 
-    appUtilities.sbgnNetworkContainer.cytoscapePanzoom(panProps);
+//    appUtilities.sbgnNetworkContainer.cytoscapePanzoom(panProps);
   }
 
   function bindCyEvents() {
