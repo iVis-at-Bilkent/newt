@@ -67,7 +67,7 @@ module.exports = function () {
         selector: 'node, edge',
         onClickFunction: function (event) {
           cy.undoRedo().do("deleteElesSimple", {
-            eles: event.cyTarget
+            eles: event.target || event.cyTarget
           });
         }
       },
@@ -103,7 +103,7 @@ module.exports = function () {
         selector: 'node.cy-expand-collapse-collapsed-node',
         onClickFunction: function (event) { // The function to be executed on click
           cy.undoRedo().do("expand", {
-            nodes: event.cyTarget
+            nodes: event.target || event.cyTarget
           });
         }
       },
@@ -113,7 +113,7 @@ module.exports = function () {
         selector: 'node:parent',
         onClickFunction: function (event) {
           cy.undoRedo().do("collapse", {
-            nodes: event.cyTarget
+            nodes: event.target || event.cyTarget
           });
         }
       },
@@ -130,7 +130,7 @@ module.exports = function () {
         title: 'Select Objects of This Type',
         selector: 'node, edge',
         onClickFunction: function (event) {
-          var cyTarget = event.cyTarget;
+          var cyTarget = event.target || event.cyTarget;
           var sbgnclass = cyTarget.data('class');
 
           cy.elements().unselect();
@@ -142,7 +142,7 @@ module.exports = function () {
         title: 'Show Hidden Neighbors',
         selector: 'node',
         onClickFunction: function (event) {
-          var cyTarget = event.cyTarget;
+          var cyTarget = event.target || event.cyTarget;
           appUtilities.showAndPerformIncrementalLayout(cyTarget);
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
@@ -351,12 +351,12 @@ module.exports = function () {
       if (modeHandler.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
         appUtilities.enableDragAndDropMode();
         appUtilities.nodesToDragAndDrop = self.union(cy.nodes(':selected'));
-        appUtilities.dragAndDropStartPosition = event.cyPosition;
+        appUtilities.dragAndDropStartPosition = event.position || event.cyPosition;
       }
     });
     
     cy.on("mouseup", function (event) {
-      var self = event.cyTarget;
+      var self = event.target || event.cyTarget;
       if (appUtilities.dragAndDropModeEnabled) {
         var newParent;
         if (self != cy) {
@@ -369,9 +369,10 @@ module.exports = function () {
         var nodes = appUtilities.nodesToDragAndDrop;
 
         appUtilities.disableDragAndDropMode();
-
-        chise.changeParent(nodes, newParent, event.cyPosition.x - appUtilities.dragAndDropStartPosition.x, 
-                              event.cyPosition.y - appUtilities.dragAndDropStartPosition.y);
+        
+        var pos = event.position || event.cyPosition;
+        chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
+                              pos.y - appUtilities.dragAndDropStartPosition.y);
 
         appUtilities.dragAndDropStartPosition = null;
         appUtilities.nodesToDragAndDrop = null;
@@ -450,7 +451,7 @@ module.exports = function () {
         // also be aware that not everything in the event may be correctly defined here
       }
       else { // normal click case
-        cyTarget = event.cyTarget;
+        cyTarget = event.target || event.cyTarget;
       }
       
       
@@ -477,8 +478,9 @@ module.exports = function () {
             cyPosY = modelPos.y;
           }
           else {
-            cyPosX = event.cyPosition.x;
-            cyPosY = event.cyPosition.y;
+            var pos = event.position || event.cyPosition;
+            cyPosX = pos.x;
+            cyPosY = pos.y;
           }
           
 
