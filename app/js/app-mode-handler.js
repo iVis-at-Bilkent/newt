@@ -48,7 +48,7 @@ var modeHandler = {
 
       modeHandler.autoEnableMenuItems(false);
 
-      cy.autolock(true);
+      cy.autoungrabify(true);
       cy.autounselectify(true);
 
       cy.edgehandles('drawoff');
@@ -88,7 +88,7 @@ var modeHandler = {
 
       modeHandler.autoEnableMenuItems(false);
 
-      cy.autolock(true);
+      cy.autoungrabify(true);
       cy.autounselectify(true);
 
       cy.edgehandles('drawon');
@@ -111,7 +111,7 @@ var modeHandler = {
       modeHandler.autoEnableMenuItems(true);
 
       modeHandler.mode = "selection-mode";
-      cy.autolock(false);
+      cy.autoungrabify(false);
       cy.autounselectify(false);
 
       cy.edgehandles('drawoff');
