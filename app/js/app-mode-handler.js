@@ -88,7 +88,6 @@ var modeHandler = {
 
       modeHandler.autoEnableMenuItems(false);
 
-      cy.autoungrabify(true);
       cy.autounselectify(true);
 
       cy.edgehandles('drawon');
