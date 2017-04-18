@@ -22,7 +22,7 @@
     "jquery-expander": "1.7.0",
     "cytoscape-panzoom": "cytoscape/cytoscape.js-panzoom#master",
     "cytoscape-qtip": "cytoscape/cytoscape.js-qtip#master",
-    "cytoscape-edgehandles": "~2.10.2",
+    "cytoscape-edgehandles": "2.10.2",
     "filesaverjs": "~0.2.2",
     "mousetrap": "^1.6.0",
     "ocanvas": "^2.8.5",
