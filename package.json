@@ -35,7 +35,7 @@
     "cytoscape-clipboard": "^1.0.3",
     "cytoscape-edge-bend-editing": "iVis-at-Bilkent/cytoscape.js-edge-bend-editing#master",
     "cytoscape-view-utilities": "^2.0.0",
-    "cytoscape-context-menus": "^2.0.3",
+    "cytoscape-context-menus": "iVis-at-Bilkent/cytoscape.js-context-menus#master",
     "cytoscape-grid-guide": "iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-autopan-on-drag": "^2.0.1",
     "cytoscape-node-resize": "iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
