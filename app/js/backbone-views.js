@@ -300,8 +300,16 @@ var GeneralPropertiesView = Backbone.View.extend({
               document.getElementById("animate-on-drawing-changes").checked;
       appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
           document.getElementById("adjust-node-label-font-size-automatically").checked;
+      appUtilities.currentGeneralProperties.enablePorts =
+          document.getElementById("enable-ports").checked;
 
       chise.refreshPaddings(); // Refresh/recalculate paddings
+      if (appUtilities.currentGeneralProperties.enablePorts) {
+        chise.enablePorts();
+      }
+      else {
+        chise.disablePorts();
+      }
       cy.style().update();
       
       $(self.el).modal('toggle');

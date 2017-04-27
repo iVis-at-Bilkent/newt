@@ -71,6 +71,7 @@ appUtilities.defaultGeneralProperties = {
   rearrangeAfterExpandCollapse: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
+  enablePorts: true,
   mapColorScheme: 'black_white'
 };
 
