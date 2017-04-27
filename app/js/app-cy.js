@@ -341,6 +341,12 @@ module.exports = function () {
   }
 
   function bindCyEvents() {
+    cy.on('layoutstart', function(event) {
+      if (event.layout.options.name !== 'preset') {
+        appUtilities.currentGeneralProperties.enablePorts = false;
+      }
+    });
+    
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
     });
