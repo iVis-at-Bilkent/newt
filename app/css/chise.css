@@ -365,6 +365,10 @@ input {
     font-size: 12px !important;
 }
 
+textarea {
+    font-size: 12px !important;
+}
+
 button:not(.close) {
     font-size: 12px !important;
 }
@@ -611,6 +615,8 @@ hr.inspector-divider {
     z-index: 100;
     display: none;
     width: 100px;
+    height: 30px;
+    white-space: pre;
 }
 
 .element-palette img {

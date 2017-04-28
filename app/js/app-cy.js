@@ -620,6 +620,7 @@ module.exports = function () {
     });
     
     cy.on('unselect', function() {
+      $("#node-label-textbox").blur();
       handleInspectorThrottled();
     });
     

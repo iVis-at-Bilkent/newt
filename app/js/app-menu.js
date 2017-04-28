@@ -102,21 +102,39 @@ module.exports = function () {
       }
     });
 
+    $("#node-label-textbox").keyup(function (e) {
+      if (e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+      }
+    });
+
     $("#node-label-textbox").keydown(function (e) {
-      if (e.which === 13) {
+      if (e.which === 13 && !e.shiftKey) {
         $("#node-label-textbox").blur();
       }
     });
     
     $("#node-label-textbox").blur(function () {
       $("#node-label-textbox").hide();
-      $("#node-label-textbox").data('node', undefined);
+      $("#node-label-textbox").removeData("node");
     });
 
     $("#node-label-textbox").on('change', function () {
       var node = $(this).data('node');
-      chise.changeNodeLabel(node, $(this).val());
+      var lines = $(this).val();
+
+      if ($(this).val().includes("\\n")){
+        lines = $(this).val().split("\\n");
+        lines = $.map(lines, function(x) {
+          x = x.trim();
+          if (x) return (x);
+        });
+        lines = lines.join("\n")
+      }
+
+      chise.changeNodeLabel(node, lines);
       inspectorUtilities.handleSBGNInspector();
+
     });
 
     $("#new-file, #new-file-icon").click(function () {

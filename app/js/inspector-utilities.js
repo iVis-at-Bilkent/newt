@@ -101,6 +101,8 @@ inspectorUtilities.handleSBGNInspector = function () {
     var sbgnlabel = chise.elementUtilities.getCommonProperty(selectedEles, "label", "data");
     if (sbgnlabel == null) {
       sbgnlabel = "";
+    } else if (sbgnlabel.includes("\n")) {
+      sbgnlabel = sbgnlabel.replace(new RegExp("\n", "g"), " \\n ");
     }
 
     var classInfo = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
@@ -490,7 +492,30 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-label").on('change', function () {
-        chise.changeNodeLabel(selectedEles, $(this).val());
+        var lines = $(this).val().trim();
+        var current_label_data = selectedEles.data('label').replace(new RegExp("\n", "g"), " \\n ").trim();
+
+        if (current_label_data !== lines){
+          lines = lines.split("\\n");
+          lines = $.map(lines, function(x) {
+            x = x.trim();
+            if (x) return (x);
+          });
+          lines = lines.join("\n");
+
+          chise.changeNodeLabel(selectedEles, lines);
+        }
+      });
+
+      $("#inspector-label").on('keydown', function (e) {
+        var current_insp_lable = $(this).val();
+        if (e.keyCode == 13 && e.shiftKey) {
+          var cursor_position = $(this)[0].selectionStart;
+          var tmp = $(this).val().substring(0, cursor_position) + " \\n " + $(this).val().substring(cursor_position);
+          $(this).val(tmp);
+        } else if (e.keyCode == 13 && !e.shiftKey) {
+          $(this).trigger("change");
+        }
       });
 
       $("#inspector-background-opacity").on('change', function () {
