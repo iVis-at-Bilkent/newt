@@ -1,6 +1,7 @@
 var appUtilities = require('./app-utilities');
 var inspectorUtilities = {};
 var fillBioGeneContainer = require('./fill-biogene-container');
+var annotHandler = require('./annotations-handler');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
   //first empty the state variables and infos data in inspector
@@ -394,22 +395,31 @@ inspectorUtilities.handleSBGNInspector = function () {
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
       
+      function addCollapsibleSection(identifier, title, hasSubtitleSection) {
+        html =  "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#"+identifier+"-collapsable'>"+
+                  "<p class='panel-title accordion-toggle'>"+title+"</p>"+
+                "</div>"+
+                "<div style='margin-top: 5px;align: center;text-align: center;' id='"+identifier+"-collapsable' class='panel-collapse collapse'>";
+        if (hasSubtitleSection) {
+          html += "<div class='panel-body' style='padding-left: 3px;' id='"+identifier+"-title'></div>";
+        }
+        html += "<div id='"+identifier+"-container'></div>"+
+                "</div>";
+
+        $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-'+identifier+'-panel" class="panel" ></div>');
+        $("#sbgn-inspector-style-"+identifier+"-panel").html(html);
+      }
+
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
-          html = "";
-    
-          html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#biogene-collapsable'><p class='panel-title accordion-toggle'>Properties from EntrezGene</p></div>"
-    
-          html += "<div style='margin-top: 5px;align: center;text-align: center;' id='biogene-collapsable' class='panel-collapse collapse'>";
-          html += "<div class='panel-body' style='padding-left: 3px;' id='biogene-title'></div>";
-          html += "<div id='biogene-container'></div>";
-          html += "</div>";
-//          html += "<hr class='inspector-divider'>";
-          
-          $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-entrezgene-panel" class="panel" ></div>');
-          $("#sbgn-inspector-style-entrezgene-panel").html(html);
+
+          addCollapsibleSection("biogene", "Properties from EntrezGene", true);
           fillBioGeneContainer(selectedEles[0]);
       }
+
+      // annotations handling part
+      addCollapsibleSection("annotations", "Custom Properties", false);
+      annotHandler.fillAnnotationsContainer(selectedEles[0]);
     }
 
     if (type == "node") {

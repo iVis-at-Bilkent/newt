@@ -949,6 +949,49 @@ var FontPropertiesView = Backbone.View.extend({
   }
 });
 
+var AnnotationListView = Backbone.View.extend({
+  elements: [],
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#annotation-list-template").html());
+    var elements = this.model.elements;
+    for(var i=0; i<elements.length; i++) {
+      this.elements.push(elements[i]);
+    }
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#annotation-list-template").html());
+    var renderedElement = [];
+    for(var i=0; i<this.elements.length; i++) {
+      renderedElement.push(this.elements[i].render());
+    }
+    self.template = self.template({elements: renderedElement});
+    $(self.el).html(self.template);
+    return this;
+  }
+});
+
+var AnnotationElementView = Backbone.View.extend({
+  vocabulary: null,
+  dbList: null,
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#annotation-element-template").html());
+    this.vocabulary = this.model.vocabulary;
+    this.dbList = this.model.dbList;
+    //console.log("vocab", this.vocabulary);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#annotation-element-template").html());
+    //$(self.el).html(self.template);
+    self.template = self.template({vocabulary: this.vocabulary, dbList: this.dbList});
+    //console.log('self.template of element', self.template());
+    return self.template;
+  }
+});
+
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
@@ -961,5 +1004,7 @@ module.exports = {
   PromptConfirmationView: PromptConfirmationView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
-  FontPropertiesView: FontPropertiesView
+  FontPropertiesView: FontPropertiesView,
+  AnnotationListView: AnnotationListView,
+  AnnotationElementView: AnnotationElementView
 };
