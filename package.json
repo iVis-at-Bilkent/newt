@@ -20,7 +20,7 @@
     "qtip2": "~3.0.2",
     "bootstrap": "3.3.7",
     "jquery-expander": "1.7.0",
-    "cytoscape-panzoom": "cytoscape/cytoscape.js-panzoom#master",
+    "cytoscape-panzoom": "~2.5.2",
     "cytoscape-qtip": "cytoscape/cytoscape.js-qtip#master",
     "cytoscape-edgehandles": "2.10.2",
     "filesaverjs": "~0.2.2",
