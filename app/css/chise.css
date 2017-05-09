@@ -672,3 +672,11 @@ hr.inspector-divider {
 img#template-reaction-add-button:hover {
     cursor: pointer;
 }
+
+.delete-annotation:hover {
+    background-color: #FBEFF2;
+}
+
+.pointer-button:hover {
+    cursor: pointer;
+}
