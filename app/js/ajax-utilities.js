@@ -1,10 +1,11 @@
 var libxmljs = require('libxmljs');
-fs = require('fs');
+var fs = require('fs');
+var request = require('request');
 
 /*
 	functions in this file all have to take the same arguments:
 	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
-	 - res: the response object that MUST be called threw res.send to send the result back
+	 - res: the response object that MUST be called through res.send to send the result back
 	The only cases where res.send doesn't need to be used is in case of errors.
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
@@ -55,4 +56,17 @@ exports.validateSBGNML = function (req, res) {
 	else {
 		res.send("validate OK");
 	}
-}
+};
+
+/**
+ * Simple get request to other page. Used to test the validity of annotations links.
+ * Simply pass the response back.
+ * This cannot be done on browser side due to CORS/same-origin policies forbiding requests
+ * by the application to other domains than the application's domain.
+ */
+exports.testURL = function (req, res) {
+	var url = req.query.url;
+	request.get(url, {timeout: 5000}, function (error, response, body) {
+		res.send({error: error, response: response});
+	});
+};
