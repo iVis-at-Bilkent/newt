@@ -6,10 +6,7 @@
 
 var jquery = $ = require('jquery');
 var AnnotationListView = require('./backbone-views').AnnotationListView;
-var AnnotationElementView = require('./backbone-views').AnnotationElementView;
 var Backbone = require('backbone');
-/*var localStorage = require('backbone.localstorage');
-var LocalStorage = localStorage.LocalStorage;*/
 
 var ns = {};
 
@@ -239,32 +236,32 @@ ns.expandPrefix = function (string) {
 	return string;
 };
 
+/**
+ * Called everytime the inspector div is filled.
+ * Creates the view for annotations of the current selected element. 
+ */
 ns.fillAnnotationsContainer = function (element) {
-
-	/*var element = new AnnotationElementView({model: {vocabulary: vocabulary, dbList: dbList, status: "validated", index: 0}});
-	var element2 = new AnnotationElementView({model: {vocabulary: vocabulary, dbList: dbList, status: "error", index: 1}});
-
-	var info = new AnnotationListView({
-		el: '#annotations-container',
-		model: {elements: [element, element2]}
-	}).render();*/
-	//$('#annotations-container').html("<span>"+ns.getElementAnnotations(element)+"</span>");
-
-	var annotationsModel;
-	if(element.data('annotationsModel')) {
-		console.log("get previous model");
-		annotationsModel = element.data('annotationsModel');
+	var annotationsListModel;
+	if(element.data('annotationsView')) {
+		// some annotations view were already present
+		// retrieve listModel from previous view
+		var previousView = element.data('annotationsView');
+		annotationsListModel = previousView.model;
+		// now ensure that each model elements are up to date with data contained in data('annotations')
+		annotationsListModel.forEach(function(item){
+			item.fetch();
+		});
+		// finally destroy the previous view
+		previousView.remove();
 	}
 	else {
-		console.log("create new model");
-		annotationsModel = new ns.AnnotationList([], {cyParent: element});
-		element.data('annotationsModel', annotationsModel);
+		// create new and empty list
+		annotationsListModel = new ns.AnnotationList([], {cyParent: element});
 	}
-	var listView = new AnnotationListView({model: annotationsModel});
-
-	//test validation
-	//ns.validateAnnotation("pubmed", "163333295");
-	//ns.validateAnnotation("uniprot", "62158");
+	// create new view from model
+	var listView = new AnnotationListView({model: annotationsListModel});
+	// keep reference to this view, so we can check and delete it later
+	element.data('annotationsView', listView);
 };
 
 ns.getElementAnnotations = function(element) {
@@ -333,42 +330,11 @@ ns.IDToRetrieveURL = function (dbKey, id) {
 	return identifiersURL + dbID + "/" + id;
 };
 
-/*ns.getResourceAccessURL = function (miriamID, resourceID) {
-	var identifierResourceURL = "http://identifiers.org/rest/resources/";
-	var url = identifierResourceURL + miriamID;
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: url,
-		success: function(data){
-			console.log("resource data", data);
-			var retrievableURL = data.accessURL.replace(/\$id/, resourceID);
-			console.log("end URL", retrievableURL);
-			ns.testURL(retrievableURL);
-		},
-		error: function(jqXHR, status, error) {
-			console.log("could not get resource data", status, error);
-		}
-	});
-};
-
-ns.testURL = function (url) {
-	// retrieve URL to check that content exists
-	$.ajax({
-		type: "GET",
-		dataType: "html",
-		url: url,
-		success: function(data){
-			console.log("retrieve", data);
-		},
-		error: function(jqXHR, status, error) {
-			console.log("could not retrieve", status, error);
-		}
-	});
-};*/
-
 /* <******* backbone part *******> */
 
+/**
+ * Model that holds the information for a single annotation element.
+ */
 ns.Annotation = Backbone.Model.extend({
 	defaults: {
 		status: "unchecked",
@@ -386,12 +352,10 @@ ns.Annotation = Backbone.Model.extend({
 	sync: function(method, model, options) {
 		switch(method) {
 			case 'delete':
-				console.log("delete");
-				delete model.get('cyParent').data('annotations')[model.cid];
+				delete model.get('cyParent').data('annotations')[model.get('id')];
 				break;
 			case 'read':
-				console.log("read");
-				var annotationData = model.get('cyParent').data('annotations')[model.cid];
+				var annotationData = model.get('cyParent').data('annotations')[model.get('id')];
 				model.set('status', annotationData.status);
 				model.set('selectedDB', annotationData.selectedDB);
 				model.set('selectedRelation', annotationData.selectedRelation);
@@ -399,29 +363,34 @@ ns.Annotation = Backbone.Model.extend({
 				model.set('annotationKey', annotationData.annotationKey);
 				break;
 			case 'update':
-				console.log("update", options);
-				model.get('cyParent').data('annotations')[model.cid] = model.toJSON();
+				model.get('cyParent').data('annotations')[model.get('id')] = model.toJSON();
 				break;
 			case 'create':
-				console.log("create model", model, options);
-				console.log("whitelist attributes", ns.Annotation.stringifiableAttr);
 				if(!model.get('cyParent').data('annotations')) {
 					model.get('cyParent').data('annotations', {}); // ensure annotations has been init
 				}
-				model.get('cyParent').data('annotations')[model.cid] = model.toJSON();
 				model.set('id', model.get('cyParent').data('id')+'-annot-'+model.collection.indexOf(model));
-				//JSON.parse(JSON.stringify(model, ns.Annotation.stringifiableAttr));
+				model.get('cyParent').data('annotations')[model.get('id')] = model.toJSON();
 				break;
 		}
 	}
 }, {
+	/**
+	 * class attributes
+	 * will provide choices for the UI select lists
+	 */
 	dbList: ns.dbList,
-	vocabulary: ns.vocabulary,
-	stringifiableAttr: ['status', 'selectedDB', 'selectedRelation', 'annotationValue', 'annotationKey']
+	vocabulary: ns.vocabulary
 });
 
+/**
+ * Collection that represents the list of annotations of a cytoscape element.
+ */
 ns.AnnotationList = Backbone.Collection.extend({
 	model: ns.Annotation,
+	/**
+	 * override default collection's initialize to be able to pass reference to parent cytoscape element
+	 */
 	initialize: function(models, options) {
 		options || (options = {});
         if (options.cyParent) {

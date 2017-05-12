@@ -961,32 +961,43 @@ var AnnotationListView = Backbone.View.extend({
     for(var i=0; i<elements.length; i++) {
       this.elements.push(elements[i]);
     }*/
-    console.log("inside view list", this);
+    console.log("initialize view list", this);
     this.listenTo(this.model, 'add', this.addAnnotationElementView);
-    this.render();
+    this.listenTo(this.model, 'destroy', this.resetAndPopulate);
+
+    this.resetAndPopulate();
   },
   events: {
     'click #annotations-add-button': 'createAnnotation'
+  },
+  resetAndPopulate: function() {
+    this.elements = [];
+    this.render();
+    // populate from the model
+    var self = this;
+    this.model.forEach(function(item){
+      console.log("foreach", item);
+      self.addAnnotationElementView(item);
+    });
   },
   createAnnotation: function(e) {
     console.log("createAnnotation");
     var newAnnot = this.model.create({cyParent: this.model.cyParent});//, {wait: true});
     //this.model.add(newAnnot);
-    console.log("creation done", this.model);
     /*res.id = res.cyParent.data('id')+'-annot-'+res.collection.indexOf(res);
     console.log("res of creation of model:", res);*/
   },
   addAnnotationElementView: function(annotationModel) {
-    console.log("add elementview", annotationModel);
-    // var view = new app.TodoView({model: todo});
-    // $('#todo-list').append(view.render().el);
-    this.$el.append("<div></div>");
+    console.log("add element view", annotationModel);
+    //this.$el.append("<div></div>");
     var view = new AnnotationElementView({model: annotationModel});
     this.elements.push(view);
+    console.log("add element view VIEW", view);
     this.$el.children('div').first().append(view.render().el);
     //this.render();
   },
   render: function () {
+    console.log("render list view");
     this.template = _.template($("#annotation-list-template").html());
     this.$el.empty();
     var renderedElement = [];
@@ -1000,7 +1011,6 @@ var AnnotationListView = Backbone.View.extend({
     });*/
 
     this.$el.html(this.template({elements: renderedElement}));
-    console.log("rendered");
     return this;
   }
 });
@@ -1032,49 +1042,53 @@ var AnnotationElementView = Backbone.View.extend({
     this.listenTo(this.model, 'change:status', this.statusChangeHandler);
   },
   events: {
-    "change .annotations-db-list" : 'dbChangeHandler',
-    "change .annotations-vocabulary-list" : 'vocabularyChangeHandler'
+    "change .annotations-db-list": 'dbChangeHandler',
+    "change .annotations-vocabulary-list": 'vocabularyChangeHandler',
+    "click .annotations-retry-validation": 'retryHandler',
+    "click .delete-annotation": 'deleteHandler'
     //"input .annotations-object-identifier": "valueChangeHandler" <-- see initialize
   },
   dbChangeHandler: function(e) {
     var selectedDBkey = $(e.currentTarget).val();
     this.model.set('selectedDB', selectedDBkey);
     console.log("change on dblist, selected", selectedDBkey);
+    this.model.save();
     this.launchValidation();
   },
   valueChangeHandler: function (e) {
     var identifier = $(e.currentTarget).val();
     this.model.set('annotationValue', identifier);
     console.log("change on identifier, selected", identifier);
+    this.model.save();
     this.launchValidation();
   },
   vocabularyChangeHandler: function(e) {
     var relation = $(e.currentTarget).val();
     this.model.set('selectedRelation', relation);
-    console.log("change on relationship, selecte", relation);
+    this.model.save();
+    this.render();
+    //console.log("change on relationship, selecte", relation);
+  },
+  retryHandler: function(e) {
+    //console.log("retry clicked");
+    this.launchValidation();
   },
   statusChangeHandler: function(annotationModel) {
-    console.log("status change", annotationModel.get('status'));
-    console.log("isNew", annotationModel.isNew(), annotationModel.id, annotationModel.get('id'));
+    //console.log("status change", annotationModel.get('status'));
     //annotationModel.save();
     this.render();
-    /*switch(annotationModel.get('status')) {
-      case "unchecked":
-        break;
-      case "pending":
-        break;
-      case "error":
-        break;
-      case "validated":
-        break;
-    }*/
+  },
+  deleteHandler: function(e) {
+    console.log("remove button clicked");
+    this.model.destroy();
+    this.remove();
   },
   render: function () {
     //this.model.fetch();
+    console.log('render element view', this.$el);
     this.template = _.template($("#annotation-element-template").html());
     this.$el.empty();
     //$(self.el).html(self.template);
-    console.log("render with annotation value", this.model.get('annotationValue'));
     this.$el.html(this.template({
       vocabulary: this.model.constructor.vocabulary,
       dbList: this.model.constructor.dbList,
@@ -1084,7 +1098,6 @@ var AnnotationElementView = Backbone.View.extend({
       selectedRelation: this.model.get('selectedRelation'),
       annotationValue: this.model.get('annotationValue')
     }));
-    console.log('self.template of element', this);
     return this;
   },
   launchValidation: function () {
@@ -1096,19 +1109,19 @@ var AnnotationElementView = Backbone.View.extend({
     if (identifier && !(identifier.length === 0 || !identifier.trim())) {
       this.model.set('status', 'pending');
       //$("#annotations-status-icon-"+index).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
-      console.log("after pending change");
+
       var validateAnnotation = this.model.get('validateAnnotation');
       var self = this;
       validateAnnotation(selectedDBkey, identifier, function(err, result) {
         if(err) {
           self.model.set('status', 'error');
-          //$("#annotations-status-icon-"+index).html('<i style="color:#FE2E2E;" class="fa fa-exclamation-triangle"></i><a href="#" style="color:#FE2E2E;">Retry</a>');
+          self.model.save();
           console.log("Error with validation", err);
           return;
         }
         self.model.set('status', 'validated');
-        //$("#annotations-status-icon-"+index).html('<i style="color:green;" class="fa fa-check fa-lg"></i> ');
-        console.log("valid", result);
+        self.model.save();
+        console.log("Validation passed", result);
       });
     }
   }

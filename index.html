@@ -1438,9 +1438,9 @@
         <script type="text/template" id="annotation-element-template">
             <div style="padding: 5px;border-bottom: 1px solid rgb(221, 221, 221);">
                 <div style="float:left;width:93%;">
-                    <select style="width: 50%;margin-right:2%;float:left;" class="annotations-vocabulary-list" id="annotations-vocabulary-list-<%= index %>">
+                    <select style="width: 50%;margin-right:2%;float:left;" class="annotations-vocabulary-list" id="annotations-vocabulary-list-<%= index %>" title="<%= vocabulary[selectedRelation].description %>">
                         <% var i=0; for( var relation in vocabulary) { %>
-                            <option value="<%= relation %>" <% if (relation == selectedRelation){ %> selected<%}%> ><%= vocabulary[relation].label %></option>
+                            <option value="<%= relation %>" <% if (relation == selectedRelation){ %> selected<%}%> title="<%= vocabulary[relation].description %>"><%= vocabulary[relation].label %></option>
                         <% i++;} %>
                     </select>
                     <select style="width: 47%;margin-left:0px;float:left;" class="annotations-db-list" id="annotations-db-list-<%= index %>">
@@ -1456,14 +1456,14 @@
                         <!-- reflect status of validation with icon -->
                         <div style="float:left;margin-top:5px;" id="annotations-status-icon-<%= index %>">
                         <% if (status == "unchecked"){ %>
-                            <i style="color:#E6E6E6;" class="fa fa-check fa-lg"></i>
+                            <i style="color:#E6E6E6;" class="fa fa-check fa-lg" title="No validation was done. Fill the input on the left or change the database to trigger validation."></i>
                         <%} else if (status == "pending"){ %>
                             <i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>
                         <%} else if (status == "validated"){ %>
-                            <i style="color:green;" class="fa fa-check fa-lg"></i>
+                            <i style="color:green;" class="fa fa-check fa-lg" title="The identifier has been successfully checked and validated."></i>
                         <%} else if (status == "error"){ %>
-                            <i style="color:#FE2E2E;" class="fa fa-exclamation-triangle"></i>
-                            <a href="#" style="color:#FE2E2E;">Retry</a>
+                            <i style="color:#FE2E2E;" class="fa fa-exclamation-triangle" title="The identifier could not be validated."></i>
+                            <a href="#" style="color:#FE2E2E;" class="annotations-retry-validation">Retry</a>
                         <%}%>
                         </div>
                     </div>
