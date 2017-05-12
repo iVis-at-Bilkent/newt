@@ -380,7 +380,8 @@ ns.Annotation = Backbone.Model.extend({
 	 * will provide choices for the UI select lists
 	 */
 	dbList: ns.dbList,
-	vocabulary: ns.vocabulary
+	vocabulary: ns.vocabulary,
+	userDefinedProperties: []
 });
 
 /**

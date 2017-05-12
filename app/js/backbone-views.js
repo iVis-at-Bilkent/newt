@@ -1050,21 +1050,44 @@ var AnnotationElementView = Backbone.View.extend({
   },
   dbChangeHandler: function(e) {
     var selectedDBkey = $(e.currentTarget).val();
-    this.model.set('selectedDB', selectedDBkey);
     console.log("change on dblist, selected", selectedDBkey);
-    this.model.save();
-    this.launchValidation();
+    if (this.underControlledMode()) {
+      this.model.set('selectedDB', selectedDBkey);
+      this.model.save();
+      this.launchValidation();
+    }
+    else {
+      if (selectedDBkey && !(selectedDBkey.length === 0 || !selectedDBkey.trim())) {
+        // real value provided
+        var globalProp = this.model.constructor.userDefinedProperties;
+        if (!_.contains(globalProp, selectedDBkey)) {
+          globalProp.push(selectedDBkey);
+        }
+        this.model.set('selectedDB', selectedDBkey);
+        this.model.save();
+        this.render();
+      }
+    }
   },
   valueChangeHandler: function (e) {
     var identifier = $(e.currentTarget).val();
     this.model.set('annotationValue', identifier);
     console.log("change on identifier, selected", identifier);
     this.model.save();
-    this.launchValidation();
+    if (this.underControlledMode()) {
+      this.launchValidation();
+    }
   },
   vocabularyChangeHandler: function(e) {
     var relation = $(e.currentTarget).val();
     this.model.set('selectedRelation', relation);
+    if (this.underControlledMode()) {
+      this.model.set('selectedDB', this.model.defaults.selectedDB);
+    }
+    else {
+      this.model.set('selectedDB', null);
+    }
+
     this.model.save();
     this.render();
     //console.log("change on relationship, selecte", relation);
@@ -1083,6 +1106,9 @@ var AnnotationElementView = Backbone.View.extend({
     this.model.destroy();
     this.remove();
   },
+  underControlledMode: function() {
+    return this.model.constructor.vocabulary[this.model.get('selectedRelation')].controlled;
+  },
   render: function () {
     //this.model.fetch();
     console.log('render element view', this.$el);
@@ -1092,6 +1118,7 @@ var AnnotationElementView = Backbone.View.extend({
     this.$el.html(this.template({
       vocabulary: this.model.constructor.vocabulary,
       dbList: this.model.constructor.dbList,
+      userDefinedProperties: this.model.constructor.userDefinedProperties,
       status: this.model.get('status'),
       index: this.model.collection.indexOf(this.model),
       selectedDB: this.model.get('selectedDB'),
