@@ -326,7 +326,7 @@ module.exports = function () {
       }
     });
 
-    var panProps = ({
+    var panProps = {
       fitPadding: 10,
       fitSelector: ':visible',
       animateOnFit: function () {
@@ -335,9 +335,9 @@ module.exports = function () {
       animateOnZoom: function () {
         return appUtilities.currentGeneralProperties.animateOnDrawingChanges;
       }
-    });
+    };
 
-//    appUtilities.sbgnNetworkContainer.cytoscapePanzoom(panProps);
+    cy.panzoom(panProps);
   }
 
   function bindCyEvents() {
