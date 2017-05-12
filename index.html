@@ -1432,24 +1432,42 @@
                     <%= elements[i] %>
                 <% } %>
             </div>
-            <img src="app/img/add.png">
+            <img src="app/img/add.png" id="annotations-add-button" class="pointer-button">
         </script>
 
         <script type="text/template" id="annotation-element-template">
             <div style="padding: 5px;border-bottom: 1px solid rgb(221, 221, 221);">
                 <div style="float:left;width:93%;">
-                    <select style="width: 40%;margin-right:10%;float:left;">
+                    <select style="width: 50%;margin-right:2%;float:left;" class="annotations-vocabulary-list" id="annotations-vocabulary-list-<%= index %>">
                         <% var i=0; for( var relation in vocabulary) { %>
-                            <option value="<%= relation %>"><%= vocabulary[relation].label %></option>
+                            <option value="<%= relation %>" <% if (relation == selectedRelation){ %> selected<%}%> ><%= vocabulary[relation].label %></option>
                         <% i++;} %>
                     </select>
-                    <select style="width: 40%;margin-left:0px;float:left;">
+                    <select style="width: 47%;margin-left:0px;float:left;" class="annotations-db-list" id="annotations-db-list-<%= index %>">
                         <% var i=0; for( var db in dbList) { %>
-                            <option value="<%= dbList[db].id %>"><%= dbList[db].label %></option>
+                            <option value="<%= db %>" <% if (db == selectedDB){ %> selected<%}%> ><%= dbList[db].label %></option>
                         <% i++;} %>
                     </select>
                     <div style="clear:both;"></div>
-                    <input type="text" style="width: 60%;float:left;margin-top:5px;" />
+
+                    <div style="display:flex;align-items:center;">
+                        <input type="text" style="width: 70%;float:left;margin-top:5px;margin-right:2%;" class="annotations-object-identifier" id="annotations-object-identifier-<%= index %>" <% if (annotationValue != null){ %> value="<%= annotationValue %>" <%}%>/>
+
+                        <!-- reflect status of validation with icon -->
+                        <div style="float:left;margin-top:5px;" id="annotations-status-icon-<%= index %>">
+                        <% if (status == "unchecked"){ %>
+                            <i style="color:#E6E6E6;" class="fa fa-check fa-lg"></i>
+                        <%} else if (status == "pending"){ %>
+                            <i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>
+                        <%} else if (status == "validated"){ %>
+                            <i style="color:green;" class="fa fa-check fa-lg"></i>
+                        <%} else if (status == "error"){ %>
+                            <i style="color:#FE2E2E;" class="fa fa-exclamation-triangle"></i>
+                            <a href="#" style="color:#FE2E2E;">Retry</a>
+                        <%}%>
+                        </div>
+                    </div>
+
                     <div style="clear:both;"></div>
                 </div>
                 <div style="width:6%;float:right;height:51px;display:flex;align-items:center;" class="delete-annotation pointer-button">

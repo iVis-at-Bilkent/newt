@@ -7,6 +7,9 @@
 var jquery = $ = require('jquery');
 var AnnotationListView = require('./backbone-views').AnnotationListView;
 var AnnotationElementView = require('./backbone-views').AnnotationElementView;
+var Backbone = require('backbone');
+/*var localStorage = require('backbone.localstorage');
+var LocalStorage = localStorage.LocalStorage;*/
 
 var ns = {};
 
@@ -15,7 +18,10 @@ var prefixes = {	rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
 				    bqbiol: "http://biomodels.net/biology-qualifiers/",
 				    sio: "http://semanticscience.org/resource/"};
 
-var vocabulary = {
+var identifiersURL = "http://identifiers.org/";
+var validateRESTURL = "http://identifiers.org/rest/identifiers/validate/";
+
+ns.vocabulary = {
 	// bqmodel
 	"bqmodel:is": {
 		label: "bqmodel:is",
@@ -169,7 +175,7 @@ var vocabulary = {
 
 };
 
-var dbList = {
+ns.dbList = {
 	chebi: {
 		id: "chebi",
 		label: "ChEBI"
@@ -235,20 +241,195 @@ ns.expandPrefix = function (string) {
 
 ns.fillAnnotationsContainer = function (element) {
 
-	var element = new AnnotationElementView({model: {vocabulary: vocabulary, dbList: dbList}});
-	var element2 = new AnnotationElementView({model: {vocabulary: vocabulary, dbList: dbList}});
+	/*var element = new AnnotationElementView({model: {vocabulary: vocabulary, dbList: dbList, status: "validated", index: 0}});
+	var element2 = new AnnotationElementView({model: {vocabulary: vocabulary, dbList: dbList, status: "error", index: 1}});
 
 	var info = new AnnotationListView({
 		el: '#annotations-container',
 		model: {elements: [element, element2]}
-	}).render();
+	}).render();*/
 	//$('#annotations-container').html("<span>"+ns.getElementAnnotations(element)+"</span>");
+
+	var annotationsModel;
+	if(element.data('annotationsModel')) {
+		console.log("get previous model");
+		annotationsModel = element.data('annotationsModel');
+	}
+	else {
+		console.log("create new model");
+		annotationsModel = new ns.AnnotationList([], {cyParent: element});
+		element.data('annotationsModel', annotationsModel);
+	}
+	var listView = new AnnotationListView({model: annotationsModel});
+
+	//test validation
+	//ns.validateAnnotation("pubmed", "163333295");
+	//ns.validateAnnotation("uniprot", "62158");
 };
 
 ns.getElementAnnotations = function(element) {
 	var annotations = element.data('annotations');
 	return annotations ? annotations : {};
 };
+
+ns.validateAnnotation = function(dbKey, resourceID, callback) {
+	console.log("validate", dbKey, resourceID);
+
+	function testURL(url, callback) {
+		$.ajax({
+			type: 'get',
+			url: "/utilities/testURL",
+			data: {url: url},
+			success: function(data){
+				console.log("validation resource", data);
+				// here we can get 404 as well, for example, so there are still error cases to handle
+				if (data.response.statusCode == 200) {
+					callback(null, url);
+				}
+				else {
+					callback(new Error("Testing availability of url "+url+" failed. Request status: "+data.response.statusCode+" Error: "+data.error));
+				}
+			},
+			error: function(jqXHR, status, error) {
+				console.log("could not validate resource", status, error);
+				callback(new Error("Testing availability of url "+url+" failed. Request status: "+status+" Error: "+error));
+			}
+	    });
+	}
+
+	if(resourceID.startsWith("http://identifiers.org/")) {
+		testURL(resourceID, callback);
+	}
+	else {
+		var validateURL = ns.IDToValidateURL(dbKey, resourceID);
+		console.log("URL", validateURL);
+		// validate url syntax
+		$.ajax({ 
+			type: "GET",
+			dataType: "json",
+			url: validateURL,
+			success: function(data){
+				console.log("validated syntax", data);
+				// validate url content
+			    testURL(ns.IDToRetrieveURL(dbKey, resourceID), callback);
+			},
+			error: function(jqXHR, status, error) {
+				console.log("could not validate", status, error);
+				callback(new Error("Validating syntax of url "+validateURL+" failed. Request status: "+status+" Error: "+error));
+			}
+		});
+	}
+};
+
+ns.IDToValidateURL = function (dbKey, id) {
+	var dbID = ns.dbList[dbKey].id;
+	console.log("transform to URL", dbID, id);
+	return validateRESTURL + dbID + ":" + id;
+};
+
+ns.IDToRetrieveURL = function (dbKey, id) {
+	var dbID = ns.dbList[dbKey].id;
+	console.log("transform to retrieveURL", dbID, id);
+	return identifiersURL + dbID + "/" + id;
+};
+
+/*ns.getResourceAccessURL = function (miriamID, resourceID) {
+	var identifierResourceURL = "http://identifiers.org/rest/resources/";
+	var url = identifierResourceURL + miriamID;
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: url,
+		success: function(data){
+			console.log("resource data", data);
+			var retrievableURL = data.accessURL.replace(/\$id/, resourceID);
+			console.log("end URL", retrievableURL);
+			ns.testURL(retrievableURL);
+		},
+		error: function(jqXHR, status, error) {
+			console.log("could not get resource data", status, error);
+		}
+	});
+};
+
+ns.testURL = function (url) {
+	// retrieve URL to check that content exists
+	$.ajax({
+		type: "GET",
+		dataType: "html",
+		url: url,
+		success: function(data){
+			console.log("retrieve", data);
+		},
+		error: function(jqXHR, status, error) {
+			console.log("could not retrieve", status, error);
+		}
+	});
+};*/
+
+/* <******* backbone part *******> */
+
+ns.Annotation = Backbone.Model.extend({
+	defaults: {
+		status: "unchecked",
+		selectedDB: "chebi", // db selected if under controlled vocabulary
+		selectedRelation: "bqmodel:is", // vocabulary choice
+		annotationValue: null, // the identifiers or value of the key-value property
+		annotationKey: null, // the key if key-value property is chosen
+		cyParent: null,
+		validateAnnotation: ns.validateAnnotation
+	},
+	/**
+	 *	Here we override the default backbone's behavior to store the model in data('annotations')
+	 *	property of each concerned cytoscape element
+	 */
+	sync: function(method, model, options) {
+		switch(method) {
+			case 'delete':
+				console.log("delete");
+				delete model.get('cyParent').data('annotations')[model.cid];
+				break;
+			case 'read':
+				console.log("read");
+				var annotationData = model.get('cyParent').data('annotations')[model.cid];
+				model.set('status', annotationData.status);
+				model.set('selectedDB', annotationData.selectedDB);
+				model.set('selectedRelation', annotationData.selectedRelation);
+				model.set('annotationValue', annotationData.annotationValue);
+				model.set('annotationKey', annotationData.annotationKey);
+				break;
+			case 'update':
+				console.log("update", options);
+				model.get('cyParent').data('annotations')[model.cid] = model.toJSON();
+				break;
+			case 'create':
+				console.log("create model", model, options);
+				console.log("whitelist attributes", ns.Annotation.stringifiableAttr);
+				if(!model.get('cyParent').data('annotations')) {
+					model.get('cyParent').data('annotations', {}); // ensure annotations has been init
+				}
+				model.get('cyParent').data('annotations')[model.cid] = model.toJSON();
+				model.set('id', model.get('cyParent').data('id')+'-annot-'+model.collection.indexOf(model));
+				//JSON.parse(JSON.stringify(model, ns.Annotation.stringifiableAttr));
+				break;
+		}
+	}
+}, {
+	dbList: ns.dbList,
+	vocabulary: ns.vocabulary,
+	stringifiableAttr: ['status', 'selectedDB', 'selectedRelation', 'annotationValue', 'annotationKey']
+});
+
+ns.AnnotationList = Backbone.Collection.extend({
+	model: ns.Annotation,
+	initialize: function(models, options) {
+		options || (options = {});
+        if (options.cyParent) {
+            this.cyParent = options.cyParent;
+        };
+	}
+});
+
 
 
 module.exports = ns;

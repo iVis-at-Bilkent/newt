@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
+//var annotationsHandler = require('./annotations-handler');
 
 /**
  * Backbone view for the BioGene information.
@@ -951,44 +952,165 @@ var FontPropertiesView = Backbone.View.extend({
 
 var AnnotationListView = Backbone.View.extend({
   elements: [],
+  el: '#annotations-container',
   initialize: function () {
-    var self = this;
-    self.template = _.template($("#annotation-list-template").html());
-    var elements = this.model.elements;
+    //this.template = _.template($("#annotation-list-template").html());
+    //this.addButton = this.$('#annotations-add-button');
+
+    /*var elements = this.model.elements;
     for(var i=0; i<elements.length; i++) {
       this.elements.push(elements[i]);
-    }
+    }*/
+    console.log("inside view list", this);
+    this.listenTo(this.model, 'add', this.addAnnotationElementView);
+    this.render();
+  },
+  events: {
+    'click #annotations-add-button': 'createAnnotation'
+  },
+  createAnnotation: function(e) {
+    console.log("createAnnotation");
+    var newAnnot = this.model.create({cyParent: this.model.cyParent});//, {wait: true});
+    //this.model.add(newAnnot);
+    console.log("creation done", this.model);
+    /*res.id = res.cyParent.data('id')+'-annot-'+res.collection.indexOf(res);
+    console.log("res of creation of model:", res);*/
+  },
+  addAnnotationElementView: function(annotationModel) {
+    console.log("add elementview", annotationModel);
+    // var view = new app.TodoView({model: todo});
+    // $('#todo-list').append(view.render().el);
+    this.$el.append("<div></div>");
+    var view = new AnnotationElementView({model: annotationModel});
+    this.elements.push(view);
+    this.$el.children('div').first().append(view.render().el);
+    //this.render();
   },
   render: function () {
-    var self = this;
-    self.template = _.template($("#annotation-list-template").html());
+    this.template = _.template($("#annotation-list-template").html());
+    this.$el.empty();
     var renderedElement = [];
     for(var i=0; i<this.elements.length; i++) {
-      renderedElement.push(this.elements[i].render());
+      renderedElement.push(this.elements[i].render().$el.html());
     }
-    self.template = self.template({elements: renderedElement});
-    $(self.el).html(self.template);
+    //this.template = this.template({elements: renderedElement});
+
+    /*this.collection.forEach(function(item) {
+
+    });*/
+
+    this.$el.html(this.template({elements: renderedElement}));
+    console.log("rendered");
     return this;
   }
 });
 
 var AnnotationElementView = Backbone.View.extend({
-  vocabulary: null,
+  /*vocabulary: null,
   dbList: null,
+  status: "unchecked", // unchecked, pending, validated, error
+  index: null,*/
+  tagName: 'div',
   initialize: function () {
-    var self = this;
-    self.template = _.template($("#annotation-element-template").html());
-    this.vocabulary = this.model.vocabulary;
+    //this.template = _.template($("#annotation-element-template").html());
+    /*this.vocabulary = this.model.vocabulary;
     this.dbList = this.model.dbList;
-    //console.log("vocab", this.vocabulary);
+    this.status = this.model.status;
+    this.index = this.model.index;*/
+    console.log("initialize element View", this);
+
+    /**
+     * We need to debounce the text input, but if we do that when defining events normally, we lose the context (this)
+     * So we need to bind this event manually here, after other events have been defined (this is done before initialize)
+     * This is done through delegateEvents
+     */
+    var eventsHash = this.events; // get all defined events
+    eventsHash["input .annotations-object-identifier"] = _.debounce(this.valueChangeHandler, 1000); // add the one that need debounce
+    this.delegateEvents(eventsHash); // redefine all events with delegate
+
+    /** bind events triggered on change of model */
+    this.listenTo(this.model, 'change:status', this.statusChangeHandler);
+  },
+  events: {
+    "change .annotations-db-list" : 'dbChangeHandler',
+    "change .annotations-vocabulary-list" : 'vocabularyChangeHandler'
+    //"input .annotations-object-identifier": "valueChangeHandler" <-- see initialize
+  },
+  dbChangeHandler: function(e) {
+    var selectedDBkey = $(e.currentTarget).val();
+    this.model.set('selectedDB', selectedDBkey);
+    console.log("change on dblist, selected", selectedDBkey);
+    this.launchValidation();
+  },
+  valueChangeHandler: function (e) {
+    var identifier = $(e.currentTarget).val();
+    this.model.set('annotationValue', identifier);
+    console.log("change on identifier, selected", identifier);
+    this.launchValidation();
+  },
+  vocabularyChangeHandler: function(e) {
+    var relation = $(e.currentTarget).val();
+    this.model.set('selectedRelation', relation);
+    console.log("change on relationship, selecte", relation);
+  },
+  statusChangeHandler: function(annotationModel) {
+    console.log("status change", annotationModel.get('status'));
+    console.log("isNew", annotationModel.isNew(), annotationModel.id, annotationModel.get('id'));
+    //annotationModel.save();
+    this.render();
+    /*switch(annotationModel.get('status')) {
+      case "unchecked":
+        break;
+      case "pending":
+        break;
+      case "error":
+        break;
+      case "validated":
+        break;
+    }*/
   },
   render: function () {
-    var self = this;
-    self.template = _.template($("#annotation-element-template").html());
+    //this.model.fetch();
+    this.template = _.template($("#annotation-element-template").html());
+    this.$el.empty();
     //$(self.el).html(self.template);
-    self.template = self.template({vocabulary: this.vocabulary, dbList: this.dbList});
-    //console.log('self.template of element', self.template());
-    return self.template;
+    console.log("render with annotation value", this.model.get('annotationValue'));
+    this.$el.html(this.template({
+      vocabulary: this.model.constructor.vocabulary,
+      dbList: this.model.constructor.dbList,
+      status: this.model.get('status'),
+      index: this.model.collection.indexOf(this.model),
+      selectedDB: this.model.get('selectedDB'),
+      selectedRelation: this.model.get('selectedRelation'),
+      annotationValue: this.model.get('annotationValue')
+    }));
+    console.log('self.template of element', this);
+    return this;
+  },
+  launchValidation: function () {
+    var index = this.model.collection.indexOf(this.model);
+    var selectedDBkey = this.model.get('selectedDB');
+    var identifier = this.model.get('annotationValue');
+    console.log("launchValidation", selectedDBkey, identifier);
+    // we don't need to validate if the input is empty or blank
+    if (identifier && !(identifier.length === 0 || !identifier.trim())) {
+      this.model.set('status', 'pending');
+      //$("#annotations-status-icon-"+index).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+      console.log("after pending change");
+      var validateAnnotation = this.model.get('validateAnnotation');
+      var self = this;
+      validateAnnotation(selectedDBkey, identifier, function(err, result) {
+        if(err) {
+          self.model.set('status', 'error');
+          //$("#annotations-status-icon-"+index).html('<i style="color:#FE2E2E;" class="fa fa-exclamation-triangle"></i><a href="#" style="color:#FE2E2E;">Retry</a>');
+          console.log("Error with validation", err);
+          return;
+        }
+        self.model.set('status', 'validated');
+        //$("#annotations-status-icon-"+index).html('<i style="color:green;" class="fa fa-check fa-lg"></i> ');
+        console.log("valid", result);
+      });
+    }
   }
 });
 
