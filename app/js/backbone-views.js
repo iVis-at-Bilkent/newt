@@ -1016,10 +1016,8 @@ var AnnotationListView = Backbone.View.extend({
 });
 
 var AnnotationElementView = Backbone.View.extend({
-  /*vocabulary: null,
-  dbList: null,
-  status: "unchecked", // unchecked, pending, validated, error
-  index: null,*/
+  //status is: unchecked, pending, validated, error
+  previousSelectedRelation: null, // convenience variable, to check change in controlled vocabulary mode
   tagName: 'div',
   initialize: function () {
     //this.template = _.template($("#annotation-element-template").html());
@@ -1080,12 +1078,17 @@ var AnnotationElementView = Backbone.View.extend({
   },
   vocabularyChangeHandler: function(e) {
     var relation = $(e.currentTarget).val();
+    var previouslyControlledMode = this.underControlledMode(this.previousSelectedRelation);
+    var nowControlledMode = this.underControlledMode(relation);
     this.model.set('selectedRelation', relation);
-    if (this.underControlledMode()) {
-      this.model.set('selectedDB', this.model.defaults.selectedDB);
-    }
-    else {
+
+    if (previouslyControlledMode && !nowControlledMode) {
+      // went from controlled into uncontrolled mode, reset key
       this.model.set('selectedDB', null);
+    }
+    else if (!previouslyControlledMode && nowControlledMode) {
+      // went from uncontrolled to controlled, select defaults db
+      this.model.set('selectedDB', this.model.defaults.selectedDB);
     }
 
     this.model.save();
@@ -1106,8 +1109,13 @@ var AnnotationElementView = Backbone.View.extend({
     this.model.destroy();
     this.remove();
   },
-  underControlledMode: function() {
-    return this.model.constructor.vocabulary[this.model.get('selectedRelation')].controlled;
+  underControlledMode: function(relation) {
+    if (relation) {
+      return this.model.constructor.vocabulary[relation].controlled;
+    }
+    else {
+      return this.model.constructor.vocabulary[this.model.get('selectedRelation')].controlled;
+    }
   },
   render: function () {
     //this.model.fetch();
@@ -1125,6 +1133,7 @@ var AnnotationElementView = Backbone.View.extend({
       selectedRelation: this.model.get('selectedRelation'),
       annotationValue: this.model.get('annotationValue')
     }));
+    this.previousSelectedRelation = this.model.get('selectedRelation'); // save the value of relation, for comparison
     return this;
   },
   launchValidation: function () {
