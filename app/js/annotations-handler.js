@@ -338,10 +338,9 @@ ns.IDToRetrieveURL = function (dbKey, id) {
 ns.Annotation = Backbone.Model.extend({
 	defaults: {
 		status: "unchecked",
-		selectedDB: "chebi", // db selected if under controlled vocabulary
+		selectedDB: "chebi", // db selected or custom property
 		selectedRelation: "bqmodel:is", // vocabulary choice
 		annotationValue: null, // the identifiers or value of the key-value property
-		annotationKey: null, // the key if key-value property is chosen
 		cyParent: null,
 		validateAnnotation: ns.validateAnnotation
 	},
@@ -360,7 +359,6 @@ ns.Annotation = Backbone.Model.extend({
 				model.set('selectedDB', annotationData.selectedDB);
 				model.set('selectedRelation', annotationData.selectedRelation);
 				model.set('annotationValue', annotationData.annotationValue);
-				model.set('annotationKey', annotationData.annotationKey);
 				break;
 			case 'update':
 				model.get('cyParent').data('annotations')[model.get('id')] = model.toJSON();

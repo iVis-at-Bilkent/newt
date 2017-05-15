@@ -1085,10 +1085,14 @@ var AnnotationElementView = Backbone.View.extend({
     if (previouslyControlledMode && !nowControlledMode) {
       // went from controlled into uncontrolled mode, reset key
       this.model.set('selectedDB', null);
+      // validation cannot be applied, considered always valid
+      this.model.set('status', 'validated');
     }
     else if (!previouslyControlledMode && nowControlledMode) {
       // went from uncontrolled to controlled, select defaults db
       this.model.set('selectedDB', this.model.defaults.selectedDB);
+      // reset validation status
+      this.model.set('status', 'unchecked');
     }
 
     this.model.save();
