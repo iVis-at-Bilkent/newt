@@ -976,6 +976,7 @@ var AnnotationListView = Backbone.View.extend({
   addAnnotationElementView: function(annotationModel) {
     var view = new AnnotationElementView({model: annotationModel});
     this.elements.push(view);
+    this.$el.find('p#annotations-small-helptext').remove();
     this.$el.children('div').first().append(view.render().el);
   },
   render: function () {

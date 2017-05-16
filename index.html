@@ -1431,6 +1431,9 @@
                 <% for( var i=0; i<elements.length; i++) { %>
                     <%= elements[i] %>
                 <% } %>
+                <% if (elements.length == 0) { %>
+                    <p id="annotations-small-helptext">Attach data to the element by adding custom properties or controlled MIRIAM annotations.</p>
+                <% } %>
             </div>
             <img src="app/img/add.png" id="annotations-add-button" class="pointer-button">
         </script>
