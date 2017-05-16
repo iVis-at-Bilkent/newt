@@ -7,6 +7,7 @@
 var jquery = $ = require('jquery');
 var AnnotationListView = require('./backbone-views').AnnotationListView;
 var Backbone = require('backbone');
+var _ = require('underscore');
 
 var ns = {};
 
@@ -254,7 +255,26 @@ ns.fillAnnotationsContainer = function (element) {
 		// finally destroy the previous view
 		previousView.remove();
 	}
+	else if (element.data('annotations') && !$.isEmptyObject(element.data('annotations'))) {
+		// some annotations are there but this element has never been displayed (eg on file load)
+		// create each model and fetch the data
+		var annotations = element.data('annotations')
+		annotationsListModel = new ns.AnnotationList([], {cyParent: element});
+		for (var annotID in annotations ) {
+			var model = new ns.Annotation({cyParent: element, id: annotID});
+			model.fetch();
+			annotationsListModel.add(model);
+
+			// fill the userDefined properties
+			if(!ns.vocabulary[model.get('selectedRelation')].controlled) {
+				if (!_.contains(ns.Annotation.userDefinedProperties, model.get('selectedDB'))) {
+		          ns.Annotation.userDefinedProperties.push(model.get('selectedDB'));
+		        }
+			}
+		}
+	}
 	else {
+		// this element has no annotations
 		// create new and empty list
 		annotationsListModel = new ns.AnnotationList([], {cyParent: element});
 	}
@@ -270,7 +290,6 @@ ns.getElementAnnotations = function(element) {
 };
 
 ns.validateAnnotation = function(dbKey, resourceID, callback) {
-	console.log("validate", dbKey, resourceID);
 
 	function testURL(url, callback) {
 		$.ajax({
@@ -278,7 +297,6 @@ ns.validateAnnotation = function(dbKey, resourceID, callback) {
 			url: "/utilities/testURL",
 			data: {url: url},
 			success: function(data){
-				console.log("validation resource", data);
 				// here we can get 404 as well, for example, so there are still error cases to handle
 				if (data.response.statusCode == 200) {
 					callback(null, url);
@@ -288,30 +306,33 @@ ns.validateAnnotation = function(dbKey, resourceID, callback) {
 				}
 			},
 			error: function(jqXHR, status, error) {
-				console.log("could not validate resource", status, error);
 				callback(new Error("Testing availability of url "+url+" failed. Request status: "+status+" Error: "+error));
 			}
 	    });
 	}
 
-	if(resourceID.startsWith("http://identifiers.org/")) {
-		testURL(resourceID, callback);
+	if(resourceID.startsWith(identifiersURL)) {
+		// check the provided db in the URL against the selected DB (might be different)
+		// example: user input a URL. Then change the selected DB. Validation is triggered.
+		if(resourceID.startsWith(identifiersURL+ns.dbList[dbKey].id)) {
+			testURL(resourceID, callback);
+		}
+		else {
+			callback(new Error("Selected database is different than the one provided in the URL"));
+		}
 	}
 	else {
 		var validateURL = ns.IDToValidateURL(dbKey, resourceID);
-		console.log("URL", validateURL);
 		// validate url syntax
 		$.ajax({ 
 			type: "GET",
 			dataType: "json",
 			url: validateURL,
 			success: function(data){
-				console.log("validated syntax", data);
 				// validate url content
 			    testURL(ns.IDToRetrieveURL(dbKey, resourceID), callback);
 			},
 			error: function(jqXHR, status, error) {
-				console.log("could not validate", status, error);
 				callback(new Error("Validating syntax of url "+validateURL+" failed. Request status: "+status+" Error: "+error));
 			}
 		});
@@ -320,13 +341,11 @@ ns.validateAnnotation = function(dbKey, resourceID, callback) {
 
 ns.IDToValidateURL = function (dbKey, id) {
 	var dbID = ns.dbList[dbKey].id;
-	console.log("transform to URL", dbID, id);
 	return validateRESTURL + dbID + ":" + id;
 };
 
 ns.IDToRetrieveURL = function (dbKey, id) {
 	var dbID = ns.dbList[dbKey].id;
-	console.log("transform to retrieveURL", dbID, id);
 	return identifiersURL + dbID + "/" + id;
 };
 

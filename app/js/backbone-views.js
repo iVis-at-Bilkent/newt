@@ -954,17 +954,8 @@ var AnnotationListView = Backbone.View.extend({
   elements: [],
   el: '#annotations-container',
   initialize: function () {
-    //this.template = _.template($("#annotation-list-template").html());
-    //this.addButton = this.$('#annotations-add-button');
-
-    /*var elements = this.model.elements;
-    for(var i=0; i<elements.length; i++) {
-      this.elements.push(elements[i]);
-    }*/
-    console.log("initialize view list", this);
     this.listenTo(this.model, 'add', this.addAnnotationElementView);
     this.listenTo(this.model, 'destroy', this.resetAndPopulate);
-
     this.resetAndPopulate();
   },
   events: {
@@ -976,40 +967,24 @@ var AnnotationListView = Backbone.View.extend({
     // populate from the model
     var self = this;
     this.model.forEach(function(item){
-      console.log("foreach", item);
       self.addAnnotationElementView(item);
     });
   },
   createAnnotation: function(e) {
-    console.log("createAnnotation");
-    var newAnnot = this.model.create({cyParent: this.model.cyParent});//, {wait: true});
-    //this.model.add(newAnnot);
-    /*res.id = res.cyParent.data('id')+'-annot-'+res.collection.indexOf(res);
-    console.log("res of creation of model:", res);*/
+    var newAnnot = this.model.create({cyParent: this.model.cyParent});
   },
   addAnnotationElementView: function(annotationModel) {
-    console.log("add element view", annotationModel);
-    //this.$el.append("<div></div>");
     var view = new AnnotationElementView({model: annotationModel});
     this.elements.push(view);
-    console.log("add element view VIEW", view);
     this.$el.children('div').first().append(view.render().el);
-    //this.render();
   },
   render: function () {
-    console.log("render list view");
     this.template = _.template($("#annotation-list-template").html());
     this.$el.empty();
     var renderedElement = [];
     for(var i=0; i<this.elements.length; i++) {
       renderedElement.push(this.elements[i].render().$el.html());
     }
-    //this.template = this.template({elements: renderedElement});
-
-    /*this.collection.forEach(function(item) {
-
-    });*/
-
     this.$el.html(this.template({elements: renderedElement}));
     return this;
   }
@@ -1020,13 +995,6 @@ var AnnotationElementView = Backbone.View.extend({
   previousSelectedRelation: null, // convenience variable, to check change in controlled vocabulary mode
   tagName: 'div',
   initialize: function () {
-    //this.template = _.template($("#annotation-element-template").html());
-    /*this.vocabulary = this.model.vocabulary;
-    this.dbList = this.model.dbList;
-    this.status = this.model.status;
-    this.index = this.model.index;*/
-    console.log("initialize element View", this);
-
     /**
      * We need to debounce the text input, but if we do that when defining events normally, we lose the context (this)
      * So we need to bind this event manually here, after other events have been defined (this is done before initialize)
@@ -1048,7 +1016,6 @@ var AnnotationElementView = Backbone.View.extend({
   },
   dbChangeHandler: function(e) {
     var selectedDBkey = $(e.currentTarget).val();
-    console.log("change on dblist, selected", selectedDBkey);
     if (this.underControlledMode()) {
       this.model.set('selectedDB', selectedDBkey);
       this.model.save();
@@ -1070,7 +1037,6 @@ var AnnotationElementView = Backbone.View.extend({
   valueChangeHandler: function (e) {
     var identifier = $(e.currentTarget).val();
     this.model.set('annotationValue', identifier);
-    console.log("change on identifier, selected", identifier);
     this.model.save();
     if (this.underControlledMode()) {
       this.launchValidation();
@@ -1097,19 +1063,14 @@ var AnnotationElementView = Backbone.View.extend({
 
     this.model.save();
     this.render();
-    //console.log("change on relationship, selecte", relation);
   },
   retryHandler: function(e) {
-    //console.log("retry clicked");
     this.launchValidation();
   },
   statusChangeHandler: function(annotationModel) {
-    //console.log("status change", annotationModel.get('status'));
-    //annotationModel.save();
     this.render();
   },
   deleteHandler: function(e) {
-    console.log("remove button clicked");
     this.model.destroy();
     this.remove();
   },
@@ -1122,11 +1083,8 @@ var AnnotationElementView = Backbone.View.extend({
     }
   },
   render: function () {
-    //this.model.fetch();
-    console.log('render element view', this.$el);
     this.template = _.template($("#annotation-element-template").html());
     this.$el.empty();
-    //$(self.el).html(self.template);
     this.$el.html(this.template({
       vocabulary: this.model.constructor.vocabulary,
       dbList: this.model.constructor.dbList,
@@ -1144,24 +1102,22 @@ var AnnotationElementView = Backbone.View.extend({
     var index = this.model.collection.indexOf(this.model);
     var selectedDBkey = this.model.get('selectedDB');
     var identifier = this.model.get('annotationValue');
-    console.log("launchValidation", selectedDBkey, identifier);
     // we don't need to validate if the input is empty or blank
     if (identifier && !(identifier.length === 0 || !identifier.trim())) {
       this.model.set('status', 'pending');
-      //$("#annotations-status-icon-"+index).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
-
       var validateAnnotation = this.model.get('validateAnnotation');
       var self = this;
       validateAnnotation(selectedDBkey, identifier, function(err, result) {
         if(err) {
           self.model.set('status', 'error');
           self.model.save();
-          console.log("Error with validation", err);
           return;
         }
+        // result contains the validated url
         self.model.set('status', 'validated');
+        self.model.set('annotationValue', result);
         self.model.save();
-        console.log("Validation passed", result);
+        self.render();
       });
     }
   }
