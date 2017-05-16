@@ -157,12 +157,22 @@ module.exports = function () {
       }
     });
 
+    // local utility function to avoid code duplication
+    function highlightColor(ele) {
+      if (ele.selected()){
+        return '#d67614'; // default select color
+      }
+      else {
+        return '#0B9BCD'; // highlight color
+      }
+    };
     cy.viewUtilities({
       node: {
         highlighted: { // styles for when nodes are highlighted.
           'border-width': function(ele) {
-            return parseFloat(ele.data('border-width')) + 3;
-          }
+            return parseFloat(ele.data('border-width')) + 2;
+          },
+          'border-color': highlightColor
         }, 
         unhighlighted: {// styles for when nodes are unhighlighted.
           'opacity': function (ele) {
@@ -174,8 +184,11 @@ module.exports = function () {
       edge: {
         highlighted: {
           'width': function(ele) { // styles for when edges are highlighted.
-            return parseFloat(ele.data('width')) + 3;
-          }
+            return parseFloat(ele.data('width')) + 2;
+          },
+          'line-color': highlightColor,
+          'source-arrow-color': highlightColor,
+          'target-arrow-color': highlightColor
         }, 
         unhighlighted: {// styles for when edges are unhighlighted.
           'opacity': function (ele) {
