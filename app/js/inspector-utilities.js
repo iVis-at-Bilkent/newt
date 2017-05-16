@@ -1,6 +1,7 @@
 var appUtilities = require('./app-utilities');
 var inspectorUtilities = {};
 var fillBioGeneContainer = require('./fill-biogene-container');
+var annotHandler = require('./annotations-handler');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
   //first empty the state variables and infos data in inspector
@@ -16,7 +17,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + "<span width='" + width / 5 + "'px>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
                 + width / 2.5 + "px;' value='" + (state.state.variable || '')
-                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box' src='app/img/delete.png'></img></div>");
+                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.png'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
@@ -30,7 +31,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         var total = width / 1.25;
         $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                 + total + "px;' value='" + (state.label.text || '')
-                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box' src='app/img/delete.png'></img></div>");
+                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.png'></img></div>");
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val());
@@ -43,8 +44,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       });
     })(i);
   }
-  $("#inspector-state-variables").append("<img id='inspector-add-state-variable' src='app/img/add.png'/>");
-  $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png'/>");
+  $("#inspector-state-variables").append("<img id='inspector-add-state-variable' src='app/img/add.png' class='pointer-button'/>");
+  $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png' class='pointer-button'/>");
 
   $("#inspector-add-state-variable").click(function () {
     var obj = {};
@@ -204,7 +205,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             title = "lock aspect ratio";
           }
           
-          html += "<img id='inspector-node-sizes-aspect-ratio' style='vertical-align: top; margin-left: 5px;' src='app/img/";
+          html += "<img id='inspector-node-sizes-aspect-ratio' style='vertical-align: top; margin-left: 5px;' class='pointer-button' src='app/img/";
           html += imageName;
           html += "'";
           
@@ -394,22 +395,31 @@ inspectorUtilities.handleSBGNInspector = function () {
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
       
+      function addCollapsibleSection(identifier, title, hasSubtitleSection) {
+        html =  "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#"+identifier+"-collapsable'>"+
+                  "<p class='panel-title accordion-toggle'>"+title+"</p>"+
+                "</div>"+
+                "<div style='margin-top: 5px;align: center;text-align: center;' id='"+identifier+"-collapsable' class='panel-collapse collapse'>";
+        if (hasSubtitleSection) {
+          html += "<div class='panel-body' style='padding-left: 3px;' id='"+identifier+"-title'></div>";
+        }
+        html += "<div id='"+identifier+"-container'></div>"+
+                "</div>";
+
+        $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-'+identifier+'-panel" class="panel" ></div>');
+        $("#sbgn-inspector-style-"+identifier+"-panel").html(html);
+      }
+
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
-          html = "";
-    
-          html += "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#biogene-collapsable'><p class='panel-title accordion-toggle'>Properties from EntrezGene</p></div>"
-    
-          html += "<div style='margin-top: 5px;align: center;text-align: center;' id='biogene-collapsable' class='panel-collapse collapse'>";
-          html += "<div class='panel-body' style='padding-left: 3px;' id='biogene-title'></div>";
-          html += "<div id='biogene-container'></div>";
-          html += "</div>";
-//          html += "<hr class='inspector-divider'>";
-          
-          $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-entrezgene-panel" class="panel" ></div>');
-          $("#sbgn-inspector-style-entrezgene-panel").html(html);
+
+          addCollapsibleSection("biogene", "Properties from EntrezGene", true);
           fillBioGeneContainer(selectedEles[0]);
       }
+
+      // annotations handling part
+      addCollapsibleSection("annotations", "Custom Properties", false);
+      annotHandler.fillAnnotationsContainer(selectedEles[0]);
     }
 
     if (type == "node") {

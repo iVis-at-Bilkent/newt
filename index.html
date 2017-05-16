@@ -1424,5 +1424,73 @@
             <%=id %>
             </a>
         </script>
+
+        <!-- annotations template for backbone.js -->
+        <script type="text/template" id="annotation-list-template">
+            <div>
+                <% for( var i=0; i<elements.length; i++) { %>
+                    <%= elements[i] %>
+                <% } %>
+            </div>
+            <img src="app/img/add.png" id="annotations-add-button" class="pointer-button">
+        </script>
+
+        <script type="text/template" id="annotation-element-template">
+            <div style="padding: 5px;border-bottom: 1px solid rgb(221, 221, 221);">
+                <div style="float:left;width:93%;">
+                    <select style="width: 50%;margin-right:2%;float:left;" class="annotations-vocabulary-list" id="annotations-vocabulary-list-<%= index %>" title="<%= vocabulary[selectedRelation].description %>">
+                        <% for( var relation in vocabulary) { %>
+                            <option value="<%= relation %>" <% if (relation == selectedRelation){ %> selected<%}%> title="<%= vocabulary[relation].description %>"><%= vocabulary[relation].label %></option>
+                        <% } %>
+                    </select>
+
+                    <% if (vocabulary[selectedRelation].controlled){ %>
+                        <!-- controlled case -->
+
+                        <select style="width: 47%;margin-left:0px;float:left;" class="annotations-db-list" id="annotations-db-list-<%= index %>">
+                            <% for( var db in dbList) { %>
+                                <option value="<%= db %>" <% if (db == selectedDB){ %> selected<%}%> ><%= dbList[db].label %></option>
+                            <% } %>
+                        </select>
+                    <%} else {%>
+                        <!-- uncontrolled case -->
+
+                        <input style="width: 47%;margin-left:0px;float:left;" type="text" class="annotations-db-list" id="annotations-db-list-<%= index %>" list="userDefinedProperties" <% if (selectedDB != null){ %> value="<%= selectedDB %>" <%}%> />
+                        <datalist id="userDefinedProperties">
+                            <% for( var i=0; i<userDefinedProperties.length; i++) { %>
+                                <option value="<%= userDefinedProperties[i] %>">
+                            <% } %>
+                        </datalist>
+                    <%}%>
+                    <div style="clear:both;"></div>
+
+                    <div style="display:flex;align-items:center;">
+                        <input type="text" style="width: 70%;float:left;margin-top:5px;margin-right:2%;" class="annotations-object-identifier" id="annotations-object-identifier-<%= index %>" <% if (annotationValue != null){ %> value="<%= annotationValue %>" <%}%>/>
+
+                        <% if (vocabulary[selectedRelation].controlled){ %>
+                            <!-- reflect status of validation with icon -->
+                            <div style="float:left;margin-top:5px;" id="annotations-status-icon-<%= index %>">
+                            <% if (status == "unchecked"){ %>
+                                <i style="color:#E6E6E6;" class="fa fa-check fa-lg" title="No validation was done. Fill the input on the left or change the database to trigger validation."></i>
+                            <%} else if (status == "pending"){ %>
+                                <i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>
+                            <%} else if (status == "validated"){ %>
+                                <i style="color:green;" class="fa fa-check fa-lg" title="The identifier has been successfully checked and validated."></i>
+                            <%} else if (status == "error"){ %>
+                                <i style="color:#FE2E2E;" class="fa fa-exclamation-triangle" title="The identifier could not be validated."></i>
+                                <a href="#" style="color:#FE2E2E;" class="annotations-retry-validation">Retry</a>
+                            <%}%>
+                            </div>
+                        <%}%>
+                    </div>
+
+                    <div style="clear:both;"></div>
+                </div>
+                <div style="width:6%;float:right;height:51px;display:flex;align-items:center;" class="delete-annotation pointer-button">
+                    <img width="12px" height="12px" src="app/img/delete.png" style="margin:auto;"/>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+        </script>
     </body>
 </html>

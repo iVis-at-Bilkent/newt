@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
+//var annotationsHandler = require('./annotations-handler');
 
 /**
  * Backbone view for the BioGene information.
@@ -949,6 +950,179 @@ var FontPropertiesView = Backbone.View.extend({
   }
 });
 
+var AnnotationListView = Backbone.View.extend({
+  elements: [],
+  el: '#annotations-container',
+  initialize: function () {
+    this.listenTo(this.model, 'add', this.addAnnotationElementView);
+    this.listenTo(this.model, 'destroy', this.resetAndPopulate);
+    this.resetAndPopulate();
+  },
+  events: {
+    'click #annotations-add-button': 'createAnnotation'
+  },
+  resetAndPopulate: function() {
+    this.elements = [];
+    this.render();
+    // populate from the model
+    var self = this;
+    this.model.forEach(function(item){
+      self.addAnnotationElementView(item);
+    });
+  },
+  createAnnotation: function(e) {
+    var newAnnot = this.model.create({cyParent: this.model.cyParent});
+  },
+  addAnnotationElementView: function(annotationModel) {
+    var view = new AnnotationElementView({model: annotationModel});
+    this.elements.push(view);
+    this.$el.children('div').first().append(view.render().el);
+  },
+  render: function () {
+    this.template = _.template($("#annotation-list-template").html());
+    this.$el.empty();
+    var renderedElement = [];
+    for(var i=0; i<this.elements.length; i++) {
+      renderedElement.push(this.elements[i].render().$el.html());
+    }
+    this.$el.html(this.template({elements: renderedElement}));
+    return this;
+  }
+});
+
+var AnnotationElementView = Backbone.View.extend({
+  //status is: unchecked, pending, validated, error
+  previousSelectedRelation: null, // convenience variable, to check change in controlled vocabulary mode
+  tagName: 'div',
+  initialize: function () {
+    /**
+     * We need to debounce the text input, but if we do that when defining events normally, we lose the context (this)
+     * So we need to bind this event manually here, after other events have been defined (this is done before initialize)
+     * This is done through delegateEvents
+     */
+    var eventsHash = this.events; // get all defined events
+    eventsHash["input .annotations-object-identifier"] = _.debounce(this.valueChangeHandler, 1000); // add the one that need debounce
+    this.delegateEvents(eventsHash); // redefine all events with delegate
+
+    /** bind events triggered on change of model */
+    this.listenTo(this.model, 'change:status', this.statusChangeHandler);
+  },
+  events: {
+    "change .annotations-db-list": 'dbChangeHandler',
+    "change .annotations-vocabulary-list": 'vocabularyChangeHandler',
+    "click .annotations-retry-validation": 'retryHandler',
+    "click .delete-annotation": 'deleteHandler'
+    //"input .annotations-object-identifier": "valueChangeHandler" <-- see initialize
+  },
+  dbChangeHandler: function(e) {
+    var selectedDBkey = $(e.currentTarget).val();
+    if (this.underControlledMode()) {
+      this.model.set('selectedDB', selectedDBkey);
+      this.model.save();
+      this.launchValidation();
+    }
+    else {
+      if (selectedDBkey && !(selectedDBkey.length === 0 || !selectedDBkey.trim())) {
+        // real value provided
+        var globalProp = this.model.constructor.userDefinedProperties;
+        if (!_.contains(globalProp, selectedDBkey)) {
+          globalProp.push(selectedDBkey);
+        }
+        this.model.set('selectedDB', selectedDBkey);
+        this.model.save();
+        this.render();
+      }
+    }
+  },
+  valueChangeHandler: function (e) {
+    var identifier = $(e.currentTarget).val();
+    this.model.set('annotationValue', identifier);
+    this.model.save();
+    if (this.underControlledMode()) {
+      this.launchValidation();
+    }
+  },
+  vocabularyChangeHandler: function(e) {
+    var relation = $(e.currentTarget).val();
+    var previouslyControlledMode = this.underControlledMode(this.previousSelectedRelation);
+    var nowControlledMode = this.underControlledMode(relation);
+    this.model.set('selectedRelation', relation);
+
+    if (previouslyControlledMode && !nowControlledMode) {
+      // went from controlled into uncontrolled mode, reset key
+      this.model.set('selectedDB', null);
+      // validation cannot be applied, considered always valid
+      this.model.set('status', 'validated');
+    }
+    else if (!previouslyControlledMode && nowControlledMode) {
+      // went from uncontrolled to controlled, select defaults db
+      this.model.set('selectedDB', this.model.defaults.selectedDB);
+      // reset validation status
+      this.model.set('status', 'unchecked');
+    }
+
+    this.model.save();
+    this.render();
+  },
+  retryHandler: function(e) {
+    this.launchValidation();
+  },
+  statusChangeHandler: function(annotationModel) {
+    this.render();
+  },
+  deleteHandler: function(e) {
+    this.model.destroy();
+    this.remove();
+  },
+  underControlledMode: function(relation) {
+    if (relation) {
+      return this.model.constructor.vocabulary[relation].controlled;
+    }
+    else {
+      return this.model.constructor.vocabulary[this.model.get('selectedRelation')].controlled;
+    }
+  },
+  render: function () {
+    this.template = _.template($("#annotation-element-template").html());
+    this.$el.empty();
+    this.$el.html(this.template({
+      vocabulary: this.model.constructor.vocabulary,
+      dbList: this.model.constructor.dbList,
+      userDefinedProperties: this.model.constructor.userDefinedProperties,
+      status: this.model.get('status'),
+      index: this.model.collection.indexOf(this.model),
+      selectedDB: this.model.get('selectedDB'),
+      selectedRelation: this.model.get('selectedRelation'),
+      annotationValue: this.model.get('annotationValue')
+    }));
+    this.previousSelectedRelation = this.model.get('selectedRelation'); // save the value of relation, for comparison
+    return this;
+  },
+  launchValidation: function () {
+    var index = this.model.collection.indexOf(this.model);
+    var selectedDBkey = this.model.get('selectedDB');
+    var identifier = this.model.get('annotationValue');
+    // we don't need to validate if the input is empty or blank
+    if (identifier && !(identifier.length === 0 || !identifier.trim())) {
+      this.model.set('status', 'pending');
+      var validateAnnotation = this.model.get('validateAnnotation');
+      var self = this;
+      validateAnnotation(selectedDBkey, identifier, function(err, result) {
+        if(err) {
+          self.model.set('status', 'error');
+          self.model.save();
+          return;
+        }
+        // result contains the validated url
+        self.model.set('status', 'validated');
+        self.model.set('annotationValue', result);
+        self.model.save();
+        self.render();
+      });
+    }
+  }
+});
+
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
@@ -961,5 +1135,7 @@ module.exports = {
   PromptConfirmationView: PromptConfirmationView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
-  FontPropertiesView: FontPropertiesView
+  FontPropertiesView: FontPropertiesView,
+  AnnotationListView: AnnotationListView,
+  AnnotationElementView: AnnotationElementView
 };
