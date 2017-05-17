@@ -310,8 +310,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         
         var commonOrderingVal = commonOrdering || "empty"; // If there is no common ordering we should use "empty" for common ordering value
         
-        var orderings = ["", "none", "left to right", "right to left", "bottom to top", "top to bottom"];
-        var values = ["empty", "none", "L-to-R", "R-to-L", "B-to-T", "T-to-B"];
+        var orderings = ["", "none", "Left-to-right", "Right-to-left", "Top-to-bottom", "Bottom-to-top"];
+        var values = ["empty", "none", "L-to-R", "R-to-L", "T-to-B", "B-to-T"];
     
         // For all possible values create an option str and append it to options str
         for ( var i = 0; i < orderings.length; i++ ) {
