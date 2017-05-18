@@ -296,7 +296,7 @@ inspectorUtilities.handleSBGNInspector = function () {
        * If all selected elements can have ports add a selectbox to enable setting their ports ordering.
        */
       if ( chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHavePorts.bind(chise.elementUtilities)) ) {
-        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Ports Ordering</font>" + "</td>"
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Ports</font>" + "</td>"
                 + "<td style='padding-left: 5px; width: '" + width + "'>"; 
         
         html += "<select id='inspector-ports-ordering-select' class='input-medium layout-text' name='inspector-ports-ordering-select'>";
@@ -310,8 +310,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         
         var commonOrderingVal = commonOrdering || "empty"; // If there is no common ordering we should use "empty" for common ordering value
         
-        var orderings = ["", "none", "Left-to-right", "Right-to-left", "Top-to-bottom", "Bottom-to-top"];
-        var values = ["empty", "none", "L-to-R", "R-to-L", "T-to-B", "B-to-T"];
+        var orderings = ["", "None", "Left-to-right", "Right-to-left", "Top-to-bottom", "Bottom-to-top"]; // The orderings to be displayed on screen
+        var values = ["empty", "none", "L-to-R", "R-to-L", "T-to-B", "B-to-T"]; // The values for the orderings
     
         // For all possible values create an option str and append it to options str
         for ( var i = 0; i < orderings.length; i++ ) {
