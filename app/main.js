@@ -66,6 +66,8 @@ chise({
     return appUtilities.currentGeneralProperties.compoundPadding;
   },
   extraCompartmentPadding: appUtilities.currentGeneralProperties.extraCompartmentPadding,
+  extraComplexPadding: appUtilities.currentGeneralProperties.extraComplexPadding,
+  showComplexName: appUtilities.currentGeneralProperties.showComplexName,
   // Whether to adjust node label font size automatically.
   // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
   // instead of doing it.

@@ -303,7 +303,10 @@ var GeneralPropertiesView = Backbone.View.extend({
           document.getElementById("adjust-node-label-font-size-automatically").checked;
       appUtilities.currentGeneralProperties.enablePorts =
           document.getElementById("enable-ports").checked;
+      appUtilities.currentGeneralProperties.showComplexName =
+          document.getElementById("show-complex-name").checked;
 
+      chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
       chise.refreshPaddings(); // Refresh/recalculate paddings
       if (appUtilities.currentGeneralProperties.enablePorts) {
         chise.enablePorts();
