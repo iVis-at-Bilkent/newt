@@ -450,34 +450,70 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
+          
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
+          
+          // Push this action if the node can be multimer
+          if (chise.elementUtilities.canBeMultimer(sbgnclass)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
+          }
+          
+          // Push this action if the node can be cloned
+          if (chise.elementUtilities.canBeCloned(sbgnclass)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
+          }
+          
+          // Push this action if the node can have label
+          if (chise.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
+          }
+          
+          // Push this action if the node can have ports
+          if (chise.elementUtilities.canHavePorts(selected)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chise.elementUtilities.getPortsOrdering(selected)}});
+          }
+          
           ur.do("batch", actions);
         }
         else {
           var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
           defaults['width'] = selected.width();
           defaults['height'] = selected.height();
-          defaults['clonemarker'] = selected._private.data.clonemarker;
-          defaults['multimer'] = multimer;
           defaults['border-width'] = selected.data('border-width');
           defaults['border-color'] = selected.data('border-color');
           defaults['background-color'] = selected.data('background-color');
           defaults['background-opacity'] = selected.data('background-opacity');
-          defaults['font-size'] = selected.data('font-size');
-          defaults['font-family'] = selected.data('font-family');
-          defaults['font-weight'] = selected.data('font-weight');
-          defaults['font-style'] = selected.data('font-style');
+
+          // Set this if the node can be multimer
+          if (chise.elementUtilities.canBeMultimer(sbgnclass)) {
+            defaults['multimer'] = multimer;
+          }
+          
+          // Set this if the node can be cloned
+          if (chise.elementUtilities.canBeCloned(sbgnclass)) {
+            defaults['clonemarker'] = selected._private.data.clonemarker;
+          }
+          
+          // Set this if the node can have label
+          if (chise.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+            defaults['font-size'] = selected.data('font-size');
+            defaults['font-family'] = selected.data('font-family');
+            defaults['font-weight'] = selected.data('font-weight');
+            defaults['font-style'] = selected.data('font-style');
+          }
+          
+          // Set this if the node can have ports
+          if (chise.elementUtilities.canHavePorts(selected)) {
+            defaults['ports-ordering'] = chise.elementUtilities.getPortsOrdering(selected);
+          }
         }
       });
 
