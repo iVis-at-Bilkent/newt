@@ -55,7 +55,7 @@ module.exports = function () {
     contextMenus.appendMenuItems([
       {
         id: 'ctx-menu-general-properties',
-        title: 'Properties...',
+        content: 'Properties...',
         coreAsWell: true,
         onClickFunction: function (event) {
           $("#general-properties").trigger("click");
@@ -63,7 +63,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-delete',
-        title: 'Delete',
+        content: 'Delete',
         selector: 'node, edge',
         onClickFunction: function (event) {
           cy.undoRedo().do("deleteElesSimple", {
@@ -73,7 +73,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-delete-selected',
-        title: 'Delete Selected',
+        content: 'Delete Selected',
         onClickFunction: function () {
           $("#delete-selected-simple").trigger('click');
         },
@@ -81,7 +81,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-hide-selected',
-        title: 'Hide Selected',
+        content: 'Hide Selected',
         onClickFunction: function () {
           $("#hide-selected").trigger('click');
         },
@@ -89,7 +89,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-show-all',
-        title: 'Show All',
+        content: 'Show All',
         onClickFunction: function () {
           $("#show-all").trigger('click');
         },
@@ -97,7 +97,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-expand', // ID of menu item
-        title: 'Expand', // Title of menu item
+        content: 'Expand', // Title of menu item
         // Filters the elements to have this menu item on cxttap
         // If the selector is not truthy no elements will have this menu item on cxttap
         selector: 'node.cy-expand-collapse-collapsed-node',
@@ -109,7 +109,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-collapse',
-        title: 'Collapse',
+        content: 'Collapse',
         selector: 'node:parent',
         onClickFunction: function (event) {
           cy.undoRedo().do("collapse", {
@@ -119,7 +119,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-perform-layout',
-        title: 'Perform Layout',
+        content: 'Perform Layout',
         onClickFunction: function () {
           $("#perform-layout").trigger('click');
         },
@@ -127,7 +127,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-select-all-object-of-this-type',
-        title: 'Select Objects of This Type',
+        content: 'Select Objects of This Type',
         selector: 'node, edge',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
@@ -139,7 +139,7 @@ module.exports = function () {
       },
       {
         id: 'ctx-menu-show-hidden-neighbors',
-        title: 'Show Hidden Neighbors',
+        content: 'Show Hidden Neighbors',
         selector: 'node',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
