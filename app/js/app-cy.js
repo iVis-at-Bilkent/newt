@@ -549,9 +549,15 @@ module.exports = function () {
       
       // Signal that creation of convenient process is finished 
       if (convenientProcessSource) {
-        // After tap is performed drawoff edgehandles
         convenientProcessSource = undefined;
+        // cy.edgehandles('drawoff'); call will set the autoungrabify state the value of autoungrabify before the drawon
+        // however here we do not want to change that state here so we need to keep the current ungrabify state and return back to it
+        // after cy.edgehandles('drawoff'); is called
+        var currentUngrabifyState = cy.autoungrabify();
+        // After tap is performed drawoff edgehandles
         cy.edgehandles('drawoff');
+        // Return the current current ungrabify state (Do not let edge handles to change it)
+        cy.autoungrabify(currentUngrabifyState);
       }
       
       appUtilities.removeDragImage();

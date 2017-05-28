@@ -48,10 +48,10 @@ var modeHandler = {
 
       modeHandler.autoEnableMenuItems(false);
 
+      cy.edgehandles('drawoff');
+
       cy.autoungrabify(true);
       cy.autounselectify(true);
-
-      cy.edgehandles('drawoff');
     }
     
     // Check if there is a needed type change if there is perform it.
@@ -110,10 +110,11 @@ var modeHandler = {
       modeHandler.autoEnableMenuItems(true);
 
       modeHandler.mode = "selection-mode";
-      cy.autoungrabify(false);
-      cy.autounselectify(false);
 
       cy.edgehandles('drawoff');
+      
+      cy.autoungrabify(false);
+      cy.autounselectify(false);
     }
     
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
