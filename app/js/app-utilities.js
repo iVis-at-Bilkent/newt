@@ -84,7 +84,9 @@ appUtilities.setFileContent = function (fileName) {
   while (span.firstChild) {
     span.removeChild(span.firstChild);
   }
-  span.appendChild(document.createTextNode(fileName));
+  if (fileName.length <= 40)
+    span.appendChild(document.createTextNode(fileName));
+  else span.appendChild(document.createTextNode(fileName.substring(0, 34) + "...xml"));
 };
 
 appUtilities.triggerIncrementalLayout = function () {
