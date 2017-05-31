@@ -362,18 +362,39 @@ module.exports = function () {
     
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
+
+      if(actionName == "resize") {
+        var node = res.node;
+        if(node.data('statesandinfos').length > 0) {
+          updateInfoBox(node);
+        }
+      }
     });
 
     cy.on("afterUndo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
+
+      if(actionName == "resize") {
+        var node = res.node;
+        if(node.data('statesandinfos').length > 0) {
+          updateInfoBox(node);
+        }
+      }
     });
 
     cy.on("afterRedo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
+
+      if(actionName == "resize") {
+        var node = res.node;
+        if(node.data('statesandinfos').length > 0) {
+          updateInfoBox(node);
+        }
+      }
     });
     
     cy.on("mousedown", "node", function (event) {
@@ -663,5 +684,19 @@ module.exports = function () {
         appUtilities.firstSelectedNode = undefined;
       }
     });
+
+    cy.on('noderesize.resizedrag', function(e, type, node) {
+      console.log("resize drag triggered");
+      if(node.data('statesandinfos').length > 0) {
+        //console.log("in nodeResize drag");
+        updateInfoBox(node);
+      }
+    });
+  }
+
+  function updateInfoBox(node) {
+    for(var location in node.data('auxunitlayouts')) {
+      node.data('auxunitlayouts')[location].update();
+    }
   }
 };
