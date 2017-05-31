@@ -24,8 +24,9 @@ module.exports = function () {
       async: false
     });
   }
-
+  var fileName = ""; // Used as a global variable to hold filename
   function loadSample(filename) {
+    fileName = filename;
     var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
     return chise.loadSample(filename, 'app/samples/');
@@ -393,13 +394,13 @@ module.exports = function () {
     });
 
     $("#save-as-png").click(function (evt) {
-      var filename = document.getElementById('file-name').innerHTML;
+      var filename = fileName; //Assign the global filename to a local variable
       filename = filename.substring(0,filename.length - 3) + "png";
       chise.saveAsPng(filename); // the default filename is 'network.png'
     });
 
     $("#save-as-jpg").click(function (evt) {
-      var filename = document.getElementById('file-name').innerHTML;
+      var filename = fileName; //Assign the global filename to a local variable
       filename = filename.substring(0,filename.length - 3) + "jpg";
       chise.saveAsJpg(filename); // the default filename is 'network.jpg'
     });
