@@ -81,12 +81,20 @@ appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.def
 
 appUtilities.setFileContent = function (fileName) {
   var span = document.getElementById('file-name');
+  var displayedSpan = document.getElementById('displayed-file-name');
   while (span.firstChild) {
     span.removeChild(span.firstChild);
   }
+  while (displayedSpan.firstChild) {
+      displayedSpan.removeChild(displayedSpan.firstChild);
+  }
+  span.appendChild(document.createTextNode(fileName));
   if (fileName.length <= 40)
-    span.appendChild(document.createTextNode(fileName));
-  else span.appendChild(document.createTextNode(fileName.substring(0, 34) + "...xml"));
+      displayedSpan.appendChild(document.createTextNode(fileName));
+  else displayedSpan.appendChild(document.createTextNode(fileName.substring(0, 34) + "...xml"));
+
+  displayedSpan.style.display = 'block';
+  span.style.display = 'none';
 };
 
 appUtilities.triggerIncrementalLayout = function () {
