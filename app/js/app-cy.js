@@ -685,11 +685,28 @@ module.exports = function () {
       }
     });
 
+    // infobox refresh when resize happen, for simple nodes
     cy.on('noderesize.resizedrag', function(e, type, node) {
-      console.log("resize drag triggered");
       if(node.data('statesandinfos').length > 0) {
-        //console.log("in nodeResize drag");
         updateInfoBox(node);
+      }
+    });
+
+    // if the position of compund changes by repositioning its children's
+    // Note: position event for compound is not triggered in this case
+    // edge case: when moving a complex, it triggers the position change of the children,
+    // which then triggers the event below.
+    var oldPos = {x: undefined, y: undefined};
+    var currentPos = {x : 0, y : 0};
+    cy.on("position", "node:child[class!='complex']", function(event) {
+      var parent = event.target.parent();
+      if(!parent.is("[class='complex']")) {
+        return;
+      }
+      currentPos = parent.position();
+      if (currentPos.x != oldPos.x || currentPos.y != oldPos.y){
+          oldPos = {x : currentPos.x, y : currentPos.y};
+          cy.trigger('noderesize.resizedrag', ['unknown', parent]);
       }
     });
   }
