@@ -24,8 +24,9 @@ module.exports = function () {
       async: false
     });
   }
-
+  var fileName = ""; // Used as a global variable to hold filename
   function loadSample(filename) {
+    fileName = filename;
     var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
     return chise.loadSample(filename, 'app/samples/');
@@ -393,11 +394,15 @@ module.exports = function () {
     });
 
     $("#save-as-png").click(function (evt) {
-      chise.saveAsPng(); // the default filename is 'network.png'
+      var filename = fileName; //Assign the global filename to a local variable
+      filename = filename.substring(0,filename.length - 3) + "png";
+      chise.saveAsPng(filename); // the default filename is 'network.png'
     });
 
     $("#save-as-jpg").click(function (evt) {
-      chise.saveAsJpg(); // the default filename is 'network.jpg'
+      var filename = fileName; //Assign the global filename to a local variable
+      filename = filename.substring(0,filename.length - 3) + "jpg";
+      chise.saveAsJpg(filename); // the default filename is 'network.jpg'
     });
 
     //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
