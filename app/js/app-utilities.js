@@ -13,10 +13,11 @@ appUtilities.undoable = true;
 
 appUtilities.defaultLayoutProperties = {
   name: 'cose-bilkent',
-  nodeRepulsion: 4500,
-  idealEdgeLength: 50,
+  nodeRepulsion: 2000,
+  idealEdgeLength: 30,
   edgeElasticity: 0.45,
   nestingFactor: 0.1,
+  paddingCompound: 20,
   gravity: 0.25,
   numIter: 2500,
   tile: true,
