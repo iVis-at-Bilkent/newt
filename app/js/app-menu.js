@@ -227,21 +227,49 @@ module.exports = function () {
       cy.elements().unselect();
       cy.edges().select();
     });
-
+ 
+    var nodesWithHiddenNeighbor = [];
+    var thinBorder = function(nodesWithHiddenNeighbor){
+      nodesWithHiddenNeighbor.forEach(function( ele ){
+        var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+        chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+      });
+    };
+    var thickenBorder = function(nodesWithHiddenNeighbor){
+      nodesWithHiddenNeighbor.forEach(function( ele ){
+        var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+        chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+      });
+    };
     $("#hide-selected, #hide-selected-icon").click(function(e) {
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thinBorder(nodesWithHiddenNeighbor);
       chise.hideNodesSmart(cy.nodes(":selected"));
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thickenBorder(nodesWithHiddenNeighbor);
+      //chise.changeCss(nodesWithHiddenNeighbor, 'border-width', '3.25'); 
     });
     
     $("#show-selected, #show-selected-icon").click(function(e) {
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thinBorder(nodesWithHiddenNeighbor);
       chise.showNodesSmart(cy.nodes(":selected"));
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thickenBorder(nodesWithHiddenNeighbor);
     });
     
     $("#show-hidden-neighbors-of-selected").click(function(e) {
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thinBorder(nodesWithHiddenNeighbor);  
       appUtilities.showAndPerformIncrementalLayout(cy.elements(':selected'));
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thickenBorder(nodesWithHiddenNeighbor);
     });
 
     $("#show-all").click(function (e) {
-      chise.showAll();
+      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+      thinBorder(nodesWithHiddenNeighbor);
+      chise.showAll();   
     });
 
     $("#delete-selected-smart, #delete-selected-smart-icon").click(function (e) {
