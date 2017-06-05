@@ -9,7 +9,7 @@ var _ = require('underscore');
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
-  
+
   var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
@@ -35,7 +35,7 @@ module.exports = function () {
   $(document).ready(function ()
   {
     console.log('init the sbgnviz template/page');
-    
+
     $(window).on('resize', _.debounce(dynamicResize, 100));
     dynamicResize();
 
@@ -56,15 +56,15 @@ module.exports = function () {
     colorSchemeMenuView.render();
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
-    // wait until it is resized before loading the default sample. As the current solution we set a 100 ms 
-    // time out before loading the default sample. 
+    // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
+    // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
       loadSample('neuronal_muscle_signalling.xml');
       keyboardShortcuts();
     }, 100);
   });
-  
+
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename) {
     appUtilities.setFileContent(filename);
@@ -76,14 +76,14 @@ module.exports = function () {
       $('#inspector-style-tab a').blur();
     }
   });
-  
+
   $(document).on('updateGraphEnd', function(event) {
     appUtilities.resetUndoRedoButtons();
     modeHandler.setSelectionMode();
   });
 
   function toolbarButtonsAndMenu() {
-    
+
     // menu behavior: on first click, triggers the other menus on hover.
     var isMenuHoverMode = false;
     $('ul.navbar-nav > li.dropdown').on('mouseenter', function(e){
@@ -114,7 +114,7 @@ module.exports = function () {
         $("#node-label-textbox").blur();
       }
     });
-    
+
     $("#node-label-textbox").blur(function () {
       $("#node-label-textbox").hide();
       $("#node-label-textbox").removeData("node");
@@ -148,7 +148,7 @@ module.exports = function () {
           $('#inspector-palette-tab a').tab('show');
           $('#inspector-style-tab a').blur();
         }
-        
+
         chise.updateGraph({
           nodes: [],
           edges: []
@@ -231,11 +231,11 @@ module.exports = function () {
     $("#hide-selected, #hide-selected-icon").click(function(e) {
       chise.hideNodesSmart(cy.nodes(":selected"));
     });
-    
+
     $("#show-selected, #show-selected-icon").click(function(e) {
       chise.showNodesSmart(cy.nodes(":selected"));
     });
-    
+
     $("#show-hidden-neighbors-of-selected").click(function(e) {
       appUtilities.showAndPerformIncrementalLayout(cy.elements(':selected'));
     });
@@ -294,7 +294,7 @@ module.exports = function () {
     $("#query-pathsbyURI").click(function (e) {
         pathsByURIQueryView.render();
     });
-    
+
     $("#grid-properties").click(function (e) {
       gridPropertiesView.render();
     });
@@ -321,7 +321,7 @@ module.exports = function () {
       }
       toggleShowGridEnableSnap = !toggleShowGridEnableSnap;
       appUtilities.currentGridProperties.showGrid = toggleShowGridEnableSnap;
-      appUtilities.currentGridProperties.snapToGrid = toggleShowGridEnableSnap; 
+      appUtilities.currentGridProperties.snapToGrid = toggleShowGridEnableSnap;
 
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
@@ -372,10 +372,10 @@ module.exports = function () {
 
     $("#perform-layout, #perform-layout-icon").click(function (e) {
       // TODO think whether here is the right place to start the spinner
-      chise.startSpinner("layout-spinner"); 
-      
+      chise.startSpinner("layout-spinner");
+
       // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
-      // If it is 'during' use it as is 
+      // If it is 'during' use it as is
       var preferences = {
         animate: appUtilities.currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
       };
@@ -411,23 +411,23 @@ module.exports = function () {
       //chise.saveAsSbgnml(filename);
       fileSaveView.render();
     });
-    
+
     $("#add-complex-for-selected").click(function (e) {
       chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
     });
-    
+
     $("#add-compartment-for-selected").click(function (e) {
       chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
     });
-    
+
     $("#create-reaction-template").click(function (e) {
       reactionTemplateView.render();
     });
-    
+
     $("#clone-selected").click(function (e) {
       chise.cloneElements(cy.nodes(':selected'));
     });
-    
+
     /*
      * Align selected nodes w.r.t the first selected node start
      */
@@ -454,11 +454,11 @@ module.exports = function () {
     $('#align-vertical-right,#align-vertical-right-icon').click(function (e) {
       chise.align(cy.nodes(":selected"), "none", "right", appUtilities.firstSelectedNode);
     });
-    
+
     /*
      * Align selected nodes w.r.t the first selected node end
      */
-    
+
     // Mode handler related menu items
 
     var dragAndDropPlacement = false;
@@ -468,28 +468,28 @@ module.exports = function () {
       dragAndDropPlacement = true;
       appUtilities.addDragImage($(this).attr('value')+".svg", $(this).css('width'), $(this).css('height'));
 
-      $('.node-palette img').parent().removeClass('selected-mode'); // Make any image inside node palettes non selected
-      $(this).parent().addClass('selected-mode'); // Make clicked element selected
+      $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
+      $(this).addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
       modeHandler.setAddNodeMode(elementType); // Set add node mode and set selected node type
-      
+
       // Update the some attributes of add node mode icon
       var src = $(this).attr('src');
       var title = "Create a new " + $(this).attr('title');
       $('#add-node-mode-icon').attr('src', src);
       $('#add-node-mode-icon').attr('title', title);
     });
-    
+
     // Listen to click event on img tags under an edge palette
     $(document).on('mousedown', '.edge-palette img', function (e) {
       // we don't want to have the icons following the mouse on drag (default browser behavior),
       // this would confuse the user as edges are not draggable.
       e.preventDefault();
-      $('.edge-palette img').parent().removeClass('selected-mode');// Make any image inside edge palettes non selected
-      $(this).parent().addClass('selected-mode'); // Make clicked element selected
+      $('.edge-palette img').removeClass('selected-mode');// Make any image inside edge palettes non selected
+      $(this).addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
       modeHandler.setAddEdgeMode(elementType); // Set add edge mode and set selected edge type
-      
+
       // Update the some attributes of add edge mode icon
       var src = $(this).attr('src');
       var title = "Create a new " + $(this).attr('title');
@@ -506,19 +506,19 @@ module.exports = function () {
     $('#select-mode-icon').click(function (e) {
       modeHandler.setSelectionMode();
     });
-    
+
     $('#add-node-mode-icon').click(function (e) {
       modeHandler.setAddNodeMode();
-      
+
       // Go to inspector palette tab when the icon is clicked
       if (!$('#inspector-palette-tab').hasClass('active')) {
         $('#inspector-palette-tab a').tab('show');
       }
     });
-    
+
     $('#add-edge-mode-icon').click(function (e) {
       modeHandler.setAddEdgeMode();
-      
+
       // Go to inspector palette tab when the icon is clicked
       if (!$('#inspector-palette-tab').hasClass('active')) {
         $('#inspector-palette-tab a').tab('show');
