@@ -143,7 +143,17 @@ module.exports = function () {
         selector: 'node',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.showAndPerformIncrementalLayout(cyTarget);
+          var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+          nodesWithHiddenNeighbor.forEach(function( ele ){
+            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+            chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+          });
+          appUtilities.showAndPerformIncrementalLayout(cyTarget);   
+          nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+          nodesWithHiddenNeighbor.forEach(function( ele ){
+            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+            chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+          });
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       }
@@ -438,7 +448,7 @@ module.exports = function () {
 
       node.qtipTimeOutFcn = setTimeout(function () {
         nodeQtipFunction(node);
-      }, 1000);
+      }, 2500);
     });
 
     cy.on('mouseout', 'node', function (event) {
