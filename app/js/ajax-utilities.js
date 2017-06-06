@@ -1,6 +1,7 @@
 var libxmljs = require('libxmljs');
 var fs = require('fs');
 var request = require('request');
+var querystring = require('querystring');
 
 /*
 	functions in this file all have to take the same arguments:
@@ -10,51 +11,80 @@ var request = require('request');
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
 
+
+/**
+ * 100MB limit to map size, to avoid potential flood.
+ */
 exports.validateSBGNML = function (req, res) {
-	var sbgnml = req.query.sbgnml;
-
-	var xsdString;
-	try {
-		xsdString = fs.readFileSync('app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
-	}
-	catch (err) {
-		throw new Error("Failed to read xsd file " + err);
-	}
-
-	var xsdDoc;
-	try {
-		xsdDoc = libxmljs.parseXml(xsdString);
-	}
-	catch (err) {
-		throw new Error("libxmljs failed to parse xsd " + err);
-	}
-
-	var xmlDoc;
-	try {
-		xmlDoc = libxmljs.parseXml(sbgnml);
-	}
-	catch (err) {
-		throw new Error("libxmljs failed to parse xml " + err);
-	}
-
-	if (!xmlDoc.validate(xsdDoc)) {
-		var errors = xmlDoc.validationErrors;
-		var errorList = [];
-		for(var i=0; i < errors.length; i++) {
-			 // I can't understand the structure of this object. It's a mix of object with string in the middle....
-			var error = errors[i];
-			var message = error.toString(); // get the string message part
-			var newErrorObj = {}; // get the object properties
-			newErrorObj.message = message;
-			for(var key in error) {
-				newErrorObj[key] = error[key];
+	var sbgnml;
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				throw new Error("Too much data passed");
 			}
-			errorList.push(newErrorObj);
-		}
-		res.send(errorList);
+		});
+
+		req.on('end', function () {
+			var post = querystring.parse(body);
+			sbgnml = post.sbgnml;
+			executeValidate(sbgnml, res);
+		});
 	}
-	else {
-		res.send("validate OK");
+	else if(req.method == 'GET') {
+		sbgnml = req.query.sbgnml;
+		executeValidate(sbgnml, res);
+	}
+
+	function executeValidate(sbgnml, res) {
+		var xsdString;
+		try {
+			xsdString = fs.readFileSync('app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
+		}
+		catch (err) {
+			throw new Error("Failed to read xsd file " + err);
+		}
+
+		var xsdDoc;
+		try {
+			xsdDoc = libxmljs.parseXml(xsdString);
+		}
+		catch (err) {
+			throw new Error("libxmljs failed to parse xsd " + err);
+		}
+
+		var xmlDoc;
+		try {
+			xmlDoc = libxmljs.parseXml(sbgnml);
+		}
+		catch (err) {
+			throw new Error("libxmljs failed to parse xml " + err);
+		}
+
+		if (!xmlDoc.validate(xsdDoc)) {
+			var errors = xmlDoc.validationErrors;
+			var errorList = [];
+			for(var i=0; i < errors.length; i++) {
+				 // I can't understand the structure of this object. It's a mix of object with string in the middle....
+				var error = errors[i];
+				var message = error.toString(); // get the string message part
+				var newErrorObj = {}; // get the object properties
+				newErrorObj.message = message;
+				for(var key in error) {
+					newErrorObj[key] = error[key];
+				}
+				errorList.push(newErrorObj);
+			}
+			res.send(errorList);
+		}
+		else {
+			res.send("validate OK");
+		}
 	}
 };
 

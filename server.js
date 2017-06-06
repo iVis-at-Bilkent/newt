@@ -4,7 +4,12 @@ var server = require('http').createServer(app);
 var port = process.env.port || 80;
 
 var ajaxUtilities = require('./app/js/ajax-utilities');
-app.get('/utilities/:fn', function(req, res){
+
+/**
+ * This function redirects requests from the application to the corresponding function
+ * located in ajax-utilities. The desired function is passed in the URL.
+ */
+function requestHandler(req, res){
 	// :fn holds the name of the function to call in ajax-utilities.js
 	var fn = req.params.fn || "";
 	if (typeof ajaxUtilities[fn] !== "function") {
@@ -22,7 +27,10 @@ app.get('/utilities/:fn', function(req, res){
 			res.sendStatus(500);
 		}
 	}
-});
+}
+
+app.get('/utilities/:fn', requestHandler);
+app.post('/utilities/:fn', requestHandler);
 
 server.listen(port, function(){
   console.log('server listening on port: %d', port);

@@ -469,7 +469,7 @@ module.exports = function () {
 
       node.qtipTimeOutFcn = setTimeout(function () {
         nodeQtipFunction(node);
-      }, 1000);
+      }, 2500);
     });
 
     cy.on('mouseout', 'node', function (event) {
