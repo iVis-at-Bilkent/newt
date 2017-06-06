@@ -15,13 +15,12 @@ module.exports = function () {
 
   function validateSBGNML(xml) {
     $.ajax({
-      type: 'get',
+      type: 'post',
       url: "/utilities/validateSBGNML",
       data: {sbgnml: xml},
       success: function(data){
         console.log("validation result", data);
-      },
-      async: false
+      }
     });
   }
   var fileName = ""; // Used as a global variable to hold filename
