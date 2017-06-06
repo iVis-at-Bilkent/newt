@@ -6,8 +6,8 @@ var modeHandler = {
   // Initilize mode handler
   initilize: function () {
     $('#select-mode-icon').parent().addClass('selected-mode'); // Initial mode is selection mode.
-    $('.node-palette img').parent().addClass('inactive-palette-element');
-    $('.edge-palette img').parent().addClass('inactive-palette-element');
+    $('.node-palette img').addClass('inactive-palette-element');
+    $('.edge-palette img').addClass('inactive-palette-element');
     // Node/edge palettes should be initialized according to default selectedNodeType and selectedEdgeType
     var defaultNodeImg = $('.node-palette img[value="'+this.selectedNodeType+'"]');
     var defaultEdgeImg = $('.edge-palette img[value="'+this.selectedEdgeType+'"]');
@@ -43,8 +43,8 @@ var modeHandler = {
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().addClass('selected-mode');
-      $('.node-palette img').parent().removeClass('inactive-palette-element');
-      $('.edge-palette img').parent().addClass('inactive-palette-element');
+      $('.node-palette img').removeClass('inactive-palette-element');
+      $('.edge-palette img').addClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -83,8 +83,8 @@ var modeHandler = {
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().addClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
-      $('.node-palette img').parent().addClass('inactive-palette-element');
-      $('.edge-palette img').parent().removeClass('inactive-palette-element');
+      $('.node-palette img').addClass('inactive-palette-element');
+      $('.edge-palette img').removeClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(false);
 
@@ -104,8 +104,8 @@ var modeHandler = {
       $('#select-mode-icon').parent().addClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
-      $('.node-palette img').parent().addClass('inactive-palette-element');
-      $('.edge-palette img').parent().addClass('inactive-palette-element');
+      $('.node-palette img').addClass('inactive-palette-element');
+      $('.edge-palette img').addClass('inactive-palette-element');
 
       modeHandler.autoEnableMenuItems(true);
 
