@@ -32,7 +32,7 @@
     "cytoscape-cose-bilkent": "kinimesi/cytoscape.js-cose-bilkent#master",
     "cytoscape-undo-redo": "iVis-at-Bilkent/cytoscape.js-undo-redo#master",
     "cytoscape-expand-collapse": "iVis-at-Bilkent/cytoscape.js-expand-collapse#unstable",
-    "cytoscape-clipboard": "^1.0.3",
+    "cytoscape-clipboard": "^2.0.1",
     "cytoscape-edge-bend-editing": "iVis-at-Bilkent/cytoscape.js-edge-bend-editing#master",
     "cytoscape-view-utilities": "^2.0.0",
     "cytoscape-context-menus": "iVis-at-Bilkent/cytoscape.js-context-menus#master",
