@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Common utilities for sample application. Includes functions and variables.
  * You can directly utilize this object also you can use this object to set a variable in a file and access it in another file.
  */
@@ -143,8 +143,11 @@ appUtilities.dynamicResize = function () {
 
   if (windowWidth > canvasWidth)
   {
-    $("#sbgn-network-container").width(windowWidth * 0.9 * 0.8);
-    $("#sbgn-inspector").width(windowWidth * 0.9 * 0.2);
+    //This is the margin on left and right of the main content when the page is
+    //displayed
+    var mainContentMargin = 10;
+    $("#sbgn-network-container").width(windowWidth  * 0.8 - mainContentMargin);
+    $("#sbgn-inspector").width(windowWidth  * 0.2 - mainContentMargin);
     var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
     $(".navbar").width(w);
@@ -738,7 +741,7 @@ function rgb2hex(rgb) {
           function hex(x) {
                return ("0" + parseInt(x).toString(16)).slice(-2);
           }
-          return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]); 
+          return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
      }
 }
 
