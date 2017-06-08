@@ -10,6 +10,11 @@ module.exports = function () {
   });
   mt.bind(["ctrl+y", "command+y"], function () {
     cy.undoRedo().redo();
+
+    // return false to prevent default browser behavior
+    // and stop event from bubbling
+    // on chrome -> cmd+y opens history in a new tab
+    return false;
   });
   mt.bind(["ctrl+c", "command+c"], function () {
     chise.copyElements(cy.$(":selected"));
