@@ -1,7 +1,7 @@
 var jquery = $ = require('jquery');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
-var inspectorUtilities = require('./inspector-utilities');
+inspectorUtilities = require('./inspector-utilities');
 var appUndoActions = require('./app-undo-actions');
 var _ = require('underscore');
 
