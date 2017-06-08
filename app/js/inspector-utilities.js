@@ -592,10 +592,10 @@ inspectorUtilities.handleSBGNInspector = function () {
       $("#inspector-label").on('change', function () {
         var lines = $(this).val().trim();
         var current_label_data;
-        if (selectedEles.data('label') == 'undefined')
-          current_label_data = selectedEles.data('label').replace(new RegExp("\n", "g"), " \\n ").trim();
-        else
+        if (typeof selectedEles.data('label') == 'undefined')
           current_label_data = "";
+        else
+          current_label_data = selectedEles.data('label').replace(new RegExp("\n", "g"), " \\n ").trim();
         if (current_label_data !== lines){
           lines = lines.split("\\n");
           lines = $.map(lines, function(x) {
