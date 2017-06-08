@@ -167,7 +167,7 @@ ns.vocabulary = {
 		label: "Has custom property",
 		controlled: false,
 		description: 	"Attach a custom property to the entity. You can freely specify the name "+
-						"and value of the property in the following fields. None of the two fields "+
+						"and value of the property in the following fields. Neither of the fields "+
 						"will be checked for validation."
 	}
 
