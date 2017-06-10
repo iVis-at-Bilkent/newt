@@ -1,6 +1,7 @@
 var chise = require('chise');
 var sbgnviz = require('sbgnviz');
 var filesaverjs = require('filesaverjs');
+var konva = require('konva');
 window.jQuery = window.jquery = window.$ = require('jquery'); // jquery should be global because jquery.qtip extension is not compatible with commonjs
 var cytoscape = require('cytoscape');
 
@@ -40,7 +41,7 @@ cyViewUtilities( cytoscape, $ );
 cyEdgehandles( cytoscape );
 cyGridGuide( cytoscape );
 cyAutopanOnDrag( cytoscape );
-cyNodeResize( cytoscape, $ );
+cyNodeResize( cytoscape, $, konva );
 
 // Libraries to pass sbgnviz
 var libs = {};
