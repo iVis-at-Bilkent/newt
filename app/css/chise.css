@@ -367,6 +367,7 @@ input {
 
 textarea {
     font-size: 12px !important;
+    overflow: hidden;
 }
 
 button:not(.close) {
