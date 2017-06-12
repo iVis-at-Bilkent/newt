@@ -375,9 +375,12 @@ module.exports = function () {
 
       if(actionName == "resize") {
         var node = res.node;
+        // ensure consistency of infoboxes through resizing
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
+        // ensure consistency of inspector properties through resizing
+        inspectorUtilities.handleSBGNInspector();
       }
     });
 
@@ -388,6 +391,7 @@ module.exports = function () {
 
       if(actionName == "resize") {
         var node = res.node;
+        // ensure consistency of infoboxes through resizing
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
@@ -401,6 +405,7 @@ module.exports = function () {
 
       if(actionName == "resize") {
         var node = res.node;
+        // ensure consistency of infoboxes through resizing
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
