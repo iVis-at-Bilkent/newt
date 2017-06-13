@@ -233,6 +233,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
       appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
+      appUtilities.currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
     
 	
       $(self.el).modal('toggle');

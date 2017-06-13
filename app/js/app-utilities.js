@@ -30,6 +30,7 @@ appUtilities.defaultLayoutProperties = {
   gravityRangeCompound: 1.5,
   gravityCompound: 1.0,
   gravityRange: 3.8,
+  initialEnergyOnIncremental:0.8,
   stop: function () {
     chise.endSpinner('layout-spinner');
   }
