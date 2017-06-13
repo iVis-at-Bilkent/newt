@@ -71,12 +71,13 @@ appUtilities.defaultGeneralProperties = {
   showComplexName: true,
   dynamicLabelSize: 'regular',
   fitLabelsToNodes: false,
+  fitLabelsToInfoboxes: false,
   rearrangeAfterExpandCollapse: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
   mapColorScheme: 'black_white',
-  defaultInfoboxHeight: 10,
+  defaultInfoboxHeight: 12,
   defaultInfoboxWidth: 30
 };
 

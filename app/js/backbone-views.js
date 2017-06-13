@@ -295,6 +295,7 @@ var GeneralPropertiesView = Backbone.View.extend({
       appUtilities.currentGeneralProperties.compoundPadding = Number(document.getElementById("compound-padding").value);
       appUtilities.currentGeneralProperties.dynamicLabelSize = $('select[name="dynamic-label-size"] option:selected').val();
       appUtilities.currentGeneralProperties.fitLabelsToNodes = document.getElementById("fit-labels-to-nodes").checked;
+      appUtilities.currentGeneralProperties.fitLabelsToInfoboxes = document.getElementById("fit-labels-to-infoboxes").checked;
       appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse =
               document.getElementById("rearrange-after-expand-collapse").checked;
       appUtilities.currentGeneralProperties.animateOnDrawingChanges =

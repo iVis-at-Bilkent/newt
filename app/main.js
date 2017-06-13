@@ -58,6 +58,10 @@ chise({
   fitLabelsToNodes: function () {
     return appUtilities.currentGeneralProperties.fitLabelsToNodes;
   },
+  // whether to fit label to nodes
+  fitLabelsToInfoboxes: function () {
+    return appUtilities.currentGeneralProperties.fitLabelsToInfoboxes;
+  },
   // dynamic label size it may be 'small', 'regular', 'large'
   dynamicLabelSize: function () {
     return appUtilities.currentGeneralProperties.dynamicLabelSize;
