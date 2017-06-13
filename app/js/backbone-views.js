@@ -308,7 +308,9 @@ var GeneralPropertiesView = Backbone.View.extend({
           document.getElementById("show-complex-name").checked;
 
       chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-      chise.refreshPaddings(); // Refresh/recalculate paddings
+      var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
+      appUtilities.currentGeneralProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+      
       if (appUtilities.currentGeneralProperties.enablePorts) {
         chise.enablePorts();
       }
