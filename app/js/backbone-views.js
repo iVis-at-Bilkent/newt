@@ -233,6 +233,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
       appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
+      appUtilities.currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
     
 	
       $(self.el).modal('toggle');
@@ -308,7 +309,9 @@ var GeneralPropertiesView = Backbone.View.extend({
           document.getElementById("show-complex-name").checked;
 
       chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-      chise.refreshPaddings(); // Refresh/recalculate paddings
+      var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
+      appUtilities.currentGeneralProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+      
       if (appUtilities.currentGeneralProperties.enablePorts) {
         chise.enablePorts();
       }
