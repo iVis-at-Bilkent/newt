@@ -75,7 +75,9 @@ appUtilities.defaultGeneralProperties = {
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
-  mapColorScheme: 'black_white'
+  mapColorScheme: 'black_white',
+  defaultInfoboxHeight: 10,
+  defaultInfoboxWidth: 30
 };
 
 appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
