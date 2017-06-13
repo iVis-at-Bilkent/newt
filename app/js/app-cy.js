@@ -568,7 +568,8 @@ module.exports = function () {
           
           // If the parent class is valid for the node type then add the node
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
-            chise.addNode(cyPosX, cyPosY, nodeType, undefined, parentId);
+            var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage, infoBoxName : modeHandler.selectedInfoBoxName};
+            chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
           }
         }
         
