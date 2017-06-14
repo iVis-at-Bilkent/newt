@@ -4,6 +4,7 @@
  * You can directly utilize this object also you can use this object to set a variable in a file and access it in another file.
  */
 var jquery = $ = require('jquery');
+var chroma = require('chroma-js');
 
 var appUtilities = {};
 
@@ -736,42 +737,10 @@ appUtilities.getAllStyles = function () {
   };
 };
 
-// see http://stackoverflow.com/a/4090628
-function rgb2hex(rgb) {
-     if (  rgb.search("rgb") == -1 ) {
-          return rgb;
-     } else {
-          rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-          function hex(x) {
-               return ("0" + parseInt(x).toString(16)).slice(-2);
-          }
-          return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-     }
-}
-
-function expandShortHex(hex) {
-  if (hex.length < 6) {
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    longhex = hex.replace(shorthandRegex, function(m, r, g, b) {
-        return "#" + r + r + g + g + b + b;
-    });
-    return longhex;
-  }
-  else {
-    return hex
-  }
-}
-
 // accepts short or long hex or rgb color, return sbgnml compliant color value (= long hex)
 // can optionnally convert opacity value and return a 8 characer hex color
 function getXmlValidColor(color, opacity) {
-  var finalColor;
-  if (/^#[0-9A-F]{3,8}$/i.test(color)){ // color is hex
-    finalColor = expandShortHex(color);
-  }
-  else { // rgb case
-    finalColor = rgb2hex(color);
-  }
+  var finalColor = chroma(color).hex();
   if (typeof opacity === 'undefined') {
     return finalColor;
   }
