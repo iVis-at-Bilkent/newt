@@ -304,6 +304,8 @@ var GeneralPropertiesView = Backbone.View.extend({
       appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
           document.getElementById("adjust-node-label-font-size-automatically").checked;
       appUtilities.currentGeneralProperties.enablePorts =
+          document.getElementById("allow-compound-node-resize").checked;
+      appUtilities.currentGeneralProperties.allowCompoundNodeResize =
           document.getElementById("enable-ports").checked;
       appUtilities.currentGeneralProperties.showComplexName =
           document.getElementById("show-complex-name").checked;
@@ -318,6 +320,15 @@ var GeneralPropertiesView = Backbone.View.extend({
       else {
         chise.disablePorts();
       }
+      
+      // TODO add sbgnviz.considerCompoundSizes() and sbgnviz.omitCompoundSizes()
+      if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
+        chise.considerCompoundSizes();
+      }
+      else {
+        chise.omitCompoundSizes();
+      }
+      
       cy.style().update();
       
       $(self.el).modal('toggle');

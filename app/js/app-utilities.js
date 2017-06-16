@@ -78,6 +78,7 @@ appUtilities.defaultGeneralProperties = {
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
+  allowCompoundNodeResize: true,
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
   defaultInfoboxWidth: 30
