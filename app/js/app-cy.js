@@ -144,21 +144,36 @@ module.exports = function () {
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-          var actions = [];
-          nodesWithHiddenNeighbor.forEach(function( ele ){
-            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
-          });
-          cy.undoRedo().do("batch", actions);
+          if(appUtilities.undoable){
+            var actions = [];
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
+            });
+            cy.undoRedo().do("batch", actions);
+          }
+          else{
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+            });  
+          }
           appUtilities.showAndPerformIncrementalLayout(cyTarget);   
           nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-          console.log(nodesWithHiddenNeighbor);
-          actions = [];
-          nodesWithHiddenNeighbor.forEach(function( ele ){
-            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
-          });
-          cy.undoRedo().do("batch", actions);
+          if(appUtilities.undoable){
+            actions = [];
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
+            });
+            cy.undoRedo().do("batch", actions);
+          }
+          else{
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+            });
+          }
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       }

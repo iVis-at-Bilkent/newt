@@ -229,21 +229,37 @@ module.exports = function () {
  
     var nodesWithHiddenNeighbor = [];
     var thinBorder = function(nodesWithHiddenNeighbor){
-      var actions = [];
-      nodesWithHiddenNeighbor.forEach(function( ele ){
-        var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-        actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
-      });
-      cy.undoRedo().do("batch", actions);
+      if(appUtilities.undoable){
+        var actions = [];
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
+        });
+        cy.undoRedo().do("batch", actions);
+      }
+      else{
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+        });
+      }
     };
     
     var thickenBorder = function(nodesWithHiddenNeighbor){
-      var actions = [];
-      nodesWithHiddenNeighbor.forEach(function( ele ){
-        var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-        actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
-      });
-      cy.undoRedo().do("batch", actions);
+      if(appUtilities.undoable){
+        var actions = [];
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
+        });
+        cy.undoRedo().do("batch", actions);
+      }
+      else{
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+        });
+      }
     };
     
     $("#hide-selected, #hide-selected-icon").click(function(e) {
