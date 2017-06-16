@@ -648,6 +648,12 @@ module.exports = function () {
         left = left.toString() + 'px';
         var top = containerPos.top + this.renderedPosition().y;
         top -= nodeLabelTextbox.height() / 2;
+
+        //For complexes and compartments move the textarea to the bottom
+        var nodeType = node.data('class');
+        if (nodeType == "compartment" || nodeType == "complex" )
+            top += (node.outerHeight() / 2 * cy.zoom() );
+
         top = top.toString() + 'px';
 
         nodeLabelTextbox.css('left', left);
