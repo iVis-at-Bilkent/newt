@@ -144,16 +144,21 @@ module.exports = function () {
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+          var actions = [];
           nodesWithHiddenNeighbor.forEach(function( ele ){
             var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+            actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
           });
+          cy.undoRedo().do("batch", actions);
           appUtilities.showAndPerformIncrementalLayout(cyTarget);   
           nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
+          console.log(nodesWithHiddenNeighbor);
+          actions = [];
           nodesWithHiddenNeighbor.forEach(function( ele ){
             var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+            actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
           });
+          cy.undoRedo().do("batch", actions);
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       }
