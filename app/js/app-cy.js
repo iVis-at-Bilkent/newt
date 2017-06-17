@@ -244,6 +244,24 @@ module.exports = function () {
       boundingRectangleLineColor: "darkgray",
       boundingRectangleLineWidth: 1.5,
       zIndex: 999,
+      getCompoundMinWidth: function(node) { 
+        return node.data('minWidth'); 
+      },
+      getCompoundMinHeight: function(node) { 
+        return node.data('minHeight'); 
+      },
+      getCompoundMinWidthBiasRight: function(node) {
+        return node.data('minWidthBiasRight'); 
+      },
+      getCompoundMinWidthBiasLeft: function(node) { 
+        return node.data('minWidthBiasLeft'); 
+      },
+      getCompoundMinHeightBiasTop: function(node) {
+        return node.data('minHeightBiasTop');
+      },
+      getCompoundMinHeightBiasBottom: function(node) { 
+        return node.data('minHeightBiasBottom');
+      },
       setWidth: function(node, width) {
         var bbox = node.data('bbox');
         bbox.w = width;
@@ -253,6 +271,24 @@ module.exports = function () {
         var bbox = node.data('bbox');
         bbox.h = height;
         node.data('bbox', bbox);
+      },
+      setCompoundMinWidth: function(node, minWidth) { 
+        node.data('minWidth', minWidth); 
+      },
+      setCompoundMinHeight: function(node, minHeight) { 
+        node.data('minHeight', minHeight); 
+      },
+      setCompoundMinWidthBiasLeft: function(node, minWidthBiasLeft) {
+        node.data('minWidthBiasLeft', minWidthBiasLeft); 
+      },
+      setCompoundMinWidthBiasRight: function(node, minHeightBiasRight) {
+        node.data('minWidthBiasRight', minHeightBiasRight); 
+      },
+      setCompoundMinHeightBiasTop: function(node, minHeightBiasTop) { 
+        node.data('minHeightBiasTop', minHeightBiasTop); 
+      },
+      setCompoundMinHeightBiasBottom: function(node, minHeightBiasBottom) {
+        node.data('minHeightBiasBottom', minHeightBiasBottom); 
       },
       minWidth: function (node) {
         var data = node.data("resizeMinWidth");
@@ -268,7 +304,7 @@ module.exports = function () {
         return chise.elementUtilities.mustBeSquare(sbgnclass);
       }, // with only 4 active grapples (at corners)
       isNoResizeMode: function (node) {
-        return node.is(".noResizeMode, :parent")
+        return node.is(':parent') && !appUtilities.currentGeneralProperties.allowCompoundNodeResize;
       }, // no active grapples
 
       cursors: {// See http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor

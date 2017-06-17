@@ -304,9 +304,9 @@ var GeneralPropertiesView = Backbone.View.extend({
       appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
           document.getElementById("adjust-node-label-font-size-automatically").checked;
       appUtilities.currentGeneralProperties.enablePorts =
-          document.getElementById("allow-compound-node-resize").checked;
-      appUtilities.currentGeneralProperties.allowCompoundNodeResize =
           document.getElementById("enable-ports").checked;
+      appUtilities.currentGeneralProperties.allowCompoundNodeResize =
+          document.getElementById("allow-compound-node-resize").checked;
       appUtilities.currentGeneralProperties.showComplexName =
           document.getElementById("show-complex-name").checked;
 
