@@ -245,22 +245,22 @@ module.exports = function () {
       boundingRectangleLineWidth: 1.5,
       zIndex: 999,
       getCompoundMinWidth: function(node) { 
-        return node.data('minWidth'); 
+        return node.data('minWidth') || 0; 
       },
       getCompoundMinHeight: function(node) { 
-        return node.data('minHeight'); 
+        return node.data('minHeight') || 0; 
       },
       getCompoundMinWidthBiasRight: function(node) {
-        return node.data('minWidthBiasRight'); 
+        return node.data('minWidthBiasRight') || 0; 
       },
       getCompoundMinWidthBiasLeft: function(node) { 
-        return node.data('minWidthBiasLeft'); 
+        return node.data('minWidthBiasLeft') || 0; 
       },
       getCompoundMinHeightBiasTop: function(node) {
-        return node.data('minHeightBiasTop');
+        return node.data('minHeightBiasTop') || 0;
       },
       getCompoundMinHeightBiasBottom: function(node) { 
-        return node.data('minHeightBiasBottom');
+        return node.data('minHeightBiasBottom') || 0;
       },
       setWidth: function(node, width) {
         var bbox = node.data('bbox');
