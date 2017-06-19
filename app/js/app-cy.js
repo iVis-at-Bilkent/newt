@@ -144,16 +144,36 @@ module.exports = function () {
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-          nodesWithHiddenNeighbor.forEach(function( ele ){
-            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
-          });
+          if(appUtilities.undoable){
+            var actions = [];
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
+            });
+            cy.undoRedo().do("batch", actions);
+          }
+          else{
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+            });  
+          }
           appUtilities.showAndPerformIncrementalLayout(cyTarget);   
           nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-          nodesWithHiddenNeighbor.forEach(function( ele ){
-            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
-          });
+          if(appUtilities.undoable){
+            actions = [];
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
+            });
+            cy.undoRedo().do("batch", actions);
+          }
+          else{
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+            });
+          }
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       }
@@ -682,6 +702,12 @@ module.exports = function () {
         left = left.toString() + 'px';
         var top = containerPos.top + this.renderedPosition().y;
         top -= nodeLabelTextbox.height() / 2;
+
+        //For complexes and compartments move the textarea to the bottom
+        var nodeType = node.data('class');
+        if (nodeType == "compartment" || nodeType == "complex" )
+            top += (node.outerHeight() / 2 * cy.zoom() );
+
         top = top.toString() + 'px';
 
         nodeLabelTextbox.css('left', left);
