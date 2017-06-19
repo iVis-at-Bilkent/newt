@@ -254,24 +254,6 @@ var LayoutPropertiesView = Backbone.View.extend({
 });
 
 
-var ColorSchemeMenuView = Backbone.View.extend({
-  initialize: function () {
-    var self = this;
-    self.template = _.template($("#color-scheme-menu-template").html());
-    $(document).on("click", "a.map-color-scheme", function (evt) {
-      var raw_id = $(this).attr('id');
-      var scheme_id = raw_id.replace("map-color-scheme_", "");
-      appUtilities.applyMapColorScheme(scheme_id);
-    });
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template($("#color-scheme-menu-template").html());
-    $(self.el).html(self.template);
-    return this;
-  }
-});
-
 var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -1195,7 +1177,6 @@ var AnnotationElementView = Backbone.View.extend({
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
-  ColorSchemeMenuView: ColorSchemeMenuView,
   ColorSchemeInspectorView: ColorSchemeInspectorView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
