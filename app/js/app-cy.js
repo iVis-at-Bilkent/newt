@@ -164,6 +164,39 @@ module.exports = function () {
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
         undoable: appUtilities.undoable // and if undoRedo extension exists
+      },
+      afterPaste: function(eles) {
+        eles.nodes().forEach(function(ele){
+          // skip nodes without any auxiliary units
+          if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
+            return;
+          }
+
+          // maintain consistency of layouts, and infoboxes through them
+          // we need to replace the layouts contained in ele by new cloned layouts
+          var globalInfoboxCount = 0;
+          for(var side in ele.data('auxunitlayouts')) {
+            var layout = ele.data('auxunitlayouts')[side];
+            var newLayout = layout.copy(ele); // get a new layout
+
+            // copy each infobox of the layout
+            for(var i=0; i < layout.units.length; i++) {
+              var auxunit = layout.units[i];
+              // keep the new infobox at exactly the same position in the statesandinfos list 
+              var statesandinfosIndex = ele.data('statesandinfos').indexOf(auxunit);
+
+              // copy the current infobox
+              var newAuxunit = auxunit.copy(ele, ele.data('id') + "_" + globalInfoboxCount);
+              // update statesandinfos list
+              ele.data('statesandinfos')[statesandinfosIndex] = newAuxunit;
+              // update layout's infobox list
+              newLayout.units[i] = newAuxunit;
+              globalInfoboxCount++;
+            }
+            // update layout
+            ele.data('auxunitlayouts')[side] = newLayout;
+          }
+        });
       }
     });
 
