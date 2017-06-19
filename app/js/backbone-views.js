@@ -1,6 +1,7 @@
 var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var chroma = require('chroma-js');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -267,6 +268,66 @@ var ColorSchemeMenuView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#color-scheme-menu-template").html());
     $(self.el).html(self.template);
+    return this;
+  }
+});
+
+var ColorSchemeInspectorView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+
+    var schemes = appUtilities.mapColorSchemes;
+    var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
+    for(var id in schemes) {
+      var previewColors = schemes[id].preview;
+      if(invertedScheme[id]) { // this scheme is the complement of a previous one
+        schemes[id].isDisplayed = false;
+      }
+      else if (schemes[id].invert) { // this scheme has a complement
+        invertedScheme[schemes[id].invert] = id;
+        schemes[id].isDisplayed = true;
+      }
+      else { // scheme has no complement, display it normally
+        schemes[id].isDisplayed = true;
+      }
+
+      var colorCount = previewColors.length;
+      var html = "";
+      for(var i=0; i < colorCount; i++) {
+        var color = chroma(previewColors[i]);
+        // apply default alpha of elements backgrounds, to make it look more like reality
+        color = color.alpha(0.5);
+        var prct = 100/colorCount;
+        html += "<div style='float:left; width:"+prct+"%; height:100%; background-color:"+color.css()+"'></div>";
+      }
+      schemes[id].previewHtml = html;
+    }
+    this.schemes = schemes;
+
+    // attach events
+    $(document).on("click", "div.color-scheme-choice", function (evt) {
+      var raw_id = $(this).attr('id');
+      var scheme_id = raw_id.replace("map-color-scheme_", "");
+      appUtilities.applyMapColorScheme(scheme_id);
+    });
+
+    $(document).on("click", "div.color-scheme-invert-button", function (evt) {
+      var raw_id = $(this).attr('id');
+      var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
+      var inverted_id = schemes[scheme_id].invert;
+      self.schemes[inverted_id].isDisplayed = true;
+      self.schemes[scheme_id].isDisplayed = false;
+      self.render();
+      // if we don't apply this before the menu is rendered again, the correct ids won't appear
+      // in the html and the radio button cannot be correctly checked.
+      appUtilities.applyMapColorScheme(inverted_id);
+    });
+  },
+  render: function () {
+    var self = this;
+    this.template = _.template($("#color-scheme-inspector-template").html());
+    this.$el.empty();
+    this.$el.html(this.template({schemes: this.schemes}));
     return this;
   }
 });
@@ -1135,6 +1196,7 @@ module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
   ColorSchemeMenuView: ColorSchemeMenuView,
+  ColorSchemeInspectorView: ColorSchemeInspectorView,
   GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PathsByURIQueryView: PathsByURIQueryView,

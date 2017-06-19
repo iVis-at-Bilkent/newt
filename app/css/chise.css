@@ -683,6 +683,10 @@ img#template-reaction-add-button:hover {
     cursor: pointer;
 }
 
+.color-scheme-choice:hover, .color-scheme-invert-button:hover {
+    background-color: #f0f0f0;
+}
+
 
 /*
   Palettes on right pane

@@ -477,20 +477,26 @@ module.exports = function () {
         appUtilities.nodesToDragAndDrop = null;
       }
 
-      // make palette tab active if no element is selected
-      // cannot be done on unselect event because it causes conflict with the select trigger
-      // when nodes are selected one after another
-      // after tests, seems better to do it here
+      /*  make palette tab active if no element is selected
+          cannot be done on unselect event because it causes conflict with the select trigger
+          when nodes are selected one after another
+          after tests, seems better to do it here
+
+          With the addition of the 3rd Map tab, we can probably keep the behavior 
+          when the user has the Object tab selected.
+      */
       if (cy.elements(':selected').length == 0){
-        // edge case when the properties tab is already selected (and shown empty)
-        // and an element is selected, the property tab gets shown and the palette tab is concatenated after it
-        // we need to wait a bit before triggering the following, and check again if everything is unselected
-        // that is really dirty...
+        /* edge case when the properties tab is already selected (and shown empty)
+          and an element is selected, the property tab gets shown and the palette tab is concatenated after it
+          we need to wait a bit before triggering the following, and check again if everything is unselected
+          that is really dirty...
+        */
         setTimeout(function () {
           if (cy.elements(':selected').length == 0){
-            if (!$('#inspector-palette-tab').hasClass('active')) {
+            if ($('#inspector-style-tab').hasClass('active')) {
               $('#inspector-palette-tab a').tab('show');
               $('#inspector-style-tab a').blur();
+              $('#inspector-map-tab a').blur();
             }
           }
         }, 20);
@@ -704,6 +710,7 @@ module.exports = function () {
       if (!$('#inspector-style-tab').hasClass('active')) {
         $('#inspector-style-tab a').tab('show');
         $('#inspector-palette-tab a').blur();
+        $('#inspector-map-tab a').blur();
       }
     });
     

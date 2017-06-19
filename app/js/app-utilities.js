@@ -250,6 +250,7 @@ appUtilities.showAndPerformIncrementalLayout = function(eles) {
 appUtilities.mapColorSchemes = mapColorSchemes = {
   'black_white': {
     'name': 'Black and white',
+    'preview': ['#ffffff', '#000000'],
     'values': {
       'unspecified entity': '#ffffff',
       'simple chemical': '#ffffff',
@@ -282,6 +283,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'greyscale': {
     'name': 'Greyscale',
+    'preview': ['#ffffff', '#f0f0f0', '#d9d9d9', '#bdbdbd'],
+    'invert': 'inverse_greyscale',
     'values': {
       'unspecified entity': '#ffffff',
       'simple chemical': '#bdbdbd',
@@ -314,6 +317,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'inverse_greyscale': {
     'name': 'Inverse greyscale',
+    'preview': ['#bdbdbd', '#d9d9d9', '#f0f0f0', '#ffffff'],
+    'invert': 'greyscale',
     'values': {
       'unspecified entity': '#f0f0f0',
       'simple chemical': '#f0f0f0',
@@ -346,6 +351,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'blue_scale': {
     'name': 'Blue scale',
+    'preview': ['#ffffff', '#eff3ff', '#c6dbef', '#9ecae1'],
+    'invert': 'inverse_blue_scale',
     'values': {
       'unspecified entity': '#9ecae1',
       'simple chemical': '#9ecae1',
@@ -378,6 +385,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'inverse_blue_scale': {
     'name': 'Inverse blue scale',
+    'preview': ['#9ecae1', '#c6dbef', '#eff3ff', '#ffffff'],
+    'invert': 'blue_scale',
     'values': {
       'unspecified entity': '#eff3ff',
       'simple chemical': '#eff3ff',
@@ -410,6 +419,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'opposed_red_blue': {
     'name': 'Red blue',
+    'preview': ['#f4a582', '#fddbc7', '#f7f7f7', '#d1e5f0', '#92c5de'],
+    'invert': 'opposed_red_blue2',
     'values': {
       'unspecified entity': '#f7f7f7',
       'simple chemical': '#fddbc7',
@@ -442,6 +453,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'opposed_red_blue2': {
     'name': 'Red blue 2',
+    'preview': ['#92c5de', '#d1e5f0', '#f7f7f7', '#fddbc7', '#f4a582'],
+    'invert': 'opposed_red_blue',
     'values': {
       'unspecified entity': '#f7f7f7',
       'simple chemical': '#d1e5f0',
@@ -474,6 +487,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'opposed_green_brown': {
     'name': 'Green brown',
+    'preview': ['#dfc27d', '#f6e8c3', '#f5f5f5', '#c7eae5', '#80cdc1'],
+    'invert': 'opposed_green_brown2',
     'values': {
       'unspecified entity': '#f5f5f5',
       'simple chemical': '#f6e8c3',
@@ -506,6 +521,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   'opposed_green_brown2': {
     'name': 'Green brown 2',
+    'preview': ['#80cdc1', '#c7eae5', '#f5f5f5', '#f6e8c3', '#dfc27d'],
+    'invert': 'opposed_green_brown',
     'values': {
       'unspecified entity': '#f5f5f5',
       'simple chemical': '#c7eae5',
@@ -534,6 +551,210 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'or': '#ffffff',
       'not': '#ffffff',
       'compartment': '#f5f5f5'
+    }
+  },
+  'opposed_purple_brown': {
+    'name': 'Purple brown',
+    'preview': ['#fdb863', '#fee0b6', '#f7f7f7', '#d8daeb', '#b2abd2'],
+    'invert': 'opposed_purple_brown2',
+    'values': {
+      'unspecified entity': '#f7f7f7',
+      'simple chemical': '#fee0b6',
+      'macromolecule': '#b2abd2',
+      'nucleic acid feature': '#fdb863',
+      'perturbing agent': '#f7f7f7',
+      'source and sink': '#f7f7f7',
+      'complex': '#d8daeb',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f7f7f7',
+      'tag': '#f7f7f7',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f7f7f7'
+    }
+  },
+  'opposed_purple_brown2': {
+    'name': 'Purple brown 2',
+    'preview': ['#b2abd2', '#d8daeb', '#f7f7f7', '#fee0b6', '#fdb863'],
+    'invert': 'opposed_purple_brown',
+    'values': {
+      'unspecified entity': '#f7f7f7',
+      'simple chemical': '#d8daeb',
+      'macromolecule': '#fdb863',
+      'nucleic acid feature': '#b2abd2',
+      'perturbing agent': '#f7f7f7',
+      'source and sink': '#f7f7f7',
+      'complex': '#fee0b6',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f7f7f7',
+      'tag': '#f7f7f7',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f7f7f7'
+    }
+  },
+  'opposed_purple_green': {
+    'name': 'Purple green',
+    'preview': ['#a6dba0', '#d9f0d3', '#f7f7f7', '#e7d4e8', '#c2a5cf'],
+    'invert': 'opposed_purple_green2',
+    'values': {
+      'unspecified entity': '#f7f7f7',
+      'simple chemical': '#d9f0d3',
+      'macromolecule': '#c2a5cf',
+      'nucleic acid feature': '#a6dba0',
+      'perturbing agent': '#f7f7f7',
+      'source and sink': '#f7f7f7',
+      'complex': '#e7d4e8',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f7f7f7',
+      'tag': '#f7f7f7',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f7f7f7'
+    }
+  },
+  'opposed_purple_green2': {
+    'name': 'Purple green 2',
+    'preview': ['#c2a5cf', '#e7d4e8', '#f7f7f7', '#d9f0d3', '#a6dba0'],
+    'invert': 'opposed_purple_green',
+    'values': {
+      'unspecified entity': '#f7f7f7',
+      'simple chemical': '#e7d4e8',
+      'macromolecule': '#a6dba0',
+      'nucleic acid feature': '#c2a5cf',
+      'perturbing agent': '#f7f7f7',
+      'source and sink': '#f7f7f7',
+      'complex': '#d9f0d3',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#f7f7f7',
+      'tag': '#f7f7f7',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#f7f7f7'
+    }
+  },
+  'opposed_grey_red': {
+    'name': 'Grey red',
+    'preview': ['#bababa', '#e0e0e0', '#ffffff', '#fddbc7', '#f4a582'],
+    'invert': 'opposed_grey_red2',
+    'values': {
+      'unspecified entity': '#ffffff',
+      'simple chemical': '#e0e0e0',
+      'macromolecule': '#f4a582',
+      'nucleic acid feature': '#bababa',
+      'perturbing agent': '#ffffff',
+      'source and sink': '#ffffff',
+      'complex': '#fddbc7',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#ffffff',
+      'tag': '#ffffff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#ffffff'
+    }
+  },
+  'opposed_grey_red2': {
+    'name': 'Grey red 2',
+    'preview': ['#f4a582', '#fddbc7', '#ffffff', '#e0e0e0', '#bababa'],
+    'invert': 'opposed_grey_red',
+    'values': {
+      'unspecified entity': '#ffffff',
+      'simple chemical': '#fddbc7',
+      'macromolecule': '#bababa',
+      'nucleic acid feature': '#f4a582',
+      'perturbing agent': '#ffffff',
+      'source and sink': '#ffffff',
+      'complex': '#e0e0e0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#ffffff',
+      'tag': '#ffffff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#ffffff'
     }
   }
 };
@@ -581,6 +802,8 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
   }
 
   cy.undoRedo().do("batch", actions);
+  // ensure the menu is updated accordingly
+  $('input#map-color-scheme_radio_'+newColorScheme).prop('checked', true);
 
 };
 

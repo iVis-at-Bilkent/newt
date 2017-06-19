@@ -65,7 +65,7 @@
                                         <li><a href="#" id="save-as-jpg">JPG</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#" id="general-properties">Properties...</a></li>
+                                <li><a href="#" id="general-properties">Map Properties...</a></li>
                             </ul>
                         </li>
 
@@ -259,7 +259,7 @@
                     <img id="new-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/new.svg" title="New: Create a blank SBGN-PD map">
                     <img id="load-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/load.svg" title="Load: Load an SBGN-PD map from SBGN-ML file">
                     <img id="save-icon" class="sbgn-toolbar-element" src="app/img/toolbar/save.svg" title="Save: Save current SBGN-PD map to an SBGN-ML file">
-                    <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Properties: Modify general properties of current SBGN-PD map" >
+                    <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Map Properties: Modify general properties of current SBGN-PD map" >
                 </div>
 
                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
@@ -348,12 +348,27 @@
                 <td>
                     <div id="sbgn-inspector">
                         <ul class="nav nav-tabs">
-                            <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Properties</a></li>
+                            <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Object</a></li>
+                            <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map">&nbsp;Map</a></li>
                             <li id='inspector-palette-tab' class="chise-tab active"><a data-toggle="tab" href="#sbgn-inspector-palette"><img width="18px" height="18px" src="app/img/tabs/palette.svg"/>&nbsp;Palette</a></li>
                         </ul>
                         <div class="tab-content">
                         <div id="sbgn-inspector-style" class="tab-pane fade">
                             <div id="sbgn-inspector-style-panel-group" class="panel-group">
+                            </div>
+                        </div>
+                        <div id="sbgn-inspector-map" class="tab-pane fade">
+                            <div class="panel-group">
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
+                                        <p class="panel-title accordion-toggle">Color Schemes</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-color-scheme" class="panel-collapse collapse in">
+                                        <div id="color-scheme-template-container" >
+                                            <!-- color schemes listed here-->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div id="sbgn-inspector-palette" class="tab-pane fade in active">
@@ -782,7 +797,7 @@
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Properties</h4>
+            <h4 class="modal-title">Map Properties</h4>
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
@@ -823,7 +838,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Resize Labels to Information Boxes </span>
+            <span class="add-on layout-text"> Fit Labels to Information Boxes </span>
             </td>
 
             <td>
@@ -1512,6 +1527,31 @@
                     <img width="12px" height="12px" src="app/img/delete.png" style="margin:auto;"/>
                 </div>
                 <div style="clear:both;"></div>
+            </div>
+        </script>
+
+        <script type="text/template" id="color-scheme-inspector-template">
+            <div style="margin-top:15px;">
+                <% for(var scheme_id in schemes) { %>
+                    <% if(schemes[scheme_id].isDisplayed) {%>
+                        <div style="display:block;">
+                            <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:80%; float:left; padding-bottom: 7px; padding-top: 7px; ">
+                                <div style="width:20%; float:left; height:25px; text-align:center; display:flex; align-items:center;">
+                                    <input type="radio" id="map-color-scheme_radio_<%= scheme_id%>" name="color-scheme-choice" style="margin:auto;"/>
+                                </div>
+                                <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:80%; height:25px; float:left; border:1px solid black; display:block;'>
+                                    <%= schemes[scheme_id].previewHtml %>
+                                </div>
+                            </div>
+                            <% if(schemes[scheme_id].invert) {%>
+                                <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:20%; float:left; height:39px; text-align:center; display:flex; align-items:center;'>
+                                    <i class="fa fa-arrows-h fa-lg" aria-hidden="true" style="margin:auto;"></i>
+                                </div>
+                            <% } %>
+                            <div style="clear:both"></div>
+                        </div>
+                    <% } %>
+                <% } %>
             </div>
         </script>
     </body>

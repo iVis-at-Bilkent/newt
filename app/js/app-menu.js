@@ -40,6 +40,7 @@ module.exports = function () {
 
     layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
     colorSchemeMenuView = appUtilities.colorSchemeMenuView = new BackboneViews.ColorSchemeMenuView({el: '#color-scheme-menu'});
+    colorSchemeinspectorView = appUtilities.colorSchemeinspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
     generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
     pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
@@ -53,6 +54,7 @@ module.exports = function () {
     toolbarButtonsAndMenu();
     modeHandler.initilize();
     colorSchemeMenuView.render();
+    colorSchemeinspectorView.render();
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
     // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
