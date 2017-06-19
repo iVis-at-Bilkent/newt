@@ -321,13 +321,15 @@ var GeneralPropertiesView = Backbone.View.extend({
         chise.disablePorts();
       }
       
-      // TODO add sbgnviz.considerCompoundSizes() and sbgnviz.omitCompoundSizes()
       if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
         chise.considerCompoundSizes();
       }
       else {
         chise.omitCompoundSizes();
       }
+      
+      // Refresh resize grapples
+      cy.nodeResize('get').refreshGrapples();
       
       cy.style().update();
       
