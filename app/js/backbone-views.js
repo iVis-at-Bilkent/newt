@@ -546,7 +546,7 @@ var FileSaveView = Backbone.View.extend({
     var filename = document.getElementById('file-name').innerHTML;
     $("#file-save-filename").val(filename);
 
-    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
+    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
       var renderInfo = appUtilities.getAllStyles();
