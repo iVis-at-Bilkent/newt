@@ -329,6 +329,16 @@ var GeneralPropertiesParentView = Backbone.View.extend({
       chise.disablePorts();
     }
 
+    if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
+      chise.considerCompoundSizes();
+    }
+    else {
+      chise.omitCompoundSizes();
+    }
+    
+    // Refresh resize grapples
+    cy.nodeResize('get').refreshGrapples();
+
     cy.style().update();
 
     $(document).trigger('saveGeneralProperties');
@@ -347,6 +357,11 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     // general properties part
     $(document).on("change", "#compound-padding", function (evt) {
       appUtilities.currentGeneralProperties.compoundPadding = Number($('#compound-padding').val());
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#allow-compound-node-resize", function (evt) {
+      appUtilities.currentGeneralProperties.allowCompoundNodeResize = $('#allow-compound-node-resize').prop('checked');
       self.applyUpdate();
     });
 
@@ -384,7 +399,7 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
       appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
             $('#adjust-node-label-font-size-automatically').prop('checked');
-      self.applyUpdate();
+      self.applyUpdate();  
     });
 
     $(document).on("change", "#fit-labels-to-nodes", function (evt) {
@@ -689,7 +704,7 @@ var FileSaveView = Backbone.View.extend({
     var filename = document.getElementById('file-name').innerHTML;
     $("#file-save-filename").val(filename);
 
-    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
+    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
       var renderInfo = appUtilities.getAllStyles();
