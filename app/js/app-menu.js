@@ -339,7 +339,10 @@ module.exports = function () {
     });
 
     $("#general-properties, #properties-icon").click(function (e) {
-      generalPropertiesView.render();
+      // Go to inspector map tab
+      if (!$('#inspector-map-tab').hasClass('active')) {
+        $('#inspector-map-tab a').tab('show');
+      }
     });
 
     $("#query-pathsbetween").click(function (e) {

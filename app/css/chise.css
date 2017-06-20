@@ -687,6 +687,17 @@ img#template-reaction-add-button:hover {
     background-color: #f0f0f0;
 }
 
+.map-panel-table {
+    width: 100%;
+}
+
+.map-panel-table td {
+    width: 50%;
+}
+
+.map-panel-table td.header {
+    text-align: right;
+}
 
 /*
   Palettes on right pane
