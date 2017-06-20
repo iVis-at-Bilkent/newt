@@ -223,7 +223,9 @@ body {
     margin: auto;
     width: 1000px;
     height: 30px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
+    margin-top: 5px !important;
+    margin-bottom: 2px !important;
     /*overflow: auto !important;*/
 }
 
@@ -687,3 +689,9 @@ img#template-reaction-add-button:hover {
 /*
   Palettes on right pane
 */
+
+@media (min-width: 768px) {
+    .col-sm-3 {
+        width: 20% !important;
+    }
+}
