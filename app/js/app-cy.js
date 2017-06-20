@@ -459,6 +459,16 @@ module.exports = function () {
       }
     });
     
+    // Expand collapse extension is supposed to clear expand collapse cue on node position event.
+    // If compounds are resized position event is not triggered though the position of the node is changed.
+    // Therefore, we listen to noderesize.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
+    // expand collapse extension.
+    cy.on("noderesize.resizedrag", function(e, type, node){ 
+        if (node.isParent()) {
+            cy.expandCollapse('get').clearVisualCue();
+        }
+    });
+    
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
 
@@ -669,6 +679,12 @@ module.exports = function () {
           // If the parent class is valid for the node type then add the node
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
             chise.addNode(cyPosX, cyPosY, nodeType, undefined, parentId);
+            
+            // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
+            // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
+            if (parent) {
+              cy.expandCollapse('get').clearVisualCue();
+            }
           }
         }
         
