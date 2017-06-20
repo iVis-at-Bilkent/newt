@@ -351,12 +351,38 @@
                         <div id="sbgn-inspector-map" class="tab-pane fade">
                             <div class="panel-group">
                                 <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-general">
+                                        <p class="panel-title accordion-toggle">General</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-general" class="panel-collapse collapse in">  
+                                        <div id="map-tab-general-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-label">
+                                        <p class="panel-title accordion-toggle">Labels</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-label" class="panel-collapse collapse in">  
+                                        <div id="map-tab-label-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-rearrangement">
+                                        <p class="panel-title accordion-toggle">Rearrangement</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-rearrangement" class="panel-collapse collapse in">  
+                                        <div id="map-tab-rearrangement-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
                                     <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
                                         <p class="panel-title accordion-toggle">Color Schemes</p>
                                     </div>
                                     <div id="sbgn-inspector-map-color-scheme" class="panel-collapse collapse in">
                                         <div id="color-scheme-template-container" >
-                                            <!-- color schemes listed here-->
                                         </div>
                                     </div>
                                 </div>
@@ -432,10 +458,6 @@
 
         <div id="layout-properties-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- sbgn layout table will be shown here -->
-        </div>
-
-        <div id="general-properties-table" tabindex="-1" class="modal fade" role="dialog">
-            <!-- sbgn properties table will be shown here-->
         </div>
 
         <div id="biogene-container" style="display: none">
@@ -777,16 +799,10 @@
             </div>
         </script>
 
-        <script type="text/template" id="general-properties-template">
-            <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Map Properties</h4>
-            </div>
-            <div class="modal-body">
+        <script type="text/template" id="map-tab-general-template">
             <table class="table-condensed layout-table dialog-table">
             <tbody>
+
             <tr>
             <td>
             <span class="add-on layout-text"> Compound Padding </span>
@@ -794,70 +810,6 @@
 
             <td>
             <input id="compound-padding" type="text" class="sbgn-input-small layout-text integer-input" min="0" max="100" value= <%= compoundPadding %> > %
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Label Size </span>
-            </td>
-
-            <td>
-            <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
-            <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
-            <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
-            <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
-            </select>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Fit Labels To Nodes </span>
-            </td>
-
-            <td>
-            <input id="fit-labels-to-nodes" type="checkbox" class="layout-text" <% if (fitLabelsToNodes){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Fit Labels to Information Boxes </span>
-            </td>
-
-            <td>
-            <input id="fit-labels-to-infoboxes" type="checkbox" class="layout-text" <% if (fitLabelsToInfoboxes){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Rearrange After Expand-Collapse </span>
-            </td>
-
-            <td>
-            <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Animate on Drawing Changes </span>
-            </td>
-
-            <td>
-            <input id="animate-on-drawing-changes" type="checkbox" class="layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Adjust Node Label Font Size Automatically </span>
-            </td>
-
-            <td>
-            <input id="adjust-node-label-font-size-automatically" type="checkbox" class="layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
             </td>
             </tr>
 
@@ -871,25 +823,104 @@
             </td>
             </tr>
 
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Display Labels For Named Complexes </span>
-            </td>
+            </tbody>
+            </table>
+        </script>
 
-            <td>
-            <input id="show-complex-name" type="checkbox" class="layout-text" <% if (showComplexName){ %> checked<%}%>>
-            </td>
-            </tr>
+        <script type="text/template" id="map-tab-label-template">
+            <table class="table-condensed layout-table dialog-table">
+            <tbody>
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Label Size </span>
+                </td>
+
+                <td>
+                <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
+                <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
+                <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
+                <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
+                </select>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Display Labels For Named Complexes </span>
+                </td>
+
+                <td>
+                <input id="show-complex-name" type="checkbox" class="layout-text" <% if (showComplexName){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Adjust Node Label Font Size Automatically </span>
+                </td>
+
+                <td>
+                <input id="adjust-node-label-font-size-automatically" type="checkbox" class="layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Fit Labels To Nodes </span>
+                </td>
+
+                <td>
+                <input id="fit-labels-to-nodes" type="checkbox" class="layout-text" <% if (fitLabelsToNodes){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Fit Labels to Information Boxes </span>
+                </td>
+
+                <td>
+                <input id="fit-labels-to-infoboxes" type="checkbox" class="layout-text" <% if (fitLabelsToInfoboxes){ %> checked<%}%>>
+                </td>
+                </tr>
 
             </tbody>
             </table>
-            </div>
+        </script>
+
+        <script type="text/template" id="map-tab-rearrangement-template">
+            <table class="table-condensed layout-table dialog-table">
+            <tbody>
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Rearrange After Expand-Collapse </span>
+                </td>
+
+                <td>
+                <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                <span class="add-on layout-text"> Animate on Drawing Changes </span>
+                </td>
+
+                <td>
+                <input id="animate-on-drawing-changes" type="checkbox" class="layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </script>
+
+        <script type="text/template" id="general-properties-template">
+            <!-- legacy, keep it to know how the default button was designed before
+            </tbody>
+            </table>
             <div class="modal-footer" style="text-align: center">
-            <button id="save-sbgn" class="btn btn-default" >Save</button>
             <button id="default-sbgn" class="btn btn-default">Default</button>
-            </div>
-            </div>
-            </div>
+            </div>-->
         </script>
 
         <script type="text/template" id="query-pathsbetween-template">
