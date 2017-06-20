@@ -741,7 +741,7 @@ module.exports = function () {
 
         //For complexes and compartments move the textarea to the bottom
         var nodeType = node.data('class');
-        if (nodeType == "compartment" || nodeType == "complex" )
+        if (nodeType == "compartment" || nodeType.startsWith("complex") )
             top += (node.outerHeight() / 2 * cy.zoom() );
 
         top = top.toString() + 'px';
@@ -817,7 +817,7 @@ module.exports = function () {
     var currentPos = {x : 0, y : 0};
     cy.on("position", "node:child[class!='complex']", function(event) {
       var parent = event.target.parent();
-      if(!parent.is("[class='complex']")) {
+      if(!parent.is("[class^='complex']")) {
         return;
       }
       currentPos = parent.position();
