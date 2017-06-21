@@ -66,7 +66,7 @@ var modeHandler = {
   // Set the current mode to add edge mode, if edgeType is specified than switch the current edge type to the given value,
   // if the edgeType will remain same, add edge mode is already enabled and sustain mode is not set before, then set the sustain mode
   // so that users will be able to add the current edge type in a sustainable way.
-  setAddEdgeMode: function (edgeType) {
+  setAddEdgeMode: function (edgeType, language) {
     var typeChange = edgeType && edgeType != modeHandler.selectedEdgeType; // See if the type will change
 
     // Handle sustainable mode
@@ -101,6 +101,7 @@ var modeHandler = {
     if ( typeChange ) {
       modeHandler.selectedEdgeType = edgeType;
     }
+    modeHandler.selectedLanguage = language;
   },
   // Set selection mode, disables sustainable mode.
   setSelectionMode: function () {
