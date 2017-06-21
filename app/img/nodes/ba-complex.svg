@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="delay.svg"
+   sodipodi:docname="ba-complex.svg"
    inkscape:export-filename="C:\Users\ugur\Desktop\node-legend.2016.04.01.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
@@ -168,21 +168,21 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.694605"
-     inkscape:cx="33.945484"
-     inkscape:cy="24.049861"
+     inkscape:zoom="5.6"
+     inkscape:cx="36.472477"
+     inkscape:cy="13.188633"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1280"
      inkscape:window-height="751"
-     inkscape:window-x="0"
-     inkscape:window-y="1"
-     inkscape:window-maximized="1"
-     fit-margin-top="7"
-     fit-margin-left="7"
-     fit-margin-right="7"
-     fit-margin-bottom="7" />
+     inkscape:window-x="12"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -191,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -199,31 +199,53 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-458.55017,-350.96411)">
+     transform="translate(-7.6400969,-208.12166)">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.25px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="477.67322"
-       y="384.51099"
-       id="text3817-6"
-       sodipodi:linespacing="0%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
+       style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="281.42856"
+       y="336.64789"
+       id="text5854"
+       sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan3819-3"
-         x="477.67322"
-         y="384.51099"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:35px;line-height:0%;font-family:Cambria;-inkscape-font-specification:'Cambria Bold';letter-spacing:-1.20000005px">τ</tspan></text>
-    <ellipse
-       ry="20.450665"
-       rx="20.450663"
-       cy="374.96411"
-       cx="488.55017"
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
+         id="tspan5856"
+         x="281.42856"
+         y="336.64789" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="187.14285"
+       y="363.07648"
+       id="text6007"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6009"
+         x="187.14285"
+         y="363.07648" /></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:4.0000453;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 15.769794,238.95753 -0.121879,-14.93952 11.198409,-9.07306 10.797645,-0.11473 11.164734,0.11473 10.831344,8.72754 -4.51e-4,15.85969 -10.102759,9.7619 -23.667043,0.11501 z"
+       id="rect2985-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\complex.png"
+       inkscape:export-xdpi="54"
+       inkscape:export-ydpi="54" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4264"
+       width="8"
+       height="4"
+       x="7.6400967"
+       y="230.12166"
+       ry="0" />
+    <rect
+       ry="0"
+       y="230.12166"
+       x="59.640099"
+       height="4"
+       width="8"
+       id="rect4334"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>

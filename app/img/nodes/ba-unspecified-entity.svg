@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="delay.svg"
+   sodipodi:docname="ba-unspecified-entity.svg"
    inkscape:export-filename="C:\Users\ugur\Desktop\node-legend.2016.04.01.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
@@ -168,9 +168,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.694605"
-     inkscape:cx="33.945484"
-     inkscape:cy="24.049861"
+     inkscape:zoom="7.919596"
+     inkscape:cx="22.351142"
+     inkscape:cy="15.444975"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -179,10 +179,10 @@
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
-     fit-margin-top="7"
-     fit-margin-left="7"
-     fit-margin-right="7"
-     fit-margin-bottom="7" />
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -199,31 +199,30 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-458.55017,-350.96411)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.25px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="477.67322"
-       y="384.51099"
-       id="text3817-6"
-       sodipodi:linespacing="0%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-3"
-         x="477.67322"
-         y="384.51099"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:35px;line-height:0%;font-family:Cambria;-inkscape-font-specification:'Cambria Bold';letter-spacing:-1.20000005px">τ</tspan></text>
+     transform="translate(-6.5142826,-255.27521)">
     <ellipse
-       ry="20.450665"
-       rx="20.450663"
-       cy="374.96411"
-       cx="488.55017"
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
+       style="fill:none;stroke:#000000;stroke-width:3.99970841;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3890"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\unspecifiedentity.png"
+       inkscape:export-xdpi="54"
+       inkscape:export-ydpi="54"
+       cx="36.514282"
+       cy="279.27521"
+       rx="22.000145"
+       ry="17.255768" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4214"
+       width="8"
+       height="4"
+       x="6.5142827"
+       y="277.27521" />
+    <rect
+       y="277.27521"
+       x="58.514282"
+       height="4"
+       width="8"
+       id="rect4216"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>

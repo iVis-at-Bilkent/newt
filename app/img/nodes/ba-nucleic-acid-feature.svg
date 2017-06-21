@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="delay.svg"
+   sodipodi:docname="ba-nucleicacidfeature.svg"
    inkscape:export-filename="C:\Users\ugur\Desktop\node-legend.2016.04.01.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
@@ -168,9 +168,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.694605"
-     inkscape:cx="33.945484"
-     inkscape:cy="24.049861"
+     inkscape:zoom="7.919596"
+     inkscape:cx="42.41226"
+     inkscape:cy="17.446235"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -179,10 +179,10 @@
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
-     fit-margin-top="7"
-     fit-margin-left="7"
-     fit-margin-right="7"
-     fit-margin-bottom="7" />
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -199,31 +199,28 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-458.55017,-350.96411)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.25px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="477.67322"
-       y="384.51099"
-       id="text3817-6"
-       sodipodi:linespacing="0%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-3"
-         x="477.67322"
-         y="384.51099"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:35px;line-height:0%;font-family:Cambria;-inkscape-font-specification:'Cambria Bold';letter-spacing:-1.20000005px">τ</tspan></text>
-    <ellipse
-       ry="20.450665"
-       rx="20.450663"
-       cy="374.96411"
-       cx="488.55017"
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
+     transform="translate(-8.0141601,-302.43192)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3.99970531;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 16.014013,309.17624 0,20.98099 c 0,7.49092 4.777902,13.53037 10.733516,13.53037 l 22.50958,0 c 5.955596,0 10.757198,-6.03945 10.757198,-13.53037 l 0,-20.98099 -44.000294,0 z"
+       id="path3913"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\nucleicacidfeature.png"
+       inkscape:export-xdpi="54"
+       inkscape:export-ydpi="54" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4214"
+       width="8"
+       height="4"
+       x="8.0141602"
+       y="324.43192" />
+    <rect
+       y="324.43192"
+       x="60.01416"
+       height="4"
+       width="8"
+       id="rect4216"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>
