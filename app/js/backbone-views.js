@@ -1,6 +1,7 @@
 var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var chroma = require('chroma-js');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -233,6 +234,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
       appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
+      appUtilities.currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
     
 	
       $(self.el).modal('toggle');
@@ -252,20 +254,196 @@ var LayoutPropertiesView = Backbone.View.extend({
 });
 
 
-var ColorSchemeMenuView = Backbone.View.extend({
+var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.template = _.template($("#color-scheme-menu-template").html());
-    $(document).on("click", "a.map-color-scheme", function (evt) {
+
+    var schemes = appUtilities.mapColorSchemes;
+    var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
+    for(var id in schemes) {
+      var previewColors = schemes[id].preview;
+      if(invertedScheme[id]) { // this scheme is the complement of a previous one
+        schemes[id].isDisplayed = false;
+      }
+      else if (schemes[id].invert) { // this scheme has a complement
+        invertedScheme[schemes[id].invert] = id;
+        schemes[id].isDisplayed = true;
+      }
+      else { // scheme has no complement, display it normally
+        schemes[id].isDisplayed = true;
+      }
+
+      var colorCount = previewColors.length;
+      var html = "";
+      for(var i=0; i < colorCount; i++) {
+        var color = chroma(previewColors[i]);
+        // apply default alpha of elements backgrounds, to make it look more like reality
+        color = color.alpha(0.5);
+        var prct = 100/colorCount;
+        html += "<div style='float:left; width:"+prct+"%; height:100%; background-color:"+color.css()+"'></div>";
+      }
+      schemes[id].previewHtml = html;
+    }
+    this.schemes = schemes;
+
+    // attach events
+    $(document).on("click", "div.color-scheme-choice", function (evt) {
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
       appUtilities.applyMapColorScheme(scheme_id);
     });
+
+    $(document).on("click", "div.color-scheme-invert-button", function (evt) {
+      var raw_id = $(this).attr('id');
+      var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
+      var inverted_id = schemes[scheme_id].invert;
+      self.schemes[inverted_id].isDisplayed = true;
+      self.schemes[scheme_id].isDisplayed = false;
+      self.render();
+      // if we don't apply this before the menu is rendered again, the correct ids won't appear
+      // in the html and the radio button cannot be correctly checked.
+      appUtilities.applyMapColorScheme(inverted_id);
+    });
   },
   render: function () {
+    this.template = _.template($("#color-scheme-inspector-template").html());
+    this.$el.empty();
+    this.$el.html(this.template({schemes: this.schemes}));
+    return this;
+  }
+});
+
+// provide common functions for different views tied to 
+// inspector map panels
+var GeneralPropertiesParentView = Backbone.View.extend({
+  // Apply the properties as they are set
+  applyUpdate: function() {
+    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
+    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+
+    if (appUtilities.currentGeneralProperties.enablePorts) {
+      chise.enablePorts();
+    }
+    else {
+      chise.disablePorts();
+    }
+
+    if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
+      chise.considerCompoundSizes();
+    }
+    else {
+      chise.omitCompoundSizes();
+    }
+    
+    // Refresh resize grapples
+    cy.nodeResize('get').refreshGrapples();
+
+    cy.style().update();
+
+    $(document).trigger('saveGeneralProperties');
+  },
+  setPropertiesToDefault: function () {
+    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
+  }
+});
+
+// inherit from GeneralPropertiesParentView
+var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
     var self = this;
-    self.template = _.template($("#color-scheme-menu-template").html());
-    $(self.el).html(self.template);
+    self.setPropertiesToDefault();
+
+    // general properties part
+    $(document).on("change", "#compound-padding", function (evt) {
+      appUtilities.currentGeneralProperties.compoundPadding = Number($('#compound-padding').val());
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#allow-compound-node-resize", function (evt) {
+      appUtilities.currentGeneralProperties.allowCompoundNodeResize = $('#allow-compound-node-resize').prop('checked');
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#enable-ports", function (evt) {
+      appUtilities.currentGeneralProperties.enablePorts = $('#enable-ports').prop('checked');
+      self.applyUpdate();
+    });
+  },
+  render: function() {
+    this.template = _.template($("#map-tab-general-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+
+    return this;
+  }
+});
+
+// inherit from GeneralPropertiesParentView
+var MapTabLabelPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    var self = this;
+    self.setPropertiesToDefault();
+
+    $(document).on("change", 'select[name="dynamic-label-size"]', function (evt) {
+      appUtilities.currentGeneralProperties.dynamicLabelSize =
+            $('select[name="dynamic-label-size"] option:selected').val();
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#show-complex-name", function (evt) {
+      appUtilities.currentGeneralProperties.showComplexName = $('#show-complex-name').prop('checked');
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
+      appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
+            $('#adjust-node-label-font-size-automatically').prop('checked');
+      self.applyUpdate();  
+    });
+
+    $(document).on("change", "#fit-labels-to-nodes", function (evt) {
+      appUtilities.currentGeneralProperties.fitLabelsToNodes = $('#fit-labels-to-nodes').prop('checked');
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#fit-labels-to-infoboxes", function (evt) {
+      appUtilities.currentGeneralProperties.fitLabelsToInfoboxes = $('#fit-labels-to-infoboxes').prop('checked');
+      self.applyUpdate();
+    });
+  },
+  render: function() {
+    this.template = _.template($("#map-tab-label-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+
+    return this;
+  }
+});
+
+// inherit from GeneralPropertiesParentView
+var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    var self = this;
+    self.setPropertiesToDefault();
+
+    $(document).on("change", "#rearrange-after-expand-collapse", function (evt) {
+      appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse =
+            $('#rearrange-after-expand-collapse').prop('checked');
+      self.applyUpdate();
+    });
+
+    $(document).on("change", "#animate-on-drawing-changes", function (evt) {
+      appUtilities.currentGeneralProperties.animateOnDrawingChanges =
+            $('#animate-on-drawing-changes').prop('checked');
+      self.applyUpdate();
+    });
+  },
+  render: function() {
+    this.template = _.template($("#map-tab-rearrangement-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+
     return this;
   }
 });
@@ -273,63 +451,47 @@ var ColorSchemeMenuView = Backbone.View.extend({
 /**
  * SBGN Properties view for the Sample Application.
  */
-var GeneralPropertiesView = Backbone.View.extend({
+/*var GeneralPropertiesView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.copyProperties();
-    self.template = _.template($("#general-properties-template").html());
-    self.template = self.template(appUtilities.currentGeneralProperties);
+    self.setPropertiesToDefault();
+
+    $(document).on("click", "#default-sbgn", function (evt) {
+      self.setPropertiesToDefault();
+      self.applyUpdate();
+      self.render();
+    });
+
   },
-  copyProperties: function () {
+  // Apply the properties as they are set
+  applyUpdate: function() {
+    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
+    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+
+    if (appUtilities.currentGeneralProperties.enablePorts) {
+      chise.enablePorts();
+    }
+    else {
+      chise.disablePorts();
+    }
+
+    cy.style().update();
+
+    $(document).trigger('saveGeneralProperties');
+  },
+  setPropertiesToDefault: function () {
     appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
   },
   render: function () {
-    var self = this;
-    self.template = _.template($("#general-properties-template").html());
-    self.template = self.template(appUtilities.currentGeneralProperties);
-    $(self.el).html(self.template);
-
-    $(self.el).modal('show');
-
-    $(document).off("click", "#save-sbgn").on("click", "#save-sbgn", function (evt) {
-      appUtilities.currentGeneralProperties.compoundPadding = Number(document.getElementById("compound-padding").value);
-      appUtilities.currentGeneralProperties.dynamicLabelSize = $('select[name="dynamic-label-size"] option:selected').val();
-      appUtilities.currentGeneralProperties.fitLabelsToNodes = document.getElementById("fit-labels-to-nodes").checked;
-      appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse =
-              document.getElementById("rearrange-after-expand-collapse").checked;
-      appUtilities.currentGeneralProperties.animateOnDrawingChanges =
-              document.getElementById("animate-on-drawing-changes").checked;
-      appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
-          document.getElementById("adjust-node-label-font-size-automatically").checked;
-      appUtilities.currentGeneralProperties.enablePorts =
-          document.getElementById("enable-ports").checked;
-      appUtilities.currentGeneralProperties.showComplexName =
-          document.getElementById("show-complex-name").checked;
-
-      chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-      chise.refreshPaddings(); // Refresh/recalculate paddings
-      if (appUtilities.currentGeneralProperties.enablePorts) {
-        chise.enablePorts();
-      }
-      else {
-        chise.disablePorts();
-      }
-      cy.style().update();
-      
-      $(self.el).modal('toggle');
-      $(document).trigger('saveGeneralProperties');
-    });
-
-    $(document).off("click", "#default-sbgn").on("click", "#default-sbgn", function (evt) {
-      self.copyProperties();
-      self.template = _.template($("#general-properties-template").html());
-      self.template = self.template(appUtilities.currentGeneralProperties);
-      $(self.el).html(self.template);
-    });
+    console.log("render general", appUtilities.currentGeneralProperties);
+    this.template = _.template($("#general-properties-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(appUtilities.currentGeneralProperties));
 
     return this;
   }
-});
+});*/
 
 /**
  * Paths Between Query view for the Sample Application.
@@ -542,7 +704,7 @@ var FileSaveView = Backbone.View.extend({
     var filename = document.getElementById('file-name').innerHTML;
     $("#file-save-filename").val(filename);
 
-    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) { 
+    $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
       var renderInfo = appUtilities.getAllStyles();
@@ -1130,8 +1292,11 @@ var AnnotationElementView = Backbone.View.extend({
 module.exports = {
   BioGeneView: BioGeneView,
   LayoutPropertiesView: LayoutPropertiesView,
-  ColorSchemeMenuView: ColorSchemeMenuView,
-  GeneralPropertiesView: GeneralPropertiesView,
+  ColorSchemeInspectorView: ColorSchemeInspectorView,
+  MapTabGeneralPanel: MapTabGeneralPanel,
+  MapTabLabelPanel: MapTabLabelPanel,
+  MapTabRearrangementPanel: MapTabRearrangementPanel,
+  //GeneralPropertiesView: GeneralPropertiesView,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,

@@ -223,7 +223,9 @@ body {
     margin: auto;
     width: 1000px;
     height: 30px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
+    margin-top: 5px !important;
+    margin-bottom: 2px !important;
     /*overflow: auto !important;*/
 }
 
@@ -367,6 +369,7 @@ input {
 
 textarea {
     font-size: 12px !important;
+    overflow: hidden;
 }
 
 button:not(.close) {
@@ -682,7 +685,36 @@ img#template-reaction-add-button:hover {
     cursor: pointer;
 }
 
+.color-scheme-choice:hover, .color-scheme-invert-button:hover {
+    background-color: #f0f0f0;
+}
+
+.map-panel-table {
+    width: 100%;
+}
+
+.map-panel-table td {
+    width: 50%;
+}
+
+.map-panel-table td.header {
+    text-align: right;
+}
+
+.paletteCol {
+  position: relative;
+  float: left;
+  width: 50px !important;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 
 /*
   Palettes on right pane
 */
+
+/*@media (min-width: 768px) {
+    .col-sm-3 {
+        width: 20% !important;
+    }
+}*/

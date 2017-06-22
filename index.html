@@ -16,7 +16,6 @@
         <!-- app's style -->
         <link href="app/css/chise.css" rel="stylesheet">
 
-        <script src="node_modules/ocanvas/build/dist/latest/ocanvas.min.js"></script>
         <script src="app/bundle.js"></script>
         <!-- libraries -->
         <script src="node_modules/qtip2/dist/jquery.qtip.js"></script>
@@ -65,7 +64,7 @@
                                         <li><a href="#" id="save-as-jpg">JPG</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#" id="general-properties">Properties...</a></li>
+                                <li><a href="#" id="general-properties">Map Properties...</a></li>
                             </ul>
                         </li>
 
@@ -166,15 +165,6 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        Color Schemes
-                                        <!--<b class="right-caret"></b>-->
-                                    </a>
-                                    <ul id="color-scheme-menu" class="dropdown-menu">
-                                        <!-- template for color-scheme -->
-                                    </ul>
-                                </li>
                                 <li><a href="#" id="grid-properties" style="padding-right: 30px;">Grid and Guidelines...</a></li>
                             </ul>
                         </li>
@@ -251,7 +241,7 @@
             </nav>
         </div>
 
-        <div id="sbgn-toolbar" style="margin-top: 10px;">
+        <div id="sbgn-toolbar">
             <table width="100%" height="100%" align="center" valign="center">
             <tbody>
                 <tr>
@@ -259,7 +249,7 @@
                     <img id="new-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/new.svg" title="New: Create a blank SBGN-PD map">
                     <img id="load-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/load.svg" title="Load: Load an SBGN-PD map from SBGN-ML file">
                     <img id="save-icon" class="sbgn-toolbar-element" src="app/img/toolbar/save.svg" title="Save: Save current SBGN-PD map to an SBGN-ML file">
-                    <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Properties: Modify general properties of current SBGN-PD map" >
+                    <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Map Properties: Modify general properties of current SBGN-PD map" >
                 </div>
 
                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
@@ -348,12 +338,53 @@
                 <td>
                     <div id="sbgn-inspector">
                         <ul class="nav nav-tabs">
-                            <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Properties</a></li>
+                            <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Object</a></li>
+                            <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map">&nbsp;Map</a></li>
                             <li id='inspector-palette-tab' class="chise-tab active"><a data-toggle="tab" href="#sbgn-inspector-palette"><img width="18px" height="18px" src="app/img/tabs/palette.svg"/>&nbsp;Palette</a></li>
                         </ul>
                         <div class="tab-content">
                         <div id="sbgn-inspector-style" class="tab-pane fade">
                             <div id="sbgn-inspector-style-panel-group" class="panel-group">
+                            </div>
+                        </div>
+                        <div id="sbgn-inspector-map" class="tab-pane fade">
+                            <div class="panel-group">
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-general">
+                                        <p class="panel-title accordion-toggle">General</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-general" class="panel-collapse collapse in">
+                                        <div id="map-tab-general-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-label">
+                                        <p class="panel-title accordion-toggle">Labels</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-label" class="panel-collapse collapse in">
+                                        <div id="map-tab-label-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-rearrangement">
+                                        <p class="panel-title accordion-toggle">Rearrangement</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-rearrangement" class="panel-collapse collapse in">
+                                        <div id="map-tab-rearrangement-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
+                                        <p class="panel-title accordion-toggle">Color Schemes</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-color-scheme" class="panel-collapse collapse in">
+                                        <div id="color-scheme-template-container" >
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div id="sbgn-inspector-palette" class="tab-pane fade in active">
@@ -367,25 +398,26 @@
                                 <div id="expand-collapse-pd-nodes-palette" class="panel-collapse collapse in">
                                     <div class="panel-body">
                                       <div id="pd-node-palette" class="element-palette node-palette">
-                                        <div class="row">
-                                          <div class="col-sm-3"><img src="app/img/nodes/unspecified-entity.svg" language="PD" value="unspecified-entity" title="Unspecified Entity"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/simple-chemical.svg" language="PD" value="simple-chemical" title="Simple Chemical"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/macromolecule.svg" language="PD" value="macromolecule" title="Macromolecule"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/nucleic-acid-feature.svg" language="PD" value="nucleic-acid-feature" title="Nucleic Acid Feature"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/perturbing-agent.svg" language="PD" value="perturbing-agent" title="Perturbing Agent"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/source-and-sink.svg" language="PD" value="source-and-sink" title="Source and Sink"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/complex.svg" language="PD" value="complex" title="Complex"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/process.svg" language="PD" value="process" title="Process"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/omitted-process.svg" language="PD" value="omitted-process" title="Omitted Process"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/uncertain-process.svg" language="PD" value="uncertain-process" title="Uncertain Process"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/association.svg" language="PD" value="association" title="Association"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/dissociation.svg" language="PD" value="dissociation" title="Dissociation"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/phenotype.svg" language="PD" value="phenotype" title="Phenotype"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/compartment.svg" language="PD" value="compartment" title="Compartment"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/tag.svg" language="PD" value="tag" title="Tag"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/and.svg" language="PD" value="and" title="AND"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/or.svg" language="PD" value="or" title="OR"/></div>
-                                          <div class="col-sm-3"><img src="app/img/nodes/not.svg" language="PD" value="not" title="NOT"/></div>
+                                        <div class="">
+                                          <div class="paletteCol"><img src="app/img/nodes/unspecified-entity.svg" language="PD" value="unspecified-entity" title="Unspecified Entity"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/simple-chemical.svg" language="PD" value="simple-chemical" title="Simple Chemical"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/macromolecule.svg" language="PD" value="macromolecule" title="Macromolecule"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/nucleic-acid-feature.svg" language="PD" value="nucleic-acid-feature" title="Nucleic Acid Feature"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/perturbing-agent.svg" language="PD" value="perturbing-agent" title="Perturbing Agent"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/source-and-sink.svg" language="PD" value="source-and-sink" title="Source and Sink"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/complex.svg" language="PD" value="complex" title="Complex"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/process.svg" language="PD" value="process" title="Process"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/omitted-process.svg" language="PD" value="omitted-process" title="Omitted Process"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/uncertain-process.svg" language="PD" value="uncertain-process" title="Uncertain Process"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/association.svg" language="PD" value="association" title="Association"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/dissociation.svg" language="PD" value="dissociation" title="Dissociation"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/phenotype.svg" language="PD" value="phenotype" title="Phenotype"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/compartment.svg" language="PD" value="compartment" title="Compartment"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/tag.svg" language="PD" value="tag" title="Tag"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/and.svg" language="PD" value="and" title="AND"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/or.svg" language="PD" value="or" title="OR"/></div>
+                                          <div class="paletteCol"><img src="app/img/nodes/not.svg" language="PD" value="not" title="NOT"/></div>
+
                                         </div>
                                       </div>
                                     </div>
@@ -400,15 +432,15 @@
                                 <div id="expand-collapse-pd-edges-palette" class="panel-collapse collapse in">
                                     <div class="panel-body">
                                       <div id="pd-edge-palette" class="element-palette edge-palette">
-                                        <div class="row">
-                                          <div class="col-sm-3"><img src="app/img/edges/consumption.svg" language="PD" value="consumption" title="Consumption"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/production.svg" language="PD" value="production" title="Production"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/modulation.svg" language="PD" value="modulation" title="Modulation"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/stimulation.svg" language="PD" value="stimulation" title="Stimulation"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/catalysis.svg" language="PD" value="catalysis" title="Catalysis"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/inhibition.svg" language="PD" value="inhibition" title="Inhibition"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary-stimulation" title="Necessary Stimulation"/></div>
-                                          <div class="col-sm-3"><img src="app/img/edges/consumption.svg" language="PD" value="logic-arc" title="Logic Arc"/></div>
+                                        <div class="">
+                                          <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="consumption" title="Consumption"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/production.svg" language="PD" value="production" title="Production"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/modulation.svg" language="PD" value="modulation" title="Modulation"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/stimulation.svg" language="PD" value="stimulation" title="Stimulation"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/catalysis.svg" language="PD" value="catalysis" title="Catalysis"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/inhibition.svg" language="PD" value="inhibition" title="Inhibition"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary-stimulation" title="Necessary Stimulation"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="logic-arc" title="Logic Arc"/></div>
                                         </div>
                                       </div>
                                     </div>
@@ -480,10 +512,6 @@
 
         <div id="layout-properties-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- sbgn layout table will be shown here -->
-        </div>
-
-        <div id="general-properties-table" tabindex="-1" class="modal fade" role="dialog">
-            <!-- sbgn properties table will be shown here-->
         </div>
 
         <div id="biogene-container" style="display: none">
@@ -563,7 +591,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 0.4</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 0.5</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -804,6 +832,16 @@
             <input id="incremental" type="checkbox" class="layout-text" <% if (!randomize){ %> checked<%}%>>
             </td>
             </tr>
+
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Incremental Cooling Factor </span>
+            </td>
+            <td>
+            <input id="incremental-cooling-factor" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= initialEnergyOnIncremental %> >
+            </td>
+            </tr>
+
             </tbody>
             </table>
             </div>
@@ -815,24 +853,12 @@
             </div>
         </script>
 
-        <script type="text/template" id="color-scheme-menu-template">
-            <% var i=0; for( var scheme_id in mapColorSchemes) { %>
-                <li><a href="#" class="map-color-scheme" id="map-color-scheme_<%= scheme_id %>"><%= mapColorSchemes[scheme_id]['name'] %></a></li>
-            <% i++;} %>
-        </script>
-
-        <script type="text/template" id="general-properties-template">
-            <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Properties</h4>
-            </div>
-            <div class="modal-body">
-            <table class="table-condensed layout-table dialog-table">
+        <script type="text/template" id="map-tab-general-template">
+            <table class="table-condensed layout-table dialog-table map-panel-table">
             <tbody>
+
             <tr>
-            <td>
+            <td class="header">
             <span class="add-on layout-text"> Compound Padding </span>
             </td>
 
@@ -842,61 +868,17 @@
             </tr>
 
             <tr>
-            <td>
-            <span class="add-on layout-text"> Label Size </span>
+            <td class="header">
+            <span class="add-on layout-text"> Allow Compound Node Resize </span>
             </td>
 
             <td>
-            <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
-            <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
-            <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
-            <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
-            </select>
+            <input id="allow-compound-node-resize" type="checkbox" class="layout-text" <% if (allowCompoundNodeResize){ %> checked<%}%>>
             </td>
             </tr>
 
             <tr>
-            <td>
-            <span class="add-on layout-text"> Fit Labels To Nodes </span>
-            </td>
-
-            <td>
-            <input id="fit-labels-to-nodes" type="checkbox" class="layout-text" <% if (fitLabelsToNodes){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Rearrange After Expand-Collapse </span>
-            </td>
-
-            <td>
-            <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Animate on Drawing Changes </span>
-            </td>
-
-            <td>
-            <input id="animate-on-drawing-changes" type="checkbox" class="layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Adjust Node Label Font Size Automatically </span>
-            </td>
-
-            <td>
-            <input id="adjust-node-label-font-size-automatically" type="checkbox" class="layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
+            <td class="header">
             <span class="add-on layout-text"> Enable Ports </span>
             </td>
 
@@ -905,25 +887,104 @@
             </td>
             </tr>
 
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Display Labels For Named Complexes </span>
-            </td>
+            </tbody>
+            </table>
+        </script>
 
-            <td>
-            <input id="show-complex-name" type="checkbox" class="layout-text" <% if (showComplexName){ %> checked<%}%>>
-            </td>
-            </tr>
+        <script type="text/template" id="map-tab-label-template">
+            <table class="table-condensed layout-table dialog-table map-panel-table">
+            <tbody>
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Label Size </span>
+                </td>
+
+                <td>
+                <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
+                <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
+                <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
+                <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
+                </select>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Display Labels For Named Complexes </span>
+                </td>
+
+                <td>
+                <input id="show-complex-name" type="checkbox" class="layout-text" <% if (showComplexName){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Adjust Node Label Font Size Automatically </span>
+                </td>
+
+                <td>
+                <input id="adjust-node-label-font-size-automatically" type="checkbox" class="layout-text" <% if (adjustNodeLabelFontSizeAutomatically){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Fit Labels To Nodes </span>
+                </td>
+
+                <td>
+                <input id="fit-labels-to-nodes" type="checkbox" class="layout-text" <% if (fitLabelsToNodes){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Fit Labels to Information Boxes </span>
+                </td>
+
+                <td>
+                <input id="fit-labels-to-infoboxes" type="checkbox" class="layout-text" <% if (fitLabelsToInfoboxes){ %> checked<%}%>>
+                </td>
+                </tr>
 
             </tbody>
             </table>
-            </div>
+        </script>
+
+        <script type="text/template" id="map-tab-rearrangement-template">
+            <table class="table-condensed layout-table dialog-table map-panel-table">
+            <tbody>
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Rearrange After Expand-Collapse </span>
+                </td>
+
+                <td>
+                <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Animate on Drawing Changes </span>
+                </td>
+
+                <td>
+                <input id="animate-on-drawing-changes" type="checkbox" class="layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </script>
+
+        <script type="text/template" id="general-properties-template">
+            <!-- legacy, keep it to know how the default button was designed before
+            </tbody>
+            </table>
             <div class="modal-footer" style="text-align: center">
-            <button id="save-sbgn" class="btn btn-default" >Save</button>
             <button id="default-sbgn" class="btn btn-default">Default</button>
-            </div>
-            </div>
-            </div>
+            </div>-->
         </script>
 
         <script type="text/template" id="query-pathsbetween-template">
@@ -1546,6 +1607,31 @@
                     <img width="12px" height="12px" src="app/img/delete.png" style="margin:auto;"/>
                 </div>
                 <div style="clear:both;"></div>
+            </div>
+        </script>
+
+        <script type="text/template" id="color-scheme-inspector-template">
+            <div style="margin-top:15px;">
+                <% for(var scheme_id in schemes) { %>
+                    <% if(schemes[scheme_id].isDisplayed) {%>
+                        <div style="display:block;">
+                            <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:80%; float:left; padding-bottom: 7px; padding-top: 7px; ">
+                                <div style="width:20%; float:left; height:25px; text-align:center; display:flex; align-items:center;">
+                                    <input type="radio" id="map-color-scheme_radio_<%= scheme_id%>" name="color-scheme-choice" style="margin:auto;"/>
+                                </div>
+                                <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:80%; height:25px; float:left; border:1px solid black; display:block;'>
+                                    <%= schemes[scheme_id].previewHtml %>
+                                </div>
+                            </div>
+                            <% if(schemes[scheme_id].invert) {%>
+                                <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:20%; float:left; height:39px; text-align:center; display:flex; align-items:center;'>
+                                    <i class="fa fa-arrows-h fa-lg" aria-hidden="true" style="margin:auto;"></i>
+                                </div>
+                            <% } %>
+                            <div style="clear:both"></div>
+                        </div>
+                    <% } %>
+                <% } %>
             </div>
         </script>
     </body>

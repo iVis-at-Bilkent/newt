@@ -54,6 +54,9 @@ var modeHandler = {
       cy.autoungrabify(true);
       cy.autounselectify(true);
     }
+    else if(!modeHandler.sustainMode){
+        modeHandler.setSelectionMode();
+    }
 
     // Check if there is a needed type change if there is perform it.
     if ( typeChange ) {
@@ -96,6 +99,9 @@ var modeHandler = {
       cy.autounselectify(true);
 
       cy.edgehandles('drawon');
+    }
+    else if(!modeHandler.sustainMode){
+        modeHandler.setSelectionMode();
     }
 
     // Check if there is a needed type change if there is perform it.

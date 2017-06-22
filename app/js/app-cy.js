@@ -144,16 +144,36 @@ module.exports = function () {
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-          nodesWithHiddenNeighbor.forEach(function( ele ){
-            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
-          });
+          if(appUtilities.undoable){
+            var actions = [];
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
+            });
+            cy.undoRedo().do("batch", actions);
+          }
+          else{
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+            });  
+          }
           appUtilities.showAndPerformIncrementalLayout(cyTarget);   
           nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-          nodesWithHiddenNeighbor.forEach(function( ele ){
-            var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-            chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
-          });
+          if(appUtilities.undoable){
+            actions = [];
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
+            });
+            cy.undoRedo().do("batch", actions);
+          }
+          else{
+            nodesWithHiddenNeighbor.forEach(function( ele ){
+              var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+              chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+            });
+          }
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       }
@@ -164,6 +184,39 @@ module.exports = function () {
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
         undoable: appUtilities.undoable // and if undoRedo extension exists
+      },
+      afterPaste: function(eles) {
+        eles.nodes().forEach(function(ele){
+          // skip nodes without any auxiliary units
+          if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
+            return;
+          }
+
+          // maintain consistency of layouts, and infoboxes through them
+          // we need to replace the layouts contained in ele by new cloned layouts
+          var globalInfoboxCount = 0;
+          for(var side in ele.data('auxunitlayouts')) {
+            var layout = ele.data('auxunitlayouts')[side];
+            var newLayout = layout.copy(ele); // get a new layout
+
+            // copy each infobox of the layout
+            for(var i=0; i < layout.units.length; i++) {
+              var auxunit = layout.units[i];
+              // keep the new infobox at exactly the same position in the statesandinfos list 
+              var statesandinfosIndex = ele.data('statesandinfos').indexOf(auxunit);
+
+              // copy the current infobox
+              var newAuxunit = auxunit.copy(ele, ele.data('id') + "_" + globalInfoboxCount);
+              // update statesandinfos list
+              ele.data('statesandinfos')[statesandinfosIndex] = newAuxunit;
+              // update layout's infobox list
+              newLayout.units[i] = newAuxunit;
+              globalInfoboxCount++;
+            }
+            // update layout
+            ele.data('auxunitlayouts')[side] = newLayout;
+          }
+        });
       }
     });
 
@@ -239,6 +292,24 @@ module.exports = function () {
       boundingRectangleLineColor: "darkgray",
       boundingRectangleLineWidth: 1.5,
       zIndex: 999,
+      getCompoundMinWidth: function(node) { 
+        return node.data('minWidth') || 0; 
+      },
+      getCompoundMinHeight: function(node) { 
+        return node.data('minHeight') || 0; 
+      },
+      getCompoundMinWidthBiasRight: function(node) {
+        return node.data('minWidthBiasRight') || 0; 
+      },
+      getCompoundMinWidthBiasLeft: function(node) { 
+        return node.data('minWidthBiasLeft') || 0; 
+      },
+      getCompoundMinHeightBiasTop: function(node) {
+        return node.data('minHeightBiasTop') || 0;
+      },
+      getCompoundMinHeightBiasBottom: function(node) { 
+        return node.data('minHeightBiasBottom') || 0;
+      },
       setWidth: function(node, width) {
         var bbox = node.data('bbox');
         bbox.w = width;
@@ -248,6 +319,24 @@ module.exports = function () {
         var bbox = node.data('bbox');
         bbox.h = height;
         node.data('bbox', bbox);
+      },
+      setCompoundMinWidth: function(node, minWidth) { 
+        node.data('minWidth', minWidth); 
+      },
+      setCompoundMinHeight: function(node, minHeight) { 
+        node.data('minHeight', minHeight); 
+      },
+      setCompoundMinWidthBiasLeft: function(node, minWidthBiasLeft) {
+        node.data('minWidthBiasLeft', minWidthBiasLeft); 
+      },
+      setCompoundMinWidthBiasRight: function(node, minHeightBiasRight) {
+        node.data('minWidthBiasRight', minHeightBiasRight); 
+      },
+      setCompoundMinHeightBiasTop: function(node, minHeightBiasTop) { 
+        node.data('minHeightBiasTop', minHeightBiasTop); 
+      },
+      setCompoundMinHeightBiasBottom: function(node, minHeightBiasBottom) {
+        node.data('minHeightBiasBottom', minHeightBiasBottom); 
       },
       minWidth: function (node) {
         var data = node.data("resizeMinWidth");
@@ -263,7 +352,7 @@ module.exports = function () {
         return chise.elementUtilities.mustBeSquare(sbgnclass);
       }, // with only 4 active grapples (at corners)
       isNoResizeMode: function (node) {
-        return node.is(".noResizeMode, :parent")
+        return node.is(':parent') && !appUtilities.currentGeneralProperties.allowCompoundNodeResize;
       }, // no active grapples
 
       cursors: {// See http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
@@ -369,14 +458,36 @@ module.exports = function () {
       }
     });
     
+    // Expand collapse extension is supposed to clear expand collapse cue on node position event.
+    // If compounds are resized position event is not triggered though the position of the node is changed.
+    // Therefore, we listen to noderesize.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
+    // expand collapse extension.
+    cy.on("noderesize.resizedrag", function(e, type, node){ 
+        if (node.isParent()) {
+            cy.expandCollapse('get').clearVisualCue();
+        }
+    });
+
+    /*
+     * Collapsing/expanding can change the nature of the node and change wether it's resizeable or not.
+     * We need to refresh the resize grapples to ensure they are consistent with their parent's status.
+     * (for instance: complexes)
+     */
+    cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
+      cy.nodeResize('get').refreshGrapples();
+    });
+    
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus();
 
       if(actionName == "resize") {
         var node = res.node;
+        // ensure consistency of infoboxes through resizing
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
+        // ensure consistency of inspector properties through resizing
+        inspectorUtilities.handleSBGNInspector();
       }
     });
 
@@ -387,6 +498,7 @@ module.exports = function () {
 
       if(actionName == "resize") {
         var node = res.node;
+        // ensure consistency of infoboxes through resizing
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
@@ -400,6 +512,7 @@ module.exports = function () {
 
       if(actionName == "resize") {
         var node = res.node;
+        // ensure consistency of infoboxes through resizing
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
@@ -438,20 +551,26 @@ module.exports = function () {
         appUtilities.nodesToDragAndDrop = null;
       }
 
-      // make palette tab active if no element is selected
-      // cannot be done on unselect event because it causes conflict with the select trigger
-      // when nodes are selected one after another
-      // after tests, seems better to do it here
+      /*  make palette tab active if no element is selected
+          cannot be done on unselect event because it causes conflict with the select trigger
+          when nodes are selected one after another
+          after tests, seems better to do it here
+
+          With the addition of the 3rd Map tab, we can probably keep the behavior 
+          when the user has the Object tab selected.
+      */
       if (cy.elements(':selected').length == 0){
-        // edge case when the properties tab is already selected (and shown empty)
-        // and an element is selected, the property tab gets shown and the palette tab is concatenated after it
-        // we need to wait a bit before triggering the following, and check again if everything is unselected
-        // that is really dirty...
+        /* edge case when the properties tab is already selected (and shown empty)
+          and an element is selected, the property tab gets shown and the palette tab is concatenated after it
+          we need to wait a bit before triggering the following, and check again if everything is unselected
+          that is really dirty...
+        */
         setTimeout(function () {
           if (cy.elements(':selected').length == 0){
-            if (!$('#inspector-palette-tab').hasClass('active')) {
+            if ($('#inspector-style-tab').hasClass('active')) {
               $('#inspector-palette-tab a').tab('show');
               $('#inspector-style-tab a').blur();
+              $('#inspector-map-tab a').blur();
             }
           }
         }, 20);
@@ -569,6 +688,12 @@ module.exports = function () {
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
             var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage, infoBoxName : modeHandler.selectedInfoBoxName};
             chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
+
+            // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
+            // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
+            if (parent) {
+              cy.expandCollapse('get').clearVisualCue();
+            }
           }
         }
         
@@ -638,6 +763,12 @@ module.exports = function () {
         left = left.toString() + 'px';
         var top = containerPos.top + this.renderedPosition().y;
         top -= nodeLabelTextbox.height() / 2;
+
+        //For complexes and compartments move the textarea to the bottom
+        var nodeType = node.data('class');
+        if (nodeType == "compartment" || nodeType.startsWith("complex") )
+            top += (node.outerHeight() / 2 * cy.zoom() );
+
         top = top.toString() + 'px';
 
         nodeLabelTextbox.css('left', left);
@@ -666,6 +797,7 @@ module.exports = function () {
       if (!$('#inspector-style-tab').hasClass('active')) {
         $('#inspector-style-tab a').tab('show');
         $('#inspector-palette-tab a').blur();
+        $('#inspector-map-tab a').blur();
       }
     });
     
@@ -710,7 +842,7 @@ module.exports = function () {
     var currentPos = {x : 0, y : 0};
     cy.on("position", "node:child[class!='complex']", function(event) {
       var parent = event.target.parent();
-      if(!parent.is("[class='complex']")) {
+      if(!parent.is("[class^='complex']")) {
         return;
       }
       currentPos = parent.position();

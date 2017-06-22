@@ -10,7 +10,7 @@ var _ = require('underscore');
 module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, colorSchemeMenuView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
@@ -23,9 +23,7 @@ module.exports = function () {
       }
     });
   }
-  var fileName = ""; // Used as a global variable to hold filename
   function loadSample(filename) {
-    fileName = filename;
     var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
     return chise.loadSample(filename, 'app/samples/');
@@ -39,8 +37,11 @@ module.exports = function () {
     dynamicResize();
 
     layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
-    colorSchemeMenuView = appUtilities.colorSchemeMenuView = new BackboneViews.ColorSchemeMenuView({el: '#color-scheme-menu'});
-    generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
+    colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
+    //generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
+    mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
+    mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
+    mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
     pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
     pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
     //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
@@ -52,7 +53,11 @@ module.exports = function () {
 
     toolbarButtonsAndMenu();
     modeHandler.initilize();
-    colorSchemeMenuView.render();
+    //generalPropertiesView.render();
+    colorSchemeInspectorView.render();
+    mapTabGeneralPanel.render();
+    mapTabLabelPanel.render();
+    mapTabRearrangementPanel.render();
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
     // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
@@ -230,24 +235,45 @@ module.exports = function () {
  
     var nodesWithHiddenNeighbor = [];
     var thinBorder = function(nodesWithHiddenNeighbor){
-      nodesWithHiddenNeighbor.forEach(function( ele ){
-        var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-        chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
-      });
+      if(appUtilities.undoable){
+        var actions = [];
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
+        });
+        cy.undoRedo().do("batch", actions);
+      }
+      else{
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
+        });
+      }
     };
+    
     var thickenBorder = function(nodesWithHiddenNeighbor){
-      nodesWithHiddenNeighbor.forEach(function( ele ){
-        var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-        chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
-      });
+      if(appUtilities.undoable){
+        var actions = [];
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
+        });
+        cy.undoRedo().do("batch", actions);
+      }
+      else{
+        nodesWithHiddenNeighbor.forEach(function( ele ){
+          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
+          chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
+        });
+      }
     };
+    
     $("#hide-selected, #hide-selected-icon").click(function(e) {
       nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
       thinBorder(nodesWithHiddenNeighbor);
       chise.hideNodesSmart(cy.nodes(":selected"));
       nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
       thickenBorder(nodesWithHiddenNeighbor);
-      //chise.changeCss(nodesWithHiddenNeighbor, 'border-width', '3.25'); 
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
@@ -312,7 +338,10 @@ module.exports = function () {
     });
 
     $("#general-properties, #properties-icon").click(function (e) {
-      generalPropertiesView.render();
+      // Go to inspector map tab
+      if (!$('#inspector-map-tab').hasClass('active')) {
+        $('#inspector-map-tab a').tab('show');
+      }
     });
 
     $("#query-pathsbetween").click(function (e) {
@@ -422,14 +451,14 @@ module.exports = function () {
     });
 
     $("#save-as-png").click(function (evt) {
-      var filename = fileName; //Assign the global filename to a local variable
-      filename = filename.substring(0,filename.length - 3) + "png";
+      var filename = document.getElementById('file-name').innerHTML;
+      filename = filename.substring(0,filename.lastIndexOf('.')) + ".png";
       chise.saveAsPng(filename); // the default filename is 'network.png'
     });
 
     $("#save-as-jpg").click(function (evt) {
-      var filename = fileName; //Assign the global filename to a local variable
-      filename = filename.substring(0,filename.length - 3) + "jpg";
+      var filename = document.getElementById('file-name').innerHTML;
+      filename = filename.substring(0,filename.lastIndexOf('.')) + ".jpg";
       chise.saveAsJpg(filename); // the default filename is 'network.jpg'
     });
 
