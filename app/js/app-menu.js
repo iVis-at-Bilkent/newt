@@ -160,6 +160,7 @@ module.exports = function () {
       };
 
       promptConfirmationView.render(createNewFile);
+      chise.resetMapType();
     });
 
     $("#load-file, #load-file-icon").click(function () {
@@ -527,7 +528,11 @@ module.exports = function () {
       $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
       $(this).addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
-      modeHandler.setAddNodeMode(elementType); // Set add node mode and set selected node type
+      var language = $(this).attr('language');
+      var infoBoxName = $(this).attr('name');
+      infoBoxName = infoBoxName ? infoBoxName.replace(/-/gi, ' ') : undefined;
+
+      modeHandler.setAddNodeMode(elementType, language, infoBoxName); // Set add node mode and set selected node type
 
       // Update the some attributes of add node mode icon
       var src = $(this).attr('src');
@@ -544,7 +549,8 @@ module.exports = function () {
       $('.edge-palette img').removeClass('selected-mode');// Make any image inside edge palettes non selected
       $(this).addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
-      modeHandler.setAddEdgeMode(elementType); // Set add edge mode and set selected edge type
+      var language = $(this).attr('language');
+      modeHandler.setAddEdgeMode(elementType, language); // Set add edge mode and set selected edge type
 
       // Update the some attributes of add edge mode icon
       var src = $(this).attr('src');

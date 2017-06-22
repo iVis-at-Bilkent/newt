@@ -388,9 +388,8 @@ module.exports = function () {
           // fired when edgehandles is done and entities are added
           var source = sourceNode.id();
           var target = targetNodes[0].id();
-          var edgeclass = modeHandler.selectedEdgeType;
-
-          chise.addEdge(source, target, edgeclass);
+          var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedLanguage};
+          chise.addEdge(source, target, edgeParams);
           
           // If not in sustain mode set selection mode
           if (!modeHandler.sustainMode) {
@@ -687,8 +686,9 @@ module.exports = function () {
           
           // If the parent class is valid for the node type then add the node
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
-            chise.addNode(cyPosX, cyPosY, nodeType, undefined, parentId);
-            
+            var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage, infoBoxName : modeHandler.selectedInfoBoxName};
+            chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
+
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
             // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
             if (parent) {

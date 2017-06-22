@@ -29,9 +29,14 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       }
       else if (state.clazz == "unit of information") {
         var total = width / 1.25;
-        $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                + total + "px;' value='" + (state.label.text || '')
-                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.png'></img></div>");
+        if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
+          $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
+                  + total + "px;' value='" + (state.label.text || '')
+			  + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.png'></img></div>");
+        } else {
+          $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
+                  + total + "px;' value='" + (state.label.text || '') + "'/></div>");
+        }
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val());
@@ -45,8 +50,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     })(i);
   }
   $("#inspector-state-variables").append("<img id='inspector-add-state-variable' src='app/img/add.png' class='pointer-button'/>");
-  $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png' class='pointer-button'/>");
-
+  
+  if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
+    $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png' class='pointer-button'/>");
+  };
   $("#inspector-add-state-variable").click(function () {
     var obj = {};
     obj.clazz = "state variable";
