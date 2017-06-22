@@ -335,7 +335,6 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     else {
       chise.omitCompoundSizes();
     }
-    
     // Refresh resize grapples
     cy.nodeResize('get').refreshGrapples();
 
@@ -368,6 +367,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#enable-ports", function (evt) {
       appUtilities.currentGeneralProperties.enablePorts = $('#enable-ports').prop('checked');
       self.applyUpdate();
+    });
+    $(document).on("click", "#inspector-map-tab", function (evt) {
+      document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
+    });
+    $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
+      document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
     });
   },
   render: function() {
