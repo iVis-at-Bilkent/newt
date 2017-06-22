@@ -753,6 +753,31 @@ var PromptConfirmationView = Backbone.View.extend({
   }
 });
 
+var PromptMapTypeView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-mapType-template").html());
+  },
+  render: function (afterFunction) {
+    var self = this;
+    self.template = _.template($("#prompt-mapType-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-mapType-accept").on("click", "#prompt-mapType-accept", function (evt) {
+      afterFunction();
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#prompt-mapType-cancel").on("click", "#prompt-mapType-cancel", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   addMacromolecule: function (i) {
     var html = "<tr><td>"
@@ -1307,6 +1332,7 @@ module.exports = {
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   PromptConfirmationView: PromptConfirmationView,
+  PromptMapTypeView: PromptMapTypeView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,

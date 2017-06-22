@@ -11,7 +11,7 @@ module.exports = function () {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+        promptMapTypeView, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -47,6 +47,7 @@ module.exports = function () {
     //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
     fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
     promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
+    promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
     reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
     gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
     fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
@@ -144,6 +145,7 @@ module.exports = function () {
 
     $("#new-file, #new-file-icon").click(function () {
       var createNewFile = function () {
+        chise.resetMapType();  // reset map type while creating new file
         appUtilities.setFileContent("new_file.sbgnml");
 
         //clean and reset things
@@ -160,7 +162,6 @@ module.exports = function () {
       };
 
       promptConfirmationView.render(createNewFile);
-      chise.resetMapType();
     });
 
     $("#load-file, #load-file-icon").click(function () {

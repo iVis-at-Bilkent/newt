@@ -389,7 +389,15 @@ module.exports = function () {
           var source = sourceNode.id();
           var target = targetNodes[0].id();
           var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedLanguage};
-          chise.addEdge(source, target, edgeParams);
+
+          // if added edge changes map type, warn user
+          if (chise.getMapType() && chise.getMapType() != "Unknown" && edgeParams.language != chise.getMapType()){
+            appUtilities.promptMapTypeView.render(function(){
+                chise.addEdge(source, target, edgeParams);});
+          }
+          else{
+            chise.addEdge(source, target, edgeParams);
+          }
           
           // If not in sustain mode set selection mode
           if (!modeHandler.sustainMode) {
@@ -687,7 +695,15 @@ module.exports = function () {
           // If the parent class is valid for the node type then add the node
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
             var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage, infoBoxName : modeHandler.selectedInfoBoxName};
-            chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
+
+            // if added node changes map type, warn user
+            if (chise.getMapType() && chise.getMapType() != "Unknown" && nodeParams.language != chise.getMapType()){
+              appUtilities.promptMapTypeView.render(function(){
+                  chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
+            }
+            else{
+              chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
+            }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
             // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
