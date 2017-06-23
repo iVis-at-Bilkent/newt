@@ -134,13 +134,7 @@ module.exports = function () {
           var sbgnclass = cyTarget.data('class');
 
           cy.elements().unselect();
-          if (sbgnclass != "biological activity"){
-            cy.elements('[class="' + sbgnclass + '"]').select();
-          }
-          else{
-            var name = cyTarget.data('name');
-            cy.elements('[class="' + sbgnclass + '"][name="' + name + '"]').select();
-          }
+          cy.elements('[class="' + sbgnclass + '"]').select();
         }
       },
       {
@@ -700,7 +694,7 @@ module.exports = function () {
           
           // If the parent class is valid for the node type then add the node
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
-            var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage, infoBoxName : modeHandler.selectedInfoBoxName};
+            var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage};
 
             // if added node changes map type, warn user
             if (chise.getMapType() && chise.getMapType() != "Unknown" && nodeParams.language != chise.getMapType()){

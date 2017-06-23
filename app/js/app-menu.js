@@ -530,10 +530,8 @@ module.exports = function () {
       $(this).addClass('selected-mode'); // Make clicked element selected
       var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
       var language = $(this).attr('language');
-      var infoBoxName = $(this).attr('name');
-      infoBoxName = infoBoxName ? infoBoxName.replace(/-/gi, ' ') : undefined;
 
-      modeHandler.setAddNodeMode(elementType, language, infoBoxName); // Set add node mode and set selected node type
+      modeHandler.setAddNodeMode(elementType, language); // Set add node mode and set selected node type
 
       // Update the some attributes of add node mode icon
       var src = $(this).attr('src');
