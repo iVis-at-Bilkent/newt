@@ -134,7 +134,13 @@ module.exports = function () {
           var sbgnclass = cyTarget.data('class');
 
           cy.elements().unselect();
-          cy.elements('[class="' + sbgnclass + '"]').select();
+          if (sbgnclass != "biological activity"){
+            cy.elements('[class="' + sbgnclass + '"]').select();
+          }
+          else{
+            var name = cyTarget.data('name');
+            cy.elements('[class="' + sbgnclass + '"][name="' + name + '"]').select();
+          }
         }
       },
       {
