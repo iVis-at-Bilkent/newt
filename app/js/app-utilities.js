@@ -815,7 +815,6 @@ appUtilities.dragImageMouseMoveHandler = function (e) {
 };
 
 appUtilities.addDragImage = function (img, width, height){
-	console.log(img);
   // see: http://stackoverflow.com/questions/38838508/make-a-dynamic-image-follow-mouse
   $(document.body).append('<img id="drag-image" src="app/img/nodes/'+img+'" style="position: absolute;'+
                                 'width:'+width+'; height:'+height+';" >');
