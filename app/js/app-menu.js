@@ -189,12 +189,12 @@ module.exports = function () {
       $("#edge_legend_modal").modal('show');
     });
 
-    $("#quick-help").click(function (e) {
+    $("#quick-help, #quick-help-icon").click(function (e) {
       e.preventDefault();
       $("#quick_help_modal").modal('show');
     });
 
-    $("#about").click(function (e) {
+    $("#about, #about-icon").click(function (e) {
       e.preventDefault();
       $("#about_modal").modal('show');
     });
