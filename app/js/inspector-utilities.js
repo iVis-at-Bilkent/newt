@@ -266,8 +266,9 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (chise.elementUtilities.canHaveUnitOfInformation(selectedEles)) {
           fillStateAndInfos = true;
           
+          var unit = chise.elementUtilities.canHaveMultipleUnitOfInformation(selectedEles) ? "Units" : "Unit";
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
-          html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Units of Information</font>" + "</td>"
+          html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>" + unit + " of Information</font>" + "</td>"
                   + "<td id='inspector-unit-of-informations' style='padding-left: 5px; width: '" + width + "'></td></tr>";
         }
       }
