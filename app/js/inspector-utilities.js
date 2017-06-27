@@ -129,6 +129,13 @@ inspectorUtilities.handleSBGNInspector = function () {
       classInfo = classInfo.replace(' Not ', ' not ');
     }
 
+    if (classInfo.includes("Ba")){
+      classInfo = classInfo.substr(3);
+    }
+
+    if (classInfo == "Plain")
+      classInfo = "Biological Activity";
+
     var title = classInfo=="" ? "Visual Properties":classInfo + " Visual Properties";
 
     var buttonwidth = width;
