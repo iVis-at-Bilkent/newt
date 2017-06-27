@@ -17,7 +17,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + "<span width='" + width / 5 + "'px>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
                 + width / 2.5 + "px;' value='" + (state.state.variable || '')
-                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.png'></img></div>");
+                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.svg'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
@@ -32,7 +32,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '')
-			  + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.png'></img></div>");
+			  + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.svg'></img></div>");
         } else {
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '') + "'/></div>");
@@ -49,10 +49,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       });
     })(i);
   }
-  $("#inspector-state-variables").append("<img id='inspector-add-state-variable' src='app/img/add.png' class='pointer-button'/>");
+  $("#inspector-state-variables").append("<img width='16px' height='16px' id='inspector-add-state-variable' src='app/img/add.svg' class='pointer-button'/>");
   
   if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
-    $("#inspector-unit-of-informations").append("<img id='inspector-add-unit-of-information' src='app/img/add.png' class='pointer-button'/>");
+    $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
   };
   $("#inspector-add-state-variable").click(function () {
     var obj = {};
@@ -204,15 +204,15 @@ inspectorUtilities.handleSBGNInspector = function () {
           var imageName;
           var title;
           if(appUtilities.nodeResizeUseAspectRatio) {
-            imageName = "lock.png";
+            imageName = "lock.svg";
             title = "unlock aspect ratio";
           }
           else {
-            imageName = "open-lock.png";
+            imageName = "open-lock.svg";
             title = "lock aspect ratio";
           }
           
-          html += "<img id='inspector-node-sizes-aspect-ratio' style='vertical-align: top; margin-left: 5px;' class='pointer-button' src='app/img/";
+          html += "<img width='16px' height='16x' id='inspector-node-sizes-aspect-ratio' style='vertical-align: top; margin-left: 5px;' class='pointer-button' src='app/img/";
           html += imageName;
           html += "'";
           
@@ -578,11 +578,11 @@ inspectorUtilities.handleSBGNInspector = function () {
         
         // refresh image
         if (appUtilities.nodeResizeUseAspectRatio) {
-          imageName = "lock.png";
+          imageName = "lock.svg";
           title = "unlock aspect ratio";
         }
         else {
-          imageName = "open-lock.png";
+          imageName = "open-lock.svg";
           title = "lock aspect ratio";
         }
         
