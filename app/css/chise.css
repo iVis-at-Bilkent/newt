@@ -193,7 +193,7 @@ body {
 }
 
 .target-cursor {
-    cursor: url(../../sampleapp-images/drag-target.cur), pointer!important;
+    cursor: url(../../app/img/target-cursor.svg), pointer!important;
 }
 
 .inside-menu {
@@ -547,10 +547,6 @@ menu:not([title]):before{
     position:relative;
     top: 6px;
     transform: translateY(-50%);
-}
-
-.target-cursor {
-    cursor: url(../../app/img/drag-target.cur), pointer!important;
 }
 
 .panel-heading {
