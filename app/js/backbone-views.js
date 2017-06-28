@@ -381,6 +381,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("click", "#map-general-default-button", function (evt) {
       self.setPropertiesToDefault();
       self.$el.html(self.template(appUtilities.defaultGeneralProperties));
+      $("#inspector-map-tab").trigger('click');
       self.applyUpdate();
     });
   },
