@@ -257,7 +257,6 @@ var LayoutPropertiesView = Backbone.View.extend({
 var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-
     var schemes = appUtilities.mapColorSchemes;
     var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
     for(var id in schemes) {
@@ -304,6 +303,11 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       // in the html and the radio button cannot be correctly checked.
       appUtilities.applyMapColorScheme(inverted_id);
     });
+
+    $(document).on("click", "#map-color-scheme-default-button", function (evt) {
+      appUtilities.applyMapColorScheme("black_white");
+    });
+
   },
   render: function () {
     this.template = _.template($("#color-scheme-inspector-template").html());
@@ -374,12 +378,16 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
       document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
     });
+    $(document).on("click", "#map-general-default-button", function (evt) {
+      self.setPropertiesToDefault();
+      self.$el.html(self.template(appUtilities.defaultGeneralProperties));
+      self.applyUpdate();
+    });
   },
   render: function() {
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(appUtilities.currentGeneralProperties));
-
     return this;
   }
 });
@@ -416,6 +424,11 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       appUtilities.currentGeneralProperties.fitLabelsToInfoboxes = $('#fit-labels-to-infoboxes').prop('checked');
       self.applyUpdate();
     });
+    $(document).on("click", "#map-label-default-button", function (evt) {
+      self.setPropertiesToDefault();
+      self.$el.html(self.template(appUtilities.defaultGeneralProperties));
+      self.applyUpdate();
+    });
   },
   render: function() {
     this.template = _.template($("#map-tab-label-template").html());
@@ -441,6 +454,11 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
       appUtilities.currentGeneralProperties.animateOnDrawingChanges =
             $('#animate-on-drawing-changes').prop('checked');
+      self.applyUpdate();
+    });
+    $(document).on("click", "#map-rearrangement-default-button", function (evt) {
+      self.setPropertiesToDefault();
+      self.$el.html(self.template(appUtilities.defaultGeneralProperties));
       self.applyUpdate();
     });
   },
