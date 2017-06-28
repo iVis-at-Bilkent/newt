@@ -17,7 +17,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + "<span width='" + width / 5 + "'px>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
                 + width / 2.5 + "px;' value='" + (state.state.variable || '')
-                + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.svg'></img></div>");
+                + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
           chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
@@ -28,11 +28,11 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         });
       }
       else if (state.clazz == "unit of information") {
-        var total = width / 1.25;
+        var total = width / 1.4;
         if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '')
-			  + "'/><img width='12px' height='12px' id='inspector-delete-state-and-info" + i + "' class='inspector-input-box pointer-button' src='app/img/delete.svg'></img></div>");
+			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
         } else {
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '') + "'/></div>");
@@ -212,11 +212,11 @@ inspectorUtilities.handleSBGNInspector = function () {
           var title;
           if(appUtilities.nodeResizeUseAspectRatio) {
             imageName = "lock.svg";
-            title = "unlock aspect ratio";
+            title = "Unlock aspect ratio";
           }
           else {
             imageName = "open-lock.svg";
-            title = "lock aspect ratio";
+            title = "Lock aspect ratio";
           }
           
           html += "<img width='16px' height='16x' id='inspector-node-sizes-aspect-ratio' style='vertical-align: top; margin-left: 5px;' class='pointer-button' src='app/img/";
@@ -586,11 +586,11 @@ inspectorUtilities.handleSBGNInspector = function () {
         // refresh image
         if (appUtilities.nodeResizeUseAspectRatio) {
           imageName = "lock.svg";
-          title = "unlock aspect ratio";
+          title = "Unlock aspect ratio";
         }
         else {
           imageName = "open-lock.svg";
-          title = "lock aspect ratio";
+          title = "Lock aspect ratio";
         }
         
         $(this).attr('src', 'app/img/' + imageName);

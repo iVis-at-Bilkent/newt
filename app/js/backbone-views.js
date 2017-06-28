@@ -783,7 +783,7 @@ var ReactionTemplateView = Backbone.View.extend({
     var html = "<tr><td>"
         + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
         + i + "' value=''></input>"
-        + "</td><td><img style='vertical-align: text-bottom; margin-bottom:2px; margin-top:2px;' class='template-reaction-delete-button' width='12px' height='12px' name='" + i + "' src='app/img/delete.svg'/></td></tr>";
+        + "</td><td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
 
     $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
     return html;
