@@ -563,6 +563,11 @@ menu:not([title]):before{
     color: #555;
 }
 
+.panel-body {
+    padding-top: 7px;
+    padding-bottom: 3px;;
+}
+
 .panel {
     border: 1px solid transparent;
 }
