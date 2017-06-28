@@ -130,7 +130,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
 
     if (classInfo == "Ba Plain"){
-      classInfo = "Biological Activity";
+      classInfo = "BA";
     }
     else if (classInfo.includes("Ba ")){
       classInfo = "BA " + classInfo.substr(3);
