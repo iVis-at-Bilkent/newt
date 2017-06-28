@@ -804,8 +804,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
 
   cy.undoRedo().do("batch", actions);
   // ensure the menu is updated accordingly
-  $('input#map-color-scheme_radio_'+newColorScheme).prop('checked', true);
-
+  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "2px solid";
 };
 
 // the 3 following functions are related to the handling of the dynamic image

@@ -257,6 +257,7 @@ var LayoutPropertiesView = Backbone.View.extend({
 var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
+    var defaultColorScheme = currentScheme = "black_white";
     var schemes = appUtilities.mapColorSchemes;
     var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
     for(var id in schemes) {
@@ -289,6 +290,9 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     $(document).on("click", "div.color-scheme-choice", function (evt) {
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
+
+      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
+      currentScheme = scheme_id;
       appUtilities.applyMapColorScheme(scheme_id);
     });
 
@@ -296,6 +300,9 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
+
+      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
+      currentScheme = inverted_id;
       self.schemes[inverted_id].isDisplayed = true;
       self.schemes[scheme_id].isDisplayed = false;
       self.render();
@@ -305,7 +312,9 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
-      appUtilities.applyMapColorScheme("black_white");
+      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
+      appUtilities.applyMapColorScheme(defaultColorScheme);
+      currentScheme = defaultColorScheme;
     });
 
   },
