@@ -704,6 +704,10 @@ img#template-reaction-add-button:hover {
     text-align: right;
 }
 
+.object-panel-table {
+    margin-bottom: 0px;
+}
+
 .paletteCol {
   position: relative;
   float: left;

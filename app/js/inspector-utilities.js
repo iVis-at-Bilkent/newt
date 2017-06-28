@@ -416,7 +416,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                 "</div>"+
                 "<div style='margin-top: 5px;align: center;text-align: center;' id='"+identifier+"-collapsable' class='panel-collapse collapse'>";
         if (hasSubtitleSection) {
-          html += "<div class='panel-body' style='padding-left: 3px;' id='"+identifier+"-title'></div>";
+          html += "<div class='panel-body' style='padding-top: 3px; padding-left: 3px;' id='"+identifier+"-title'></div>";
         }
         html += "<div id='"+identifier+"-container'></div>"+
                 "</div>";
