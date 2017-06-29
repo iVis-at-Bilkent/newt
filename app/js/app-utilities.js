@@ -18,7 +18,6 @@ appUtilities.defaultLayoutProperties = {
   idealEdgeLength: 30,
   edgeElasticity: 0.45,
   nestingFactor: 0.1,
-  paddingCompound: 20,
   gravity: 0.25,
   numIter: 2500,
   tile: true,

@@ -635,7 +635,7 @@ hr.inspector-divider {
 
 .element-palette div {
     /*width: 36px;*/
-    height: 30px;
+    /*height: 30px;*/
 }
 
 .selected-mode.inactive-palette-element {
@@ -704,12 +704,15 @@ img#template-reaction-add-button:hover {
     margin-bottom: 0px;
 }
 
+.paletteWrapper
+{
+  text-align: center;
+}
+
 .paletteCol {
   position: relative;
-  float: left;
+  display: inline-grid;
   width: 50px !important;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 /*
