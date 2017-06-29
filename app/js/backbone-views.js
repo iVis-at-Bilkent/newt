@@ -332,8 +332,7 @@ var GeneralPropertiesParentView = Backbone.View.extend({
   // Apply the properties as they are set
   applyUpdate: function() {
     chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
-    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+    chise.refreshPaddings(); // Refresh/recalculate paddings
 
     if (appUtilities.currentGeneralProperties.enablePorts) {
       chise.enablePorts();
