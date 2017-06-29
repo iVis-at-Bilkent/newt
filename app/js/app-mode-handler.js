@@ -53,7 +53,7 @@ var modeHandler = {
       cy.autoungrabify(true);
       cy.autounselectify(true);
     }
-    else if(!modeHandler.sustainMode){
+    else if(!modeHandler.sustainMode && !typeChange){
         modeHandler.setSelectionMode();
     }
 
@@ -97,7 +97,7 @@ var modeHandler = {
 
       cy.edgehandles('drawon');
     }
-    else if(!modeHandler.sustainMode){
+    else if(!modeHandler.sustainMode && !typeChange){
         modeHandler.setSelectionMode();
     }
 
