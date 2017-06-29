@@ -14,7 +14,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
                 + width / 5 + "px;' value='" + (state.state.value || '') + "'/>"
-                + "<span width='" + width / 5 + "'px>@</span>"
+                + "<span style='font-size: 10pt' width='" + width / 5 + "'px>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
                 + width / 2.5 + "px;' value='" + (state.state.variable || '')
                 + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
@@ -28,7 +28,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         });
       }
       else if (state.clazz == "unit of information") {
-        var total = width / 1.4;
+        var total = 0.6 * width + 10;
         if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '')
