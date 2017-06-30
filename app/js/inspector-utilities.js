@@ -7,6 +7,13 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   //first empty the state variables and infos data in inspector
   $("#inspector-state-variables").html("");
   $("#inspector-unit-of-informations").html("");
+
+  function get_tex_width(txt, font) {
+    this.element = document.createElement('canvas');
+    this.context = this.element.getContext("2d");
+    this.context.font = font;
+    return this.context.measureText(txt).width;
+  };
   
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
@@ -14,7 +21,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
                 + width / 5 + "px;' value='" + (state.state.value || '') + "'/>"
-                + "<span style='font-size: 10pt' width='" + width / 5 + "'px>@</span>"
+                + "<span id='Test' style='font: 10pt Helvetica;'>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
                 + width / 2.5 + "px;' value='" + (state.state.variable || '')
                 + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
@@ -28,7 +35,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         });
       }
       else if (state.clazz == "unit of information") {
-        var total = 0.6 * width + 10;
+        var total = 0.6 * width + get_tex_width("@", "10pt Helvetica");
         if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '')
