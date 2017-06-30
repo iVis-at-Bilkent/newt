@@ -711,16 +711,17 @@ img#template-reaction-add-button:hover {
 
 .paletteCol {
   position: relative;
-  display: inline-grid;
-  width: 50px !important;
+  float: left;
+  display: inline-block;
+  width: 25%;
 }
 
 /*
   Palettes on right pane
 */
 
-/*@media (min-width: 768px) {
-    .col-sm-3 {
-        width: 20% !important;
-    }
-}*/
+@media (max-width: 1024px) {
+  .paletteCol {
+    width: 30%;
+  }
+}
