@@ -234,8 +234,8 @@ module.exports = function () {
       cy.edges().select();
     });
  
-    var nodesWithHiddenNeighbor = [];
-    var thinBorder = function(nodesWithHiddenNeighbor){
+    var thinBorder = function(){
+      var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
       if(appUtilities.undoable){
         var actions = [];
         nodesWithHiddenNeighbor.forEach(function( ele ){
@@ -252,7 +252,8 @@ module.exports = function () {
       }
     };
     
-    var thickenBorder = function(nodesWithHiddenNeighbor){
+    var thickenBorder = function(){
+      var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
       if(appUtilities.undoable){
         var actions = [];
         nodesWithHiddenNeighbor.forEach(function( ele ){
@@ -270,32 +271,25 @@ module.exports = function () {
     };
     
     $("#hide-selected, #hide-selected-icon").click(function(e) {
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thinBorder(nodesWithHiddenNeighbor);
+      thinBorder();
       chise.hideNodesSmart(cy.nodes(":selected"));
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thickenBorder(nodesWithHiddenNeighbor);
+      thickenBorder();
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thinBorder(nodesWithHiddenNeighbor);
+      thinBorder();
       chise.showNodesSmart(cy.nodes(":selected"));
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thickenBorder(nodesWithHiddenNeighbor);
+      thickenBorder();
     });
 
     $("#show-hidden-neighbors-of-selected").click(function(e) {
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thinBorder(nodesWithHiddenNeighbor);  
+      thinBorder();  
       appUtilities.showAndPerformIncrementalLayout(cy.elements(':selected'));
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thickenBorder(nodesWithHiddenNeighbor);
+      thickenBorder();
     });
 
     $("#show-all").click(function (e) {
-      nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      thinBorder(nodesWithHiddenNeighbor);
+      thinBorder();
       chise.showAll();   
     });
 
