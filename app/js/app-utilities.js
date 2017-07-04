@@ -133,7 +133,23 @@ appUtilities.getExpandCollapseOptions = function () {
       }
 
       self.triggerIncrementalLayout();
-    }
+    },
+    expandCollapseCueSize: 12,
+    expandCollapseCuePosition: function (node) {;
+       var offset = 1, rectSize = 12; // this is the expandCollapseCueSize;
+       var size = cy.zoom() < 1 ? rectSize / (2*cy.zoom()) : rectSize / 2; 
+       var x = node.position('x') - node.width() / 2 - parseFloat(node.css('padding-left'))
+           + parseFloat(node.css('border-width')) + size + offset;
+       if (node.data("class") == "compartment"){
+           var y  = node.position('y') - node.outerHeight() / 2  + node.outerHeight()*0.05
+               + parseFloat(node.css('border-width'))+ size;
+       } else {
+           var y = node.position('y') - node.height() / 2 - parseFloat(node.css('padding-top'))
+               + parseFloat(node.css('border-width')) + size + offset;
+       };
+
+       return {'x': x, 'y': y};
+    },
   };
 };
 
