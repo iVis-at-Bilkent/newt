@@ -411,7 +411,8 @@ module.exports = function () {
         return false;
       },
       toggleOffOnLeave: true, // whether an edge is cancelled by leaving a node (true), or whether you need to go over again to cancel (false; allows multiple edges in one pass)
-      handleSize: 0 // the size of the edge handle put on nodes (Note that it is 0 because we do not want to see the handle)
+      handleSize: 0, // the size of the edge handle put on nodes (Note that it is 0 because we do not want to see the handle)
+      handleHitThreshold: 0,
     });
 
     cy.edgehandles('drawoff');
@@ -739,7 +740,7 @@ module.exports = function () {
 
     cy.on('tap', 'node', function (event) {
       var node = this;
-      
+
       var tappedNow = node;
       setTimeout(function () {
         tappedBefore = null;
