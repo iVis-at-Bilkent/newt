@@ -141,7 +141,7 @@ appUtilities.getExpandCollapseOptions = function () {
        var x = node.position('x') - node.width() / 2 - parseFloat(node.css('padding-left'))
            + parseFloat(node.css('border-width')) + size + offset;
        if (node.data("class") == "compartment"){
-           var y  = node.position('y') - node.outerHeight() / 2  + node.outerHeight()*0.05
+           var y  = node.position('y') - node.outerHeight() / 2  + Math.min(15, node.outerHeight()*0.05)
                + parseFloat(node.css('border-width'))+ size;
        } else {
            var y = node.position('y') - node.height() / 2 - parseFloat(node.css('padding-top'))
