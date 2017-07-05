@@ -315,6 +315,10 @@ module.exports = function () {
     $("#highlight-search-menu-item").click(function (e) {
       $("#search-by-label-text-box").focus();
     });
+    
+    $("#highlight-selected").click(function (e) {
+      chise.highlightSelected(cy.elements(':selected'));
+    });
 
     $("#highlight-processes-of-selected").click(function (e) {
       chise.highlightProcesses(cy.nodes(':selected'));
