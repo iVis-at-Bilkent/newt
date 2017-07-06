@@ -1316,23 +1316,31 @@
             </table>
             <table class="table-condensed layout-table dialog-table property-table" style="padding-bottom: 4px;">
             <tbody>
-			<tr> <th> Snap Policy </th> </tr>
+			<tr> <th colspan="100%"> Snap Policy </th> </tr>
 			<tr>
-            <td>
-            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!discreteDrag && !snapToGrid && ! snapToAlignmentLocation){ %> checked<%}%>>
+            <td style="padding-right: 10px">
+            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!discreteDrag && !snapToGrid && !snapToAlignmentLocationOnRelease && !snapToAlignmentLocationDuringDrag){ %> checked<%}%>>
             <span class="add-on layout-text"> No Snap </span>
             </td>
-            <td>
-            <input id="discrete-drag" type="radio" name="snap-policy" class="layout-text" <% if (discreteDrag){ %> checked<%}%>>
-            <span class="add-on layout-text"> Discrete Drag </span>
+            <td style="padding-left: 10px; padding-right: 0px;">
+            <span> Snap to Grid: </span>
             </td>
-            <td>
-            <input id="snap-to-grid" type="radio" name="snap-policy" class="layout-text" <% if (snapToGrid){ %> checked<%}%>>
-            <span class="add-on layout-text"> Snap to Grid </span>
+            <td style="padding-left: 0px; padding-right: 10px;">
+            <select id="snap-to-grid">
+              <option value="disabled" <% if (!discreteDrag && !snapToGrid){ %> selected<% }%> > Disabled </option>
+              <option value="onRelease" <% if (snapToGrid){ %> selected<% }%> > On Release </option>
+              <option value="duringDrag" <% if (discreteDrag){ %> selected<% }%> > During Drag </option>
+            </select>
             </td>
-            <td>
-            <input id="snap-to-alignment-location" type="radio" name="snap-policy" class="layout-text" <% if (snapToAlignmentLocation){ %> checked<%}%>>
-            <span class="add-on layout-text"> Snap to Alignment Location </span>
+            <td style="padding-left: 10px; padding-right: 0px;">
+            <span> Snap to Alignment Location: </span>
+            </td>
+            <td style="padding-left: 0px;">
+            <select id="snap-to-alignment-location">
+              <option value="disabled" <% if (!snapToAlignmentLocationOnRelease && !snapToAlignmentLocationDuringDrag){ %> selected<% }%> > Disabled </option>
+              <option value="onRelease" <% if (snapToAlignmentLocationOnRelease){ %> selected<% }%> > On Release </option>
+              <option value="duringDrag" <% if (snapToAlignmentLocationDuringDrag){ %> selected<% }%> > During Drag </option>
+            </select>
             </td>
             </tr>
             </tbody>
@@ -1340,9 +1348,9 @@
             <table class="table-condensed layout-table dialog-table property-table" style="padding-bottom: 4px !important;">
             <tbody>
             <tr> <th colspan="100%"> Alignment Guidelines </th> </tr>
-			<tr>
-			<td style="padding-bottom: 20px !important; width: 140px;">
-			<span class="add-on layout-text"> Reference Guideline</span>
+            <tr>
+            <td style="padding-bottom: 20px !important; width: 140px;">
+            <span class="add-on layout-text"> Reference Guideline</span>
             </td>
             <td style="padding-bottom: 20px !important;">
             <input id="show-init-Pos-Alignment" type="checkbox" class="layout-text" <% if (showInitPosAlignment){ %> checked<%}%>>
@@ -1354,13 +1362,13 @@
             <input id="init-Pos-Alignment-Color" type="color" class="sbgn-input-small layout-text" value= <%= initPosAlignmentColor %> >
             </td>
 
-			<td style="padding-bottom: 20px !important;">
-			<select name="init-Pos-Alignment-Line">
-			  <option value="0,0" <% if (initPosAlignmentLine[0] == 0 && initPosAlignmentLine[1] == 0){ %> selected<% }%> > Solid </option>
-		   	  <option value="3,5" <% if (initPosAlignmentLine[0] != 0 || initPosAlignmentLine[1] != 0){ %> selected<% }%> > Dashed </option>
-			</select>
-			</td>
-			</tr>
+            <td style="padding-bottom: 20px !important;">
+            <select name="init-Pos-Alignment-Line">
+              <option value="0,0" <% if (initPosAlignmentLine[0] == 0 && initPosAlignmentLine[1] == 0){ %> selected<% }%> > Solid </option>
+              <option value="3,5" <% if (initPosAlignmentLine[0] != 0 || initPosAlignmentLine[1] != 0){ %> selected<% }%> > Dashed </option>
+            </select>
+            </td>
+            </tr>
 
             <tr>
             <td style="padding-bottom: 20px !important; width: 140px;">
@@ -1376,12 +1384,12 @@
             <td style="padding-bottom: 20px !important;">
             <input id="geometric-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= guidelineColor %> >
             </td>
-			<td style="padding-bottom: 20px !important;">
-			<select id="geometric-Alignment-Line">
-			  <option value="0,0" <% if (lineDash[0] == 0 && lineDash[1] == 0){ %> selected<% }%> > Solid </option>
-		   	  <option value="3,5" <% if (lineDash[0] != 0 || lineDash[1] != 0){ %> selected<% }%> > Dashed </option>
-			</select>
-			</td>
+            <td style="padding-bottom: 20px !important;">
+            <select id="geometric-Alignment-Line">
+              <option value="0,0" <% if (lineDash[0] == 0 && lineDash[1] == 0){ %> selected<% }%> > Solid </option>
+              <option value="3,5" <% if (lineDash[0] != 0 || lineDash[1] != 0){ %> selected<% }%> > Dashed </option>
+            </select>
+            </td>
             <td style="padding-bottom: 20px !important; padding-left: 35px;">
             <span class="add-on layout-text"> Range </span>
             </td>
@@ -1407,12 +1415,12 @@
             <td>
             <input id="horizontal-guideline-color" type="color" class="sbgn-input-small layout-text" value= <%= horizontalGuidelineColor %> >
             </td>
-			<td>
-			<select name="horizontal-Dist-Alignment-Line">
-			  <option value="0,0" <% if (horizontalDistLine[0] == 0 && horizontalDistLine[1] == 0){ %> selected<% }%> > Solid </option>
-		   	  <option value="3,5" <% if (horizontalDistLine[0] != 0 || horizontalDistLine[1] != 0){ %> selected<% }%> > Dashed </option>
-			</select>
-			</td>
+            <td>
+            <select name="horizontal-Dist-Alignment-Line">
+              <option value="0,0" <% if (horizontalDistLine[0] == 0 && horizontalDistLine[1] == 0){ %> selected<% }%> > Solid </option>
+              <option value="3,5" <% if (horizontalDistLine[0] != 0 || horizontalDistLine[1] != 0){ %> selected<% }%> > Dashed </option>
+            </select>
+            </td>
             <td rowspan="2" style="padding-left: 35px;">
             <span class="add-on layout-text"> Range </span>
             </td>
