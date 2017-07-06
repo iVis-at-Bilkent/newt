@@ -120,6 +120,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-perform-layout',
         content: 'Perform Layout',
+        image: {src : "app/img/toolbar/layout-cose.svg", width : 12, height : 12, x : 6, y : 6},
         onClickFunction: function () {
           $("#perform-layout").trigger('click');
         },
