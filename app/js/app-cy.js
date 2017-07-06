@@ -461,11 +461,6 @@ module.exports = function () {
   }
 
   function bindCyEvents() {
-    cy.on('layoutstart', function(event) {
-      if (event.layout.options.name !== 'preset') {
-        appUtilities.currentGeneralProperties.enablePorts = false;
-      }
-    });
     
     // Expand collapse extension is supposed to clear expand collapse cue on node position event.
     // If compounds are resized position event is not triggered though the position of the node is changed.

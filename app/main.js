@@ -79,6 +79,10 @@ chise({
   adjustNodeLabelFontSizeAutomatically: function() {
     return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
   },
+  // whether to improve flow (swap nodes)
+    improveFlow: function () {
+      return appUtilities.currentLayoutProperties.improveFlow;
+  },
   undoable: appUtilities.undoable,
   undoableDrag: function() {
     return appUtilities.ctrlKeyDown !== true;
