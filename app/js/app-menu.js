@@ -233,63 +233,20 @@ module.exports = function () {
       cy.elements().unselect();
       cy.edges().select();
     });
- 
-    var thinBorder = function(){
-      var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      if(appUtilities.undoable){
-        var actions = [];
-        nodesWithHiddenNeighbor.forEach(function( ele ){
-          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-          actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth - 2)}});
-        });
-        cy.undoRedo().do("batch", actions);
-      }
-      else{
-        nodesWithHiddenNeighbor.forEach(function( ele ){
-          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-          chise.changeData(ele, 'border-width', defaultBorderWidth - 2);
-        });
-      }
-    };
-    
-    var thickenBorder = function(){
-      var nodesWithHiddenNeighbor = cy.edges(":hidden").connectedNodes(':visible');
-      if(appUtilities.undoable){
-        var actions = [];
-        nodesWithHiddenNeighbor.forEach(function( ele ){
-          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-          actions.push({name:"changeData", param:{eles: ele, name: "border-width", valueMap: (defaultBorderWidth + 2)}});
-        });
-        cy.undoRedo().do("batch", actions);
-      }
-      else{
-        nodesWithHiddenNeighbor.forEach(function( ele ){
-          var defaultBorderWidth = Number(chise.elementUtilities.getCommonProperty(ele, "border-width", "data"));
-          chise.changeData(ele, 'border-width', defaultBorderWidth + 2);
-        });
-      }
-    };
     
     $("#hide-selected, #hide-selected-icon").click(function(e) {
-      thinBorder();
       chise.hideNodesSmart(cy.nodes(":selected"));
-      thickenBorder();
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
-      thinBorder();
       chise.showNodesSmart(cy.nodes(":selected"));
-      thickenBorder();
     });
 
     $("#show-hidden-neighbors-of-selected").click(function(e) {
-      thinBorder();  
       appUtilities.showAndPerformIncrementalLayout(cy.elements(':selected'));
-      thickenBorder();
     });
 
     $("#show-all").click(function (e) {
-      thinBorder();
       chise.showAll();   
     });
 
