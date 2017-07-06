@@ -430,7 +430,8 @@ module.exports = function () {
       geometricGuideline: gridProperties.showGeometricGuidelines,
       initPosAlignment: gridProperties.showInitPosAlignment,
       distributionGuidelines: gridProperties.showDistributionGuidelines,
-      snapToAlignmentLocation: gridProperties.snapToAlignmentLocation,
+      snapToAlignmentLocationOnRelease: gridProperties.snapToAlignmentLocationOnRelease,
+      snapToAlignmentLocationDuringDrag: gridProperties.snapToAlignmentLocationDuringDrag,
       lineWidth: gridProperties.lineWidth,
       guidelinesStyle: {
         initPosAlignmentLine: gridProperties.initPosAlignmentLine,
@@ -551,7 +552,6 @@ module.exports = function () {
         var nodes = appUtilities.nodesToDragAndDrop;
 
         appUtilities.disableDragAndDropMode();
-        
         var pos = event.position || event.cyPosition;
         chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
                               pos.y - appUtilities.dragAndDropStartPosition.y);

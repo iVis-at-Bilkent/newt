@@ -401,13 +401,13 @@ module.exports = function () {
       toggleEnableGuidelineAndSnap = !toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.snapToAlignmentLocation = toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease = toggleEnableGuidelineAndSnap;
 
       cy.gridGuide({
         geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
         initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
         distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
-        snapToAlignmentLocation: appUtilities.currentGridProperties.snapToAlignmentLocation,
+        snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
       });
 
       if (toggleEnableGuidelineAndSnap){
