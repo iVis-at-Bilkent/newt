@@ -347,6 +347,7 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     else {
       chise.omitCompoundSizes();
     }
+
     // Refresh resize grapples
     cy.nodeResize('get').refreshGrapples();
 
@@ -380,6 +381,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       appUtilities.currentGeneralProperties.enablePorts = $('#enable-ports').prop('checked');
       self.applyUpdate();
     });
+
+    $(document).on("change", "#improve-flow", function (evt) {
+        appUtilities.currentLayoutProperties.improveFlow = $('#improve-flow').prop('checked');
+        self.applyUpdate();
+    });
+
     $(document).on("click", "#inspector-map-tab", function (evt) {
       document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
     });
@@ -931,20 +938,39 @@ var GridPropertiesView = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
-	
-	// Enable Show Grid when Snap to Grid is enabled
-	$(document).ready(function(){
-	  $("#snap-to-grid").change(function(){
-		$("#show-grid").prop('checked', true);
-	  });
-	});
+
+    // The following functions give Snap Policy row a radio button functionality
+    // and enable Show Grid when Snap to Grid is enabled
+    $(document).off("change", "#snap-to-grid").on("change", "#snap-to-grid", function(event){
+      $("#show-grid").prop('checked', true);
+      $("#snap-to-alignment-location").val("disabled");
+
+      if ($("#snap-to-grid").val() == "disabled" && $("#snap-to-alignment-location").val() == "disabled")
+        $("#no-snap").prop('checked', true);
+      else
+        $("#no-snap").prop('checked', false);
+    });
+
+    $(document).off("change", "#snap-to-alignment-location").on("change", "#snap-to-alignment-location", function(event){
+      $("#snap-to-grid").val("disabled");
+      if ($("#snap-to-grid").val() == "disabled" && $("#snap-to-alignment-location").val() == "disabled")
+        $("#no-snap").prop('checked', true);
+      else
+        $("#no-snap").prop('checked', false);
+    });
+
+    $(document).off("click", "#no-snap").on("click", "#no-snap", function(event){
+      $("#snap-to-grid").val("disabled");
+      $("#snap-to-alignment-location").val("disabled");
+    });
 
     $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
       appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;
-      appUtilities.currentGridProperties.snapToGrid = document.getElementById("snap-to-grid").checked;
-      appUtilities.currentGridProperties.snapToAlignmentLocation = document.getElementById("snap-to-alignment-location").checked;
+      appUtilities.currentGridProperties.snapToGrid = $("#snap-to-grid").val() == "onRelease";
+      appUtilities.currentGridProperties.discreteDrag = $("#snap-to-grid").val() == "duringDrag";
+      appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease = $("#snap-to-alignment-location").val() == "onRelease";
+      appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag = $("#snap-to-alignment-location").val() == "duringDrag";
       appUtilities.currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
-      appUtilities.currentGridProperties.discreteDrag = document.getElementById("discrete-drag").checked;
       appUtilities.currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
       appUtilities.currentGridProperties.showGeometricGuidelines = document.getElementById("show-geometric-guidelines").checked;
       appUtilities.currentGridProperties.showDistributionGuidelines = document.getElementById("show-distribution-guidelines").checked;
@@ -965,7 +991,8 @@ var GridPropertiesView = Backbone.View.extend({
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
         snapToGrid: appUtilities.currentGridProperties.snapToGrid,
-		snapToAlignmentLocation: appUtilities.currentGridProperties.snapToAlignmentLocation,
+        snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
+        snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
         gridSpacing: appUtilities.currentGridProperties.gridSize,
         discreteDrag: appUtilities.currentGridProperties.discreteDrag,
         resize: appUtilities.currentGridProperties.autoResizeNodes,

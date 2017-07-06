@@ -168,16 +168,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="12.82053"
-     inkscape:cy="31.505525"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="270.9023"
+     inkscape:cy="-68.124267"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1280"
+     inkscape:window-height="751"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -191,7 +191,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -200,16 +200,11 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-238.20243,-112.80493)">
-    <rect
+    <path
        style="fill:none;stroke:#000000;stroke-width:6.95341682;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 260.46027,116.14411 15.48432,0 c 5.90765,0 18.66363,2.75598 18.66363,8.66363 l 0,23.99437 c 0,5.90765 -12.75598,8.66363 -18.66363,8.66363 l -15.48432,0 c -5.90765,0 -18.66363,-2.75598 -18.66363,-8.66363 l 0,-23.99437 c 0,-5.90765 12.75598,-8.66363 18.66363,-8.66363 z"
        id="rect2985-31"
-       width="52.811584"
-       height="41.321632"
-       x="241.8855"
-       y="116.14412"
-       ry="10.663628"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\compartment.png" />
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssssssss" />
   </g>
 </svg>
