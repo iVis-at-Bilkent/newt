@@ -392,8 +392,9 @@ module.exports = function () {
     
     cy.gridGuide({
       drawGrid: gridProperties.showGrid,
-      snapToGrid: gridProperties.snapToGrid,
-      discreteDrag: gridProperties.discreteDrag,
+      gridColor: gridProperties.gridColor,
+      snapToGridOnRelease: gridProperties.snapToGridOnRelease,
+      snapToGridDuringDrag: gridProperties.snapToGridDuringDrag,
       gridSpacing: gridProperties.gridSize,
       resize: gridProperties.autoResizeNodes,
       guidelines: gridProperties.showAlignmentGuidelines,

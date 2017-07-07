@@ -337,11 +337,11 @@ module.exports = function () {
       }
       toggleShowGridEnableSnap = !toggleShowGridEnableSnap;
       appUtilities.currentGridProperties.showGrid = toggleShowGridEnableSnap;
-      appUtilities.currentGridProperties.snapToGrid = toggleShowGridEnableSnap;
+      appUtilities.currentGridProperties.snapToGridDuringDrag = toggleShowGridEnableSnap;
 
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
-        snapToGrid: appUtilities.currentGridProperties.snapToGrid,
+        snapToGridDuringDrag: appUtilities.currentGridProperties.snapToGridDuringDrag,
       });
 
       if (toggleShowGridEnableSnap){
@@ -361,13 +361,13 @@ module.exports = function () {
       toggleEnableGuidelineAndSnap = !toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease = toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag = toggleEnableGuidelineAndSnap;
 
       cy.gridGuide({
         geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
         initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
         distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
-        snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
+        snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
       });
 
       if (toggleEnableGuidelineAndSnap){

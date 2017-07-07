@@ -966,11 +966,12 @@ var GridPropertiesView = Backbone.View.extend({
 
     $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
       appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;
-      appUtilities.currentGridProperties.snapToGrid = $("#snap-to-grid").val() == "onRelease";
-      appUtilities.currentGridProperties.discreteDrag = $("#snap-to-grid").val() == "duringDrag";
+      appUtilities.currentGridProperties.snapToGridOnRelease = $("#snap-to-grid").val() == "onRelease";
+      appUtilities.currentGridProperties.snapToGridDuringDrag = $("#snap-to-grid").val() == "duringDrag";
       appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease = $("#snap-to-alignment-location").val() == "onRelease";
       appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag = $("#snap-to-alignment-location").val() == "duringDrag";
       appUtilities.currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
+      appUtilities.currentGridProperties.gridColor = document.getElementById("grid-color").value;
       appUtilities.currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
       appUtilities.currentGridProperties.showGeometricGuidelines = document.getElementById("show-geometric-guidelines").checked;
       appUtilities.currentGridProperties.showDistributionGuidelines = document.getElementById("show-distribution-guidelines").checked;
@@ -990,11 +991,12 @@ var GridPropertiesView = Backbone.View.extend({
       appUtilities.currentGridProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
-        snapToGrid: appUtilities.currentGridProperties.snapToGrid,
+        gridColor: appUtilities.currentGridProperties.gridColor,
+        snapToGridOnRelease: appUtilities.currentGridProperties.snapToGriOnReleased,
+        snapToGridDuringDrag: appUtilities.currentGridProperties.snapToGridDuringDrag,
         snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
         snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
         gridSpacing: appUtilities.currentGridProperties.gridSize,
-        discreteDrag: appUtilities.currentGridProperties.discreteDrag,
         resize: appUtilities.currentGridProperties.autoResizeNodes,
         geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
         distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,

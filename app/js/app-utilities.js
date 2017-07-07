@@ -41,11 +41,12 @@ appUtilities.currentLayoutProperties = jquery.extend(true, {}, appUtilities.defa
 
 appUtilities.defaultGridProperties = {
   showGrid: false,
-  snapToGrid: false,
+  snapToGridOnRelease: false,
+  snapToGridDuringDrag: false,
   snapToAlignmentLocationOnRelease: false,
   snapToAlignmentLocationDuringDrag: false,
-  discreteDrag: false,
   gridSize: 20,
+  gridColor: "#c8c8c8",
   autoResizeNodes: false,
   showGeometricGuidelines: false,
   showInitPosAlignment: false,
