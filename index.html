@@ -377,7 +377,7 @@
                                 </div>
                                 <div class="panel">
                                     <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-rearrangement">
-                                        <p class="panel-title accordion-toggle">Rearrangement</p>
+                                        <p class="panel-title accordion-toggle">Arrangement</p>
                                     </div>
                                     <div id="sbgn-inspector-map-properties-rearrangement" class="panel-collapse collapse">
                                         <div id="map-tab-rearrangement-container" >
@@ -386,7 +386,7 @@
                                 </div>
                                 <div class="panel">
                                     <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
-                                        <p class="panel-title accordion-toggle">Color Schemes</p>
+                                        <p class="panel-title accordion-toggle">Color Scheme</p>
                                     </div>
                                     <div id="sbgn-inspector-map-color-scheme" class="panel-collapse collapse">
                                         <div id="color-scheme-template-container" >
@@ -860,6 +860,16 @@
             <tbody>
 
             <tr>
+                <td class="header">
+                    <span class="add-on layout-text"> Map Type </span>
+                </td>
+
+                <td>
+                    <input id="map-type" type="text" class="sbgn-input-medium layout-text" value="Unknown" readonly>
+                </td>
+            </tr>
+
+            <tr>
             <td class="header">
             <span class="add-on layout-text"> Compound Padding </span>
             </td>
@@ -871,7 +881,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Allow Compound Node Resize </span>
+            <span class="add-on layout-text"> Allow Compound Resize </span>
             </td>
 
             <td>
@@ -889,17 +899,6 @@
             </td>
             </tr>
 
-            <tr>
-            <td class="header">
-            <span class="add-on layout-text"> Map Type </span>
-            </td>
-
-            <td>
-            <input id="map-type" type="text" class="sbgn-input-medium layout-text" value="Unknown" readonly>
-            </td>
-
-            </tr>
-
             </tbody>
             </table>
 
@@ -913,21 +912,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Label Size </span>
-                </td>
-
-                <td>
-                <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
-                <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
-                <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
-                <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
-                </select>
-                </td>
-                </tr>
-
-                <tr>
-                <td class="header">
-                <span class="add-on layout-text"> Display Labels For Named Complexes </span>
+                <span class="add-on layout-text"> Display Labels for Named Complexes </span>
                 </td>
 
                 <td>
@@ -946,8 +931,22 @@
                 </tr>
 
                 <tr>
+                    <td class="header">
+                        <span class="add-on layout-text"> Label Size </span>
+                    </td>
+
+                    <td>
+                        <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
+                            <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
+                            <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
+                            <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Fit Labels To Nodes </span>
+                <span class="add-on layout-text"> Fit Labels to Nodes </span>
                 </td>
 
                 <td>
@@ -978,7 +977,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Rearrange After Expand-Collapse </span>
+                <span class="add-on layout-text"> Rearrange on Complexity Management </span>
                 </td>
 
                 <td>
