@@ -1313,8 +1313,12 @@
             <span class="add-on layout-text"> Show Grid </span>
             </td>
             <td style="padding-right: 25px;">
-            <span class="add-on layout-text"> Grid Size </span>
+            <span class="add-on layout-text"> Size </span>
             <input id="grid-size" type="text" min="5" class="sbgn-input-small layout-text integer-input" value= <%= gridSize %> >
+            </td>
+            <td style="padding-right: 25px;">
+            <span class="add-on layout-text"> Color </span>
+            <input id="grid-color" type="color" class="sbgn-input-small layout-text" value= <%= gridColor %> >
             </td>
             <td>
             <input id="auto-resize-nodes" type="checkbox" class="layout-text" <% if (autoResizeNodes){ %> checked<%}%>>
@@ -1328,7 +1332,7 @@
 			<tr> <th colspan="100%"> Snap Policy </th> </tr>
 			<tr>
             <td style="padding-right: 10px">
-            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!discreteDrag && !snapToGrid && !snapToAlignmentLocationOnRelease && !snapToAlignmentLocationDuringDrag){ %> checked<%}%>>
+            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!snapToGridDuringDrag && !snapToGridOnRelease && !snapToAlignmentLocationOnRelease && !snapToAlignmentLocationDuringDrag){ %> checked<%}%>>
             <span class="add-on layout-text"> No Snap </span>
             </td>
             <td style="padding-left: 10px; padding-right: 5px;">
@@ -1336,9 +1340,9 @@
             </td>
             <td style="padding-left: 0px; padding-right: 10px;">
             <select id="snap-to-grid">
-              <option value="disabled" <% if (!discreteDrag && !snapToGrid){ %> selected<% }%> > Disabled </option>
-              <option value="onRelease" <% if (snapToGrid){ %> selected<% }%> > On Release </option>
-              <option value="duringDrag" <% if (discreteDrag){ %> selected<% }%> > During Drag </option>
+              <option value="disabled" <% if (!snapToGridDuringDrag && !snapToGridOnRelease){ %> selected<% }%> > Disabled </option>
+              <option value="onRelease" <% if (snapToGridOnRelease){ %> selected<% }%> > On Release </option>
+              <option value="duringDrag" <% if (snapToGridDuringDrag){ %> selected<% }%> > During Drag </option>
             </select>
             </td>
             <td style="padding-left: 10px; padding-right: 5px;">
