@@ -291,7 +291,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
 
-      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "2px solid";;
+      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
       currentScheme = scheme_id;
       appUtilities.applyMapColorScheme(scheme_id);
     });
@@ -301,7 +301,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
 
-      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "2px solid";;
+      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
       currentScheme = inverted_id;
       self.schemes[inverted_id].isDisplayed = true;
       self.schemes[scheme_id].isDisplayed = false;
@@ -312,7 +312,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
-      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "2px solid";;
+      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
       appUtilities.applyMapColorScheme(defaultColorScheme);
       currentScheme = defaultColorScheme;
     });
