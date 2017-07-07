@@ -236,6 +236,7 @@ module.exports = function () {
     
     $("#hide-selected, #hide-selected-icon").click(function(e) {
       chise.hideNodesSmart(cy.nodes(":selected"));
+      $('#inspector-palette-tab a').tab('show');
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
@@ -252,6 +253,7 @@ module.exports = function () {
 
     $("#delete-selected-smart, #delete-selected-smart-icon").click(function (e) {
       chise.deleteNodesSmart(cy.nodes(':selected'));
+      $('#inspector-palette-tab a').tab('show');
     });
 
     $("#highlight-neighbors-of-selected, #highlight-neighbors-of-selected-icon").click(function (e) {
@@ -291,6 +293,7 @@ module.exports = function () {
 
     $("#delete-selected-simple, #delete-selected-simple-icon").click(function (e) {
       chise.deleteElesSimple(cy.elements(':selected'));
+      $('#inspector-palette-tab a').tab('show');
     });
 
     $("#general-properties, #properties-icon").click(function (e) {
