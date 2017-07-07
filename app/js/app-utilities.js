@@ -822,7 +822,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
 
   cy.undoRedo().do("batch", actions);
   // ensure the menu is updated accordingly
-  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "2px solid";
+  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "3px solid";
 };
 
 // the 3 following functions are related to the handling of the dynamic image
