@@ -256,7 +256,7 @@ module.exports = function () {
       $('#inspector-palette-tab a').tab('show');
     });
 
-    $("#highlight-neighbors-of-selected, #highlight-neighbors-of-selected-icon").click(function (e) {
+    $("#highlight-neighbors-of-selected").click(function (e) {
       chise.highlightNeighbours(cy.nodes(':selected'));
     });
 
@@ -275,7 +275,7 @@ module.exports = function () {
       $("#search-by-label-text-box").focus();
     });
     
-    $("#highlight-selected").click(function (e) {
+    $("#highlight-selected, #highlight-selected-icon").click(function (e) {
       chise.highlightSelected(cy.elements(':selected'));
     });
 
