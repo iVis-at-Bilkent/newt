@@ -31,7 +31,7 @@ module.exports = function () {
   });
   mt.bind(["del", "backspace"], function () {
     chise.deleteElesSimple(cy.elements(':selected'));
-    
+    $('#inspector-palette-tab a').tab('show');
     // return false to prevent default browser behavior
     // and stop event from bubbling
     return false;
