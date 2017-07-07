@@ -565,7 +565,9 @@ menu:not([title]):before{
 
 .panel-body {
     padding-top: 7px;
-    padding-bottom: 3px;;
+    padding-bottom: 3px;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
 
 .panel {
@@ -706,22 +708,43 @@ img#template-reaction-add-button:hover {
 
 .paletteWrapper
 {
-  text-align: center;
+    display: table;
+    margin: auto;
+    width: 300px;
+}
+
+.paletteCont
+{
+
 }
 
 .paletteCol {
   position: relative;
-  float: left;
   display: inline-block;
-  width: 25%;
+  width: 40px;
+  height: 26px;
+  text-align: center;
+  margin: 5px;
 }
 
 /*
   Palettes on right pane
 */
 
-@media (max-width: 1024px) {
-  .paletteCol {
-    width: 30%;
-  }
+@media (max-width: 1530px) {
+    .paletteWrapper
+    {
+        width: 250px;
+    }
+}
+
+/*
+  Palettes on right pane
+*/
+
+@media (max-width: 1290px) {
+    .paletteWrapper
+    {
+        width: 200px;
+    }
 }
