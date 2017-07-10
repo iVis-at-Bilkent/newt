@@ -727,6 +727,10 @@ img#template-reaction-add-button:hover {
   margin: 5px;
 }
 
+.custom-menu-item {
+    padding-left: 24px !important;
+}
+
 /*
   Palettes on right pane
 */
