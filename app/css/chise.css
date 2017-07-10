@@ -728,6 +728,7 @@ img#template-reaction-add-button:hover {
 }
 
 .custom-menu-item {
+    background-color: white;
     padding-left: 24px !important;
 }
 
