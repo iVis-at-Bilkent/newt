@@ -166,13 +166,35 @@ module.exports = function () {
       {
         id: 'ctx-menu-show-hidden-neighbors',
         content: 'Show Hidden Neighbors',
-        selector: 'node',
+        selector: 'node[thickBorder]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           appUtilities.showAndPerformIncrementalLayout(cyTarget);   
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
-      }
+      },
+      {
+        id: 'ctx-menu-highlight-neighbors',
+        content: 'Highlight Neighbors',
+        image: {src : "app/img/toolbar/layout-cose.svg", width : 16, height : 16, x : 2, y : 3},
+        selector: 'node[class="process"]',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          cyTarget.select();
+          $("#highlight-neighbors-of-selected").trigger('click');
+        }
+      },
+      {
+        id: 'ctx-menu-highlight-processes',
+        content: 'Highlight Processes',
+        image: {src : "app/img/toolbar/layout-cose.svg", width : 16, height : 16, x : 2, y : 3},
+        selector: 'node[class!="process"]',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          cyTarget.select();
+          $("#highlight-processes-of-selected").trigger('click');
+        }
+      },
     ]);
 
     cy.clipboard({
