@@ -303,7 +303,7 @@ module.exports = function () {
       }
     });
 
-    $("#query-pathsbetween").click(function (e) {
+    $("#query-pathsbetween, #query-pathsbetween-icon").click(function (e) {
       pathsBetweenQueryView.render();
     });
 
