@@ -176,7 +176,6 @@ module.exports = function () {
       {
         id: 'ctx-menu-highlight-neighbors',
         content: 'Highlight Neighbors',
-        image: {src : "app/img/toolbar/layout-cose.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node[class="process"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
@@ -187,7 +186,6 @@ module.exports = function () {
       {
         id: 'ctx-menu-highlight-processes',
         content: 'Highlight Processes',
-        image: {src : "app/img/toolbar/layout-cose.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node[class!="process"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
