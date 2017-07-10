@@ -176,7 +176,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-highlight-neighbors',
         content: 'Highlight Neighbors',
-        selector: 'node[class="process"]',
+        selector: 'node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           cyTarget.select();
@@ -186,7 +186,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-highlight-processes',
         content: 'Highlight Processes',
-        selector: 'node[class!="process"]',
+        selector: 'node[class!="process"][class!="omitted process"][class!="uncertain process"][class!="association"][class!="dissociation"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           cyTarget.select();
