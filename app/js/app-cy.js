@@ -557,7 +557,7 @@ module.exports = function () {
         if (self != cy) {
           newParent = self;
 
-          if (newParent.data("class") != "complex" && newParent.data("class") != "compartment") {
+          if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment") {
             newParent = newParent.parent()[0];
           }
         }
@@ -567,7 +567,6 @@ module.exports = function () {
         var pos = event.position || event.cyPosition;
         chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
                               pos.y - appUtilities.dragAndDropStartPosition.y);
-
         appUtilities.dragAndDropStartPosition = null;
         appUtilities.nodesToDragAndDrop = null;
       }
