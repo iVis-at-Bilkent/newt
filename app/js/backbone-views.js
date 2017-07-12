@@ -394,9 +394,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
     });
     $(document).on("click", "#map-general-default-button", function (evt) {
-      self.setPropertiesToDefault();
+      appUtilities.currentGeneralProperties.compoundPadding = appUtilities.defaultGeneralProperties.compoundPadding;
+      appUtilities.currentGeneralProperties.allowCompoundNodeResize = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
+      appUtilities.currentGeneralProperties.enablePorts = appUtilities.defaultGeneralProperties.enablePorts;
       self.$el.html(self.template(appUtilities.defaultGeneralProperties));
-      $("#inspector-map-tab").trigger('click');
       self.applyUpdate();
     });
   },
@@ -441,7 +442,11 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       self.applyUpdate();
     });
     $(document).on("click", "#map-label-default-button", function (evt) {
-      self.setPropertiesToDefault();
+      appUtilities.currentGeneralProperties.dynamicLabelSize = appUtilities.defaultGeneralProperties.dynamicLabelSize;
+      appUtilities.currentGeneralProperties.showComplexName = appUtilities.defaultGeneralProperties.showComplexName;
+      appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+      appUtilities.currentGeneralProperties.fitLabelsToNodes = appUtilities.defaultGeneralProperties.fitLabelsToNodes;
+      appUtilities.currentGeneralProperties.fitLabelsToInfoboxes = appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
       self.$el.html(self.template(appUtilities.defaultGeneralProperties));
       self.applyUpdate();
     });
@@ -473,7 +478,8 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       self.applyUpdate();
     });
     $(document).on("click", "#map-rearrangement-default-button", function (evt) {
-      self.setPropertiesToDefault();
+      appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse = appUtilities.defaultGeneralProperties.rearrangeAfterExpandCollapse;
+      appUtilities.currentGeneralProperties.animateOnDrawingChanges = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
       self.$el.html(self.template(appUtilities.defaultGeneralProperties));
       self.applyUpdate();
     });
