@@ -557,7 +557,8 @@ module.exports = function () {
         if (self != cy) {
           newParent = self;
 
-          if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment") {
+          if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
+              && newParent.data("class") != "submap") {
             newParent = newParent.parent()[0];
           }
         }
@@ -687,7 +688,8 @@ module.exports = function () {
           
           // If cyTarget is a node determine the parent of new node
           if (cyTarget.isNode && cyTarget.isNode()) {
-            if (cyTarget.data('class').startsWith('complex') || cyTarget.data('class') === 'compartment' ) {
+            if (cyTarget.data('class').startsWith('complex') || cyTarget.data('class') === 'compartment'
+                ||  cyTarget.data('class') == 'submap') {
               parent = cyTarget;
             }
             else {
