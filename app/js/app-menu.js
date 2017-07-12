@@ -260,6 +260,8 @@ module.exports = function () {
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
+      if (cy.nodes(":selected").length === 0)
+          return;
       chise.showNodesSmart(cy.nodes(":selected"));
     });
 

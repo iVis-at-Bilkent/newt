@@ -687,7 +687,7 @@ module.exports = function () {
           
           // If cyTarget is a node determine the parent of new node
           if (cyTarget.isNode && cyTarget.isNode()) {
-            if (cyTarget.data('class') === 'complex' || cyTarget.data('class') === 'compartment' ) {
+            if (cyTarget.data('class').startsWith('complex') || cyTarget.data('class') === 'compartment' ) {
               parent = cyTarget;
             }
             else {
