@@ -727,6 +727,11 @@ img#template-reaction-add-button:hover {
   margin: 5px;
 }
 
+#sbgn-inspector-palette
+{
+  overflow: hidden;
+}
+
 /*
   Palettes on right pane
 */
