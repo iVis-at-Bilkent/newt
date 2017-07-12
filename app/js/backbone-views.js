@@ -398,6 +398,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       appUtilities.currentGeneralProperties.allowCompoundNodeResize = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
       appUtilities.currentGeneralProperties.enablePorts = appUtilities.defaultGeneralProperties.enablePorts;
       self.$el.html(self.template(appUtilities.defaultGeneralProperties));
+      $("#inspector-map-tab").trigger('click');
       self.applyUpdate();
     });
   },
