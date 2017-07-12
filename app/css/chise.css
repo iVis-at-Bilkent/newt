@@ -402,6 +402,12 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     background-color: #ffffff;
 }
 
+/* Hides spinner buttons in the right side of number inputs */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .sbgn-input-small {
     width: 50px !important;
 }
