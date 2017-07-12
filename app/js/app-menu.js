@@ -87,6 +87,26 @@ module.exports = function () {
     modeHandler.setSelectionMode();
   });
 
+  $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename) {
+    // select appropriate palette depending on the map
+    if(chise.elementUtilities.mapType == "AF") {
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }
+    }
+    else if(chise.elementUtilities.mapType == "PD"){
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+    }
+  });
+
   function toolbarButtonsAndMenu() {
 
     // menu behavior: on first click, triggers the other menus on hover.
