@@ -235,7 +235,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
       appUtilities.currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
-    
+      appUtilities.currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
 	
       $(self.el).modal('toggle');
       $(document).trigger('saveLayout');
@@ -380,11 +380,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#enable-ports", function (evt) {
       appUtilities.currentGeneralProperties.enablePorts = $('#enable-ports').prop('checked');
       self.applyUpdate();
-    });
-
-    $(document).on("change", "#improve-flow", function (evt) {
-        appUtilities.currentLayoutProperties.improveFlow = $('#improve-flow').prop('checked');
-        self.applyUpdate();
     });
 
     $(document).on("click", "#inspector-map-tab", function (evt) {
