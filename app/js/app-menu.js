@@ -87,6 +87,26 @@ module.exports = function () {
     modeHandler.setSelectionMode();
   });
 
+  $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename) {
+    // select appropriate palette depending on the map
+    if(chise.elementUtilities.mapType == "AF") {
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }
+    }
+    else if(chise.elementUtilities.mapType == "PD"){
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+    }
+  });
+
   function toolbarButtonsAndMenu() {
 
     // menu behavior: on first click, triggers the other menus on hover.
@@ -240,6 +260,8 @@ module.exports = function () {
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
+      if (cy.nodes(":selected").length === 0)
+          return;
       chise.showNodesSmart(cy.nodes(":selected"));
     });
 
@@ -256,7 +278,7 @@ module.exports = function () {
       $('#inspector-palette-tab a').tab('show');
     });
 
-    $("#highlight-neighbors-of-selected, #highlight-neighbors-of-selected-icon").click(function (e) {
+    $("#highlight-neighbors-of-selected").click(function (e) {
       chise.highlightNeighbours(cy.nodes(':selected'));
     });
 
@@ -275,7 +297,7 @@ module.exports = function () {
       $("#search-by-label-text-box").focus();
     });
     
-    $("#highlight-selected").click(function (e) {
+    $("#highlight-selected, #highlight-selected-icon").click(function (e) {
       chise.highlightSelected(cy.elements(':selected'));
     });
 
@@ -303,7 +325,7 @@ module.exports = function () {
       }
     });
 
-    $("#query-pathsbetween").click(function (e) {
+    $("#query-pathsbetween, #query-pathsbetween-icon").click(function (e) {
       pathsBetweenQueryView.render();
     });
 
@@ -337,11 +359,11 @@ module.exports = function () {
       }
       toggleShowGridEnableSnap = !toggleShowGridEnableSnap;
       appUtilities.currentGridProperties.showGrid = toggleShowGridEnableSnap;
-      appUtilities.currentGridProperties.snapToGrid = toggleShowGridEnableSnap;
+      appUtilities.currentGridProperties.snapToGridDuringDrag = toggleShowGridEnableSnap;
 
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
-        snapToGrid: appUtilities.currentGridProperties.snapToGrid,
+        snapToGridDuringDrag: appUtilities.currentGridProperties.snapToGridDuringDrag,
       });
 
       if (toggleShowGridEnableSnap){
@@ -361,13 +383,13 @@ module.exports = function () {
       toggleEnableGuidelineAndSnap = !toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
       appUtilities.currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease = toggleEnableGuidelineAndSnap;
+      appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag = toggleEnableGuidelineAndSnap;
 
       cy.gridGuide({
         geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
         initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
         distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
-        snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
+        snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
       });
 
       if (toggleEnableGuidelineAndSnap){

@@ -35,6 +35,7 @@ module.exports = function () {
     cy.expandCollapse(getExpandCollapseOptions());
 
     var contextMenus = cy.contextMenus({
+      menuItemClasses: ['custom-menu-item'],
     });
     
     cy.autopanOnDrag();
@@ -56,6 +57,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-general-properties',
         content: 'Properties...',
+        image: {src : "app/img/toolbar/settings.svg", width : 16, height : 16, x : 2, y : 3},
         coreAsWell: true,
         onClickFunction: function (event) {
           $("#general-properties").trigger("click");
@@ -64,6 +66,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-delete',
         content: 'Delete',
+        image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
           cy.undoRedo().do("deleteElesSimple", {
@@ -74,6 +77,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-delete-selected',
         content: 'Delete Selected',
+        image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
           $("#delete-selected-simple").trigger('click');
         },
@@ -82,6 +86,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-hide-selected',
         content: 'Hide Selected',
+        image: {src : "app/img/toolbar/hide-selected.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
           $("#hide-selected").trigger('click');
         },
@@ -90,14 +95,33 @@ module.exports = function () {
       {
         id: 'ctx-menu-show-all',
         content: 'Show All',
+        image: {src : "app/img/toolbar/show-all.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
           $("#show-all").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
       {
+        id: 'ctx-menu-collapse-complexes',
+        content: 'Collapse Complexes',
+        onClickFunction: function () {
+          $("#collapse-complexes").trigger('click');
+        },
+        coreAsWell: true // Whether core instance have this item on cxttap
+      },
+      {
+        id: 'ctx-menu-highlight-selected',
+        content: 'Highlight Selected',
+        image: {src : "app/img/toolbar/highlight-selected.svg", width : 16, height : 16, x : 2, y : 3},
+        onClickFunction: function () {
+          $("#highlight-selected").trigger('click');
+        },
+        coreAsWell: true // Whether core instance have this item on cxttap
+      },
+      {
         id: 'ctx-menu-expand', // ID of menu item
         content: 'Expand', // Title of menu item
+        image: {src : "app/img/toolbar/expand-selected.svg", width : 16, height : 16, x : 2, y : 3},
         // Filters the elements to have this menu item on cxttap
         // If the selector is not truthy no elements will have this menu item on cxttap
         selector: 'node.cy-expand-collapse-collapsed-node',
@@ -110,6 +134,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-collapse',
         content: 'Collapse',
+        image: {src : "app/img/toolbar/collapse-selected.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node:parent',
         onClickFunction: function (event) {
           cy.undoRedo().do("collapse", {
@@ -120,7 +145,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-perform-layout',
         content: 'Perform Layout',
-        image: {src : "app/img/toolbar/layout-cose.svg", width : 12, height : 12, x : 6, y : 6},
+        image: {src : "app/img/toolbar/layout-cose.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
           $("#perform-layout").trigger('click');
         },
@@ -141,13 +166,33 @@ module.exports = function () {
       {
         id: 'ctx-menu-show-hidden-neighbors',
         content: 'Show Hidden Neighbors',
-        selector: 'node',
+        selector: 'node[thickBorder]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           appUtilities.showAndPerformIncrementalLayout(cyTarget);   
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
-      }
+      },
+      {
+        id: 'ctx-menu-highlight-neighbors',
+        content: 'Highlight Neighbors',
+        selector: 'node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          cyTarget.select();
+          $("#highlight-neighbors-of-selected").trigger('click');
+        }
+      },
+      {
+        id: 'ctx-menu-highlight-processes',
+        content: 'Highlight Processes',
+        selector: 'node[class!="process"][class!="omitted process"][class!="uncertain process"][class!="association"][class!="dissociation"]',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          cyTarget.select();
+          $("#highlight-processes-of-selected").trigger('click');
+        }
+      },
     ]);
 
     cy.clipboard({
@@ -392,8 +437,9 @@ module.exports = function () {
     
     cy.gridGuide({
       drawGrid: gridProperties.showGrid,
-      snapToGrid: gridProperties.snapToGrid,
-      discreteDrag: gridProperties.discreteDrag,
+      gridColor: gridProperties.gridColor,
+      snapToGridOnRelease: gridProperties.snapToGridOnRelease,
+      snapToGridDuringDrag: gridProperties.snapToGridDuringDrag,
       gridSpacing: gridProperties.gridSize,
       resize: gridProperties.autoResizeNodes,
       guidelines: gridProperties.showAlignmentGuidelines,
@@ -511,7 +557,7 @@ module.exports = function () {
         if (self != cy) {
           newParent = self;
 
-          if (newParent.data("class") != "complex" && newParent.data("class") != "compartment") {
+          if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment") {
             newParent = newParent.parent()[0];
           }
         }
@@ -521,7 +567,6 @@ module.exports = function () {
         var pos = event.position || event.cyPosition;
         chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
                               pos.y - appUtilities.dragAndDropStartPosition.y);
-
         appUtilities.dragAndDropStartPosition = null;
         appUtilities.nodesToDragAndDrop = null;
       }
@@ -642,7 +687,7 @@ module.exports = function () {
           
           // If cyTarget is a node determine the parent of new node
           if (cyTarget.isNode && cyTarget.isNode()) {
-            if (cyTarget.data('class') === 'complex' || cyTarget.data('class') === 'compartment' ) {
+            if (cyTarget.data('class').startsWith('complex') || cyTarget.data('class') === 'compartment' ) {
               parent = cyTarget;
             }
             else {
@@ -671,6 +716,11 @@ module.exports = function () {
             else{
               chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
             }
+              if (nodeType === 'process')
+              {
+                  var newEle = cy.nodes()[cy.nodes().length - 1];
+                  chise.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
+              }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
             // the node is added. Therefore, we may need to clear the expand collapse viusal cue.

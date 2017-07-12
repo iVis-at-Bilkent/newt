@@ -31,7 +31,7 @@ appUtilities.defaultLayoutProperties = {
   gravityCompound: 1.0,
   gravityRange: 3.8,
   initialEnergyOnIncremental: 0.3,
-  improveFlow: false,
+  improveFlow: true,
   stop: function () {
     chise.endSpinner('layout-spinner');
   }
@@ -41,11 +41,12 @@ appUtilities.currentLayoutProperties = jquery.extend(true, {}, appUtilities.defa
 
 appUtilities.defaultGridProperties = {
   showGrid: false,
-  snapToGrid: false,
+  snapToGridOnRelease: false,
+  snapToGridDuringDrag: false,
   snapToAlignmentLocationOnRelease: false,
   snapToAlignmentLocationDuringDrag: false,
-  discreteDrag: false,
   gridSize: 20,
+  gridColor: "#c8c8c8",
   autoResizeNodes: false,
   showGeometricGuidelines: false,
   showInitPosAlignment: false,
@@ -821,7 +822,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
 
   cy.undoRedo().do("batch", actions);
   // ensure the menu is updated accordingly
-  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "2px solid";
+  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "3px solid";
 };
 
 // the 3 following functions are related to the handling of the dynamic image

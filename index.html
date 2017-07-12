@@ -76,7 +76,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#" id="add-complex-for-selected" >Add Complex for Selected</a></li>
                                 <li><a href="#" id="add-compartment-for-selected" >Add Compartment for Selected</a></li>
-                                <li><a href="#" id="create-reaction-template" >Add From Template...</a></li>
+                                <li><a href="#" id="create-reaction-template" >Add from Template...</a></li>
                                 <li><a href="#" id="clone-selected" >Clone Selected</a></li>
 
                                 <li class="divider"></li>
@@ -274,7 +274,7 @@
                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                 <div class="inside-menu">
                     <img id="hide-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/hide-selected.svg" title="Hide Selected: Hide selected nodes and any processes they are involved in" >
-                    <img id="show-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/show-selected.svg" title="Show Selected: Show selected nodes and any processes they are involved in, hiding the remaining nodes and their edges" >
+                    <img id="show-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/show-all.svg" title="Show Selected: Show selected nodes and any processes they are involved in, hiding the remaining nodes and their edges" >
 
                     <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
                     <img id="collapse-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/collapse-selected.svg" title="Collapse Selected: Collapse selected compound node to hide its members" >
@@ -305,9 +305,9 @@
                     </div>
 
                     <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-                    <img id="toggle-grid-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid on mouse release" >
+                    <img id="toggle-grid-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid during drag" >
 
-                    <img id="toggle-guidelines-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/guidelines.svg" title="Enable Guidelines: Enable and snap to alignment guidelines on mouse release" >
+                    <img id="toggle-guidelines-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/guidelines.svg" title="Enable Guidelines: Enable and snap to alignment guidelines during drag" >
 
                 </div>
 
@@ -315,7 +315,7 @@
                 <div class="inside-menu">
                     <img id="search-by-label-icon" class="sbgn-toolbar-element" src="app/img/toolbar/search.svg" title="Search: Search and find (case insensitive) all nodes with specified label text, selecting them and highlighting them along with their processes" >
                     <input id="search-by-label-text-box" class="sbgn-toolbar-element" type="label">
-                    <img id="highlight-neighbors-of-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/highlight-neighbors-of-selected.svg" title="Highlight Neighbors of Selected: Highlight selected nodes and their neighbors by ghosting remaining nodes" >
+                    <img id="highlight-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/highlight-selected.svg" title="Highlight Selected: Highlight selected nodes and edges" >
                     <img id="remove-highlights-icon" class="sbgn-toolbar-element" src="app/img/toolbar/remove-highlights.svg" title="Remove Highlights: Remove any highlights" >
                 </div>
 
@@ -323,6 +323,11 @@
                 <div class="inside-menu">
                     <img id="perform-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-cose.svg" title="Perform Layout: Perform a force-directed layout of current map, maintaining compound structures" >
                     <img id="layout-properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
+                </div>
+
+                <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
+                <div class="inside-menu">
+                    <img id="query-pathsbetween-icon" class="sbgn-toolbar-element" src="app/img/toolbar/PC-logo.svg" title="Perform PC Query: Perform a PathwayCommons query to get a map of interest between specified genes" >
                 </div>
 
                  <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
@@ -377,7 +382,7 @@
                                 </div>
                                 <div class="panel">
                                     <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-rearrangement">
-                                        <p class="panel-title accordion-toggle">Rearrangement</p>
+                                        <p class="panel-title accordion-toggle">Arrangement</p>
                                     </div>
                                     <div id="sbgn-inspector-map-properties-rearrangement" class="panel-collapse collapse">
                                         <div id="map-tab-rearrangement-container" >
@@ -386,7 +391,7 @@
                                 </div>
                                 <div class="panel">
                                     <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
-                                        <p class="panel-title accordion-toggle">Color Schemes</p>
+                                        <p class="panel-title accordion-toggle">Color Scheme</p>
                                     </div>
                                     <div id="sbgn-inspector-map-color-scheme" class="panel-collapse collapse">
                                         <div id="color-scheme-template-container" >
@@ -398,7 +403,7 @@
                         <div id="sbgn-inspector-palette" class="tab-pane fade in active">
                           <div class="panel-group">
                             <div class="panel">
-                                <div class="panel-heading" data-toggle="collapse" data-target="#expand-collapse-pd-nodes-palette">
+                                <div id="PD-palette-heading" class="panel-heading" data-toggle="collapse" data-target="#expand-collapse-pd-nodes-palette">
                                     <p class="panel-title accordion-toggle">
                                         Process Description
                                     </p>
@@ -446,7 +451,7 @@
                             </div>
                             <!-- AF Nodes Panel -->
                             <div class="panel">
-                                <div class="panel-heading collapsed" data-toggle="collapse" data-target="#expand-collapse-af-nodes-palette">
+                                <div id="AF-palette-heading" class="panel-heading collapsed" data-toggle="collapse" data-target="#expand-collapse-af-nodes-palette">
                                     <p class="panel-title accordion-toggle">
                                         Activity Flow
                                     </p>
@@ -584,7 +589,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 0.5</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 0.6</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -837,7 +842,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Improve flow </span>
+            <span class="add-on layout-text"> Improve Flow </span>
             </td>
             <td>
             <input id="improve-flow" type="checkbox" class="layout-text" <% if (improveFlow){ %> checked<%}%>>
@@ -860,6 +865,16 @@
             <tbody>
 
             <tr>
+                <td class="header">
+                    <span class="add-on layout-text"> Map Type </span>
+                </td>
+
+                <td>
+                    <input id="map-type" type="text" class="sbgn-input-medium layout-text" value="Unknown"  style='color: #808080;' readonly>
+                </td>
+            </tr>
+
+            <tr>
             <td class="header">
             <span class="add-on layout-text"> Compound Padding </span>
             </td>
@@ -871,7 +886,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Allow Compound Node Resize </span>
+            <span class="add-on layout-text"> Allow Compound Resize </span>
             </td>
 
             <td>
@@ -889,17 +904,6 @@
             </td>
             </tr>
 
-            <tr>
-            <td class="header">
-            <span class="add-on layout-text"> Map Type </span>
-            </td>
-
-            <td>
-            <input id="map-type" type="text" class="sbgn-input-medium layout-text" value="Unknown" readonly>
-            </td>
-
-            </tr>
-
             </tbody>
             </table>
 
@@ -913,21 +917,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Label Size </span>
-                </td>
-
-                <td>
-                <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
-                <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
-                <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
-                <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
-                </select>
-                </td>
-                </tr>
-
-                <tr>
-                <td class="header">
-                <span class="add-on layout-text"> Display Labels For Named Complexes </span>
+                <span class="add-on layout-text"> Display Labels for Named Complexes </span>
                 </td>
 
                 <td>
@@ -946,8 +936,22 @@
                 </tr>
 
                 <tr>
+                    <td class="header">
+                        <span class="add-on layout-text"> Label Size </span>
+                    </td>
+
+                    <td>
+                        <select id="dynamic-label-size-select"  class="sbgn-input-medium" name="dynamic-label-size">
+                            <option id="dynamic-label-size_small" value="small" <% if (dynamicLabelSize == 'small'){ %> selected<%}%> > Small </option>
+                            <option id="dynamic-label-size_regular" value="regular" <% if (dynamicLabelSize == 'regular'){ %> selected<%}%> > Regular </option>
+                            <option id="dynamic-label-size_large" value="large" <% if (dynamicLabelSize == 'large'){ %> selected<%}%> > Large </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Fit Labels To Nodes </span>
+                <span class="add-on layout-text"> Fit Labels to Nodes </span>
                 </td>
 
                 <td>
@@ -978,7 +982,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Rearrange After Expand-Collapse </span>
+                <span class="add-on layout-text"> Rearrange on Complexity Management </span>
                 </td>
 
                 <td>
@@ -1013,7 +1017,7 @@
         </script>
 
         <script type="text/template" id="query-pathsbetween-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1029,12 +1033,12 @@
             </tr>
 
             <tr>
-            <td>
+            <td style="padding-left: 40px;">
             <span class="add-on layout-text"> Gene Symbols: </span><br>
-            <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 206px;"><%= geneSymbols %></textarea>
+            <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
             </td>
 
-            <td>
+            <td style="padding-right: 5px;">
             <table frame="box" style="border-color: rgb(204, 204, 204)">
             <tbody>
             <caption style="text-align: left;">Stop Distance</caption>
@@ -1313,8 +1317,12 @@
             <span class="add-on layout-text"> Show Grid </span>
             </td>
             <td style="padding-right: 25px;">
-            <span class="add-on layout-text"> Grid Size </span>
+            <span class="add-on layout-text"> Size </span>
             <input id="grid-size" type="text" min="5" class="sbgn-input-small layout-text integer-input" value= <%= gridSize %> >
+            </td>
+            <td style="padding-right: 25px;">
+            <span class="add-on layout-text"> Color </span>
+            <input id="grid-color" type="color" class="sbgn-input-small layout-text" value= <%= gridColor %> >
             </td>
             <td>
             <input id="auto-resize-nodes" type="checkbox" class="layout-text" <% if (autoResizeNodes){ %> checked<%}%>>
@@ -1328,7 +1336,7 @@
 			<tr> <th colspan="100%"> Snap Policy </th> </tr>
 			<tr>
             <td style="padding-right: 10px">
-            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!discreteDrag && !snapToGrid && !snapToAlignmentLocationOnRelease && !snapToAlignmentLocationDuringDrag){ %> checked<%}%>>
+            <input id="no-snap" type="radio" name="snap-policy" class="layout-text" <% if (!snapToGridDuringDrag && !snapToGridOnRelease && !snapToAlignmentLocationOnRelease && !snapToAlignmentLocationDuringDrag){ %> checked<%}%>>
             <span class="add-on layout-text"> No Snap </span>
             </td>
             <td style="padding-left: 10px; padding-right: 5px;">
@@ -1336,9 +1344,9 @@
             </td>
             <td style="padding-left: 0px; padding-right: 10px;">
             <select id="snap-to-grid">
-              <option value="disabled" <% if (!discreteDrag && !snapToGrid){ %> selected<% }%> > Disabled </option>
-              <option value="onRelease" <% if (snapToGrid){ %> selected<% }%> > On Release </option>
-              <option value="duringDrag" <% if (discreteDrag){ %> selected<% }%> > During Drag </option>
+              <option value="disabled" <% if (!snapToGridDuringDrag && !snapToGridOnRelease){ %> selected<% }%> > Disabled </option>
+              <option value="onRelease" <% if (snapToGridOnRelease){ %> selected<% }%> > On Release </option>
+              <option value="duringDrag" <% if (snapToGridDuringDrag){ %> selected<% }%> > During Drag </option>
             </select>
             </td>
             <td style="padding-left: 10px; padding-right: 5px;">
