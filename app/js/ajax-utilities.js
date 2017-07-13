@@ -26,7 +26,9 @@ exports.validateSBGNML = function (req, res) {
 			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
 			if (body.length > 1e8) { // kill if more than 100MB
 				req.connection.destroy();
-				throw new Error("Too much data passed");
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
 			}
 		});
 
@@ -47,7 +49,9 @@ exports.validateSBGNML = function (req, res) {
 			xsdString = fs.readFileSync('app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
 		}
 		catch (err) {
-			throw new Error("Failed to read xsd file " + err);
+			res.status(500);
+			res.send("Error: Failed to read xsd file " + err);
+			return;
 		}
 
 		var xsdDoc;
@@ -55,7 +59,9 @@ exports.validateSBGNML = function (req, res) {
 			xsdDoc = libxmljs.parseXml(xsdString);
 		}
 		catch (err) {
-			throw new Error("libxmljs failed to parse xsd " + err);
+			res.status(500);
+			res.send("Error: libxmljs failed to parse xsd " + err);
+			return;
 		}
 
 		var xmlDoc;
@@ -63,7 +69,9 @@ exports.validateSBGNML = function (req, res) {
 			xmlDoc = libxmljs.parseXml(sbgnml);
 		}
 		catch (err) {
-			throw new Error("libxmljs failed to parse xml " + err);
+			res.status(415);
+			res.send("Error: libxmljs failed to parse xml " + err);
+			return;
 		}
 
 		if (!xmlDoc.validate(xsdDoc)) {
@@ -83,7 +91,7 @@ exports.validateSBGNML = function (req, res) {
 			res.send(errorList);
 		}
 		else {
-			res.send("validate OK");
+			res.send([]);
 		}
 	}
 };
