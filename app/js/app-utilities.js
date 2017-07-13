@@ -185,7 +185,7 @@ appUtilities.dynamicResize = function () {
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
 };
-
+/*
 appUtilities.nodeQtipFunction = function (node) {
   if (node.renderedStyle("label") == node.data("label") && node.data("statesandinfos").length == 0 && node.data("class") != "complex") {
     return;
@@ -220,7 +220,7 @@ appUtilities.nodeQtipFunction = function (node) {
     }
   });
 };
-
+*/
 appUtilities.refreshUndoRedoButtonsStatus = function () {
   var ur = cy.undoRedo();
   if (ur.isUndoStackEmpty()) {

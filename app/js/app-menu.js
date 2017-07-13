@@ -466,6 +466,10 @@ module.exports = function () {
       chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
     });
 
+    $("#add-submap-for-selected").click(function (e) {
+      chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'submap');
+    });
+
     $("#create-reaction-template").click(function (e) {
       reactionTemplateView.render();
     });

@@ -17,11 +17,9 @@
   "homepage": "https://github.com/iVis-at-Bilkent/chise.js-sample-app/",
   "dependencies": {
     "jquery": "~2.2.4",
-    "qtip2": "~3.0.2",
     "bootstrap": "3.3.7",
     "jquery-expander": "1.7.0",
     "cytoscape-panzoom": "~2.5.2",
-    "cytoscape-qtip": "cytoscape/cytoscape.js-qtip#master",
     "cytoscape-edgehandles": "~2.13.1",
     "filesaverjs": "~0.2.2",
     "mousetrap": "^1.6.0",
