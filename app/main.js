@@ -15,7 +15,7 @@ var appMenu = require('./js/app-menu');
 
 // Get cy extension instances
 var cyPanzoom = require('cytoscape-panzoom');
-var cyQtip = require('cytoscape-qtip');
+//var cyQtip = require('cytoscape-qtip');
 var cyCoseBilkent = require('cytoscape-cose-bilkent');
 var cyUndoRedo = require('cytoscape-undo-redo');
 var cyClipboard = require('cytoscape-clipboard');
@@ -30,7 +30,7 @@ var cyNodeResize = require('cytoscape-node-resize');
 
 // Register cy extensions
 cyPanzoom( cytoscape, $ );
-cyQtip( cytoscape, $ );
+//cyQtip( cytoscape, $ );
 cyCoseBilkent( cytoscape );
 cyUndoRedo( cytoscape );
 cyClipboard( cytoscape, $ );

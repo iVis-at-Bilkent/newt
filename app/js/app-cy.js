@@ -7,7 +7,7 @@ var _ = require('underscore');
 
 module.exports = function () {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
-  var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
+//  var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
 
   $(document).ready(function ()
@@ -597,7 +597,7 @@ module.exports = function () {
         }, 20);
       }
     });
-
+/*
     cy.on('mouseover', 'node', function (event) {
       var node = this;
 
@@ -617,7 +617,7 @@ module.exports = function () {
         this.qtipTimeOutFcn = null;
       }
     });
-    
+*/
     // Indicates whether creating a process with convenient edges
     var convenientProcessSource;
     // cyTarget will be selected after 'tap' event is ended by cy core. We do not want this behaviour.
@@ -653,7 +653,6 @@ module.exports = function () {
       else { // normal click case
         cyTarget = event.target || event.cyTarget;
       }
-      
       
       // If in add node mode do the followings conditionally,
       // If selected node type is a PN create a process and source and target nodes are EPNs with convenient edges,
@@ -770,17 +769,18 @@ module.exports = function () {
         tappedBefore = tappedNow;
       }
 
-      $(".qtip").remove();
+//      $(".qtip").remove();
 
       if (event.originalEvent.shiftKey)
         return;
-
+/*
       if (node.qtipTimeOutFcn != null) {
         clearTimeout(node.qtipTimeOutFcn);
         node.qtipTimeOutFcn = null;
       }
 
       nodeQtipFunction(node);
+*/
     });
     
     cy.on('doubleTap', 'node', function (event) {
@@ -818,7 +818,7 @@ module.exports = function () {
         nodeLabelTextbox.focus();
       }
     });
-    
+
     var handleInspectorThrottled = _.throttle(function() {
       inspectorUtilities.handleSBGNInspector();
     }, 200);
