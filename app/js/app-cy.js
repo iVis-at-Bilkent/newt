@@ -186,7 +186,7 @@ module.exports = function () {
       {
         id: 'ctx-menu-highlight-processes',
         content: 'Highlight Processes',
-        selector: 'node[class!="process"][class!="omitted process"][class!="uncertain process"][class!="association"][class!="dissociation"]',
+        selector: 'node[class="unspecified entity"],[class^="simple chemical"],[class^="macromolecule"],[class^="nucleic acid feature"],[class^="complex"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           cyTarget.select();
