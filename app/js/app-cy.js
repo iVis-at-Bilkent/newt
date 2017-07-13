@@ -801,7 +801,7 @@ module.exports = function () {
 
         //For complexes and compartments move the textarea to the bottom
         var nodeType = node.data('class');
-        if (nodeType == "compartment" || nodeType.startsWith("complex") )
+        if (nodeType == "compartment" || nodeType.startsWith("complex") || nodeType == "submap")
             top += (node.outerHeight() / 2 * cy.zoom() );
 
         top = top.toString() + 'px';
