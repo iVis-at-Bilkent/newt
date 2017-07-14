@@ -72,6 +72,7 @@ module.exports = function () {
           cy.undoRedo().do("deleteElesSimple", {
             eles: event.target || event.cyTarget
           });
+          $('#inspector-palette-tab a').tab('show');
         }
       },
       {
