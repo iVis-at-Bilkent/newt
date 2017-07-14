@@ -572,6 +572,8 @@ module.exports = function () {
         appUtilities.nodesToDragAndDrop = null;
       }
 
+      nodeToUnselect = undefined;
+
       /*  make palette tab active if no element is selected
           cannot be done on unselect event because it causes conflict with the select trigger
           when nodes are selected one after another
