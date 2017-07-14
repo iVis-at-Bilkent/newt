@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="670.28003"
-   height="671.05518"
+   width="667.15094"
+   height="668.20734"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="pd-legend.2017.07.02.svg"
+   sodipodi:docname="pd-legend.2017.07.14.svg"
    inkscape:export-filename="C:\Users\ugur\Desktop\node-legend.2016.04.01.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
@@ -224,21 +224,22 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="108.24083"
-     inkscape:cy="301.4767"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="317.68124"
+     inkscape:cy="362.20041"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="751"
-     inkscape:window-x="0"
-     inkscape:window-y="1"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      fit-margin-top="6"
      fit-margin-right="6"
      fit-margin-bottom="6"
-     fit-margin-left="6" />
+     fit-margin-left="6"
+     showguides="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -247,7 +248,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -255,7 +256,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0.2001214,-114.80493)">
+     transform="translate(0.2001214,-115.81508)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -278,1108 +279,1206 @@
          id="tspan6009"
          x="187.14285"
          y="363.07648" /></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985"
-       width="48.039204"
-       height="38.039204"
-       x="6.7802758"
-       y="122.79548"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1.99199998;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-0"
-       width="48.007816"
-       height="38.00782"
-       x="7.5102553"
-       y="169.96461"
-       ry="18.374697"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 8.7703966,243.63461 -0.12674,-16.41641 11.6445014,-9.96999 11.22777,-0.12605 11.60948,0.12605 11.26281,9.59029 -4.7e-4,17.42756 -10.5052,10.72694 -24.60982,0.12639 z"
-       id="rect2985-8"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccc"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\complex.png"
-       inkscape:export-xdpi="54"
-       inkscape:export-ydpi="54" />
-    <ellipse
-       style="fill:none;stroke:#000000;stroke-width:1.99199986;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3890"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\unspecifiedentity.png"
-       inkscape:export-xdpi="54"
-       inkscape:export-ydpi="54"
-       cx="31.514164"
-       cy="283.27533"
-       rx="24.003881"
-       ry="19.003881" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2.1674068;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 9.0978635,311.50929 0,23.00397 c 0,8.2132 4.8682795,14.83495 10.9365495,14.83495 l 22.93537,0 c 6.06825,0 10.96068,-6.62175 10.96068,-14.83495 l 0,-23.00397 -44.8325995,0 z"
-       id="path3913"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\nucleicacidfeature.png"
-       inkscape:export-xdpi="54"
-       inkscape:export-ydpi="54" />
-    <ellipse
-       ry="19.003086"
-       rx="19.003084"
-       cy="377.58218"
-       cx="31.514166"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1-7"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 12.49556,396.6008 C 50.53278,358.56357 50.53278,358.56357 50.53278,358.56357"
-       id="path3945"
-       inkscape:connector-curvature="0" />
+    <g
+       id="g5738"
+       transform="translate(30.615776,0)">
+      <path
+         inkscape:transform-center-y="-62.257366"
+         inkscape:transform-center-x="-2.6812787"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4"
+         d="m 173.55376,514.74668 57.67514,0"
+         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="495.72708"
+         x="125.34003"
+         height="38.039204"
+         width="48.039204"
+         id="rect2985-5-0"
+         style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="499.72546"
+         x="230.77501"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-2"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4397"
+         y="488.90912"
+         x="145.21744"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="text-align:start;text-anchor:start"
+           y="488.90912"
+           x="145.21744"
+           id="tspan4399"
+           sodipodi:role="line">consumption</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\modulation.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path3787"
+         d="m 154.35739,576.25835 53.77577,0"
+         style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#EmptyDiamondL-2)" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="561.23712"
+         x="230.77501"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-9"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4405"
+         y="555.41443"
+         x="165.94385"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="text-align:start;text-anchor:start"
+           y="555.41443"
+           x="165.94385"
+           id="tspan4407"
+           sodipodi:role="line">modulation</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\stimulation.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path3787-1-8"
+         d="m 157.78185,636.14753 66.98965,0"
+         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#EmptyTriangleOutL-8)" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="621.12634"
+         x="230.77501"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-0"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4409"
+         y="616.01794"
+         x="168.25301"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="text-align:start;text-anchor:start"
+           y="616.01794"
+           x="168.25301"
+           id="tspan4411"
+           sodipodi:role="line">stimulation</tspan></text>
+      <path
+         inkscape:transform-center-y="-31.428571"
+         inkscape:transform-center-x="1.9975671"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4-3"
+         d="m 157.93948,695.64701 42.96828,0"
+         style="fill:none;stroke:#000000;stroke-width:3.17016387;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <circle
+         r="11.995872"
+         id="path5879"
+         style="fill:none;stroke:#000000;stroke-width:3.00825524;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         cx="213.72499"
+         cy="695.78992" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="680.76874"
+         x="230.77501"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-6"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4421"
+         y="674.83649"
+         x="177.57864"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="674.83649"
+           x="177.57864"
+           id="tspan4423"
+           sodipodi:role="line">catalysis</tspan></text>
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="722.07819"
+         x="124.1442"
+         height="38.039204"
+         width="48.039204"
+         id="rect2985-88"
+         style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="54"
+         inkscape:export-xdpi="54"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\tag.png"
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="rect2985-87-9"
+         d="m 230.77501,722.08238 32.03082,0 16,19.01541 -16,19.0154 -32.03082,0 z"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:transform-center-y="-62.257366"
+         inkscape:transform-center-x="-2.6812787"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4-17"
+         d="m 172.00434,741.09779 57.67514,0"
+         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4425"
+         y="774.76196"
+         x="201.45883"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           y="774.76196"
+           x="201.45883"
+           id="tspan4427"
+           sodipodi:role="line">equivelance arc</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path3787-1"
+         d="m 363.42209,514.95541 53.77576,0"
+         style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1)" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="495.93579"
+         x="433.16254"
+         height="38.039204"
+         width="48.039204"
+         id="rect2985-5-1"
+         style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="499.9342"
+         x="333.38419"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-2-7"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4401"
+         y="489.3266"
+         x="367.1904"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="text-align:start;text-anchor:start"
+           y="489.3266"
+           x="367.1904"
+           id="tspan4403"
+           sodipodi:role="line">production</tspan></text>
+      <path
+         inkscape:transform-center-y="-31.428571"
+         inkscape:transform-center-x="-2.7854942"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4-8"
+         d="m 434.92307,596.54474 -65.95453,0"
+         style="fill:none;stroke:#000000;stroke-width:3.11264324;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <path
+         inkscape:transform-center-y="1.3542431"
+         inkscape:transform-center-x="-31.428575"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4-8-1"
+         d="m 369.1084,581.9797 0,29.13008"
+         style="fill:none;stroke:#000000;stroke-width:4.28659248;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="581.5235"
+         x="333.38419"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-8"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4417"
+         y="574.70087"
+         x="349.09064"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="574.70087"
+           x="349.09064"
+           id="tspan4419"
+           sodipodi:role="line">inhibition</tspan></text>
+      <ellipse
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         id="path3815-1-6"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         cx="352.38727"
+         cy="741.26007"
+         rx="19.003084"
+         ry="19.003086" />
+      <text
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         sodipodi:linespacing="125%"
+         id="text3817-6-8"
+         y="746.27081"
+         x="337.98053"
+         style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#999999"
+         xml:space="preserve"><tspan
+           y="746.27081"
+           x="337.98053"
+           id="tspan3819-3-6"
+           sodipodi:role="line">AND</tspan></text>
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="722.24048"
+         x="429.11185"
+         height="38.039204"
+         width="48.039204"
+         id="rect2985-1"
+         style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:transform-center-y="-62.257366"
+         inkscape:transform-center-x="-2.6812787"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4-1"
+         d="m 370.7558,741.2601 57.67514,0"
+         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4429"
+         y="774.92426"
+         x="404.78174"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           y="774.92426"
+           x="404.78174"
+           id="tspan4431"
+           sodipodi:role="line">logic arc</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\stimulation.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path3787-1-8-2"
+         d="m 436.40061,675.97282 -66.98964,0"
+         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#EmptyTriangleOutL-8)" />
+      <path
+         inkscape:transform-center-y="1.5746171"
+         inkscape:transform-center-x="-21.479139"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path3787-4-8-1-7"
+         d="m 400.06575,659.03766 0,33.87032"
+         style="fill:none;stroke:#000000;stroke-width:3.17000008;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="660.9516"
+         x="333.38419"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-28"
+         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="319.6478"
+         y="654.3114"
+         id="text4474"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4476"
+           x="319.6478"
+           y="654.3114"
+           style="text-align:start;text-anchor:start">necessary stimulation</tspan></text>
+    </g>
+    <g
+       id="g4691">
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="122.79548"
+         x="6.7802758"
+         height="38.039204"
+         width="48.039204"
+         id="rect2985"
+         style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="18.374697"
+         y="217.11687"
+         x="7.5120292"
+         height="38.00782"
+         width="48.007816"
+         id="rect2985-0"
+         style="fill:none;stroke:#000000;stroke-width:1.99199998;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="54"
+         inkscape:export-xdpi="54"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\complex.png"
+         sodipodi:nodetypes="cccccccccc"
+         inkscape:connector-curvature="0"
+         id="rect2985-8"
+         d="m 8.7686228,196.48236 -0.12674,-16.41641 11.6445012,-9.96999 11.22777,-0.12605 11.60948,0.12605 11.26281,9.59029 -4.7e-4,17.42756 -10.5052,10.72694 -24.60982,0.12639 z"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ellipse
+         ry="19.003881"
+         rx="24.003881"
+         cy="283.27533"
+         cx="31.514164"
+         inkscape:export-ydpi="54"
+         inkscape:export-xdpi="54"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\unspecifiedentity.png"
+         id="path3890"
+         style="fill:none;stroke:#000000;stroke-width:1.99199986;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="54"
+         inkscape:export-xdpi="54"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\nucleicacidfeature.png"
+         inkscape:connector-curvature="0"
+         id="path3913"
+         d="m 9.0978635,311.50929 0,23.00397 c 0,8.2132 4.8682795,14.83495 10.9365495,14.83495 l 22.93537,0 c 6.06825,0 10.96068,-6.62175 10.96068,-14.83495 l 0,-23.00397 -44.8325995,0 z"
+         style="fill:none;stroke:#000000;stroke-width:2.1674068;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <g
+         transform="translate(-7e-6,47.153395)"
+         id="g4415">
+        <ellipse
+           ry="19.003086"
+           rx="19.003084"
+           cy="377.58218"
+           cx="31.514166"
+           style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="path3815-1-7"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+           inkscape:export-xdpi="53.91"
+           inkscape:export-ydpi="53.91" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 12.49556,396.6008 C 50.53278,358.56357 50.53278,358.56357 50.53278,358.56357"
+           id="path3945"
+           inkscape:connector-curvature="0" />
+      </g>
+      <path
+         inkscape:export-ydpi="54"
+         inkscape:export-xdpi="54"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\perturbingagent.png"
+         sodipodi:nodetypes="ccccccc"
+         inkscape:connector-curvature="0"
+         id="rect2985-85"
+         d="m 10.498765,358.56677 42.03081,0 -12,19.01541 12,19.01541 -42.03081,0 12,-19.01541 z"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text5915"
+         y="147.3998"
+         x="61.571426"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="147.3998"
+           x="61.571426"
+           id="tspan5917"
+           sodipodi:role="line">macromolecule</tspan><tspan
+           id="tspan5919"
+           y="166.1498"
+           x="61.571426"
+           sodipodi:role="line" /><tspan
+           id="tspan5945"
+           y="184.8998"
+           x="61.571426"
+           sodipodi:role="line" /><tspan
+           id="tspan5927"
+           y="203.6498"
+           x="61.571426"
+           sodipodi:role="line" /><tspan
+           id="tspan5929"
+           y="222.3998"
+           x="61.571426"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6104"
+         y="240.31133"
+         x="62.120743"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="240.31133"
+           x="62.120743"
+           id="tspan6106"
+           sodipodi:role="line">simple chemical</tspan><tspan
+           id="tspan6108"
+           y="259.06134"
+           x="62.120743"
+           sodipodi:role="line" /><tspan
+           id="tspan6126"
+           y="277.81134"
+           x="62.120743"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6172"
+         y="193.15797"
+         x="62.157364"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="193.15797"
+           x="62.157364"
+           id="tspan6174"
+           sodipodi:role="line">complex</tspan><tspan
+           id="tspan6176"
+           y="211.90797"
+           x="62.157364"
+           sodipodi:role="line" /><tspan
+           id="tspan6190"
+           y="230.65797"
+           x="62.157364"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6219"
+         y="287.50143"
+         x="61.63002"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="287.50143"
+           x="61.63002"
+           id="tspan6221"
+           sodipodi:role="line">unspecified entity</tspan><tspan
+           id="tspan6223"
+           y="306.25143"
+           x="61.63002"
+           sodipodi:role="line" /><tspan
+           id="tspan6233"
+           y="325.00143"
+           x="61.63002"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6249"
+         y="336.05014"
+         x="61.571426"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="336.05014"
+           x="61.571426"
+           id="tspan6251"
+           sodipodi:role="line">nucleic acid feature</tspan><tspan
+           id="tspan6253"
+           y="354.80014"
+           x="61.571426"
+           sodipodi:role="line" /><tspan
+           id="tspan6259"
+           y="373.55014"
+           x="61.571426"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6266"
+         y="430.32028"
+         x="62.120743"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="430.32028"
+           x="62.120743"
+           id="tspan6268"
+           sodipodi:role="line">source or sink</tspan><tspan
+           id="tspan6270"
+           y="449.07028"
+           x="62.120743"
+           sodipodi:role="line" /><tspan
+           id="tspan6272"
+           y="467.82028"
+           x="62.120743"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6274"
+         y="381.73132"
+         x="61.571426"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="381.73132"
+           x="61.571426"
+           id="tspan6276"
+           sodipodi:role="line">perturbing agent</tspan></text>
+    </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 10.498758,405.72017 42.03081,0 -12,19.01541 12,19.01541 -42.03081,0 12,-19.01541 z"
-       id="rect2985-85"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\perturbingagent.png"
-       inkscape:export-xdpi="54"
-       inkscape:export-ydpi="54" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="61.571426"
-       y="147.3998"
-       id="text5915"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5917"
-         x="61.571426"
-         y="147.3998">macromolecule</tspan><tspan
-         sodipodi:role="line"
-         x="61.571426"
-         y="166.1498"
-         id="tspan5919" /><tspan
-         sodipodi:role="line"
-         x="61.571426"
-         y="184.8998"
-         id="tspan5945" /><tspan
-         sodipodi:role="line"
-         x="61.571426"
-         y="203.6498"
-         id="tspan5927" /><tspan
-         sodipodi:role="line"
-         x="61.571426"
-         y="222.3998"
-         id="tspan5929" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="62.120743"
-       y="193.15797"
-       id="text6104"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6106"
-         x="62.120743"
-         y="193.15797">simple chemical</tspan><tspan
-         sodipodi:role="line"
-         x="62.120743"
-         y="211.90797"
-         id="tspan6108" /><tspan
-         sodipodi:role="line"
-         x="62.120743"
-         y="230.65797"
-         id="tspan6126" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="62.157364"
-       y="240.31133"
-       id="text6172"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6174"
-         x="62.157364"
-         y="240.31133">complex</tspan><tspan
-         sodipodi:role="line"
-         x="62.157364"
-         y="259.06134"
-         id="tspan6176" /><tspan
-         sodipodi:role="line"
-         x="62.157364"
-         y="277.81134"
-         id="tspan6190" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="61.63002"
-       y="287.50143"
-       id="text6219"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6221"
-         x="61.63002"
-         y="287.50143">unspecified entity</tspan><tspan
-         sodipodi:role="line"
-         x="61.63002"
-         y="306.25143"
-         id="tspan6223" /><tspan
-         sodipodi:role="line"
-         x="61.63002"
-         y="325.00143"
-         id="tspan6233" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="61.571426"
-       y="336.05014"
-       id="text6249"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6251"
-         x="61.571426"
-         y="336.05014">nucleic acid feature</tspan><tspan
-         sodipodi:role="line"
-         x="61.571426"
-         y="354.80014"
-         id="tspan6253" /><tspan
-         sodipodi:role="line"
-         x="61.571426"
-         y="373.55014"
-         id="tspan6259" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="62.120743"
-       y="383.16687"
-       id="text6266"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6268"
-         x="62.120743"
-         y="383.16687">source or sink</tspan><tspan
-         sodipodi:role="line"
-         x="62.120743"
-         y="401.91687"
-         id="tspan6270" /><tspan
-         sodipodi:role="line"
-         x="62.120743"
-         y="420.66687"
-         id="tspan6272" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="61.571426"
-       y="428.88474"
-       id="text6274"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6276"
-         x="61.571426"
-         y="428.88474">perturbing agent</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 238.35697,216.09632 32.03082,0 16,19.01541 -16,19.0154 -32.03082,0 z"
-       id="rect2985-87"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccc"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\tag.png"
-       inkscape:export-xdpi="54"
-       inkscape:export-ydpi="54" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 248.51042,168.94296 28.03082,0 10,19.01541 -10,19.0154 -28.03082,0 -10,-19.0154 z"
+       d="m 245.87468,122.81508 28.03082,0 10,19.01541 -10,19.0154 -28.03082,0 -10,-19.0154 z"
        id="rect2985-3"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\phenotype.png"
        inkscape:export-xdpi="54"
        inkscape:export-ydpi="54" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:4.03670788;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 255.28382,123.83344 16.54218,0 c 5.2991,0 13.68148,4.13924 13.68148,9.28083 l 0,17.40162 c 0,5.14158 -10.44054,9.28083 -15.73964,9.28083 l -14.48402,0 c -5.2991,0 -15.73963,-4.13925 -15.73963,-9.28083 l 0,-17.40162 c 0,-5.14159 10.44053,-9.28083 15.73963,-9.28083 z"
-       id="rect2985-31"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="sssssssss" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-9"
-       width="48.039204"
-       height="38.039204"
-       x="240.29196"
-       y="265.03128"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <rect
-       style="fill:#ffffff;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-5"
-       width="48.039204"
-       height="38.039204"
-       x="236.7205"
-       y="261.45981"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <path
-       style="fill:#999999;stroke:#ffffff;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 238.63325,339.41834 c 0.72407,4.71428 4.76635,8.30469 9.68946,8.30469 l 28.40624,0 c 4.92311,0 8.96539,-3.59041 9.68946,-8.30469 l -47.78516,0 z"
-       id="rect2985-7-5"
-       inkscape:connector-curvature="0" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-7"
-       width="48.039204"
-       height="38.039204"
-       x="238.50623"
-       y="310.39902"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-06"
-       width="48.039204"
-       height="38.039204"
-       x="238.50623"
-       y="354.80243"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <rect
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect5852"
-       width="38.805485"
-       height="11.662626"
-       x="243.12308"
-       y="387.2764"
-       ry="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="243.77533"
-       y="395.20242"
-       id="text5858"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5860"
-         x="243.77533"
-         y="395.20242"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold'">pre:label</tspan></text>
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-06-6"
-       width="48.039204"
-       height="38.039204"
-       x="238.50624"
-       y="402.42953"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <ellipse
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
-       id="path5877"
-       cx="262.52585"
-       cy="438.94916"
-       rx="18.909636"
-       ry="6.0524921" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="245.73245"
-       y="441.38446"
-       id="text5858-9"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5860-0"
-         x="245.73245"
-         y="441.38446"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold'">val@var</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="297.01172"
-       y="144.56226"
-       id="text6011"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6013"
-         x="297.01172"
-         y="144.56226">compartment</tspan><tspan
-         sodipodi:role="line"
-         x="297.01172"
-         y="163.31226"
-         id="tspan6015" /><tspan
-         sodipodi:role="line"
-         x="297.01172"
-         y="182.06226"
-         id="tspan6037" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="296.42578"
-       y="192.14784"
+       x="289.76974"
+       y="146.01994"
        id="text6373"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6375"
-         x="296.42578"
-         y="192.14784">phenotype</tspan><tspan
+         x="289.76974"
+         y="146.01994">phenotype</tspan><tspan
          sodipodi:role="line"
-         x="296.42578"
-         y="210.89784"
+         x="289.76974"
+         y="164.76994"
          id="tspan6377" /><tspan
          sodipodi:role="line"
-         x="296.42578"
-         y="229.64784"
+         x="289.76974"
+         y="183.51994"
          id="tspan6395" /></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 235.72123,394.77391 32.03082,0 16,19.01541 -16,19.0154 -32.03082,0 z"
+       id="rect2985-87"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\tag.png"
+       inkscape:export-xdpi="54"
+       inkscape:export-ydpi="54" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="297.32666"
-       y="238.82881"
+       x="290.67062"
+       y="417.50635"
        id="text6441"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6443"
-         x="297.32666"
-         y="238.82881">tag</tspan><tspan
+         x="290.67062"
+         y="417.50635">tag</tspan><tspan
          sodipodi:role="line"
-         x="297.32666"
-         y="257.5788"
+         x="290.67062"
+         y="436.25635"
          id="tspan6445" /><tspan
          sodipodi:role="line"
-         x="297.32666"
-         y="276.3288"
+         x="290.67062"
+         y="455.00635"
          id="tspan6459" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="296.42578"
-       y="287.84991"
-       id="text6488"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6490"
-         x="296.42578"
-         y="287.84991">multimers</tspan><tspan
-         sodipodi:role="line"
-         x="296.42578"
-         y="306.59991"
-         id="tspan6492" /><tspan
-         sodipodi:role="line"
-         x="296.42578"
-         y="325.34991"
-         id="tspan6502" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="297.01172"
-       y="335.00333"
-       id="text6518"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6520"
-         x="297.01172"
-         y="335.00333">cloned</tspan><tspan
-         sodipodi:role="line"
-         x="297.01172"
-         y="353.75333"
-         id="tspan6522" /><tspan
-         sodipodi:role="line"
-         x="297.01172"
-         y="372.50333"
-         id="tspan6528" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="296.48438"
-       y="382.19336"
-       id="text6535"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6537"
-         x="296.48438"
-         y="382.19336">unit of information</tspan><tspan
-         sodipodi:role="line"
-         x="296.48438"
-         y="400.94336"
-         id="tspan6539" /><tspan
-         sodipodi:role="line"
-         x="296.48438"
-         y="419.69336"
-         id="tspan6541" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="296.9751"
-       y="429.31012"
-       id="text6543"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6545"
-         x="296.9751"
-         y="429.31012">state variable</tspan></text>
-    <ellipse
-       ry="19.003086"
-       rx="19.003084"
-       cy="371.96103"
-       cx="529.12469"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="518.3786"
-       y="376.97519"
-       id="text3817"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819"
-         x="518.3786"
-         y="376.97519">OR</tspan></text>
-    <ellipse
-       ry="19.003086"
-       rx="19.003084"
-       cy="371.96103"
-       cx="485.55325"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="471.14651"
-       y="376.97177"
-       id="text3817-6"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-3"
-         x="471.14651"
-         y="376.97177">AND</tspan></text>
-    <ellipse
-       ry="19.003086"
-       rx="19.003084"
-       cy="409.23486"
-       cx="507.33899"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-7"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="492.17001"
-       y="414.24902"
-       id="text3817-61"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-7"
-         x="492.17001"
-         y="414.24902">NOT</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2985-08"
        width="30.042414"
        height="30.042412"
-       x="492.31775"
-       y="138.29657"
+       x="244.86888"
+       y="174.80444"
        ry="0"
        inkscape:export-xdpi="53.959999"
        inkscape:export-ydpi="53.959999"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-1"
-       width="30.042414"
-       height="30.042412"
-       x="492.31778"
-       y="224.14848"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="502.39075"
-       y="245.72194"
-       id="text3817-6-2"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-3-4"
-         x="502.39075"
-         y="245.72194"
-         style="font-size:18px">?</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-1-1"
-       width="30.042414"
-       height="30.042412"
-       x="492.31775"
-       y="181.22253"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="498.71689"
-       y="201.7457"
-       id="text3817-6-2-5"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-3-4-7"
-         x="498.71689"
-         y="201.7457"
-         style="font-size:18px">\\</tspan></text>
+    <g
+       id="g4639"
+       transform="translate(-6.4537134,-8.2677523)">
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="271.07413"
+         x="251.3226"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-1"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         sodipodi:linespacing="125%"
+         id="text3817-6-2"
+         y="292.64758"
+         x="261.3956"
+         style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           style="font-size:18px"
+           y="292.64758"
+           x="261.3956"
+           id="tspan3819-3-4"
+           sodipodi:role="line">?</tspan></text>
+    </g>
+    <g
+       id="g4634"
+       transform="translate(-6.4536829,-9.342734)">
+      <rect
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="0"
+         y="228.14816"
+         x="251.32257"
+         height="30.042412"
+         width="30.042414"
+         id="rect2985-08-1-1"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         sodipodi:linespacing="125%"
+         id="text3817-6-2-5"
+         y="248.67133"
+         x="257.72174"
+         style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           style="font-size:18px"
+           y="248.67133"
+           x="257.72174"
+           id="tspan3819-3-4-7"
+           sodipodi:role="line">\\</tspan></text>
+    </g>
     <circle
        style="fill:#777777;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path3815-1-3"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\association.png"
        inkscape:export-xdpi="53.91"
        inkscape:export-ydpi="53.91"
-       cx="507.33896"
-       cy="282.08679"
+       cx="259.89011"
+       cy="321.8197"
        r="15.012353" />
-    <circle
-       cy="325.04434"
-       cx="507.33896"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1-3-2"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"
-       r="15.012353" />
-    <circle
-       cy="325.04434"
-       cx="507.33896"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1-3-2-0"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"
-       r="7.3072042" />
+    <g
+       id="g4644"
+       transform="translate(-6.4537162,-6.1669842)">
+      <circle
+         r="15.012353"
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         id="path3815-1-3-2"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         cx="266.34381"
+         cy="371.96997" />
+      <circle
+         r="7.3072042"
+         inkscape:export-ydpi="53.91"
+         inkscape:export-xdpi="53.91"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+         id="path3815-1-3-2-0"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         cx="266.34381"
+         cy="371.96997" />
+    </g>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="531.43097"
-       y="156.01309"
+       x="289.76974"
+       y="192.52097"
        id="text6011-6"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6013-0"
-         x="531.43097"
-         y="156.01309">process</tspan><tspan
+         x="289.76974"
+         y="192.52097">process</tspan><tspan
          sodipodi:role="line"
-         x="531.43097"
-         y="174.76309"
+         x="289.76974"
+         y="211.27097"
          id="tspan6015-4" /><tspan
          sodipodi:role="line"
-         x="531.43097"
-         y="193.51309"
+         x="289.76974"
+         y="230.02097"
          id="tspan6037-7" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="532.00958"
-       y="200.4332"
+       x="290.34836"
+       y="238.01608"
        id="text6373-4"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6375-0"
-         x="532.00958"
-         y="200.4332">omitted process</tspan><tspan
+         x="290.34836"
+         y="238.01608">omitted process</tspan><tspan
          sodipodi:role="line"
-         x="532.00958"
-         y="219.1832"
+         x="290.34836"
+         y="256.76608"
          id="tspan6377-5" /><tspan
          sodipodi:role="line"
-         x="532.00958"
-         y="237.9332"
+         x="290.34836"
+         y="275.51608"
          id="tspan6395-0" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="531.48956"
-       y="243.15041"
+       x="289.82834"
+       y="281.80829"
        id="text6441-0"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6443-6"
-         x="531.48956"
-         y="243.15041">uncertain process</tspan><tspan
+         x="289.82834"
+         y="281.80829">uncertain process</tspan><tspan
          sodipodi:role="line"
-         x="531.48956"
-         y="261.90039"
+         x="289.82834"
+         y="300.55829"
          id="tspan6445-7" /><tspan
          sodipodi:role="line"
-         x="531.48956"
-         y="280.65039"
+         x="289.82834"
+         y="319.30829"
          id="tspan6459-0" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="532.02423"
-       y="287.46277"
+       x="290.36301"
+       y="327.19568"
        id="text6488-4"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6490-2"
-         x="532.02423"
-         y="287.46277">association</tspan><tspan
+         x="290.36301"
+         y="327.19568">association</tspan><tspan
          sodipodi:role="line"
-         x="532.02423"
-         y="306.21277"
+         x="290.36301"
+         y="345.94568"
          id="tspan6492-2" /><tspan
          sodipodi:role="line"
-         x="532.02423"
-         y="324.96277"
+         x="290.36301"
+         y="364.69568"
          id="tspan6502-3" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="531.99493"
-       y="330.62906"
+       x="290.33371"
+       y="371.3877"
        id="text6518-8"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6520-8"
-         x="531.99493"
-         y="330.62906">dissociation</tspan><tspan
+         x="290.33371"
+         y="371.3877">dissociation</tspan><tspan
          sodipodi:role="line"
-         x="531.99493"
-         y="349.37906"
+         x="290.33371"
+         y="390.1377"
          id="tspan6522-7" /><tspan
          sodipodi:role="line"
-         x="531.99493"
-         y="368.12906"
+         x="290.33371"
+         y="408.8877"
          id="tspan6528-4" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="553.41632"
-       y="385.41241"
-       id="text6535-2"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6537-0"
-         x="553.41632"
-         y="385.41241">logical</tspan><tspan
-         sodipodi:role="line"
-         x="553.41632"
-         y="404.16241"
-         id="tspan6877">operators</tspan><tspan
-         sodipodi:role="line"
-         x="553.41632"
-         y="422.91241"
-         id="tspan6539-4" /><tspan
-         sodipodi:role="line"
-         x="553.41632"
-         y="441.66241"
-         id="tspan6541-1" /></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 220.96231,524.74666 57.67514,0"
-       id="path3787-4"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-2.6812787"
-       inkscape:transform-center-y="-62.257366" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-5-0"
-       width="48.039204"
-       height="38.039204"
-       x="172.74858"
-       y="505.72705"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-2"
-       width="30.042414"
-       height="30.042412"
-       x="278.18356"
-       y="509.72546"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#EmptyTriangleOutL-8)"
-       d="m 203.47818,633.92227 66.98964,0"
-       id="path3787-1-8"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="37.616287"
-       inkscape:export-ydpi="37.616287"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\stimulation.png" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-0"
-       width="30.042414"
-       height="30.042412"
-       x="278.18356"
-       y="618.90106"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.17016387;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 483.69445,670.17126 -42.96828,0"
-       id="path3787-4-3"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-1.9975674"
-       inkscape:transform-center-y="-31.428571" />
-    <circle
-       cy="670.31415"
-       cx="-427.90894"
-       style="fill:none;stroke:#000000;stroke-width:3.00825524;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path5879"
-       transform="scale(-1,1)"
-       r="11.995872" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-6"
-       width="30.042414"
-       height="30.042412"
-       x="380.79272"
-       y="655.29291"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#EmptyDiamondL-2)"
-       d="m 201.76595,579.33442 53.77576,0"
-       id="path3787"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="37.616287"
-       inkscape:export-ydpi="37.616287"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\modulation.png" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-9"
-       width="30.042414"
-       height="30.042412"
-       x="278.18356"
-       y="564.31323"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2.96675444;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 478.219,597.53037 -59.91687,0"
-       id="path3787-4-8"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-2.7854942"
-       inkscape:transform-center-y="-31.428571" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:4.08568096;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 418.42918,582.96533 0,29.13008"
-       id="path3787-4-8-1"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-31.428575"
-       inkscape:transform-center-y="1.3542431" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-8"
-       width="30.042414"
-       height="30.042412"
-       x="380.79272"
-       y="582.50916"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#EmptyTriangleOutL-8)"
-       d="m 203.47818,688.51002 66.98964,0"
-       id="path3787-1-8-2"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="37.616287"
-       inkscape:export-ydpi="37.616287"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\stimulation.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.17000008;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 242.58645,671.57486 0,33.87032"
-       id="path3787-4-8-1-7"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-21.479139"
-       inkscape:transform-center-y="1.5746171" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-28"
-       width="30.042414"
-       height="30.042412"
-       x="278.18356"
-       y="673.48883"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1)"
-       d="m 410.83064,524.74666 53.77576,0"
-       id="path3787-1"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="37.616287"
-       inkscape:export-ydpi="37.616287"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-5-1"
-       width="48.039204"
-       height="38.039204"
-       x="480.57104"
-       y="505.72705"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-08-2-7"
-       width="30.042414"
-       height="30.042412"
-       x="380.79272"
-       y="509.72546"
-       ry="0"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
-    <ellipse
-       ry="19.003086"
-       rx="19.003084"
-       cy="743.09778"
-       cx="399.76523"
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3815-1-6"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#999999"
-       x="385.35849"
-       y="748.10852"
-       id="text3817-6-8"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-       inkscape:export-xdpi="53.91"
-       inkscape:export-ydpi="53.91"><tspan
-         sodipodi:role="line"
-         id="tspan3819-3-6"
-         x="385.35849"
-         y="748.10852">AND</tspan></text>
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-1"
-       width="48.039204"
-       height="38.039204"
-       x="476.48981"
-       y="724.07819"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 418.13377,743.09779 57.67514,0"
-       id="path3787-4-1"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-2.6812787"
-       inkscape:transform-center-y="-62.257366" />
-    <rect
-       style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2985-88"
-       width="48.039204"
-       height="38.039204"
-       x="171.55275"
-       y="724.07819"
-       ry="9.8165531"
-       inkscape:export-xdpi="53.959999"
-       inkscape:export-ydpi="53.959999"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
-    <path
-       style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 278.18358,724.08238 32.03082,0 16,19.01541 -16,19.0154 -32.03082,0 z"
-       id="rect2985-87-9"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccc"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\tag.png"
-       inkscape:export-xdpi="54"
-       inkscape:export-ydpi="54" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
-       d="m 219.41289,743.09779 57.67514,0"
-       id="path3787-4-17"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-2.6812787"
-       inkscape:transform-center-y="-62.257366" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="192.16823"
-       y="498.90912"
-       id="text4397"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4399"
-         x="192.16823"
-         y="498.90912"
-         style="text-align:start;text-anchor:start">consumption</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="414.35721"
-       y="499.11786"
-       id="text4401"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4403"
-         x="414.35721"
-         y="499.11786"
-         style="text-align:start;text-anchor:start">production</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="112.3432"
-       y="584.91913"
-       id="text4405"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4407"
-         x="112.3432"
-         y="584.91913"
-         style="text-align:start;text-anchor:start">modulation</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="113.16351"
-       y="639.50702"
-       id="text4409"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4411"
-         x="113.16351"
-         y="639.50702"
-         style="text-align:start;text-anchor:start">stimulation</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="489.23529"
-       y="603.11511"
-       id="text4417"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4419"
-         x="489.23529"
-         y="603.11511">inhibition</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="489.82123"
-       y="674.5036"
-       id="text4421"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4423"
-         x="489.82123"
-         y="674.5036">catalysis</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="249.0981"
-       y="776.76196"
-       id="text4425"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4427"
-         x="249.0981"
-         y="776.76196"
-         style="text-align:center;text-anchor:middle">equivelance arc</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="452.39407"
-       y="776.76196"
-       id="text4429"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4431"
-         x="452.39407"
-         y="776.76196"
-         style="text-align:center;text-anchor:middle">logic arc</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text4474"
-       y="690.93561"
-       x="40.304138"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       xml:space="preserve"><tspan
-         style="text-align:start;text-anchor:start"
-         y="690.93561"
-         x="40.304138"
-         id="tspan4476"
-         sodipodi:role="line">necessary stimulation</tspan></text>
+    <g
+       id="g4636"
+       transform="translate(0,6.0609436e-6)">
+      <path
+         sodipodi:nodetypes="sssssssss"
+         inkscape:connector-curvature="0"
+         id="rect2985-31"
+         d="m 484.15715,123.83344 16.54218,0 c 5.2991,0 13.68148,4.13924 13.68148,9.28083 l 0,17.40162 c 0,5.14158 -10.44054,9.28083 -15.73964,9.28083 l -14.48402,0 c -5.2991,0 -15.73963,-4.13925 -15.73963,-9.28083 l 0,-17.40162 c 0,-5.14159 10.44053,-9.28083 15.73963,-9.28083 z"
+         style="fill:none;stroke:#000000;stroke-width:4.03670788;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text6011"
+         y="145.5724"
+         x="522.29602"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="145.5724"
+           x="522.29602"
+           id="tspan6013"
+           sodipodi:role="line">compartment</tspan><tspan
+           id="tspan6015"
+           y="164.3224"
+           x="522.29602"
+           sodipodi:role="line" /><tspan
+           id="tspan6037"
+           y="183.0724"
+           x="522.29602"
+           sodipodi:role="line" /></text>
+    </g>
+    <g
+       id="g4670"
+       transform="translate(0,8.4907019)">
+      <g
+         transform="translate(5.24293e-6,0.3034955)"
+         id="g4672">
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2985-9"
+           width="48.039204"
+           height="38.039204"
+           x="469.16528"
+           y="292.55234"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
+        <rect
+           style="fill:#ffffff;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2985-5"
+           width="48.039204"
+           height="38.039204"
+           x="465.59384"
+           y="288.98087"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
+      </g>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6488"
+         y="315.67447"
+         x="521.71008"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="315.67447"
+           x="521.71008"
+           id="tspan6490"
+           sodipodi:role="line">multimers</tspan><tspan
+           id="tspan6492"
+           y="334.42447"
+           x="521.71008"
+           sodipodi:role="line" /><tspan
+           id="tspan6502"
+           y="353.17447"
+           x="521.71008"
+           sodipodi:role="line" /></text>
+    </g>
+    <g
+       id="g4679"
+       transform="translate(0,9.4097998)">
+      <g
+         transform="translate(2.0501719e-5,0.3034955)"
+         id="g4676">
+        <path
+           style="fill:#999999;stroke:#ffffff;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           d="m 467.50659,366.93941 c 0.72407,4.71428 4.76635,8.30469 9.68946,8.30469 l 28.40624,0 c 4.92311,0 8.96539,-3.59041 9.68946,-8.30469 l -47.78516,0 z"
+           id="rect2985-7-5"
+           inkscape:connector-curvature="0" />
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2985-7"
+           width="48.039204"
+           height="38.039204"
+           x="467.37955"
+           y="337.92007"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
+      </g>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6518"
+         y="362.82788"
+         x="522.29602"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="362.82788"
+           x="522.29602"
+           id="tspan6520"
+           sodipodi:role="line">cloned</tspan><tspan
+           id="tspan6522"
+           y="381.57788"
+           x="522.29602"
+           sodipodi:role="line" /><tspan
+           id="tspan6528"
+           y="400.32788"
+           x="522.29602"
+           sodipodi:role="line" /></text>
+    </g>
+    <g
+       id="g4650"
+       transform="translate(0,5.4396276)">
+      <g
+         transform="translate(-0.61068726,0.3034955)"
+         id="g4658">
+        <g
+           id="g4624"
+           transform="translate(-0.35368395,31.444031)">
+          <ellipse
+             inkscape:export-ydpi="53.91"
+             inkscape:export-xdpi="53.91"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+             id="path3815"
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             cx="513.97241"
+             cy="197.20464"
+             rx="19.003084"
+             ry="19.003086" />
+          <text
+             inkscape:export-ydpi="53.91"
+             inkscape:export-xdpi="53.91"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+             sodipodi:linespacing="125%"
+             id="text3817"
+             y="202.2188"
+             x="503.22632"
+             style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="202.2188"
+               x="503.22632"
+               id="tspan3819"
+               sodipodi:role="line">OR</tspan></text>
+        </g>
+        <g
+           id="g4619"
+           transform="translate(1.4784692e-5,31.444031)">
+          <ellipse
+             inkscape:export-ydpi="53.91"
+             inkscape:export-xdpi="53.91"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+             id="path3815-1"
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             cx="470.40097"
+             cy="197.20464"
+             rx="19.003084"
+             ry="19.003086" />
+          <text
+             inkscape:export-ydpi="53.91"
+             inkscape:export-xdpi="53.91"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+             sodipodi:linespacing="125%"
+             id="text3817-6"
+             y="202.21538"
+             x="455.99423"
+             style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="202.21538"
+               x="455.99423"
+               id="tspan3819-3"
+               sodipodi:role="line">AND</tspan></text>
+        </g>
+        <g
+           id="g4629"
+           transform="translate(-0.25247461,30.28315)">
+          <ellipse
+             inkscape:export-ydpi="53.91"
+             inkscape:export-xdpi="53.91"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+             id="path3815-7"
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             cx="492.18671"
+             cy="234.47847"
+             rx="19.003084"
+             ry="19.003086" />
+          <text
+             inkscape:export-ydpi="53.91"
+             inkscape:export-xdpi="53.91"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+             sodipodi:linespacing="125%"
+             id="text3817-61"
+             y="239.49263"
+             x="477.01773"
+             style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="239.49263"
+               x="477.01773"
+               id="tspan3819-7"
+               sodipodi:role="line">NOT</tspan></text>
+        </g>
+      </g>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6535-2"
+         y="241.82309"
+         x="538.52802"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="241.82309"
+           x="538.52802"
+           id="tspan6537-0"
+           sodipodi:role="line">logical</tspan><tspan
+           id="tspan6877"
+           y="260.57309"
+           x="538.52802"
+           sodipodi:role="line">operators</tspan><tspan
+           id="tspan6539-4"
+           y="279.32309"
+           x="538.52802"
+           sodipodi:role="line" /><tspan
+           id="tspan6541-1"
+           y="298.07309"
+           x="538.52802"
+           sodipodi:role="line" /></text>
+    </g>
+    <g
+       id="g4643"
+       transform="translate(0,3.8741945)">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="522.2594"
+         y="186.282"
+         id="text4532"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4534"
+           x="522.2594"
+           y="186.282">submap</tspan><tspan
+           sodipodi:role="line"
+           x="522.2594"
+           y="205.032"
+           id="tspan4536" /><tspan
+           sodipodi:role="line"
+           x="522.2594"
+           y="223.782"
+           id="tspan4538" /></text>
+      <rect
+         ry="0"
+         y="165.72571"
+         x="467.89719"
+         height="37.003963"
+         width="47.003963"
+         id="rect4540"
+         style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.99603653;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g4688"
+       transform="translate(0,-1.4087036e-5)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text6535"
+         y="405.39246"
+         x="521.76868"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="405.39246"
+           x="521.76868"
+           id="tspan6537"
+           sodipodi:role="line">unit of information</tspan><tspan
+           id="tspan6539"
+           y="424.14246"
+           x="521.76868"
+           sodipodi:role="line" /><tspan
+           id="tspan6541"
+           y="442.89246"
+           x="521.76868"
+           sodipodi:role="line" /></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text6543"
+         y="442.35846"
+         x="522.2594"
+         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="442.35846"
+           x="522.2594"
+           id="tspan6545"
+           sodipodi:role="line">state variable</tspan></text>
+      <g
+         transform="translate(-1.0015859e-5,0.3034955)"
+         id="g4680">
+        <rect
+           style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2985-06-6"
+           width="48.039204"
+           height="38.039204"
+           x="467.37958"
+           y="399.95062"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
+        <g
+           id="g4653"
+           transform="translate(9.5367431e-6,0)">
+          <ellipse
+             ry="6.0524921"
+             rx="18.909636"
+             cy="436.47025"
+             cx="491.39917"
+             id="path5877"
+             style="fill:#ffffff;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none" />
+          <text
+             sodipodi:linespacing="125%"
+             id="text5858-9"
+             y="438.90555"
+             x="474.60577"
+             style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             xml:space="preserve"><tspan
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold'"
+               y="438.90555"
+               x="474.60577"
+               id="tspan5860-0"
+               sodipodi:role="line">val@var</tspan></text>
+        </g>
+        <g
+           id="g4648"
+           transform="translate(3.8146973e-5,8.8388347)">
+          <rect
+             ry="0"
+             y="384.79749"
+             x="471.9964"
+             height="11.662626"
+             width="38.805485"
+             id="rect5852"
+             style="fill:#ffffff;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none" />
+          <text
+             sodipodi:linespacing="125%"
+             id="text5858"
+             y="392.72351"
+             x="472.64865"
+             style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             xml:space="preserve"><tspan
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold'"
+               y="392.72351"
+               x="472.64865"
+               id="tspan5860"
+               sodipodi:role="line">pre:label</tspan></text>
+        </g>
+      </g>
+    </g>
   </g>
 </svg>
