@@ -814,6 +814,26 @@ var PromptMapTypeView = Backbone.View.extend({
   }
 });
 
+var PromptInvalidFileView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidFile-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidFile-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+    
+    $(document).off("click", "#prompt-invalidFile-confirm").on("click", "#prompt-invalidFile-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    
+    return this;
+  }
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   addMacromolecule: function (i) {
     var html = "<tr><td>"
@@ -1391,6 +1411,7 @@ module.exports = {
   FileSaveView: FileSaveView,
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
+  PromptInvalidFileView: PromptInvalidFileView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
