@@ -872,15 +872,15 @@ module.exports = function () {
       }
     });
 
-    // if the position of compund changes by repositioning its children's
+    // if the position of compound changes by repositioning its children
     // Note: position event for compound is not triggered in this case
     // edge case: when moving a complex, it triggers the position change of the children,
     // which then triggers the event below.
     var oldPos = {x: undefined, y: undefined};
     var currentPos = {x : 0, y : 0};
-    cy.on("position", "node:child[class!='complex']", function(event) {
+    cy.on("position", "node:child", function(event) {
       var parent = event.target.parent();
-      if(!parent.is("[class^='complex']")) {
+      if(!parent.is("[class^='complex'], [class^='compartment']")) {
         return;
       }
       currentPos = parent.position();
