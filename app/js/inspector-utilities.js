@@ -197,7 +197,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       // if at least one node is not a non-resizable parent node
       if( selectedEles.filter(':parent').length != selectedEles.length ) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
-                + "<input id='inspector-node-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
+                + "<input id='inspector-node-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
         if (nodeWidth) {
           html += " value='" + nodeWidth + "'";
@@ -206,7 +206,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         html += "/>" + "</td></tr>";
 
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Height</font>" + "</td><td style='padding-left: 5px;'>"
-                + "<input id='inspector-node-height' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
+                + "<input id='inspector-node-height' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
         if (nodeHeight) {
           html += " value='" + nodeHeight + "'";
@@ -248,7 +248,7 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "<input id='inspector-fill-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + backgroundColor
               + "'/>" + "</td></tr>";
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Width</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-border-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
+              + "<input id='inspector-border-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
       
       if(borderWidth){
         html += " value='" + parseFloat(borderWidth) + "'";
