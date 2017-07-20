@@ -302,11 +302,16 @@ ns.validateAnnotation = function(dbKey, resourceID, callback) {
 					callback(null, url);
 				}
 				else {
-					callback(new Error("Testing availability of url "+url+" failed. Request status: "+data.response.statusCode+" Error: "+data.error));
+					callback(new Error("Testing availability of url "+url+" failed. Request status: "+data.response.statusCode+". Error: "+data.error));
 				}
 			},
 			error: function(jqXHR, status, error) {
-				callback(new Error("Testing availability of url "+url+" failed. Request status: "+status+" Error: "+error));
+				var errorMsg = "Testing availability of url "+url+" failed. Request status: "+status+
+					". Error: "+error+".";
+				if(jqXHR.responseJSON && jqXHR.responseJSON.message) {
+					errorMsg += " identifiers.org message: "+jqXHR.responseJSON.message;
+				}
+				callback(new Error(errorMsg));
 			}
 	    });
 	}
@@ -333,7 +338,12 @@ ns.validateAnnotation = function(dbKey, resourceID, callback) {
 			    testURL(ns.IDToRetrieveURL(dbKey, resourceID), callback);
 			},
 			error: function(jqXHR, status, error) {
-				callback(new Error("Validating syntax of url "+validateURL+" failed. Request status: "+status+" Error: "+error));
+				var errorMsg = "Validating syntax of url "+validateURL+" failed. Request status: "+status+
+					". Error: "+error+".";
+				if(jqXHR.responseJSON && jqXHR.responseJSON.message) {
+					errorMsg += " identifiers.org message: "+jqXHR.responseJSON.message;
+				}
+				callback(new Error(errorMsg));
 			}
 		});
 	}
