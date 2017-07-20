@@ -175,7 +175,7 @@ ns.vocabulary = {
 
 ns.dbList = {
 	chebi: {
-		id: "chebi",
+		id: "CHEBI",
 		label: "ChEBI"
 	},
 	pubmed: {
@@ -199,7 +199,7 @@ ns.dbList = {
 		label: "Reactome"
 	},
 	go: {
-		id: "go",
+		id: "GO",
 		label: "Gene Ontology"
 	},
 	ec: {
@@ -346,7 +346,7 @@ ns.IDToValidateURL = function (dbKey, id) {
 
 ns.IDToRetrieveURL = function (dbKey, id) {
 	var dbID = ns.dbList[dbKey].id;
-	return identifiersURL + dbID + "/" + id;
+	return identifiersURL + dbID + ":" + id;
 };
 
 /* <******* backbone part *******> */
