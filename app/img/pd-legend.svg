@@ -10,11 +10,11 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="667.15094"
-   height="668.20734"
+   height="668.16705"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="pd-legend.2017.07.14.svg"
+   sodipodi:docname="pd-legend.2017.07.23.svg"
    inkscape:export-filename="C:\Users\ugur\Desktop\node-legend.2016.04.01.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
@@ -225,10 +225,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.9899495"
-     inkscape:cx="317.68124"
-     inkscape:cy="362.20041"
+     inkscape:cx="166.66344"
+     inkscape:cy="362.16011"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g5738"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -426,48 +426,52 @@
            x="177.57864"
            id="tspan4423"
            sodipodi:role="line">catalysis</tspan></text>
-      <rect
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
-         inkscape:export-ydpi="53.959999"
-         inkscape:export-xdpi="53.959999"
-         ry="9.8165531"
-         y="722.07819"
-         x="124.1442"
-         height="38.039204"
-         width="48.039204"
-         id="rect2985-88"
-         style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <path
-         inkscape:export-ydpi="54"
-         inkscape:export-xdpi="54"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\tag.png"
-         sodipodi:nodetypes="cccccc"
-         inkscape:connector-curvature="0"
-         id="rect2985-87-9"
-         d="m 230.77501,722.08238 32.03082,0 16,19.01541 -16,19.0154 -32.03082,0 z"
-         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1" />
-      <path
-         inkscape:transform-center-y="-62.257366"
-         inkscape:transform-center-x="-2.6812787"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-         inkscape:export-ydpi="38.150002"
-         inkscape:export-xdpi="38.150002"
-         inkscape:connector-curvature="0"
-         id="path3787-4-17"
-         d="m 172.00434,741.09779 57.67514,0"
-         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
-      <text
-         sodipodi:linespacing="125%"
-         id="text4425"
-         y="774.76196"
-         x="201.45883"
-         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           style="text-align:center;text-anchor:middle"
-           y="774.76196"
+      <g
+         id="g4440"
+         transform="translate(209.22038,0.20257568)">
+        <rect
+           style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2985-88"
+           width="48.039204"
+           height="38.039204"
+           x="124.1442"
+           y="722.07819"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
+        <path
+           style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
+           d="m 230.77501,722.08238 32.03082,0 16,19.01541 -16,19.0154 -32.03082,0 z"
+           id="rect2985-87-9"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccc"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\tag.png"
+           inkscape:export-xdpi="54"
+           inkscape:export-ydpi="54" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
+           d="m 172.00434,741.09779 57.67514,0"
+           id="path3787-4-17"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="38.150002"
+           inkscape:export-ydpi="38.150002"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+           inkscape:transform-center-x="-2.6812787"
+           inkscape:transform-center-y="-62.257366" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            x="201.45883"
-           id="tspan4427"
-           sodipodi:role="line">equivelance arc</tspan></text>
+           y="774.76196"
+           id="text4425"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan4427"
+             x="201.45883"
+             y="774.76196"
+             style="text-align:center;text-anchor:middle">equivelance arc</tspan></text>
+      </g>
       <path
          inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
          inkscape:export-ydpi="37.616287"
@@ -552,63 +556,67 @@
            x="349.09064"
            id="tspan4419"
            sodipodi:role="line">inhibition</tspan></text>
-      <ellipse
-         inkscape:export-ydpi="53.91"
-         inkscape:export-xdpi="53.91"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-         id="path3815-1-6"
-         style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         cx="352.38727"
-         cy="741.26007"
-         rx="19.003084"
-         ry="19.003086" />
-      <text
-         inkscape:export-ydpi="53.91"
-         inkscape:export-xdpi="53.91"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
-         sodipodi:linespacing="125%"
-         id="text3817-6-8"
-         y="746.27081"
-         x="337.98053"
-         style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#999999"
-         xml:space="preserve"><tspan
-           y="746.27081"
+      <g
+         id="g4447"
+         transform="translate(-216.31402,-0.20257568)">
+        <ellipse
+           ry="19.003086"
+           rx="19.003084"
+           cy="741.26007"
+           cx="352.38727"
+           style="fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="path3815-1-6"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+           inkscape:export-xdpi="53.91"
+           inkscape:export-ydpi="53.91" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:14px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#999999"
            x="337.98053"
-           id="tspan3819-3-6"
-           sodipodi:role="line">AND</tspan></text>
-      <rect
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
-         inkscape:export-ydpi="53.959999"
-         inkscape:export-xdpi="53.959999"
-         ry="9.8165531"
-         y="722.24048"
-         x="429.11185"
-         height="38.039204"
-         width="48.039204"
-         id="rect2985-1"
-         style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <path
-         inkscape:transform-center-y="-62.257366"
-         inkscape:transform-center-x="-2.6812787"
-         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-         inkscape:export-ydpi="38.150002"
-         inkscape:export-xdpi="38.150002"
-         inkscape:connector-curvature="0"
-         id="path3787-4-1"
-         d="m 370.7558,741.2601 57.67514,0"
-         style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
-      <text
-         sodipodi:linespacing="125%"
-         id="text4429"
-         y="774.92426"
-         x="404.78174"
-         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           style="text-align:center;text-anchor:middle"
-           y="774.92426"
+           y="746.27081"
+           id="text3817-6-8"
+           sodipodi:linespacing="125%"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\and2.png"
+           inkscape:export-xdpi="53.91"
+           inkscape:export-ydpi="53.91"><tspan
+             sodipodi:role="line"
+             id="tspan3819-3-6"
+             x="337.98053"
+             y="746.27081">AND</tspan></text>
+        <rect
+           style="fill:none;stroke:#999999;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2985-1"
+           width="48.039204"
+           height="38.039204"
+           x="429.11185"
+           y="722.24048"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
+           d="m 370.7558,741.2601 57.67514,0"
+           id="path3787-4-1"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="38.150002"
+           inkscape:export-ydpi="38.150002"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+           inkscape:transform-center-x="-2.6812787"
+           inkscape:transform-center-y="-62.257366" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            x="404.78174"
-           id="tspan4431"
-           sodipodi:role="line">logic arc</tspan></text>
+           y="774.92426"
+           id="text4429"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan4431"
+             x="404.78174"
+             y="774.92426"
+             style="text-align:center;text-anchor:middle">logic arc</tspan></text>
+      </g>
       <path
          inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\stimulation.png"
          inkscape:export-ydpi="37.616287"
