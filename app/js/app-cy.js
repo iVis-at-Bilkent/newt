@@ -720,11 +720,11 @@ module.exports = function () {
             else{
               chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
             }
-              if (nodeType === 'process')
-              {
-                  var newEle = cy.nodes()[cy.nodes().length - 1];
-                  chise.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
-              }
+            if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+            {
+                var newEle = cy.nodes()[cy.nodes().length - 1];
+                chise.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
+            }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
             // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
