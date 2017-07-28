@@ -170,7 +170,7 @@ module.exports = function () {
         selector: 'node[thickBorder]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.showAndPerformIncrementalLayout(cyTarget);   
+          appUtilities.showHiddenNeighbors(cyTarget);
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       },
