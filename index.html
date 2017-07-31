@@ -708,7 +708,7 @@
             <tbody>
             <tr>
             <td>
-            <span class="add-on layout-text"> Node Repulsion </span>
+            <span class="add-on layout-text" title="Node repulsion (non overlapping) multiplier"> Node Repulsion </span>
             </td>
             <td>
             <input id="node-repulsion" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= nodeRepulsion %> >
@@ -717,7 +717,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Ideal Edge Length </span>
+            <span class="add-on layout-text" title="Ideal (intra-graph) edge length"> Ideal Edge Length </span>
             </td>
             <td>
             <input id="ideal-edge-length" type="text" min="5" class="sbgn-input-small layout-text integer-input" value= <%= idealEdgeLength %> >
@@ -726,7 +726,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Edge Elasticity </span>
+            <span class="add-on layout-text" title="Divisor to compute edge forces"> Edge Elasticity </span>
             </td>
             <td>
             <input id="edge-elasticity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= edgeElasticity %> >
@@ -735,7 +735,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Nesting Factor </span>
+            <span class="add-on layout-text" title="Nesting factor (multiplier) to compute ideal edge length for inter-graph edges"> Nesting Factor </span>
             </td>
             <td>
             <input id="nesting-factor" type="number" min="0" class="sbgn-input-small layout-text" value= <%= nestingFactor %> >
@@ -744,7 +744,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Gravity </span>
+            <span class="add-on layout-text" title="Gravity force (constant)"> Gravity </span>
             </td>
             <td>
             <input id="gravity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravity %> >
@@ -753,7 +753,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Gravity Range   </span>
+            <span class="add-on layout-text" title="Gravity range (constant)"> Gravity Range   </span>
             </td>
             <td>
             <input id="gravity-range" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityRange %> >
@@ -762,7 +762,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Compound Gravity  </span>
+            <span class="add-on layout-text" title="Gravity force (constant) for compounds"> Compound Gravity  </span>
             </td>
             <td>
             <input id="gravity-compound" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityCompound %> >
@@ -771,7 +771,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Compound Gravity Range </span>
+            <span class="add-on layout-text" title="Gravity range (constant) for compounds"> Compound Gravity Range </span>
             </td>
             <td>
             <input id="gravity-range-compound" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityRangeCompound %> >
@@ -780,7 +780,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Number of Iterations </span>
+            <span class="add-on layout-text" title="Maximum number of iterations to perform"> Number of Iterations </span>
             </td>
             <td>
             <input id="num-iter" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= numIter %> >
@@ -789,7 +789,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Tiling Vertical Padding </span>
+            <span class="add-on layout-text" title="Amount of vertical space to put between degree zero nodes during tiling"> Tiling Vertical Padding </span>
             </td>
             <td>
             <input id="tiling-padding-vertical" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingVertical %> >
@@ -798,7 +798,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Tiling Horizontal Padding </span>
+            <span class="add-on layout-text" title="Amount of horizontal space to put between degree zero nodes during tiling"> Tiling Horizontal Padding </span>
             </td>
             <td>
             <input id="tiling-padding-horizontal" type="text" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingHorizontal %> >
@@ -807,7 +807,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Tile Disconnected </span>
+            <span class="add-on layout-text" title="Whether to tile disconnected nodes"> Tile Disconnected </span>
             </td>
 
             <td>
@@ -817,7 +817,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Animate </span>
+            <span class="add-on layout-text" title="Whether to perform animation during layout"> Animate </span>
             </td>
 
             <td>
@@ -826,7 +826,7 @@
             </tr>
             <tr>
             <td>
-            <span class="add-on layout-text"> Incremental </span>
+            <span class="add-on layout-text" title="Whether to enable incremental mode"> Incremental </span>
             </td>
 
             <td>
@@ -836,7 +836,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Incremental Cooling Factor </span>
+            <span class="add-on layout-text" title="Initial cooling factor for incremental layout"> Incremental Cooling Factor </span>
             </td>
             <td>
             <input id="incremental-cooling-factor" type="number" min="0" class="sbgn-input-small layout-text" value= <%= initialEnergyOnIncremental %> >
@@ -845,7 +845,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Improve Flow </span>
+            <span class="add-on layout-text" title="Whether to adjust port orientations to improve flow"> Improve Flow </span>
             </td>
             <td>
             <input id="improve-flow" type="checkbox" class="layout-text" <% if (improveFlow){ %> checked<%}%>>

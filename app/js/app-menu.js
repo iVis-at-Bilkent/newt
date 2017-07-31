@@ -268,7 +268,7 @@ module.exports = function () {
     });
     
     $("#hide-selected, #hide-selected-icon").click(function(e) {
-      chise.hideNodesSmart(cy.nodes(":selected"));
+      appUtilities.hideNodesSmart(cy.nodes(":selected"));
       $('#inspector-palette-tab a').tab('show');
     });
 
@@ -279,7 +279,7 @@ module.exports = function () {
     });
 
     $("#show-hidden-neighbors-of-selected").click(function(e) {
-      appUtilities.showAndPerformIncrementalLayout(cy.elements(':selected'));
+      appUtilities.showHiddenNeighbors(cy.elements(':selected'));
     });
 
     $("#show-all").click(function (e) {

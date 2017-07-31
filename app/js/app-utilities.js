@@ -260,10 +260,33 @@ appUtilities.disableDragAndDropMode = function() {
   cy.autounselectify(false);
 };
 
-// Show given eles and perform incremental layout afterward
-appUtilities.showAndPerformIncrementalLayout = function(eles) {
-  var extendedList = chise.elementUtilities.extendNodeList(eles);
-  chise.showAndPerformLayout(extendedList, this.triggerIncrementalLayout.bind(this));
+// Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
+appUtilities.showHiddenNeighbors = function(eles) {
+    var extendedList = chise.elementUtilities.extendNodeList(eles);
+    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+    {
+        //Put them near node, show and perform incremental layout
+        chise.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this));
+    }
+    else
+    {
+        //Just show them
+        chise.showEles(extendedList);
+    }
+};
+
+// Hides nodes and perform incremental layout afterward if Rearrange option is checked
+appUtilities.hideNodesSmart = function(eles) {
+    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+    {
+        //Put them near node and perform incremental layout
+        chise.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this));
+    }
+    else
+    {
+        //Just show them
+        chise.hideNodesSmart(eles);
+    }
 };
 
 appUtilities.mapColorSchemes = mapColorSchemes = {
