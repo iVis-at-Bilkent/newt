@@ -456,6 +456,12 @@ module.exports = function () {
       chise.saveAsJpg(filename); // the default filename is 'network.jpg'
     });
 
+    $("#save-as-svg").click(function (evt) {
+      var filename = document.getElementById('file-name').innerHTML;
+      filename = filename.substring(0,filename.lastIndexOf('.')) + ".svg";
+      chise.saveAsSvg(filename); // the default filename is 'network.jpg'
+    });
+
     //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
     $("#save-as-sbgnml, #save-icon").click(function (evt) {
       //var filename = document.getElementById('file-name').innerHTML;
