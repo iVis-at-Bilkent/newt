@@ -233,7 +233,7 @@ body {
     padding-left: 15px;
     padding-right: 5px;
     margin-top: 8px;
-    float:left;
+    float:right;
     color: #0B9BCD !important;
 }
 
@@ -242,8 +242,8 @@ body {
 }
 
 .input-file{
-    float:right;
-    text-align: right;
+    float:center;
+    text-align: center;
     color: #0B9BCD !important;
     font-size: 12px !important;
     padding-top: 10px !important;
