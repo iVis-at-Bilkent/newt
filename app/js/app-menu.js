@@ -74,7 +74,7 @@ module.exports = function () {
     // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
-      loadSample('neuronal_muscle_signalling.xml');
+      loadSample('neuronal_muscle_signaling.xml');
       keyboardShortcuts();
     }, 100);
   });
@@ -233,15 +233,19 @@ module.exports = function () {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signalling.xml',
-      "#load-sample2" : 'CaM-CaMK_dependent_signaling_to_the_nucleus.xml',
-      "#load-sample3" : 'activated_stat1alpha_induction_of_the_irf1_gene.xml',
-      "#load-sample4" : 'glycolysis.xml',
-      "#load-sample5" : 'mapk_cascade.xml',
-      "#load-sample6" : 'polyq_proteins_interference.xml',
-      "#load-sample7" : 'insulin-like_growth_factor_signaling.xml',
-      "#load-sample8" : 'atm_mediated_phosphorylation_of_repair_proteins.xml',
-      "#load-sample9" : 'vitamins_b6_activation_to_pyridoxal_phosphate.xml'
+      "#load-sample1" : 'neuronal_muscle_signaling.xml',
+      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.xml',
+      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.xml',
+      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.xml',
+      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.xml',
+      "#load-sample6" : 'insulin-like_growth_factor_signaling.xml',
+      "#load-sample7" : 'polyq_proteins_interference.xml',
+      "#load-sample8" : 'glycolysis.xml',
+      "#load-sample9" : 'mapk_cascade.xml',
+      "#load-sample10" : 'transforming_growth_factor_beta_signaling.xml',
+      "#load-sample11" : 'repressilator.xml',
+      "#load-sample12" : 'epidermal_growth_factor_receptor.xml',
+      "#load-sample13" : 'regulation_of_tgfbeta-induced_metastasis.xml'
     };
 
     for ( var selector in selectorToSampleFileName ) {

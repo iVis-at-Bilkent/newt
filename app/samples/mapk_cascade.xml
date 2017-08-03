@@ -1,277 +1,403 @@
-<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<sbgn xmlns='http://sbgn.org/libsbgn/0.3'>
-<map language='process description' id='mapk_cascade.xml'>
-<extension>
-<renderInformation id='renderInformation' programName='sbgnviz' programVersion='3.1.0' backgroundColor='#ffffff' xmlns='http://www.sbml.org/sbml/level3/version1/render/version1'>
-<listOfColorDefinitions>
-<colorDefinition id='color_1' value='#ffffff7f' />
-<colorDefinition id='color_2' value='#555555' />
-</listOfColorDefinitions>
-<listOfStyles>
-<style id='nodeffffff0.55551.2511normalnormalHelvetica' idList='glyph4 glyph5 glyph7 glyph6 glyph10 glyph9 glyph2 glyph18 glyph16 glyph15 glyph17 glyph12 glyph19 glyph20 glyph1 glyph0 glyph24 glyph25 glyph23 glyph22 glyph21'>
-<g fontSize='11' fontFamily='Helvetica' fontWeight='normal' fontStyle='normal' stroke='color_2' strokeWidth='1.25' fill='color_1' />
-</style>
-<style id='nodeffffff0.55551.25' idList='glyph11 glyph3 glyph8 glyph13 glyph14'>
-<g stroke='color_2' strokeWidth='1.25' fill='color_1' />
-</style>
-<style id='edge5551.25' idList='a314916d-e011-442b-ac8b-da528cf85f65 _9c76b735-3f24-4bd3-bf4e-56c21def76f9 _25233365-46be-4879-900f-44b6577b3b9d de70b4d6-e11f-4ed3-8023-1077e02dd5bb eb2dc84b-bdf8-48f6-9c13-abe59f551b71 _9cd5d7f5-e95f-4f32-becc-d831c0c56df1 cfb33c55-c46a-4289-af68-91b6ee3ea3a7 fe454f3c-6669-4aa3-8e97-b643e9c10a51 _4f028649-f33e-41f0-be0c-95a74f91b757 _7b6dd56d-d137-4036-8122-f67231fe6313 dcc060a2-1cd0-4c5e-a5ed-dd543413ba7d a15dee56-c1af-4790-876b-65514dded91f f57954b4-59b8-4e38-9464-d1fb29581904 _8b9f768b-4dbe-4cd8-8bab-26fd536c6c79 ea05bb96-b06a-47e1-bfd1-0c5219f1c4ea c135a3bc-e2aa-496d-b22e-cc907057d7da ade4090b-ed76-4895-9504-f8905cff3887 _5a929238-0081-4f94-ab1c-b96d14846112 _8873527d-d72d-46fa-8114-5c8d04a46bf2 c3a12bf6-e73a-426b-a3d0-a96a16a83680 a2624829-3a8a-4439-97fb-8f625911bfe8 _370fac1e-6c43-4691-8857-516f78e9e5d0 _99e214cb-608e-4062-aa86-e676d89a117e _93ebb8f5-639b-43c8-9326-4b03be3668af _2c259b8c-8dc3-417d-a869-f2431e47a04f _3fe1e36d-1aa1-4d8c-998b-aaaafeef53f5 _7b6f3815-6a57-4d98-9650-27eea17a7925'>
-<g stroke='color_2' strokeWidth='1.25' />
-</style>
-</listOfStyles>
-</renderInformation>
-</extension>
-<glyph id='glyph4' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='132.59898679973332' x='288.1589165885067' w='60' h='60' />
-</glyph>
-<glyph id='glyph5' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='323.3425311332147' x='338.7150698032765' w='60' h='60' />
-</glyph>
-<glyph id='glyph7' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='73.68144699737059' x='393.4601247086921' w='60' h='60' />
-</glyph>
-<glyph id='glyph6' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='10.161697186467563' x='484.82865648041616' w='60' h='60' />
-</glyph>
-<glyph id='glyph10' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='380.5318087906144' x='558.775693273037' w='60' h='60' />
-</glyph>
-<glyph id='glyph9' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='322.2241646137692' x='467.6859428037237' w='60' h='60' />
-</glyph>
-<glyph id='glyph2' class='macromolecule' >
-<label text='RAF' />
-<bbox y='210.2873064873903' x='417.18302213209245' w='100' h='60' />
-<glyph id='glyph2_0' class='state variable'>
-<state value='P' />
-<bbox y='259.2873064873903' x='454.68302213209245' w='25.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph18' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='254.06574468684062' x='914.040949176361' w='60' h='60' />
-</glyph>
-<glyph id='glyph16' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='452.44467100584745' x='659.1314585303767' w='60' h='60' />
-</glyph>
-<glyph id='glyph15' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='452.5246268128043' x='852.8443326294546' w='60' h='60' />
-</glyph>
-<glyph id='glyph17' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='190.58540441014577' x='729.9810408902129' w='60' h='60' />
-</glyph>
-<glyph id='glyph12' class='macromolecule' >
-<label text='MEK' />
-<bbox y='322.770069365478' x='672.5240088762721' w='100' h='60' />
-<glyph id='glyph12_0' class='state variable'>
-<state value='2P' />
-<bbox y='371.770069365478' x='706.5240088762721' w='32.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph19' class='macromolecule' >
-<label text='ERK' />
-<bbox y='158.01104320899924' x='837.0312955929699' w='100' h='60' />
-<glyph id='glyph19_0' class='state variable'>
-<state value='2P' />
-<bbox y='207.01104320899924' x='846.0312955929699' w='32.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph20' class='tag' >
-<label text='ERK' />
-<bbox y='54.668527273971904' x='921.0567176507191' w='100' h='60' />
-</glyph>
-<glyph id='glyph1' class='macromolecule' >
-<label text='RAS' />
-<bbox y='206.18933213306605' x='163.55056132706864' w='100' h='60' />
-<glyph id='glyph1_0' class='state variable'>
-<state value='active' />
-<bbox y='253.18933213306605' x='188.55056132706864' w='50.0' h='26.0' />
-</glyph>
-</glyph>
-<glyph id='glyph0' class='tag' >
-<label text='RAS' />
-<bbox y='170.02587224541605' x='10.134389512288635' w='100' h='60' />
-</glyph>
-<glyph id='glyph24' class='macromolecule' >
-<label text='MEK' />
-<bbox y='186.36466489184716' x='557.5584862953788' w='100' h='60' />
-<glyph id='glyph24_0' class='state variable'>
-<state value='P' />
-<bbox y='235.36466489184716' x='570.0584862953788' w='25.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph11' class='process' >
-<bbox y='303.4502085225929' x='582.6185230656652' w='20' h='20' />
-</glyph>
-<glyph id='glyph25' class='macromolecule' >
-<label text='RAF' />
-<bbox y='308.29565236558483' x='197.4431965319236' w='100' h='60' />
-<glyph id='glyph25_0' class='state variable'>
-<state />
-<bbox y='357.29565236558483' x='237.4431965319236' w='20.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph3' class='process' >
-<bbox y='249.13454532846924' x='327.77918025112933' w='20' h='20' />
-</glyph>
-<glyph id='glyph23' class='macromolecule' >
-<label text='MEK' />
-<bbox y='63.61445750305336' x='581.3665810796247' w='100' h='60' />
-<glyph id='glyph23_0' class='state variable'>
-<state />
-<bbox y='112.61445750305336' x='596.3665810796247' w='20.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph8' class='process' >
-<bbox y='132.01290840429613' x='506.9252315842282' w='20' h='20' />
-</glyph>
-<glyph id='glyph22' class='macromolecule' >
-<label text='ERK' />
-<bbox y='527.4534904328991' x='736.1602768573573' w='100' h='60' />
-<glyph id='glyph22_0' class='state variable'>
-<state />
-<bbox y='576.4534904328991' x='751.1602768573573' w='20.0' h='22.0' />
-</glyph>
-</glyph>
-<glyph id='glyph13' class='process' >
-<bbox y='274.87165823750354' x='834.4300288939096' w='20' h='20' />
-</glyph>
-<glyph id='glyph14' class='process' >
-<bbox y='443.1501505501591' x='773.7402046808443' w='20' h='20' />
-</glyph>
-<glyph id='glyph21' class='macromolecule' >
-<label text='ERK' />
-<bbox y='348.5680972732039' x='822.1517334162531' w='100' h='60' />
-<glyph id='glyph21_0' class='state variable'>
-<state value='P' />
-<bbox y='397.5680972732039' x='834.6517334162531' w='25.0' h='22.0' />
-</glyph>
-</glyph>
-<arc id='a314916d-e011-442b-ac8b-da528cf85f65' target='glyph2' source='glyph3' class='production'>
-<start y='257.6052552783842' x='348.27918025112933'/>
-<end y='248.00277845541774' x='414.2091237798568'/>
-</arc>
-<arc id='_9c76b735-3f24-4bd3-bf4e-56c21def76f9' target='glyph3' source='glyph4' class='consumption'>
-<start y='192.97788886756575' x='324.3332432038589'/>
-<end y='248.63454532846924' x='335.6451192730058'/>
-</arc>
-<arc id='_25233365-46be-4879-900f-44b6577b3b9d' target='glyph5' source='glyph3' class='production'>
-<start y='269.63454532846924' x='341.2271558927143'/>
-<end y='321.5146482715581' x='358.26347315278014'/>
-</arc>
-<arc id='de70b4d6-e11f-4ed3-8023-1077e02dd5bb' target='glyph3' source='glyph1' class='catalysis'>
-<start y='245.51675826404622' x='264.05056132706864'/>
-<end y='256.7411060544464' x='324.82076260827057'/>
-</arc>
-<arc id='eb2dc84b-bdf8-48f6-9c13-abe59f551b71' target='glyph8' source='glyph7' class='consumption'>
-<start y='115.44422739527724' x='452.14177384730726'/>
-<end y='137.70669875850086' x='506.4252315842282'/>
-</arc>
-<arc id='_9cd5d7f5-e95f-4f32-becc-d831c0c56df1' target='glyph6' source='glyph8' class='production'>
-<start y='131.51290840429613' x='516.7090923913133'/>
-<end y='73.65460197614968' x='515.5180973765702'/>
-</arc>
-<arc id='cfb33c55-c46a-4289-af68-91b6ee3ea3a7' target='glyph11' source='glyph10' class='consumption'>
-<start y='379.5560665203112' x='590.0018216528377'/>
-<end y='323.9502085225929' x='592.202896286634'/>
-</arc>
-<arc id='fe454f3c-6669-4aa3-8e97-b643e9c10a51' target='glyph12' source='glyph11' class='production'>
-<start y='316.62835405104437' x='603.1185230656652'/>
-<end y='336.76045087762907' x='669.6312156993906'/>
-</arc>
-<arc id='_4f028649-f33e-41f0-be0c-95a74f91b757' target='glyph9' source='glyph11' class='production'>
-<start y='317.7387945679105' x='582.1185230656652'/>
-<end y='339.5573447746014' x='528.6988703527647'/>
-</arc>
-<arc id='_7b6dd56d-d137-4036-8122-f67231fe6313' target='glyph11' source='glyph2' class='catalysis'>
-<start y='268.2930865811297' x='515.1980537584135'/>
-<end y='306.0662847381793' x='579.9590173190561'/>
-</arc>
-<arc id='dcc060a2-1cd0-4c5e-a5ed-dd543413ba7d' target='glyph8' source='glyph2' class='catalysis'>
-<start y='209.7873064873903' x='482.6207904408574'/>
-<end y='154.7434565925472' x='510.48158393262855'/>
-</arc>
-<arc id='a15dee56-c1af-4790-876b-65514dded91f' target='glyph19' source='glyph13' class='production'>
-<start y='274.37165823750354' x='849.0481422541076'/>
-<end y='230.62509901918955' x='868.2887679292305'/>
-</arc>
-<arc id='f57954b4-59b8-4e38-9464-d1fb29581904' target='glyph18' source='glyph13' class='production'>
-<start y='284.7867067858156' x='854.9300288939096'/>
-<end y='284.3367714005033' x='910.5420455447422'/>
-</arc>
-<arc id='_8b9f768b-4dbe-4cd8-8bab-26fd536c6c79' target='glyph16' source='glyph14' class='production'>
-<start y='456.4013559333858' x='773.2402046808443'/>
-<end y='472.5359136862538' x='721.1324980194527'/>
-</arc>
-<arc id='ea05bb96-b06a-47e1-bfd1-0c5219f1c4ea' target='glyph14' source='glyph15' class='consumption'>
-<start y='473.7150516075572' x='853.122431870871'/>
-<end y='456.26235189981134' x='794.2402046808443'/>
-</arc>
-<arc id='c135a3bc-e2aa-496d-b22e-cc907057d7da' target='glyph13' source='glyph17' class='consumption'>
-<start y='239.3624243404661' x='784.6472834605022'/>
-<end y='276.878600166071' x='833.9300288939096'/>
-</arc>
-<arc id='ade4090b-ed76-4895-9504-f8905cff3887' target='glyph13' source='glyph12' class='catalysis'>
-<start y='325.61357295613936' x='771.2812675497637'/>
-<end y='291.93635195375765' x='831.7459516189803'/>
-</arc>
-<arc id='_5a929238-0081-4f94-ab1c-b96d14846112' target='glyph14' source='glyph12' class='catalysis'>
-<start y='383.270069365478' x='741.1242525700816'/>
-<end y='440.5157435632688' x='776.0351866846827'/>
-</arc>
-<arc id='_8873527d-d72d-46fa-8114-5c8d04a46bf2' target='glyph20' source='glyph19' class='equivalence arc'>
-<start y='157.51104320899924' x='911.830143865375'/>
-<end y='115.2935272739719' x='946.1562347542467'/>
-</arc>
-<arc id='c3a12bf6-e73a-426b-a3d0-a96a16a83680' target='glyph0' source='glyph1' class='equivalence arc'>
-<start y='224.2854063426926' x='163.05056132706864'/>
-<end y='209.2604824505832' x='99.31035747220899'/>
-</arc>
-<arc id='a2624829-3a8a-4439-97fb-8f625911bfe8' target='glyph24' source='glyph8' class='production'>
-<start y='150.62667214484992' x='527.4252315842282'/>
-<end y='184.27905168740983' x='568.4467868346118'/>
-</arc>
-<arc id='_370fac1e-6c43-4691-8857-516f78e9e5d0' target='glyph11' source='glyph24' class='consumption'>
-<start y='246.86466489184716' x='602.8650081371953'/>
-<end y='302.9502085225929' x='594.2343106283184'/>
-</arc>
-<arc id='_99e214cb-608e-4062-aa86-e676d89a117e' target='glyph3' source='glyph25' class='consumption'>
-<start y='307.79565236558483' x='282.2487671784274'/>
-<end y='268.3356586574981' x='327.27918025112933'/>
-</arc>
-<arc id='_93ebb8f5-639b-43c8-9326-4b03be3668af' target='glyph8' source='glyph23' class='consumption'>
-<start y='114.9714388851287' x='580.8665810796247'/>
-<end y='137.57234791891412' x='527.4252315842282'/>
-</arc>
-<arc id='_2c259b8c-8dc3-417d-a869-f2431e47a04f' target='glyph14' source='glyph22' class='consumption'>
-<start y='526.9534904328991' x='785.4526082298078'/>
-<end y='463.6501505501591' x='783.983828306722'/>
-</arc>
-<arc id='_3fe1e36d-1aa1-4d8c-998b-aaaafeef53f5' target='glyph13' source='glyph21' class='consumption'>
-<start y='348.0680972732039' x='863.1277833426616'/>
-<end y='295.37165823750354' x='847.5366346569493'/>
-</arc>
-<arc id='_7b6f3815-6a57-4d98-9650-27eea17a7925' target='glyph21' source='glyph14' class='production'>
-<start y='444.2925776678751' x='794.2402046808443'/>
-<end y='412.0846238476488' x='832.4203607582247'/>
-</arc>
-</map>
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn 
+  xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="mapk_cascade.sbgn.txt" language="unknown">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+        </listOfColorDefinitions>
+        <listOfStyles>
+          <style id="nodeffffff0.55551.2514normalnormalHelvetica" idList="glyph4 glyph5 glyph7 glyph6 glyph10 glyph9 glyph2 glyph18 glyph16 glyph15 glyph17 glyph12 glyph19 glyph20 glyph1 glyph0 glyph24 glyph25 glyph23 glyph22 glyph21">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1"/>
+          </style>
+          <style id="nodeffffff0.55551.25" idList="glyph11 glyph3 glyph8 glyph13 glyph14">
+            <g stroke="color_2" strokeWidth="1.25" fill="color_1"/>
+          </style>
+          <style id="edge5551.25" idList="71683490-4e4e-4d59-ae45-f02b1207cfe2 80d68006-906e-4f82-aca0-6dc0dfa5ddf9 a387f0f2-0df9-4373-a35c-35babc7c69ce 6f654e59-3ebb-46c3-ad76-13f125b0ffb7 a21961f1-f7d0-4455-9f7c-5c6b8cd7b947 5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6 aee723a4-2d8a-4480-8cdf-882601705ac0 6b514356-6708-4b90-881c-323c091dfe0d ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783 69eb919d-6711-4187-ba2c-d60d53b2654b a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af 61110232-ba80-4615-936f-bc21c393870c 7ada8b74-27e7-4e68-9c3d-bc406684ccb1 7d519bfc-0843-408a-95a0-34d0f7f17168 fc9c53a3-8627-41cf-9972-0bfa282538a0 0e18c34a-d3bc-4af5-b973-af8d56f4ec66 72badb00-9293-4106-9edc-dd830d41c62d 31a70df8-a7f0-4e03-8cf1-a6ced51843ea 7a83e4b9-1830-4fef-9a89-1be72e62f78a 47a398c9-b511-467a-9820-8c5844d9a9c8 80054f2d-3fd0-4dbd-b3b4-906a529e3ab7 6926ebfd-f318-4081-916b-2954f17ea6f5 e5e14893-b88e-4930-9b85-9938c3671ea4 4bb4836b-50b0-473e-8359-dda084e66be4 22d6d63b-53d4-40b6-8c82-86e65e0cb25b be003e1b-ca84-4eb1-83f9-a6de90fb0f8a f0c8409c-d838-4830-9fc3-edc71afbf61d">
+            <g stroke="color_2" strokeWidth="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+    </extension>
+    <glyph id="glyph4" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="282.5" y="179.5" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph5" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="442.5" y="179.5" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph7" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="170.5" y="327.09897128583543" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph6" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="341.5" y="327.09897128583543" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph10" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="409.02408963222445" y="327.09897128583543" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph9" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="592.2572328187581" y="327.09897128583543" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph2" class="macromolecule">
+      <label text="RAF"/>
+      <bbox x="468.27129399053865" y="134.5" w="70" h="35"/>
+      <glyph id="glyph2_0" class="state variable">
+        <state value="P"/>
+        <bbox x="506.52129399053865" y="158.5" w="25" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph18" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="590.5" y="492.5" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph16" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="328.5" y="492.5" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph15" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="138.5" y="492.5" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph17" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="400.5" y="492.5" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph12" class="macromolecule">
+      <label text="MEK"/>
+      <bbox x="607.8763427766252" y="262.65371426741484" w="70" h="35"/>
+      <glyph id="glyph12_0" class="state variable">
+        <state value="2P"/>
+        <bbox x="645.0763427766252" y="286.65371426741484" w="32" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph19" class="macromolecule">
+      <label text="ERK"/>
+      <bbox x="609.511632895616" y="420.5" w="70" h="35"/>
+      <glyph id="glyph19_0" class="state variable">
+        <state value="2P"/>
+        <bbox x="646.711632895616" y="444.5" w="32" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph20" class="tag">
+      <label text="ERK"/>
+      <bbox x="755.2777022450305" y="420.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph1" class="macromolecule">
+      <label text="RAS"/>
+      <bbox x="345" y="42.5" w="70" h="35"/>
+      <glyph id="glyph1_0" class="state variable">
+        <state value="active"/>
+        <bbox x="379.5" y="64.5" w="50" h="26"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph0" class="tag">
+      <label text="RAS"/>
+      <bbox x="223" y="42.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph24" class="macromolecule">
+      <label text="MEK"/>
+      <bbox x="357.7299750958073" y="262.65371426741484" w="70" h="35"/>
+      <glyph id="glyph24_0" class="state variable">
+        <state value="P"/>
+        <bbox x="395.9799750958073" y="286.65371426741484" w="25" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph11" class="process">
+      <bbox x="502.9151999743807" y="272.65371426741484" w="15" h="15"/>
+      <port id="glyph11.1" x="495.4151999743807" y="280.15371426741484"/>
+      <port id="glyph11.2" x="525.4151999743807" y="280.15371426741484"/>
+    </glyph>
+    <glyph id="glyph25" class="macromolecule">
+      <label text="RAF"/>
+      <bbox x="223" y="134.5" w="70" h="35"/>
+      <glyph id="glyph25_0" class="state variable">
+        <state/>
+        <bbox x="262" y="158.5" w="20" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph3" class="process">
+      <bbox x="372.5" y="144.5" w="15" h="15"/>
+      <port id="glyph3.2" x="395" y="152"/>
+      <port id="glyph3.1" x="365" y="152"/>
+    </glyph>
+    <glyph id="glyph23" class="macromolecule">
+      <label text="MEK"/>
+      <bbox x="126.95577169574398" y="262.65371426741484" w="70" h="35"/>
+      <glyph id="glyph23_0" class="state variable">
+        <state/>
+        <bbox x="165.95577169574398" y="286.65371426741484" w="20" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph8" class="process">
+      <bbox x="264.7473144467498" y="272.65371426741484" w="15" h="15"/>
+      <port id="glyph8.1" x="257.2473144467498" y="280.15371426741484"/>
+      <port id="glyph8.2" x="287.2473144467498" y="280.15371426741484"/>
+    </glyph>
+    <glyph id="glyph22" class="macromolecule">
+      <label text="ERK"/>
+      <bbox x="86.73851429303409" y="420.5" w="70" h="35"/>
+      <glyph id="glyph22_0" class="state variable">
+        <state/>
+        <bbox x="125.73851429303409" y="444.5" w="20" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph13" class="process">
+      <bbox x="499.5" y="430.5" w="15" h="15"/>
+      <port id="glyph13.2" x="522" y="438"/>
+      <port id="glyph13.1" x="492" y="438"/>
+    </glyph>
+    <glyph id="glyph14" class="process">
+      <bbox x="249.5" y="430.5" w="15" h="15"/>
+      <port id="glyph14.2" x="272" y="438"/>
+      <port id="glyph14.1" x="242" y="438"/>
+    </glyph>
+    <glyph id="glyph21" class="macromolecule">
+      <label text="ERK"/>
+      <bbox x="349" y="420.5" w="70" h="35"/>
+      <glyph id="glyph21_0" class="state variable">
+        <state value="P"/>
+        <bbox x="387.25" y="444.5" w="25" h="22"/>
+      </glyph>
+    </glyph>
+    <arc id="71683490-4e4e-4d59-ae45-f02b1207cfe2" class="production" source="glyph3.2" target="glyph2">
+      <glyph id="71683490-4e4e-4d59-ae45-f02b1207cfe2_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="395.625" y="152"/>
+      <end x="464.64629399053865" y="152"/>
+    </arc>
+    <arc id="80d68006-906e-4f82-aca0-6dc0dfa5ddf9" class="consumption" source="glyph4" target="glyph3.1">
+      <glyph id="80d68006-906e-4f82-aca0-6dc0dfa5ddf9_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="316.12414743680415" y="187.93016706679765"/>
+      <end x="364.375" y="152"/>
+    </arc>
+    <arc id="a387f0f2-0df9-4373-a35c-35babc7c69ce" class="production" source="glyph3.2" target="glyph5">
+      <glyph id="a387f0f2-0df9-4373-a35c-35babc7c69ce_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="395.625" y="152"/>
+      <end x="441.1521790096816" y="186.3981006929459"/>
+    </arc>
+    <arc id="6f654e59-3ebb-46c3-ad76-13f125b0ffb7" class="catalysis" source="glyph1" target="glyph3">
+      <glyph id="6f654e59-3ebb-46c3-ad76-13f125b0ffb7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="380" y="78"/>
+      <end x="380" y="141.0625"/>
+    </arc>
+    <arc id="a21961f1-f7d0-4455-9f7c-5c6b8cd7b947" class="consumption" source="glyph7" target="glyph8.1">
+      <glyph id="a21961f1-f7d0-4455-9f7c-5c6b8cd7b947_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="202.6938658249118" y="333.35885086301573"/>
+      <end x="256.6223144467498" y="280.15371426741484"/>
+    </arc>
+    <arc id="5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6" class="production" source="glyph8.2" target="glyph6">
+      <glyph id="5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="287.8723144467498" y="280.15371426741484"/>
+      <end x="341.64070307173387" y="331.7034125481812"/>
+    </arc>
+    <arc id="aee723a4-2d8a-4480-8cdf-882601705ac0" class="consumption" source="glyph10" target="glyph11.1">
+      <glyph id="aee723a4-2d8a-4480-8cdf-882601705ac0_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="441.19492954815496" y="333.32881351581557"/>
+      <end x="494.7901999743807" y="280.15371426741484"/>
+    </arc>
+    <arc id="6b514356-6708-4b90-881c-323c091dfe0d" class="production" source="glyph11.2" target="glyph12">
+      <glyph id="6b514356-6708-4b90-881c-323c091dfe0d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="526.0401999743807" y="280.15371426741484"/>
+      <end x="604.2513427766252" y="280.15371426741484"/>
+    </arc>
+    <arc id="ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783" class="production" source="glyph11.2" target="glyph9">
+      <glyph id="ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="526.0401999743807" y="280.15371426741484"/>
+      <end x="591.6152937924335" y="332.8299155308004"/>
+    </arc>
+    <arc id="69eb919d-6711-4187-ba2c-d60d53b2654b" class="catalysis" source="glyph2" target="glyph11">
+      <glyph id="69eb919d-6711-4187-ba2c-d60d53b2654b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="504.2747007856069" y="170"/>
+      <end x="509.8057610210828" y="269.221058426055"/>
+    </arc>
+    <arc id="a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af" class="catalysis" source="glyph2" target="glyph8">
+      <glyph id="a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="498.6194444232425" y="178.66789943401045"/>
+      <next x="488.3133267358834" y="237.75031516253895"/>
+      <next x="272.289148243138" y="237.75031516253898"/>
+      <end x="272.2581050223648" y="269.2162157882177"/>
+    </arc>
+    <arc id="61110232-ba80-4615-936f-bc21c393870c" class="production" source="glyph13.2" target="glyph19">
+      <glyph id="61110232-ba80-4615-936f-bc21c393870c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="522.625" y="438"/>
+      <end x="605.886632895616" y="438"/>
+    </arc>
+    <arc id="7ada8b74-27e7-4e68-9c3d-bc406684ccb1" class="production" source="glyph13.2" target="glyph18">
+      <glyph id="7ada8b74-27e7-4e68-9c3d-bc406684ccb1_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="522.625" y="438"/>
+      <end x="590.3912414036042" y="497.44722159464857"/>
+    </arc>
+    <arc id="7d519bfc-0843-408a-95a0-34d0f7f17168" class="production" source="glyph14.2" target="glyph16">
+      <glyph id="7d519bfc-0843-408a-95a0-34d0f7f17168_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="272.625" y="438"/>
+      <end x="329.1876814511337" y="496.3990231964228"/>
+    </arc>
+    <arc id="fc9c53a3-8627-41cf-9972-0bfa282538a0" class="consumption" source="glyph15" target="glyph14.1">
+      <glyph id="fc9c53a3-8627-41cf-9972-0bfa282538a0_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="171.06414030211894" y="499.26120691334097"/>
+      <end x="241.375" y="438"/>
+    </arc>
+    <arc id="0e18c34a-d3bc-4af5-b973-af8d56f4ec66" class="consumption" source="glyph17" target="glyph13.1">
+      <glyph id="0e18c34a-d3bc-4af5-b973-af8d56f4ec66_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="432.382792747007" y="498.3644822720842"/>
+      <end x="491.375" y="438"/>
+    </arc>
+    <arc id="72badb00-9293-4106-9edc-dd830d41c62d" class="catalysis" source="glyph12" target="glyph13">
+      <glyph id="72badb00-9293-4106-9edc-dd830d41c62d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="646.6464421651933" y="304.9361158559993"/>
+      <next x="661.118464549032" y="400.06662398074064"/>
+      <next x="506.75855472818324" y="400.06662398074064"/>
+      <end x="506.93038340758926" y="427.0625632996412"/>
+    </arc>
+    <arc id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea" class="catalysis" source="glyph12" target="glyph14">
+      <glyph id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="640.0532397147944" y="308.3174860200949"/>
+      <next x="632.0298309160219" y="388.3604207404915"/>
+      <next x="257.1147499561934" y="389.58539553611524"/>
+      <end x="257.0259235132156" y="427.06250877749267"/>
+    </arc>
+    <arc id="7a83e4b9-1830-4fef-9a89-1be72e62f78a" class="equivalence arc" source="glyph19" target="glyph20">
+      <glyph id="7a83e4b9-1830-4fef-9a89-1be72e62f78a_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="680.011632895616" y="438"/>
+      <end x="754.6527022450305" y="438"/>
+    </arc>
+    <arc id="47a398c9-b511-467a-9820-8c5844d9a9c8" class="equivalence arc" source="glyph1" target="glyph0">
+      <glyph id="47a398c9-b511-467a-9820-8c5844d9a9c8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="344.5" y="60"/>
+      <end x="293.625" y="60"/>
+    </arc>
+    <arc id="80054f2d-3fd0-4dbd-b3b4-906a529e3ab7" class="production" source="glyph8.2" target="glyph24">
+      <glyph id="80054f2d-3fd0-4dbd-b3b4-906a529e3ab7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="287.8723144467498" y="280.15371426741484"/>
+      <end x="354.1049750958073" y="280.15371426741484"/>
+    </arc>
+    <arc id="6926ebfd-f318-4081-916b-2954f17ea6f5" class="consumption" source="glyph24" target="glyph11.1">
+      <glyph id="6926ebfd-f318-4081-916b-2954f17ea6f5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="428.2299750958073" y="280.15371426741484"/>
+      <end x="494.7901999743807" y="280.15371426741484"/>
+    </arc>
+    <arc id="e5e14893-b88e-4930-9b85-9938c3671ea4" class="consumption" source="glyph25" target="glyph3.1">
+      <glyph id="e5e14893-b88e-4930-9b85-9938c3671ea4_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="293.5" y="152"/>
+      <end x="364.375" y="152"/>
+    </arc>
+    <arc id="4bb4836b-50b0-473e-8359-dda084e66be4" class="consumption" source="glyph23" target="glyph8.1">
+      <glyph id="4bb4836b-50b0-473e-8359-dda084e66be4_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="197.45577169574398" y="280.15371426741484"/>
+      <end x="256.6223144467498" y="280.15371426741484"/>
+    </arc>
+    <arc id="22d6d63b-53d4-40b6-8c82-86e65e0cb25b" class="consumption" source="glyph22" target="glyph14.1">
+      <glyph id="22d6d63b-53d4-40b6-8c82-86e65e0cb25b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="157.2385142930341" y="438"/>
+      <end x="241.375" y="438"/>
+    </arc>
+    <arc id="be003e1b-ca84-4eb1-83f9-a6de90fb0f8a" class="consumption" source="glyph21" target="glyph13.1">
+      <glyph id="be003e1b-ca84-4eb1-83f9-a6de90fb0f8a_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="419.5" y="438"/>
+      <end x="491.375" y="438"/>
+    </arc>
+    <arc id="f0c8409c-d838-4830-9fc3-edc71afbf61d" class="production" source="glyph14.2" target="glyph21">
+      <glyph id="f0c8409c-d838-4830-9fc3-edc71afbf61d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="272.625" y="438"/>
+      <end x="345.375" y="438"/>
+    </arc>
+  </map>
 </sbgn>

@@ -1,374 +1,572 @@
-<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<sbgn xmlns='http://sbgn.org/libsbgn/0.3'>
-<map language='process description' id='glycolysis.xml'>
-<extension>
-<renderInformation id='renderInformation' programName='sbgnviz' programVersion='3.1.0' backgroundColor='#ffffff' xmlns='http://www.sbml.org/sbml/level3/version1/render/version1'>
-<listOfColorDefinitions>
-<colorDefinition id='color_1' value='#ffffff7f' />
-<colorDefinition id='color_2' value='#555555' />
-</listOfColorDefinitions>
-<listOfStyles>
-<style id='nodeffffff0.55551.2511normalnormalHelvetica' idList='glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5'>
-<g fontSize='11' fontFamily='Helvetica' fontWeight='normal' fontStyle='normal' stroke='color_2' strokeWidth='1.25' fill='color_1' />
-</style>
-<style id='nodeffffff0.55551.25' idList='glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14'>
-<g stroke='color_2' strokeWidth='1.25' fill='color_1' />
-</style>
-<style id='edge5551.25' idList='f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec'>
-<g stroke='color_2' strokeWidth='1.25' />
-</style>
-</listOfStyles>
-</renderInformation>
-</extension>
-<glyph id='glyph9' class='macromolecule' >
-<label text='hexokinase' />
-<bbox y='579.3619416544145' x='1392.639173965406' w='120' h='60' />
-</glyph>
-<glyph id='glyph0' class='simple chemical' >
-<label text='glucose' />
-<bbox y='488.95299013847625' x='1321.3490293961959' w='60' h='60' />
-</glyph>
-<glyph id='glyph6' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='677.9866590968695' x='1328.2854747390154' w='60' h='60' />
-</glyph>
-<glyph id='glyph8' class='process' >
-<bbox y='604.6878118623499' x='1312.9939787691299' w='20' h='20' />
-</glyph>
-<glyph id='glyph7' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='513.2369849876238' x='1209.4852011317887' w='60' h='60' />
-</glyph>
-<glyph id='glyph12' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='735.0152660242113' x='811.6855140740067' w='60' h='60' />
-</glyph>
-<glyph id='glyph13' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='811.6087025848726' x='989.5908382748769' w='60' h='60' />
-</glyph>
-<glyph id='glyph1' class='simple chemical' >
-<label text='glucose _6P' />
-<bbox y='643.2683218469676' x='1201.2768042260652' w='60' h='60' />
-</glyph>
-<glyph id='glyph2' class='simple chemical' >
-<label text='fructose _6P' />
-<bbox y='700.180116446269' x='1009.8995038336504' w='60' h='60' />
-</glyph>
-<glyph id='glyph15' class='macromolecule' >
-<label text='triose-P isomerase' />
-<bbox y='476.89980858075364' x='509.5498472077387' w='120' h='60' />
-</glyph>
-<glyph id='glyph3' class='simple chemical' >
-<label text='fructose _1,6P' />
-<bbox y='624.3308627056822' x='873.0347368937041' w='60' h='60' />
-</glyph>
-<glyph id='glyph17' class='macromolecule' >
-<label text='glucose-6P isomerase' />
-<bbox y='790.9504141631944' x='1135.6310733031135' w='120' h='60' />
-</glyph>
-<glyph id='glyph10' class='process' >
-<bbox y='722.3190922346248' x='1131.2404374322139' w='20' h='20' />
-</glyph>
-<glyph id='glyph19' class='macromolecule' >
-<label text='phospho fructokinase' />
-<bbox y='826.2695126662625' x='833.1427762830865' w='120' h='60' />
-</glyph>
-<glyph id='glyph11' class='process' >
-<bbox y='748.3699048922733' x='929.3335184518824' w='20' h='20' />
-</glyph>
-<glyph id='glyph18' class='macromolecule' >
-<label text='adolase' />
-<bbox y='629.2220219290564' x='710.4114528170364' w='120' h='60' />
-</glyph>
-<glyph id='glyph16' class='process' >
-<bbox y='554.8072603606723' x='808.0111009023315' w='20' h='20' />
-</glyph>
-<glyph id='glyph22' class='macromolecule' >
-<label text='GAPDH' />
-<bbox y='284.1387423188818' x='591.1292498357636' w='120' h='60' />
-</glyph>
-<glyph id='glyph4' class='simple chemical' >
-<label text='GA-3P' />
-<bbox y='424.0225025614517' x='762.0076145303351' w='60' h='60' />
-</glyph>
-<glyph id='glyph23' class='simple chemical' >
-<label text='Pi' />
-<bbox y='368.0421081673902' x='674.0937009722281' w='60' h='60' />
-</glyph>
-<glyph id='glyph24' class='simple chemical' >
-<label text='NAD' />
-<bbox y='201.7141323534711' x='779.2974819306742' w='60' h='60' />
-</glyph>
-<glyph id='glyph25' class='simple chemical' >
-<label text='H+' />
-<bbox y='269.74915938409947' x='860.826951363933' w='60' h='60' />
-</glyph>
-<glyph id='glyph20' class='process' >
-<bbox y='321.67766378118495' x='776.2625869125006' w='20' h='20' />
-</glyph>
-<glyph id='glyph26' class='simple chemical' >
-<label text='NADH' />
-<bbox y='359.27232563593486' x='849.2981049664311' w='60' h='60' />
-</glyph>
-<glyph id='glyph35' class='macromolecule' >
-<label text='PGK1' />
-<bbox y='10.089848876876886' x='567.088268638501' w='120' h='60' />
-</glyph>
-<glyph id='glyph36' class='macromolecule' >
-<label text='PG mutase' />
-<bbox y='157.20503497360494' x='269.6761506918384' w='120' h='60' />
-</glyph>
-<glyph id='glyph37' class='macromolecule' >
-<label text='enolase' />
-<bbox y='349.5263531900425' x='95.12947729633356' w='120' h='60' />
-</glyph>
-<glyph id='glyph38' class='macromolecule' >
-<label text='pyruvate kinase' />
-<bbox y='551.2691021233562' x='10.139521653720237' w='120' h='60' />
-</glyph>
-<glyph id='glyph21' class='simple chemical' >
-<label text='1,3 BPG' />
-<bbox y='199.06355211274115' x='683.4639263718316' w='60' h='60' />
-</glyph>
-<glyph id='glyph42' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='78.47701882803744' x='493.84899407447494' w='60' h='60' />
-</glyph>
-<glyph id='glyph41' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='86.46683749236911' x='688.966532806447' w='60' h='60' />
-</glyph>
-<glyph id='glyph31' class='process' >
-<bbox y='135.7168752444793' x='611.3138039842713' w='20' h='20' />
-</glyph>
-<glyph id='glyph27' class='simple chemical' >
-<label text='3 PG' />
-<bbox y='180.92542274858295' x='495.2099120385327' w='60' h='60' />
-</glyph>
-<glyph id='glyph32' class='process' >
-<bbox y='247.85665030680025' x='416.3492127437995' w='20' h='20' />
-</glyph>
-<glyph id='glyph28' class='simple chemical' >
-<label text='2 PG' />
-<bbox y='314.4562152937847' x='316.30926488002945' w='60' h='60' />
-</glyph>
-<glyph id='glyph43' class='simple chemical' >
-<label text='H2O' />
-<bbox y='456.5705174517715' x='333.54724181648487' w='60' h='60' />
-</glyph>
-<glyph id='glyph33' class='process' >
-<bbox y='425.0423711483709' x='266.2797233955059' w='20' h='20' />
-</glyph>
-<glyph id='glyph29' class='simple chemical' >
-<label text='PEP' />
-<bbox y='501.824141876398' x='197.86139816113416' w='60' h='60' />
-</glyph>
-<glyph id='glyph39' class='simple chemical' >
-<label text='ADP' />
-<clone/>
-<bbox y='661.8382969303054' x='74.77693104995387' w='60' h='60' />
-</glyph>
-<glyph id='glyph40' class='simple chemical' >
-<label text='ATP' />
-<clone/>
-<bbox y='613.4009391289965' x='262.039416141131' w='60' h='60' />
-</glyph>
-<glyph id='glyph34' class='process' >
-<bbox y='622.9540034207419' x='183.8304385062596' w='20' h='20' />
-</glyph>
-<glyph id='glyph30' class='simple chemical' >
-<label text='pyruvate' />
-<bbox y='703.5181650652648' x='175.4745704273754' w='60' h='60' />
-</glyph>
-<glyph id='glyph14' class='process' >
-<bbox y='472.8828321494848' x='685.1248473196924' w='20' h='20' />
-</glyph>
-<glyph id='glyph5' class='simple chemical' >
-<label text='DHA-P' />
-<bbox y='540.3868893775194' x='691.6687687330186' w='60' h='60' />
-</glyph>
-<arc id='f58fd051-70b2-4f4f-a75f-04d442d486ae' target='glyph8' source='glyph9' class='catalysis'>
-<start y='611.8473029290246' x='1392.139173965406'/>
-<end y='614.1538538401765' x='1335.9918719412456'/>
-</arc>
-<arc id='_4a2452a5-80cf-4b3a-9469-09d479a848c2' target='glyph8' source='glyph0' class='consumption'>
-<start y='548.6766467214436' x='1342.5453801904505'/>
-<end y='604.1878118623499' x='1326.1039028931118'/>
-</arc>
-<arc id='a8ecfde2-b558-485e-bf1a-f050e068da4d' target='glyph1' source='glyph8' class='production'>
-<start y='621.3942477932744' x='1312.4939787691299'/>
-<end y='655.235904174401' x='1259.5094433673517'/>
-</arc>
-<arc id='f4edba5d-82c0-466d-989f-2967e4d6dbe5' target='glyph8' source='glyph6' class='consumption'>
-<start y='678.9916773652291' x='1347.3177477921117'/>
-<end y='625.1878118623499' x='1326.9657396072068'/>
-</arc>
-<arc id='_0256a519-fbdd-47e5-b989-65fceeb9be2b' target='glyph7' source='glyph8' class='production'>
-<start y='605.7039217443229' x='1312.4939787691299'/>
-<end y='565.0159739694543' x='1264.939584623229'/>
-</arc>
-<arc id='_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7' target='glyph12' source='glyph11' class='production'>
-<start y='759.0844744559823' x='928.8335184518824'/>
-<end y='762.7407099272546' x='875.1082068823637'/>
-</arc>
-<arc id='_959a75d5-b615-4761-abf3-ad2105a044f8' target='glyph11' source='glyph13' class='consumption'>
-<start y='819.2923688617853' x='998.0738392006612'/>
-<end y='768.8699048922733' x='949.4574255901563'/>
-</arc>
-<arc id='_685a3c56-02f3-470e-a263-f53033bfce1e' target='glyph10' source='glyph1' class='consumption'>
-<start y='690.2695076535404' x='1205.3546191104083'/>
-<end y='725.4326183446906' x='1151.7404374322139'/>
-</arc>
-<arc id='_2d6de60d-1386-4337-86f7-4b879b324ed8' target='glyph2' source='glyph10' class='production'>
-<start y='732.097471562896' x='1130.7404374322139'/>
-<end y='730.8870344763724' x='1073.3920443001293'/>
-</arc>
-<arc id='_99e148d2-ff28-4bca-ba79-8389aaefc8e6' target='glyph11' source='glyph2' class='consumption'>
-<start y='738.54726213495' x='1010.0500336034372'/>
-<end y='755.4266355794992' x='949.8335184518824'/>
-</arc>
-<arc id='_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc' target='glyph3' source='glyph11' class='production'>
-<start y='747.8699048922733' x='935.6701128846021'/>
-<end y='685.960992710265' x='914.0703554034745'/>
-</arc>
-<arc id='c4694210-3890-477c-b17d-6b2b856080e7' target='glyph4' source='glyph14' class='production'>
-<start y='479.75499559610176' x='705.6248473196924'/>
-<end y='463.58646525672776' x='759.9018421900944'/>
-</arc>
-<arc id='_25258eef-e524-496f-856b-58c50656e29f' target='glyph14' source='glyph15' class='catalysis'>
-<start y='495.32881855251276' x='630.0498472077387'/>
-<end y='485.3606484960893' x='682.1693535716466'/>
-</arc>
-<arc id='bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc' target='glyph16' source='glyph3' class='consumption'>
-<start y='631.8528982331194' x='881.6866429935404'/>
-<end y='575.3072603606723' x='827.9833110740011'/>
-</arc>
-<arc id='_1e3385ff-6751-48f8-8956-b216d43840b8' target='glyph5' source='glyph16' class='production'>
-<start y='565.4153638117485' x='807.5111009023315'/>
-<end y='568.4499953469273' x='755.1127284494496'/>
-</arc>
-<arc id='f1f388bc-cc6b-47ac-821b-8037aa452e3c' target='glyph4' source='glyph16' class='production'>
-<start y='554.3072603606723' x='815.5465325598092'/>
-<end y='486.63614165620163' x='799.6627138110368'/>
-</arc>
-<arc id='_4544d16e-3e08-4e04-913b-504ad4b81f72' target='glyph10' source='glyph17' class='catalysis'>
-<start y='790.4504141631944' x='1176.9140513974783'/>
-<end y='744.9498643994316' x='1148.991599376272'/>
-</arc>
-<arc id='bb409d93-f527-40e2-af6d-79740790c156' target='glyph11' source='glyph19' class='catalysis'>
-<start y='825.7695126662625' x='907.533208156937'/>
-<end y='771.1308797644472' x='933.3126679750976'/>
-</arc>
-<arc id='d2703827-9b63-4e78-978e-4cc5cd1feff6' target='glyph16' source='glyph18' class='catalysis'>
-<start y='628.7220219290564' x='785.7881719071967'/>
-<end y='577.5396061153019' x='811.5920286391271'/>
-</arc>
-<arc id='e704169a-bd58-4e57-a497-42c079b2df1b' target='glyph20' source='glyph22' class='catalysis'>
-<start y='321.991021937099' x='711.6292498357636'/>
-<end y='329.9930959825598' x='773.2833812840643'/>
-</arc>
-<arc id='f9c598f3-8c60-419a-9775-d2bbdfb18f22' target='glyph20' source='glyph4' class='consumption'>
-<start y='423.05662398462755' x='790.553529262759'/>
-<end y='342.17766378118495' x='786.7556423661565'/>
-</arc>
-<arc id='_820fbd73-82ef-41bc-a7ef-58615edc06e0' target='glyph21' source='glyph20' class='production'>
-<start y='321.17766378118495' x='778.8134561521348'/>
-<end y='256.3860895452867' x='732.8476553280243'/>
-</arc>
-<arc id='_3cecee18-495f-47a6-ab14-410a4ce0547e' target='glyph20' source='glyph23' class='consumption'>
-<start y='378.56414324816274' x='728.2102696047128'/>
-<end y='340.1580838097791' x='775.7625869125006'/>
-</arc>
-<arc id='_50d9673e-973b-4985-956e-afe770731642' target='glyph20' source='glyph24' class='consumption'>
-<start y='261.92248337959387' x='802.3364814075778'/>
-<end y='321.17766378118495' x='788.6821332634188'/>
-</arc>
-<arc id='e1e603a7-e681-46e1-bac6-887674cb5e1b' target='glyph25' source='glyph20' class='production'>
-<start y='328.4715113034437' x='796.7625869125006'/>
-<end y='309.53239375205237' x='858.7873145791361'/>
-</arc>
-<arc id='d7e5d61d-9b85-4f2d-92b2-8add8a8db09c' target='glyph26' source='glyph20' class='production'>
-<start y='338.1778043954858' x='796.7625869125006'/>
-<end y='371.6391702780618' x='850.8143932678987'/>
-</arc>
-<arc id='_1281b2ec-97d2-4802-8301-9b32364f382c' target='glyph31' source='glyph35' class='catalysis'>
-<start y='70.58984887687687' x='625.4208812471238'/>
-<end y='132.72060268935564' x='622.0242899184784'/>
-</arc>
-<arc id='_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669' target='glyph32' source='glyph36' class='catalysis'>
-<start y='217.70503497360494' x='371.4094978867958'/>
-<end y='248.70780881710976' x='413.83079378245907'/>
-</arc>
-<arc id='_2b0a2f73-7fbc-4907-857b-046dd1c80462' target='glyph33' source='glyph37' class='catalysis'>
-<start y='406.51015954355495' x='214.01509086599384'/>
-<end y='429.18937647378203' x='263.506981917977'/>
-</arc>
-<arc id='_978c4f3c-9c62-4a41-8c5b-ea216310ac65' target='glyph34' source='glyph38' class='catalysis'>
-<start y='606.3136863288748' x='130.0755475493122'/>
-<end y='627.6026489483618' x='181.02372079032386'/>
-</arc>
-<arc id='_5280e682-f58d-41e0-8425-185de6e8508c' target='glyph31' source='glyph21' class='consumption'>
-<start y='208.26897689526356' x='690.472935929385'/>
-<end y='155.21377101023995' x='631.8138039842713'/>
-</arc>
-<arc id='d13ecda0-799a-4d14-891f-d1f5f6447764' target='glyph31' source='glyph42' class='consumption'>
-<start y='119.54151430243341' x='552.8071870411825'/>
-<end y='141.70498118000077' x='610.8138039842713'/>
-</arc>
-<arc id='_2dade40f-5091-4ca1-9104-9a682e49f9a5' target='glyph41' source='glyph31' class='production'>
-<start y='142.57179778375183' x='631.8138039842713'/>
-<end y='126.07918816667399' x='686.8752144397268'/>
-</arc>
-<arc id='a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137' target='glyph27' source='glyph31' class='production'>
-<start y='152.84134996585345' x='610.8138039842713'/>
-<end y='192.11607480266167' x='552.9309948068747'/>
-</arc>
-<arc id='_3e8a670e-bec3-44cd-8d66-96e8c8075840' target='glyph32' source='glyph27' class='consumption'>
-<start y='224.219803515754' x='497.20527956428884'/>
-<end y='252.8720821935183' x='436.8492127437995'/>
-</arc>
-<arc id='_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270' target='glyph28' source='glyph32' class='production'>
-<start y='268.35665030680025' x='416.64455137863104'/>
-<end y='319.85473094094215' x='369.0472719966798'/>
-</arc>
-<arc id='_716d7259-74e7-493b-a074-3ae9d320b37b' target='glyph33' source='glyph28' class='consumption'>
-<start y='368.9819695133343' x='327.34911245547744'/>
-<end y='424.5423711483709' x='284.3969702159567'/>
-</arc>
-<arc id='_6aad03a2-9603-4fca-864a-b7fadde71398' target='glyph43' source='glyph33' class='production'>
-<start y='441.24222128706396' x='286.7797233955059'/>
-<end y='469.5376474389133' x='334.70055502016316'/>
-</arc>
-<arc id='_296c2cb1-721c-4209-9077-c962aa3d67f5' target='glyph29' source='glyph33' class='production'>
-<start y='445.5423711483709' x='271.0267464026632'/>
-<end y='501.8642294797112' x='242.8498486875512'/>
-</arc>
-<arc id='fe64d11e-3fb5-45d0-8efa-e62acb34c913' target='glyph34' source='glyph29' class='consumption'>
-<start y='561.2052259595263' x='217.97444220390696'/>
-<end y='622.4540034207419' x='197.363767543989'/>
-</arc>
-<arc id='_7574124a-ee7a-4aab-83bb-e8d53b2f7a91' target='glyph34' source='glyph39' class='consumption'>
-<start y='674.740152352034' x='130.63526533467774'/>
-<end y='639.8968527201226' x='183.3304385062596'/>
-</arc>
-<arc id='_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf' target='glyph40' source='glyph34' class='production'>
-<start y='634.070936185733' x='204.3304385062596'/>
-<end y='639.8573839676583' x='258.7273580117006'/>
-</arc>
-<arc id='_90406689-30d9-4546-a85e-280293431b9b' target='glyph30' source='glyph34' class='production'>
-<start y='643.4540034207419' x='195.0462134222172'/>
-<end y='700.2404972199513' x='201.62141291995627'/>
-</arc>
-<arc id='b1cde550-e4ab-4b19-99e2-4de33f301cec' target='glyph5' source='glyph14' class='production'>
-<start y='493.3828321494848' x='698.3099702004934'/>
-<end y='538.3293734607929' x='711.9442804046372'/>
-</arc>
-</map>
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn 
+  xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="glycolysis_draft.sbgnml" language="process description">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+        </listOfColorDefinitions>
+        <listOfStyles>
+          <style id="nodeffffff0.55555551.2511normalnormalHelvetica" idList="glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1"/>
+          </style>
+          <style id="nodeffffff0.55555551.25" idList="glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14">
+            <g stroke="color_2" strokeWidth="1.25" fill="color_1"/>
+          </style>
+          <style id="edge5555551.25" idList="f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec">
+            <g stroke="color_2" strokeWidth="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+    </extension>
+    <glyph id="glyph9" class="macromolecule">
+      <label text="hexokinase"/>
+      <bbox x="53.324697717076916" y="35.98323077999954" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph0" class="simple chemical">
+      <label text="glucose"/>
+      <bbox x="-18.635842004116014" y="110.78371741386201" w="48" h="35"/>
+    </glyph>
+    <glyph id="glyph6" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="-12.135842004116014" y="166.26409787306358" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph8" class="process">
+      <bbox x="81.18184057421978" y="121.14086027100487" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph8.1" x="98.32469771707692" y="128.283717413862"/>
+      <port id="glyph8.2" x="78.32469771707692" y="128.283717413862"/>
+    </glyph>
+    <glyph id="glyph7" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="153.2667770493495" y="166.26409787306358" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph12" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="488.7858513347395" y="166.26409787306358" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph13" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="318.26415637028" y="166.26409787306358" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph1" class="simple chemical">
+      <label text="glucose&#10;6P"/>
+      <bbox x="147.28523743826983" y="110.78371741386201" w="48" h="35"/>
+    </glyph>
+    <glyph id="glyph2" class="simple chemical">
+      <label text="fructose&#10;6P"/>
+      <bbox x="313.20631688065566" y="110.78371741386201" w="48" h="35"/>
+    </glyph>
+    <glyph id="glyph15" class="macromolecule">
+      <label text="triose-P&#10;isomerase"/>
+      <bbox x="774.7899455213721" y="110.26658024258396" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph3" class="simple chemical">
+      <label text="fructose&#10;1,6P"/>
+      <bbox x="482.2858513347395" y="110.78371741386201" w="48" h="35"/>
+    </glyph>
+    <glyph id="glyph17" class="macromolecule">
+      <label text="glucose-6P&#10;isomerase"/>
+      <bbox x="218.3772700391366" y="35.98323077999954" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph10" class="process">
+      <bbox x="245.7429111687172" y="121.14086027100487" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph10.1" x="262.88576831157434" y="128.283717413862"/>
+      <port id="glyph10.2" x="242.88576831157434" y="128.283717413862"/>
+    </glyph>
+    <glyph id="glyph19" class="macromolecule">
+      <label text="phospho&#10;fructokinase"/>
+      <bbox x="383.15104270142336" y="35.98323077999954" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph11" class="process">
+      <bbox x="413.89227365674986" y="121.14086027100487" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph11.1" x="431.03513079960703" y="128.283717413862"/>
+      <port id="glyph11.2" x="411.03513079960703" y="128.283717413862"/>
+    </glyph>
+    <glyph id="glyph18" class="macromolecule">
+      <label text="adolase"/>
+      <bbox x="556.5382207947348" y="35.983230779999516" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph16" class="process">
+      <bbox x="584.3953636518776" y="121.14086027100487" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph16.1" x="601.5382207947347" y="128.283717413862"/>
+      <port id="glyph16.2" x="581.5382207947347" y="128.283717413862"/>
+    </glyph>
+    <glyph id="glyph22" class="macromolecule">
+      <label text="GAPDH"/>
+      <bbox x="775.9300198297399" y="250.63747473904266" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph4" class="simple chemical">
+      <label text="GA-3P"/>
+      <bbox x="683.0047105160871" y="177.0868730968662" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph23" class="simple chemical">
+      <label text="Pi"/>
+      <bbox x="620.4581980388436" y="195.8176721876209" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph24" class="simple chemical">
+      <label text="NAD"/>
+      <bbox x="740.443976326979" y="195.8176721876209" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph25" class="simple chemical">
+      <label text="H+"/>
+      <bbox x="771.8433789799271" y="306.2103344903014" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph20" class="process">
+      <bbox x="693.36185337323" y="260.9946175961855" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph20.1" x="700.5047105160871" y="278.13747473904266"/>
+      <port id="glyph20.2" x="700.5047105160871" y="258.13747473904266"/>
+    </glyph>
+    <glyph id="glyph26" class="simple chemical">
+      <label text="NADH"/>
+      <bbox x="751.8184840967929" y="348.61599424282105" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph35" class="macromolecule">
+      <label text="PGK1"/>
+      <bbox x="555.2723651417102" y="406.445133940345" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph36" class="macromolecule">
+      <label text="PG mutase"/>
+      <bbox x="369.15863622787424" y="406.445133940345" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph37" class="macromolecule">
+      <label text="enolase"/>
+      <bbox x="217.88576831157434" y="406.445133940345" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph38" class="macromolecule">
+      <label text="pyruvate&#10;kinase"/>
+      <bbox x="16.222939763508755" y="406.445133940345" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph21" class="simple chemical">
+      <label text="1,3 BPG"/>
+      <bbox x="676.5047105160871" y="332.1249043390634" w="48" h="35"/>
+    </glyph>
+    <glyph id="glyph42" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="625.7794398323597" y="276.5413095934183" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph41" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="489.1389806297966" y="276.5413095934183" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph31" class="process">
+      <bbox x="583.1295079988531" y="342.4820471962062" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph31.1" x="580.2723651417102" y="349.6249043390634"/>
+      <port id="glyph31.2" x="600.2723651417102" y="349.6249043390634"/>
+    </glyph>
+    <glyph id="glyph27" class="simple chemical">
+      <label text="3 PG"/>
+      <bbox x="454.9788658291559" y="332.1249043390634" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph32" class="process">
+      <bbox x="397.0157790850171" y="342.4820471962062" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph32.1" x="394.15863622787424" y="349.6249043390634"/>
+      <port id="glyph32.2" x="414.15863622787424" y="349.6249043390634"/>
+    </glyph>
+    <glyph id="glyph28" class="simple chemical">
+      <label text="2 PG"/>
+      <bbox x="318.26415637028003" y="332.1249043390634" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph43" class="simple chemical">
+      <label text="H2O"/>
+      <bbox x="153.2667770493495" y="276.5413095934183" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph33" class="process">
+      <bbox x="245.7429111687172" y="342.4820471962062" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph33.1" x="242.88576831157434" y="349.6249043390634"/>
+      <port id="glyph33.2" x="262.88576831157434" y="349.6249043390634"/>
+    </glyph>
+    <glyph id="glyph29" class="simple chemical">
+      <label text="PEP"/>
+      <bbox x="115.90276341382432" y="332.1249043390634" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph39" class="simple chemical">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="86.04901679447991" y="276.5413095934183" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph40" class="simple chemical">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="-29.581923360913365" y="276.5413095934183" w="35" h="35"/>
+    </glyph>
+    <glyph id="glyph34" class="process">
+      <bbox x="42.94879208876826" y="342.4820471962062" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph34.1" x="40.091649231625404" y="349.6249043390634"/>
+      <port id="glyph34.2" x="60.091649231625404" y="349.6249043390634"/>
+    </glyph>
+    <glyph id="glyph30" class="simple chemical">
+      <label text="pyruvate"/>
+      <bbox x="-63.94745709793577" y="332.1249043390634" w="48" h="35"/>
+    </glyph>
+    <glyph id="glyph14" class="process">
+      <bbox x="708.3492986452685" y="121.14086027100487" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="glyph14.1" x="705.4921557881256" y="128.283717413862"/>
+      <port id="glyph14.2" x="725.4921557881256" y="128.283717413862"/>
+    </glyph>
+    <glyph id="glyph5" class="simple chemical">
+      <label text="DHA-P"/>
+      <bbox x="683.0047105160871" y="35.983230779999516" w="35" h="35"/>
+    </glyph>
+    <arc id="f58fd051-70b2-4f4f-a75f-04d442d486ae" class="catalysis" source="glyph9" target="glyph8">
+      <glyph id="f58fd051-70b2-4f4f-a75f-04d442d486ae_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="88.32469771707692" y="71.48323077999953"/>
+      <end x="88.32469771707692" y="117.56943169957628"/>
+    </arc>
+    <arc id="_4a2452a5-80cf-4b3a-9469-09d479a848c2" class="consumption" source="glyph0" target="glyph8.2">
+      <glyph id="_4a2452a5-80cf-4b3a-9469-09d479a848c2_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="30.364157995883986" y="128.283717413862"/>
+      <end x="77.69969771707692" y="128.283717413862"/>
+    </arc>
+    <arc id="a8ecfde2-b558-485e-bf1a-f050e068da4d" class="production" source="glyph8.1" target="glyph1">
+      <glyph id="a8ecfde2-b558-485e-bf1a-f050e068da4d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="98.94969771707692" y="128.283717413862"/>
+      <end x="143.16023743826983" y="128.283717413862"/>
+    </arc>
+    <arc id="f4edba5d-82c0-466d-989f-2967e4d6dbe5" class="consumption" source="glyph6" target="glyph8.2">
+      <glyph id="f4edba5d-82c0-466d-989f-2967e4d6dbe5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="20.742241299753502" y="173.47990836201072"/>
+      <end x="77.69969771707692" y="128.283717413862"/>
+    </arc>
+    <arc id="_0256a519-fbdd-47e5-b989-65fceeb9be2b" class="production" source="glyph8.1" target="glyph7">
+      <glyph id="_0256a519-fbdd-47e5-b989-65fceeb9be2b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="98.94969771707692" y="128.283717413862"/>
+      <end x="152.82598636853953" y="171.690628829439"/>
+    </arc>
+    <arc id="_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7" class="production" source="glyph11.1" target="glyph12">
+      <glyph id="_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="431.66013079960703" y="128.283717413862"/>
+      <end x="488.16105991623" y="171.9686512500855"/>
+    </arc>
+    <arc id="_959a75d5-b615-4761-abf3-ad2105a044f8" class="consumption" source="glyph13" target="glyph11.2">
+      <glyph id="_959a75d5-b615-4761-abf3-ad2105a044f8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="351.27085401599305" y="173.67487946307577"/>
+      <end x="410.41013079960703" y="128.283717413862"/>
+    </arc>
+    <arc id="_685a3c56-02f3-470e-a263-f53033bfce1e" class="consumption" source="glyph1" target="glyph10.2">
+      <glyph id="_685a3c56-02f3-470e-a263-f53033bfce1e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="196.28523743826983" y="128.283717413862"/>
+      <end x="242.26076831157434" y="128.283717413862"/>
+    </arc>
+    <arc id="_2d6de60d-1386-4337-86f7-4b879b324ed8" class="production" source="glyph10.1" target="glyph2">
+      <glyph id="_2d6de60d-1386-4337-86f7-4b879b324ed8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="263.51076831157434" y="128.283717413862"/>
+      <end x="309.08131688065566" y="128.283717413862"/>
+    </arc>
+    <arc id="_99e148d2-ff28-4bca-ba79-8389aaefc8e6" class="consumption" source="glyph2" target="glyph11.2">
+      <glyph id="_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="362.20631688065566" y="128.283717413862"/>
+      <end x="410.41013079960703" y="128.283717413862"/>
+    </arc>
+    <arc id="_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc" class="production" source="glyph11.1" target="glyph3">
+      <glyph id="_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="431.66013079960703" y="128.283717413862"/>
+      <end x="478.1608513347395" y="128.283717413862"/>
+    </arc>
+    <arc id="c4694210-3890-477c-b17d-6b2b856080e7" class="production" source="glyph14.1" target="glyph4">
+      <glyph id="c4694210-3890-477c-b17d-6b2b856080e7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="704.8671557881256" y="128.283717413862"/>
+      <end x="705.2726236849584" y="173.49403950310491"/>
+    </arc>
+    <arc id="_25258eef-e524-496f-856b-58c50656e29f" class="catalysis" source="glyph15" target="glyph14">
+      <glyph id="_25258eef-e524-496f-856b-58c50656e29f_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="774.2899455213721" y="127.96126528909781"/>
+      <end x="729.2421087966899" y="128.20831149157934"/>
+    </arc>
+    <arc id="bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc" class="consumption" source="glyph3" target="glyph16.2">
+      <glyph id="bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="531.2858513347395" y="128.283717413862"/>
+      <end x="580.9132207947347" y="128.283717413862"/>
+    </arc>
+    <arc id="_1e3385ff-6751-48f8-8956-b216d43840b8" class="production" source="glyph16.1" target="glyph5">
+      <glyph id="_1e3385ff-6751-48f8-8956-b216d43840b8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="602.1632207947347" y="128.283717413862"/>
+      <end x="682.6761026666984" y="65.72175059052856"/>
+    </arc>
+    <arc id="f1f388bc-cc6b-47ac-821b-8037aa452e3c" class="production" source="glyph16.1" target="glyph4">
+      <glyph id="f1f388bc-cc6b-47ac-821b-8037aa452e3c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="602.1632207947347" y="128.283717413862"/>
+      <end x="682.0308393010595" y="183.34602315877993"/>
+    </arc>
+    <arc id="_4544d16e-3e08-4e04-913b-504ad4b81f72" class="catalysis" source="glyph17" target="glyph10">
+      <glyph id="_4544d16e-3e08-4e04-913b-504ad4b81f72_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="253.25899499181736" y="71.48323077999953"/>
+      <end x="252.95616968218533" y="117.5694991597125"/>
+    </arc>
+    <arc id="bb409d93-f527-40e2-af6d-79740790c156" class="catalysis" source="glyph19" target="glyph11">
+      <glyph id="bb409d93-f527-40e2-af6d-79740790c156_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="418.8450700815047" y="71.48323077999953"/>
+      <end x="420.6221087278667" y="117.57175200054542"/>
+    </arc>
+    <arc id="d2703827-9b63-4e78-978e-4cc5cd1feff6" class="catalysis" source="glyph18" target="glyph16">
+      <glyph id="d2703827-9b63-4e78-978e-4cc5cd1feff6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="591.5382207947348" y="71.4832307799995"/>
+      <end x="591.5382207947347" y="117.5694316995763"/>
+    </arc>
+    <arc id="e704169a-bd58-4e57-a497-42c079b2df1b" class="catalysis" source="glyph22" target="glyph20">
+      <glyph id="e704169a-bd58-4e57-a497-42c079b2df1b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="775.4300198297399" y="268.13747473904266"/>
+      <end x="711.2189962303728" y="268.13747473904266"/>
+    </arc>
+    <arc id="f9c598f3-8c60-419a-9775-d2bbdfb18f22" class="consumption" source="glyph4" target="glyph20.2">
+      <glyph id="f9c598f3-8c60-419a-9775-d2bbdfb18f22_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="700.5047105160871" y="213.0868730968662"/>
+      <end x="700.5047105160871" y="257.51247473904266"/>
+    </arc>
+    <arc id="_820fbd73-82ef-41bc-a7ef-58615edc06e0" class="production" source="glyph20.1" target="glyph21">
+      <glyph id="_820fbd73-82ef-41bc-a7ef-58615edc06e0_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="700.5047105160871" y="278.76247473904266"/>
+      <end x="700.5047105160871" y="327.9999043390634"/>
+    </arc>
+    <arc id="_3cecee18-495f-47a6-ab14-410a4ce0547e" class="consumption" source="glyph23" target="glyph20.2">
+      <glyph id="_3cecee18-495f-47a6-ab14-410a4ce0547e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="651.8707642606824" y="225.51154364515853"/>
+      <end x="700.5047105160871" y="257.51247473904266"/>
+    </arc>
+    <arc id="_50d9673e-973b-4985-956e-afe770731642" class="consumption" source="glyph24" target="glyph20.2">
+      <glyph id="_50d9673e-973b-4985-956e-afe770731642_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="744.560899454655" y="226.09042652760039"/>
+      <end x="700.5047105160871" y="257.51247473904266"/>
+    </arc>
+    <arc id="e1e603a7-e681-46e1-bac6-887674cb5e1b" class="production" source="glyph20.1" target="glyph25">
+      <glyph id="e1e603a7-e681-46e1-bac6-887674cb5e1b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="700.5047105160871" y="278.76247473904266"/>
+      <end x="771.0099332393493" y="312.2418824466607"/>
+    </arc>
+    <arc id="d7e5d61d-9b85-4f2d-92b2-8add8a8db09c" class="production" source="glyph20.1" target="glyph26">
+      <glyph id="d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="700.5047105160871" y="278.76247473904266"/>
+      <end x="756.8896400898324" y="348.41954087920493"/>
+    </arc>
+    <arc id="_1281b2ec-97d2-4802-8301-9b32364f382c" class="catalysis" source="glyph35" target="glyph31">
+      <glyph id="_1281b2ec-97d2-4802-8301-9b32364f382c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="590.2723651417102" y="405.945133940345"/>
+      <end x="590.2723651417102" y="360.3391900533491"/>
+    </arc>
+    <arc id="_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669" class="catalysis" source="glyph36" target="glyph32">
+      <glyph id="_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="404.15863622787424" y="405.945133940345"/>
+      <end x="404.15863622787424" y="360.3391900533491"/>
+    </arc>
+    <arc id="_2b0a2f73-7fbc-4907-857b-046dd1c80462" class="catalysis" source="glyph37" target="glyph33">
+      <glyph id="_2b0a2f73-7fbc-4907-857b-046dd1c80462_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="252.88576831157434" y="405.945133940345"/>
+      <end x="252.88576831157434" y="360.3391900533491"/>
+    </arc>
+    <arc id="_978c4f3c-9c62-4a41-8c5b-ea216310ac65" class="catalysis" source="glyph38" target="glyph34">
+      <glyph id="_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="50.94894667060328" y="405.945133940345"/>
+      <end x="50.254734848427255" y="360.33882807817764"/>
+    </arc>
+    <arc id="_5280e682-f58d-41e0-8425-185de6e8508c" class="consumption" source="glyph21" target="glyph31.2">
+      <glyph id="_5280e682-f58d-41e0-8425-185de6e8508c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="675.5047105160871" y="349.6249043390634"/>
+      <end x="600.8973651417102" y="349.6249043390634"/>
+    </arc>
+    <arc id="d13ecda0-799a-4d14-891f-d1f5f6447764" class="consumption" source="glyph42" target="glyph31.2">
+      <glyph id="d13ecda0-799a-4d14-891f-d1f5f6447764_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="630.5119405796297" y="307.42939992891945"/>
+      <end x="600.8973651417102" y="349.6249043390634"/>
+    </arc>
+    <arc id="_2dade40f-5091-4ca1-9104-9a682e49f9a5" class="production" source="glyph31.1" target="glyph41">
+      <glyph id="_2dade40f-5091-4ca1-9104-9a682e49f9a5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="579.6473651417102" y="349.6249043390634"/>
+      <end x="524.6491446756188" y="306.0110471027614"/>
+    </arc>
+    <arc id="a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137" class="production" source="glyph31.1" target="glyph27">
+      <glyph id="a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="579.6473651417102" y="349.6249043390634"/>
+      <end x="494.1038658291559" y="349.6249043390634"/>
+    </arc>
+    <arc id="_3e8a670e-bec3-44cd-8d66-96e8c8075840" class="consumption" source="glyph27" target="glyph32.2">
+      <glyph id="_3e8a670e-bec3-44cd-8d66-96e8c8075840_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="453.9788658291559" y="349.6249043390634"/>
+      <end x="414.78363622787424" y="349.6249043390634"/>
+    </arc>
+    <arc id="_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270" class="production" source="glyph32.1" target="glyph28">
+      <glyph id="_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="393.53363622787424" y="349.6249043390634"/>
+      <end x="357.38915637028003" y="349.6249043390634"/>
+    </arc>
+    <arc id="_716d7259-74e7-493b-a074-3ae9d320b37b" class="consumption" source="glyph28" target="glyph33.2">
+      <glyph id="_716d7259-74e7-493b-a074-3ae9d320b37b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="317.26415637028003" y="349.6249043390634"/>
+      <end x="263.51076831157434" y="349.6249043390634"/>
+    </arc>
+    <arc id="_6aad03a2-9603-4fca-864a-b7fadde71398" class="production" source="glyph33.1" target="glyph43">
+      <glyph id="_6aad03a2-9603-4fca-864a-b7fadde71398_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="242.26076831157434" y="349.6249043390634"/>
+      <end x="188.67511465279387" y="306.1628635070493"/>
+    </arc>
+    <arc id="_296c2cb1-721c-4209-9077-c962aa3d67f5" class="production" source="glyph33.1" target="glyph29">
+      <glyph id="_296c2cb1-721c-4209-9077-c962aa3d67f5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="242.26076831157434" y="349.6249043390634"/>
+      <end x="155.02776341382432" y="349.6249043390634"/>
+    </arc>
+    <arc id="fe64d11e-3fb5-45d0-8efa-e62acb34c913" class="consumption" source="glyph29" target="glyph34.2">
+      <glyph id="fe64d11e-3fb5-45d0-8efa-e62acb34c913_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="114.90276341382432" y="349.6249043390634"/>
+      <end x="60.71664923162541" y="349.6249043390634"/>
+    </arc>
+    <arc id="_7574124a-ee7a-4aab-83bb-e8d53b2f7a91" class="consumption" source="glyph39" target="glyph34.2">
+      <glyph id="_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="90.72505928529361" y="307.37533050995296"/>
+      <end x="60.716649231625404" y="349.6249043390634"/>
+    </arc>
+    <arc id="_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf" class="production" source="glyph34.1" target="glyph40">
+      <glyph id="_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="39.466649231625404" y="349.6249043390634"/>
+      <end x="4.039767510003706" y="308.4542103584478"/>
+    </arc>
+    <arc id="_90406689-30d9-4546-a85e-280293431b9b" class="production" source="glyph34.1" target="glyph30">
+      <glyph id="_90406689-30d9-4546-a85e-280293431b9b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="39.46664923162541" y="349.6249043390634"/>
+      <end x="-11.822457097935775" y="349.6249043390634"/>
+    </arc>
+    <arc id="b1cde550-e4ab-4b19-99e2-4de33f301cec" class="production" source="glyph14.1" target="glyph5">
+      <glyph id="b1cde550-e4ab-4b19-99e2-4de33f301cec_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="704.8671557881256" y="128.283717413862"/>
+      <end x="704.7531757868935" y="74.68679575956726"/>
+    </arc>
+  </map>
 </sbgn>
