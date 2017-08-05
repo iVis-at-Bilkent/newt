@@ -29,6 +29,7 @@ module.exports = function () {
     var ur = cy.undoRedo();
     ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
+    ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
   }
   
   function cytoscapeExtensionsAndContextMenu() {

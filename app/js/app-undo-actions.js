@@ -39,6 +39,7 @@ appUndoActions.changeDataDirty = function (param) {
  * - property: can be one of currentLayoutProperties, currentGridProperties, currentGeneralProperties
  * - id: the id of the input to change
  * - type: the type of input, may include: text, checkbox, radio, select
+ * - update (optional): a function to apply after changing properties to update graph
  * - value
  * in case of checkbox or radio, value is true or false
  *
@@ -55,7 +56,8 @@ appUndoActions.changeMenu = function (param) {
     id: id,
     type: type,
     value: currentValue,
-    property: param.property
+    property: param.property,
+    update: param.update
   };
 
   if(type == "checkbox" || type == "radio"){
@@ -66,10 +68,33 @@ appUndoActions.changeMenu = function (param) {
   }
   lo_set(appUtilities, param.property, param.value);
 
+  if (param.update){
+    param.update.call();
+  };
   return result;
 }
 
+appUndoActions.refreshColorSchemeMenu = function (param) {
+  var result = {
+    value: appUtilities.currentGeneralProperties.mapColorScheme,
+    self: param.self
+  };
 
+  if (param.self){
+    var inverted_id = param.self.schemes[param.value].invert;
+    param.self.schemes[param.value].isDisplayed = true;
 
+    if (inverted_id)
+      param.self.schemes[inverted_id].isDisplayed = false;
+
+    param.self.render();
+  } else {
+    document.getElementById("map-color-scheme_preview_" + result.value).style.border = "1px solid";
+  };
+
+  document.getElementById("map-color-scheme_preview_" + param.value).style.border = "3px solid";
+  appUtilities.currentGeneralProperties.mapColorScheme = param.value;
+  return result;
+}
 
 module.exports = appUndoActions;

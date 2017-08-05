@@ -83,7 +83,8 @@ appUtilities.defaultGeneralProperties = {
   allowCompoundNodeResize: false,
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
-  defaultInfoboxWidth: 30
+  defaultInfoboxWidth: 30,
+  mapType: function() {return chise.getMapType() || "Unknown"}
 };
 
 appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
@@ -972,7 +973,7 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 };
 
 // change the global style of the map by applying the current color scheme
-appUtilities.applyMapColorScheme = function(newColorScheme) {
+appUtilities.applyMapColorScheme = function(newColorScheme, self) {
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
   var collapsedChildren = appUtilities.getCollapsedChildren("nodes");
@@ -984,6 +985,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme) {
   // collapsed nodes' style should also be changed, special edge case
   actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
 
+  actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self}});
   // set to be the default as well
   for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
     classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
