@@ -291,7 +291,6 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
 
-      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
       currentScheme = scheme_id;
       appUtilities.applyMapColorScheme(scheme_id);
     });
@@ -301,18 +300,11 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
 
-      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
       currentScheme = inverted_id;
-      self.schemes[inverted_id].isDisplayed = true;
-      self.schemes[scheme_id].isDisplayed = false;
-      self.render();
-      // if we don't apply this before the menu is rendered again, the correct ids won't appear
-      // in the html and the radio button cannot be correctly checked.
-      appUtilities.applyMapColorScheme(inverted_id);
+      appUtilities.applyMapColorScheme(inverted_id, self);
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
-      document.getElementById("map-color-scheme_preview_" + currentScheme).style.border = "1px solid";;
       appUtilities.applyMapColorScheme(defaultColorScheme);
       currentScheme = defaultColorScheme;
     });
@@ -365,21 +357,31 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
     self.setPropertiesToDefault();
+    // initialize undo-redo parameters
+    self.params = {};
+    self.params.compoundPadding = {id: "compound-padding", type: "text",
+      property: "currentGeneralProperties.compoundPadding", update: self.applyUpdate};
+
+    self.params.allowCompoundNodeResize = {id: "allow-compound-node-resize", type: "checkbox",
+      property: "currentGeneralProperties.allowCompoundNodeResize", update: self.applyUpdate};
+
+    self.params.enablePorts = {id: "enable-ports", type: "checkbox",
+      property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
 
     // general properties part
     $(document).on("change", "#compound-padding", function (evt) {
-      appUtilities.currentGeneralProperties.compoundPadding = Number($('#compound-padding').val());
-      self.applyUpdate();
+      self.params.compoundPadding.value = Number($('#compound-padding').val());
+      cy.undoRedo().do("changeMenu", self.params.compoundPadding);
     });
 
     $(document).on("change", "#allow-compound-node-resize", function (evt) {
-      appUtilities.currentGeneralProperties.allowCompoundNodeResize = $('#allow-compound-node-resize').prop('checked');
-      self.applyUpdate();
+      self.params.allowCompoundNodeResize.value = $('#allow-compound-node-resize').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
     });
 
     $(document).on("change", "#enable-ports", function (evt) {
-      appUtilities.currentGeneralProperties.enablePorts = $('#enable-ports').prop('checked');
-      self.applyUpdate();
+      self.params.enablePorts.value = $('#enable-ports').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.enablePorts);
     });
 
     $(document).on("click", "#inspector-map-tab", function (evt) {
@@ -389,12 +391,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
     });
     $(document).on("click", "#map-general-default-button", function (evt) {
-      appUtilities.currentGeneralProperties.compoundPadding = appUtilities.defaultGeneralProperties.compoundPadding;
-      appUtilities.currentGeneralProperties.allowCompoundNodeResize = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
-      appUtilities.currentGeneralProperties.enablePorts = appUtilities.defaultGeneralProperties.enablePorts;
-      self.$el.html(self.template(appUtilities.defaultGeneralProperties));
-      $("#inspector-map-tab").trigger('click');
-      self.applyUpdate();
+      var ur = cy.undoRedo();
+      var actions = [];
+      self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
+      self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
+      self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
+      actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
+      actions.push({name: "changeMenu", param: self.params.enablePorts});
+      actions.push({name: "changeMenu", param: self.params.compoundPadding});
+      ur.do("batch", actions);
     });
   },
   render: function() {
@@ -410,41 +415,67 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
     self.setPropertiesToDefault();
+    // initialize undo-redo parameters
+    self.params = {};
+    self.params.dynamicLabelSize = {id: "dynamic-label-size-select", type: "select",
+      property: "currentGeneralProperties.dynamicLabelSize"};
+
+    self.params.showComplexName = {id: "show-complex-name", type: "checkbox",
+      property: "currentGeneralProperties.showComplexName", update: self.applyUpdate};
+
+    self.params.adjustAutomatically = {id: "adjust-node-label-font-size-automatically", type: "checkbox",
+      property: "currentGeneralProperties.adjustNodeLabelFontSizeAutomatically"};
+
+    self.params.fitLabelsToNodes = {id: "fit-labels-to-nodes", type: "checkbox",
+      property: "currentGeneralProperties.fitLabelsToNodes"};
+
+    self.params.fitLabelsToInfoboxes = {id: "fit-labels-to-infoboxes", type: "checkbox",
+      property: "currentGeneralProperties.fitLabelsToInfoboxes"};
 
     $(document).on("change", 'select[name="dynamic-label-size"]', function (evt) {
-      appUtilities.currentGeneralProperties.dynamicLabelSize =
-            $('select[name="dynamic-label-size"] option:selected').val();
+      self.params.dynamicLabelSize.value = $('#dynamic-label-size-select option:selected').val();
+      cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
+      $('#dynamic-label-size-select').blur();
       self.applyUpdate();
     });
 
     $(document).on("change", "#show-complex-name", function (evt) {
-      appUtilities.currentGeneralProperties.showComplexName = $('#show-complex-name').prop('checked');
-      self.applyUpdate();
+      self.params.showComplexName.value = $('#show-complex-name').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.showComplexName);
     });
 
     $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
-      appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically =
-            $('#adjust-node-label-font-size-automatically').prop('checked');
-      self.applyUpdate();  
+      self.params.adjustAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.adjustAutomatically);
+      self.applyUpdate();
     });
 
     $(document).on("change", "#fit-labels-to-nodes", function (evt) {
-      appUtilities.currentGeneralProperties.fitLabelsToNodes = $('#fit-labels-to-nodes').prop('checked');
+      self.params.fitLabelsToNodes.value = $('#fit-labels-to-nodes').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
       self.applyUpdate();
     });
 
     $(document).on("change", "#fit-labels-to-infoboxes", function (evt) {
-      appUtilities.currentGeneralProperties.fitLabelsToInfoboxes = $('#fit-labels-to-infoboxes').prop('checked');
+      self.params.fitLabelsToInfoboxes.value = $('#fit-labels-to-infoboxes').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
       self.applyUpdate();
     });
     $(document).on("click", "#map-label-default-button", function (evt) {
-      appUtilities.currentGeneralProperties.dynamicLabelSize = appUtilities.defaultGeneralProperties.dynamicLabelSize;
-      appUtilities.currentGeneralProperties.showComplexName = appUtilities.defaultGeneralProperties.showComplexName;
-      appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
-      appUtilities.currentGeneralProperties.fitLabelsToNodes = appUtilities.defaultGeneralProperties.fitLabelsToNodes;
-      appUtilities.currentGeneralProperties.fitLabelsToInfoboxes = appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
-      self.$el.html(self.template(appUtilities.defaultGeneralProperties));
-      self.applyUpdate();
+      var ur = cy.undoRedo();
+      var actions = [];
+      self.params.dynamicLabelSize.value = appUtilities.defaultGeneralProperties.dynamicLabelSize;
+      self.params.adjustAutomatically.value = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+      self.params.fitLabelsToNodes.value = appUtilities.defaultGeneralProperties.fitLabelsToNodes;
+      self.params.fitLabelsToInfoboxes.value = appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
+      self.params.showComplexName.value = appUtilities.defaultGeneralProperties.showComplexName;
+
+      actions.push({name: "changeMenu", param: self.params.dynamicLabelSize});
+      actions.push({name: "changeMenu", param: self.params.adjustAutomatically});
+      actions.push({name: "changeMenu", param: self.params.fitLabelsToNodes});
+      actions.push({name: "changeMenu", param: self.params.fitLabelsToInfoboxes});
+      actions.push({name: "changeMenu", param: self.params.showComplexName});
+      ur.do("batch", actions);
     });
   },
   render: function() {
@@ -461,23 +492,32 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
     self.setPropertiesToDefault();
+    // initialize undo-redo parameters
+    self.params = {};
+    self.params.rearrangeAfterExpandCollapse = {id: "rearrange-after-expand-collapse", type: "checkbox",
+      property: "currentGeneralProperties.rearrangeAfterExpandCollapse"};
+
+    self.params.animateOnDrawingChanges = {id: "animate-on-drawing-changes", type: "checkbox",
+      property: "currentGeneralProperties.animateOnDrawingChanges"};
 
     $(document).on("change", "#rearrange-after-expand-collapse", function (evt) {
-      appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse =
-            $('#rearrange-after-expand-collapse').prop('checked');
-      self.applyUpdate();
+      self.params.rearrangeAfterExpandCollapse.value = $('#rearrange-after-expand-collapse').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.rearrangeAfterExpandCollapse);
     });
 
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
-      appUtilities.currentGeneralProperties.animateOnDrawingChanges =
-            $('#animate-on-drawing-changes').prop('checked');
-      self.applyUpdate();
+      self.params.animateOnDrawingChanges.value = $('#animate-on-drawing-changes').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
     });
+
     $(document).on("click", "#map-rearrangement-default-button", function (evt) {
-      appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse = appUtilities.defaultGeneralProperties.rearrangeAfterExpandCollapse;
-      appUtilities.currentGeneralProperties.animateOnDrawingChanges = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
-      self.$el.html(self.template(appUtilities.defaultGeneralProperties));
-      self.applyUpdate();
+      var ur = cy.undoRedo();
+      var actions = [];
+      self.params.rearrangeAfterExpandCollapse.value = appUtilities.defaultGeneralProperties.rearrangeAfterExpandCollapse;
+      self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
+      actions.push({name: "changeMenu", param: self.params.rearrangeAfterExpandCollapse});
+      actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});
+      ur.do("batch", actions);
     });
   },
   render: function() {
