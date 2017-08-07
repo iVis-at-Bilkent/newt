@@ -372,16 +372,19 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#compound-padding", function (evt) {
       self.params.compoundPadding.value = Number($('#compound-padding').val());
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
+      $('#compound-padding').blur();
     });
 
     $(document).on("change", "#allow-compound-node-resize", function (evt) {
       self.params.allowCompoundNodeResize.value = $('#allow-compound-node-resize').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
+      $('#allow-compound-node-resize').blur();
     });
 
     $(document).on("change", "#enable-ports", function (evt) {
       self.params.enablePorts.value = $('#enable-ports').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.enablePorts);
+      $('#enable-ports').blur();
     });
 
     $(document).on("click", "#inspector-map-tab", function (evt) {
@@ -442,23 +445,27 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#show-complex-name", function (evt) {
       self.params.showComplexName.value = $('#show-complex-name').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.showComplexName);
+      $('#show-complex-name').blur();
     });
 
     $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
       self.params.adjustAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.adjustAutomatically);
+      $('#adjust-node-label-font-size-automatically').blur();
       self.applyUpdate();
     });
 
     $(document).on("change", "#fit-labels-to-nodes", function (evt) {
       self.params.fitLabelsToNodes.value = $('#fit-labels-to-nodes').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
+      $('#fit-labels-to-nodes').blur();
       self.applyUpdate();
     });
 
     $(document).on("change", "#fit-labels-to-infoboxes", function (evt) {
       self.params.fitLabelsToInfoboxes.value = $('#fit-labels-to-infoboxes').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
+      $('#fit-labels-to-infoboxes').blur();
       self.applyUpdate();
     });
     $(document).on("click", "#map-label-default-button", function (evt) {
@@ -503,11 +510,13 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#rearrange-after-expand-collapse", function (evt) {
       self.params.rearrangeAfterExpandCollapse.value = $('#rearrange-after-expand-collapse').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.rearrangeAfterExpandCollapse);
+      $('#rearrange-after-expand-collapse').blur();
     });
 
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
       self.params.animateOnDrawingChanges.value = $('#animate-on-drawing-changes').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
+      $('#animate-on-drawing-changes').blur();
     });
 
     $(document).on("click", "#map-rearrangement-default-button", function (evt) {
