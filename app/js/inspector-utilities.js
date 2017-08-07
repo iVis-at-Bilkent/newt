@@ -366,21 +366,30 @@ inspectorUtilities.handleSBGNInspector = function () {
       
       var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "line-color", "data");
       commonLineColor = commonLineColor?commonLineColor:'#FFFFFF';
-      
+
       var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "data");
-      
+      var arrowScale = chise.elementUtilities.getCommonProperty(selectedEles, "arrow-scale", "style");
+      arrowScale = arrowScale?arrowScale:1.25;
+
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Color</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
-              + "'/>" + "</td></tr>";
+          + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
+          + "'/>" + "</td></tr>";
 
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
-      
+          + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
       if(commonLineWidth){
-        html += " value='" + parseFloat(commonLineWidth) + "'";
+          html += " value='" + parseFloat(commonLineWidth) + "'";
       }
-      
       html += "/>" + "</td></tr>";
+
+      if (selectedEles.data('class') === 'production' || selectedEles.data('class') === 'modulation' || selectedEles.data('class') === 'stimulation' || selectedEles.data('class') === 'catalysis'
+          || selectedEles.data('class') === 'inhibition' || selectedEles.data('class') === 'necessary stimulation' || selectedEles.data('class') === 'positive influence'
+          || selectedEles.data('class') === 'negative influence' || selectedEles.data('class') === 'unknown influence')
+      {
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Arrow Size</font>" + "</td><td style='padding-left: 5px;'>"
+              + "<input id='inspector-arrow-scale' class='inspector-input-box' type='range' step='0.01' min='1' max='1.5' style='width: " + buttonwidth + "px;' value='" + parseFloat(arrowScale)
+              + "'/>" + "</td></tr>";
+      }
       
       if (chise.elementUtilities.canHaveSBGNCardinality(selectedEles)) {
         var cardinality = chise.elementUtilities.getCommonProperty(selectedEles, "cardinality", "data");
@@ -675,17 +684,23 @@ inspectorUtilities.handleSBGNInspector = function () {
           var actions = [];
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'arrow-scale', value: selectedEles.style('arrow-scale')}});
           ur.do("batch", actions);
         }
         else {
           var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
           defaults['width'] = selectedEles.data('width');
           defaults['line-color'] = selectedEles.data('line-color');
+          defaults['arrow-scale'] = selectedEles.style('arrow-scale');
         }
       });
 
       $("#inspector-line-color").on('change', function () {
         chise.changeData(selectedEles, "line-color", $("#inspector-line-color").val());
+      });
+
+      $("#inspector-arrow-scale").on('change', function () {
+          chise.changeCss(selectedEles, "arrow-scale", $("#inspector-arrow-scale").val());
       });
 
       $("#inspector-cardinality").change( function () {
