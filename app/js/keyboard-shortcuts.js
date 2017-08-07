@@ -7,6 +7,10 @@ module.exports = function () {
 
   mt.bind(["ctrl+z", "command+z"], function () {
     cy.undoRedo().undo();
+
+    // return false to prevent default browser behavior
+    // and stop event from bubbling
+    return false;
   });
   mt.bind(["ctrl+y", "command+y"], function () {
     cy.undoRedo().redo();
