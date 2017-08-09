@@ -146,6 +146,7 @@ module.exports = function () {
     $("#node-label-textbox").keydown(function (e) {
       if (e.which === 13 && !e.shiftKey) {
         $("#node-label-textbox").blur();
+        cy.nodes().unselect();
       }
     });
 
