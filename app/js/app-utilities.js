@@ -72,6 +72,7 @@ appUtilities.defaultGeneralProperties = {
   compoundPadding: 10,
   extraCompartmentPadding: 14,
   extraComplexPadding: 10,
+  arrowScale: 1.25,
   showComplexName: true,
   dynamicLabelSize: 'regular',
   fitLabelsToNodes: false,

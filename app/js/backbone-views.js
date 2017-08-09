@@ -362,6 +362,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.compoundPadding = {id: "compound-padding", type: "text",
       property: "currentGeneralProperties.compoundPadding", update: self.applyUpdate};
 
+    self.params.arrowScale = {id: "arrow-scale", type: "range",
+      property: "currentGeneralProperties.arrowScale"};
+
     self.params.allowCompoundNodeResize = {id: "allow-compound-node-resize", type: "checkbox",
       property: "currentGeneralProperties.allowCompoundNodeResize", update: self.applyUpdate};
 
@@ -373,6 +376,17 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.compoundPadding.value = Number($('#compound-padding').val());
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
       $('#compound-padding').blur();
+    });
+
+    $(document).on("change", "#arrow-scale", function (evt) {
+      self.params.arrowScale.value = Number($('#arrow-scale').val());
+      var ur = cy.undoRedo();
+      var actions = [];
+      actions.push({name: "changeMenu", param: self.params.arrowScale});
+      actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
+          valueMap: self.params.arrowScale.value}});
+      ur.do("batch", actions);
+      $('#arrow-scale').blur();
     });
 
     $(document).on("change", "#allow-compound-node-resize", function (evt) {
@@ -399,9 +413,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
+      self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
+      actions.push({name: "changeMenu", param: self.params.arrowScale});
+      actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
+          valueMap: self.params.arrowScale.value}});
       ur.do("batch", actions);
     });
   },
