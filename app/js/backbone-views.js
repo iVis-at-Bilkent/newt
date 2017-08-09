@@ -489,7 +489,6 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     this.template = _.template($("#map-tab-label-template").html());
     this.$el.empty();
     this.$el.html(this.template(appUtilities.currentGeneralProperties));
-
     return this;
   }
 });
@@ -798,7 +797,9 @@ var FileSaveView = Backbone.View.extend({
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
       var renderInfo = appUtilities.getAllStyles();
-      chise.saveAsSbgnml(filename, renderInfo);
+      var properties = jquery.extend(true, {}, appUtilities.currentGeneralProperties);
+      delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
+      chise.saveAsSbgnml(filename, renderInfo, properties);
       $(self.el).modal('toggle');
     });
 
