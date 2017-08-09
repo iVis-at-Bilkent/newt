@@ -1218,4 +1218,40 @@ appUtilities.getColorsFromElements = function (nodes, edges) {
   return colorHash;
 }
 
+/**
+ * updates current general properties and refreshes map
+ * @mapProperties : a set of properties as object
+ */
+appUtilities.setMapProperties = function(mapProperties) {
+  for (property in mapProperties){
+    var value = mapProperties[property];
+    // convert strings to correct appropriate types
+    if (value == 'true' || value == 'false')  // if boolean
+      appUtilities.currentGeneralProperties[property] = (value == 'true');
+    else if (Number(value))  // if number
+      appUtilities.currentGeneralProperties[property] = Number(value);
+    else  // if string
+      appUtilities.currentGeneralProperties[property] = value;
+  }
+    // refresh map with new settings
+    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+    chise.refreshPaddings(); // Refresh/recalculate paddings
+
+    if (appUtilities.currentGeneralProperties.enablePorts) {
+      chise.enablePorts();
+    }
+    else {
+      chise.disablePorts();
+    }
+
+    if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
+      chise.considerCompoundSizes();
+    }
+    else {
+      chise.omitCompoundSizes();
+    }
+
+    cy.style().update();
+};
+
 module.exports = appUtilities;

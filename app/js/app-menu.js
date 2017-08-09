@@ -209,6 +209,18 @@ module.exports = function () {
         
         chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         $(this).val("");
+        // get and set map properties from file
+        $( document ).on( "sbgnvizLoadFileEnd", function(){
+          var properties = chise.getMapProperties();
+          if (properties && properties.mapProperties){
+            appUtilities.setMapProperties(properties.mapProperties);
+            // update map panel
+            colorSchemeInspectorView.render();
+            mapTabGeneralPanel.render();
+            mapTabLabelPanel.render();
+            mapTabRearrangementPanel.render();
+          };
+        });
       }
     });
 
