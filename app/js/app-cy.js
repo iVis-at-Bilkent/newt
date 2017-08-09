@@ -812,6 +812,7 @@ module.exports = function () {
 
         nodeLabelTextbox.css('left', left);
         nodeLabelTextbox.css('top', top);
+        cy.nodes().unselect();
         nodeLabelTextbox.show();
         var sbgnlabel = this.data('label');
         if (sbgnlabel == null) {
@@ -838,10 +839,15 @@ module.exports = function () {
         $('#inspector-palette-tab a').blur();
         $('#inspector-map-tab a').blur();
       }
+      //Remove grapples while node-label-textbox is visible 
+      if($("#node-label-textbox").is(":visible")){
+        cy.nodeResize('get').removeGrapples();
+      }
     });
     
     cy.on('unselect', function() {
       $("#node-label-textbox").blur();
+      cy.nodes().unselect();
       handleInspectorThrottled();
     });
     

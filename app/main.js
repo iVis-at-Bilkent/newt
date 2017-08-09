@@ -70,6 +70,10 @@ chise({
   compoundPadding: function () {
     return appUtilities.currentGeneralProperties.compoundPadding;
   },
+  // arrow size changed by a slider on a scale from 0.5-2
+  arrowScale: function () {
+      return appUtilities.currentGeneralProperties.arrowScale;
+  },
   extraCompartmentPadding: appUtilities.currentGeneralProperties.extraCompartmentPadding,
   extraComplexPadding: appUtilities.currentGeneralProperties.extraComplexPadding,
   showComplexName: appUtilities.currentGeneralProperties.showComplexName,
@@ -80,8 +84,8 @@ chise({
     return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
   },
   // whether to improve flow (swap nodes)
-    improveFlow: function () {
-      return appUtilities.currentLayoutProperties.improveFlow;
+  improveFlow: function () {
+    return appUtilities.currentLayoutProperties.improveFlow;
   },
   undoable: appUtilities.undoable,
   undoableDrag: function() {

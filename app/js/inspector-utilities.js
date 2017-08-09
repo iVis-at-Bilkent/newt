@@ -366,20 +366,18 @@ inspectorUtilities.handleSBGNInspector = function () {
       
       var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "line-color", "data");
       commonLineColor = commonLineColor?commonLineColor:'#FFFFFF';
-      
+
       var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "data");
-      
+
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Color</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
-              + "'/>" + "</td></tr>";
+          + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
+          + "'/>" + "</td></tr>";
 
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
-      
+          + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
       if(commonLineWidth){
-        html += " value='" + parseFloat(commonLineWidth) + "'";
+          html += " value='" + parseFloat(commonLineWidth) + "'";
       }
-      
       html += "/>" + "</td></tr>";
       
       if (chise.elementUtilities.canHaveSBGNCardinality(selectedEles)) {
