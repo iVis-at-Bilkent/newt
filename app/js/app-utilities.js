@@ -1252,6 +1252,7 @@ appUtilities.setMapProperties = function(mapProperties) {
       chise.omitCompoundSizes();
     }
 
+    cy.edges().css('arrow-scale', appUtilities.currentGeneralProperties.arrowScale);
     cy.style().update();
 };
 
