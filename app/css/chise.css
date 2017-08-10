@@ -257,6 +257,7 @@ body {
     overflow: visible !important;
     font-size: 12px !important;
     min-height: 0px;
+    background-color: #eaeaea !important;
 }
 
 .sbgn-nav-bar .navbar-nav > li > a {
@@ -561,7 +562,7 @@ menu:not([title]):before{
     margin: 0px;
     padding: 0px;
     text-align: center;
-    background-color: #eee;
+    background-color: #eaeaea;
 }
 
 .panel-title {
@@ -666,7 +667,11 @@ hr.inspector-divider {
 }*/
 
 .chise-tab.active a {
-    background: #eee !important;
+    background: #eaeaea !important;
+}
+
+.chise-tab:hover a {
+    background: #eaeaea !important;
 }
 
 .btn-default {
@@ -693,7 +698,7 @@ img#template-reaction-add-button:hover {
 }
 
 .color-scheme-choice:hover, .color-scheme-invert-button:hover {
-    background-color: #f0f0f0;
+    background-color: #eaeaea;
 }
 
 .map-panel-table {
