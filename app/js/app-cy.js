@@ -411,10 +411,17 @@ module.exports = function () {
           // if added edge changes map type, warn user
           if (chise.getMapType() && chise.getMapType() != "Unknown" && edgeParams.language != chise.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chise.addEdge(source, target, edgeParams);});
+                chise.addEdge(source, target, edgeParams);
+                var addedEdge = cy.elements()[cy.elements().length - 1];
+                var currentArrowScale = Number($('#arrow-scale').val());
+                addedEdge.style('arrow-scale', currentArrowScale);
+            });
           }
           else{
-            chise.addEdge(source, target, edgeParams);
+              chise.addEdge(source, target, edgeParams);
+              var addedEdge = cy.elements()[cy.elements().length - 1];
+              var currentArrowScale = Number($('#arrow-scale').val());
+              addedEdge.style('arrow-scale', currentArrowScale);
           }
           
           // If not in sustain mode set selection mode
