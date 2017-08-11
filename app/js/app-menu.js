@@ -23,11 +23,11 @@ module.exports = function () {
           console.log("Xsd validation OK");
         }
         else {
-          console.log("Xsd validation failed. Errors:", data);
+          console.error("Xsd validation failed. Errors:", data);
         }
       },
       error: function(req, status, err) {
-        console.log("Error during file validation", status, err);
+        console.error("Error during file validation", status, err);
       }
     });
   }

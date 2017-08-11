@@ -1453,7 +1453,7 @@ var AnnotationElementView = Backbone.View.extend({
         if(err) {
           self.model.set('status', 'error');
           self.model.save();
-          console.log("validation error", err);
+          console.error("validation error", err);
           return;
         }
         // result contains the validated url
