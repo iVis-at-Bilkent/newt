@@ -635,14 +635,21 @@ var PathsBetweenQueryView = Backbone.View.extend({
         document.getElementById("query-pathsbetween-gene-symbols").focus();
         return;
       }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+          document.getElementById("query-pathsbetween-length-limit").focus();
+          return;
+      }
 
       var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
               + self.currentQueryParameters.lengthLimit;
       
       var sources = "";
       var filename = "";
-      var geneSymbolsArray = self.currentQueryParameters.geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
-      
+      var geneSymbols = self.currentQueryParameters.geneSymbols;
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+      var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
+
       for (var i = 0; i < geneSymbolsArray.length; i++) {
         var currentGeneSymbol = geneSymbolsArray[i];
         if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
@@ -657,7 +664,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
         }
       }
       filename = filename + '_PATHSBETWEEN.sbgnml';
-      setFileContent(filename);
 
       chise.startSpinner('paths-between-spinner');
 
@@ -666,12 +672,20 @@ var PathsBetweenQueryView = Backbone.View.extend({
         url: queryURL,
         type: 'GET',
         success: function (data) {
-          chise.updateGraph(chise.convertSbgnmlToJson(data));
-          chise.endSpinner('paths-between-spinner');
+          if (data == null)
+          {
+            document.getElementById("query-pathsbetween-gene-symbols").focus();
+            chise.endSpinner('paths-between-spinner');
+          }
+          else
+          {
+            setFileContent(filename);
+            $(self.el).modal('toggle');
+            chise.updateGraph(chise.convertSbgnmlToJson(data));
+            chise.endSpinner('paths-between-spinner');
+          }
         }
       });
-
-      $(self.el).modal('toggle');
     });
 
     $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
@@ -732,14 +746,14 @@ var PathsByURIQueryView = Backbone.View.extend({
             filename = filename + '_URI.sbgnml';
             setFileContent(filename);
 
-            chise.startSpinner('paths-between-spinner');
+            chise.startSpinner('paths-byURI-spinner');
 
             $.ajax({
                 url: queryURL,
                 type: 'GET',
                 success: function (data) {
                     chise.updateGraph(chise.convertSbgnmlToJson(data));
-                    chise.endSpinner('paths-between-spinner');
+                    chise.endSpinner('paths-byURI-spinner');
                 }
             });
 
