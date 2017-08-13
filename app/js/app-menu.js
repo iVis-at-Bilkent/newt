@@ -245,6 +245,10 @@ module.exports = function () {
       e.preventDefault();
       $("#about_modal").modal('show');
     });
+    
+    $(".title").click(function(e){
+      e.stopPropagation();    
+    });
 
     var selectorToSampleFileName = {
       "#load-sample1" : 'neuronal_muscle_signaling.xml',

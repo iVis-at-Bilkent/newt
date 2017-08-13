@@ -72,6 +72,15 @@ body {
     filter: none;
 }
 
+.sbgn-nav-menu .dropdown-submenu:hover .title {
+    color: #000000;
+    text-decoration: none;
+    background-color: #ffffff;
+    background-image: none;
+    background-repeat: repeat-x;
+    filter: none;
+}
+
 .sbgn-nav-menu .dropdown-menu .active > a,
 .sbgn-nav-menu .dropdown-menu .active > a:hover {
     color: #ffffff;
