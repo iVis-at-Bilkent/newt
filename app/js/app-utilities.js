@@ -85,7 +85,9 @@ appUtilities.defaultGeneralProperties = {
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
   defaultInfoboxWidth: 30,
-  mapType: function() {return chise.getMapType() || "Unknown"}
+  mapType: function() {return chise.getMapType() || "Unknown"},
+  mapName: "",
+  mapDescription: ""
 };
 
 appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);

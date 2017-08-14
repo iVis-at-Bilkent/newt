@@ -178,6 +178,11 @@ module.exports = function () {
         chise.resetMapType();  // reset map type while creating new file
         appUtilities.setFileContent("new_file.sbgnml");
 
+        // reset map name and description
+        appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
+        appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+        mapTabGeneralPanel.render();
+
         //clean and reset things
         cy.elements().unselect();
         if (!$('#inspector-palette-tab').hasClass('active')) {
@@ -215,6 +220,13 @@ module.exports = function () {
 
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(){
+
+      // reset map name and description
+      appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
+      appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+      mapTabGeneralPanel.render();
+
+      // get and set properties from file
       var properties = chise.getMapProperties();
       if (properties && properties.mapProperties){
         appUtilities.setMapProperties(properties.mapProperties);

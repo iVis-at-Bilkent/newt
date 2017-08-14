@@ -371,7 +371,25 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
 
+    self.params.mapName = {id: "map-name", type: "text",
+      property: "currentGeneralProperties.mapName"};
+
+    self.params.mapDescription = {id: "map-description", type: "text",
+      property: "currentGeneralProperties.mapDescription"};
+
     // general properties part
+    $(document).on("change", "#map-name", function (evt) {
+      self.params.mapName.value = $('#map-name').val();
+      cy.undoRedo().do("changeMenu", self.params.mapName);
+      $('#map-name').blur();
+    });
+
+    $(document).on("change", "#map-description", function (evt) {
+      self.params.mapDescription.value = $('#map-description').val();
+      cy.undoRedo().do("changeMenu", self.params.mapDescription);
+      $('#map-description').blur();
+    });
+
     $(document).on("change", "#compound-padding", function (evt) {
       self.params.compoundPadding.value = Number($('#compound-padding').val());
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
@@ -410,10 +428,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("click", "#map-general-default-button", function (evt) {
       var ur = cy.undoRedo();
       var actions = [];
+
+      self.params.mapName.value = appUtilities.defaultGeneralProperties.mapName;
+      self.params.mapDescription.value = appUtilities.defaultGeneralProperties.mapDescription;
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
+      actions.push({name: "changeMenu", param: self.params.mapName});
+      actions.push({name: "changeMenu", param: self.params.mapDescription});
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
