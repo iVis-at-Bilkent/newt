@@ -200,7 +200,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                 + "<input id='inspector-node-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
         if (nodeWidth) {
-          html += " value='" + nodeWidth + "'";
+          html += " value='" + parseFloat(nodeWidth.toFixed(2)) + "'";
         }
 
         html += "/>" + "</td></tr>";
@@ -209,7 +209,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                 + "<input id='inspector-node-height' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
         if (nodeHeight) {
-          html += " value='" + nodeHeight + "'";
+          html += " value='" + parseFloat(nodeHeight.toFixed(2)) + "'";
         }
 
         html += "/>";
