@@ -666,26 +666,26 @@ var PathsBetweenQueryView = Backbone.View.extend({
       filename = filename + '_PATHSBETWEEN.sbgnml';
 
       chise.startSpinner('paths-between-spinner');
-
       queryURL = queryURL + sources;
+
       $.ajax({
         url: queryURL,
         type: 'GET',
         success: function (data) {
           if (data == null)
           {
-            document.getElementById("query-pathsbetween-gene-symbols").focus();
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
             chise.endSpinner('paths-between-spinner');
           }
           else
           {
             setFileContent(filename);
-            $(self.el).modal('toggle');
             chise.updateGraph(chise.convertSbgnmlToJson(data));
             chise.endSpinner('paths-between-spinner');
           }
         }
       });
+      $(self.el).modal('toggle');
     });
 
     $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
@@ -893,6 +893,26 @@ var PromptMapTypeView = Backbone.View.extend({
     });
 
     return this;
+  }
+});
+
+var PromptInvalidQueryView = Backbone.View.extend({
+  initialize: function () {
+      var self = this;
+      self.template = _.template($("#prompt-invalidQuery-template").html());
+  },
+  render: function () {
+      var self = this;
+      self.template = _.template($("#prompt-invalidQuery-template").html());
+
+      $(self.el).html(self.template);
+      $(self.el).modal('show');
+
+      $(document).off("click", "#prompt-invalidQuery-confirm").on("click", "#prompt-invalidQuery-confirm", function (evt) {
+          $(self.el).modal('toggle');
+      });
+
+      return this;
   }
 });
 
