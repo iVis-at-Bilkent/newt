@@ -853,8 +853,10 @@ module.exports = function () {
     });
     
     cy.on('unselect', function() {
+      if($("#node-label-textbox").is(":visible")){
+        cy.nodes().unselect();
+      }
       $("#node-label-textbox").blur();
-      cy.nodes().unselect();
       handleInspectorThrottled();
     });
     
