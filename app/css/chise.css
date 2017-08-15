@@ -392,11 +392,11 @@ option {
 
 input, select{
     padding-left: 4px;
-    border: 1px solid rgb(204, 204, 204);
     height: 23px;
 }
 
 input, select, textarea {
+    border: 1px solid rgb(204, 204, 204);
     border-radius: 4px;
 }
 
