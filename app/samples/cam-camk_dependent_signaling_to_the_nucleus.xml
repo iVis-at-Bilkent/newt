@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn 
   xmlns="http://sbgn.org/libsbgn/0.3">
-  <map id="CaM-CaMK_dependent_signaling_to_the_nucleus.sbgnml" language="process description">
+  <map id="cam-camk_dependent_signaling_to_the_nucleus.xml" language="process description">
     <extension>
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
@@ -45,6 +45,26 @@
           </style>
         </listOfStyles>
       </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>false</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>CaM-CaMK dependent signaling to nucleus</mapName>
+        <mapDescription>Ma et al., Cell, 2014</mapDescription>
+      </mapProperties>
     </extension>
     <glyph id="glyph0" class="compartment">
       <label text="neuron"/>

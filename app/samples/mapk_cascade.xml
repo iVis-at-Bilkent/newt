@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn 
   xmlns="http://sbgn.org/libsbgn/0.3">
-  <map id="mapk_cascade.sbgn.txt" language="unknown">
+  <map id="mapk_cascade.xml" language="unknown">
     <extension>
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
@@ -10,17 +10,37 @@
           <colorDefinition id="color_2" value="#555555"/>
         </listOfColorDefinitions>
         <listOfStyles>
-          <style id="nodeffffff0.55551.2514normalnormalHelvetica" idList="glyph4 glyph5 glyph7 glyph6 glyph10 glyph9 glyph2 glyph18 glyph16 glyph15 glyph17 glyph12 glyph19 glyph20 glyph1 glyph0 glyph24 glyph25 glyph23 glyph22 glyph21">
+          <style id="nodeffffff0.55555551.2514normalnormalHelvetica" idList="glyph4 glyph5 glyph7 glyph6 glyph10 glyph9 glyph2 glyph18 glyph16 glyph15 glyph17 glyph12 glyph19 glyph20 glyph1 glyph0 glyph24 glyph25 glyph23 glyph22 glyph21">
             <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1"/>
           </style>
-          <style id="nodeffffff0.55551.25" idList="glyph11 glyph3 glyph8 glyph13 glyph14">
+          <style id="nodeffffff0.55555551.25" idList="glyph11 glyph3 glyph8 glyph13 glyph14">
             <g stroke="color_2" strokeWidth="1.25" fill="color_1"/>
           </style>
-          <style id="edge5551.25" idList="71683490-4e4e-4d59-ae45-f02b1207cfe2 80d68006-906e-4f82-aca0-6dc0dfa5ddf9 a387f0f2-0df9-4373-a35c-35babc7c69ce 6f654e59-3ebb-46c3-ad76-13f125b0ffb7 a21961f1-f7d0-4455-9f7c-5c6b8cd7b947 5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6 aee723a4-2d8a-4480-8cdf-882601705ac0 6b514356-6708-4b90-881c-323c091dfe0d ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783 69eb919d-6711-4187-ba2c-d60d53b2654b a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af 61110232-ba80-4615-936f-bc21c393870c 7ada8b74-27e7-4e68-9c3d-bc406684ccb1 7d519bfc-0843-408a-95a0-34d0f7f17168 fc9c53a3-8627-41cf-9972-0bfa282538a0 0e18c34a-d3bc-4af5-b973-af8d56f4ec66 72badb00-9293-4106-9edc-dd830d41c62d 31a70df8-a7f0-4e03-8cf1-a6ced51843ea 7a83e4b9-1830-4fef-9a89-1be72e62f78a 47a398c9-b511-467a-9820-8c5844d9a9c8 80054f2d-3fd0-4dbd-b3b4-906a529e3ab7 6926ebfd-f318-4081-916b-2954f17ea6f5 e5e14893-b88e-4930-9b85-9938c3671ea4 4bb4836b-50b0-473e-8359-dda084e66be4 22d6d63b-53d4-40b6-8c82-86e65e0cb25b be003e1b-ca84-4eb1-83f9-a6de90fb0f8a f0c8409c-d838-4830-9fc3-edc71afbf61d">
+          <style id="edge5555551.25" idList="71683490-4e4e-4d59-ae45-f02b1207cfe2 80d68006-906e-4f82-aca0-6dc0dfa5ddf9 a387f0f2-0df9-4373-a35c-35babc7c69ce 6f654e59-3ebb-46c3-ad76-13f125b0ffb7 a21961f1-f7d0-4455-9f7c-5c6b8cd7b947 5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6 aee723a4-2d8a-4480-8cdf-882601705ac0 6b514356-6708-4b90-881c-323c091dfe0d ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783 69eb919d-6711-4187-ba2c-d60d53b2654b a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af 61110232-ba80-4615-936f-bc21c393870c 7ada8b74-27e7-4e68-9c3d-bc406684ccb1 7d519bfc-0843-408a-95a0-34d0f7f17168 fc9c53a3-8627-41cf-9972-0bfa282538a0 0e18c34a-d3bc-4af5-b973-af8d56f4ec66 72badb00-9293-4106-9edc-dd830d41c62d 31a70df8-a7f0-4e03-8cf1-a6ced51843ea 7a83e4b9-1830-4fef-9a89-1be72e62f78a 47a398c9-b511-467a-9820-8c5844d9a9c8 80054f2d-3fd0-4dbd-b3b4-906a529e3ab7 6926ebfd-f318-4081-916b-2954f17ea6f5 e5e14893-b88e-4930-9b85-9938c3671ea4 4bb4836b-50b0-473e-8359-dda084e66be4 22d6d63b-53d4-40b6-8c82-86e65e0cb25b be003e1b-ca84-4eb1-83f9-a6de90fb0f8a f0c8409c-d838-4830-9fc3-edc71afbf61d">
             <g stroke="color_2" strokeWidth="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>MAPK cascade</mapName>
+        <mapDescription/>
+      </mapProperties>
     </extension>
     <glyph id="glyph4" class="simple chemical">
       <label text="ATP"/>
@@ -56,8 +76,8 @@
       <label text="RAF"/>
       <bbox x="468.27129399053865" y="134.5" w="70" h="35"/>
       <glyph id="glyph2_0" class="state variable">
-        <state value="P"/>
-        <bbox x="506.52129399053865" y="158.5" w="25" h="22"/>
+        <state value="P" variable=""/>
+        <bbox x="505.77129399053865" y="128.5" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph18" class="simple chemical">
@@ -84,16 +104,16 @@
       <label text="MEK"/>
       <bbox x="607.8763427766252" y="262.65371426741484" w="70" h="35"/>
       <glyph id="glyph12_0" class="state variable">
-        <state value="2P"/>
-        <bbox x="645.0763427766252" y="286.65371426741484" w="32" h="22"/>
+        <state value="2P" variable=""/>
+        <bbox x="645.3763427766252" y="256.65371426741484" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph19" class="macromolecule">
       <label text="ERK"/>
       <bbox x="609.511632895616" y="420.5" w="70" h="35"/>
       <glyph id="glyph19_0" class="state variable">
-        <state value="2P"/>
-        <bbox x="646.711632895616" y="444.5" w="32" h="22"/>
+        <state value="2P" variable=""/>
+        <bbox x="647.011632895616" y="414.5" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph20" class="tag">
@@ -104,8 +124,8 @@
       <label text="RAS"/>
       <bbox x="345" y="42.5" w="70" h="35"/>
       <glyph id="glyph1_0" class="state variable">
-        <state value="active"/>
-        <bbox x="379.5" y="64.5" w="50" h="26"/>
+        <state value="active" variable=""/>
+        <bbox x="382.5" y="36.5" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph0" class="tag">
@@ -116,8 +136,8 @@
       <label text="MEK"/>
       <bbox x="357.7299750958073" y="262.65371426741484" w="70" h="35"/>
       <glyph id="glyph24_0" class="state variable">
-        <state value="P"/>
-        <bbox x="395.9799750958073" y="286.65371426741484" w="25" h="22"/>
+        <state value="P" variable=""/>
+        <bbox x="395.2299750958073" y="256.65371426741484" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph11" class="process">
@@ -129,8 +149,8 @@
       <label text="RAF"/>
       <bbox x="223" y="134.5" w="70" h="35"/>
       <glyph id="glyph25_0" class="state variable">
-        <state/>
-        <bbox x="262" y="158.5" w="20" h="22"/>
+        <state value="" variable=""/>
+        <bbox x="260.5" y="128.5" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph3" class="process">
@@ -142,8 +162,8 @@
       <label text="MEK"/>
       <bbox x="126.95577169574398" y="262.65371426741484" w="70" h="35"/>
       <glyph id="glyph23_0" class="state variable">
-        <state/>
-        <bbox x="165.95577169574398" y="286.65371426741484" w="20" h="22"/>
+        <state value="" variable=""/>
+        <bbox x="164.45577169574398" y="256.65371426741484" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph8" class="process">
@@ -155,8 +175,8 @@
       <label text="ERK"/>
       <bbox x="86.73851429303409" y="420.5" w="70" h="35"/>
       <glyph id="glyph22_0" class="state variable">
-        <state/>
-        <bbox x="125.73851429303409" y="444.5" w="20" h="22"/>
+        <state value="" variable=""/>
+        <bbox x="124.23851429303409" y="414.5" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph13" class="process">
@@ -173,229 +193,121 @@
       <label text="ERK"/>
       <bbox x="349" y="420.5" w="70" h="35"/>
       <glyph id="glyph21_0" class="state variable">
-        <state value="P"/>
-        <bbox x="387.25" y="444.5" w="25" h="22"/>
+        <state value="P" variable=""/>
+        <bbox x="386.5" y="414.5" w="30" h="12"/>
       </glyph>
     </glyph>
     <arc id="71683490-4e4e-4d59-ae45-f02b1207cfe2" class="production" source="glyph3.2" target="glyph2">
-      <glyph id="71683490-4e4e-4d59-ae45-f02b1207cfe2_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="395.625" y="152"/>
       <end x="464.64629399053865" y="152"/>
     </arc>
     <arc id="80d68006-906e-4f82-aca0-6dc0dfa5ddf9" class="consumption" source="glyph4" target="glyph3.1">
-      <glyph id="80d68006-906e-4f82-aca0-6dc0dfa5ddf9_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="316.12414743680415" y="187.93016706679765"/>
       <end x="364.375" y="152"/>
     </arc>
     <arc id="a387f0f2-0df9-4373-a35c-35babc7c69ce" class="production" source="glyph3.2" target="glyph5">
-      <glyph id="a387f0f2-0df9-4373-a35c-35babc7c69ce_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="395.625" y="152"/>
       <end x="441.1521790096816" y="186.3981006929459"/>
     </arc>
     <arc id="6f654e59-3ebb-46c3-ad76-13f125b0ffb7" class="catalysis" source="glyph1" target="glyph3">
-      <glyph id="6f654e59-3ebb-46c3-ad76-13f125b0ffb7_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="380" y="78"/>
       <end x="380" y="141.0625"/>
     </arc>
     <arc id="a21961f1-f7d0-4455-9f7c-5c6b8cd7b947" class="consumption" source="glyph7" target="glyph8.1">
-      <glyph id="a21961f1-f7d0-4455-9f7c-5c6b8cd7b947_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="202.6938658249118" y="333.35885086301573"/>
       <end x="256.6223144467498" y="280.15371426741484"/>
     </arc>
     <arc id="5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6" class="production" source="glyph8.2" target="glyph6">
-      <glyph id="5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="287.8723144467498" y="280.15371426741484"/>
       <end x="341.64070307173387" y="331.7034125481812"/>
     </arc>
     <arc id="aee723a4-2d8a-4480-8cdf-882601705ac0" class="consumption" source="glyph10" target="glyph11.1">
-      <glyph id="aee723a4-2d8a-4480-8cdf-882601705ac0_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="441.19492954815496" y="333.32881351581557"/>
       <end x="494.7901999743807" y="280.15371426741484"/>
     </arc>
     <arc id="6b514356-6708-4b90-881c-323c091dfe0d" class="production" source="glyph11.2" target="glyph12">
-      <glyph id="6b514356-6708-4b90-881c-323c091dfe0d_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="526.0401999743807" y="280.15371426741484"/>
       <end x="604.2513427766252" y="280.15371426741484"/>
     </arc>
     <arc id="ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783" class="production" source="glyph11.2" target="glyph9">
-      <glyph id="ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="526.0401999743807" y="280.15371426741484"/>
       <end x="591.6152937924335" y="332.8299155308004"/>
     </arc>
     <arc id="69eb919d-6711-4187-ba2c-d60d53b2654b" class="catalysis" source="glyph2" target="glyph11">
-      <glyph id="69eb919d-6711-4187-ba2c-d60d53b2654b_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="504.2747007856069" y="170"/>
       <end x="509.8057610210828" y="269.221058426055"/>
     </arc>
     <arc id="a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af" class="catalysis" source="glyph2" target="glyph8">
-      <glyph id="a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="498.6194444232425" y="178.66789943401045"/>
-      <next x="488.3133267358834" y="237.75031516253895"/>
+      <next x="488.3133267358834" y="237.75031516253898"/>
       <next x="272.289148243138" y="237.75031516253898"/>
       <end x="272.2581050223648" y="269.2162157882177"/>
     </arc>
     <arc id="61110232-ba80-4615-936f-bc21c393870c" class="production" source="glyph13.2" target="glyph19">
-      <glyph id="61110232-ba80-4615-936f-bc21c393870c_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="522.625" y="438"/>
       <end x="605.886632895616" y="438"/>
     </arc>
     <arc id="7ada8b74-27e7-4e68-9c3d-bc406684ccb1" class="production" source="glyph13.2" target="glyph18">
-      <glyph id="7ada8b74-27e7-4e68-9c3d-bc406684ccb1_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="522.625" y="438"/>
       <end x="590.3912414036042" y="497.44722159464857"/>
     </arc>
     <arc id="7d519bfc-0843-408a-95a0-34d0f7f17168" class="production" source="glyph14.2" target="glyph16">
-      <glyph id="7d519bfc-0843-408a-95a0-34d0f7f17168_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="272.625" y="438"/>
       <end x="329.1876814511337" y="496.3990231964228"/>
     </arc>
     <arc id="fc9c53a3-8627-41cf-9972-0bfa282538a0" class="consumption" source="glyph15" target="glyph14.1">
-      <glyph id="fc9c53a3-8627-41cf-9972-0bfa282538a0_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="171.06414030211894" y="499.26120691334097"/>
       <end x="241.375" y="438"/>
     </arc>
     <arc id="0e18c34a-d3bc-4af5-b973-af8d56f4ec66" class="consumption" source="glyph17" target="glyph13.1">
-      <glyph id="0e18c34a-d3bc-4af5-b973-af8d56f4ec66_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="432.382792747007" y="498.3644822720842"/>
       <end x="491.375" y="438"/>
     </arc>
     <arc id="72badb00-9293-4106-9edc-dd830d41c62d" class="catalysis" source="glyph12" target="glyph13">
-      <glyph id="72badb00-9293-4106-9edc-dd830d41c62d_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="646.6464421651933" y="304.9361158559993"/>
-      <next x="661.118464549032" y="400.06662398074064"/>
-      <next x="506.75855472818324" y="400.06662398074064"/>
+      <start x="646.6464421652826" y="304.9361158565859"/>
+      <next x="661.1184645490318" y="400.0666239807406"/>
+      <next x="506.7585547281833" y="400.0666239807405"/>
       <end x="506.93038340758926" y="427.0625632996412"/>
     </arc>
     <arc id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea" class="catalysis" source="glyph12" target="glyph14">
-      <glyph id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="640.0532397147944" y="308.3174860200949"/>
+      <start x="640.0532397148758" y="308.31748601928274"/>
       <next x="632.0298309160219" y="388.3604207404915"/>
-      <next x="257.1147499561934" y="389.58539553611524"/>
-      <end x="257.0259235132156" y="427.06250877749267"/>
+      <next x="257.1147499561934" y="389.5853955361153"/>
+      <end x="257.0259235132156" y="427.0625087774927"/>
     </arc>
     <arc id="7a83e4b9-1830-4fef-9a89-1be72e62f78a" class="equivalence arc" source="glyph19" target="glyph20">
-      <glyph id="7a83e4b9-1830-4fef-9a89-1be72e62f78a_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="680.011632895616" y="438"/>
       <end x="754.6527022450305" y="438"/>
     </arc>
     <arc id="47a398c9-b511-467a-9820-8c5844d9a9c8" class="equivalence arc" source="glyph1" target="glyph0">
-      <glyph id="47a398c9-b511-467a-9820-8c5844d9a9c8_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="344.5" y="60"/>
       <end x="293.625" y="60"/>
     </arc>
     <arc id="80054f2d-3fd0-4dbd-b3b4-906a529e3ab7" class="production" source="glyph8.2" target="glyph24">
-      <glyph id="80054f2d-3fd0-4dbd-b3b4-906a529e3ab7_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="287.8723144467498" y="280.15371426741484"/>
       <end x="354.1049750958073" y="280.15371426741484"/>
     </arc>
     <arc id="6926ebfd-f318-4081-916b-2954f17ea6f5" class="consumption" source="glyph24" target="glyph11.1">
-      <glyph id="6926ebfd-f318-4081-916b-2954f17ea6f5_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="428.2299750958073" y="280.15371426741484"/>
       <end x="494.7901999743807" y="280.15371426741484"/>
     </arc>
     <arc id="e5e14893-b88e-4930-9b85-9938c3671ea4" class="consumption" source="glyph25" target="glyph3.1">
-      <glyph id="e5e14893-b88e-4930-9b85-9938c3671ea4_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="293.5" y="152"/>
       <end x="364.375" y="152"/>
     </arc>
     <arc id="4bb4836b-50b0-473e-8359-dda084e66be4" class="consumption" source="glyph23" target="glyph8.1">
-      <glyph id="4bb4836b-50b0-473e-8359-dda084e66be4_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="197.45577169574398" y="280.15371426741484"/>
       <end x="256.6223144467498" y="280.15371426741484"/>
     </arc>
     <arc id="22d6d63b-53d4-40b6-8c82-86e65e0cb25b" class="consumption" source="glyph22" target="glyph14.1">
-      <glyph id="22d6d63b-53d4-40b6-8c82-86e65e0cb25b_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="157.2385142930341" y="438"/>
       <end x="241.375" y="438"/>
     </arc>
     <arc id="be003e1b-ca84-4eb1-83f9-a6de90fb0f8a" class="consumption" source="glyph21" target="glyph13.1">
-      <glyph id="be003e1b-ca84-4eb1-83f9-a6de90fb0f8a_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="419.5" y="438"/>
       <end x="491.375" y="438"/>
     </arc>
     <arc id="f0c8409c-d838-4830-9fc3-edc71afbf61d" class="production" source="glyph14.2" target="glyph21">
-      <glyph id="f0c8409c-d838-4830-9fc3-edc71afbf61d_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="272.625" y="438"/>
       <end x="345.375" y="438"/>
     </arc>

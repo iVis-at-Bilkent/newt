@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn 
   xmlns="http://sbgn.org/libsbgn/0.3">
-  <map id="activated_stat1alpha_induction_of_the_irf1_gene.sbgnml" language="process description">
+  <map id="activated_stat1alpha_induction_of_the_irf1_gene.xml" language="process description">
     <extension>
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
@@ -37,6 +37,27 @@
           </style>
         </listOfStyles>
       </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>false</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Activated STAT1alpha induction of the IRF1 gene</mapName>
+        <mapDescription>An example of gene regulation
+using logical operators</mapDescription>
+      </mapProperties>
     </extension>
     <glyph id="glyph8" class="source and sink">
       <bbox x="217.84507961077375" y="436.5211623750535" w="25" h="25"/>
@@ -149,90 +170,46 @@
       <port id="glyph9.2" x="185.69557595308527" y="143.76868025458344"/>
     </glyph>
     <arc id="_432e6d5e-1f2f-4936-b977-0c7f7556fe52" class="necessary stimulation" source="glyph4.2" target="glyph6">
-      <glyph id="_432e6d5e-1f2f-4936-b977-0c7f7556fe52_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="306.924783012962" y="398.3256319387646"/>
       <end x="306.924783012962" y="438.3068766607678"/>
     </arc>
     <arc id="_0459b128-2bee-44af-8ba9-383b6910c1e1" class="necessary stimulation" source="glyph3" target="glyph5">
-      <glyph id="_0459b128-2bee-44af-8ba9-383b6910c1e1_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="409.1620543768622" y="464.5211623750535"/>
       <end x="409.1620543768622" y="526.2911951254143"/>
     </arc>
     <arc id="_4ee2bde6-472d-4524-9553-049e291af07d" class="consumption" source="glyph8" target="glyph6.1">
-      <glyph id="_4ee2bde6-472d-4524-9553-049e291af07d_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="243.47007961077375" y="449.0211623750535"/>
       <end x="296.299783012962" y="449.0211623750535"/>
     </arc>
     <arc id="_0ad8dcf1-cac1-41b3-95a5-cbf68587f704" class="production" source="glyph6.2" target="glyph3">
-      <glyph id="_0ad8dcf1-cac1-41b3-95a5-cbf68587f704_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="317.549783012962" y="449.0211623750535"/>
       <end x="364.5370543768622" y="449.0211623750535"/>
     </arc>
     <arc id="be7ed04d-e856-4c84-b27c-2fa49b5177d6" class="consumption" source="glyph7" target="glyph5.1">
-      <glyph id="be7ed04d-e856-4c84-b27c-2fa49b5177d6_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="346.2087185192559" y="537.0054808397"/>
       <end x="398.5370543768622" y="537.0054808397"/>
     </arc>
     <arc id="b4225995-e295-4243-bf85-798329327c1b" class="production" source="glyph5.2" target="glyph15">
-      <glyph id="b4225995-e295-4243-bf85-798329327c1b_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="419.7870543768622" y="537.0054808397"/>
       <end x="473.90412179116584" y="537.0054808397"/>
     </arc>
     <arc id="_3efdeb75-2c5a-42cf-983a-e1965f773e4a" class="production" source="glyph9.2" target="glyph13">
-      <glyph id="_3efdeb75-2c5a-42cf-983a-e1965f773e4a_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="185.69557595308527" y="144.39368025458344"/>
       <end x="185.69557595308527" y="171.8416944941332"/>
     </arc>
     <arc id="_2fe44e25-0d21-42fa-aac6-9ae816bb943b" class="logic arc" source="glyph14" target="glyph4.1">
-      <glyph id="_2fe44e25-0d21-42fa-aac6-9ae816bb943b_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="361.9924348160677" y="314.5166944941331"/>
       <end x="306.924783012962" y="357.0756319387646"/>
     </arc>
     <arc id="e0f6d804-1490-4f60-a20b-efb336daaac2" class="logic arc" source="glyph13" target="glyph4.1">
-      <glyph id="e0f6d804-1490-4f60-a20b-efb336daaac2_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="256.537942566396" y="324.5166944941331"/>
       <end x="306.924783012962" y="357.0756319387646"/>
     </arc>
     <arc id="_4766ca86-a8d5-4b08-adc5-f3cc051ad699" class="consumption" source="glyph0" target="glyph9.1">
-      <glyph id="_4766ca86-a8d5-4b08-adc5-f3cc051ad699_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="134.119976387803" y="99.84609843233484"/>
       <end x="185.69557595308527" y="123.14368025458344"/>
     </arc>
     <arc id="_5491eb3b-6a5f-4f9d-b67d-e922e04d3020" class="consumption" source="glyph2" target="glyph9.1">
-      <glyph id="_5491eb3b-6a5f-4f9d-b67d-e922e04d3020_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="236.23999036850995" y="89.84609843233483"/>
       <end x="185.69557595308527" y="123.14368025458344"/>
     </arc>

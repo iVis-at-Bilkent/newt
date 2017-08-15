@@ -38,7 +38,25 @@
         </listOfStyles>
       </renderInformation>
       <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Insulin-like growth factor (IGF) signaling</mapName>
+        <mapDescription>This example shows the use of
+compartments and how details can be hidden by using a submap</mapDescription>
       </mapProperties>
     </extension>
     <glyph id="glyph1" class="compartment">
@@ -82,7 +100,7 @@
     </glyph>
     <glyph id="glyph18" class="complex" compartmentRef="glyph1">
       <label text="SOS"/>
-      <bbox x="234.1666541344378" y="507.532960330186" w="160.24139409278052" h="46.77370911391708"/>
+      <bbox x="234.1666541344378" y="507.50492447763173" w="160.24139409278052" h="46.77370911391708"/>
       <glyph id="glyph16" class="macromolecule">
         <label text="SOS"/>
         <bbox x="236.37278184735214" y="517.3357972129285" w="70" h="35"/>
@@ -240,7 +258,7 @@
     </glyph>
     <glyph id="glyph40" class="compartment">
       <label text="extracellular"/>
-      <bbox x="162.0594968812975" y="90.875" w="854.5008263055079" h="38.249999999999986"/>
+      <bbox x="160.4508214468127" y="90.875" w="854.5008263055079" h="38.249999999999986"/>
     </glyph>
     <glyph id="glyph0" class="macromolecule" compartmentRef="glyph40">
       <label text="IGF"/>
@@ -259,130 +277,258 @@
       </glyph>
     </glyph>
     <arc id="nwtE_205f3bda-b313-4d9f-9043-7a3a5f3c474e" class="consumption" source="glyph2" target="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac.1">
+      <glyph id="nwtE_205f3bda-b313-4d9f-9043-7a3a5f3c474e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="221.40490701458214" y="218.94018094175615"/>
       <end x="254.49446187725965" y="182.58314255887925"/>
     </arc>
     <arc id="nwtE_dc05658e-19be-4cea-8dce-c0df93b698f6" class="production" source="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac.2" target="glyph5">
+      <glyph id="nwtE_dc05658e-19be-4cea-8dce-c0df93b698f6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="270.74446187725965" y="182.58314255887925"/>
       <end x="329.85412144949294" y="164.7789601807396"/>
     </arc>
     <arc id="nwtE_0dfe1633-d41d-4522-9135-deacd6868b80" class="consumption" source="glyph0" target="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac.1">
+      <glyph id="nwtE_0dfe1633-d41d-4522-9135-deacd6868b80_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="216.28110074444538" y="128"/>
       <end x="254.49446187725965" y="182.58314255887925"/>
     </arc>
     <arc id="nwtE_2a3c3e4b-7ae4-48c6-9426-66a38b59101e" class="consumption" source="glyph9" target="nwtN_82204400-82b3-4721-9984-827ed5853962.1">
+      <glyph id="nwtE_2a3c3e4b-7ae4-48c6-9426-66a38b59101e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="311.24408272289725" y="269"/>
       <end x="371.87499999999994" y="269"/>
     </arc>
     <arc id="nwtE_41e78176-d5ec-4738-86ef-5dd15d8d9510" class="production" source="nwtN_82204400-82b3-4721-9984-827ed5853962.2" target="glyph10">
+      <glyph id="nwtE_41e78176-d5ec-4738-86ef-5dd15d8d9510_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="388.12499999999994" y="269"/>
       <end x="445.30547364657326" y="269"/>
     </arc>
     <arc id="nwtE_62712dc6-bd0e-4e10-a653-666946a8644f" class="consumption" source="glyph12" target="nwtN_d0a6afb3-420b-4888-bb31-fa80ab42128f.2">
+      <glyph id="nwtE_62712dc6-bd0e-4e10-a653-666946a8644f_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="549.7289311704909" y="396.97527762533247"/>
       <end x="497.9584143311141" y="396.9752776253324"/>
     </arc>
     <arc id="nwtE_460d08a0-eb4e-4042-b6af-2034da151bb1" class="consumption" source="glyph20" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.1">
+      <glyph id="nwtE_460d08a0-eb4e-4042-b6af-2034da151bb1_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="250.71984067236775" y="629"/>
       <end x="304.875" y="629"/>
     </arc>
     <arc id="nwtE_46e7c3ff-9118-47db-b44a-4f0acd238bc7" class="production" source="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.2" target="glyph18">
+      <glyph id="nwtE_46e7c3ff-9118-47db-b44a-4f0acd238bc7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="314.2873511808281" y="458.5448141513982"/>
-      <end x="314.28735118082807" y="493.907960330186"/>
+      <end x="314.28735118082807" y="493.87992447763173"/>
     </arc>
     <arc id="nwtE_5e455f08-a22a-4e62-8b51-c16c1dfb3a32" class="stimulation" source="glyph18" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b">
-      <start x="313.842569371146" y="564.806669444103"/>
-      <end x="313.11718840525276" y="620.0716977220789"/>
+      <glyph id="nwtE_5e455f08-a22a-4e62-8b51-c16c1dfb3a32_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="313.8426964740239" y="564.7786335915488"/>
+      <end x="313.1171549189777" y="620.0716975682932"/>
     </arc>
     <arc id="nwtE_9f555f8f-1b16-49c3-929e-6c515d18712f" class="consumption" source="glyph22" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.1">
+      <glyph id="nwtE_9f555f8f-1b16-49c3-929e-6c515d18712f_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="243.0503466729695" y="679.0006091394025"/>
       <end x="304.875" y="629"/>
     </arc>
     <arc id="nwtE_172d224c-05b3-4a62-8aea-03a1730816d5" class="production" source="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.2" target="glyph23">
+      <glyph id="nwtE_172d224c-05b3-4a62-8aea-03a1730816d5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="321.125" y="629"/>
       <end x="377.8734687982842" y="677.1553568270281"/>
     </arc>
     <arc id="nwtE_21f25624-edaf-4d3b-a01c-d69d2eddd581" class="production" source="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.2" target="nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0">
+      <glyph id="nwtE_21f25624-edaf-4d3b-a01c-d69d2eddd581_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="321.125" y="629"/>
       <end x="375.44723445937456" y="629"/>
     </arc>
     <arc id="nwtE_a0f02f26-86e9-4362-b992-147332a1eb26" class="production" source="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.2" target="glyph29">
+      <glyph id="nwtE_a0f02f26-86e9-4362-b992-147332a1eb26_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="776.2047086187061" y="560.7517169700867"/>
       <end x="807.1668447138634" y="522.2248413838163"/>
     </arc>
     <arc id="nwtE_dd0f49d4-6c51-49a4-a43e-fa2c19e49467" class="consumption" source="glyph28" target="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.1">
+      <glyph id="nwtE_dd0f49d4-6c51-49a4-a43e-fa2c19e49467_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="724.211002993113" y="519.6871281056508"/>
       <end x="759.9547086187061" y="560.7517169700867"/>
     </arc>
     <arc id="nwtE_62a4dd38-160a-4c93-b11d-ce5e608f671e" class="production" source="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.2" target="glyph33">
+      <glyph id="nwtE_62a4dd38-160a-4c93-b11d-ce5e608f671e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="877.4546883066769" y="677.8573766260579"/>
       <end x="932.6443525974161" y="631.0187269476119"/>
     </arc>
     <arc id="nwtE_6914a35c-25bc-4c40-a67c-9eef9dbe3f2e" class="consumption" source="glyph34" target="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.1">
+      <glyph id="nwtE_6914a35c-25bc-4c40-a67c-9eef9dbe3f2e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="812.6306564982983" y="630.0789330281403"/>
       <end x="861.2046883066769" y="677.8573766260579"/>
     </arc>
     <arc id="nwtE_75b49f84-6c31-4b88-874f-ec77e3629610" class="production" source="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.2" target="glyph30">
+      <glyph id="nwtE_75b49f84-6c31-4b88-874f-ec77e3629610_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="776.2047086187061" y="560.7517169700867"/>
       <end x="830.235723685416" y="560.7517169700867"/>
     </arc>
     <arc id="nwtE_4916caeb-ab01-45d0-86ee-d09f8036a02e" class="catalysis" source="glyph30" target="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589">
+      <glyph id="nwtE_4916caeb-ab01-45d0-86ee-d09f8036a02e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="868.932806992128" y="578.7517169700867"/>
       <end x="869.293932798535" y="668.9288302550704"/>
     </arc>
     <arc id="4822874a-0984-4c49-97b3-8c3bc5f00559" class="stimulation" source="glyph35" target="glyph36">
+      <glyph id="4822874a-0984-4c49-97b3-8c3bc5f00559_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="981.5364203691795" y="695.8573766260579"/>
       <end x="981.5364203691795" y="742.0204994780389"/>
     </arc>
     <arc id="nwtE_1233115f-b202-4de8-a32e-f7342d8fca4a" class="production" source="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.2" target="glyph35">
+      <glyph id="nwtE_1233115f-b202-4de8-a32e-f7342d8fca4a_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="877.4546883066769" y="677.8573766260579"/>
       <end x="942.9114203691795" y="677.8573766260579"/>
     </arc>
     <arc id="nwtE_9c8be502-dda4-4bd6-8773-e9f70b88d068" class="stimulation" source="glyph7" target="nwtN_d0a6afb3-420b-4888-bb31-fa80ab42128f">
+      <glyph id="nwtE_9c8be502-dda4-4bd6-8773-e9f70b88d068_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="489.0939457427128" y="345.8857199034844"/>
       <end x="489.7041872172446" y="388.0470334824158"/>
     </arc>
     <arc id="nwtE_84394666-2c79-4ec4-b255-3dcb332154c7" class="production" source="nwtN_82204400-82b3-4721-9984-827ed5853962.2" target="glyph7">
+      <glyph id="nwtE_84394666-2c79-4ec4-b255-3dcb332154c7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="388.12499999999994" y="269"/>
       <end x="454.87709856113463" y="309.51321811555107"/>
     </arc>
     <arc id="nwtE_8194a235-55f8-4726-8ec2-bd359dee2bdc" class="catalysis" source="nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113" target="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540">
+      <glyph id="nwtE_8194a235-55f8-4726-8ec2-bd359dee2bdc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="732.2098600697776" y="612.1791701606948"/>
       <end x="762.2440678736467" y="569.1184136079155"/>
     </arc>
     <arc id="nwtE_13e70c5e-bf72-42c1-859f-6149e50cc84a" class="consumption" source="glyph37" target="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.1">
+      <glyph id="nwtE_13e70c5e-bf72-42c1-859f-6149e50cc84a_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="811.7260665817881" y="677.8573766260579"/>
       <end x="861.2046883066769" y="677.8573766260579"/>
     </arc>
     <arc id="nwtE_4fb12a98-805d-4355-9bf6-e3029c4bec7d" class="consumption" source="glyph38" target="nwtN_82204400-82b3-4721-9984-827ed5853962.1">
+      <glyph id="nwtE_4fb12a98-805d-4355-9bf6-e3029c4bec7d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="310.2169786434224" y="310.31696698847406"/>
       <end x="371.87499999999994" y="269"/>
     </arc>
     <arc id="nwtE_701c64bf-43b2-4185-a704-6346b85a8719" class="catalysis" source="glyph5" target="nwtN_82204400-82b3-4721-9984-827ed5853962">
+      <glyph id="nwtE_701c64bf-43b2-4185-a704-6346b85a8719_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="380" y="209.92456970463905"/>
       <end x="379.99999999999994" y="260.07142857142856"/>
     </arc>
     <arc id="nwtE_834ec9e7-fd4e-4f27-96d6-d5e421c807eb" class="consumption" source="glyph39" target="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.1">
+      <glyph id="nwtE_834ec9e7-fd4e-4f27-96d6-d5e421c807eb_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="683.418215855997" y="560.7517169700867"/>
       <end x="759.9547086187061" y="560.7517169700867"/>
     </arc>
     <arc id="nwtE_d7413b64-6af7-41eb-8446-e2dbbb807ed0" class="consumption" source="glyph14" target="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.1">
+      <glyph id="nwtE_d7413b64-6af7-41eb-8446-e2dbbb807ed0_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="265.7762177096534" y="414.9752776253324"/>
       <end x="314.2873511808281" y="442.2948141513982"/>
     </arc>
     <arc id="nwtE_291d921c-6f42-4d7d-baad-bc934b27e69e" class="consumption" source="nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9" target="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.1">
+      <glyph id="nwtE_291d921c-6f42-4d7d-baad-bc934b27e69e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="362.38338342842746" y="414.9752776253324"/>
       <end x="314.2873511808281" y="442.2948141513982"/>
     </arc>
     <arc id="nwtE_b2e764a9-68c4-4546-b6f6-83ff85296143" class="production" source="nwtN_d0a6afb3-420b-4888-bb31-fa80ab42128f.1" target="nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9">
+      <glyph id="nwtE_b2e764a9-68c4-4546-b6f6-83ff85296143_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="481.7084143311141" y="396.9752776253324"/>
       <end x="425.43326425089595" y="396.9752776253324"/>
     </arc>
     <arc id="nwtE_9c6da152-15f0-483f-9e84-176f4dfc180f" class="catalysis" source="nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0" target="glyph24">
+      <glyph id="nwtE_9c6da152-15f0-483f-9e84-176f4dfc180f_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="449.57223445937456" y="629.2699038604648"/>
       <end x="511.91658920149246" y="629.7439033540727"/>
     </arc>
     <arc id="nwtE_ce830d52-eea6-49d2-9457-e5036c010b35" class="production" source="glyph24" target="nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113">
+      <glyph id="nwtE_ce830d52-eea6-49d2-9457-e5036c010b35_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
       <start x="623.2914988859104" y="630.1791701606948"/>
       <end x="681.0301400938986" y="630.1791701606948"/>
     </arc>
