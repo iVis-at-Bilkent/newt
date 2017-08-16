@@ -82,12 +82,10 @@ module.exports = function () {
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename) {
     appUtilities.setFileContent(filename);
-
     //clean and reset things
     cy.elements().unselect();
-    if (!$('#inspector-palette-tab').hasClass('active')) {
-      $('#inspector-palette-tab a').tab('show');
-      $('#inspector-style-tab a').blur();
+    if (!$('#inspector-map-tab').hasClass('active')) {
+      $('#inspector-map-tab a').tab('show');
     }
   });
 
