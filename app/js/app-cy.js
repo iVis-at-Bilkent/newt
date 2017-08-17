@@ -804,9 +804,23 @@ module.exports = function () {
         
         var nodeLabelTextbox = $("#node-label-textbox");
         var containerPos = $(cy.container()).position();
+        var containerWidth = $(cy.container()).width();
+        var containerHeight = $(cy.container()).height();
+        
+        // Adjust left of the textbox
         var left = containerPos.left + this.renderedPosition().x;
         left -= nodeLabelTextbox.width() / 2;
+        // If textbox goes beyond the borders of container, "+5" is for better seperation
+        if(left < containerPos.left){
+          left = containerPos.left + 5; 
+        }
+        if((left + nodeLabelTextbox.width()) > (containerPos.left + containerWidth)){
+          left -= (left + nodeLabelTextbox.width()) - (containerPos.left + containerWidth) + 5;  
+        }       
+        
         left = left.toString() + 'px';
+        
+        // Adjust top of the textbox
         var top = containerPos.top + this.renderedPosition().y;
         top -= nodeLabelTextbox.height() / 2;
 
@@ -814,7 +828,15 @@ module.exports = function () {
         var nodeType = node.data('class');
         if (nodeType == "compartment" || nodeType.startsWith("complex") || nodeType == "submap")
             top += (node.outerHeight() / 2 * cy.zoom() );
-
+        
+        // If textbox goes beyond the borders of container, "+5" is for better seperation
+        if(top < containerPos.top){
+          top = containerPos.top + 5;  
+        }
+        if((top + nodeLabelTextbox.height()) > (containerPos.top + containerHeight)){
+          top -= (top + nodeLabelTextbox.height()) - (containerPos.top + containerHeight) + 5;  
+        }
+  
         top = top.toString() + 'px';
 
         nodeLabelTextbox.css('left', left);
