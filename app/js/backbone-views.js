@@ -257,7 +257,8 @@ var LayoutPropertiesView = Backbone.View.extend({
 var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    var defaultColorScheme = currentScheme = "black_white";
+    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+    var currentScheme = appUtilities.currentGeneralProperties.mapColorScheme;
     var schemes = appUtilities.mapColorSchemes;
     var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
     for(var id in schemes) {

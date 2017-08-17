@@ -1,6 +1,7 @@
 var jquery = $ = require('jquery');
 var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
+var appUndoActions = require('./app-undo-actions');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
@@ -229,11 +230,12 @@ module.exports = function () {
       if (properties && properties.mapProperties){
         appUtilities.setMapProperties(properties.mapProperties);
         // update map panel
-        colorSchemeInspectorView.render();
         mapTabGeneralPanel.render();
         mapTabLabelPanel.render();
         mapTabRearrangementPanel.render();
+        appUndoActions.refreshColorSchemeMenu({value: appUtilities.currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
       };
+
     });
 
     $("#PD-legend").click(function (e) {
