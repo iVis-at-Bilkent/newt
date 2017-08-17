@@ -48,7 +48,7 @@
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
-        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorScheme>blue_scale</mapColorScheme>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>PolyQ proteins interference</mapName>

@@ -55,7 +55,7 @@
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
-        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorScheme>opposed_green_brown</mapColorScheme>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>Neuronal muscle signaling</mapName>

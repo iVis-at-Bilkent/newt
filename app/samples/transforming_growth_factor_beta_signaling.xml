@@ -51,7 +51,7 @@
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
-        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorScheme>greyscale</mapColorScheme>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>Transforming growth factor beta (TGFB) signaling</mapName>

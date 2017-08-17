@@ -51,7 +51,7 @@
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
-        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorScheme>opposed_red_blue</mapColorScheme>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>ATM mediated phosphorylation of repair proteins</mapName>

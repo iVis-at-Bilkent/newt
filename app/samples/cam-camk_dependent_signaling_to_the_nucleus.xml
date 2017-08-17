@@ -59,7 +59,7 @@
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
-        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorScheme>opposed_purple_green2</mapColorScheme>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>CaM-CaMK dependent signaling to nucleus</mapName>
