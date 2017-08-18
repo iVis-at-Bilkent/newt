@@ -69,13 +69,13 @@ module.exports = function () {
     mapTabGeneralPanel.render();
     mapTabLabelPanel.render();
     mapTabRearrangementPanel.render();
+    appUndoActions.refreshColorSchemeMenu({value: appUtilities.defaultGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
     // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
     // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
-      loadSample('neuronal_muscle_signaling.xml');
       keyboardShortcuts();
     }, 100);
   });
