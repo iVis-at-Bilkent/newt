@@ -234,6 +234,15 @@ module.exports = function () {
         mapTabLabelPanel.render();
         mapTabRearrangementPanel.render();
         appUndoActions.refreshColorSchemeMenu({value: appUtilities.currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
+
+        // set default colors according to the color scheme
+        for(var nodeClass in appUtilities.mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values']){
+          classBgColor = appUtilities.mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+          // nodeClass may not be defined in the defaultProperties (for edges, for example)
+          if(nodeClass in chise.elementUtilities.defaultProperties){
+            chise.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
+          }
+        }
       };
 
     });
