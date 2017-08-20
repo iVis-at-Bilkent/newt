@@ -195,7 +195,12 @@ module.exports = function () {
         });
       };
 
-      promptConfirmationView.render(createNewFile);
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(createNewFile);
+      }
+      else {
+        createNewFile(); 
+      } 
     });
 
     $("#load-file, #load-file-icon").click(function () {
@@ -211,8 +216,12 @@ module.exports = function () {
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
-        
-        chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        if(cy.elements().length != 0) {
+          promptConfirmationView.render(function(){chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+        }
+        else {
+          chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning); 
+        }
         $(this).val("");
       }
     });
@@ -290,7 +299,12 @@ module.exports = function () {
     for ( var selector in selectorToSampleFileName ) {
       (function(selector){
         $(selector).click(function (e) {
-          promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
+          if(cy.elements().length != 0) {
+            promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
+          }
+          else {
+            loadSample(selectorToSampleFileName[selector]);  
+          }
         });
       })(selector);
     }
