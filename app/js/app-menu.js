@@ -76,6 +76,7 @@ module.exports = function () {
     // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
+      $("#new-file").trigger('click');  
       keyboardShortcuts();
     }, 100);
   });
