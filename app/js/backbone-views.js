@@ -671,7 +671,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
       var filename = "";
       var geneSymbols = self.currentQueryParameters.geneSymbols;
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
 
       for (var i = 0; i < geneSymbolsArray.length; i++) {

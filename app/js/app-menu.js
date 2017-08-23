@@ -69,13 +69,14 @@ module.exports = function () {
     mapTabGeneralPanel.render();
     mapTabLabelPanel.render();
     mapTabRearrangementPanel.render();
+    appUndoActions.refreshColorSchemeMenu({value: appUtilities.defaultGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
     // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
     // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
-      loadSample('neuronal_muscle_signaling.xml');
+      $("#new-file").trigger('click');  
       keyboardShortcuts();
     }, 100);
   });
@@ -195,7 +196,12 @@ module.exports = function () {
         });
       };
 
-      promptConfirmationView.render(createNewFile);
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(createNewFile);
+      }
+      else {
+        createNewFile(); 
+      } 
     });
 
     $("#load-file, #load-file-icon").click(function () {
@@ -211,8 +217,12 @@ module.exports = function () {
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
-        
-        chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        if(cy.elements().length != 0) {
+          promptConfirmationView.render(function(){chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+        }
+        else {
+          chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning); 
+        }
         $(this).val("");
       }
     });
@@ -290,7 +300,12 @@ module.exports = function () {
     for ( var selector in selectorToSampleFileName ) {
       (function(selector){
         $(selector).click(function (e) {
-          promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
+          if(cy.elements().length != 0) {
+            promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
+          }
+          else {
+            loadSample(selectorToSampleFileName[selector]);  
+          }
         });
       })(selector);
     }
@@ -318,7 +333,11 @@ module.exports = function () {
     $("#show-selected, #show-selected-icon").click(function(e) {
       if (cy.nodes(":selected").length === 0)
           return;
-      chise.showNodesSmart(cy.nodes(":selected"));
+      var nodes = cy.nodes(":selected");
+      var allNodes = cy.elements();
+      var nodesToShow = chise.elementUtilities.extendNodeList(nodes);
+      var nodesToHide = allNodes.not(nodesToShow);
+      appUtilities.hideNodesSmart(nodesToHide);
     });
 
     $("#show-hidden-neighbors-of-selected").click(function(e) {
