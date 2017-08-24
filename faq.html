@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+
+<script src="js/scripts.js"></script>
+<script src="js/gcse.js"></script>
+
+<head>
+  <title>Newt Editor</title>
+  <meta name="description" content="Newt Pathway Viewer & Editor" />
+  <meta name="keywords" content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <link rel="icon" href="style/newt-icon-blue.png">
+  <link rel="stylesheet" type="text/css" href="style/style.css" title="style" />
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <script> writeLogo(); </script>
+      <script> writeMenubar(5); </script>
+    </div>
+    <div id="site_content">
+      <div class="sidebar">
+      <script> writeNews(); </script>
+      </div>
+      <div id="content">
+
+        <h1>FAQ</h1>
+
+	  <p> <b>Q: Is Newt free to use?</b><br>
+            A: Newt is an open source <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">project</a>, distributed under <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License.</a></p>
+
+	  <p> <b>Q: Is there anything I need to install to start using Newt?</b><br>
+            A: No, Newt is web based and is expected to work on most major browsers with recent releases without any prior installation or set up.</p>
+
+	  <p> <b>Q: What is the best way to get started with Newt?</b><br>
+            A: First, read the <a href="tutorials.html">tutorials page</a> and watch the associated videos.</p>
+
+	  <p> <b>Q: What notation is used in Newt to draw biological maps?</b><br>
+            A: Newt supports <a target="_blank" href="http://sbgn.github.io/sbgn/">SBGN</a> Process Description (PD) and Activity Flow (AF) maps. Users are allowed mix up notation from these two languages at the cost of disabled validation checks during creation.</p>
+
+	  <p> <b>Q: What format does Newt use to save maps?</b><br>
+            A: Newt can read <a target="_blank" href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Models constructed with Newt can be saved in SBGNML or can be exported as static (raster or vector) images. We plan to support tab-delimited files and <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> file format for importing models in the near future.</p>
+
+	  <p> <b>Q: Does Newt save styling information (e.g. color, font, custom annotations, etc.)?</b><br>
+            A: Yes, any style information per node/edge/map is saved as an extension to standard SBGNML. Thus, you can restore such information when you load such files back up on Newt but such information might be lost when imported to other tools (since style information isn't supported by standard SBGNML).</p>
+
+	  <p> <b>Q: Can I deploy my own Newt instance?</b><br>
+            A: Yes, it is rather straightforward to <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">deploy</a> and maintain a local copy of Newt. In addition, Newt is specifically designed to be easily customizable (modify menu and toolbars, and other functionality) and embeddable within your own website. </p>
+
+	  <p> <b>Q: What if I'd like to contribute to Newt development?</b><br>
+            A: We'd love to have more resources. Please contact us privately through <a href="contact.html">this form</a>. </p>
+
+      </div>
+    </div>
+    <script> writeFooter(); </script>
+  </div>
+</body>
+</html>

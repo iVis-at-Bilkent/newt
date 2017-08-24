@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+
+<script src="js/scripts.js"></script>
+<script src="js/gcse.js"></script>
+
+<head>
+  <title>Newt Editor</title>
+  <meta name="description" content="Newt Pathway Viewer & Editor" />
+  <meta name="keywords" content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <link rel="icon" href="style/newt-icon-blue.png">
+  <link rel="stylesheet" type="text/css" href="style/style.css" title="style" />
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <script> writeLogo(); </script>
+      <script> writeMenubar(6); </script>
+    </div>
+    <div id="site_content">
+      <div class="sidebar">
+        <script> writeNews(); </script>
+      </div>
+      <div id="content">
+        <!-- insert the page content here -->
+        <h1>Contact Us</h1>
+        <p>Please email <a href="mailto:newt-discuss@googlegroups.com?Subject=Newt%20question" target="_top">the discussion list</a> on any inquiries, feature requests, and bug reports. For any private inquiries, feel free to contact us using the following form:</p>
+	<!-- send contact form message as email by using google script -->
+        <form id="gform" action="https://script.google.com/macros/s/AKfycbyqee-5VtA5jt5aj400rSpdY1Getv1rS5GsK7nchkXc9dLpH2D2/exec" method="post">
+          <div class="form_settings">
+            <p><span>Name</span><input class="contact" type="text" name="your_name" value="" /></p>
+            <p><span>Email address</span><input class="contact" id="email" name="email" type="email" value=""
+	    required placeholder="your.name@email.com"/></p>
+      
+	    <p id="email-invalid" style="display:none; color:red;">
+              Must be a valid email address</p>
+            <p><span>Message</span><textarea class="contact textarea" rows="8" cols="50" name="your_enquiry"></textarea></p>
+            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="contact_submitted" value="submit" /></p>
+          </div>
+        </form>
+	<!-- submitted form thank you message -->
+	<div style="display:none;" id="thankyou_message">
+          <h3>Thanks for contacting us! We will get back to you soon.</h3>
+        </div>
+      </div>
+    </div>
+    <script> writeFooter(); </script>
+    <!-- thank you message script -->
+    <script data-cfasync="false" type="text/javascript"
+    src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"></script>
+    
+  </div>
+</body>
+</html>

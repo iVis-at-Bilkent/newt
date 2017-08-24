@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<script src="js/scripts.js"></script>
+<script src="js/gcse.js"></script>
+<script src="js/lightbox-plus-jquery.js"></script>
+
+<head>
+  <title>Newt Editor</title>
+  <meta name="description" content="Newt Pathway Viewer & Editor" />
+  <meta name="keywords" content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <link rel="icon" href="style/newt-icon-blue.png">
+  <link href="style/lightbox.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style/style.css" title="style" />
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <script> writeLogo(); </script>
+      <script> writeMenubar(2); </script>
+    </div>
+    <div id="site_content">
+      <div class="sidebar">
+      <script> writeNews(); </script>
+      </div>
+      <div id="content">
+        <h1>Software</h1>
+        
+        <a class="launchlink" target="_blank" href="http://web.newteditor.org/">
+        <table class="launchtable">
+          <tr>
+            <th class="launchtext">Launch</th>
+            <th><img class="launchimage" src="style/newt-logo.png"/></th>
+          </tr>
+        </table>
+        </a>
+
+        <p> Newt is a free web based, <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">open source</a> software that is expected to work on most major browsers with recent releases without any prior installation or set up. </p>
+
+        <h2> Architecture </h2>
+
+        <p> Newt is based on and is a <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">sample application</a> for the customizable JavaScript library named <a href="https://github.com/iVis-at-Bilkent/chise.js">ChiSE</a>. Below is a diagram showing software libraries used for building Newt and their dependencies. </p>
+        <span class="center"><a href="images/newt-architecture.svg" data-lightbox="image-arch" data-title="Overall architecture of the Newt editor"><img src="images/newt-architecture.svg" style="width: 80%;" /></a></span>
+
+      </div>
+    </div>
+    <script> writeFooter(); </script>
+  </div>
+</body>
+</html>
