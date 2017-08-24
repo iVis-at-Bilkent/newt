@@ -1,0 +1,267 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn 
+  xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="newt-architecture.sbgnml" language="unknown">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#dfdfff7f"/>
+          <colorDefinition id="color_2" value="#e1e1ff"/>
+          <colorDefinition id="color_3" value="#a8a8ff7f"/>
+          <colorDefinition id="color_4" value="#a8a8ff"/>
+          <colorDefinition id="color_5" value="#ff82c07f"/>
+          <colorDefinition id="color_6" value="#ff86c2"/>
+          <colorDefinition id="color_7" value="#7cbebe7f"/>
+          <colorDefinition id="color_8" value="#5fafaf"/>
+          <colorDefinition id="color_9" value="#ffdbed7f"/>
+          <colorDefinition id="color_10" value="#ffdbed"/>
+          <colorDefinition id="color_11" value="#ff82c0"/>
+          <colorDefinition id="color_12" value="#ffffff7f"/>
+          <colorDefinition id="color_13" value="#ffffff"/>
+          <colorDefinition id="color_14" value="#f1f1f1f"/>
+          <colorDefinition id="color_15" value="#f1f1f1"/>
+          <colorDefinition id="color_16" value="#ffffffef"/>
+          <colorDefinition id="color_17" value="#400000"/>
+          <colorDefinition id="color_18" value="#555555"/>
+        </listOfColorDefinitions>
+        <listOfStyles>
+          <style id="nodedfdfff0.5e1e1ff3.2514boldnormalHelvetica" idList="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="bold" fontStyle="normal" stroke="color_2" strokeWidth="3.25" fill="color_1"/>
+          </style>
+          <style id="nodea8a8ff0.5a8a8ff1.2511normalnormalHelvetica" idList="nwtN_0103ae14-9d15-4c28-b8b1-2c41313c92bd nwtN_dc1c34c4-eb05-48fa-a44f-5d6907b615e7 nwtN_fe98e3e1-554f-4dc4-95ee-1530fdf8c3be nwtN_33c544d3-c60c-4fbd-85ae-106569dbb531 nwtN_e7eb6c5d-828e-4791-8ce7-4ac81037d49c">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_4" strokeWidth="1.25" fill="color_3"/>
+          </style>
+          <style id="nodeff82c00.5ff86c21.2511normalnormalHelvetica" idList="nwtN_5bf37e49-a680-4a2a-aa57-2d47c7566e0d">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_6" strokeWidth="1.25" fill="color_5"/>
+          </style>
+          <style id="node7cbebe0.55fafaf1.2511normalnormalHelvetica" idList="1deea347-b0e5-8405-2994-448966ec3a34">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_8" strokeWidth="1.25" fill="color_7"/>
+          </style>
+          <style id="nodeffdbed0.5ffdbed3.2514normalnormalHelvetica" idList="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_10" strokeWidth="3.25" fill="color_9"/>
+          </style>
+          <style id="nodeff82c00.5ff82c01.2511normalnormalHelvetica" idList="nwtN_9b724a96-5f8a-497e-9df3-6c114f5355e6 nwtN_9484acb9-6638-4f39-9224-aecc2243cb3b nwtN_07f3acc2-f136-429a-8893-7bb26436910f nwtN_9d4968a4-71e2-4466-9f61-7998bf2ae499 nwtN_b392e6a6-724d-4699-926f-e52c829e8f2c nwtN_77cd3855-21a4-4788-aa26-8a2680fcf074 nwtN_218686b5-eb0a-4c3c-b79c-b57b9efcfa5c nwtN_60ef6448-ea46-4aa5-9c76-32990453f147 nwtN_986e2f28-3f5c-4175-931e-3c4e97943fae nwtN_f5b1f009-ecfe-4d6c-a86b-1efee766514b nwtN_9c731725-e620-4009-b2e8-18ad380163a0 nwtN_bef91dc4-aa34-4eff-9f5b-0e3dc0562d30 nwtN_9bb340ef-4da1-4066-a526-a11a15a247c1">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_11" strokeWidth="1.25" fill="color_5"/>
+          </style>
+          <style id="nodeffffff0.5ffffff1.2511normalnormalHelvetica" idList="nwtN_aec38de3-fca2-438a-92c5-9fbbe9110c23 7c5c1156-c4fb-2145-34dc-3e1ab28bf317 69e0ca92-0cfc-92a5-f629-91b216e17530">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_13" strokeWidth="1.25" fill="color_12"/>
+          </style>
+          <style id="nodef1f1f10.06f1f1f10.000111normalnormalHelvetica" idList="nwtN_07e7bef0-8da1-4df6-946d-95fb52b2949a b31e2704-378e-6ebd-8971-c27d266c77ad">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_15" strokeWidth="0.0001" fill="color_14"/>
+          </style>
+          <style id="nodeffffff0.94ffffff0.000111normalnormalHelvetica" idList="b66a6866-e70a-c013-e17f-2642aea70bc4">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_13" strokeWidth="0.0001" fill="color_16"/>
+          </style>
+          <style id="edge4000002" idList="nwtE_7f239830-6c4b-4cdb-9e1f-f831f93521e3 nwtE_34663766-5861-4c58-9c12-c93a74c5bd7f nwtE_282acd11-c861-4a0f-9d6e-9ecbd35768ca nwtE_a604e728-c4ee-4f14-8f4c-65600de54022 nwtE_b6961dc6-2d1a-408b-bbd0-db06f8556cca nwtE_a0f01028-f8eb-47cc-a38d-709e783e052b">
+            <g stroke="color_17" strokeWidth="2"/>
+          </style>
+          <style id="edge5555551.25" idList="nwtE_f810b5d7-8783-4f54-b33b-9053e8fb17c4 nwtE_ead3a8a7-2e70-4f17-8dcb-3ad4df9eb953 nwtE_c8a14de1-74e4-4c07-a241-5f0d2ee51a7c">
+            <g stroke="color_18" strokeWidth="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.4</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>false</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Newt architecture</mapName>
+        <mapDescription/>
+      </mapProperties>
+    </extension>
+    <glyph id="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464" class="compartment">
+      <label text="Newt"/>
+      <bbox x="751.1637372051678" y="26.018096516823935" w="292.38487175458215" h="38.24999999999999"/>
+    </glyph>
+    <glyph id="nwtN_0103ae14-9d15-4c28-b8b1-2c41313c92bd" class="macromolecule" compartmentRef="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464">
+      <label text="jQuery"/>
+      <bbox x="752.7887372051676" y="27.643096516823938" w="54" h="35"/>
+    </glyph>
+    <glyph id="nwtN_dc1c34c4-eb05-48fa-a44f-5d6907b615e7" class="macromolecule" compartmentRef="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464">
+      <label text="Backbone.js"/>
+      <bbox x="815.9532680774423" y="27.643096516823938" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_fe98e3e1-554f-4dc4-95ee-1530fdf8c3be" class="macromolecule" compartmentRef="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464">
+      <label text="Underscore.js"/>
+      <bbox x="894.3241946385073" y="27.643096516823938" w="78" h="35"/>
+    </glyph>
+    <glyph id="nwtN_33c544d3-c60c-4fbd-85ae-106569dbb531" class="macromolecule" compartmentRef="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464">
+      <label text="html5/css"/>
+      <bbox x="981.9236089597497" y="27.643096516823938" w="60" h="35"/>
+    </glyph>
+    <glyph id="nwtN_e7eb6c5d-828e-4791-8ce7-4ac81037d49c" class="macromolecule">
+      <label text="ChiSE.js"/>
+      <bbox x="987.4739694254678" y="122.49065581325607" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_5bf37e49-a680-4a2a-aa57-2d47c7566e0d" class="macromolecule">
+      <label text="Cytoscape.js"/>
+      <bbox x="861.1129292369669" y="270.98192910382124" w="70" h="35"/>
+    </glyph>
+    <glyph id="1deea347-b0e5-8405-2994-448966ec3a34" class="macromolecule">
+      <label text="SBGNViz.js"/>
+      <bbox x="987.4739694254679" y="211.1441406498371" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc" class="compartment">
+      <label text="Cytoscape.js extensions"/>
+      <bbox x="495.46426161166056" y="197.18974505221297" w="283.84464187109995" h="179.2203408823077"/>
+    </glyph>
+    <glyph id="nwtN_9b724a96-5f8a-497e-9df3-6c114f5355e6" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="undo-redo"/>
+      <bbox x="497.08926161166085" y="198.81474505221297" w="56" h="35"/>
+    </glyph>
+    <glyph id="nwtN_9484acb9-6638-4f39-9224-aecc2243cb3b" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="cose-bilkent"/>
+      <bbox x="563.9194830193396" y="198.81474505221297" w="64" h="35"/>
+    </glyph>
+    <glyph id="nwtN_07f3acc2-f136-429a-8893-7bb26436910f" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="qtip"/>
+      <bbox x="672.3886642385173" y="244.44613781740668" w="40" h="35"/>
+    </glyph>
+    <glyph id="nwtN_9d4968a4-71e2-4466-9f61-7998bf2ae499" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="view-utilities"/>
+      <bbox x="497.0892616116605" y="244.44613781740668" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_b392e6a6-724d-4699-926f-e52c829e8f2c" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="expand-collapse"/>
+      <bbox x="577.9194830193396" y="244.44613781740668" w="84" h="35"/>
+    </glyph>
+    <glyph id="nwtN_77cd3855-21a4-4788-aa26-8a2680fcf074" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="edge-bende-editing"/>
+      <bbox x="640.3886642385175" y="198.81474505221297" w="98" h="35"/>
+    </glyph>
+    <glyph id="nwtN_218686b5-eb0a-4c3c-b79c-b57b9efcfa5c" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="context-menus"/>
+      <bbox x="497.0892616116606" y="293.92520540914927" w="76" h="35"/>
+    </glyph>
+    <glyph id="nwtN_60ef6448-ea46-4aa5-9c76-32990453f147" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="panzoom"/>
+      <bbox x="584.9194830193395" y="293.92520540914927" w="60" h="35"/>
+    </glyph>
+    <glyph id="nwtN_986e2f28-3f5c-4175-931e-3c4e97943fae" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="edgehandles"/>
+      <bbox x="655.3886642385172" y="293.92520540914927" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_f5b1f009-ecfe-4d6c-a86b-1efee766514b" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="node-resize"/>
+      <bbox x="497.0892616116605" y="339.7850859345207" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_9c731725-e620-4009-b2e8-18ad380163a0" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="grid-guide"/>
+      <bbox x="578.9194830193394" y="339.7850859345207" w="62" h="35"/>
+    </glyph>
+    <glyph id="nwtN_bef91dc4-aa34-4eff-9f5b-0e3dc0562d30" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="autopan-on-drag"/>
+      <bbox x="651.3886642385175" y="339.7850859345207" w="84" h="35"/>
+    </glyph>
+    <glyph id="nwtN_9bb340ef-4da1-4066-a526-a11a15a247c1" class="macromolecule" compartmentRef="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc">
+      <label text="clipboard"/>
+      <bbox x="721.6839034827605" y="244.44613781740668" w="56" h="35"/>
+    </glyph>
+    <glyph id="nwtN_aec38de3-fca2-438a-92c5-9fbbe9110c23" class="macromolecule">
+      <label text="extends"/>
+      <bbox x="537.735704176616" y="45.751880897788645" w="80" h="10.543024479645025"/>
+    </glyph>
+    <glyph id="7c5c1156-c4fb-2145-34dc-3e1ab28bf317" class="macromolecule">
+      <label text="accesses API"/>
+      <bbox x="537.735704176616" y="22.370859525310074" w="80" h="10.543024479645025"/>
+    </glyph>
+    <glyph id="nwtN_07e7bef0-8da1-4df6-946d-95fb52b2949a" class="macromolecule">
+      <bbox x="468.5490812329541" y="17.642371765132587" w="20" h="20"/>
+    </glyph>
+    <glyph id="b31e2704-378e-6ebd-8971-c27d266c77ad" class="macromolecule">
+      <bbox x="468.5490812329541" y="42.045276770148895" w="20" h="20"/>
+    </glyph>
+    <glyph id="69e0ca92-0cfc-92a5-f629-91b216e17530" class="macromolecule">
+      <label text="registers"/>
+      <bbox x="537.735704176616" y="70.62143935687475" w="80" h="10.543024479645025"/>
+    </glyph>
+    <glyph id="b66a6866-e70a-c013-e17f-2642aea70bc4" class="macromolecule">
+      <bbox x="468.5490812329541" y="65.89295159669726" w="20" h="20"/>
+    </glyph>
+    <arc id="nwtE_7f239830-6c4b-4cdb-9e1f-f831f93521e3" class="production" source="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464" target="nwtN_e7eb6c5d-828e-4791-8ce7-4ac81037d49c">
+      <glyph id="nwtE_7f239830-6c4b-4cdb-9e1f-f831f93521e3_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="949.7922340789349" y="84.89309651682393"/>
+      <end x="994.7448178869191" y="118.97012618706269"/>
+    </arc>
+    <arc id="nwtE_34663766-5861-4c58-9c12-c93a74c5bd7f" class="production" source="nwtN_44f9b9cc-fe30-4ac7-bab0-63a36f982464" target="nwtN_5bf37e49-a680-4a2a-aa57-2d47c7566e0d">
+      <glyph id="nwtE_34663766-5861-4c58-9c12-c93a74c5bd7f_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="897.1530861261645" y="84.8930965168239"/>
+      <end x="896.2304383373971" y="265.48199435994934"/>
+    </arc>
+    <arc id="nwtE_282acd11-c861-4a0f-9d6e-9ecbd35768ca" class="production" source="nwtN_e7eb6c5d-828e-4791-8ce7-4ac81037d49c" target="nwtN_5bf37e49-a680-4a2a-aa57-2d47c7566e0d">
+      <glyph id="nwtE_282acd11-c861-4a0f-9d6e-9ecbd35768ca_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1007.1565795682045" y="157.99065581325607"/>
+      <end x="914.6706964220364" y="266.67404848943227"/>
+    </arc>
+    <arc id="nwtE_a604e728-c4ee-4f14-8f4c-65600de54022" class="production" source="1deea347-b0e5-8405-2994-448966ec3a34" target="nwtN_5bf37e49-a680-4a2a-aa57-2d47c7566e0d">
+      <glyph id="nwtE_a604e728-c4ee-4f14-8f4c-65600de54022_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="989.5468184737882" y="244.23666735031222"/>
+      <end x="933.5590106616673" y="270.7494801197095"/>
+    </arc>
+    <arc id="nwtE_b6961dc6-2d1a-408b-bbd0-db06f8556cca" class="stimulation" source="nwtN_e7eb6c5d-828e-4791-8ce7-4ac81037d49c" target="1deea347-b0e5-8405-2994-448966ec3a34">
+      <glyph id="nwtE_b6961dc6-2d1a-408b-bbd0-db06f8556cca_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1022.4739694254678" y="157.99065581325607"/>
+      <end x="1022.4739694254679" y="205.64414064983708"/>
+    </arc>
+    <arc id="nwtE_f810b5d7-8783-4f54-b33b-9053e8fb17c4" class="catalysis" source="b66a6866-e70a-c013-e17f-2642aea70bc4" target="69e0ca92-0cfc-92a5-f629-91b216e17530">
+      <glyph id="nwtE_f810b5d7-8783-4f54-b33b-9053e8fb17c4_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="488.5490812329541" y="75.89295159669726"/>
+      <end x="534.110704176616" y="75.89295159669726"/>
+    </arc>
+    <arc id="nwtE_a0f01028-f8eb-47cc-a38d-709e783e052b" class="catalysis" source="nwtN_47e5cce0-618b-497d-91cb-d15ee4e1f1dc" target="nwtN_5bf37e49-a680-4a2a-aa57-2d47c7566e0d">
+      <glyph id="nwtE_a0f01028-f8eb-47cc-a38d-709e783e052b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="799.9339034827606" y="287.8566567555327"/>
+      <end x="855.6130348953454" y="288.21863402631504"/>
+    </arc>
+    <arc id="nwtE_ead3a8a7-2e70-4f17-8dcb-3ad4df9eb953" class="stimulation" source="b31e2704-378e-6ebd-8971-c27d266c77ad" target="nwtN_aec38de3-fca2-438a-92c5-9fbbe9110c23">
+      <glyph id="nwtE_ead3a8a7-2e70-4f17-8dcb-3ad4df9eb953_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="488.5490812329541" y="51.94225041415347"/>
+      <end x="534.1108700138833" y="51.472843907080254"/>
+    </arc>
+    <arc id="nwtE_c8a14de1-74e4-4c07-a241-5f0d2ee51a7c" class="production" source="nwtN_07e7bef0-8da1-4df6-946d-95fb52b2949a" target="7c5c1156-c4fb-2145-34dc-3e1ab28bf317">
+      <glyph id="nwtE_c8a14de1-74e4-4c07-a241-5f0d2ee51a7c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="488.5490812329541" y="27.642371765132587"/>
+      <end x="534.110704176616" y="27.642371765132587"/>
+    </arc>
+  </map>
+</sbgn>
