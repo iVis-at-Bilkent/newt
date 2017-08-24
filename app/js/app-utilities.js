@@ -979,7 +979,7 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 appUtilities.applyMapColorScheme = function(newColorScheme, self) {
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
-  var collapsedChildren = appUtilities.getCollapsedChildren("nodes");
+  var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
   var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
 
   var actions = [];
@@ -1021,42 +1021,11 @@ appUtilities.removeDragImage = function () {
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
 };
 
-// get all the content (nodes only) of all collapsed nodes of the map
-// get things in a raw, dirty way (as collapsedChildren are not to be considered as normal nodes)
-appUtilities.getCollapsedChildren = function(nodesOrEdges) {
-  var expandableNodes = cy.expandCollapse('get').expandableNodes();
-  var resultEles = [];
-  for (var i=0; i<expandableNodes.length; i++) {
-    var expandableNode = expandableNodes[i];
-    var collapsedChildren = expandableNode._private.data['collapsedChildren'];
-    for(var j=0; j < collapsedChildren.length; j++){
-      var collapsedChild = collapsedChildren[j];
-      if (collapsedChild._private.group != nodesOrEdges) {
-        continue;
-      }
-      resultEles.push(collapsedChild);
-    }
-  }
-  return resultEles;
-};
-
-/*
-  fetch all possible styles used in the graph
-  example: if a node is blue with thick border, and another blue with thin border -> 2 styles
-  return renderInfo {
-    colors: {
-      validXmlValue: id
-    },
-    styles: [{
-      idList: list of the nodes ids have this style
-      properties: {}
-    }]
-  }
-*/
 appUtilities.getAllStyles = function () {
-  var collapsedChildrenNodes = appUtilities.getCollapsedChildren("nodes");
+  var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively();
+  var collapsedChildrenNodes = collapsedChildren.filter("node");
   var nodes = cy.nodes().union(collapsedChildrenNodes);
-  var collapsedChildrenEdges = appUtilities.getCollapsedChildren("edges");
+  var collapsedChildrenEdges = collapsedChildren.filter("edge");
   var edges = cy.edges().union(collapsedChildrenEdges);
 
   // first get all used colors, then deal with them and keep reference to them
