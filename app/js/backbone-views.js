@@ -655,23 +655,24 @@ var PathsBetweenQueryView = Backbone.View.extend({
       self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
 
-      if (self.currentQueryParameters.geneSymbols.length === 0) {
-        document.getElementById("query-pathsbetween-gene-symbols").focus();
-        return;
-      }
-      if (self.currentQueryParameters.lengthLimit > 3) {
-          document.getElementById("query-pathsbetween-length-limit").focus();
-          return;
-      }
-
       var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
               + self.currentQueryParameters.lengthLimit;
       
       var sources = "";
       var filename = "";
-      var geneSymbols = self.currentQueryParameters.geneSymbols;
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+          document.getElementById("query-pathsbetween-gene-symbols").focus();
+          return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+          $(self.el).modal('toggle');
+          new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+          document.getElementById("query-pathsbetween-length-limit").focus();
+          return;
+      }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "");
       var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
 
       for (var i = 0; i < geneSymbolsArray.length; i++) {
@@ -724,72 +725,79 @@ var PathsBetweenQueryView = Backbone.View.extend({
  * Paths By URI Query view for the Sample Application.
  */
 var PathsByURIQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        URI: ""
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-pathsbyURI-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
-        var self = this;
-        self.template = _.template($("#query-pathsbyURI-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
+  defaultQueryParameters: {
+      URI: ""
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-pathsbyURI-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#query-pathsbyURI-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
 
-        $(self.el).modal('show');
+    $(self.el).modal('show');
 
-        $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
+    $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
 
-            self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
+        self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
 
-            if (self.currentQueryParameters.URI.length === 0) {
-                document.getElementById("query-pathsbyURI-gene-symbols").focus();
-                return;
+        if (self.currentQueryParameters.URI.length === 0) {
+            document.getElementById("query-pathsbyURI-URI").focus();
+            return;
+        }
+
+        var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
+            + self.currentQueryParameters.URI + "&format=SBGN";
+
+        var filename = "";
+        var uri = self.currentQueryParameters.URI;
+
+        if (filename == '') {
+            filename = uri;
+        } else {
+            filename = filename + '_' + uri;
+        }
+
+        filename = filename + '_URI.sbgnml';
+        setFileContent(filename);
+
+        chise.startSpinner('paths-byURI-spinner');
+
+        $.ajax({
+          url: queryURL,
+          type: 'GET',
+          success: function (data) {
+            if (data == null)
+            {
+                new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
+                chise.endSpinner('paths-byURI-spinner');
             }
-
-            var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
-                + self.currentQueryParameters.URI + "&format=SBGN";
-          /*var queryURL = "http://www.pathwaycommons.org/pc2/get?uri=http://identifiers.org/uniprot/"
-           + self.currentQueryParameters.URI + "&format=SBGN";*/
-            var filename = "";
-            var uri = self.currentQueryParameters.URI;
-
-            if (filename == '') {
-                filename = uri;
-            } else {
-                filename = filename + '_' + uri;
+            else
+            {
+                chise.updateGraph(chise.convertSbgnmlToJson(data));
+                chise.endSpinner('paths-byURI-spinner');
+                $(document).trigger('sbgnvizLoadFile', filename);
             }
-
-            filename = filename + '_URI.sbgnml';
-            setFileContent(filename);
-
-            chise.startSpinner('paths-byURI-spinner');
-
-            $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    chise.updateGraph(chise.convertSbgnmlToJson(data));
-                    chise.endSpinner('paths-byURI-spinner');
-                }
-            });
-
-            $(self.el).modal('toggle');
+          }
         });
+        $(self.el).modal('toggle');
+    });
 
-        $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
-            $(self.el).modal('toggle');
-        });
+    $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
+        $(self.el).modal('toggle');
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 /*
@@ -934,10 +942,53 @@ var PromptInvalidQueryView = Backbone.View.extend({
 
       $(document).off("click", "#prompt-invalidQuery-confirm").on("click", "#prompt-invalidQuery-confirm", function (evt) {
           $(self.el).modal('toggle');
+          appUtilities.pathsBetweenQueryView.render();
       });
 
       return this;
   }
+});
+
+var PromptInvalidLengthLimitView = Backbone.View.extend({
+    initialize: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidLengthLimit-template").html());
+    },
+    render: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidLengthLimit-template").html());
+
+        $(self.el).html(self.template);
+        $(self.el).modal('show');
+
+        $(document).off("click", "#prompt-invalidLengthLimit-confirm").on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
+            $(self.el).modal('toggle');
+            appUtilities.pathsBetweenQueryView.render();
+        });
+
+        return this;
+    }
+});
+
+var PromptInvalidURIView = Backbone.View.extend({
+    initialize: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidURI-template").html());
+    },
+    render: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidURI-template").html());
+
+        $(self.el).html(self.template);
+        $(self.el).modal('show');
+
+        $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
+            $(self.el).modal('toggle');
+            appUtilities.pathsByURIQueryView.render();
+        });
+
+        return this;
+    }
 });
 
 var PromptInvalidFileView = Backbone.View.extend({
