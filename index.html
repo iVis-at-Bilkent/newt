@@ -546,6 +546,14 @@
         <div id="prompt-invalidQuery-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
+
+        <div id="prompt-invalidLengthLimit-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
+        <div id="prompt-invalidURI-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
         
         <div id="prompt-invalidFile-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
@@ -605,7 +613,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 1.0 beta</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 1.0.0</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -681,7 +689,7 @@
                                 <table align="center" valign="center">
                                 <tbody>
                                     <tr>
-                                        <td><b>Edit > Add {Complex,Compartment} for Selected</b>: include all selected nodes inside a newly created complex or compartment.</td>
+                                        <td><b>Edit > Add {Complex,Compartment,Submap} for Selected</b>: include all selected nodes inside a newly created complex or compartment or submap.</td>
                                     </tr>
                                     <tr>
                                         <td><b>Convenient process creation</b>:
@@ -689,11 +697,11 @@
                                     </tr>
                                     <tr>
                                         <td><b>Enable grid</b>:
-                                            Clicking on the Enable Grid tool on the toolbar shows and snaps to the grid upon release of the mouse during node dragging.</td>
+                                            Clicking on the Enable Grid tool on the toolbar shows and snaps to the grid during node dragging.</td>
                                     </tr>
                                     <tr>
                                         <td><b>Enable guidelines</b>:
-                                            Clicking on the Enable Guidelines tool on the toolbar enables and snaps to alignment guidelines upon release of the mouse during node dragging.</td>
+                                            Clicking on the Enable Guidelines tool on the toolbar enables and snaps to alignment guidelines during node dragging.</td>
                                     </tr>
                                 </tbody>
                                 </table>
@@ -1293,6 +1301,68 @@
             </div>
             <div class="modal-footer" style="text-align: center">
             <button id="prompt-invalidQuery-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <!-- Invalid length limit warning -->
+        <script type="text/template" id="prompt-invalidLengthLimit-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text">Length limit can be at most 3.</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidLengthLimit-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidLengthLimit-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <!-- Invalid  URI error -->
+        <script type="text/template" id="prompt-invalidURI-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text">Invalid URI!</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidURI-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidURI-confirm" class="btn btn-default">OK</button>
             </div>
             </div>
             </div>
