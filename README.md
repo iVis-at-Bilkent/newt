@@ -8,7 +8,7 @@ ChiSE and this sample application are distributed under [GNU Lesser General Publ
 
 **A deployment of this sample application along with detailed documentation on its usage** can be found [here](http://newteditor.org/). ChiSE and Newt work on every platform that have Javascript support including mobile devices.
 
-Please cite the following when you use SBGNViz.js:
+Please cite the following when you use this application or underlying libraries until a Newt publication is available:
 
 M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "[SBGNViz: a tool for visualization and complexity management of SBGN process description maps](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0128985)", PLoS ONE, 10(6), e0128985, 2015.
 
@@ -45,7 +45,7 @@ Thanks to JetBrains for an [Open Source License](https://www.jetbrains.com/buy/o
 
 ## Team
 
-  * [Metin Can Siper](https://github.com/metincansiper), [Ilkin Safarli](https://github.com/kinimesi), [Hasan Balci](https://github.com/hasanbalci), [Leonard Dervishi](https://github.com/leonarddrv), [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), and [Ludovic Roy](https://github.com/royludo), [Alexander Mazein](https://github.com/amazein) of [EISBM](http://eisbm.org)
+  * [Ilkin Safarli](https://github.com/kinimesi), [Hasan Balci](https://github.com/hasanbalci), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Metin Can Siper](https://github.com/metincansiper), [Ozgun Babur](https://github.com/ozgunbabur), and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/), and [Ludovic Roy](https://github.com/royludo) and [Alexander Mazein](https://github.com/amazein) of [EISBM](http://eisbm.org)
 
 #### Alumni
 
