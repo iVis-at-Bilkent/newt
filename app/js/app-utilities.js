@@ -279,6 +279,20 @@ appUtilities.showHiddenNeighbors = function(eles) {
     }
 };
 
+// Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
+appUtilities.showAll = function() {
+    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+    {
+        //Show all and perform incremental layout
+        chise.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this));
+    }
+    else
+    {
+        //Just show them all
+        chise.showAll();
+    }
+};
+
 // Hides nodes and perform incremental layout afterward if Rearrange option is checked
 appUtilities.hideNodesSmart = function(eles) {
     if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
