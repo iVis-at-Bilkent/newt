@@ -46,7 +46,7 @@ document.write("                <ul>");
 document.write("                  <li><a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a></li>");
 document.write("                  <li><a href=\"http://js.cytoscape.org/\" target=\"_blank\">Cytoscape.js</a></li>");
 document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt Github page</a></li>");
-document.write("                  <li><a href=\"http://www.pathwaycommons.org/\" target=\"_blank\">PathwayCommons</a></li>");
+document.write("                  <li><a href=\"http://www.pathwaycommons.org/\" target=\"_blank\">Pathway Commons</a></li>");
 document.write("                  <li><a href=\"http://disease-maps.org/\" target=\"_blank\">Disease Maps Project</a></li>");
 document.write("                  <li><a href=\"http://www.cs.bilkent.edu.tr/~ivis\" target=\"_blank\">i-Vis</a></li>");
 document.write("                </ul>");

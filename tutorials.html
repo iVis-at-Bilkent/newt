@@ -41,7 +41,8 @@
         <li> <a href="#search-and-highlight">Search and highlight</a>
         <li> <a href="#automatic-layout">Automatic layout</a>
              <span style="float: right;">Automatic layout: <a href="tutorials-layout.html"><img src="images/play-button.svg" width=16px/></a></span>
-        <li> <a href="#querying-pathway-commons">Querying PathwayCommons</a>
+        <li> <a href="#querying-pathway-commons">Querying Pathway Commons</a>
+        <li> <a href="#references">References</a>
         </ul>
 
         <h2 id="introduction">Introduction
@@ -123,7 +124,7 @@ Grid and guideline support is rather involved and can be customized using the se
         <h2 id="complexity-management">Complexity management
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Some maps can be rather large. No matter how advanced of layout and viewing facilities are available, navigation through such maps and tracing interactions can be cumbersome. Newt provides some advanced complexity management techniques so that the user can focus on a sub-map of interest at any time during their analysis, removing unwanted details <i>temporarily</i> from the map. Below we discuss these facilities. </p>
+        <p> Some maps can be rather large. No matter how advanced of layout and viewing facilities are available, navigation through such maps and tracing interactions can be cumbersome. Newt provides some advanced complexity management techniques [<a href="#references">2</a>,<a href="#references">1</a>,<a href="#references">3</a>] so that the user can focus on a sub-map of interest at any time during their analysis, removing unwanted details <i>temporarily</i> from the map. Below we discuss these facilities. </p>
 
         <p> <a href="tutorials-compl.html">Here</a> is a short tutorial illustrating complexity management in Newt. </p>
 
@@ -181,20 +182,31 @@ Grid and guideline support is rather involved and can be customized using the se
         <span class="left"><a href="images/before-layout.svg" data-lightbox="image-layout" data-title="A map with random layout"><img src="images/before-layout.svg" style="height: 220px;" /></a></span>
         <span class="right"><a href="images/after-layout.svg" data-lightbox="image-layout" data-title="After Newt automatic layout performed on the same map"><img src="images/after-layout.svg" style="height: 220px;" /></a></span>
 
-        <p> Newt provides automatic layout services to lay out a map from scratch (disable Incremental flag under Layout | Layout Properties...) or incrementally (default). Newt uses the layout algorithm described <a target="_blank" href="http://dx.doi.org/10.1016/j.ins.2008.11.017">here</a>, respecting compound structures (e.g. compartments). </p>
+        <p> Newt provides automatic layout services to lay out a map from scratch (disable Incremental flag under Layout | Layout Properties...) or incrementally (default). Newt uses a layout algorithm [<a href="#references">5</a>,<a href="#references">4</a>,<a href="#references">6</a>] respecting compound structures (e.g. compartments). </p>
 
         <p> The same algorithm is also applied incrementally after complexity management operations described earlier, if the associated flag (Map Properties... | Arrangement | Rearrange on Complexity Management) is enabled. </p>
 
         <p> <a href="tutorials-layout.html">Here</a> is a short tutorial illustrating automatic layout capabilities of Newt. </p>
 
-        <h2 id="querying-pathway-commons">Querying PathwayCommons
+        <h2 id="querying-pathway-commons">Querying Pathway Commons
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Newt provides an interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">PathwayCommons</a> database, presenting results in SBGN, and enabling editing on them. </p>
+        <p> Newt provides an interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">Pathway Commons</a> database, presenting results in SBGN, and enabling editing on them. </p>
 
         <span class="right"><a href="images/PC-query-result.png" data-lightbox="image-layout" data-title="Partial view of the result of sample query"><img src="images/PC-query-result.png" style="height: 240px;" /></a></span>
         <span class="right"><a href="images/PC-query-dialog.png" data-lightbox="image-layout" data-title="Sample Paths Between query"><img src="images/PC-query-dialog.png" style="height: 140px;" /></a></span>
-        <p> Currently available type of queries include Query by URI and Query Paths Between (find the paths between specific source set of states or entities within the boundaries of a specified length limit) as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a>. Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
+        <p> Currently available type of queries include Query by URI and Query Paths Between (find the paths between specific source set of states or entities within the boundaries of a specified length limit) as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a> [<a href="#references">7</a>]. Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
+
+        <h2 id="references">References
+          <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+
+        [1] M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "SBGNViz: a tool for visualization and complexity management of SBGN process description maps", PLoS ONE, 10(6), e0128985, 2015. 
+        <br><br>[2] U. Dogrusoz and B. Genc, "A Multi-Graph Approach to Complexity Management in Interactive Graph Visualization", Computers & Graphics, vol. 30/1, pp. 86-97, 2006.
+        <br><br>[3] U. Dogrusoz and B. Genc, "A Framework for Complexity Management in Graph Visualization", LNCS, vol. 2528, pp. 368-369, 2002.
+        <br><br>[4] B. Genc, U. Dogrusoz, "An Algorithm for Automated Layout of Process Description Maps Drawn in SBGN", Bioinformatics, 32(1), pp. 77-84, 2016.
+        <br><br>[5] U. Dogrusoz, E. Giral, A. Cetintas, A. Civril, and E. Demir, "A Layout Algorithm For Undirected Compound Graphs", Information Sciences, 179, pp. 980-994, 2009.
+        <br><br>[6] U. Dogrusoz, E. Giral, A. Cetintas, A. Civril, and E. Demir, "A Compound Graph Layout Algorithm for Biological Pathways", LNCS, vol. 3383, pp. 442-447, 2004.
+        <br><br>[7] U. Dogrusoz, A. Cetintas, E. Demir, and O. Babur, "Algorithms for Effective Querying of Compound Graph-Based Pathway Databases", BMC Bioinformatics, 10:376, 2009. 
  
       </div>
     </div>
