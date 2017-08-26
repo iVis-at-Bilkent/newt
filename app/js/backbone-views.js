@@ -655,14 +655,16 @@ var PathsBetweenQueryView = Backbone.View.extend({
       self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
 
-      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
-              + self.currentQueryParameters.lengthLimit;
-      
-      var sources = "";
-      var filename = "";
       var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
       if (geneSymbols.length === 0) {
           document.getElementById("query-pathsbetween-gene-symbols").focus();
+          return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+          $(self.el).modal('toggle');
+          new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
           return;
       }
       if (self.currentQueryParameters.lengthLimit > 3) {
@@ -671,10 +673,13 @@ var PathsBetweenQueryView = Backbone.View.extend({
           document.getElementById("query-pathsbetween-length-limit").focus();
           return;
       }
-      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "");
+
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+          + self.currentQueryParameters.lengthLimit;
       var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
 
+      var filename = "";
+      var sources = "";
       for (var i = 0; i < geneSymbolsArray.length; i++) {
         var currentGeneSymbol = geneSymbolsArray[i];
         if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
@@ -682,6 +687,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           continue;
         }
         sources = sources + "&source=" + currentGeneSymbol;
+
         if (filename == '') {
           filename = currentGeneSymbol;
         } else {
@@ -749,17 +755,24 @@ var PathsByURIQueryView = Backbone.View.extend({
     $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
 
         self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
+        var uri = self.currentQueryParameters.URI.trim();
 
-        if (self.currentQueryParameters.URI.length === 0) {
+        if (uri.length === 0) {
             document.getElementById("query-pathsbyURI-URI").focus();
+            return;
+        }
+        // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+        uri = uri.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        if (uri.length === 0) {
+            $(self.el).modal('toggle');
+            new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
             return;
         }
 
         var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
-            + self.currentQueryParameters.URI + "&format=SBGN";
+            + uri + "&format=SBGN";
 
         var filename = "";
-        var uri = self.currentQueryParameters.URI;
 
         if (filename == '') {
             filename = uri;
@@ -768,7 +781,6 @@ var PathsByURIQueryView = Backbone.View.extend({
         }
 
         filename = filename + '_URI.sbgnml';
-        setFileContent(filename);
 
         chise.startSpinner('paths-byURI-spinner');
 
