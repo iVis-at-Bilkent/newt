@@ -27,7 +27,7 @@ document.write("      </div>");
 }
 
 function writeFooter(){
-document.write("    <div id=\"footer\" align=\"middle\">");
+document.write("    <div id=\"footer\">");
 document.write("      Copyright &copy; <a href=\"http://www.cs.bilkent.edu.tr/~ivis/\">i-Vis Research Lab</a> | <a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\"><img src=\"images/github.png\" height=12px> Github</a> | <a href=\"https://twitter.com/newteditor\" target=\"_blank\"><img src=\"images/twitter.png\" height=12px> Twitter</a> | <a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a> | <a href=\"http://www.html5webtemplates.co.uk\">Free CSS Templates</a>");
 document.write("    </div>");
 }
@@ -49,6 +49,6 @@ document.write("                  <li><a href=\"https://github.com/iVis-at-Bilke
 document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt on Twitter</a></li>");
 document.write("                  <li><a href=\"http://www.pathwaycommons.org/\" target=\"_blank\">Pathway Commons</a></li>");
 document.write("                  <li><a href=\"http://disease-maps.org/\" target=\"_blank\">Disease Maps Project</a></li>");
-document.write("                  <li><a href=\"http://www.cs.bilkent.edu.tr/~ivis\" target=\"_blank\">i-Vis</a></li>");
+document.write("                  <li><a href=\"http://www.cs.bilkent.edu.tr/~ivis\" target=\"_blank\">i-Vis Research Lab</a></li>");
 document.write("                </ul>");
 }
