@@ -27,8 +27,8 @@ document.write("      </div>");
 }
 
 function writeFooter(){
-document.write("    <div id=\"footer\">");
-document.write("      Copyright &copy; <a href=\"http://www.cs.bilkent.edu.tr/~ivis/\">i-Vis Research Lab</a> | <a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Github</a> | <a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a> | <a href=\"http://www.html5webtemplates.co.uk\">Free CSS Templates</a>");
+document.write("    <div id=\"footer\" align=\"middle\">");
+document.write("      Copyright &copy; <a href=\"http://www.cs.bilkent.edu.tr/~ivis/\">i-Vis Research Lab</a> | <a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\"><img src=\"images/github.png\" height=12px> Github</a> | <a href=\"https://twitter.com/newteditor\" target=\"_blank\"><img src=\"images/twitter.png\" height=12px> Twitter</a> | <a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a> | <a href=\"http://www.html5webtemplates.co.uk\">Free CSS Templates</a>");
 document.write("    </div>");
 }
 
@@ -45,7 +45,8 @@ document.write("                <h3>Useful Links</h3>");
 document.write("                <ul>");
 document.write("                  <li><a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a></li>");
 document.write("                  <li><a href=\"http://js.cytoscape.org/\" target=\"_blank\">Cytoscape.js</a></li>");
-document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt Github page</a></li>");
+document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt on Github</a></li>");
+document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt on Twitter</a></li>");
 document.write("                  <li><a href=\"http://www.pathwaycommons.org/\" target=\"_blank\">Pathway Commons</a></li>");
 document.write("                  <li><a href=\"http://disease-maps.org/\" target=\"_blank\">Disease Maps Project</a></li>");
 document.write("                  <li><a href=\"http://www.cs.bilkent.edu.tr/~ivis\" target=\"_blank\">i-Vis</a></li>");
