@@ -758,15 +758,15 @@ var PathsByURIQueryView = Backbone.View.extend({
       var uri = self.currentQueryParameters.URI.trim();
 
       if (uri.length === 0) {
-        document.getElementById("query-pathsbyURI-URI").focus();
-        return;
+          document.getElementById("query-pathsbyURI-URI").focus();
+          return;
       }
       // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
       uri = uri.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (uri.length === 0) {
-        $(self.el).modal('toggle');
-        new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
-        return;
+          $(self.el).modal('toggle');
+          new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
+          return;
       }
 
       var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
@@ -801,6 +801,8 @@ var PathsByURIQueryView = Backbone.View.extend({
           }
         }
       });
+      $(self.el).modal('toggle');
+  });
 
     $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
         $(self.el).modal('toggle');
