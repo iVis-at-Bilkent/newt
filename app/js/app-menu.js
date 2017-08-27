@@ -345,7 +345,7 @@ module.exports = function () {
     });
 
     $("#show-all").click(function (e) {
-      chise.showAll();   
+      appUtilities.showAll();
     });
 
     $("#delete-selected-smart, #delete-selected-smart-icon").click(function (e) {
