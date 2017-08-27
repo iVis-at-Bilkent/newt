@@ -655,37 +655,43 @@ var PathsBetweenQueryView = Backbone.View.extend({
       self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
 
-      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
-              + self.currentQueryParameters.lengthLimit;
-      
-      var sources = "";
-      var filename = "";
       var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
       if (geneSymbols.length === 0) {
           document.getElementById("query-pathsbetween-gene-symbols").focus();
           return;
       }
-      if (self.currentQueryParameters.lengthLimit > 3) {
-          $(self.el).modal('toggle');
-          new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-          document.getElementById("query-pathsbetween-length-limit").focus();
-          return;
-      }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "");
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-pathsbetween-length-limit").focus();
+        return;
+      }
+
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+          + self.currentQueryParameters.lengthLimit;
       var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
 
+      var filename = "";
+      var sources = "";
       for (var i = 0; i < geneSymbolsArray.length; i++) {
         var currentGeneSymbol = geneSymbolsArray[i];
         if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-          continue;
+            || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+            continue;
         }
         sources = sources + "&source=" + currentGeneSymbol;
+
         if (filename == '') {
-          filename = currentGeneSymbol;
+            filename = currentGeneSymbol;
         } else {
-          filename = filename + '_' + currentGeneSymbol;
+            filename = filename + '_' + currentGeneSymbol;
         }
       }
       filename = filename + '_PATHSBETWEEN.sbgnml';
@@ -697,17 +703,17 @@ var PathsBetweenQueryView = Backbone.View.extend({
         url: queryURL,
         type: 'GET',
         success: function (data) {
-          if (data == null)
-          {
-            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-            chise.endSpinner('paths-between-spinner');
-          }
-          else
-          {
-            chise.updateGraph(chise.convertSbgnmlToJson(data));
-            chise.endSpinner('paths-between-spinner');
-            $(document).trigger('sbgnvizLoadFile', filename);
-          }
+            if (data == null)
+            {
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                chise.endSpinner('paths-between-spinner');
+            }
+            else
+            {
+                chise.updateGraph(chise.convertSbgnmlToJson(data));
+                chise.endSpinner('paths-between-spinner');
+                $(document).trigger('sbgnvizLoadFile', filename);
+            }
         }
       });
       $(self.el).modal('toggle');
@@ -746,51 +752,55 @@ var PathsByURIQueryView = Backbone.View.extend({
 
     $(self.el).modal('show');
 
-    $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
+      $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
 
-        self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
+      self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
+      var uri = self.currentQueryParameters.URI.trim();
 
-        if (self.currentQueryParameters.URI.length === 0) {
-            document.getElementById("query-pathsbyURI-URI").focus();
-            return;
-        }
-
-        var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
-            + self.currentQueryParameters.URI + "&format=SBGN";
-
-        var filename = "";
-        var uri = self.currentQueryParameters.URI;
-
-        if (filename == '') {
-            filename = uri;
-        } else {
-            filename = filename + '_' + uri;
-        }
-
-        filename = filename + '_URI.sbgnml';
-        setFileContent(filename);
-
-        chise.startSpinner('paths-byURI-spinner');
-
-        $.ajax({
-          url: queryURL,
-          type: 'GET',
-          success: function (data) {
-            if (data == null)
-            {
-                new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
-                chise.endSpinner('paths-byURI-spinner');
-            }
-            else
-            {
-                chise.updateGraph(chise.convertSbgnmlToJson(data));
-                chise.endSpinner('paths-byURI-spinner');
-                $(document).trigger('sbgnvizLoadFile', filename);
-            }
-          }
-        });
+      if (uri.length === 0) {
+        document.getElementById("query-pathsbyURI-URI").focus();
+        return;
+      }
+      // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      uri = uri.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (uri.length === 0) {
         $(self.el).modal('toggle');
-    });
+        new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
+        return;
+      }
+
+      var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
+          + uri + "&format=SBGN";
+
+      var filename = "";
+
+      if (filename == '') {
+          filename = uri;
+      } else {
+          filename = filename + '_' + uri;
+      }
+
+      filename = filename + '_URI.sbgnml';
+
+      chise.startSpinner('paths-byURI-spinner');
+
+      $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null)
+          {
+            new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
+            chise.endSpinner('paths-byURI-spinner');
+          }
+          else
+          {
+            chise.updateGraph(chise.convertSbgnmlToJson(data));
+            chise.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFile', filename);
+          }
+        }
+      });
 
     $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
         $(self.el).modal('toggle');
