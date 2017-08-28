@@ -349,3 +349,10 @@ input.gsc-search-button {
 .gsc-control-cse {
   padding: 0px !important;
 }
+
+.twitter-follow-button {
+  border-radius: 4px 12px 4px 12px;
+  padding: 5px !important;
+  color: white !important;
+  background-color: #0B9BCD;
+}
