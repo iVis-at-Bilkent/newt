@@ -1,6 +1,6 @@
 # Newt: A Sample Application for ChiSE
 
-Newt is a sample application for the [web based library named ChiSE](https://github.com/iVis-at-Bilkent/chise.js) developed to visualize and edit the pathway models represented by process description maps in SBGN.
+Newt is a sample application for the web based library named [ChiSE](https://github.com/iVis-at-Bilkent/chise.js) developed to visualize and edit the pathway models represented by process description (PD) and activity flow (AF) languages of [SBGN](http://sbgn.org).
 
 ## Software
 
