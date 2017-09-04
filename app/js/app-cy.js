@@ -215,7 +215,7 @@ module.exports = function () {
           var globalInfoboxCount = 0;
           for(var side in ele.data('auxunitlayouts')) {
             var layout = ele.data('auxunitlayouts')[side];
-            var newLayout = layout.copy(ele); // get a new layout
+            var newLayout = chise.classes.AuxUnitLayout.copy(layout, ele); // get a new layout
 
             // copy each infobox of the layout
             for(var i=0; i < layout.units.length; i++) {
@@ -224,7 +224,7 @@ module.exports = function () {
               var statesandinfosIndex = ele.data('statesandinfos').indexOf(auxunit);
 
               // copy the current infobox
-              var newAuxunit = auxunit.copy(ele, ele.data('id') + "_" + globalInfoboxCount);
+              var newAuxunit = chise.classes.getAuxUnitClass(auxunit).copy(auxunit, ele, ele.data('id') + "_" + globalInfoboxCount);
               // update statesandinfos list
               ele.data('statesandinfos')[statesandinfosIndex] = newAuxunit;
               // update layout's infobox list
@@ -931,7 +931,7 @@ module.exports = function () {
 
   function updateInfoBox(node) {
     for(var location in node.data('auxunitlayouts')) {
-      node.data('auxunitlayouts')[location].update();
+      chise.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location]);
     }
   }
 };
