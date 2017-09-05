@@ -210,6 +210,12 @@ module.exports = function () {
             return;
           }
 
+          // Defined to get index of an auxilary unit in statesandinfos array.
+          // Since during clone operation the reference of object is changed we cannot use .indexOf() method
+          // Instead we compare the objects by stringifing them. However, string representation of the objects may be the same.
+          // To prevent conflictions in such cases we need to keep used incdices here and pass the already used indices.
+          var usedIndices = {};
+
           // maintain consistency of layouts, and infoboxes through them
           // we need to replace the layouts contained in ele by new cloned layouts
           var globalInfoboxCount = 0;
@@ -220,8 +226,31 @@ module.exports = function () {
             // copy each infobox of the layout
             for(var i=0; i < layout.units.length; i++) {
               var auxunit = layout.units[i];
-              // keep the new infobox at exactly the same position in the statesandinfos list 
-              var statesandinfosIndex = ele.data('statesandinfos').indexOf(auxunit);
+              var auxunitStr = JSON.stringify(auxunit);
+              // keep the new infobox at exactly the same position in the statesandinfos list
+              // var statesandinfosIndex = ele.data('statesandinfos').indexOf(auxunit);
+
+              var statesandinfos = ele.data('statesandinfos');
+
+              // keep the new infobox at exactly the same position in the statesandinfos list
+              var statesandinfosIndex;
+
+              // Go through the not used indices of statesandinfos to get the index of aucilary unit
+              for (var j = 0; j < statesandinfos.length; j++) {
+                // Already used pass it
+                if (usedIndices[j]) {
+                  continue;
+                }
+
+                var currentBox = statesandinfos[j];
+
+                // Found out the correct index
+                if (JSON.stringify(currentBox) === auxunitStr) {
+                  usedIndices[j] = true;
+                  statesandinfosIndex = j;
+                  break;
+                }
+              }
 
               // copy the current infobox
               var newAuxunit = chise.classes.getAuxUnitClass(auxunit).copy(auxunit, ele, ele.data('id') + "_" + globalInfoboxCount);
