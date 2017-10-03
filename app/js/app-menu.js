@@ -235,6 +235,12 @@ module.exports = function () {
       appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
       mapTabGeneralPanel.render();
 
+      // set reaggange on complexity managment based on map size
+      if (cy.nodes().length > 100){
+        appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse = false;
+        mapTabRearrangementPanel.render();
+      }
+
       // get and set properties from file
       var properties = chise.getMapProperties();
       if (properties && properties.mapProperties){
