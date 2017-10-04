@@ -430,14 +430,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var ur = cy.undoRedo();
       var actions = [];
 
-      self.params.mapName.value = appUtilities.defaultGeneralProperties.mapName;
-      self.params.mapDescription.value = appUtilities.defaultGeneralProperties.mapDescription;
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
-      actions.push({name: "changeMenu", param: self.params.mapName});
-      actions.push({name: "changeMenu", param: self.params.mapDescription});
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
