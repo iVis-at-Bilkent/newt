@@ -147,6 +147,7 @@ module.exports = function () {
       if (e.which === 13 && !e.shiftKey) {
         $("#node-label-textbox").blur();
         cy.nodes().unselect();
+        $('#inspector-palette-tab a').tab('show');
       }
     });
 
