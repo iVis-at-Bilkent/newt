@@ -1199,7 +1199,7 @@ var GridPropertiesView = Backbone.View.extend({
       cy.gridGuide({
         drawGrid: appUtilities.currentGridProperties.showGrid,
         gridColor: appUtilities.currentGridProperties.gridColor,
-        snapToGridOnRelease: appUtilities.currentGridProperties.snapToGriOnReleased,
+        snapToGridOnRelease: appUtilities.currentGridProperties.snapToGridOnRelease,
         snapToGridDuringDrag: appUtilities.currentGridProperties.snapToGridDuringDrag,
         snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
         snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
