@@ -33,9 +33,13 @@ module.exports = function () {
     });
   }
   function loadSample(filename) {
-    var textXml = (new XMLSerializer()).serializeToString(chise.loadXMLDoc("app/samples/"+filename));
+
+    // use the active chise instance
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+    var textXml = (new XMLSerializer()).serializeToString(chiseInstance.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
-    return chise.loadSample(filename, 'app/samples/');
+    return chiseInstance.loadSample(filename, 'app/samples/');
   }
 
   $(document).ready(function ()
@@ -83,6 +87,10 @@ module.exports = function () {
 
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename) {
+
+    // use active cy instance
+    var cy = appUtilities.getActiveCy();
+
     appUtilities.setFileContent(filename);
     //clean and reset things
     cy.elements().unselect();
@@ -97,8 +105,12 @@ module.exports = function () {
   });
 
   $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename) {
+
+    // use the active chise instance
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
     // select appropriate palette depending on the map
-    if(chise.elementUtilities.mapType == "AF") {
+    if(chiseInstance.elementUtilities.mapType == "AF") {
       if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
         $("#PD-palette-heading").click();
       }
@@ -106,7 +118,7 @@ module.exports = function () {
         $("#AF-palette-heading").click();
       }
     }
-    else if(chise.elementUtilities.mapType == "PD"){
+    else if(chiseInstance.elementUtilities.mapType == "PD"){
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
         $("#PD-palette-heading").click();
       }
@@ -144,6 +156,10 @@ module.exports = function () {
     });
 
     $("#node-label-textbox").keydown(function (e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       if (e.which === 13 && !e.shiftKey) {
         $("#node-label-textbox").blur();
         cy.nodes().unselect();
@@ -157,6 +173,10 @@ module.exports = function () {
     });
 
     $("#node-label-textbox").on('change', function () {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
       var node = $(this).data('node');
       var lines = $(this).val();
 
@@ -169,14 +189,21 @@ module.exports = function () {
         lines = lines.join("\n")
       }
 
-      chise.changeNodeLabel(node, lines);
+      chiseInstance.changeNodeLabel(node, lines);
       inspectorUtilities.handleSBGNInspector();
 
     });
 
     $("#new-file, #new-file-icon").click(function () {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance for active chise instance
+      var cy = chiseInstance.getCy();
+
       var createNewFile = function () {
-        chise.resetMapType();  // reset map type while creating new file
+        chiseInstance.resetMapType();  // reset map type while creating new file
         appUtilities.setFileContent("new_file.sbgnml");
 
         // reset map name and description
@@ -191,7 +218,7 @@ module.exports = function () {
           $('#inspector-style-tab a').blur();
         }
 
-        chise.updateGraph({
+        chiseInstance.updateGraph({
           nodes: [],
           edges: []
         });
@@ -210,6 +237,13 @@ module.exports = function () {
     });
 
     $("#file-input").change(function () {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+
       if ($(this).val() != "") {
         var file = this.files[0];
         var loadCallbackSBGNMLValidity = function (text) {
@@ -219,10 +253,10 @@ module.exports = function () {
           promptInvalidFileView.render();
         }
         if(cy.elements().length != 0) {
-          promptConfirmationView.render(function(){chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+          promptConfirmationView.render(function(){chiseInstance.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
         }
         else {
-          chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning); 
+          chiseInstance.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
         $(this).val("");
       }
@@ -230,6 +264,12 @@ module.exports = function () {
 
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(){
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
 
       // reset map name and description
       appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
@@ -243,7 +283,7 @@ module.exports = function () {
       }
 
       // get and set properties from file
-      var properties = chise.getMapProperties();
+      var properties = chiseInstance.getMapProperties();
       if (properties && properties.mapProperties){
         appUtilities.setMapProperties(properties.mapProperties);
         // update map panel
@@ -256,8 +296,8 @@ module.exports = function () {
         for(var nodeClass in appUtilities.mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values']){
           classBgColor = appUtilities.mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeClass];
           // nodeClass may not be defined in the defaultProperties (for edges, for example)
-          if(nodeClass in chise.elementUtilities.defaultProperties){
-            chise.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
+          if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+            chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
           }
         }
       };
@@ -307,6 +347,10 @@ module.exports = function () {
     for ( var selector in selectorToSampleFileName ) {
       (function(selector){
         $(selector).click(function (e) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
           if(cy.elements().length != 0) {
             promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
           }
@@ -318,36 +362,63 @@ module.exports = function () {
     }
 
     $("#select-all").click(function(e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       cy.elements().unselect();
       cy.elements().select();
     });
 
     $("#select-all-nodes").click(function(e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       cy.elements().unselect();
       cy.nodes().select();
     });
 
     $("#select-all-edges").click(function(e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       cy.elements().unselect();
       cy.edges().select();
     });
     
     $("#hide-selected, #hide-selected-icon").click(function(e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       appUtilities.hideNodesSmart(cy.nodes(":selected"));
       $('#inspector-palette-tab a').tab('show');
     });
 
     $("#show-selected, #show-selected-icon").click(function(e) {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
       if (cy.nodes(":selected").length === 0)
           return;
       var nodes = cy.nodes(":selected");
       var allNodes = cy.elements();
-      var nodesToShow = chise.elementUtilities.extendNodeList(nodes);
+      var nodesToShow = chiseInstance.elementUtilities.extendNodeList(nodes);
       var nodesToHide = allNodes.not(nodesToShow);
       appUtilities.hideNodesSmart(nodesToHide);
     });
 
     $("#show-hidden-neighbors-of-selected").click(function(e) {
+
+      // use active cy instance
+      var cy = chiseInstance.getActiveCy();
+
       appUtilities.showHiddenNeighbors(cy.elements(':selected'));
     });
 
@@ -356,17 +427,35 @@ module.exports = function () {
     });
 
     $("#delete-selected-smart, #delete-selected-smart-icon").click(function (e) {
-      chise.deleteNodesSmart(cy.nodes(':selected'));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.deleteNodesSmart(cy.nodes(':selected'));
       $('#inspector-palette-tab a').tab('show');
     });
 
     $("#highlight-neighbors-of-selected").click(function (e) {
-      chise.highlightNeighbours(cy.nodes(':selected'));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.highlightNeighbours(cy.nodes(':selected'));
     });
 
     $("#search-by-label-icon").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
       var label = $("#search-by-label-text-box").val().toLowerCase();
-      chise.searchByLabel(label);
+      chiseInstance.searchByLabel(label);
     });
 
     $("#search-by-label-text-box").keydown(function (e) {
@@ -380,15 +469,33 @@ module.exports = function () {
     });
     
     $("#highlight-selected, #highlight-selected-icon").click(function (e) {
-      chise.highlightSelected(cy.elements(':selected'));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.highlightSelected(cy.elements(':selected'));
     });
 
     $("#highlight-processes-of-selected").click(function (e) {
-      chise.highlightProcesses(cy.nodes(':selected'));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.highlightProcesses(cy.nodes(':selected'));
     });
 
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
-      chise.removeHighlights();
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      chiseInstance.removeHighlights();
     });
 
     $("#layout-properties, #layout-properties-icon").click(function (e) {
@@ -396,7 +503,14 @@ module.exports = function () {
     });
 
     $("#delete-selected-simple, #delete-selected-simple-icon").click(function (e) {
-      chise.deleteElesSimple(cy.elements(':selected'));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.deleteElesSimple(cy.elements(':selected'));
       $('#inspector-palette-tab a').tab('show');
     });
 
@@ -420,22 +534,51 @@ module.exports = function () {
     });
 
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
-      chise.collapseNodes(cy.nodes(":selected"));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.collapseNodes(cy.nodes(":selected"));
     });
 
     $("#expand-selected,#expand-selected-icon").click(function (e) {
-      chise.expandNodes(cy.nodes(":selected"));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.expandNodes(cy.nodes(":selected"));
     });
 
     $("#collapse-complexes").click(function (e) {
-      chise.collapseComplexes();
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      chiseInstance.collapseComplexes();
     });
+
     $("#expand-complexes").click(function (e) {
-      chise.expandComplexes();
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      chiseInstance.expandComplexes();
     });
+
     // Toggle show grid and snap to grid
     var toggleShowGridEnableSnap = false;
+
     $("#toggle-grid-snapping-icon").click(function(){
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       if (toggleEnableGuidelineAndSnap){
         $("#toggle-guidelines-snapping-icon").click();
       }
@@ -459,6 +602,10 @@ module.exports = function () {
     // Toggle guidelines and snap to alignment location
     var toggleEnableGuidelineAndSnap = false;
     $("#toggle-guidelines-snapping-icon").click(function(){
+
+      // use active cy instance
+      var cy = chiseInstance.getActiveCy();
+
       if (toggleShowGridEnableSnap){
         $("#toggle-grid-snapping-icon").click();
       }
@@ -483,16 +630,28 @@ module.exports = function () {
     });
 
     $("#collapse-all").click(function (e) {
-      chise.collapseAll();
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      chiseInstance.collapseAll();
     });
 
     $("#expand-all").click(function (e) {
-      chise.expandAll();
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      chiseInstance.expandAll();
     });
 
     $("#perform-layout, #perform-layout-icon").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
       // TODO think whether here is the right place to start the spinner
-      chise.startSpinner("layout-spinner");
+      chiseInstance.startSpinner("layout-spinner");
 
       // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
       // If it is 'during' use it as is
@@ -506,29 +665,49 @@ module.exports = function () {
     });
 
     $("#undo-last-action, #undo-icon").click(function (e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       cy.undoRedo().undo();
     });
 
     $("#redo-last-action, #redo-icon").click(function (e) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       cy.undoRedo().redo();
     });
 
     $("#save-as-png").click(function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".png";
-      chise.saveAsPng(filename); // the default filename is 'network.png'
+      chiseInstance.saveAsPng(filename); // the default filename is 'network.png'
     });
 
     $("#save-as-jpg").click(function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".jpg";
-      chise.saveAsJpg(filename); // the default filename is 'network.jpg'
+      chiseInstance.saveAsJpg(filename); // the default filename is 'network.jpg'
     });
 
     $("#save-as-svg").click(function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".svg";
-      chise.saveAsSvg(filename); // the default filename is 'network.jpg'
+      chiseInstance.saveAsSvg(filename); // the default filename is 'network.jpg'
     });
 
     //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
@@ -539,15 +718,36 @@ module.exports = function () {
     });
 
     $("#add-complex-for-selected").click(function (e) {
-      chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
     });
 
     $("#add-compartment-for-selected").click(function (e) {
-      chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
     });
 
     $("#add-submap-for-selected").click(function (e) {
-      chise.createCompoundForGivenNodes(cy.nodes(':selected'), 'submap');
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'submap');
     });
 
     $("#create-reaction-template").click(function (e) {
@@ -555,34 +755,83 @@ module.exports = function () {
     });
 
     $("#clone-selected").click(function (e) {
-      chise.cloneElements(cy.nodes(':selected'));
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.cloneElements(cy.nodes(':selected'));
     });
 
     /*
      * Align selected nodes w.r.t the first selected node start
      */
     $('#align-horizontal-top,#align-horizontal-top-icon').click(function (e) {
-      chise.align(cy.nodes(":selected"), "top", "none", appUtilities.firstSelectedNode);
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.align(cy.nodes(":selected"), "top", "none", appUtilities.firstSelectedNode);
     });
 
     $('#align-horizontal-middle,#align-horizontal-middle-icon').click(function (e) {
-      chise.align(cy.nodes(":selected"), "center", "none", appUtilities.firstSelectedNode);
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.align(cy.nodes(":selected"), "center", "none", appUtilities.firstSelectedNode);
     });
 
     $('#align-horizontal-bottom,#align-horizontal-bottom-icon').click(function (e) {
-      chise.align(cy.nodes(":selected"), "bottom", "none", appUtilities.firstSelectedNode);
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.align(cy.nodes(":selected"), "bottom", "none", appUtilities.firstSelectedNode);
     });
 
     $('#align-vertical-left,#align-vertical-left-icon').click(function (e) {
-      chise.align(cy.nodes(":selected"), "none", "left", appUtilities.firstSelectedNode);
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.align(cy.nodes(":selected"), "none", "left", appUtilities.firstSelectedNode);
     });
 
     $('#align-vertical-center,#align-vertical-center-icon').click(function (e) {
-      chise.align(cy.nodes(":selected"), "none", "center", appUtilities.firstSelectedNode);
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.align(cy.nodes(":selected"), "none", "center", appUtilities.firstSelectedNode);
     });
 
     $('#align-vertical-right,#align-vertical-right-icon').click(function (e) {
-      chise.align(cy.nodes(":selected"), "none", "right", appUtilities.firstSelectedNode);
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChise();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.align(cy.nodes(":selected"), "none", "right", appUtilities.firstSelectedNode);
     });
 
     /*
@@ -678,6 +927,10 @@ module.exports = function () {
     // cy doesn't provide a clean way to handle events from the outside of cy
     // so here we need to go through the container and fire events down the chain manually to cy
     appUtilities.sbgnNetworkContainer.on("mouseup", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       if (dragAndDropPlacement) {
         var parentOffset = appUtilities.sbgnNetworkContainer.offset();
         var relX = evt.pageX - parentOffset.left;

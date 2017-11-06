@@ -5,13 +5,162 @@
  */
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
+var chise = require('chise');
 
 var appUtilities = {};
+
+// Get the whole scratchpad reserved for newt (on an element or core) or get a single property of it
+appUtilities.getScratch = function (cyOrEle, name) {
+  if (cyOrEle.scratch('_newt') === undefined) {
+    cyOrEle.scratch('_newt', {});
+  }
+
+  var scratch = cyOrEle.scratch('_newt');
+  var retVal = ( name === undefined ) ? scratch : scratch[name];
+  return retVal;
+}
+
+// Set a single property on scratchpad of an element or the core
+appUtilities.setScratch = function (cyOrEle, name, val) {
+  this.getScratch(cyOrEle)[name] = val;
+}
+
+// id for the next tab to be created, starts by 0
+// a unique div selector is to be created using this id
+appUtilities.nextTabId = 0;
 
 // Configuration flag for whether the operations should be undoable.
 // It is to be checked and passed to extensions/libraries where applicable.
 appUtilities.undoable = true;
 
+// refers to the chise.js instance assocated with the current active tab
+appUtilities.activeChiseInstance = undefined;
+
+// map of unique tab div selector to related chise.js instance
+appUtilities.tabToChiseInstance = {};
+
+// creates a new tab and returns the new chise.js instance that is created for this tab
+appUtilities.createNewTab = function () {
+
+  // id of the div associated with the new tab
+  var tabSelector = '#sbgn-network-container' + nextTabId;
+
+  // Create a new chise.js instance
+  var newInst = chise({
+    networkContainerSelector: divId,
+    // whether to fit label to nodes
+    fitLabelsToNodes: function () {
+      return appUtilities.currentGeneralProperties.fitLabelsToNodes;
+    },
+    // whether to fit label to nodes
+    fitLabelsToInfoboxes: function () {
+      return appUtilities.currentGeneralProperties.fitLabelsToInfoboxes;
+    },
+    // dynamic label size it may be 'small', 'regular', 'large'
+    dynamicLabelSize: function () {
+      return appUtilities.currentGeneralProperties.dynamicLabelSize;
+    },
+    // percentage used to calculate compound paddings
+    compoundPadding: function () {
+      return appUtilities.currentGeneralProperties.compoundPadding;
+    },
+    // arrow size changed by a slider on a scale from 0.5-2
+    arrowScale: function () {
+      return appUtilities.currentGeneralProperties.arrowScale;
+    },
+    extraCompartmentPadding: appUtilities.currentGeneralProperties.extraCompartmentPadding,
+    extraComplexPadding: appUtilities.currentGeneralProperties.extraComplexPadding,
+    showComplexName: appUtilities.currentGeneralProperties.showComplexName,
+    // Whether to adjust node label font size automatically.
+    // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
+    // instead of doing it.
+    adjustNodeLabelFontSizeAutomatically: function() {
+      return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+    },
+    // whether to improve flow (swap nodes)
+    improveFlow: function () {
+      return appUtilities.currentLayoutProperties.improveFlow;
+    },
+    undoable: appUtilities.undoable,
+    undoableDrag: function() {
+      return appUtilities.ctrlKeyDown !== true;
+    }
+  });
+
+  // initialize current properties for this instance by copying the default properties
+  var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
+  var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
+  var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
+
+  // set scracth pad of the related cy instance with these properties
+  appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
+  appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
+  appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
+
+
+  // maintain tabToChiseInstance map
+  appUtilities.tabToChiseInstance[tabSelector] = newInst;
+
+  // increment new tab id
+  nextTabId++;
+
+  // return the new instance
+  return newInst;
+};
+
+// basically returns appUtilities.activeChiseInstance
+appUtilities.getActiveChiseInstance = function () {
+
+  return this.activeChiseInstance;
+};
+
+// setter for appUtilities.activeChiseInstance
+appUtilities.setActiveChiseInstance = function (chiseInstance) {
+
+  this.activeChiseInstance = chiseInstance;
+};
+
+// sets appUtilities.activeChiseInstance through the selector of the tab to be activated
+// returns activated chise.js instance if successful, else returns false
+appUtilities.setActiveTab = function (tabSelector) {
+
+  var chiseInstance = this.tabToChiseInstance[tabSelector];
+
+  if (chiseInstance) {
+
+    this.setActiveChiseInstance(chiseInstance);
+
+    return chiseInstance;
+  }
+
+  return false;
+};
+
+// returns the sbgnviz.js instance associated with the currently active tab
+appUtilities.getActiveSbgnvizInstance = function () {
+
+  var chiseInstance = this.getActiveChiseInstance();
+
+  return chiseInstance ? chiseInstance.getSbgnvizInstance() : false;
+};
+
+// returns the cy instance associated with the currently active tab
+appUtilities.getActiveCy = function () {
+
+  var chiseInstance = this.getActiveChiseInstance();
+
+  return chiseInstance ? chiseInstance.getCy() : false;
+};
+
+// returns active tab
+appUtilities.getActiveTab = function () {
+
+  var activeCy = this.getActiveCy();
+
+  return activeCy ? activeCy.container() : false;
+};
+
+// TODO move end spinner to sbgnviz level by listening to stop event?
 appUtilities.defaultLayoutProperties = {
   name: 'cose-bilkent',
   nodeRepulsion: 2000,
@@ -33,11 +182,9 @@ appUtilities.defaultLayoutProperties = {
   initialEnergyOnIncremental: 0.3,
   improveFlow: true,
   stop: function () {
-    chise.endSpinner('layout-spinner');
+    appUtilities.getActiveChiseInstance().endSpinner('layout-spinner');
   }
 };
-
-appUtilities.currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
 
 appUtilities.defaultGridProperties = {
   showGrid: false,
@@ -66,8 +213,7 @@ appUtilities.defaultGridProperties = {
   verticalDistLine: [0, 0],
 };
 
-appUtilities.currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
-
+// TODO revise map type option
 appUtilities.defaultGeneralProperties = {
   compoundPadding: 10,
   extraCompartmentPadding: 14,
@@ -85,12 +231,10 @@ appUtilities.defaultGeneralProperties = {
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
   defaultInfoboxWidth: 30,
-  mapType: function() {return chise.getMapType() || "Unknown"},
+  mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: ""
 };
-
-appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
 
 appUtilities.setFileContent = function (fileName) {
   var span = document.getElementById('file-name');
@@ -110,41 +254,59 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-appUtilities.triggerIncrementalLayout = function () {
+// TODO should get cy or chise instance parameter?
+appUtilities.triggerIncrementalLayout = function (_cy) {
+
+  // use parametrized cy if exists. Otherwise use the recently active cy
+  var cy = _cy || this.getActiveCy();
+
+  // access the current general properties of cy
+  var currentGeneralProperties = this.getScratch(cy, 'currentGeneralProperties');
+
   // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
   // If it is 'during' use it as is. Set 'randomize' and 'fit' options to false
   var preferences = {
     randomize: false,
-    animate: this.currentGeneralProperties.animateOnDrawingChanges ? 'end' : false,
+    animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false,
     fit: false
   };
-  if (this.currentLayoutProperties.animate === 'during') {
+
+  if (currentLayoutProperties.animate === 'during') {
     delete preferences.animate;
   }
 
-  this.layoutPropertiesView.applyLayout(preferences, true); // layout must not be undoable
+  // access chise instance related to cy using tabToChiseInstance map
+  var chiseInstance = this.tabToChiseInstance['#' + cy.container().id];
+
+  // layout must not be undoable
+  this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
 };
 
-appUtilities.getExpandCollapseOptions = function () {
+appUtilities.getExpandCollapseOptions = function (_cy) {
+
+  // use parametrized cy if exists. Otherwise use the recently active cy
+  var cy = _cy || this.getActiveCy();
+
   var self = this;
+
   return {
     fisheye: function () {
-      return self.currentGeneralProperties.rearrangeAfterExpandCollapse;
+      return self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse;
     },
     animate: function () {
-      return self.currentGeneralProperties.animateOnDrawingChanges;
+      return self.getScratch(cy, 'currentGeneralProperties').animateOnDrawingChanges;
     },
     layoutBy: function () {
-      if (!self.currentGeneralProperties.rearrangeAfterExpandCollapse) {
+      if ( self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse ) {
         return;
       }
 
-      self.triggerIncrementalLayout();
+      self.triggerIncrementalLayout(cy);
     },
     expandCollapseCueSize: 12,
-    expandCollapseCuePosition: function (node) {;
+    expandCollapseCuePosition: function (node) {
        var offset = 1, rectSize = 12; // this is the expandCollapseCueSize;
-       var size = cy.zoom() < 1 ? rectSize / (2*cy.zoom()) : rectSize / 2; 
+       var size = cy.zoom() < 1 ? rectSize / (2*cy.zoom()) : rectSize / 2;
        var x = node.position('x') - node.width() / 2 - parseFloat(node.css('padding-left'))
            + parseFloat(node.css('border-width')) + size + offset;
        if (node.data("class") == "compartment"){
@@ -160,6 +322,7 @@ appUtilities.getExpandCollapseOptions = function () {
   };
 };
 
+// TODO consider what changes are needed for this function
 appUtilities.dynamicResize = function () {
   var win = $(window);
 
@@ -225,8 +388,15 @@ appUtilities.nodeQtipFunction = function (node) {
   });
 };
 */
-appUtilities.refreshUndoRedoButtonsStatus = function () {
+appUtilities.refreshUndoRedoButtonsStatus = function (_cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCyInstance();
+
+  // get undo redo extension instance for cy
   var ur = cy.undoRedo();
+
+  // refresh status of undo button accordingly
   if (ur.isUndoStackEmpty()) {
     $("#undo-last-action").parent("li").addClass("disabled");
   }
@@ -234,6 +404,7 @@ appUtilities.refreshUndoRedoButtonsStatus = function () {
     $("#undo-last-action").parent("li").removeClass("disabled");
   }
 
+  // refresh status of redo button accordingly
   if (ur.isRedoStackEmpty()) {
     $("#redo-last-action").parent("li").addClass("disabled");
   }
@@ -248,62 +419,86 @@ appUtilities.resetUndoRedoButtons = function () {
 };
 
 // Enable drag and drop mode
-appUtilities.enableDragAndDropMode = function() {
+appUtilities.enableDragAndDropMode = function (cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCyInstance();
+
+  // TODO this prop should be set per instance in cy scratch pad?
   appUtilities.dragAndDropModeEnabled = true;
+
   $("#sbgn-network-container canvas").addClass("target-cursor");
   cy.autolock(true);
   cy.autounselectify(true);
 };
 
 // Disable drag and drop mode
-appUtilities.disableDragAndDropMode = function() {
+appUtilities.disableDragAndDropMode = function (cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCyInstance();
+
   appUtilities.dragAndDropModeEnabled = null;
   appUtilities.nodesToDragAndDrop = null;
+
   $("#sbgn-network-container canvas").removeClass("target-cursor");
+
   cy.autolock(false);
   cy.autounselectify(false);
 };
 
 // Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
-appUtilities.showHiddenNeighbors = function(eles) {
-    var extendedList = chise.elementUtilities.extendNodeList(eles);
+appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    var extendedList = chiseInstance.elementUtilities.extendNodeList(eles);
     if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
         //Put them near node, show and perform incremental layout
-        chise.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this));
+        chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this, chiseInstance.getCy()));
     }
     else
     {
         //Just show them
-        chise.showEles(extendedList);
+        chiseInstance.showEles(extendedList);
     }
 };
 
 // Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
-appUtilities.showAll = function() {
+appUtilities.showAll = function (_chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
     if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
       //Show all and perform incremental layout
-     chise.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this));
+     chiseInstance.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this, chiseInstance.getCy()));
     }
     else
     {
       //Just show them all
-      chise.showAll();
+      chiseInstance.showAll();
     }
 };
 
 // Hides nodes and perform incremental layout afterward if Rearrange option is checked
-appUtilities.hideNodesSmart = function(eles) {
+appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
     if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
         //Put them near node and perform incremental layout
-        chise.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this));
+        chiseInstance.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this, chiseInstance.getCy()));
     }
     else
     {
         //Just show them
-        chise.hideNodesSmart(eles);
+        chiseInstance.hideNodesSmart(eles);
     }
 };
 
@@ -990,11 +1185,16 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 };
 
 // change the global style of the map by applying the current color scheme
-appUtilities.applyMapColorScheme = function(newColorScheme, self) {
+appUtilities.applyMapColorScheme = function(newColorScheme, self, _cy) {
+
+  // if _cy param is set use it else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCyInstance();
+
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
   var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
   var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
+  var chiseInstance = appUtilities.getActiveChiseInstance();
 
   var actions = [];
   // edit style of the current map elements
@@ -1007,7 +1207,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, self) {
   for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
     classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
     // nodeClass may not be defined in the defaultProperties (for edges, for example)
-    if(nodeClass in chise.elementUtilities.defaultProperties){
+    if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
       actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
     }
   }
@@ -1035,7 +1235,11 @@ appUtilities.removeDragImage = function () {
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
 };
 
-appUtilities.getAllStyles = function () {
+appUtilities.getAllStyles = function (_cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCyInstance();
+
   var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively();
   var collapsedChildrenNodes = collapsedChildren.filter("node");
   var nodes = cy.nodes().union(collapsedChildrenNodes);
@@ -1208,7 +1412,12 @@ appUtilities.getColorsFromElements = function (nodes, edges) {
  * updates current general properties and refreshes map
  * @mapProperties : a set of properties as object
  */
-appUtilities.setMapProperties = function(mapProperties) {
+appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
+
+  // use _chiseInstance param if it is set else use the recently active chise instance
+  var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+  var cy = chiseInstance.getCy();
+
   for (property in mapProperties){
     var value = mapProperties[property];
     // convert strings to correct appropriate types
@@ -1220,21 +1429,21 @@ appUtilities.setMapProperties = function(mapProperties) {
       appUtilities.currentGeneralProperties[property] = value;
   }
     // refresh map with new settings
-    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    chise.refreshPaddings(); // Refresh/recalculate paddings
+    chiseInstance.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+    chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
     if (appUtilities.currentGeneralProperties.enablePorts) {
-      chise.enablePorts();
+      chiseInstance.enablePorts();
     }
     else {
-      chise.disablePorts();
+      chiseInstance.disablePorts();
     }
 
     if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
-      chise.considerCompoundSizes();
+      chiseInstance.considerCompoundSizes();
     }
     else {
-      chise.omitCompoundSizes();
+      chiseInstance.omitCompoundSizes();
     }
 
     cy.edges().css('arrow-scale', appUtilities.currentGeneralProperties.arrowScale);

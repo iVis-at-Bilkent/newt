@@ -5,14 +5,13 @@ var inspectorUtilities = require('./inspector-utilities');
 var appUndoActions = require('./app-undo-actions');
 var _ = require('underscore');
 
-module.exports = function () {
+module.exports = function (cy) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
 //  var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
 
   $(document).ready(function ()
   {
-    appUtilities.sbgnNetworkContainer = $('#sbgn-network-container');
     // register extensions and bind events when cy is ready
     cy.ready(function () {
       cytoscapeExtensionsAndContextMenu();
@@ -26,14 +25,20 @@ module.exports = function () {
   });
 
   function registerUndoRedoActions() { // only if undoRedo is set
+    // get ur extension instance for cy
     var ur = cy.undoRedo();
-    ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
-    ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
-    ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
+
+    // generate an instance of app undo actions with related cy
+    var _appUndoActions = appUndoActions(cy);
+
+    // bind ur actions
+    ur.action("changeDataDirty", _appUndoActions.changeDataDirty, _appUndoActions.changeDataDirty);
+    ur.action("changeMenu", _appUndoActions.changeMenu, _appUndoActions.changeMenu);
+    ur.action("refreshColorSchemeMenu", _appUndoActions.refreshColorSchemeMenu, _appUndoActions.refreshColorSchemeMenu);
   }
   
   function cytoscapeExtensionsAndContextMenu() {
-    cy.expandCollapse(getExpandCollapseOptions());
+    cy.expandCollapse(getExpandCollapseOptions(cy));
 
     var contextMenus = cy.contextMenus({
       menuItemClasses: ['custom-menu-item'],
@@ -171,7 +176,7 @@ module.exports = function () {
         selector: 'node[thickBorder]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.showHiddenNeighbors(cyTarget);
+          appUtilities.showHiddenNeighbors(cyTarget, cy);
 //          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       },
@@ -538,7 +543,7 @@ module.exports = function () {
     });
     
     cy.on("afterDo", function (event, actionName, args, res) {
-      refreshUndoRedoButtonsStatus();
+      refreshUndoRedoButtonsStatus(cy);
 
       if(actionName == "resize") {
         var node = res.node;
@@ -552,7 +557,7 @@ module.exports = function () {
     });
 
     cy.on("afterUndo", function (event, actionName, args, res) {
-      refreshUndoRedoButtonsStatus();
+      refreshUndoRedoButtonsStatus(cy);
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
 
@@ -566,7 +571,7 @@ module.exports = function () {
     });
 
     cy.on("afterRedo", function (event, actionName, args, res) {
-      refreshUndoRedoButtonsStatus();
+      refreshUndoRedoButtonsStatus(cy);
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
 
@@ -582,7 +587,7 @@ module.exports = function () {
     cy.on("mousedown", "node", function (event) {
       var self = this;
       if (modeHandler.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
-        appUtilities.enableDragAndDropMode();
+        appUtilities.enableDragAndDropMode(cy);
         appUtilities.nodesToDragAndDrop = self.union(cy.nodes(':selected'));
         appUtilities.dragAndDropStartPosition = event.position || event.cyPosition;
       }
@@ -602,7 +607,7 @@ module.exports = function () {
         }
         var nodes = appUtilities.nodesToDragAndDrop;
 
-        appUtilities.disableDragAndDropMode();
+        appUtilities.disableDragAndDropMode(cy);
         var pos = event.position || event.cyPosition;
         chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
                               pos.y - appUtilities.dragAndDropStartPosition.y);
