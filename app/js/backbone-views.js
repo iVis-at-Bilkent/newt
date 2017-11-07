@@ -706,9 +706,10 @@ var PathsBetweenQueryView = Backbone.View.extend({
             }
             else
             {
+                $(document).trigger('sbgnvizLoadFile', filename);
                 chise.updateGraph(chise.convertSbgnmlToJson(data));
                 chise.endSpinner('paths-between-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd', filename);
+                $(document).trigger('sbgnvizLoadFileEnd');
             }
         }
       });
@@ -791,9 +792,10 @@ var PathsByURIQueryView = Backbone.View.extend({
           }
           else
           {
+            $(document).trigger('sbgnvizLoadFile', filename);
             chise.updateGraph(chise.convertSbgnmlToJson(data));
             chise.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', filename);
+            $(document).trigger('sbgnvizLoadFileEnd');
           }
         }
       });
