@@ -51,7 +51,11 @@ module.exports = function (cy) {
     var id = param.id;
     var jQId = '#'+id;
     var type = param.type;
-    var currentValue = lo_get(appUtilities, param.property);
+
+    // need to get and set properties on scratchpad of cy
+    var scratchpad = appUtilities.getScratch(cy);
+
+    var currentValue = lo_get(scratchpad, param.property);
 
     var result = {
       id: id,
@@ -67,7 +71,7 @@ module.exports = function (cy) {
     else {
       $(jQId).val(param.value);
     }
-    lo_set(appUtilities, param.property, param.value);
+    lo_set(scratchpad, param.property, param.value);
 
     if (param.update){
       param.update.call();
@@ -76,8 +80,12 @@ module.exports = function (cy) {
   }
 
   appUndoActions.refreshColorSchemeMenu = function (param) {
+
+    // get 'currentGeneralProperties' for cy
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     var result = {
-      value: appUtilities.currentGeneralProperties.mapColorScheme,
+      value: currentGeneralProperties.mapColorScheme,
       self: param.self
     };
 
@@ -94,7 +102,11 @@ module.exports = function (cy) {
     };
 
     document.getElementById("map-color-scheme_preview_" + param.value).style.border = "3px solid";
-    appUtilities.currentGeneralProperties.mapColorScheme = param.value;
+    currentGeneralProperties.mapColorScheme = param.value;
+
+    // update 'currentGeneralProperties' in scratchpad
+    appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+
     return result;
   }
 

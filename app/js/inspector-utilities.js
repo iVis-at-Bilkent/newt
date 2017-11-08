@@ -4,6 +4,13 @@ var fillBioGeneContainer = require('./fill-biogene-container');
 var annotHandler = require('./annotations-handler');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
+
+  // use the active chise instance
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+
+  // get the associated cy instance
+  var cy = chiseInstance.getCy();
+
   //first empty the state variables and infos data in inspector
   $("#inspector-state-variables").html("");
   $("#inspector-unit-of-informations").html("");
@@ -27,16 +34,16 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
-          chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
+          chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
         });
 
         $("#inspector-state-variable-variable" + i).unbind('change').on('change', function () {
-          chise.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
+          chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
         });
       }
       else if (state.clazz == "unit of information") {
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
-        if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
+        if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                   + total + "px;' value='" + (state.label.text || '')
 			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
@@ -46,22 +53,26 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         }
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
-          chise.changeStateOrInfoBox(nodes, i, $(this).val());
+          chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val());
         });
       }
       
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
-        chise.removeStateOrInfoBox(nodes, i);
+        chiseInstance.removeStateOrInfoBox(nodes, i);
         inspectorUtilities.handleSBGNInspector();
       });
     })(i);
   }
   $("#inspector-state-variables").append("<img width='16px' height='16px' id='inspector-add-state-variable' src='app/img/add.svg' class='pointer-button'/>");
-  
-  if (chise.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
+
+  if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
     $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
   };
   $("#inspector-add-state-variable").click(function () {
+
+    // access current general properties for active instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     var obj = {};
     obj.clazz = "state variable";
 
@@ -70,11 +81,11 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       variable: ""
     };
     obj.bbox = {
-      w: appUtilities.currentGeneralProperties.defaultInfoboxWidth,
-      h: appUtilities.currentGeneralProperties.defaultInfoboxHeight
+      w: currentGeneralProperties.defaultInfoboxWidth,
+      h: currentGeneralProperties.defaultInfoboxHeight
     };
-    
-    chise.addStateOrInfoBox(nodes, obj);
+
+    chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
   });
 
@@ -85,16 +96,23 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       text: ""
     };
     obj.bbox = {
-      w: appUtilities.currentGeneralProperties.defaultInfoboxWidth,
-      h: appUtilities.currentGeneralProperties.defaultInfoboxHeight
+      w: currentGeneralProperties.defaultInfoboxWidth,
+      h: currentGeneralProperties.defaultInfoboxHeight
     };
-    
-    chise.addStateOrInfoBox(nodes, obj);
+
+    chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
   });
 }
 
 inspectorUtilities.handleSBGNInspector = function () {
+
+  // use the active chise instance
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+
+  // get the associated cy instance
+  var cy = chiseInstance.getCy();
+
   var selectedEles = cy.elements(":selected");
   
   $("#sbgn-inspector-style-panel-group").html("");
@@ -104,23 +122,23 @@ inspectorUtilities.handleSBGNInspector = function () {
   }
   
   var width = $("#sbgn-inspector").width() * 0.45;
-  
-  var allNodes = chise.elementUtilities.trueForAllElements(selectedEles, function(ele) {
+
+  var allNodes = chiseInstance.elementUtilities.trueForAllElements(selectedEles, function(ele) {
     return ele.isNode();
   });
-  var allEdges = chise.elementUtilities.trueForAllElements(selectedEles, function(ele) {
+  var allEdges = chiseInstance.elementUtilities.trueForAllElements(selectedEles, function(ele) {
     return ele.isEdge();
   });
   
   if (allNodes || allEdges) {
-    var sbgnlabel = chise.elementUtilities.getCommonProperty(selectedEles, "label", "data");
+    var sbgnlabel = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "label", "data");
     if (sbgnlabel == null) {
       sbgnlabel = "";
     } else if (sbgnlabel.includes("\n")) {
       sbgnlabel = sbgnlabel.replace(new RegExp("\n", "g"), " \\n ");
     }
 
-    var classInfo = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+    var classInfo = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
       return ele.data('class').replace(' multimer', '');
     }) || "";
     if (classInfo == 'and' || classInfo == 'or' || classInfo == 'not') {
@@ -168,27 +186,27 @@ inspectorUtilities.handleSBGNInspector = function () {
     
     if (allNodes) {
       type = "node";
-      
-      var borderColor = chise.elementUtilities.getCommonProperty(selectedEles, "border-color", "data");
+
+      var borderColor = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "border-color", "data");
       borderColor = borderColor?borderColor:'#FFFFFF';
-      
-      var backgroundColor = chise.elementUtilities.getCommonProperty(selectedEles, "background-color", "data");
+
+      var backgroundColor = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "background-color", "data");
       backgroundColor = backgroundColor?backgroundColor:'#FFFFFF';
-      
-      var borderWidth = chise.elementUtilities.getCommonProperty(selectedEles, "border-width", "data");
-      
-      var backgroundOpacity = chise.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "data");
+
+      var borderWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "border-width", "data");
+
+      var backgroundOpacity = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "data");
       backgroundOpacity = backgroundOpacity?backgroundOpacity:0.5;
-      
-      var nodeWidth = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+
+      var nodeWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
         return ele.width();
       });
 
-      var nodeHeight = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+      var nodeHeight = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
         return ele.height();
       });
-      
-      if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
+
+      if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Label</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel
               + "'/>" + "</td></tr>";
@@ -213,8 +231,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
 
         html += "/>";
-        
-        if( chise.elementUtilities.someMustNotBeSquare(selectedEles) ) {
+
+        if( chiseInstance.elementUtilities.someMustNotBeSquare(selectedEles) ) {
           var imageName;
           var title;
           if(appUtilities.nodeResizeUseAspectRatio) {
@@ -258,18 +276,18 @@ inspectorUtilities.handleSBGNInspector = function () {
       
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Opacity</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-background-opacity' class='inspector-input-box' type='range' step='0.01' min='0' max='1' style='width: " + buttonwidth + "px;' value='" + parseFloat(backgroundOpacity)
-              + "'/>" + "</td></tr>"; 
-      
-      if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveSBGNLabel)) {
+              + "'/>" + "</td></tr>";
+
+      if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Font</font>" + "</td><td style='padding-left: 5px;'>"
               + "<label id='inspector-font' style='cursor: pointer;width: " + buttonwidth + "px;'>"
               + "..." + "<label/>" + "</td></tr>"; 
       }
-      
-      commonStateAndInfos = chise.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
-      
+
+      commonStateAndInfos = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
+
       if(commonStateAndInfos){
-        if (chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHaveStateVariable)) {
+        if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveStateVariable)) {
           fillStateAndInfos = true;
           
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
@@ -277,26 +295,26 @@ inspectorUtilities.handleSBGNInspector = function () {
                   + "<td id='inspector-state-variables' style='padding-left: 5px; width: '" + width + "'></td></tr>";
         }
 
-        if (chise.elementUtilities.canHaveUnitOfInformation(selectedEles)) {
+        if (chiseInstance.elementUtilities.canHaveUnitOfInformation(selectedEles)) {
           fillStateAndInfos = true;
-          
-          var unit = chise.elementUtilities.canHaveMultipleUnitOfInformation(selectedEles) ? "Units" : "Unit";
+
+          var unit = chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(selectedEles) ? "Units" : "Unit";
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
           html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>" + unit + " of Information</font>" + "</td>"
                   + "<td id='inspector-unit-of-informations' style='padding-left: 5px; width: '" + width + "'></td></tr>";
         }
       }
-      
-      commonIsMultimer = chise.elementUtilities.getCommonProperty(selectedEles, function(ele){
+
+      commonIsMultimer = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
         return ele.data('class').endsWith(' multimer');
       });
-      commonIsCloned = chise.elementUtilities.getCommonProperty(selectedEles, function(ele){
+      commonIsCloned = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
         return ele.data('clonemarker') === true;
       });
-      
-      multimerCheck = chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canBeMultimer);
-      clonedCheck = chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canBeCloned);
-      
+
+      multimerCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeMultimer);
+      clonedCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeCloned);
+
       multimerCheck = multimerCheck?multimerCheck:false;
       clonedCheck = clonedCheck?clonedCheck:false;
 
@@ -317,7 +335,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       /*
        * If all selected elements can have ports add a selectbox to enable setting their ports ordering.
        */
-      if ( chise.elementUtilities.trueForAllElements(selectedEles, chise.elementUtilities.canHavePorts.bind(chise.elementUtilities)) ) {
+      if ( chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHavePorts.bind(chiseInstance.elementUtilities)) ) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Ports</font>" + "</td>"
                 + "<td style='padding-left: 5px; width: '" + width + "'>"; 
         
@@ -326,8 +344,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         var optionsStr = "";
         
         // Get the common ordering of the nodes
-        var commonOrdering = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
-          return chise.elementUtilities.getPortsOrdering(ele);
+        var commonOrdering = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+          return chiseInstance.elementUtilities.getPortsOrdering(ele);
         });
         
         var commonOrderingVal = commonOrdering || "empty"; // If there is no common ordering we should use "empty" for common ordering value
@@ -363,11 +381,11 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
     else {
       type = "edge";
-      
-      var commonLineColor = chise.elementUtilities.getCommonProperty(selectedEles, "line-color", "data");
+
+      var commonLineColor = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "line-color", "data");
       commonLineColor = commonLineColor?commonLineColor:'#FFFFFF';
 
-      var commonLineWidth = chise.elementUtilities.getCommonProperty(selectedEles, "width", "data");
+      var commonLineWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "width", "data");
 
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Color</font>" + "</td><td style='padding-left: 5px;'>"
           + "<input id='inspector-line-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + commonLineColor
@@ -379,9 +397,9 @@ inspectorUtilities.handleSBGNInspector = function () {
           html += " value='" + parseFloat(commonLineWidth) + "'";
       }
       html += "/>" + "</td></tr>";
-      
-      if (chise.elementUtilities.canHaveSBGNCardinality(selectedEles)) {
-        var cardinality = chise.elementUtilities.getCommonProperty(selectedEles, "cardinality", "data");
+
+      if (chiseInstance.elementUtilities.canHaveSBGNCardinality(selectedEles)) {
+        var cardinality = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "cardinality", "data");
         commonSBGNCardinality = cardinality;
         
         if (cardinality <= 0) {
@@ -463,8 +481,8 @@ inspectorUtilities.handleSBGNInspector = function () {
           sbgnclass = sbgnclass.replace(' multimer', '');
           multimer = true;
         }
-        if (chise.elementUtilities.defaultProperties[sbgnclass] == null) {
-          chise.elementUtilities.defaultProperties[sbgnclass] = {};
+        if (chiseInstance.elementUtilities.defaultProperties[sbgnclass] == null) {
+          chiseInstance.elementUtilities.defaultProperties[sbgnclass] = {};
         }
 
         if (appUtilities.undoable) {
@@ -479,17 +497,17 @@ inspectorUtilities.handleSBGNInspector = function () {
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
           
           // Push this action if the node can be multimer
-          if (chise.elementUtilities.canBeMultimer(sbgnclass)) {
+          if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
           }
           
           // Push this action if the node can be cloned
-          if (chise.elementUtilities.canBeCloned(sbgnclass)) {
+          if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
           }
           
           // Push this action if the node can have label
-          if (chise.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+          if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
@@ -497,14 +515,14 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
           
           // Push this action if the node can have ports
-          if (chise.elementUtilities.canHavePorts(selected)) {
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chise.elementUtilities.getPortsOrdering(selected)}});
+          if (chiseInstance.elementUtilities.canHavePorts(selected)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chiseInstance.elementUtilities.getPortsOrdering(selected)}});
           }
           
           ur.do("batch", actions);
         }
         else {
-          var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
+          var defaults = chiseInstance.elementUtilities.defaultProperties[sbgnclass];
           defaults['width'] = selected.width();
           defaults['height'] = selected.height();
           defaults['border-width'] = selected.data('border-width');
@@ -513,17 +531,17 @@ inspectorUtilities.handleSBGNInspector = function () {
           defaults['background-opacity'] = selected.data('background-opacity');
 
           // Set this if the node can be multimer
-          if (chise.elementUtilities.canBeMultimer(sbgnclass)) {
+          if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
             defaults['multimer'] = multimer;
           }
           
           // Set this if the node can be cloned
-          if (chise.elementUtilities.canBeCloned(sbgnclass)) {
+          if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
             defaults['clonemarker'] = selected._private.data.clonemarker;
           }
           
           // Set this if the node can have label
-          if (chise.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+          if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
             defaults['font-size'] = selected.data('font-size');
             defaults['font-family'] = selected.data('font-family');
             defaults['font-weight'] = selected.data('font-weight');
@@ -531,15 +549,15 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
           
           // Set this if the node can have ports
-          if (chise.elementUtilities.canHavePorts(selected)) {
-            defaults['ports-ordering'] = chise.elementUtilities.getPortsOrdering(selected);
+          if (chiseInstance.elementUtilities.canHavePorts(selected)) {
+            defaults['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
           }
         }
       });
 
       $("#inspector-ports-ordering-select").on('change', function() {
         var ordering = this.value;
-        chise.setPortsOrdering( selectedEles, ordering );
+        chiseInstance.setPortsOrdering( selectedEles, ordering );
       });
 
       $("#inspector-node-width, #inspector-node-height").change( function () {
@@ -558,20 +576,20 @@ inspectorUtilities.handleSBGNInspector = function () {
         // trigger resize event accordingly
         selectedEles.forEach(function(node) {
           cy.trigger('noderesize.resizestart', [null, node]);
-          chise.resizeNodes(node, w, h, useAspectRatio);
+          chiseInstance.resizeNodes(node, w, h, useAspectRatio);
           cy.trigger('noderesize.resizeend', [null, node]);
         });
 
         // if aspect ratio used, must correctly update the other side length
         if(useAspectRatio){
           if( $(this).attr('id') === 'inspector-node-width' ) {
-            var nodeHeight = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+            var nodeHeight = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
               return ele.height();
             });
             $("#inspector-node-height").val(nodeHeight);
           }
           else {
-            var nodeWidth = chise.elementUtilities.getCommonProperty(selectedEles, function(ele) {
+            var nodeWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
               return ele.width();
             });
             $("#inspector-node-width").val(nodeWidth);
@@ -603,15 +621,15 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-is-multimer').on('click', function () {
-        chise.setMultimerStatus(selectedEles, $('#inspector-is-multimer').prop('checked'));
+        chiseInstance.setMultimerStatus(selectedEles, $('#inspector-is-multimer').prop('checked'));
       });
 
       $('#inspector-is-clone-marker').on('click', function () {
-        chise.setCloneMarkerStatus(selectedEles, $('#inspector-is-clone-marker').prop('checked'));
+        chiseInstance.setCloneMarkerStatus(selectedEles, $('#inspector-is-clone-marker').prop('checked'));
       });
 
       $("#inspector-border-color").on('change', function () {
-        chise.changeData(selectedEles, "border-color", $("#inspector-border-color").val());
+        chiseInstance.changeData(selectedEles, "border-color", $("#inspector-border-color").val());
       });
 
       $("#inspector-label").on('change', function () {
@@ -629,7 +647,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           });
           lines = lines.join("\n");
 
-          chise.changeNodeLabel(selectedEles, lines);
+          chiseInstance.changeNodeLabel(selectedEles, lines);
         }
       });
 
@@ -645,15 +663,15 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-background-opacity").on('change', function () {
-        chise.changeData(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
+        chiseInstance.changeData(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
       });
 
       $("#inspector-fill-color").on('change', function () {
-        chise.changeData(selectedEles, "background-color", $("#inspector-fill-color").val());
+        chiseInstance.changeData(selectedEles, "background-color", $("#inspector-fill-color").val());
       });
 
       $("#inspector-border-width").change( function () {
-        chise.changeData(selectedEles, "border-width", $("#inspector-border-width").val());
+        chiseInstance.changeData(selectedEles, "border-width", $("#inspector-border-width").val());
       });
       
       // Open font properties dialog
@@ -664,8 +682,8 @@ inspectorUtilities.handleSBGNInspector = function () {
     else {
       $('#inspector-set-as-default-button').on('click', function () {
         var sbgnclass = selectedEles.data('class');
-        if (chise.elementUtilities.defaultProperties[sbgnclass] == null) {
-          chise.elementUtilities.defaultProperties[sbgnclass] = {};
+        if (chiseInstance.elementUtilities.defaultProperties[sbgnclass] == null) {
+          chiseInstance.elementUtilities.defaultProperties[sbgnclass] = {};
         }
 
         if (appUtilities.undoable) {
@@ -676,14 +694,14 @@ inspectorUtilities.handleSBGNInspector = function () {
           ur.do("batch", actions);
         }
         else {
-          var defaults = chise.elementUtilities.defaultProperties[sbgnclass];
+          var defaults = chiseInstance.elementUtilities.defaultProperties[sbgnclass];
           defaults['width'] = selectedEles.data('width');
           defaults['line-color'] = selectedEles.data('line-color');
         }
       });
 
       $("#inspector-line-color").on('change', function () {
-        chise.changeData(selectedEles, "line-color", $("#inspector-line-color").val());
+        chiseInstance.changeData(selectedEles, "line-color", $("#inspector-line-color").val());
       });
 
       $("#inspector-cardinality").change( function () {
@@ -696,12 +714,12 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
           data = 0;
         }
-        
-        chise.changeData(selectedEles, "cardinality", data);
+
+        chiseInstance.changeData(selectedEles, "cardinality", data);
       });
 
       $("#inspector-edge-width").change( function () {
-        chise.changeData(selectedEles, "width", $("#inspector-edge-width").val());
+        chiseInstance.changeData(selectedEles, "width", $("#inspector-edge-width").val());
       });
     }
   }

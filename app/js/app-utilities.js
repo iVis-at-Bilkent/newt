@@ -45,41 +45,53 @@ appUtilities.createNewTab = function () {
   // id of the div associated with the new tab
   var tabSelector = '#sbgn-network-container' + nextTabId;
 
+  // initialize current properties for the new instance by copying the default properties
+  var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
+  var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
+  var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
+
   // Create a new chise.js instance
   var newInst = chise({
     networkContainerSelector: divId,
     // whether to fit label to nodes
     fitLabelsToNodes: function () {
-      return appUtilities.currentGeneralProperties.fitLabelsToNodes;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.fitLabelsToNodes;
     },
     // whether to fit label to nodes
     fitLabelsToInfoboxes: function () {
-      return appUtilities.currentGeneralProperties.fitLabelsToInfoboxes;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.fitLabelsToInfoboxes;
     },
     // dynamic label size it may be 'small', 'regular', 'large'
     dynamicLabelSize: function () {
-      return appUtilities.currentGeneralProperties.dynamicLabelSize;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.dynamicLabelSize;
     },
     // percentage used to calculate compound paddings
     compoundPadding: function () {
-      return appUtilities.currentGeneralProperties.compoundPadding;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.compoundPadding;
     },
     // arrow size changed by a slider on a scale from 0.5-2
     arrowScale: function () {
-      return appUtilities.currentGeneralProperties.arrowScale;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.arrowScale;
     },
-    extraCompartmentPadding: appUtilities.currentGeneralProperties.extraCompartmentPadding,
-    extraComplexPadding: appUtilities.currentGeneralProperties.extraComplexPadding,
-    showComplexName: appUtilities.currentGeneralProperties.showComplexName,
+    extraCompartmentPadding: currentGeneralProperties.extraCompartmentPadding,
+    extraComplexPadding: currentGeneralProperties.extraComplexPadding,
+    showComplexName: currentGeneralProperties.showComplexName,
     // Whether to adjust node label font size automatically.
     // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
     // instead of doing it.
     adjustNodeLabelFontSizeAutomatically: function() {
-      return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
     },
     // whether to improve flow (swap nodes)
     improveFlow: function () {
-      return appUtilities.currentLayoutProperties.improveFlow;
+      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      return currentGeneralProperties.improveFlow;
     },
     undoable: appUtilities.undoable,
     undoableDrag: function() {
@@ -87,16 +99,10 @@ appUtilities.createNewTab = function () {
     }
   });
 
-  // initialize current properties for this instance by copying the default properties
-  var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
-  var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
-  var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
-
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
-
 
   // maintain tabToChiseInstance map
   appUtilities.tabToChiseInstance[tabSelector] = newInst;
@@ -1416,38 +1422,46 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
 
   // use _chiseInstance param if it is set else use the recently active chise instance
   var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+  // use associated cy instance
   var cy = chiseInstance.getCy();
+
+  // get current general properties for cy
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
   for (property in mapProperties){
     var value = mapProperties[property];
     // convert strings to correct appropriate types
     if (value == 'true' || value == 'false')  // if boolean
-      appUtilities.currentGeneralProperties[property] = (value == 'true');
+      currentGeneralProperties[property] = (value == 'true');
     else if (Number(value))  // if number
-      appUtilities.currentGeneralProperties[property] = Number(value);
+      currentGeneralProperties[property] = Number(value);
     else  // if string
-      appUtilities.currentGeneralProperties[property] = value;
+      currentGeneralProperties[property] = value;
   }
     // refresh map with new settings
-    chiseInstance.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+    chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
-    if (appUtilities.currentGeneralProperties.enablePorts) {
+    if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
     }
     else {
       chiseInstance.disablePorts();
     }
 
-    if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
+    if (currentGeneralProperties.allowCompoundNodeResize) {
       chiseInstance.considerCompoundSizes();
     }
     else {
       chiseInstance.omitCompoundSizes();
     }
 
-    cy.edges().css('arrow-scale', appUtilities.currentGeneralProperties.arrowScale);
+    cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
     cy.style().update();
+
+    // reset 'currentGeneralProperties' on scratchpad of cy
+    appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
 };
 
 module.exports = appUtilities;

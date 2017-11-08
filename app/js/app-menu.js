@@ -1,7 +1,7 @@
 var jquery = $ = require('jquery');
 var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
-var appUndoActions = require('./app-undo-actions');
+var appUndoActionsFactory = require('./app-undo-actions-factory');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
@@ -48,6 +48,11 @@ module.exports = function () {
 
     $(window).on('resize', _.debounce(dynamicResize, 100));
     dynamicResize();
+
+    // needing an appUndoActions instance here is something unexpected
+    // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
+    // that uses the active cy instance
+    var appUndoActions = appUndoActionsFactory(appUtilities.getActiveCy());
 
     layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
     colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
@@ -207,6 +212,7 @@ module.exports = function () {
         appUtilities.setFileContent("new_file.sbgnml");
 
         // reset map name and description
+        // TODO think about what changes are needed for currentGeneralProperties here
         appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
         appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
         mapTabGeneralPanel.render();
@@ -271,14 +277,22 @@ module.exports = function () {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
+      // get current general properties for cy
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+      // needing an appUndoActions instance here is something unexpected
+      // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
+      // that uses the active cy instance
+      var appUndoActions = appUndoActionsFactory(cy);
+
       // reset map name and description
-      appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
-      appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+      currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
+      currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
       mapTabGeneralPanel.render();
 
       // set reaggange on complexity managment based on map size
       if (cy.nodes().length > 100){
-        appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse = false;
+        currentGeneralProperties.rearrangeAfterExpandCollapse = false;
         mapTabRearrangementPanel.render();
       }
 
@@ -290,11 +304,11 @@ module.exports = function () {
         mapTabGeneralPanel.render();
         mapTabLabelPanel.render();
         mapTabRearrangementPanel.render();
-        appUndoActions.refreshColorSchemeMenu({value: appUtilities.currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
+        appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
 
         // set default colors according to the color scheme
-        for(var nodeClass in appUtilities.mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values']){
-          classBgColor = appUtilities.mapColorSchemes[appUtilities.currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+        for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
+          classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
           // nodeClass may not be defined in the defaultProperties (for edges, for example)
           if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
             chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
@@ -302,6 +316,8 @@ module.exports = function () {
         }
       };
 
+      // reset current general properties at the scratch pad of cy
+      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
     });
 
     $("#PD-legend").click(function (e) {
@@ -571,24 +587,29 @@ module.exports = function () {
       chiseInstance.expandComplexes();
     });
 
-    // Toggle show grid and snap to grid
-    var toggleShowGridEnableSnap = false;
 
     $("#toggle-grid-snapping-icon").click(function(){
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
+      // Toggle show grid and snap to grid, if not initialized yet initialize by false
+      var toggleShowGridEnableSnap = appUtilities.getScratch(cy, 'toggleShowGridEnableSnap') || false;
+
+      // get current grid properties for cy
+      var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
       if (toggleEnableGuidelineAndSnap){
         $("#toggle-guidelines-snapping-icon").click();
       }
+
       toggleShowGridEnableSnap = !toggleShowGridEnableSnap;
-      appUtilities.currentGridProperties.showGrid = toggleShowGridEnableSnap;
-      appUtilities.currentGridProperties.snapToGridDuringDrag = toggleShowGridEnableSnap;
+      currentGridProperties.showGrid = toggleShowGridEnableSnap;
+      currentGridProperties.snapToGridDuringDrag = toggleShowGridEnableSnap;
 
       cy.gridGuide({
-        drawGrid: appUtilities.currentGridProperties.showGrid,
-        snapToGridDuringDrag: appUtilities.currentGridProperties.snapToGridDuringDrag,
+        drawGrid: currentGridProperties.showGrid,
+        snapToGridDuringDrag: currentGridProperties.snapToGridDuringDrag,
       });
 
       if (toggleShowGridEnableSnap){
@@ -597,28 +618,39 @@ module.exports = function () {
       else{
          $('#toggle-grid-snapping-icon').removeClass('toggle-mode-sustainable');
       }
+
+      // update 'toggleShowGridEnableSnap' and 'currentGridProperties' for cy
+      appUtilities.setScratch(cy, 'toggleShowGridEnableSnap');
+      appUtilities.setScratch(cy, 'currentGridProperties');
+
     });
 
-    // Toggle guidelines and snap to alignment location
-    var toggleEnableGuidelineAndSnap = false;
+
     $("#toggle-guidelines-snapping-icon").click(function(){
 
       // use active cy instance
       var cy = chiseInstance.getActiveCy();
 
+      // Toggle guidelines and snap to alignment location, if not initialized yet initialize by false
+      var toggleEnableGuidelineAndSnap = appUtilities.getScratch(cy, 'toggleEnableGuidelineAndSnap') || false;
+
+      // get current grid properties for cy
+      var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
       if (toggleShowGridEnableSnap){
         $("#toggle-grid-snapping-icon").click();
       }
+
       toggleEnableGuidelineAndSnap = !toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
-      appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag = toggleEnableGuidelineAndSnap;
+      currentGridProperties.showGeometricGuidelines = toggleEnableGuidelineAndSnap;
+      currentGridProperties.showDistributionGuidelines = toggleEnableGuidelineAndSnap;
+      currentGridProperties.snapToAlignmentLocationDuringDrag = toggleEnableGuidelineAndSnap;
 
       cy.gridGuide({
-        geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
-        initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
-        distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
-        snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
+        geometricGuideline: currentGridProperties.showGeometricGuidelines,
+        initPosAlignment: currentGridProperties.showInitPosAlignment,
+        distributionGuidelines: currentGridProperties.showDistributionGuidelines,
+        snapToAlignmentLocationDuringDrag: currentGridProperties.snapToAlignmentLocationDuringDrag,
       });
 
       if (toggleEnableGuidelineAndSnap){
@@ -627,6 +659,10 @@ module.exports = function () {
       else{
         $('#toggle-guidelines-snapping-icon').removeClass('toggle-mode-sustainable');
       }
+
+      // update 'toggleEnableGuidelineAndSnap' and 'currentGridProperties' for cy
+      appUtilities.setScratch(cy, 'toggleEnableGuidelineAndSnap', toggleEnableGuidelineAndSnap);
+      appUtilities.setScratch(cy, 'currentGridProperties', currentGridProperties);
     });
 
     $("#collapse-all").click(function (e) {
@@ -650,15 +686,21 @@ module.exports = function () {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChise();
 
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      // get current general properties for cy
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
 
       // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
       // If it is 'during' use it as is
       var preferences = {
-        animate: appUtilities.currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
+        animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
       };
-      if (appUtilities.currentLayoutProperties.animate == 'during') {
+      if (currentLayoutProperties.animate == 'during') {
         delete preferences.animate;
       }
       layoutPropertiesView.applyLayout(preferences);

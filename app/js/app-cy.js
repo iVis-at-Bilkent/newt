@@ -2,7 +2,7 @@ var jquery = $ = require('jquery');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
-var appUndoActions = require('./app-undo-actions');
+var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
 
 module.exports = function (cy) {
@@ -29,12 +29,12 @@ module.exports = function (cy) {
     var ur = cy.undoRedo();
 
     // generate an instance of app undo actions with related cy
-    var _appUndoActions = appUndoActions(cy);
+    var appUndoActions = appUndoActionsFactory(cy);
 
     // bind ur actions
-    ur.action("changeDataDirty", _appUndoActions.changeDataDirty, _appUndoActions.changeDataDirty);
-    ur.action("changeMenu", _appUndoActions.changeMenu, _appUndoActions.changeMenu);
-    ur.action("refreshColorSchemeMenu", _appUndoActions.refreshColorSchemeMenu, _appUndoActions.refreshColorSchemeMenu);
+    ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
+    ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
+    ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
   }
   
   function cytoscapeExtensionsAndContextMenu() {
@@ -404,7 +404,8 @@ module.exports = function (cy) {
         return chise.elementUtilities.mustBeSquare(sbgnclass);
       }, // with only 4 active grapples (at corners)
       isNoResizeMode: function (node) {
-        return node.is(':parent') && !appUtilities.currentGeneralProperties.allowCompoundNodeResize;
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return node.is(':parent') && !currentGeneralProperties.allowCompoundNodeResize;
       }, // no active grapples
 
       cursors: {// See http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
@@ -475,9 +476,9 @@ module.exports = function (cy) {
     });
 
     cy.edgehandles('drawoff');
-    
-    var gridProperties = appUtilities.currentGridProperties;
-    
+
+    var gridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
     cy.gridGuide({
       drawGrid: gridProperties.showGrid,
       gridColor: gridProperties.gridColor,
@@ -511,10 +512,12 @@ module.exports = function (cy) {
       fitPadding: 10,
       fitSelector: ':visible',
       animateOnFit: function () {
-        return appUtilities.currentGeneralProperties.animateOnDrawingChanges;
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return currentGeneralProperties.animateOnDrawingChanges;
       },
       animateOnZoom: function () {
-        return appUtilities.currentGeneralProperties.animateOnDrawingChanges;
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return currentGeneralProperties.animateOnDrawingChanges;
       }
     };
 
