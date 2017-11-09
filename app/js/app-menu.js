@@ -91,25 +91,30 @@ module.exports = function () {
   });
 
   // Events triggered by sbgnviz module
-  $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename) {
+  $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
-    // use active cy instance
-    var cy = appUtilities.getActiveCy();
+    // TODO the commented code segment below would be moved to somewhere else
+    // or they are performed here by checking if the cy parameter is equal to active cy instance
 
-    appUtilities.setFileContent(filename);
+    // appUtilities.setFileContent(filename);
+    //
+    // if (!$('#inspector-map-tab').hasClass('active')) {
+    //   $('#inspector-map-tab a').tab('show');
+    // }
+
     //clean and reset things
     cy.elements().unselect();
-    if (!$('#inspector-map-tab').hasClass('active')) {
-      $('#inspector-map-tab a').tab('show');
-    }
   });
 
-  $(document).on('updateGraphEnd', function(event) {
-    appUtilities.resetUndoRedoButtons();
-    modeHandler.setSelectionMode();
+  $(document).on('updateGraphEnd', function(event, cy) {
+    appUtilities.resetUndoRedoButtons(cy);
+    modeHandler.setSelectionMode(cy);
   });
 
-  $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename) {
+  $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename, cy) {
+
+    // TODO the code segment below would be moved to somewhere else
+    // or they are performed here by checking if the cy parameter is equal to active cy instance
 
     // use the active chise instance
     var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -269,20 +274,24 @@ module.exports = function () {
     });
 
     // get and set map properties from file
-    $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(){
+    $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(filename, cy){
 
-      // use the active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
+      // TODO think about what to do if cy is not the current cy instance
+      // If cy is not the active instance .render() calls would not be done. However, the calls
+      // in this function may not be destroying the expected behaviour. appUndoActions.refreshColorSchemeMenu()
+      // call in this function seems to be the most problematic thing because that call both changes currentGeneralProperties
+      // and make changes in menu components. Inside that function we can check if the cy instance is the active one
+      // and would not make menu components related changes if not. 
 
-      // use cy instance associated with chise instance
-      var cy = chiseInstance.getCy();
+      // get chise instance for cy
+      var chiseInstance = appUtilities.getChiseInstance(cy);
 
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
       // needing an appUndoActions instance here is something unexpected
       // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
-      // that uses the active cy instance
+      // that uses cy instance here
       var appUndoActions = appUndoActionsFactory(cy);
 
       // reset map name and description
@@ -949,7 +958,16 @@ module.exports = function () {
       }
     });
 
-    appUtilities.sbgnNetworkContainer.on("click", ".biogene-info .expandable", function (evt) {
+    $(document).on("click", ".biogene-info .expandable", function (evt) {
+
+      // get the recently active tab
+      var activeTab = appUtilities.getActiveTab();
+
+      // if the event is not triggered for the active tab return directly
+      if ( $(this).attr('id') !== activeTab.id ) {
+        return;
+      }
+
       var expanderOpts = {slicePoint: 150,
         expandPrefix: ' ',
         expandText: ' (...)',
@@ -968,13 +986,21 @@ module.exports = function () {
     // this is used to detect a drag and drop of nodes from the palette
     // cy doesn't provide a clean way to handle events from the outside of cy
     // so here we need to go through the container and fire events down the chain manually to cy
-    appUtilities.sbgnNetworkContainer.on("mouseup", function (evt) {
+    $(document).on("mouseup", function (evt) {
+
+      // get the recently active tab
+      var activeTab = appUtilities.getActiveTab();
+
+      // if the event is not triggered for the active tab return directly
+      if ( $(this).attr('id') !== activeTab.id ) {
+        return;
+      }
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
       if (dragAndDropPlacement) {
-        var parentOffset = appUtilities.sbgnNetworkContainer.offset();
+        var parentOffset = activeTab.offset();
         var relX = evt.pageX - parentOffset.left;
         var relY = evt.pageY - parentOffset.top;
         // the following event doesn't contain all the necessary information that cytoscape usually provide

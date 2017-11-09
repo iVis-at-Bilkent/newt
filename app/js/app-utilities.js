@@ -6,6 +6,7 @@
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
+var appCy = require('./app-cy');
 
 var appUtilities = {};
 
@@ -39,11 +40,29 @@ appUtilities.activeChiseInstance = undefined;
 // map of unique tab div selector to related chise.js instance
 appUtilities.tabToChiseInstance = {};
 
+// returns chise instance for the given cy instance
+appUtilities.getChiseInstance = function (cy) {
+  // get tab which is the container of cy
+  var tab = cy.container();
+
+  // obtain the tab selector by tab id
+  var tabSelector = '#' + container.id;
+
+  // get chise instance from tab to chise instance map
+  var chiseInstance = tabToChiseInstance[tabSelector];
+
+  return chiseInstance;
+};
+
 // creates a new tab and returns the new chise.js instance that is created for this tab
 appUtilities.createNewTab = function () {
 
   // id of the div associated with the new tab
-  var tabSelector = '#sbgn-network-container' + nextTabId;
+  // var tabSelector = '#sbgn-network-container' + nextTabId;
+
+  // until UI for multiple tabs are enabled use this tab selector.
+  // TODO: once it is enabled remove the following line and uncomment the line above.
+  var tabSelector = '#sbgn-network-container';
 
   // initialize current properties for the new instance by copying the default properties
   var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
@@ -103,6 +122,9 @@ appUtilities.createNewTab = function () {
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
+
+  // register cy extensions, bind cy events etc.
+  appCy(newInst);
 
   // maintain tabToChiseInstance map
   appUtilities.tabToChiseInstance[tabSelector] = newInst;

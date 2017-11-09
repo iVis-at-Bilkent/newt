@@ -5,10 +5,13 @@ var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
 
-module.exports = function (cy) {
+module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
 //  var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
+
+  // use chise instance associated with chise instance
+  var cy = chiseInstance.getCy();
 
   $(document).ready(function ()
   {
@@ -177,7 +180,7 @@ module.exports = function (cy) {
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
           appUtilities.showHiddenNeighbors(cyTarget, cy);
-//          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
+//          chiseInstance.showAndPerformLayout(chiseInstance.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
         }
       },
       {
@@ -226,7 +229,7 @@ module.exports = function (cy) {
           var globalInfoboxCount = 0;
           for(var side in ele.data('auxunitlayouts')) {
             var layout = ele.data('auxunitlayouts')[side];
-            var newLayout = chise.classes.AuxUnitLayout.copy(layout, ele); // get a new layout
+            var newLayout = chiseInstance.classes.AuxUnitLayout.copy(layout, ele); // get a new layout
 
             // copy each infobox of the layout
             for(var i=0; i < layout.units.length; i++) {
@@ -258,7 +261,7 @@ module.exports = function (cy) {
               }
 
               // copy the current infobox
-              var newAuxunit = chise.classes.getAuxUnitClass(auxunit).copy(auxunit, ele, ele.data('id') + "_" + globalInfoboxCount);
+              var newAuxunit = chiseInstance.classes.getAuxUnitClass(auxunit).copy(auxunit, ele, ele.data('id') + "_" + globalInfoboxCount);
               // update statesandinfos list
               ele.data('statesandinfos')[statesandinfosIndex] = newAuxunit;
               // update layout's infobox list
@@ -314,14 +317,14 @@ module.exports = function (cy) {
       },
       neighbor: function(node){ //select and return process-based neighbors
         var nodesToSelect = node;
-        if(chise.elementUtilities.isPNClass(node) || chise.elementUtilities.isLogicalOperator(node)){
+        if(chiseInstance.elementUtilities.isPNClass(node) || chiseInstance.elementUtilities.isLogicalOperator(node)){
             nodesToSelect = nodesToSelect.union(node.openNeighborhood());
         }
         node.openNeighborhood().forEach(function(ele){
-            if(chise.elementUtilities.isPNClass(ele) || chise.elementUtilities.isLogicalOperator(ele)){
+            if(chiseInstance.elementUtilities.isPNClass(ele) || chiseInstance.elementUtilities.isLogicalOperator(ele)){
                 nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
                 ele.openNeighborhood().forEach(function(ele2){
-                    if(chise.elementUtilities.isPNClass(ele2) || chise.elementUtilities.isLogicalOperator(ele2)){
+                    if(chiseInstance.elementUtilities.isPNClass(ele2) || chiseInstance.elementUtilities.isLogicalOperator(ele2)){
                         nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
                     }
                 });
@@ -401,7 +404,7 @@ module.exports = function (cy) {
 
       isFixedAspectRatioResizeMode: function (node) {
         var sbgnclass = node.data("class");
-        return chise.elementUtilities.mustBeSquare(sbgnclass);
+        return chiseInstance.elementUtilities.mustBeSquare(sbgnclass);
       }, // with only 4 active grapples (at corners)
       isNoResizeMode: function (node) {
         var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
@@ -444,16 +447,16 @@ module.exports = function (cy) {
           var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedLanguage};
 
           // if added edge changes map type, warn user
-          if (chise.getMapType() && chise.getMapType() != "Unknown" && edgeParams.language != chise.getMapType()){
+          if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chise.addEdge(source, target, edgeParams);
+                chiseInstance.addEdge(source, target, edgeParams);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             });
           }
           else{
-              chise.addEdge(source, target, edgeParams);
+              chiseInstance.addEdge(source, target, edgeParams);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
@@ -676,7 +679,7 @@ module.exports = function (cy) {
     // If mouesdown in add-node-mode and selected node type is a PN draw on edge handles and mark that creating a convenient process
     cy.on('mousedown', 'node', function() {
       var node = this;
-      if (modeHandler.mode === 'add-node-mode' && chise.elementUtilities.isPNClass(modeHandler.selectedNodeType) && chise.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+      if (modeHandler.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeHandler.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
         convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
@@ -687,7 +690,7 @@ module.exports = function (cy) {
       $('input').blur();
       var cyTarget;
       if (relPos){ // drag and drop case
-        var nodesAtRelpos = chise.elementUtilities.getNodesAt(relPos);
+        var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
         if (nodesAtRelpos.length == 0) { // when element is placed in the background
           cyTarget = cy;
         }
@@ -710,17 +713,17 @@ module.exports = function (cy) {
 
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
-                && chise.elementUtilities.isPNClass(nodeType)
-                && chise.elementUtilities.isEPNClass(cyTarget) 
-                && chise.elementUtilities.isEPNClass(convenientProcessSource) ) {
+                && chiseInstance.elementUtilities.isPNClass(nodeType)
+                && chiseInstance.elementUtilities.isEPNClass(cyTarget)
+                && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource) ) {
 
-          chise.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+          chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
         }
         else {
           var cyPosX;
           var cyPosY;
           if (relPos) {
-            modelPos = chise.elementUtilities.convertToModelPosition(relPos);
+            modelPos = chiseInstance.elementUtilities.convertToModelPosition(relPos);
             cyPosX = modelPos.x;
             cyPosY = modelPos.y;
           }
@@ -754,21 +757,21 @@ module.exports = function (cy) {
           }
           
           // If the parent class is valid for the node type then add the node
-          if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
+          if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
             var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage};
 
             // if added node changes map type, warn user
-            if (chise.getMapType() && chise.getMapType() != "Unknown" && nodeParams.language != chise.getMapType()){
+            if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){
               appUtilities.promptMapTypeView.render(function(){
-                  chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
+                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
             }
             else{
-              chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
+              chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
             }
             if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
             {
                 var newEle = cy.nodes()[cy.nodes().length - 1];
-                chise.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
+                chiseInstance.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
             }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
@@ -835,7 +838,7 @@ module.exports = function (cy) {
       if (modeHandler.mode == 'selection-mode') {
         var node = this;
 
-        if (!chise.elementUtilities.canHaveSBGNLabel(node)) {
+        if (!chiseInstance.elementUtilities.canHaveSBGNLabel(node)) {
           return;
         }
         
@@ -968,7 +971,7 @@ module.exports = function (cy) {
 
   function updateInfoBox(node) {
     for(var location in node.data('auxunitlayouts')) {
-      chise.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location]);
+      chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location]);
     }
   }
 };

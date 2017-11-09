@@ -9,7 +9,6 @@ require('jquery-expander')($);
 require('bootstrap');
 
 var appUtilities = require('./js/app-utilities');
-var appCy = require('./js/app-cy');
 var appMenu = require('./js/app-menu');
 
 // Get cy extension instances
