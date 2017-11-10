@@ -6,7 +6,6 @@
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
-var appCy = require('./app-cy');
 
 var appUtilities = {};
 
@@ -46,10 +45,10 @@ appUtilities.getChiseInstance = function (cy) {
   var tab = cy.container();
 
   // obtain the tab selector by tab id
-  var tabSelector = '#' + container.id;
+  var tabSelector = '#' + tab.id;
 
   // get chise instance from tab to chise instance map
-  var chiseInstance = tabToChiseInstance[tabSelector];
+  var chiseInstance = appUtilities.tabToChiseInstance[tabSelector];
 
   return chiseInstance;
 };
@@ -58,10 +57,10 @@ appUtilities.getChiseInstance = function (cy) {
 appUtilities.createNewTab = function () {
 
   // id of the div associated with the new tab
-  // var tabSelector = '#sbgn-network-container' + nextTabId;
+  // var tabSelector = '#sbgn-network-container' + appUtilities.nextTabId;
 
   // until UI for multiple tabs are enabled use this tab selector.
-  // TODO: once it is enabled remove the following line and uncomment the line above.
+  // TODO metin: once it is enabled remove the following line and uncomment the line above.
   var tabSelector = '#sbgn-network-container';
 
   // initialize current properties for the new instance by copying the default properties
@@ -71,30 +70,30 @@ appUtilities.createNewTab = function () {
 
   // Create a new chise.js instance
   var newInst = chise({
-    networkContainerSelector: divId,
+    networkContainerSelector: tabSelector,
     // whether to fit label to nodes
     fitLabelsToNodes: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.fitLabelsToNodes;
     },
     // whether to fit label to nodes
     fitLabelsToInfoboxes: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.fitLabelsToInfoboxes;
     },
     // dynamic label size it may be 'small', 'regular', 'large'
     dynamicLabelSize: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.dynamicLabelSize;
     },
     // percentage used to calculate compound paddings
     compoundPadding: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.compoundPadding;
     },
     // arrow size changed by a slider on a scale from 0.5-2
     arrowScale: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.arrowScale;
     },
     extraCompartmentPadding: currentGeneralProperties.extraCompartmentPadding,
@@ -104,12 +103,12 @@ appUtilities.createNewTab = function () {
     // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
     // instead of doing it.
     adjustNodeLabelFontSizeAutomatically: function() {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
     },
     // whether to improve flow (swap nodes)
     improveFlow: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst, 'currentGeneralProperties');
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.improveFlow;
     },
     undoable: appUtilities.undoable,
@@ -124,13 +123,17 @@ appUtilities.createNewTab = function () {
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
 
   // register cy extensions, bind cy events etc.
+  var appCy = require('./app-cy');
   appCy(newInst);
+
+  var modeHandler = require('./app-mode-handler');
+  modeHandler.initModeProperties(newInst.getCy());
 
   // maintain tabToChiseInstance map
   appUtilities.tabToChiseInstance[tabSelector] = newInst;
 
   // increment new tab id
-  nextTabId++;
+  appUtilities.nextTabId++;
 
   // return the new instance
   return newInst;
@@ -188,7 +191,6 @@ appUtilities.getActiveTab = function () {
   return activeCy ? activeCy.container() : false;
 };
 
-// TODO move end spinner to sbgnviz level by listening to stop event?
 appUtilities.defaultLayoutProperties = {
   name: 'cose-bilkent',
   nodeRepulsion: 2000,
@@ -208,10 +210,7 @@ appUtilities.defaultLayoutProperties = {
   gravityCompound: 1.0,
   gravityRange: 3.8,
   initialEnergyOnIncremental: 0.3,
-  improveFlow: true,
-  stop: function () {
-    appUtilities.getActiveChiseInstance().endSpinner('layout-spinner');
-  }
+  improveFlow: true
 };
 
 appUtilities.defaultGridProperties = {
@@ -241,7 +240,7 @@ appUtilities.defaultGridProperties = {
   verticalDistLine: [0, 0],
 };
 
-// TODO revise map type option
+// TODO metin: revise map type option (is it really used?)
 appUtilities.defaultGeneralProperties = {
   compoundPadding: 10,
   extraCompartmentPadding: 14,
@@ -282,7 +281,7 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-// TODO should get cy or chise instance parameter?
+// TODO metin: should get cy or chise instance parameter?
 appUtilities.triggerIncrementalLayout = function (_cy) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
@@ -304,7 +303,7 @@ appUtilities.triggerIncrementalLayout = function (_cy) {
   }
 
   // access chise instance related to cy using tabToChiseInstance map
-  var chiseInstance = this.tabToChiseInstance['#' + cy.container().id];
+  var chiseInstance = appUtilities.getChiseInstance(cy);
 
   // layout must not be undoable
   this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
@@ -350,7 +349,6 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
   };
 };
 
-// TODO consider what changes are needed for this function
 appUtilities.dynamicResize = function () {
   var win = $(window);
 
@@ -447,29 +445,29 @@ appUtilities.resetUndoRedoButtons = function () {
 };
 
 // Enable drag and drop mode
-appUtilities.enableDragAndDropMode = function (cy) {
+appUtilities.enableDragAndDropMode = function (_cy) {
 
   // use _cy param if it is set else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCyInstance();
 
-  // TODO this prop should be set per instance in cy scratch pad?
-  appUtilities.dragAndDropModeEnabled = true;
+  appUtilities.setScratch(cy, 'dragAndDropModeEnabled', true);
 
-  $("#sbgn-network-container canvas").addClass("target-cursor");
+  $(cy.container()).find('canvas').addClass("target-cursor");
+
   cy.autolock(true);
   cy.autounselectify(true);
 };
 
 // Disable drag and drop mode
-appUtilities.disableDragAndDropMode = function (cy) {
+appUtilities.disableDragAndDropMode = function (_cy) {
 
   // use _cy param if it is set else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCyInstance();
 
-  appUtilities.dragAndDropModeEnabled = null;
-  appUtilities.nodesToDragAndDrop = null;
+  appUtilities.setScratch(cy, 'dragAndDropModeEnabled', null);
+  appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
 
-  $("#sbgn-network-container canvas").removeClass("target-cursor");
+  $(cy.container()).find('canvas').removeClass("target-cursor");
 
   cy.autolock(false);
   cy.autounselectify(false);

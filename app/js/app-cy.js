@@ -433,18 +433,20 @@ module.exports = function (chiseInstance) {
         if (!targetNodes) {
           return;
         }
-        
+
+        var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
         // We need to remove interactively added entities because we should add the edge with the chise api
         addedEntities.remove();
         
         /*
          * If in add edge mode create an edge
          */
-        if (modeHandler.mode === 'add-edge-mode') {
+        if (modeProperties.mode === 'add-edge-mode') {
           // fired when edgehandles is done and entities are added
           var source = sourceNode.id();
           var target = targetNodes[0].id();
-          var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedLanguage};
+          var edgeParams = {class : modeProperties.selectedEdgeType, language : modeProperties.selectedLanguage};
 
           // if added edge changes map type, warn user
           if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
@@ -463,7 +465,7 @@ module.exports = function (chiseInstance) {
           }
           
           // If not in sustain mode set selection mode
-          if (!modeHandler.sustainMode) {
+          if (!modeProperties.sustainMode) {
             modeHandler.setSelectionMode();
           }
         }
@@ -591,17 +593,31 @@ module.exports = function (chiseInstance) {
     });
     
     cy.on("mousedown", "node", function (event) {
+
       var self = this;
-      if (modeHandler.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+      if (modeProperties.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
         appUtilities.enableDragAndDropMode(cy);
-        appUtilities.nodesToDragAndDrop = self.union(cy.nodes(':selected'));
-        appUtilities.dragAndDropStartPosition = event.position || event.cyPosition;
+
+        var nodesToDragAndDrop = self.union(cy.nodes(':selected'));
+        appUtilities.setScratch(cy, 'nodesToDragAndDrop', nodesToDragAndDrop);
+
+        var dragAndDropStartPosition = event.position || event.cyPosition;
+        appUtilities.setScratch(cy, 'dragAndDropStartPosition', dragAndDropStartPosition);
       }
     });
     
     cy.on("mouseup", function (event) {
+
       var self = event.target || event.cyTarget;
-      if (appUtilities.dragAndDropModeEnabled) {
+
+      // get chise instance for cy
+      var chiseInstance = appUtilities.getChiseInstance(cy);
+
+      if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
         var newParent;
         if (self != cy) {
           newParent = self;
@@ -611,14 +627,18 @@ module.exports = function (chiseInstance) {
             newParent = newParent.parent()[0];
           }
         }
-        var nodes = appUtilities.nodesToDragAndDrop;
+        var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
 
         appUtilities.disableDragAndDropMode(cy);
+
         var pos = event.position || event.cyPosition;
-        chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
-                              pos.y - appUtilities.dragAndDropStartPosition.y);
-        appUtilities.dragAndDropStartPosition = null;
-        appUtilities.nodesToDragAndDrop = null;
+        var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+
+        chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
+                              pos.y - dragAndDropStartPosition.y);
+
+        appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
+        appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
       }
 
       nodeToUnselect = undefined;
@@ -628,7 +648,7 @@ module.exports = function (chiseInstance) {
           when nodes are selected one after another
           after tests, seems better to do it here
 
-          With the addition of the 3rd Map tab, we can probably keep the behavior 
+          With the addition of the 3rd Map tab, we can probably keep the behavior
           when the user has the Object tab selected.
       */
       if (cy.elements(':selected').length == 0){
@@ -679,16 +699,26 @@ module.exports = function (chiseInstance) {
     // If mouesdown in add-node-mode and selected node type is a PN draw on edge handles and mark that creating a convenient process
     cy.on('mousedown', 'node', function() {
       var node = this;
-      if (modeHandler.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeHandler.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
         convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
     });
 
     cy.on('tapend', function (event, relPos) {
+
       relPos = relPos || false;
       $('input').blur();
+
       var cyTarget;
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
       if (relPos){ // drag and drop case
         var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
         if (nodesAtRelpos.length == 0) { // when element is placed in the background
@@ -708,8 +738,8 @@ module.exports = function (chiseInstance) {
       // If in add node mode do the followings conditionally,
       // If selected node type is a PN create a process and source and target nodes are EPNs with convenient edges,
       // else just create a new node with the current selected node type
-      if (modeHandler.mode === "add-node-mode") {
-        var nodeType = modeHandler.selectedNodeType;
+      if (modeProperties.mode === "add-node-mode") {
+        var nodeType = modeProperties.selectedNodeType;
 
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
@@ -758,7 +788,7 @@ module.exports = function (chiseInstance) {
           
           // If the parent class is valid for the node type then add the node
           if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
-            var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage};
+            var nodeParams = {class : nodeType, language : modeProperties.selectedLanguage};
 
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){
@@ -783,8 +813,8 @@ module.exports = function (chiseInstance) {
         }
         
         // If not in sustainable mode set selection mode
-        if (!modeHandler.sustainMode) {
-          modeHandler.setSelectionMode();
+        if (!modeProperties.sustainMode) {
+          modeProperties.setSelectionMode();
         }
       }
       
@@ -835,7 +865,11 @@ module.exports = function (chiseInstance) {
     });
     
     cy.on('doubleTap', 'node', function (event) {
-      if (modeHandler.mode == 'selection-mode') {
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+      if (modeProperties.mode == 'selection-mode') {
         var node = this;
 
         if (!chiseInstance.elementUtilities.canHaveSBGNLabel(node)) {
@@ -947,6 +981,19 @@ module.exports = function (chiseInstance) {
     cy.on('noderesize.resizedrag', function(e, type, node) {
       if(node.data('statesandinfos').length > 0) {
         updateInfoBox(node);
+      }
+    });
+
+    cy.on('layoutstop', function (event) {
+  		/*
+  		* 'preset' layout is called to give the initial positions of nodes by sbgnviz.
+  		* Seems like 'grid' layout is called by Cytoscape.js core in loading graphs.
+  		* If the layout is not one of these (normally it is supposed to be 'cose-bilkent')
+  		* stop layout spinner for the related chise instance.
+  		*/
+      if (event.layout.options.name !== 'preset' && event.layout.options.name !== 'grid')
+      {
+        appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
       }
     });
 

@@ -24,7 +24,11 @@ var modeHandler = {
   },
 
   // inilizes modeProperties field in the scratch pad of cy
-  initModeProperties: function (cy) {
+  initModeProperties: function (_cy) {
+
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
+
     // create an object for mode properties of cy
     var modeProperties = {
       mode: modeHandler.initialMode,
@@ -38,7 +42,11 @@ var modeHandler = {
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
   },
 
-  adjustUIComponents: function (cy) {
+  // adjust UI components according to mode properties of cy kept in scratch pad of it
+  adjustUIComponents: function (_cy) {
+
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
 
     // access the mode properties of cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
@@ -51,13 +59,16 @@ var modeHandler = {
     var sustainMode = modeProperties.sustainMode;
     var lang = modeProperties.selectedLanguage;
 
-    // TODO complete this method
+    // TODO metin: complete this method
   },
 
   // Set the current mode to add node mode, if nodeType is specified than switch the current node type to the given value,
   // if the nodeType will remain same, add node mode is already enabled and sustain mode is not set before, then set the sustain mode
   // so that users will be able to add the current node type in a sustainable way.
-  setAddNodeMode: function (cy, nodeType, language) {
+  setAddNodeMode: function (nodeType, language, _cy) {
+
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
 
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
@@ -109,7 +120,10 @@ var modeHandler = {
   // Set the current mode to add edge mode, if edgeType is specified than switch the current edge type to the given value,
   // if the edgeType will remain same, add edge mode is already enabled and sustain mode is not set before, then set the sustain mode
   // so that users will be able to add the current edge type in a sustainable way.
-  setAddEdgeMode: function (cy, edgeType, language) {
+  setAddEdgeMode: function (edgeType, language, _cy) {
+
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
 
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
@@ -143,7 +157,7 @@ var modeHandler = {
 
       cy.edgehandles('drawon');
     }
-    else if(!modeHandler.sustainMode && !typeChange){
+    else if(!modeProperties.sustainMode && !typeChange){
         modeHandler.setSelectionMode(cy);
     }
 
@@ -159,7 +173,10 @@ var modeHandler = {
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
   },
   // Set selection mode, disables sustainable mode.
-  setSelectionMode: function (cy) {
+  setSelectionMode: function (_cy) {
+
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
 
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');

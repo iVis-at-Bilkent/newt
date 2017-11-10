@@ -184,7 +184,7 @@ var BioGeneView = Backbone.View.extend({
  */
 var LayoutPropertiesView = Backbone.View.extend({
   initialize: function () {
-    // TODO revise: these lines must not be needed
+    // TODO metin revise: these lines must not be needed
     // var self = this;
     // self.copyProperties();
     //
@@ -280,7 +280,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');
 
       $(self.el).modal('toggle');
-      $(document).trigger('saveLayout');
+      $(document).trigger('saveLayout', cy);
     });
 
     $(document).off("click", "#default-layout").on("click", "#default-layout", function (evt) {
@@ -305,7 +305,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     var cy = appUtilities.getActiveCy();
 
     var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    // TODO need to re-access current schema inside events
+    // TODO metin: need to re-access current schema inside events
     var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
 
     var schemes = appUtilities.mapColorSchemes;
@@ -341,7 +341,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
 
-      // TODO check if set scratch if needed after such equlizations
+      // TODO metin: check if set scratch is needed after such equlizations
       currentScheme = scheme_id;
       appUtilities.applyMapColorScheme(scheme_id);
     });
@@ -406,8 +406,7 @@ var GeneralPropertiesParentView = Backbone.View.extend({
 
     cy.style().update();
 
-    // TODO revise such events for extra params (cy or chiseInstance)
-    $(document).trigger('saveGeneralProperties');
+    $(document).trigger('saveGeneralProperties', cy);
   },
   setPropertiesToDefault: function () {
     var cy = appUtilities.getActiveCy();
@@ -545,7 +544,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     var cy = appUtilities.getActiveCy();
 
     // get current general properties for cy
-    var currentGeneralProperties = getScratch(cy, 'currentGeneralProperties');
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
@@ -776,7 +775,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
 /**
  * Paths Between Query view for the Sample Application.
  */
- // TODO revise
+ // TODO metin: revise
 var PathsBetweenQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
@@ -803,7 +802,11 @@ var PathsBetweenQueryView = Backbone.View.extend({
 
     $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
 
+      // use active chise instance
       var chise = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chise.getCy();
 
       self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
@@ -863,10 +866,10 @@ var PathsBetweenQueryView = Backbone.View.extend({
             }
             else
             {
-                $(document).trigger('sbgnvizLoadFile', filename);
+                $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
                 chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
                 chiseInstance.endSpinner('paths-between-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd');
+                $(document).trigger('sbgnvizLoadFileEnd', cy);
             }
         }
       });
@@ -884,7 +887,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
 /**
  * Paths By URI Query view for the Sample Application.
  */
- // TODO revise
+ // TODO metin: revise
 var PathsByURIQueryView = Backbone.View.extend({
   defaultQueryParameters: {
       URI: ""
@@ -909,7 +912,11 @@ var PathsByURIQueryView = Backbone.View.extend({
 
     $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
 
+      // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
       self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
       var uri = self.currentQueryParameters.URI.trim();
@@ -952,10 +959,10 @@ var PathsByURIQueryView = Backbone.View.extend({
           }
           else
           {
-            $(document).trigger('sbgnvizLoadFile', filename);
+            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
             chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
             chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd');
+            $(document).trigger('sbgnvizLoadFileEnd', cy);
           }
         }
       });
@@ -1313,7 +1320,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
 var GridPropertiesView = Backbone.View.extend({
   initialize: function () {
-    // TODO revise: these lines must not be needed
+    // TODO metin revise: these lines must not be needed
     // var self = this;
     // self.copyProperties();
     //
@@ -1436,7 +1443,7 @@ var GridPropertiesView = Backbone.View.extend({
       appUtilities.setScratch(cy, 'currentGridProperties', currentGridProperties);
 
       $(self.el).modal('toggle');
-      $(document).trigger('saveGridProperties');
+      $(document).trigger('saveGridProperties', cy);
     });
 
     $(document).off("click", "#default-grid").on("click", "#default-grid", function (evt) {
@@ -1450,7 +1457,7 @@ var GridPropertiesView = Backbone.View.extend({
   }
 });
 
-// TODO re-check if some changes is to be done for currentFontProperties
+// TODO metin: re-check if some changes is to be done for currentFontProperties
 var FontPropertiesView = Backbone.View.extend({
   defaultFontProperties: {
     fontFamily: "",
@@ -1561,7 +1568,11 @@ var FontPropertiesView = Backbone.View.extend({
 
     $(document).off("click", "#set-font-properties").on("click", "#set-font-properties", function (evt) {
 
+      // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
       var data = {};
       
@@ -1620,7 +1631,7 @@ var FontPropertiesView = Backbone.View.extend({
 	    
      
       $(self.el).modal('toggle');
-	    $(document).trigger('saveFontProperties');
+	    $(document).trigger('saveFontProperties', cy);
     });
 
     return this;

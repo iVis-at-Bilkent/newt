@@ -93,7 +93,7 @@ module.exports = function () {
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
-    // TODO the commented code segment below would be moved to somewhere else
+    // TODO metin: the commented code segment below would be moved to somewhere else
     // or they are performed here by checking if the cy parameter is equal to active cy instance
 
     // appUtilities.setFileContent(filename);
@@ -113,7 +113,7 @@ module.exports = function () {
 
   $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename, cy) {
 
-    // TODO the code segment below would be moved to somewhere else
+    // TODO metin: the code segment below would be moved to somewhere else
     // or they are performed here by checking if the cy parameter is equal to active cy instance
 
     // use the active chise instance
@@ -217,9 +217,9 @@ module.exports = function () {
         appUtilities.setFileContent("new_file.sbgnml");
 
         // reset map name and description
-        // TODO think about what changes are needed for currentGeneralProperties here
-        appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
-        appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+        // TODO metin: think about what changes are needed for currentGeneralProperties here
+        // appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
+        // appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
         mapTabGeneralPanel.render();
 
         //clean and reset things
@@ -276,7 +276,7 @@ module.exports = function () {
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(filename, cy){
 
-      // TODO think about what to do if cy is not the current cy instance
+      // TODO metin: think about what to do if cy is not the current cy instance
       // If cy is not the active instance .render() calls would not be done. However, the calls
       // in this function may not be destroying the expected behaviour. appUndoActions.refreshColorSchemeMenu()
       // call in this function seems to be the most problematic thing because that call both changes currentGeneralProperties
