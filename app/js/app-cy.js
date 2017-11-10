@@ -704,9 +704,11 @@ module.exports = function () {
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chise.elementUtilities.isPNClass(nodeType)
                 && chise.elementUtilities.isEPNClass(cyTarget) 
-                && chise.elementUtilities.isEPNClass(convenientProcessSource) ) {
-
-          chise.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+                && chise.elementUtilities.isEPNClass(convenientProcessSource)
+                && !(cyTarget.parent()[0] != undefined && chise.elementUtilities.isEPNClass(cyTarget.parent()[0]) || 
+                  convenientProcessSource.parent()[0] != undefined && chise.elementUtilities.isEPNClass(convenientProcessSource.parent()[0]))
+          ){
+            chise.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
         }
         else {
           var cyPosX;
