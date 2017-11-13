@@ -290,6 +290,9 @@ appUtilities.triggerIncrementalLayout = function (_cy) {
   // access the current general properties of cy
   var currentGeneralProperties = this.getScratch(cy, 'currentGeneralProperties');
 
+  // access the current layout properties of cy
+  var currentLayoutProperties = this.getScratch(cy, 'currentLayoutProperties');
+
   // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
   // If it is 'during' use it as is. Set 'randomize' and 'fit' options to false
   var preferences = {
@@ -311,20 +314,29 @@ appUtilities.triggerIncrementalLayout = function (_cy) {
 
 appUtilities.getExpandCollapseOptions = function (_cy) {
 
-  // use parametrized cy if exists. Otherwise use the recently active cy
-  var cy = _cy || this.getActiveCy();
-
   var self = this;
 
   return {
     fisheye: function () {
+
+      // use parametrized cy if exists. Otherwise use the recently active cy
+      var cy = _cy || self.getActiveCy();
+
       return self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse;
     },
     animate: function () {
+
+      // use parametrized cy if exists. Otherwise use the recently active cy
+      var cy = _cy || self.getActiveCy();
+
       return self.getScratch(cy, 'currentGeneralProperties').animateOnDrawingChanges;
     },
     layoutBy: function () {
-      if ( self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse ) {
+
+      // use parametrized cy if exists. Otherwise use the recently active cy
+      var cy = _cy || self.getActiveCy();
+
+      if ( !self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse ) {
         return;
       }
 
@@ -332,6 +344,10 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
     },
     expandCollapseCueSize: 12,
     expandCollapseCuePosition: function (node) {
+
+       // use parametrized cy if exists. Otherwise use the recently active cy
+       var cy = _cy || self.getActiveCy();
+
        var offset = 1, rectSize = 12; // this is the expandCollapseCueSize;
        var size = cy.zoom() < 1 ? rectSize / (2*cy.zoom()) : rectSize / 2;
        var x = node.position('x') - node.width() / 2 - parseFloat(node.css('padding-left'))
@@ -417,7 +433,7 @@ appUtilities.nodeQtipFunction = function (node) {
 appUtilities.refreshUndoRedoButtonsStatus = function (_cy) {
 
   // use _cy param if it is set else use the recently active cy instance
-  var cy = _cy || appUtilities.getActiveCyInstance();
+  var cy = _cy || appUtilities.getActiveCy();
 
   // get undo redo extension instance for cy
   var ur = cy.undoRedo();
@@ -448,7 +464,7 @@ appUtilities.resetUndoRedoButtons = function () {
 appUtilities.enableDragAndDropMode = function (_cy) {
 
   // use _cy param if it is set else use the recently active cy instance
-  var cy = _cy || appUtilities.getActiveCyInstance();
+  var cy = _cy || appUtilities.getActiveCy();
 
   appUtilities.setScratch(cy, 'dragAndDropModeEnabled', true);
 
@@ -462,7 +478,7 @@ appUtilities.enableDragAndDropMode = function (_cy) {
 appUtilities.disableDragAndDropMode = function (_cy) {
 
   // use _cy param if it is set else use the recently active cy instance
-  var cy = _cy || appUtilities.getActiveCyInstance();
+  var cy = _cy || appUtilities.getActiveCy();
 
   appUtilities.setScratch(cy, 'dragAndDropModeEnabled', null);
   appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
@@ -479,11 +495,17 @@ appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
     // check _chiseInstance param if it is set use it else use recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
+    // get the associated cy instance
+    var cy = chiseInstance.getCy();
+
+    // get current general properties for assocated cy instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     var extendedList = chiseInstance.elementUtilities.extendNodeList(eles);
-    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
         //Put them near node, show and perform incremental layout
-        chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this, chiseInstance.getCy()));
+        chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this, cy));
     }
     else
     {
@@ -498,10 +520,16 @@ appUtilities.showAll = function (_chiseInstance) {
     // check _chiseInstance param if it is set use it else use recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
-    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+    // get the associated cy instance
+    var cy = chiseInstance.getCy();
+
+    // get current general properties for cy instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
       //Show all and perform incremental layout
-     chiseInstance.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this, chiseInstance.getCy()));
+     chiseInstance.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this, cy));
     }
     else
     {
@@ -516,10 +544,16 @@ appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
     // check _chiseInstance param if it is set use it else use recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
-    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+    // get the associated cy instance
+    var cy = chiseInstance.getCy();
+
+    // get current general properties for cy instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
         //Put them near node and perform incremental layout
-        chiseInstance.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this, chiseInstance.getCy()));
+        chiseInstance.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this, cy));
     }
     else
     {
@@ -1214,7 +1248,7 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 appUtilities.applyMapColorScheme = function(newColorScheme, self, _cy) {
 
   // if _cy param is set use it else use the recently active cy instance
-  var cy = _cy || appUtilities.getActiveCyInstance();
+  var cy = _cy || appUtilities.getActiveCy();
 
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
@@ -1264,7 +1298,7 @@ appUtilities.removeDragImage = function () {
 appUtilities.getAllStyles = function (_cy) {
 
   // use _cy param if it is set else use the recently active cy instance
-  var cy = _cy || appUtilities.getActiveCyInstance();
+  var cy = _cy || appUtilities.getActiveCy();
 
   var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively();
   var collapsedChildrenNodes = collapsedChildren.filter("node");

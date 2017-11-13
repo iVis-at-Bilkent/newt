@@ -274,7 +274,7 @@ module.exports = function () {
     });
 
     // get and set map properties from file
-    $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(filename, cy){
+    $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(evt, filename, cy){
 
       // TODO metin: think about what to do if cy is not the current cy instance
       // If cy is not the active instance .render() calls would not be done. However, the calls
@@ -441,8 +441,11 @@ module.exports = function () {
 
     $("#show-hidden-neighbors-of-selected").click(function(e) {
 
-      // use active cy instance
-      var cy = chiseInstance.getActiveCy();
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
 
       appUtilities.showHiddenNeighbors(cy.elements(':selected'));
     });
@@ -454,7 +457,7 @@ module.exports = function () {
     $("#delete-selected-smart, #delete-selected-smart-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -466,7 +469,7 @@ module.exports = function () {
     $("#highlight-neighbors-of-selected").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -477,7 +480,7 @@ module.exports = function () {
     $("#search-by-label-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       var label = $("#search-by-label-text-box").val().toLowerCase();
       chiseInstance.searchByLabel(label);
@@ -496,7 +499,7 @@ module.exports = function () {
     $("#highlight-selected, #highlight-selected-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -507,7 +510,7 @@ module.exports = function () {
     $("#highlight-processes-of-selected").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -518,7 +521,7 @@ module.exports = function () {
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       chiseInstance.removeHighlights();
     });
@@ -530,7 +533,7 @@ module.exports = function () {
     $("#delete-selected-simple, #delete-selected-simple-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -561,7 +564,7 @@ module.exports = function () {
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -572,7 +575,7 @@ module.exports = function () {
     $("#expand-selected,#expand-selected-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -583,7 +586,7 @@ module.exports = function () {
     $("#collapse-complexes").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       chiseInstance.collapseComplexes();
     });
@@ -591,7 +594,7 @@ module.exports = function () {
     $("#expand-complexes").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       chiseInstance.expandComplexes();
     });
@@ -637,8 +640,11 @@ module.exports = function () {
 
     $("#toggle-guidelines-snapping-icon").click(function(){
 
-      // use active cy instance
-      var cy = chiseInstance.getActiveCy();
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
 
       // Toggle guidelines and snap to alignment location, if not initialized yet initialize by false
       var toggleEnableGuidelineAndSnap = appUtilities.getScratch(cy, 'toggleEnableGuidelineAndSnap') || false;
@@ -677,7 +683,7 @@ module.exports = function () {
     $("#collapse-all").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       chiseInstance.collapseAll();
     });
@@ -685,7 +691,7 @@ module.exports = function () {
     $("#expand-all").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       chiseInstance.expandAll();
     });
@@ -693,13 +699,16 @@ module.exports = function () {
     $("#perform-layout, #perform-layout-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use the associated cy instance
       var cy = chiseInstance.getCy();
 
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+      // get current layout properties for cy
+      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
 
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
@@ -734,7 +743,7 @@ module.exports = function () {
     $("#save-as-png").click(function (evt) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".png";
@@ -744,7 +753,7 @@ module.exports = function () {
     $("#save-as-jpg").click(function (evt) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".jpg";
@@ -754,7 +763,7 @@ module.exports = function () {
     $("#save-as-svg").click(function (evt) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".svg";
@@ -771,7 +780,7 @@ module.exports = function () {
     $("#add-complex-for-selected").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -782,7 +791,7 @@ module.exports = function () {
     $("#add-compartment-for-selected").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -793,7 +802,7 @@ module.exports = function () {
     $("#add-submap-for-selected").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -808,7 +817,7 @@ module.exports = function () {
     $("#clone-selected").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -822,7 +831,7 @@ module.exports = function () {
     $('#align-horizontal-top,#align-horizontal-top-icon').click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -833,7 +842,7 @@ module.exports = function () {
     $('#align-horizontal-middle,#align-horizontal-middle-icon').click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -844,7 +853,7 @@ module.exports = function () {
     $('#align-horizontal-bottom,#align-horizontal-bottom-icon').click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -855,7 +864,7 @@ module.exports = function () {
     $('#align-vertical-left,#align-vertical-left-icon').click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -866,7 +875,7 @@ module.exports = function () {
     $('#align-vertical-center,#align-vertical-center-icon').click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
@@ -877,7 +886,7 @@ module.exports = function () {
     $('#align-vertical-right,#align-vertical-right-icon').click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChise();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();

@@ -229,7 +229,7 @@ module.exports = function (chiseInstance) {
           var globalInfoboxCount = 0;
           for(var side in ele.data('auxunitlayouts')) {
             var layout = ele.data('auxunitlayouts')[side];
-            var newLayout = chiseInstance.classes.AuxUnitLayout.copy(layout, ele); // get a new layout
+            var newLayout = chiseInstance.classes.AuxUnitLayout.copy(layout, cy, ele); // get a new layout
 
             // copy each infobox of the layout
             for(var i=0; i < layout.units.length; i++) {
@@ -261,7 +261,7 @@ module.exports = function (chiseInstance) {
               }
 
               // copy the current infobox
-              var newAuxunit = chiseInstance.classes.getAuxUnitClass(auxunit).copy(auxunit, ele, ele.data('id') + "_" + globalInfoboxCount);
+              var newAuxunit = chiseInstance.classes.getAuxUnitClass(auxunit).copy(auxunit, cy, ele, ele.data('id') + "_" + globalInfoboxCount);
               // update statesandinfos list
               ele.data('statesandinfos')[statesandinfosIndex] = newAuxunit;
               // update layout's infobox list
@@ -719,6 +719,7 @@ module.exports = function (chiseInstance) {
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
+      // TODO metin: for drag and drop case do not enter this function. Why?
       if (relPos){ // drag and drop case
         var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
         if (nodesAtRelpos.length == 0) { // when element is placed in the background
@@ -814,7 +815,7 @@ module.exports = function (chiseInstance) {
         
         // If not in sustainable mode set selection mode
         if (!modeProperties.sustainMode) {
-          modeProperties.setSelectionMode();
+          modeHandler.setSelectionMode();
         }
       }
       
@@ -1018,7 +1019,7 @@ module.exports = function (chiseInstance) {
 
   function updateInfoBox(node) {
     for(var location in node.data('auxunitlayouts')) {
-      chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location]);
+      chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location], cy);
     }
   }
 };

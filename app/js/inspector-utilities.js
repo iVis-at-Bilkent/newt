@@ -90,6 +90,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   });
 
   $("#inspector-add-unit-of-information").click(function () {
+
+    // access current general properties for active instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     var obj = {};
     obj.clazz = "unit of information";
     obj.label = {

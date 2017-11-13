@@ -87,7 +87,7 @@ var modeHandler = {
 
     if (modeProperties.mode != "add-node-mode") {
       cy.elements().unselect();
-      modeHandler.mode = "add-node-mode";
+      modeProperties.mode = "add-node-mode";
 
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');

@@ -803,10 +803,10 @@ var PathsBetweenQueryView = Backbone.View.extend({
     $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
 
       // use active chise instance
-      var chise = appUtilities.getActiveChiseInstance();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use the associated cy instance
-      var cy = chise.getCy();
+      var cy = chiseInstance.getCy();
 
       self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
@@ -869,7 +869,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
                 chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
                 chiseInstance.endSpinner('paths-between-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd', cy);
+                $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
             }
         }
       });
@@ -962,7 +962,7 @@ var PathsByURIQueryView = Backbone.View.extend({
             $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
             chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
             chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', cy);
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
           }
         }
       });
@@ -1335,7 +1335,7 @@ var GridPropertiesView = Backbone.View.extend({
     var clonedProps = _.clone(appUtilities.defaultGridProperties);
 
     // update the scratch pad of cy
-    appUtilities.setScratch(cy, 'currentGridProperties', currentGridProperties);
+    appUtilities.setScratch(cy, 'currentGridProperties', clonedProps);
 
     // return cloned props to make them accessible
     return clonedProps;
