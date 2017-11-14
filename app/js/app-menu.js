@@ -237,7 +237,7 @@ module.exports = function () {
       mapTabGeneralPanel.render();
 
       // set reaggange on complexity managment based on map size
-      if (cy.nodes().length > 100){
+      if (cy.nodes().length > 1250){
         appUtilities.currentGeneralProperties.rearrangeAfterExpandCollapse = false;
         mapTabRearrangementPanel.render();
       }
