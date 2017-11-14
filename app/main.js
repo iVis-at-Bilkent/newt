@@ -56,11 +56,10 @@ $(document).ready(function () {
   chise.register(libs);
 
   // create a new tab and access the related chise.js instance
-  var chiseInstance = appUtilities.createNewTab();
+  var chiseInstance = appUtilities.createNewNetwork();
 
   // set the new chise.js instance as the active one (as it is the only instance so far)
   appUtilities.setActiveChiseInstance(chiseInstance);
 
-  // appCy(); to be called inside appUtilities.createNewTab()
   appMenu();
 });

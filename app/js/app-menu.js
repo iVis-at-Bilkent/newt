@@ -970,7 +970,7 @@ module.exports = function () {
     $(document).on("click", ".biogene-info .expandable", function (evt) {
 
       // get the recently active tab
-      var activeTab = appUtilities.getActiveTab();
+      var activeTab = appUtilities.getActiveNetworkPanel();
 
       // if the event is not triggered for the active tab return directly
       if ( $(this).attr('id') !== activeTab.id ) {
@@ -998,7 +998,7 @@ module.exports = function () {
     $(document).on("mouseup", function (evt) {
 
       // get the recently active tab
-      var activeTab = appUtilities.getActiveTab();
+      var activeTab = appUtilities.getActiveNetworkPanel();
 
       // if the event is not triggered for the active tab return directly
       if ( $(this).attr('id') !== activeTab.id ) {

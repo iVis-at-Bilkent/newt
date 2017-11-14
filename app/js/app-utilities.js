@@ -25,43 +25,55 @@ appUtilities.setScratch = function (cyOrEle, name, val) {
   this.getScratch(cyOrEle)[name] = val;
 }
 
-// id for the next tab to be created, starts by 0
+// id for the next network to be created, starts by 0
 // a unique div selector is to be created using this id
-appUtilities.nextTabId = 0;
+appUtilities.nextNetworkId = 0;
 
 // Configuration flag for whether the operations should be undoable.
 // It is to be checked and passed to extensions/libraries where applicable.
 appUtilities.undoable = true;
 
-// refers to the chise.js instance assocated with the current active tab
+// refers to the chise.js instance assocated with the current active network
 appUtilities.activeChiseInstance = undefined;
 
-// map of unique tab div selector to related chise.js instance
-appUtilities.tabToChiseInstance = {};
+// map of unique network panel div selector to related chise.js instance
+appUtilities.networkPanelToChiseInstance = {};
 
 // returns chise instance for the given cy instance
 appUtilities.getChiseInstance = function (cy) {
-  // get tab which is the container of cy
-  var tab = cy.container();
+  // get the panel which is the container of cy
+  var panel = cy.container();
 
-  // obtain the tab selector by tab id
-  var tabSelector = '#' + tab.id;
+  // obtain the panel selector by panel id
+  var panelSelector = '#' + panel.id;
 
-  // get chise instance from tab to chise instance map
-  var chiseInstance = appUtilities.tabToChiseInstance[tabSelector];
+  // get chise instance from network panel to chise instance map
+  var chiseInstance = appUtilities.networkPanelToChiseInstance[panelSelector];
 
   return chiseInstance;
 };
 
-// creates a new tab and returns the new chise.js instance that is created for this tab
-appUtilities.createNewTab = function () {
+// creates a new network and returns the new chise.js instance that is created for this network
+appUtilities.createNewNetwork = function () {
 
-  // id of the div associated with the new tab
-  // var tabSelector = '#sbgn-network-container' + appUtilities.nextTabId;
+  // id of the div panel associated with the new network
+  var networkPanelId = 'sbgn-network-container' + appUtilities.nextNetworkId;
 
-  // until UI for multiple tabs are enabled use this tab selector.
+  // until UI for multiple network are enabled use this network selector.
   // TODO metin: once it is enabled remove the following line and uncomment the line above.
-  var tabSelector = '#sbgn-network-container';
+  // var networkPanelId = 'sbgn-network-container';
+
+  // id of the tab for the new network
+  var networkTabId = 'sbgn-network-tab' + appUtilities.nextNetworkId;
+
+  // string to represent the new tab
+  var networkTabDesc = 'Network #' + appUtilities.nextNetworkId;
+
+  // create physical html components for the new network
+  appUtilities.createPhysicalNetworkComponents(networkPanelId, networkTabId, networkTabDesc);
+
+  // generate network panel selector from the network panel id
+  var networkPanelSelector = '#' + networkPanelId;
 
   // initialize current properties for the new instance by copying the default properties
   var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
@@ -70,7 +82,7 @@ appUtilities.createNewTab = function () {
 
   // Create a new chise.js instance
   var newInst = chise({
-    networkContainerSelector: tabSelector,
+    networkContainerSelector: networkPanelSelector,
     // whether to fit label to nodes
     fitLabelsToNodes: function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
@@ -129,14 +141,33 @@ appUtilities.createNewTab = function () {
   var modeHandler = require('./app-mode-handler');
   modeHandler.initModeProperties(newInst.getCy());
 
-  // maintain tabToChiseInstance map
-  appUtilities.tabToChiseInstance[tabSelector] = newInst;
+  // maintain networkPanelToChiseInstance map
+  appUtilities.networkPanelToChiseInstance[networkPanelSelector] = newInst;
 
-  // increment new tab id
-  appUtilities.nextTabId++;
+  // increment new network id
+  appUtilities.nextNetworkId++;
 
   // return the new instance
   return newInst;
+};
+
+appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc) {
+
+  // the component that includes the tab panels
+  var panelsParent = $('#network-panels-container');
+
+  var newPanelStr = '<div id="' + panelId + '" class="tab-pane fade"></div>';
+
+  // create new panel inside the panels parent
+  panelsParent.append(newPanelStr);
+
+  // the container that lists the network tabs
+  var tabsList = $('#network-tabs-list');
+
+  var newTabStr = '<li id="' + tabId + '" class="chise-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
+
+  // create new tab inside the list of network tabs
+  tabsList.append(newTabStr);
 };
 
 // basically returns appUtilities.activeChiseInstance
@@ -151,11 +182,11 @@ appUtilities.setActiveChiseInstance = function (chiseInstance) {
   this.activeChiseInstance = chiseInstance;
 };
 
-// sets appUtilities.activeChiseInstance through the selector of the tab to be activated
+// sets appUtilities.activeChiseInstance through the selector of the network panel to be activated
 // returns activated chise.js instance if successful, else returns false
-appUtilities.setActiveTab = function (tabSelector) {
+appUtilities.setActiveNetwork = function (networkPanelSelector) {
 
-  var chiseInstance = this.tabToChiseInstance[tabSelector];
+  var chiseInstance = this.networkPanelToChiseInstance[networkPanelSelector];
 
   if (chiseInstance) {
 
@@ -167,7 +198,7 @@ appUtilities.setActiveTab = function (tabSelector) {
   return false;
 };
 
-// returns the sbgnviz.js instance associated with the currently active tab
+// returns the sbgnviz.js instance associated with the currently active netwrok
 appUtilities.getActiveSbgnvizInstance = function () {
 
   var chiseInstance = this.getActiveChiseInstance();
@@ -175,7 +206,7 @@ appUtilities.getActiveSbgnvizInstance = function () {
   return chiseInstance ? chiseInstance.getSbgnvizInstance() : false;
 };
 
-// returns the cy instance associated with the currently active tab
+// returns the cy instance associated with the currently active network
 appUtilities.getActiveCy = function () {
 
   var chiseInstance = this.getActiveChiseInstance();
@@ -183,8 +214,8 @@ appUtilities.getActiveCy = function () {
   return chiseInstance ? chiseInstance.getCy() : false;
 };
 
-// returns active tab
-appUtilities.getActiveTab = function () {
+// returns active network panel
+appUtilities.getActiveNetworkPanel = function () {
 
   var activeCy = this.getActiveCy();
 
@@ -305,7 +336,7 @@ appUtilities.triggerIncrementalLayout = function (_cy) {
     delete preferences.animate;
   }
 
-  // access chise instance related to cy using tabToChiseInstance map
+  // access chise instance related to cy using networkPanelToChiseInstance map
   var chiseInstance = appUtilities.getChiseInstance(cy);
 
   // layout must not be undoable
@@ -379,7 +410,7 @@ appUtilities.dynamicResize = function () {
     //This is the margin on left and right of the main content when the page is
     //displayed
     var mainContentMargin = 10;
-    $("#sbgn-network-container").width(windowWidth  * 0.8 - mainContentMargin);
+    $("#network-panels-container").width(windowWidth  * 0.8 - mainContentMargin);
     $("#sbgn-inspector").width(windowWidth  * 0.2 - mainContentMargin);
     var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
@@ -390,7 +421,7 @@ appUtilities.dynamicResize = function () {
 
   if (windowHeight > canvasHeight)
   {
-    $("#sbgn-network-container").height(windowHeight * 0.85);
+    $("#network-panels-container").height(windowHeight * 0.85);
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
 };
@@ -1388,6 +1419,7 @@ appUtilities.getAllStyles = function (_cy) {
     currentEdgeStyle.idList.push(edge.data('id'));
   }
 
+  // TODO metin: handle $("#sbgn-network-container")
   var containerBgColor = $("#sbgn-network-container").css('background-color');
   if (containerBgColor == "transparent") {
     containerBgColor = "#ffffff";
