@@ -85,7 +85,9 @@ module.exports = function () {
     // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
-      $("#new-file").trigger('click');  
+      // TODO metin: this should not be called now. Check if any of old new-file behavior should be maintained here?
+      // $("#new-file").trigger('click');
+
       keyboardShortcuts();
     }, 100);
   });
@@ -206,42 +208,49 @@ module.exports = function () {
 
     $("#new-file, #new-file-icon").click(function () {
 
-      // use the active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
+      appUtilities.createNewNetwork();
 
-      // use cy instance for active chise instance
-      var cy = chiseInstance.getCy();
-
-      var createNewFile = function () {
-        chiseInstance.resetMapType();  // reset map type while creating new file
-        appUtilities.setFileContent("new_file.sbgnml");
-
-        // reset map name and description
-        // TODO metin: think about what changes are needed for currentGeneralProperties here
-        // appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
-        // appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-        mapTabGeneralPanel.render();
-
-        //clean and reset things
-        cy.elements().unselect();
-        if (!$('#inspector-palette-tab').hasClass('active')) {
-          $('#inspector-palette-tab a').tab('show');
-          $('#inspector-style-tab a').blur();
-        }
-
-        chiseInstance.updateGraph({
-          nodes: [],
-          edges: []
-        });
-      };
-
-      if(cy.elements().length != 0) {
-        promptConfirmationView.render(createNewFile);
-      }
-      else {
-        createNewFile(); 
-      } 
     });
+
+    // TODO metin: this content would be used when a tab is closed while there is no other network
+    // $("#new-file, #new-file-icon").click(function () {
+    //
+    //   // use the active chise instance
+    //   var chiseInstance = appUtilities.getActiveChiseInstance();
+    //
+    //   // use cy instance for active chise instance
+    //   var cy = chiseInstance.getCy();
+    //
+    //   var createNewFile = function () {
+    //     chiseInstance.resetMapType();  // reset map type while creating new file
+    //     appUtilities.setFileContent("new_file.sbgnml");
+    //
+    //     // reset map name and description
+    //     // TODO metin: think about what changes are needed for currentGeneralProperties here
+    //     // appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
+    //     // appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+    //     mapTabGeneralPanel.render();
+    //
+    //     //clean and reset things
+    //     cy.elements().unselect();
+    //     if (!$('#inspector-palette-tab').hasClass('active')) {
+    //       $('#inspector-palette-tab a').tab('show');
+    //       $('#inspector-style-tab a').blur();
+    //     }
+    //
+    //     chiseInstance.updateGraph({
+    //       nodes: [],
+    //       edges: []
+    //     });
+    //   };
+    //
+    //   if(cy.elements().length != 0) {
+    //     promptConfirmationView.render(createNewFile);
+    //   }
+    //   else {
+    //     createNewFile();
+    //   }
+    // });
 
     $("#load-file, #load-file-icon").click(function () {
       $("#file-input").trigger('click');

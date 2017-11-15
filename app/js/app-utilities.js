@@ -36,44 +36,97 @@ appUtilities.undoable = true;
 // refers to the chise.js instance assocated with the current active network
 appUtilities.activeChiseInstance = undefined;
 
-// map of unique network panel div selector to related chise.js instance
-appUtilities.networkPanelToChiseInstance = {};
+// map of unique network id to related chise.js instance
+appUtilities.networkIdToChiseInstance = {};
 
-// returns chise instance for the given cy instance
-appUtilities.getChiseInstance = function (cy) {
-  // get the panel which is the container of cy
-  var panel = cy.container();
+// get id of the div panel for the given network id
+appUtilities.getNetworkPanelId = function (networkId) {
+  return 'sbgn-network-container-' + networkId;
+};
 
-  // obtain the panel selector by panel id
-  var panelSelector = '#' + panel.id;
+// get id of the tab for the the given network id
+appUtilities.getNetworkTabId = function (networkId) {
+  return 'sbgn-network-tab-' + networkId;
+};
 
-  // get chise instance from network panel to chise instance map
-  var chiseInstance = appUtilities.networkPanelToChiseInstance[panelSelector];
+// get network id by given network tab or panel id or selector
+// that is basically the remaining part of the string after the last occurance of '-'
+appUtilities.getNetworkId = function (tabOrPanelId) {
 
-  return chiseInstance;
+  // if the id is a number no need to process
+  if (typeof tabOrPanelId === 'number') {
+    return tabOrPanelId;
+  }
+
+  // get the last index of '-'
+  var index =  tabOrPanelId.lastIndexOf("-");
+
+  // get the remaining part of string after the last occurance of '-'
+  var rem = tabOrPanelId.substring(index+1);
+
+  // id is the integer representation of the remaining string
+  var id = parseInt(rem);
+
+  // return the obtained id
+  return id;
+};
+
+// get selector of the div panel for the given network id
+// it is basically '#' + panelId
+appUtilities.getNetworkPanelSelector = function (networkId) {
+  return '#' + this.getNetworkPanelId(networkId);
+};
+
+// get the string to represent the tab for given network id
+appUtilities.getNetworkTabDesc = function (networkId) {
+  return 'Network #' + networkId;
+};
+
+// map given chise instance to the given network id
+// if key param is a cy instance or tab/panel id/selector use the actual network id
+appUtilities.putToChiseInstances = function (key, chiseInstance) {
+
+  // if key is a cy instance go for its container id
+  var networkId = typeof key === 'object' ? key.container().id : key;
+
+  // if the network id parameter is the network tab/panel id/selector get the actual network id
+  networkId = this.getNetworkId(networkId);
+
+  // perfrom the actual mapping
+  this.networkIdToChiseInstance[networkId] = chiseInstance;
+};
+
+// get the chise instance mapped to the given key
+// if key param is a cy instance or tab/panel id/selector use the actual network id
+appUtilities.getChiseInstance = function (key) {
+
+  // if key is a cy instance go for its container id
+  var networkId = typeof key === 'object' ? key.container().id : key;
+
+  // if the network id parameter is the network tab/panel id/selector get the actual network id
+  networkId = this.getNetworkId(networkId);
+
+  // return the chise instance mapped for the network id
+  return this.networkIdToChiseInstance[networkId];
 };
 
 // creates a new network and returns the new chise.js instance that is created for this network
 appUtilities.createNewNetwork = function () {
 
   // id of the div panel associated with the new network
-  var networkPanelId = 'sbgn-network-container' + appUtilities.nextNetworkId;
-
-  // until UI for multiple network are enabled use this network selector.
-  // TODO metin: once it is enabled remove the following line and uncomment the line above.
-  // var networkPanelId = 'sbgn-network-container';
+  var networkPanelId = appUtilities.getNetworkPanelId(appUtilities.nextNetworkId);
 
   // id of the tab for the new network
-  var networkTabId = 'sbgn-network-tab' + appUtilities.nextNetworkId;
+  var networkTabId = appUtilities.getNetworkTabId(appUtilities.nextNetworkId);
 
   // string to represent the new tab
-  var networkTabDesc = 'Network #' + appUtilities.nextNetworkId;
+  var networkTabDesc = appUtilities.getNetworkTabDesc(appUtilities.nextNetworkId);
 
   // create physical html components for the new network
   appUtilities.createPhysicalNetworkComponents(networkPanelId, networkTabId, networkTabDesc);
 
   // generate network panel selector from the network panel id
-  var networkPanelSelector = '#' + networkPanelId;
+  var networkPanelSelector = appUtilities.getNetworkPanelSelector(appUtilities.nextNetworkId);
 
   // initialize current properties for the new instance by copying the default properties
   var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
@@ -141,11 +194,14 @@ appUtilities.createNewNetwork = function () {
   var modeHandler = require('./app-mode-handler');
   modeHandler.initModeProperties(newInst.getCy());
 
-  // maintain networkPanelToChiseInstance map
-  appUtilities.networkPanelToChiseInstance[networkPanelSelector] = newInst;
+  // maintain networkIdToChiseInstance map
+  appUtilities.putToChiseInstances(appUtilities.nextNetworkId, newInst);
 
   // increment new network id
   appUtilities.nextNetworkId++;
+
+  // set the new network as the active one and force it to be opened
+  appUtilities.setActiveNetwork(networkPanelSelector, true);
 
   // return the new instance
   return newInst;
@@ -182,15 +238,31 @@ appUtilities.setActiveChiseInstance = function (chiseInstance) {
   this.activeChiseInstance = chiseInstance;
 };
 
-// sets appUtilities.activeChiseInstance through the selector of the network panel to be activated
+// sets appUtilities.activeChiseInstance through the network key to be activated
 // returns activated chise.js instance if successful, else returns false
-appUtilities.setActiveNetwork = function (networkPanelSelector) {
+appUtilities.setActiveNetwork = function (networkKey, openNetworkPhysically) {
 
-  var chiseInstance = this.networkPanelToChiseInstance[networkPanelSelector];
+  // get chise instance for network key
+  var chiseInstance = this.getChiseInstance(networkKey);
 
   if (chiseInstance) {
 
     this.setActiveChiseInstance(chiseInstance);
+
+    // open network that is just activated physically if it is required
+    if (openNetworkPhysically) {
+
+      // in case of network key is not the network id
+      var networkId = this.getNetworkId(networkKey);
+
+      // get id of physical html tab for the ntework id
+      var networkTabId = this.getNetworkTabId(networkId);
+
+      // if network tab is not activated activate it
+      if (!$('#' + networkTabId).hasClass('active')) {
+        $('#' + networkTabId + ' a').tab('show');
+      }
+    }
 
     return chiseInstance;
   }
@@ -336,7 +408,7 @@ appUtilities.triggerIncrementalLayout = function (_cy) {
     delete preferences.animate;
   }
 
-  // access chise instance related to cy using networkPanelToChiseInstance map
+  // access chise instance related to cy
   var chiseInstance = appUtilities.getChiseInstance(cy);
 
   // layout must not be undoable
