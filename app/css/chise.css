@@ -184,6 +184,11 @@ body {
     /*float: left;*/
 }
 
+.network-panel {
+  height: 680px;
+  width: 800px;
+}
+
 #sbgn-inspector-and-canvas {
     margin: auto;
     overflow: auto !important;

@@ -212,7 +212,7 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the component that includes the tab panels
   var panelsParent = $('#network-panels-container');
 
-  var newPanelStr = '<div id="' + panelId + '" class="tab-pane fade"></div>';
+  var newPanelStr = '<div id="' + panelId + '" class="tab-pane fade network-panel"></div>';
 
   // create new panel inside the panels parent
   panelsParent.append(newPanelStr);
@@ -482,7 +482,7 @@ appUtilities.dynamicResize = function () {
     //This is the margin on left and right of the main content when the page is
     //displayed
     var mainContentMargin = 10;
-    $("#network-panels-container").width(windowWidth  * 0.8 - mainContentMargin);
+    $("#network-panels-container, .network-panel").width(windowWidth  * 0.8 - mainContentMargin);
     $("#sbgn-inspector").width(windowWidth  * 0.2 - mainContentMargin);
     var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
@@ -493,7 +493,7 @@ appUtilities.dynamicResize = function () {
 
   if (windowHeight > canvasHeight)
   {
-    $("#network-panels-container").height(windowHeight * 0.85);
+    $("#network-panels-container, .network-panel").height(windowHeight * 0.85);
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
 };
