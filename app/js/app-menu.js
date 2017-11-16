@@ -1026,5 +1026,12 @@ module.exports = function () {
         cy.trigger('tapend', {x: relX, y: relY});
       }
     });
+
+    // on active network tab change
+    $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
+      var target = $(e.target).attr("href"); // activated tab
+      console.log(target);
+      appUtilities.setActiveNetwork(target);
+    });
   }
 };

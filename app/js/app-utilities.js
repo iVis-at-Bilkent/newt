@@ -197,11 +197,17 @@ appUtilities.createNewNetwork = function () {
   // maintain networkIdToChiseInstance map
   appUtilities.putToChiseInstances(appUtilities.nextNetworkId, newInst);
 
+  // if this is the first network to be created set it as active network here
+  // otherwise it will be activated (by listening html events) when the new tab is choosen
+  if (appUtilities.nextNetworkId === 0) {
+    appUtilities.setActiveNetwork(appUtilities.nextNetworkId);
+  }
+
+  // physically open the new tab
+  appUtilities.chooseNetworkTab(appUtilities.nextNetworkId);
+
   // increment new network id
   appUtilities.nextNetworkId++;
-
-  // set the new network as the active one and force it to be opened
-  appUtilities.setActiveNetwork(networkPanelSelector, true);
 
   // return the new instance
   return newInst;
@@ -240,7 +246,7 @@ appUtilities.setActiveChiseInstance = function (chiseInstance) {
 
 // sets appUtilities.activeChiseInstance through the network key to be activated
 // returns activated chise.js instance if successful, else returns false
-appUtilities.setActiveNetwork = function (networkKey, openNetworkPhysically) {
+appUtilities.setActiveNetwork = function (networkKey) {
 
   // get chise instance for network key
   var chiseInstance = this.getChiseInstance(networkKey);
@@ -249,25 +255,24 @@ appUtilities.setActiveNetwork = function (networkKey, openNetworkPhysically) {
 
     this.setActiveChiseInstance(chiseInstance);
 
-    // open network that is just activated physically if it is required
-    if (openNetworkPhysically) {
-
-      // in case of network key is not the network id
-      var networkId = this.getNetworkId(networkKey);
-
-      // get id of physical html tab for the ntework id
-      var networkTabId = this.getNetworkTabId(networkId);
-
-      // if network tab is not activated activate it
-      if (!$('#' + networkTabId).hasClass('active')) {
-        $('#' + networkTabId + ' a').tab('show');
-      }
-    }
-
     return chiseInstance;
   }
 
   return false;
+};
+
+// chooses a network tab programatically
+appUtilities.chooseNetworkTab = function (networkKey) {
+  // in case of network key is not the network id
+  var networkId = this.getNetworkId(networkKey);
+
+  // get id of physical html tab for the ntework id
+  var networkTabId = this.getNetworkTabId(networkId);
+
+  // if network tab is not activated activate it
+  if (!$('#' + networkTabId).hasClass('active')) {
+    $('#' + networkTabId + ' a').tab('show');
+  }
 };
 
 // returns the sbgnviz.js instance associated with the currently active netwrok

@@ -7,6 +7,7 @@ var modeHandler = {
   initialSelectedEdgeType: "consumption",
   initialSelectedLanguage: "PD",
   // Initilize mode handler
+  // TODO metin: this could be removed and adjustUIComponents would be called instead when it is ready
   initilize: function () {
     $('#select-mode-icon').parent().addClass('selected-mode'); // Initial mode is selection mode.
     $('.node-palette img').addClass('inactive-palette-element');
