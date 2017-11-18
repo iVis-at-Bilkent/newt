@@ -39,6 +39,94 @@ appUtilities.activeChiseInstance = undefined;
 // map of unique network id to related chise.js instance
 appUtilities.networkIdToChiseInstance = {};
 
+appUtilities.adjustUIComponents = function (_cy) {
+
+  // if _cy param is not set use the active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
+  // TODO metin: improve this function more thing should be done to adjust UI components
+
+  // adjust UI components in inspector map tab
+  $(document).ready(function () {
+    appUtilities.colorSchemeInspectorView.render();
+    appUtilities.mapTabGeneralPanel.render();
+    appUtilities.mapTabLabelPanel.render();
+    appUtilities.mapTabRearrangementPanel.render();
+  });
+
+  // adjust UI components related to mode properties
+
+  // access the mode properties of cy
+  var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+  // html values to select
+  var nodeVal = modeProperties.selectedNodeType.replace(/ /gi, '-'); // Html values includes '-' instead of ' '
+  var edgeVal = modeProperties.selectedEdgeType.replace(/ /gi, '-'); // Html values includes '-' instead of ' '
+
+  var mode = modeProperties.mode;
+  var sustainMode = modeProperties.sustainMode;
+  var nodeLang = modeProperties.selectedNodeLanguage;
+  var edgeLang = modeProperties.selectedEdgeLanguage;
+
+  $('.node-palette img').removeClass('selected-mode');
+  $('.edge-palette img').removeClass('selected-mode');
+
+  // Get images for node/edge palettes
+  var nodeImg = $('.node-palette img[value="'+nodeVal+'"][language="' + nodeLang + '"]');
+  var edgeImg = $('.edge-palette img[value="'+edgeVal+'"][language="' + edgeLang + '"]');
+
+  // also set the icons in toolbar accordingly
+  $('#add-node-mode-icon').attr('src', nodeImg.attr('src'));
+  $('#add-node-mode-icon').attr('title', "Create a new " + nodeImg.attr('title'));
+  $('#add-edge-mode-icon').attr('src', edgeImg.attr('src'));
+  $('#add-edge-mode-icon').attr('title', "Create a new " + edgeImg.attr('title'));
+
+  // unactivate all UI components
+  $('#select-mode-icon').parent().removeClass('selected-mode');
+  $('#add-edge-mode-icon').parent().removeClass('selected-mode');
+  $('#add-node-mode-icon').parent().removeClass('selected-mode');
+  $('#add-edge-mode-icon').parent().removeClass('selected-mode-sustainable');
+  $('#add-node-mode-icon').parent().removeClass('selected-mode-sustainable');
+  $('.node-palette img').addClass('inactive-palette-element');
+  $('.edge-palette img').addClass('inactive-palette-element');
+  $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
+
+  // Node/edge palettes should be initialized according to default nodeVal and edgeVal
+  nodeImg.addClass('selected-mode');
+  edgeImg.addClass('selected-mode');
+
+  // adjust UI components according to the params
+  if ( mode === 'selection-mode' ) {
+
+    $('#select-mode-icon').parent().addClass('selected-mode');
+
+  }
+  else if ( mode === 'add-node-mode' ) {
+
+    $('#add-node-mode-icon').parent().addClass('selected-mode');
+    $('.node-palette img').removeClass('inactive-palette-element');
+
+    if ( sustainMode ) {
+      $('#add-node-mode-icon').parent().addClass('selected-mode-sustainable');
+      $('.node-palette .selected-mode').addClass('selected-mode-sustainable');
+    }
+
+  }
+  else if ( mode === 'add-edge-mode' ) {
+
+    $('#add-edge-mode-icon').parent().addClass('selected-mode');
+    $('.edge-palette img').removeClass('inactive-palette-element');
+
+    if ( sustainMode ) {
+      $('#add-edge-mode-icon').parent().addClass('selected-mode-sustainable');
+      $('.edge-palette .selected-mode').addClass('selected-mode-sustainable');
+    }
+
+  }
+
+  // TODO metin: complete this part
+};
+
 // get id of the div panel for the given network id
 appUtilities.getNetworkPanelId = function (networkId) {
   return 'sbgn-network-container-' + networkId;
@@ -254,6 +342,8 @@ appUtilities.setActiveNetwork = function (networkKey) {
   if (chiseInstance) {
 
     this.setActiveChiseInstance(chiseInstance);
+
+    this.adjustUIComponents();
 
     return chiseInstance;
   }

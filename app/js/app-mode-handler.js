@@ -5,7 +5,8 @@ var modeHandler = {
   initialSustainMode: false,
   initialSelectedNodeType: "macromolecule",
   initialSelectedEdgeType: "consumption",
-  initialSelectedLanguage: "PD",
+  initialSelectedNodeLanguage: "PD",
+  initialSelectedEdgeLanguage: "PD",
   // Initilize mode handler
   // TODO metin: this could be removed and adjustUIComponents would be called instead when it is ready
   initilize: function () {
@@ -36,31 +37,12 @@ var modeHandler = {
       sustainMode: modeHandler.initialSustainMode,
       selectedNodeType: modeHandler.initialSelectedNodeType,
       selectedEdgeType: modeHandler.initialSelectedEdgeType,
-      selectedLanguage: modeHandler.initialSelectedLanguage
+      selectedNodeLanguage: modeHandler.initialSelectedNodeLanguage,
+      selectedEdgeLanguage: modeHandler.initialSelectedEdgeLanguage
     };
 
     // register mode properties to the scratch pad of cy
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
-  },
-
-  // adjust UI components according to mode properties of cy kept in scratch pad of it
-  adjustUIComponents: function (_cy) {
-
-    // if _cy param is not set use the active cy instance
-    var cy = _cy || appUtilities.getActiveCy();
-
-    // access the mode properties of cy
-    var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
-
-    // html values to select
-    var nodeVal = modeProperties.selectedNodeType.replace(/ /gi, '-'); // Html values includes '-' instead of ' '
-    var edgeVal = modeProperties.selectedEdgeType.replace(/ /gi, '-'); // Html values includes '-' instead of ' '
-
-    var mode = modeProperties.mode;
-    var sustainMode = modeProperties.sustainMode;
-    var lang = modeProperties.selectedLanguage;
-
-    // TODO metin: complete this method
   },
 
   // Set the current mode to add node mode, if nodeType is specified than switch the current node type to the given value,
@@ -112,7 +94,7 @@ var modeHandler = {
       modeProperties.selectedNodeType = nodeType;
     }
     if ( language ) {
-      modeProperties.selectedLanguage = language;
+      modeProperties.selectedNodeLanguage = language;
     }
 
     // reset mode properties of cy
@@ -167,7 +149,7 @@ var modeHandler = {
       modeProperties.selectedEdgeType = edgeType;
     }
     if (language) {
-      modeProperties.selectedLanguage = language;
+      modeProperties.selectedEdgeLanguage = language;
     }
 
     // reset mode properties of cy

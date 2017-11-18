@@ -73,11 +73,7 @@ module.exports = function () {
 
     toolbarButtonsAndMenu();
     modeHandler.initilize();
-    //generalPropertiesView.render();
-    colorSchemeInspectorView.render();
-    mapTabGeneralPanel.render();
-    mapTabLabelPanel.render();
-    mapTabRearrangementPanel.render();
+
     appUndoActions.refreshColorSchemeMenu({value: appUtilities.defaultGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
 
     // loadSample is called before the container is resized in dynamicResize function, so we need to wait
