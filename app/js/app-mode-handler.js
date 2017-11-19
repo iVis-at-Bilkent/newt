@@ -3,7 +3,8 @@ var modeHandler = {
   sustainMode: false,
   selectedNodeType: "macromolecule",
   selectedEdgeType: "consumption",
-  selectedLanguage: "PD",
+  selectedNodeLanguage: "PD",
+  selectedEdgeLanguage: "PD",
   // Initilize mode handler
   initilize: function () {
     $('#select-mode-icon').parent().addClass('selected-mode'); // Initial mode is selection mode.
@@ -62,7 +63,7 @@ var modeHandler = {
       modeHandler.selectedNodeType = nodeType;
     }
     if (language)
-      modeHandler.selectedLanguage = language;
+      modeHandler.selectedNodeLanguage = language;
   },
   // Set the current mode to add edge mode, if edgeType is specified than switch the current edge type to the given value,
   // if the edgeType will remain same, add edge mode is already enabled and sustain mode is not set before, then set the sustain mode
@@ -106,7 +107,7 @@ var modeHandler = {
       modeHandler.selectedEdgeType = edgeType;
     }
     if (language)
-      modeHandler.selectedLanguage = language;
+      modeHandler.selectedEdgeLanguage = language;
   },
   // Set selection mode, disables sustainable mode.
   setSelectionMode: function () {

@@ -435,7 +435,7 @@ module.exports = function () {
           // fired when edgehandles is done and entities are added
           var source = sourceNode.id();
           var target = targetNodes[0].id();
-          var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedLanguage};
+          var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedEdgeLanguage};
 
           // if added edge changes map type, warn user
           if (chise.getMapType() && chise.getMapType() != "Unknown" && edgeParams.language != chise.getMapType()){
@@ -749,7 +749,7 @@ module.exports = function () {
           
           // If the parent class is valid for the node type then add the node
           if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
-            var nodeParams = {class : nodeType, language : modeHandler.selectedLanguage};
+            var nodeParams = {class : nodeType, language : modeHandler.selectedNodeLanguage};
 
             // if added node changes map type, warn user
             if (chise.getMapType() && chise.getMapType() != "Unknown" && nodeParams.language != chise.getMapType()){
