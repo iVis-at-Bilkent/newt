@@ -33,8 +33,9 @@ appUtilities.nextNetworkId = 0;
 // It is to be checked and passed to extensions/libraries where applicable.
 appUtilities.undoable = true;
 
-// refers to the chise.js instance assocated with the current active network
-appUtilities.activeChiseInstance = undefined;
+// A stack to order network ids. The top of stack represents the active network while
+// the one closest to the top is represents the previous active network.
+appUtilities.networkIdsStack = [];
 
 // map of unique network id to related chise.js instance
 appUtilities.networkIdToChiseInstance = {};
@@ -200,8 +201,16 @@ appUtilities.putToChiseInstances = function (key, chiseInstance) {
   // if the network id parameter is the network tab/panel id/selector get the actual network id
   networkId = this.getNetworkId(networkId);
 
+  // Throw error if there is already an instance mapped for the networkId
+  if ( this.networkIdToChiseInstance[networkId] ) {
+    throw 'A chise instance is already mapped for network id ' + networkId;
+  }
+
   // perfrom the actual mapping
   this.networkIdToChiseInstance[networkId] = chiseInstance;
+
+  // push network id to the top of network ids stack
+  this.networkIdsStack.push(networkId);
 };
 
 // get the chise instance mapped to the given key
@@ -333,6 +342,11 @@ appUtilities.createNewNetwork = function () {
   return newInst;
 };
 
+// TODO metin fill this method
+appUtilities.closeActiveNetwork = function () {
+
+};
+
 appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc) {
 
   // the component that includes the tab panels
@@ -352,35 +366,42 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   tabsList.append(newTabStr);
 };
 
-// basically returns appUtilities.activeChiseInstance
+// basically get the active chise instance
 appUtilities.getActiveChiseInstance = function () {
 
-  return this.activeChiseInstance;
+  // get the networkId of the active network that is at the top of networkIdsStack
+  var activeNetworkId = this.networkIdsStack[this.networkIdsStack.length - 1];
+
+  // return the chise instance mapped for active network id that is the active networks itself
+  return this.getChiseInstance(activeNetworkId);
 };
 
-// setter for appUtilities.activeChiseInstance
-appUtilities.setActiveChiseInstance = function (chiseInstance) {
-
-  this.activeChiseInstance = chiseInstance;
-};
-
-// sets appUtilities.activeChiseInstance through the network key to be activated
-// returns activated chise.js instance if successful, else returns false
+// sets the active network through the network key to be activated
 appUtilities.setActiveNetwork = function (networkKey) {
 
   // get chise instance for network key
   var chiseInstance = this.getChiseInstance(networkKey);
 
-  if (chiseInstance) {
+  // use the actual network id (network key would not be the actual network id)
+  var networkId = this.getNetworkId(networkKey);
 
-    this.setActiveChiseInstance(chiseInstance);
+  // get old index of the network
+  var oldIndex = this.networkIdsStack.indexOf(networkId);
 
-    this.adjustUIComponents();
-
-    return chiseInstance;
+  // if there is no existing network with this id throw an error
+  if ( oldIndex === -1 ) {
+    throw 'Network with id ' + networkId + ' cannot be found';
   }
 
-  return false;
+  // remove the network from the old index
+  this.networkIdsStack.splice(oldIndex, 1);
+
+  // add the new network to the top of the stack
+  this.networkIdsStack.push(networkId);
+
+  // adjust UI components for †he activated network
+  this.adjustUIComponents();
+
 };
 
 // chooses a network tab programatically
