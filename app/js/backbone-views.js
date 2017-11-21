@@ -184,12 +184,6 @@ var BioGeneView = Backbone.View.extend({
  */
 var LayoutPropertiesView = Backbone.View.extend({
   initialize: function () {
-    // TODO metin revise: these lines must not be needed
-    // var self = this;
-    // self.copyProperties();
-    //
-    // self.template = _.template($("#layout-settings-template").html());
-    // self.template = self.template(appUtilities.currentLayoutProperties);
   },
   copyProperties: function () {
 
@@ -305,8 +299,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     var cy = appUtilities.getActiveCy();
 
     var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    // TODO metin: need to re-access current schema inside events
-    var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
+    // it was a dead variable that is just set somewhere but never utilized
+    // var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
 
     var schemes = appUtilities.mapColorSchemes;
     var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
@@ -341,8 +335,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
 
-      // TODO metin: check if set scratch is needed after such equlizations
-      currentScheme = scheme_id;
+      // currentScheme = scheme_id;
       appUtilities.applyMapColorScheme(scheme_id);
     });
 
@@ -351,13 +344,13 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
 
-      currentScheme = inverted_id;
+      // currentScheme = inverted_id;
       appUtilities.applyMapColorScheme(inverted_id, self);
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
       appUtilities.applyMapColorScheme(defaultColorScheme);
-      currentScheme = defaultColorScheme;
+      // currentScheme = defaultColorScheme;
     });
 
   },
@@ -1320,12 +1313,6 @@ var ReactionTemplateView = Backbone.View.extend({
 
 var GridPropertiesView = Backbone.View.extend({
   initialize: function () {
-    // TODO metin revise: these lines must not be needed
-    // var self = this;
-    // self.copyProperties();
-    //
-    // self.template = _.template($("#grid-properties-template").html());
-    // self.template = self.template(appUtilities.currentGridProperties);
   },
   copyProperties: function () {
     // use active cy instance
@@ -1457,7 +1444,6 @@ var GridPropertiesView = Backbone.View.extend({
   }
 });
 
-// TODO metin: re-check if some changes is to be done for currentFontProperties
 var FontPropertiesView = Backbone.View.extend({
   defaultFontProperties: {
     fontFamily: "",

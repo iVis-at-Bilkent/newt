@@ -47,12 +47,8 @@ module.exports = function () {
     console.log('init the sbgnviz template/page');
 
     $(window).on('resize', _.debounce(dynamicResize, 100));
-    dynamicResize();
 
-    // needing an appUndoActions instance here is something unexpected
-    // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
-    // that uses the active cy instance
-    var appUndoActions = appUndoActionsFactory(appUtilities.getActiveCy());
+    // appUtilities.dynamicResize();
 
     layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
     colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
@@ -72,33 +68,28 @@ module.exports = function () {
     fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
 
     toolbarButtonsAndMenu();
-    modeHandler.initilize();
 
-    appUndoActions.refreshColorSchemeMenu({value: appUtilities.defaultGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
-
-    // loadSample is called before the container is resized in dynamicResize function, so we need to wait
-    // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
-    // time out before loading the default sample.
-    // TODO search for a better way.
-    setTimeout(function(){
-      // TODO metin: this should not be called now. Check if any of old new-file behavior should be maintained here?
-      // $("#new-file").trigger('click');
-
-      keyboardShortcuts();
-    }, 100);
+    keyboardShortcuts();
   });
 
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
-    // TODO metin: the commented code segment below would be moved to somewhere else
-    // or they are performed here by checking if the cy parameter is equal to active cy instance
+    // TODO metin: revise
 
-    // appUtilities.setFileContent(filename);
-    //
-    // if (!$('#inspector-map-tab').hasClass('active')) {
-    //   $('#inspector-map-tab a').tab('show');
-    // }
+    if ( cy != appUtilities.getActiveCy() ) {
+      throw "Event is not fired on the active cy instance";
+    }
+
+    // set the current file name for cy
+    appUtilities.setScratch(cy, 'currentFileName', filename);
+
+    // set file content accordingly
+    appUtilities.setFileContent(filename);
+
+    if (!$('#inspector-map-tab').hasClass('active')) {
+      $('#inspector-map-tab a').tab('show');
+    }
 
     //clean and reset things
     cy.elements().unselect();
@@ -111,8 +102,11 @@ module.exports = function () {
 
   $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename, cy) {
 
-    // TODO metin: the code segment below would be moved to somewhere else
-    // or they are performed here by checking if the cy parameter is equal to active cy instance
+    // TODO metin: revise
+
+    if ( cy != appUtilities.getActiveCy() ) {
+      throw "Event is not fired on the active cy instance";
+    }
 
     // use the active chise instance
     var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -223,6 +217,7 @@ module.exports = function () {
     //
     //     // reset map name and description
     //     // TODO metin: think about what changes are needed for currentGeneralProperties here
+    //     // seems like they can be removed
     //     // appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
     //     // appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
     //     mapTabGeneralPanel.render();
@@ -247,6 +242,23 @@ module.exports = function () {
     //     createNewFile();
     //   }
     // });
+
+    // TODO metin complete method
+    $("#close-file").click(function () {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance for active chise instance
+      var cy = chiseInstance.getCy();
+
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(appUtilities.closeActiveNetwork);
+      }
+      else {
+        appUtilities.closeActiveNetwork();
+      }
+    });
 
     $("#load-file, #load-file-icon").click(function () {
       $("#file-input").trigger('click');
@@ -281,12 +293,18 @@ module.exports = function () {
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(evt, filename, cy){
 
-      // TODO metin: think about what to do if cy is not the current cy instance
+      // TODO metin: revise.
+      // Think about what to do if cy is not the current cy instance
       // If cy is not the active instance .render() calls would not be done. However, the calls
       // in this function may not be destroying the expected behaviour. appUndoActions.refreshColorSchemeMenu()
       // call in this function seems to be the most problematic thing because that call both changes currentGeneralProperties
       // and make changes in menu components. Inside that function we can check if the cy instance is the active one
-      // and would not make menu components related changes if not. 
+      // and would not make menu components related changes if not.
+      // Finally, considered just throwing exception in case of cy is not the active one.
+
+      if ( cy != appUtilities.getActiveCy() ) {
+        throw "Event is not fired on the active cy instance";
+      }
 
       // get chise instance for cy
       var chiseInstance = appUtilities.getChiseInstance(cy);

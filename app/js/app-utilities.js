@@ -44,14 +44,29 @@ appUtilities.adjustUIComponents = function (_cy) {
   // if _cy param is not set use the active cy instance
   var cy = _cy || appUtilities.getActiveCy();
 
-  // TODO metin: improve this function more thing should be done to adjust UI components
-
   // adjust UI components in inspector map tab
   $(document).ready(function () {
+
     appUtilities.colorSchemeInspectorView.render();
     appUtilities.mapTabGeneralPanel.render();
     appUtilities.mapTabLabelPanel.render();
     appUtilities.mapTabRearrangementPanel.render();
+
+    // needing an appUndoActions instance here is something unexpected
+    // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
+    // that uses the active cy instance
+    var appUndoActionsFactory = require('./app-undo-actions-factory');
+    var appUndoActions = appUndoActionsFactory(appUtilities.getActiveCy());
+
+    // get current general properties for cy
+    var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    // refresh color schema menu
+    appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView});
+
+    // set the file content by the current file name for cy
+    var fileName = appUtilities.getScratch(cy, 'currentFileName');
+    appUtilities.setFileContent(fileName);
   });
 
   // adjust UI components related to mode properties
@@ -95,16 +110,21 @@ appUtilities.adjustUIComponents = function (_cy) {
   nodeImg.addClass('selected-mode');
   edgeImg.addClass('selected-mode');
 
+  var modeHandler = require('./app-mode-handler');
+
   // adjust UI components according to the params
   if ( mode === 'selection-mode' ) {
 
     $('#select-mode-icon').parent().addClass('selected-mode');
 
+    modeHandler.autoEnableMenuItems(true);
   }
   else if ( mode === 'add-node-mode' ) {
 
     $('#add-node-mode-icon').parent().addClass('selected-mode');
     $('.node-palette img').removeClass('inactive-palette-element');
+
+    modeHandler.autoEnableMenuItems(false);
 
     if ( sustainMode ) {
       $('#add-node-mode-icon').parent().addClass('selected-mode-sustainable');
@@ -117,14 +137,14 @@ appUtilities.adjustUIComponents = function (_cy) {
     $('#add-edge-mode-icon').parent().addClass('selected-mode');
     $('.edge-palette img').removeClass('inactive-palette-element');
 
+    modeHandler.autoEnableMenuItems(false);
+
     if ( sustainMode ) {
       $('#add-edge-mode-icon').parent().addClass('selected-mode-sustainable');
       $('.edge-palette .selected-mode').addClass('selected-mode-sustainable');
     }
 
   }
-
-  // TODO metin: complete this part
 };
 
 // get id of the div panel for the given network id
@@ -275,6 +295,9 @@ appUtilities.createNewNetwork = function () {
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
 
+  // init the current file name for the map
+  appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.sbgnml');
+
   // register cy extensions, bind cy events etc.
   var appCy = require('./app-cy');
   appCy(newInst);
@@ -293,6 +316,15 @@ appUtilities.createNewNetwork = function () {
 
   // physically open the new tab
   appUtilities.chooseNetworkTab(appUtilities.nextNetworkId);
+
+  // resize html components according to the window size
+  appUtilities.dynamicResize();
+
+  // activate palette tab
+  if (!$('#inspector-palette-tab').hasClass('active')) {
+    $('#inspector-palette-tab a').tab('show');
+    $('#inspector-style-tab a').blur();
+  }
 
   // increment new network id
   appUtilities.nextNetworkId++;
@@ -564,10 +596,13 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
 };
 
 appUtilities.dynamicResize = function () {
-  var win = $(window);
 
-  var windowWidth = win.width();
-  var windowHeight = win.height();
+  // get window inner width and inner height that includes scrollbars when they are rendered
+  // using $(window).width() would be problematic when scrolls are visible
+  // please see: https://stackoverflow.com/questions/19582862/get-browser-window-width-including-scrollbar
+  // and https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth
+  var windowWidth = window.innerWidth;
+  var windowHeight = window.innerHeight;
 
   var canvasWidth = 1000;
   var canvasHeight = 680;
@@ -1586,8 +1621,7 @@ appUtilities.getAllStyles = function (_cy) {
     currentEdgeStyle.idList.push(edge.data('id'));
   }
 
-  // TODO metin: handle $("#sbgn-network-container")
-  var containerBgColor = $("#sbgn-network-container").css('background-color');
+  var containerBgColor = $(cy.container()).css('background-color');
   if (containerBgColor == "transparent") {
     containerBgColor = "#ffffff";
   }

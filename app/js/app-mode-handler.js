@@ -7,23 +7,6 @@ var modeHandler = {
   initialSelectedEdgeType: "consumption",
   initialSelectedNodeLanguage: "PD",
   initialSelectedEdgeLanguage: "PD",
-  // Initilize mode handler
-  // TODO metin: this could be removed and adjustUIComponents would be called instead when it is ready
-  initilize: function () {
-    $('#select-mode-icon').parent().addClass('selected-mode'); // Initial mode is selection mode.
-    $('.node-palette img').addClass('inactive-palette-element');
-    $('.edge-palette img').addClass('inactive-palette-element');
-    // Node/edge palettes should be initialized according to default selectedNodeType and selectedEdgeType
-    var defaultNodeImg = $('.node-palette img[value="'+this.initialSelectedNodeType+'"]');
-    var defaultEdgeImg = $('.edge-palette img[value="'+this.initialSelectedEdgeType+'"]');
-    defaultNodeImg.addClass('selected-mode');
-    defaultEdgeImg.addClass('selected-mode');
-    // also set the icons in toolbar accordingly
-    $('#add-node-mode-icon').attr('src', defaultNodeImg.attr('src'));
-    $('#add-node-mode-icon').attr('title', "Create a new " + defaultNodeImg.attr('title'));
-    $('#add-edge-mode-icon').attr('src', defaultEdgeImg.attr('src'));
-    $('#add-edge-mode-icon').attr('title', "Create a new " + defaultEdgeImg.attr('title'));
-  },
 
   // inilizes modeProperties field in the scratch pad of cy
   initModeProperties: function (_cy) {
