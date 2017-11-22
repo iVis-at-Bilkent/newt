@@ -243,7 +243,7 @@ module.exports = function () {
     //   }
     // });
 
-    // TODO metin complete method
+    // close the active file
     $("#close-file").click(function () {
 
       // use the active chise instance
@@ -253,7 +253,7 @@ module.exports = function () {
       var cy = chiseInstance.getCy();
 
       if(cy.elements().length != 0) {
-        promptConfirmationView.render(appUtilities.closeActiveNetwork);
+        promptConfirmationView.render(appUtilities.closeActiveNetwork.bind(appUtilities));
       }
       else {
         appUtilities.closeActiveNetwork();

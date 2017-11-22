@@ -186,6 +186,12 @@ appUtilities.getNetworkPanelSelector = function (networkId) {
   return '#' + this.getNetworkPanelId(networkId);
 };
 
+// selector of the tab for the the given network id
+// it is basically '#' + tabId
+appUtilities.getNetworkTabSelector = function (networkId) {
+  return '#' + this.getNetworkTabId(networkId);
+};
+
 // get the string to represent the tab for given network id
 appUtilities.getNetworkTabDesc = function (networkId) {
   return 'Network #' + networkId;
@@ -208,9 +214,25 @@ appUtilities.putToChiseInstances = function (key, chiseInstance) {
 
   // perfrom the actual mapping
   this.networkIdToChiseInstance[networkId] = chiseInstance;
+};
 
-  // push network id to the top of network ids stack
-  this.networkIdsStack.push(networkId);
+// remove the chise instance mapped to the given key
+// if key param is a cy instance or tab/panel id/selector use the actual network id
+appUtilities.removeFromChiseInstances = function (key) {
+
+  // if key is a cy instance go for its container id
+  var networkId = typeof key === 'object' ? key.container().id : key;
+
+  // if the network id parameter is the network tab/panel id/selector get the actual network id
+  networkId = this.getNetworkId(networkId);
+
+  // Throw error if there is no instance mapped for the networkId
+  if ( !this.networkIdToChiseInstance[networkId] ) {
+    throw 'No chise instance is mapped for network id ' + networkId;
+  }
+
+  // perform the actual removal
+  delete this.networkIdToChiseInstance[networkId];
 };
 
 // get the chise instance mapped to the given key
@@ -317,6 +339,9 @@ appUtilities.createNewNetwork = function () {
   // maintain networkIdToChiseInstance map
   appUtilities.putToChiseInstances(appUtilities.nextNetworkId, newInst);
 
+  // push network id to the top of network ids stack
+  this.networkIdsStack.push(appUtilities.nextNetworkId);
+
   // if this is the first network to be created set it as active network here
   // otherwise it will be activated (by listening html events) when the new tab is choosen
   if (appUtilities.nextNetworkId === 0) {
@@ -342,9 +367,52 @@ appUtilities.createNewNetwork = function () {
   return newInst;
 };
 
-// TODO metin fill this method
+// close the active network
 appUtilities.closeActiveNetwork = function () {
 
+  // active network id is the one that is at the top of the stack
+  // pop and get it
+  var activeNetworkId = this.networkIdsStack.pop();
+
+  // remove the chise instance mapped to the actual network id from the chise instances map
+  this.removeFromChiseInstances(activeNetworkId);
+
+  // remove physical html components for networkId
+  this.removePhysicalNetworkComponents(activeNetworkId);
+
+  // If there is no other network after closing the active one create a new network
+  // otherwise just select the tab for the new active network
+  if ( this.networkIdsStack.length === 0 ) {
+
+    // create a new network
+    this.createNewNetwork();
+  }
+  else {
+
+    // get the new active network id from the top of the stack
+    var newActiveNetworkId = this.networkIdsStack[this.networkIdsStack.length - 1];
+
+    // choose the network tab for the new active network
+    this.chooseNetworkTab(newActiveNetworkId);
+  }
+
+};
+
+// removes physical html components for the network that is represented by given networkKey
+appUtilities.removePhysicalNetworkComponents = function (networkKey) {
+
+  // use the actual network id (network key may not be equal to it)
+  var networkId = appUtilities.getNetworkId(networkKey);
+
+  // get the selector of network panel
+  var panelSelector = appUtilities.getNetworkPanelSelector(networkId);
+
+  // get the selector of tab
+  var tabSelector = appUtilities.getNetworkTabSelector(networkId);
+
+  // remove the html components corresponding to the selectors
+  $(panelSelector).remove();
+  $(tabSelector).remove();
 };
 
 appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc) {
