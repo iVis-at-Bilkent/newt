@@ -146,6 +146,28 @@ appUtilities.adjustUIComponents = function (_cy) {
     }
 
   }
+
+  // adjust status of grid guide related icons in toolbar
+
+  // get the current status of related variables for cy
+  var toggleEnableGuidelineAndSnap = appUtilities.getScratch(cy, 'toggleEnableGuidelineAndSnap');
+  var toggleShowGridEnableSnap = appUtilities.getScratch(cy, 'toggleShowGridEnableSnap');
+
+  // adjust toggle-guidelines-snapping-icon icons accordingly
+  if (toggleEnableGuidelineAndSnap){
+    $('#toggle-guidelines-snapping-icon').addClass('toggle-mode-sustainable');
+  }
+  else{
+    $('#toggle-guidelines-snapping-icon').removeClass('toggle-mode-sustainable');
+  }
+
+  // adjust oggle-grid-snapping-icon accordingly
+  if (toggleShowGridEnableSnap){
+    $('#toggle-grid-snapping-icon').addClass('toggle-mode-sustainable');
+  }
+  else{
+     $('#toggle-grid-snapping-icon').removeClass('toggle-mode-sustainable');
+  }
 };
 
 // get id of the div panel for the given network id

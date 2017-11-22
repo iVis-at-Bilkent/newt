@@ -592,6 +592,9 @@ module.exports = function () {
       // get current grid properties for cy
       var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
 
+      // get toggleEnableGuidelineAndSnap for cy
+      var toggleEnableGuidelineAndSnap = appUtilities.getScratch(cy, 'toggleEnableGuidelineAndSnap');
+
       if (toggleEnableGuidelineAndSnap){
         $("#toggle-guidelines-snapping-icon").click();
       }
@@ -613,8 +616,8 @@ module.exports = function () {
       }
 
       // update 'toggleShowGridEnableSnap' and 'currentGridProperties' for cy
-      appUtilities.setScratch(cy, 'toggleShowGridEnableSnap');
-      appUtilities.setScratch(cy, 'currentGridProperties');
+      appUtilities.setScratch(cy, 'toggleShowGridEnableSnap', toggleShowGridEnableSnap);
+      appUtilities.setScratch(cy, 'currentGridProperties', currentGridProperties);
 
     });
 
@@ -632,6 +635,9 @@ module.exports = function () {
 
       // get current grid properties for cy
       var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
+      // get toggleShowGridEnableSnap for cy
+      var toggleShowGridEnableSnap = appUtilities.getScratch(cy, 'toggleShowGridEnableSnap');
 
       if (toggleShowGridEnableSnap){
         $("#toggle-grid-snapping-icon").click();
@@ -948,7 +954,7 @@ module.exports = function () {
       }
     });
 
-    $(document).on("click", ".biogene-info .expandable", function (evt) {
+    $('.network-panel').on("click", ".biogene-info .expandable", function (evt) {
 
       // get the recently active tab
       var activeTab = appUtilities.getActiveNetworkPanel();
@@ -976,7 +982,7 @@ module.exports = function () {
     // this is used to detect a drag and drop of nodes from the palette
     // cy doesn't provide a clean way to handle events from the outside of cy
     // so here we need to go through the container and fire events down the chain manually to cy
-    $(document).on("mouseup", function (evt) {
+    $('.network-panel').on("mouseup", function (evt) {
 
       // get the recently active tab
       var activeTab = appUtilities.getActiveNetworkPanel();
@@ -990,7 +996,7 @@ module.exports = function () {
       var cy = appUtilities.getActiveCy();
 
       if (dragAndDropPlacement) {
-        var parentOffset = activeTab.offset();
+        var parentOffset = $(activeTab).offset();
         var relX = evt.pageX - parentOffset.left;
         var relY = evt.pageY - parentOffset.top;
         // the following event doesn't contain all the necessary information that cytoscape usually provide

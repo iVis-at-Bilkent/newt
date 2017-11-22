@@ -719,7 +719,6 @@ module.exports = function (chiseInstance) {
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
-      // TODO metin: for drag and drop case do not enter this function. Why?
       if (relPos){ // drag and drop case
         var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
         if (nodesAtRelpos.length == 0) { // when element is placed in the background
