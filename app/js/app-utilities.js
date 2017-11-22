@@ -249,6 +249,22 @@ appUtilities.getChiseInstance = function (key) {
   return this.networkIdToChiseInstance[networkId];
 };
 
+// If there is just one network then network tabs should not be rendered.
+// This function is to adjust that.
+appUtilities.adjustVisibilityOfNetworkTabs = function () {
+
+  var tabsContainer = $('#network-tabs-list');
+
+  // if there is just one tab hide tabs container else show it
+  if ( this.networkIdsStack.length === 1 ) {
+    tabsContainer.hide();
+  }
+  else {
+    tabsContainer.show();
+  }
+
+};
+
 // creates a new network and returns the new chise.js instance that is created for this network
 appUtilities.createNewNetwork = function () {
 
@@ -363,6 +379,9 @@ appUtilities.createNewNetwork = function () {
   // increment new network id
   appUtilities.nextNetworkId++;
 
+  // adjust the visibility of network tabs
+  appUtilities.adjustVisibilityOfNetworkTabs();
+
   // return the new instance
   return newInst;
 };
@@ -395,6 +414,9 @@ appUtilities.closeActiveNetwork = function () {
     // choose the network tab for the new active network
     this.chooseNetworkTab(newActiveNetworkId);
   }
+
+  // adjust the visibility of network tabs
+  this.adjustVisibilityOfNetworkTabs();
 
 };
 

@@ -75,8 +75,10 @@ module.exports = function () {
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
-    // TODO metin: revise
-
+    // If cy is not the active instance throw an error.
+    // Now load operations in newt are blocking and tab cannot be changed on these operations.
+    // If this changes as a future improvement then some operations below would be done by checking
+    // if the cy is the active instance.
     if ( cy != appUtilities.getActiveCy() ) {
       throw "Event is not fired on the active cy instance";
     }
@@ -102,8 +104,10 @@ module.exports = function () {
 
   $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename, cy) {
 
-    // TODO metin: revise
-
+    // If cy is not the active instance throw an error.
+    // Now load operations in newt are blocking and tab cannot be changed on these operations.
+    // If this changes as a future improvement then some operations below would be done by checking
+    // if the cy is the active instance. 
     if ( cy != appUtilities.getActiveCy() ) {
       throw "Event is not fired on the active cy instance";
     }
@@ -202,47 +206,6 @@ module.exports = function () {
 
     });
 
-    // TODO metin: this content would be used when a tab is closed while there is no other network
-    // $("#new-file, #new-file-icon").click(function () {
-    //
-    //   // use the active chise instance
-    //   var chiseInstance = appUtilities.getActiveChiseInstance();
-    //
-    //   // use cy instance for active chise instance
-    //   var cy = chiseInstance.getCy();
-    //
-    //   var createNewFile = function () {
-    //     chiseInstance.resetMapType();  // reset map type while creating new file
-    //     appUtilities.setFileContent("new_file.sbgnml");
-    //
-    //     // reset map name and description
-    //     // TODO metin: think about what changes are needed for currentGeneralProperties here
-    //     // seems like they can be removed
-    //     // appUtilities.currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
-    //     // appUtilities.currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-    //     mapTabGeneralPanel.render();
-    //
-    //     //clean and reset things
-    //     cy.elements().unselect();
-    //     if (!$('#inspector-palette-tab').hasClass('active')) {
-    //       $('#inspector-palette-tab a').tab('show');
-    //       $('#inspector-style-tab a').blur();
-    //     }
-    //
-    //     chiseInstance.updateGraph({
-    //       nodes: [],
-    //       edges: []
-    //     });
-    //   };
-    //
-    //   if(cy.elements().length != 0) {
-    //     promptConfirmationView.render(createNewFile);
-    //   }
-    //   else {
-    //     createNewFile();
-    //   }
-    // });
-
     // close the active file
     $("#close-file").click(function () {
 
@@ -293,15 +256,10 @@ module.exports = function () {
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(evt, filename, cy){
 
-      // TODO metin: revise.
-      // Think about what to do if cy is not the current cy instance
-      // If cy is not the active instance .render() calls would not be done. However, the calls
-      // in this function may not be destroying the expected behaviour. appUndoActions.refreshColorSchemeMenu()
-      // call in this function seems to be the most problematic thing because that call both changes currentGeneralProperties
-      // and make changes in menu components. Inside that function we can check if the cy instance is the active one
-      // and would not make menu components related changes if not.
-      // Finally, considered just throwing exception in case of cy is not the active one.
-
+      // If cy is not the active instance throw an error.
+      // Now load operations in newt are blocking and tab cannot be changed on these operations.
+      // If this changes as a future improvement then some operations below would be done by checking
+      // if the cy is the active instance.
       if ( cy != appUtilities.getActiveCy() ) {
         throw "Event is not fired on the active cy instance";
       }

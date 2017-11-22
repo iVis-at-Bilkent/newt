@@ -768,7 +768,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
 /**
  * Paths Between Query view for the Sample Application.
  */
- // TODO metin: revise
 var PathsBetweenQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
@@ -880,7 +879,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
 /**
  * Paths By URI Query view for the Sample Application.
  */
- // TODO metin: revise
 var PathsByURIQueryView = Backbone.View.extend({
   defaultQueryParameters: {
       URI: ""
