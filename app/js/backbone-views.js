@@ -759,7 +759,7 @@ var PathsByURIQueryView = Backbone.View.extend({
           return;
       }
       // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      uri = uri.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      uri = uri.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
       if (uri.length === 0) {
           $(self.el).modal('toggle');
           new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
