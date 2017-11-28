@@ -603,7 +603,6 @@ appUtilities.defaultGridProperties = {
   verticalDistLine: [0, 0],
 };
 
-// TODO metin: revise map type option (is it really used?)
 appUtilities.defaultGeneralProperties = {
   compoundPadding: 10,
   extraCompartmentPadding: 14,
@@ -644,7 +643,6 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-// TODO metin: should get cy or chise instance parameter?
 appUtilities.triggerIncrementalLayout = function (_cy) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
