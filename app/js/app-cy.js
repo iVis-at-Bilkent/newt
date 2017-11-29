@@ -176,8 +176,7 @@ module.exports = function (chiseInstance) {
         selector: 'node[thickBorder]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.showHiddenNeighbors(cyTarget, cy);
-//          chiseInstance.showAndPerformLayout(chiseInstance.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
+          appUtilities.showHiddenNeighbors(cyTarget, appUtilities.getChiseInstance(cy));
         }
       },
       {
