@@ -75,63 +75,65 @@ module.exports = function () {
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
-    // If cy is not the active instance throw an error.
-    // Now load operations in newt are blocking and tab cannot be changed on these operations.
-    // If this changes as a future improvement then some operations below would be done by checking
-    // if the cy is the active instance.
-    if ( cy != appUtilities.getActiveCy() ) {
-      throw "Event is not fired on the active cy instance";
-    }
+    // check if the event is triggered for the active instance
+    var isActiveInstance = ( cy == appUtilities.getActiveCy() );
 
     // set the current file name for cy
     appUtilities.setScratch(cy, 'currentFileName', filename);
 
-    // set file content accordingly
-    appUtilities.setFileContent(filename);
-
-    if (!$('#inspector-map-tab').hasClass('active')) {
-      $('#inspector-map-tab a').tab('show');
-    }
-
     //clean and reset things
     cy.elements().unselect();
+
+    // if the event is triggered for the active instance do the followings
+    if ( isActiveInstance ) {
+
+      // set file content accordingly
+      appUtilities.setFileContent(filename);
+
+      if (!$('#inspector-map-tab').hasClass('active')) {
+        $('#inspector-map-tab a').tab('show');
+      }
+
+    }
+
   });
 
   $(document).on('updateGraphEnd', function(event, cy) {
-    appUtilities.resetUndoRedoButtons(cy);
+    appUtilities.resetUndoRedoButtons();
     modeHandler.setSelectionMode(cy);
   });
 
   $(document).on('sbgnvizLoadFileEnd sbgnvizLoadSampleEnd', function(event, filename, cy) {
 
-    // If cy is not the active instance throw an error.
-    // Now load operations in newt are blocking and tab cannot be changed on these operations.
-    // If this changes as a future improvement then some operations below would be done by checking
-    // if the cy is the active instance. 
-    if ( cy != appUtilities.getActiveCy() ) {
-      throw "Event is not fired on the active cy instance";
+    // check if the event is triggered for the active instance
+    var isActiveInstance = ( cy == appUtilities.getActiveCy() );
+
+    // get chise instance for cy
+    var chiseInstance = appUtilities.getChiseInstance(cy);
+
+    // Do the followings if the event is triggered for the active instance
+    if ( isActiveInstance ) {
+
+      // select appropriate palette depending on the map
+      if(chiseInstance.elementUtilities.mapType == "AF") {
+        if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+          $("#PD-palette-heading").click();
+        }
+        if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+          $("#AF-palette-heading").click();
+        }
+      }
+      else if(chiseInstance.elementUtilities.mapType == "PD"){
+        if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+          $("#PD-palette-heading").click();
+        }
+        if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+          $("#AF-palette-heading").click();
+        }
+      }
+
     }
 
-    // use the active chise instance
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-
-    // select appropriate palette depending on the map
-    if(chiseInstance.elementUtilities.mapType == "AF") {
-      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
-        $("#PD-palette-heading").click();
-      }
-      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
-        $("#AF-palette-heading").click();
-      }
-    }
-    else if(chiseInstance.elementUtilities.mapType == "PD"){
-      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
-        $("#PD-palette-heading").click();
-      }
-      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
-        $("#AF-palette-heading").click();
-      }
-    }
   });
 
   function toolbarButtonsAndMenu() {
@@ -256,13 +258,8 @@ module.exports = function () {
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(evt, filename, cy){
 
-      // If cy is not the active instance throw an error.
-      // Now load operations in newt are blocking and tab cannot be changed on these operations.
-      // If this changes as a future improvement then some operations below would be done by checking
-      // if the cy is the active instance.
-      if ( cy != appUtilities.getActiveCy() ) {
-        throw "Event is not fired on the active cy instance";
-      }
+      // check if the event is triggered for the active instance
+      var isActiveInstance = ( cy == appUtilities.getActiveCy() );
 
       // get chise instance for cy
       var chiseInstance = appUtilities.getChiseInstance(cy);
@@ -278,23 +275,36 @@ module.exports = function () {
       // reset map name and description
       currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
       currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-      mapTabGeneralPanel.render();
 
       // set reaggange on complexity managment based on map size
       if (cy.nodes().length > 100){
         currentGeneralProperties.rearrangeAfterExpandCollapse = false;
-        mapTabRearrangementPanel.render();
       }
 
       // get and set properties from file
       var properties = chiseInstance.getMapProperties();
-      if (properties && properties.mapProperties){
-        appUtilities.setMapProperties(properties.mapProperties);
+
+      // some operations are to be performed if properties.mapProperties exists
+      var mapPropertiesExist = ( properties && properties.mapProperties );
+
+      if (mapPropertiesExist) {
+          appUtilities.setMapProperties(properties.mapProperties);
+      }
+
+      // some operations are to be done if the event is triggered for the active instance
+      if ( isActiveInstance ) {
         // update map panel
         mapTabGeneralPanel.render();
-        mapTabLabelPanel.render();
         mapTabRearrangementPanel.render();
-        appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
+        mapTabLabelPanel.render();
+
+        if (mapPropertiesExist){
+          // update map panel
+          appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
+        }
+      }
+
+      if (mapPropertiesExist) {
 
         // set default colors according to the color scheme
         for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){

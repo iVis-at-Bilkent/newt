@@ -68,6 +68,9 @@ appUtilities.adjustUIComponents = function (_cy) {
     // set the file content by the current file name for cy
     var fileName = appUtilities.getScratch(cy, 'currentFileName');
     appUtilities.setFileContent(fileName);
+
+    // reset the status of undo redo buttons
+    appUtilities.refreshUndoRedoButtonsStatus(cy);
   });
 
   // adjust UI components related to mode properties
