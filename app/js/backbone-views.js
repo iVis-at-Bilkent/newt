@@ -295,9 +295,6 @@ var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
 
-    // use active cy instance
-    var cy = appUtilities.getActiveCy();
-
     var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
     // it was a dead variable that is just set somewhere but never utilized
     // var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
@@ -412,7 +409,6 @@ var GeneralPropertiesParentView = Backbone.View.extend({
 var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
-    self.setPropertiesToDefault();
     // initialize undo-redo parameters
     self.params = {};
     self.params.compoundPadding = {id: "compound-padding", type: "text",
@@ -550,7 +546,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 var MapTabLabelPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
-    self.setPropertiesToDefault();
     // initialize undo-redo parameters
     self.params = {};
     self.params.dynamicLabelSize = {id: "dynamic-label-size-select", type: "select",
@@ -661,7 +656,6 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
 var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
-    self.setPropertiesToDefault();
     // initialize undo-redo parameters
     self.params = {};
     self.params.rearrangeAfterExpandCollapse = {id: "rearrange-after-expand-collapse", type: "checkbox",
@@ -726,7 +720,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
 /*var GeneralPropertiesView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.setPropertiesToDefault();
 
     $(document).on("click", "#default-sbgn", function (evt) {
       self.setPropertiesToDefault();

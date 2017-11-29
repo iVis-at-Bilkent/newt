@@ -46,32 +46,30 @@ appUtilities.adjustUIComponents = function (_cy) {
   var cy = _cy || appUtilities.getActiveCy();
 
   // adjust UI components in inspector map tab
-  $(document).ready(function () {
 
-    appUtilities.colorSchemeInspectorView.render();
-    appUtilities.mapTabGeneralPanel.render();
-    appUtilities.mapTabLabelPanel.render();
-    appUtilities.mapTabRearrangementPanel.render();
+  appUtilities.colorSchemeInspectorView.render();
+  appUtilities.mapTabGeneralPanel.render();
+  appUtilities.mapTabLabelPanel.render();
+  appUtilities.mapTabRearrangementPanel.render();
 
-    // needing an appUndoActions instance here is something unexpected
-    // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
-    // that uses the active cy instance
-    var appUndoActionsFactory = require('./app-undo-actions-factory');
-    var appUndoActions = appUndoActionsFactory(appUtilities.getActiveCy());
+  // needing an appUndoActions instance here is something unexpected
+  // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
+  // that uses the active cy instance
+  var appUndoActionsFactory = require('./app-undo-actions-factory');
+  var appUndoActions = appUndoActionsFactory(appUtilities.getActiveCy());
 
-    // get current general properties for cy
-    var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+  // get current general properties for cy
+  var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-    // refresh color schema menu
-    appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView});
+  // refresh color schema menu
+  appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView});
 
-    // set the file content by the current file name for cy
-    var fileName = appUtilities.getScratch(cy, 'currentFileName');
-    appUtilities.setFileContent(fileName);
+  // set the file content by the current file name for cy
+  var fileName = appUtilities.getScratch(cy, 'currentFileName');
+  appUtilities.setFileContent(fileName);
 
-    // reset the status of undo redo buttons
-    appUtilities.refreshUndoRedoButtonsStatus(cy);
-  });
+  // reset the status of undo redo buttons
+  appUtilities.refreshUndoRedoButtonsStatus(cy);
 
   // adjust UI components related to mode properties
 

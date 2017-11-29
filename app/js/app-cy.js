@@ -13,18 +13,15 @@ module.exports = function (chiseInstance) {
   // use chise instance associated with chise instance
   var cy = chiseInstance.getCy();
 
-  $(document).ready(function ()
-  {
-    // register extensions and bind events when cy is ready
-    cy.ready(function () {
-      cytoscapeExtensionsAndContextMenu();
-      bindCyEvents();
-      cy.style().selector('core').style({'active-bg-opacity': 0});
-      // If undo extension, register undo/redo actions
-      if (appUtilities.undoable) {
-        registerUndoRedoActions();
-      }
-    });
+  // register extensions and bind events when cy is ready
+  cy.ready(function () {
+    cytoscapeExtensionsAndContextMenu();
+    bindCyEvents();
+    cy.style().selector('core').style({'active-bg-opacity': 0});
+    // If undo extension, register undo/redo actions
+    if (appUtilities.undoable) {
+      registerUndoRedoActions();
+    }
   });
 
   function registerUndoRedoActions() { // only if undoRedo is set
