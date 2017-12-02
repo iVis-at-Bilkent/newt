@@ -212,14 +212,16 @@ module.exports = function () {
     $("#file-input").change(function () {
       if ($(this).val() != "") {
         var file = this.files[0];
+        /*
         var loadCallbackSBGNMLValidity = function (text) {
           validateSBGNML(text);
         }      
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
+        */
         if(cy.elements().length != 0) {
-          promptConfirmationView.render(function(){chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+          promptConfirmationView.render(function(){chise.loadTDFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
         }
         else {
           chise.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning); 
