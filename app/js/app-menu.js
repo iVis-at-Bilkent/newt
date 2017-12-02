@@ -38,60 +38,10 @@ module.exports = function () {
     return chise.loadSample(filename, 'app/samples/');
   }
 
-  function loadFromURL(){
-    var filePath = getParameterByName('filename');
-
-    var loadCallbackSBGNMLValidity = function (text) {
-      validateSBGNML(text);
-    }      
-    var loadCallbackInvalidityWarning  = function () {
-      promptInvalidFileView.render();
-    }
-
-    if(filePath == undefined)
-      return;
-
-    if(filePath.indexOf('file:///') === 0){
-      console.log('read from local');
-    }
-    else if(filePath.indexOf('http') === 0){
-      //load file via url from remote
-      $.ajax({
-        url: filePath,
-        success: function(result){
-          var fileToLoad = new File([result], 'remote-file.xml', {
-            type: 'text/xml',
-            lastModified: Date.now()
-          });
-
-          if(cy.elements().length != 0) {
-            promptConfirmationView.render(function(){chise.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
-          }
-          else {
-            chise.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning); 
-          }
-        }
-
-      });      
-    }
-  }
-
-  function getParameterByName(name, url) {
-    if (!url){
-      url = window.location.href;
-    }
-
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-
   $(document).ready(function ()
   {
     console.log('init the sbgnviz template/page');
-    
+
     $(window).on('resize', _.debounce(dynamicResize, 100));
     dynamicResize();
 
@@ -129,9 +79,6 @@ module.exports = function () {
       $("#new-file").trigger('click');  
       keyboardShortcuts();
     }, 100);
-
-
-    loadFromURL();
   });
 
   // Events triggered by sbgnviz module
