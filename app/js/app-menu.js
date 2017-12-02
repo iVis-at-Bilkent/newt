@@ -38,9 +38,7 @@ module.exports = function () {
     return chise.loadSample(filename, 'app/samples/');
   }
 
-  function loadFromURL(){
-    var filePath = getParameterByName('filename');
-
+  function loadFromURL(filepath){
     var loadCallbackSBGNMLValidity = function (text) {
       validateSBGNML(text);
     }      
@@ -48,32 +46,66 @@ module.exports = function () {
       promptInvalidFileView.render();
     }
 
-    if(filePath == undefined)
+    if(filepath == undefined)
       return;
 
-    if(filePath.indexOf('file:///') === 0){
-      console.log('read from local');
-    }
-    else if(filePath.indexOf('http') === 0){
-      //load file via url from remote
+    //load file via url from remote
+    if(filepath.indexOf('http') === 0){
+      var filename = filepath.split('/');
+      if(filename.length > 0)
+        filename = filename[filename.length - 1];
+      else
+        filename = 'remote';
+
+      var fileExtension = filename.split('.');
+      if(fileExtension.length > 0)
+        fileExtension = fileExtension[fileExtension.length - 1];
+      else
+        fileExtension = 'txt';
+
       $.ajax({
-        url: filePath,
+        type: 'get',
+        url: filepath,
         success: function(result){
-          var fileToLoad = new File([result], 'remote-file.xml', {
-            type: 'text/xml',
+          var fileToLoad = new File([result], filename, {
+            type: 'text/' + fileExtension,
             lastModified: Date.now()
           });
+          
+          chise.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          promptInvalidFileView.render();
+          $("#new-file").trigger('click');
+        }
+      });       
+    }
+  }
 
-          if(cy.elements().length != 0) {
-            promptConfirmationView.render(function(){chise.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+  function loadFromURI(uri){
+
+    var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
+          + uri + "&format=SBGN";
+
+    var filename = uri + '.sbgnml';
+    chise.startSpinner('paths-byURI-spinner');
+
+    $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null) {
+            chise.endSpinner('paths-byURI-spinner');
+            $("#new-file").trigger('click');
           }
           else {
-            chise.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning); 
+            $(document).trigger('sbgnvizLoadFile', filename);
+            chise.updateGraph(chise.convertSbgnmlToJson(data));
+            chise.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd');
           }
         }
-
-      });      
-    }
+      });
   }
 
   function getParameterByName(name, url) {
@@ -112,6 +144,7 @@ module.exports = function () {
     gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
     fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
 
+
     toolbarButtonsAndMenu();
     modeHandler.initilize();
     //generalPropertiesView.render();
@@ -126,12 +159,19 @@ module.exports = function () {
     // time out before loading the default sample.
     // TODO search for a better way.
     setTimeout(function(){
-      $("#new-file").trigger('click');  
+      //check URL query
+      var url_path = getParameterByName('url');
+      var uri_path = getParameterByName('uri');
+      if(url_path != undefined)
+        loadFromURL(url_path);
+      else if(uri_path != undefined)
+        loadFromURI(uri_path);
+      else
+        $("#new-file").trigger('click');
+      
       keyboardShortcuts();
     }, 100);
 
-
-    loadFromURL();
   });
 
   // Events triggered by sbgnviz module
