@@ -173,7 +173,7 @@ body {
     border: 2px solid #F7CAA9;
 }
 
-#sbgn-network-container {
+#network-panels-container {
     margin: auto;
     border: 1px solid #ddd;
     height: 680px;
@@ -182,6 +182,11 @@ body {
     overflow: hidden;
     border-radius: 0.25em;
     /*float: left;*/
+}
+
+.network-panel {
+  height: 680px;
+  width: 800px;
 }
 
 #sbgn-inspector-and-canvas {

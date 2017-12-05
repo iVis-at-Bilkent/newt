@@ -2,38 +2,43 @@ var jquery = $ = require('jquery');
 var appUtilities = require('./app-utilities');
 var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
-var appUndoActions = require('./app-undo-actions');
+var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
 
-module.exports = function () {
+module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
 //  var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
 
-  $(document).ready(function ()
-  {
-    appUtilities.sbgnNetworkContainer = $('#sbgn-network-container');
-    // register extensions and bind events when cy is ready
-    cy.ready(function () {
-      cytoscapeExtensionsAndContextMenu();
-      bindCyEvents();
-      cy.style().selector('core').style({'active-bg-opacity': 0});
-      // If undo extension, register undo/redo actions
-      if (appUtilities.undoable) {
-        registerUndoRedoActions();
-      }
-    });
+  // use chise instance associated with chise instance
+  var cy = chiseInstance.getCy();
+
+  // register extensions and bind events when cy is ready
+  cy.ready(function () {
+    cytoscapeExtensionsAndContextMenu();
+    bindCyEvents();
+    cy.style().selector('core').style({'active-bg-opacity': 0});
+    // If undo extension, register undo/redo actions
+    if (appUtilities.undoable) {
+      registerUndoRedoActions();
+    }
   });
 
   function registerUndoRedoActions() { // only if undoRedo is set
+    // get ur extension instance for cy
     var ur = cy.undoRedo();
+
+    // generate an instance of app undo actions with related cy
+    var appUndoActions = appUndoActionsFactory(cy);
+
+    // bind ur actions
     ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
   }
   
   function cytoscapeExtensionsAndContextMenu() {
-    cy.expandCollapse(getExpandCollapseOptions());
+    cy.expandCollapse(getExpandCollapseOptions(cy));
 
     var contextMenus = cy.contextMenus({
       menuItemClasses: ['custom-menu-item'],
@@ -171,8 +176,7 @@ module.exports = function () {
         selector: 'node[thickBorder]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.showHiddenNeighbors(cyTarget);
-//          chise.showAndPerformLayout(chise.elementUtilities.extendNodeList(cyTarget), appUtilities.triggerIncrementalLayout.bind(appUtilities));
+          appUtilities.showHiddenNeighbors(cyTarget, appUtilities.getChiseInstance(cy));
         }
       },
       {
@@ -221,7 +225,7 @@ module.exports = function () {
           var globalInfoboxCount = 0;
           for(var side in ele.data('auxunitlayouts')) {
             var layout = ele.data('auxunitlayouts')[side];
-            var newLayout = chise.classes.AuxUnitLayout.copy(layout, ele); // get a new layout
+            var newLayout = chiseInstance.classes.AuxUnitLayout.copy(layout, cy, ele); // get a new layout
 
             // copy each infobox of the layout
             for(var i=0; i < layout.units.length; i++) {
@@ -253,7 +257,7 @@ module.exports = function () {
               }
 
               // copy the current infobox
-              var newAuxunit = chise.classes.getAuxUnitClass(auxunit).copy(auxunit, ele, ele.data('id') + "_" + globalInfoboxCount);
+              var newAuxunit = chiseInstance.classes.getAuxUnitClass(auxunit).copy(auxunit, cy, ele, ele.data('id') + "_" + globalInfoboxCount);
               // update statesandinfos list
               ele.data('statesandinfos')[statesandinfosIndex] = newAuxunit;
               // update layout's infobox list
@@ -309,14 +313,14 @@ module.exports = function () {
       },
       neighbor: function(node){ //select and return process-based neighbors
         var nodesToSelect = node;
-        if(chise.elementUtilities.isPNClass(node) || chise.elementUtilities.isLogicalOperator(node)){
+        if(chiseInstance.elementUtilities.isPNClass(node) || chiseInstance.elementUtilities.isLogicalOperator(node)){
             nodesToSelect = nodesToSelect.union(node.openNeighborhood());
         }
         node.openNeighborhood().forEach(function(ele){
-            if(chise.elementUtilities.isPNClass(ele) || chise.elementUtilities.isLogicalOperator(ele)){
+            if(chiseInstance.elementUtilities.isPNClass(ele) || chiseInstance.elementUtilities.isLogicalOperator(ele)){
                 nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
                 ele.openNeighborhood().forEach(function(ele2){
-                    if(chise.elementUtilities.isPNClass(ele2) || chise.elementUtilities.isLogicalOperator(ele2)){
+                    if(chiseInstance.elementUtilities.isPNClass(ele2) || chiseInstance.elementUtilities.isLogicalOperator(ele2)){
                         nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
                     }
                 });
@@ -396,10 +400,11 @@ module.exports = function () {
 
       isFixedAspectRatioResizeMode: function (node) {
         var sbgnclass = node.data("class");
-        return chise.elementUtilities.mustBeSquare(sbgnclass);
+        return chiseInstance.elementUtilities.mustBeSquare(sbgnclass);
       }, // with only 4 active grapples (at corners)
       isNoResizeMode: function (node) {
-        return node.is(':parent') && !appUtilities.currentGeneralProperties.allowCompoundNodeResize;
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return node.is(':parent') && !currentGeneralProperties.allowCompoundNodeResize;
       }, // no active grapples
 
       cursors: {// See http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
@@ -424,37 +429,39 @@ module.exports = function () {
         if (!targetNodes) {
           return;
         }
-        
+
+        var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
         // We need to remove interactively added entities because we should add the edge with the chise api
         addedEntities.remove();
         
         /*
          * If in add edge mode create an edge
          */
-        if (modeHandler.mode === 'add-edge-mode') {
+        if (modeProperties.mode === 'add-edge-mode') {
           // fired when edgehandles is done and entities are added
           var source = sourceNode.id();
           var target = targetNodes[0].id();
-          var edgeParams = {class : modeHandler.selectedEdgeType, language : modeHandler.selectedEdgeLanguage};
+          var edgeParams = {class : modeProperties.selectedEdgeType, language : modeProperties.selectedEdgeLanguage};
 
           // if added edge changes map type, warn user
-          if (chise.getMapType() && chise.getMapType() != "Unknown" && edgeParams.language != chise.getMapType()){
+          if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chise.addEdge(source, target, edgeParams);
+                chiseInstance.addEdge(source, target, edgeParams);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             });
           }
           else{
-              chise.addEdge(source, target, edgeParams);
+              chiseInstance.addEdge(source, target, edgeParams);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
           }
           
           // If not in sustain mode set selection mode
-          if (!modeHandler.sustainMode) {
+          if (!modeProperties.sustainMode) {
             modeHandler.setSelectionMode();
           }
         }
@@ -470,9 +477,9 @@ module.exports = function () {
     });
 
     cy.edgehandles('drawoff');
-    
-    var gridProperties = appUtilities.currentGridProperties;
-    
+
+    var gridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
     cy.gridGuide({
       drawGrid: gridProperties.showGrid,
       gridColor: gridProperties.gridColor,
@@ -506,10 +513,12 @@ module.exports = function () {
       fitPadding: 10,
       fitSelector: ':visible',
       animateOnFit: function () {
-        return appUtilities.currentGeneralProperties.animateOnDrawingChanges;
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return currentGeneralProperties.animateOnDrawingChanges;
       },
       animateOnZoom: function () {
-        return appUtilities.currentGeneralProperties.animateOnDrawingChanges;
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return currentGeneralProperties.animateOnDrawingChanges;
       }
     };
 
@@ -538,7 +547,7 @@ module.exports = function () {
     });
     
     cy.on("afterDo", function (event, actionName, args, res) {
-      refreshUndoRedoButtonsStatus();
+      refreshUndoRedoButtonsStatus(cy);
 
       if(actionName == "resize") {
         var node = res.node;
@@ -552,7 +561,7 @@ module.exports = function () {
     });
 
     cy.on("afterUndo", function (event, actionName, args, res) {
-      refreshUndoRedoButtonsStatus();
+      refreshUndoRedoButtonsStatus(cy);
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
 
@@ -566,7 +575,7 @@ module.exports = function () {
     });
 
     cy.on("afterRedo", function (event, actionName, args, res) {
-      refreshUndoRedoButtonsStatus();
+      refreshUndoRedoButtonsStatus(cy);
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
 
@@ -580,17 +589,31 @@ module.exports = function () {
     });
     
     cy.on("mousedown", "node", function (event) {
+
       var self = this;
-      if (modeHandler.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
-        appUtilities.enableDragAndDropMode();
-        appUtilities.nodesToDragAndDrop = self.union(cy.nodes(':selected'));
-        appUtilities.dragAndDropStartPosition = event.position || event.cyPosition;
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+      if (modeProperties.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
+        appUtilities.enableDragAndDropMode(cy);
+
+        var nodesToDragAndDrop = self.union(cy.nodes(':selected'));
+        appUtilities.setScratch(cy, 'nodesToDragAndDrop', nodesToDragAndDrop);
+
+        var dragAndDropStartPosition = event.position || event.cyPosition;
+        appUtilities.setScratch(cy, 'dragAndDropStartPosition', dragAndDropStartPosition);
       }
     });
     
     cy.on("mouseup", function (event) {
+
       var self = event.target || event.cyTarget;
-      if (appUtilities.dragAndDropModeEnabled) {
+
+      // get chise instance for cy
+      var chiseInstance = appUtilities.getChiseInstance(cy);
+
+      if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
         var newParent;
         if (self != cy) {
           newParent = self;
@@ -600,14 +623,18 @@ module.exports = function () {
             newParent = newParent.parent()[0];
           }
         }
-        var nodes = appUtilities.nodesToDragAndDrop;
+        var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
 
-        appUtilities.disableDragAndDropMode();
+        appUtilities.disableDragAndDropMode(cy);
+
         var pos = event.position || event.cyPosition;
-        chise.changeParent(nodes, newParent, pos.x - appUtilities.dragAndDropStartPosition.x, 
-                              pos.y - appUtilities.dragAndDropStartPosition.y);
-        appUtilities.dragAndDropStartPosition = null;
-        appUtilities.nodesToDragAndDrop = null;
+        var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+
+        chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
+                              pos.y - dragAndDropStartPosition.y);
+
+        appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
+        appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
       }
 
       nodeToUnselect = undefined;
@@ -617,7 +644,7 @@ module.exports = function () {
           when nodes are selected one after another
           after tests, seems better to do it here
 
-          With the addition of the 3rd Map tab, we can probably keep the behavior 
+          With the addition of the 3rd Map tab, we can probably keep the behavior
           when the user has the Object tab selected.
       */
       if (cy.elements(':selected').length == 0){
@@ -668,18 +695,28 @@ module.exports = function () {
     // If mouesdown in add-node-mode and selected node type is a PN draw on edge handles and mark that creating a convenient process
     cy.on('mousedown', 'node', function() {
       var node = this;
-      if (modeHandler.mode === 'add-node-mode' && chise.elementUtilities.isPNClass(modeHandler.selectedNodeType) && chise.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
         convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
     });
 
     cy.on('tapend', function (event, relPos) {
+
       relPos = relPos || false;
       $('input').blur();
+
       var cyTarget;
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
       if (relPos){ // drag and drop case
-        var nodesAtRelpos = chise.elementUtilities.getNodesAt(relPos);
+        var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
         if (nodesAtRelpos.length == 0) { // when element is placed in the background
           cyTarget = cy;
         }
@@ -697,24 +734,24 @@ module.exports = function () {
       // If in add node mode do the followings conditionally,
       // If selected node type is a PN create a process and source and target nodes are EPNs with convenient edges,
       // else just create a new node with the current selected node type
-      if (modeHandler.mode === "add-node-mode") {
-        var nodeType = modeHandler.selectedNodeType;
+      if (modeProperties.mode === "add-node-mode") {
+        var nodeType = modeProperties.selectedNodeType;
 
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
-                && chise.elementUtilities.isPNClass(nodeType)
-                && chise.elementUtilities.isEPNClass(cyTarget) 
-                && chise.elementUtilities.isEPNClass(convenientProcessSource)
+                && chiseInstance.elementUtilities.isPNClass(nodeType)
+                && chiseInstance.elementUtilities.isEPNClass(cyTarget)
+                && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)
                 && !(cyTarget.parent()[0] != undefined && chise.elementUtilities.isEPNClass(cyTarget.parent()[0]) || 
-                  convenientProcessSource.parent()[0] != undefined && chise.elementUtilities.isEPNClass(convenientProcessSource.parent()[0]))
-          ){
-            chise.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+                  convenientProcessSource.parent()[0] != undefined && chise.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
+        {
+          chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
         }
         else {
           var cyPosX;
           var cyPosY;
           if (relPos) {
-            modelPos = chise.elementUtilities.convertToModelPosition(relPos);
+            modelPos = chiseInstance.elementUtilities.convertToModelPosition(relPos);
             cyPosX = modelPos.x;
             cyPosY = modelPos.y;
           }
@@ -748,21 +785,21 @@ module.exports = function () {
           }
           
           // If the parent class is valid for the node type then add the node
-          if (chise.elementUtilities.isValidParent(nodeType, parentClass)) {
-            var nodeParams = {class : nodeType, language : modeHandler.selectedNodeLanguage};
+          if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
+            var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
 
             // if added node changes map type, warn user
-            if (chise.getMapType() && chise.getMapType() != "Unknown" && nodeParams.language != chise.getMapType()){
+            if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){
               appUtilities.promptMapTypeView.render(function(){
-                  chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
+                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
             }
             else{
-              chise.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
+              chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
             }
             if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
             {
                 var newEle = cy.nodes()[cy.nodes().length - 1];
-                chise.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
+                chiseInstance.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
             }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
@@ -774,7 +811,7 @@ module.exports = function () {
         }
         
         // If not in sustainable mode set selection mode
-        if (!modeHandler.sustainMode) {
+        if (!modeProperties.sustainMode) {
           modeHandler.setSelectionMode();
         }
       }
@@ -826,10 +863,14 @@ module.exports = function () {
     });
     
     cy.on('doubleTap', 'node', function (event) {
-      if (modeHandler.mode == 'selection-mode') {
+
+      // get mode properties for cy
+      var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+      if (modeProperties.mode == 'selection-mode') {
         var node = this;
 
-        if (!chise.elementUtilities.canHaveSBGNLabel(node)) {
+        if (!chiseInstance.elementUtilities.canHaveSBGNLabel(node)) {
           return;
         }
         
@@ -941,6 +982,19 @@ module.exports = function () {
       }
     });
 
+    cy.on('layoutstop', function (event) {
+  		/*
+  		* 'preset' layout is called to give the initial positions of nodes by sbgnviz.
+  		* Seems like 'grid' layout is called by Cytoscape.js core in loading graphs.
+  		* If the layout is not one of these (normally it is supposed to be 'cose-bilkent')
+  		* stop layout spinner for the related chise instance.
+  		*/
+      if (event.layout.options.name !== 'preset' && event.layout.options.name !== 'grid')
+      {
+        appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
+      }
+    });
+
     // if the position of compound changes by repositioning its children
     // Note: position event for compound is not triggered in this case
     // edge case: when moving a complex, it triggers the position change of the children,
@@ -962,7 +1016,7 @@ module.exports = function () {
 
   function updateInfoBox(node) {
     for(var location in node.data('auxunitlayouts')) {
-      chise.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location]);
+      chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location], cy);
     }
   }
 };
