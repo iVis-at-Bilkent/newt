@@ -961,7 +961,7 @@ module.exports = function () {
       }
     });
 
-    $('.network-panel').on("click", ".biogene-info .expandable", function (evt) {
+    $(document).on("click", ".biogene-info .expandable .network-panel", function (evt) {
 
       // get the recently active tab
       var activeTab = appUtilities.getActiveNetworkPanel();
@@ -989,7 +989,7 @@ module.exports = function () {
     // this is used to detect a drag and drop of nodes from the palette
     // cy doesn't provide a clean way to handle events from the outside of cy
     // so here we need to go through the container and fire events down the chain manually to cy
-    $('.network-panel').on("mouseup", function (evt) {
+    $(document).on("mouseup", ".network-panel", function (evt) {
 
       // get the recently active tab
       var activeTab = appUtilities.getActiveNetworkPanel();
