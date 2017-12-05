@@ -59,4 +59,7 @@ $(document).ready(function () {
 
   // create a new network and access the related chise.js instance
   appUtilities.createNewNetwork();
+
+  // launch with a model file
+  appMenu().launchWithModelFile();
 });

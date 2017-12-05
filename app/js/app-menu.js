@@ -32,6 +32,7 @@ module.exports = function () {
       }
     });
   }
+  
   function loadSample(filename) {
 
     // use the active chise instance
@@ -40,6 +41,100 @@ module.exports = function () {
     var textXml = (new XMLSerializer()).serializeToString(chiseInstance.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
     return chiseInstance.loadSample(filename, 'app/samples/');
+  }
+
+  function launchWithModelFile(){
+    var url_path = getParameterByName('url');
+    var uri_path = getParameterByName('uri');
+    if(url_path != undefined)
+      loadFromURL(url_path);
+    else if(uri_path != undefined)
+      loadFromURI(uri_path);
+  }
+
+  function loadFromURL(filepath){
+    var loadCallbackSBGNMLValidity = function (text) {
+      validateSBGNML(text);
+    }      
+    var loadCallbackInvalidityWarning  = function () {
+      promptInvalidFileView.render();
+    }
+
+    if(filepath == undefined)
+      return;
+
+    //load file via url from remote
+    if(filepath.indexOf('http') === 0){
+      var filename = filepath.split('/');
+      if(filename.length > 0)
+        filename = filename[filename.length - 1];
+      else
+        filename = 'remote';
+
+      var fileExtension = filename.split('.');
+      if(fileExtension.length > 0)
+        fileExtension = fileExtension[fileExtension.length - 1];
+      else
+        fileExtension = 'txt';
+
+      $.ajax({
+        type: 'get',
+        url: filepath,
+        success: function(result){
+          var fileToLoad = new File([result], filename, {
+            type: 'text/' + fileExtension,
+            lastModified: Date.now()
+          });
+          
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          promptInvalidFileView.render();
+          $("#new-file").trigger('click');
+        }
+      });       
+    }
+  }
+
+  function loadFromURI(uri){
+
+    var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
+          + uri + "&format=SBGN";
+
+    var filename = uri + '.sbgnml';
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.startSpinner('paths-byURI-spinner');
+
+    $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null) {
+            chiseInstance.endSpinner('paths-byURI-spinner');
+            promptInvalidURIView.render();
+            $("#new-file").trigger('click');
+          }
+          else {
+            $(document).trigger('sbgnvizLoadFile', filename);
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
+            chiseInstance.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd');
+          }
+        }
+      });
+  }
+
+  function getParameterByName(name, url) {
+    if (!url){
+      url = window.location.href;
+    }
+
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"), results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
   console.log('init the sbgnviz template/page');
@@ -64,6 +159,7 @@ module.exports = function () {
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
+  promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
 
   toolbarButtonsAndMenu();
 

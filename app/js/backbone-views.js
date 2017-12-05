@@ -1848,5 +1848,6 @@ module.exports = {
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
   AnnotationListView: AnnotationListView,
-  AnnotationElementView: AnnotationElementView
+  AnnotationElementView: AnnotationElementView,
+  PromptInvalidURIView: PromptInvalidURIView
 };
