@@ -42,36 +42,147 @@ module.exports = function () {
     return chiseInstance.loadSample(filename, 'app/samples/');
   }
 
-  console.log('init the sbgnviz template/page');
+function loadFromURL(filepath){
+    var loadCallbackSBGNMLValidity = function (text) {
+      validateSBGNML(text);
+    }      
+    var loadCallbackInvalidityWarning  = function () {
+      promptInvalidFileView.render();
+    }
 
-  $(window).on('resize', _.debounce(dynamicResize, 100));
+    if(filepath == undefined)
+      return;
 
-  // appUtilities.dynamicResize();
+    //load file via url from remote
+    if(filepath.indexOf('http') === 0){
+      var filename = filepath.split('/');
+      if(filename.length > 0)
+        filename = filename[filename.length - 1];
+      else
+        filename = 'remote';
 
-  layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
-  colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
-  //generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
-  mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
-  mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
-  mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
-  pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
-  pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
-  //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
-  fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
-  promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
-  promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
-  promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
-  reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
-  gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
-  fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
+      var fileExtension = filename.split('.');
+      if(fileExtension.length > 0)
+        fileExtension = fileExtension[fileExtension.length - 1];
+      else
+        fileExtension = 'txt';
 
-  toolbarButtonsAndMenu();
+      $.ajax({
+        type: 'get',
+        url: filepath,
+        success: function(result){
+          var fileToLoad = new File([result], filename, {
+            type: 'text/' + fileExtension,
+            lastModified: Date.now()
+          });
+          
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          promptInvalidFileView.render();
+          $("#new-file").trigger('click');
+        }
+      });       
+    }
+  }
 
-  keyboardShortcuts();
+  function loadFromURI(uri){
 
-  // Events triggered by sbgnviz module
+    var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
+          + uri + "&format=SBGN";
+
+    var filename = uri + '.sbgnml';
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.startSpinner('paths-byURI-spinner');
+
+    $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null) {
+            chiseInstance.endSpinner('paths-byURI-spinner');
+            promptInvalidURIView.render();
+            $("#new-file").trigger('click');
+          }
+          else {
+            $(document).trigger('sbgnvizLoadFile', filename);
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
+            chiseInstance.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd');
+          }
+        }
+      });
+  }
+
+  function getParameterByName(name, url) {
+    if (!url){
+      url = window.location.href;
+    }
+
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
+    var results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  $(document).ready(function () {
+    console.log('init the sbgnviz template/page');
+    
+    $(window).on('resize', _.debounce(dynamicResize, 100));
+    dynamicResize();
+
+    layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
+    colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
+    //generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
+    mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
+    mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
+    mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
+    pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
+    pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
+    //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
+    fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
+    promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
+    promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
+    promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
+    reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
+    gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
+    fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
+    promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'}); 
+
+    toolbarButtonsAndMenu();
+    modeHandler.initilize();
+    //generalPropertiesView.render();
+    colorSchemeInspectorView.render();
+    mapTabGeneralPanel.render();
+    mapTabLabelPanel.render();
+    mapTabRearrangementPanel.render();
+    appUndoActions.refreshColorSchemeMenu({value: appUtilities.defaultGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
+
+    // loadSample is called before the container is resized in dynamicResize function, so we need to wait
+    // wait until it is resized before loading the default sample. As the current solution we set a 100 ms
+    // time out before loading the default sample.
+    // TODO search for a better way.
+    setTimeout(function(){
+      //check URL query
+      var url_path = getParameterByName('url');
+      var uri_path = getParameterByName('uri');
+      if(url_path != undefined)
+        loadFromURL(url_path);
+      else if(uri_path != undefined)
+        loadFromURI(uri_path);
+      else
+        $("#new-file").trigger('click');
+      
+      keyboardShortcuts();
+    }, 100);
+
+  });
+
+   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
-
     // check if the event is triggered for the active instance
     var isActiveInstance = ( cy == appUtilities.getActiveCy() );
 
