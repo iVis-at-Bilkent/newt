@@ -5,12 +5,555 @@
  */
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
+var chise = require('chise');
 
 var appUtilities = {};
+
+// Get the whole scratchpad reserved for newt (on an element or core) or get a single property of it
+appUtilities.getScratch = function (cyOrEle, name) {
+  if (cyOrEle.scratch('_newt') === undefined) {
+    cyOrEle.scratch('_newt', {});
+  }
+
+  var scratch = cyOrEle.scratch('_newt');
+  var retVal = ( name === undefined ) ? scratch : scratch[name];
+  return retVal;
+}
+
+// Set a single property on scratchpad of an element or the core
+appUtilities.setScratch = function (cyOrEle, name, val) {
+  this.getScratch(cyOrEle)[name] = val;
+}
+
+// id for the next network to be created, starts by 0
+// a unique div selector is to be created using this id
+appUtilities.nextNetworkId = 0;
 
 // Configuration flag for whether the operations should be undoable.
 // It is to be checked and passed to extensions/libraries where applicable.
 appUtilities.undoable = true;
+
+// A stack to order network ids. The top of stack represents the active network while
+// the one closest to the top is represents the previous active network.
+appUtilities.networkIdsStack = [];
+
+// map of unique network id to related chise.js instance
+appUtilities.networkIdToChiseInstance = {};
+
+appUtilities.adjustUIComponents = function (_cy) {
+
+  // if _cy param is not set use the active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
+  // adjust UI components in inspector map tab
+
+  appUtilities.colorSchemeInspectorView.render();
+  appUtilities.mapTabGeneralPanel.render();
+  appUtilities.mapTabLabelPanel.render();
+  appUtilities.mapTabRearrangementPanel.render();
+
+  // needing an appUndoActions instance here is something unexpected
+  // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
+  // that uses the active cy instance
+  var appUndoActionsFactory = require('./app-undo-actions-factory');
+  var appUndoActions = appUndoActionsFactory(appUtilities.getActiveCy());
+
+  // get current general properties for cy
+  var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+  // refresh color schema menu
+  appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView});
+
+  // set the file content by the current file name for cy
+  var fileName = appUtilities.getScratch(cy, 'currentFileName');
+  appUtilities.setFileContent(fileName);
+
+  // reset the status of undo redo buttons
+  appUtilities.refreshUndoRedoButtonsStatus(cy);
+
+  // adjust UI components related to mode properties
+
+  // access the mode properties of cy
+  var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+  // html values to select
+  var nodeVal = modeProperties.selectedNodeType.replace(/ /gi, '-'); // Html values includes '-' instead of ' '
+  var edgeVal = modeProperties.selectedEdgeType.replace(/ /gi, '-'); // Html values includes '-' instead of ' '
+
+  var mode = modeProperties.mode;
+  var sustainMode = modeProperties.sustainMode;
+  var nodeLang = modeProperties.selectedNodeLanguage;
+  var edgeLang = modeProperties.selectedEdgeLanguage;
+
+  $('.node-palette img').removeClass('selected-mode');
+  $('.edge-palette img').removeClass('selected-mode');
+
+  // Get images for node/edge palettes
+  var nodeImg = $('.node-palette img[value="'+nodeVal+'"][language="' + nodeLang + '"]');
+  var edgeImg = $('.edge-palette img[value="'+edgeVal+'"][language="' + edgeLang + '"]');
+
+  // also set the icons in toolbar accordingly
+  $('#add-node-mode-icon').attr('src', nodeImg.attr('src'));
+  $('#add-node-mode-icon').attr('title', "Create a new " + nodeImg.attr('title'));
+  $('#add-edge-mode-icon').attr('src', edgeImg.attr('src'));
+  $('#add-edge-mode-icon').attr('title', "Create a new " + edgeImg.attr('title'));
+
+  // unactivate all UI components
+  $('#select-mode-icon').parent().removeClass('selected-mode');
+  $('#add-edge-mode-icon').parent().removeClass('selected-mode');
+  $('#add-node-mode-icon').parent().removeClass('selected-mode');
+  $('#add-edge-mode-icon').parent().removeClass('selected-mode-sustainable');
+  $('#add-node-mode-icon').parent().removeClass('selected-mode-sustainable');
+  $('.node-palette img').addClass('inactive-palette-element');
+  $('.edge-palette img').addClass('inactive-palette-element');
+  $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
+
+  // Node/edge palettes should be initialized according to default nodeVal and edgeVal
+  nodeImg.addClass('selected-mode');
+  edgeImg.addClass('selected-mode');
+
+  var modeHandler = require('./app-mode-handler');
+
+  // adjust UI components according to the params
+  if ( mode === 'selection-mode' ) {
+
+    $('#select-mode-icon').parent().addClass('selected-mode');
+
+    modeHandler.autoEnableMenuItems(true);
+  }
+  else if ( mode === 'add-node-mode' ) {
+
+    $('#add-node-mode-icon').parent().addClass('selected-mode');
+    $('.node-palette img').removeClass('inactive-palette-element');
+
+    modeHandler.autoEnableMenuItems(false);
+
+    if ( sustainMode ) {
+      $('#add-node-mode-icon').parent().addClass('selected-mode-sustainable');
+      $('.node-palette .selected-mode').addClass('selected-mode-sustainable');
+    }
+
+  }
+  else if ( mode === 'add-edge-mode' ) {
+
+    $('#add-edge-mode-icon').parent().addClass('selected-mode');
+    $('.edge-palette img').removeClass('inactive-palette-element');
+
+    modeHandler.autoEnableMenuItems(false);
+
+    if ( sustainMode ) {
+      $('#add-edge-mode-icon').parent().addClass('selected-mode-sustainable');
+      $('.edge-palette .selected-mode').addClass('selected-mode-sustainable');
+    }
+
+  }
+
+  // adjust status of grid guide related icons in toolbar
+
+  // get the current status of related variables for cy
+  var toggleEnableGuidelineAndSnap = appUtilities.getScratch(cy, 'toggleEnableGuidelineAndSnap');
+  var toggleShowGridEnableSnap = appUtilities.getScratch(cy, 'toggleShowGridEnableSnap');
+
+  // adjust toggle-guidelines-snapping-icon icons accordingly
+  if (toggleEnableGuidelineAndSnap){
+    $('#toggle-guidelines-snapping-icon').addClass('toggle-mode-sustainable');
+  }
+  else{
+    $('#toggle-guidelines-snapping-icon').removeClass('toggle-mode-sustainable');
+  }
+
+  // adjust oggle-grid-snapping-icon accordingly
+  if (toggleShowGridEnableSnap){
+    $('#toggle-grid-snapping-icon').addClass('toggle-mode-sustainable');
+  }
+  else{
+     $('#toggle-grid-snapping-icon').removeClass('toggle-mode-sustainable');
+  }
+};
+
+// get id of the div panel for the given network id
+appUtilities.getNetworkPanelId = function (networkId) {
+  return 'sbgn-network-container-' + networkId;
+};
+
+// get id of the tab for the the given network id
+appUtilities.getNetworkTabId = function (networkId) {
+  return 'sbgn-network-tab-' + networkId;
+};
+
+// get network id by given network tab or panel id or selector
+// that is basically the remaining part of the string after the last occurance of '-'
+appUtilities.getNetworkId = function (tabOrPanelId) {
+
+  // if the id is a number no need to process
+  if (typeof tabOrPanelId === 'number') {
+    return tabOrPanelId;
+  }
+
+  // get the last index of '-'
+  var index =  tabOrPanelId.lastIndexOf("-");
+
+  // get the remaining part of string after the last occurance of '-'
+  var rem = tabOrPanelId.substring(index+1);
+
+  // id is the integer representation of the remaining string
+  var id = parseInt(rem);
+
+  // return the obtained id
+  return id;
+};
+
+// get selector of the div panel for the given network id
+// it is basically '#' + panelId
+appUtilities.getNetworkPanelSelector = function (networkId) {
+  return '#' + this.getNetworkPanelId(networkId);
+};
+
+// selector of the tab for the the given network id
+// it is basically '#' + tabId
+appUtilities.getNetworkTabSelector = function (networkId) {
+  return '#' + this.getNetworkTabId(networkId);
+};
+
+// get the string to represent the tab for given network id
+appUtilities.getNetworkTabDesc = function (networkId) {
+  return 'Network #' + networkId;
+};
+
+// map given chise instance to the given network id
+// if key param is a cy instance or tab/panel id/selector use the actual network id
+appUtilities.putToChiseInstances = function (key, chiseInstance) {
+
+  // if key is a cy instance go for its container id
+  var networkId = typeof key === 'object' ? key.container().id : key;
+
+  // if the network id parameter is the network tab/panel id/selector get the actual network id
+  networkId = this.getNetworkId(networkId);
+
+  // Throw error if there is already an instance mapped for the networkId
+  if ( this.networkIdToChiseInstance[networkId] ) {
+    throw 'A chise instance is already mapped for network id ' + networkId;
+  }
+
+  // perfrom the actual mapping
+  this.networkIdToChiseInstance[networkId] = chiseInstance;
+};
+
+// remove the chise instance mapped to the given key
+// if key param is a cy instance or tab/panel id/selector use the actual network id
+appUtilities.removeFromChiseInstances = function (key) {
+
+  // if key is a cy instance go for its container id
+  var networkId = typeof key === 'object' ? key.container().id : key;
+
+  // if the network id parameter is the network tab/panel id/selector get the actual network id
+  networkId = this.getNetworkId(networkId);
+
+  // Throw error if there is no instance mapped for the networkId
+  if ( !this.networkIdToChiseInstance[networkId] ) {
+    throw 'No chise instance is mapped for network id ' + networkId;
+  }
+
+  // perform the actual removal
+  delete this.networkIdToChiseInstance[networkId];
+};
+
+// get the chise instance mapped to the given key
+// if key param is a cy instance or tab/panel id/selector use the actual network id
+appUtilities.getChiseInstance = function (key) {
+
+  // if key is a cy instance go for its container id
+  var networkId = typeof key === 'object' ? key.container().id : key;
+
+  // if the network id parameter is the network tab/panel id/selector get the actual network id
+  networkId = this.getNetworkId(networkId);
+
+  // return the chise instance mapped for the network id
+  return this.networkIdToChiseInstance[networkId];
+};
+
+// If there is just one network then network tabs should not be rendered.
+// This function is to adjust that.
+appUtilities.adjustVisibilityOfNetworkTabs = function () {
+
+  var tabsContainer = $('#network-tabs-list');
+
+  // if there is just one tab hide tabs container else show it
+  if ( this.networkIdsStack.length === 1 ) {
+    tabsContainer.hide();
+  }
+  else {
+    tabsContainer.show();
+  }
+
+};
+
+// creates a new network and returns the new chise.js instance that is created for this network
+appUtilities.createNewNetwork = function () {
+
+  // id of the div panel associated with the new network
+  var networkPanelId = appUtilities.getNetworkPanelId(appUtilities.nextNetworkId);
+
+  // id of the tab for the new network
+  var networkTabId = appUtilities.getNetworkTabId(appUtilities.nextNetworkId);
+
+  // string to represent the new tab
+  var networkTabDesc = appUtilities.getNetworkTabDesc(appUtilities.nextNetworkId);
+
+  // create physical html components for the new network
+  appUtilities.createPhysicalNetworkComponents(networkPanelId, networkTabId, networkTabDesc);
+
+  // generate network panel selector from the network panel id
+  var networkPanelSelector = appUtilities.getNetworkPanelSelector(appUtilities.nextNetworkId);
+
+  // initialize current properties for the new instance by copying the default properties
+  var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
+  var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
+  var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
+
+  // Create a new chise.js instance
+  var newInst = chise({
+    networkContainerSelector: networkPanelSelector,
+    // whether to fit label to nodes
+    fitLabelsToNodes: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.fitLabelsToNodes;
+    },
+    // whether to fit label to nodes
+    fitLabelsToInfoboxes: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.fitLabelsToInfoboxes;
+    },
+    // dynamic label size it may be 'small', 'regular', 'large'
+    dynamicLabelSize: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.dynamicLabelSize;
+    },
+    // percentage used to calculate compound paddings
+    compoundPadding: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.compoundPadding;
+    },
+    // arrow size changed by a slider on a scale from 0.5-2
+    arrowScale: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.arrowScale;
+    },
+    extraCompartmentPadding: currentGeneralProperties.extraCompartmentPadding,
+    extraComplexPadding: currentGeneralProperties.extraComplexPadding,
+    showComplexName: currentGeneralProperties.showComplexName,
+    // Whether to adjust node label font size automatically.
+    // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
+    // instead of doing it.
+    adjustNodeLabelFontSizeAutomatically: function() {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+    },
+    // whether to improve flow (swap nodes)
+    improveFlow: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.improveFlow;
+    },
+    undoable: appUtilities.undoable,
+    undoableDrag: function() {
+      return appUtilities.ctrlKeyDown !== true;
+    }
+  });
+
+  // set scracth pad of the related cy instance with these properties
+  appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
+  appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
+  appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
+
+  // init the current file name for the map
+  appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.sbgnml');
+
+  // register cy extensions, bind cy events etc.
+  var appCy = require('./app-cy');
+  appCy(newInst);
+
+  var modeHandler = require('./app-mode-handler');
+  modeHandler.initModeProperties(newInst.getCy());
+
+  // maintain networkIdToChiseInstance map
+  appUtilities.putToChiseInstances(appUtilities.nextNetworkId, newInst);
+
+  // push network id to the top of network ids stack
+  this.networkIdsStack.push(appUtilities.nextNetworkId);
+
+  // if this is the first network to be created set it as active network here
+  // otherwise it will be activated (by listening html events) when the new tab is choosen
+  if (appUtilities.nextNetworkId === 0) {
+    appUtilities.setActiveNetwork(appUtilities.nextNetworkId);
+  }
+
+  // physically open the new tab
+  appUtilities.chooseNetworkTab(appUtilities.nextNetworkId);
+
+  // resize html components according to the window size
+  appUtilities.dynamicResize();
+
+  // activate palette tab
+  if (!$('#inspector-palette-tab').hasClass('active')) {
+    $('#inspector-palette-tab a').tab('show');
+    $('#inspector-style-tab a').blur();
+  }
+
+  // increment new network id
+  appUtilities.nextNetworkId++;
+
+  // adjust the visibility of network tabs
+  appUtilities.adjustVisibilityOfNetworkTabs();
+
+  // return the new instance
+  return newInst;
+};
+
+// close the active network
+appUtilities.closeActiveNetwork = function () {
+
+  // active network id is the one that is at the top of the stack
+  // pop and get it
+  var activeNetworkId = this.networkIdsStack.pop();
+
+  // remove the chise instance mapped to the actual network id from the chise instances map
+  this.removeFromChiseInstances(activeNetworkId);
+
+  // remove physical html components for networkId
+  this.removePhysicalNetworkComponents(activeNetworkId);
+
+  // If there is no other network after closing the active one create a new network
+  // otherwise just select the tab for the new active network
+  if ( this.networkIdsStack.length === 0 ) {
+
+    // create a new network
+    this.createNewNetwork();
+  }
+  else {
+
+    // get the new active network id from the top of the stack
+    var newActiveNetworkId = this.networkIdsStack[this.networkIdsStack.length - 1];
+
+    // choose the network tab for the new active network
+    this.chooseNetworkTab(newActiveNetworkId);
+  }
+
+  // adjust the visibility of network tabs
+  this.adjustVisibilityOfNetworkTabs();
+
+};
+
+// removes physical html components for the network that is represented by given networkKey
+appUtilities.removePhysicalNetworkComponents = function (networkKey) {
+
+  // use the actual network id (network key may not be equal to it)
+  var networkId = appUtilities.getNetworkId(networkKey);
+
+  // get the selector of network panel
+  var panelSelector = appUtilities.getNetworkPanelSelector(networkId);
+
+  // get the selector of tab
+  var tabSelector = appUtilities.getNetworkTabSelector(networkId);
+
+  // remove the html components corresponding to the selectors
+  $(panelSelector).remove();
+  $(tabSelector).remove();
+};
+
+appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc) {
+
+  // the component that includes the tab panels
+  var panelsParent = $('#network-panels-container');
+
+  var newPanelStr = '<div id="' + panelId + '" class="tab-pane fade network-panel"></div>';
+
+  // create new panel inside the panels parent
+  panelsParent.append(newPanelStr);
+
+  // the container that lists the network tabs
+  var tabsList = $('#network-tabs-list');
+
+  var newTabStr = '<li id="' + tabId + '" class="chise-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
+
+  // create new tab inside the list of network tabs
+  tabsList.append(newTabStr);
+};
+
+// basically get the active chise instance
+appUtilities.getActiveChiseInstance = function () {
+
+  // get the networkId of the active network that is at the top of networkIdsStack
+  var activeNetworkId = this.networkIdsStack[this.networkIdsStack.length - 1];
+
+  // return the chise instance mapped for active network id that is the active networks itself
+  return this.getChiseInstance(activeNetworkId);
+};
+
+// sets the active network through the network key to be activated
+appUtilities.setActiveNetwork = function (networkKey) {
+
+  // get chise instance for network key
+  var chiseInstance = this.getChiseInstance(networkKey);
+
+  // use the actual network id (network key would not be the actual network id)
+  var networkId = this.getNetworkId(networkKey);
+
+  // get old index of the network
+  var oldIndex = this.networkIdsStack.indexOf(networkId);
+
+  // if there is no existing network with this id throw an error
+  if ( oldIndex === -1 ) {
+    throw 'Network with id ' + networkId + ' cannot be found';
+  }
+
+  // remove the network from the old index
+  this.networkIdsStack.splice(oldIndex, 1);
+
+  // add the new network to the top of the stack
+  this.networkIdsStack.push(networkId);
+
+  // adjust UI components for †he activated network
+  this.adjustUIComponents();
+
+};
+
+// chooses a network tab programatically
+appUtilities.chooseNetworkTab = function (networkKey) {
+  // in case of network key is not the network id
+  var networkId = this.getNetworkId(networkKey);
+
+  // get id of physical html tab for the ntework id
+  var networkTabId = this.getNetworkTabId(networkId);
+
+  // if network tab is not activated activate it
+  if (!$('#' + networkTabId).hasClass('active')) {
+    $('#' + networkTabId + ' a').tab('show');
+  }
+};
+
+// returns the sbgnviz.js instance associated with the currently active netwrok
+appUtilities.getActiveSbgnvizInstance = function () {
+
+  var chiseInstance = this.getActiveChiseInstance();
+
+  return chiseInstance ? chiseInstance.getSbgnvizInstance() : false;
+};
+
+// returns the cy instance associated with the currently active network
+appUtilities.getActiveCy = function () {
+
+  var chiseInstance = this.getActiveChiseInstance();
+
+  return chiseInstance ? chiseInstance.getCy() : false;
+};
+
+// returns active network panel
+appUtilities.getActiveNetworkPanel = function () {
+
+  var activeCy = this.getActiveCy();
+
+  return activeCy ? activeCy.container() : false;
+};
 
 appUtilities.defaultLayoutProperties = {
   name: 'cose-bilkent',
@@ -31,13 +574,8 @@ appUtilities.defaultLayoutProperties = {
   gravityCompound: 1.0,
   gravityRange: 3.8,
   initialEnergyOnIncremental: 0.3,
-  improveFlow: true,
-  stop: function () {
-    chise.endSpinner('layout-spinner');
-  }
+  improveFlow: true
 };
-
-appUtilities.currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
 
 appUtilities.defaultGridProperties = {
   showGrid: false,
@@ -66,8 +604,6 @@ appUtilities.defaultGridProperties = {
   verticalDistLine: [0, 0],
 };
 
-appUtilities.currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
-
 appUtilities.defaultGeneralProperties = {
   compoundPadding: 10,
   extraCompartmentPadding: 14,
@@ -85,12 +621,10 @@ appUtilities.defaultGeneralProperties = {
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
   defaultInfoboxWidth: 30,
-  mapType: function() {return chise.getMapType() || "Unknown"},
+  mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: ""
 };
-
-appUtilities.currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
 
 appUtilities.setFileContent = function (fileName) {
   var span = document.getElementById('file-name');
@@ -110,41 +644,74 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-appUtilities.triggerIncrementalLayout = function () {
+appUtilities.triggerIncrementalLayout = function (_cy) {
+
+  // use parametrized cy if exists. Otherwise use the recently active cy
+  var cy = _cy || this.getActiveCy();
+
+  // access the current general properties of cy
+  var currentGeneralProperties = this.getScratch(cy, 'currentGeneralProperties');
+
+  // access the current layout properties of cy
+  var currentLayoutProperties = this.getScratch(cy, 'currentLayoutProperties');
+
   // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
   // If it is 'during' use it as is. Set 'randomize' and 'fit' options to false
   var preferences = {
     randomize: false,
-    animate: this.currentGeneralProperties.animateOnDrawingChanges ? 'end' : false,
+    animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false,
     fit: false
   };
-  if (this.currentLayoutProperties.animate === 'during') {
+
+  if (currentLayoutProperties.animate === 'during') {
     delete preferences.animate;
   }
 
-  this.layoutPropertiesView.applyLayout(preferences, true); // layout must not be undoable
+  // access chise instance related to cy
+  var chiseInstance = appUtilities.getChiseInstance(cy);
+
+  // layout must not be undoable
+  this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
 };
 
-appUtilities.getExpandCollapseOptions = function () {
+appUtilities.getExpandCollapseOptions = function (_cy) {
+
   var self = this;
+
   return {
     fisheye: function () {
-      return self.currentGeneralProperties.rearrangeAfterExpandCollapse;
+
+      // use parametrized cy if exists. Otherwise use the recently active cy
+      var cy = _cy || self.getActiveCy();
+
+      return self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse;
     },
     animate: function () {
-      return self.currentGeneralProperties.animateOnDrawingChanges;
+
+      // use parametrized cy if exists. Otherwise use the recently active cy
+      var cy = _cy || self.getActiveCy();
+
+      return self.getScratch(cy, 'currentGeneralProperties').animateOnDrawingChanges;
     },
     layoutBy: function () {
-      if (!self.currentGeneralProperties.rearrangeAfterExpandCollapse) {
+
+      // use parametrized cy if exists. Otherwise use the recently active cy
+      var cy = _cy || self.getActiveCy();
+
+      if ( !self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse ) {
         return;
       }
 
-      self.triggerIncrementalLayout();
+      self.triggerIncrementalLayout(cy);
     },
     expandCollapseCueSize: 12,
-    expandCollapseCuePosition: function (node) {;
+    expandCollapseCuePosition: function (node) {
+
+       // use parametrized cy if exists. Otherwise use the recently active cy
+       var cy = _cy || self.getActiveCy();
+
        var offset = 1, rectSize = 12; // this is the expandCollapseCueSize;
-       var size = cy.zoom() < 1 ? rectSize / (2*cy.zoom()) : rectSize / 2; 
+       var size = cy.zoom() < 1 ? rectSize / (2*cy.zoom()) : rectSize / 2;
        var x = node.position('x') - node.width() / 2 - parseFloat(node.css('padding-left'))
            + parseFloat(node.css('border-width')) + size + offset;
        if (node.data("class") == "compartment"){
@@ -161,10 +728,13 @@ appUtilities.getExpandCollapseOptions = function () {
 };
 
 appUtilities.dynamicResize = function () {
-  var win = $(window);
 
-  var windowWidth = win.width();
-  var windowHeight = win.height();
+  // get window inner width and inner height that includes scrollbars when they are rendered
+  // using $(window).width() would be problematic when scrolls are visible
+  // please see: https://stackoverflow.com/questions/19582862/get-browser-window-width-including-scrollbar
+  // and https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth
+  var windowWidth = window.innerWidth;
+  var windowHeight = window.innerHeight;
 
   var canvasWidth = 1000;
   var canvasHeight = 680;
@@ -174,7 +744,7 @@ appUtilities.dynamicResize = function () {
     //This is the margin on left and right of the main content when the page is
     //displayed
     var mainContentMargin = 10;
-    $("#sbgn-network-container").width(windowWidth  * 0.8 - mainContentMargin);
+    $("#network-panels-container, .network-panel").width(windowWidth  * 0.8 - mainContentMargin);
     $("#sbgn-inspector").width(windowWidth  * 0.2 - mainContentMargin);
     var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
@@ -185,7 +755,7 @@ appUtilities.dynamicResize = function () {
 
   if (windowHeight > canvasHeight)
   {
-    $("#sbgn-network-container").height(windowHeight * 0.85);
+    $("#network-panels-container, .network-panel").height(windowHeight * 0.85);
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
 };
@@ -225,8 +795,15 @@ appUtilities.nodeQtipFunction = function (node) {
   });
 };
 */
-appUtilities.refreshUndoRedoButtonsStatus = function () {
+appUtilities.refreshUndoRedoButtonsStatus = function (_cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
+  // get undo redo extension instance for cy
   var ur = cy.undoRedo();
+
+  // refresh status of undo button accordingly
   if (ur.isUndoStackEmpty()) {
     $("#undo-last-action").parent("li").addClass("disabled");
   }
@@ -234,6 +811,7 @@ appUtilities.refreshUndoRedoButtonsStatus = function () {
     $("#undo-last-action").parent("li").removeClass("disabled");
   }
 
+  // refresh status of redo button accordingly
   if (ur.isRedoStackEmpty()) {
     $("#redo-last-action").parent("li").addClass("disabled");
   }
@@ -248,62 +826,104 @@ appUtilities.resetUndoRedoButtons = function () {
 };
 
 // Enable drag and drop mode
-appUtilities.enableDragAndDropMode = function() {
-  appUtilities.dragAndDropModeEnabled = true;
-  $("#sbgn-network-container canvas").addClass("target-cursor");
+appUtilities.enableDragAndDropMode = function (_cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
+  appUtilities.setScratch(cy, 'dragAndDropModeEnabled', true);
+
+  $(cy.container()).find('canvas').addClass("target-cursor");
+
   cy.autolock(true);
   cy.autounselectify(true);
 };
 
 // Disable drag and drop mode
-appUtilities.disableDragAndDropMode = function() {
-  appUtilities.dragAndDropModeEnabled = null;
-  appUtilities.nodesToDragAndDrop = null;
-  $("#sbgn-network-container canvas").removeClass("target-cursor");
+appUtilities.disableDragAndDropMode = function (_cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
+  appUtilities.setScratch(cy, 'dragAndDropModeEnabled', null);
+  appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
+
+  $(cy.container()).find('canvas').removeClass("target-cursor");
+
   cy.autolock(false);
   cy.autounselectify(false);
 };
 
 // Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
-appUtilities.showHiddenNeighbors = function(eles) {
-    var extendedList = chise.elementUtilities.extendNodeList(eles);
-    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    // get the associated cy instance
+    var cy = chiseInstance.getCy();
+
+    // get current general properties for assocated cy instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    var extendedList = chiseInstance.elementUtilities.extendNodeList(eles);
+    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
         //Put them near node, show and perform incremental layout
-        chise.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this));
+        chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this, cy));
     }
     else
     {
         //Just show them
-        chise.showEles(extendedList);
+        chiseInstance.showEles(extendedList);
     }
 };
 
 // Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
-appUtilities.showAll = function() {
-    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+appUtilities.showAll = function (_chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    // get the associated cy instance
+    var cy = chiseInstance.getCy();
+
+    // get current general properties for cy instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
       //Show all and perform incremental layout
-     chise.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this));
+     chiseInstance.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this, cy));
     }
     else
     {
       //Just show them all
-      chise.showAll();
+      chiseInstance.showAll();
     }
 };
 
 // Hides nodes and perform incremental layout afterward if Rearrange option is checked
-appUtilities.hideNodesSmart = function(eles) {
-    if (this.currentGeneralProperties.rearrangeAfterExpandCollapse )
+appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    // get the associated cy instance
+    var cy = chiseInstance.getCy();
+
+    // get current general properties for cy instance
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
     {
         //Put them near node and perform incremental layout
-        chise.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this));
+        chiseInstance.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this, cy));
     }
     else
     {
         //Just show them
-        chise.hideNodesSmart(eles);
+        chiseInstance.hideNodesSmart(eles);
     }
 };
 
@@ -990,11 +1610,16 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
 };
 
 // change the global style of the map by applying the current color scheme
-appUtilities.applyMapColorScheme = function(newColorScheme, self) {
+appUtilities.applyMapColorScheme = function(newColorScheme, self, _cy) {
+
+  // if _cy param is set use it else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
   var eles = cy.nodes();
   var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
   var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
   var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
+  var chiseInstance = appUtilities.getActiveChiseInstance();
 
   var actions = [];
   // edit style of the current map elements
@@ -1007,7 +1632,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, self) {
   for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
     classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
     // nodeClass may not be defined in the defaultProperties (for edges, for example)
-    if(nodeClass in chise.elementUtilities.defaultProperties){
+    if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
       actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
     }
   }
@@ -1035,7 +1660,11 @@ appUtilities.removeDragImage = function () {
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
 };
 
-appUtilities.getAllStyles = function () {
+appUtilities.getAllStyles = function (_cy) {
+
+  // use _cy param if it is set else use the recently active cy instance
+  var cy = _cy || appUtilities.getActiveCy();
+
   var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively();
   var collapsedChildrenNodes = collapsedChildren.filter("node");
   var nodes = cy.nodes().union(collapsedChildrenNodes);
@@ -1124,7 +1753,7 @@ appUtilities.getAllStyles = function () {
     currentEdgeStyle.idList.push(edge.data('id'));
   }
 
-  var containerBgColor = $("#sbgn-network-container").css('background-color');
+  var containerBgColor = $(cy.container()).css('background-color');
   if (containerBgColor == "transparent") {
     containerBgColor = "#ffffff";
   }
@@ -1208,37 +1837,50 @@ appUtilities.getColorsFromElements = function (nodes, edges) {
  * updates current general properties and refreshes map
  * @mapProperties : a set of properties as object
  */
-appUtilities.setMapProperties = function(mapProperties) {
+appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
+
+  // use _chiseInstance param if it is set else use the recently active chise instance
+  var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+  // use associated cy instance
+  var cy = chiseInstance.getCy();
+
+  // get current general properties for cy
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
   for (property in mapProperties){
     var value = mapProperties[property];
     // convert strings to correct appropriate types
     if (value == 'true' || value == 'false')  // if boolean
-      appUtilities.currentGeneralProperties[property] = (value == 'true');
+      currentGeneralProperties[property] = (value == 'true');
     else if (Number(value))  // if number
-      appUtilities.currentGeneralProperties[property] = Number(value);
+      currentGeneralProperties[property] = Number(value);
     else  // if string
-      appUtilities.currentGeneralProperties[property] = value;
+      currentGeneralProperties[property] = value;
   }
     // refresh map with new settings
-    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    chise.refreshPaddings(); // Refresh/recalculate paddings
+    chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
+    chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
-    if (appUtilities.currentGeneralProperties.enablePorts) {
-      chise.enablePorts();
+    if (currentGeneralProperties.enablePorts) {
+      chiseInstance.enablePorts();
     }
     else {
-      chise.disablePorts();
+      chiseInstance.disablePorts();
     }
 
-    if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
-      chise.considerCompoundSizes();
+    if (currentGeneralProperties.allowCompoundNodeResize) {
+      chiseInstance.considerCompoundSizes();
     }
     else {
-      chise.omitCompoundSizes();
+      chiseInstance.omitCompoundSizes();
     }
 
-    cy.edges().css('arrow-scale', appUtilities.currentGeneralProperties.arrowScale);
+    cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
     cy.style().update();
+
+    // reset 'currentGeneralProperties' on scratchpad of cy
+    appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
 };
 
 module.exports = appUtilities;
