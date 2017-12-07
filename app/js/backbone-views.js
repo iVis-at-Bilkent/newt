@@ -708,6 +708,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       self.params.applyFisheyeOnExpandCollapse.value = appUtilities.defaultGeneralProperties.applyFisheyeOnExpandCollapse;
       self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
       actions.push({name: "changeMenu", param: self.params.rearrangeAfterExpandCollapse});
+      actions.push({name: "changeMenu", param: self.params.applyFisheyeOnExpandCollapse});
       actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});
       ur.do("batch", actions);
     });
