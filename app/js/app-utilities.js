@@ -329,6 +329,11 @@ appUtilities.createNewNetwork = function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.dynamicLabelSize;
     },
+    // Whether to assign default parent to nodes 
+    assignDefaultParent: function () {
+      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
+      return currentGeneralProperties.assignDefaultParent;
+    },
     // percentage used to calculate compound paddings
     compoundPadding: function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
@@ -611,6 +616,7 @@ appUtilities.defaultGeneralProperties = {
   arrowScale: 1.25,
   showComplexName: true,
   dynamicLabelSize: 'regular',
+  assignDefaultParent: false,
   fitLabelsToNodes: false,
   fitLabelsToInfoboxes: false,
   rearrangeAfterExpandCollapse: true,
