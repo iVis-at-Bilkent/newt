@@ -614,6 +614,7 @@ appUtilities.defaultGeneralProperties = {
   fitLabelsToNodes: false,
   fitLabelsToInfoboxes: false,
   rearrangeAfterExpandCollapse: true,
+  applyFisheyeOnExpandCollapse: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
@@ -684,7 +685,7 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       // use parametrized cy if exists. Otherwise use the recently active cy
       var cy = _cy || self.getActiveCy();
 
-      return self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse;
+      return self.getScratch(cy, 'currentGeneralProperties').applyFisheyeOnExpandCollapse;
     },
     animate: function () {
 
