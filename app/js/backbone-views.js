@@ -661,6 +661,9 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     self.params.rearrangeAfterExpandCollapse = {id: "rearrange-after-expand-collapse", type: "checkbox",
       property: "currentGeneralProperties.rearrangeAfterExpandCollapse"};
 
+    self.params.applyFisheyeOnExpandCollapse = {id: "apply-fisheye-on-expand-collapse", type: "checkbox",
+      property: "currentGeneralProperties.applyFisheyeOnExpandCollapse"};
+
     self.params.animateOnDrawingChanges = {id: "animate-on-drawing-changes", type: "checkbox",
       property: "currentGeneralProperties.animateOnDrawingChanges"};
 
@@ -672,6 +675,16 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       self.params.rearrangeAfterExpandCollapse.value = $('#rearrange-after-expand-collapse').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.rearrangeAfterExpandCollapse);
       $('#rearrange-after-expand-collapse').blur();
+    });
+
+    $(document).on("change", "#apply-fisheye-on-expand-collapse", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.applyFisheyeOnExpandCollapse.value = $('#apply-fisheye-on-expand-collapse').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.applyFisheyeOnExpandCollapse);
+      $('#apply-fisheye-on-expand-collapse').blur();
     });
 
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
@@ -692,6 +705,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       var ur = cy.undoRedo();
       var actions = [];
       self.params.rearrangeAfterExpandCollapse.value = appUtilities.defaultGeneralProperties.rearrangeAfterExpandCollapse;
+      self.params.applyFisheyeOnExpandCollapse.value = appUtilities.defaultGeneralProperties.applyFisheyeOnExpandCollapse;
       self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
       actions.push({name: "changeMenu", param: self.params.rearrangeAfterExpandCollapse});
       actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});

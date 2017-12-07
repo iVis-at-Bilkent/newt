@@ -45,7 +45,6 @@
                                 <input id="file-input" type="file" style="display:none" />
                                 <li><a href="#" type="file" id="new-file">New</a></li>
                                 <li><a href="#" type="file" id="load-file">Load...</a></li>
-                                <li><a href="#" type="file" id="close-file">Close</a></li>
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         Samples
@@ -73,9 +72,31 @@
                                     </ul>
                                 </li>
                                 <li><a href="#" id="save-as-sbgnml">Save...</a></li>
+                                <li><a href="#" type="file" id="close-file">Close</a></li>
+                                <li class="divider"></li>
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        Save as Image
+                                        Import
+                                        <!--<b class="right-caret"></b>-->
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
+                                        <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Export
+                                        <!--<b class="right-caret"></b>-->
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" id="export-as-sbgnml2-file">SBGN-ML 0.2</a></li>
+                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Export as Image
                                         <!--<b class="right-caret"></b>-->
                                     </a>
                                     <ul class="dropdown-menu">
@@ -84,6 +105,7 @@
                                         <li><a href="#" id="save-as-svg">SVG</a></li>
                                     </ul>
                                 </li>
+                                <li class="divider"></li>
                                 <li><a href="#" id="general-properties">Map Properties...</a></li>
                             </ul>
                         </li>
@@ -1055,6 +1077,16 @@
 
                 <td>
                 <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
+                <span class="add-on layout-text"> Apply Fisheye on Complexity Management </span>
+                </td>
+
+                <td>
+                <input id="apply-fisheye-on-expand-collapse" type="checkbox" class="layout-text" <% if (applyFisheyeOnExpandCollapse){ %> checked<%}%>>
                 </td>
                 </tr>
 
