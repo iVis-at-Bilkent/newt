@@ -420,8 +420,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.allowCompoundNodeResize = {id: "allow-compound-node-resize", type: "checkbox",
       property: "currentGeneralProperties.allowCompoundNodeResize", update: self.applyUpdate};
 
-    self.params.assignDefaultParent = {id: "assign-default-parent", type: "checkbox",
-      property: "currentGeneralProperties.assignDefaultParent"};
+    self.params.inferNestingOnLoad = {id: "infer-nesting-on-load", type: "checkbox",
+      property: "currentGeneralProperties.inferNestingOnLoad"};
     
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
@@ -489,14 +489,14 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#allow-compound-node-resize').blur();
     });
     
-    $(document).on("change", "#assign-default-parent", function (evt) {
+    $(document).on("change", "#infer-nesting-on-load", function (evt) {
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.assignDefaultParent.value = $('#assign-default-parent').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.assignDefaultParent);
-      $('#assign-default-parent').blur();
+      self.params.inferNestingOnLoad.value = $('#infer-nesting-on-load').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
+      $('#infer-nesting-on-load').blur();
     });
 
     $(document).on("change", "#enable-ports", function (evt) {
@@ -528,12 +528,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var actions = [];
 
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
-      self.params.assignDefaultParent.value = appUtilities.defaultGeneralProperties.assignDefaultParent;
+      self.params.inferNestingOnLoad.value = appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
-      actions.push({name: "changeMenu", param: self.params.assignDefaultParent});
+      actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
       actions.push({name: "changeMenu", param: self.params.arrowScale});
