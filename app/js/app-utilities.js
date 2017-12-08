@@ -758,6 +758,7 @@ appUtilities.dynamicResize = function () {
     $(".navbar").width(w);
 //    $("#sbgn-info-content").width(windowWidth * 0.85);
     $("#sbgn-toolbar").width(w);
+    $("#network-tabs-list-container").width(w);
   }
 
   if (windowHeight > canvasHeight)

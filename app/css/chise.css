@@ -189,6 +189,11 @@ body {
   width: 800px;
 }
 
+#network-tabs-list-container {
+  width: 1000px;
+  margin: auto;
+}
+
 #sbgn-inspector-and-canvas {
     margin: auto;
     overflow: auto !important;
