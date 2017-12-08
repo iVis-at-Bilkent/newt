@@ -478,7 +478,7 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
-  var newTabStr = '<li id="' + tabId + '" class="chise-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
+  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
 
   // create new tab inside the list of network tabs
   tabsList.append(newTabStr);

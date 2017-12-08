@@ -681,6 +681,10 @@ hr.inspector-divider {
     padding-right: 5px !important;
 }
 
+.chise-network-tab a {
+    border-radius: 0 0 4px 4px !important;
+}
+
 /*.chise-tab.active {
     font-weight: bold;
 }*/
