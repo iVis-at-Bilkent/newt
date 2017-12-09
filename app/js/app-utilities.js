@@ -181,20 +181,20 @@ appUtilities.getNetworkTabId = function (networkId) {
   return 'sbgn-network-tab-' + networkId;
 };
 
-// get network id by given network tab or panel id or selector
+// get network id by given network key (would be tab or panel id or selector or even the network id itself)
 // that is basically the remaining part of the string after the last occurance of '-'
-appUtilities.getNetworkId = function (tabOrPanelId) {
+appUtilities.getNetworkId = function (networkKey) {
 
-  // if the id is a number no need to process
-  if (typeof tabOrPanelId === 'number') {
-    return tabOrPanelId;
+  // if the networkKey is a number it must already be the network id, so no need to process
+  if (typeof networkKey === 'number') {
+    return networkKey;
   }
 
   // get the last index of '-'
-  var index =  tabOrPanelId.lastIndexOf("-");
+  var index =  networkKey.lastIndexOf("-");
 
   // get the remaining part of string after the last occurance of '-'
-  var rem = tabOrPanelId.substring(index+1);
+  var rem = networkKey.substring(index+1);
 
   // id is the integer representation of the remaining string
   var id = parseInt(rem);
