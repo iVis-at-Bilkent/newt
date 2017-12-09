@@ -217,7 +217,39 @@ appUtilities.getNetworkTabSelector = function (networkId) {
 
 // get the string to represent the tab for given network id
 appUtilities.getNetworkTabDesc = function (networkId) {
-  return 'Network #' + networkId;
+
+  // check if an instance is alrady created for this networkId
+  var chiseInstance = this.networkIdToChiseInstance[networkId];
+
+  // if a chise instance is found for the network id and it has a map name then return that map name
+  if ( chiseInstance ) {
+
+    var mapName = this.getScratch( chiseInstance.getCy(), 'currentGeneralProperties' ).mapName;
+
+    if ( mapName ) {
+      return mapName;
+    }
+
+  }
+
+  // else generate a string to represent the tab and return it
+  return 'Pathway #' + networkId;
+};
+
+// update the string that represents the tab for the given networkKey
+appUtilities.updateNetworkTabDesc = function (networkKey) {
+
+  // get network id for the given network key (would be networkId, networkTabId, networkPanelId)
+  var networkId = appUtilities.getNetworkId(networkKey);
+
+  // get the new string to describe the network
+  var tabDesc = this.getNetworkTabDesc(networkId);
+
+  // get the id of related network tab
+  var tabId = this.getNetworkTabId(networkId);
+
+  // update the content of 'a' element that is contained by the related tab
+  $('#' + tabId + ' a').text(tabDesc);
 };
 
 // map given chise instance to the given network id
@@ -1889,6 +1921,12 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
 
     // reset 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+
+    // use the panel id as the network key
+    var networkKey = cy.container().id;
+
+    // update the network tab description as the map name is just changed
+    appUtilities.updateNetworkTabDesc(networkKey);
 };
 
 module.exports = appUtilities;

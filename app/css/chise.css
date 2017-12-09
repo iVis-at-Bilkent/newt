@@ -683,6 +683,10 @@ hr.inspector-divider {
 
 .chise-network-tab a {
     border-radius: 0 0 4px 4px !important;
+    width: 86px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /*.chise-tab.active {

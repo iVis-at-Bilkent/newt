@@ -572,6 +572,20 @@ module.exports = function (chiseInstance) {
           updateInfoBox(node);
         }
       }
+      else if ( actionName === "changeMenu" ) {
+
+        // if map name is changed update the description of the related tab
+        if (args.id === 'map-name') {
+
+          // use the panel id as the network key
+          var networkKey = cy.container().id;
+
+          // update the network tab description as the map name is just changed
+          appUtilities.updateNetworkTabDesc(networkKey);
+
+        }
+
+      }
     });
 
     cy.on("afterRedo", function (event, actionName, args, res) {
@@ -585,6 +599,20 @@ module.exports = function (chiseInstance) {
         if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
         }
+      }
+      else if ( actionName === "changeMenu" ) {
+
+        // if map name is changed update the description of the related tab
+        if (args.id === 'map-name') {
+
+          // use the panel id as the network key
+          var networkKey = cy.container().id;
+
+          // update the network tab description as the map name is just changed
+          appUtilities.updateNetworkTabDesc(networkKey);
+
+        }
+
       }
     });
     

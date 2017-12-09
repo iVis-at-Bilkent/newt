@@ -440,7 +440,16 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       self.params.mapName.value = $('#map-name').val();
 
+      // TODO while making such calls appUtilities.undoable flag should be checked
+      // if it is not true then the operation should not be undoable
       cy.undoRedo().do("changeMenu", self.params.mapName);
+
+      // use the panel id as the network key
+      var networkKey = cy.container().id;
+
+      // update the network tab description as the map name is just changed
+      appUtilities.updateNetworkTabDesc(networkKey);
+
       $('#map-name').blur();
     });
 
