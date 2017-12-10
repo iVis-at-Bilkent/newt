@@ -61,7 +61,7 @@ appMenu.appMenu = function() {
       validateSBGNML(text);
     }      
     var loadCallbackInvalidityWarning  = function () {
-      new BackpromptInvalidFileView.render();
+      promptInvalidFileView.render();
     }
 
     if(filepath == undefined)
@@ -93,7 +93,7 @@ appMenu.appMenu = function() {
           chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         },
         error: function(xhr, ajaxOptions, thrownError){
-          promptInvalidFileView.render();
+          loadCallbackInvalidityWarning();
           $("#new-file").trigger('click');
         }
       });       
