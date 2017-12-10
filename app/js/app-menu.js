@@ -222,6 +222,32 @@ module.exports = function () {
       }
     });
 
+
+    $("#import-simple-af-file").click(function () {
+      $("#import-file-input").trigger('click');
+    });   
+
+    $("#import-file-input").change(function () {
+
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+
+      var loadCallbackInvalidityWarning  = function () {
+       promptInvalidFileView.render();
+    }
+    if ($(this).val() != "") {
+
+      var file = this.files[0];
+      if( cy.elements().length != 0)
+        promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
+      else
+        chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); 
+      $(this).val("");
+    }
+    });
+
     $("#load-file, #load-file-icon").click(function () {
       $("#file-input").trigger('click');
     });
