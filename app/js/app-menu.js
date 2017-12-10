@@ -268,15 +268,15 @@ module.exports = function () {
       }
       
       if ($(this).val() != "") {
-       var file = this.files[0];
+        var file = this.files[0];
 
-       if( cy.elements().length != 0)
-        promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
-       else
-        chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning);
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
+        else
+          chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning);
 
-       $(this).val("");
-    }
+        $(this).val("");
+      }
     });
 
 
