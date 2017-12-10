@@ -192,6 +192,7 @@ body {
 #network-tabs-list-container {
   width: 1000px;
   margin: auto;
+  background-color: #eaeaea;
 }
 
 #sbgn-inspector-and-canvas {
@@ -687,6 +688,7 @@ hr.inspector-divider {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    background: transparent !important;
 }
 
 /*.chise-tab.active {
@@ -697,8 +699,16 @@ hr.inspector-divider {
     background: #eaeaea !important;
 }
 
+.chise-network-tab.active a {
+    background: white !important;
+}
+
 .chise-tab:hover a {
     background: #eaeaea !important;
+}
+
+.chise-network-tab:hover a {
+    background: white !important;
 }
 
 .btn-default {
