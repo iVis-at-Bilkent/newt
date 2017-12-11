@@ -32,6 +32,7 @@ module.exports = function () {
       }
     });
   }
+
   function loadSample(filename) {
 
     // use the active chise instance
@@ -251,6 +252,33 @@ module.exports = function () {
         $(this).val("");
       }
     });
+
+    $("#import-simple-af-file").click(function () {
+      $("#simple-af-file-input").trigger('click');
+    });   
+
+    $("#simple-af-file-input").change(function () {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+
+      var loadCallbackInvalidityWarning  = function () {
+        promptInvalidFileView.render();
+      }
+      
+      if ($(this).val() != "") {
+        var file = this.files[0];
+
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
+        else
+          chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning);
+
+        $(this).val("");
+      }
+    });
+
 
     // get and set map properties from file
     $( document ).on( "sbgnvizLoadFileEnd sbgnvizLoadSampleEnd", function(evt, filename, cy){

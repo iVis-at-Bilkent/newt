@@ -189,6 +189,12 @@ body {
   width: 800px;
 }
 
+#network-tabs-list-container {
+  width: 1000px;
+  margin: auto;
+  background-color: #eaeaea;
+}
+
 #sbgn-inspector-and-canvas {
     margin: auto;
     overflow: auto !important;
@@ -676,6 +682,15 @@ hr.inspector-divider {
     padding-right: 5px !important;
 }
 
+.chise-network-tab a {
+    border-radius: 0 0 4px 4px !important;
+    width: 86px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: transparent !important;
+}
+
 /*.chise-tab.active {
     font-weight: bold;
 }*/
@@ -684,8 +699,16 @@ hr.inspector-divider {
     background: #eaeaea !important;
 }
 
+.chise-network-tab.active a {
+    background: white !important;
+}
+
 .chise-tab:hover a {
     background: #eaeaea !important;
+}
+
+.chise-network-tab:hover a {
+    background: white !important;
 }
 
 .btn-default {

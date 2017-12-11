@@ -181,20 +181,20 @@ appUtilities.getNetworkTabId = function (networkId) {
   return 'sbgn-network-tab-' + networkId;
 };
 
-// get network id by given network tab or panel id or selector
+// get network id by given network key (would be tab or panel id or selector or even the network id itself)
 // that is basically the remaining part of the string after the last occurance of '-'
-appUtilities.getNetworkId = function (tabOrPanelId) {
+appUtilities.getNetworkId = function (networkKey) {
 
-  // if the id is a number no need to process
-  if (typeof tabOrPanelId === 'number') {
-    return tabOrPanelId;
+  // if the networkKey is a number it must already be the network id, so no need to process
+  if (typeof networkKey === 'number') {
+    return networkKey;
   }
 
   // get the last index of '-'
-  var index =  tabOrPanelId.lastIndexOf("-");
+  var index =  networkKey.lastIndexOf("-");
 
   // get the remaining part of string after the last occurance of '-'
-  var rem = tabOrPanelId.substring(index+1);
+  var rem = networkKey.substring(index+1);
 
   // id is the integer representation of the remaining string
   var id = parseInt(rem);
@@ -217,7 +217,39 @@ appUtilities.getNetworkTabSelector = function (networkId) {
 
 // get the string to represent the tab for given network id
 appUtilities.getNetworkTabDesc = function (networkId) {
-  return 'Network #' + networkId;
+
+  // check if an instance is alrady created for this networkId
+  var chiseInstance = this.networkIdToChiseInstance[networkId];
+
+  // if a chise instance is found for the network id and it has a map name then return that map name
+  if ( chiseInstance ) {
+
+    var mapName = this.getScratch( chiseInstance.getCy(), 'currentGeneralProperties' ).mapName;
+
+    if ( mapName ) {
+      return mapName;
+    }
+
+  }
+
+  // else generate a string to represent the tab and return it
+  return 'Pathway #' + networkId;
+};
+
+// update the string that represents the tab for the given networkKey
+appUtilities.updateNetworkTabDesc = function (networkKey) {
+
+  // get network id for the given network key (would be networkId, networkTabId, networkPanelId)
+  var networkId = appUtilities.getNetworkId(networkKey);
+
+  // get the new string to describe the network
+  var tabDesc = this.getNetworkTabDesc(networkId);
+
+  // get the id of related network tab
+  var tabId = this.getNetworkTabId(networkId);
+
+  // update the content of 'a' element that is contained by the related tab
+  $('#' + tabId + ' a').text(tabDesc);
 };
 
 // map given chise instance to the given network id
@@ -478,7 +510,7 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
-  var newTabStr = '<li id="' + tabId + '" class="chise-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
+  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
 
   // create new tab inside the list of network tabs
   tabsList.append(newTabStr);
@@ -758,6 +790,7 @@ appUtilities.dynamicResize = function () {
     $(".navbar").width(w);
 //    $("#sbgn-info-content").width(windowWidth * 0.85);
     $("#sbgn-toolbar").width(w);
+    $("#network-tabs-list-container").width(w);
   }
 
   if (windowHeight > canvasHeight)
@@ -1888,6 +1921,12 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
 
     // reset 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+
+    // use the panel id as the network key
+    var networkKey = cy.container().id;
+
+    // update the network tab description as the map name is just changed
+    appUtilities.updateNetworkTabDesc(networkKey);
 };
 
 module.exports = appUtilities;

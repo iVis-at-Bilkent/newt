@@ -80,6 +80,7 @@
                                         <!--<b class="right-caret"></b>-->
                                     </a>
                                     <ul class="dropdown-menu">
+                                        <input id="simple-af-file-input" type="file" style="display:none" />
                                         <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
                                         <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
                                     </ul>
@@ -544,8 +545,10 @@
         </table>
 
 
-        <ul id="network-tabs-list" class="nav nav-tabs">
-        </ul>
+        <div id="network-tabs-list-container">
+          <ul id="network-tabs-list" class="nav nav-tabs">
+          </ul>
+        </div>
 
 
         <div id="layout-properties-table" tabindex="-1" class="modal fade" role="dialog">
