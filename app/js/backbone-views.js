@@ -870,6 +870,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
       chiseInstance.startSpinner('paths-between-spinner');
       queryURL = queryURL + sources;
 
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+      
       $.ajax({
         url: queryURL,
         type: 'GET',
@@ -882,7 +885,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
             else
             {
                 $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                currentGeneralProperties.inferNestingOnLoad = false;
                 chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
                 chiseInstance.endSpinner('paths-between-spinner');
                 $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
             }
@@ -962,6 +967,9 @@ var PathsByURIQueryView = Backbone.View.extend({
 
       chiseInstance.startSpinner('paths-byURI-spinner');
 
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
       $.ajax({
         url: queryURL,
         type: 'GET',
@@ -974,7 +982,9 @@ var PathsByURIQueryView = Backbone.View.extend({
           else
           {
             $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
             chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
             chiseInstance.endSpinner('paths-byURI-spinner');
             $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
           }
