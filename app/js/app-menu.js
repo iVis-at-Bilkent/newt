@@ -7,14 +7,12 @@ var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var _ = require('underscore');
 
-var appMenu = {};
-
 // Handle sbgnviz menu functions which are to be triggered on events
-appMenu.appMenu = function() {
+module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+        promptMapTypeView, promptInvalidFileView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -45,101 +43,6 @@ appMenu.appMenu = function() {
     return chiseInstance.loadSample(filename, 'app/samples/');
   }
 
-  appMenu.launchWithModelFile = function() {
-    var url_path = getParameterByName('url');
-    var uri_path = getParameterByName('uri');
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    if(url_path != undefined)
-      loadFromURL(url_path, chiseInstance);
-    else if(uri_path != undefined)
-      loadFromURI(uri_path, chiseInstance);
-
-  }
-
-  function loadFromURL(filepath, chiseInstance){
-    var loadCallbackSBGNMLValidity = function (text) {
-      validateSBGNML(text);
-    }      
-    var loadCallbackInvalidityWarning  = function () {
-      promptInvalidFileView.render();
-    }
-
-    if(filepath == undefined)
-      return;
-
-    //load file via url from remote
-    if(filepath.indexOf('http') === 0){
-      var filename = filepath.split('/');
-      if(filename.length > 0)
-        filename = filename[filename.length - 1];
-      else
-        filename = 'remote';
-
-      var fileExtension = filename.split('.');
-      if(fileExtension.length > 0)
-        fileExtension = fileExtension[fileExtension.length - 1];
-      else
-        fileExtension = 'txt';
-
-      $.ajax({
-        type: 'get',
-        url: filepath,
-        success: function(result){
-          var fileToLoad = new File([result], filename, {
-            type: 'text/' + fileExtension,
-            lastModified: Date.now()
-          });
-          
-          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
-        },
-        error: function(xhr, ajaxOptions, thrownError){
-          loadCallbackInvalidityWarning();
-          $("#new-file").trigger('click');
-        }
-      });       
-    }
-  }
-
-  function loadFromURI(uri, chiseInstance){
-
-    var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
-          + uri + "&format=SBGN";
-
-    var filename = uri + '.sbgnml';
-    chiseInstance.startSpinner('paths-byURI-spinner');
-    var cyInstance = chiseInstance.getCy();
-
-    $.ajax({
-        url: queryURL,
-        type: 'GET',
-        success: function (data) {
-          if (data == null) {
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            promptInvalidURIView.render();
-            $("#new-file").trigger('click');
-          }
-          else {
-            $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
-          }
-        }
-      });
-  }
-
-  function getParameterByName(name, url) {
-    if (!url){
-      url = window.location.href;
-    }
-
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"), results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-
   console.log('init the sbgnviz template/page');
 
   $(window).on('resize', _.debounce(dynamicResize, 100));
@@ -163,6 +66,7 @@ appMenu.appMenu = function() {
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
   promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
+  promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
 
   toolbarButtonsAndMenu();
 
@@ -1146,5 +1050,3 @@ appMenu.appMenu = function() {
     });
   }
 };
-
-module.exports = appMenu;

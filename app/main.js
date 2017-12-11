@@ -55,11 +55,11 @@ $(document).ready(function () {
   // Register chise with libs
   chise.register(libs);
 
-  appMenu.appMenu();
+  appMenu();
   
   // create a new network and access the related chise.js instance
   appUtilities.createNewNetwork();
 
   // launch with model file if exists
-  appMenu.launchWithModelFile();
+  appUtilities.launchWithModelFile();
 });
