@@ -1251,6 +1251,26 @@ var PromptInvalidFileView = Backbone.View.extend({
   }
 });
 
+var PromptInvalidURLWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURL-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURL-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+    
+    $(document).off("click", "#prompt-invalidURL-confirm").on("click", "#prompt-invalidURL-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    
+    return this;
+  }
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   addMacromolecule: function (i) {
     var html = "<tr><td>"
@@ -1880,5 +1900,6 @@ module.exports = {
   AnnotationListView: AnnotationListView,
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,
-  PromptInvalidURIWarning: PromptInvalidURIWarning
+  PromptInvalidURIWarning: PromptInvalidURIWarning,
+  PromptInvalidURLWarning: PromptInvalidURLWarning
 };

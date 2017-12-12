@@ -1935,14 +1935,14 @@ appUtilities.launchWithModelFile = function() {
   var uri_path = getParameterByName('uri');
   var chiseInstance = appUtilities.getActiveChiseInstance();
   var promptInvalidURIWarning = this.promptInvalidURIWarning;
-  var promptInvalidFileView = this.promptInvalidFileView;
+  var promptInvalidURLWarning = this.promptInvalidURLWarning;
 
   if(url_path != undefined)
-    loadFromURL(url_path, chiseInstance, promptInvalidFileView);
+    loadFromURL(url_path, chiseInstance, promptInvalidURLWarning);
   else if(uri_path != undefined)
     loadFromURI(uri_path, chiseInstance, promptInvalidURIWarning);
 
-  function loadFromURL(filepath, chiseInstance, promptInvalidFileView){
+  function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
     
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -1964,7 +1964,7 @@ appUtilities.launchWithModelFile = function() {
     }
 
     var loadCallbackInvalidityWarning  = function () {
-      promptInvalidFileView.render();
+      promptInvalidURLWarning.render();
     }
 
     if(filepath == undefined)
