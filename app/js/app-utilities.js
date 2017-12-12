@@ -1967,39 +1967,39 @@ appUtilities.launchWithModelFile = function() {
       promptInvalidURLWarning.render();
     }
 
-    if(filepath == undefined)
+    if(filepath == undefined){
+      loadCallbackInvalidityWarning();
       return;
-
-    //load file via url from remote
-    if(filepath.indexOf('http') === 0){
-      var filename = filepath.split('/');
-      if(filename.length > 0)
-        filename = filename[filename.length - 1];
-      else
-        filename = 'remote';
-
-      var fileExtension = filename.split('.');
-      if(fileExtension.length > 0)
-        fileExtension = fileExtension[fileExtension.length - 1];
-      else
-        fileExtension = 'txt';
-
-      $.ajax({
-        type: 'get',
-        url: filepath,
-        success: function(result){
-          var fileToLoad = new File([result], filename, {
-            type: 'text/' + fileExtension,
-            lastModified: Date.now()
-          });
-          
-          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
-        },
-        error: function(xhr, ajaxOptions, thrownError){
-          loadCallbackInvalidityWarning();
-        }
-      });       
     }
+
+    var filename = filepath.split('/');
+    if(filename.length > 0)
+      filename = filename[filename.length - 1];
+    else
+      filename = 'remote';
+
+    var fileExtension = filename.split('.');
+    if(fileExtension.length > 0)
+      fileExtension = fileExtension[fileExtension.length - 1];
+    else
+      fileExtension = 'txt';
+
+    $.ajax({
+      type: 'get',
+      url: filepath,
+      success: function(result){
+        var fileToLoad = new File([result], filename, {
+          type: 'text/' + fileExtension,
+          lastModified: Date.now()
+        });
+        
+        chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+      },
+      error: function(xhr, ajaxOptions, thrownError){
+        loadCallbackInvalidityWarning();
+      }
+    });       
+    
   }
 
   function loadFromURI(uri, chiseInstance, promptInvalidURIWarning){
