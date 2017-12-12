@@ -1211,6 +1211,26 @@ var PromptInvalidURIView = Backbone.View.extend({
     }
 });
 
+var PromptInvalidURIWarning = Backbone.View.extend({
+    initialize: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidURI-template").html());
+    },
+    render: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidURI-template").html());
+
+        $(self.el).html(self.template);
+        $(self.el).modal('show');
+
+        $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
+});
+
 var PromptInvalidFileView = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -1224,6 +1244,26 @@ var PromptInvalidFileView = Backbone.View.extend({
     $(self.el).modal('show');
     
     $(document).off("click", "#prompt-invalidFile-confirm").on("click", "#prompt-invalidFile-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    
+    return this;
+  }
+});
+
+var PromptInvalidURLWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURL-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURL-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+    
+    $(document).off("click", "#prompt-invalidURL-confirm").on("click", "#prompt-invalidURL-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
     
@@ -1858,5 +1898,8 @@ module.exports = {
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
   AnnotationListView: AnnotationListView,
-  AnnotationElementView: AnnotationElementView
+  AnnotationElementView: AnnotationElementView,
+  PromptInvalidURIView: PromptInvalidURIView,
+  PromptInvalidURIWarning: PromptInvalidURIWarning,
+  PromptInvalidURLWarning: PromptInvalidURLWarning
 };
