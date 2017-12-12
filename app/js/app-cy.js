@@ -770,8 +770,8 @@ module.exports = function (chiseInstance) {
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
                 && chiseInstance.elementUtilities.isEPNClass(cyTarget)
                 && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)
-                && !(cyTarget.parent()[0] != undefined && chise.elementUtilities.isEPNClass(cyTarget.parent()[0]) || 
-                  convenientProcessSource.parent()[0] != undefined && chise.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
+                && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) || 
+                  convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
         {
           chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
         }
