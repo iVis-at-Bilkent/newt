@@ -1935,13 +1935,14 @@ appUtilities.launchWithModelFile = function() {
   var uri_path = getParameterByName('uri');
   var chiseInstance = appUtilities.getActiveChiseInstance();
   var promptInvalidURIWarning = this.promptInvalidURIWarning;
+  var promptInvalidURLWarning = this.promptInvalidURLWarning;
 
   if(url_path != undefined)
-    loadFromURL(url_path, chiseInstance, promptInvalidURIWarning);
+    loadFromURL(url_path, chiseInstance, promptInvalidURLWarning);
   else if(uri_path != undefined)
     loadFromURI(uri_path, chiseInstance, promptInvalidURIWarning);
 
-  function loadFromURL(filepath, chiseInstance, promptInvalidURIWarning){
+  function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
     
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -1963,7 +1964,7 @@ appUtilities.launchWithModelFile = function() {
     }
 
     var loadCallbackInvalidityWarning  = function () {
-      promptInvalidURIWarning.render();
+      promptInvalidURLWarning.render();
     }
 
     if(filepath == undefined)
@@ -2007,8 +2008,12 @@ appUtilities.launchWithModelFile = function() {
           + uri + "&format=SBGN";
 
     var filename = uri + '.sbgnml';
-    chiseInstance.startSpinner('paths-byURI-spinner');
     var cyInstance = chiseInstance.getCy();
+    
+    chiseInstance.startSpinner('paths-byURI-spinner');
+
+    var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
+    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
     $.ajax({
         url: queryURL,
@@ -2020,7 +2025,9 @@ appUtilities.launchWithModelFile = function() {
           }
           else {
             $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data));
+            currentGeneralProperties.inferNestingOnLoad = false;
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
             chiseInstance.endSpinner('paths-byURI-spinner');
             $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
           }
