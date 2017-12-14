@@ -303,9 +303,9 @@ module.exports = function() {
       currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
       currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
 
-      // set reaggange on complexity managment based on map size
+      // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
-        currentGeneralProperties.rearrangeAfterExpandCollapse = false;
+        currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
       }
 
       // get and set properties from file

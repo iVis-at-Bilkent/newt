@@ -682,33 +682,33 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     var self = this;
     // initialize undo-redo parameters
     self.params = {};
-    self.params.rearrangeAfterExpandCollapse = {id: "rearrange-after-expand-collapse", type: "checkbox",
-      property: "currentGeneralProperties.rearrangeAfterExpandCollapse"};
+    self.params.recalculateLayoutOnComplexityManagement = {id: "recalculate-layout-on-complexity-management", type: "checkbox",
+      property: "currentGeneralProperties.recalculateLayoutOnComplexityManagement"};
 
-    self.params.applyFisheyeOnExpandCollapse = {id: "apply-fisheye-on-expand-collapse", type: "checkbox",
-      property: "currentGeneralProperties.applyFisheyeOnExpandCollapse"};
+    self.params.rearrangeOnComplexityManagement = {id: "rearrange-on-complexity-management", type: "checkbox",
+      property: "currentGeneralProperties.rearrangeOnComplexityManagement"};
 
     self.params.animateOnDrawingChanges = {id: "animate-on-drawing-changes", type: "checkbox",
       property: "currentGeneralProperties.animateOnDrawingChanges"};
 
-    $(document).on("change", "#rearrange-after-expand-collapse", function (evt) {
+    $(document).on("change", "#recalculate-layout-on-complexity-management", function (evt) {
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.rearrangeAfterExpandCollapse.value = $('#rearrange-after-expand-collapse').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.rearrangeAfterExpandCollapse);
-      $('#rearrange-after-expand-collapse').blur();
+      self.params.recalculateLayoutOnComplexityManagement.value = $('#recalculate-layout-on-complexity-management').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.recalculateLayoutOnComplexityManagement);
+      $('#recalculate-layout-on-complexity-management').blur();
     });
 
-    $(document).on("change", "#apply-fisheye-on-expand-collapse", function (evt) {
+    $(document).on("change", "#rearrange-on-complexity-management", function (evt) {
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.applyFisheyeOnExpandCollapse.value = $('#apply-fisheye-on-expand-collapse').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.applyFisheyeOnExpandCollapse);
-      $('#apply-fisheye-on-expand-collapse').blur();
+      self.params.rearrangeOnComplexityManagement.value = $('#rearrange-on-complexity-management').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.rearrangeOnComplexityManagement);
+      $('#rearrange-on-complexity-management').blur();
     });
 
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
@@ -728,11 +728,11 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
 
       var ur = cy.undoRedo();
       var actions = [];
-      self.params.rearrangeAfterExpandCollapse.value = appUtilities.defaultGeneralProperties.rearrangeAfterExpandCollapse;
-      self.params.applyFisheyeOnExpandCollapse.value = appUtilities.defaultGeneralProperties.applyFisheyeOnExpandCollapse;
+      self.params.recalculateLayoutOnComplexityManagement.value = appUtilities.defaultGeneralProperties.recalculateLayoutOnComplexityManagement;
+      self.params.rearrangeOnComplexityManagement.value = appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
       self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
-      actions.push({name: "changeMenu", param: self.params.rearrangeAfterExpandCollapse});
-      actions.push({name: "changeMenu", param: self.params.applyFisheyeOnExpandCollapse});
+      actions.push({name: "changeMenu", param: self.params.recalculateLayoutOnComplexityManagement});
+      actions.push({name: "changeMenu", param: self.params.rearrangeOnComplexityManagement});
       actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});
       ur.do("batch", actions);
     });

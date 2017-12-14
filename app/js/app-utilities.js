@@ -651,8 +651,8 @@ appUtilities.defaultGeneralProperties = {
   inferNestingOnLoad: false,
   fitLabelsToNodes: false,
   fitLabelsToInfoboxes: false,
-  rearrangeAfterExpandCollapse: true,
-  applyFisheyeOnExpandCollapse: true,
+  recalculateLayoutOnComplexityManagement: true,
+  rearrangeOnComplexityManagement: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
@@ -723,7 +723,7 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       // use parametrized cy if exists. Otherwise use the recently active cy
       var cy = _cy || self.getActiveCy();
 
-      return self.getScratch(cy, 'currentGeneralProperties').applyFisheyeOnExpandCollapse;
+      return self.getScratch(cy, 'currentGeneralProperties').rearrangeOnComplexityManagement;
     },
     animate: function () {
 
@@ -737,7 +737,7 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       // use parametrized cy if exists. Otherwise use the recently active cy
       var cy = _cy || self.getActiveCy();
 
-      if ( !self.getScratch(cy, 'currentGeneralProperties').rearrangeAfterExpandCollapse ) {
+      if ( !self.getScratch(cy, 'currentGeneralProperties').recalculateLayoutOnComplexityManagement ) {
         return;
       }
 
@@ -907,7 +907,7 @@ appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     var extendedList = chiseInstance.elementUtilities.extendNodeList(eles);
-    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
+    if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
         //Put them near node, show and perform incremental layout
         chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this, cy));
@@ -931,7 +931,7 @@ appUtilities.showAll = function (_chiseInstance) {
     // get current general properties for cy instance
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
+    if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
       //Show all and perform incremental layout
      chiseInstance.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this, cy));
@@ -955,7 +955,7 @@ appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
     // get current general properties for cy instance
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-    if (currentGeneralProperties.rearrangeAfterExpandCollapse )
+    if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
         //Put them near node and perform incremental layout
         chiseInstance.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this, cy));
