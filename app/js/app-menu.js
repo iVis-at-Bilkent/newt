@@ -299,8 +299,12 @@ module.exports = function() {
       // that uses cy instance here
       var appUndoActions = appUndoActionsFactory(cy);
 
+      // get the network id for cy
+      var networkId = cy.container().id;
+
       // reset map name and description
-      currentGeneralProperties.mapName = appUtilities.defaultGeneralProperties.mapName;
+      // default map name should be a string that contains the network id
+      currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
       currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
 
       // set recalculate layout on complexity management based on map size

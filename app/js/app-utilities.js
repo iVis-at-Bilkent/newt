@@ -215,24 +215,10 @@ appUtilities.getNetworkTabSelector = function (networkId) {
   return '#' + this.getNetworkTabId(networkId);
 };
 
-// get the string to represent the tab for given network id
-appUtilities.getNetworkTabDesc = function (networkId) {
+// get the default map name for a network with the given id
+// basically like "Pathway #X"
+appUtilities.getDefaultMapName = function (networkId) {
 
-  // check if an instance is alrady created for this networkId
-  var chiseInstance = this.networkIdToChiseInstance[networkId];
-
-  // if a chise instance is found for the network id and it has a map name then return that map name
-  if ( chiseInstance ) {
-
-    var mapName = this.getScratch( chiseInstance.getCy(), 'currentGeneralProperties' ).mapName;
-
-    if ( mapName ) {
-      return mapName;
-    }
-
-  }
-
-  // else generate a string to represent the tab and return it
   return 'Pathway #' + networkId;
 };
 
@@ -240,16 +226,22 @@ appUtilities.getNetworkTabDesc = function (networkId) {
 appUtilities.updateNetworkTabDesc = function (networkKey) {
 
   // get network id for the given network key (would be networkId, networkTabId, networkPanelId)
-  var networkId = appUtilities.getNetworkId(networkKey);
-
-  // get the new string to describe the network
-  var tabDesc = this.getNetworkTabDesc(networkId);
+  var networkId = this.getNetworkId(networkKey);
 
   // get the id of related network tab
   var tabId = this.getNetworkTabId(networkId);
 
+  // get the related chise instace
+  var chiseInstance = this.getChiseInstance(networkId);
+
+  // get the related cy instance
+  var cy = chiseInstance.getCy();
+
+  // get the map name from scratch pad of cy to use as the new tab description
+  var mapName = this.getScratch(cy).currentGeneralProperties.mapName;
+
   // update the content of 'a' element that is contained by the related tab
-  $('#' + tabId + ' a').text(tabDesc);
+  $('#' + tabId + ' a').text(mapName);
 };
 
 // map given chise instance to the given network id
@@ -329,11 +321,12 @@ appUtilities.createNewNetwork = function () {
   // id of the tab for the new network
   var networkTabId = appUtilities.getNetworkTabId(appUtilities.nextNetworkId);
 
-  // string to represent the new tab
-  var networkTabDesc = appUtilities.getNetworkTabDesc(appUtilities.nextNetworkId);
+  // use the default map name for the given next network id
+  var mapName = appUtilities.getDefaultMapName(appUtilities.nextNetworkId);
 
   // create physical html components for the new network
-  appUtilities.createPhysicalNetworkComponents(networkPanelId, networkTabId, networkTabDesc);
+  // use map name as the tab description
+  appUtilities.createPhysicalNetworkComponents(networkPanelId, networkTabId, mapName);
 
   // generate network panel selector from the network panel id
   var networkPanelSelector = appUtilities.getNetworkPanelSelector(appUtilities.nextNetworkId);
@@ -342,6 +335,9 @@ appUtilities.createNewNetwork = function () {
   var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
   var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
   var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
+
+  // update the map name with the default map name specific for network id
+  currentGeneralProperties.mapName = mapName;
 
   // Create a new chise.js instance
   var newInst = chise({
