@@ -308,7 +308,7 @@ appUtilities.getChiseInstance = function (key) {
 // This function is to adjust that.
 appUtilities.adjustVisibilityOfNetworkTabs = function () {
 
-  var tabsContainer = $('#network-tabs-list');
+  var tabsContainer = $('#network-tabs-list-container');
 
   // if there is just one tab hide tabs container else show it
   if ( this.networkIdsStack.length === 1 ) {
