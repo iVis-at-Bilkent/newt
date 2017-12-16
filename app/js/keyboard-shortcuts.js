@@ -64,7 +64,7 @@ module.exports = function () {
     // get cy associated with active chise instance
     var cy = chiseInstance.getCy();
 
-    chise.deleteElesSimple(cy.elements(':selected'));
+    chiseInstance.deleteElesSimple(cy.elements(':selected'));
     $('#inspector-palette-tab a').tab('show');
     // return false to prevent default browser behavior
     // and stop event from bubbling
