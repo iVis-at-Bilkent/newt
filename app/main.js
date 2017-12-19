@@ -9,8 +9,6 @@ require('jquery-expander')($);
 require('bootstrap');
 
 var appUtilities = require('./js/app-utilities');
-var appUndoActions = require('./js/app-undo-actions');
-var appCy = require('./js/app-cy');
 var appMenu = require('./js/app-menu');
 
 // Get cy extension instances
@@ -51,47 +49,17 @@ libs.jquery = jquery;
 libs.cytoscape = cytoscape;
 libs.sbgnviz = sbgnviz;
 
-chise({
-  networkContainerSelector: '#sbgn-network-container',
-  imgPath: 'node_modules/sbgnviz/src/img',
-  // whether to fit label to nodes
-  fitLabelsToNodes: function () {
-    return appUtilities.currentGeneralProperties.fitLabelsToNodes;
-  },
-  // whether to fit label to nodes
-  fitLabelsToInfoboxes: function () {
-    return appUtilities.currentGeneralProperties.fitLabelsToInfoboxes;
-  },
-  // dynamic label size it may be 'small', 'regular', 'large'
-  dynamicLabelSize: function () {
-    return appUtilities.currentGeneralProperties.dynamicLabelSize;
-  },
-  // percentage used to calculate compound paddings
-  compoundPadding: function () {
-    return appUtilities.currentGeneralProperties.compoundPadding;
-  },
-  // arrow size changed by a slider on a scale from 0.5-2
-  arrowScale: function () {
-      return appUtilities.currentGeneralProperties.arrowScale;
-  },
-  extraCompartmentPadding: appUtilities.currentGeneralProperties.extraCompartmentPadding,
-  extraComplexPadding: appUtilities.currentGeneralProperties.extraComplexPadding,
-  showComplexName: appUtilities.currentGeneralProperties.showComplexName,
-  // Whether to adjust node label font size automatically.
-  // If this option return false do not adjust label sizes according to node height uses node.data('labelsize')
-  // instead of doing it.
-  adjustNodeLabelFontSizeAutomatically: function() {
-    return appUtilities.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
-  },
-  // whether to improve flow (swap nodes)
-  improveFlow: function () {
-    return appUtilities.currentLayoutProperties.improveFlow;
-  },
-  undoable: appUtilities.undoable,
-  undoableDrag: function() {
-    return appUtilities.ctrlKeyDown !== true;
-  }
-}, libs);
 
-appCy();
-appMenu();
+$(document).ready(function () {
+
+  // Register chise with libs
+  chise.register(libs);
+
+  appMenu();
+  
+  // create a new network and access the related chise.js instance
+  appUtilities.createNewNetwork();
+
+  // launch with model file if exists
+  appUtilities.launchWithModelFile();
+});

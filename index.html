@@ -72,9 +72,32 @@
                                     </ul>
                                 </li>
                                 <li><a href="#" id="save-as-sbgnml">Save...</a></li>
+                                <li><a href="#" type="file" id="close-file">Close</a></li>
+                                <li class="divider"></li>
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        Save as Image
+                                        Import
+                                        <!--<b class="right-caret"></b>-->
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <input id="simple-af-file-input" type="file" style="display:none" />
+                                        <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
+                                        <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Export
+                                        <!--<b class="right-caret"></b>-->
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" id="export-as-sbgnml2-file">SBGN-ML 0.2</a></li>
+                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Export as Image
                                         <!--<b class="right-caret"></b>-->
                                     </a>
                                     <ul class="dropdown-menu">
@@ -83,6 +106,7 @@
                                         <li><a href="#" id="save-as-svg">SVG</a></li>
                                     </ul>
                                 </li>
+                                <li class="divider"></li>
                                 <li><a href="#" id="general-properties">Map Properties...</a></li>
                             </ul>
                         </li>
@@ -360,14 +384,14 @@
         <tbody>
             <tr>
                 <td>
-                    <div id="sbgn-network-container">
+                    <div id="network-panels-container" class="tab-content">
                     </div>
                 </td>
                 <td>
                     <div id="sbgn-inspector">
                         <ul class="nav nav-tabs">
                             <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Object</a></li>
-							<li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map"><img width="18px" height="18px" src="app/img/toolbar/settings.svg"/>&nbsp;Map</a></li>
+							              <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map"><img width="18px" height="18px" src="app/img/toolbar/settings.svg"/>&nbsp;Map</a></li>
                             <li id='inspector-palette-tab' class="chise-tab active"><a data-toggle="tab" href="#sbgn-inspector-palette"><img width="18px" height="18px" src="app/img/tabs/palette.svg"/>&nbsp;Palette</a></li>
                         </ul>
                         <div class="tab-content">
@@ -521,6 +545,11 @@
         </table>
 
 
+        <div id="network-tabs-list-container">
+          <ul id="network-tabs-list" class="nav nav-tabs">
+          </ul>
+        </div>
+
 
         <div id="layout-properties-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- sbgn layout table will be shown here -->
@@ -566,6 +595,10 @@
         </div>
         
         <div id="prompt-invalidFile-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
+        <div id="prompt-invalidURL-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
@@ -957,6 +990,16 @@
             <input id="allow-compound-node-resize" type="checkbox" class="layout-text" <% if (allowCompoundNodeResize){ %> checked<%}%>>
             </td>
             </tr>
+            
+            <tr>
+            <td class="header">
+            <span class="add-on layout-text"> Infer Nesting on Load </span>
+            </td>
+
+            <td>
+            <input id="infer-nesting-on-load" type="checkbox" class="layout-text" <% if (inferNestingOnLoad){ %> checked<%}%>>
+            </td>
+            </tr>
 
             <tr>
             <td class="header">
@@ -1046,11 +1089,21 @@
             <tbody>
                 <tr>
                 <td class="header">
+                <span class="add-on layout-text"> Recalculate Layout on Complexity Management </span>
+                </td>
+
+                <td>
+                <input id="recalculate-layout-on-complexity-management" type="checkbox" class="layout-text" <% if (recalculateLayoutOnComplexityManagement){ %> checked<%}%>>
+                </td>
+                </tr>
+
+                <tr>
+                <td class="header">
                 <span class="add-on layout-text"> Rearrange on Complexity Management </span>
                 </td>
 
                 <td>
-                <input id="rearrange-after-expand-collapse" type="checkbox" class="layout-text" <% if (rearrangeAfterExpandCollapse){ %> checked<%}%>>
+                <input id="rearrange-on-complexity-management" type="checkbox" class="layout-text" <% if (rearrangeOnComplexityManagement){ %> checked<%}%>>
                 </td>
                 </tr>
 
@@ -1405,6 +1458,37 @@
             </div>
             <div class="modal-footer" style="text-align: center">
             <button id="prompt-invalidFile-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <!-- Invalid URL warning -->
+        <script type="text/template" id="prompt-invalidURL-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text">Invalid URL!</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidURL-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidURL-confirm" class="btn btn-default">OK</button>
             </div>
             </div>
             </div>

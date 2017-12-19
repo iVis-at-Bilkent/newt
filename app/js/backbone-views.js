@@ -184,68 +184,105 @@ var BioGeneView = Backbone.View.extend({
  */
 var LayoutPropertiesView = Backbone.View.extend({
   initialize: function () {
-    var self = this;
-    self.copyProperties();
-
-    self.template = _.template($("#layout-settings-template").html());
-    self.template = self.template(appUtilities.currentLayoutProperties);
   },
   copyProperties: function () {
-    appUtilities.currentLayoutProperties = _.clone(appUtilities.defaultLayoutProperties);
+
+    // use active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // clone default layout props
+    var clonedProp = _.clone(appUtilities.defaultLayoutProperties);
+
+    // reset current layout props
+    appUtilities.setScratch(cy, 'currentLayoutProperties', clonedProp);
+
+    // return cloned props to make them accessible
+    return clonedProp;
   },
-  applyLayout: function (preferences, notUndoable) {
+  applyLayout: function (preferences, notUndoable, _chiseInstance) {
+
+    // if chise instance param is not set use the recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    // get associated cy instance
+    var cy = chiseInstance.getCy();
+
+    var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+    // if preferences param is not set use an empty map not to override any layout option
     if (preferences === undefined) {
       preferences = {};
     }
-    var options = $.extend({}, appUtilities.currentLayoutProperties, preferences);
+
+    var options = $.extend({}, currentLayoutProperties, preferences);
     var verticalPaddingPercent = options.tilingPaddingVertical;
     var horizontalPaddingPercent = options.tilingPaddingHorizontal;
+
     // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
     // in dialog, in layout options we use a function using these values
     options.tilingPaddingVertical = function () {
-      return chise.calculatePaddings(verticalPaddingPercent);
+      return chiseInstance.calculatePaddings(verticalPaddingPercent);
     };
+
     options.tilingPaddingHorizontal = function () {
-      return chise.calculatePaddings(horizontalPaddingPercent);
+      return chiseInstance.calculatePaddings(horizontalPaddingPercent);
     };
-    chise.performLayout(options, notUndoable);
+
+    chiseInstance.performLayout(options, notUndoable);
   },
   render: function () {
     var self = this;
 
+    // use active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current layout props for cy
+    var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
     self.template = _.template($("#layout-settings-template").html());
-    self.template = self.template(appUtilities.currentLayoutProperties);
+    self.template = self.template(currentLayoutProperties);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
 
     $(document).off("click", "#save-layout").on("click", "#save-layout", function (evt) {
-      appUtilities.currentLayoutProperties.nodeRepulsion = Number(document.getElementById("node-repulsion").value);
-      appUtilities.currentLayoutProperties.idealEdgeLength = Number(document.getElementById("ideal-edge-length").value);
-      appUtilities.currentLayoutProperties.edgeElasticity = Number(document.getElementById("edge-elasticity").value);
-      appUtilities.currentLayoutProperties.nestingFactor = Number(document.getElementById("nesting-factor").value);
-      appUtilities.currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
-      appUtilities.currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
-      appUtilities.currentLayoutProperties.tile = document.getElementById("tile").checked;
-      appUtilities.currentLayoutProperties.animate = document.getElementById("animate").checked ? 'during' : 'end';
-      appUtilities.currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
-      appUtilities.currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
-      appUtilities.currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
-      appUtilities.currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
-      appUtilities.currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
-      appUtilities.currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
-      appUtilities.currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
-      appUtilities.currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
-	
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      // get current layout props for cy
+      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+      currentLayoutProperties.nodeRepulsion = Number(document.getElementById("node-repulsion").value);
+      currentLayoutProperties.idealEdgeLength = Number(document.getElementById("ideal-edge-length").value);
+      currentLayoutProperties.edgeElasticity = Number(document.getElementById("edge-elasticity").value);
+      currentLayoutProperties.nestingFactor = Number(document.getElementById("nesting-factor").value);
+      currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
+      currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
+      currentLayoutProperties.tile = document.getElementById("tile").checked;
+      currentLayoutProperties.animate = document.getElementById("animate").checked ? 'during' : 'end';
+      currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
+      currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
+      currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
+      currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
+      currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
+      currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
+      currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
+      currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
+
+      // reset currentLayoutProperties in scratch pad
+      appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');
+
       $(self.el).modal('toggle');
-      $(document).trigger('saveLayout');
+      $(document).trigger('saveLayout', cy);
     });
 
     $(document).off("click", "#default-layout").on("click", "#default-layout", function (evt) {
-      self.copyProperties();
+      // reset current layout props for active cy instance and get new props
+      var currentLayoutProperties = self.copyProperties();
 
       self.template = _.template($("#layout-settings-template").html());
-      self.template = self.template(appUtilities.currentLayoutProperties);
+      self.template = self.template(currentLayoutProperties);
       $(self.el).html(self.template);
     });
 
@@ -257,8 +294,11 @@ var LayoutPropertiesView = Backbone.View.extend({
 var ColorSchemeInspectorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
+
     var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    var currentScheme = appUtilities.currentGeneralProperties.mapColorScheme;
+    // it was a dead variable that is just set somewhere but never utilized
+    // var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
+
     var schemes = appUtilities.mapColorSchemes;
     var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
     for(var id in schemes) {
@@ -292,7 +332,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
 
-      currentScheme = scheme_id;
+      // currentScheme = scheme_id;
       appUtilities.applyMapColorScheme(scheme_id);
     });
 
@@ -301,13 +341,13 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
 
-      currentScheme = inverted_id;
+      // currentScheme = inverted_id;
       appUtilities.applyMapColorScheme(inverted_id, self);
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
       appUtilities.applyMapColorScheme(defaultColorScheme);
-      currentScheme = defaultColorScheme;
+      // currentScheme = defaultColorScheme;
     });
 
   },
@@ -319,26 +359,36 @@ var ColorSchemeInspectorView = Backbone.View.extend({
   }
 });
 
-// provide common functions for different views tied to 
+// provide common functions for different views tied to
 // inspector map panels
 var GeneralPropertiesParentView = Backbone.View.extend({
   // Apply the properties as they are set
   applyUpdate: function() {
-    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    chise.refreshPaddings(); // Refresh/recalculate paddings
 
-    if (appUtilities.currentGeneralProperties.enablePorts) {
-      chise.enablePorts();
+    // use active chise instance
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+    // use the associated cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get currentGeneralProperties for cy
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
+    chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
+
+    if (currentGeneralProperties.enablePorts) {
+      chiseInstance.enablePorts();
     }
     else {
-      chise.disablePorts();
+      chiseInstance.disablePorts();
     }
 
-    if (appUtilities.currentGeneralProperties.allowCompoundNodeResize) {
-      chise.considerCompoundSizes();
+    if (currentGeneralProperties.allowCompoundNodeResize) {
+      chiseInstance.considerCompoundSizes();
     }
     else {
-      chise.omitCompoundSizes();
+      chiseInstance.omitCompoundSizes();
     }
 
     // Refresh resize grapples
@@ -346,10 +396,12 @@ var GeneralPropertiesParentView = Backbone.View.extend({
 
     cy.style().update();
 
-    $(document).trigger('saveGeneralProperties');
+    $(document).trigger('saveGeneralProperties', cy);
   },
   setPropertiesToDefault: function () {
-    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
+    var cy = appUtilities.getActiveCy();
+    var clonedProps = _.clone(appUtilities.defaultGeneralProperties);
+    appUtilities.setScratch(cy, 'currentGeneralProperties', clonedProps);
   }
 });
 
@@ -357,7 +409,6 @@ var GeneralPropertiesParentView = Backbone.View.extend({
 var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
-    self.setPropertiesToDefault();
     // initialize undo-redo parameters
     self.params = {};
     self.params.compoundPadding = {id: "compound-padding", type: "text",
@@ -369,6 +420,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.allowCompoundNodeResize = {id: "allow-compound-node-resize", type: "checkbox",
       property: "currentGeneralProperties.allowCompoundNodeResize", update: self.applyUpdate};
 
+    self.params.inferNestingOnLoad = {id: "infer-nesting-on-load", type: "checkbox",
+      property: "currentGeneralProperties.inferNestingOnLoad"};
+    
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
 
@@ -380,24 +434,50 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     // general properties part
     $(document).on("change", "#map-name", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.mapName.value = $('#map-name').val();
+
+      // TODO while making such calls appUtilities.undoable flag should be checked
+      // if it is not true then the operation should not be undoable
       cy.undoRedo().do("changeMenu", self.params.mapName);
+
+      // use the panel id as the network key
+      var networkKey = cy.container().id;
+
+      // update the network tab description as the map name is just changed
+      appUtilities.updateNetworkTabDesc(networkKey);
+
       $('#map-name').blur();
     });
 
     $(document).on("change", "#map-description", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.mapDescription.value = $('#map-description').val();
       cy.undoRedo().do("changeMenu", self.params.mapDescription);
       $('#map-description').blur();
     });
 
     $(document).on("change", "#compound-padding", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.compoundPadding.value = Number($('#compound-padding').val());
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
       $('#compound-padding').blur();
     });
 
     $(document).on("change", "#arrow-scale", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.arrowScale.value = Number($('#arrow-scale').val());
       var ur = cy.undoRedo();
       var actions = [];
@@ -409,32 +489,60 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     });
 
     $(document).on("change", "#allow-compound-node-resize", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.allowCompoundNodeResize.value = $('#allow-compound-node-resize').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
       $('#allow-compound-node-resize').blur();
     });
+    
+    $(document).on("change", "#infer-nesting-on-load", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.inferNestingOnLoad.value = $('#infer-nesting-on-load').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
+      $('#infer-nesting-on-load').blur();
+    });
 
     $(document).on("change", "#enable-ports", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.enablePorts.value = $('#enable-ports').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.enablePorts);
       $('#enable-ports').blur();
     });
 
     $(document).on("click", "#inspector-map-tab", function (evt) {
-      document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
     });
+
     $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
-      document.getElementById('map-type').value = chise.getMapType() ? chise.getMapType() : "Unknown";
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
     });
+
     $(document).on("click", "#map-general-default-button", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       var ur = cy.undoRedo();
       var actions = [];
 
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
+      self.params.inferNestingOnLoad.value = appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
+      actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
       actions.push({name: "changeMenu", param: self.params.arrowScale});
@@ -444,9 +552,16 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     });
   },
   render: function() {
+
+    // use active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current general properties for cy
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
-    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+    this.$el.html(this.template(currentGeneralProperties));
     return this;
   }
 });
@@ -455,7 +570,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 var MapTabLabelPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
-    self.setPropertiesToDefault();
     // initialize undo-redo parameters
     self.params = {};
     self.params.dynamicLabelSize = {id: "dynamic-label-size-select", type: "select",
@@ -474,6 +588,10 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.fitLabelsToInfoboxes"};
 
     $(document).on("change", 'select[name="dynamic-label-size"]', function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.dynamicLabelSize.value = $('#dynamic-label-size-select option:selected').val();
       cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
       $('#dynamic-label-size-select').blur();
@@ -481,12 +599,20 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     });
 
     $(document).on("change", "#show-complex-name", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.showComplexName.value = $('#show-complex-name').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.showComplexName);
       $('#show-complex-name').blur();
     });
 
     $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.adjustAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.adjustAutomatically);
       $('#adjust-node-label-font-size-automatically').blur();
@@ -494,6 +620,10 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     });
 
     $(document).on("change", "#fit-labels-to-nodes", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.fitLabelsToNodes.value = $('#fit-labels-to-nodes').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
       $('#fit-labels-to-nodes').blur();
@@ -501,12 +631,20 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     });
 
     $(document).on("change", "#fit-labels-to-infoboxes", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.fitLabelsToInfoboxes.value = $('#fit-labels-to-infoboxes').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
       $('#fit-labels-to-infoboxes').blur();
       self.applyUpdate();
     });
     $(document).on("click", "#map-label-default-button", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       var ur = cy.undoRedo();
       var actions = [];
       self.params.dynamicLabelSize.value = appUtilities.defaultGeneralProperties.dynamicLabelSize;
@@ -524,9 +662,16 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     });
   },
   render: function() {
+
+    // use the active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current general properties of cy
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     this.template = _.template($("#map-tab-label-template").html());
     this.$el.empty();
-    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+    this.$el.html(this.template(currentGeneralProperties));
     return this;
   }
 });
@@ -535,41 +680,74 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
 var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
-    self.setPropertiesToDefault();
     // initialize undo-redo parameters
     self.params = {};
-    self.params.rearrangeAfterExpandCollapse = {id: "rearrange-after-expand-collapse", type: "checkbox",
-      property: "currentGeneralProperties.rearrangeAfterExpandCollapse"};
+    self.params.recalculateLayoutOnComplexityManagement = {id: "recalculate-layout-on-complexity-management", type: "checkbox",
+      property: "currentGeneralProperties.recalculateLayoutOnComplexityManagement"};
+
+    self.params.rearrangeOnComplexityManagement = {id: "rearrange-on-complexity-management", type: "checkbox",
+      property: "currentGeneralProperties.rearrangeOnComplexityManagement"};
 
     self.params.animateOnDrawingChanges = {id: "animate-on-drawing-changes", type: "checkbox",
       property: "currentGeneralProperties.animateOnDrawingChanges"};
 
-    $(document).on("change", "#rearrange-after-expand-collapse", function (evt) {
-      self.params.rearrangeAfterExpandCollapse.value = $('#rearrange-after-expand-collapse').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.rearrangeAfterExpandCollapse);
-      $('#rearrange-after-expand-collapse').blur();
+    $(document).on("change", "#recalculate-layout-on-complexity-management", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.recalculateLayoutOnComplexityManagement.value = $('#recalculate-layout-on-complexity-management').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.recalculateLayoutOnComplexityManagement);
+      $('#recalculate-layout-on-complexity-management').blur();
+    });
+
+    $(document).on("change", "#rearrange-on-complexity-management", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.rearrangeOnComplexityManagement.value = $('#rearrange-on-complexity-management').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.rearrangeOnComplexityManagement);
+      $('#rearrange-on-complexity-management').blur();
     });
 
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       self.params.animateOnDrawingChanges.value = $('#animate-on-drawing-changes').prop('checked');
       cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
       $('#animate-on-drawing-changes').blur();
     });
 
     $(document).on("click", "#map-rearrangement-default-button", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
       var ur = cy.undoRedo();
       var actions = [];
-      self.params.rearrangeAfterExpandCollapse.value = appUtilities.defaultGeneralProperties.rearrangeAfterExpandCollapse;
+      self.params.recalculateLayoutOnComplexityManagement.value = appUtilities.defaultGeneralProperties.recalculateLayoutOnComplexityManagement;
+      self.params.rearrangeOnComplexityManagement.value = appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
       self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
-      actions.push({name: "changeMenu", param: self.params.rearrangeAfterExpandCollapse});
+      actions.push({name: "changeMenu", param: self.params.recalculateLayoutOnComplexityManagement});
+      actions.push({name: "changeMenu", param: self.params.rearrangeOnComplexityManagement});
       actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});
       ur.do("batch", actions);
     });
   },
   render: function() {
+
+    // use the active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current general properties of cy
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
     this.template = _.template($("#map-tab-rearrangement-template").html());
     this.$el.empty();
-    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+    this.$el.html(this.template(currentGeneralProperties));
 
     return this;
   }
@@ -581,7 +759,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
 /*var GeneralPropertiesView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.setPropertiesToDefault();
 
     $(document).on("click", "#default-sbgn", function (evt) {
       self.setPropertiesToDefault();
@@ -639,6 +816,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
     this.currentQueryParameters = _.clone(this.defaultQueryParameters);
   },
   render: function () {
+
     var self = this;
     self.template = _.template($("#query-pathsbetween-template").html());
     self.template = self.template(self.currentQueryParameters);
@@ -647,6 +825,12 @@ var PathsBetweenQueryView = Backbone.View.extend({
     $(self.el).modal('show');
 
     $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
       self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
@@ -692,9 +876,12 @@ var PathsBetweenQueryView = Backbone.View.extend({
       }
       filename = filename + '_PATHSBETWEEN.sbgnml';
 
-      chise.startSpinner('paths-between-spinner');
+      chiseInstance.startSpinner('paths-between-spinner');
       queryURL = queryURL + sources;
 
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+      
       $.ajax({
         url: queryURL,
         type: 'GET',
@@ -702,14 +889,16 @@ var PathsBetweenQueryView = Backbone.View.extend({
             if (data == null)
             {
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chise.endSpinner('paths-between-spinner');
+                chiseInstance.endSpinner('paths-between-spinner');
             }
             else
             {
-                $(document).trigger('sbgnvizLoadFile', filename);
-                chise.updateGraph(chise.convertSbgnmlToJson(data));
-                chise.endSpinner('paths-between-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd');
+                $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                currentGeneralProperties.inferNestingOnLoad = false;
+                chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                chiseInstance.endSpinner('paths-between-spinner');
+                $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
             }
         }
       });
@@ -749,7 +938,13 @@ var PathsByURIQueryView = Backbone.View.extend({
 
     $(self.el).modal('show');
 
-      $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
+    $(document).off("click", "#save-query-pathsbyURI").on("click", "#save-query-pathsbyURI", function (evt) {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
       self.currentQueryParameters.URI = document.getElementById("query-pathsbyURI-URI").value;
       var uri = self.currentQueryParameters.URI.trim();
@@ -759,7 +954,7 @@ var PathsByURIQueryView = Backbone.View.extend({
           return;
       }
       // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      uri = uri.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      uri = uri.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
       if (uri.length === 0) {
           $(self.el).modal('toggle');
           new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
@@ -779,7 +974,10 @@ var PathsByURIQueryView = Backbone.View.extend({
 
       filename = filename + '_URI.sbgnml';
 
-      chise.startSpinner('paths-byURI-spinner');
+      chiseInstance.startSpinner('paths-byURI-spinner');
+
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
       $.ajax({
         url: queryURL,
@@ -788,14 +986,16 @@ var PathsByURIQueryView = Backbone.View.extend({
           if (data == null)
           {
             new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
-            chise.endSpinner('paths-byURI-spinner');
+            chiseInstance.endSpinner('paths-byURI-spinner');
           }
           else
           {
-            $(document).trigger('sbgnvizLoadFile', filename);
-            chise.updateGraph(chise.convertSbgnmlToJson(data));
-            chise.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd');
+            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            chiseInstance.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
           }
         }
       });
@@ -868,12 +1068,22 @@ var FileSaveView = Backbone.View.extend({
     $("#file-save-filename").val(filename);
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the assocated cy instance
+      var cy = chiseInstance.getCy();
+
+      // get current general properties for cy
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
       var renderInfo = appUtilities.getAllStyles();
-      var properties = jquery.extend(true, {}, appUtilities.currentGeneralProperties);
+      var properties = jquery.extend(true, {}, currentGeneralProperties);
       delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
-      chise.saveAsSbgnml(filename, renderInfo, properties);
+      chiseInstance.saveAsSbgnml(filename, renderInfo, properties);
       $(self.el).modal('toggle');
     });
 
@@ -900,7 +1110,7 @@ var PromptConfirmationView = Backbone.View.extend({
     $(self.el).html(self.template);
     $(self.el).modal('show');
 
-    $(document).off("click", "#prompt-confirmation-accept").on("click", "#prompt-confirmation-accept", function (evt) { 
+    $(document).off("click", "#prompt-confirmation-accept").on("click", "#prompt-confirmation-accept", function (evt) {
       afterFunction();
       $(self.el).modal('toggle');
     });
@@ -1001,6 +1211,26 @@ var PromptInvalidURIView = Backbone.View.extend({
     }
 });
 
+var PromptInvalidURIWarning = Backbone.View.extend({
+    initialize: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidURI-template").html());
+    },
+    render: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidURI-template").html());
+
+        $(self.el).html(self.template);
+        $(self.el).modal('show');
+
+        $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
+});
+
 var PromptInvalidFileView = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -1014,6 +1244,26 @@ var PromptInvalidFileView = Backbone.View.extend({
     $(self.el).modal('show');
     
     $(document).off("click", "#prompt-invalidFile-confirm").on("click", "#prompt-invalidFile-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    
+    return this;
+  }
+});
+
+var PromptInvalidURLWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURL-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURL-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+    
+    $(document).off("click", "#prompt-invalidURL-confirm").on("click", "#prompt-invalidURL-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
     
@@ -1064,6 +1314,7 @@ var ReactionTemplateView = Backbone.View.extend({
     $("img.template-reaction-delete-button").css("cursor", "pointer");
   },
   initialize: function() {
+
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
 
@@ -1101,15 +1352,25 @@ var ReactionTemplateView = Backbone.View.extend({
     });
 
     $(document).on("click", "#create-template", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the assocated cy instance
+      var cy = chiseInstance.getCy();
+
+      // get current layout properties for cy
+      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
       var params = self.getAllParameters();
 
       var templateType = params.templateType;
       var macromoleculeList = params.macromoleculeList;
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
-      var tilingPaddingVertical = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingVertical);
-      var tilingPaddingHorizontal = chise.calculatePaddings(appUtilities.currentLayoutProperties.tilingPaddingHorizontal);
+      var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
+      var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
 
-      chise.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+      chiseInstance.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
       $(self.el).modal('toggle');
     });
@@ -1132,18 +1393,31 @@ var ReactionTemplateView = Backbone.View.extend({
 
 var GridPropertiesView = Backbone.View.extend({
   initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template($("#grid-properties-template").html());
-    self.template = self.template(appUtilities.currentGridProperties);
   },
   copyProperties: function () {
-    appUtilities.currentGridProperties = _.clone(appUtilities.defaultGridProperties);
+    // use active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // clone default props
+    var clonedProps = _.clone(appUtilities.defaultGridProperties);
+
+    // update the scratch pad of cy
+    appUtilities.setScratch(cy, 'currentGridProperties', clonedProps);
+
+    // return cloned props to make them accessible
+    return clonedProps;
   },
   render: function () {
+
+    // use active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current grid properties
+    var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
     var self = this;
     self.template = _.template($("#grid-properties-template").html());
-    self.template = self.template(appUtilities.currentGridProperties);
+    self.template = self.template(currentGridProperties);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
@@ -1174,65 +1448,75 @@ var GridPropertiesView = Backbone.View.extend({
     });
 
     $(document).off("click", "#save-grid").on("click", "#save-grid", function (evt) {
-      appUtilities.currentGridProperties.showGrid = document.getElementById("show-grid").checked;
-      appUtilities.currentGridProperties.snapToGridOnRelease = $("#snap-to-grid").val() == "onRelease";
-      appUtilities.currentGridProperties.snapToGridDuringDrag = $("#snap-to-grid").val() == "duringDrag";
-      appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease = $("#snap-to-alignment-location").val() == "onRelease";
-      appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag = $("#snap-to-alignment-location").val() == "duringDrag";
-      appUtilities.currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
-      appUtilities.currentGridProperties.gridColor = document.getElementById("grid-color").value;
-      appUtilities.currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
-      appUtilities.currentGridProperties.showGeometricGuidelines = document.getElementById("show-geometric-guidelines").checked;
-      appUtilities.currentGridProperties.showDistributionGuidelines = document.getElementById("show-distribution-guidelines").checked;
-      appUtilities.currentGridProperties.showInitPosAlignment = document.getElementById("show-init-Pos-Alignment").checked;
-      appUtilities.currentGridProperties.guidelineTolerance = Number(document.getElementById("guideline-tolerance").value);
-      appUtilities.currentGridProperties.guidelineColor = document.getElementById("geometric-guideline-color").value;
-      appUtilities.currentGridProperties.horizontalGuidelineColor = document.getElementById("horizontal-guideline-color").value;
-      appUtilities.currentGridProperties.verticalGuidelineColor = document.getElementById("vertical-guideline-color").value;
-      appUtilities.currentGridProperties.initPosAlignmentColor = document.getElementById("init-Pos-Alignment-Color").value;
-      appUtilities.currentGridProperties.geometricAlignmentRange = Number(document.getElementById("geometric-alignment-range").value);
-      appUtilities.currentGridProperties.distributionAlignmentRange = Number(document.getElementById("distribution-alignment-range").value);
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      // get current grid properties
+      var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');
+
+      currentGridProperties.showGrid = document.getElementById("show-grid").checked;
+      currentGridProperties.snapToGridOnRelease = $("#snap-to-grid").val() == "onRelease";
+      currentGridProperties.snapToGridDuringDrag = $("#snap-to-grid").val() == "duringDrag";
+      currentGridProperties.snapToAlignmentLocationOnRelease = $("#snap-to-alignment-location").val() == "onRelease";
+      currentGridProperties.snapToAlignmentLocationDuringDrag = $("#snap-to-alignment-location").val() == "duringDrag";
+      currentGridProperties.gridSize = Number(document.getElementById("grid-size").value);
+      currentGridProperties.gridColor = document.getElementById("grid-color").value;
+      currentGridProperties.autoResizeNodes = document.getElementById("auto-resize-nodes").checked;
+      currentGridProperties.showGeometricGuidelines = document.getElementById("show-geometric-guidelines").checked;
+      currentGridProperties.showDistributionGuidelines = document.getElementById("show-distribution-guidelines").checked;
+      currentGridProperties.showInitPosAlignment = document.getElementById("show-init-Pos-Alignment").checked;
+      currentGridProperties.guidelineTolerance = Number(document.getElementById("guideline-tolerance").value);
+      currentGridProperties.guidelineColor = document.getElementById("geometric-guideline-color").value;
+      currentGridProperties.horizontalGuidelineColor = document.getElementById("horizontal-guideline-color").value;
+      currentGridProperties.verticalGuidelineColor = document.getElementById("vertical-guideline-color").value;
+      currentGridProperties.initPosAlignmentColor = document.getElementById("init-Pos-Alignment-Color").value;
+      currentGridProperties.geometricAlignmentRange = Number(document.getElementById("geometric-alignment-range").value);
+      currentGridProperties.distributionAlignmentRange = Number(document.getElementById("distribution-alignment-range").value);
 
 	  // Line styles for guidelines
-      appUtilities.currentGridProperties.initPosAlignmentLine = $('select[name="init-Pos-Alignment-Line"] option:selected').val().split(',').map(Number);
-      appUtilities.currentGridProperties.lineDash = $('select[id="geometric-Alignment-Line"] option:selected').val().split(',').map(Number),
-      appUtilities.currentGridProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
-      appUtilities.currentGridProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
+      currentGridProperties.initPosAlignmentLine = $('select[name="init-Pos-Alignment-Line"] option:selected').val().split(',').map(Number);
+      currentGridProperties.lineDash = $('select[id="geometric-Alignment-Line"] option:selected').val().split(',').map(Number),
+      currentGridProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
+      currentGridProperties.verticalDistLine = $('select[name="vertical-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
       cy.gridGuide({
-        drawGrid: appUtilities.currentGridProperties.showGrid,
-        gridColor: appUtilities.currentGridProperties.gridColor,
-        snapToGridOnRelease: appUtilities.currentGridProperties.snapToGridOnRelease,
-        snapToGridDuringDrag: appUtilities.currentGridProperties.snapToGridDuringDrag,
-        snapToAlignmentLocationOnRelease: appUtilities.currentGridProperties.snapToAlignmentLocationOnRelease,
-        snapToAlignmentLocationDuringDrag: appUtilities.currentGridProperties.snapToAlignmentLocationDuringDrag,
-        gridSpacing: appUtilities.currentGridProperties.gridSize,
-        resize: appUtilities.currentGridProperties.autoResizeNodes,
-        geometricGuideline: appUtilities.currentGridProperties.showGeometricGuidelines,
-        distributionGuidelines: appUtilities.currentGridProperties.showDistributionGuidelines,
-        initPosAlignment: appUtilities.currentGridProperties.showInitPosAlignment,
-        guidelinesTolerance: appUtilities.currentGridProperties.guidelineTolerance,
+        drawGrid: currentGridProperties.showGrid,
+        gridColor: currentGridProperties.gridColor,
+        snapToGridOnRelease: currentGridProperties.snapToGridOnRelease,
+        snapToGridDuringDrag: currentGridProperties.snapToGridDuringDrag,
+        snapToAlignmentLocationOnRelease: currentGridProperties.snapToAlignmentLocationOnRelease,
+        snapToAlignmentLocationDuringDrag: currentGridProperties.snapToAlignmentLocationDuringDrag,
+        gridSpacing: currentGridProperties.gridSize,
+        resize: currentGridProperties.autoResizeNodes,
+        geometricGuideline: currentGridProperties.showGeometricGuidelines,
+        distributionGuidelines: currentGridProperties.showDistributionGuidelines,
+        initPosAlignment: currentGridProperties.showInitPosAlignment,
+        guidelinesTolerance: currentGridProperties.guidelineTolerance,
         guidelinesStyle: {
-		  initPosAlignmentLine: appUtilities.currentGridProperties.initPosAlignmentLine,
-		  lineDash: appUtilities.currentGridProperties.lineDash,
-		  horizontalDistLine: appUtilities.currentGridProperties.horizontalDistLine,
-		  verticalDistLine: appUtilities.currentGridProperties.verticalDistLine,
-          strokeStyle: appUtilities.currentGridProperties.guidelineColor,
-		  horizontalDistColor: appUtilities.currentGridProperties.horizontalGuidelineColor,
-		  verticalDistColor: appUtilities.currentGridProperties.verticalGuidelineColor,
-		  initPosAlignmentColor: appUtilities.currentGridProperties.initPosAlignmentColor,
-          geometricGuidelineRange: appUtilities.currentGridProperties.geometricAlignmentRange,
-          range: appUtilities.currentGridProperties.distributionAlignmentRange
+		  initPosAlignmentLine: currentGridProperties.initPosAlignmentLine,
+		  lineDash: currentGridProperties.lineDash,
+		  horizontalDistLine: currentGridProperties.horizontalDistLine,
+		  verticalDistLine: currentGridProperties.verticalDistLine,
+          strokeStyle: currentGridProperties.guidelineColor,
+		  horizontalDistColor: currentGridProperties.horizontalGuidelineColor,
+		  verticalDistColor: currentGridProperties.verticalGuidelineColor,
+		  initPosAlignmentColor: currentGridProperties.initPosAlignmentColor,
+          geometricGuidelineRange: currentGridProperties.geometricAlignmentRange,
+          range: currentGridProperties.distributionAlignmentRange
         }
       });
-      
+
+      // reset current grid properties in scracth pad of cy
+      appUtilities.setScratch(cy, 'currentGridProperties', currentGridProperties);
+
       $(self.el).modal('toggle');
-      $(document).trigger('saveGridProperties');
+      $(document).trigger('saveGridProperties', cy);
     });
 
     $(document).off("click", "#default-grid").on("click", "#default-grid", function (evt) {
-      self.copyProperties();
+      var currentGridProperties = self.copyProperties();
       self.template = _.template($("#grid-properties-template").html());
-      self.template = self.template(appUtilities.currentGridProperties);
+      self.template = self.template(currentGridProperties);
       $(self.el).html(self.template);
     });
 
@@ -1309,15 +1593,18 @@ var FontPropertiesView = Backbone.View.extend({
     self.template = self.template(self.defaultFontProperties);
   },
   extendProperties: function (eles) {
+
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
     var self = this;
     var commonProperties = {};
     
     // Get common properties. Note that we check the data field for labelsize property and css field for other properties.
-    var commonFontSize = parseInt(chise.elementUtilities.getCommonProperty(eles, "font-size", "data"));
-    var commonFontWeight = chise.elementUtilities.getCommonProperty(eles, "font-weight", "data");
-    var commonFontFamily = chise.elementUtilities.getCommonProperty(eles, "font-family", "data");
-    var commonFontStyle = chise.elementUtilities.getCommonProperty(eles, "font-style", "data");
-    
+    var commonFontSize = parseInt(chiseInstance.elementUtilities.getCommonProperty(eles, "font-size", "data"));
+    var commonFontWeight = chiseInstance.elementUtilities.getCommonProperty(eles, "font-weight", "data");
+    var commonFontFamily = chiseInstance.elementUtilities.getCommonProperty(eles, "font-family", "data");
+    var commonFontStyle = chiseInstance.elementUtilities.getCommonProperty(eles, "font-style", "data");
+
     if( commonFontSize != null ) {
       commonProperties.fontSize = commonFontSize;
     }
@@ -1346,6 +1633,13 @@ var FontPropertiesView = Backbone.View.extend({
     $(self.el).modal('show');
 
     $(document).off("click", "#set-font-properties").on("click", "#set-font-properties", function (evt) {
+
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
       var data = {};
       
       var fontsize = $('#font-properties-font-size').val();
@@ -1396,14 +1690,14 @@ var FontPropertiesView = Backbone.View.extend({
         $(self.el).modal('toggle');
         return;
       }
-      
-      chise.changeFontProperties(eles, data);
-      
+
+      chiseInstance.changeFontProperties(eles, data);
+
       self.copyProperties();
 	    
      
       $(self.el).modal('toggle');
-	    $(document).trigger('saveFontProperties');
+	    $(document).trigger('saveFontProperties', cy);
     });
 
     return this;
@@ -1604,5 +1898,8 @@ module.exports = {
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
   AnnotationListView: AnnotationListView,
-  AnnotationElementView: AnnotationElementView
+  AnnotationElementView: AnnotationElementView,
+  PromptInvalidURIView: PromptInvalidURIView,
+  PromptInvalidURIWarning: PromptInvalidURIWarning,
+  PromptInvalidURLWarning: PromptInvalidURLWarning
 };
