@@ -240,6 +240,10 @@ appUtilities.updateNetworkTabDesc = function (networkKey) {
   // get the map name from scratch pad of cy to use as the new tab description
   var mapName = this.getScratch(cy).currentGeneralProperties.mapName;
 
+  // if mapName is empty set it to "Pathway" #219
+  if (!mapName)
+    mapName = "Pathway";
+
   // update the content of 'a' element that is contained by the related tab
   $('#' + tabId + ' a').text(mapName);
 };
