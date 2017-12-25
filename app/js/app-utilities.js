@@ -1943,6 +1943,10 @@ appUtilities.launchWithModelFile = function() {
     loadFromURI(uri_path, chiseInstance, promptInvalidURIWarning);
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
+    // get current general properties
+    var cyInstance = chiseInstance.getCy();
+    var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
+    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
     
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -1993,12 +1997,18 @@ appUtilities.launchWithModelFile = function() {
           lastModified: Date.now()
         });
         
+        currentGeneralProperties.inferNestingOnLoad = true;
         chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
       },
       error: function(xhr, ajaxOptions, thrownError){
         loadCallbackInvalidityWarning();
       }
     });       
+
+    $(document).one("sbgnvizLoadFileEnd", function(){
+      currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+      appUtilities.mapTabGeneralPanel.render();
+    });
     
   }
 
