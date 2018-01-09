@@ -798,6 +798,9 @@ appUtilities.dynamicResize = function () {
     $("#network-panels-container, .network-panel").height(windowHeight * 0.85);
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
+
+  // trigger an event to notify that newt components are dynamically resized
+  $(document).trigger('newtAfterDynamicResize');
 };
 /*
 appUtilities.nodeQtipFunction = function (node) {
