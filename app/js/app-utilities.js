@@ -427,9 +427,6 @@ appUtilities.createNewNetwork = function () {
   // physically open the new tab
   appUtilities.chooseNetworkTab(appUtilities.nextNetworkId);
 
-  // resize html components according to the window size
-  appUtilities.dynamicResize();
-
   // activate palette tab
   if (!$('#inspector-palette-tab').hasClass('active')) {
     $('#inspector-palette-tab a').tab('show');
@@ -783,7 +780,7 @@ appUtilities.dynamicResize = function () {
     //This is the margin on left and right of the main content when the page is
     //displayed
     var mainContentMargin = 10;
-    $("#network-panels-container, .network-panel").width(windowWidth  * 0.8 - mainContentMargin);
+    $("#network-panels-container").width(windowWidth  * 0.8 - mainContentMargin);
     $("#sbgn-inspector").width(windowWidth  * 0.2 - mainContentMargin);
     var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
@@ -795,7 +792,7 @@ appUtilities.dynamicResize = function () {
 
   if (windowHeight > canvasHeight)
   {
-    $("#network-panels-container, .network-panel").height(windowHeight * 0.85);
+    $("#network-panels-container").height(windowHeight * 0.85);
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
 };
