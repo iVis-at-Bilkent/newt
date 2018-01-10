@@ -47,7 +47,7 @@ module.exports = function() {
 
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
-  // appUtilities.dynamicResize();
+  dynamicResize();
 
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
