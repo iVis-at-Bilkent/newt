@@ -54,6 +54,8 @@
 
         <p> Newt is a viewer and editor of maps drawn in SBGN notation. Specifically, currently it supports Process Description (PD) and Activity Flow (AF) languages of this notation. Please refer to related <a href="http://sbgn.github.io/sbgn/templates">reference cards</a> and <a href="http://sbgn.github.io/sbgn/specifications">specifications</a> for details of these languages. </p>
 
+        <p> Newt can be launched with a blank model, where a map can be created from scratch or an existing one can be uploaded for editing. In addition, one can launch Newt with a remote SBGN model specified as a URL or as a <a href="http://www.pathwaycommons.org/pc2/" target="_blank">Pathway Commons URI</a>. Examples: launch with <a href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn" target="_blank">URL</a> or <a href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211" target="_blank">URI</a>.
+
         <p> <a href="tutorials-basics.html">Here</a> is a short tutorial illustrating basics of Newt. </p>
 
         <h2 id="menubar-and-toolbar">Menubar and toolbar
@@ -76,6 +78,7 @@
         <span class="right"><a href="images/map-properties.png" data-lightbox="image-right-panel" data-title="Configuring the map through options"><img src="images/map-properties.png" style="width: 400px;"/></a></span>
         <p> The tab titled "Map" on the right panel is for configuring the drawing of the map. It can be enabled with "File | Map Properties..." or through the associated tool on the toolbar. </p>
         <p> Numerous settings of a map from general properties like compound paddings to label related settings such as whether to fit labels to nodes, to color scheme can be set using this tab. </p>
+        <p> Name and description of the map can also be set using this panel.</p>
 
         <h3>Palette</h3>
         <span class="left"><a href="images/palette.png" data-lightbox="image-right-panel" data-title="Constructing map using the palette"><img src="images/palette.png" style="width: 400px;"/></a></span>
@@ -87,7 +90,22 @@
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
         <p> Newt can read and write an extended version of <a href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Extension includes style of map objects (such as color and font), custom properties (e.g. Uniprot ID associated with a macromolecule), and hidden/collapsed map content; thus, such information is restored upon save-reload. </p>
 
-        <p> In addition, File menu can be used to export the current map as a static image (either as a raster file in PNG or JPG or as scalable vector graphics in SVG).</p>
+        <p> In addition, AF models can be imported to Newt from simple tab-delimited files. An example model formatted in this manner follows:</p>
+
+        <p style="font-family:courier; margin-left:30px">
+        SBGNViz AF 1.0<br>
+        Sample Pathway title<br>
+        This is a sample pathway description.<br>
+        --NODE_NAME	NODE_ID	NODE_TYPE	PARENT_ID	POSX	POSY	WIDTH	HEIGHT--<br>
+        ERBB2	1	BIOLOGICAL_ACTIVITY	-1<br>
+        NRAS	2	BIOLOGICAL_ACTIVITY	-1<br>
+        ...<br>
+        --EDGE_ID	SOURCE	TARGET	EDGE_TYPE--<br>
+        11	1	2	NEGATIVE_INFLUENCE<br>
+        ...
+        </p>
+
+        <p> Furthermore, File menu can be used to export the current map as a static image (either as a raster file in PNG or JPG or as scalable vector graphics in SVG).</p>
 
         <h2 id="convenient-editing">Convenient editing
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
