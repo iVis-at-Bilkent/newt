@@ -199,6 +199,15 @@ module.exports = function (chiseInstance) {
           $("#highlight-processes-of-selected").trigger('click');
         }
       },
+      {
+        id: 'ctx-menu-animate-edge',
+        content: 'Animate to Other End',
+        selector: 'edge',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          appUtilities.animateToOtherEnd(cyTarget, event.position);
+        }
+      },
     ]);
 
     cy.clipboard({

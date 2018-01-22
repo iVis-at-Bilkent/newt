@@ -2058,4 +2058,31 @@ appUtilities.launchWithModelFile = function() {
   }  
 }
 
+appUtilities.animateToOtherEnd = function(edge, mouse_position) {
+  
+  if(!edge.isEdge()){
+    return;
+  }
+
+  var cy = appUtilities.getActiveCy();
+  var source_node = edge.source();
+  var target_node = edge.target();
+  
+  var source_position = source_node.position();
+  var target_position = target_node.position();
+  var source_loc = Math.pow((mouse_position.x - source_position.x), 2) + Math.pow((mouse_position.y - source_position.y), 2);
+  var target_loc = Math.pow((mouse_position.x - target_position.x), 2) + Math.pow((mouse_position.y - target_position.y), 2);
+  
+  var pan_target = (source_loc < target_loc) ? target_node : source_node;
+  
+  cy.animate({
+    duration: 1234,
+    center: {
+      eles: pan_target
+    }
+  });
+  pan_target.select();
+  
+}
+
 module.exports = appUtilities;
