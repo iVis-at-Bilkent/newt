@@ -2065,6 +2065,8 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
   }
 
   var cy = appUtilities.getActiveCy();
+  var bend_instance = cy.edgeBendEditing('get'); 
+
   var source_node = edge.source();
   var target_node = edge.target();
   
@@ -2073,15 +2075,52 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
   var source_loc = Math.pow((mouse_position.x - source_position.x), 2) + Math.pow((mouse_position.y - source_position.y), 2);
   var target_loc = Math.pow((mouse_position.x - target_position.x), 2) + Math.pow((mouse_position.y - target_position.y), 2);
   
-  var pan_target = (source_loc < target_loc) ? target_node : source_node;
+  // Animation direction
+  var source_to_target = (source_loc < target_loc) ? true : false;
+
+  var bend_points = [];
+  if(bend_instance !== undefined && bend_instance.getSegmentPoints(edge) !== undefined){
+    bend_points = bend_instance.getSegmentPoints(edge);
+  }
   
+  // Read bend points according to animation direction
+  if(!source_to_target){
+    var new_bend_points = [];
+    for(var i = bend_points.length-1; i > 0; i=i-2){
+      new_bend_points.push(bend_points[i-1], bend_points[i]);
+    }
+    bend_points = new_bend_points;
+  }
+
+  var start_node = source_to_target ? source_node : target_node;
+  var s_normal = start_node.position();
+  var s_rendered = start_node.renderedPosition();
+  var zoom_level = cy.zoom();
+
+  // Animate for each bend point
+  for(var i = 0; i < bend_points.length-1; i=i+2){
+    // Convert normal position into rendered position
+    var rend_x = (bend_points[i] - s_normal.x) * zoom_level + s_rendered.x; 
+    var rend_y = (bend_points[i+1] - s_normal.y) * zoom_level + s_rendered.y;
+
+    cy.animate({
+     duration: 750,
+     panBy: {x: (cy.width()/2-rend_x), y: (cy.height()/2-rend_y)},
+     easing: 'ease',
+    });
+  }
+  
+  // End animation on target node
   cy.animate({
-    duration: 1234,
+    duration: 1000,
     center: {
-      eles: pan_target
+      eles: (source_to_target ? target_node : source_node)
+    },
+    easing: 'ease',
+    complete: function(){
+      (source_to_target ? target_node : source_node).select();
     }
   });
-  pan_target.select();
   
 }
 
