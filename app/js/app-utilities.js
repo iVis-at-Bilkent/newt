@@ -2070,19 +2070,20 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
   var source_node = edge.source();
   var target_node = edge.target();
   
-  var source_position = source_node.position();
-  var target_position = target_node.position();
+  var source_position = source_node.renderedPosition();
+  var target_position = target_node.renderedPosition();
+
   var source_loc = Math.pow((mouse_position.x - source_position.x), 2) + Math.pow((mouse_position.y - source_position.y), 2);
   var target_loc = Math.pow((mouse_position.x - target_position.x), 2) + Math.pow((mouse_position.y - target_position.y), 2);
   
   // Animation direction
-  var source_to_target = (source_loc < target_loc) ? true : false;
+  var source_to_target = source_loc < target_loc;
 
   var bend_points = [];
   if(bend_instance !== undefined && bend_instance.getSegmentPoints(edge) !== undefined){
     bend_points = bend_instance.getSegmentPoints(edge);
   }
-  
+
   // Read bend points according to animation direction
   if(!source_to_target){
     var new_bend_points = [];
@@ -2105,17 +2106,17 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
 
     cy.animate({
      duration: 750,
-     panBy: {x: (cy.width()/2-rend_x), y: (cy.height()/2-rend_y)},
+     panBy: {x: (mouse_position.x-rend_x), y: (mouse_position.y-rend_y)},
      easing: 'ease',
     });
   }
   
   // End animation on target node
+  var rend_x = (source_to_target ? target_position : source_position).x;
+  var rend_y = (source_to_target ? target_position : source_position).y;
   cy.animate({
     duration: 1000,
-    center: {
-      eles: (source_to_target ? target_node : source_node)
-    },
+    panBy: {x: (mouse_position.x-rend_x), y: (mouse_position.y-rend_y)},
     easing: 'ease',
     complete: function(){
       (source_to_target ? target_node : source_node).select();

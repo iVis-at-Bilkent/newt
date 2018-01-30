@@ -205,7 +205,7 @@ module.exports = function (chiseInstance) {
         selector: 'edge',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.animateToOtherEnd(cyTarget, event.position);
+          appUtilities.animateToOtherEnd(cyTarget, event.renderedPosition);
         }
       },
     ]);
