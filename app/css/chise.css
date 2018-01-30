@@ -185,8 +185,8 @@ body {
 }
 
 .network-panel {
-  height: 680px;
-  width: 800px;
+  height: 100%;
+  width: 100%;
 }
 
 #network-tabs-list-container {
