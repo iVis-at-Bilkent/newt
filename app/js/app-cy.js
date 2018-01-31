@@ -201,11 +201,11 @@ module.exports = function (chiseInstance) {
       },
       {
         id: 'ctx-menu-animate-edge',
-        content: 'Animate to Other End',
+        content: 'Navigate to Other End',
         selector: 'edge',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          appUtilities.animateToOtherEnd(cyTarget, event.renderedPosition);
+          appUtilities.animateToOtherEnd(cyTarget, event.renderedPosition, event.position);
         }
       },
     ]);

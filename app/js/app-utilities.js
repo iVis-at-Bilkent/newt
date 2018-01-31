@@ -2058,7 +2058,7 @@ appUtilities.launchWithModelFile = function() {
   }  
 }
 
-appUtilities.animateToOtherEnd = function(edge, mouse_position) {
+appUtilities.animateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   
   if(!edge.isEdge()){
     return;
@@ -2073,8 +2073,8 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
   var source_position = source_node.renderedPosition();
   var target_position = target_node.renderedPosition();
 
-  var source_loc = Math.pow((mouse_position.x - source_position.x), 2) + Math.pow((mouse_position.y - source_position.y), 2);
-  var target_loc = Math.pow((mouse_position.x - target_position.x), 2) + Math.pow((mouse_position.y - target_position.y), 2);
+  var source_loc = Math.pow((mouse_rend.x - source_position.x), 2) + Math.pow((mouse_rend.y - source_position.y), 2);
+  var target_loc = Math.pow((mouse_rend.x - target_position.x), 2) + Math.pow((mouse_rend.y - target_position.y), 2);
   
   // Animation direction
   var source_to_target = source_loc < target_loc;
@@ -2098,15 +2098,27 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
   var s_rendered = start_node.renderedPosition();
   var zoom_level = cy.zoom();
 
+  // Determine start position of animation
+  var starting_point = 0;
+  for(var i = 0; i < bend_points.length-3; i=i+2){
+    var in_between_x = (mouse_normal.x >= bend_points[i] && mouse_normal.x <= bend_points[i+2])
+      || (mouse_normal.x <= bend_points[i] && mouse_normal.x >= bend_points[i+2]);
+
+    var in_between_y = (mouse_normal.y >= bend_points[i+1] && mouse_normal.y <= bend_points[i+3])
+      || (mouse_normal.y <= bend_points[i+1] && mouse_normal.y >= bend_points[i+3]);
+
+    if(in_between_x && in_between_y) starting_point = i+2;
+  }
+
   // Animate for each bend point
-  for(var i = 0; i < bend_points.length-1; i=i+2){
+  for(var i = starting_point; i < bend_points.length-1; i=i+2){
     // Convert normal position into rendered position
     var rend_x = (bend_points[i] - s_normal.x) * zoom_level + s_rendered.x; 
     var rend_y = (bend_points[i+1] - s_normal.y) * zoom_level + s_rendered.y;
 
     cy.animate({
-     duration: 750,
-     panBy: {x: (mouse_position.x-rend_x), y: (mouse_position.y-rend_y)},
+     duration: 700,
+     panBy: {x: (mouse_rend.x-rend_x), y: (mouse_rend.y-rend_y)},
      easing: 'ease',
     });
   }
@@ -2116,7 +2128,7 @@ appUtilities.animateToOtherEnd = function(edge, mouse_position) {
   var rend_y = (source_to_target ? target_position : source_position).y;
   cy.animate({
     duration: 1000,
-    panBy: {x: (mouse_position.x-rend_x), y: (mouse_position.y-rend_y)},
+    panBy: {x: (mouse_rend.x-rend_x), y: (mouse_rend.y-rend_y)},
     easing: 'ease',
     complete: function(){
       (source_to_target ? target_node : source_node).select();
