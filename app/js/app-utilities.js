@@ -2069,12 +2069,12 @@ appUtilities.animateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
 
   var source_node = edge.source();
   var target_node = edge.target();
-  
-  var source_position = source_node.renderedPosition();
-  var target_position = target_node.renderedPosition();
 
-  var source_loc = Math.pow((mouse_rend.x - source_position.x), 2) + Math.pow((mouse_rend.y - source_position.y), 2);
-  var target_loc = Math.pow((mouse_rend.x - target_position.x), 2) + Math.pow((mouse_rend.y - target_position.y), 2);
+  var source_position = {x: edge._private.rscratch.startX, y: edge._private.rscratch.startY};
+  var target_position = {x: edge._private.rscratch.endX, y: edge._private.rscratch.endY};
+
+  var source_loc = Math.pow((mouse_normal.x - source_position.x), 2) + Math.pow((mouse_normal.y - source_position.y), 2);
+  var target_loc = Math.pow((mouse_normal.x - target_position.x), 2) + Math.pow((mouse_normal.y - target_position.y), 2);
   
   // Animation direction
   var source_to_target = source_loc < target_loc;
@@ -2097,6 +2097,8 @@ appUtilities.animateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   var s_normal = start_node.position();
   var s_rendered = start_node.renderedPosition();
   var zoom_level = cy.zoom();
+  // Edge thickness may cause calculation error
+  var tolerance = 7; 
 
   // Determine start position of animation
   var starting_point = 0;
@@ -2104,10 +2106,26 @@ appUtilities.animateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
     var in_between_x = (mouse_normal.x >= bend_points[i] && mouse_normal.x <= bend_points[i+2])
       || (mouse_normal.x <= bend_points[i] && mouse_normal.x >= bend_points[i+2]);
 
-    var in_between_y = (mouse_normal.y >= bend_points[i+1] && mouse_normal.y <= bend_points[i+3])
-      || (mouse_normal.y <= bend_points[i+1] && mouse_normal.y >= bend_points[i+3]);
+    var in_between_y = (mouse_normal.y+tolerance>= bend_points[i+1] && mouse_normal.y-tolerance <= bend_points[i+3])
+      || (mouse_normal.y-tolerance <= bend_points[i+1] && mouse_normal.y+tolerance >= bend_points[i+3]);
 
     if(in_between_x && in_between_y) starting_point = i+2;
+  }
+  if(bend_points.length > 1){
+    var source = (source_to_target ? source_position : target_position);
+    var target = (!source_to_target ? source_position : target_position);
+
+    var between_sour_x = (mouse_normal.x >= bend_points[0] && mouse_normal.x <= source.x)
+      || (mouse_normal.x <= bend_points[0] && mouse_normal.x >= source.x);
+    var between_sour_y = (mouse_normal.y+tolerance >= bend_points[1] && mouse_normal.y-tolerance <= source.y)
+      || (mouse_normal.y-tolerance <= bend_points[1] && mouse_normal.y+tolerance >= source.y);
+
+    var between_tar_x = (mouse_normal.x >= bend_points[bend_points.length-2] && mouse_normal.x <= target.x)
+      || (mouse_normal.x <= bend_points[bend_points.length-2] && mouse_normal.x >= target.x);
+    var between_tar_y = (mouse_normal.y+tolerance >= bend_points[bend_points.length-1] && mouse_normal.y-tolerance <= target.y)
+      || (mouse_normal.y-tolerance <= bend_points[bend_points.length-1] && mouse_normal.y+tolerance >= target.y);
+
+    if(between_tar_x && between_tar_y && !(between_sour_x && between_sour_y)) starting_point = bend_points.length;
   }
 
   // Animate for each bend point
@@ -2124,11 +2142,11 @@ appUtilities.animateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   }
   
   // End animation on target node
-  var rend_x = (source_to_target ? target_position : source_position).x;
-  var rend_y = (source_to_target ? target_position : source_position).y;
+  var rend_x = mouse_normal.x - (source_to_target ? target_position : source_position).x;
+  var rend_y = mouse_normal.y - (source_to_target ? target_position : source_position).y;
   cy.animate({
     duration: 1000,
-    panBy: {x: (mouse_rend.x-rend_x), y: (mouse_rend.y-rend_y)},
+    panBy: {x: (rend_x*zoom_level), y: (rend_y*zoom_level)},
     easing: 'ease',
     complete: function(){
       (source_to_target ? target_node : source_node).select();
