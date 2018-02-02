@@ -2058,7 +2058,7 @@ appUtilities.launchWithModelFile = function() {
   }  
 }
 
-appUtilities.animateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
+appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   
   if(!edge.isEdge()){
     return;
