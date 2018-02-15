@@ -724,6 +724,15 @@ module.exports = function() {
       chiseInstance.expandAll();
     });
 
+    $("#zoom-to-selected").click( function(e){
+      // use the active chise instance
+      var cy = appUtilities.getActiveCy();
+
+      var viewUtilities = cy.viewUtilities('get');
+
+      viewUtilities.zoomToSelected(cy.$(':selected'));
+    })
+
     $("#perform-layout, #perform-layout-icon").click(function (e) {
 
       // use active chise instance
@@ -975,6 +984,10 @@ module.exports = function() {
 
     $('#select-mode-icon').click(function (e) {
       modeHandler.setSelectionMode();
+    });
+
+    $('#marquee-zoom-mode-icon').click(function(e){
+      modeHandler.setMarqueeZoomMode();
     });
 
     $('#add-node-mode-icon').click(function (e) {

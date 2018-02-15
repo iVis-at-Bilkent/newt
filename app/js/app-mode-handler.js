@@ -58,6 +58,7 @@ var modeHandler = {
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().addClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').removeClass('inactive-palette-element');
       $('.edge-palette img').addClass('inactive-palette-element');
 
@@ -114,6 +115,7 @@ var modeHandler = {
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().addClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').addClass('inactive-palette-element');
       $('.edge-palette img').removeClass('inactive-palette-element');
 
@@ -151,6 +153,7 @@ var modeHandler = {
       $('#select-mode-icon').parent().addClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').addClass('inactive-palette-element');
       $('.edge-palette img').addClass('inactive-palette-element');
 
@@ -163,12 +166,41 @@ var modeHandler = {
       cy.autoungrabify(false);
       cy.autounselectify(false);
     }
-
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
     modeProperties.sustainMode = false;
 
     // reset mode properties of cy
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
+  },
+  setMarqueeZoomMode: function(_cy){
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
+
+    // access mode properties of the cy
+    var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+    if(modeProperties.mode != "marquee-zoom-mode"){
+      $('#select-mode-icon').parent().removeClass('selected-mode');
+      $('#add-edge-mode-icon').parent().removeClass('selected-mode');
+      $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
+      $('.node-palette img').addClass('inactive-palette-element');
+      $('.edge-palette img').addClass('inactive-palette-element');
+
+      modeHandler.autoEnableMenuItems(false);
+
+      modeProperties = "marquee-zoom-mode";
+
+      var viewUtilities = cy.viewUtilities('get');
+      
+      var setSelectionAfterAnimation = function(){
+        modeHandler.setSelectionMode(cy);
+      }
+      
+      viewUtilities.marqueeZoom(setSelectionAfterAnimation);
+      // reset mode properties of cy
+      appUtilities.setScratch(cy, 'modeProperties', modeProperties);
+    }
   },
   autoEnableMenuItems: function (enable) {
     if (enable) {
