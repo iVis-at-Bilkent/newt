@@ -36,6 +36,10 @@ var modeHandler = {
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
 
+    var viewUtilities = cy.viewUtilities('get');
+
+    viewUtilities.disableMarqueeZoom();
+
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
@@ -91,6 +95,10 @@ var modeHandler = {
 
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
+
+    var viewUtilities = cy.viewUtilities('get');
+
+    viewUtilities.disableMarqueeZoom();
 
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
@@ -149,6 +157,10 @@ var modeHandler = {
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
+    var viewUtilities = cy.viewUtilities('get');  
+
+    viewUtilities.disableMarqueeZoom();
+
     if (modeProperties.mode != "selection-mode") {
       $('#select-mode-icon').parent().addClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
@@ -189,18 +201,20 @@ var modeHandler = {
 
       modeHandler.autoEnableMenuItems(false);
 
-      modeProperties = "marquee-zoom-mode";
+      modeProperties.mode = "marquee-zoom-mode";
 
       var viewUtilities = cy.viewUtilities('get');
       
       var setSelectionAfterAnimation = function(){
         modeHandler.setSelectionMode(cy);
+        viewUtilities.disableMarqueeZoom();
       }
-      
-      viewUtilities.marqueeZoom(setSelectionAfterAnimation);
-      // reset mode properties of cy
-      appUtilities.setScratch(cy, 'modeProperties', modeProperties);
+
+      viewUtilities.enableMarqueeZoom(setSelectionAfterAnimation);
+
     }
+    // reset mode properties of cy
+    appUtilities.setScratch(cy, 'modeProperties', modeProperties);
   },
   autoEnableMenuItems: function (enable) {
     if (enable) {
