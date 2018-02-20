@@ -731,7 +731,7 @@ module.exports = function() {
       var viewUtilities = cy.viewUtilities('get');
 
       viewUtilities.zoomToSelected(cy.$(':selected'));
-    })
+    });
 
     $("#perform-layout, #perform-layout-icon").click(function (e) {
 

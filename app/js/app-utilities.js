@@ -152,7 +152,6 @@ appUtilities.adjustUIComponents = function (_cy) {
 
     $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
 
-    modeHandler.autoEnableMenuItems(false);
   }
 
   // adjust status of grid guide related icons in toolbar
