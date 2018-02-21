@@ -51,9 +51,8 @@ var modeHandler = {
       modeProperties.sustainMode = false;
     }
 
-    if(modeProperties == "marquee-zoom-mode") {
+    if(modeProperties.mode == "marquee-zoom-mode") {
       var viewUtilities = cy.viewUtilities('get');
-
       viewUtilities.disableMarqueeZoom();
     }
 
@@ -113,9 +112,8 @@ var modeHandler = {
       modeProperties.sustainMode = false;
     }
 
-    if(modeProperties == "marquee-zoom-mode") {
+    if(modeProperties.mode == "marquee-zoom-mode") {
       var viewUtilities = cy.viewUtilities('get');
-
       viewUtilities.disableMarqueeZoom();
     }
 
@@ -160,9 +158,8 @@ var modeHandler = {
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
-    if(modeProperties == "marquee-zoom-mode") {
-      var viewUtilities = cy.viewUtilities('get');
-
+    if(modeProperties.mode == "marquee-zoom-mode") {
+      var viewUtilities = cy.viewUtilities('get')
       viewUtilities.disableMarqueeZoom();
     }
 
@@ -189,6 +186,7 @@ var modeHandler = {
     // reset mode properties of cy
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
   },
+  // Set marquee zoom mode, disables sustainable mode.
   setMarqueeZoomMode: function(_cy){
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
@@ -215,9 +213,15 @@ var modeHandler = {
 
       viewUtilities.enableMarqueeZoom(setSelectionAfterAnimation);
 
+      cy.autoungrabify(false);
+
+      $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
+      modeProperties.sustainMode = false;
     }
-    $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
-    modeProperties.sustainMode = false;
+    else{
+      modeHandler.setSelectionMode(cy);
+    }
+
     // reset mode properties of cy
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
   },
