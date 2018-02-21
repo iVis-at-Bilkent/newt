@@ -126,6 +126,14 @@ module.exports = function (chiseInstance) {
         coreAsWell: true // Whether core instance have this item on cxttap
       },
       {
+        id: 'ctx-menu-zoom-to-selected',
+        content: 'Zoom to Selected',
+        onClickFunction: function() {
+          $("#zoom-to-selected").trigger('click');
+        },
+        coreAsWell: true
+      },
+      {
         id: 'ctx-menu-expand', // ID of menu item
         content: 'Expand', // Title of menu item
         image: {src : "app/img/toolbar/expand-selected.svg", width : 16, height : 16, x : 2, y : 3},
