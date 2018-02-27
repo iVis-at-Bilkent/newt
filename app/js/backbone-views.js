@@ -1057,7 +1057,12 @@ var FileSaveView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#file-save-template").html());
   },
-  render: function () {
+  /*
+    possibility to use different export format here in the future
+    fileformat: sbgnml
+    version: for sbgnml: 0.2, 0.3
+  */
+  render: function (fileformat, version) {
     var self = this;
     self.template = _.template($("#file-save-template").html());
 
@@ -1080,10 +1085,17 @@ var FileSaveView = Backbone.View.extend({
 
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
-      var renderInfo = appUtilities.getAllStyles();
-      var properties = jquery.extend(true, {}, currentGeneralProperties);
-      delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
-      chiseInstance.saveAsSbgnml(filename, renderInfo, properties);
+
+      if(fileformat === "sbgnml") {
+        var renderInfo = appUtilities.getAllStyles();
+        var properties = jquery.extend(true, {}, currentGeneralProperties);
+        delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
+        chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+      }
+      else { // invalid file format provided
+        console.error("FileSaveView received unsupported file format: "+fileformat);
+      }
+
       $(self.el).modal('toggle');
     });
 
