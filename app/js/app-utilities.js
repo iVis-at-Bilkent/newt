@@ -1935,11 +1935,32 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     appUtilities.updateNetworkTabDesc(networkKey);
 };
 
+// filter the map properties of given object
+appUtilities.filterMapProperties = function(obj) {
+  var mapProps = {};
+
+  for ( var prop in obj ) {
+    if (chise.validMapProperties[prop]) {
+      mapProps[prop] = obj[prop];
+    }
+  }
+
+  return mapProps;
+};
+
 appUtilities.launchWithModelFile = function() {
-  
-  var url_path = getParameterByName('url');
-  var uri_path = getParameterByName('uri');
+
+  var paramObj = getQueryParameters();
+  var url_path = paramObj.url;
+  var uri_path = paramObj.uri;
+
   var chiseInstance = appUtilities.getActiveChiseInstance();
+  var cyInstance = chiseInstance.getCy();
+
+  // attach url params to the object to be used on sbgnvizLoadFileEnd event
+  // it will be cleared immediately after usage
+  appUtilities.setScratch(cyInstance, 'urlParams', paramObj);
+
   var promptInvalidURIWarning = this.promptInvalidURIWarning;
   var promptInvalidURLWarning = this.promptInvalidURLWarning;
 
@@ -1950,7 +1971,6 @@ appUtilities.launchWithModelFile = function() {
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
     // get current general properties
-    var cyInstance = chiseInstance.getCy();
     var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
     var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
     
@@ -2051,17 +2071,31 @@ appUtilities.launchWithModelFile = function() {
       });
   }
 
-  function getParameterByName(name, url) {
+  // returns an object that contains name-value pairs of query parameters
+  function getQueryParameters(url) {
     if (!url){
       url = window.location.href;
     }
 
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"), results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }  
+    var queryParams = {};
+    // Parse the query sting into an object please see:
+    // https://stevenbenner.com/2010/03/javascript-regex-trick-parse-a-query-string-into-an-object/
+    url.replace(
+        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+        function($0, name, $2, value) {
+          if (value !== undefined) {
+            var lowerCaseName = name.toLowerCase();
+            // for 'uri' and 'url' parameters provide case insensitivity by converting to lower case
+            if (lowerCaseName === 'url' || lowerCaseName === 'uri') {
+              name = lowerCaseName;
+            }
+            queryParams[name] = value;
+          }
+        }
+    );
+
+    return queryParams;
+  }
 }
 
 appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {

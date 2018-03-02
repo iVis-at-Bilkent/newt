@@ -314,12 +314,31 @@ module.exports = function() {
 
       // get and set properties from file
       var properties = chiseInstance.getMapProperties();
+      // init map properties
+      var mapProperties = ( properties && properties.mapProperties ) ? properties.mapProperties : {};
 
-      // some operations are to be performed if properties.mapProperties exists
-      var mapPropertiesExist = ( properties && properties.mapProperties );
+      var urlParams = appUtilities.getScratch(cy, 'urlParams');
+
+      if (urlParams) {
+        // clear urlParams from scratch
+        appUtilities.setScratch(cy, 'urlParams', undefined);
+
+        // filter map properties from the url parameters
+        var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+
+        // merge the map properties coming from url into
+        // the map properties read from file
+        for ( var prop in mapPropsFromUrl ) {
+          mapProperties[prop] = mapPropsFromUrl[prop];
+        }
+      }
+
+      // some operations are to be performed if there is any map property
+      // that comes from URL or read from file
+      var mapPropertiesExist = ( !$.isEmptyObject( mapProperties ) );
 
       if (mapPropertiesExist) {
-          appUtilities.setMapProperties(properties.mapProperties);
+          appUtilities.setMapProperties(mapProperties);
       }
 
       // some operations are to be done if the event is triggered for the active instance
