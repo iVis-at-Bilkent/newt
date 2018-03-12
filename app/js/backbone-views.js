@@ -1068,6 +1068,10 @@ var FileSaveView = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
+    
+    $(self.el).on('shown.bs.modal', function (e) {
+      $("#file-save-accept").focus();
+    });
 
     var filename = document.getElementById('file-name').innerHTML;
     $("#file-save-filename").val(filename);
