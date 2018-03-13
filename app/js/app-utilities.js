@@ -500,6 +500,46 @@ appUtilities.removePhysicalNetworkComponents = function (networkKey) {
   $(tabSelector).remove();
 };
 
+appUtilities.dropHandler = function (ev) {
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+
+  if (ev.originalEvent.dataTransfer.items) {
+    // Use DataTransferItemList interface to access the file(s)
+    for (var i = 0; i < ev.originalEvent.dataTransfer.items.length; i++) {
+      // If dropped items aren't files, reject them
+      if (ev.originalEvent.dataTransfer.items[i].kind === 'file') {
+        var file = ev.originalEvent.dataTransfer.items[i].getAsFile();
+        $("#file-input").trigger("change", [file]);    
+      }
+    }
+  } else {
+    // Use DataTransfer interface to access the file(s)
+    for (var i = 0; i < ev.originalEvent.dataTransfer.files.length; i++) {
+      $("#file-input").trigger("change", [file]);    
+    }
+  } 
+  
+  // Pass event to removeDragData for cleanup
+  removeDragData(ev);
+};
+appUtilities.dragOverHandler = function (ev) {
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+};
+
+function removeDragData(ev) {
+
+  if (ev.originalEvent.dataTransfer.items) {
+    // Use DataTransferItemList interface to remove the drag data
+    ev.originalEvent.dataTransfer.items.clear();
+  } else {
+    // Use DataTransfer interface to remove the drag data
+    ev.originalEvent.dataTransfer.clearData();
+  }
+}
+
 appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc) {
 
   // the component that includes the tab panels
@@ -510,6 +550,18 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // create new panel inside the panels parent
   panelsParent.append(newPanelStr);
 
+  $("#" + panelId).on("drop", function(event){
+    appUtilities.dropHandler(event);
+    $("#network-panels-container").removeClass("drag-and-drop-file");
+  });
+  $("#" + panelId).on("dragover", function(event){
+    appUtilities.dragOverHandler(event);
+    $("#network-panels-container").addClass("drag-and-drop-file");
+  });
+  $("#" + panelId).on("dragleave", function(event){
+    $("#network-panels-container").removeClass("drag-and-drop-file");
+  });
+    
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 

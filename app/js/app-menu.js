@@ -229,16 +229,16 @@ module.exports = function() {
       $("#file-input").trigger('click');
     });
 
-    $("#file-input").change(function () {
-
+    $("#file-input").change(function (e, fileObject) {
+      
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
       // use cy instance assocated with chise instance
       var cy = appUtilities.getActiveCy();
 
-      if ($(this).val() != "") {
-        var file = this.files[0];
+      if ($(this).val() != "" || fileObject) {
+        var file = this.files[0] || fileObject;
         var loadCallbackSBGNMLValidity = function (text) {
           validateSBGNML(text);
         }      

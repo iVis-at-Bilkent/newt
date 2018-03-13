@@ -5,6 +5,12 @@ body {
     padding: 0px;
 }
 
+.drag-and-drop-file{
+  outline: 2px dashed;
+  outline-color: #AAAAAA;
+  background-color: #EEEEEE;
+}
+
 .sbgn-nav-menu .open > .dropdown-menu {
     animation-name: slidenavAnimation;
     animation-duration:.3s;
