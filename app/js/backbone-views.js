@@ -1069,8 +1069,8 @@ var FileSaveView = Backbone.View.extend({
     $(self.el).html(self.template);
     $(self.el).modal('show');
     
-    $(document).keypress(function(e){
-      if (e.which == 13 && $(self.el).data('bs.modal').isShown){
+    $("#file-save-table").keyup(function(e){
+      if (e.which == 13 && $(self.el).data('bs.modal').isShown && !$("#file-save-accept").is(":focus") && !$("#file-save-cancel").is(":focus")){
         $("#file-save-accept").click();
       }
     });
