@@ -6,8 +6,7 @@ body {
 }
 
 .drag-and-drop-file{
-  outline: 2px dashed;
-  outline-color: #AAAAAA;
+  border: 2px dashed #0B9BCD !important;
   background-color: #EEEEEE;
 }
 
