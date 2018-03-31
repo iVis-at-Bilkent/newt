@@ -255,9 +255,18 @@ module.exports = function() {
       }
     });
 
+    $('#import-celldesigner-file').click(function (){
+        $("#celldesigner-file-input").trigger('click');
+    });
+
+    $('#celldesigner-file-input').change(function (e, fileObject) {
+      // TODO Implement this function
+      console.log("Cell designer file input is clicked");
+    });
+
     $("#import-simple-af-file").click(function () {
       $("#simple-af-file-input").trigger('click');
-    });   
+    });
 
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
