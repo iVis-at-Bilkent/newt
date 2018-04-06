@@ -40,23 +40,9 @@ module.exports = function() {
         url: "http://localhost:4567/cd2sbgnml",
         data: {xml: xml},
         success: function (data) {
-            console.log("File converted");
-            console.log(data);
-
-
             var chiseInstance = appUtilities.getActiveChiseInstance();
-            var cy = appUtilities.getActiveCy();
-
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-
-            var filename = file.name;
-            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-            currentGeneralProperties.inferNestingOnLoad = false;
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-            chiseInstance.endSpinner('paths-between-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+            validateSBGNML(xml);
+            chiseInstance.loadSBGNMLText(data);
         }
     })
   }
@@ -291,8 +277,6 @@ module.exports = function() {
 
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
-        console.log("File input requested");
-        console.log(file);
         var reader = new FileReader();
         reader.onload = function(event) {
           xml = event.target.result;
