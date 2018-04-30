@@ -259,7 +259,10 @@
                                         <!--<b class="right-caret"></b>-->
                                     </a>
                                     <ul class="dropdown-menu">
+                                        <li><a href="#" id="query-neighborhood">Neighborhood...</a></li>
                                         <li><a href="#" id="query-pathsbetween">Paths Between...</a></li>
+                                        <li><a href="#" id="query-pathsfromto">Paths From To...</a></li>
+                                        <li><a href="#" id="query-commonstream">Common Stream...</a></li>
                                         <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
                                     </ul>
                                 </li>
@@ -568,8 +571,20 @@
         <div id="biogene-container" style="display: none">
         </div>
 
+        <div id="query-neighborhood-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- neighborhood query table will be shown here-->
+        </div>
+
         <div id="query-pathsbetween-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- paths between query table will be shown here-->
+        </div>
+
+        <div id="query-pathsfromto-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- paths from to query table will be shown here-->
+        </div>
+
+        <div id="query-commonstream-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- common stream query table will be shown here-->
         </div>
 
         <div id="query-pathsbyURI-table" tabindex="-1" class="modal fade" role="dialog">
@@ -613,7 +628,7 @@
         </div>
 
         <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
-            <!-- paths between query table will be shown here -->
+            <!-- reaction templatequery table will be shown here -->
         </div>
 
         <div id="grid-properties-table" tabindex="-1" class="modal fade" role="dialog">
@@ -1143,26 +1158,26 @@
             </div>-->
         </script>
 
-        <script type="text/template" id="query-pathsbetween-template">
+        <script type="text/template" id="query-neighborhood-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Paths Between Query</h4>
+            <h4 class="modal-title">Neighborhood Query</h4>
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table">
             <tbody>
             <tr>
             <th colspan=2 style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
+            <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance. </span>
             </th>
             </tr>
 
             <tr>
             <td style="padding-left: 40px;">
             <span class="add-on layout-text"> Gene Symbols: </span><br>
-            <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+            <textarea id="query-neighborhood-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
             </td>
 
             <td style="padding-right: 5px;">
@@ -1171,7 +1186,7 @@
             <caption style="text-align: left;">Stop Distance</caption>
             <tr>
             <td colspan=2>Length limit</td>
-            <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+            <td style="padding: 10px;"><input id="query-neighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
             </tr>
             </tbody>
             </table>
@@ -1182,10 +1197,153 @@
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="save-query-pathsbetween" class="btn btn-default" >OK</button>
-            <button id="cancel-query-pathsbetween" class="btn btn-default">Cancel</button>
+            <button id="save-query-neighborhood" class="btn btn-default" >OK</button>
+            <button id="cancel-query-neighborhood" class="btn btn-default">Cancel</button>
             </div>
             </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="query-pathsbetween-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Paths Between Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+                            <tbody>
+                            <tr>
+                                <th colspan=2 style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-left: 40px;">
+                                    <span class="add-on layout-text"> Gene Symbols: </span><br>
+                                    <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                        <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-pathsbetween" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-pathsbetween" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="query-pathsfromto-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Paths From To Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+                            <tbody>
+                            <tr>
+                                <th colspan=2 style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text"> Find all paths of specified length limit from a set of source entities to a set of target entities </span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-left: 5px;">
+                                    <span class="add-on layout-text"> Source Symbols: </span><br>
+                                    <textarea id="query-pathsfromto-source-symbols" rows="4" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-left: 5px;">
+                                    <span class="add-on layout-text"> Target Symbols: </span><br>
+                                    <textarea id="query-pathsfromto-target-symbols" rows="4" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                        <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-pathsfromto-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-pathsfromto" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-pathsfromto" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="query-commonstream-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Common Stream Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+                            <tbody>
+                            <tr>
+                                <th colspan=2 style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text"> Find molecules within the specified distance that are affecting or affected by a specific set of molecules in common</span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-left: 40px;">
+                                    <span class="add-on layout-text"> Gene Symbols: </span><br>
+                                    <textarea id="query-commonstream-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                        <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-commonstream-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-commonstream" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-commonstream" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
             </div>
         </script>
 
