@@ -546,7 +546,9 @@ module.exports = function (chiseInstance) {
     var sbgnclasses = ['macromolecule', 'simple chemical', 'unspecified entity',
         'nucleic acid feature', 'perturbing agent', 'source and sink', 'phenotype',
         'process', 'omitted process', 'uncertain process', 'association',
-        'dissociation', 'tag', 'and', 'or', 'not', 'delay'];
+        'dissociation', 'tag', 'and', 'or', 'not', 'delay','BA plain',
+        'BA unspecified entity', 'BA simple chemical', 'BA macromolecule',
+        'BA nucleic acid feature', 'BA perturbing agent', 'BA complex'];
     for (i=0; i<sbgnclasses.length; i++)
     {
         var sbgnclass = sbgnclasses[i];
