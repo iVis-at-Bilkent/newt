@@ -3,6 +3,7 @@
 
 <script src="js/scripts.js"></script>
 <script src="js/gcse.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 
 <head>
   <title>Newt Editor</title>
@@ -44,7 +45,8 @@
 	    <p id="email-invalid" style="display:none; color:red;">
               Must be a valid email address</p>
             <p><span>Message</span><textarea class="contact textarea" rows="8" cols="50" name="your_enquiry"></textarea></p>
-            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="contact_submitted" value="Submit" /></p>
+            <div class="g-recaptcha" data-sitekey="6LcwdFsUAAAAAJ1RqCKmGLHFhCfBCWrBD-zYUYH2"></div>
+            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" onclick="checkCaptcha(event)" value="Submit" /></p>
           </div>
         </form>
 	<!-- submitted form thank you message -->
@@ -58,6 +60,14 @@
     <script data-cfasync="false" type="text/javascript"
     src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"></script>
     
+    <script data-cfasync="false" type="text/javascript">
+        var checkCaptcha = function(event) {
+            if (grecaptcha.getResponse().length == 0) {
+                event.preventDefault();
+                alert("Please resolve the captcha!");
+            }
+        };
+    </script>
   </div>
 </body>
 </html>
