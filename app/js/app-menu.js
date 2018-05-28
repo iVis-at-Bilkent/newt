@@ -46,6 +46,18 @@ module.exports = function() {
         }
     })
   }
+
+  function sbgnml2cd(xml) {
+
+      $.ajax({
+          type: 'post',
+          url: "http://localhost:4567/sbgnml2cd",
+          data: {xml: xml},
+          success: function (data) {
+            fileSaveView.render("celldesigner", null, data);
+          }
+      })
+  }
   
   function loadSample(filename) {
 
@@ -881,6 +893,12 @@ module.exports = function() {
 
     $("#export-as-sbgnml2-file").click(function (evt) {
       fileSaveView.render("sbgnml", "0.2");
+    });
+    
+    $("#export-as-celldesigner-file").click(function (evt) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var sbgnml = chiseInstance.createSbgnml();
+        sbgnml2cd(sbgnml);
     });
 
     $("#add-complex-for-selected").click(function (e) {

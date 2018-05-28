@@ -2,6 +2,7 @@ var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var chroma = require('chroma-js');
+var FileSaver = require('filesaverjs');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -1462,7 +1463,7 @@ var FileSaveView = Backbone.View.extend({
     fileformat: sbgnml
     version: for sbgnml: 0.2, 0.3
   */
-  render: function (fileformat, version) {
+  render: function (fileformat, version, text) {
     var self = this;
     self.template = _.template($("#file-save-template").html());
 
@@ -1497,6 +1498,13 @@ var FileSaveView = Backbone.View.extend({
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
         chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+      }
+      else if(fileformat === "celldesigner") {
+        var celldesignerText = text;
+        var blob = new Blob([celldesignerText], {
+            type: "text/plain;charset=utf-8;",
+        });
+        FileSaver.saveAs(blob, filename);
       }
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);
