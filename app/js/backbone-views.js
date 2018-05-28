@@ -797,10 +797,26 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
   }
 });*/
 
+
+String.prototype.replaceAll = function(search, replace)
+{
+    //if replace is not sent, return original string otherwise it will
+    //replace search string with 'undefined'.
+    if (replace === undefined) {
+        return this.toString();
+    }
+
+    return this.replace(new RegExp('[' + search + ']', 'g'), replace);
+};
+
+//Global variable used to check which PathwayCommon dialog was open recently
+//Clicking Ok in Error dialog will redirect to opening of that certain dialog again
+var PCdialog = "";
+
 /**
- * Paths Between Query view for the Sample Application.
+ * Neighborhood Query view for the Sample Application.
  */
-var PathsBetweenQueryView = Backbone.View.extend({
+var NeighborhoodQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
     lengthLimit: 1
@@ -809,7 +825,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
   initialize: function () {
     var self = this;
     self.copyProperties();
-    self.template = _.template($("#query-pathsbetween-template").html());
+    self.template = _.template($("#query-neighborhood-template").html());
     self.template = self.template(self.currentQueryParameters);
   },
   copyProperties: function () {
@@ -818,13 +834,14 @@ var PathsBetweenQueryView = Backbone.View.extend({
   render: function () {
 
     var self = this;
-    self.template = _.template($("#query-pathsbetween-template").html());
+    self.template = _.template($("#query-neighborhood-template").html());
     self.template = self.template(self.currentQueryParameters);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
+    PCdialog = "Neighborhood";
 
-    $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
+    $(document).off("click", "#save-query-neighborhood").on("click", "#save-query-neighborhood", function (evt) {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -832,16 +849,16 @@ var PathsBetweenQueryView = Backbone.View.extend({
       // use the associated cy instance
       var cy = chiseInstance.getCy();
 
-      self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
-      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-neighborhood-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-neighborhood-length-limit").value);
 
       var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
       if (geneSymbols.length === 0) {
-          document.getElementById("query-pathsbetween-gene-symbols").focus();
+          document.getElementById("query-neighborhood-gene-symbols").focus();
           return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      geneSymbols = geneSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (geneSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -850,13 +867,13 @@ var PathsBetweenQueryView = Backbone.View.extend({
       if (self.currentQueryParameters.lengthLimit > 3) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-        document.getElementById("query-pathsbetween-length-limit").focus();
+        document.getElementById("query-neighborhood-length-limit").focus();
         return;
       }
 
-      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit="
           + self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
       var sources = "";
@@ -874,9 +891,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
             filename = filename + '_' + currentGeneSymbol;
         }
       }
-      filename = filename + '_PATHSBETWEEN.sbgnml';
+      filename = filename + '_NEIGHBORHOOD.sbgnml';
 
-      chiseInstance.startSpinner('paths-between-spinner');
+      chiseInstance.startSpinner('neighborhood-spinner');
       queryURL = queryURL + sources;
 
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
@@ -889,7 +906,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
             if (data == null)
             {
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('paths-between-spinner');
+                chiseInstance.endSpinner('neighborhood-spinner');
             }
             else
             {
@@ -897,7 +914,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 currentGeneralProperties.inferNestingOnLoad = false;
                 chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
                 currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                chiseInstance.endSpinner('paths-between-spinner');
+                chiseInstance.endSpinner('neighborhood-spinner');
                 $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
             }
         }
@@ -905,12 +922,395 @@ var PathsBetweenQueryView = Backbone.View.extend({
       $(self.el).modal('toggle');
     });
 
-    $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
+    $(document).off("click", "#cancel-query-neighborhood").on("click", "#cancel-query-neighborhood", function (evt) {
       $(self.el).modal('toggle');
     });
 
     return this;
   }
+});
+
+/**
+ * Paths Between Query view for the Sample Application.
+ */
+var PathsBetweenQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        geneSymbols: "",
+        lengthLimit: 1
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-pathsbetween-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+
+        var self = this;
+        self.template = _.template($("#query-pathsbetween-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+        PCdialog = "PathsBetween";
+
+        $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
+
+            // use active chise instance
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+
+            // use the associated cy instance
+            var cy = chiseInstance.getCy();
+
+            self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
+            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
+
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+                document.getElementById("query-pathsbetween-gene-symbols").focus();
+                return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal('toggle');
+                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+                document.getElementById("query-pathsbetween-length-limit").focus();
+                return;
+            }
+
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+                + self.currentQueryParameters.lengthLimit;
+            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+            var filename = "";
+            var sources = "";
+            for (var i = 0; i < geneSymbolsArray.length; i++) {
+                var currentGeneSymbol = geneSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                sources = sources + "&source=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            filename = filename + '_PATHSBETWEEN.sbgnml';
+
+            chiseInstance.startSpinner('paths-between-spinner');
+            queryURL = queryURL + sources;
+
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    if (data == null)
+                    {
+                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                        chiseInstance.endSpinner('paths-between-spinner');
+                    }
+                    else
+                    {
+                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        chiseInstance.endSpinner('paths-between-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                    }
+                }
+            });
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
+});
+
+/**
+ * Paths From To Query view for the Sample Application.
+ */
+var PathsFromToQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        sourceSymbols: "",
+        targetSymbols: "",
+        lengthLimit: 1
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-pathsfromto-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+
+        var self = this;
+        self.template = _.template($("#query-pathsfromto-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+        PCdialog = "PathsFromTo";
+
+        $(document).off("click", "#save-query-pathsfromto").on("click", "#save-query-pathsfromto", function (evt) {
+
+            // use active chise instance
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+
+            // use the associated cy instance
+            var cy = chiseInstance.getCy();
+
+            self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols").value;
+            self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols").value;
+            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit").value);
+
+            var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+            if (sourceSymbols.length === 0) {
+                document.getElementById("query-pathsfromto-source-symbols").focus();
+                return;
+            }
+            // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            sourceSymbols = sourceSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (sourceSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+
+            var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+            if (targetSymbols.length === 0) {
+                document.getElementById("query-pathsfromto-target-symbols").focus();
+                return;
+            }
+            // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            targetSymbols = targetSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (targetSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+
+            if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal('toggle');
+                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+                document.getElementById("query-pathsfromto-length-limit").focus();
+                return;
+            }
+
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit="
+                + self.currentQueryParameters.lengthLimit;
+            var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+            var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+            var filename = "";
+            var sources = "";
+            var targets = "";
+            for (var i = 0; i < sourceSymbolsArray.length; i++) {
+                var currentGeneSymbol = sourceSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                sources = sources + "&source=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            for (var i = 0; i < targetSymbolsArray.length; i++) {
+                var currentGeneSymbol = targetSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                targets = targets + "&target=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            filename = filename + '_PATHSFROMTO.sbgnml';
+
+            chiseInstance.startSpinner('paths-fromto-spinner');
+            queryURL = queryURL + sources + targets;
+
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    if (data == null)
+                    {
+                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                        chiseInstance.endSpinner('paths-fromto-spinner');
+                    }
+                    else
+                    {
+                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        chiseInstance.endSpinner('paths-fromto-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                    }
+                }
+            });
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-pathsfromto").on("click", "#cancel-query-pathsfromto", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
+});
+
+/**
+ * Common Stream Query view for the Sample Application.
+ */
+var CommonStreamQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        geneSymbols: "",
+        lengthLimit: 1
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-commonstream-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+
+        var self = this;
+        self.template = _.template($("#query-commonstream-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+        PCdialog = "CommonStream";
+
+        $(document).off("click", "#save-query-commonstream").on("click", "#save-query-commonstream", function (evt) {
+
+            // use active chise instance
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+
+            // use the associated cy instance
+            var cy = chiseInstance.getCy();
+
+            self.currentQueryParameters.geneSymbols = document.getElementById("query-commonstream-gene-symbols").value;
+            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-commonstream-length-limit").value);
+
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+                document.getElementById("query-commonstream-gene-symbols").focus();
+                return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal('toggle');
+                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+                document.getElementById("query-commonstream-length-limit").focus();
+                return;
+            }
+
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
+                + self.currentQueryParameters.lengthLimit;
+            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+            var filename = "";
+            var sources = "";
+            for (var i = 0; i < geneSymbolsArray.length; i++) {
+                var currentGeneSymbol = geneSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                sources = sources + "&source=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            filename = filename + '_COMMONSTREAM.sbgnml';
+
+            chiseInstance.startSpinner('common-stream-spinner');
+            queryURL = queryURL + sources;
+
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    if (data == null)
+                    {
+                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                        chiseInstance.endSpinner('common-stream-spinner');
+                    }
+                    else
+                    {
+                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        chiseInstance.endSpinner('common-stream-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                    }
+                }
+            });
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-commonstream").on("click", "#cancel-query-commonstream", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
 });
 
 /**
@@ -954,7 +1354,7 @@ var PathsByURIQueryView = Backbone.View.extend({
           return;
       }
       // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      uri = uri.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
+      uri = uri.replaceAll(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
       if (uri.length === 0) {
           $(self.el).modal('toggle');
           new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
@@ -1180,7 +1580,14 @@ var PromptInvalidQueryView = Backbone.View.extend({
 
       $(document).off("click", "#prompt-invalidQuery-confirm").on("click", "#prompt-invalidQuery-confirm", function (evt) {
           $(self.el).modal('toggle');
-          appUtilities.pathsBetweenQueryView.render();
+          if (PCdialog == "Neighborhood")
+            appUtilities.neighborhoodQueryView.render();
+          else if (PCdialog == "PathsBetween")
+              appUtilities.pathsBetweenQueryView.render();
+          else if (PCdialog == "PathsFromTo")
+              appUtilities.pathsFromToQueryView.render();
+          else if (PCdialog == "CommonStream")
+              appUtilities.commonStreamQueryView.render();
       });
 
       return this;
@@ -1201,7 +1608,14 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
 
         $(document).off("click", "#prompt-invalidLengthLimit-confirm").on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
             $(self.el).modal('toggle');
-            appUtilities.pathsBetweenQueryView.render();
+            if (PCdialog == "Neighborhood")
+                appUtilities.neighborhoodQueryView.render();
+            else if (PCdialog == "PathsBetween")
+                appUtilities.pathsBetweenQueryView.render();
+            else if (PCdialog == "PathsFromTo")
+                appUtilities.pathsFromToQueryView.render();
+            else if (PCdialog == "CommonStream")
+                appUtilities.commonStreamQueryView.render();
         });
 
         return this;
@@ -1905,7 +2319,10 @@ module.exports = {
   MapTabLabelPanel: MapTabLabelPanel,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
+  NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,
+  PathsFromToQueryView: PathsFromToQueryView,
+  CommonStreamQueryView: CommonStreamQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
