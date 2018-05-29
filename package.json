@@ -34,7 +34,7 @@
     "cytoscape-undo-redo": "github:iVis-at-Bilkent/cytoscape.js-undo-redo#master",
     "cytoscape-view-utilities": "github:iVis-at-Bilkent/cytoscape.js-view-utilities#unstable",
     "filesaverjs": "~0.2.2",
-    "jquery": "~2.2.4",
+    "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",
     "konva": "^1.6.3",
     "libxmljs": "^0.18.4",
