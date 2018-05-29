@@ -296,10 +296,9 @@ module.exports = function() {
         appUtilities.setFileContent(file.name);
         var reader = new FileReader();
         reader.onload = function(event) {
-          xml = event.target.result;
           chiseInstance = appUtilities.getActiveChiseInstance();
           chiseInstance.startSpinner("load-spinner");
-          cd2sbgnml(xml);
+          cd2sbgnml(event.target.result);
         };
         reader.readAsText(file);
       }
