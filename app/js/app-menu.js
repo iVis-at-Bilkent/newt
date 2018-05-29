@@ -43,6 +43,7 @@ module.exports = function() {
             var chiseInstance = appUtilities.getActiveChiseInstance();
             validateSBGNML(xml);
             chiseInstance.loadSBGNMLText(data);
+            chiseInstance.endSpinner("load-spinner");
         }
     })
   }
@@ -296,6 +297,8 @@ module.exports = function() {
         var reader = new FileReader();
         reader.onload = function(event) {
           xml = event.target.result;
+          chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.startSpinner("load-spinner");
           cd2sbgnml(xml);
         };
         reader.readAsText(file);

@@ -1500,8 +1500,7 @@ var FileSaveView = Backbone.View.extend({
         chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
       }
       else if(fileformat === "celldesigner") {
-        var celldesignerText = text;
-        var blob = new Blob([celldesignerText], {
+        var blob = new Blob([text], {
             type: "text/plain;charset=utf-8;",
         });
         FileSaver.saveAs(blob, filename);
