@@ -845,11 +845,11 @@ module.exports = function() {
     $("#save-as-sbgnml, #save-icon").click(function (evt) {
       //var filename = document.getElementById('file-name').innerHTML;
       //chise.saveAsSbgnml(filename);
-      fileSaveView.render("sbgnml", "0.3");
+      fileSaveView.render("sbgnml", "0.2");
     });
 
-    $("#export-as-sbgnml2-file").click(function (evt) {
-      fileSaveView.render("sbgnml", "0.2");
+    $("#export-as-sbgnml3-file").click(function (evt) {
+      fileSaveView.render("sbgnml", "0.3");
     });
 
     $("#add-complex-for-selected").click(function (e) {
