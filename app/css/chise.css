@@ -742,11 +742,11 @@ img#template-reaction-add-button:hover {
     cursor: pointer;
 }
 
-img#template-reversible-left-add-button:hover {
+img#template-reversible-input-add-button:hover {
     cursor: pointer;
 }
 
-img#template-reversible-right-add-button:hover {
+img#template-reversible-output-add-button:hover {
     cursor: pointer;
 }
 

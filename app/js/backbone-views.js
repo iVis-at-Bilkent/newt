@@ -1713,34 +1713,34 @@ var ReactionTemplateView = Backbone.View.extend({
       html +=  "class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }else if( type == "left"){
-      html += "class='template-reversible-left-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
-      $('#template-reversible-left-table :input.template-reaction-textbox').last().closest('tr').after(html);
+      html += "class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      $('#template-reversible-input-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }else{
-      html += "class='template-reversible-right-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
-      $('#template-reversible-right-table :input.template-reaction-textbox').last().closest('tr').after(html);
+      html += "class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      $('#template-reversible-output-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
     return html;
   },
   removeMacromolecule: function (type, i) {
-    if( type == "reaction"){
+    if(type == "reaction"){
       $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();;
-    }else if( type == "left"){
-      $('#template-reversible-left-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+    }else if(type == "left"){
+      $('#template-reversible-input-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
     }else{
-      $('#template-reversible-right-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+      $('#template-reversible-output-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
     }
   },
   switchInputOutput: function (e) {
     var self = this;
-    if( e == "association") {
+    if(e == "association") {
       $('#reaction-template-left-td').html(self.associatedHTMLContent);
       $('#reaction-template-right-td').html(self.dissociatedHTMLContent);
-    }else if( e == "dissociation"){
+    }else if(e == "dissociation"){
       $('#reaction-template-left-td').html(self.dissociatedHTMLContent);
       $('#reaction-template-right-td').html(self.associatedHTMLContent);
     }else{
-      $('#reaction-template-left-td').html(self.reversibleLeftHTMLContent);
-      $('#reaction-template-right-td').html(self.reversibleRightHTMLContent);
+      $('#reaction-template-left-td').html(self.reversibleInputHTMLContent);
+      $('#reaction-template-right-td').html(self.reversibleOutputHTMLContent);
       self.disableDeleteButtonStyle("left");
       self.disableDeleteButtonStyle("right");
     }
@@ -1751,6 +1751,12 @@ var ReactionTemplateView = Backbone.View.extend({
     var macromoleculeList = $('#template-reaction-dissociated-table :input.template-reaction-textbox').map(function(){
         return $(this).val()
       }).toArray();
+    var reversibleInputMacromoleculeList = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleOutputMacromoleculeList = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
     // enable complex name only if the user provided something
     var templateReactionEnableComplexName = $.trim(templateReactionComplexName).length != 0;
 
@@ -1758,6 +1764,8 @@ var ReactionTemplateView = Backbone.View.extend({
       templateType: templateType,
       templateReactionComplexName: templateReactionComplexName,
       macromoleculeList: macromoleculeList,
+      reversibleInputMacromoleculeList: reversibleInputMacromoleculeList,
+      reversibleOutputMacromoleculeList: reversibleOutputMacromoleculeList,
       templateReactionEnableComplexName: templateReactionEnableComplexName
     }
   },
@@ -1766,23 +1774,23 @@ var ReactionTemplateView = Backbone.View.extend({
       $("img.template-reaction-delete-button").css("opacity", 0.2);
       $("img.template-reaction-delete-button").css("cursor", "default");
     }else if(type == "left"){
-      $("img.template-reversible-left-delete-button").css("opacity", 0.2);
-      $("img.template-reversible-left-delete-button").css("cursor", "default");
+      $("img.template-reversible-input-delete-button").css("opacity", 0.2);
+      $("img.template-reversible-input-delete-button").css("cursor", "default");
     }else{
-      $("img.template-reversible-right-delete-button").css("opacity", 0.2);
-      $("img.template-reversible-right-delete-button").css("cursor", "default");
+      $("img.template-reversible-output-delete-button").css("opacity", 0.2);
+      $("img.template-reversible-output-delete-button").css("cursor", "default");
     }
   },
-  enableDeleteButtonStyle: function( type) {
+  enableDeleteButtonStyle: function(type) {
     if(type == "reaction"){
       $("img.template-reaction-delete-button").css("opacity",1);
       $("img.template-reaction-delete-button").css("cursor", "pointer");
     }else if(type == "left"){
-      $("img.template-reversible-left-delete-button").css("opacity",1);
-      $("img.template-reversible-left-delete-button").css("cursor", "pointer");
+      $("img.template-reversible-input-delete-button").css("opacity",1);
+      $("img.template-reversible-input-delete-button").css("cursor", "pointer");
     }else{
-      $("img.template-reversible-right-delete-button").css("opacity",1);
-      $("img.template-reversible-right-delete-button").css("cursor", "pointer");
+      $("img.template-reversible-output-delete-button").css("opacity",1);
+      $("img.template-reversible-output-delete-button").css("cursor", "pointer");
     }
 
   },
@@ -1825,36 +1833,36 @@ var ReactionTemplateView = Backbone.View.extend({
       }
     });
 
-    $(document).on("click", "#template-reversible-left-add-button", function(event){
-      var nextIndex = parseInt($('#template-reversible-left-table :input.template-reaction-textbox').last().attr('name')) + 1;
+    $(document).on("click", "#template-reversible-input-add-button", function(event){
+      var nextIndex = parseInt($('#template-reversible-input-table :input.template-reaction-textbox').last().attr('name')) + 1;
       self.addMacromolecule( "left", nextIndex);
       self.enableDeleteButtonStyle("left");
     });
 
-    $(document).on("click", "#template-reversible-right-add-button", function(event){
-      var nextIndex = parseInt($('#template-reversible-right-table :input.template-reaction-textbox').last().attr('name')) + 1;
+    $(document).on("click", "#template-reversible-output-add-button", function(event){
+      var nextIndex = parseInt($('#template-reversible-output-table :input.template-reaction-textbox').last().attr('name')) + 1;
       self.addMacromolecule( "right", nextIndex);
       self.enableDeleteButtonStyle("right");
     });
 
-    $(document).on("click", ".template-reversible-left-delete-button", function(event){
-      if($('#template-reversible-left-table :input.template-reaction-textbox').length <= 1){
+    $(document).on("click", ".template-reversible-input-delete-button", function(event){
+      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
         return;
       }
       var index = parseInt($(this).attr('name'));
       self.removeMacromolecule("left",index);
-      if($('#template-reversible-left-table :input.template-reaction-textbox').length <= 1){
+      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
         self.disableDeleteButtonStyle("left");
       }
     });
 
-    $(document).on("click", ".template-reversible-right-delete-button", function(event){
-      if($('#template-reversible-right-table :input.template-reaction-textbox').length <= 1){
+    $(document).on("click", ".template-reversible-output-delete-button", function(event){
+      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
         return;
       }
       var index = parseInt($(this).attr('name'));
       self.removeMacromolecule("right",index);
-      if($('#template-reversible-right-table :input.template-reaction-textbox').length <= 1){
+      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
         self.disableDeleteButtonStyle("right");
       }
     });
@@ -1877,7 +1885,10 @@ var ReactionTemplateView = Backbone.View.extend({
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
-
+      if(templateType == "reversible"){
+        macromoleculeList = params.reversibleInputMacromoleculeList;
+        complexName = params.reversibleOutputMacromoleculeList;
+      }
       chiseInstance.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
       $(self.el).modal('toggle');
@@ -1896,8 +1907,8 @@ var ReactionTemplateView = Backbone.View.extend({
     $(self.el).modal('show');
     self.associatedHTMLContent = $('#reaction-template-left-td').html();
     self.dissociatedHTMLContent = $('#reaction-template-right-td').html();
-    self.reversibleLeftHTMLContent = $('#reaction-template-reversible-left-td').html();
-    self.reversibleRightHTMLContent = $('#reaction-template-reversible-right-td').html();
+    self.reversibleInputHTMLContent = $('#reversible-template-left-td').html();
+    self.reversibleOutputHTMLContent = $('#reversible-template-right-td').html();
     return this;
   }
 });
