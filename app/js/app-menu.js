@@ -292,7 +292,7 @@ module.exports = function() {
 
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
-        document.getElementById('file-name').innerHTML = file.name;
+        appUtilities.setFileContent(file.name);
         var reader = new FileReader();
         reader.onload = function(event) {
           xml = event.target.result;
