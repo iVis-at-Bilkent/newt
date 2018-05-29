@@ -1496,8 +1496,9 @@ var FileSaveView = Backbone.View.extend({
         var renderInfo = appUtilities.getAllStyles();
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
+        // Exclude extensions if the version is plain
         if (version === "plain") {
-          chiseInstance.saveAsSbgnml(filename, "0.2");
+          chiseInstance.saveAsSbgnml(filename, version);
         }
         else {
           chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
