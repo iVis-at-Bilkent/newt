@@ -1496,7 +1496,12 @@ var FileSaveView = Backbone.View.extend({
         var renderInfo = appUtilities.getAllStyles();
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
-        chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+        if (version === "plain") {
+          chiseInstance.saveAsSbgnml(filename, "0.2");
+        }
+        else {
+          chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+        }
       }
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);
