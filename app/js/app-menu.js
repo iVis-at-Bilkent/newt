@@ -852,6 +852,10 @@ module.exports = function() {
       fileSaveView.render("sbgnml", "0.3");
     });
 
+    $("#export-as-sbgnml-plain-file").click(function (evt) {
+      fileSaveView.render("sbgnml", "plain");
+    });
+
     $("#add-complex-for-selected").click(function (e) {
 
       // use active chise instance
