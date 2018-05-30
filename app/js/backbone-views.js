@@ -1477,6 +1477,8 @@ var FileSaveView = Backbone.View.extend({
     });
 
     var filename = document.getElementById('file-name').innerHTML;
+    if (fileformat === "celldesigner")
+      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".xml");
     $("#file-save-filename").val(filename);
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
