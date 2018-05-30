@@ -1712,10 +1712,12 @@ var ReactionTemplateView = Backbone.View.extend({
     if( type == "reaction"){
       html +=  "class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
-    }else if( type == "left"){
+    }
+    else if( type == "left"){
       html += "class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reversible-input-table :input.template-reaction-textbox').last().closest('tr').after(html);
-    }else{
+    }
+    else{
       html += "class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reversible-output-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
@@ -1724,9 +1726,11 @@ var ReactionTemplateView = Backbone.View.extend({
   removeMacromolecule: function (type, i) {
     if(type == "reaction"){
       $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();;
-    }else if(type == "left"){
+    }
+    else if(type == "left"){
       $('#template-reversible-input-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
-    }else{
+    }
+    else{
       $('#template-reversible-output-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
     }
   },
@@ -1735,10 +1739,12 @@ var ReactionTemplateView = Backbone.View.extend({
     if(e == "association") {
       $('#reaction-template-left-td').html(self.associatedHTMLContent);
       $('#reaction-template-right-td').html(self.dissociatedHTMLContent);
-    }else if(e == "dissociation"){
+    }
+    else if(e == "dissociation"){
       $('#reaction-template-left-td').html(self.dissociatedHTMLContent);
       $('#reaction-template-right-td').html(self.associatedHTMLContent);
-    }else{
+    }
+    else{
       $('#reaction-template-left-td').html(self.reversibleInputHTMLContent);
       $('#reaction-template-right-td').html(self.reversibleOutputHTMLContent);
       self.disableDeleteButtonStyle("left");
@@ -1773,10 +1779,12 @@ var ReactionTemplateView = Backbone.View.extend({
     if(type == "reaction"){
       $("img.template-reaction-delete-button").css("opacity", 0.2);
       $("img.template-reaction-delete-button").css("cursor", "default");
-    }else if(type == "left"){
+    }
+    else if(type == "left"){
       $("img.template-reversible-input-delete-button").css("opacity", 0.2);
       $("img.template-reversible-input-delete-button").css("cursor", "default");
-    }else{
+    }
+    else{
       $("img.template-reversible-output-delete-button").css("opacity", 0.2);
       $("img.template-reversible-output-delete-button").css("cursor", "default");
     }
@@ -1785,10 +1793,12 @@ var ReactionTemplateView = Backbone.View.extend({
     if(type == "reaction"){
       $("img.template-reaction-delete-button").css("opacity",1);
       $("img.template-reaction-delete-button").css("cursor", "pointer");
-    }else if(type == "left"){
+    }
+    else if(type == "left"){
       $("img.template-reversible-input-delete-button").css("opacity",1);
       $("img.template-reversible-input-delete-button").css("cursor", "pointer");
-    }else{
+    }
+    else{
       $("img.template-reversible-output-delete-button").css("opacity",1);
       $("img.template-reversible-output-delete-button").css("cursor", "pointer");
     }
