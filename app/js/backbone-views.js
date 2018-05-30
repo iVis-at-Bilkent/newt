@@ -423,7 +423,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     self.params.inferNestingOnLoad = {id: "infer-nesting-on-load", type: "checkbox",
       property: "currentGeneralProperties.inferNestingOnLoad"};
-    
+
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
 
@@ -498,7 +498,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
       $('#allow-compound-node-resize').blur();
     });
-    
+
     $(document).on("change", "#infer-nesting-on-load", function (evt) {
 
       // use active cy instance
@@ -899,7 +899,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
 
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-      
+
       $.ajax({
         url: queryURL,
         type: 'GET',
@@ -1419,7 +1419,7 @@ var PathsByURIQueryView = Backbone.View.extend({
   So this PromptSaveView isn't used for now, replaced by PromptConfirmationView.
 */
 var PromptSaveView = Backbone.View.extend({
-  
+
   initialize: function () {
     var self = this;
     self.template = _.template($("#prompt-save-template").html());
@@ -1436,12 +1436,12 @@ var PromptSaveView = Backbone.View.extend({
       afterFunction();
       $(self.el).modal('toggle');
     });
-    
+
     $(document).off("click", "#prompt-save-reject").on("click", "#prompt-save-reject", function (evt) {
       afterFunction();
       $(self.el).modal('toggle');
     });
-    
+
     $(document).off("click", "#prompt-save-cancel").on("click", "#prompt-save-cancel", function (evt) {
       $(self.el).modal('toggle');
     });
@@ -1469,13 +1469,13 @@ var FileSaveView = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    
+
     $("#file-save-table").keyup(function(e){
       if (e.which == 13 && $(self.el).data('bs.modal').isShown && !$("#file-save-accept").is(":focus") && !$("#file-save-cancel").is(":focus")){
         $("#file-save-accept").click();
       }
     });
-    
+
     var filename = document.getElementById('file-name').innerHTML;
     $("#file-save-filename").val(filename);
 
@@ -1681,11 +1681,11 @@ var PromptInvalidFileView = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    
+
     $(document).off("click", "#prompt-invalidFile-confirm").on("click", "#prompt-invalidFile-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
-    
+
     return this;
   }
 });
@@ -1701,32 +1701,62 @@ var PromptInvalidURLWarning = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    
+
     $(document).off("click", "#prompt-invalidURL-confirm").on("click", "#prompt-invalidURL-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
-    
+
     return this;
   }
 });
 
 var ReactionTemplateView = Backbone.View.extend({
-  addMacromolecule: function (i) {
+  addMacromolecule: function (type, i) {
     var html = "<tr><td>"
         + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
         + i + "' value=''></input>"
-        + "</td><td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
-
-    $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
+        + "</td><td><img style='vertical-align: text-bottom;'";
+    if( type == "reaction"){
+      html +=  "class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    }
+    else if( type == "left"){
+      html += "class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      $('#template-reversible-input-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    }
+    else{
+      html += "class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      $('#template-reversible-output-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    }
     return html;
   },
-  removeMacromolecule: function (i) {
-    $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+  removeMacromolecule: function (type, i) {
+    if(type == "reaction"){
+      $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();;
+    }
+    else if(type == "left"){
+      $('#template-reversible-input-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+    }
+    else{
+      $('#template-reversible-output-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+    }
   },
-  switchInputOutput: function () {
-    var saveHtmlContent = $("#reaction-template-left-td").html();
-    $("#reaction-template-left-td").html($("#reaction-template-right-td").html());
-    $("#reaction-template-right-td").html(saveHtmlContent);
+  switchInputOutput: function (e) {
+    var self = this;
+    if(e == "association") {
+      $('#reaction-template-left-td').html(self.associatedHTMLContent);
+      $('#reaction-template-right-td').html(self.dissociatedHTMLContent);
+    }
+    else if(e == "dissociation"){
+      $('#reaction-template-left-td').html(self.dissociatedHTMLContent);
+      $('#reaction-template-right-td').html(self.associatedHTMLContent);
+    }
+    else{
+      $('#reaction-template-left-td').html(self.reversibleInputHTMLContent);
+      $('#reaction-template-right-td').html(self.reversibleOutputHTMLContent);
+      self.disableDeleteButtonStyle("left");
+      self.disableDeleteButtonStyle("right");
+    }
   },
   getAllParameters: function () {
     var templateType = $('#reaction-template-type-select').val();
@@ -1734,6 +1764,12 @@ var ReactionTemplateView = Backbone.View.extend({
     var macromoleculeList = $('#template-reaction-dissociated-table :input.template-reaction-textbox').map(function(){
         return $(this).val()
       }).toArray();
+    var reversibleInputMacromoleculeList = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleOutputMacromoleculeList = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
     // enable complex name only if the user provided something
     var templateReactionEnableComplexName = $.trim(templateReactionComplexName).length != 0;
 
@@ -1741,16 +1777,39 @@ var ReactionTemplateView = Backbone.View.extend({
       templateType: templateType,
       templateReactionComplexName: templateReactionComplexName,
       macromoleculeList: macromoleculeList,
+      reversibleInputMacromoleculeList: reversibleInputMacromoleculeList,
+      reversibleOutputMacromoleculeList: reversibleOutputMacromoleculeList,
       templateReactionEnableComplexName: templateReactionEnableComplexName
     }
   },
-  disableDeleteButtonStyle: function () {
-    $("img.template-reaction-delete-button").css("opacity", 0.2);
-    $("img.template-reaction-delete-button").css("cursor", "default");
+  disableDeleteButtonStyle: function (type) {
+    if(type == "reaction"){
+      $("img.template-reaction-delete-button").css("opacity", 0.2);
+      $("img.template-reaction-delete-button").css("cursor", "default");
+    }
+    else if(type == "left"){
+      $("img.template-reversible-input-delete-button").css("opacity", 0.2);
+      $("img.template-reversible-input-delete-button").css("cursor", "default");
+    }
+    else{
+      $("img.template-reversible-output-delete-button").css("opacity", 0.2);
+      $("img.template-reversible-output-delete-button").css("cursor", "default");
+    }
   },
-  enableDeleteButtonStyle: function() {
-    $("img.template-reaction-delete-button").css("opacity",1);
-    $("img.template-reaction-delete-button").css("cursor", "pointer");
+  enableDeleteButtonStyle: function(type) {
+    if(type == "reaction"){
+      $("img.template-reaction-delete-button").css("opacity",1);
+      $("img.template-reaction-delete-button").css("cursor", "pointer");
+    }
+    else if(type == "left"){
+      $("img.template-reversible-input-delete-button").css("opacity",1);
+      $("img.template-reversible-input-delete-button").css("cursor", "pointer");
+    }
+    else{
+      $("img.template-reversible-output-delete-button").css("opacity",1);
+      $("img.template-reversible-output-delete-button").css("cursor", "pointer");
+    }
+
   },
   initialize: function() {
 
@@ -1759,7 +1818,8 @@ var ReactionTemplateView = Backbone.View.extend({
 
     $(document).on('change', '#reaction-template-type-select', function (e) {
       var valueSelected = $(this).val();
-      self.switchInputOutput();
+      self.switchInputOutput(valueSelected);
+      self.disableDeleteButtonStyle("reaction");
     });
 
     $(document).on("change", "#template-reaction-complex-name", function(e){
@@ -1770,8 +1830,8 @@ var ReactionTemplateView = Backbone.View.extend({
     $(document).on("click", "#template-reaction-add-button", function (event) {
       // get the last input name and add 1
       var nextIndex = parseInt($('#template-reaction-dissociated-table :input.template-reaction-textbox').last().attr('name')) + 1;
-      self.addMacromolecule(nextIndex);
-      self.enableDeleteButtonStyle();
+      self.addMacromolecule("reaction",nextIndex);
+      self.enableDeleteButtonStyle("reaction");
     });
 
     $(document).on('change', ".template-reaction-textbox", function () {
@@ -1784,9 +1844,43 @@ var ReactionTemplateView = Backbone.View.extend({
         return;
       }
       var index = parseInt($(this).attr('name'));
-      self.removeMacromolecule(index);
+      self.removeMacromolecule("reaction",index);
       if($('#template-reaction-dissociated-table :input.template-reaction-textbox').length <= 2){
-        self.disableDeleteButtonStyle();
+        self.disableDeleteButtonStyle("reaction");
+      }
+    });
+
+    $(document).on("click", "#template-reversible-input-add-button", function(event){
+      var nextIndex = parseInt($('#template-reversible-input-table :input.template-reaction-textbox').last().attr('name')) + 1;
+      self.addMacromolecule( "left", nextIndex);
+      self.enableDeleteButtonStyle("left");
+    });
+
+    $(document).on("click", "#template-reversible-output-add-button", function(event){
+      var nextIndex = parseInt($('#template-reversible-output-table :input.template-reaction-textbox').last().attr('name')) + 1;
+      self.addMacromolecule( "right", nextIndex);
+      self.enableDeleteButtonStyle("right");
+    });
+
+    $(document).on("click", ".template-reversible-input-delete-button", function(event){
+      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
+        return;
+      }
+      var index = parseInt($(this).attr('name'));
+      self.removeMacromolecule("left",index);
+      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
+        self.disableDeleteButtonStyle("left");
+      }
+    });
+
+    $(document).on("click", ".template-reversible-output-delete-button", function(event){
+      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
+        return;
+      }
+      var index = parseInt($(this).attr('name'));
+      self.removeMacromolecule("right",index);
+      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
+        self.disableDeleteButtonStyle("right");
       }
     });
 
@@ -1808,7 +1902,10 @@ var ReactionTemplateView = Backbone.View.extend({
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
-
+      if(templateType == "reversible"){
+        macromoleculeList = params.reversibleInputMacromoleculeList;
+        complexName = params.reversibleOutputMacromoleculeList;
+      }
       chiseInstance.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
       $(self.el).modal('toggle');
@@ -1825,7 +1922,10 @@ var ReactionTemplateView = Backbone.View.extend({
     self.disableDeleteButtonStyle();
 
     $(self.el).modal('show');
-
+    self.associatedHTMLContent = $('#reaction-template-left-td').html();
+    self.dissociatedHTMLContent = $('#reaction-template-right-td').html();
+    self.reversibleInputHTMLContent = $('#reversible-template-left-td').html();
+    self.reversibleOutputHTMLContent = $('#reversible-template-right-td').html();
     return this;
   }
 });
@@ -1975,7 +2075,7 @@ var FontPropertiesView = Backbone.View.extend({
     this.currentFontProperties = _.clone(this.defaultFontProperties);
   },
   fontFamilies: ["", "Helvetica", "Arial", "Calibri", "Cambria", "Comic Sans MS", "Consolas", "Corsiva"
-    ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact" 
+    ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact"
     ,"Lato", "Roboto", "Source Sans Pro", "Syncopate", "Times New Roman"
     ,"Trebuchet MS", "Ubuntu", "Verdana"],
   getOptionIdByFontFamily: function(fontfamily) {
@@ -1991,35 +2091,35 @@ var FontPropertiesView = Backbone.View.extend({
     if(self == null){
       self = this;
     }
-    
+
     var fontFamilies = self.fontFamilies;
-    
+
     var html = "";
     html += "<select id='font-properties-select-font-family' class='input-medium layout-text' name='font-family-select'>";
-    
+
     var optionsStr = "";
-    
+
     for ( var i = 0; i < fontFamilies.length; i++ ) {
       var fontFamily = fontFamilies[i];
       var optionId = self.getOptionIdByFontFamily(fontFamily);
-      var optionStr = "<option id='" + optionId + "'" 
+      var optionStr = "<option id='" + optionId + "'"
               + " value='" + fontFamily + "' style='" + "font-family: " + fontFamily + "'";
-      
+
       if (fontFamily === self.currentFontProperties.fontFamily) {
         optionStr += " selected";
       }
-      
+
       optionStr += "> ";
       optionStr += fontFamily;
       optionStr += " </option>";
-      
+
       optionsStr += optionStr;
     }
-    
+
     html += optionsStr;
-    
+
     html += "</select>";
-    
+
     return html;
   },
   initialize: function () {
@@ -2037,7 +2137,7 @@ var FontPropertiesView = Backbone.View.extend({
 
     var self = this;
     var commonProperties = {};
-    
+
     // Get common properties. Note that we check the data field for labelsize property and css field for other properties.
     var commonFontSize = parseInt(chiseInstance.elementUtilities.getCommonProperty(eles, "font-size", "data"));
     var commonFontWeight = chiseInstance.elementUtilities.getCommonProperty(eles, "font-weight", "data");
@@ -2047,19 +2147,19 @@ var FontPropertiesView = Backbone.View.extend({
     if( commonFontSize != null ) {
       commonProperties.fontSize = commonFontSize;
     }
-    
+
     if( commonFontWeight != null ) {
       commonProperties.fontWeight = commonFontWeight;
     }
-    
+
     if( commonFontFamily != null ) {
       commonProperties.fontFamily = commonFontFamily;
     }
-    
+
     if( commonFontStyle != null ) {
       commonProperties.fontStyle = commonFontStyle;
     }
-    
+
     self.currentFontProperties = $.extend({}, this.defaultFontProperties, commonProperties);
   },
   render: function (eles) {
@@ -2080,51 +2180,51 @@ var FontPropertiesView = Backbone.View.extend({
       var cy = chiseInstance.getCy();
 
       var data = {};
-      
+
       var fontsize = $('#font-properties-font-size').val();
       var fontfamily = $('select[name="font-family-select"] option:selected').val();
       var fontweight = $('select[name="font-weight-select"] option:selected').val();
       var fontstyle = $('select[name="font-style-select"] option:selected').val();
-      
+
       if ( fontsize != '' ) {
         data['font-size'] = parseInt(fontsize);
       }
-      
+
       if ( fontfamily != '' ) {
         data['font-family'] = fontfamily;
       }
-      
+
       if ( fontweight != '' ) {
         data['font-weight'] = fontweight;
       }
-      
+
       if ( fontstyle != '' ) {
         data['font-style'] = fontstyle;
       }
-      
+
       var keys = Object.keys(data);
-      
+
       if(keys.length === 0) {
         return;
       }
-      
+
       var validAction = false; // If there is nothing to change the action is not valid
-      
+
       for ( var i = 0; i < eles.length; i++ ) {
         var ele = eles[i];
-        
+
         keys.forEach(function(key, idx) {
           // If there is some property to change signal that the action is valid.
           if (data[key] != ele.data(key)){
             validAction = true;
           }
-        }); 
-        
+        });
+
         if ( validAction ) {
           break;
         }
       }
-      
+
       if ( validAction === false ) {
         $(self.el).modal('toggle');
         return;
@@ -2133,8 +2233,8 @@ var FontPropertiesView = Backbone.View.extend({
       chiseInstance.changeFontProperties(eles, data);
 
       self.copyProperties();
-	    
-     
+
+
       $(self.el).modal('toggle');
 	    $(document).trigger('saveFontProperties', cy);
     });

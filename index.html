@@ -61,14 +61,14 @@
                                         <li><a href="#" id="load-sample6">Insulin-like growth factor (IGF) signaling</a></li>
                                         <li><a href="#" id="load-sample7">PolyQ proteins interference</a></li>
                                         <li><a href="#" id="load-sample8">Glycolysis</a></li>
-                                        <li><a href="#" id="load-sample9">MAPK cascade</a></li>  
+                                        <li><a href="#" id="load-sample9">MAPK cascade</a></li>
                                         <li class="divider" style="margin-bottom: 0"></li>
                                         <li><a class="title"><i>AF</i></a></li>
                                         <li class="divider" style="margin-top: 0"></li>
                                         <li><a href="#" id="load-sample10">Transforming growth factor beta (TGFB) signaling</a></li>
                                         <li><a href="#" id="load-sample11">Repressilator</a></li>
                                         <li><a href="#" id="load-sample12">Epidermal growth factor receptor</a></li>
-                                        <li><a href="#" id="load-sample13">Regulation of TGF-beta induced metastasis</a></li>                                            
+                                        <li><a href="#" id="load-sample13">Regulation of TGF-beta induced metastasis</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#" id="save-as-sbgnml">Save...</a></li>
@@ -619,7 +619,7 @@
         <div id="prompt-invalidURI-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
-        
+
         <div id="prompt-invalidFile-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
@@ -1016,7 +1016,7 @@
             <input id="allow-compound-node-resize" type="checkbox" class="layout-text" <% if (allowCompoundNodeResize){ %> checked<%}%>>
             </td>
             </tr>
-            
+
             <tr>
             <td class="header">
             <span class="add-on layout-text"> Infer Nesting on Load </span>
@@ -1682,6 +1682,7 @@
             <select id="reaction-template-type-select" class='sbgn-input-medium layout-text' name="reaction-template-type">
             <option id="reaction-template-type-association" value="association" selected> Association </option>
             <option id="reaction-template-type-dissociation" value="dissociation"> Dissociation </option>
+            <option id="reaction-template-type-reversible" value="reversible"> Reversible </option>
             </select>
             </td>
             </tr>
@@ -1727,6 +1728,36 @@
             <input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value='' ></input>
             </td></tr>
             </table>
+            </td>
+
+            <td id ='reversible-template-left-td' class="hide">
+              <table id='template-reversible-input-table'>
+              <tr>
+              <td>
+              <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+              </td>
+              <td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
+              </td>
+              </tr>
+              <tr><td>
+              <img width="16px" height="16px" id='template-reversible-input-add-button' src='app/img/add.svg'/>
+              </td></tr>
+              </table>
+            </td>
+
+            <td id ='reversible-template-right-td' class="hide">
+              <table id='template-reversible-output-table'>
+              <tr>
+              <td>
+              <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+              </td>
+              <td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
+              </td>
+              </tr>
+              <tr><td>
+              <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg'/>
+              </td></tr>
+              </table>
             </td>
 
             </tr>
