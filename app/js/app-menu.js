@@ -904,6 +904,10 @@ module.exports = function() {
         sbgnml2cd(sbgnml);
     });
 
+    $("#export-as-sbgnml-plain-file").click(function (evt) {
+      fileSaveView.render("sbgnml", "plain");
+    });
+
     $("#add-complex-for-selected").click(function (e) {
 
       // use active chise instance
