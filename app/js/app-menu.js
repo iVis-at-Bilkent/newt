@@ -37,7 +37,7 @@ module.exports = function() {
 
     $.ajax({
         type: 'post',
-        url: "http://localhost:8080/cd2sbgnml",
+        url: "http://web.newteditor.org:8080/cd2sbgnml",
         data: {xml: xml},
         success: function (data) {
             var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -72,7 +72,7 @@ module.exports = function() {
 
       $.ajax({
           type: 'post',
-          url: "http://localhost:8080/sbgnml2cd",
+          url: "http://web.newteditor.org:8080/sbgnml2cd",
           data: {xml: xml},
           success: function (data) {
             fileSaveView.render("celldesigner", null, data);

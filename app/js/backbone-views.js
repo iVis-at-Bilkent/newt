@@ -1704,7 +1704,6 @@ var PromptFileConversionErrorView = Backbone.View.extend({
      self.template = _.template($("#prompt-fileConversionError-template").html());
    },
    render: function() {
-     console.log("Rendering file conversion error view");
      var self = this;
      self.template = _.template($("#prompt-fileConversionError-template").html());
 
