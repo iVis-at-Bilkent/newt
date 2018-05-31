@@ -38,11 +38,10 @@ module.exports = function() {
     $.ajax({
         type: 'post',
         url: "http://web.newteditor.org:8080/cd2sbgnml",
-        data: {xml: xml},
+        data: xml,
         success: function (data) {
             var chiseInstance = appUtilities.getActiveChiseInstance();
             var cy = appUtilities.getActiveCy();
-            validateSBGNML(xml);
             chiseInstance.endSpinner("load-spinner");
             if (cy.elements().length !== 0) {
                 promptConfirmationView.render(function() {
@@ -69,7 +68,7 @@ module.exports = function() {
       $.ajax({
           type: 'post',
           url: "http://web.newteditor.org:8080/sbgnml2cd",
-          data: {xml: xml},
+          data: xml,
           success: function (data) {
             fileSaveView.render("celldesigner", null, data);
           },
