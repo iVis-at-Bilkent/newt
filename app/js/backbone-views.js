@@ -1698,6 +1698,27 @@ var PromptInvalidFileView = Backbone.View.extend({
   }
 });
 
+var PromptFileConversionErrorView = Backbone.View.extend({
+   initialize: function () {
+     var self = this;
+     self.template = _.template($("#prompt-fileConversionError-template").html());
+   },
+   render: function() {
+     console.log("Rendering file conversion error view");
+     var self = this;
+     self.template = _.template($("#prompt-fileConversionError-template").html());
+
+     $(self.el).html(self.template);
+     $(self.el).modal('show');
+
+     $(document).off("click", "#prompt-fileConversionError-confirm").on("click", "#prompt-fileConversionError-confirm", function (evt) {
+         $(self.el).modal('toggle');
+     });
+
+     return this;
+   }
+});
+
 var PromptInvalidURLWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -2444,6 +2465,7 @@ module.exports = {
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
   PromptInvalidFileView: PromptInvalidFileView,
+  PromptFileConversionErrorView: PromptFileConversionErrorView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,

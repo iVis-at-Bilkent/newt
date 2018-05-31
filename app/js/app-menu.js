@@ -12,7 +12,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -37,13 +37,33 @@ module.exports = function() {
 
     $.ajax({
         type: 'post',
-        url: "http://web.newteditor.org:8080/cd2sbgnml",
+        url: "http://localhost:8080/cd2sbgnml",
         data: {xml: xml},
         success: function (data) {
             var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = appUtilities.getActiveCy();
             validateSBGNML(xml);
-            chiseInstance.loadSBGNMLText(data);
             chiseInstance.endSpinner("load-spinner");
+            if (cy.elements().length !== 0) {
+                promptConfirmationView.render(function() {
+                    chiseInstance.loadSBGNMLText(data);
+                });
+            }
+            else {
+                chiseInstance.loadSBGNMLText(data);
+            }
+        },
+        error: function (XMLHttpRequest) {
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+
+          if (XMLHttpRequest.status === 0) {
+            console.log("Conversion service is not available");
+          }
+          else {
+            console.log("Conversion failed");
+          }
+          promptFileConversionErrorView.render();
+          chiseInstance.endSpinner("load-spinner");
         }
     })
   }
@@ -52,10 +72,18 @@ module.exports = function() {
 
       $.ajax({
           type: 'post',
-          url: "http://web.newteditor.org:8080/sbgnml2cd",
+          url: "http://localhost:8080/sbgnml2cd",
           data: {xml: xml},
           success: function (data) {
             fileSaveView.render("celldesigner", null, data);
+          },
+          error: function (XMLHttpRequest) {
+              if (XMLHttpRequest.status === 0) {
+                  console.log("Conversion service is not available");
+              }
+              else {
+                  console.log("Conversion failed");
+              }
           }
       })
   }
@@ -92,6 +120,7 @@ module.exports = function() {
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
+  promptFileConversionErrorView = appUtilities.promptFileConversionErrorView = new BackboneViews.PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
