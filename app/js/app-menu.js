@@ -55,15 +55,11 @@ module.exports = function() {
         },
         error: function (XMLHttpRequest) {
           var chiseInstance = appUtilities.getActiveChiseInstance();
-
-          if (XMLHttpRequest.status === 0) {
-            console.log("Conversion service is not available");
-          }
-          else {
-            console.log("Conversion failed");
-          }
-          promptFileConversionErrorView.render();
           chiseInstance.endSpinner("load-spinner");
+          promptFileConversionErrorView.render();
+          if (XMLHttpRequest.status === 0) {
+              document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          }
         }
     })
   }
@@ -78,11 +74,9 @@ module.exports = function() {
             fileSaveView.render("celldesigner", null, data);
           },
           error: function (XMLHttpRequest) {
+              promptFileConversionErrorView.render();
               if (XMLHttpRequest.status === 0) {
-                  console.log("Conversion service is not available");
-              }
-              else {
-                  console.log("Conversion failed");
+                  document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
               }
           }
       })
