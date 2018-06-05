@@ -216,6 +216,36 @@ module.exports = function (chiseInstance) {
           appUtilities.navigateToOtherEnd(cyTarget, event.renderedPosition, event.position);
         }
       },
+      {
+        id: 'ctx-menu-convert-into-reversible',
+        content: 'Convert into Reversible Reaction',
+        selector: 'node[class="process"]',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          console.log(cyTarget._private.data);
+          cyTarget._private.edges.forEach(function(edge) {
+            if (edge._private.data.class === "consumption") {
+              edge._private.data.class = "production";
+
+              var sourceNode = edge._private.data.source;
+              var targetNode = edge._private.data.target;
+
+              var temp = edge.source;
+              edge.source = edge.target;
+              edge.target = temp;
+
+              temp = edge._private.data.source;
+              edge._private.data.source = edge._private.data.target;
+              edge._private.data.target = temp;
+
+              edge._private.data.portsource = targetNode + ".1";
+              edge._private.data.porttarget = sourceNode;
+
+              cy.style().update();
+            }
+          });
+        }
+      }
     ]);
 
     cy.clipboard({
