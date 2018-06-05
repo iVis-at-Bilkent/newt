@@ -187,7 +187,10 @@ inspectorUtilities.handleSBGNInspector = function () {
     var commonIsCloned;
     var commonStateAndInfos;
     var commonSBGNCardinality;
-    
+    var imageFromURL;
+    var imageURL;
+    var hasBackgroundImage;
+
     if (allNodes) {
       type = "node";
 
@@ -288,6 +291,23 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "..." + "<label/>" + "</td></tr>"; 
       }
 
+      if(selectedEles.length == 1){
+        var removeBtn = "<img id='inspector-delete-bg' width='16px' height='16px' class='pointer-button' src='app/img/toolbar/delete-simple.svg'>";
+        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+        if(!hasBackgroundImage){
+          removeBtn = "<img id='inspector-delete-bg' width='16px' style='display: none' height='16px' class='pointer-button' src='app/img/toolbar/delete-simple.svg'>";
+        }
+
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Image</font>" + "</td><td style='padding-left: 5px;'>"
+              + "<div><span id='inspector-image-selection'>"
+              + "<button id='inspector-image-file' class='btn btn-default' style='width: " + width / 1.5 + "px;'>Choose...</button></span>" 
+              + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
+              + "&nbsp;<input type='checkbox' id='inspector-image-from-url'>" 
+              + "<font class='sbgn-label-font'>URL</font></div>"
+              + removeBtn
+              + "</td></tr><input id='inspector-image-load' type='file' style='display:none;'>";
+      }
+        
       commonStateAndInfos = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
 
       if(commonStateAndInfos){
@@ -476,6 +496,73 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (clonedCheck && commonIsCloned) {
         $('#inspector-is-clone-marker').attr('checked', true);
       }
+      
+      if(imageFromURL){
+        $('#inspector-image-from-url').attr('checked', true);
+      }
+
+      function updateBackgroundDeleteInfo(){
+        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+        if(!hasBackgroundImage)
+          $('#inspector-delete-bg').hide();
+        else
+          $('#inspector-delete-bg').show();
+      }
+
+      $('#inspector-image-from-url').on('click', function() {
+        imageFromURL = !imageFromURL;
+        if(imageFromURL){
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = imageURL ? imageURL : "";
+          
+          $('#inspector-image-url').val(imageURL);
+          $('#inspector-image-url').show();
+          $('#inspector-image-file').hide();
+
+        }
+        else{
+          $('#inspector-image-url').hide();
+          $('#inspector-image-file').show();
+        }
+
+        updateBackgroundDeleteInfo();
+      });
+
+      $('#inspector-delete-bg').on('click', function () {
+        chiseInstance.changeCss(selectedEles[0], 'background-image', '');
+        updateBackgroundDeleteInfo();
+      });
+
+      $("#inspector-image-url").on('change', function () {
+        var url = $(this).val().trim();
+        imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+        
+        if (url && imageURL !== url){
+          chiseInstance.changeCss(selectedEles[0], 'background-image', url);
+          chiseInstance.changeCss(selectedEles[0], 'background-fit', 'contain');
+          chiseInstance.changeCss(selectedEles[0], 'background-image-opacity', '0.7px');
+          updateBackgroundDeleteInfo();
+        }
+      });
+
+      $("#inspector-image-url").on('keydown', function (e) {
+        if (e.keyCode == 13 ){
+          $(this).trigger("change");
+        }
+      });
+
+      $("#inspector-image-file").on('click', function () {
+        $('#inspector-image-load').trigger('click');  
+      });
+
+      $('#inspector-image-load').on('change', function (e, fileObject) {
+        
+        if ($(this).val() != "" || fileObject) {
+          var file = this.files[0] || fileObject;
+          chiseInstance.loadBackgroundImage(selectedEles[0], file);
+          $(this).val("");
+        }
+      });
 
       $('#inspector-set-as-default-button').on('click', function () {
         var multimer;
