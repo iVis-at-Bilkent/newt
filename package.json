@@ -25,7 +25,7 @@
     "cytoscape-clipboard": "github:iVis-at-Bilkent/cytoscape.js-clipboard#master",
     "cytoscape-context-menus": "^3.0.2",
     "cytoscape-cose-bilkent": "github:cytoscape/cytoscape.js-cose-bilkent#unstable",
-    "cytoscape-edge-bend-editing": "github:iVis-at-Bilkent/cytoscape.js-edge-bend-editing#master",
+    "cytoscape-edge-bend-editing": "github:iVis-at-Bilkent/cytoscape.js-edge-bend-editing#unstable",
     "cytoscape-edgehandles": "~2.13.1",
     "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#unstable",
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
