@@ -222,7 +222,6 @@ module.exports = function (chiseInstance) {
         selector: 'node[class="process"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          console.log(cyTarget._private.data);
           cyTarget._private.edges.forEach(function(edge) {
             if (edge._private.data.class === "consumption") {
               edge._private.data.class = "production";
