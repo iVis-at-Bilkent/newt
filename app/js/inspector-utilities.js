@@ -299,8 +299,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
 
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Image</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<div><span id='inspector-image-selection'>"
-              + "<button id='inspector-image-file' class='btn btn-default' style='width: " + width / 1.5 + "px;'>Choose...</button></span>" 
+              + "<div><button id='inspector-image-file' class='btn btn-default' style='width: "
+              + width / 1.5 + "px;padding:2px;margin-bottom:2px;'>Choose...</button>" 
               + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
               + "&nbsp;<input type='checkbox' id='inspector-image-from-url'>" 
               + "<font class='sbgn-label-font'>URL</font></div>"
