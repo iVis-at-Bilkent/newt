@@ -224,21 +224,23 @@ module.exports = function (chiseInstance) {
           var cyTarget = event.target || event.cyTarget;
           cyTarget._private.edges.forEach(function(edge) {
             if (edge._private.data.class === "consumption") {
-              edge._private.data.class = "production";
-
               var sourceNode = edge._private.data.source;
               var targetNode = edge._private.data.target;
 
-              var temp = edge.source;
-              edge.source = edge.target;
-              edge.target = temp;
+              edge._private.data.class = "production";
 
-              temp = edge._private.data.source;
-              edge._private.data.source = edge._private.data.target;
-              edge._private.data.target = temp;
+              if (cyTarget._private.data.id !== sourceNode) {
+                  var temp = edge.source;
+                  edge.source = edge.target;
+                  edge.target = temp;
 
-              edge._private.data.portsource = targetNode + ".1";
-              edge._private.data.porttarget = sourceNode;
+                  temp = edge._private.data.source;
+                  edge._private.data.source = edge._private.data.target;
+                  edge._private.data.target = temp;
+
+                  edge._private.data.portsource = targetNode + ".1";
+                  edge._private.data.porttarget = sourceNode;
+              }
 
               cy.style().update();
             }
