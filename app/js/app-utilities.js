@@ -367,7 +367,7 @@ appUtilities.createNewNetwork = function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.dynamicLabelSize;
     },
-    // Whether to infer nesting on load 
+    // Whether to infer nesting on load
     inferNestingOnLoad: function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.inferNestingOnLoad;
@@ -511,16 +511,16 @@ appUtilities.dropHandler = function (ev) {
       // If dropped items aren't files, reject them
       if (ev.originalEvent.dataTransfer.items[i].kind === 'file') {
         var file = ev.originalEvent.dataTransfer.items[i].getAsFile();
-        $("#file-input").trigger("change", [file]);    
+        $("#file-input").trigger("change", [file]);
       }
     }
   } else {
     // Use DataTransfer interface to access the file(s)
     for (var i = 0; i < ev.originalEvent.dataTransfer.files.length; i++) {
-      $("#file-input").trigger("change", [file]);    
+      $("#file-input").trigger("change", [file]);
     }
-  } 
-  
+  }
+
   // Pass event to removeDragData for cleanup
   removeDragData(ev);
 };
@@ -561,7 +561,7 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   $("#" + panelId).on("dragleave", function(event){
     $("#network-panels-container").removeClass("drag-and-drop-file");
   });
-    
+
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
@@ -713,7 +713,7 @@ appUtilities.defaultGeneralProperties = {
   enablePorts: true,
   allowCompoundNodeResize: false,
   mapColorScheme: 'black_white',
-  defaultInfoboxHeight: 12,
+  defaultInfoboxHeight: 8,
   defaultInfoboxWidth: 30,
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
@@ -2025,7 +2025,7 @@ appUtilities.launchWithModelFile = function() {
     // get current general properties
     var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
     var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-    
+
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -2074,20 +2074,20 @@ appUtilities.launchWithModelFile = function() {
           type: 'text/' + fileExtension,
           lastModified: Date.now()
         });
-        
+
         currentGeneralProperties.inferNestingOnLoad = true;
         chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
       },
       error: function(xhr, ajaxOptions, thrownError){
         loadCallbackInvalidityWarning();
       }
-    });       
+    });
 
     $(document).one("sbgnvizLoadFileEnd", function(){
       currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
       appUtilities.mapTabGeneralPanel.render();
     });
-    
+
   }
 
   function loadFromURI(uri, chiseInstance, promptInvalidURIWarning){
@@ -2097,7 +2097,7 @@ appUtilities.launchWithModelFile = function() {
 
     var filename = uri + '.sbgnml';
     var cyInstance = chiseInstance.getCy();
-    
+
     chiseInstance.startSpinner('paths-byURI-spinner');
 
     var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
@@ -2151,14 +2151,14 @@ appUtilities.launchWithModelFile = function() {
 }
 
 appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
-  
+
   if(!edge.isEdge()){
     return;
   }
 
   var cy = appUtilities.getActiveCy();
   var edge_pts = edge._private.rscratch.allpts;
-  
+
   var source_node = edge.source();
   var target_node = edge.target();
 
@@ -2167,11 +2167,11 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
 
   var source_loc = Math.pow((mouse_normal.x - source_position.x), 2) + Math.pow((mouse_normal.y - source_position.y), 2);
   var target_loc = Math.pow((mouse_normal.x - target_position.x), 2) + Math.pow((mouse_normal.y - target_position.y), 2);
-  
+
   // Animation direction
   var source_to_target = source_loc < target_loc;
-  
-  // Change direction of points according to animation direction 
+
+  // Change direction of points according to animation direction
   if(!source_to_target){
     var new_edge_pts = [];
     for(var i = edge_pts.length-1; i > 0; i=i-2){
@@ -2188,7 +2188,7 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
 
     var b_c = Math.pow((mouse_normal.x-edge_pts[i+2]), 2) + Math.pow((mouse_normal.y-edge_pts[i+3]), 2);
     b_c = Math.sqrt(b_c);
-    
+
     var a_c = Math.pow((edge_pts[i+2]-edge_pts[i]), 2) + Math.pow((edge_pts[i+3]-edge_pts[i+1]), 2);
     a_c = Math.sqrt(a_c);
 
@@ -2209,7 +2209,7 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   // Animate for each bend point
   for(var i = starting_point; i < edge_pts.length-1; i=i+2){
     // Convert normal position into rendered position
-    var rend_x = (edge_pts[i] - s_normal.x) * zoom_level + s_rendered.x; 
+    var rend_x = (edge_pts[i] - s_normal.x) * zoom_level + s_rendered.x;
     var rend_y = (edge_pts[i+1] - s_normal.y) * zoom_level + s_rendered.y;
 
     cy.animate({
@@ -2217,7 +2217,7 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
      panBy: {x: (mouse_rend.x-rend_x), y: (mouse_rend.y-rend_y)},
      easing: 'ease',
      complete: function(){
-      finished--; 
+      finished--;
       if(finished <= 0)
         (source_to_target ? target_node : source_node).select();
      }
@@ -2225,7 +2225,7 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   }
 
 
-  
+
 }
 
 module.exports = appUtilities;

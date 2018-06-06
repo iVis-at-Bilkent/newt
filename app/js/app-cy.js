@@ -36,14 +36,14 @@ module.exports = function (chiseInstance) {
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
   }
-  
+
   function cytoscapeExtensionsAndContextMenu() {
     cy.expandCollapse(getExpandCollapseOptions(cy));
 
     var contextMenus = cy.contextMenus({
       menuItemClasses: ['custom-menu-item'],
     });
-    
+
     cy.autopanOnDrag();
 
     cy.edgeBendEditing({
@@ -335,7 +335,7 @@ module.exports = function (chiseInstance) {
             return parseFloat(ele.data('border-width')) + 2;
           },
           'border-color': highlightColor
-        }, 
+        },
         unhighlighted: {// styles for when nodes are unhighlighted.
           'opacity': function (ele) {
             // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
@@ -351,7 +351,7 @@ module.exports = function (chiseInstance) {
           'line-color': highlightColor,
           'source-arrow-color': highlightColor,
           'target-arrow-color': highlightColor
-        }, 
+        },
         unhighlighted: {// styles for when edges are unhighlighted.
           'opacity': function (ele) {
             // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
@@ -376,9 +376,9 @@ module.exports = function (chiseInstance) {
         });
         return nodesToSelect;
       },
-      neighborSelectTime: 500 //ms 
+      neighborSelectTime: 500 //ms
     });
-    
+
     cy.nodeResize({
       padding: 2, // spacing between node and grapples/rectangle
       undoable: appUtilities.undoable, // and if cy.undoRedo exists
@@ -391,22 +391,22 @@ module.exports = function (chiseInstance) {
       boundingRectangleLineColor: "darkgray",
       boundingRectangleLineWidth: 1.5,
       zIndex: 999,
-      getCompoundMinWidth: function(node) { 
-        return node.data('minWidth') || 0; 
+      getCompoundMinWidth: function(node) {
+        return node.data('minWidth') || 0;
       },
-      getCompoundMinHeight: function(node) { 
-        return node.data('minHeight') || 0; 
+      getCompoundMinHeight: function(node) {
+        return node.data('minHeight') || 0;
       },
       getCompoundMinWidthBiasRight: function(node) {
-        return node.data('minWidthBiasRight') || 0; 
+        return node.data('minWidthBiasRight') || 0;
       },
-      getCompoundMinWidthBiasLeft: function(node) { 
-        return node.data('minWidthBiasLeft') || 0; 
+      getCompoundMinWidthBiasLeft: function(node) {
+        return node.data('minWidthBiasLeft') || 0;
       },
       getCompoundMinHeightBiasTop: function(node) {
         return node.data('minHeightBiasTop') || 0;
       },
-      getCompoundMinHeightBiasBottom: function(node) { 
+      getCompoundMinHeightBiasBottom: function(node) {
         return node.data('minHeightBiasBottom') || 0;
       },
       setWidth: function(node, width) {
@@ -419,23 +419,23 @@ module.exports = function (chiseInstance) {
         bbox.h = height;
         node.data('bbox', bbox);
       },
-      setCompoundMinWidth: function(node, minWidth) { 
-        node.data('minWidth', minWidth); 
+      setCompoundMinWidth: function(node, minWidth) {
+        node.data('minWidth', minWidth);
       },
-      setCompoundMinHeight: function(node, minHeight) { 
-        node.data('minHeight', minHeight); 
+      setCompoundMinHeight: function(node, minHeight) {
+        node.data('minHeight', minHeight);
       },
       setCompoundMinWidthBiasLeft: function(node, minWidthBiasLeft) {
-        node.data('minWidthBiasLeft', minWidthBiasLeft); 
+        node.data('minWidthBiasLeft', minWidthBiasLeft);
       },
       setCompoundMinWidthBiasRight: function(node, minHeightBiasRight) {
-        node.data('minWidthBiasRight', minHeightBiasRight); 
+        node.data('minWidthBiasRight', minHeightBiasRight);
       },
-      setCompoundMinHeightBiasTop: function(node, minHeightBiasTop) { 
-        node.data('minHeightBiasTop', minHeightBiasTop); 
+      setCompoundMinHeightBiasTop: function(node, minHeightBiasTop) {
+        node.data('minHeightBiasTop', minHeightBiasTop);
       },
       setCompoundMinHeightBiasBottom: function(node, minHeightBiasBottom) {
-        node.data('minHeightBiasBottom', minHeightBiasBottom); 
+        node.data('minHeightBiasBottom', minHeightBiasBottom);
       },
       minWidth: function (node) {
         var data = node.data("resizeMinWidth");
@@ -469,7 +469,7 @@ module.exports = function (chiseInstance) {
         w: "w-resize"
       }
     });
-    
+
     //For adding edges interactively
     cy.edgehandles({
       // fired when edgehandles is done and entities are added
@@ -482,7 +482,7 @@ module.exports = function (chiseInstance) {
 
         // We need to remove interactively added entities because we should add the edge with the chise api
         addedEntities.remove();
-        
+
         /*
          * If in add edge mode create an edge
          */
@@ -507,7 +507,7 @@ module.exports = function (chiseInstance) {
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
           }
-          
+
           // If not in sustain mode set selection mode
           if (!modeProperties.sustainMode) {
             modeHandler.setSelectionMode();
@@ -589,12 +589,12 @@ module.exports = function (chiseInstance) {
   }
 
   function bindCyEvents() {
-    
+
     // Expand collapse extension is supposed to clear expand collapse cue on node position event.
     // If compounds are resized position event is not triggered though the position of the node is changed.
     // Therefore, we listen to noderesize.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
     // expand collapse extension.
-    cy.on("noderesize.resizedrag", function(e, type, node){ 
+    cy.on("noderesize.resizedrag", function(e, type, node){
         if (node.isParent()) {
             cy.expandCollapse('get').clearVisualCue();
         }
@@ -608,7 +608,7 @@ module.exports = function (chiseInstance) {
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeResize('get').refreshGrapples();
     });
-    
+
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus(cy);
 
@@ -678,7 +678,7 @@ module.exports = function (chiseInstance) {
 
       }
     });
-    
+
     cy.on("mousedown", "node", function (event) {
 
       var self = this;
@@ -696,7 +696,7 @@ module.exports = function (chiseInstance) {
         appUtilities.setScratch(cy, 'dragAndDropStartPosition', dragAndDropStartPosition);
       }
     });
-    
+
     cy.on("mouseup", function (event) {
 
       var self = event.target || event.cyTarget;
@@ -782,7 +782,7 @@ module.exports = function (chiseInstance) {
     // Therefore we need to set node to unselect on 'tapend' event (this may be changed as 'tap' event later),
     //  which is to be unselected on 'select' event.
     var nodeToUnselect;
-    
+
     // If mouesdown in add-node-mode and selected node type is a PN draw on edge handles and mark that creating a convenient process
     cy.on('mousedown', 'node', function() {
       var node = this;
@@ -821,7 +821,7 @@ module.exports = function (chiseInstance) {
       else { // normal click case
         cyTarget = event.target || event.cyTarget;
       }
-      
+
       // If in add node mode do the followings conditionally,
       // If selected node type is a PN create a process and source and target nodes are EPNs with convenient edges,
       // else just create a new node with the current selected node type
@@ -833,7 +833,7 @@ module.exports = function (chiseInstance) {
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
                 && chiseInstance.elementUtilities.isEPNClass(cyTarget)
                 && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)
-                && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) || 
+                && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) ||
                   convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
         {
           chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
@@ -851,10 +851,10 @@ module.exports = function (chiseInstance) {
             cyPosX = pos.x;
             cyPosY = pos.y;
           }
-          
+
 
           var parent, parentId, parentClass;
-          
+
           // If cyTarget is a node determine the parent of new node
           if (cyTarget.isNode && cyTarget.isNode()) {
             if (cyTarget.data('class').startsWith('complex') || cyTarget.data('class') === 'compartment'
@@ -864,17 +864,17 @@ module.exports = function (chiseInstance) {
             else {
               parent = cyTarget.parent()[0];
             }
-            
+
             // Set nodeToUnselect here
             nodeToUnselect = cyTarget;
           }
-          
+
           // If parent is defined get parentId and parentClass
           if (parent) {
             parentId = parent.id();
             parentClass = parent.data('class');
           }
-          
+
           // If the parent class is valid for the node type then add the node
           if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
             var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
@@ -900,14 +900,14 @@ module.exports = function (chiseInstance) {
             }
           }
         }
-        
+
         // If not in sustainable mode set selection mode
         if (!modeProperties.sustainMode) {
           modeHandler.setSelectionMode();
         }
       }
-      
-      // Signal that creation of convenient process is finished 
+
+      // Signal that creation of convenient process is finished
       if (convenientProcessSource) {
         convenientProcessSource = undefined;
         // cy.edgehandles('drawoff'); call will set the autoungrabify state the value of autoungrabify before the drawon
@@ -919,7 +919,7 @@ module.exports = function (chiseInstance) {
         // Return the current current ungrabify state (Do not let edge handles to change it)
         cy.autoungrabify(currentUngrabifyState);
       }
-      
+
       appUtilities.removeDragImage();
     });
 
@@ -952,7 +952,7 @@ module.exports = function (chiseInstance) {
       nodeQtipFunction(node);
 */
     });
-    
+
     cy.on('doubleTap', 'node', function (event) {
 
       // get mode properties for cy
@@ -964,25 +964,25 @@ module.exports = function (chiseInstance) {
         if (!chiseInstance.elementUtilities.canHaveSBGNLabel(node)) {
           return;
         }
-        
+
         var nodeLabelTextbox = $("#node-label-textbox");
         var containerPos = $(cy.container()).position();
         var containerWidth = $(cy.container()).width();
         var containerHeight = $(cy.container()).height();
-        
+
         // Adjust left of the textbox
         var left = containerPos.left + this.renderedPosition().x;
         left -= nodeLabelTextbox.width() / 2;
         // If textbox goes beyond the borders of container, "+5" is for better seperation
         if(left < containerPos.left){
-          left = containerPos.left + 5; 
+          left = containerPos.left + 5;
         }
         if((left + nodeLabelTextbox.width()) > (containerPos.left + containerWidth)){
-          left -= (left + nodeLabelTextbox.width()) - (containerPos.left + containerWidth) + 5;  
-        }       
-        
+          left -= (left + nodeLabelTextbox.width()) - (containerPos.left + containerWidth) + 5;
+        }
+
         left = left.toString() + 'px';
-        
+
         // Adjust top of the textbox
         var top = containerPos.top + this.renderedPosition().y;
         top -= nodeLabelTextbox.height() / 2;
@@ -991,15 +991,15 @@ module.exports = function (chiseInstance) {
         var nodeType = node.data('class');
         if (nodeType == "compartment" || nodeType.startsWith("complex") || nodeType == "submap")
             top += (node.outerHeight() / 2 * cy.zoom() );
-        
+
         // If textbox goes beyond the borders of container, "+5" is for better seperation
         if(top < containerPos.top){
-          top = containerPos.top + 5;  
+          top = containerPos.top + 5;
         }
         if((top + nodeLabelTextbox.height()) > (containerPos.top + containerHeight)){
-          top -= (top + nodeLabelTextbox.height()) - (containerPos.top + containerHeight) + 5;  
+          top -= (top + nodeLabelTextbox.height()) - (containerPos.top + containerHeight) + 5;
         }
-  
+
         top = top.toString() + 'px';
 
         nodeLabelTextbox.css('left', left);
@@ -1019,7 +1019,7 @@ module.exports = function (chiseInstance) {
     var handleInspectorThrottled = _.throttle(function() {
       inspectorUtilities.handleSBGNInspector();
     }, 200);
-    
+
     // When we select/unselect many elements in one operation these 'select' / 'unselect' events called may times
     // and unfortunetaly the inspector is refreshed many times. This seriously decreases the performance. To handle this
     // problem we call the method used to refresh the inspector in a throttled way and decrease the number of calls.
@@ -1031,12 +1031,12 @@ module.exports = function (chiseInstance) {
         $('#inspector-palette-tab a').blur();
         $('#inspector-map-tab a').blur();
       }
-      //Remove grapples while node-label-textbox is visible 
+      //Remove grapples while node-label-textbox is visible
       if($("#node-label-textbox").is(":visible")){
         cy.nodeResize('get').removeGrapples();
       }
     });
-    
+
     cy.on('unselect', function() {
       if($("#node-label-textbox").is(":visible")){
         cy.nodes().unselect();
@@ -1044,7 +1044,7 @@ module.exports = function (chiseInstance) {
       $("#node-label-textbox").blur();
       handleInspectorThrottled();
     });
-    
+
     /*
      * Set/unset the first selected node on select/unselect node events to align w.r.t that node when needed
      */
@@ -1052,14 +1052,14 @@ module.exports = function (chiseInstance) {
       if (!appUtilities.firstSelectedNode) {
         appUtilities.firstSelectedNode = this;
       }
-      
-      // Unselect nodeToUnselect and then unset it here 
+
+      // Unselect nodeToUnselect and then unset it here
       if (nodeToUnselect && nodeToUnselect.id() === this.id()) {
         nodeToUnselect.unselect();
         nodeToUnselect = undefined;
       }
     });
-    
+
     cy.on('unselect', 'node', function() {
       if (appUtilities.firstSelectedNode && appUtilities.firstSelectedNode.id() === this.id()) {
         appUtilities.firstSelectedNode = undefined;
@@ -1109,5 +1109,6 @@ module.exports = function (chiseInstance) {
     for(var location in node.data('auxunitlayouts')) {
       chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location], cy);
     }
+    chiseInstance.classes.AuxUnitLayout.fitUnits(node); //Fit infoBoxes
   }
 };
