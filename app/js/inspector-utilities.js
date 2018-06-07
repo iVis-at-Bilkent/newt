@@ -503,10 +503,13 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       function updateBackgroundDeleteInfo(){
         hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
-        if(!hasBackgroundImage)
+        if(!hasBackgroundImage){
           $('#inspector-delete-bg').hide();
+          $('#inspector-image-url').val('');
+        }
         else
           $('#inspector-delete-bg').show();
+          
       }
 
       $('#inspector-image-from-url').on('click', function() {
@@ -529,7 +532,8 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-delete-bg').on('click', function () {
-        chiseInstance.changeCss(selectedEles[0], 'background-image', '');
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        chiseInstance.removeBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
 
@@ -538,9 +542,18 @@ inspectorUtilities.handleSBGNInspector = function () {
         imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
         
         if (url && imageURL !== url){
-          chiseInstance.changeCss(selectedEles[0], 'background-image', url);
-          chiseInstance.changeCss(selectedEles[0], 'background-fit', 'contain');
-          chiseInstance.changeCss(selectedEles[0], 'background-image-opacity', '0.7px');
+          var bgObj = {
+            'background-image' : url,
+            'background-fit' : 'contain',
+            'background-image-opacity' : '1',
+            'background-position-x' : '0%',
+            'background-position-y' : '0%',
+            'background-width' : 'auto',
+            'background-height' : 'auto',
+            'fromFile' : false
+          };
+
+          chiseInstance.addBackgroundImage(selectedEles, bgObj);
           updateBackgroundDeleteInfo();
         }
       });
@@ -559,7 +572,17 @@ inspectorUtilities.handleSBGNInspector = function () {
         
         if ($(this).val() != "" || fileObject) {
           var file = this.files[0] || fileObject;
-          chiseInstance.loadBackgroundImage(selectedEles[0], file);
+          var bgObj = {
+            'background-image' : file,
+            'background-fit' : 'contain',
+            'background-image-opacity' : '1',
+            'background-position-x' : '0%',
+            'background-position-y' : '0%',
+            'background-width' : 'auto',
+            'background-height' : 'auto',
+            'fromFile' : true
+          };
+          chiseInstance.addBackgroundImage(selectedEles, bgObj);
           $(this).val("");
         }
       });
