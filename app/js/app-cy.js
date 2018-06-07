@@ -222,29 +222,10 @@ module.exports = function (chiseInstance) {
         selector: 'node[class="process"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          cyTarget._private.edges.forEach(function(edge) {
-            if (edge._private.data.class === "consumption") {
-              var sourceNode = edge._private.data.source;
-              var targetNode = edge._private.data.target;
+          var consumptionEdges = cyTarget._private.data.edges.filter(edge => edge._private.data.class === "consumption");
 
-              edge._private.data.class = "production";
-
-              if (cyTarget._private.data.id !== sourceNode) {
-                  var temp = edge.source;
-                  edge.source = edge.target;
-                  edge.target = temp;
-
-                  temp = edge._private.data.source;
-                  edge._private.data.source = edge._private.data.target;
-                  edge._private.data.target = temp;
-
-                  edge._private.data.portsource = targetNode + ".1";
-                  edge._private.data.porttarget = sourceNode;
-              }
-
-              cy.style().update();
-            }
-          });
+          var ur = cy.undoRedo();
+          ur.do("convertIntoReversibleReaction", consumptionEdges);
         }
       }
     ]);
