@@ -222,7 +222,7 @@ module.exports = function (chiseInstance) {
         selector: 'node[class="process"]',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          var consumptionEdges = cyTarget._private.data.edges.filter(edge => edge._private.data.class === "consumption");
+          var consumptionEdges = cyTarget._private.edges.filter(edge => edge._private.data.class === "consumption");
 
           var ur = cy.undoRedo();
           ur.do("convertIntoReversibleReaction", consumptionEdges);
