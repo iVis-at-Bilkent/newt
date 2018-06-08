@@ -547,7 +547,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             'background-fit' : 'contain',
             'background-image-opacity' : '1',
             'background-position-x' : '50%',
-            'background-position-y' : '0%',
+            'background-position-y' : '50%',
             'background-width' : 'auto',
             'background-height' : 'auto',
             'fromFile' : false
@@ -577,7 +577,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             'background-fit' : 'contain',
             'background-image-opacity' : '1',
             'background-position-x' : '50%',
-            'background-position-y' : '0%',
+            'background-position-y' : '50%',
             'background-width' : 'auto',
             'background-height' : 'auto',
             'fromFile' : true
