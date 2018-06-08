@@ -633,6 +633,10 @@
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
+        <div id="prompt-invalidImage-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
         <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- reaction templatequery table will be shown here -->
         </div>
@@ -1694,6 +1698,37 @@
             </div>
             <div class="modal-footer" style="text-align: center">
             <button id="prompt-invalidURL-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <!-- Invalid background image warning -->
+        <script type="text/template" id="prompt-invalidImage-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error!</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text">Image file is invalid!</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidImage-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidImage-confirm" class="btn btn-default">OK</button>
             </div>
             </div>
             </div>

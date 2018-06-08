@@ -503,13 +503,21 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       function updateBackgroundDeleteInfo(){
         hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+        
         if(!hasBackgroundImage){
           $('#inspector-delete-bg').hide();
           $('#inspector-image-url').val('');
         }
-        else
+        else{
           $('#inspector-delete-bg').show();
-          
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = imageURL ? imageURL : "";
+          $('#inspector-image-url').val(imageURL);
+        }
+      }
+
+      function promptInvalidImage(msg){
+        appUtilities.promptInvalidImageWarning.render(msg);
       }
 
       $('#inspector-image-from-url').on('click', function() {
@@ -521,14 +529,11 @@ inspectorUtilities.handleSBGNInspector = function () {
           $('#inspector-image-url').val(imageURL);
           $('#inspector-image-url').show();
           $('#inspector-image-file').hide();
-
         }
         else{
           $('#inspector-image-url').hide();
           $('#inspector-image-file').show();
         }
-
-        updateBackgroundDeleteInfo();
       });
 
       $('#inspector-delete-bg').on('click', function () {
@@ -553,8 +558,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : false
           };
 
-          chiseInstance.addBackgroundImage(selectedEles, bgObj);
-          updateBackgroundDeleteInfo();
+          chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
         }
       });
 
@@ -582,7 +586,8 @@ inspectorUtilities.handleSBGNInspector = function () {
             'background-height' : 'auto',
             'fromFile' : true
           };
-          chiseInstance.addBackgroundImage(selectedEles, bgObj);
+
+          chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
           $(this).val("");
         }
       });

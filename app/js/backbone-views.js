@@ -1738,6 +1738,31 @@ var PromptInvalidURLWarning = Backbone.View.extend({
   }
 });
 
+var PromptInvalidImageWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidImage-template").html());
+  },
+  render: function (msg) {
+    var self = this;
+    var tmp = $("#prompt-invalidImage-template").html();
+    var spanText = '<span class="add-on layout-text">';
+    var s = tmp.indexOf(spanText)
+    var e = tmp.indexOf('</span>');
+    tmp = tmp.substring(0, s + spanText.length) + msg + tmp.substring(e);
+    self.template = _.template(tmp);
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-invalidImage-confirm").on("click", "#prompt-invalidImage-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   addMacromolecule: function (type, i) {
     var html = "<tr><td>"
@@ -2517,5 +2542,6 @@ module.exports = {
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,
   PromptInvalidURIWarning: PromptInvalidURIWarning,
-  PromptInvalidURLWarning: PromptInvalidURLWarning
+  PromptInvalidURLWarning: PromptInvalidURLWarning,
+  PromptInvalidImageWarning: PromptInvalidImageWarning
 };
