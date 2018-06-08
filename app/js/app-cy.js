@@ -224,8 +224,10 @@ module.exports = function (chiseInstance) {
           var cyTarget = event.target || event.cyTarget;
           var consumptionEdges = cyTarget._private.edges.filter(edge => edge._private.data.class === "consumption");
 
-          var ur = cy.undoRedo();
-          ur.do("convertIntoReversibleReaction", consumptionEdges);
+          if (consumptionEdges.length > 0) {
+            var ur = cy.undoRedo();
+            ur.do("convertIntoReversibleReaction", consumptionEdges);
+          }
         }
       }
     ]);
