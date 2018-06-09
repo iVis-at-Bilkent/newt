@@ -510,10 +510,21 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       function updateBackgroundDeleteInfo(){
         hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
-        if(!hasBackgroundImage)
+        
+        if(!hasBackgroundImage){
           $('#inspector-delete-bg').hide();
-        else
+          $('#inspector-image-url').val('');
+        }
+        else{
           $('#inspector-delete-bg').show();
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = imageURL ? imageURL : "";
+          $('#inspector-image-url').val(imageURL);
+        }
+      }
+
+      function promptInvalidImage(msg){
+        appUtilities.promptInvalidImageWarning.render(msg);
       }
 
       $('#inspector-image-from-url').on('click', function() {
@@ -525,18 +536,16 @@ inspectorUtilities.handleSBGNInspector = function () {
           $('#inspector-image-url').val(imageURL);
           $('#inspector-image-url').show();
           $('#inspector-image-file').hide();
-
         }
         else{
           $('#inspector-image-url').hide();
           $('#inspector-image-file').show();
         }
-
-        updateBackgroundDeleteInfo();
       });
 
       $('#inspector-delete-bg').on('click', function () {
-        chiseInstance.changeCss(selectedEles[0], 'background-image', '');
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        chiseInstance.removeBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
 
@@ -545,10 +554,18 @@ inspectorUtilities.handleSBGNInspector = function () {
         imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
         
         if (url && imageURL !== url){
-          chiseInstance.changeCss(selectedEles[0], 'background-image', url);
-          chiseInstance.changeCss(selectedEles[0], 'background-fit', 'contain');
-          chiseInstance.changeCss(selectedEles[0], 'background-image-opacity', '0.7px');
-          updateBackgroundDeleteInfo();
+          var bgObj = {
+            'background-image' : url,
+            'background-fit' : 'contain',
+            'background-image-opacity' : '1',
+            'background-position-x' : '50%',
+            'background-position-y' : '50%',
+            'background-width' : 'auto',
+            'background-height' : 'auto',
+            'fromFile' : false
+          };
+
+          chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
         }
       });
 
@@ -566,7 +583,18 @@ inspectorUtilities.handleSBGNInspector = function () {
         
         if ($(this).val() != "" || fileObject) {
           var file = this.files[0] || fileObject;
-          chiseInstance.loadBackgroundImage(selectedEles[0], file);
+          var bgObj = {
+            'background-image' : file,
+            'background-fit' : 'contain',
+            'background-image-opacity' : '1',
+            'background-position-x' : '50%',
+            'background-position-y' : '50%',
+            'background-width' : 'auto',
+            'background-height' : 'auto',
+            'fromFile' : true
+          };
+
+          chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
           $(this).val("");
         }
       });

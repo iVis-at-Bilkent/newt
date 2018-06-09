@@ -1793,22 +1793,56 @@ var PromptInvalidURLWarning = Backbone.View.extend({
   }
 });
 
+var PromptInvalidImageWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidImage-template").html());
+  },
+  render: function (msg) {
+    var self = this;
+    var tmp = $("#prompt-invalidImage-template").html();
+    var spanText = '<span class="add-on layout-text">';
+    var s = tmp.indexOf(spanText)
+    var e = tmp.indexOf('</span>');
+    tmp = tmp.substring(0, s + spanText.length) + msg + tmp.substring(e);
+    self.template = _.template(tmp);
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-invalidImage-confirm").on("click", "#prompt-invalidImage-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   addMacromolecule: function (type, i) {
     var html = "<tr><td>"
         + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
         + i + "' value=''></input>"
-        + "</td><td><img style='vertical-align: text-bottom;'";
+        + "</td><td>";
     if( type == "reaction"){
-      html +=  "class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      html +=  "<select class='template-reaction-molecule-type sbgn-input-medium layout-text' name='reaction-template-molecule-type-" + i + "'>"
+             + "<option value='Macromolecule' selected> Macromolecule </option>"
+             + "<option value='Simple Chemical'> Simple Chemical </option></td>";
+      html +=  "<td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
     else if( type == "left"){
-      html += "class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      html +=  "<select class='template-reaction-molecule-type sbgn-input-medium layout-text' name='reversible-template-input-molecule-type" + i + "'>"
+             + "<option value='Macromolecule'> Macromolecule </option>"
+             + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
+      html += "<td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reversible-input-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
     else{
-      html += "class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      html +=  "<select class='template-reaction-molecule-type sbgn-input-medium layout-text' name='reversible-template-output-molecule-type" + i + "'>"
+             + "<option value='Macromolecule'> Macromolecule </option>"
+             + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
+      html += "<td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reversible-output-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
     return html;
@@ -1844,24 +1878,60 @@ var ReactionTemplateView = Backbone.View.extend({
   getAllParameters: function () {
     var templateType = $('#reaction-template-type-select').val();
     var templateReactionComplexName = $('#template-reaction-complex-name').val();
-    var macromoleculeList = $('#template-reaction-dissociated-table :input.template-reaction-textbox').map(function(){
-        return $(this).val()
-      }).toArray();
-    var reversibleInputMacromoleculeList = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
+    var nodeNames = $('#template-reaction-dissociated-table  :input.template-reaction-textbox').map(function(){
+        return $(this).val();
+    }).toArray();
+    var nodeTypes = $('#template-reaction-dissociated-table  :input.template-reaction-molecule-type :selected').map(function(){
+        return $(this).val();
+    }).toArray();
+    var nodeList = [];
+    for( var i = 0; i < nodeNames.length; i++){
+      nodeList.push(
+        {
+          "name": nodeNames[i],
+          "type": nodeTypes[i]
+        }
+      );
+    }
+    var reversibleInputNodeNames = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
       return $(this).val();
     }).toArray();
-    var reversibleOutputMacromoleculeList = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
+    var reversibleInputNodeTypes = $('#template-reversible-input-table :input.template-reaction-molecule-type :selected').map(function(){
       return $(this).val();
     }).toArray();
+    var reversibleOutputNodeNames = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleOutputNodeTypes = $('#template-reversible-output-table :input.template-reaction-molecule-type :selected').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleInputNodeList = [];
+    for(var i = 0; i < reversibleInputNodeNames.length; i++){
+      reversibleInputNodeList.push(
+        {
+          name: reversibleInputNodeNames[i],
+          type: reversibleInputNodeTypes[i]
+        }
+      );
+    }
+    var reversibleOutputNodeList = [];
+    for(var i = 0; i < reversibleOutputNodeNames.length; i++){
+      reversibleOutputNodeList.push(
+        {
+          name: reversibleOutputNodeNames[i],
+          type: reversibleOutputNodeTypes[i]
+        }
+      );
+    }
     // enable complex name only if the user provided something
     var templateReactionEnableComplexName = $.trim(templateReactionComplexName).length != 0;
 
     return {
       templateType: templateType,
       templateReactionComplexName: templateReactionComplexName,
-      macromoleculeList: macromoleculeList,
-      reversibleInputMacromoleculeList: reversibleInputMacromoleculeList,
-      reversibleOutputMacromoleculeList: reversibleOutputMacromoleculeList,
+      nodeList: nodeList,
+      reversibleInputNodeList: reversibleInputNodeList,
+      reversibleOutputNodeList: reversibleOutputNodeList,
       templateReactionEnableComplexName: templateReactionEnableComplexName
     }
   },
@@ -1981,15 +2051,15 @@ var ReactionTemplateView = Backbone.View.extend({
       var params = self.getAllParameters();
 
       var templateType = params.templateType;
-      var macromoleculeList = params.macromoleculeList;
+      var nodeList = params.nodeList;
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
       if(templateType == "reversible"){
-        macromoleculeList = params.reversibleInputMacromoleculeList;
-        complexName = params.reversibleOutputMacromoleculeList;
+        nodeList = params.reversibleInputNodeList;
+        complexName = params.reversibleOutputNodeList;
       }
-      chiseInstance.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
       $(self.el).modal('toggle');
     });
@@ -2528,5 +2598,6 @@ module.exports = {
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,
   PromptInvalidURIWarning: PromptInvalidURIWarning,
-  PromptInvalidURLWarning: PromptInvalidURLWarning
+  PromptInvalidURLWarning: PromptInvalidURLWarning,
+  PromptInvalidImageWarning: PromptInvalidImageWarning
 };

@@ -636,6 +636,10 @@
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
+        <div id="prompt-invalidImage-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
         <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- reaction templatequery table will be shown here -->
         </div>
@@ -1702,23 +1706,52 @@
             </div>
         </script>
 
+        <!-- Invalid background image warning -->
+        <script type="text/template" id="prompt-invalidImage-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error!</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text">Image file is invalid!</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidImage-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidImage-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
         <script type="text/template" id="reaction-template-template">
             <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="display: inline-block">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Template</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="display: inline-block">
             <table class="table-condensed layout-table dialog-table">
             <tbody>
-            <tr>
-            <td style="padding-bottom: 10px;" align="right" valign="middle">
-            <span class="add-on layout-text"> <b> Type </b> </span>
-            </td>
 
-            <td>
-            <select id="reaction-template-type-select" class='sbgn-input-medium layout-text' name="reaction-template-type">
+            <tr align="center">
+            <td style="padding-bottom: 10px;" colspan=100%>
+            <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b> Type:</b> </span>
+            <select id="reaction-template-type-select" class='sbgn-input-medium layout-text' name="reaction-template-type" align="center" valign="middle">
             <option id="reaction-template-type-association" value="association" selected> Association </option>
             <option id="reaction-template-type-dissociation" value="dissociation"> Dissociation </option>
             <option id="reaction-template-type-reversible" value="reversible"> Reversible </option>
@@ -1744,6 +1777,11 @@
             <td>
             <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
             </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-input-medium layout-text' name="reaction-template-molecule-type-1">
+            <option value="Macromolecule" selected> Macromolecule </option>
+            <option value="Simple Chemical"> Simple Chemical </option>
+            </td>
             <td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
             </td>
             </tr>
@@ -1751,11 +1789,16 @@
             <td>
             <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='2' value=''></input>
             </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-input-medium layout-text' name="reaction-template-molecule-type-2">
+            <option value="Macromolecule" selected> Macromolecule </option>
+            <option value="Simple Chemical"> Simple Chemical </option>
+            </td>
             <td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='2' src='app/img/toolbar/delete-simple.svg'/>
             </td>
             </tr>
             <tr><td>
-            <img width="16px" height="16px" id='template-reaction-add-button' src='app/img/add.svg'/>
+            <img width="16px" height="16px" id='template-reaction-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
             </td></tr>
             </table>
             </td>
@@ -1765,6 +1808,11 @@
             <tr><td><!-- empty td to mirror the delete image and try to respect (unperfectly) the symmetry--></td>
             <td>
             <input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value='' ></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-input-medium layout-text' name="reaction-template-molecule-type" id='template-reaction-complex-type'>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            <option value="Simple Chemical"> Simple Chemical </option>
             </td></tr>
             </table>
             </td>
@@ -1775,11 +1823,16 @@
               <td>
               <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
               </td>
+              <td>
+              <select class='template-reaction-molecule-type sbgn-input-medium layout-text' name="reversible-template-input-molecule-type-1">
+              <option value="Macromolecule"> Macromolecule </option>
+              <option value="Simple Chemical" selected> Simple Chemical </option>
+              </td>
               <td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
               </td>
               </tr>
               <tr><td>
-              <img width="16px" height="16px" id='template-reversible-input-add-button' src='app/img/add.svg'/>
+              <img width="16px" height="16px" id='template-reversible-input-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
               </td></tr>
               </table>
             </td>
@@ -1790,11 +1843,16 @@
               <td>
               <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
               </td>
+              <td>
+              <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="reversible-template-output-molecule-type-1">
+              <option value="Macromolecule"> Macromolecule </option>
+              <option value="Simple Chemical" selected> Simple Chemical </option>
+              </td>
               <td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
               </td>
               </tr>
               <tr><td>
-              <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg'/>
+              <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
               </td></tr>
               </table>
             </td>
