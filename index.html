@@ -573,6 +573,9 @@
         <div id="biogene-container" style="display: none">
         </div>
 
+        <div id="chemical-container" style="display: none">
+        </div>
+
         <div id="query-neighborhood-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- neighborhood query table will be shown here-->
         </div>
@@ -2111,6 +2114,36 @@
             </tr>
             </tbody>
             </table>
+            </div>
+        </script>
+
+        <!-- ChemicalView template for backbone.js -->
+        <script type="text/template" id="chemical-template">
+            <!--<div class='node-details-text'>-->
+                <table class="table table-condensed table-striped object-panel-table" cellspacing="10">
+                    <tbody>
+                    <tr class="chemical-info chebi-name">
+                        <th valign="top">ChEBI Name:</th>
+                        <td>
+                            <%=chebiName %>
+                        </td>
+                    </tr>
+                    <tr class="chemical-info chemical-description node-details-summary">
+                        <th valign="top">Chemical Description:</th>
+                        <td colspan="2" class="expandable">
+                            <%=chemicalDescription %>
+                        </td>
+                    </tr>
+                    <tr class="chemical-info chebi-id">
+                        <th valign="top">ChEBI ID:</th>
+                        <td>
+                            <a href='https://www.ebi.ac.uk/chebi/searchId.do?chebiId=<%= chebiID %>' target='blank'>
+                                <%=chebiID %>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </script>
 

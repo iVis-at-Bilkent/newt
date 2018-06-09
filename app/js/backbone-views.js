@@ -181,6 +181,61 @@ var BioGeneView = Backbone.View.extend({
 });
 
 /**
+ * Backbone view for the Chemical information.
+ */
+var ChemicalView = Backbone.View.extend({
+    render: function () {
+        // pass variables in using Underscore.js template
+        var variables = {
+            chemicalDescription: this.model.description[0],
+            chebiName: this.model.label,
+            chebiID: this.model.obo_id
+        };
+
+        // compile the template using underscore
+        var template = _.template($("#chemical-template").html());
+        template = template(variables);
+
+        // load the compiled HTML into the Backbone "el"
+        this.$el.html(template);
+
+        // format after loading
+        this.format(this.model);
+
+        return this;
+    },
+    format: function ()
+    {
+        // hide rows with undefined data
+        if (this.model.label == undefined)
+            this.$el.find(".chebi-name").hide();
+
+        if (this.model.description[0] == undefined)
+            this.$el.find(".chemical-description").hide();
+
+        if (this.model.obo_id == undefined)
+            this.$el.find(".chebi-id").hide();
+
+        var expanderOpts = {slicePoint: 150,
+            expandPrefix: ' ',
+            expandText: ' (...)',
+            userCollapseText: ' (show less)',
+            moreClass: 'expander-read-more',
+            lessClass: 'expander-read-less',
+            detailClass: 'expander-details',
+            // do not use default effects
+            // (see https://github.com/kswedberg/jquery-expander/issues/46)
+            expandEffect: 'fadeIn',
+            collapseEffect: 'fadeOut'};
+
+        $(".chemical-description .expandable").expander(expanderOpts);
+
+        expanderOpts.slicePoint = 2; // show comma and the space
+        expanderOpts.widow = 0; // hide everything else in any case
+    }
+});
+
+/**
  * SBGN Layout view for the Sample Application.
  */
 var LayoutPropertiesView = Backbone.View.extend({
@@ -2448,6 +2503,7 @@ var AnnotationElementView = Backbone.View.extend({
 
 module.exports = {
   BioGeneView: BioGeneView,
+  ChemicalView: ChemicalView,
   LayoutPropertiesView: LayoutPropertiesView,
   ColorSchemeInspectorView: ColorSchemeInspectorView,
   MapTabGeneralPanel: MapTabGeneralPanel,

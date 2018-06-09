@@ -1,6 +1,7 @@
 var appUtilities = require('./app-utilities');
 var inspectorUtilities = {};
 var fillBioGeneContainer = require('./fill-biogene-container');
+var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
@@ -477,6 +478,12 @@ inspectorUtilities.handleSBGNInspector = function () {
 
           addCollapsibleSection("biogene", "Properties from EntrezGene", true);
           fillBioGeneContainer(selectedEles[0]);
+      }
+      if (geneClass === 'simple chemical')
+      {
+
+          addCollapsibleSection("chemical", "Properties from ChEBI", true);
+          fillChemicalContainer(selectedEles[0]);
       }
 
       // annotations handling part
