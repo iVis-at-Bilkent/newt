@@ -563,11 +563,24 @@ module.exports = function (chiseInstance) {
         'dissociation', 'tag', 'and', 'or', 'not', 'delay','BA plain',
         'BA unspecified entity', 'BA simple chemical', 'BA macromolecule',
         'BA nucleic acid feature', 'BA perturbing agent', 'BA complex'];
+
     for (i=0; i<sbgnclasses.length; i++)
     {
         var sbgnclass = sbgnclasses[i];
         var param = {class: sbgnclass, name: 'background-opacity', value: 1};
         chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
+    }
+
+    // set default dimensions to 20x20 for all process nodes.
+    var processNodes = ['process', 'omitted process', 'uncertain process', 'association', 'dissociation'];
+
+    for(i = 0; i < processNodes.length; i++)
+    {
+      var processNode = processNodes[i];
+      var param = {class: processNode, name: 'width', value: 20};
+      chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
+      var param = {class: processNode, name: 'height', value: 20};
+      chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
     }
   }
 
