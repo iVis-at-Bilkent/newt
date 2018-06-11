@@ -80,7 +80,7 @@ module.exports = function() {
           }
       })
   }
-  
+
   function loadSample(filename) {
 
     // use the active chise instance
@@ -283,7 +283,7 @@ module.exports = function() {
     });
 
     $("#file-input").change(function (e, fileObject) {
-      
+
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -294,7 +294,7 @@ module.exports = function() {
         var file = this.files[0] || fileObject;
         var loadCallbackSBGNMLValidity = function (text) {
           validateSBGNML(text);
-        }      
+        }
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
@@ -340,7 +340,7 @@ module.exports = function() {
       var loadCallbackInvalidityWarning  = function () {
         promptInvalidFileView.render();
       }
-      
+
       if ($(this).val() != "") {
         var file = this.files[0];
 
@@ -461,9 +461,9 @@ module.exports = function() {
       e.preventDefault();
       $("#about_modal").modal('show');
     });
-    
+
     $(".title").click(function(e){
-      e.stopPropagation();    
+      e.stopPropagation();
     });
 
     var selectorToSampleFileName = {
@@ -493,7 +493,7 @@ module.exports = function() {
             promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
           }
           else {
-            loadSample(selectorToSampleFileName[selector]);  
+            loadSample(selectorToSampleFileName[selector]);
           }
         });
       })(selector);
@@ -525,7 +525,7 @@ module.exports = function() {
       cy.elements().unselect();
       cy.edges().select();
     });
-    
+
     $("#hide-selected, #hide-selected-icon").click(function(e) {
 
       // use active cy instance
@@ -608,7 +608,7 @@ module.exports = function() {
     $("#highlight-search-menu-item").click(function (e) {
       $("#search-by-label-text-box").focus();
     });
-    
+
     $("#highlight-selected, #highlight-selected-icon").click(function (e) {
 
       // use active chise instance
@@ -920,7 +920,7 @@ module.exports = function() {
     $("#export-as-sbgnml3-file").click(function (evt) {
       fileSaveView.render("sbgnml", "0.3");
     });
-    
+
     $("#export-as-celldesigner-file").click(function (evt) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var sbgnml = chiseInstance.createSbgnml();
@@ -1097,6 +1097,7 @@ module.exports = function() {
     $(document).on('mouseup', function (e) {
       dragAndDropPlacement = false;
       appUtilities.removeDragImage();
+      appUtilities.disableInfoBoxRelocationDrag();
     });
 
     $('#select-mode-icon').click(function (e) {

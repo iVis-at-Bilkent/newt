@@ -229,6 +229,15 @@ module.exports = function (chiseInstance) {
             ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "Unknown"});
           }
         }
+      },
+      {
+        id: 'ctx-menu-relocate-info-boxes',
+        content: 'Relocate Info Boxes',
+        selector: 'node',
+        onClickFunction: function (event){
+          var cyTarget = event.target || event.cyTarget;
+          appUtilities.relocateInfoBoxes(cyTarget);
+        }
       }
     ]);
 

@@ -2228,4 +2228,298 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
 
 }
 
+//Info-box drag handlers
+var relocationDragHandler;
+var relocationHandler;
+
+//Enables info-box relocation if a node is selected
+appUtilities.relocateInfoBoxes = function(node){
+  //Abort if node has no info-boxes or selected ele is not a node
+  if (node.data("auxunitlayouts") === undefined || !node.isNode()) {
+    return;
+  }
+  node.unselect();
+  this.enableInfoBoxRelocation(node);
+}
+
+//Checks whether a info-box is selected in a given mouse position
+appUtilities.checkMouseContainsInfoBox = function(unit, mouse_down_x, mouse_down_y){
+  var box = unit.bbox;
+  var instance = this.getActiveSbgnvizInstance();
+  var cy = this.getActiveCy();
+  var coords = instance.classes.AuxiliaryUnit.getAbsoluteCoord(unit, cy);
+  var x_loc = coords.x;
+  var y_loc = coords.y;
+  var width = box.w;
+  var height = box.h;
+  return ((mouse_down_x >= x_loc - width / 2) && (mouse_down_x <= x_loc + width / 2))
+    && ( (mouse_down_y >= y_loc - height / 2) && (mouse_down_y <= y_loc + height / 2));
+}
+
+//Enables info-box relocationHandler
+appUtilities.enableInfoBoxRelocation = function(node){
+  var cy = this.getActiveCy();
+  //Disable box movements
+  var selectedBox;
+  var anchorSide;
+  cy.autounselectify(true);
+  cy.on('mousedown', relocationHandler = function(event){
+      //Check whether event contained by infobox of a node
+      //Lock the node so that it won't change position when
+      //Info boxes are dragged
+      cy.autolock(true);
+      var top = node.data('auxunitlayouts').top;
+      var bottom = node.data('auxunitlayouts').bottom;
+      var right = node.data('auxunitlayouts').right;
+      var left = node.data('auxunitlayouts').left;
+
+      //Get mouse positions
+      var mouse_down_x = event.position.x;
+      var mouse_down_y = event.position.y;
+      var instance = appUtilities.getActiveSbgnvizInstance();
+
+      var oldAnchorSide; //Hold old anchor side to modify units
+      //Check top units
+      if (top !== undefined && selectedBox === undefined) {
+        var units = top.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+      //Check right units
+      if (right !== undefined && selectedBox === undefined) {
+        var units = right.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+      //Check bottom units
+      if (bottom !== undefined && selectedBox === undefined) {
+        var units = bottom.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+      //Check left units
+      if (left !== undefined && selectedBox === undefined) {
+        var units = left.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+
+      //If no info-box found abort
+      if (selectedBox === undefined) {
+        appUtilities.disableInfoBoxRelocation();
+        return;
+      }
+      //Else If a info-box contained by event move info-box
+      var instance = appUtilities.getActiveSbgnvizInstance();
+      var parentBbox = node.data("bbox");
+      var position = node._private.position;
+      selectedBox.dashed = true;
+      var last_mouse_x = mouse_down_x;
+      var last_mouse_y = mouse_down_y;
+
+      cy.on("mousemove", relocationDragHandler = function(event){
+        if (selectedBox === undefined) {
+          appUtilities.disableInfoBoxRelocation();
+          return;
+        }
+        var drag_x = event.position.x;
+        var drag_y = event.position.y;
+        var anchorSide = selectedBox.anchorSide;
+
+        var gap;
+        var shift_x;
+        var shift_y;
+        var box_new_x;
+        var box_new_y;
+
+        //If anchor side is top or bottom only move in x direction
+        if (anchorSide === "top" || anchorSide === "bottom") {
+          if (anchorSide === "top") {
+            gap = instance.classes.AuxUnitLayout.getCurrentTopGap();
+          }
+          else {
+            gap = instance.classes.AuxUnitLayout.getCurrentBottomGap();
+          }
+
+          shift_x = drag_x - last_mouse_x;
+          box_new_x = selectedBox.bbox.x + shift_x; //Calculate new box position
+          //Get absolute position
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, box_new_x, selectedBox.bbox.y, cy);
+          var newRelativeCoords;
+          if (absoluteCoords.x - selectedBox.bbox.w/2 < (position.x - parentBbox.w/2) + gap) { //Box cannot go futher than parentBox + margin on left side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox,((position.x - parentBbox.w/2) + gap + selectedBox.bbox.w/2),
+              absoluteCoords.y, cy);
+            selectedBox.bbox.x = newRelativeCoords.x;
+          }
+          else if (absoluteCoords.x + selectedBox.bbox.w/2 > (position.x + parentBbox.w/2) - gap) { //Box cannot go futher than parentBox - margin on right side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, ((position.x + parentBbox.w/2) - gap - selectedBox.bbox.w/2),
+              absoluteCoords.y, cy);
+            selectedBox.bbox.x = newRelativeCoords.x;
+          }
+          else { //Else it is already relative
+            selectedBox.bbox.x = box_new_x;
+          }
+          //If box is at margin points allow it to change anchor side
+          //If it on left it can pass left anchor side
+          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
+          if (absoluteCoords.x === (position.x - parentBbox.w/2) + gap + selectedBox.bbox.w/2) { //If it is on the left margin allow it to change anchor sides
+            //If it is in the top and mouse moves bottom it can go left anchor
+            if (last_mouse_y < drag_y  && anchorSide === "top") {
+              selectedBox.anchorSide = "left"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x - parentBbox.w/2),
+                (position.y - parentBbox.h/2 + instance.classes.AuxUnitLayout.getCurrentLeftGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_y > drag_y && anchorSide === "bottom") { //If it is in the bottom and mouse moves up it can go left anchor side
+              selectedBox.anchorSide = "left"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x - parentBbox.w/2),
+                (position.y + parentBbox.h/2 - instance.classes.AuxUnitLayout.getCurrentLeftGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+          //If it on right it can pass right anchor side, * 2 for relaxation
+          else if (absoluteCoords.x  === (position.x + parentBbox.w/2) - gap - selectedBox.bbox.w/2) {
+            if (last_mouse_y < drag_y && anchorSide === "top") {
+              selectedBox.anchorSide = "right"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x + parentBbox.w/2),
+              (position.y - parentBbox.h/2 + instance.classes.AuxUnitLayout.getCurrentRightGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_y > drag_y && anchorSide === "bottom") { //If it is in the bottom and mouse moves up it can go left anchor side
+              selectedBox.anchorSide = "right"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x + parentBbox.w/2),
+                (position.y + parentBbox.h/2 - instance.classes.AuxUnitLayout.getCurrentRightGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+        }
+        else {
+           //If anchor side left or right only move in y direction
+          if (anchorSide === "right") {
+            gap = instance.classes.AuxUnitLayout.getCurrentRightGap();
+          }
+          else {
+            gap = instance.classes.AuxUnitLayout.getCurrentLeftGap();
+          }
+
+          shift_y = drag_y - last_mouse_y;
+          box_new_y = selectedBox.bbox.y + shift_y; //Calculate new box position
+
+          //Get absolute position
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, box_new_y, cy);
+          var newRelativeCoords;
+          if (absoluteCoords.y - selectedBox.bbox.h/2 < (position.y - parentBbox.h/2) + gap) { //Box cannot go futher than parentBox + margin on left side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
+              (position.y - parentBbox.h/2) + gap + selectedBox.bbox.h/2, cy);
+            selectedBox.bbox.y = newRelativeCoords.y;
+          }
+          else if (absoluteCoords.y + selectedBox.bbox.h/2 > (position.y + parentBbox.h/2) - gap) { //Box cannot go futher than parentBox - margin on right side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
+              (position.y + parentBbox.h/2) - gap - selectedBox.bbox.h/2, cy);
+            selectedBox.bbox.y = newRelativeCoords.y;
+          }
+          else { //Else it is already relative
+            selectedBox.bbox.y = box_new_y;
+          }
+
+          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
+          //Set anchor side changes
+          if (absoluteCoords.y  === (position.y - parentBbox.h/2) + gap + selectedBox.bbox.h / 2) { //If it is on the top margin allow it to change anchor sides
+            //If it is in the top and mouse moves bottom it can go left anchor
+            if (last_mouse_x < drag_x  && anchorSide === "left") {
+              selectedBox.anchorSide = "top"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x - parentBbox.w/2)
+                + instance.classes.AuxUnitLayout.getCurrentTopGap(), (position.y - parentBbox.h/2), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_x > drag_x && anchorSide === "right") { //If it is in the right and mouse moves up it can go top anchor side
+              selectedBox.anchorSide = "top"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x + parentBbox.w/2)
+                - instance.classes.AuxUnitLayout.getCurrentTopGap(), (position.y - parentBbox.h/2), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+          //If it on right it can pass right anchor side
+          else if (absoluteCoords.y === (position.y + parentBbox.h/2) - gap - selectedBox.bbox.h/2) {
+            if (last_mouse_x < drag_x && anchorSide === "left") {
+              selectedBox.anchorSide = "bottom"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x - parentBbox.w/2)
+                + instance.classes.AuxUnitLayout.getCurrentBottomGap(), (position.y + parentBbox.h/2), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_x > drag_x && anchorSide === "right") { //If it is in the bottom and mouse moves up it can go left anchor side
+              selectedBox.anchorSide = "bottom"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (position.x + parentBbox.w/2)
+                - instance.classes.AuxUnitLayout.getCurrentBottomGap(), (position.y + parentBbox.h/2), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+
+        }
+
+        last_mouse_x = drag_x;
+        last_mouse_y = drag_y;
+        cy.style().update();
+      });
+
+    cy.on("mouseup", function(event){
+      appUtilities.disableInfoBoxRelocationDrag();
+      if (selectedBox !== undefined && oldAnchorSide !== undefined) {
+        selectedBox.dashed = false;
+        instance.classes.AuxUnitLayout.modifyUnits(node, selectedBox, oldAnchorSide, cy); //Modify aux unit layouts
+        selectedBox = undefined;
+        anchorSide = undefined;
+        oldAnchorSide = undefined;
+      }
+    });
+
+    });
+}
+
+//Disables info-box relocation
+appUtilities.disableInfoBoxRelocation = function(){
+  var cy = this.getActiveCy();
+  //Remove listerners
+  cy.off('mousedown', relocationHandler);
+  cy.off('mousemove', relocationDragHandler);
+  //Enable box selection
+  cy.autolock(false); //Make the nodes moveable again
+  cy.autounselectify(false); //Make the nodes selectable
+}
+
+//Disables info-box dragging
+appUtilities.disableInfoBoxRelocationDrag = function(){
+  var cy = this.getActiveCy();
+  //Remove listerners
+  cy.off('mousemove', relocationDragHandler);
+}
+
 module.exports = appUtilities;
