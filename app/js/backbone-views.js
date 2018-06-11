@@ -920,7 +920,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
         return;
       }
-      if (self.currentQueryParameters.lengthLimit > 3) {
+      if (self.currentQueryParameters.lengthLimit > 2) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
         document.getElementById("query-neighborhood-length-limit").focus();
@@ -1674,6 +1674,10 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
         self.template = _.template($("#prompt-invalidLengthLimit-template").html());
 
         $(self.el).html(self.template);
+        if (PCdialog == "Neighborhood")
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
+        else
+            document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
         $(self.el).modal('show');
 
         $(document).off("click", "#prompt-invalidLengthLimit-confirm").on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
