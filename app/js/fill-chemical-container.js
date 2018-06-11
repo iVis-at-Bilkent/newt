@@ -16,7 +16,7 @@ var fillChemicalContainer = function (node) {
   if (geneName == "" || geneName == undefined)
   {
       $('#chemical-title').html("<b>" + node.data('label') + "</b>");
-      $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available &#013; for the selected node!</span>");
+      $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
       return;
   }
 
@@ -46,7 +46,7 @@ var fillChemicalContainer = function (node) {
                       })).render();
             }
             else {
-              $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available &#013; for the selected node!</span>");
+              $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
             }
           },
           function (xhr, status, error) {

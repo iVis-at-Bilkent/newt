@@ -56,7 +56,7 @@ var fillBioGeneContainer = function (node) {
                       })).render();
             }
             else {
-              $('#biogene-container').html("<span style='padding-left: 3px;'>No additional information available &#013; for the selected node!</span>");
+              $('#biogene-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
             }
           }, function (xhr, status, error) {
             $('#biogene-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + error + "</span>");
