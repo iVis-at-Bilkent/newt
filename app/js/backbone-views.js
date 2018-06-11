@@ -189,7 +189,7 @@ var ChemicalView = Backbone.View.extend({
         var variables = {
             chemicalDescription: this.model.description[0],
             chebiName: this.model.label,
-            chebiID: this.model.obo_id
+            chebiID: this.model.obo_id.substring(6, this.model.obo_id.length) //Gets only the nr from ChEBI:15422 format
         };
 
         // compile the template using underscore
