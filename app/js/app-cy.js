@@ -226,7 +226,7 @@ module.exports = function (chiseInstance) {
 
           if (consumptionEdges.length > 0) {
             var ur = cy.undoRedo();
-            ur.do("convertIntoReversibleReaction", {collection: consumptionEdges, mapType: "Unknown"});
+            ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "Unknown"});
           }
         }
       }
