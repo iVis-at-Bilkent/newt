@@ -13,6 +13,13 @@ var fillChemicalContainer = function (node) {
   var queryScriptURL = "https://www.ebi.ac.uk/ols/api/search";
   var geneName = node.data('label');
 
+  if (geneName == "" || geneName == undefined)
+  {
+      $('#chemical-title').html("<b>" + node.data('label') + "</b>");
+      $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available &#013; for the selected node!</span>");
+      return;
+  }
+
   // set the query parameters
   var queryParams = {
     ontology: 'chebi',
@@ -29,9 +36,8 @@ var fillChemicalContainer = function (node) {
   })
           .then(
               function (queryResult) {
-              console.log(queryResult);
             // - json parse is not required when no PHP involved
-            if (queryResult.response.numFound > 0 && queryParams.q != "" && typeof queryParams.q != 'undefined')
+            if (queryResult.response.numFound > 0)
             {
               var info = (new ChemicalView(
                       {
