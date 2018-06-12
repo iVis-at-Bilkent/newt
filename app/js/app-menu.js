@@ -976,7 +976,9 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
-      chiseInstance.cloneElements(cy.nodes(':selected'));
+      //When the menu option is clicked paste at mouse location is false
+      var pasteAtMouseLoc = false;
+      chiseInstance.cloneElements(cy.nodes(':selected'), pasteAtMouseLoc);
     });
 
     /*
