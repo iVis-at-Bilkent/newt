@@ -301,9 +301,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Image</font>" + "</td><td style='padding-left: 5px;'>"
               + "<div><button id='inspector-image-file' class='btn btn-default' style='width: "
-              + width / 1.5 + "px;padding:2px;margin-bottom:2px;padding-bottom=0.5px;padding-top=0.5px; margin-right: 2px;'>Choose...</button>"
+              + width / 1.5 + "px;padding:2px;margin-bottom:2px;padding-bottom=0.5px;padding-top=0.5px;'>Choose...</button>"
               + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
-              + "&nbsp;<input type='checkbox' id='inspector-image-from-url' style='margin-right: 1px;'>"
+              + "&nbsp;<input type='checkbox' id='inspector-image-from-url' style='margin-right: 1px; margin-left: 2px;'>"
               + "<font class='sbgn-label-font'>URL</font></div>"
               + removeBtn
               + "</td></tr><input id='inspector-image-load' type='file' style='display:none;'>";
@@ -445,7 +445,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     if(selectedEles.length == 1){
       var setAsDefaultTitle = "Set as Default for " + classInfo;
-      html += "<div style='text-align: center; margin-top: 5px;'><button class='btn btn-default' style='align: center; padding-bottom: 2.4px; padding-top: 2.4px; font-size: 12px' id='inspector-set-as-default-button'"
+      html += "<div style='text-align: center; margin-top: 5px;'><button class='btn btn-default' style='align: center;' id='inspector-set-as-default-button'"
             + ">" + setAsDefaultTitle + "</button></div>";
     }
 
