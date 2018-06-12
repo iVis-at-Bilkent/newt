@@ -2519,25 +2519,31 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
 //Disables info-box relocation
 appUtilities.disableInfoBoxRelocation = function(){
-  var cy = this.getActiveCy();
-  //Remove listerners
-  cy.off('mousedown', appUtilities.RelocationHandler);
-  cy.off('mousemove', appUtilities.relocationDragHandler);
-  if (relocatedNode !== undefined) {
-    relocatedNode.data("border-color", "#555");
+  if (appUtilities.RelocationHandler !== undefined) {
+    var cy = this.getActiveCy();
+    //Remove listerners
+    cy.off('mousedown', appUtilities.RelocationHandler);
+    appUtilities.disableInfoBoxRelocationDrag();
+    if (relocatedNode !== undefined) {
+      relocatedNode.data("border-color", "#555");
+      relocatedNode = undefined;
+    }
     relocatedNode = undefined;
+    appUtilities.RelocationHandler = undefined;
+    //Enable box selection
+    cy.autolock(false); //Make the nodes moveable again
+    cy.autounselectify(false); //Make the nodes selectable
   }
-  relocatedNode = undefined;
-  //Enable box selection
-  cy.autolock(false); //Make the nodes moveable again
-  cy.autounselectify(false); //Make the nodes selectable
 }
 
 //Disables info-box dragging
 appUtilities.disableInfoBoxRelocationDrag = function(){
-  var cy = this.getActiveCy();
-  //Remove listerners
-  cy.off('mousemove', appUtilities.relocationDragHandler);
+  if (appUtilities.relocationDragHandler !== undefined) {
+    var cy = this.getActiveCy();
+    //Remove listerners
+    cy.off('mousemove', appUtilities.relocationDragHandler);
+    appUtilities.relocationDragHandler = undefined;
+  }
 }
 
 module.exports = appUtilities;

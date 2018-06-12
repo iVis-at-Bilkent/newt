@@ -133,10 +133,9 @@ module.exports = function() {
 
     // set the current file name for cy
     appUtilities.setScratch(cy, 'currentFileName', filename);
-    appUtilities.disableInfoBoxRelocation();
     //clean and reset things
     cy.elements().unselect();
-
+    appUtilities.disableInfoBoxRelocation();
     // if the event is triggered for the active instance do the followings
     if ( isActiveInstance ) {
 
