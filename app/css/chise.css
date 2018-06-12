@@ -439,6 +439,14 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+#template-modal-content {
+  position: fixed;
+  width: 600px;
+  top: 50%;
+  left: 50%;
+  margin-left: -300px;
+}
+
 .sbgn-input-small {
     width: 50px !important;
 }
@@ -729,8 +737,7 @@ hr.inspector-divider {
     border-width: 1px !important;
     border-radius: calc !important;
     font-size: 12px;
-    padding-top: 0.5px;
-    padding-bottom: 0.5px;
+    align: center;
 }
 
 #sbgn-toolbar img {
