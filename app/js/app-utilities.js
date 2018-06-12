@@ -2237,7 +2237,7 @@ var relocatedNode;
 //Enables info-box relocation if a node is selected
 appUtilities.relocateInfoBoxes = function(node){
   if (relocatedNode !== undefined) {
-    relocatedNode.data("border-color", "#000000");
+    relocatedNode.data("border-color", "#555");
     relocatedNode = undefined;
   }
   this.disableInfoBoxRelocation();
@@ -2336,7 +2336,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
       //If no info-box found abort
       if (selectedBox === undefined) {
         appUtilities.disableInfoBoxRelocation();
-        node.data("border-color", "#000000");
+        node.data("border-color", "#555");
         relocatedNode = undefined;
         return;
       }
@@ -2351,7 +2351,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
       cy.on("mousemove", appUtilities.relocationDragHandler = function(event){
         if (selectedBox === undefined) {
           appUtilities.disableInfoBoxRelocation();
-          node.data("border-color", "#000000");
+          node.data("border-color", "#555");
           relocatedNode = undefined;
           return;
         }
@@ -2524,7 +2524,7 @@ appUtilities.disableInfoBoxRelocation = function(){
   cy.off('mousedown', appUtilities.RelocationHandler);
   cy.off('mousemove', appUtilities.relocationDragHandler);
   if (relocatedNode !== undefined) {
-    relocatedNode.data("border-color", "#000000");
+    relocatedNode.data("border-color", "#555");
     relocatedNode = undefined;
   }
   relocatedNode = undefined;
