@@ -244,42 +244,46 @@ module.exports = function (chiseInstance) {
         content: 'Fit Content into Node',
         selector: 'node',
         onClickFunction: function (event) {
+          var api = cy.nodeResize('get');
           var cyTarget = event.target || event.cyTarget;
-          console.log(cyTarget);
-
           var statesandinfos = cyTarget._private.data.statesandinfos;
           var labelText = cyTarget._private.style.label.value;
-          var labelFontSize = 11; // TODO
+          var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
+
+          var margin = 10;
 
           var bottomWidth = 0;
           var topWidth = 0;
           var labelWidth = labelText.length * labelFontSize;
 
           statesandinfos.forEach(function (infoBox) {
-              if (infoBox.anchorSide === "bottom") {
-                bottomWidth = bottomWidth + infoBox.bbox.w;
-              }
-              else if (infoBox.anchorSide === "top") {
-                topWidth = topWidth + infoBox.bbox.w;
-              }
-              else if (infoBox.anchorSide === "left") {
+            if (infoBox.anchorSide === "bottom") {
+              bottomWidth = bottomWidth + infoBox.bbox.w;
+            }
+            else if (infoBox.anchorSide === "top") {
+              topWidth = topWidth + infoBox.bbox.w;
+            }
+            else if (infoBox.anchorSide === "left") {
 
-              }
-              else if (infoBox.anchorSide === "right") {
+            }
+            else if (infoBox.anchorSide === "right") {
 
-              }
+            }
           });
 
-          console.log("Bottom", bottomWidth);
-          console.log("Top", topWidth);
-          console.log("Label", labelWidth);
-
-          var width = Math.max(bottomWidth*125/100, topWidth*125/100, labelWidth*90/100);
+          // Scaling the widths
+          bottomWidth = bottomWidth * 125/100;
+          topWidth = topWidth * 125/100;
+          labelWidth = labelWidth*80/100;
 
           var bbox = cyTarget.data('bbox');
+          var width = Math.max(bottomWidth, topWidth, labelWidth);
+          width = (width === 0) ? bbox.w : width + 2*margin;
+          bbox.w = width;
+          cyTarget.data('bbox', bbox);
+          api.refreshGrapples();
+          
           if (bbox.w < width) {
-            bbox.w = width;
-            cyTarget.data('bbox', bbox);
             chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget);
           }
         }
