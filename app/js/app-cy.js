@@ -246,45 +246,79 @@ module.exports = function (chiseInstance) {
         onClickFunction: function (event) {
           var api = cy.nodeResize('get');
           var cyTarget = event.target || event.cyTarget;
-          var statesandinfos = cyTarget._private.data.statesandinfos;
-          var labelText = cyTarget._private.style.label.value;
-          var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
-
-          var margin = 10;
-
-          var bottomWidth = 0;
-          var topWidth = 0;
-          var labelWidth = labelText.length * labelFontSize;
-
-          statesandinfos.forEach(function (infoBox) {
-            if (infoBox.anchorSide === "bottom") {
-              bottomWidth = bottomWidth + infoBox.bbox.w;
-            }
-            else if (infoBox.anchorSide === "top") {
-              topWidth = topWidth + infoBox.bbox.w;
-            }
-            else if (infoBox.anchorSide === "left") {
-
-            }
-            else if (infoBox.anchorSide === "right") {
-
-            }
-          });
-
-          // Scaling the widths
-          bottomWidth = bottomWidth * 125/100;
-          topWidth = topWidth * 125/100;
-          labelWidth = labelWidth*80/100;
 
           var bbox = cyTarget.data('bbox');
-          var width = Math.max(bottomWidth, topWidth, labelWidth);
-          width = (width === 0) ? bbox.w : width + 2*margin;
-          bbox.w = width;
+          bbox.w = calculateWidth(cyTarget);
+          bbox.h = calculateHeight(cyTarget);
+
+          chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget);
           cyTarget.data('bbox', bbox);
           api.refreshGrapples();
-          
-          if (bbox.w < width) {
-            chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget);
+
+          function calculateWidth(cyTarget) {
+            // Label width calculation
+            var labelText = cyTarget._private.style.label.value;
+            var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
+            var labelWidth = labelText.length * labelFontSize * 80/100;
+            var labelWidth = (labelWidth === 0) ? 15 : labelWidth;
+
+            // Separation of info boxes based on their locations
+            var statesandinfos = cyTarget._private.data.statesandinfos;
+            var bottomInfoBoxes = statesandinfos.filter(box => box.anchorSide === "bottom");
+            var topInfoBoxes = statesandinfos.filter(box => box.anchorSide === "top");
+            var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
+            var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
+
+            var horizontalMargin = 10;
+
+            var bottomWidth = horizontalMargin;
+            var topWidth = horizontalMargin;
+            var middleWidth = 0;
+            var leftWidth = 0;
+            var rightWidth = 0;
+
+            bottomInfoBoxes.forEach(function (infoBox) {
+              bottomWidth += infoBox.bbox.w;
+            });
+
+            topInfoBoxes.forEach(function (infoBox) {
+              topWidth += infoBox.bbox.w;
+            });
+
+            leftInfoBoxes.forEach(function (infoBox) {
+              leftWidth = (leftWidth > infoBox.bbox.w/2) ? leftWidth : infoBox.bbox.w/2;
+            }); 
+
+            rightInfoBoxes.forEach(function (infoBox) {
+              rightWidth = (rightWidth > infoBox.bbox.w/2) ? rightWidth : infoBox.bbox.w/2;
+            }); 
+
+            middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin; 
+            var width = Math.max(bottomWidth, topWidth, labelWidth);
+            return width + 2*horizontalMargin;
+          }
+
+          function calculateHeight(cyTarget) {
+            var defaultHeight = 30;
+            var infoBoxHeight = 0;
+            var margin = 10;
+
+            var statesandinfos = cyTarget._private.data.statesandinfos;
+            var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
+            var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
+
+            var leftHeight = 2*margin;
+            var rightHeight = 2*margin;
+            leftInfoBoxes.forEach(function (infoBox) {
+              leftHeight += infoBox.bbox.h;
+            }); 
+
+            rightInfoBoxes.forEach(function (infoBox) {
+              rightHeight += infoBox.bbox.h;      
+            }); 
+
+            var height = Math.max(leftHeight, rightHeight, defaultHeight);
+            return height;
           }
         }
       }
