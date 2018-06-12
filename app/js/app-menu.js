@@ -1097,7 +1097,6 @@ module.exports = function() {
     $(document).on('mouseup', function (e) {
       dragAndDropPlacement = false;
       appUtilities.removeDragImage();
-      appUtilities.disableInfoBoxRelocationDrag();
     });
 
     $('#select-mode-icon').click(function (e) {
