@@ -133,7 +133,7 @@ module.exports = function() {
 
     // set the current file name for cy
     appUtilities.setScratch(cy, 'currentFileName', filename);
-
+    appUtilities.disableInfoBoxRelocation();
     //clean and reset things
     cy.elements().unselect();
 

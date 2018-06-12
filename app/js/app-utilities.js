@@ -2229,16 +2229,24 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
 }
 
 //Info-box drag handlers
-var relocationDragHandler;
-var relocationHandler;
+appUtilities.relocationDragHandler;
+appUtilities.RelocationHandler;
+
+var relocatedNode;
 
 //Enables info-box relocation if a node is selected
 appUtilities.relocateInfoBoxes = function(node){
+  if (relocatedNode !== undefined) {
+    relocatedNode.data("border-color", "#000000");
+    relocatedNode = undefined;
+  }
+  this.disableInfoBoxRelocation();
   //Abort if node has no info-boxes or selected ele is not a node
   if (node.data("auxunitlayouts") === undefined || !node.isNode()) {
     return;
   }
   node.unselect();
+  relocatedNode = node;
   this.enableInfoBoxRelocation(node);
 }
 
@@ -2256,14 +2264,15 @@ appUtilities.checkMouseContainsInfoBox = function(unit, mouse_down_x, mouse_down
     && ( (mouse_down_y >= y_loc - height / 2) && (mouse_down_y <= y_loc + height / 2));
 }
 
-//Enables info-box relocationHandler
+//Enables info-box appUtilities.RelocationHandler
 appUtilities.enableInfoBoxRelocation = function(node){
   var cy = this.getActiveCy();
   //Disable box movements
+  node.data("border-color", "#d67614");
   var selectedBox;
   var anchorSide;
   cy.autounselectify(true);
-  cy.on('mousedown', relocationHandler = function(event){
+  cy.on('mousedown', appUtilities.RelocationHandler = function(event){
       //Check whether event contained by infobox of a node
       //Lock the node so that it won't change position when
       //Info boxes are dragged
@@ -2327,6 +2336,8 @@ appUtilities.enableInfoBoxRelocation = function(node){
       //If no info-box found abort
       if (selectedBox === undefined) {
         appUtilities.disableInfoBoxRelocation();
+        node.data("border-color", "#000000");
+        relocatedNode = undefined;
         return;
       }
       //Else If a info-box contained by event move info-box
@@ -2337,9 +2348,11 @@ appUtilities.enableInfoBoxRelocation = function(node){
       var last_mouse_x = mouse_down_x;
       var last_mouse_y = mouse_down_y;
 
-      cy.on("mousemove", relocationDragHandler = function(event){
+      cy.on("mousemove", appUtilities.relocationDragHandler = function(event){
         if (selectedBox === undefined) {
           appUtilities.disableInfoBoxRelocation();
+          node.data("border-color", "#000000");
+          relocatedNode = undefined;
           return;
         }
         var drag_x = event.position.x;
@@ -2508,8 +2521,13 @@ appUtilities.enableInfoBoxRelocation = function(node){
 appUtilities.disableInfoBoxRelocation = function(){
   var cy = this.getActiveCy();
   //Remove listerners
-  cy.off('mousedown', relocationHandler);
-  cy.off('mousemove', relocationDragHandler);
+  cy.off('mousedown', appUtilities.RelocationHandler);
+  cy.off('mousemove', appUtilities.relocationDragHandler);
+  if (relocatedNode !== undefined) {
+    relocatedNode.data("border-color", "#000000");
+    relocatedNode = undefined;
+  }
+  relocatedNode = undefined;
   //Enable box selection
   cy.autolock(false); //Make the nodes moveable again
   cy.autounselectify(false); //Make the nodes selectable
@@ -2519,7 +2537,7 @@ appUtilities.disableInfoBoxRelocation = function(){
 appUtilities.disableInfoBoxRelocationDrag = function(){
   var cy = this.getActiveCy();
   //Remove listerners
-  cy.off('mousemove', relocationDragHandler);
+  cy.off('mousemove', appUtilities.relocationDragHandler);
 }
 
 module.exports = appUtilities;

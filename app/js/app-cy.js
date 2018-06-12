@@ -232,7 +232,7 @@ module.exports = function (chiseInstance) {
       },
       {
         id: 'ctx-menu-relocate-info-boxes',
-        content: 'Relocate Info Boxes',
+        content: 'Relocate Information Boxes',
         selector: 'node',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
@@ -287,13 +287,13 @@ module.exports = function (chiseInstance) {
 
             leftInfoBoxes.forEach(function (infoBox) {
               leftWidth = (leftWidth > infoBox.bbox.w/2) ? leftWidth : infoBox.bbox.w/2;
-            }); 
+            });
 
             rightInfoBoxes.forEach(function (infoBox) {
               rightWidth = (rightWidth > infoBox.bbox.w/2) ? rightWidth : infoBox.bbox.w/2;
-            }); 
+            });
 
-            middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin; 
+            middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin;
             var width = Math.max(bottomWidth, topWidth, labelWidth);
             return width + 2*horizontalMargin;
           }
@@ -311,11 +311,11 @@ module.exports = function (chiseInstance) {
             var rightHeight = 2*margin;
             leftInfoBoxes.forEach(function (infoBox) {
               leftHeight += infoBox.bbox.h;
-            }); 
+            });
 
             rightInfoBoxes.forEach(function (infoBox) {
-              rightHeight += infoBox.bbox.h;      
-            }); 
+              rightHeight += infoBox.bbox.h;
+            });
 
             var height = Math.max(leftHeight, rightHeight, defaultHeight);
             return height;
