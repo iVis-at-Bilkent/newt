@@ -238,6 +238,51 @@ module.exports = function (chiseInstance) {
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
         }
+      },
+      {
+        id: 'ctx-menu-fit-content-into-node',
+        content: 'Fit Content into Node',
+        selector: 'node',
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          console.log(cyTarget);
+
+          var statesandinfos = cyTarget._private.data.statesandinfos;
+          var labelText = cyTarget._private.style.label.value;
+          var labelFontSize = 11; // TODO
+
+          var bottomWidth = 0;
+          var topWidth = 0;
+          var labelWidth = labelText.length * labelFontSize;
+
+          statesandinfos.forEach(function (infoBox) {
+              if (infoBox.anchorSide === "bottom") {
+                bottomWidth = bottomWidth + infoBox.bbox.w;
+              }
+              else if (infoBox.anchorSide === "top") {
+                topWidth = topWidth + infoBox.bbox.w;
+              }
+              else if (infoBox.anchorSide === "left") {
+
+              }
+              else if (infoBox.anchorSide === "right") {
+
+              }
+          });
+
+          console.log("Bottom", bottomWidth);
+          console.log("Top", topWidth);
+          console.log("Label", labelWidth);
+
+          var width = Math.max(bottomWidth*125/100, topWidth*125/100, labelWidth*90/100);
+
+          var bbox = cyTarget.data('bbox');
+          if (bbox.w < width) {
+            bbox.w = width;
+            cyTarget.data('bbox', bbox);
+            chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget);
+          }
+        }
       }
     ]);
 
