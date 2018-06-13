@@ -2236,13 +2236,10 @@ var relocatedNode;
 
 //Enables info-box relocation if a node is selected
 appUtilities.relocateInfoBoxes = function(node){
-  if (relocatedNode !== undefined) {
-    relocatedNode.data("border-color", "#555");
-    relocatedNode = undefined;
-  }
   this.disableInfoBoxRelocation();
   //Abort if node has no info-boxes or selected ele is not a node
-  if (node.data("auxunitlayouts") === undefined || !node.isNode()) {
+  if (node.data("auxunitlayouts") === undefined || node.data("statesandinfos").length === 0 || !node.isNode()) {
+    this.disableInfoBoxRelocation();
     return;
   }
   node.unselect();
@@ -2271,11 +2268,11 @@ appUtilities.enableInfoBoxRelocation = function(node){
   node.data("border-color", "#d67614");
   var selectedBox;
   var anchorSide;
-  cy.autounselectify(true);
   cy.on('mousedown', appUtilities.RelocationHandler = function(event){
       //Check whether event contained by infobox of a node
       //Lock the node so that it won't change position when
       //Info boxes are dragged
+      cy.autounselectify(true);
       cy.autolock(true);
       var top = node.data('auxunitlayouts').top;
       var bottom = node.data('auxunitlayouts').bottom;
@@ -2511,6 +2508,8 @@ appUtilities.enableInfoBoxRelocation = function(node){
         selectedBox = undefined;
         anchorSide = undefined;
         oldAnchorSide = undefined;
+        cy.autounselectify(false);
+        cy.autolock(false);
       }
     });
 
@@ -2519,8 +2518,10 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
 //Disables info-box relocation
 appUtilities.disableInfoBoxRelocation = function(){
+  var cy = this.getActiveCy();
+  cy.autolock(false); //Make the nodes moveable again
+  cy.autounselectify(false); //Make the nodes selectable
   if (appUtilities.RelocationHandler !== undefined) {
-    var cy = this.getActiveCy();
     //Remove listerners
     cy.off('mousedown', appUtilities.RelocationHandler);
     appUtilities.disableInfoBoxRelocationDrag();
@@ -2530,10 +2531,8 @@ appUtilities.disableInfoBoxRelocation = function(){
     }
     relocatedNode = undefined;
     appUtilities.RelocationHandler = undefined;
-    //Enable box selection
-    cy.autolock(false); //Make the nodes moveable again
-    cy.autounselectify(false); //Make the nodes selectable
   }
+
 }
 
 //Disables info-box dragging
