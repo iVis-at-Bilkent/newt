@@ -2213,7 +2213,7 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
     var rend_y = (edge_pts[i+1] - s_normal.y) * zoom_level + s_rendered.y;
 
     cy.animate({
-     duration: 700,
+     duration: 1400,
      panBy: {x: (mouse_rend.x-rend_x), y: (mouse_rend.y-rend_y)},
      easing: 'ease',
      complete: function(){
