@@ -914,7 +914,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
           return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (geneSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1031,7 +1031,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
                 $(self.el).modal('toggle');
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1150,7 +1150,7 @@ var PathsFromToQueryView = Backbone.View.extend({
                 return;
             }
             // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            sourceSymbols = sourceSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
             if (sourceSymbols.length === 0) {
                 $(self.el).modal('toggle');
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1163,7 +1163,7 @@ var PathsFromToQueryView = Backbone.View.extend({
                 return;
             }
             // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            targetSymbols = targetSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
             if (targetSymbols.length === 0) {
                 $(self.el).modal('toggle');
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1297,7 +1297,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                 return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replaceAll(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
                 $(self.el).modal('toggle');
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1410,7 +1410,7 @@ var PathsByURIQueryView = Backbone.View.extend({
           return;
       }
       // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      uri = uri.replaceAll(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
+      uri = uri.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
       if (uri.length === 0) {
           $(self.el).modal('toggle');
           new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
