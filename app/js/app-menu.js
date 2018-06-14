@@ -1182,6 +1182,7 @@ module.exports = function() {
       var target = $(e.target).attr("href"); // activated tab
       console.log(target);
       appUtilities.setActiveNetwork(target);
+      inspectorUtilities.handleSBGNInspector();
     });
   }
 };

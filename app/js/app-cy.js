@@ -233,7 +233,7 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
