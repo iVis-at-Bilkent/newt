@@ -578,6 +578,11 @@ module.exports = function() {
       $('#inspector-palette-tab a').tab('show');
     });
 
+    $("#resize-nodes-to-content").click(function (e) {
+
+        // TODO implement
+    });
+
     $("#highlight-neighbors-of-selected").click(function (e) {
 
       // use active chise instance

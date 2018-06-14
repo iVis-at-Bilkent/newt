@@ -2533,7 +2533,7 @@ appUtilities.disableInfoBoxRelocation = function(){
     appUtilities.RelocationHandler = undefined;
   }
 
-}
+};
 
 //Disables info-box dragging
 appUtilities.disableInfoBoxRelocationDrag = function(){
@@ -2543,6 +2543,88 @@ appUtilities.disableInfoBoxRelocationDrag = function(){
     cy.off('mousemove', appUtilities.relocationDragHandler);
     appUtilities.relocationDragHandler = undefined;
   }
-}
+};
+
+appUtilities.resizeNodesToContent = function(collection){
+
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = appUtilities.getActiveCy();
+
+    collection.forEach(function( node ){
+        var bbox = node.data('bbox');
+        bbox.w = calculateWidth(node);
+        bbox.h = calculateHeight(node);
+
+        chiseInstance.classes.AuxUnitLayout.fitUnits(node);
+        chiseInstance.resizeNodes(node, bbox.w, bbox.h, false);
+    });
+    cy.nodeResize('get').refreshGrapples();
+
+    function calculateWidth(cyTarget) {
+        // Label width calculation
+        var labelText = cyTarget._private.style.label.value;
+        var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
+        var labelWidth = labelText.length * labelFontSize * 80/100;
+        var labelWidth = (labelWidth === 0) ? 15 : labelWidth;
+
+        // Separation of info boxes based on their locations
+        var statesandinfos = cyTarget._private.data.statesandinfos;
+        var bottomInfoBoxes = statesandinfos.filter(box => box.anchorSide === "bottom");
+        var topInfoBoxes = statesandinfos.filter(box => box.anchorSide === "top");
+        var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
+        var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
+
+        var horizontalMargin = 10;
+
+        var bottomWidth = horizontalMargin;
+        var topWidth = horizontalMargin;
+        var middleWidth = 0;
+        var leftWidth = 0;
+        var rightWidth = 0;
+
+        bottomInfoBoxes.forEach(function (infoBox) {
+            bottomWidth += infoBox.bbox.w;
+        });
+
+        topInfoBoxes.forEach(function (infoBox) {
+            topWidth += infoBox.bbox.w;
+        });
+
+        leftInfoBoxes.forEach(function (infoBox) {
+            leftWidth = (leftWidth > infoBox.bbox.w/2) ? leftWidth : infoBox.bbox.w/2;
+        });
+
+        rightInfoBoxes.forEach(function (infoBox) {
+            rightWidth = (rightWidth > infoBox.bbox.w/2) ? rightWidth : infoBox.bbox.w/2;
+        });
+
+        middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin;
+        var width = Math.max(bottomWidth, topWidth, labelWidth);
+        return width + 2*horizontalMargin;
+    }
+
+    function calculateHeight(cyTarget) {
+        var defaultHeight = 30;
+        var infoBoxHeight = 0;
+        var margin = 10;
+
+        var statesandinfos = cyTarget._private.data.statesandinfos;
+        var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
+        var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
+
+        var leftHeight = 2*margin;
+        var rightHeight = 2*margin;
+        leftInfoBoxes.forEach(function (infoBox) {
+            leftHeight += infoBox.bbox.h;
+        });
+
+        rightInfoBoxes.forEach(function (infoBox) {
+            rightHeight += infoBox.bbox.h;
+        });
+
+        var height = Math.max(leftHeight, rightHeight, defaultHeight);
+        return height;
+    }
+};
 
 module.exports = appUtilities;

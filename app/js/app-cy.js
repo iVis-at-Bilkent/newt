@@ -241,85 +241,15 @@ module.exports = function (chiseInstance) {
       },
       {
         id: 'ctx-menu-fit-content-into-node',
-        content: 'Fit Content into Node',
-        selector: 'node',
+        content: 'Resize Node to Content',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"]',
         onClickFunction: function (event) {
-          var api = cy.nodeResize('get');
-          var cyTarget = event.target || event.cyTarget;
-
-          var bbox = cyTarget.data('bbox');
-          bbox.w = calculateWidth(cyTarget);
-          bbox.h = calculateHeight(cyTarget);
-
-          chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget);
-          cyTarget.data('bbox', bbox);
-          api.refreshGrapples();
-
-          function calculateWidth(cyTarget) {
-            // Label width calculation
-            var labelText = cyTarget._private.style.label.value;
-            var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
-            var labelWidth = labelText.length * labelFontSize * 80/100;
-            var labelWidth = (labelWidth === 0) ? 15 : labelWidth;
-
-            // Separation of info boxes based on their locations
-            var statesandinfos = cyTarget._private.data.statesandinfos;
-            var bottomInfoBoxes = statesandinfos.filter(box => box.anchorSide === "bottom");
-            var topInfoBoxes = statesandinfos.filter(box => box.anchorSide === "top");
-            var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
-            var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
-
-            var horizontalMargin = 10;
-
-            var bottomWidth = horizontalMargin;
-            var topWidth = horizontalMargin;
-            var middleWidth = 0;
-            var leftWidth = 0;
-            var rightWidth = 0;
-
-            bottomInfoBoxes.forEach(function (infoBox) {
-              bottomWidth += infoBox.bbox.w;
-            });
-
-            topInfoBoxes.forEach(function (infoBox) {
-              topWidth += infoBox.bbox.w;
-            });
-
-            leftInfoBoxes.forEach(function (infoBox) {
-              leftWidth = (leftWidth > infoBox.bbox.w/2) ? leftWidth : infoBox.bbox.w/2;
-            });
-
-            rightInfoBoxes.forEach(function (infoBox) {
-              rightWidth = (rightWidth > infoBox.bbox.w/2) ? rightWidth : infoBox.bbox.w/2;
-            });
-
-            middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin;
-            var width = Math.max(bottomWidth, topWidth, labelWidth);
-            return width + 2*horizontalMargin;
-          }
-
-          function calculateHeight(cyTarget) {
-            var defaultHeight = 30;
-            var infoBoxHeight = 0;
-            var margin = 10;
-
-            var statesandinfos = cyTarget._private.data.statesandinfos;
-            var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
-            var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
-
-            var leftHeight = 2*margin;
-            var rightHeight = 2*margin;
-            leftInfoBoxes.forEach(function (infoBox) {
-              leftHeight += infoBox.bbox.h;
-            });
-
-            rightInfoBoxes.forEach(function (infoBox) {
-              rightHeight += infoBox.bbox.h;
-            });
-
-            var height = Math.max(leftHeight, rightHeight, defaultHeight);
-            return height;
-          }
+            var cyTarget = event.target || event.cyTarget;
+            //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
+            var collection = cy.collection();
+            collection = collection.add(cyTarget);
+            appUtilities.resizeNodesToContent(collection);
         }
       }
     ]);
