@@ -293,18 +293,34 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       if(selectedEles.length == 1){
-        var removeBtn = "<img id='inspector-delete-bg' width='16px' height='16px' class='pointer-button' src='app/img/toolbar/delete-simple.svg'>";
         hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
-        if(!hasBackgroundImage){
-          removeBtn = "<img id='inspector-delete-bg' width='16px' style='display: none' height='16px' class='pointer-button' src='app/img/toolbar/delete-simple.svg'>";
+        var display = hasBackgroundImage ? "" : 'display: none;';
+
+        var removeBtn = "<img id='inspector-delete-bg' width='16px' height='16px' class='pointer-button' "
+                      + 'style="' + display + '"'
+                      + "src='app/img/toolbar/delete-simple.svg'>";
+
+        var options = '<option value="none">None</option>'  
+                    + '<option value="fit" selected>Fit</option>'
+                    + '<option value="cover">Cover</option>'
+                    + '<option value="contain">Contain</option>';
+        if(hasBackgroundImage){
+          var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles[0]);
+          options = tmp ? tmp : options;
         }
+        
+        var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px;'
+                        + display + '">'
+                        + options
+                        + '</select>';
 
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Image</font>" + "</td><td style='padding-left: 5px;'>"
               + "<div><button id='inspector-image-file' class='btn btn-default' style='width: "
               + width / 1.5 + "px;padding:2px;margin-bottom:2px;padding-bottom=0.5px;padding-top=0.5px;'>Choose...</button>"
               + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
-              + "&nbsp;<input type='checkbox' id='inspector-image-from-url' style='margin-right: 1px; margin-left: 2px;'>"
+              + "<input type='checkbox' id='inspector-image-from-url' style='margin-left: 3px;'>"
               + "<font class='sbgn-label-font'>URL</font></div>"
+              + fitSelection
               + removeBtn
               + "</td></tr><input id='inspector-image-load' type='file' style='display:none;'>";
       }
@@ -513,10 +529,12 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         if(!hasBackgroundImage){
           $('#inspector-delete-bg').hide();
+          $('#inspector-fit-selector').hide();
           $('#inspector-image-url').val('');
         }
         else{
           $('#inspector-delete-bg').show();
+          $('#inspector-fit-selector').show();
           imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
           imageURL = imageURL ? imageURL : "";
           $('#inspector-image-url').val(imageURL);
@@ -549,19 +567,64 @@ inspectorUtilities.handleSBGNInspector = function () {
         updateBackgroundDeleteInfo();
       });
 
+      $('#inspector-fit-selector').on('change', function () {
+        var fit = $("#inspector-fit-selector").val();
+        if(!fit){
+          return;
+        }
+        
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        if(!bgObj || bgObj === {}){
+          return;
+        }
+
+        var bgWidth = "auto";
+        var bgHeight = "auto";
+        var bgFit = "none";
+        
+        if(fit === "fit"){
+          bgWidth = "100%";
+          bgHeight = "100%";
+          bgFit = "none"
+        }
+        else if(fit){
+          bgFit = fit;
+        }
+
+        bgObj['background-fit'] = bgFit;
+        bgObj['background-width'] = bgWidth;
+        bgObj['background-height'] = bgHeight;
+        chiseInstance.updateBackgroundImage(selectedEles, bgObj);
+        updateBackgroundDeleteInfo();
+      });
+
       $("#inspector-image-url").on('change', function () {
         var url = $(this).val().trim();
         imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
 
         if (url && imageURL !== url){
+          var fit = $("#inspector-fit-selector").val();
+          var bgWidth = "auto";
+          var bgHeight = "auto";
+          var bgFit = "none";
+          
+          if(fit === "fit"){
+            bgWidth = "100%";
+            bgHeight = "100%";
+            bgFit = "none"
+          }
+          else if(fit){
+            bgFit = fit;
+          }
+          
           var bgObj = {
             'background-image' : url,
-            'background-fit' : 'contain',
+            'background-fit' : bgFit,
             'background-image-opacity' : '1',
             'background-position-x' : '50%',
             'background-position-y' : '50%',
-            'background-width' : 'auto',
-            'background-height' : 'auto',
+            'background-width' : bgWidth,
+            'background-height' : bgHeight,
             'fromFile' : false
           };
 
@@ -583,14 +646,28 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         if ($(this).val() != "" || fileObject) {
           var file = this.files[0] || fileObject;
+          var fit = $("#inspector-fit-selector").val();
+          var bgWidth = "auto";
+          var bgHeight = "auto";
+          var bgFit = "none";
+          
+          if(fit === "fit"){
+            bgWidth = "100%";
+            bgHeight = "100%";
+            bgFit = "none"
+          }
+          else if(fit){
+            bgFit = fit;
+          }
+          
           var bgObj = {
             'background-image' : file,
-            'background-fit' : 'contain',
+            'background-fit' : bgFit,
             'background-image-opacity' : '1',
             'background-position-x' : '50%',
             'background-position-y' : '50%',
-            'background-width' : 'auto',
-            'background-height' : 'auto',
+            'background-width' : bgWidth,
+            'background-height' : bgHeight,
             'fromFile' : true
           };
 
