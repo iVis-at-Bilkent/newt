@@ -522,6 +522,10 @@ module.exports = function (chiseInstance) {
       }, // a function returns min height of node
 
       isFixedAspectRatioResizeMode: function (node) {
+        //Initially checks if Aspect ratio in Object properties is checked
+        if (appUtilities.nodeResizeUseAspectRatio)
+            return true;
+        //Otherwise it checks 'processes', 'and', 'or' etc. which have fixedAspectRatio as default
         var sbgnclass = node.data("class");
         return chiseInstance.elementUtilities.mustBeSquare(sbgnclass);
       }, // with only 4 active grapples (at corners)

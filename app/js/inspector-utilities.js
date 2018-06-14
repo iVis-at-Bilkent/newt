@@ -744,6 +744,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         $(this).attr('src', 'app/img/' + imageName);
         $(this).attr('title', title);
+
+        //Refresh grapples when the lock icon is clicked
+        cy.nodeResize('get').refreshGrapples();
       });
 
       $('#inspector-is-multimer').on('click', function () {
