@@ -2361,17 +2361,17 @@ appUtilities.enableInfoBoxRelocation = function(node){
       var parentY1 = position.y - parentHeight/2 - padding;
       var parentY2 = position.y + parentHeight/2 + padding;
       cy.on("mousemove", appUtilities.relocationDragHandler = function(event){
-        if (selectedBox === undefined) {
+        if (selectedBox === undefined) { //If selected box is undefined somehow abort
           appUtilities.disableInfoBoxRelocation();
           node.data("border-color", oldColor);
           relocatedNode = undefined;
           return;
         }
-
+        //Clear visual cues during relocation
+        cy.expandCollapse('get').clearVisualCue(node);
         var drag_x = event.position.x;
         var drag_y = event.position.y;
         var anchorSide = selectedBox.anchorSide;
-
         var gap, shift_x, shift_y, box_new_x, box_new_y;
 
         //If anchor side is top or bottom only move in x direction
