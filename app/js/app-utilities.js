@@ -2566,7 +2566,7 @@ appUtilities.resizeNodesToContent = function(collection){
         bbox.w = calculateWidth(node);
         bbox.h = calculateHeight(node);
 
-        chiseInstance.classes.AuxUnitLayout.setParentMinDimensions(node);
+        chiseInstance.classes.AuxUnitLayout.fitUnits(node);
         chiseInstance.resizeNodes(node, bbox.w, bbox.h, false);
     });
     cy.nodeResize('get').refreshGrapples();
