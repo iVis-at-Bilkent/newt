@@ -580,7 +580,16 @@ module.exports = function() {
 
     $("#resize-nodes-to-content").click(function (e) {
 
-        // TODO implement
+        // use active chise instance
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+        // use cy instance associated with chise instance
+        var cy = chiseInstance.getCy();
+
+        //Remove processes and other nodes which cannot be resized according to content
+        var toBeResized = cy.nodes().difference('node[class*="process"],[class*="association"],[class*="dissociation"],[class="source and sink"],[class="and"],[class="or"],[class="not"],[class="delay"]');
+        appUtilities.resizeNodesToContent(toBeResized);
+
     });
 
     $("#highlight-neighbors-of-selected").click(function (e) {

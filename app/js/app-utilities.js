@@ -2561,14 +2561,18 @@ appUtilities.resizeNodesToContent = function(collection){
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var cy = appUtilities.getActiveCy();
 
+    var actions = [];
     collection.forEach(function( node ){
         var bbox = node.data('bbox');
         bbox.w = calculateWidth(node);
         bbox.h = calculateHeight(node);
 
         chiseInstance.classes.AuxUnitLayout.fitUnits(node);
-        chiseInstance.resizeNodes(node, bbox.w, bbox.h, false);
+        chiseInstance.resizeNodesToContent(node, bbox, actions);
     });
+
+    cy.undoRedo().do("batch", actions);
+    cy.style().update();
     cy.nodeResize('get').refreshGrapples();
 
     function calculateWidth(cyTarget) {
