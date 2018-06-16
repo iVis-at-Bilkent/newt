@@ -862,6 +862,10 @@ module.exports = function (chiseInstance) {
                   convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
         {
           chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+          //Update arrow scale of the newly added edge
+          var addedEdge = cy.elements()[cy.elements().length - 1];
+          var currentArrowScale = Number($('#arrow-scale').val());
+          addedEdge.style('arrow-scale', currentArrowScale);
         }
         else {
           var cyPosX;
