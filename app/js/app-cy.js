@@ -629,6 +629,9 @@ module.exports = function (chiseInstance) {
      */
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeResize('get').refreshGrapples();
+      if (node !== undefined) {
+        chiseInstance.classes.AuxUnitLayout.fitUnits(node); //Fit infoBoxes
+      }
     });
 
     cy.on("afterDo", function (event, actionName, args, res) {
