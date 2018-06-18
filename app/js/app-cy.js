@@ -228,6 +228,8 @@ module.exports = function (chiseInstance) {
             var ur = cy.undoRedo();
             ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "Unknown"});
           }
+          var currentArrowScale = Number($('#arrow-scale').val());
+          cyTarget.connectedEdges().style('arrow-scale', currentArrowScale);
         }
       },
       {
