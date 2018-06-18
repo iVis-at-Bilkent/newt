@@ -927,7 +927,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
         return;
       }
 
-      var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit="
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit="
           + self.currentQueryParameters.lengthLimit;
       var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
@@ -1044,7 +1044,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 return;
             }
 
-            var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
                 + self.currentQueryParameters.lengthLimit;
             var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
@@ -1177,7 +1177,7 @@ var PathsFromToQueryView = Backbone.View.extend({
                 return;
             }
 
-            var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit="
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit="
                 + self.currentQueryParameters.lengthLimit;
             var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
             var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
@@ -1417,7 +1417,7 @@ var PathsByURIQueryView = Backbone.View.extend({
           return;
       }
 
-      var queryURL = "http://beta.pathwaycommons.org/pc2/get?uri="
+      var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
           + uri + "&format=SBGN";
 
       var filename = "";
