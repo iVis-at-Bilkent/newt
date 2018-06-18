@@ -1115,13 +1115,13 @@ module.exports = function (chiseInstance) {
       {
         appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
       }
-      /*cy.nodes().forEach(function(ele){
+      cy.nodes().forEach(function(ele){
         // skip nodes without any auxiliary units
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
         chiseInstance.classes.AuxUnitLayout.fitUnits(ele);
-      });*/
+      });
     });
 
     // if the position of compound changes by repositioning its children
