@@ -405,7 +405,7 @@ appUtilities.createNewNetwork = function () {
   
   //set border-width of selected nodes to a fixed value 
   newInst.getCy().style()
-    .selector("nodes:selected")
+    .selector("node:selected")
     .css({
       'border-width': 3
     })
