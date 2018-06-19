@@ -629,11 +629,19 @@ module.exports = function (chiseInstance) {
      * We need to refresh the resize grapples to ensure they are consistent with their parent's status.
      * (for instance: complexes)
      */
+    cy.on("fit-units-after-expandcollapse", function(event) {
+      cy.nodes().forEach(function(ele){
+        if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
+          return;
+        }
+        chiseInstance.classes.AuxUnitLayout.fitUnits(ele);
+      });
+      cy.style().update();
+    });
+
+    //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeResize('get').refreshGrapples();
-      if (node !== undefined) {
-        chiseInstance.classes.AuxUnitLayout.fitUnits(node); //Fit infoBoxes
-      }
     });
 
     cy.on("afterDo", function (event, actionName, args, res) {

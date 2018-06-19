@@ -402,8 +402,8 @@ appUtilities.createNewNetwork = function () {
       return appUtilities.ctrlKeyDown !== true;
     }
   });
-  
-  //set border-width of selected nodes to a fixed value 
+
+  //set border-width of selected nodes to a fixed value
   newInst.getCy().style()
     .selector("node:selected")
     .css({
@@ -801,10 +801,11 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       var cy = _cy || self.getActiveCy();
 
       if ( !self.getScratch(cy, 'currentGeneralProperties').recalculateLayoutOnComplexityManagement ) {
+        cy.trigger('fit-units-after-expandcollapse');
         return;
       }
-
       self.triggerIncrementalLayout(cy);
+      cy.trigger('fit-units-after-expandcollapse');
     },
     expandCollapseCueSize: 12,
     expandCollapseCuePosition: function (node) {
