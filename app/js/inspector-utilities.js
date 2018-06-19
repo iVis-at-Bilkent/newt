@@ -628,7 +628,14 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : false
           };
 
-          chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          // If there is a background image change it, don't add
+          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
+            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          }
+          else{
+            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          }
         }
       });
 
@@ -671,7 +678,14 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : true
           };
 
-          chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          // If there is a background image change it, don't add
+          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
+            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          }
+          else{
+            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          }
           $(this).val("");
         }
       });

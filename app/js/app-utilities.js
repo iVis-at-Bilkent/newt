@@ -1778,8 +1778,9 @@ appUtilities.getAllStyles = function (_cy) {
   var collapsedChildrenEdges = collapsedChildren.filter("edge");
   var edges = cy.edges().union(collapsedChildrenEdges);
 
-  // first get all used colors, then deal with them and keep reference to them
+  // first get all used colors and background images, then deal with them and keep reference to them
   var colorUsed = appUtilities.getColorsFromElements(nodes, edges);
+  var imagesUsed = appUtilities.getImagesFromElements(nodes);
 
   var nodePropertiesToXml = {
     'background-color': 'fill',
@@ -1789,7 +1790,14 @@ appUtilities.getAllStyles = function (_cy) {
     'font-size': 'fontSize',
     'font-weight': 'fontWeight',
     'font-style': 'fontStyle',
-    'font-family': 'fontFamily'
+    'font-family': 'fontFamily',
+    'background-image': 'backgroundImage',
+    'background-fit': 'backgroundFit',
+    'background-position-x': 'backgroundPosX',
+    'background-position-y': 'backgroundPosY',
+    'background-height': 'backgroundHeight',
+    'background-width': 'backgroundWidth',
+    'background-image-opacity': 'backgroundImageOpacity',
   };
   var edgePropertiesToXml = {
     'line-color': 'stroke',
@@ -1800,7 +1808,12 @@ appUtilities.getAllStyles = function (_cy) {
     var hash = "";
     for(var cssProp in properties){
       if (element.data(cssProp)) {
-        hash += element.data(cssProp).toString();
+        if(cssProp === 'background-image'){
+          var imgs = appUtilities.elementValidImages(element);
+          hash += appUtilities.elementValidImageIDs(imgs, imagesUsed);
+        }
+        else
+          hash += element.data(cssProp).toString();
       }
       else {
         hash += "";
@@ -1818,6 +1831,11 @@ appUtilities.getAllStyles = function (_cy) {
           var validColor = appUtilities.elementValidColor(element, cssProp);
           var colorID = colorUsed[validColor];
           props[properties[cssProp]] = colorID;
+        }
+        //if it is background image property, replace it with corresponding id 
+        else if(cssProp == 'background-image'){
+          var imgs = appUtilities.elementValidImages(element);
+          props[properties[cssProp]] = appUtilities.elementValidImageIDs(imgs, imagesUsed);
         }
         else{
           props[properties[cssProp]] = element.data(cssProp);
@@ -1870,6 +1888,7 @@ appUtilities.getAllStyles = function (_cy) {
 
   return {
     colors: colorUsed,
+    images: imagesUsed,
     background: containerBgColor,
     styles: styles
   };
@@ -1907,6 +1926,28 @@ appUtilities.elementValidColor = function (ele, colorProperty) {
   }
 };
 
+appUtilities.elementValidImages = function (ele) {
+  if (ele.isNode() && ele.data('background-image')) {
+    return ele.data('background-image').split(" ");
+  }
+  else { // element don't have that property
+    return undefined;
+  }
+};
+
+appUtilities.elementValidImageIDs = function (imgs, imagesUsed) {
+  if(imgs && imagesUsed && imgs.length > 0){
+    var ids = [];
+    imgs.forEach(function(img){
+      ids.push(imagesUsed[img]);
+    });
+    return ids.join(" ");
+  }
+  else{
+    return undefined;
+  }
+} 
+
 /*
   returns: {
     xmlValid: id
@@ -1938,6 +1979,25 @@ appUtilities.getColorsFromElements = function (nodes, edges) {
     }
   }
   return colorHash;
+}
+
+appUtilities.getImagesFromElements = function (nodes) {
+  var imageHash = {};
+  var imageID = 0;
+  for(var i=0; i<nodes.length; i++) {
+    var node = nodes[i];
+    var validImages = appUtilities.elementValidImages(node);
+    if(!validImages)
+      continue;
+    validImages.forEach(function(img){
+      if (!imageHash[img]) {
+        imageID++;
+        imageHash[img] = 'image_' + imageID;
+      }
+    });
+  }
+  
+  return imageHash;
 }
 
 /**
@@ -2270,7 +2330,6 @@ appUtilities.checkMouseContainsInfoBox = function(unit, mouse_down_x, mouse_down
   return ((mouse_down_x >= x_loc - width / 2) && (mouse_down_x <= x_loc + width / 2))
     && ( (mouse_down_y >= y_loc - height / 2) && (mouse_down_y <= y_loc + height / 2));
 }
-
 
 //Enables info-box appUtilities.RelocationHandler
 appUtilities.enableInfoBoxRelocation = function(node){
