@@ -403,13 +403,14 @@ appUtilities.createNewNetwork = function () {
     }
   });
 
-  //set border-width of selected nodes to a fixed value
+  //set border-width of selected nodes to a fixed value 
   newInst.getCy().style()
-    .selector("node:selected")
+    .selector('node:selected')
     .css({
-      'border-width': 3
-    })
-  ;
+      'border-width': function(ele){
+        return Math.max(ele.data("border-width"), 3);
+      }
+    });
 
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
