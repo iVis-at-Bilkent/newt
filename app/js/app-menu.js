@@ -11,8 +11,8 @@ var _ = require('underscore');
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, pathsBetweenQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -32,7 +32,55 @@ module.exports = function() {
       }
     });
   }
-  
+
+  function cd2sbgnml(xml) {
+
+    $.ajax({
+        type: 'post',
+        url: "http://web.newteditor.org:8080/cd2sbgnml",
+        data: xml,
+        success: function (data) {
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = appUtilities.getActiveCy();
+            chiseInstance.endSpinner("load-spinner");
+            if (cy.elements().length !== 0) {
+                promptConfirmationView.render(function() {
+                    chiseInstance.loadSBGNMLText(data);
+                });
+            }
+            else {
+                chiseInstance.loadSBGNMLText(data);
+            }
+        },
+        error: function (XMLHttpRequest) {
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.endSpinner("load-spinner");
+          promptFileConversionErrorView.render();
+          if (XMLHttpRequest.status === 0) {
+              document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          }
+        }
+    })
+  }
+
+  function sbgnml2cd(xml) {
+
+      $.ajax({
+          type: 'post',
+          url: "http://web.newteditor.org:8080/sbgnml2cd",
+          data: xml,
+          success: function (data) {
+            fileSaveView.render("celldesigner", null, data);
+          },
+          error: function (XMLHttpRequest) {
+              promptFileConversionErrorView.render();
+              if (XMLHttpRequest.status === 0) {
+                  document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+              }
+          }
+      })
+  }
+
   function loadSample(filename) {
 
     // use the active chise instance
@@ -47,7 +95,7 @@ module.exports = function() {
 
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
-  // appUtilities.dynamicResize();
+  dynamicResize();
 
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
@@ -55,19 +103,24 @@ module.exports = function() {
   mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
   mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
+  neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
+  pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
+  commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
+  promptFileConversionErrorView = appUtilities.promptFileConversionErrorView = new BackboneViews.PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
   promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
+  promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   toolbarButtonsAndMenu();
 
   keyboardShortcuts();
@@ -80,10 +133,9 @@ module.exports = function() {
 
     // set the current file name for cy
     appUtilities.setScratch(cy, 'currentFileName', filename);
-
     //clean and reset things
     cy.elements().unselect();
-
+    appUtilities.disableInfoBoxRelocation();
     // if the event is triggered for the active instance do the followings
     if ( isActiveInstance ) {
 
@@ -229,7 +281,7 @@ module.exports = function() {
       $("#file-input").trigger('click');
     });
 
-    $("#file-input").change(function () {
+    $("#file-input").change(function (e, fileObject) {
 
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -237,11 +289,11 @@ module.exports = function() {
       // use cy instance assocated with chise instance
       var cy = appUtilities.getActiveCy();
 
-      if ($(this).val() != "") {
-        var file = this.files[0];
+      if ($(this).val() != "" || fileObject) {
+        var file = this.files[0] || fileObject;
         var loadCallbackSBGNMLValidity = function (text) {
           validateSBGNML(text);
-        }      
+        }
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
@@ -255,9 +307,28 @@ module.exports = function() {
       }
     });
 
+    $('#import-celldesigner-file').click(function (){
+        $("#celldesigner-file-input").trigger('click');
+    });
+
+    $('#celldesigner-file-input').change(function (e, fileObject) {
+
+      if ($(this).val() != "" || fileObject) {
+        var file = this.files[0] || fileObject;
+        appUtilities.setFileContent(file.name);
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.startSpinner("load-spinner");
+          cd2sbgnml(event.target.result);
+        };
+        reader.readAsText(file);
+      }
+    });
+
     $("#import-simple-af-file").click(function () {
       $("#simple-af-file-input").trigger('click');
-    });   
+    });
 
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -268,7 +339,7 @@ module.exports = function() {
       var loadCallbackInvalidityWarning  = function () {
         promptInvalidFileView.render();
       }
-      
+
       if ($(this).val() != "") {
         var file = this.files[0];
 
@@ -314,12 +385,31 @@ module.exports = function() {
 
       // get and set properties from file
       var properties = chiseInstance.getMapProperties();
+      // init map properties
+      var mapProperties = ( properties && properties.mapProperties ) ? properties.mapProperties : {};
 
-      // some operations are to be performed if properties.mapProperties exists
-      var mapPropertiesExist = ( properties && properties.mapProperties );
+      var urlParams = appUtilities.getScratch(cy, 'urlParams');
+
+      if (urlParams) {
+        // clear urlParams from scratch
+        appUtilities.setScratch(cy, 'urlParams', undefined);
+
+        // filter map properties from the url parameters
+        var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+
+        // merge the map properties coming from url into
+        // the map properties read from file
+        for ( var prop in mapPropsFromUrl ) {
+          mapProperties[prop] = mapPropsFromUrl[prop];
+        }
+      }
+
+      // some operations are to be performed if there is any map property
+      // that comes from URL or read from file
+      var mapPropertiesExist = ( !$.isEmptyObject( mapProperties ) );
 
       if (mapPropertiesExist) {
-          appUtilities.setMapProperties(properties.mapProperties);
+          appUtilities.setMapProperties(mapProperties);
       }
 
       // some operations are to be done if the event is triggered for the active instance
@@ -370,9 +460,9 @@ module.exports = function() {
       e.preventDefault();
       $("#about_modal").modal('show');
     });
-    
+
     $(".title").click(function(e){
-      e.stopPropagation();    
+      e.stopPropagation();
     });
 
     var selectorToSampleFileName = {
@@ -402,7 +492,7 @@ module.exports = function() {
             promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
           }
           else {
-            loadSample(selectorToSampleFileName[selector]);  
+            loadSample(selectorToSampleFileName[selector]);
           }
         });
       })(selector);
@@ -434,7 +524,7 @@ module.exports = function() {
       cy.elements().unselect();
       cy.edges().select();
     });
-    
+
     $("#hide-selected, #hide-selected-icon").click(function(e) {
 
       // use active cy instance
@@ -488,6 +578,20 @@ module.exports = function() {
       $('#inspector-palette-tab a').tab('show');
     });
 
+    $("#resize-nodes-to-content").click(function (e) {
+
+        // use active chise instance
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+        // use cy instance associated with chise instance
+        var cy = chiseInstance.getCy();
+
+        //Remove processes and other nodes which cannot be resized according to content
+        var toBeResized = cy.nodes().difference('node[class*="process"],[class*="association"],[class*="dissociation"],[class="source and sink"],[class="and"],[class="or"],[class="not"],[class="delay"]');
+        appUtilities.resizeNodesToContent(toBeResized);
+
+    });
+
     $("#highlight-neighbors-of-selected").click(function (e) {
 
       // use active chise instance
@@ -517,7 +621,7 @@ module.exports = function() {
     $("#highlight-search-menu-item").click(function (e) {
       $("#search-by-label-text-box").focus();
     });
-    
+
     $("#highlight-selected, #highlight-selected-icon").click(function (e) {
 
       // use active chise instance
@@ -571,8 +675,20 @@ module.exports = function() {
       }
     });
 
+    $("#query-neighborhood").click(function (e) {
+        neighborhoodQueryView.render();
+    });
+
     $("#query-pathsbetween, #query-pathsbetween-icon").click(function (e) {
-      pathsBetweenQueryView.render();
+        pathsBetweenQueryView.render();
+    });
+
+    $("#query-pathsfromto").click(function (e) {
+        pathsFromToQueryView.render();
+    });
+
+    $("#query-commonstream").click(function (e) {
+        commonStreamQueryView.render();
     });
 
     $("#query-pathsbyURI").click(function (e) {
@@ -724,6 +840,15 @@ module.exports = function() {
       chiseInstance.expandAll();
     });
 
+    $("#zoom-to-selected").click( function(e){
+      // use the active chise instance
+      var cy = appUtilities.getActiveCy();
+
+      var viewUtilities = cy.viewUtilities('get');
+
+      viewUtilities.zoomToSelected(cy.$(':selected'));
+    });
+
     $("#perform-layout, #perform-layout-icon").click(function (e) {
 
       // use active chise instance
@@ -802,7 +927,21 @@ module.exports = function() {
     $("#save-as-sbgnml, #save-icon").click(function (evt) {
       //var filename = document.getElementById('file-name').innerHTML;
       //chise.saveAsSbgnml(filename);
-      fileSaveView.render();
+      fileSaveView.render("sbgnml", "0.2");
+    });
+
+    $("#export-as-sbgnml3-file").click(function (evt) {
+      fileSaveView.render("sbgnml", "0.3");
+    });
+
+    $("#export-as-celldesigner-file").click(function (evt) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var sbgnml = chiseInstance.createSbgnml();
+        sbgnml2cd(sbgnml);
+    });
+
+    $("#export-as-sbgnml-plain-file").click(function (evt) {
+      fileSaveView.render("sbgnml", "plain");
     });
 
     $("#add-complex-for-selected").click(function (e) {
@@ -850,7 +989,9 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
-      chiseInstance.cloneElements(cy.nodes(':selected'));
+      //When the menu option is clicked paste at mouse location is false
+      var pasteAtMouseLoc = false;
+      chiseInstance.cloneElements(cy.nodes(':selected'), pasteAtMouseLoc);
     });
 
     /*
@@ -977,6 +1118,10 @@ module.exports = function() {
       modeHandler.setSelectionMode();
     });
 
+    $('#marquee-zoom-mode-icon').click(function(e){
+      modeHandler.setMarqueeZoomMode();
+    });
+
     $('#add-node-mode-icon').click(function (e) {
       modeHandler.setAddNodeMode();
 
@@ -1051,6 +1196,7 @@ module.exports = function() {
       var target = $(e.target).attr("href"); // activated tab
       console.log(target);
       appUtilities.setActiveNetwork(target);
+      inspectorUtilities.handleSBGNInspector();
     });
   }
 };

@@ -104,6 +104,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   $('#add-node-mode-icon').parent().removeClass('selected-mode');
   $('#add-edge-mode-icon').parent().removeClass('selected-mode-sustainable');
   $('#add-node-mode-icon').parent().removeClass('selected-mode-sustainable');
+  $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
   $('.node-palette img').addClass('inactive-palette-element');
   $('.edge-palette img').addClass('inactive-palette-element');
   $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
@@ -145,6 +146,11 @@ appUtilities.adjustUIComponents = function (_cy) {
       $('#add-edge-mode-icon').parent().addClass('selected-mode-sustainable');
       $('.edge-palette .selected-mode').addClass('selected-mode-sustainable');
     }
+
+  }
+  else if( mode === 'marquee-zoom-mode'){
+
+    $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
 
   }
 
@@ -361,7 +367,7 @@ appUtilities.createNewNetwork = function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.dynamicLabelSize;
     },
-    // Whether to infer nesting on load 
+    // Whether to infer nesting on load
     inferNestingOnLoad: function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.inferNestingOnLoad;
@@ -397,6 +403,15 @@ appUtilities.createNewNetwork = function () {
     }
   });
 
+  //set border-width of selected nodes to a fixed value 
+  newInst.getCy().style()
+    .selector('node:selected')
+    .css({
+      'border-width': function(ele){
+        return Math.max(ele.data("border-width"), 3);
+      }
+    });
+
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
@@ -426,9 +441,6 @@ appUtilities.createNewNetwork = function () {
 
   // physically open the new tab
   appUtilities.chooseNetworkTab(appUtilities.nextNetworkId);
-
-  // resize html components according to the window size
-  appUtilities.dynamicResize();
 
   // activate palette tab
   if (!$('#inspector-palette-tab').hasClass('active')) {
@@ -497,6 +509,46 @@ appUtilities.removePhysicalNetworkComponents = function (networkKey) {
   $(tabSelector).remove();
 };
 
+appUtilities.dropHandler = function (ev) {
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+
+  if (ev.originalEvent.dataTransfer.items) {
+    // Use DataTransferItemList interface to access the file(s)
+    for (var i = 0; i < ev.originalEvent.dataTransfer.items.length; i++) {
+      // If dropped items aren't files, reject them
+      if (ev.originalEvent.dataTransfer.items[i].kind === 'file') {
+        var file = ev.originalEvent.dataTransfer.items[i].getAsFile();
+        $("#file-input").trigger("change", [file]);
+      }
+    }
+  } else {
+    // Use DataTransfer interface to access the file(s)
+    for (var i = 0; i < ev.originalEvent.dataTransfer.files.length; i++) {
+      $("#file-input").trigger("change", [file]);
+    }
+  }
+
+  // Pass event to removeDragData for cleanup
+  removeDragData(ev);
+};
+appUtilities.dragOverHandler = function (ev) {
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+};
+
+function removeDragData(ev) {
+
+  if (ev.originalEvent.dataTransfer.items) {
+    // Use DataTransferItemList interface to remove the drag data
+    ev.originalEvent.dataTransfer.items.clear();
+  } else {
+    // Use DataTransfer interface to remove the drag data
+    ev.originalEvent.dataTransfer.clearData();
+  }
+}
+
 appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc) {
 
   // the component that includes the tab panels
@@ -506,6 +558,18 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
 
   // create new panel inside the panels parent
   panelsParent.append(newPanelStr);
+
+  $("#" + panelId).on("drop", function(event){
+    appUtilities.dropHandler(event);
+    $("#network-panels-container").removeClass("drag-and-drop-file");
+  });
+  $("#" + panelId).on("dragover", function(event){
+    appUtilities.dragOverHandler(event);
+    $("#network-panels-container").addClass("drag-and-drop-file");
+  });
+  $("#" + panelId).on("dragleave", function(event){
+    $("#network-panels-container").removeClass("drag-and-drop-file");
+  });
 
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
@@ -659,7 +723,7 @@ appUtilities.defaultGeneralProperties = {
   allowCompoundNodeResize: false,
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
-  defaultInfoboxWidth: 30,
+  defaultInfoboxWidth: 8,
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: ""
@@ -738,10 +802,11 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       var cy = _cy || self.getActiveCy();
 
       if ( !self.getScratch(cy, 'currentGeneralProperties').recalculateLayoutOnComplexityManagement ) {
+        cy.trigger('fit-units-after-expandcollapse');
         return;
       }
-
       self.triggerIncrementalLayout(cy);
+      cy.trigger('fit-units-after-expandcollapse');
     },
     expandCollapseCueSize: 12,
     expandCollapseCuePosition: function (node) {
@@ -783,7 +848,7 @@ appUtilities.dynamicResize = function () {
     //This is the margin on left and right of the main content when the page is
     //displayed
     var mainContentMargin = 10;
-    $("#network-panels-container, .network-panel").width(windowWidth  * 0.8 - mainContentMargin);
+    $("#network-panels-container").width(windowWidth  * 0.8 - mainContentMargin);
     $("#sbgn-inspector").width(windowWidth  * 0.2 - mainContentMargin);
     var w = $("#sbgn-inspector-and-canvas").width();
     $(".nav-menu").width(w);
@@ -795,9 +860,12 @@ appUtilities.dynamicResize = function () {
 
   if (windowHeight > canvasHeight)
   {
-    $("#network-panels-container, .network-panel").height(windowHeight * 0.85);
+    $("#network-panels-container").height(windowHeight * 0.85);
     $("#sbgn-inspector").height(windowHeight * 0.85);
   }
+
+  // trigger an event to notify that newt components are dynamically resized
+  $(document).trigger('newtAfterDynamicResize');
 };
 /*
 appUtilities.nodeQtipFunction = function (node) {
@@ -1711,8 +1779,9 @@ appUtilities.getAllStyles = function (_cy) {
   var collapsedChildrenEdges = collapsedChildren.filter("edge");
   var edges = cy.edges().union(collapsedChildrenEdges);
 
-  // first get all used colors, then deal with them and keep reference to them
+  // first get all used colors and background images, then deal with them and keep reference to them
   var colorUsed = appUtilities.getColorsFromElements(nodes, edges);
+  var imagesUsed = appUtilities.getImagesFromElements(nodes);
 
   var nodePropertiesToXml = {
     'background-color': 'fill',
@@ -1722,7 +1791,14 @@ appUtilities.getAllStyles = function (_cy) {
     'font-size': 'fontSize',
     'font-weight': 'fontWeight',
     'font-style': 'fontStyle',
-    'font-family': 'fontFamily'
+    'font-family': 'fontFamily',
+    'background-image': 'backgroundImage',
+    'background-fit': 'backgroundFit',
+    'background-position-x': 'backgroundPosX',
+    'background-position-y': 'backgroundPosY',
+    'background-height': 'backgroundHeight',
+    'background-width': 'backgroundWidth',
+    'background-image-opacity': 'backgroundImageOpacity',
   };
   var edgePropertiesToXml = {
     'line-color': 'stroke',
@@ -1733,7 +1809,12 @@ appUtilities.getAllStyles = function (_cy) {
     var hash = "";
     for(var cssProp in properties){
       if (element.data(cssProp)) {
-        hash += element.data(cssProp).toString();
+        if(cssProp === 'background-image'){
+          var imgs = appUtilities.elementValidImages(element);
+          hash += appUtilities.elementValidImageIDs(imgs, imagesUsed);
+        }
+        else
+          hash += element.data(cssProp).toString();
       }
       else {
         hash += "";
@@ -1751,6 +1832,11 @@ appUtilities.getAllStyles = function (_cy) {
           var validColor = appUtilities.elementValidColor(element, cssProp);
           var colorID = colorUsed[validColor];
           props[properties[cssProp]] = colorID;
+        }
+        //if it is background image property, replace it with corresponding id 
+        else if(cssProp == 'background-image'){
+          var imgs = appUtilities.elementValidImages(element);
+          props[properties[cssProp]] = appUtilities.elementValidImageIDs(imgs, imagesUsed);
         }
         else{
           props[properties[cssProp]] = element.data(cssProp);
@@ -1803,6 +1889,7 @@ appUtilities.getAllStyles = function (_cy) {
 
   return {
     colors: colorUsed,
+    images: imagesUsed,
     background: containerBgColor,
     styles: styles
   };
@@ -1840,6 +1927,28 @@ appUtilities.elementValidColor = function (ele, colorProperty) {
   }
 };
 
+appUtilities.elementValidImages = function (ele) {
+  if (ele.isNode() && ele.data('background-image')) {
+    return ele.data('background-image').split(" ");
+  }
+  else { // element don't have that property
+    return undefined;
+  }
+};
+
+appUtilities.elementValidImageIDs = function (imgs, imagesUsed) {
+  if(imgs && imagesUsed && imgs.length > 0){
+    var ids = [];
+    imgs.forEach(function(img){
+      ids.push(imagesUsed[img]);
+    });
+    return ids.join(" ");
+  }
+  else{
+    return undefined;
+  }
+} 
+
 /*
   returns: {
     xmlValid: id
@@ -1871,6 +1980,25 @@ appUtilities.getColorsFromElements = function (nodes, edges) {
     }
   }
   return colorHash;
+}
+
+appUtilities.getImagesFromElements = function (nodes) {
+  var imageHash = {};
+  var imageID = 0;
+  for(var i=0; i<nodes.length; i++) {
+    var node = nodes[i];
+    var validImages = appUtilities.elementValidImages(node);
+    if(!validImages)
+      continue;
+    validImages.forEach(function(img){
+      if (!imageHash[img]) {
+        imageID++;
+        imageHash[img] = 'image_' + imageID;
+      }
+    });
+  }
+  
+  return imageHash;
 }
 
 /**
@@ -1929,11 +2057,32 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     appUtilities.updateNetworkTabDesc(networkKey);
 };
 
+// filter the map properties of given object
+appUtilities.filterMapProperties = function(obj) {
+  var mapProps = {};
+
+  for ( var prop in obj ) {
+    if (chise.validMapProperties[prop]) {
+      mapProps[prop] = obj[prop];
+    }
+  }
+
+  return mapProps;
+};
+
 appUtilities.launchWithModelFile = function() {
-  
-  var url_path = getParameterByName('url');
-  var uri_path = getParameterByName('uri');
+
+  var paramObj = getQueryParameters();
+  var url_path = paramObj.url;
+  var uri_path = paramObj.uri;
+
   var chiseInstance = appUtilities.getActiveChiseInstance();
+  var cyInstance = chiseInstance.getCy();
+
+  // attach url params to the object to be used on sbgnvizLoadFileEnd event
+  // it will be cleared immediately after usage
+  appUtilities.setScratch(cyInstance, 'urlParams', paramObj);
+
   var promptInvalidURIWarning = this.promptInvalidURIWarning;
   var promptInvalidURLWarning = this.promptInvalidURLWarning;
 
@@ -1944,10 +2093,9 @@ appUtilities.launchWithModelFile = function() {
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
     // get current general properties
-    var cyInstance = chiseInstance.getCy();
     var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
     var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-    
+
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -1996,20 +2144,20 @@ appUtilities.launchWithModelFile = function() {
           type: 'text/' + fileExtension,
           lastModified: Date.now()
         });
-        
+
         currentGeneralProperties.inferNestingOnLoad = true;
         chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
       },
       error: function(xhr, ajaxOptions, thrownError){
         loadCallbackInvalidityWarning();
       }
-    });       
+    });
 
     $(document).one("sbgnvizLoadFileEnd", function(){
       currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
       appUtilities.mapTabGeneralPanel.render();
     });
-    
+
   }
 
   function loadFromURI(uri, chiseInstance, promptInvalidURIWarning){
@@ -2019,7 +2167,7 @@ appUtilities.launchWithModelFile = function() {
 
     var filename = uri + '.sbgnml';
     var cyInstance = chiseInstance.getCy();
-    
+
     chiseInstance.startSpinner('paths-byURI-spinner');
 
     var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
@@ -2045,17 +2193,522 @@ appUtilities.launchWithModelFile = function() {
       });
   }
 
-  function getParameterByName(name, url) {
+  // returns an object that contains name-value pairs of query parameters
+  function getQueryParameters(url) {
     if (!url){
       url = window.location.href;
     }
 
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"), results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }  
+    var queryParams = {};
+    // Parse the query sting into an object please see:
+    // https://stevenbenner.com/2010/03/javascript-regex-trick-parse-a-query-string-into-an-object/
+    url.replace(
+        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+        function($0, name, $2, value) {
+          if (value !== undefined) {
+            var lowerCaseName = name.toLowerCase();
+            // for 'uri' and 'url' parameters provide case insensitivity by converting to lower case
+            if (lowerCaseName === 'url' || lowerCaseName === 'uri') {
+              name = lowerCaseName;
+            }
+            queryParams[name] = value;
+          }
+        }
+    );
+
+    return queryParams;
+  }
 }
+
+appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
+
+  if(!edge.isEdge()){
+    return;
+  }
+
+  var cy = appUtilities.getActiveCy();
+  var edge_pts = edge._private.rscratch.allpts;
+
+  var source_node = edge.source();
+  var target_node = edge.target();
+
+  var source_position = {x: edge_pts[0], y: edge_pts[1]};
+  var target_position = {x: edge_pts[edge_pts.length-2], y: edge_pts[edge_pts.length-1]};
+
+  var source_loc = Math.pow((mouse_normal.x - source_position.x), 2) + Math.pow((mouse_normal.y - source_position.y), 2);
+  var target_loc = Math.pow((mouse_normal.x - target_position.x), 2) + Math.pow((mouse_normal.y - target_position.y), 2);
+
+  // Animation direction
+  var source_to_target = source_loc < target_loc;
+
+  // Change direction of points according to animation direction
+  if(!source_to_target){
+    var new_edge_pts = [];
+    for(var i = edge_pts.length-1; i > 0; i=i-2){
+      new_edge_pts.push(edge_pts[i-1], edge_pts[i]);
+    }
+    edge_pts = new_edge_pts;
+  }
+
+  var starting_point = 0;
+  var minimum;
+  for(var i = 0; i < edge_pts.length-3; i=i+2){
+    var a_b = Math.pow((mouse_normal.x-edge_pts[i]), 2) + Math.pow((mouse_normal.y-edge_pts[i+1]), 2);
+    a_b = Math.sqrt(a_b);
+
+    var b_c = Math.pow((mouse_normal.x-edge_pts[i+2]), 2) + Math.pow((mouse_normal.y-edge_pts[i+3]), 2);
+    b_c = Math.sqrt(b_c);
+
+    var a_c = Math.pow((edge_pts[i+2]-edge_pts[i]), 2) + Math.pow((edge_pts[i+3]-edge_pts[i+1]), 2);
+    a_c = Math.sqrt(a_c);
+
+    var difference = Math.abs(a_c - a_b - b_c);
+
+    if(minimum === undefined || minimum > difference){
+      minimum = difference;
+      starting_point = i+2;
+    }
+  }
+
+  var start_node = source_to_target ? source_node : target_node;
+  var s_normal = start_node.position();
+  var s_rendered = start_node.renderedPosition();
+  var zoom_level = cy.zoom();
+  var finished = (edge_pts.length-starting_point-1)/2;
+
+  // Animate for each bend point
+  for(var i = starting_point; i < edge_pts.length-1; i=i+2){
+    // Convert normal position into rendered position
+    var rend_x = (edge_pts[i] - s_normal.x) * zoom_level + s_rendered.x;
+    var rend_y = (edge_pts[i+1] - s_normal.y) * zoom_level + s_rendered.y;
+
+    cy.animate({
+     duration: 1400,
+     panBy: {x: (mouse_rend.x-rend_x), y: (mouse_rend.y-rend_y)},
+     easing: 'ease',
+     complete: function(){
+      finished--;
+      if(finished <= 0)
+        (source_to_target ? target_node : source_node).select();
+     }
+    });
+  }
+
+
+
+}
+
+//Info-box drag handlers
+appUtilities.relocationDragHandler;
+appUtilities.RelocationHandler;
+
+var relocatedNode;
+
+//Enables info-box relocation if a node is selected
+appUtilities.relocateInfoBoxes = function(node){
+  var cy = this.getActiveCy();
+  this.disableInfoBoxRelocation();
+  //Abort if node has no info-boxes or selected ele is not a node
+  if (node.data("auxunitlayouts") === undefined || node.data("statesandinfos").length === 0 || !node.isNode()) {
+    this.disableInfoBoxRelocation();
+    return;
+  }
+  cy.nodes(":selected").unselect();
+  relocatedNode = node;
+  this.enableInfoBoxRelocation(node);
+}
+
+//Checks whether a info-box is selected in a given mouse position
+appUtilities.checkMouseContainsInfoBox = function(unit, mouse_down_x, mouse_down_y){
+  var box = unit.bbox;
+  var instance = this.getActiveSbgnvizInstance();
+  var cy = this.getActiveCy();
+  var coords = instance.classes.AuxiliaryUnit.getAbsoluteCoord(unit, cy);
+  var x_loc = coords.x;
+  var y_loc = coords.y;
+  var width = box.w;
+  var height = box.h;
+  return ((mouse_down_x >= x_loc - width / 2) && (mouse_down_x <= x_loc + width / 2))
+    && ( (mouse_down_y >= y_loc - height / 2) && (mouse_down_y <= y_loc + height / 2));
+}
+
+//Enables info-box appUtilities.RelocationHandler
+appUtilities.enableInfoBoxRelocation = function(node){
+  var cy = this.getActiveCy();
+  //Disable box movements
+  var oldColor = node.data("border-color");
+  node.data("border-color", "#d67614");
+  var selectedBox;
+  var anchorSide;
+  cy.on('mousedown', appUtilities.RelocationHandler = function(event){
+      //Check whether event contained by infobox of a node
+      //Lock the node so that it won't change position when
+      //Info boxes are dragged
+      cy.autounselectify(true);
+      cy.autolock(true);
+      var top = node.data('auxunitlayouts').top;
+      var bottom = node.data('auxunitlayouts').bottom;
+      var right = node.data('auxunitlayouts').right;
+      var left = node.data('auxunitlayouts').left;
+
+      //Get mouse positions
+      var mouse_down_x = event.position.x;
+      var mouse_down_y = event.position.y;
+      var instance = appUtilities.getActiveSbgnvizInstance();
+      var oldAnchorSide; //Hold old anchor side to modify units
+      //Check top units
+      if (top !== undefined && selectedBox === undefined) {
+        var units = top.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+      //Check right units
+      if (right !== undefined && selectedBox === undefined) {
+        var units = right.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+      //Check bottom units
+      if (bottom !== undefined && selectedBox === undefined) {
+        var units = bottom.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+      //Check left units
+      if (left !== undefined && selectedBox === undefined) {
+        var units = left.units;
+        for (var i = units.length-1; i >= 0 ; i--) {
+          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
+            selectedBox = units[i];
+            oldAnchorSide = selectedBox.anchorSide;
+            break;
+          }
+        }
+      }
+
+      //If no info-box found abort
+      if (selectedBox === undefined) {
+        appUtilities.disableInfoBoxRelocation();
+        node.data("border-color", oldColor);
+        relocatedNode = undefined;
+        return;
+      }
+      //Else If a info-box contained by event move info-box
+      var instance = appUtilities.getActiveSbgnvizInstance();
+      var position = node.position();
+      selectedBox.dashed = true;
+      var last_mouse_x = mouse_down_x;
+      var last_mouse_y = mouse_down_y;
+      if ((node.data("class") === "compartment" || node.data("class") === "complex")
+        && node._private.children !== undefined && node._private.children.length !== 0) {
+        var parentWidth = node._private.autoWidth;
+        var parentHeight = node._private.autoHeight;
+        var padding = node._private.autoPadding;
+      }
+      else {
+        var parentWidth = node.data("bbox").w;
+        var parentHeight = node.data("bbox").h;
+        var padding = 0;
+      }
+      var parentX1 = position.x - parentWidth/2 - padding;
+      var parentX2 = position.x + parentWidth/2 + padding;
+      var parentY1 = position.y - parentHeight/2 - padding;
+      var parentY2 = position.y + parentHeight/2 + padding;
+      cy.on("mousemove", appUtilities.relocationDragHandler = function(event){
+        if (selectedBox === undefined) { //If selected box is undefined somehow abort
+          appUtilities.disableInfoBoxRelocation();
+          node.data("border-color", oldColor);
+          relocatedNode = undefined;
+          return;
+        }
+        //Clear visual cues during relocation
+        cy.expandCollapse('get').clearVisualCue(node);
+        var drag_x = event.position.x;
+        var drag_y = event.position.y;
+        var anchorSide = selectedBox.anchorSide;
+        var gap, shift_x, shift_y, box_new_x, box_new_y;
+
+        //If anchor side is top or bottom only move in x direction
+        if (anchorSide === "top" || anchorSide === "bottom") {
+          if (anchorSide === "top") {
+            gap = instance.classes.AuxUnitLayout.getCurrentTopGap();
+          }
+          else {
+            gap = instance.classes.AuxUnitLayout.getCurrentBottomGap();
+          }
+
+          shift_x = drag_x - last_mouse_x;
+          box_new_x = selectedBox.bbox.x + shift_x; //Calculate new box position
+          //Get absolute position
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, box_new_x, selectedBox.bbox.y, cy);
+          var newRelativeCoords;
+          if (absoluteCoords.x - selectedBox.bbox.w/2 < (parentX1) + gap) { //Box cannot go futher than parentBox + margin on left side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox,((parentX1) + gap + selectedBox.bbox.w/2),
+              absoluteCoords.y, cy);
+            selectedBox.bbox.x = newRelativeCoords.x;
+          }
+          else if (absoluteCoords.x + selectedBox.bbox.w/2 > (parentX2) - gap) { //Box cannot go futher than parentBox - margin on right side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, ((parentX2) - gap - selectedBox.bbox.w/2),
+              absoluteCoords.y, cy);
+            selectedBox.bbox.x = newRelativeCoords.x;
+          }
+          else { //Else it is already relative
+            selectedBox.bbox.x = box_new_x;
+          }
+          //If box is at margin points allow it to change anchor side
+          //If it on left it can pass left anchor side
+          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
+          if (absoluteCoords.x === (parentX1) + gap + selectedBox.bbox.w/2) { //If it is on the left margin allow it to change anchor sides
+            //If it is in the top and mouse moves bottom it can go left anchor
+            if (last_mouse_y < drag_y  && anchorSide === "top") {
+              selectedBox.anchorSide = "left"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1),
+                (parentY1 + instance.classes.AuxUnitLayout.getCurrentLeftGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_y > drag_y && anchorSide === "bottom") { //If it is in the bottom and mouse moves up it can go left anchor side
+              selectedBox.anchorSide = "left"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1),
+                (parentY2 - instance.classes.AuxUnitLayout.getCurrentLeftGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+          //If it on right it can pass right anchor side, * 2 for relaxation
+          else if (absoluteCoords.x  === (parentX2) - gap - selectedBox.bbox.w/2) {
+            if (last_mouse_y < drag_y && anchorSide === "top") {
+              selectedBox.anchorSide = "right"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2),
+              (parentY1 + instance.classes.AuxUnitLayout.getCurrentRightGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_y > drag_y && anchorSide === "bottom") { //If it is in the bottom and mouse moves up it can go left anchor side
+              selectedBox.anchorSide = "right"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2),
+                (parentY2 - instance.classes.AuxUnitLayout.getCurrentRightGap()), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+        }
+        else {
+           //If anchor side left or right only move in y direction
+          if (anchorSide === "right") {
+            gap = instance.classes.AuxUnitLayout.getCurrentRightGap();
+          }
+          else {
+            gap = instance.classes.AuxUnitLayout.getCurrentLeftGap();
+          }
+
+          shift_y = drag_y - last_mouse_y;
+          box_new_y = selectedBox.bbox.y + shift_y; //Calculate new box position
+
+          //Get absolute position
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, box_new_y, cy);
+          var newRelativeCoords;
+          if (absoluteCoords.y - selectedBox.bbox.h/2 < (parentY1) + gap) { //Box cannot go futher than parentBox + margin on left side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
+              (parentY1) + gap + selectedBox.bbox.h/2, cy);
+            selectedBox.bbox.y = newRelativeCoords.y;
+          }
+          else if (absoluteCoords.y + selectedBox.bbox.h/2 > (parentY2) - gap) { //Box cannot go futher than parentBox - margin on right side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
+              (parentY2) - gap - selectedBox.bbox.h/2, cy);
+            selectedBox.bbox.y = newRelativeCoords.y;
+          }
+          else { //Else it is already relative
+            selectedBox.bbox.y = box_new_y;
+          }
+
+          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
+          //Set anchor side changes
+          if (absoluteCoords.y  === (parentY1) + gap + selectedBox.bbox.h / 2) { //If it is on the top margin allow it to change anchor sides
+            //If it is in the top and mouse moves bottom it can go left anchor
+            if (last_mouse_x < drag_x  && anchorSide === "left") {
+              selectedBox.anchorSide = "top"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1)
+                + instance.classes.AuxUnitLayout.getCurrentTopGap(), (parentY1), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_x > drag_x && anchorSide === "right") { //If it is in the right and mouse moves up it can go top anchor side
+              selectedBox.anchorSide = "top"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2)
+                - instance.classes.AuxUnitLayout.getCurrentTopGap(), (parentY1), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+          //If it on right it can pass right anchor side
+          else if (absoluteCoords.y === (parentY2) - gap - selectedBox.bbox.h/2) {
+            if (last_mouse_x < drag_x && anchorSide === "left") {
+              selectedBox.anchorSide = "bottom"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1)
+                + instance.classes.AuxUnitLayout.getCurrentBottomGap(), (parentY2), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+            else if (last_mouse_x > drag_x && anchorSide === "right") { //If it is in the bottom and mouse moves up it can go left anchor side
+              selectedBox.anchorSide = "bottom"; //Set new anchor side
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2)
+                - instance.classes.AuxUnitLayout.getCurrentBottomGap(), (parentY2), cy);
+              selectedBox.bbox.x = newRelativeCoords.x;
+              selectedBox.bbox.y = newRelativeCoords.y;
+            }
+          }
+
+        }
+
+        last_mouse_x = drag_x;
+        last_mouse_y = drag_y;
+        cy.style().update();
+      });
+
+    cy.on("mouseup", function(event){
+      appUtilities.disableInfoBoxRelocationDrag();
+      if (selectedBox !== undefined && oldAnchorSide !== undefined) {
+        selectedBox.dashed = false;
+        instance.classes.AuxUnitLayout.modifyUnits(node, selectedBox, oldAnchorSide, cy); //Modify aux unit layouts
+        selectedBox = undefined;
+        anchorSide = undefined;
+        oldAnchorSide = undefined;
+        cy.autolock(false);
+      }
+    });
+
+    });
+}
+
+//Disables info-box relocation
+appUtilities.disableInfoBoxRelocation = function(color){
+  var cy = this.getActiveCy();
+  if (appUtilities.RelocationHandler !== undefined) {
+    //Remove listerners
+    cy.off('mousedown', appUtilities.RelocationHandler);
+    appUtilities.disableInfoBoxRelocationDrag();
+    if (relocatedNode !== undefined) {
+      relocatedNode.data("border-color", color);
+      relocatedNode = undefined;
+    }
+    relocatedNode = undefined;
+    appUtilities.RelocationHandler = undefined;
+    cy.autolock(false); //Make the nodes moveable again
+    cy.autounselectify(false); //Make the nodes selectable
+  }
+
+};
+
+//Disables info-box dragging
+appUtilities.disableInfoBoxRelocationDrag = function(){
+  if (appUtilities.relocationDragHandler !== undefined) {
+    var cy = this.getActiveCy();
+    //Remove listerners
+    cy.off('mousemove', appUtilities.relocationDragHandler);
+    appUtilities.relocationDragHandler = undefined;
+  }
+};
+
+appUtilities.resizeNodesToContent = function(collection){
+
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = appUtilities.getActiveCy();
+
+    var actions = [];
+    collection.forEach(function( node ){
+        var bbox = node.data('bbox');
+        bbox.w = calculateWidth(node);
+        bbox.h = calculateHeight(node);
+
+        chiseInstance.classes.AuxUnitLayout.fitUnits(node);
+        chiseInstance.resizeNodesToContent(node, bbox, actions);
+    });
+
+    cy.undoRedo().do("batch", actions);
+    cy.style().update();
+    cy.nodeResize('get').refreshGrapples();
+
+    function calculateWidth(cyTarget) {
+        // Label width calculation
+        var labelText = cyTarget._private.style.label.value;
+        var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
+        var labelWidth = labelText.length * labelFontSize * 80/100;
+        var labelWidth = (labelWidth === 0) ? 15 : labelWidth;
+
+        // Separation of info boxes based on their locations
+        var statesandinfos = cyTarget._private.data.statesandinfos;
+        var bottomInfoBoxes = statesandinfos.filter(box => box.anchorSide === "bottom");
+        var topInfoBoxes = statesandinfos.filter(box => box.anchorSide === "top");
+        var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
+        var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
+
+        var horizontalMargin = 10;
+
+        var bottomWidth = horizontalMargin;
+        var topWidth = horizontalMargin;
+        var middleWidth = 0;
+        var leftWidth = 0;
+        var rightWidth = 0;
+
+        bottomInfoBoxes.forEach(function (infoBox) {
+            bottomWidth += infoBox.bbox.w;
+        });
+
+        topInfoBoxes.forEach(function (infoBox) {
+            topWidth += infoBox.bbox.w;
+        });
+
+        leftInfoBoxes.forEach(function (infoBox) {
+            leftWidth = (leftWidth > infoBox.bbox.w/2) ? leftWidth : infoBox.bbox.w/2;
+        });
+
+        rightInfoBoxes.forEach(function (infoBox) {
+            rightWidth = (rightWidth > infoBox.bbox.w/2) ? rightWidth : infoBox.bbox.w/2;
+        });
+
+        middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin;
+        var width = Math.max(bottomWidth, topWidth, labelWidth);
+        return width + 2*horizontalMargin;
+    }
+
+    function calculateHeight(cyTarget) {
+        var defaultHeight = 30;
+        var infoBoxHeight = 0;
+        var margin = 10;
+
+        var statesandinfos = cyTarget._private.data.statesandinfos;
+        var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
+        var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
+
+        var leftHeight = 2*margin;
+        var rightHeight = 2*margin;
+        leftInfoBoxes.forEach(function (infoBox) {
+            leftHeight += infoBox.bbox.h;
+        });
+
+        rightInfoBoxes.forEach(function (infoBox) {
+            rightHeight += infoBox.bbox.h;
+        });
+
+        var height = Math.max(leftHeight, rightHeight, defaultHeight);
+        return height;
+    }
+};
 
 module.exports = appUtilities;

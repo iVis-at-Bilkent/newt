@@ -61,14 +61,14 @@
                                         <li><a href="#" id="load-sample6">Insulin-like growth factor (IGF) signaling</a></li>
                                         <li><a href="#" id="load-sample7">PolyQ proteins interference</a></li>
                                         <li><a href="#" id="load-sample8">Glycolysis</a></li>
-                                        <li><a href="#" id="load-sample9">MAPK cascade</a></li>  
+                                        <li><a href="#" id="load-sample9">MAPK cascade</a></li>
                                         <li class="divider" style="margin-bottom: 0"></li>
                                         <li><a class="title"><i>AF</i></a></li>
                                         <li class="divider" style="margin-top: 0"></li>
                                         <li><a href="#" id="load-sample10">Transforming growth factor beta (TGFB) signaling</a></li>
                                         <li><a href="#" id="load-sample11">Repressilator</a></li>
                                         <li><a href="#" id="load-sample12">Epidermal growth factor receptor</a></li>
-                                        <li><a href="#" id="load-sample13">Regulation of TGF-beta induced metastasis</a></li>                                            
+                                        <li><a href="#" id="load-sample13">Regulation of TGF-beta induced metastasis</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#" id="save-as-sbgnml">Save...</a></li>
@@ -81,21 +81,22 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <input id="simple-af-file-input" type="file" style="display:none" />
-                                        <!--<li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>-->
+                                        <input id="celldesigner-file-input" type="file" style="display:none" />
+                                        <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
                                         <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
                                     </ul>
                                 </li>
-                                <!--
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         Export
+                                        <!--<b class="right-caret"></b>-->
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#" id="export-as-sbgnml2-file">SBGN-ML 0.2</a></li>
+                                        <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
+                                        <li><a href="#" id="export-as-sbgnml3-file">SBGN-ML 0.3</a></li>
                                         <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
                                     </ul>
                                 </li>
-                                -->
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         Export as Image
@@ -129,6 +130,9 @@
                                 <li><a href="#" id="delete-selected-smart">Delete Selected Smart</a></li>
 
                                 <li class="divider"></li>
+                                <li><a href="#" id="resize-nodes-to-content">Resize Nodes To Content</a></li>
+
+                                <li class="divider"></li>
                                 <li class="disabled"><a href="#" id="undo-last-action" >Undo</a></li>
                                 <li class="disabled"><a href="#" id="redo-last-action" >Redo</a></li>
 
@@ -149,6 +153,15 @@
                                         <li><a href="#" id="select-all">All Nodes and Edges</a></li>
                                         <li><a href="#" id="select-all-nodes">All Nodes</a></li>
                                         <li><a href="#" id="select-all-edges">All Edges</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Zoom
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" id="zoom-to-selected">Zoom to Selected</a></li>
                                     </ul>
                                 </li>
 
@@ -252,6 +265,9 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li><a href="#" id="query-pathsbetween">Paths Between...</a></li>
+                                        <li><a href="#" id="query-pathsfromto">Paths From To...</a></li>
+                                        <li><a href="#" id="query-commonstream">Common Stream...</a></li>
+                                        <li><a href="#" id="query-neighborhood">Neighborhood...</a></li>
                                         <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
                                     </ul>
                                 </li>
@@ -302,6 +318,7 @@
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="select-mode-icon" src="app/img/toolbar/select.svg" title="Select / Edit" ></div>
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" ></div>
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-edge-mode-icon" src="app/img/edges/consumption.svg" title="Create a new Consumption" ></div>
+                    <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to specified area specified by Shift + drag" ></div>
 
                     <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
 
@@ -559,8 +576,23 @@
         <div id="biogene-container" style="display: none">
         </div>
 
+        <div id="chemical-container" style="display: none">
+        </div>
+
+        <div id="query-neighborhood-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- neighborhood query table will be shown here-->
+        </div>
+
         <div id="query-pathsbetween-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- paths between query table will be shown here-->
+        </div>
+
+        <div id="query-pathsfromto-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- paths from to query table will be shown here-->
+        </div>
+
+        <div id="query-commonstream-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- common stream query table will be shown here-->
         </div>
 
         <div id="query-pathsbyURI-table" tabindex="-1" class="modal fade" role="dialog">
@@ -594,8 +626,12 @@
         <div id="prompt-invalidURI-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
-        
+
         <div id="prompt-invalidFile-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
+        <div id="prompt-fileConversionError-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
@@ -603,8 +639,12 @@
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
+        <div id="prompt-invalidImage-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
         <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
-            <!-- paths between query table will be shown here -->
+            <!-- reaction templatequery table will be shown here -->
         </div>
 
         <div id="grid-properties-table" tabindex="-1" class="modal fade" role="dialog">
@@ -657,7 +697,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 1.0.5</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 1.1.0</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -991,7 +1031,7 @@
             <input id="allow-compound-node-resize" type="checkbox" class="layout-text" <% if (allowCompoundNodeResize){ %> checked<%}%>>
             </td>
             </tr>
-            
+
             <tr>
             <td class="header">
             <span class="add-on layout-text"> Infer Nesting on Load </span>
@@ -1016,7 +1056,7 @@
             </table>
 
             <div style='text-align: center; margin-top: 5px;'>
-              <button class='btn btn-default' style='align: center;' id='map-general-default-button'>Default</button>
+              <button class='btn btn-default' id='map-general-default-button'>Default</button>
             <div>
         </script>
 
@@ -1134,26 +1174,27 @@
             </div>-->
         </script>
 
-        <script type="text/template" id="query-pathsbetween-template">
+        <script type="text/template" id="query-neighborhood-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Paths Between Query</h4>
+            <h4 class="modal-title">Neighborhood Query</h4>
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table">
             <tbody>
             <tr>
             <th colspan=2 style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
+                <!--&emsp; are added to fill the row so that the distance between the -->
+            <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</span>
             </th>
             </tr>
 
             <tr>
             <td style="padding-left: 40px;">
             <span class="add-on layout-text"> Gene Symbols: </span><br>
-            <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+            <textarea id="query-neighborhood-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
             </td>
 
             <td style="padding-right: 5px;">
@@ -1162,7 +1203,7 @@
             <caption style="text-align: left;">Stop Distance</caption>
             <tr>
             <td colspan=2>Length limit</td>
-            <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+            <td style="padding: 10px;"><input id="query-neighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
             </tr>
             </tbody>
             </table>
@@ -1173,10 +1214,153 @@
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="save-query-pathsbetween" class="btn btn-default" >OK</button>
-            <button id="cancel-query-pathsbetween" class="btn btn-default">Cancel</button>
+            <button id="save-query-neighborhood" class="btn btn-default" >OK</button>
+            <button id="cancel-query-neighborhood" class="btn btn-default">Cancel</button>
             </div>
             </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="query-pathsbetween-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Paths Between Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+                            <tbody>
+                            <tr>
+                                <th colspan=2 style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-left: 40px;">
+                                    <span class="add-on layout-text"> Gene Symbols: </span><br>
+                                    <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                        <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-pathsbetween" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-pathsbetween" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="query-pathsfromto-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Paths From To Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+                            <tbody>
+                            <tr>
+                                <th colspan=3 style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text"> Find all paths of specified length limit from a set of source entities to a set of target entities </span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-left: 5px;">
+                                    <span class="add-on layout-text"> Source Symbols: </span><br>
+                                    <textarea id="query-pathsfromto-source-symbols" rows="4" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-left: 5px;">
+                                    <span class="add-on layout-text"> Target Symbols: </span><br>
+                                    <textarea id="query-pathsfromto-target-symbols" rows="4" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                        <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-pathsfromto-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-pathsfromto" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-pathsfromto" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="query-commonstream-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Common Stream Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table">
+                            <tbody>
+                            <tr>
+                                <th colspan=2 style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text"> Find molecules within the specified distance that are affecting or affected by a specific set of molecules in common</span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-left: 40px;">
+                                    <span class="add-on layout-text"> Gene Symbols: </span><br>
+                                    <textarea id="query-commonstream-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                        <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-commonstream-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-commonstream" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-commonstream" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
             </div>
         </script>
 
@@ -1384,7 +1568,7 @@
             <tbody>
             <tr>
             <th style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text">Length limit can be at most 3.</span>
+            <span class="add-on layout-text" id="length-limit-constant">Length limit can be at most 3.</span>
             </th>
             </tr>
 
@@ -1464,6 +1648,37 @@
             </div>
         </script>
 
+        <!-- Conversion error warning -->
+        <script type="text/template" id="prompt-fileConversionError-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Error</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+                            <tbody>
+                            <tr>
+                                <th style="padding-left: 0px;" align="left">
+                                    <span class="add-on layout-text" id="file-conversion-error-message">Conversion failed!</span>
+                                </th>
+                            </tr>
+
+                            <tr id="prompt-fileConversionError-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+                                <td>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="prompt-fileConversionError-confirm" class="btn btn-default">OK</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
         <!-- Invalid URL warning -->
         <script type="text/template" id="prompt-invalidURL-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
@@ -1495,35 +1710,68 @@
             </div>
         </script>
 
+        <!-- Invalid background image warning -->
+        <script type="text/template" id="prompt-invalidImage-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error!</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text">Image file is invalid!</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidImage-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidImage-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
         <script type="text/template" id="reaction-template-template">
             <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content">
+              <div class="modal-content" style="display: inline-block"  id="template-modal-content" align="center">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Template</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="display: inline-block">
             <table class="table-condensed layout-table dialog-table">
             <tbody>
-            <tr>
-            <td style="padding-bottom: 10px;" align="right" valign="middle">
-            <span class="add-on layout-text"> <b> Type </b> </span>
-            </td>
 
-            <td>
-            <select id="reaction-template-type-select" class='sbgn-input-medium layout-text' name="reaction-template-type">
+            <tr align="center">
+            <td style="padding-bottom: 10px;" colspan=100%>
+            <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b> Type:</b> </span>
+            <select id="reaction-template-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: 18%">
             <option id="reaction-template-type-association" value="association" selected> Association </option>
             <option id="reaction-template-type-dissociation" value="dissociation"> Dissociation </option>
+            <option id="reaction-template-type-reversible" value="reversible"> Reversible </option>
             </select>
             </td>
             </tr>
 
-            <tr style="height: 40px; vertical-align:bottom">
-            <td align="center" style="margin-left: 5px;">
+            <tr style="height: 40px; vertical-align:bottom; width: 100%;">
+            <td align="center" style="margin-left: 5px; width: 16.25%;">
             <span class="add-on layout-text"> <b> Input </b> </span>
             </td>
 
-            <td align="center" style="margin-right: 5px;">
+            <td style="margin-left: 25%;">
+            </td>
+
+            <td align="center" style="margin-right: 5px; width: 16.25%;">
             <span class="add-on layout-text"> <b> Output </b> </span>
             </td>
             </tr>
@@ -1536,6 +1784,11 @@
             <td>
             <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
             </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            <option value="Simple Chemical"> Simple Chemical </option>
+            </td>
             <td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
             </td>
             </tr>
@@ -1543,22 +1796,79 @@
             <td>
             <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='2' value=''></input>
             </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="2" style='width: 120px'>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            <option value="Simple Chemical"> Simple Chemical </option>
+            </td>
             <td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='2' src='app/img/toolbar/delete-simple.svg'/>
             </td>
             </tr>
             <tr><td>
-            <img width="16px" height="16px" id='template-reaction-add-button' src='app/img/add.svg'/>
+            <img width="16px" height="16px" id='template-reaction-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
             </td></tr>
             </table>
             </td>
 
+            <!-- Blank space between input and output -->
+            <td style="width: 45px; margin-left: 50%;"></td>
+
             <td id ='reaction-template-right-td'>
+
             <table id='template-reaction-associated-table'>
-            <tr><td><!-- empty td to mirror the delete image and try to respect (unperfectly) the symmetry--></td>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
             <td>
-            <input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value='' ></input>
-            </td></tr>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value=''></input>
+            </td>
+            </tr>
             </table>
+            </td>
+
+          <!--  <td style="width: 50px; margin-left: 50%;"></td> -->
+
+            <td id ='reversible-template-left-td' class="hide">
+              <table id='template-reversible-input-table'>
+              <tr>
+              <td>
+              <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+              </td>
+              <td>
+              <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+              <option value="Macromolecule"> Macromolecule </option>
+              <option value="Simple Chemical" selected> Simple Chemical </option>
+              </td>
+              <td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
+              </td>
+              </tr>
+              <tr><td>
+              <img width="16px" height="16px" id='template-reversible-input-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
+              </td></tr>
+              </table>
+            </td>
+
+            <!-- Blank space between input and output
+            <td style="width: 50px; margin-left: 50%;"></td> -->
+
+
+            <td id ='reversible-template-right-td' class="hide">
+              <table id='template-reversible-output-table'>
+              <tr>
+              <td>
+              <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+              </td>
+              <td>
+              <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+              <option value="Macromolecule"> Macromolecule </option>
+              <option value="Simple Chemical" selected> Simple Chemical </option>
+              </td>
+              <td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
+              </td>
+              </tr>
+              <tr><td>
+              <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
+              </td></tr>
+              </table>
             </td>
 
             </tr>
@@ -1876,6 +2186,36 @@
             </tr>
             </tbody>
             </table>
+            </div>
+        </script>
+
+        <!-- ChemicalView template for backbone.js -->
+        <script type="text/template" id="chemical-template">
+            <!--<div class='node-details-text'>-->
+                <table class="table table-condensed table-striped object-panel-table" cellspacing="10">
+                    <tbody>
+                    <tr class="chemical-info chebi-name">
+                        <th valign="top">ChEBI Name:</th>
+                        <td>
+                            <%=chebiName %>
+                        </td>
+                    </tr>
+                    <tr class="chemical-info chemical-description node-details-summary">
+                        <th valign="top">Chemical Description:</th>
+                        <td colspan="2" class="expandable">
+                            <%=chemicalDescription %>
+                        </td>
+                    </tr>
+                    <tr class="chemical-info chebi-id">
+                        <th valign="top">ChEBI ID:</th>
+                        <td>
+                            <a href='https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:<%= chebiID %>' target='blank'>
+                                <%=chebiID %>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </script>
 

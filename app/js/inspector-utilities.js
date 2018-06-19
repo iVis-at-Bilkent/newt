@@ -1,6 +1,7 @@
 var appUtilities = require('./app-utilities');
 var inspectorUtilities = {};
 var fillBioGeneContainer = require('./fill-biogene-container');
+var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
@@ -21,7 +22,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     this.context.font = font;
     return this.context.measureText(txt).width;
   };
-  
+
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
       var state = stateAndInfos[i];
@@ -56,7 +57,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
           chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val());
         });
       }
-      
+
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
         inspectorUtilities.handleSBGNInspector();
@@ -118,13 +119,13 @@ inspectorUtilities.handleSBGNInspector = function () {
   var cy = chiseInstance.getCy();
 
   var selectedEles = cy.elements(":selected");
-  
+
   $("#sbgn-inspector-style-panel-group").html("");
-  
+
   if(selectedEles.length == 0){
     return;
   }
-  
+
   var width = $("#sbgn-inspector").width() * 0.45;
 
   var allNodes = chiseInstance.elementUtilities.trueForAllElements(selectedEles, function(ele) {
@@ -133,7 +134,7 @@ inspectorUtilities.handleSBGNInspector = function () {
   var allEdges = chiseInstance.elementUtilities.trueForAllElements(selectedEles, function(ele) {
     return ele.isEdge();
   });
-  
+
   if (allNodes || allEdges) {
     var sbgnlabel = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "label", "data");
     if (sbgnlabel == null) {
@@ -173,9 +174,9 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
 
     var html = "";
-    
+
     html += "<div  class='panel-heading' data-toggle='collapse' data-target='#inspector-style-properties-toggle'><p class='panel-title accordion-toggle'>" + title + "</p></div>"
-    
+
     html += "<div id='inspector-style-properties-toggle' class='panel-collapse collapse in'>";
     html += "<div class='panel-body'>";
     html += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
@@ -187,7 +188,10 @@ inspectorUtilities.handleSBGNInspector = function () {
     var commonIsCloned;
     var commonStateAndInfos;
     var commonSBGNCardinality;
-    
+    var imageFromURL;
+    var imageURL;
+    var hasBackgroundImage;
+
     if (allNodes) {
       type = "node";
 
@@ -215,7 +219,7 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel
               + "'/>" + "</td></tr>";
       }
-      
+
       // if at least one node is not a non-resizable parent node
       if( selectedEles.filter(':parent').length != selectedEles.length ) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
@@ -247,22 +251,22 @@ inspectorUtilities.handleSBGNInspector = function () {
             imageName = "open-lock.svg";
             title = "Lock aspect ratio";
           }
-          
+
           html += "<img width='16px' height='16x' id='inspector-node-sizes-aspect-ratio' style='vertical-align: top; margin-left: 5px;' class='pointer-button' src='app/img/";
           html += imageName;
           html += "'";
-          
+
           html += "title='";
           html += title;
           html += "'";
-          
+
           html += "></img>";
         }
-        
+
         html += "</td></tr>";
       }
-      
-      
+
+
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Color</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-border-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + borderColor
               + "'/>" + "</td></tr>";
@@ -271,13 +275,13 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "'/>" + "</td></tr>";
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Width</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-border-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
-      
+
       if(borderWidth){
         html += " value='" + parseFloat(borderWidth) + "'";
       }
-      
+
       html += "/>" + "</td></tr>";
-      
+
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Opacity</font>" + "</td><td style='padding-left: 5px;'>"
               + "<input id='inspector-background-opacity' class='inspector-input-box' type='range' step='0.01' min='0' max='1' style='width: " + buttonwidth + "px;' value='" + parseFloat(backgroundOpacity)
               + "'/>" + "</td></tr>";
@@ -285,7 +289,40 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Font</font>" + "</td><td style='padding-left: 5px;'>"
               + "<label id='inspector-font' style='cursor: pointer;width: " + buttonwidth + "px;'>"
-              + "..." + "<label/>" + "</td></tr>"; 
+              + "..." + "<label/>" + "</td></tr>";
+      }
+
+      if(selectedEles.length == 1){
+        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+        var display = hasBackgroundImage ? "" : 'display: none;';
+
+        var removeBtn = "<img id='inspector-delete-bg' width='16px' height='16px' class='pointer-button' "
+                      + 'style="' + display + '"'
+                      + "src='app/img/toolbar/delete-simple.svg'>";
+
+        var options = '<option value="none">None</option>'  
+                    + '<option value="fit" selected>Fit</option>'
+                    + '<option value="cover">Cover</option>'
+                    + '<option value="contain">Contain</option>';
+        if(hasBackgroundImage){
+          var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles[0]);
+          options = tmp ? tmp : options;
+        }
+        
+        var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px;'
+                        + display + '">'
+                        + options
+                        + '</select>';
+
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Image</font>" + "</td><td style='padding-left: 5px;'>"
+              + "<div><button id='inspector-image-file' class='btn btn-default' style='width: "
+              + width / 1.5 + "px;padding:2px;margin-bottom:2px;padding-bottom=0.5px;padding-top=0.5px;'>Choose...</button>"
+              + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
+              + "<input type='checkbox' id='inspector-image-from-url' style='margin-left: 3px;'>"
+              + "<font class='sbgn-label-font'>URL</font></div>"
+              + fitSelection
+              + removeBtn
+              + "</td></tr><input id='inspector-image-load' type='file' style='display:none;'>";
       }
 
       commonStateAndInfos = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
@@ -293,7 +330,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if(commonStateAndInfos){
         if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveStateVariable)) {
           fillStateAndInfos = true;
-          
+
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
           html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>State Variables</font>" + "</td>"
                   + "<td id='inspector-state-variables' style='padding-left: 5px; width: '" + width + "'></td></tr>";
@@ -335,34 +372,34 @@ inspectorUtilities.handleSBGNInspector = function () {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Cloned</font>" + "</td>"
                 + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-clone-marker'></td></tr>";
       }
-      
+
       /*
        * If all selected elements can have ports add a selectbox to enable setting their ports ordering.
        */
       if ( chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHavePorts.bind(chiseInstance.elementUtilities)) ) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Ports</font>" + "</td>"
-                + "<td style='padding-left: 5px; width: '" + width + "'>"; 
-        
+                + "<td style='padding-left: 5px; width: '" + width + "'>";
+
         html += "<select id='inspector-ports-ordering-select' class='input-medium layout-text' name='inspector-ports-ordering-select'>";
-        
+
         var optionsStr = "";
-        
+
         // Get the common ordering of the nodes
         var commonOrdering = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
           return chiseInstance.elementUtilities.getPortsOrdering(ele);
         });
-        
+
         var commonOrderingVal = commonOrdering || "empty"; // If there is no common ordering we should use "empty" for common ordering value
-        
+
         var orderings = ["", "None", "Left-to-right", "Right-to-left", "Top-to-bottom", "Bottom-to-top"]; // The orderings to be displayed on screen
         var values = ["empty", "none", "L-to-R", "R-to-L", "T-to-B", "B-to-T"]; // The values for the orderings
-    
+
         // For all possible values create an option str and append it to options str
         for ( var i = 0; i < orderings.length; i++ ) {
           var ordering = orderings[i];
           var optionVal = values[i];
           var optionId = "inspector-ports-ordering-" + optionVal; // Option id is generated from option value
-          var optionStr = "<option id='" + optionId + "'" 
+          var optionStr = "<option id='" + optionId + "'"
                   + " value='" + optionVal + "'";
 
           if ( optionVal === commonOrderingVal ) {
@@ -379,7 +416,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         html += optionsStr; // The string to represent this option in selectbox
 
         html += "</select>";
-        
+
         html += "</td></tr>";
       }
     }
@@ -405,38 +442,38 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (chiseInstance.elementUtilities.canHaveSBGNCardinality(selectedEles)) {
         var cardinality = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "cardinality", "data");
         commonSBGNCardinality = cardinality;
-        
+
         if (cardinality <= 0) {
           cardinality = undefined;
         }
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Cardinality</font>" + "</td><td style='padding-left: 5px;'>"
                 + "<input id='inspector-cardinality' class='inspector-input-box integer-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
-        
+
         if(cardinality != null) {
           html += "value='" + cardinality + "'/>";
         }
-        
+
         html += "</td></tr>";
       }
 
     }
     html += "</table></div>";
-    
+
     if(selectedEles.length == 1){
       var setAsDefaultTitle = "Set as Default for " + classInfo;
       html += "<div style='text-align: center; margin-top: 5px;'><button class='btn btn-default' style='align: center;' id='inspector-set-as-default-button'"
             + ">" + setAsDefaultTitle + "</button></div>";
     }
-    
+
 //    html += "<hr class='inspector-divider' style='border-width: 3px;'>";
     html += "</div>";
-    
+
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
     $("#sbgn-inspector-style-properties-panel").html(html);
-    
+
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
-      
+
       function addCollapsibleSection(identifier, title, hasSubtitleSection) {
         html =  "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#"+identifier+"-collapsable'>"+
                   "<p class='panel-title accordion-toggle'>"+title+"</p>"+
@@ -458,6 +495,12 @@ inspectorUtilities.handleSBGNInspector = function () {
           addCollapsibleSection("biogene", "Properties from EntrezGene", true);
           fillBioGeneContainer(selectedEles[0]);
       }
+      if (geneClass === 'simple chemical')
+      {
+
+          addCollapsibleSection("chemical", "Properties from ChEBI", true);
+          fillChemicalContainer(selectedEles[0]);
+      }
 
       // annotations handling part
       addCollapsibleSection("annotations", "Custom Properties", false);
@@ -477,6 +520,176 @@ inspectorUtilities.handleSBGNInspector = function () {
         $('#inspector-is-clone-marker').attr('checked', true);
       }
 
+      if(imageFromURL){
+        $('#inspector-image-from-url').attr('checked', true);
+      }
+
+      function updateBackgroundDeleteInfo(){
+        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+
+        if(!hasBackgroundImage){
+          $('#inspector-delete-bg').hide();
+          $('#inspector-fit-selector').hide();
+          $('#inspector-image-url').val('');
+        }
+        else{
+          $('#inspector-delete-bg').show();
+          $('#inspector-fit-selector').show();
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = imageURL ? imageURL : "";
+          $('#inspector-image-url').val(imageURL);
+        }
+      }
+
+      function promptInvalidImage(msg){
+        appUtilities.promptInvalidImageWarning.render(msg);
+      }
+
+      $('#inspector-image-from-url').on('click', function() {
+        imageFromURL = !imageFromURL;
+        if(imageFromURL){
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = imageURL ? imageURL : "";
+
+          $('#inspector-image-url').val(imageURL);
+          $('#inspector-image-url').show();
+          $('#inspector-image-file').hide();
+        }
+        else{
+          $('#inspector-image-url').hide();
+          $('#inspector-image-file').show();
+        }
+      });
+
+      $('#inspector-delete-bg').on('click', function () {
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        chiseInstance.removeBackgroundImage(selectedEles, bgObj);
+        updateBackgroundDeleteInfo();
+      });
+
+      $('#inspector-fit-selector').on('change', function () {
+        var fit = $("#inspector-fit-selector").val();
+        if(!fit){
+          return;
+        }
+        
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        if(!bgObj || bgObj === {}){
+          return;
+        }
+
+        var bgWidth = "auto";
+        var bgHeight = "auto";
+        var bgFit = "none";
+        
+        if(fit === "fit"){
+          bgWidth = "100%";
+          bgHeight = "100%";
+          bgFit = "none"
+        }
+        else if(fit){
+          bgFit = fit;
+        }
+
+        bgObj['background-fit'] = bgFit;
+        bgObj['background-width'] = bgWidth;
+        bgObj['background-height'] = bgHeight;
+        chiseInstance.updateBackgroundImage(selectedEles, bgObj);
+        updateBackgroundDeleteInfo();
+      });
+
+      $("#inspector-image-url").on('change', function () {
+        var url = $(this).val().trim();
+        imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+
+        if (url && imageURL !== url){
+          var fit = $("#inspector-fit-selector").val();
+          var bgWidth = "auto";
+          var bgHeight = "auto";
+          var bgFit = "none";
+          
+          if(fit === "fit"){
+            bgWidth = "100%";
+            bgHeight = "100%";
+            bgFit = "none"
+          }
+          else if(fit){
+            bgFit = fit;
+          }
+          
+          var bgObj = {
+            'background-image' : url,
+            'background-fit' : bgFit,
+            'background-image-opacity' : '1',
+            'background-position-x' : '50%',
+            'background-position-y' : '50%',
+            'background-width' : bgWidth,
+            'background-height' : bgHeight,
+            'fromFile' : false
+          };
+
+          // If there is a background image change it, don't add
+          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
+            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          }
+          else{
+            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          }
+        }
+      });
+
+      $("#inspector-image-url").on('keydown', function (e) {
+        if (e.keyCode == 13 ){
+          $(this).trigger("change");
+        }
+      });
+
+      $("#inspector-image-file").on('click', function () {
+        $('#inspector-image-load').trigger('click');
+      });
+
+      $('#inspector-image-load').on('change', function (e, fileObject) {
+
+        if ($(this).val() != "" || fileObject) {
+          var file = this.files[0] || fileObject;
+          var fit = $("#inspector-fit-selector").val();
+          var bgWidth = "auto";
+          var bgHeight = "auto";
+          var bgFit = "none";
+          
+          if(fit === "fit"){
+            bgWidth = "100%";
+            bgHeight = "100%";
+            bgFit = "none"
+          }
+          else if(fit){
+            bgFit = fit;
+          }
+          
+          var bgObj = {
+            'background-image' : file,
+            'background-fit' : bgFit,
+            'background-image-opacity' : '1',
+            'background-position-x' : '50%',
+            'background-position-y' : '50%',
+            'background-width' : bgWidth,
+            'background-height' : bgHeight,
+            'fromFile' : true
+          };
+
+          // If there is a background image change it, don't add
+          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
+            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          }
+          else{
+            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          }
+          $(this).val("");
+        }
+      });
+
       $('#inspector-set-as-default-button').on('click', function () {
         var multimer;
         var selected = selectedEles[0];
@@ -492,24 +705,24 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
-          
+
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
-          
+
           // Push this action if the node can be multimer
           if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
           }
-          
+
           // Push this action if the node can be cloned
           if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
           }
-          
+
           // Push this action if the node can have label
           if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
@@ -517,12 +730,12 @@ inspectorUtilities.handleSBGNInspector = function () {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
           }
-          
+
           // Push this action if the node can have ports
           if (chiseInstance.elementUtilities.canHavePorts(selected)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chiseInstance.elementUtilities.getPortsOrdering(selected)}});
           }
-          
+
           ur.do("batch", actions);
         }
         else {
@@ -538,12 +751,12 @@ inspectorUtilities.handleSBGNInspector = function () {
           if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
             defaults['multimer'] = multimer;
           }
-          
+
           // Set this if the node can be cloned
           if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
             defaults['clonemarker'] = selected._private.data.clonemarker;
           }
-          
+
           // Set this if the node can have label
           if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
             defaults['font-size'] = selected.data('font-size');
@@ -551,7 +764,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             defaults['font-weight'] = selected.data('font-weight');
             defaults['font-style'] = selected.data('font-style');
           }
-          
+
           // Set this if the node can have ports
           if (chiseInstance.elementUtilities.canHavePorts(selected)) {
             defaults['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
@@ -567,16 +780,16 @@ inspectorUtilities.handleSBGNInspector = function () {
       $("#inspector-node-width, #inspector-node-height").change( function () {
         var w = parseFloat($("#inspector-node-width").val());
         var h = parseFloat($("#inspector-node-height").val());
-        
+
         if( $(this).attr('id') === 'inspector-node-width' ) {
           h = undefined;
         }
         else {
           w = undefined;
         }
-        
+
         var useAspectRatio = appUtilities.nodeResizeUseAspectRatio;
-        
+
         // trigger resize event accordingly
         selectedEles.forEach(function(node) {
           cy.trigger('noderesize.resizestart', [null, node]);
@@ -607,9 +820,9 @@ inspectorUtilities.handleSBGNInspector = function () {
         if(appUtilities.nodeResizeUseAspectRatio == null) {
           appUtilities.nodeResizeUseAspectRatio = false;
         }
-        
+
         appUtilities.nodeResizeUseAspectRatio = !appUtilities.nodeResizeUseAspectRatio;
-        
+
         // refresh image
         if (appUtilities.nodeResizeUseAspectRatio) {
           imageName = "lock.svg";
@@ -619,9 +832,12 @@ inspectorUtilities.handleSBGNInspector = function () {
           imageName = "open-lock.svg";
           title = "Lock aspect ratio";
         }
-        
+
         $(this).attr('src', 'app/img/' + imageName);
         $(this).attr('title', title);
+
+        //Refresh grapples when the lock icon is clicked
+        cy.nodeResize('get').refreshGrapples();
       });
 
       $('#inspector-is-multimer').on('click', function () {
@@ -677,7 +893,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       $("#inspector-border-width").change( function () {
         chiseInstance.changeData(selectedEles, "border-width", $("#inspector-border-width").val());
       });
-      
+
       // Open font properties dialog
       $("#inspector-font").on('click', function () {
         appUtilities.fontPropertiesView.render(selectedEles);

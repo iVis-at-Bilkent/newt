@@ -2,6 +2,7 @@ var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var chroma = require('chroma-js');
+var FileSaver = require('filesaverjs');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -177,6 +178,61 @@ var BioGeneView = Backbone.View.extend({
 
     return text;
   }
+});
+
+/**
+ * Backbone view for the Chemical information.
+ */
+var ChemicalView = Backbone.View.extend({
+    render: function () {
+        // pass variables in using Underscore.js template
+        var variables = {
+            chemicalDescription: this.model.description[0],
+            chebiName: this.model.label,
+            chebiID: this.model.obo_id.substring(6, this.model.obo_id.length) //Gets only the nr from ChEBI:15422 format
+        };
+
+        // compile the template using underscore
+        var template = _.template($("#chemical-template").html());
+        template = template(variables);
+
+        // load the compiled HTML into the Backbone "el"
+        this.$el.html(template);
+
+        // format after loading
+        this.format(this.model);
+
+        return this;
+    },
+    format: function ()
+    {
+        // hide rows with undefined data
+        if (this.model.label == undefined)
+            this.$el.find(".chebi-name").hide();
+
+        if (this.model.description[0] == undefined)
+            this.$el.find(".chemical-description").hide();
+
+        if (this.model.obo_id == undefined)
+            this.$el.find(".chebi-id").hide();
+
+        var expanderOpts = {slicePoint: 150,
+            expandPrefix: ' ',
+            expandText: ' (...)',
+            userCollapseText: ' (show less)',
+            moreClass: 'expander-read-more',
+            lessClass: 'expander-read-less',
+            detailClass: 'expander-details',
+            // do not use default effects
+            // (see https://github.com/kswedberg/jquery-expander/issues/46)
+            expandEffect: 'fadeIn',
+            collapseEffect: 'fadeOut'};
+
+        $(".chemical-description .expandable").expander(expanderOpts);
+
+        expanderOpts.slicePoint = 2; // show comma and the space
+        expanderOpts.widow = 0; // hide everything else in any case
+    }
 });
 
 /**
@@ -422,7 +478,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     self.params.inferNestingOnLoad = {id: "infer-nesting-on-load", type: "checkbox",
       property: "currentGeneralProperties.inferNestingOnLoad"};
-    
+
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
 
@@ -497,7 +553,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
       $('#allow-compound-node-resize').blur();
     });
-    
+
     $(document).on("change", "#infer-nesting-on-load", function (evt) {
 
       // use active cy instance
@@ -797,10 +853,26 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
   }
 });*/
 
+
+String.prototype.replaceAll = function(search, replace)
+{
+    //if replace is not sent, return original string otherwise it will
+    //replace search string with 'undefined'.
+    if (replace === undefined) {
+        return this.toString();
+    }
+
+    return this.replace(new RegExp('[' + search + ']', 'g'), replace);
+};
+
+//Global variable used to check which PathwayCommon dialog was open recently
+//Clicking Ok in Error dialog will redirect to opening of that certain dialog again
+var PCdialog = "";
+
 /**
- * Paths Between Query view for the Sample Application.
+ * Neighborhood Query view for the Sample Application.
  */
-var PathsBetweenQueryView = Backbone.View.extend({
+var NeighborhoodQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
     lengthLimit: 1
@@ -809,7 +881,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
   initialize: function () {
     var self = this;
     self.copyProperties();
-    self.template = _.template($("#query-pathsbetween-template").html());
+    self.template = _.template($("#query-neighborhood-template").html());
     self.template = self.template(self.currentQueryParameters);
   },
   copyProperties: function () {
@@ -818,13 +890,14 @@ var PathsBetweenQueryView = Backbone.View.extend({
   render: function () {
 
     var self = this;
-    self.template = _.template($("#query-pathsbetween-template").html());
+    self.template = _.template($("#query-neighborhood-template").html());
     self.template = self.template(self.currentQueryParameters);
     $(self.el).html(self.template);
 
     $(self.el).modal('show');
+    PCdialog = "Neighborhood";
 
-    $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
+    $(document).off("click", "#save-query-neighborhood").on("click", "#save-query-neighborhood", function (evt) {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -832,12 +905,12 @@ var PathsBetweenQueryView = Backbone.View.extend({
       // use the associated cy instance
       var cy = chiseInstance.getCy();
 
-      self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
-      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-neighborhood-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-neighborhood-length-limit").value);
 
       var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
       if (geneSymbols.length === 0) {
-          document.getElementById("query-pathsbetween-gene-symbols").focus();
+          document.getElementById("query-neighborhood-gene-symbols").focus();
           return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
@@ -847,16 +920,16 @@ var PathsBetweenQueryView = Backbone.View.extend({
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
         return;
       }
-      if (self.currentQueryParameters.lengthLimit > 3) {
+      if (self.currentQueryParameters.lengthLimit > 2) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-        document.getElementById("query-pathsbetween-length-limit").focus();
+        document.getElementById("query-neighborhood-length-limit").focus();
         return;
       }
 
-      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit="
           + self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols.replace("\n", " ").replace("\t", " ").split(" ");
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
       var sources = "";
@@ -874,14 +947,14 @@ var PathsBetweenQueryView = Backbone.View.extend({
             filename = filename + '_' + currentGeneSymbol;
         }
       }
-      filename = filename + '_PATHSBETWEEN.sbgnml';
+      filename = filename + '_NEIGHBORHOOD.sbgnml';
 
-      chiseInstance.startSpinner('paths-between-spinner');
+      chiseInstance.startSpinner('neighborhood-spinner');
       queryURL = queryURL + sources;
 
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-      
+
       $.ajax({
         url: queryURL,
         type: 'GET',
@@ -889,7 +962,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
             if (data == null)
             {
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('paths-between-spinner');
+                chiseInstance.endSpinner('neighborhood-spinner');
             }
             else
             {
@@ -897,7 +970,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 currentGeneralProperties.inferNestingOnLoad = false;
                 chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
                 currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                chiseInstance.endSpinner('paths-between-spinner');
+                chiseInstance.endSpinner('neighborhood-spinner');
                 $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
             }
         }
@@ -905,12 +978,395 @@ var PathsBetweenQueryView = Backbone.View.extend({
       $(self.el).modal('toggle');
     });
 
-    $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
+    $(document).off("click", "#cancel-query-neighborhood").on("click", "#cancel-query-neighborhood", function (evt) {
       $(self.el).modal('toggle');
     });
 
     return this;
   }
+});
+
+/**
+ * Paths Between Query view for the Sample Application.
+ */
+var PathsBetweenQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        geneSymbols: "",
+        lengthLimit: 1
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-pathsbetween-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+
+        var self = this;
+        self.template = _.template($("#query-pathsbetween-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+        PCdialog = "PathsBetween";
+
+        $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
+
+            // use active chise instance
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+
+            // use the associated cy instance
+            var cy = chiseInstance.getCy();
+
+            self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
+            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
+
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+                document.getElementById("query-pathsbetween-gene-symbols").focus();
+                return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal('toggle');
+                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+                document.getElementById("query-pathsbetween-length-limit").focus();
+                return;
+            }
+
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+                + self.currentQueryParameters.lengthLimit;
+            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+            var filename = "";
+            var sources = "";
+            for (var i = 0; i < geneSymbolsArray.length; i++) {
+                var currentGeneSymbol = geneSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                sources = sources + "&source=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            filename = filename + '_PATHSBETWEEN.sbgnml';
+
+            chiseInstance.startSpinner('paths-between-spinner');
+            queryURL = queryURL + sources;
+
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    if (data == null)
+                    {
+                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                        chiseInstance.endSpinner('paths-between-spinner');
+                    }
+                    else
+                    {
+                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        chiseInstance.endSpinner('paths-between-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                    }
+                }
+            });
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
+});
+
+/**
+ * Paths From To Query view for the Sample Application.
+ */
+var PathsFromToQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        sourceSymbols: "",
+        targetSymbols: "",
+        lengthLimit: 1
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-pathsfromto-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+
+        var self = this;
+        self.template = _.template($("#query-pathsfromto-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+        PCdialog = "PathsFromTo";
+
+        $(document).off("click", "#save-query-pathsfromto").on("click", "#save-query-pathsfromto", function (evt) {
+
+            // use active chise instance
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+
+            // use the associated cy instance
+            var cy = chiseInstance.getCy();
+
+            self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols").value;
+            self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols").value;
+            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit").value);
+
+            var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+            if (sourceSymbols.length === 0) {
+                document.getElementById("query-pathsfromto-source-symbols").focus();
+                return;
+            }
+            // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (sourceSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+
+            var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+            if (targetSymbols.length === 0) {
+                document.getElementById("query-pathsfromto-target-symbols").focus();
+                return;
+            }
+            // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (targetSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+
+            if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal('toggle');
+                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+                document.getElementById("query-pathsfromto-length-limit").focus();
+                return;
+            }
+
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit="
+                + self.currentQueryParameters.lengthLimit;
+            var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+            var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+            var filename = "";
+            var sources = "";
+            var targets = "";
+            for (var i = 0; i < sourceSymbolsArray.length; i++) {
+                var currentGeneSymbol = sourceSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                sources = sources + "&source=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            for (var i = 0; i < targetSymbolsArray.length; i++) {
+                var currentGeneSymbol = targetSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                targets = targets + "&target=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            filename = filename + '_PATHSFROMTO.sbgnml';
+
+            chiseInstance.startSpinner('paths-fromto-spinner');
+            queryURL = queryURL + sources + targets;
+
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    if (data == null)
+                    {
+                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                        chiseInstance.endSpinner('paths-fromto-spinner');
+                    }
+                    else
+                    {
+                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        chiseInstance.endSpinner('paths-fromto-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                    }
+                }
+            });
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-pathsfromto").on("click", "#cancel-query-pathsfromto", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
+});
+
+/**
+ * Common Stream Query view for the Sample Application.
+ */
+var CommonStreamQueryView = Backbone.View.extend({
+    defaultQueryParameters: {
+        geneSymbols: "",
+        lengthLimit: 1
+    },
+    currentQueryParameters: null,
+    initialize: function () {
+        var self = this;
+        self.copyProperties();
+        self.template = _.template($("#query-commonstream-template").html());
+        self.template = self.template(self.currentQueryParameters);
+    },
+    copyProperties: function () {
+        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+    },
+    render: function () {
+
+        var self = this;
+        self.template = _.template($("#query-commonstream-template").html());
+        self.template = self.template(self.currentQueryParameters);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+        PCdialog = "CommonStream";
+
+        $(document).off("click", "#save-query-commonstream").on("click", "#save-query-commonstream", function (evt) {
+
+            // use active chise instance
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+
+            // use the associated cy instance
+            var cy = chiseInstance.getCy();
+
+            self.currentQueryParameters.geneSymbols = document.getElementById("query-commonstream-gene-symbols").value;
+            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-commonstream-length-limit").value);
+
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+                document.getElementById("query-commonstream-gene-symbols").focus();
+                return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+                $(self.el).modal('toggle');
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal('toggle');
+                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+                document.getElementById("query-commonstream-length-limit").focus();
+                return;
+            }
+
+            var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
+                + self.currentQueryParameters.lengthLimit;
+            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+            var filename = "";
+            var sources = "";
+            for (var i = 0; i < geneSymbolsArray.length; i++) {
+                var currentGeneSymbol = geneSymbolsArray[i];
+                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                    continue;
+                }
+                sources = sources + "&source=" + currentGeneSymbol;
+
+                if (filename == '') {
+                    filename = currentGeneSymbol;
+                } else {
+                    filename = filename + '_' + currentGeneSymbol;
+                }
+            }
+            filename = filename + '_COMMONSTREAM.sbgnml';
+
+            chiseInstance.startSpinner('common-stream-spinner');
+            queryURL = queryURL + sources;
+
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            $.ajax({
+                url: queryURL,
+                type: 'GET',
+                success: function (data) {
+                    if (data == null)
+                    {
+                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                        chiseInstance.endSpinner('common-stream-spinner');
+                    }
+                    else
+                    {
+                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        chiseInstance.endSpinner('common-stream-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                    }
+                }
+            });
+            $(self.el).modal('toggle');
+        });
+
+        $(document).off("click", "#cancel-query-commonstream").on("click", "#cancel-query-commonstream", function (evt) {
+            $(self.el).modal('toggle');
+        });
+
+        return this;
+    }
 });
 
 /**
@@ -1018,7 +1474,7 @@ var PathsByURIQueryView = Backbone.View.extend({
   So this PromptSaveView isn't used for now, replaced by PromptConfirmationView.
 */
 var PromptSaveView = Backbone.View.extend({
-  
+
   initialize: function () {
     var self = this;
     self.template = _.template($("#prompt-save-template").html());
@@ -1035,12 +1491,12 @@ var PromptSaveView = Backbone.View.extend({
       afterFunction();
       $(self.el).modal('toggle');
     });
-    
+
     $(document).off("click", "#prompt-save-reject").on("click", "#prompt-save-reject", function (evt) {
       afterFunction();
       $(self.el).modal('toggle');
     });
-    
+
     $(document).off("click", "#prompt-save-cancel").on("click", "#prompt-save-cancel", function (evt) {
       $(self.el).modal('toggle');
     });
@@ -1057,14 +1513,27 @@ var FileSaveView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#file-save-template").html());
   },
-  render: function () {
+  /*
+    possibility to use different export format here in the future
+    fileformat: sbgnml
+    version: for sbgnml: 0.2, 0.3
+  */
+  render: function (fileformat, version, text) {
     var self = this;
     self.template = _.template($("#file-save-template").html());
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
 
+    $("#file-save-table").keyup(function(e){
+      if (e.which == 13 && $(self.el).data('bs.modal').isShown && !$("#file-save-accept").is(":focus") && !$("#file-save-cancel").is(":focus")){
+        $("#file-save-accept").click();
+      }
+    });
+
     var filename = document.getElementById('file-name').innerHTML;
+    if (fileformat === "celldesigner")
+      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".xml");
     $("#file-save-filename").val(filename);
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
@@ -1080,10 +1549,29 @@ var FileSaveView = Backbone.View.extend({
 
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
-      var renderInfo = appUtilities.getAllStyles();
-      var properties = jquery.extend(true, {}, currentGeneralProperties);
-      delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
-      chiseInstance.saveAsSbgnml(filename, renderInfo, properties);
+
+      if(fileformat === "sbgnml") {
+        var renderInfo = appUtilities.getAllStyles();
+        var properties = jquery.extend(true, {}, currentGeneralProperties);
+        delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
+        // Exclude extensions if the version is plain
+        if (version === "plain") {
+          chiseInstance.saveAsSbgnml(filename, version);
+        }
+        else {
+          chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+        }
+      }
+      else if(fileformat === "celldesigner") {
+        var blob = new Blob([text], {
+            type: "text/plain;charset=utf-8;",
+        });
+        FileSaver.saveAs(blob, filename);
+      }
+      else { // invalid file format provided
+        console.error("FileSaveView received unsupported file format: "+fileformat);
+      }
+
       $(self.el).modal('toggle');
     });
 
@@ -1162,7 +1650,14 @@ var PromptInvalidQueryView = Backbone.View.extend({
 
       $(document).off("click", "#prompt-invalidQuery-confirm").on("click", "#prompt-invalidQuery-confirm", function (evt) {
           $(self.el).modal('toggle');
-          appUtilities.pathsBetweenQueryView.render();
+          if (PCdialog == "Neighborhood")
+            appUtilities.neighborhoodQueryView.render();
+          else if (PCdialog == "PathsBetween")
+              appUtilities.pathsBetweenQueryView.render();
+          else if (PCdialog == "PathsFromTo")
+              appUtilities.pathsFromToQueryView.render();
+          else if (PCdialog == "CommonStream")
+              appUtilities.commonStreamQueryView.render();
       });
 
       return this;
@@ -1179,11 +1674,22 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
         self.template = _.template($("#prompt-invalidLengthLimit-template").html());
 
         $(self.el).html(self.template);
+        if (PCdialog == "Neighborhood")
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
+        else
+            document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
         $(self.el).modal('show');
 
         $(document).off("click", "#prompt-invalidLengthLimit-confirm").on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
             $(self.el).modal('toggle');
-            appUtilities.pathsBetweenQueryView.render();
+            if (PCdialog == "Neighborhood")
+                appUtilities.neighborhoodQueryView.render();
+            else if (PCdialog == "PathsBetween")
+                appUtilities.pathsBetweenQueryView.render();
+            else if (PCdialog == "PathsFromTo")
+                appUtilities.pathsFromToQueryView.render();
+            else if (PCdialog == "CommonStream")
+                appUtilities.commonStreamQueryView.render();
         });
 
         return this;
@@ -1242,13 +1748,33 @@ var PromptInvalidFileView = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    
+
     $(document).off("click", "#prompt-invalidFile-confirm").on("click", "#prompt-invalidFile-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
-    
+
     return this;
   }
+});
+
+var PromptFileConversionErrorView = Backbone.View.extend({
+   initialize: function () {
+     var self = this;
+     self.template = _.template($("#prompt-fileConversionError-template").html());
+   },
+   render: function() {
+     var self = this;
+     self.template = _.template($("#prompt-fileConversionError-template").html());
+
+     $(self.el).html(self.template);
+     $(self.el).modal('show');
+
+     $(document).off("click", "#prompt-fileConversionError-confirm").on("click", "#prompt-fileConversionError-confirm", function (evt) {
+         $(self.el).modal('toggle');
+     });
+
+     return this;
+   }
 });
 
 var PromptInvalidURLWarning = Backbone.View.extend({
@@ -1262,65 +1788,200 @@ var PromptInvalidURLWarning = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    
+
     $(document).off("click", "#prompt-invalidURL-confirm").on("click", "#prompt-invalidURL-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
-    
+
+    return this;
+  }
+});
+
+var PromptInvalidImageWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidImage-template").html());
+  },
+  render: function (msg) {
+    var self = this;
+    var tmp = $("#prompt-invalidImage-template").html();
+    var spanText = '<span class="add-on layout-text">';
+    var s = tmp.indexOf(spanText)
+    var e = tmp.indexOf('</span>');
+    tmp = tmp.substring(0, s + spanText.length) + msg + tmp.substring(e);
+    self.template = _.template(tmp);
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-invalidImage-confirm").on("click", "#prompt-invalidImage-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
     return this;
   }
 });
 
 var ReactionTemplateView = Backbone.View.extend({
-  addMacromolecule: function (i) {
+  addMacromolecule: function (type, i) {
     var html = "<tr><td>"
         + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
         + i + "' value=''></input>"
-        + "</td><td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
-
-    $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
+        + "</td><td>";
+    if( type == "reaction"){
+      html +=  "<select class='template-reaction-molecule-type sbgn-output-medium layout-text' name='" + i + "' style='width: 120px'>"
+             + "<option value='Macromolecule' selected> Macromolecule </option>"
+             + "<option value='Simple Chemical'> Simple Chemical </option></td>";
+      html +=  "<td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'style='margin-right: 30px'/></td></tr>";
+      $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    }
+    else if( type == "left"){
+      html +=  "<select class='template-reaction-molecule-type sbgn-output-medium layout-text' name='" + i + "' style='width: 120px'>"
+             + "<option value='Macromolecule'> Macromolecule </option>"
+             + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
+      html += "<td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg' style='margin-right: 30px'/></td></tr>";
+      $('#template-reversible-input-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    }
+    else{
+      html +=  "<select class='template-reaction-molecule-type sbgn-output-medium layout-text' name='" + i + "' style='width: 120px'>"
+             + "<option value='Macromolecule'> Macromolecule </option>"
+             + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
+      html += "<td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
+      $('#template-reversible-output-table :input.template-reaction-textbox').last().closest('tr').after(html);
+    }
     return html;
   },
-  removeMacromolecule: function (i) {
-    $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+  removeMacromolecule: function (type, i) {
+    if(type == "reaction"){
+      $('#template-reaction-dissociated-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();;
+    }
+    else if(type == "left"){
+      $('#template-reversible-input-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+    }
+    else{
+      $('#template-reversible-output-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
+    }
   },
-  switchInputOutput: function () {
-    var saveHtmlContent = $("#reaction-template-left-td").html();
-    $("#reaction-template-left-td").html($("#reaction-template-right-td").html());
-    $("#reaction-template-right-td").html(saveHtmlContent);
+  switchInputOutput: function (e) {
+    var self = this;
+    if(e == "association") {
+      $('#reaction-template-left-td').html(self.associatedHTMLContent);
+      $('#reaction-template-right-td').html(self.dissociatedHTMLContent);
+    }
+    else if(e == "dissociation"){
+      $('#reaction-template-left-td').html(self.dissociatedHTMLContent);
+      $('#reaction-template-right-td').html(self.associatedHTMLContent);
+    }
+    else{
+      $('#reaction-template-left-td').html(self.reversibleInputHTMLContent);
+      $('#reaction-template-right-td').html(self.reversibleOutputHTMLContent);
+      self.disableDeleteButtonStyle("left");
+      self.disableDeleteButtonStyle("right");
+    }
   },
   getAllParameters: function () {
     var templateType = $('#reaction-template-type-select').val();
     var templateReactionComplexName = $('#template-reaction-complex-name').val();
-    var macromoleculeList = $('#template-reaction-dissociated-table :input.template-reaction-textbox').map(function(){
-        return $(this).val()
-      }).toArray();
+    var nodeNames = $('#template-reaction-dissociated-table  :input.template-reaction-textbox').map(function(){
+        return {
+            name: $(this).val(),
+            id: $(this).attr('name').charAt(0)
+        };
+    }).toArray();
+    var nodeTypes = $('#template-reaction-dissociated-table  :input.template-reaction-molecule-type :selected').map(function(){
+        return $(this).val();
+    }).toArray();
+    var nodeList = [];
+    for( var i = 0; i < nodeNames.length; i++){
+      nodeList.push(
+        {
+          "name": nodeNames[i].name,
+          "type": nodeTypes[i],
+          "id": nodeNames[i].id
+        }
+      );
+    }
+    var reversibleInputNodeNames = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleInputNodeTypes = $('#template-reversible-input-table :input.template-reaction-molecule-type :selected').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleOutputNodeNames = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleOutputNodeTypes = $('#template-reversible-output-table :input.template-reaction-molecule-type :selected').map(function(){
+      return $(this).val();
+    }).toArray();
+    var reversibleInputNodeList = [];
+    for(var i = 0; i < reversibleInputNodeNames.length; i++){
+      reversibleInputNodeList.push(
+        {
+          name: reversibleInputNodeNames[i],
+          type: reversibleInputNodeTypes[i]
+        }
+      );
+    }
+    var reversibleOutputNodeList = [];
+    for(var i = 0; i < reversibleOutputNodeNames.length; i++){
+      reversibleOutputNodeList.push(
+        {
+          name: reversibleOutputNodeNames[i],
+          type: reversibleOutputNodeTypes[i]
+        }
+      );
+    }
     // enable complex name only if the user provided something
     var templateReactionEnableComplexName = $.trim(templateReactionComplexName).length != 0;
 
     return {
       templateType: templateType,
       templateReactionComplexName: templateReactionComplexName,
-      macromoleculeList: macromoleculeList,
+      nodeList: nodeList,
+      reversibleInputNodeList: reversibleInputNodeList,
+      reversibleOutputNodeList: reversibleOutputNodeList,
       templateReactionEnableComplexName: templateReactionEnableComplexName
     }
   },
-  disableDeleteButtonStyle: function () {
-    $("img.template-reaction-delete-button").css("opacity", 0.2);
-    $("img.template-reaction-delete-button").css("cursor", "default");
+  disableDeleteButtonStyle: function (type) {
+    if(type == "reaction"){
+      $("img.template-reaction-delete-button").css("opacity", 0.2);
+      $("img.template-reaction-delete-button").css("cursor", "default");
+    }
+    else if(type == "left"){
+      $("img.template-reversible-input-delete-button").css("opacity", 0.2);
+      $("img.template-reversible-input-delete-button").css("cursor", "default");
+    }
+    else{
+      $("img.template-reversible-output-delete-button").css("opacity", 0.2);
+      $("img.template-reversible-output-delete-button").css("cursor", "default");
+    }
   },
-  enableDeleteButtonStyle: function() {
-    $("img.template-reaction-delete-button").css("opacity",1);
-    $("img.template-reaction-delete-button").css("cursor", "pointer");
+  enableDeleteButtonStyle: function(type) {
+    if(type == "reaction"){
+      $("img.template-reaction-delete-button").css("opacity",1);
+      $("img.template-reaction-delete-button").css("cursor", "pointer");
+    }
+    else if(type == "left"){
+      $("img.template-reversible-input-delete-button").css("opacity",1);
+      $("img.template-reversible-input-delete-button").css("cursor", "pointer");
+    }
+    else{
+      $("img.template-reversible-output-delete-button").css("opacity",1);
+      $("img.template-reversible-output-delete-button").css("cursor", "pointer");
+    }
+
   },
   initialize: function() {
 
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
 
+
     $(document).on('change', '#reaction-template-type-select', function (e) {
       var valueSelected = $(this).val();
-      self.switchInputOutput();
+      self.switchInputOutput(valueSelected);
+      self.disableDeleteButtonStyle("reaction");
     });
 
     $(document).on("change", "#template-reaction-complex-name", function(e){
@@ -1331,8 +1992,8 @@ var ReactionTemplateView = Backbone.View.extend({
     $(document).on("click", "#template-reaction-add-button", function (event) {
       // get the last input name and add 1
       var nextIndex = parseInt($('#template-reaction-dissociated-table :input.template-reaction-textbox').last().attr('name')) + 1;
-      self.addMacromolecule(nextIndex);
-      self.enableDeleteButtonStyle();
+      self.addMacromolecule("reaction",nextIndex);
+      self.enableDeleteButtonStyle("reaction");
     });
 
     $(document).on('change', ".template-reaction-textbox", function () {
@@ -1345,9 +2006,43 @@ var ReactionTemplateView = Backbone.View.extend({
         return;
       }
       var index = parseInt($(this).attr('name'));
-      self.removeMacromolecule(index);
+      self.removeMacromolecule("reaction",index);
       if($('#template-reaction-dissociated-table :input.template-reaction-textbox').length <= 2){
-        self.disableDeleteButtonStyle();
+        self.disableDeleteButtonStyle("reaction");
+      }
+    });
+
+    $(document).on("click", "#template-reversible-input-add-button", function(event){
+      var nextIndex = parseInt($('#template-reversible-input-table :input.template-reaction-textbox').last().attr('name')) + 1;
+      self.addMacromolecule( "left", nextIndex);
+      self.enableDeleteButtonStyle("left");
+    });
+
+    $(document).on("click", "#template-reversible-output-add-button", function(event){
+      var nextIndex = parseInt($('#template-reversible-output-table :input.template-reaction-textbox').last().attr('name')) + 1;
+      self.addMacromolecule( "right", nextIndex);
+      self.enableDeleteButtonStyle("right");
+    });
+
+    $(document).on("click", ".template-reversible-input-delete-button", function(event){
+      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
+        return;
+      }
+      var index = parseInt($(this).attr('name'));
+      self.removeMacromolecule("left",index);
+      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
+        self.disableDeleteButtonStyle("left");
+      }
+    });
+
+    $(document).on("click", ".template-reversible-output-delete-button", function(event){
+      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
+        return;
+      }
+      var index = parseInt($(this).attr('name'));
+      self.removeMacromolecule("right",index);
+      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
+        self.disableDeleteButtonStyle("right");
       }
     });
 
@@ -1365,12 +2060,15 @@ var ReactionTemplateView = Backbone.View.extend({
       var params = self.getAllParameters();
 
       var templateType = params.templateType;
-      var macromoleculeList = params.macromoleculeList;
+      var nodeList = params.nodeList;
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
-
-      chiseInstance.createTemplateReaction(templateType, macromoleculeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+      if(templateType == "reversible"){
+        nodeList = params.reversibleInputNodeList;
+        complexName = params.reversibleOutputNodeList;
+      }
+      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
       $(self.el).modal('toggle');
     });
@@ -1383,10 +2081,13 @@ var ReactionTemplateView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
     $(self.el).html(self.template);
-    self.disableDeleteButtonStyle();
+    self.disableDeleteButtonStyle("reaction");
 
     $(self.el).modal('show');
-
+    self.associatedHTMLContent = $('#reaction-template-left-td').html();
+    self.dissociatedHTMLContent = $('#reaction-template-right-td').html();
+    self.reversibleInputHTMLContent = $('#reversible-template-left-td').html();
+    self.reversibleOutputHTMLContent = $('#reversible-template-right-td').html();
     return this;
   }
 });
@@ -1536,7 +2237,7 @@ var FontPropertiesView = Backbone.View.extend({
     this.currentFontProperties = _.clone(this.defaultFontProperties);
   },
   fontFamilies: ["", "Helvetica", "Arial", "Calibri", "Cambria", "Comic Sans MS", "Consolas", "Corsiva"
-    ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact" 
+    ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact"
     ,"Lato", "Roboto", "Source Sans Pro", "Syncopate", "Times New Roman"
     ,"Trebuchet MS", "Ubuntu", "Verdana"],
   getOptionIdByFontFamily: function(fontfamily) {
@@ -1552,35 +2253,35 @@ var FontPropertiesView = Backbone.View.extend({
     if(self == null){
       self = this;
     }
-    
+
     var fontFamilies = self.fontFamilies;
-    
+
     var html = "";
     html += "<select id='font-properties-select-font-family' class='input-medium layout-text' name='font-family-select'>";
-    
+
     var optionsStr = "";
-    
+
     for ( var i = 0; i < fontFamilies.length; i++ ) {
       var fontFamily = fontFamilies[i];
       var optionId = self.getOptionIdByFontFamily(fontFamily);
-      var optionStr = "<option id='" + optionId + "'" 
+      var optionStr = "<option id='" + optionId + "'"
               + " value='" + fontFamily + "' style='" + "font-family: " + fontFamily + "'";
-      
+
       if (fontFamily === self.currentFontProperties.fontFamily) {
         optionStr += " selected";
       }
-      
+
       optionStr += "> ";
       optionStr += fontFamily;
       optionStr += " </option>";
-      
+
       optionsStr += optionStr;
     }
-    
+
     html += optionsStr;
-    
+
     html += "</select>";
-    
+
     return html;
   },
   initialize: function () {
@@ -1598,7 +2299,7 @@ var FontPropertiesView = Backbone.View.extend({
 
     var self = this;
     var commonProperties = {};
-    
+
     // Get common properties. Note that we check the data field for labelsize property and css field for other properties.
     var commonFontSize = parseInt(chiseInstance.elementUtilities.getCommonProperty(eles, "font-size", "data"));
     var commonFontWeight = chiseInstance.elementUtilities.getCommonProperty(eles, "font-weight", "data");
@@ -1608,19 +2309,19 @@ var FontPropertiesView = Backbone.View.extend({
     if( commonFontSize != null ) {
       commonProperties.fontSize = commonFontSize;
     }
-    
+
     if( commonFontWeight != null ) {
       commonProperties.fontWeight = commonFontWeight;
     }
-    
+
     if( commonFontFamily != null ) {
       commonProperties.fontFamily = commonFontFamily;
     }
-    
+
     if( commonFontStyle != null ) {
       commonProperties.fontStyle = commonFontStyle;
     }
-    
+
     self.currentFontProperties = $.extend({}, this.defaultFontProperties, commonProperties);
   },
   render: function (eles) {
@@ -1641,51 +2342,51 @@ var FontPropertiesView = Backbone.View.extend({
       var cy = chiseInstance.getCy();
 
       var data = {};
-      
+
       var fontsize = $('#font-properties-font-size').val();
       var fontfamily = $('select[name="font-family-select"] option:selected').val();
       var fontweight = $('select[name="font-weight-select"] option:selected').val();
       var fontstyle = $('select[name="font-style-select"] option:selected').val();
-      
+
       if ( fontsize != '' ) {
         data['font-size'] = parseInt(fontsize);
       }
-      
+
       if ( fontfamily != '' ) {
         data['font-family'] = fontfamily;
       }
-      
+
       if ( fontweight != '' ) {
         data['font-weight'] = fontweight;
       }
-      
+
       if ( fontstyle != '' ) {
         data['font-style'] = fontstyle;
       }
-      
+
       var keys = Object.keys(data);
-      
+
       if(keys.length === 0) {
         return;
       }
-      
+
       var validAction = false; // If there is nothing to change the action is not valid
-      
+
       for ( var i = 0; i < eles.length; i++ ) {
         var ele = eles[i];
-        
+
         keys.forEach(function(key, idx) {
           // If there is some property to change signal that the action is valid.
           if (data[key] != ele.data(key)){
             validAction = true;
           }
-        }); 
-        
+        });
+
         if ( validAction ) {
           break;
         }
       }
-      
+
       if ( validAction === false ) {
         $(self.el).modal('toggle');
         return;
@@ -1694,8 +2395,8 @@ var FontPropertiesView = Backbone.View.extend({
       chiseInstance.changeFontProperties(eles, data);
 
       self.copyProperties();
-	    
-     
+
+
       $(self.el).modal('toggle');
 	    $(document).trigger('saveFontProperties', cy);
     });
@@ -1881,19 +2582,24 @@ var AnnotationElementView = Backbone.View.extend({
 
 module.exports = {
   BioGeneView: BioGeneView,
+  ChemicalView: ChemicalView,
   LayoutPropertiesView: LayoutPropertiesView,
   ColorSchemeInspectorView: ColorSchemeInspectorView,
   MapTabGeneralPanel: MapTabGeneralPanel,
   MapTabLabelPanel: MapTabLabelPanel,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
+  NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,
+  PathsFromToQueryView: PathsFromToQueryView,
+  CommonStreamQueryView: CommonStreamQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
   PromptInvalidFileView: PromptInvalidFileView,
+  PromptFileConversionErrorView: PromptFileConversionErrorView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
@@ -1901,5 +2607,6 @@ module.exports = {
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,
   PromptInvalidURIWarning: PromptInvalidURIWarning,
-  PromptInvalidURLWarning: PromptInvalidURLWarning
+  PromptInvalidURLWarning: PromptInvalidURLWarning,
+  PromptInvalidImageWarning: PromptInvalidImageWarning
 };

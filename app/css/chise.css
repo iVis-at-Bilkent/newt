@@ -5,6 +5,11 @@ body {
     padding: 0px;
 }
 
+.drag-and-drop-file{
+  border: 2px dashed #0B9BCD !important;
+  background-color: #EEEEEE;
+}
+
 .sbgn-nav-menu .open > .dropdown-menu {
     animation-name: slidenavAnimation;
     animation-duration:.3s;
@@ -185,8 +190,8 @@ body {
 }
 
 .network-panel {
-  height: 680px;
-  width: 800px;
+  height: 100%;
+  width: 100%;
 }
 
 #network-tabs-list-container {
@@ -432,6 +437,14 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+#template-modal-content {
+  position: fixed;
+  width: 600px;
+  top: 50%;
+  left: 50%;
+  margin-left: -300px;
 }
 
 .sbgn-input-small {
@@ -723,6 +736,8 @@ hr.inspector-divider {
     border-style: solid !important;
     border-width: 1px !important;
     border-radius: calc !important;
+    font-size: 12px;
+    align: center;
 }
 
 #sbgn-toolbar img {
@@ -734,6 +749,14 @@ hr.inspector-divider {
 }
 
 img#template-reaction-add-button:hover {
+    cursor: pointer;
+}
+
+img#template-reversible-input-add-button:hover {
+    cursor: pointer;
+}
+
+img#template-reversible-output-add-button:hover {
     cursor: pointer;
 }
 

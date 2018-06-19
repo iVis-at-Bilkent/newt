@@ -51,6 +51,11 @@ var modeHandler = {
       modeProperties.sustainMode = false;
     }
 
+    if(modeProperties.mode == "marquee-zoom-mode") {
+      var viewUtilities = cy.viewUtilities('get');
+      viewUtilities.disableMarqueeZoom();
+    }
+
     if (modeProperties.mode != "add-node-mode") {
       cy.elements().unselect();
       modeProperties.mode = "add-node-mode";
@@ -58,6 +63,7 @@ var modeHandler = {
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().addClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').removeClass('inactive-palette-element');
       $('.edge-palette img').addClass('inactive-palette-element');
 
@@ -87,7 +93,6 @@ var modeHandler = {
   // if the edgeType will remain same, add edge mode is already enabled and sustain mode is not set before, then set the sustain mode
   // so that users will be able to add the current edge type in a sustainable way.
   setAddEdgeMode: function (edgeType, language, _cy) {
-
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
 
@@ -107,6 +112,11 @@ var modeHandler = {
       modeProperties.sustainMode = false;
     }
 
+    if(modeProperties.mode == "marquee-zoom-mode") {
+      var viewUtilities = cy.viewUtilities('get');
+      viewUtilities.disableMarqueeZoom();
+    }
+
     if (modeProperties.mode != "add-edge-mode") {
       cy.elements().unselect();
       modeProperties.mode = "add-edge-mode";
@@ -114,6 +124,7 @@ var modeHandler = {
       $('#select-mode-icon').parent().removeClass('selected-mode');
       $('#add-edge-mode-icon').parent().addClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').addClass('inactive-palette-element');
       $('.edge-palette img').removeClass('inactive-palette-element');
 
@@ -147,10 +158,16 @@ var modeHandler = {
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
+    if(modeProperties.mode == "marquee-zoom-mode") {
+      var viewUtilities = cy.viewUtilities('get')
+      viewUtilities.disableMarqueeZoom();
+    }
+
     if (modeProperties.mode != "selection-mode") {
       $('#select-mode-icon').parent().addClass('selected-mode');
       $('#add-edge-mode-icon').parent().removeClass('selected-mode');
       $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
       $('.node-palette img').addClass('inactive-palette-element');
       $('.edge-palette img').addClass('inactive-palette-element');
 
@@ -163,9 +180,47 @@ var modeHandler = {
       cy.autoungrabify(false);
       cy.autounselectify(false);
     }
-
     $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
     modeProperties.sustainMode = false;
+
+    // reset mode properties of cy
+    appUtilities.setScratch(cy, 'modeProperties', modeProperties);
+  },
+  // Set marquee zoom mode, disables sustainable mode.
+  setMarqueeZoomMode: function(_cy){
+    // if _cy param is not set use the active cy instance
+    var cy = _cy || appUtilities.getActiveCy();
+
+    // access mode properties of the cy
+    var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+
+    if(modeProperties.mode != "marquee-zoom-mode"){
+      $('#select-mode-icon').parent().removeClass('selected-mode');
+      $('#add-edge-mode-icon').parent().removeClass('selected-mode');
+      $('#add-node-mode-icon').parent().removeClass('selected-mode');
+      $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
+      $('.node-palette img').addClass('inactive-palette-element');
+      $('.edge-palette img').addClass('inactive-palette-element');
+
+      modeProperties.mode = "marquee-zoom-mode";
+
+      var viewUtilities = cy.viewUtilities('get');
+      
+      var setSelectionAfterAnimation = function(){
+        modeHandler.setSelectionMode(cy);
+        viewUtilities.disableMarqueeZoom();
+      }
+
+      viewUtilities.enableMarqueeZoom(setSelectionAfterAnimation);
+
+      cy.autoungrabify(false);
+
+      $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
+      modeProperties.sustainMode = false;
+    }
+    else{
+      modeHandler.setSelectionMode(cy);
+    }
 
     // reset mode properties of cy
     appUtilities.setScratch(cy, 'modeProperties', modeProperties);
