@@ -712,6 +712,13 @@ inspectorUtilities.handleSBGNInspector = function () {
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-image', value: selected.data('background-image')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-fit', value: selected.data('background-fit')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-position-x', value: selected.data('background-position-x')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-position-y', value: selected.data('background-position-y')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-width', value: selected.data('background-width')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-height', value: selected.data('background-height')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-image-opacity', value: selected.data('background-image-opacity')}});
 
           // Push this action if the node can be multimer
           if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
@@ -746,6 +753,13 @@ inspectorUtilities.handleSBGNInspector = function () {
           defaults['border-color'] = selected.data('border-color');
           defaults['background-color'] = selected.data('background-color');
           defaults['background-opacity'] = selected.data('background-opacity');
+          defaults['background-image'] = selected.data('background-image');
+          defaults['background-fit'] = selected.data('background-fit');
+          defaults['background-position-x'] = selected.data('background-position-x');
+          defaults['background-position-y'] = selected.data('background-position-y');
+          defaults['background-width'] = selected.data('background-width');
+          defaults['background-height'] = selected.data('background-height');
+          defaults['background-image-opacity'] = selected.data('background-image-opacity');
 
           // Set this if the node can be multimer
           if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
