@@ -40,10 +40,16 @@
             A: Newt supports <a target="_blank" href="http://sbgn.github.io/sbgn/">SBGN</a> Process Description (PD) and Activity Flow (AF) maps. Users are allowed mix up notation from these two languages at the cost of disabled validation checks during creation.</p>
 
 	  <p> <b>Q: What format does Newt use to save maps?</b><br>
-            A: Newt can read <a target="_blank" href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a>files. Models constructed with Newt can be saved in SBGNML or can be exported as static (raster or vector) images. In addition, the user can import AF models from simple, tab-delimited text files. We plan to support importing <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> file format in the near future.</p>
+            A: Newt can read <a target="_blank" href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Models constructed with Newt can be saved in rich SBGNML, with extensions for style and annotations ("File | Save..."), or in plain SBGNML ("Export | SBGN-ML Plain"). In addition, the user can import AF models from simple, tab-delimited text files. We also support importing from and exporting to <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> file format. Maps can also be exported as static (raster or vector) images. </p>
 
 	  <p> <b>Q: Does Newt save styling information (e.g. color, font, custom annotations, etc.)?</b><br>
-            A: Yes, any style information per node/edge/map is saved as an extension to standard SBGNML. Thus, you can restore such information when you load such files back up on Newt but such information might be lost when imported to other tools (since style information isn't supported by standard SBGNML).</p>
+            A: Yes, any style information per node/edge/map is saved as an extension to standard SBGNML. Thus, you can restore such information when you load such files back up on Newt but such information might be lost when imported to other tools (since style information isn't supported by standard SBGNML). If a tool is having difficulty importing our files, try exporting in plain SBGNML ("Export | SBGN-ML Plain"). </p>
+
+	  <p> <b>Q: How can I create a reversible reaction in Newt?</b><br>
+            A: Use of a single process for a reversible reaction is <a href="http://sbgn.github.io/sbgn/faq/pd#can-we-represent-reversible-interactions-with-a-single-association-or-dissociation-glyphs">a controversial issue</a> since it can lead to ambiguities when the process has modulators. In Newt, if a map's type is PD, it doesn't allow connecting production edges to both the input and the output ports of a process. However, one can create reversible reactions using a template ("Edit | Add from Template..."), but Newt will set the map type as "Unknown" and further editing will not go through validation checks. </p>
+
+	  <p> <b>Q: Can I overlay experimental data on my maps in Newt?</b><br>
+            A: Support for this using a simple tab-delimited file is planned for a release in near future. </p>
 
 	  <p> <b>Q: Can I deploy my own Newt instance?</b><br>
             A: Yes, it is rather straightforward to <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">deploy</a> and maintain a local copy of Newt. In addition, Newt is specifically designed to be easily customizable (modify menu and toolbars, and other functionality) and embeddable within your own website. </p>
