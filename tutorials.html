@@ -88,7 +88,11 @@
 
         <h2 id="file-operations">File operations
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
-        <p> Newt can read and write an extended version of <a href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Extension includes style of map objects (such as color and font), custom properties (e.g. Uniprot ID associated with a macromolecule), and hidden/collapsed map content; thus, such information is restored upon save-reload. </p>
+        <p> Newt can read and write an extended version of <a href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Extension includes style of map objects (such as color, font, and optional background image), custom properties (e.g. Uniprot ID associated with a macromolecule), and hidden/collapsed map content; thus, such information is restored upon save-reload. </p>
+
+        <p> If you'd like a version without such style and annotation information to perhaps exchange maps with other tools such as <a href="https://immersive-analytics.infotech.monash.edu/vanted/addons/sbgn-ed/">SBGN-ED</a>, however, you could get your map in plain SBGNML using "Export | SBGN-ML Plain". </p>
+
+        <p> Newt supports import and export facilities from and to <a href="http://www.celldesigner.org/">CellDesigner</a> through "{Import,Export} | CellDesigner File".</p>
 
         <p> In addition, AF models can be imported to Newt from simple tab-delimited files. An example model formatted in this manner follows:</p>
 
@@ -110,7 +114,7 @@
         <h2 id="convenient-editing">Convenient editing
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit menu. </p>
+        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit menu. However, note that if you create a reversible reaction, which requires using input ports of a process node for production edges, the map type will be set to "Unknown", and no validation checks for linking nodes will be performed for subsequent operations. </p>
 
         <table class="plaintable">
           <tr>
@@ -213,18 +217,26 @@ Grid and guideline support is rather involved and can be customized using the se
 
         <span class="right"><a href="images/PC-query-result.png" data-lightbox="image-layout" data-title="Partial view of the result of sample query"><img src="images/PC-query-result.png" style="height: 240px;" /></a></span>
         <span class="right"><a href="images/PC-query-dialog.png" data-lightbox="image-layout" data-title="Sample Paths Between query"><img src="images/PC-query-dialog.png" style="height: 140px;" /></a></span>
-        <p> Currently available type of queries include Query by URI and Query Paths Between (find the paths between specific source set of states or entities within the boundaries of a specified length limit) as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a> [<a href="#references">7</a>]. Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
+        <p> Currently available type of queries include
+<ul>
+ <li> Query Paths Between (find all paths of specified length limit between any two entities of the specified set),
+ <li> Query From To.. (find all paths of specified length limit from a set of source entities to a set of target entities),
+ <li> Common Stream (find molecules within the specified distance that are affecting or affected by a specific set of molecules in common),
+ <li> Neighborhood (find the neighbors of an entity within a certain distance), and
+ <li> Query by URI
+</ul> 
+as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a> [<a href="#references">7</a>]. For instance, Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
 
         <h2 id="references">References
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        [1] M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "SBGNViz: a tool for visualization and complexity management of SBGN process description maps", PLoS ONE, 10(6), e0128985, 2015. 
-        <br><br>[2] U. Dogrusoz and B. Genc, "A Multi-Graph Approach to Complexity Management in Interactive Graph Visualization", Computers & Graphics, vol. 30/1, pp. 86-97, 2006.
-        <br><br>[3] U. Dogrusoz and B. Genc, "A Framework for Complexity Management in Graph Visualization", LNCS, vol. 2528, pp. 368-369, 2002.
-        <br><br>[4] B. Genc, U. Dogrusoz, "An Algorithm for Automated Layout of Process Description Maps Drawn in SBGN", Bioinformatics, 32(1), pp. 77-84, 2016.
-        <br><br>[5] U. Dogrusoz, E. Giral, A. Cetintas, A. Civril, and E. Demir, "A Layout Algorithm For Undirected Compound Graphs", Information Sciences, 179, pp. 980-994, 2009.
+        [1] M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "<a href="https://doi.org/10.1371/journal.pone.0128985">SBGNViz: a tool for visualization and complexity management of SBGN process description maps</a>", PLoS ONE, 2015. 
+        <br><br>[2] U. Dogrusoz and B. Genc, "<a href="https://doi.org/10.1016/j.cag.2005.10.015">A Multi-Graph Approach to Complexity Management in Interactive Graph Visualization</a>", Computers & Graphics, 2006.
+        <br><br>[3] U. Dogrusoz, A. Karacelik, I. Safarli, H. Balci, L. Dervishi, M.C. Siper, "<a href="https://doi.org/10.1371/journal.pone.0197238">Efficient methods and readily customizable libraries for managing complexity of large networks</a>", PLoS ONE, 2018.
+        <br><br>[4] B. Genc, U. Dogrusoz, "<a href="https://doi.org/10.1093/bioinformatics/btv516">An Algorithm for Automated Layout of Process Description Maps Drawn in SBGN</a>", Bioinformatics, 32(1), pp. 77-84, 2016.
+        <br><br>[5] U. Dogrusoz, E. Giral, A. Cetintas, A. Civril, and E. Demir, "<a href="https://doi.org/10.1016/j.ins.2008.11.017">A Layout Algorithm For Undirected Compound Graphs</a>", Information Sciences, 2009.
         <br><br>[6] U. Dogrusoz, E. Giral, A. Cetintas, A. Civril, and E. Demir, "A Compound Graph Layout Algorithm for Biological Pathways", LNCS, vol. 3383, pp. 442-447, 2004.
-        <br><br>[7] U. Dogrusoz, A. Cetintas, E. Demir, and O. Babur, "Algorithms for Effective Querying of Compound Graph-Based Pathway Databases", BMC Bioinformatics, 10:376, 2009. 
+        <br><br>[7] U. Dogrusoz, A. Cetintas, E. Demir, and O. Babur, "<a href="https://doi.org/10.1186/1471-2105-10-376">Algorithms for Effective Querying of Compound Graph-Based Pathway Databases</a>", BMC Bioinformatics, 10:376, 2009. 
  
       </div>
     </div>
