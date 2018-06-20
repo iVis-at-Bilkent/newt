@@ -403,7 +403,7 @@ appUtilities.createNewNetwork = function () {
     }
   });
 
-  //set border-width of selected nodes to a fixed value 
+  //set border-width of selected nodes to a fixed value
   newInst.getCy().style()
     .selector('node:selected')
     .css({
@@ -1833,7 +1833,7 @@ appUtilities.getAllStyles = function (_cy) {
           var colorID = colorUsed[validColor];
           props[properties[cssProp]] = colorID;
         }
-        //if it is background image property, replace it with corresponding id 
+        //if it is background image property, replace it with corresponding id
         else if(cssProp == 'background-image'){
           var imgs = appUtilities.elementValidImages(element);
           props[properties[cssProp]] = appUtilities.elementValidImageIDs(imgs, imagesUsed);
@@ -1947,7 +1947,7 @@ appUtilities.elementValidImageIDs = function (imgs, imagesUsed) {
   else{
     return undefined;
   }
-} 
+}
 
 /*
   returns: {
@@ -1997,7 +1997,7 @@ appUtilities.getImagesFromElements = function (nodes) {
       }
     });
   }
-  
+
   return imageHash;
 }
 
@@ -2319,17 +2319,12 @@ appUtilities.relocateInfoBoxes = function(node){
 }
 
 //Checks whether a info-box is selected in a given mouse position
-appUtilities.checkMouseContainsInfoBox = function(unit, mouse_down_x, mouse_down_y){
+appUtilities.checkMouseContainsInfoBox = function(cy, unit, mouse_down_x, mouse_down_y){
   var box = unit.bbox;
   var instance = this.getActiveSbgnvizInstance();
-  var cy = this.getActiveCy();
   var coords = instance.classes.AuxiliaryUnit.getAbsoluteCoord(unit, cy);
-  var x_loc = coords.x;
-  var y_loc = coords.y;
-  var width = box.w;
-  var height = box.h;
-  return ((mouse_down_x >= x_loc - width / 2) && (mouse_down_x <= x_loc + width / 2))
-    && ( (mouse_down_y >= y_loc - height / 2) && (mouse_down_y <= y_loc + height / 2));
+  return ((mouse_down_x >= coords.x - box.w / 2) && (mouse_down_x <= coords.x + box.w / 2))
+    && ( (mouse_down_y >= coords.y - box.h / 2) && (mouse_down_y <= coords.y + box.h / 2));
 }
 
 //Enables info-box appUtilities.RelocationHandler
@@ -2340,64 +2335,29 @@ appUtilities.enableInfoBoxRelocation = function(node){
   node.data("border-color", "#d67614");
   var selectedBox;
   var anchorSide;
-  cy.on('mousedown', appUtilities.RelocationHandler = function(event){
+  $(document).on('mousedown', appUtilities.RelocationHandler = function(event){
       //Check whether event contained by infobox of a node
       //Lock the node so that it won't change position when
       //Info boxes are dragged
       cy.autounselectify(true);
       cy.autolock(true);
-      var top = node.data('auxunitlayouts').top;
-      var bottom = node.data('auxunitlayouts').bottom;
-      var right = node.data('auxunitlayouts').right;
-      var left = node.data('auxunitlayouts').left;
+      var statesandinfos = node.data('statesandinfos');
+
+      //Check if event is on cy canvas
+      var containerPos = $(cy.container()).position();
+      var containerWidth = $(cy.container()).width();
+      var containerHeight = $(cy.container()).height();
 
       //Get mouse positions
-      var mouse_down_x = event.position.x;
-      var mouse_down_y = event.position.y;
+      var mouse_down_x = (event.pageX - containerPos.left - cy.pan().x)/cy.zoom();
+      var mouse_down_y = (event.pageY - containerPos.top - cy.pan().y)/cy.zoom();
       var instance = appUtilities.getActiveSbgnvizInstance();
       var oldAnchorSide; //Hold old anchor side to modify units
-      //Check top units
-      if (top !== undefined && selectedBox === undefined) {
-        var units = top.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
-        }
-      }
-      //Check right units
-      if (right !== undefined && selectedBox === undefined) {
-        var units = right.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
-        }
-      }
-      //Check bottom units
-      if (bottom !== undefined && selectedBox === undefined) {
-        var units = bottom.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
-        }
-      }
-      //Check left units
-      if (left !== undefined && selectedBox === undefined) {
-        var units = left.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
+      for (var i = 0; i < statesandinfos.length && selectedBox === undefined; i++) {
+        if(appUtilities.checkMouseContainsInfoBox(cy, statesandinfos[i], mouse_down_x, mouse_down_y)) {
+          selectedBox = statesandinfos[i];
+          oldAnchorSide = selectedBox.anchorSide;
+          break;
         }
       }
 
@@ -2578,8 +2538,11 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
         last_mouse_x = drag_x;
         last_mouse_y = drag_y;
-        cy.style().update();
-      });
+
+        //TODO find a way to elimate this redundancy to update info-box positions
+        node.data('border-width', node.data('border-width'));
+        
+    });
 
     cy.on("mouseup", function(event){
       appUtilities.disableInfoBoxRelocationDrag();
@@ -2601,7 +2564,7 @@ appUtilities.disableInfoBoxRelocation = function(color){
   var cy = this.getActiveCy();
   if (appUtilities.RelocationHandler !== undefined) {
     //Remove listerners
-    cy.off('mousedown', appUtilities.RelocationHandler);
+    $(document).off('mousedown', appUtilities.RelocationHandler);
     appUtilities.disableInfoBoxRelocationDrag();
     if (relocatedNode !== undefined) {
       relocatedNode.data("border-color", color);
@@ -2609,9 +2572,9 @@ appUtilities.disableInfoBoxRelocation = function(color){
     }
     relocatedNode = undefined;
     appUtilities.RelocationHandler = undefined;
-    cy.autolock(false); //Make the nodes moveable again
-    cy.autounselectify(false); //Make the nodes selectable
   }
+  cy.autolock(false); //Make the nodes moveable again
+  cy.autounselectify(false); //Make the nodes selectable
 
 };
 
