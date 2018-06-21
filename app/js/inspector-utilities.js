@@ -28,10 +28,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       var state = stateAndInfos[i];
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
-                + width / 5 + "px;' value='" + (state.state.value || '') + "'/>"
+                + width / 5 + "px;' value='" + (state.state.value || '').replace(/'/g, "&#039;") + "'/>"
                 + "<span style='font: 10pt Helvetica;'>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
-                + width / 2.5 + "px;' value='" + (state.state.variable || '')
+                + width / 2.5 + "px;' value='" + (state.state.variable || '').replace(/'/g, "&#039;")
                 + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
@@ -44,23 +44,14 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       }
       else if (state.clazz == "unit of information") {
 
-        function escapeHTML(str) {
-          return str
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
-       }
-
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
         if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + escapeHTML(state.label.text || '')
+                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;")
 			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
         } else {
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + escapeHTML(state.label.text || '') + "'/></div>");
+                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;") + "'/></div>");
         }
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
@@ -224,18 +215,9 @@ inspectorUtilities.handleSBGNInspector = function () {
         return ele.height();
       });
 
-      function escapeHTML(str) {
-       return str
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
-     }
-
       if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Label</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + escapeHTML(sbgnlabel)
+              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel.replace(/'/g, "&#039;")
               + "'/>" + "</td></tr>";
       }
 
