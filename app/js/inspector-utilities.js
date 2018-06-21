@@ -43,14 +43,24 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         });
       }
       else if (state.clazz == "unit of information") {
+
+        function escapeHTML(str) {
+          return str
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+       }
+
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
         if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '')
+                  + total + "px;' value='" + escapeHTML(state.label.text || '')
 			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
         } else {
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '') + "'/></div>");
+                  + total + "px;' value='" + escapeHTML(state.label.text || '') + "'/></div>");
         }
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
@@ -214,9 +224,18 @@ inspectorUtilities.handleSBGNInspector = function () {
         return ele.height();
       });
 
+      function escapeHTML(str) {
+       return str
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+     }
+
       if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Label</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel
+              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + escapeHTML(sbgnlabel)
               + "'/>" + "</td></tr>";
       }
 
@@ -300,7 +319,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                       + 'style="' + display + '"'
                       + "src='app/img/toolbar/delete-simple.svg'>";
 
-        var options = '<option value="none">None</option>'  
+        var options = '<option value="none">None</option>'
                     + '<option value="fit" selected>Fit</option>'
                     + '<option value="cover">Cover</option>'
                     + '<option value="contain">Contain</option>';
@@ -308,7 +327,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles[0]);
           options = tmp ? tmp : options;
         }
-        
+
         var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px;'
                         + display + '">'
                         + options
@@ -572,7 +591,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         if(!fit){
           return;
         }
-        
+
         var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
         if(!bgObj || bgObj === {}){
           return;
@@ -581,7 +600,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         var bgWidth = "auto";
         var bgHeight = "auto";
         var bgFit = "none";
-        
+
         if(fit === "fit"){
           bgWidth = "100%";
           bgHeight = "100%";
@@ -607,7 +626,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           var bgWidth = "auto";
           var bgHeight = "auto";
           var bgFit = "none";
-          
+
           if(fit === "fit"){
             bgWidth = "100%";
             bgHeight = "100%";
@@ -616,7 +635,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           else if(fit){
             bgFit = fit;
           }
-          
+
           var bgObj = {
             'background-image' : url,
             'background-fit' : bgFit,
@@ -657,7 +676,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           var bgWidth = "auto";
           var bgHeight = "auto";
           var bgFit = "none";
-          
+
           if(fit === "fit"){
             bgWidth = "100%";
             bgHeight = "100%";
@@ -666,7 +685,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           else if(fit){
             bgFit = fit;
           }
-          
+
           var bgObj = {
             'background-image' : file,
             'background-fit' : bgFit,
