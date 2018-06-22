@@ -22,9 +22,13 @@ cd newt
 npm install 
 ```
 
-- Running the tool
+- Running the tool (Windows)
 ```
 npm run debug-build
+```
+- Running the tool (MacOS/Linux)
+```
+sudo npm run debug-build
 ```
 
 Then, open a web browser and navigate to localhost. Please note that the default port is 80 but you can run this application in another port by setting 'port' environment variable.
