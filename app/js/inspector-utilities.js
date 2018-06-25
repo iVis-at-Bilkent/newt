@@ -191,7 +191,6 @@ inspectorUtilities.handleSBGNInspector = function () {
     var commonSBGNCardinality;
     var imageFromURL;
     var imageURL;
-    var hasBackgroundImage;
 
     if (allNodes) {
       type = "node";
@@ -293,8 +292,9 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "..." + "<label/>" + "</td></tr>";
       }
 
-      if(selectedEles.length == 1){
-        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+      if(selectedEles.length > 0){
+
+        var hasBackgroundImage = chiseInstance.elementUtilities.anyHasBackgroundImage(selectedEles);
         var display = hasBackgroundImage ? "" : 'display: none;';
 
         var removeBtn = "<img id='inspector-delete-bg' width='16px' height='16px' class='pointer-button' "
@@ -305,8 +305,9 @@ inspectorUtilities.handleSBGNInspector = function () {
                     + '<option value="fit" selected>Fit</option>'
                     + '<option value="cover">Cover</option>'
                     + '<option value="contain">Contain</option>';
+
         if(hasBackgroundImage){
-          var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles[0]);
+          var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles);
           options = tmp ? tmp : options;
         }
 
@@ -466,7 +467,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             + ">" + setAsDefaultTitle + "</button></div>";
     }
 
-//    html += "<hr class='inspector-divider' style='border-width: 3px;'>";
+    // html += "<hr class='inspector-divider' style='border-width: 3px;'>";
     html += "</div>";
 
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
@@ -526,7 +527,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       function updateBackgroundDeleteInfo(){
-        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
+        var hasBackgroundImage = chiseInstance.elementUtilities.anyHasBackgroundImage(selectedEles);
 
         if(!hasBackgroundImage){
           $('#inspector-delete-bg').hide();
@@ -536,7 +537,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         else{
           $('#inspector-delete-bg').show();
           $('#inspector-fit-selector').show();
-          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
           imageURL = imageURL ? imageURL : "";
           $('#inspector-image-url').val(imageURL);
         }
@@ -549,7 +550,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       $('#inspector-image-from-url').on('click', function() {
         imageFromURL = !imageFromURL;
         if(imageFromURL){
-          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
           imageURL = imageURL ? imageURL : "";
 
           $('#inspector-image-url').val(imageURL);
@@ -563,7 +564,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-delete-bg').on('click', function () {
-        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
         chiseInstance.removeBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
@@ -573,9 +574,9 @@ inspectorUtilities.handleSBGNInspector = function () {
         if(!fit){
           return;
         }
-
-        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
-        if(!bgObj || bgObj === {}){
+        
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
+        if(bgObj === undefined){
           return;
         }
 
@@ -592,16 +593,22 @@ inspectorUtilities.handleSBGNInspector = function () {
           bgFit = fit;
         }
 
-        bgObj['background-fit'] = bgFit;
-        bgObj['background-width'] = bgWidth;
-        bgObj['background-height'] = bgHeight;
+        selectedEles.forEach(function(ele){
+          if(bgObj[ele.data('id')]){
+            var obj = bgObj[ele.data('id')];
+            obj['background-fit'] = bgFit;
+            obj['background-width'] = bgWidth;
+            obj['background-height'] = bgHeight;
+          }
+        });
+        
         chiseInstance.updateBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
 
       $("#inspector-image-url").on('change', function () {
         var url = $(this).val().trim();
-        imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
+        imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
 
         if (url && imageURL !== url){
           var fit = $("#inspector-fit-selector").val();
@@ -614,10 +621,9 @@ inspectorUtilities.handleSBGNInspector = function () {
             bgHeight = "100%";
             bgFit = "none"
           }
-          else if(fit){
+          else if(fit)
             bgFit = fit;
-          }
-
+          
           var bgObj = {
             'background-image' : url,
             'background-fit' : bgFit,
@@ -629,20 +635,19 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : false
           };
 
-          // If there is a background image change it, don't add
-          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
-            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
-            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          var obj = {};
+          for(var i = 0; i < selectedEles.length; i++){
+            var node = selectedEles[i];
+            if(node.isNode())
+              obj[node.data('id')] = bgObj;
           }
-          else{
-            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
-          }
-        }
-      });
 
-      $("#inspector-image-url").on('keydown', function (e) {
-        if (e.keyCode == 13 ){
-          $(this).trigger("change");
+          // If there is a background image change it, don't add
+          var oldObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
+          if(oldObj !== undefined)
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, obj, updateBackgroundDeleteInfo, promptInvalidImage);
+          else
+            chiseInstance.addBackgroundImage(selectedEles, obj, updateBackgroundDeleteInfo, promptInvalidImage);
         }
       });
 
@@ -679,14 +684,19 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : true
           };
 
+          var obj = {};
+          for(var i = 0; i < selectedEles.length; i++){
+            var node = selectedEles[i];
+            if(node.isNode())
+              obj[node.data('id')] = bgObj;
+          }
+
           // If there is a background image change it, don't add
-          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
-            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
-            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
-          }
-          else{
-            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
-          }
+          var oldObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
+          if(oldObj !== undefined)
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, obj, updateBackgroundDeleteInfo, promptInvalidImage);
+          else
+            chiseInstance.addBackgroundImage(selectedEles, obj, updateBackgroundDeleteInfo, promptInvalidImage);
           $(this).val("");
         }
       });
