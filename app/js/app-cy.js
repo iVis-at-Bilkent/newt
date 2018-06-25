@@ -644,6 +644,12 @@ module.exports = function (chiseInstance) {
       cy.nodeResize('get').refreshGrapples();
     });
 
+    //Changes arrow-scale of pasted edges
+    cy.on("pasteClonedElements", function(e) {
+        var currentArrowScale = Number($('#arrow-scale').val());
+        cy.edges(":selected").style('arrow-scale', currentArrowScale);
+    });
+
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus(cy);
 
