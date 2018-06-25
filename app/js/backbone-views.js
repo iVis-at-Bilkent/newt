@@ -2070,6 +2070,10 @@ var ReactionTemplateView = Backbone.View.extend({
       }
       chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
 
+      //Update arrow-scale of newly added edges (newly added elements are selected so we just update selected edges)
+      var currentArrowScale = Number($('#arrow-scale').val());
+      cy.edges(":selected").style('arrow-scale', currentArrowScale);
+
       $(self.el).modal('toggle');
     });
 
