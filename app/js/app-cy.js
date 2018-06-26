@@ -644,6 +644,12 @@ module.exports = function (chiseInstance) {
       cy.nodeResize('get').refreshGrapples();
     });
 
+    //Updates arrow-scale of edges after expand
+    cy.on("expandcollapse.afterexpand", function(event) {
+        var currentArrowScale = Number($('#arrow-scale').val());
+        cy.edges().style('arrow-scale', currentArrowScale);
+    });
+
     //Changes arrow-scale of pasted edges
     cy.on("pasteClonedElements", function(e) {
         var currentArrowScale = Number($('#arrow-scale').val());
