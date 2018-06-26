@@ -31,7 +31,7 @@ npm run debug-build
 sudo npm run debug-build
 ```
 
-Then, open a web browser and navigate to localhost. Please note that the default port is 80 but you can run this application in another port by setting 'port' environment variable.
+Then, open a web browser and navigate to localhost. Please note that the default port is 80 but you might have to run this application in another port such as 8080 in some platforms by setting 'port' environment variable.
 
 ## Credits
 
