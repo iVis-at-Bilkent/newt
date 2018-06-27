@@ -242,6 +242,15 @@ module.exports = function (chiseInstance) {
         }
       },
       {
+        id: 'ctx-menu-rearrange-info-boxes',
+        content: 'Tile Information Boxes',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
+        onClickFunction: function (event){
+          var cyTarget = event.target || event.cyTarget;
+          chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget, cy, undefined, true); //Force fit
+        }
+      },
+      {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
@@ -634,7 +643,7 @@ module.exports = function (chiseInstance) {
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(ele);
+        chiseInstance.classes.AuxUnitLayout.fitUnits(node, cy);
       });
       cy.style().update();
     });
@@ -1140,7 +1149,7 @@ module.exports = function (chiseInstance) {
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(ele);
+        chiseInstance.classes.AuxUnitLayout.fitUnits(node, cy);
       });
     });
 
@@ -1176,15 +1185,12 @@ module.exports = function (chiseInstance) {
       keys.forEach(function(key){
         opt[key] = node.data(key);
       });
-      
+
       node.style(opt);
     });
   }
 
   function updateInfoBox(node) {
-    for(var location in node.data('auxunitlayouts')) {
-      chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location], cy);
-    }
-    chiseInstance.classes.AuxUnitLayout.fitUnits(node); //Fit infoBoxes
+    chiseInstance.classes.AuxUnitLayout.fitUnits(node, cy); //Fit infoBoxes
   }
 };
