@@ -643,7 +643,7 @@ module.exports = function (chiseInstance) {
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(node, cy);
+        chiseInstance.classes.AuxUnitLayout.fitUnits(ele, cy);
       });
       cy.style().update();
     });
