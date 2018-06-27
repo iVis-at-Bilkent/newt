@@ -1149,7 +1149,7 @@ module.exports = function (chiseInstance) {
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(node, cy);
+        chiseInstance.classes.AuxUnitLayout.fitUnits(ele, cy);
       });
     });
 
@@ -1174,10 +1174,10 @@ module.exports = function (chiseInstance) {
     // update background image style when data changes
     cy.on('data', 'node', function(event) {
       var node = event.target;
-      
+
       if(!node || !node.isNode())
         return;
-      
+
       var keys = ['background-image', 'background-fit', 'background-image-opacity',
         'background-position-x', 'background-position-y', 'background-height', 'background-width'];
 
