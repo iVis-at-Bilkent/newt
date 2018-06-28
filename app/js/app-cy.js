@@ -58,7 +58,13 @@ module.exports = function (chiseInstance) {
       // whether to initilize bend points on creation of this extension automatically
       initBendPointsAutomatically: false,
       // function to validate edge source and target on reconnection
-      validateEdge: chiseInstance.elementUtilities.validateArrowEnds
+      validateEdge: chiseInstance.elementUtilities.validateArrowEnds,
+      // function to be called on invalid edge reconnection
+      actOnUnsuccessfulReconnection: function () {
+        if(appUtilities.promptInvalidEdgeWarning){
+          appUtilities.promptInvalidEdgeWarning.render();
+        }
+      }
     });
 
     contextMenus.appendMenuItems([
@@ -513,18 +519,21 @@ module.exports = function (chiseInstance) {
           var source = sourceNode.id();
           var target = targetNodes[0].id();
           var edgeParams = {class : modeProperties.selectedEdgeType, language : modeProperties.selectedEdgeLanguage};
+          var promptInvalidEdge = function(){
+            appUtilities.promptInvalidEdgeWarning.render();
+          }
 
           // if added edge changes map type, warn user
           if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chiseInstance.addEdge(source, target, edgeParams);
+                chiseInstance.addEdge(source, target, edgeParams, undefined, undefined, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             });
           }
           else{
-              chiseInstance.addEdge(source, target, edgeParams);
+              chiseInstance.addEdge(source, target, edgeParams,  undefined, undefined, promptInvalidEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
