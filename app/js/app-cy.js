@@ -56,7 +56,9 @@ module.exports = function (chiseInstance) {
       // title of remove bend point menu item
       removeBendMenuItemTitle: "Delete Bend Point",
       // whether to initilize bend points on creation of this extension automatically
-      initBendPointsAutomatically: false
+      initBendPointsAutomatically: false,
+      // function to validate edge source and target on reconnection
+      validateEdge: chiseInstance.elementUtilities.validateArrowEnds
     });
 
     contextMenus.appendMenuItems([
