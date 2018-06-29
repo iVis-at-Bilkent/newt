@@ -251,12 +251,13 @@ module.exports = function (chiseInstance) {
         }
       },
       {
-        id: 'ctx-menu-rearrange-info-boxes',
+        id: 'ctx-menu-tile-info-boxes',
         content: 'Tile Information Boxes',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
-          chiseInstance.classes.AuxUnitLayout.fitUnits(cyTarget, cy, undefined, true); //Force fit
+          var locations = ["top", "bottom", "right", "left"]; //Fit all locations
+          chiseInstance.fitUnits(cyTarget, locations); //Force fit
         }
       },
       {
@@ -655,7 +656,8 @@ module.exports = function (chiseInstance) {
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(ele, cy);
+        var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
+        chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
       });
       cy.style().update();
     });
@@ -1161,7 +1163,8 @@ module.exports = function (chiseInstance) {
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(ele, cy);
+        var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
+        chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
       });
     });
 
@@ -1203,6 +1206,7 @@ module.exports = function (chiseInstance) {
   }
 
   function updateInfoBox(node) {
-    chiseInstance.classes.AuxUnitLayout.fitUnits(node, cy); //Fit infoBoxes
+    var locations = chiseInstance.elementUtilities.checkFit(node); //Fit all locations
+    chiseInstance.elementUtilities.fitUnits(node, locations); //Force fit
   }
 };

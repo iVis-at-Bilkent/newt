@@ -2566,6 +2566,12 @@ appUtilities.disableInfoBoxRelocationDrag = function(){
   }
 };
 
+appUtilities.modifyUnits = function (node, ele, anchorSide) {
+    var cy = this.getActiveCy();
+    var instance = appUtilities.getActiveSbgnvizInstance();
+    instance.classes.AuxUnitLayout.modifyUnits(node, ele, anchorSide, cy); //Modify aux unit layouts
+};
+
 appUtilities.resizeNodesToContent = function(collection){
 
     var chiseInstance = appUtilities.getActiveChiseInstance();
