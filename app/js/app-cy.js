@@ -35,6 +35,7 @@ module.exports = function (chiseInstance) {
     ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
+    ur.action("relocateInfoBoxes", appUndoActions.relocateInfoBoxes, appUndoActions.relocateInfoBoxes);
   }
 
   function cytoscapeExtensionsAndContextMenu() {

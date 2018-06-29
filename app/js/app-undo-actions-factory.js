@@ -110,5 +110,46 @@ module.exports = function (cy) {
     return result;
   }
 
+  //For each unit, save the positions and sides of respective elements
+  appUndoActions.relocateInfoBoxes = function(param) {
+    var node = param.node;
+    var color = param.color;
+    var data = param.data;
+    var tempColor = node.data("border-color");
+    var tempData = [];
+
+    var index = 0;
+    node.data('statesandinfos').forEach( function(ele) {
+      tempData.push({
+        x: ele.bbox.x,
+        y: ele.bbox.y,
+        anchorSide: ele.anchorSide,
+      });
+      if (data !== undefined) {
+        ele.bbox.x = data[index].x;
+        ele.bbox.y = data[index].y
+        var anchorSide = ele.anchorSide;
+        ele.anchorSide = data[index].anchorSide;
+        appUtilities.modifyUnits(node, ele, anchorSide);
+        index++;
+      }
+    });
+
+    if (data === undefined) {
+      appUtilities.enableInfoBoxRelocation(node);
+    }
+    else {
+      appUtilities.disableInfoBoxRelocation(color);
+    }
+
+    var result = {
+      node: node,
+      color: tempColor,
+      data: tempData
+    };
+
+    return result;
+  }
+
   return appUndoActions;
 };

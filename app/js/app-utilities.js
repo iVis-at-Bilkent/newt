@@ -2314,8 +2314,12 @@ appUtilities.relocateInfoBoxes = function(node){
     return;
   }
   cy.nodes(":selected").unselect();
+
   relocatedNode = node;
-  this.enableInfoBoxRelocation(node);
+
+  //Call undo-redo relocate function
+  cy.undoRedo().do("relocateInfoBoxes", {node});
+
 }
 
 //Checks whether a info-box is selected in a given mouse position
