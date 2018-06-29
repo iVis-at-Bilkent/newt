@@ -723,7 +723,7 @@ appUtilities.defaultGeneralProperties = {
   allowCompoundNodeResize: false,
   mapColorScheme: 'black_white',
   defaultInfoboxHeight: 12,
-  defaultInfoboxWidth: 8,
+  defaultInfoboxWidth: 12,
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: ""
