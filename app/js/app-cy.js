@@ -358,7 +358,7 @@ module.exports = function (chiseInstance) {
       node: {
         highlighted: { // styles for when nodes are highlighted.
           'border-width': function(ele) {
-            return parseFloat(ele.data('border-width')) + 2;
+            return Math.max(parseFloat(ele.data('border-width')) + 2, 3);
           },
           'border-color': highlightColor
         },

@@ -410,7 +410,13 @@ appUtilities.createNewNetwork = function () {
       'border-width': function(ele){
         return Math.max(ele.data("border-width"), 3);
       }
-    });
+    })
+    .selector('edge:selected')
+    .css({
+      'width': function(ele){
+        return Math.max(ele.data("width"), 3);
+      }
+    });;
 
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
@@ -2336,7 +2342,9 @@ appUtilities.enableInfoBoxRelocation = function(node){
   var cy = this.getActiveCy();
   //Disable box movements
   var oldColor = node.data("border-color");
+  var oldWidth = node.data("border-width");
   node.data("border-color", "#d67614");
+  node.data("border-width", Math.max(3, oldWidth));
   var selectedBox;
   var anchorSide;
   $(document).on('mousedown', appUtilities.RelocationHandler = function(event){
@@ -2369,6 +2377,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
       if (selectedBox === undefined) {
         appUtilities.disableInfoBoxRelocation();
         node.data("border-color", oldColor);
+        node.data("border-width", oldWidth);
         relocatedNode = undefined;
         return;
       }
@@ -2389,6 +2398,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
         if (selectedBox === undefined) { //If selected box is undefined somehow abort
           appUtilities.disableInfoBoxRelocation();
           node.data("border-color", oldColor);
+          node.data("border-width", oldWidth);
           relocatedNode = undefined;
           return;
         }
