@@ -1207,6 +1207,20 @@ module.exports = function (chiseInstance) {
 
   function updateInfoBox(node) {
     var locations = chiseInstance.elementUtilities.checkFit(node); //Fit all locations
-    chiseInstance.elementUtilities.fitUnits(node, locations); //Force fit
+    if (locations !== undefined && locations.length > 0) {
+      var firstTime = true;
+      for (var i = 0; i < locations.length; i++) {
+        if( chiseInstance.classes.AuxUnitLayout.getCurrentGap(locations[i]) < chiseInstance.classes.AuxUnitLayout.unitGap) {
+          firstTime = false;
+          break;
+        }
+      }
+      if (firstTime === true) {
+        chiseInstance.fitUnits(node, locations); //Force fit
+      }
+      else {
+        chiseInstance.elementUtilities.fitUnits(node, locations);
+      }
+    }
   }
 };
