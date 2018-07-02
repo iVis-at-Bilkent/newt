@@ -435,7 +435,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           + "'/>" + "</td></tr>";
 
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
-          + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
+          + "<input id='inspector-edge-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
       if(commonLineWidth){
           html += " value='" + parseFloat(commonLineWidth) + "'";
       }
