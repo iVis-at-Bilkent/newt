@@ -65,7 +65,9 @@ module.exports = function (chiseInstance) {
         if(appUtilities.promptInvalidEdgeWarning){
           appUtilities.promptInvalidEdgeWarning.render();
         }
-      }
+      },
+      // function that handles edge reconnection
+      handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
     });
 
     contextMenus.appendMenuItems([
@@ -528,14 +530,14 @@ module.exports = function (chiseInstance) {
           // if added edge changes map type, warn user
           if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chiseInstance.addEdge(source, target, edgeParams, undefined, undefined, promptInvalidEdge);
+                chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             });
           }
           else{
-              chiseInstance.addEdge(source, target, edgeParams,  undefined, undefined, promptInvalidEdge);
+              chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
