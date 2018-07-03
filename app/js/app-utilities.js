@@ -2374,7 +2374,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
       }
 
       //If no info-box found abort
-      if (selectedBox === undefined) {
+      if (selectedBox === undefined || event.which !== 1) { //If event is not a right left click disable relocation
         appUtilities.disableInfoBoxRelocation();
         node.data("border-color", oldColor);
         node.data("border-width", oldWidth);
