@@ -38,6 +38,12 @@ tutorial.introduction = function(checkCookie){
                 <hr style="margin:10px auto;">\n\
                 <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/2IK6RPZDy-A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
                 <br><p style="text-align:center; margin: 0px; font-size: 12px;">Learn Basics - Object property editing, compound structures, and persistency</p>'               
+      },
+      {
+        intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
+                <hr style="margin:10px auto;">\n\
+                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/Vc_qI7zjFqI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
+                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Learn Basics - Templates, complexity management, highlighting, CellDesigner import, PC queries, annotation, search, and marquee zoom</p>'               
       }
     ],
     showStepNumbers: false,
@@ -191,23 +197,26 @@ tutorial.UIGuide = function(){
 function setStyleBeforeIntroduction(){
   var ss = document.styleSheets;
   for (var i=0; i<ss.length; i++) {
-      var rules = ss[i].cssRules || ss[i].rules;
-      for (var j=0; j<rules.length; j++) {
-          if (rules[j].selectorText === ".introjs-tooltip") {
-              rules[j].style.maxWidth = "600px";
-              rules[j].style.borderRadius = "4px"; 
-              rules[j].style.boxShadow = "rgba(0, 0, 0, 0.4) 0px 1px 10px";
-          }
-          if (rules[j].selectorText === ".introjs-tooltipbuttons") {
-            rules[j].style.textAlign = "right";
-          }
-          if (rules[j].selectorText === ".introjs-button") {
-            rules[j].style.font = "12px/normal sans-serif";
-          }
-          if (rules[j].selectorText === ".introjsFloatingElement") {
-            rules[j].style.top = "50%";
-          }
+    var rules = ss[i].cssRules || ss[i].rules;
+    for (var j=0; j<rules.length; j++) {
+      if (rules[j].selectorText === ".introjs-overlay") {
+        rules[j].style.background = "#000";
       }
+      if (rules[j].selectorText === ".introjs-tooltip") {
+        rules[j].style.maxWidth = "600px";
+        rules[j].style.borderRadius = "4px"; 
+        rules[j].style.boxShadow = "rgba(0, 0, 0, 0.4) 0px 1px 10px";
+      }
+      if (rules[j].selectorText === ".introjs-tooltipbuttons") {
+        rules[j].style.textAlign = "right";
+      }
+      if (rules[j].selectorText === ".introjs-button") {
+        rules[j].style.font = "12px/normal sans-serif";
+      }
+      if (rules[j].selectorText === ".introjsFloatingElement") {
+        rules[j].style.top = "50%";
+      }
+    }
   }
   
   setStyleRule('.introjs-tooltip', 'opacity: 1 !important');
@@ -246,29 +255,29 @@ function setStyleDuringIntroduction(isChecked) {
 function setStyleBeforeUIGuide(){
   var ss = document.styleSheets;
   for (var i=0; i<ss.length; i++) {
-      var rules = ss[i].cssRules || ss[i].rules;
-      for (var j=0; j<rules.length; j++) {
-          if (rules[j].selectorText === ".introjs-overlay") {
-              rules[j].style.background = "#000";
-          }
-          if (rules[j].selectorText === ".introjs-tooltip") {
-              rules[j].style.maxWidth = "400px";
-              rules[j].style.minWidth = "320px";
-              rules[j].style.opacity = "";
-              rules[j].style.display = "";
-              rules[j].style.borderRadius = "6px"; 
-              rules[j].style.boxShadow = "inset 0px 0px 0px 2px #0B9BCD";
-          }
-          if (rules[j].selectorText === ".introjs-tooltipbuttons") {
-            rules[j].style.textAlign = "center";
-          }
-          if (rules[j].selectorText === ".introjs-button") {
-            rules[j].style.font = "12px/normal sans-serif";
-          }
-          if (rules[j].selectorText === ".introjsFloatingElement") {
-            rules[j].style.top = "0%";
-          }
+    var rules = ss[i].cssRules || ss[i].rules;
+    for (var j=0; j<rules.length; j++) {
+      if (rules[j].selectorText === ".introjs-overlay") {
+        rules[j].style.background = "#000";
       }
+      if (rules[j].selectorText === ".introjs-tooltip") {
+        rules[j].style.maxWidth = "400px";
+        rules[j].style.minWidth = "320px";
+        rules[j].style.opacity = "";
+        rules[j].style.display = "";
+        rules[j].style.borderRadius = "6px"; 
+        rules[j].style.boxShadow = "inset 0px 0px 0px 2px #0B9BCD";
+      }
+      if (rules[j].selectorText === ".introjs-tooltipbuttons") {
+        rules[j].style.textAlign = "center";
+      }
+      if (rules[j].selectorText === ".introjs-button") {
+        rules[j].style.font = "12px/normal sans-serif";
+      }
+      if (rules[j].selectorText === ".introjsFloatingElement") {
+        rules[j].style.top = "0%";
+      }
+    }
   }
 
   setStyleRule('.introjsFloatingElement', 'margin-top:144px !important');
@@ -279,16 +288,16 @@ setStyleRule = function(selector, rule) {
   var stylesheet = document.styleSheets[(document.styleSheets.length - 1)];
 
   for( var i in document.styleSheets ){
-      if( document.styleSheets[i].href && document.styleSheets[i].href.indexOf("introjs.css") ) {
-          stylesheet = document.styleSheets[i];
-          break;
-      }
+    if( document.styleSheets[i].href && document.styleSheets[i].href.indexOf("introjs.css") ) {
+      stylesheet = document.styleSheets[i];
+      break;
+    }
   }
 
   if( stylesheet.addRule ){
-      stylesheet.addRule(selector, rule);
+    stylesheet.addRule(selector, rule);
   } else if( stylesheet.insertRule ){
-      stylesheet.insertRule(selector + ' { ' + rule + ' }', stylesheet.cssRules.length);
+    stylesheet.insertRule(selector + ' { ' + rule + ' }', stylesheet.cssRules.length);
   }
 };
 
@@ -303,13 +312,13 @@ function getCookie(cname) {
   var name = cname + "=";
   var ca = document.cookie.split(';');
   for(var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-      }
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+    }
   }
   return "";
 }
