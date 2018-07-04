@@ -320,8 +320,8 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "<div><button id='inspector-image-file' class='btn btn-default' style='width: "
               + width / 1.5 + "px;padding:2px;margin-bottom:2px;padding-bottom=0.5px;padding-top=0.5px;'>Choose...</button>"
               + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
-              + "<input type='checkbox' id='inspector-image-from-url' style='margin-left: 3px;'>"
-              + "<font class='sbgn-label-font'>URL</font></div>"
+              + "<label class='sbgn-label-font' style='font-weight: initial;'>"
+              + "<input type='checkbox' id='inspector-image-from-url' style='margin: 0px 1px 0px 5px; vertical-align:text-bottom;'>URL</label>"
               + fitSelection
               + removeBtn
               + "</td></tr><input id='inspector-image-load' type='file' style='display:none;'>";
