@@ -916,7 +916,9 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-border-width").change( function () {
-        chiseInstance.changeData(selectedEles, "border-width", $("#inspector-border-width").val());
+        var inputVal = $("#inspector-border-width").val();
+        if(inputVal || inputVal === 0)
+          chiseInstance.changeData(selectedEles, "border-width", inputVal);
       });
 
       // Open font properties dialog
