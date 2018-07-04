@@ -18,6 +18,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="node_modules/intro.js/introjs.css" rel="stylesheet" type="text/css" />
         <!--cytoscape.js plugins -->
         <link href="node_modules/cytoscape-panzoom/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
         <link href="node_modules/cytoscape-panzoom/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css" />
@@ -293,6 +294,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#" id="quick-help">Quick Help</a></li>
+                                <li><a href="#" id="quick-tutorial">Quick Tutorial</a></li>
+                                <li><a href="#" id="ui-guide">UI Guide</a></li>
                                 <li><a href="#" id="about">About</a></li>
                             </ul>
                         </li>
@@ -318,7 +321,7 @@
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="select-mode-icon" src="app/img/toolbar/select.svg" title="Select / Edit" ></div>
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" ></div>
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-edge-mode-icon" src="app/img/edges/consumption.svg" title="Create a new Consumption" ></div>
-                    <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to area specified by Shift + drag" ></div>
+                    <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to area specified by Shift + left click and drag" ></div>
 
                     <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
 
@@ -409,7 +412,7 @@
                     <div id="sbgn-inspector">
                         <ul class="nav nav-tabs">
                             <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Object</a></li>
-							              <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map"><img width="18px" height="18px" src="app/img/toolbar/settings.svg"/>&nbsp;Map</a></li>
+                            <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map"><img width="18px" height="18px" src="app/img/toolbar/settings.svg"/>&nbsp;Map</a></li>
                             <li id='inspector-palette-tab' class="chise-tab active"><a data-toggle="tab" href="#sbgn-inspector-palette"><img width="18px" height="18px" src="app/img/tabs/palette.svg"/>&nbsp;Palette</a></li>
                         </ul>
                         <div class="tab-content">
