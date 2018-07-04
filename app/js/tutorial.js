@@ -89,14 +89,14 @@ tutorial.UIGuide = function(){
       {
         element: document.getElementsByClassName('inside-menu')[1],
         intro: '<p style="font-size:12px; margin:0px;">This group is for edit operations</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0 0 5px;">Newt can be on one of the following forms at any time:<br>\n\
+                <p style="font-size:12px; margin:0 0 5px;">Newt can be in one of the following modes at any given time:<br>\n\
                 <b>- Select/Edit: </b>Select a particular object to edit its properties.<br>\n\
                 <b>- Add Node: </b>Create a new node with type that is currently selected in the palette.<br>\n\
                 <b>- Add Edge: </b>Create a new edge with type that is currently selected in the palette.<br>\n\
                 <b>- Activate Marquee Zoom: </b>Mark the zoom area by using Shift + left click and drag.</p>\n\
-                <p style="font-size:12px; margin:0px;">Remaining Edit Operations:<br>\n\
+                <p style="font-size:12px; margin:0px;">Remaining edit operations:<br>\n\
                 <b>- Delete Selected Simple</b><br>\n\
-                <b>- Delete Selected Smart: </b>Perform deletion on selected objects and associated neighbors leaving the map intact wrt. the map type.<br>\n\
+                <b>- Delete Selected Smart: </b>Perform deletion on selected objects and associated neighbors, leaving the map intact w.r.t. the map type.<br>\n\
                 <b>- Undo<br>- Redo</b></p>'             
       },
       {
@@ -108,9 +108,8 @@ tutorial.UIGuide = function(){
       {
         element: document.getElementsByClassName('inside-menu')[3],
         intro: '<p style="font-size:12px; margin:0px;">This group is for highlight operations</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0px;"><b>- Search: </b>Search and highlight all nodes with given keywords. \n\
-                For PD maps, result includes all processes that these nodes are involved in.<br>\n\
-                <b>- Highlight Selected<br>- Remove Highlights</b></p>'
+                <p style="font-size:12px; margin:0px;"><b>- Search<br>\n\
+                - Highlight Selected<br>- Remove Highlights</b></p>'
       },
       {
         element: document.getElementsByClassName('inside-menu')[4],
@@ -130,7 +129,7 @@ tutorial.UIGuide = function(){
       {
         element: document.getElementById('sbgn-inspector'),
         intro: '<p style="font-size:12px; margin:0px;">Object Properties</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0px;">This tab is activated when a particular object(s) is selected by left-clicking on it, \n\
+                <p style="font-size:12px; margin:0px;">This tab is activated when a particular object is selected by left-clicking on it, \n\
                 enabling inspection and editing of the style of the underlying object from border color to font type and size to state variables and custom annotations.\n\
                 Multiple objects can be selected and edited simultaneously.</p>'
       },
@@ -145,9 +144,9 @@ tutorial.UIGuide = function(){
         element: document.getElementById('sbgn-inspector'),
         intro: '<p style="font-size:12px; margin:0px;">Palette</p><hr style="margin: 5px auto;">\n\
                 <p style="font-size:12px; margin:0px;">  \n\
-                Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection mode. \n\
+                Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection (Select / Edit) mode. \n\
                 Clicking twice on a tool, on the other hand, puts you in sustained mode so that the user can create multiple objects of that type in a row.\n\
-                When in select/edit mode, nodes can also be created by simply clicking on a particular node/edge and dragging onto the canvas.</p>'
+                When in Select / Edit mode, nodes can also be created by simply clicking on a particular node/edge and dragging onto the canvas.</p>'
       }
     ],
     showStepNumbers: false,
