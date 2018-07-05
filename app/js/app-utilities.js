@@ -1986,7 +1986,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
   }
 
   cy.undoRedo().do("batch", actions);
-  console.log(newColorScheme);
 
   // ensure the menu is updated accordingly
   if(scheme_type == 'solid'){
