@@ -444,7 +444,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
       self.changeStyle('solid'); // default color scheme style
-      current_scheme_id = 'black_white';
+      current_scheme_id = defaultColorScheme;
       appUtilities.applyMapColorScheme(defaultColorScheme, 'solid'); // default color scheme
     });
 
