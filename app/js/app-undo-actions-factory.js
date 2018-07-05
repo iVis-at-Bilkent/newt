@@ -84,22 +84,67 @@ module.exports = function (cy) {
     // get 'currentGeneralProperties' for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
+
     var result = {
       value: currentGeneralProperties.mapColorScheme,
       self: param.self
     };
+    if(param.scheme_type == '3D'){
+      if (param.self){
+        var inverted_id = param.self.schemes_3D[param.value].invert;
+        param.self.schemes_3D[param.value].isDisplayed = true;
 
-    if (param.self){
-      var inverted_id = param.self.schemes[param.value].invert;
-      param.self.schemes[param.value].isDisplayed = true;
 
-      if (inverted_id)
-        param.self.schemes[inverted_id].isDisplayed = false;
+        if (inverted_id)
+          param.self.schemes_3D[inverted_id].isDisplayed = false;
 
-      param.self.render();
-    } else {
-      document.getElementById("map-color-scheme_preview_" + result.value).style.border = "1px solid";
-    };
+        param.self.changeStyle(param.scheme_type);
+        param.self.render();
+      } else {
+
+        $('#3D-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
+
+      };
+    }
+    else if(param.scheme_type == 'gradient'){
+      if (param.self){
+        var inverted_id = param.self.schemes_gradient[param.value].invert;
+        param.self.schemes_gradient[param.value].isDisplayed = true;
+
+
+        if (inverted_id)
+          param.self.schemes_gradient[inverted_id].isDisplayed = false;
+
+        param.self.changeStyle(param.scheme_type);
+        param.self.render();
+      } else {
+
+        $('#gradient-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
+
+      };
+    }
+    else{
+
+      if (param.self){
+        var inverted_id = param.self.schemes[param.value].invert;
+        param.self.schemes[param.value].isDisplayed = true;
+
+
+        if (inverted_id){
+          param.self.schemes[inverted_id].isDisplayed = false;
+        }
+
+
+        param.self.changeStyle(param.scheme_type);
+        param.self.render();
+      } else {
+
+        $('#solid-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
+
+      };
+    }
+
+
 
     document.getElementById("map-color-scheme_preview_" + param.value).style.border = "3px solid";
     currentGeneralProperties.mapColorScheme = param.value;

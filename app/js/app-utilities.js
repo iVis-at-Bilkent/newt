@@ -7,7 +7,7 @@ var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
 
-var appUtilities = {};
+appUtilities = {};
 
 // Get the whole scratchpad reserved for newt (on an element or core) or get a single property of it
 appUtilities.getScratch = function (cyOrEle, name) {
@@ -1041,6 +1041,69 @@ appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
     }
 };
 
+appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
+  '#000000' : 'http://newteditor.org/color-scheme-images/bw2_gradient.png',
+  '#80cdc1' : 'http://newteditor.org/color-scheme-images/gb5_gradient.png',
+  '#92c5de' : 'http://newteditor.org/color-scheme-images/rb5_gradient.png',
+  '#9ecae1' : 'http://newteditor.org/color-scheme-images/blue4_gradient.png',
+  '#a6dba0' : 'http://newteditor.org/color-scheme-images/pg1_gradient.png',
+  '#b2abd2' : 'http://newteditor.org/color-scheme-images/pb5_gradient.png',
+  '#bababa' : 'http://newteditor.org/color-scheme-images/gr1_gradient.png',
+  '#bdbdbd' : 'http://newteditor.org/color-scheme-images/grey4_gradient.png',
+  '#c2a5cf' : 'http://newteditor.org/color-scheme-images/pg5_gradient.png',
+  '#c6dbef' : 'http://newteditor.org/color-scheme-images/blue3_gradient.png',
+  '#c7eae5' : 'http://newteditor.org/color-scheme-images/gb4_gradient.png',
+  '#d1e5f0' : 'http://newteditor.org/color-scheme-images/rb4_gradient.png',
+  '#d8daeb' : 'http://newteditor.org/color-scheme-images/pb4_gradient.png',
+  '#d9d9d9' : 'http://newteditor.org/color-scheme-images/grey3_gradient.png',
+  '#d9f0d3' : 'http://newteditor.org/color-scheme-images/pg2_gradient.png',
+  '#dfc27d' : 'http://newteditor.org/color-scheme-images/gb1_gradient.png',
+  '#e0e0e0' : 'http://newteditor.org/color-scheme-images/gr2_gradient.png',
+  '#e7d4e8' : 'http://newteditor.org/color-scheme-images/pg4_gradient.png',
+  '#eff3ff' : 'http://newteditor.org/color-scheme-images/blue2_gradient.png',
+  '#f0f0f0' : 'http://newteditor.org/color-scheme-images/grey2_gradient.png',
+  '#f4a582' : 'http://newteditor.org/color-scheme-images/rb1_gradient.png',
+  '#f5f5f5' : 'http://newteditor.org/color-scheme-images/gb3_gradient.png',
+  '#f6e8c3' : 'http://newteditor.org/color-scheme-images/gb2_gradient.png',
+  '#f7f7f7' : 'http://newteditor.org/color-scheme-images/rb3_gradient.png',
+  '#fdb863' : 'http://newteditor.org/color-scheme-images/pb1_gradient.png',
+  '#fddbc7' : 'http://newteditor.org/color-scheme-images/rb2_gradient.png',
+  '#fee0b6' : 'http://newteditor.org/color-scheme-images/pb2_gradient.png',
+  '#ffffff' : 'http://newteditor.org/color-scheme-images/bw1_gradient.png',
+};
+
+appUtilities.colorCodeTo3DImage = colorCodeTo3DImage ={
+  '#000000' : 'http://newteditor.org/color-scheme-images/bw2_3d.png',
+  '#80cdc1' : 'http://newteditor.org/color-scheme-images/gb5_3d.png',
+  '#92c5de' : 'http://newteditor.org/color-scheme-images/rb5_3d.png',
+  '#9ecae1' : 'http://newteditor.org/color-scheme-images/blue4_3d.png',
+  '#a6dba0' : 'http://newteditor.org/color-scheme-images/pg1_3d.png',
+  '#b2abd2' : 'http://newteditor.org/color-scheme-images/pb5_3d.png',
+  '#bababa' : 'http://newteditor.org/color-scheme-images/gr1_3d.png',
+  '#bdbdbd' : 'http://newteditor.org/color-scheme-images/grey4_3d.png',
+  '#c2a5cf' : 'http://newteditor.org/color-scheme-images/pg5_3d.png',
+  '#c6dbef' : 'http://newteditor.org/color-scheme-images/blue3_3d.png',
+  '#c7eae5' : 'http://newteditor.org/color-scheme-images/gb4_3d.png',
+  '#d1e5f0' : 'http://newteditor.org/color-scheme-images/rb4_3d.png',
+  '#d8daeb' : 'http://newteditor.org/color-scheme-images/pb4_3d.png',
+  '#d9d9d9' : 'http://newteditor.org/color-scheme-images/grey3_3d.png',
+  '#d9f0d3' : 'http://newteditor.org/color-scheme-images/pg2_3d.png',
+  '#dfc27d' : 'http://newteditor.org/color-scheme-images/gb1_3d.png',
+  '#e0e0e0' : 'http://newteditor.org/color-scheme-images/gr2_3d.png',
+  '#e7d4e8' : 'http://newteditor.org/color-scheme-images/pg4_3d.png',
+  '#eff3ff' : 'http://newteditor.org/color-scheme-images/blue2_3d.png',
+  '#f0f0f0' : 'http://newteditor.org/color-scheme-images/grey2_3d.png',
+  '#f4a582' : 'http://newteditor.org/color-scheme-images/rb1_3d.png',
+  '#f5f5f5' : 'http://newteditor.org/color-scheme-images/gb3_3d.png',
+  '#f6e8c3' : 'http://newteditor.org/color-scheme-images/gb2_3d.png',
+  '#f7f7f7' : 'http://newteditor.org/color-scheme-images/rb3_3d.png',
+  '#fdb863' : 'http://newteditor.org/color-scheme-images/pb1_3d.png',
+  '#fddbc7' : 'http://newteditor.org/color-scheme-images/rb2_3d.png',
+  '#fee0b6' : 'http://newteditor.org/color-scheme-images/pb2_3d.png',
+  '#ffffff' : 'http://newteditor.org/color-scheme-images/bw1_3d.png',
+};
+
+
 appUtilities.mapColorSchemes = mapColorSchemes = {
   'black_white': {
     'name': 'Black and white',
@@ -1700,6 +1763,49 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'BA complex': '#e0e0e0',
       'delay': '#ffffff'
     }
+  },
+  'pure_white': {
+    'name': 'Pure White',
+    'preview': ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+    'values': {
+      'unspecified entity': '#ffffff',
+      'simple chemical': '#ffffff',
+      'macromolecule': '#ffffff',
+      'nucleic acid feature': '#ffffff',
+      'perturbing agent': '#ffffff',
+      'source and sink': '#ffffff',
+      'complex': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#ffffff',
+      'tag': '#ffffff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#ffffff',
+      'submap': '#ffffff',
+      // AF
+      'BA plain': '#ffffff',
+      'BA unspecified entity': '#ffffff',
+      'BA simple chemical': '#ffffff',
+      'BA macromolecule': '#ffffff',
+      'BA nucleic acid feature': '#ffffff',
+      'BA perturbing agent': '#ffffff',
+      'BA complex': '#ffffff',
+      'delay': '#ffffff'
+    }
   }
 };
 // set multimers to be the same as their original elements
@@ -1723,37 +1829,176 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
   return result;
 };
 
+// go through eles, mapping the id of these elements to URL's that were mapped to their data().class color.
+// this function can only be used with gradient and 3D type color schemes since, solid color schemes does
+// not have a default background image.
+// classMap is of the form: {ele.data().class: value}
+// return object of the form: {ele.id: value}
+appUtilities.mapEleClassToBackgroundImage = function(eles, classMap, scheme_type){
+  result = {};
+  if(scheme_type == 'gradient'){
+    for( var i = 0; i < eles.length; i++ ){
+      ele = eles[i];
+      result[ele.id()] = colorCodeToGradientImage[ classMap[ele.data().class] ];
+    }
+  }
+  else if (scheme_type == '3D'){
+    for( var i = 0; i < eles.length; i++ ){
+      ele = eles[i];
+      result[ele.id()] = colorCodeTo3DImage[ classMap[ele.data().class ]];
+    }
+  }
+  return result;
+}
+
+appUtilities.mapBgImgCoverToEle = function(){
+  result = {};
+  for( var i = 0; i < eles.length; i++ ){
+    ele = eles[i];
+    result[ele.id()] = classMap[ele.data().class];
+  }
+  return result;
+}
+
 // change the global style of the map by applying the current color scheme
-appUtilities.applyMapColorScheme = function(newColorScheme, self, _cy) {
+appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
 
   // if _cy param is set use it else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCy();
-
   var eles = cy.nodes();
-  var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
-  var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
-  var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
-  var chiseInstance = appUtilities.getActiveChiseInstance();
 
-  var actions = [];
-  // edit style of the current map elements
-  actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
-  // collapsed nodes' style should also be changed, special edge case
-  actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+  if(scheme_type == 'solid'){
 
-  actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self}});
-  // set to be the default as well
-  for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
-    classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
-    // nodeClass may not be defined in the defaultProperties (for edges, for example)
-    if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
-      actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+    var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
+    var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
+    var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+    var clearBgImg = function(eles){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = '';
+      }
+      return result;
+    };
+    
+    var actions = [];
+
+    //first clear the background images of already present elementUtilities
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: clearBgImg(eles)}});
+    // edit style of the current map elements
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+    // collapsed nodes' style should also be changed, special edge case
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+
+    actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
+
+    // set to be the default as well
+    for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
+      classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
+      // nodeClass may not be defined in the defaultProperties (for edges, for example)
+      if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+      }
+    }
+
+  }
+
+  // no need to handle 3D and Gradient color schemes separately
+  else {
+
+    var colorIDMap = appUtilities.mapEleClassToId(eles, mapColorSchemes['pure_white']['values']);
+    var backgroundImgMap = appUtilities.mapEleClassToBackgroundImage(eles, mapColorSchemes[newColorScheme]['values'], scheme_type);
+    var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
+    var collapsedColorIDMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes['pure_white']['values']);
+    var collapsedBackgroundImgMap = appUtilities.mapEleClassToBackgroundImage(collapsedChildren, mapColorSchemes[newColorScheme]['values'], scheme_type);
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+    //utility functions to set background image Properties
+    var mapCovertoBgFit = function(eles){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = 'none';
+      }
+      return result;
+    };
+
+    var map1toBgOpacity = function(eles){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = '1';
+      }
+      return result;
+    };
+
+    var mapPercentToPosition = function(eles,percent){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = percent + '%';
+      }
+      return result;
+    };
+
+    var actions = [];
+
+    // edit style of the current map elements
+    // change background color of the current map elements to #ffffff
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: colorIDMap}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: backgroundImgMap}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-opacity', valueMap: map1toBgOpacity(eles)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
+
+    // collapsed nodes' style should also be changed, special edge case
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedColorIDMap}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: collapsedBackgroundImgMap}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-opacity', valueMap: map1toBgOpacity(eles)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
+
+
+    actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
+
+    // set to be the default as well
+    for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
+      classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
+      classBgImg = scheme_type == 'gradient' ? colorCodeToGradientImage[mapColorSchemes[newColorScheme]['values'][nodeClass]] : colorCodeTo3DImage[mapColorSchemes[newColorScheme]['values'][nodeClass]];
+      // nodeClass may not be defined in the defaultProperties (for edges, for example)
+      if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: 'cover'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-opacity', value: '1'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: '50%'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: '50%'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: classBgImg}});
+      }
     }
   }
 
   cy.undoRedo().do("batch", actions);
+  console.log(newColorScheme);
+
   // ensure the menu is updated accordingly
-  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "3px solid";
+  if(scheme_type == 'solid'){
+    $('#solid-color-scheme-display').find('#map-color-scheme_preview_' + newColorScheme).css( "border", "3px solid" );
+  }
+  else if(scheme_type == 'gradient'){
+    $('#gradient-color-scheme-display').find('#map-color-scheme_preview_' + newColorScheme).css( "border", "3px solid" );
+  }
+  else{
+    $('#3D-color-scheme-display').find('#map-color-scheme_preview_' + newColorScheme).css( "border", "3px solid" );
+  }
+
 };
 
 // the 3 following functions are related to the handling of the dynamic image
@@ -2529,7 +2774,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
         //TODO find a way to elimate this redundancy to update info-box positions
         node.data('border-width', node.data('border-width'));
-        
+
     });
 
     cy.on("mouseup", function(event){

@@ -352,13 +352,18 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     var self = this;
 
     var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    // it was a dead variable that is just set somewhere but never utilized
-    // var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
+
+    // in order to preserve the id of the current color scheme
+    var current_scheme_id;
 
     var schemes = appUtilities.mapColorSchemes;
+    var schemes_gradient = Object.assign({}, schemes);
+    var schemes_3D = Object.assign({}, schemes);
     var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
+
     for(var id in schemes) {
       var previewColors = schemes[id].preview;
+
       if(invertedScheme[id]) { // this scheme is the complement of a previous one
         schemes[id].isDisplayed = false;
       }
@@ -366,51 +371,111 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         invertedScheme[schemes[id].invert] = id;
         schemes[id].isDisplayed = true;
       }
+      else if(schemes[id].name == 'Pure White'){ // pure white is not an option for color scheme selection
+        continue;
+      }
       else { // scheme has no complement, display it normally
         schemes[id].isDisplayed = true;
       }
 
+      schemes_gradient[id] = Object.assign({}, schemes[id]);
+      schemes_3D[id] = Object.assign({}, schemes[id]);
+
       var colorCount = previewColors.length;
-      var html = "";
+      var htmlS  = "";
+      var htmlG  = "";
+      var html3D = "";
+
       for(var i=0; i < colorCount; i++) {
         var color = chroma(previewColors[i]);
         // apply default alpha of elements backgrounds, to make it look more like reality
         color = color.alpha(0.5);
         var prct = 100/colorCount;
-        html += "<div style='float:left; width:"+prct+"%; height:100%; background-color:"+color.css()+"'></div>";
+        htmlS += "<div style='float:left; width:"+prct+"%; height:100%; background-color:"+color.css()+"'></div>";
+        htmlG += "<img style='float:left; width:"+prct+"%; height:100%;' src='" + appUtilities.colorCodeToGradientImage[previewColors[i]] + "'>";
+        html3D += "<img style='float:left; width:"+prct+"%; height:100%;' src='" + appUtilities.colorCodeTo3DImage[previewColors[i]] + "'>";
       }
-      schemes[id].previewHtml = html;
+
+      schemes[id].previewHtml = htmlS;
+      schemes_gradient[id].previewHtml = htmlG;
+      schemes_3D[id].previewHtml = html3D;
+
     }
+
     this.schemes = schemes;
+    this.schemes_gradient = schemes_gradient;
+    this.schemes_3D = schemes_3D;
 
     // attach events
     $(document).on("click", "div.color-scheme-choice", function (evt) {
       var raw_id = $(this).attr('id');
+      var scheme_type = $("#color-scheme-inspector-style-select").val();
+      var scheme_id = raw_id.replace("map-color-scheme_", "");
+      current_scheme_id = scheme_id;
+      appUtilities.applyMapColorScheme(scheme_id,scheme_type);
+    });
+
+    $(document).on("change", "#color-scheme-inspector-style-select", function (event) {
+
+      var cy = appUtilities.getActiveCy();
+      current_scheme_id = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
+
+      //predetermine the color scheme id before style change
+      var raw_id = $('div.color-scheme-choice').attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
 
-      // currentScheme = scheme_id;
-      appUtilities.applyMapColorScheme(scheme_id);
+      //change the currently displayed html element
+      var selected_style = $(this).val();
+      self.changeStyle(selected_style);
+
+      //change to the color scheme choice to match current style
+      appUtilities.applyMapColorScheme(current_scheme_id,selected_style);
     });
 
     $(document).on("click", "div.color-scheme-invert-button", function (evt) {
       var raw_id = $(this).attr('id');
+      var scheme_type = $("#color-scheme-inspector-style-select").val();
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
-
-      // currentScheme = inverted_id;
-      appUtilities.applyMapColorScheme(inverted_id, self);
+      current_scheme_id = scheme_id;
+      appUtilities.applyMapColorScheme(inverted_id, scheme_type, self);
+      self.changeStyle(scheme_type);
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
-      appUtilities.applyMapColorScheme(defaultColorScheme);
-      // currentScheme = defaultColorScheme;
+      self.changeStyle('solid'); // default color scheme style
+      current_scheme_id = 'black_white';
+      appUtilities.applyMapColorScheme(defaultColorScheme, 'solid'); // default color scheme
     });
+
+  },
+  changeStyle: function(style) {
+
+    if(style == 'solid'){
+      $('#solid-color-scheme-display').show();
+      $('#gradient-color-scheme-display').hide();
+      $('#3D-color-scheme-display').hide();
+      $("#color-scheme-inspector-style-select").val("solid");
+    }
+    else if(style == 'gradient'){
+      $('#solid-color-scheme-display').hide();
+      $('#gradient-color-scheme-display').show();
+      $('#3D-color-scheme-display').hide();
+      $("#color-scheme-inspector-style-select").val("gradient");
+    }
+    else if(style == '3D'){
+      $('#solid-color-scheme-display').hide();
+      $('#gradient-color-scheme-display').hide();
+      $('#3D-color-scheme-display').show();
+      $("#color-scheme-inspector-style-select").val("3D");
+    }
 
   },
   render: function () {
     this.template = _.template($("#color-scheme-inspector-template").html());
     this.$el.empty();
-    this.$el.html(this.template({schemes: this.schemes}));
+    this.$el.html(this.template({schemes: this.schemes, schemes_gradient: this.schemes_gradient, schemes_3D: this.schemes_3D}));
+
     return this;
   }
 });
