@@ -65,7 +65,9 @@ module.exports = function (chiseInstance) {
         if(appUtilities.promptInvalidEdgeWarning){
           appUtilities.promptInvalidEdgeWarning.render();
         }
-      }
+      },
+      // function that handles edge reconnection
+      handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
     });
 
     contextMenus.appendMenuItems([
@@ -528,14 +530,14 @@ module.exports = function (chiseInstance) {
           // if added edge changes map type, warn user
           if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chiseInstance.addEdge(source, target, edgeParams, undefined, undefined, promptInvalidEdge);
+                chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             });
           }
           else{
-              chiseInstance.addEdge(source, target, edgeParams,  undefined, undefined, promptInvalidEdge);
+              chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
@@ -897,7 +899,8 @@ module.exports = function (chiseInstance) {
       // else just create a new node with the current selected node type
       if (modeProperties.mode === "add-node-mode") {
         var nodeType = modeProperties.selectedNodeType;
-
+        var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
+        
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
@@ -906,7 +909,7 @@ module.exports = function (chiseInstance) {
                 && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) ||
                   convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
         {
-          chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+          chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeParams);
           //Update arrow scale of the newly added edge
           var addedEdge = cy.elements()[cy.elements().length - 1];
           var currentArrowScale = Number($('#arrow-scale').val());
@@ -951,7 +954,6 @@ module.exports = function (chiseInstance) {
 
           // If the parent class is valid for the node type then add the node
           if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
-            var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
 
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){

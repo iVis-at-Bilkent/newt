@@ -5,6 +5,7 @@ var appUndoActionsFactory = require('./app-undo-actions-factory');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
+var tutorial = require('./tutorial');
 var _ = require('underscore');
 
 // Handle sbgnviz menu functions which are to be triggered on events
@@ -13,6 +14,8 @@ module.exports = function() {
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+
+  tutorial.introduction(true);
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -455,6 +458,16 @@ module.exports = function() {
     $("#quick-help, #quick-help-icon").click(function (e) {
       e.preventDefault();
       $("#quick_help_modal").modal('show');
+    });
+    
+    $("#quick-tutorial").click(function (e) {
+      e.preventDefault();
+      tutorial.introduction();
+    });
+   
+    $("#ui-guide").click(function (e) {
+      e.preventDefault();
+      tutorial.UIGuide();
     });
 
     $("#about, #about-icon").click(function (e) {
