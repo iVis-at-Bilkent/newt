@@ -7,7 +7,7 @@ var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
 
-appUtilities = {};
+var appUtilities = {};
 
 // Get the whole scratchpad reserved for newt (on an element or core) or get a single property of it
 appUtilities.getScratch = function (cyOrEle, name) {
