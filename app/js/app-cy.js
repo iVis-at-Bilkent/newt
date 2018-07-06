@@ -777,14 +777,17 @@ module.exports = function (chiseInstance) {
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
       if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
+        
         var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
-        if (appUtilities.ctrlKeyDown && self != cy && nodes.intersection(self).length === 0) {
-          
-          var newParent = self;
-
-          if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
-              && newParent.data("class") != "submap") {
-            newParent = newParent.parent()[0];
+        if (appUtilities.ctrlKeyDown ) {
+          var newParent;
+          if( self != cy) {
+            newParent = self;
+            nodes = nodes.difference(newParent);
+            if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
+                && newParent.data("class") != "submap") {
+              newParent = newParent.parent()[0];
+            }
           }
 
           appUtilities.disableDragAndDropMode(cy);
