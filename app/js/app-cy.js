@@ -777,27 +777,33 @@ module.exports = function (chiseInstance) {
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
       if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
-        var newParent;
-        if (self != cy) {
-          newParent = self;
+        var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
+        if (appUtilities.ctrlKeyDown && self != cy && nodes.intersection(self).length === 0) {
+          
+          var newParent = self;
 
           if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
               && newParent.data("class") != "submap") {
             newParent = newParent.parent()[0];
           }
+
+          appUtilities.disableDragAndDropMode(cy);
+
+          var pos = event.position || event.cyPosition;
+          var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+
+          chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
+                                pos.y - dragAndDropStartPosition.y);
+
+          appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
+          appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
         }
-        var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
+        else {
+          appUtilities.disableDragAndDropMode(cy);
+          appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
+          appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
+        }
 
-        appUtilities.disableDragAndDropMode(cy);
-
-        var pos = event.position || event.cyPosition;
-        var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
-
-        chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
-                              pos.y - dragAndDropStartPosition.y);
-
-        appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
-        appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
       }
 
       nodeToUnselect = undefined;
