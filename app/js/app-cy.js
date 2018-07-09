@@ -761,6 +761,7 @@ module.exports = function (chiseInstance) {
       if (modeProperties.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
         appUtilities.enableDragAndDropMode(cy);
 
+        appUtilities.setScratch(cy, 'mouseDownNode', self);
         var nodesToDragAndDrop = self.union(cy.nodes(':selected'));
         appUtilities.setScratch(cy, 'nodesToDragAndDrop', nodesToDragAndDrop);
 
@@ -792,11 +793,14 @@ module.exports = function (chiseInstance) {
 
           appUtilities.disableDragAndDropMode(cy);
 
+          var mouseDownNode = appUtilities.getScratch(cy, 'mouseDownNode');
           var pos = event.position || event.cyPosition;
           var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
 
-          chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
-                                pos.y - dragAndDropStartPosition.y);
+          if( self == cy ||(self != cy && mouseDownNode != self)){
+            chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
+                                  pos.y - dragAndDropStartPosition.y);
+          }
 
           appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
           appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
