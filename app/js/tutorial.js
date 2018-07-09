@@ -54,17 +54,17 @@ tutorial.introduction = function(checkCookie){
   intro.goToStepNumber(currentStep+1).start();  
   
   // necessary style changes at the beginning of the introduction
-  setStyleDuringIntroduction(introCookie);
+  setStyleDuringIntroduction(intro, introCookie);
 
   // set cookies accordingly before exit
   intro.onbeforeexit(function() {
     if(document.getElementsByClassName('introCheck')[0].checked) {
-      setCookie("showIntro", false, 365);
+      setCookie("showIntro", false, 180);
     }
     else {
-      setCookie("showIntro", "", 365);
+      setCookie("showIntro", "", 180);
     }
-    setCookie("stepNo", this._currentStep, 365);
+    setCookie("stepNo", this._currentStep, 180);
   });
 };
 
@@ -120,7 +120,7 @@ tutorial.UIGuide = function(){
       {
         element: document.getElementsByClassName('inside-menu')[4],
         intro: '<p style="font-size:12px; margin:0px;">This group is for layout operations</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0px;"><b>- Perform Layout<br>- Layout Properties</b></pr>'
+                <p style="font-size:12px; margin:0px;"><b>- Perform Layout<br>- Layout Properties</b></p>'
       },
       {
         element: document.getElementsByClassName('inside-menu')[5],
@@ -225,31 +225,68 @@ function setStyleBeforeIntroduction(){
   setStyleRule('.introjsFloatingElement', 'margin-top:0px !important');
 };
 
-function setStyleDuringIntroduction(isChecked) {
+function setStyleDuringIntroduction(intro, isChecked) {
+  // function to add "Don't show again" checkbox
+  var addCheckbox = function(isChecked){
+    var label = document.createElement("Label");
+    label.style.fontWeight="initial";
+    label.style.float="left";
+    label.style.marginTop="10px";
+
+    var checkbox = document.createElement("Input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.style.verticalAlign="text-bottom";
+    checkbox.classList.add("introCheck");
+
+    label.appendChild(checkbox);
+    var labelHTML = label.innerHTML;
+    label.innerHTML = labelHTML + " Don't show again";
+    label.style.fontSize = "12px";
+    buttonLayer.insertBefore(label, buttonLayer.childNodes[0]);
+
+    if(isChecked) {
+      document.getElementsByClassName('introCheck')[0].checked = true;
+    }
+    else {
+      document.getElementsByClassName('introCheck')[0].checked = false;     
+    }
+  };
+  
   var buttonLayer = document.getElementsByClassName("introjs-tooltipbuttons")[0];
+  var showWarning = (getCookie("showWarning") == "" ? true : false);
+  // check whether we need to show cookie warning
+  if(showWarning){
+    buttonLayer.style.display = "none";
+    var cookieWarningDiv = document.createElement('div');
+    cookieWarningDiv.className = "introjs-tooltipbuttons";
+    cookieWarningDiv.style.textAlign = "right";
+    cookieWarningDiv.innerHTML = '<p style="font-size:11px; margin: 15px 0px 0px 0px; float:left;">\n\
+                                  <b>Newt uses cookies to maintain progress on Quick Tutorial and for Google Analytics support.</b></p>\n\
+                                  <a  id="dismissButton" class="introjs-button introjs-nextbutton" role="button" tabindex="0">Dismiss</a>';
+    var tooltip = document.getElementsByClassName("introjs-tooltip")[0];
+    tooltip.appendChild(cookieWarningDiv);
+    intro.setOptions({
+      exitOnEsc: false,
+      exitOnOverlayClick: false
+    });
 
-  var label = document.createElement("Label");
-  label.style.fontWeight="initial";
-  label.style.float="left";
-  label.style.marginTop="10px";
-
-  var checkbox = document.createElement("Input");
-  checkbox.setAttribute("type", "checkbox");
-  checkbox.style.verticalAlign="text-bottom";
-  checkbox.classList.add("introCheck");
-
-  label.appendChild(checkbox);
-  var labelHTML = label.innerHTML;
-  label.innerHTML = labelHTML + " Don't show again";
-  label.style.fontSize = "12px";
-  buttonLayer.insertBefore(label, buttonLayer.childNodes[0]);
-
-  if(isChecked) {
-    document.getElementsByClassName('introCheck')[0].checked = true;
+    var dismissButton = document.getElementById("dismissButton");
+    dismissButton.onclick = function() {
+      buttonLayer.style.display = "block";
+      buttonLayer.style.textAlign = "right";
+      cookieWarningDiv.style.display = "none";
+      setCookie("showWarning", false, 180);
+      addCheckbox(isChecked);
+      intro.setOptions({
+        exitOnEsc: true,
+        exitOnOverlayClick: true
+      });
+    };
   }
   else {
-    document.getElementsByClassName('introCheck')[0].checked = false;     
+    addCheckbox(isChecked);
   }
+ 
 };
 
 function setStyleBeforeUIGuide(){
