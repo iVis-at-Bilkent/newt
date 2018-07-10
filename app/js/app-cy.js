@@ -979,7 +979,7 @@ module.exports = function (chiseInstance) {
             if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
             {
                 var newEle = cy.nodes()[cy.nodes().length - 1];
-                chiseInstance.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
+                chiseInstance.elementUtilities.setPortsOrdering(newEle, ( chiseInstance.elementUtilities.defaultProperties[nodeType]['ports-ordering'] ? chiseInstance.elementUtilities.defaultProperties[nodeType]['ports-ordering'] : 'L-to-R'));
             }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after

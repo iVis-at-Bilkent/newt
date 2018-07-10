@@ -750,7 +750,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
 
           // Push this action if the node can have ports
-          if (chiseInstance.elementUtilities.canHavePorts(selected)) {
+          if (chiseInstance.elementUtilities.canHavePorts(sbgnclass)) {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chiseInstance.elementUtilities.getPortsOrdering(selected)}});
           }
 
@@ -791,7 +791,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
 
           // Set this if the node can have ports
-          if (chiseInstance.elementUtilities.canHavePorts(selected)) {
+          if (chiseInstance.elementUtilities.canHavePorts(sbgnclass)) {
             defaults['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
           }
         }
