@@ -2381,24 +2381,31 @@ appUtilities.launchWithModelFile = function() {
       filename = 'remote';
 
     var fileExtension = filename.split('.');
-    if(fileExtension.length > 0)
+    if(fileExtension.length > 0 && filename.indexOf('.') > -1)
       fileExtension = fileExtension[fileExtension.length - 1];
     else
       fileExtension = 'txt';
 
     $.ajax({
       type: 'get',
-      url: filepath,
-      success: function(result){
-        var fileToLoad = new File([result], filename, {
-          type: 'text/' + fileExtension,
-          lastModified: Date.now()
-        });
-
-        currentGeneralProperties.inferNestingOnLoad = true;
-        chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+      url: "/utilities/testURL",
+      data: {url: filepath},
+      success: function(data){
+        // here we can get 404 as well, for example, so there are still error cases to handle
+        if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+          var fileToLoad = new File([data.response.body], filename, {
+            type: 'text/' + fileExtension,
+            lastModified: Date.now()
+          });
+  
+          currentGeneralProperties.inferNestingOnLoad = true;
+          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        }
+        else {
+          loadCallbackInvalidityWarning();
+        }
       },
-      error: function(xhr, ajaxOptions, thrownError){
+      error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
       }
     });
@@ -2424,23 +2431,29 @@ appUtilities.launchWithModelFile = function() {
     var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
     $.ajax({
-        url: queryURL,
-        type: 'GET',
-        success: function (data) {
-          if (data == null) {
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            promptInvalidURIWarning.render();
-          }
-          else {
-            $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
-            currentGeneralProperties.inferNestingOnLoad = false;
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
-          }
+      type: 'get',
+      url: "/utilities/testURL",
+      data: {url: queryURL},
+      success: function(data){
+        // here we can get 404 as well, for example, so there are still error cases to handle
+        if (data.response.statusCode == 200 && data.response.body != null) {
+          var xml = $.parseXML(data.response.body);
+          $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('paths-byURI-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
-      });
+        else {
+          chiseInstance.endSpinner('paths-byURI-spinner');
+          promptInvalidURIWarning.render();
+        }
+      },
+      error: function(xhr, options, err){
+        chiseInstance.endSpinner('paths-byURI-spinner');
+        promptInvalidURIWarning.render();      }
+    });
   }
 
   // returns an object that contains name-value pairs of query parameters
