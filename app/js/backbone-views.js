@@ -1031,12 +1031,22 @@ var NeighborhoodQueryView = Backbone.View.extend({
             }
             else
             {
-                $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                //create new tab
                 chiseInstance.endSpinner('neighborhood-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                appUtilities.createNewNetwork();
+                var _chiseInstance = appUtilities.getActiveChiseInstance();
+                var _cy = appUtilities.getActiveCy();
+                var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+                //create graph from the resulting data
+                _chiseInstance.startSpinner('neigborhood-spinner');
+                $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                currentGeneralProperties.inferNestingOnLoad = false;
+                _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                _chiseInstance.endSpinner('neigborhood-spinner');
+                $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
             }
         }
       });
@@ -1148,12 +1158,24 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     }
                     else
                     {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+
+                        //create new tab
                         chiseInstance.endSpinner('paths-between-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                        appUtilities.createNewNetwork();
+                        var _chiseInstance = appUtilities.getActiveChiseInstance();
+                        var _cy = appUtilities.getActiveCy();
+                        var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                        var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+
+                        //create graph from the resulting data
+                        _chiseInstance.startSpinner('paths-between-spinner');
+                        $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        _chiseInstance.endSpinner('paths-between-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
                     }
                 }
             });
@@ -1297,12 +1319,23 @@ var PathsFromToQueryView = Backbone.View.extend({
                     }
                     else
                     {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        //create new tab
                         chiseInstance.endSpinner('paths-fromto-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                        appUtilities.createNewNetwork();
+                        var _chiseInstance = appUtilities.getActiveChiseInstance();
+                        var _cy = appUtilities.getActiveCy();
+                        var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                        var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+
+                        //create graph from the resulting data
+                        _chiseInstance.startSpinner('paths-fromto-spinner');
+                        $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        _chiseInstance.endSpinner('paths-fromto-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
                     }
                 }
             });
@@ -1414,12 +1447,23 @@ var CommonStreamQueryView = Backbone.View.extend({
                     }
                     else
                     {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+
+                        //create new tab
                         chiseInstance.endSpinner('common-stream-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                        appUtilities.createNewNetwork();
+                        var _chiseInstance = appUtilities.getActiveChiseInstance();
+                        var _cy = appUtilities.getActiveCy();
+                        var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                        var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+                        //create graph from the resulting data
+                        _chiseInstance.startSpinner('common-stream-spinner');
+                        $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                        currentGeneralProperties.inferNestingOnLoad = false;
+                        _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(data), undefined, true);
+                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                        _chiseInstance.endSpinner('common-stream-spinner');
+                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
                     }
                 }
             });
@@ -1511,12 +1555,23 @@ var PathsByURIQueryView = Backbone.View.extend({
           }
           else
           {
-            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-            currentGeneralProperties.inferNestingOnLoad = false;
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+
+            //create new tab
             chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+            appUtilities.createNewNetwork();
+            var _chiseInstance = appUtilities.getActiveChiseInstance();
+            var _cy = appUtilities.getActiveCy();
+            var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            //create graph from the resulting data
+            _chiseInstance.startSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            _chiseInstance.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
           }
         }
       });
