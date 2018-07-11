@@ -1025,7 +1025,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
         url: "/utilities/testURL",
         data: {url: queryURL},
         success: function(data){
-          if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+          if (!data.error && data.response.statusCode == 200 && data.response.body) {
             var xml = $.parseXML(data.response.body);
             //create new tab
             chiseInstance.endSpinner('neighborhood-spinner');
@@ -1156,7 +1156,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: {url: queryURL},
               success: function(data){
-                if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+                if (!data.error && data.response.statusCode == 200 && data.response.body) {
                   var xml = $.parseXML(data.response.body);
                   //create new tab
                   chiseInstance.endSpinner('paths-between-spinner');
@@ -1320,7 +1320,7 @@ var PathsFromToQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: {url: queryURL},
               success: function(data){
-                if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+                if (!data.error && data.response.statusCode == 200 && data.response.body) {
                   var xml = $.parseXML(data.response.body);
                   //create new tab
                   chiseInstance.endSpinner('paths-fromto-spinner');
@@ -1452,7 +1452,7 @@ var CommonStreamQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: {url: queryURL},
               success: function(data){
-                if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+                if (!data.error && data.response.statusCode == 200 && data.response.body) {
                   var xml = $.parseXML(data.response.body);
                   //create new tab
                   chiseInstance.endSpinner('common-stream-spinner');
@@ -1563,7 +1563,7 @@ var PathsByURIQueryView = Backbone.View.extend({
         url: "/utilities/testURL",
         data: {url: queryURL},
         success: function(data){
-          if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+          if (!data.error && data.response.statusCode == 200 && data.response.body) {
             var xml = $.parseXML(data.response.body);
             //create new tab
             chiseInstance.endSpinner('paths-byURI-spinner');
