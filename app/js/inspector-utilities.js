@@ -606,6 +606,36 @@ inspectorUtilities.handleSBGNInspector = function () {
         updateBackgroundDeleteInfo();
       });
 
+      function validateBgImageURL(node, bgObj, applyBackground, promptInvalidImage){
+        var url = bgObj['background-image'];
+        var extension = (url.split(/[?#]/)[0]).split(".").pop();
+        var validExtensions = ["png", "svg", "jpg", "jpeg"];
+
+        if(!validExtensions.includes(extension)){
+          if(typeof promptInvalidImage === 'function')
+            promptInvalidImage("Invalid URL is given!");
+          return;
+        }
+
+        $.ajax({
+          url: "/utilities/testURL",
+          type: 'GET',
+          data: {url: url},
+          success: function(data){
+            console.log(data);
+            // here we can get 404 as well, for example, so there are still error cases to handle
+            if (!data.error && data.response.statusCode == 200 && typeof applyBackground === 'function')
+              applyBackground(node, bgObj);
+            else if(typeof promptInvalidImage === 'function')
+              promptInvalidImage("Invalid URL is given!");
+          },
+          error: function(jqXHR, status, error) {
+            if(typeof promptInvalidImage === 'function')
+              promptInvalidImage("Invalid URL is given!");
+          }
+        });
+      }
+
       $("#inspector-image-url").on('change', function () {
         var url = $(this).val().trim();
         imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
@@ -645,9 +675,9 @@ inspectorUtilities.handleSBGNInspector = function () {
           // If there is a background image change it, don't add
           var oldObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
           if(oldObj !== undefined)
-            chiseInstance.changeBackgroundImage(selectedEles, oldObj, obj, updateBackgroundDeleteInfo, promptInvalidImage);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, obj, updateBackgroundDeleteInfo, promptInvalidImage, validateBgImageURL);
           else
-            chiseInstance.addBackgroundImage(selectedEles, obj, updateBackgroundDeleteInfo, promptInvalidImage);
+            chiseInstance.addBackgroundImage(selectedEles, obj, updateBackgroundDeleteInfo, promptInvalidImage, validateBgImageURL);
         }
       });
 
