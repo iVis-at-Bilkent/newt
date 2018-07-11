@@ -28,10 +28,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       var state = stateAndInfos[i];
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
-                + width / 5 + "px;' value='" + (state.state.value || '').replace(/'/g, "&#039;") + "'/>"
+                + width / 5 + "px;' value='" + (state.state.value || '').toString().replace(/'/g, "&#039;") + "'/>"
                 + "<span style='font: 10pt Helvetica;'>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
-                + width / 2.5 + "px;' value='" + (state.state.variable || '').replace(/'/g, "&#039;")
+                + width / 2.5 + "px;' value='" + (state.state.variable || '').toString().replace(/'/g, "&#039;")
                 + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
