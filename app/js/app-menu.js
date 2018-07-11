@@ -870,6 +870,11 @@ module.exports = function() {
 
       // use the associated cy instance
       var cy = chiseInstance.getCy();
+      
+      // if there is no element in the cy instance, then return directly
+      if(cy.elements().length == 0) {
+        return;
+      }
 
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
