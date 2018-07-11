@@ -1021,23 +1021,37 @@ var NeighborhoodQueryView = Backbone.View.extend({
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
       $.ajax({
-        url: queryURL,
-        type: 'GET',
-        success: function (data) {
-            if (data == null)
-            {
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('neighborhood-spinner');
-            }
-            else
-            {
-                $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                chiseInstance.endSpinner('neighborhood-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-            }
+        type: 'get',
+        url: "/utilities/testURL",
+        data: {url: queryURL},
+        success: function(data){
+          if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+            var xml = $.parseXML(data.response.body);
+            //create new tab
+            chiseInstance.endSpinner('neighborhood-spinner');
+            appUtilities.createNewNetwork();
+            var _chiseInstance = appUtilities.getActiveChiseInstance();
+            var _cy = appUtilities.getActiveCy();
+            var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            //create graph from the resulting data
+            _chiseInstance.startSpinner('neigborhood-spinner');
+            $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            _chiseInstance.endSpinner('neigborhood-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
+          }
+          else {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner('neighborhood-spinner');
+          }
+        },
+        error: function(xhr, options, err){
+          new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+          chiseInstance.endSpinner('neighborhood-spinner');
         }
       });
       $(self.el).modal('toggle');
@@ -1138,24 +1152,39 @@ var PathsBetweenQueryView = Backbone.View.extend({
             var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
             $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    if (data == null)
-                    {
-                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                        chiseInstance.endSpinner('paths-between-spinner');
-                    }
-                    else
-                    {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                        chiseInstance.endSpinner('paths-between-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                    }
+              type: 'get',
+              url: "/utilities/testURL",
+              data: {url: queryURL},
+              success: function(data){
+                if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+                  var xml = $.parseXML(data.response.body);
+                  //create new tab
+                  chiseInstance.endSpinner('paths-between-spinner');
+                  appUtilities.createNewNetwork();
+                  var _chiseInstance = appUtilities.getActiveChiseInstance();
+                  var _cy = appUtilities.getActiveCy();
+                  var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                  var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+
+                  //create graph from the resulting data
+                  _chiseInstance.startSpinner('paths-between-spinner');
+                  $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                  _chiseInstance.endSpinner('paths-between-spinner');
+                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
                 }
+                else {
+                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                  chiseInstance.endSpinner('paths-between-spinner');
+                }
+              },
+              error: function(xhr, options, err){
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                chiseInstance.endSpinner('paths-between-spinner');
+              }
             });
             $(self.el).modal('toggle');
         });
@@ -1285,26 +1314,41 @@ var PathsFromToQueryView = Backbone.View.extend({
 
             var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
             var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-
+            
             $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    if (data == null)
-                    {
-                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                        chiseInstance.endSpinner('paths-fromto-spinner');
-                    }
-                    else
-                    {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                        chiseInstance.endSpinner('paths-fromto-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                    }
+              type: 'get',
+              url: "/utilities/testURL",
+              data: {url: queryURL},
+              success: function(data){
+                if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+                  var xml = $.parseXML(data.response.body);
+                  //create new tab
+                  chiseInstance.endSpinner('paths-fromto-spinner');
+                  appUtilities.createNewNetwork();
+                  var _chiseInstance = appUtilities.getActiveChiseInstance();
+                  var _cy = appUtilities.getActiveCy();
+                  var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                  var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+
+                  //create graph from the resulting data
+                  _chiseInstance.startSpinner('paths-fromto-spinner');
+                  $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                  _chiseInstance.endSpinner('paths-fromto-spinner');
+                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
                 }
+                else {
+                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                  chiseInstance.endSpinner('paths-fromto-spinner');
+                }
+              },
+              error: function(xhr, options, err){
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                chiseInstance.endSpinner('paths-fromto-spinner');
+              }
             });
             $(self.el).modal('toggle');
         });
@@ -1404,24 +1448,38 @@ var CommonStreamQueryView = Backbone.View.extend({
             var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
             $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    if (data == null)
-                    {
-                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                        chiseInstance.endSpinner('common-stream-spinner');
-                    }
-                    else
-                    {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                        chiseInstance.endSpinner('common-stream-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                    }
+              type: 'get',
+              url: "/utilities/testURL",
+              data: {url: queryURL},
+              success: function(data){
+                if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+                  var xml = $.parseXML(data.response.body);
+                  //create new tab
+                  chiseInstance.endSpinner('common-stream-spinner');
+                  appUtilities.createNewNetwork();
+                  var _chiseInstance = appUtilities.getActiveChiseInstance();
+                  var _cy = appUtilities.getActiveCy();
+                  var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+                  var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+                  //create graph from the resulting data
+                  _chiseInstance.startSpinner('common-stream-spinner');
+                  $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                  _chiseInstance.endSpinner('common-stream-spinner');
+                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
                 }
+                else {
+                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                  chiseInstance.endSpinner('common-stream-spinner');
+                }
+              },
+              error: function(xhr, options, err){
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                chiseInstance.endSpinner('common-stream-spinner');
+              }
             });
             $(self.el).modal('toggle');
         });
@@ -1501,23 +1559,37 @@ var PathsByURIQueryView = Backbone.View.extend({
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
       $.ajax({
-        url: queryURL,
-        type: 'GET',
-        success: function (data) {
-          if (data == null)
-          {
+        type: 'get',
+        url: "/utilities/testURL",
+        data: {url: queryURL},
+        success: function(data){
+          if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+            var xml = $.parseXML(data.response.body);
+            //create new tab
+            chiseInstance.endSpinner('paths-byURI-spinner');
+            appUtilities.createNewNetwork();
+            var _chiseInstance = appUtilities.getActiveChiseInstance();
+            var _cy = appUtilities.getActiveCy();
+            var currentGeneralProperties = appUtilities.getScratch(_cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+            //create graph from the resulting data
+            _chiseInstance.startSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFile', [ filename, _cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            _chiseInstance.updateGraph(_chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            _chiseInstance.endSpinner('paths-byURI-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, _cy ]);
+          }
+          else {
             new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
             chiseInstance.endSpinner('paths-byURI-spinner');
           }
-          else
-          {
-            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-            currentGeneralProperties.inferNestingOnLoad = false;
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-          }
+        },
+        error: function(xhr, options, err){
+          new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
+          chiseInstance.endSpinner('paths-byURI-spinner');
         }
       });
       $(self.el).modal('toggle');
