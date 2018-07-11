@@ -623,17 +623,6 @@ module.exports = function (chiseInstance) {
         chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
     }
 
-    // set default dimensions to 20x20 for all process nodes.
-    var processNodes = ['process', 'omitted process', 'uncertain process', 'association', 'dissociation'];
-
-    for(i = 0; i < processNodes.length; i++)
-    {
-      var processNode = processNodes[i];
-      var param = {class: processNode, name: 'width', value: 20};
-      chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
-      var param = {class: processNode, name: 'height', value: 20};
-      chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
-    }
   }
 
   function bindCyEvents() {
