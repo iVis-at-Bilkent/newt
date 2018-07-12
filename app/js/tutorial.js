@@ -12,7 +12,7 @@ tutorial.introduction = function(checkCookie){
     return;
   }
   
-  var intro = introJs.introJs();
+  var intro = introJs();
  
   // set the current step
   var currentStep = 0;
@@ -70,7 +70,7 @@ tutorial.introduction = function(checkCookie){
 
 // method for introducing the user interface of Newt. Can be opened from Help->UI Guide menu 
 tutorial.UIGuide = function(){
-  var intro = introJs.introJs();
+  var intro = introJs();
   
   // necessary style changes before starting UIGuide
   setStyleBeforeUIGuide();
