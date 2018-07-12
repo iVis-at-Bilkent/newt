@@ -1158,6 +1158,13 @@ module.exports = function() {
         $('#inspector-palette-tab a').tab('show');
       }
     });
+    
+    $('#network-tabs-list').on('mousedown', function(e) {
+      if( e.which == 2 ) {
+        if(e.target != this) return;
+        appUtilities.createNewNetwork();
+      }
+    });
 
     $(document).on("click", ".biogene-info .expandable .network-panel", function (evt) {
 

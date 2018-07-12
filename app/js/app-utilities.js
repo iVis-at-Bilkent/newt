@@ -251,7 +251,9 @@ appUtilities.updateNetworkTabDesc = function (networkKey) {
     mapName = "Pathway";
 
   // update the content of 'a' element that is contained by the related tab
-  $('#' + tabId + ' a').text(mapName);
+  var relatedTab = document.getElementById(tabId).childNodes[1];
+  var relatedTabTextField = relatedTab.childNodes[2];
+  relatedTabTextField.nodeValue = mapName;
 };
 
 // map given chise instance to the given network id
@@ -580,8 +582,23 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
-  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
-
+  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab">\n\
+                  <a data-toggle="tab" href="#' + panelId + '">\n\
+                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '</a></li>';
+  
+  $('ul').on('click', 'button.' + tabId +'closeTab', function() {
+    var networkId = tabId.substring(17);
+    appUtilities.setActiveNetwork(networkId);
+    appUtilities.closeActiveNetwork();
+  });
+  
+  $('ul').on('mousedown', '#' + tabId, function(e) {
+    if( e.which == 2 ) {
+     var networkId = tabId.substring(17);
+     appUtilities.setActiveNetwork(networkId);
+     appUtilities.closeActiveNetwork();
+    }
+  });
   // create new tab inside the list of network tabs
   tabsList.append(newTabStr);
 };

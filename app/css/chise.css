@@ -703,6 +703,7 @@ hr.inspector-divider {
 
 .chise-network-tab a {
     border-radius: 0 0 8px 8px !important;
+    font-size: 11px;
     width: 86px;
     white-space: nowrap;
     overflow: hidden;
@@ -721,6 +722,15 @@ hr.inspector-divider {
 
 .chise-network-tab.active a {
     background: white !important;
+}
+
+.close:hover,
+.close:focus {
+  opacity: 0.75;
+}
+
+.closeTab {
+    margin-top: -10px !important;
 }
 
 .chise-tab:hover a {
