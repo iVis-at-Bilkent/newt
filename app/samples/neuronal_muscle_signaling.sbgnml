@@ -1,0 +1,591 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="process description">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="4.0.2" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffff72"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#ffffffff"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/gb3_3d.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/gb5_3d.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
+          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/gb2_3d.png"/>
+          <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/gb4_3d.png"/>
+        </listOfBackgroundImages>
+        <listOfStyles>
+          <style id="nodeffffff0.455555550.2514normalnormalHelveticaimage_1none5050100100" idList="_82f19e9e-6aa2-42b3-8b5e-8cee17197085 _9007194d-c2e6-4939-a795-be71ae35a60d e95a1256-8a47-4aaf-b3d8-7d8387d5a31d _23d436e2-6633-42f2-98d0-00dbb962ac3d nwtN_d1535aaf-5d91-4108-9331-852d6acb876e">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="0.25" fill="color_1" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_2none5050100100" idList="_66737d5c-5193-43a2-baa6-094aa1c21654 be08c23c-dca4-43cd-b8a6-06f6ebdaf710 ce103257-dbf5-430f-9e6c-1745990341de _9886817c-7043-4de9-9895-0cd247f47190 b88b6460-4172-427f-abbe-d7c0f0a174ce f3ac8950-6d69-4c5b-92dd-3020906ea2c8 _4b4a1add-6cf6-47cb-b952-5ea0ceade9a0 _26a815b4-64c3-4797-9bfd-7dceafb3345d _9b7f467a-30eb-4b8e-a966-43692648a46e a0a8dd07-644b-4646-a305-ef249fa67752 _1ce3ffae-f9a7-09a1-c91f-bf176708c1d2 _0fbd0d13-c59b-48ab-240d-c262dd1bc480 _343e0d0d-eeac-5cf5-acec-bc15975650a3 _96e17352-dd50-0332-a224-954cd97fc3c2">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3" backgroundImage="image_2" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          </style>
+          <style id="nodeffffff15555551.25image_3none5050100100" idList="_96b935d7-083c-468d-8607-d3b70fff10a7 _2bdf0056-96f6-4184-a214-8c7cc7da6214 _3797d8d2-4f00-4d1f-9d85-ecad1e61746d _6865aebe-2564-4ff6-a15a-6bd07a3a0ef8 d9e08f4b-94b8-4285-af36-f4159b56a2fc _264a7088-e810-4679-9c92-f06886510f98 d756f4ab-9813-4d55-aa86-c37dc7f3b286 _3a96c155-e828-4038-8384-4c25f4f1aaf6 _97c2c87b-c5d2-41fb-97f6-a1001075cf08 _1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8 _00ac7e0a-288f-42e0-b252-9bcb59027572">
+            <g stroke="color_2" strokeWidth="1.25" fill="color_3" backgroundImage="image_3" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_4none5050100100" idList="a083be43-422d-9067-c688-661cec17e472 d2531344-d005-4b92-afd2-14dcb7d40965 _135e2807-2b5c-4886-bbdf-d3c8bf433ab9 ed79ab12-7b79-4a8a-80b3-c65181c076e4 fb8eb6bc-a39a-4361-b938-026a3b63a9b9 _8ba53135-01b4-4a4b-b87d-a5971850cb39 _06e41c55-1352-407e-9c4b-604d3f5f616b ac2f1b2b-2e6e-4647-84bd-c141925f4d85 _5fcbfc9c-92a0-45b2-834b-ad8866d4008b _20e434c6-e738-4ae5-8a8a-e49f53fe85fb a3f830ac-34e3-466a-62ac-642bc3e51777 _6259ebd3-e879-4c70-b442-a602e5408989 fb04887c-b0a0-4a2d-8cdd-a70826c659ee _8c083cee-7025-4035-9201-1319da22340b">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3" backgroundImage="image_4" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_5none5050100100" idList="_1129b8c7-71da-4a6c-8681-3082e6f04a6c _85682413-94f7-8b3c-e052-59a72cd48e12 _04ea25d8-dfaa-7912-303f-be00b342fc27">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3" backgroundImage="image_5" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_1none5050100100" idList="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          </style>
+          <style id="edge5555551.25" idList="_04ea25d8-dfaa-7912-303f-be00b342fc27-1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8 _1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-fb04887c-b0a0-4a2d-8cdd-a70826c659ee _3797d8d2-4f00-4d1f-9d85-ecad1e61746d-a083be43-422d-9067-c688-661cec17e472 d2531344-d005-4b92-afd2-14dcb7d40965-3797d8d2-4f00-4d1f-9d85-ecad1e61746d _9886817c-7043-4de9-9895-0cd247f47190-3797d8d2-4f00-4d1f-9d85-ecad1e61746d ce103257-dbf5-430f-9e6c-1745990341de-2bdf0056-96f6-4184-a214-8c7cc7da6214 ed79ab12-7b79-4a8a-80b3-c65181c076e4-2bdf0056-96f6-4184-a214-8c7cc7da6214 _135e2807-2b5c-4886-bbdf-d3c8bf433ab9-2bdf0056-96f6-4184-a214-8c7cc7da6214 _2bdf0056-96f6-4184-a214-8c7cc7da6214-d2531344-d005-4b92-afd2-14dcb7d40965 _96b935d7-083c-468d-8607-d3b70fff10a7-135e2807-2b5c-4886-bbdf-d3c8bf433ab9 a083be43-422d-9067-c688-661cec17e472-d9e08f4b-94b8-4285-af36-f4159b56a2fc _66737d5c-5193-43a2-baa6-094aa1c21654-96b935d7-083c-468d-8607-d3b70fff10a7 fb8eb6bc-a39a-4361-b938-026a3b63a9b9-96b935d7-083c-468d-8607-d3b70fff10a7 be08c23c-dca4-43cd-b8a6-06f6ebdaf710-d9e08f4b-94b8-4285-af36-f4159b56a2fc d9e08f4b-94b8-4285-af36-f4159b56a2fc-06e41c55-1352-407e-9c4b-604d3f5f616b _06e41c55-1352-407e-9c4b-604d3f5f616b-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8 b88b6460-4172-427f-abbe-d7c0f0a174ce-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8 _6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-fb8eb6bc-a39a-4361-b938-026a3b63a9b9 _6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-8ba53135-01b4-4a4b-b87d-a5971850cb39 f3ac8950-6d69-4c5b-92dd-3020906ea2c8-264a7088-e810-4679-9c92-f06886510f98 _264a7088-e810-4679-9c92-f06886510f98-4b4a1add-6cf6-47cb-b952-5ea0ceade9a0 _4b4a1add-6cf6-47cb-b952-5ea0ceade9a0-d756f4ab-9813-4d55-aa86-c37dc7f3b286 d756f4ab-9813-4d55-aa86-c37dc7f3b286-ac2f1b2b-2e6e-4647-84bd-c141925f4d85 ac2f1b2b-2e6e-4647-84bd-c141925f4d85-3a96c155-e828-4038-8384-4c25f4f1aaf6 _06e41c55-1352-407e-9c4b-604d3f5f616b-264a7088-e810-4679-9c92-f06886510f98 _1129b8c7-71da-4a6c-8681-3082e6f04a6c-3a96c155-e828-4038-8384-4c25f4f1aaf6 _1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-6259ebd3-e879-4c70-b442-a602e5408989 _9b7f467a-30eb-4b8e-a966-43692648a46e-3a96c155-e828-4038-8384-4c25f4f1aaf6 _97c2c87b-c5d2-41fb-97f6-a1001075cf08-9b7f467a-30eb-4b8e-a966-43692648a46e _3a96c155-e828-4038-8384-4c25f4f1aaf6-04ea25d8-dfaa-7912-303f-be00b342fc27 _97c2c87b-c5d2-41fb-97f6-a1001075cf08-a0a8dd07-644b-4646-a305-ef249fa67752 _85682413-94f7-8b3c-e052-59a72cd48e12-97c2c87b-c5d2-41fb-97f6-a1001075cf08 _8c083cee-7025-4035-9201-1319da22340b-d756f4ab-9813-4d55-aa86-c37dc7f3b286 _1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-85682413-94f7-8b3c-e052-59a72cd48e12 _85682413-94f7-8b3c-e052-59a72cd48e12-e889d01c-1eb1-4c83-8bd9-0160e9c2abcb _00ac7e0a-288f-42e0-b252-9bcb59027572-1129b8c7-71da-4a6c-8681-3082e6f04a6c _20e434c6-e738-4ae5-8a8a-e49f53fe85fb-00ac7e0a-288f-42e0-b252-9bcb59027572 a0a8dd07-644b-4646-a305-ef249fa67752-00ac7e0a-288f-42e0-b252-9bcb59027572">
+            <g stroke="color_2" strokeWidth="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>false</allowCompoundNodeResize>
+        <mapColorScheme>opposed_green_brown</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Neuronal muscle signaling</mapName>
+        <mapDescription>An illustration of inter-cellular signaling using SBGN</mapDescription>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+      </mapProperties>
+    </extension>
+    <glyph id="_82f19e9e-6aa2-42b3-8b5e-8cee17197085" class="compartment">
+      <label text="synaptic button"/>
+      <bbox x="25.073510739186418" y="146.23726550999152" w="302.3938386692404" h="284.0351830586877"/>
+    </glyph>
+    <glyph id="_66737d5c-5193-43a2-baa6-094aa1c21654" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="CHT1"/>
+      <bbox x="265.8423494084268" y="398.64744856867924" w="60" h="30"/>
+    </glyph>
+    <glyph id="be08c23c-dca4-43cd-b8a6-06f6ebdaf710" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="SNARE"/>
+      <bbox x="228.049992895414" y="268.62883651233903" w="60" h="30"/>
+    </glyph>
+    <glyph id="_96b935d7-083c-468d-8607-d3b70fff10a7" class="process" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <bbox x="255.19695103095128" y="350.9699991271626" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_96b935d7-083c-468d-8607-d3b70fff10a7.1" x="272.3398081738084" y="358.1128562700198"/>
+      <port id="_96b935d7-083c-468d-8607-d3b70fff10a7.2" x="252.33980817380842" y="358.1128562700198"/>
+    </glyph>
+    <glyph id="_9007194d-c2e6-4939-a795-be71ae35a60d" class="compartment" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="synaptic vesicle"/>
+      <bbox x="242.7294767769191" y="170.6479215786033" w="33.25" h="33.25"/>
+    </glyph>
+    <glyph id="a083be43-422d-9067-c688-661cec17e472" class="simple chemical" compartmentRef="_9007194d-c2e6-4939-a795-be71ae35a60d">
+      <label text="ACh"/>
+      <bbox x="244.3544767769191" y="172.2729215786033" w="30" h="30"/>
+    </glyph>
+    <glyph id="d2531344-d005-4b92-afd2-14dcb7d40965" class="simple chemical" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="ACh"/>
+      <bbox x="134.25832614086298" y="242.66449925685174" w="30" h="30"/>
+    </glyph>
+    <glyph id="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9" class="simple chemical" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="choline"/>
+      <bbox x="182.77223568907257" y="334.67400172377114" w="30" h="30"/>
+    </glyph>
+    <glyph id="ed79ab12-7b79-4a8a-80b3-c65181c076e4" class="simple chemical" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="acetyl&#xA;CoA"/>
+      <bbox x="95.58909814567396" y="364.64613921842954" w="30" h="30"/>
+    </glyph>
+    <glyph id="_2bdf0056-96f6-4184-a214-8c7cc7da6214" class="process" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <bbox x="129.96670443725796" y="313.4179337014039" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_2bdf0056-96f6-4184-a214-8c7cc7da6214.1" x="137.1095615801151" y="330.5607908442611"/>
+      <port id="_2bdf0056-96f6-4184-a214-8c7cc7da6214.2" x="137.1095615801151" y="310.5607908442611"/>
+    </glyph>
+    <glyph id="ce103257-dbf5-430f-9e6c-1745990341de" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="ChAT"/>
+      <bbox x="26.698510739186432" y="293.31342071036784" w="60" h="30"/>
+    </glyph>
+    <glyph id="_9886817c-7043-4de9-9895-0cd247f47190" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="vAChT"/>
+      <bbox x="97.16204703876046" y="147.86226550999152" w="60" h="30"/>
+    </glyph>
+    <glyph id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d" class="process" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <bbox x="191.35719447753738" y="196.3033785809978" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.1" x="188.50005162039452" y="203.44623572385493"/>
+      <port id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.2" x="208.50005162039452" y="203.44623572385493"/>
+    </glyph>
+    <glyph id="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d" class="compartment">
+      <label text="synaptic cleft"/>
+      <bbox x="433.2464540518981" y="214.8838562306875" w="193.8683290421913" h="167.4032801212396"/>
+    </glyph>
+    <glyph id="b88b6460-4172-427f-abbe-d7c0f0a174ce" class="macromolecule" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="AChE"/>
+      <bbox x="565.4897830940895" y="282.0118666119137" w="60" h="30"/>
+    </glyph>
+    <glyph id="fb8eb6bc-a39a-4361-b938-026a3b63a9b9" class="simple chemical" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="choline"/>
+      <bbox x="434.8714540518982" y="308.55063779267874" w="30" h="30"/>
+    </glyph>
+    <glyph id="_8ba53135-01b4-4a4b-b87d-a5971850cb39" class="simple chemical" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="acetate"/>
+      <bbox x="524.4179859887548" y="350.66213635192713" w="30" h="30"/>
+    </glyph>
+    <glyph id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8" class="process" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <bbox x="507.1104957650021" y="298.87241246180685" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.1" x="514.2533529078593" y="296.015269604664"/>
+      <port id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.2" x="514.2533529078593" y="316.015269604664"/>
+    </glyph>
+    <glyph id="d9e08f4b-94b8-4285-af36-f4159b56a2fc" class="process" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <bbox x="445.1721072367037" y="219.3659990878304" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="d9e08f4b-94b8-4285-af36-f4159b56a2fc.1" x="442.3149643795609" y="226.50885623068754"/>
+      <port id="d9e08f4b-94b8-4285-af36-f4159b56a2fc.2" x="462.3149643795609" y="226.50885623068754"/>
+    </glyph>
+    <glyph id="_06e41c55-1352-407e-9c4b-604d3f5f616b" class="simple chemical" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="ACh"/>
+      <bbox x="502.76661155030433" y="227.46765782236366" w="30" h="30"/>
+    </glyph>
+    <glyph id="_23d436e2-6633-42f2-98d0-00dbb962ac3d" class="compartment">
+      <label text="muscle cytosol"/>
+      <bbox x="752.2397258595956" y="71.94350603486907" w="725.3810398535437" h="425.23497814496966"/>
+    </glyph>
+    <glyph id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="nAChR"/>
+      <bbox x="753.8647258595958" y="282.7012585846991" w="60" h="30"/>
+      <glyph id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8_0" class="unit of information">
+        <label text="closed"/>
+        <bbox x="784.0834758595958" y="276.7012585846991" w="28.90625" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="nAChR"/>
+      <bbox x="855.2766403936383" y="216.556150753623" w="60" h="30"/>
+      <glyph id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0_0" class="unit of information">
+        <label text="open"/>
+        <bbox x="886.8274216436383" y="210.556150753623" w="22.24609375" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="ac2f1b2b-2e6e-4647-84bd-c141925f4d85" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="Ca2+"/>
+      <bbox x="1027.3686264385096" y="210.90187243064213" w="30" h="30"/>
+    </glyph>
+    <glyph id="_264a7088-e810-4679-9c92-f06886510f98" class="process" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="791.9414632025464" y="230.86481935354198" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_264a7088-e810-4679-9c92-f06886510f98.1" x="789.0843203454035" y="238.0076764963991"/>
+      <port id="_264a7088-e810-4679-9c92-f06886510f98.2" x="809.0843203454035" y="238.0076764963991"/>
+    </glyph>
+    <glyph id="d756f4ab-9813-4d55-aa86-c37dc7f3b286" class="process" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="965.1819158039619" y="204.3206981036635" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="d756f4ab-9813-4d55-aa86-c37dc7f3b286.1" x="962.324772946819" y="211.46355524652063"/>
+      <port id="d756f4ab-9813-4d55-aa86-c37dc7f3b286.2" x="982.324772946819" y="211.46355524652063"/>
+    </glyph>
+    <glyph id="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="myosin"/>
+      <bbox x="1120.8605112995508" y="86.10247044730838" w="65.75" h="76.7"/>
+      <glyph id="_26a815b4-64c3-4797-9bfd-7dceafb3345d" class="macromolecule">
+        <label text="myosin"/>
+        <bbox x="1124.9855112995508" y="87.72747044730836" w="60" h="30"/>
+      </glyph>
+      <glyph id="_5fcbfc9c-92a0-45b2-834b-ad8866d4008b" class="simple chemical">
+        <label text="ATP"/>
+        <bbox x="1122.4855112995508" y="131.17747044730837" w="30" h="30"/>
+      </glyph>
+    </glyph>
+    <glyph id="_9b7f467a-30eb-4b8e-a966-43692648a46e" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="actin"/>
+      <bbox x="1165.7708374990975" y="227.64263443384425" w="60" h="30"/>
+    </glyph>
+    <glyph id="_3a96c155-e828-4038-8384-4c25f4f1aaf6" class="association" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1105.2745101217417" y="230.54593263248728" w="14.285714285714072" h="14.285714285714072"/>
+      <port id="_3a96c155-e828-4038-8384-4c25f4f1aaf6.1" x="1112.4173672645989" y="227.6887897753443"/>
+      <port id="_3a96c155-e828-4038-8384-4c25f4f1aaf6.2" x="1112.4173672645989" y="247.6887897753443"/>
+    </glyph>
+    <glyph id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08" class="dissociation" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1269.700679627068" y="234.68290530444452" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.1" x="1276.843536769925" y="231.82576244730166"/>
+      <port id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.2" x="1276.843536769925" y="251.82576244730166"/>
+    </glyph>
+    <glyph id="a0a8dd07-644b-4646-a305-ef249fa67752" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="myosin"/>
+      <bbox x="1287.540192356423" y="172.23589536456083" w="60" h="30"/>
+    </glyph>
+    <glyph id="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="ATP"/>
+      <bbox x="1301.6393787238735" y="73.56850603486907" w="30" h="30"/>
+    </glyph>
+    <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="tense"/>
+      <bbox x="1298.6653764007108" y="290.9125643462867" w="63.25" h="76.69999999999999"/>
+      <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12_0" class="unit of information">
+        <label text="tense"/>
+        <bbox x="1332.120320248367" y="284.9125643462867" w="24.462890625" h="12"/>
+      </glyph>
+      <glyph id="_1ce3ffae-f9a7-09a1-c91f-bf176708c1d2" class="macromolecule">
+        <label text="myosin"/>
+        <bbox x="1300.2903764007108" y="292.5375643462867" w="60" h="30"/>
+      </glyph>
+      <glyph id="_0fbd0d13-c59b-48ab-240d-c262dd1bc480" class="macromolecule">
+        <label text="actin"/>
+        <bbox x="1300.2903764007108" y="335.98756434628666" w="60" h="30"/>
+      </glyph>
+    </glyph>
+    <glyph id="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb" class="phenotype" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="muscle&#xA;contraction"/>
+      <bbox x="1415.9957657131395" y="407.6732533795157" w="60" h="30"/>
+    </glyph>
+    <glyph id="_04ea25d8-dfaa-7912-303f-be00b342fc27" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="relaxed"/>
+      <bbox x="1070.4784373310354" y="297.24436645317076" w="109.20000000000005" h="76.69999999999999"/>
+      <glyph id="_04ea25d8-dfaa-7912-303f-be00b342fc27_0" class="unit of information">
+        <label text="relaxed"/>
+        <bbox x="1137.5071385029103" y="291.24436645317076" w="32.7978515625" h="12"/>
+      </glyph>
+      <glyph id="_343e0d0d-eeac-5cf5-acec-bc15975650a3" class="macromolecule">
+        <label text="myosin"/>
+        <bbox x="1072.1034373310351" y="298.8693664531708" w="60" h="30"/>
+      </glyph>
+      <glyph id="_96e17352-dd50-0332-a224-954cd97fc3c2" class="macromolecule">
+        <label text="actin"/>
+        <bbox x="1072.1034373310351" y="342.3193664531708" w="60" h="30"/>
+      </glyph>
+      <glyph id="a3f830ac-34e3-466a-62ac-642bc3e51777" class="simple chemical">
+        <label text="ATP"/>
+        <bbox x="1148.0534373310352" y="298.8693664531708" w="30" h="30"/>
+      </glyph>
+    </glyph>
+    <glyph id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8" class="process" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1243.4122324844996" y="416.4436692230222" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.1" x="1240.5550896273567" y="423.58652636587937"/>
+      <port id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" x="1260.5550896273567" y="423.58652636587937"/>
+    </glyph>
+    <glyph id="_6259ebd3-e879-4c70-b442-a602e5408989" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="Pi"/>
+      <bbox x="1203.398156504148" y="465.55348417983873" w="30" h="30"/>
+    </glyph>
+    <glyph id="fb04887c-b0a0-4a2d-8cdd-a70826c659ee" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="ADP"/>
+      <bbox x="1288.8843823208715" y="456.1206679799028" w="30" h="30"/>
+    </glyph>
+    <glyph id="nwtN_d1535aaf-5d91-4108-9331-852d6acb876e" class="compartment" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="ER"/>
+      <bbox x="939.3565797057314" y="134.9371348675121" w="33.25" h="33.25"/>
+    </glyph>
+    <glyph id="_8c083cee-7025-4035-9201-1319da22340b" class="simple chemical" compartmentRef="nwtN_d1535aaf-5d91-4108-9331-852d6acb876e">
+      <label text="Ca2+"/>
+      <bbox x="940.9815797057314" y="136.5621348675121" w="30" h="30"/>
+    </glyph>
+    <glyph id="_00ac7e0a-288f-42e0-b252-9bcb59027572" class="association" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1257.8498293417895" y="130.20432501118145" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_00ac7e0a-288f-42e0-b252-9bcb59027572.1" x="1274.9926864846466" y="137.3471821540386"/>
+      <port id="_00ac7e0a-288f-42e0-b252-9bcb59027572.2" x="1254.9926864846466" y="137.3471821540386"/>
+    </glyph>
+    <arc id="_04ea25d8-dfaa-7912-303f-be00b342fc27-1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8" class="consumption" source="_04ea25d8-dfaa-7912-303f-be00b342fc27" target="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.1">
+      <glyph id="_04ea25d8-dfaa-7912-303f-be00b342fc27-1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1184.8323344415069" y="377.4975761238857"/>
+      <end x="1239.9300896273567" y="423.58652636587937"/>
+    </arc>
+    <arc id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-fb04887c-b0a0-4a2d-8cdd-a70826c659ee" class="production" source="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" target="fb04887c-b0a0-4a2d-8cdd-a70826c659ee">
+      <glyph id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-fb04887c-b0a0-4a2d-8cdd-a70826c659ee_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1261.1800896273567" y="423.58652636587937"/>
+      <end x="1289.607516948794" y="458.3952312428954"/>
+    </arc>
+    <arc id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d-a083be43-422d-9067-c688-661cec17e472" class="production" source="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.2" target="a083be43-422d-9067-c688-661cec17e472">
+      <glyph id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d-a083be43-422d-9067-c688-661cec17e472_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="209.12505162039452" y="203.44623572385493"/>
+      <end x="240.87111640471716" y="192.18525446139066"/>
+    </arc>
+    <arc id="d2531344-d005-4b92-afd2-14dcb7d40965-3797d8d2-4f00-4d1f-9d85-ecad1e61746d" class="consumption" source="d2531344-d005-4b92-afd2-14dcb7d40965" target="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.1">
+      <glyph id="d2531344-d005-4b92-afd2-14dcb7d40965-3797d8d2-4f00-4d1f-9d85-ecad1e61746d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="160.01539574475362" y="245.82028321960166"/>
+      <end x="187.87505162039452" y="203.44623572385493"/>
+    </arc>
+    <arc id="_9886817c-7043-4de9-9895-0cd247f47190-3797d8d2-4f00-4d1f-9d85-ecad1e61746d" class="necessary stimulation" source="_9886817c-7043-4de9-9895-0cd247f47190" target="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d">
+      <glyph id="_9886817c-7043-4de9-9895-0cd247f47190-3797d8d2-4f00-4d1f-9d85-ecad1e61746d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="153.06889686680182" y="177.6005922675491"/>
+      <end x="188.1945488337248" y="197.58346705537488"/>
+    </arc>
+    <arc id="ce103257-dbf5-430f-9e6c-1745990341de-2bdf0056-96f6-4184-a214-8c7cc7da6214" class="catalysis" source="ce103257-dbf5-430f-9e6c-1745990341de" target="_2bdf0056-96f6-4184-a214-8c7cc7da6214">
+      <glyph id="ce103257-dbf5-430f-9e6c-1745990341de-2bdf0056-96f6-4184-a214-8c7cc7da6214_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="87.19851073918643" y="312.95886166875925"/>
+      <end x="126.43090434419872" y="318.93432947690536"/>
+    </arc>
+    <arc id="ed79ab12-7b79-4a8a-80b3-c65181c076e4-2bdf0056-96f6-4184-a214-8c7cc7da6214" class="consumption" source="ed79ab12-7b79-4a8a-80b3-c65181c076e4" target="_2bdf0056-96f6-4184-a214-8c7cc7da6214.1">
+      <glyph id="ed79ab12-7b79-4a8a-80b3-c65181c076e4-2bdf0056-96f6-4184-a214-8c7cc7da6214_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="117.14097124087972" y="365.0491203808614"/>
+      <end x="137.1095615801151" y="331.1857908442611"/>
+    </arc>
+    <arc id="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9-2bdf0056-96f6-4184-a214-8c7cc7da6214" class="consumption" source="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9" target="_2bdf0056-96f6-4184-a214-8c7cc7da6214.1">
+      <glyph id="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9-2bdf0056-96f6-4184-a214-8c7cc7da6214_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="183.3474147853426" y="342.75124635503863"/>
+      <end x="137.1095615801151" y="331.1857908442611"/>
+    </arc>
+    <arc id="_2bdf0056-96f6-4184-a214-8c7cc7da6214-d2531344-d005-4b92-afd2-14dcb7d40965" class="production" source="_2bdf0056-96f6-4184-a214-8c7cc7da6214.2" target="d2531344-d005-4b92-afd2-14dcb7d40965">
+      <glyph id="_2bdf0056-96f6-4184-a214-8c7cc7da6214-d2531344-d005-4b92-afd2-14dcb7d40965_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="137.1095615801151" y="309.9357908442611"/>
+      <end x="145.6312686716118" y="276.4424139204865"/>
+    </arc>
+    <arc id="_96b935d7-083c-468d-8607-d3b70fff10a7-135e2807-2b5c-4886-bbdf-d3c8bf433ab9" class="production" source="_96b935d7-083c-468d-8607-d3b70fff10a7.2" target="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9">
+      <glyph id="_96b935d7-083c-468d-8607-d3b70fff10a7-135e2807-2b5c-4886-bbdf-d3c8bf433ab9_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="251.71480817380842" y="358.1128562700198"/>
+      <end x="216.73595265993717" y="352.1525221793944"/>
+    </arc>
+    <arc id="a083be43-422d-9067-c688-661cec17e472-d9e08f4b-94b8-4285-af36-f4159b56a2fc" class="consumption" source="a083be43-422d-9067-c688-661cec17e472" target="d9e08f4b-94b8-4285-af36-f4159b56a2fc.1">
+      <glyph id="a083be43-422d-9067-c688-661cec17e472-d9e08f4b-94b8-4285-af36-f4159b56a2fc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="275.0336262786068" y="190.46106694914835"/>
+      <end x="441.6899643795609" y="226.50885623068754"/>
+    </arc>
+    <arc id="_66737d5c-5193-43a2-baa6-094aa1c21654-96b935d7-083c-468d-8607-d3b70fff10a7" class="necessary stimulation" source="_66737d5c-5193-43a2-baa6-094aa1c21654" target="_96b935d7-083c-468d-8607-d3b70fff10a7">
+      <glyph id="_66737d5c-5193-43a2-baa6-094aa1c21654-96b935d7-083c-468d-8607-d3b70fff10a7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="286.4916120095836" y="398.14744856867924"/>
+      <end x="268.5324571752951" y="368.37793542141577"/>
+    </arc>
+    <arc id="fb8eb6bc-a39a-4361-b938-026a3b63a9b9-96b935d7-083c-468d-8607-d3b70fff10a7" class="consumption" source="fb8eb6bc-a39a-4361-b938-026a3b63a9b9" target="_96b935d7-083c-468d-8607-d3b70fff10a7.1">
+      <glyph id="fb8eb6bc-a39a-4361-b938-026a3b63a9b9-96b935d7-083c-468d-8607-d3b70fff10a7_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="434.13645596206607" y="326.45060936374284"/>
+      <end x="272.9648081738084" y="358.1128562700198"/>
+    </arc>
+    <arc id="be08c23c-dca4-43cd-b8a6-06f6ebdaf710-d9e08f4b-94b8-4285-af36-f4159b56a2fc" class="necessary stimulation" source="be08c23c-dca4-43cd-b8a6-06f6ebdaf710" target="d9e08f4b-94b8-4285-af36-f4159b56a2fc">
+      <glyph id="be08c23c-dca4-43cd-b8a6-06f6ebdaf710-d9e08f4b-94b8-4285-af36-f4159b56a2fc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="288.4211369834105" y="274.6987698194915"/>
+      <end x="441.72759139679397" y="229.62187517275396"/>
+    </arc>
+    <arc id="d9e08f4b-94b8-4285-af36-f4159b56a2fc-06e41c55-1352-407e-9c4b-604d3f5f616b" class="production" source="d9e08f4b-94b8-4285-af36-f4159b56a2fc.2" target="_06e41c55-1352-407e-9c4b-604d3f5f616b">
+      <glyph id="d9e08f4b-94b8-4285-af36-f4159b56a2fc-06e41c55-1352-407e-9c4b-604d3f5f616b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="462.9399643795609" y="226.50885623068754"/>
+      <end x="499.1859573919013" y="237.93721457188346"/>
+    </arc>
+    <arc id="_06e41c55-1352-407e-9c4b-604d3f5f616b-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8" class="consumption" source="_06e41c55-1352-407e-9c4b-604d3f5f616b" target="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.1">
+      <glyph id="_06e41c55-1352-407e-9c4b-604d3f5f616b-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="516.8833930083372" y="258.4432618800238"/>
+      <end x="514.2533529078593" y="295.390269604664"/>
+    </arc>
+    <arc id="b88b6460-4172-427f-abbe-d7c0f0a174ce-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8" class="catalysis" source="b88b6460-4172-427f-abbe-d7c0f0a174ce" target="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8">
+      <glyph id="b88b6460-4172-427f-abbe-d7c0f0a174ce-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="564.9897830940895" y="300.3921701364454"/>
+      <end x="524.9486211321137" y="304.8299170514096"/>
+    </arc>
+    <arc id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-fb8eb6bc-a39a-4361-b938-026a3b63a9b9" class="production" source="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.2" target="fb8eb6bc-a39a-4361-b938-026a3b63a9b9">
+      <glyph id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-fb8eb6bc-a39a-4361-b938-026a3b63a9b9_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="514.2533529078593" y="316.640269604664"/>
+      <end x="468.32425859132303" y="318.5247418894807"/>
+    </arc>
+    <arc id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-8ba53135-01b4-4a4b-b87d-a5971850cb39" class="production" source="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.2" target="_8ba53135-01b4-4a4b-b87d-a5971850cb39">
+      <glyph id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-8ba53135-01b4-4a4b-b87d-a5971850cb39_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="514.2533529078593" y="316.640269604664"/>
+      <end x="531.9838101564665" y="348.04116433859537"/>
+    </arc>
+    <arc id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8-264a7088-e810-4679-9c92-f06886510f98" class="consumption" source="f3ac8950-6d69-4c5b-92dd-3020906ea2c8" target="_264a7088-e810-4679-9c92-f06886510f98.1">
+      <glyph id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8-264a7088-e810-4679-9c92-f06886510f98_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="789.3464086468815" y="276.2012585846991"/>
+      <end x="788.4593203454035" y="238.0076764963991"/>
+    </arc>
+    <arc id="_264a7088-e810-4679-9c92-f06886510f98-4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" class="production" source="_264a7088-e810-4679-9c92-f06886510f98.2" target="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0">
+      <glyph id="_264a7088-e810-4679-9c92-f06886510f98-4b4a1add-6cf6-47cb-b952-5ea0ceade9a0_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="809.7093203454035" y="238.0076764963991"/>
+      <end x="851.6603578051376" y="234.07234143482037"/>
+    </arc>
+    <arc id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0-d756f4ab-9813-4d55-aa86-c37dc7f3b286" class="necessary stimulation" source="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" target="d756f4ab-9813-4d55-aa86-c37dc7f3b286">
+      <glyph id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0-d756f4ab-9813-4d55-aa86-c37dc7f3b286_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="915.7766403936383" y="224.5160897552756"/>
+      <end x="961.6905497359398" y="213.91816442929544"/>
+    </arc>
+    <arc id="d756f4ab-9813-4d55-aa86-c37dc7f3b286-ac2f1b2b-2e6e-4647-84bd-c141925f4d85" class="production" source="d756f4ab-9813-4d55-aa86-c37dc7f3b286.2" target="ac2f1b2b-2e6e-4647-84bd-c141925f4d85">
+      <glyph id="d756f4ab-9813-4d55-aa86-c37dc7f3b286-ac2f1b2b-2e6e-4647-84bd-c141925f4d85_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="982.949772946819" y="211.46355524652063"/>
+      <end x="1023.6374366057483" y="222.04076475938186"/>
+    </arc>
+    <arc id="ac2f1b2b-2e6e-4647-84bd-c141925f4d85-3a96c155-e828-4038-8384-4c25f4f1aaf6" class="stimulation" source="ac2f1b2b-2e6e-4647-84bd-c141925f4d85" target="_3a96c155-e828-4038-8384-4c25f4f1aaf6">
+      <glyph id="ac2f1b2b-2e6e-4647-84bd-c141925f4d85-3a96c155-e828-4038-8384-4c25f4f1aaf6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1058.146814490819" y="228.55682662722737"/>
+      <end x="1101.8615267188593" y="235.91258625549247"/>
+    </arc>
+    <arc id="_06e41c55-1352-407e-9c4b-604d3f5f616b-264a7088-e810-4679-9c92-f06886510f98" class="necessary stimulation" source="_06e41c55-1352-407e-9c4b-604d3f5f616b" target="_264a7088-e810-4679-9c92-f06886510f98">
+      <glyph id="_06e41c55-1352-407e-9c4b-604d3f5f616b-264a7088-e810-4679-9c92-f06886510f98_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="533.7646011614623" y="242.21402738002735"/>
+      <end x="788.3704272851885" y="238.17753342855457"/>
+    </arc>
+    <arc id="_1129b8c7-71da-4a6c-8681-3082e6f04a6c-3a96c155-e828-4038-8384-4c25f4f1aaf6" class="consumption" source="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" target="_3a96c155-e828-4038-8384-4c25f4f1aaf6.1">
+      <glyph id="_1129b8c7-71da-4a6c-8681-3082e6f04a6c-3a96c155-e828-4038-8384-4c25f4f1aaf6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1135.910918023428" y="173.30247044730837"/>
+      <end x="1112.4173672645989" y="227.0637897753443"/>
+    </arc>
+    <arc id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-6259ebd3-e879-4c70-b442-a602e5408989" class="production" source="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" target="_6259ebd3-e879-4c70-b442-a602e5408989">
+      <glyph id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-6259ebd3-e879-4c70-b442-a602e5408989_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1261.1800896273567" y="423.58652636587937"/>
+      <end x="1227.7994923190217" y="463.898739813864"/>
+    </arc>
+    <arc id="_9b7f467a-30eb-4b8e-a966-43692648a46e-3a96c155-e828-4038-8384-4c25f4f1aaf6" class="consumption" source="_9b7f467a-30eb-4b8e-a966-43692648a46e" target="_3a96c155-e828-4038-8384-4c25f4f1aaf6.1">
+      <glyph id="_9b7f467a-30eb-4b8e-a966-43692648a46e-3a96c155-e828-4038-8384-4c25f4f1aaf6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1165.2708374990975" y="240.82996530730182"/>
+      <end x="1112.4173672645989" y="227.0637897753443"/>
+    </arc>
+    <arc id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08-9b7f467a-30eb-4b8e-a966-43692648a46e" class="production" source="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.1" target="_9b7f467a-30eb-4b8e-a966-43692648a46e">
+      <glyph id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08-9b7f467a-30eb-4b8e-a966-43692648a46e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1276.843536769925" y="231.20076244730166"/>
+      <end x="1229.39567888357" y="242.30383738840285"/>
+    </arc>
+    <arc id="_3a96c155-e828-4038-8384-4c25f4f1aaf6-04ea25d8-dfaa-7912-303f-be00b342fc27" class="production" source="_3a96c155-e828-4038-8384-4c25f4f1aaf6.2" target="_04ea25d8-dfaa-7912-303f-be00b342fc27">
+      <glyph id="_3a96c155-e828-4038-8384-4c25f4f1aaf6-04ea25d8-dfaa-7912-303f-be00b342fc27_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1112.4173672645989" y="248.3137897753443"/>
+      <end x="1118.3604096882104" y="283.64517360793457"/>
+    </arc>
+    <arc id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08-a0a8dd07-644b-4646-a305-ef249fa67752" class="production" source="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.1" target="a0a8dd07-644b-4646-a305-ef249fa67752">
+      <glyph id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08-a0a8dd07-644b-4646-a305-ef249fa67752_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1276.843536769925" y="231.20076244730166"/>
+      <end x="1304.1171940323238" y="205.24129860480994"/>
+    </arc>
+    <arc id="_85682413-94f7-8b3c-e052-59a72cd48e12-97c2c87b-c5d2-41fb-97f6-a1001075cf08" class="consumption" source="_85682413-94f7-8b3c-e052-59a72cd48e12" target="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.2">
+      <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12-97c2c87b-c5d2-41fb-97f6-a1001075cf08_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1298.1653764007108" y="276.7074033599868"/>
+      <end x="1276.843536769925" y="252.45076244730166"/>
+    </arc>
+    <arc id="_8c083cee-7025-4035-9201-1319da22340b-d756f4ab-9813-4d55-aa86-c37dc7f3b286" class="consumption" source="_8c083cee-7025-4035-9201-1319da22340b" target="d756f4ab-9813-4d55-aa86-c37dc7f3b286.1">
+      <glyph id="_8c083cee-7025-4035-9201-1319da22340b-d756f4ab-9813-4d55-aa86-c37dc7f3b286_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="960.1930033255996" y="166.99793452590413"/>
+      <end x="961.699772946819" y="211.46355524652063"/>
+    </arc>
+    <arc id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-85682413-94f7-8b3c-e052-59a72cd48e12" class="production" source="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" target="_85682413-94f7-8b3c-e052-59a72cd48e12">
+      <glyph id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-85682413-94f7-8b3c-e052-59a72cd48e12_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1261.1800896273567" y="423.58652636587937"/>
+      <end x="1292.2292410823275" y="374.28751161208754"/>
+    </arc>
+    <arc id="_85682413-94f7-8b3c-e052-59a72cd48e12-e889d01c-1eb1-4c83-8bd9-0160e9c2abcb" class="stimulation" source="_85682413-94f7-8b3c-e052-59a72cd48e12" target="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb">
+      <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12-e889d01c-1eb1-4c83-8bd9-0160e9c2abcb_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1372.4153764007108" y="363.2707060491736"/>
+      <end x="1426.466475147702" y="406.90696540548026"/>
+    </arc>
+    <arc id="_00ac7e0a-288f-42e0-b252-9bcb59027572-1129b8c7-71da-4a6c-8681-3082e6f04a6c" class="production" source="_00ac7e0a-288f-42e0-b252-9bcb59027572.2" target="_1129b8c7-71da-4a6c-8681-3082e6f04a6c">
+      <glyph id="_00ac7e0a-288f-42e0-b252-9bcb59027572-1129b8c7-71da-4a6c-8681-3082e6f04a6c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1254.3676864846466" y="137.3471821540386"/>
+      <end x="1200.2147316316948" y="129.83941421555963"/>
+    </arc>
+    <arc id="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb-00ac7e0a-288f-42e0-b252-9bcb59027572" class="consumption" source="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb" target="_00ac7e0a-288f-42e0-b252-9bcb59027572.1">
+      <glyph id="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb-00ac7e0a-288f-42e0-b252-9bcb59027572_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1305.0073082077165" y="99.55463071589972"/>
+      <end x="1275.6176864846466" y="137.3471821540386"/>
+    </arc>
+    <arc id="a0a8dd07-644b-4646-a305-ef249fa67752-00ac7e0a-288f-42e0-b252-9bcb59027572" class="consumption" source="a0a8dd07-644b-4646-a305-ef249fa67752" target="_00ac7e0a-288f-42e0-b252-9bcb59027572.1">
+      <glyph id="a0a8dd07-644b-4646-a305-ef249fa67752-00ac7e0a-288f-42e0-b252-9bcb59027572_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1301.2141280304995" y="171.73589536456083"/>
+      <end x="1275.6176864846466" y="137.3471821540386"/>
+    </arc>
+  </map>
+</sbgn>
