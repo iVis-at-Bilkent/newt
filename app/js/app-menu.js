@@ -495,7 +495,7 @@ module.exports = function() {
       "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
       "#load-sample14" : 'repressilator.sbgnml',
       "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
-      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.xml'
+      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgnml'
     };
 
     for ( var selector in selectorToSampleFileName ) {
