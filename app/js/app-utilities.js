@@ -759,12 +759,15 @@ appUtilities.setFileContent = function (fileName) {
     span.removeChild(span.firstChild);
   }
   while (displayedSpan.firstChild) {
-      displayedSpan.removeChild(displayedSpan.firstChild);
+    displayedSpan.removeChild(displayedSpan.firstChild);
   }
   span.appendChild(document.createTextNode(fileName));
-  if (fileName.length <= 40)
-      displayedSpan.appendChild(document.createTextNode(fileName));
-  else displayedSpan.appendChild(document.createTextNode(fileName.substring(0, 34) + "...xml"));
+  if (fileName.length <= 40) {
+    displayedSpan.appendChild(document.createTextNode(fileName));
+  }
+  else {
+    displayedSpan.appendChild(document.createTextNode(fileName.substring(0, 34) + "..." + fileName.substring(fileName.lastIndexOf('.')+1, fileName.length)));
+  };
 
   displayedSpan.style.display = 'block';
   span.style.display = 'none';
