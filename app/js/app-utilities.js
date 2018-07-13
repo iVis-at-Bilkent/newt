@@ -2059,6 +2059,7 @@ appUtilities.getAllStyles = function (_cy) {
     'font-weight': 'fontWeight',
     'font-style': 'fontStyle',
     'font-family': 'fontFamily',
+    'color': 'fontColor',
     'background-image': 'backgroundImage',
     'background-fit': 'backgroundFit',
     'background-position-x': 'backgroundPosX',

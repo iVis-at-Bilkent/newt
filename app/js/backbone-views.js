@@ -2559,7 +2559,8 @@ var FontPropertiesView = Backbone.View.extend({
     fontFamily: "",
     fontSize: "",
     fontWeight: "",
-    fontStyle: ""
+    fontStyle: "",
+    fontColor: ""
   },
   currentFontProperties: undefined,
   copyProperties: function () {
@@ -2634,6 +2635,7 @@ var FontPropertiesView = Backbone.View.extend({
     var commonFontWeight = chiseInstance.elementUtilities.getCommonProperty(eles, "font-weight", "data");
     var commonFontFamily = chiseInstance.elementUtilities.getCommonProperty(eles, "font-family", "data");
     var commonFontStyle = chiseInstance.elementUtilities.getCommonProperty(eles, "font-style", "data");
+    var commonFontColor = chiseInstance.elementUtilities.getCommonProperty(eles, "color", "data");
 
     if( commonFontSize != null ) {
       commonProperties.fontSize = commonFontSize;
@@ -2649,6 +2651,10 @@ var FontPropertiesView = Backbone.View.extend({
 
     if( commonFontStyle != null ) {
       commonProperties.fontStyle = commonFontStyle;
+    }
+
+    if (commonFontColor != null) {
+      commonProperties.fontColor = commonFontColor;
     }
 
     self.currentFontProperties = $.extend({}, this.defaultFontProperties, commonProperties);
@@ -2676,6 +2682,7 @@ var FontPropertiesView = Backbone.View.extend({
       var fontfamily = $('select[name="font-family-select"] option:selected').val();
       var fontweight = $('select[name="font-weight-select"] option:selected').val();
       var fontstyle = $('select[name="font-style-select"] option:selected').val();
+      var fontcolor = $('#font-properties-font-color').val();
 
       if ( fontsize != '' ) {
         data['font-size'] = parseInt(fontsize);
@@ -2691,6 +2698,10 @@ var FontPropertiesView = Backbone.View.extend({
 
       if ( fontstyle != '' ) {
         data['font-style'] = fontstyle;
+      }
+
+      if ( fontcolor != '') {
+        data['color'] = fontcolor;
       }
 
       var keys = Object.keys(data);

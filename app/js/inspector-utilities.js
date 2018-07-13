@@ -777,6 +777,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'color', value: selected.data('color')}});
           }
 
           // Push this action if the node can have ports
@@ -818,6 +819,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             defaults['font-family'] = selected.data('font-family');
             defaults['font-weight'] = selected.data('font-weight');
             defaults['font-style'] = selected.data('font-style');
+            defaults['color'] = selected.data('color');
           }
 
           // Set this if the node can have ports
