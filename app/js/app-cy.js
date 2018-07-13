@@ -499,7 +499,11 @@ module.exports = function (chiseInstance) {
         s: "s-resize",
         sw: "sw-resize",
         w: "w-resize"
-      }
+      },
+
+      resizeToContentCueEnabled: true,
+      resizeToContentFunction: appUtilities.resizeNodesToContent,
+      resizeToContentCuePosition: 'bottom-right',
     });
 
     //For adding edges interactively
