@@ -501,7 +501,12 @@ module.exports = function (chiseInstance) {
         w: "w-resize"
       },
 
-      resizeToContentCueEnabled: true,
+      resizeToContentCueEnabled: function (node){
+        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature", 
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
+        
+        return enabled_classes.includes(node.data('class'));
+      },
       resizeToContentFunction: appUtilities.resizeNodesToContent,
       resizeToContentCuePosition: 'bottom-right',
     });
