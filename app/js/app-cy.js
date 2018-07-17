@@ -512,7 +512,7 @@ module.exports = function (chiseInstance) {
             result = true;
         });
 
-        return result;
+        return result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
       },
       resizeToContentFunction: appUtilities.resizeNodesToContent,
       resizeToContentCuePosition: 'bottom-right',
