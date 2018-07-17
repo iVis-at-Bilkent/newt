@@ -2,7 +2,7 @@
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
     <extension>
-      <renderInformation 
+      <renderInformation
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="4.0.2" backgroundColor="#000000">
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#ffffffff"/>
@@ -57,6 +57,7 @@
         <enablePorts>true</enablePorts>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
         <mapColorScheme>opposed_purple_green2</mapColorScheme>
+        <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>CaM-CaMK dependent signaling to nucleus</mapName>
