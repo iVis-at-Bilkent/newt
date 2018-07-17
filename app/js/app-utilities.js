@@ -2866,6 +2866,7 @@ appUtilities.resizeNodesToContent = function(nodes){
     var cy = appUtilities.getActiveCy();
 
     chiseInstance.resizeNodesToContent(nodes, false);
+    cy.nodeResize('get').refreshGrapples();
 
 };
 
