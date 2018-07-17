@@ -425,7 +425,7 @@ module.exports = function() {
 
         if (mapPropertiesExist){
           // update map panel
-          appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
+          appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView, scheme_type: currentGeneralProperties.mapColorSchemeStyle});
         }
       }
 

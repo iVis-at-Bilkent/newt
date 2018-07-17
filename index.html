@@ -2338,22 +2338,22 @@
           <div style="margin-top:5px;">
 
               <div style="margin-bottom:5px;">
-                <class="add-on layout-text" style="margin-left:35%;">Style</>
+                <class="add-on layout-text" style="margin-left:33.5%;">Style</>
                 <class="add-on layout-text" style="margin-left:2%;"></>
                 <select id="color-scheme-inspector-style-select" class="color-scheme-type-select" style="margin-left: %7;">
-                  <option id="color-scheme-inspector-style-solid" value="solid" selected> Solid </option>
-                  <option id="color-scheme-inspector-style-gradient" value="gradient"> Gradient </option>
-                  <option id="color-scheme-inspector-style-3D" value="3D"> 3D </option>
+                  <option id="color-scheme-inspector-style-solid" value="solid" <% if (scheme_type == 'solid') print('selected')%>> Solid </option>
+                  <option id="color-scheme-inspector-style-gradient" value="gradient" <% if (scheme_type == 'gradient') print('selected')%>> Gradient </option>
+                  <option id="color-scheme-inspector-style-3D" value="3D" <% if (scheme_type == '3D') print('selected')%>> 3D </option>
                 </select>
               </div>
 
 
-              <div id='solid-color-scheme-display' style='display: block;'>
+              <div id='solid-color-scheme-display' <% if (scheme_type == 'solid') {print('style="display: block;"');} else { print('style="display: none;"'); }%>>
                   <% for(var scheme_id in schemes) { %>
                       <% if(schemes[scheme_id].isDisplayed) {%>
                           <div style="display:block; width:70%; margin:0 auto;">
                               <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
-                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:1px solid black; display:block;'>
+                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
                                       <%= schemes[scheme_id].previewHtml %>
                                   </div>
                               </div>
@@ -2368,12 +2368,12 @@
                   <% } %>
               </div>
 
-              <div id='gradient-color-scheme-display' style='display: none;'>
+              <div id='gradient-color-scheme-display' <% if (scheme_type == 'gradient') {print('style="display: block;"');} else { print('style="display: none;"'); }%>>
                   <% for(var scheme_id in schemes_gradient) { %>
                       <% if(schemes_gradient[scheme_id].isDisplayed) {%>
                           <div style="display:block; width:70%; margin:0 auto;">
                               <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
-                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:1px solid black; display:block;'>
+                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
                                       <%= schemes_gradient[scheme_id].previewHtml %>
                                   </div>
                               </div>
@@ -2388,12 +2388,12 @@
                   <% } %>
               </div>
 
-              <div id='3D-color-scheme-display' style='display: none;'>
+              <div id='3D-color-scheme-display'  <% if (scheme_type == '3D') {print('style="display: block;"');} else { print('style="display: none;"'); }%>>
                   <% for(var scheme_id in schemes_3D) { %>
                       <% if(schemes_3D[scheme_id].isDisplayed) {%>
                           <div style="display:block; width:70%; margin:0 auto;">
                               <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
-                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:1px solid black; display:block;'>
+                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
                                       <%= schemes_3D[scheme_id].previewHtml %>
                                   </div>
                               </div>

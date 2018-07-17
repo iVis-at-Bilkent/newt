@@ -62,7 +62,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
   // refresh color schema menu
-  appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView});
+  appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView, scheme_type: generalProperties.mapColorSchemeStyle});
 
   // set the file content by the current file name for cy
   var fileName = appUtilities.getScratch(cy, 'currentFileName');
@@ -728,6 +728,7 @@ appUtilities.defaultGeneralProperties = {
   enablePorts: true,
   allowCompoundNodeResize: false,
   mapColorScheme: 'black_white',
+  mapColorSchemeStyle: 'solid',
   defaultInfoboxHeight: 12,
   defaultInfoboxWidth: 12,
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
@@ -1986,17 +1987,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
   }
 
   cy.undoRedo().do("batch", actions);
-
-  // ensure the menu is updated accordingly
-  if(scheme_type == 'solid'){
-    $('#solid-color-scheme-display').find('#map-color-scheme_preview_' + newColorScheme).css( "border", "3px solid" );
-  }
-  else if(scheme_type == 'gradient'){
-    $('#gradient-color-scheme-display').find('#map-color-scheme_preview_' + newColorScheme).css( "border", "3px solid" );
-  }
-  else{
-    $('#3D-color-scheme-display').find('#map-color-scheme_preview_' + newColorScheme).css( "border", "3px solid" );
-  }
 
 };
 

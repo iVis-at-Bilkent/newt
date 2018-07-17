@@ -84,74 +84,56 @@ module.exports = function (cy) {
     // get 'currentGeneralProperties' for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-
+    // return the old values of map color scheme and map color scheme style to undo
     var result = {
       value: currentGeneralProperties.mapColorScheme,
-      self: param.self
+      self: param.self,
+      scheme_type: currentGeneralProperties.mapColorSchemeStyle
     };
+
     if(param.scheme_type == '3D'){
-      if (param.self){
         var inverted_id = param.self.schemes_3D[param.value].invert;
         param.self.schemes_3D[param.value].isDisplayed = true;
-
-
-        if (inverted_id)
+        if (inverted_id){
           param.self.schemes_3D[inverted_id].isDisplayed = false;
-
+        }
+        $("#color-scheme-inspector-style-select").val(param.scheme_type);
         param.self.changeStyle(param.scheme_type);
+        // update 'currentGeneralProperties' in scratchpad before rendering the color scheme view
+        currentGeneralProperties.mapColorScheme = param.value;
+        currentGeneralProperties.mapColorSchemeStyle = param.scheme_type;
+        appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
         param.self.render();
-      } else {
-          $('#solid-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-          $('#gradient-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-          $('#3D-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-      };
     }
+    
     else if(param.scheme_type == 'gradient'){
-      if (param.self){
         var inverted_id = param.self.schemes_gradient[param.value].invert;
         param.self.schemes_gradient[param.value].isDisplayed = true;
-
-
-        if (inverted_id)
+        if (inverted_id){
           param.self.schemes_gradient[inverted_id].isDisplayed = false;
-
+        }
+        $("#color-scheme-inspector-style-select").val(param.scheme_type);
         param.self.changeStyle(param.scheme_type);
+        // update 'currentGeneralProperties' in scratchpad before rendering the color scheme view
+        currentGeneralProperties.mapColorScheme = param.value;
+        currentGeneralProperties.mapColorSchemeStyle = param.scheme_type;
+        appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
         param.self.render();
-      } else {
-          $('#solid-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-          $('#gradient-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-          $('#3D-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-      };
     }
     else{
-
-      if (param.self){
         var inverted_id = param.self.schemes[param.value].invert;
         param.self.schemes[param.value].isDisplayed = true;
-
-
         if (inverted_id){
           param.self.schemes[inverted_id].isDisplayed = false;
         }
-
-
+        $("#color-scheme-inspector-style-select").val(param.scheme_type);
         param.self.changeStyle(param.scheme_type);
+        // update 'currentGeneralProperties' in scratchpad before rendering the color scheme view
+        currentGeneralProperties.mapColorScheme = param.value;
+        currentGeneralProperties.mapColorSchemeStyle = param.scheme_type;
+        appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
         param.self.render();
-      } else {
-          $('#solid-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-          $('#gradient-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-          $('#3D-color-scheme-display').find('#map-color-scheme_preview_' + result.value).css( "border", "1px solid" );
-      };
     }
-
-
-
-    document.getElementById("map-color-scheme_preview_" + param.value).style.border = "3px solid";
-    currentGeneralProperties.mapColorScheme = param.value;
-
-    // update 'currentGeneralProperties' in scratchpad
-    appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
-
     return result;
   }
 

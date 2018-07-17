@@ -348,13 +348,9 @@ var LayoutPropertiesView = Backbone.View.extend({
 
 
 var ColorSchemeInspectorView = Backbone.View.extend({
+
   initialize: function () {
     var self = this;
-
-    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-
-    // in order to preserve the id of the current color scheme
-    var current_scheme_id;
 
     var schemes = appUtilities.mapColorSchemes;
     var schemes_gradient = Object.assign({}, schemes);
@@ -408,49 +404,39 @@ var ColorSchemeInspectorView = Backbone.View.extend({
 
     // attach events
     $(document).on("click", "div.color-scheme-choice", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var scheme_type = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorSchemeStyle;
       var raw_id = $(this).attr('id');
-      var scheme_type = $("#color-scheme-inspector-style-select").val();
       var scheme_id = raw_id.replace("map-color-scheme_", "");
-      current_scheme_id = scheme_id;
-      appUtilities.applyMapColorScheme(scheme_id,scheme_type);
+      appUtilities.applyMapColorScheme(scheme_id, scheme_type, self);
     });
 
     $(document).on("change", "#color-scheme-inspector-style-select", function (event) {
-
       var cy = appUtilities.getActiveCy();
-      current_scheme_id = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
-
-      //predetermine the color scheme id before style change
-      var raw_id = $('div.color-scheme-choice').attr('id');
-      var scheme_id = raw_id.replace("map-color-scheme_", "");
-
+      var current_scheme_id = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
       //change the currently displayed html element
-      var selected_style = $(this).val();
-      self.changeStyle(selected_style);
-
+      var selected_style = $('#color-scheme-inspector-style-select').val();
       //change to the color scheme choice to match current style
-      appUtilities.applyMapColorScheme(current_scheme_id,selected_style);
+      appUtilities.applyMapColorScheme(current_scheme_id,selected_style,self);
     });
 
     $(document).on("click", "div.color-scheme-invert-button", function (evt) {
       var raw_id = $(this).attr('id');
-      var scheme_type = $("#color-scheme-inspector-style-select").val();
+      var cy = appUtilities.getActiveCy();
+      var scheme_type = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorSchemeStyle;
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
-      current_scheme_id = scheme_id;
       appUtilities.applyMapColorScheme(inverted_id, scheme_type, self);
-      self.changeStyle(scheme_type);
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
-      self.changeStyle('solid'); // default color scheme style
-      current_scheme_id = defaultColorScheme;
-      appUtilities.applyMapColorScheme(defaultColorScheme, 'solid'); // default color scheme
+      var cy = appUtilities.getActiveCy();
+      var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+      var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, self); // default color scheme
     });
-
   },
   changeStyle: function(style) {
-
     if(style == 'solid'){
       $('#solid-color-scheme-display').show();
       $('#gradient-color-scheme-display').hide();
@@ -469,13 +455,15 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       $('#3D-color-scheme-display').show();
       $("#color-scheme-inspector-style-select").val("3D");
     }
-
   },
   render: function () {
     this.template = _.template($("#color-scheme-inspector-template").html());
+    var cy = appUtilities.getActiveCy();
+    // scheme_type and current_scheme are used to highlight the current color scheme with the javascript embedded to color-scheme-inspector-template div(line: 2337 in index.html)
+    var scheme_type = $("#color-scheme-inspector-style-select").val();
+    var current_scheme = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
     this.$el.empty();
-    this.$el.html(this.template({schemes: this.schemes, schemes_gradient: this.schemes_gradient, schemes_3D: this.schemes_3D}));
-
+    this.$el.html(this.template({schemes: this.schemes, schemes_gradient: this.schemes_gradient, schemes_3D: this.schemes_3D, scheme_type: scheme_type, current_scheme: current_scheme}));
     return this;
   }
 });
