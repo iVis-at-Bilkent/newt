@@ -499,7 +499,23 @@ module.exports = function (chiseInstance) {
         s: "s-resize",
         sw: "sw-resize",
         w: "w-resize"
-      }
+      },
+
+      resizeToContentCueEnabled: function (node){
+        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature", 
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
+        var node_class = node.data('class');
+        var result = false;
+
+        enabled_classes.forEach(function(enabled_class){
+          if(node_class.indexOf(enabled_class) > -1)
+            result = true;
+        });
+
+        return result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
+      },
+      resizeToContentFunction: appUtilities.resizeNodesToContent,
+      resizeToContentCuePosition: 'bottom-right',
     });
 
     //For adding edges interactively

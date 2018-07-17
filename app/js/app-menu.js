@@ -480,19 +480,22 @@ module.exports = function() {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signaling.xml',
-      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.xml',
-      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.xml',
-      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.xml',
-      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.xml',
-      "#load-sample6" : 'insulin-like_growth_factor_signaling.xml',
-      "#load-sample7" : 'polyq_proteins_interference.xml',
-      "#load-sample8" : 'glycolysis.xml',
-      "#load-sample9" : 'mapk_cascade.xml',
-      "#load-sample10" : 'transforming_growth_factor_beta_signaling.xml',
-      "#load-sample11" : 'repressilator.xml',
-      "#load-sample12" : 'epidermal_growth_factor_receptor.xml',
-      "#load-sample13" : 'regulation_of_tgfbeta-induced_metastasis.xml'
+      "#load-sample1" : 'neuronal_muscle_signaling.sbgnml',
+      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgnml',
+      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgnml',
+      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgnml',
+      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgnml',
+      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgnml',
+      "#load-sample7" : 'polyq_proteins_interference.sbgnml',
+      "#load-sample8" : 'glycolysis.sbgnml',
+      "#load-sample9" : 'mapk_cascade.sbgnml',
+      "#load-sample10" : 'drosophila_cell_cycle.sbgnml', 
+      "#load-sample11" : 'mammalian_cholesterol.sbgnml',
+      "#load-sample12" : 'two_gene_system_behavior.sbgnml',      
+      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
+      "#load-sample14" : 'repressilator.sbgnml',
+      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
+      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgnml'
     };
 
     for ( var selector in selectorToSampleFileName ) {
@@ -870,7 +873,7 @@ module.exports = function() {
 
       // use the associated cy instance
       var cy = chiseInstance.getCy();
-      
+
       // if there is no element in the cy instance, then return directly
       if(cy.elements().length == 0) {
         return;
@@ -1156,6 +1159,13 @@ module.exports = function() {
       // Go to inspector palette tab when the icon is clicked
       if (!$('#inspector-palette-tab').hasClass('active')) {
         $('#inspector-palette-tab a').tab('show');
+      }
+    });
+
+    $('#network-tabs-list').on('mousedown', function(e) {
+      if( e.which == 2 ) {
+        if(e.target != this) return;
+        appUtilities.createNewNetwork();
       }
     });
 

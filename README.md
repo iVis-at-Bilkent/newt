@@ -45,6 +45,26 @@ Icons made by [Freepik](http://www.freepik.com),
 [Flaticon](http://www.flaticon.com) and licensed with 
 [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)
 
+Third-party libraries:
+[Cytoscape.js](https://github.com/cytoscape/cytoscape.js),
+[Backbone](https://github.com/jashkenas/backbone),
+[Bootstrap](https://github.com/twbs/bootstrap),
+[FileSaver.js](https://github.com/eligrey/FileSaver.js),
+[jQuery](https://github.com/jquery/jquery),
+[jquery-expander](https://github.com/kswedberg/jquery-expander),
+[Konva](https://github.com/konvajs/konva),
+[Libxmljs](https://github.com/libxmljs/libxmljs),
+[lodash](https://github.com/lodash/lodash),
+[underscore](https://github.com/jashkenas/underscore),
+[express](https://github.com/expressjs/express),
+[browserify](https://github.com/browserify/browserify),
+[nodemon](https://github.com/remy/nodemon),
+[Parallel Shell](https://github.com/darkguy2008/parallelshell) licensed with [MIT](https://opensource.org/licenses/MIT);
+[chroma-js](https://github.com/gka/chroma.js) licensed with [BSD](https://opensource.org/licenses/BSD-3-Clause); 
+[Mousetrap](https://github.com/ccampbell/mousetrap),
+[Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) and
+[Intro.js](https://github.com/usablica/intro.js) licensed with [GNU LGPL](https://www.gnu.org/licenses/lgpl-3.0.html).
+
 Thanks to JetBrains for an [Open Source License](https://www.jetbrains.com/buy/opensource/)
 
 ## Team
