@@ -952,8 +952,6 @@ var NeighborhoodQueryView = Backbone.View.extend({
 
     $(document).off("click", "#save-query-neighborhood").on("click", "#save-query-neighborhood", function (evt) {
 
-      new PromptConfirmationView({el: '#prompt-confirmation-table'}).render();
-
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
