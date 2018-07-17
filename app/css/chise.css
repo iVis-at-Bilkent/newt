@@ -194,6 +194,22 @@ body {
   width: 100%;
 }
 
+.select-cursor {
+    cursor: url(../../app/img/select-cursor.svg), pointer!important;
+}
+
+.add-node-cursor {
+    cursor: url(../../app/img/add-node-cursor.svg), pointer!important;
+}
+
+.add-edge-cursor {
+    cursor: url(../../app/img/add-edge-cursor.svg), pointer!important;
+}
+
+.zoom-cursor {
+    cursor: url(../../app/img/zoom-cursor.svg), pointer!important;
+}
+
 #network-tabs-list-container {
   width: 1000px;
   margin: auto;
