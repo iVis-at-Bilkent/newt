@@ -1506,7 +1506,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                 return;
             }
 
-            var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
+            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
                 + self.currentQueryParameters.lengthLimit;
             var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
