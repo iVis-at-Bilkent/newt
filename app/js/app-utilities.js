@@ -6,6 +6,7 @@
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
+var tutorial = require('./tutorial');
 
 var appUtilities = {};
 
@@ -2351,6 +2352,8 @@ appUtilities.launchWithModelFile = function() {
     loadFromURL(url_path, chiseInstance, promptInvalidURLWarning);
   else if(uri_path != undefined)
     loadFromURI(uri_path, chiseInstance, promptInvalidURIWarning);
+  else
+    tutorial.introduction(true);
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
     // get current general properties
