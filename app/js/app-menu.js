@@ -46,11 +46,11 @@ module.exports = function() {
             chiseInstance.endSpinner("load-spinner");
             if (cy.elements().length !== 0) {
                 promptConfirmationView.render(function() {
-                    chiseInstance.loadSBGNMLText(data);
+                    chiseInstance.loadSBGNMLText(data, true);
                 });
             }
             else {
-                chiseInstance.loadSBGNMLText(data);
+                chiseInstance.loadSBGNMLText(data, true);
             }
         },
         error: function (XMLHttpRequest) {
@@ -323,14 +323,6 @@ module.exports = function() {
           chiseInstance = appUtilities.getActiveChiseInstance();
           chiseInstance.startSpinner("load-spinner");
           cd2sbgnml(event.target.result);
-          var cy = appUtilities.getActiveCy();
-          cy.nodes().forEach(function(ele){
-            if (ele.data('statesandinfos') !== undefined && ele.data('statesandinfos').length > 0) {
-              var locations = chiseInstance.elementUtilities.checkFit(ele);
-              chiseInstance.elementUtilities.fitUnits(ele, locations);
-            }
-          })
-
         };
         reader.readAsText(file);
       }
