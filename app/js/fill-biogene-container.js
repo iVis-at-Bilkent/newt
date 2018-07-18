@@ -44,7 +44,7 @@ var fillBioGeneContainer = function (node) {
     url: "/utilities/testURL",
     data: {url: queryScriptURL, qs: queryParams},
     success: function(data){
-      if (!data.error && data.response.statusCode == 200 && data.response.body != null && 
+      if (!data.error && data.response.statusCode == 200 && data.response.body && 
         queryParams.query != "" && typeof queryParams.query != 'undefined') {
         
         var json = JSON.parse(data.response.body);

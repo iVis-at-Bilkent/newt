@@ -314,7 +314,7 @@ module.exports = function() {
     });
 
     $('#celldesigner-file-input').change(function (e, fileObject) {
-
+        var chiseInstance = appUtilities.getActiveChiseInstance();
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
         appUtilities.setFileContent(file.name);
@@ -323,6 +323,14 @@ module.exports = function() {
           chiseInstance = appUtilities.getActiveChiseInstance();
           chiseInstance.startSpinner("load-spinner");
           cd2sbgnml(event.target.result);
+          var cy = appUtilities.getActiveCy();
+          cy.nodes().forEach(function(ele){
+            if (ele.data('statesandinfos') !== undefined && ele.data('statesandinfos').length > 0) {
+              var locations = chiseInstance.elementUtilities.checkFit(ele);
+              chiseInstance.elementUtilities.fitUnits(ele, locations);
+            }
+          })
+
         };
         reader.readAsText(file);
       }
