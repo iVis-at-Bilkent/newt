@@ -2403,7 +2403,7 @@ appUtilities.launchWithModelFile = function() {
       data: {url: filepath},
       success: function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
-        if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+        if (!data.error && data.response.statusCode == 200 && data.response.body) {
           var fileToLoad = new File([data.response.body], filename, {
             type: 'text/' + fileExtension,
             lastModified: Date.now()
@@ -2447,7 +2447,7 @@ appUtilities.launchWithModelFile = function() {
       data: {url: queryURL},
       success: function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
-        if (data.response.statusCode == 200 && data.response.body != null) {
+        if (data.response.statusCode == 200 && data.response.body) {
           var xml = $.parseXML(data.response.body);
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
           currentGeneralProperties.inferNestingOnLoad = false;

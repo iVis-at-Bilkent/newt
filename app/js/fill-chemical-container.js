@@ -33,7 +33,7 @@ var fillChemicalContainer = function (node) {
     url: "/utilities/testURL",
     data: {url: queryScriptURL, qs: queryParams},
     success: function(data){
-      if (!data.error && data.response.statusCode == 200 && data.response.body != null) {
+      if (!data.error && data.response.statusCode == 200 && data.response.body) {
         var json = JSON.parse(data.response.body);
         if(json.response.numFound > 0){
           new ChemicalView({
