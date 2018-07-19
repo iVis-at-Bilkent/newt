@@ -896,6 +896,29 @@ module.exports = function() {
       }
       layoutPropertiesView.applyLayout(preferences);
     });
+    
+    $("#perform-static-layout-icon").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      // if there is no element in the cy instance, then return directly
+      if(cy.elements().length == 0) {
+        return;
+      }
+
+      // TODO think whether here is the right place to start the spinner
+      chiseInstance.startSpinner("layout-spinner");
+
+      var preferences = {
+        randomize: true
+      };
+
+      layoutPropertiesView.applyLayout(preferences);
+    });
 
     $("#undo-last-action, #undo-icon").click(function (e) {
 

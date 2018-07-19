@@ -120,7 +120,7 @@ tutorial.UIGuide = function(){
       {
         element: document.getElementsByClassName('inside-menu')[4],
         intro: '<p style="font-size:12px; margin:0px;">This group is for layout operations</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0px;"><b>- Perform Layout<br>- Layout Properties</b></p>'
+                <p style="font-size:12px; margin:0px;"><b>- Perform Layout<br>- Perform Static Layout<br>- Layout Properties</b></p>'
       },
       {
         element: document.getElementsByClassName('inside-menu')[5],
