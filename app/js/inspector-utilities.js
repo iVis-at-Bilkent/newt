@@ -311,7 +311,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           options = tmp ? tmp : options;
         }
 
-        var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px;'
+        var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px; margin-bottom: 2px;'
                         + display + '">'
                         + options
                         + '</select>';
