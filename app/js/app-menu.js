@@ -428,7 +428,37 @@ module.exports = function() {
       }
 
       if (mapPropertiesExist) {
-        appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, colorSchemeInspectorView);
+
+        // set default colors(or background images) according to the specified color scheme style
+        if(currentGeneralProperties.mapColorSchemeStyle == 'solid'){
+          for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
+            classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+            // nodeClass may not be defined in the defaultProperties (for edges, for example)
+            if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
+            }
+          }
+        }
+
+        else{
+          for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
+            classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+            classBgImg = currentGeneralProperties.mapColorSchemeStyle == 'gradient'
+                       ? appUtilities.colorCodeToGradientImage[appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass]]
+                       : appUtilities.colorCodeTo3DImage[appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass]];
+            // nodeClass may not be defined in the defaultProperties (for edges, for example)
+            if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: '#ffffff'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-fit', value: 'cover'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-opacity', value: '1'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-x', value: '50%'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-y', value: '50%'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: classBgImg});
+            }
+          }
+        }
+
       };
 
       // reset current general properties at the scratch pad of cy
