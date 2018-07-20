@@ -428,15 +428,7 @@ module.exports = function() {
       }
 
       if (mapPropertiesExist) {
-
-        // set default colors according to the color scheme
-        for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
-          classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
-          // nodeClass may not be defined in the defaultProperties (for edges, for example)
-          if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
-            chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
-          }
-        }
+        appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, colorSchemeInspectorView);
       };
 
       // reset current general properties at the scratch pad of cy

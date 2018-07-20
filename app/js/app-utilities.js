@@ -586,13 +586,13 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab">\n\
                   <a data-toggle="tab" href="#' + panelId + '">\n\
                   <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '</a></li>';
-  
+
   $('ul').on('click', 'button.' + tabId +'closeTab', function() {
     var networkId = tabId.substring(17);
     appUtilities.setActiveNetwork(networkId);
     appUtilities.closeActiveNetwork();
   });
-  
+
   $('ul').on('mousedown', '#' + tabId, function(e) {
     if( e.which == 2 ) {
      var networkId = tabId.substring(17);
@@ -1904,7 +1904,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       }
       return result;
     };
-    
+
     var actions = [];
 
     //first clear the background images of already present elementUtilities
@@ -1997,7 +1997,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       classBgImg = scheme_type == 'gradient' ? colorCodeToGradientImage[mapColorSchemes[newColorScheme]['values'][nodeClass]] : colorCodeTo3DImage[mapColorSchemes[newColorScheme]['values'][nodeClass]];
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
       if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
-        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: '#ffffff'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: 'cover'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-opacity', value: '1'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: '50%'}});
@@ -2411,7 +2411,7 @@ appUtilities.launchWithModelFile = function() {
             type: 'text/' + fileExtension,
             lastModified: Date.now()
           });
-  
+
           currentGeneralProperties.inferNestingOnLoad = true;
           chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
