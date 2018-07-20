@@ -897,7 +897,7 @@ module.exports = function() {
       layoutPropertiesView.applyLayout(preferences);
     });
     
-    $("#perform-static-layout-icon").click(function (e) {
+    $("#perform-static-layout, #perform-static-layout-icon").click(function (e) {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
