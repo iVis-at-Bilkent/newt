@@ -435,7 +435,7 @@ module.exports = function() {
         for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
           classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
           // nodeClass may not be defined in the defaultProperties (for edges, for example)
-          if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+          if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
             chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
           }
         }
