@@ -434,7 +434,7 @@ module.exports = function() {
           for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
             classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
             // nodeClass may not be defined in the defaultProperties (for edges, for example)
-            if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+            if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
             }
@@ -448,7 +448,7 @@ module.exports = function() {
                        ? appUtilities.colorCodeToGradientImage[appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass]]
                        : appUtilities.colorCodeTo3DImage[appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass]];
             // nodeClass may not be defined in the defaultProperties (for edges, for example)
-            if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+            if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: '#ffffff'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-fit', value: 'cover'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-opacity', value: '1'});
@@ -479,12 +479,12 @@ module.exports = function() {
       e.preventDefault();
       $("#quick_help_modal").modal('show');
     });
-    
+
     $("#quick-tutorial").click(function (e) {
       e.preventDefault();
       tutorial.introduction();
     });
-   
+
     $("#ui-guide").click(function (e) {
       e.preventDefault();
       tutorial.UIGuide();
@@ -509,9 +509,9 @@ module.exports = function() {
       "#load-sample7" : 'polyq_proteins_interference.sbgnml',
       "#load-sample8" : 'glycolysis.sbgnml',
       "#load-sample9" : 'mapk_cascade.sbgnml',
-      "#load-sample10" : 'drosophila_cell_cycle.sbgnml', 
+      "#load-sample10" : 'drosophila_cell_cycle.sbgnml',
       "#load-sample11" : 'mammalian_cholesterol.sbgnml',
-      "#load-sample12" : 'two_gene_system_behavior.sbgnml',      
+      "#load-sample12" : 'two_gene_system_behavior.sbgnml',
       "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
       "#load-sample14" : 'repressilator.sbgnml',
       "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
@@ -918,7 +918,7 @@ module.exports = function() {
       }
       layoutPropertiesView.applyLayout(preferences);
     });
-    
+
     $("#perform-static-layout, #perform-static-layout-icon").click(function (e) {
 
       // use active chise instance

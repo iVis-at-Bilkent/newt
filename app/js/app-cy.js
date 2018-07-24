@@ -625,12 +625,7 @@ module.exports = function (chiseInstance) {
 
     //Overwrite the default background-opacity (transparency) of simple nodes from chise
 
-    var sbgnclasses = ['macromolecule', 'simple chemical', 'unspecified entity',
-        'nucleic acid feature', 'perturbing agent', 'source and sink', 'phenotype',
-        'process', 'omitted process', 'uncertain process', 'association',
-        'dissociation', 'tag', 'and', 'or', 'not', 'delay','BA plain',
-        'BA unspecified entity', 'BA simple chemical', 'BA macromolecule',
-        'BA nucleic acid feature', 'BA perturbing agent', 'BA complex'];
+    var sbgnclasses = chiseInstance.elementUtilities.simpleNodeTypes;
 
     for (i=0; i<sbgnclasses.length; i++)
     {
@@ -984,7 +979,8 @@ module.exports = function (chiseInstance) {
             if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
             {
                 var newEle = cy.nodes()[cy.nodes().length - 1];
-                chiseInstance.elementUtilities.setPortsOrdering(newEle, ( chiseInstance.elementUtilities.defaultProperties[nodeType]['ports-ordering'] ? chiseInstance.elementUtilities.defaultProperties[nodeType]['ports-ordering'] : 'L-to-R'));
+                var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
+                chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
             }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after

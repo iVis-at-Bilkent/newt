@@ -739,93 +739,59 @@ inspectorUtilities.handleSBGNInspector = function () {
           sbgnclass = sbgnclass.replace(' multimer', '');
           multimer = true;
         }
-        if (chiseInstance.elementUtilities.defaultProperties[sbgnclass] == null) {
-          chiseInstance.elementUtilities.defaultProperties[sbgnclass] = {};
+
+        var nameToVal = {
+          'width': selected.width(),
+          'height': selected.height(),
+          'border-width': selected.data('border-width'),
+          'border-color': selected.data('border-color'),
+          'background-color': selected.data('background-color'),
+          'background-opacity': selected.data('background-opacity'),
+          'background-image': selected.data('background-image'),
+          'background-fit': selected.data('background-fit'),
+          'background-position-x': selected.data('background-position-x'),
+          'background-position-y': selected.data('background-position-y'),
+          'background-width': selected.data('background-width'),
+          'background-height': selected.data('background-height'),
+          'background-image-opacity': selected.data('background-image-opacity')
+        };
+
+        // Push this action if the node can be multimer
+        if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
+          nameToVal['multimer'] = multimer;
+        }
+
+        // Push this action if the node can be cloned
+        if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
+          nameToVal['clonemarker'] = selected.data('clonemarker');
+        }
+
+        // Push this action if the node can have label
+        if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+          var fontProps = ['font-size', 'font-family', 'font-weight', 'font-style', 'color'];
+          fontProps.forEach( function(name) {
+            nameToVal[name] = selected.data(name);
+          } );
+        }
+
+        // Push this action if the node can have ports
+        if (chiseInstance.elementUtilities.canHavePorts(sbgnclass)) {
+          nameToVal['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
         }
 
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
 
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-image', value: selected.data('background-image')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-fit', value: selected.data('background-fit')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-position-x', value: selected.data('background-position-x')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-position-y', value: selected.data('background-position-y')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-width', value: selected.data('background-width')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-height', value: selected.data('background-height')}});
-          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-image-opacity', value: selected.data('background-image-opacity')}});
-
-          // Push this action if the node can be multimer
-          if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
-          }
-
-          // Push this action if the node can be cloned
-          if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
-          }
-
-          // Push this action if the node can have label
-          if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'color', value: selected.data('color')}});
-          }
-
-          // Push this action if the node can have ports
-          if (chiseInstance.elementUtilities.canHavePorts(sbgnclass)) {
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chiseInstance.elementUtilities.getPortsOrdering(selected)}});
-          }
+          Object.keys(nameToVal).forEach( function(name) {
+            var value = nameToVal[name];
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: name, value: value}});
+          } );
 
           ur.do("batch", actions);
         }
         else {
-          var defaults = chiseInstance.elementUtilities.defaultProperties[sbgnclass];
-          defaults['width'] = selected.width();
-          defaults['height'] = selected.height();
-          defaults['border-width'] = selected.data('border-width');
-          defaults['border-color'] = selected.data('border-color');
-          defaults['background-color'] = selected.data('background-color');
-          defaults['background-opacity'] = selected.data('background-opacity');
-          defaults['background-image'] = selected.data('background-image');
-          defaults['background-fit'] = selected.data('background-fit');
-          defaults['background-position-x'] = selected.data('background-position-x');
-          defaults['background-position-y'] = selected.data('background-position-y');
-          defaults['background-width'] = selected.data('background-width');
-          defaults['background-height'] = selected.data('background-height');
-          defaults['background-image-opacity'] = selected.data('background-image-opacity');
-
-          // Set this if the node can be multimer
-          if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
-            defaults['multimer'] = multimer;
-          }
-
-          // Set this if the node can be cloned
-          if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
-            defaults['clonemarker'] = selected._private.data.clonemarker;
-          }
-
-          // Set this if the node can have label
-          if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
-            defaults['font-size'] = selected.data('font-size');
-            defaults['font-family'] = selected.data('font-family');
-            defaults['font-weight'] = selected.data('font-weight');
-            defaults['font-style'] = selected.data('font-style');
-            defaults['color'] = selected.data('color');
-          }
-
-          // Set this if the node can have ports
-          if (chiseInstance.elementUtilities.canHavePorts(sbgnclass)) {
-            defaults['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
-          }
+          chiseInstance.elementUtilities.setDefaultProperties( sbgnclass, nameToVal );
         }
       });
 
@@ -961,9 +927,6 @@ inspectorUtilities.handleSBGNInspector = function () {
     else {
       $('#inspector-set-as-default-button').on('click', function () {
         var sbgnclass = selectedEles.data('class');
-        if (chiseInstance.elementUtilities.defaultProperties[sbgnclass] == null) {
-          chiseInstance.elementUtilities.defaultProperties[sbgnclass] = {};
-        }
 
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
@@ -973,7 +936,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           ur.do("batch", actions);
         }
         else {
-          var defaults = chiseInstance.elementUtilities.defaultProperties[sbgnclass];
+          var defaults = chiseInstance.elementUtilities.getDefaultProperties( sbgnclass );
           defaults['width'] = selectedEles.data('width');
           defaults['line-color'] = selectedEles.data('line-color');
         }

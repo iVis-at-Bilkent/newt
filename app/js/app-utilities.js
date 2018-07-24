@@ -1920,7 +1920,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
     for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
       classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
-      if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+      if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
       }
     }
@@ -1996,7 +1996,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
       classBgImg = scheme_type == 'gradient' ? colorCodeToGradientImage[mapColorSchemes[newColorScheme]['values'][nodeClass]] : colorCodeTo3DImage[mapColorSchemes[newColorScheme]['values'][nodeClass]];
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
-      if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+      if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: '#ffffff'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: 'cover'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-opacity', value: '1'}});
