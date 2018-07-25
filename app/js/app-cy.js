@@ -622,18 +622,6 @@ module.exports = function (chiseInstance) {
     };
 
     cy.panzoom(panProps);
-
-    //Overwrite the default background-opacity (transparency) of simple nodes from chise
-
-    var sbgnclasses = chiseInstance.elementUtilities.simpleNodeTypes;
-
-    for (i=0; i<sbgnclasses.length; i++)
-    {
-        var sbgnclass = sbgnclasses[i];
-        var param = {class: sbgnclass, name: 'background-opacity', value: 1};
-        chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
-    }
-
   }
 
   function bindCyEvents() {
