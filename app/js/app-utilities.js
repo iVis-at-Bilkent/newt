@@ -1947,15 +1947,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       return result;
     };
 
-    var map1toBgOpacity = function(eles){
-      result = {};
-      for( var i = 0; i < eles.length; i++ ){
-        ele = eles[i];
-        result[ele.id()] = '1';
-      }
-      return result;
-    };
-
     var mapPercentToPosition = function(eles,percent){
       result = {};
       for( var i = 0; i < eles.length; i++ ){
@@ -1972,7 +1963,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
     actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: colorIDMap}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: backgroundImgMap}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
-    actions.push({name: "changeData", param: {eles: eles, name: 'background-opacity', valueMap: map1toBgOpacity(eles)}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
@@ -1982,7 +1972,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedColorIDMap}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: collapsedBackgroundImgMap}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-opacity', valueMap: map1toBgOpacity(eles)}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
@@ -1999,7 +1988,6 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: '#ffffff'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: 'cover'}});
-        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-opacity', value: '1'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: '50%'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: '50%'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: classBgImg}});
