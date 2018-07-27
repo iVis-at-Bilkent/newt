@@ -668,8 +668,11 @@ inspectorUtilities.handleSBGNInspector = function () {
           var obj = {};
           for(var i = 0; i < selectedEles.length; i++){
             var node = selectedEles[i];
-            if(node.isNode())
-              obj[node.data('id')] = bgObj;
+            if(node.isNode()){
+                bgObj['background-image-opacity'] = node.data('background-opacity');
+                obj[node.data('id')] = bgObj;
+            }
+
           }
 
           // If there is a background image change it, don't add
@@ -717,8 +720,11 @@ inspectorUtilities.handleSBGNInspector = function () {
           var obj = {};
           for(var i = 0; i < selectedEles.length; i++){
             var node = selectedEles[i];
-            if(node.isNode())
+            if(node.isNode()){
+              bgObj['background-image-opacity'] = node.data('background-opacity');
               obj[node.data('id')] = bgObj;
+            }
+
           }
 
           // If there is a background image change it, don't add
@@ -907,6 +913,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $("#inspector-background-opacity").on('change', function () {
         chiseInstance.changeData(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
+        chiseInstance.changeData(selectedEles, "background-image-opacity", $("#inspector-background-opacity").val());
       });
 
       $("#inspector-fill-color").on('change', function () {
