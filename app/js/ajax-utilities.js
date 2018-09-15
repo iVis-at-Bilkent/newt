@@ -2,6 +2,10 @@ var libxmljs = require('libxmljs');
 var fs = require('fs');
 var request = require('request');
 var querystring = require('querystring');
+var neo4j = require('neo4j-driver').v1;
+
+var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "123456"));
+var session = driver.session();
 
 /*
 	functions in this file all have to take the same arguments:
@@ -11,7 +15,390 @@ var querystring = require('querystring');
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
 
-/* test enes*/
+
+
+exports.ReadFromDb = function (req, res) {
+	//var url = req.query.url;
+	//request.get(url, {timeout: 5000}, 
+	
+	
+	if(req.method == 'GET') {
+			const resultPromise3 = session.run(
+  'call ReadGraphFromDb() yield out return out'  
+	);
+
+	resultPromise3.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+  res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+	}
+	 
+ 	
+	
+};
+
+exports.AddSBGNML = function (req, res) {
+	var sbgnml;
+	
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+		});
+
+		req.on('end', function () {
+			var resultPromise = session.run(
+  'MATCH (n) OPTIONAL MATCH (n)-[r]-()DELETE n,r' );
+			resultPromise.then( function(){
+				var post = querystring.parse(body);
+			sbgnml = post.sbgnml;
+			
+			 session.run(
+  'call InsertGraph($name2)',
+  {name2: sbgnml});
+				
+			}
+			
+			
+			
+			
+			
+			);
+			
+			
+		});
+	}
+	
+
+
+};
+
+exports.Neighbors = function (req, res) {
+	var sbgnml;
+	var limit;
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
+			}			 
+		});
+		var post = querystring.parse(body);
+			sbgnml = post.sbgnml;
+			limit = post.limit;
+			const resultPromise3 = session.run(
+  'CREATE (a:Person {name2: $name}) RETURN a',
+  {name: sbgnml});
+
+	resultPromise3.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+
+  res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+	}
+	
+};
+
+exports.AddSBGNML2 = function (req, res) {
+	var sbgnml;
+	var limit;
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
+			}			 
+		});
+
+		req.on('end', function () {
+			var post = querystring.parse(body);
+			sbgnml = post.sbgnml;
+			limit = post.limit;
+			const rrd =	 session.run(
+  'call Neighbors($name, $limit)',
+  {name: sbgnml, limit: neo4j.int(limit)});
+  
+  rrd.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+
+  res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+  
+  
+		});
+	}
+	else if(req.method == 'GET') {
+		sbgnml = req.query.sbgnml;
+		
+	
+	}
+
+
+};
+
+
+
+exports.PathsTo	 = function (req, res) {
+	var sbgnml;
+	var limit;
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
+			}			 
+		});
+
+		req.on('end', function () {
+			var post = querystring.parse(body);
+			target = post.target;
+			source = post.source;
+			limit = post.limit;
+			addition = post.addition;
+			const rrd =	 session.run(
+  'call PathsBetween($source, $target, $limit, $addition)',
+  {source: source, target: target,limit: neo4j.int(limit), addition: neo4j.int(addition)});
+  
+  rrd.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+
+   res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+  
+  
+		});
+	}
+	else if(req.method == 'GET') {
+		sbgnml = req.query.sbgnml;
+		
+	
+	}
+
+
+};
+
+exports.GOI	 = function (req, res) {
+	var sbgnml;
+	var limit;
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
+			}			 
+		});
+
+		req.on('end', function () {
+			var post = querystring.parse(body);		
+			genes = post.genes;
+			limit = post.limit;
+			direction = post.direction;
+			const rrd =	 session.run(
+  'call GOI($genes, $limit, $direction)',
+  {genes: genes ,limit: neo4j.int(limit), direction: neo4j.int(direction)});
+  
+  rrd.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+
+   res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+  
+  
+		});
+	}
+	else if(req.method == 'GET') {
+		sbgnml = req.query.sbgnml;
+		
+	
+	}
+
+
+};
+
+
+exports.Stream = function (req, res) {
+	var sbgnml;
+	var limit;
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
+			}			 
+		});
+
+		req.on('end', function () {
+			var post = querystring.parse(body);
+			sbgnml = post.sbgnml;
+			limit = post.limit;
+			dir = post.dir;
+			const rrd =	 session.run(
+  'call StreamHighlight($name, $limit, $dir)',
+  {name: sbgnml, limit: neo4j.int(limit),dir: neo4j.int(dir) });
+  
+  rrd.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+
+  res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+  
+  
+		});
+	}
+	else if(req.method == 'GET') {
+		sbgnml = req.query.sbgnml;
+		
+	
+	}
+
+
+};
+
+exports.Stream2 = function (req, res) {
+	var sbgnml;
+	var limit;
+	
+	// passing the entire map for validation is too big to use GET request. POST should be prefered.
+	if(req.method == 'POST') {
+		var body = '';
+		req.on('data', function (data) {
+			body += data;
+			// Security: too much POST data, kill the connection!
+			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+			if (body.length > 1e8) { // kill if more than 100MB
+				req.connection.destroy();
+				res.status(413);
+				res.send("Error: Too much data passed");
+				return;
+			}			 
+		});
+
+		req.on('end', function () {
+			var post = querystring.parse(body);
+			sbgnml = post.sbgnml;
+			limit = post.limit;
+			dir = post.dir;
+			const rrd =	 session.run(
+  'call StreamPaths($name, $limit, $dir)',
+  {name: sbgnml, limit: neo4j.int(limit),dir: neo4j.int(dir) });
+  
+  rrd.then(result3 => {
+  
+
+  var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+
+  res.send(datas);
+  
+  res.sendStatus(200)  ;
+
+  
+//	}
+});
+  
+  
+		});
+	}
+	else if(req.method == 'GET') {
+		sbgnml = req.query.sbgnml;
+		
+	
+	}
+
+
+};
+
 
 /**
  * 100MB limit to map size, to avoid potential flood.
