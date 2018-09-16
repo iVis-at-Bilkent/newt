@@ -9,27 +9,27 @@ var setFileContent = appUtilities.setFileContent.bind(appUtilities);
 //var annotationsHandler = require('./annotations-handler');
 
 /**
- * Backbone view for the BioGene information.
- */
+* Backbone view for the BioGene information.
+*/
 var BioGeneView = Backbone.View.extend({
   /*
-   * Copyright 2013 Memorial-Sloan Kettering Cancer Center.
-   *
-   * This file is part of PCViz.
-   *
-   * PCViz is free software: you can redistribute it and/or modify
-   * it under the terms of the GNU Lesser General Public License as published by
-   * the Free Software Foundation, either version 3 of the License, or
-   * (at your option) any later version.
-   *
-   * PCViz is distributed in the hope that it will be useful,
-   * but WITHOUT ANY WARRANTY; without even the implied warranty of
-   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   * GNU Lesser General Public License for more details.
-   *
-   * You should have received a copy of the GNU Lesser General Public License
-   * along with PCViz. If not, see <http://www.gnu.org/licenses/>.
-   */
+  * Copyright 2013 Memorial-Sloan Kettering Cancer Center.
+  *
+  * This file is part of PCViz.
+  *
+  * PCViz is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU Lesser General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * PCViz is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU Lesser General Public License for more details.
+  *
+  * You should have received a copy of the GNU Lesser General Public License
+  * along with PCViz. If not, see <http://www.gnu.org/licenses/>.
+  */
 
   render: function () {
     // pass variables in using Underscore.js template
@@ -61,31 +61,31 @@ var BioGeneView = Backbone.View.extend({
   {
     // hide rows with undefined data
     if (this.model.geneDescription == undefined)
-      this.$el.find(".biogene-description").hide();
+    this.$el.find(".biogene-description").hide();
 
     if (this.model.geneAliases == undefined)
-      this.$el.find(".biogene-aliases").hide();
+    this.$el.find(".biogene-aliases").hide();
 
     if (this.model.geneDesignations == undefined)
-      this.$el.find(".biogene-designations").hide();
+    this.$el.find(".biogene-designations").hide();
 
     if (this.model.geneChromosome == undefined)
-      this.$el.find(".biogene-chromosome").hide();
+    this.$el.find(".biogene-chromosome").hide();
 
     if (this.model.geneLocation == undefined)
-      this.$el.find(".biogene-location").hide();
+    this.$el.find(".biogene-location").hide();
 
     if (this.model.geneMim == undefined)
-      this.$el.find(".biogene-mim").hide();
+    this.$el.find(".biogene-mim").hide();
 
     if (this.model.geneId == undefined)
-      this.$el.find(".biogene-id").hide();
+    this.$el.find(".biogene-id").hide();
 
     if (this.model.geneUniprotMapping == undefined)
-      this.$el.find(".biogene-uniprot-links").hide();
+    this.$el.find(".biogene-uniprot-links").hide();
 
     if (this.model.geneSummary == undefined)
-      this.$el.find(".node-details-summary").hide();
+    this.$el.find(".node-details-summary").hide();
 
     var expanderOpts = {slicePoint: 150,
       expandPrefix: ' ',
@@ -99,770 +99,770 @@ var BioGeneView = Backbone.View.extend({
       expandEffect: 'fadeIn',
       collapseEffect: 'fadeOut'};
 
-    $(".biogene-info .expandable").expander(expanderOpts);
+      $(".biogene-info .expandable").expander(expanderOpts);
 
-    expanderOpts.slicePoint = 2; // show comma and the space
-    expanderOpts.widow = 0; // hide everything else in any case
-  },
-  generateUniprotLinks: function (mapping) {
-    var formatter = function (id) {
-      return _.template($("#uniprot-link-template").html(), {id: id});
-    };
+      expanderOpts.slicePoint = 2; // show comma and the space
+      expanderOpts.widow = 0; // hide everything else in any case
+    },
+    generateUniprotLinks: function (mapping) {
+      var formatter = function (id) {
+        return _.template($("#uniprot-link-template").html(), {id: id});
+      };
 
-    if (mapping == undefined || mapping == null)
-    {
-      return "";
-    }
-
-    // remove first id (assuming it is already processed)
-    if (mapping.indexOf(':') < 0)
-    {
-      return "";
-    }
-    else
-    {
-      mapping = mapping.substring(mapping.indexOf(':') + 1);
-      return ', ' + this.parseDelimitedInfo(mapping, ':', ',', formatter);
-    }
-  },
-  extractFirstUniprotId: function (mapping) {
-    if (mapping == undefined || mapping == null)
-    {
-      return "";
-    }
-
-    var parts = mapping.split(":");
-
-    if (parts.length > 0)
-    {
-      return parts[0];
-    }
-
-    return "";
-  },
-  parseDelimitedInfo: function (info, delimiter, separator, formatter) {
-    // do not process undefined or null values
-    if (info == undefined || info == null)
-    {
-      return info;
-    }
-
-    var text = "";
-    var parts = info.split(delimiter);
-
-    if (parts.length > 0)
-    {
-      if (formatter)
+      if (mapping == undefined || mapping == null)
       {
-        text = formatter(parts[0]);
+        return "";
+      }
+
+      // remove first id (assuming it is already processed)
+      if (mapping.indexOf(':') < 0)
+      {
+        return "";
       }
       else
       {
-        text = parts[0];
+        mapping = mapping.substring(mapping.indexOf(':') + 1);
+        return ', ' + this.parseDelimitedInfo(mapping, ':', ',', formatter);
       }
-    }
-
-    for (var i = 1; i < parts.length; i++)
-    {
-      text += separator + " ";
-
-      if (formatter)
+    },
+    extractFirstUniprotId: function (mapping) {
+      if (mapping == undefined || mapping == null)
       {
-        text += formatter(parts[i]);
+        return "";
       }
-      else
+
+      var parts = mapping.split(":");
+
+      if (parts.length > 0)
       {
-        text += parts[i];
+        return parts[0];
       }
+
+      return "";
+    },
+    parseDelimitedInfo: function (info, delimiter, separator, formatter) {
+      // do not process undefined or null values
+      if (info == undefined || info == null)
+      {
+        return info;
+      }
+
+      var text = "";
+      var parts = info.split(delimiter);
+
+      if (parts.length > 0)
+      {
+        if (formatter)
+        {
+          text = formatter(parts[0]);
+        }
+        else
+        {
+          text = parts[0];
+        }
+      }
+
+      for (var i = 1; i < parts.length; i++)
+      {
+        text += separator + " ";
+
+        if (formatter)
+        {
+          text += formatter(parts[i]);
+        }
+        else
+        {
+          text += parts[i];
+        }
+      }
+
+      return text;
     }
+  });
 
-    return text;
-  }
-});
-
-/**
- * Backbone view for the Chemical information.
- */
-var ChemicalView = Backbone.View.extend({
+  /**
+  * Backbone view for the Chemical information.
+  */
+  var ChemicalView = Backbone.View.extend({
     render: function () {
-        // pass variables in using Underscore.js template
-        var variables = {
-            chemicalDescription: this.model.description[0],
-            chebiName: this.model.label,
-            chebiID: this.model.obo_id.substring(6, this.model.obo_id.length) //Gets only the nr from ChEBI:15422 format
-        };
+      // pass variables in using Underscore.js template
+      var variables = {
+        chemicalDescription: this.model.description[0],
+        chebiName: this.model.label,
+        chebiID: this.model.obo_id.substring(6, this.model.obo_id.length) //Gets only the nr from ChEBI:15422 format
+      };
 
-        // compile the template using underscore
-        var template = _.template($("#chemical-template").html());
-        template = template(variables);
+      // compile the template using underscore
+      var template = _.template($("#chemical-template").html());
+      template = template(variables);
 
-        // load the compiled HTML into the Backbone "el"
-        this.$el.html(template);
+      // load the compiled HTML into the Backbone "el"
+      this.$el.html(template);
 
-        // format after loading
-        this.format(this.model);
+      // format after loading
+      this.format(this.model);
 
-        return this;
+      return this;
     },
     format: function ()
     {
-        // hide rows with undefined data
-        if (this.model.label == undefined)
-            this.$el.find(".chebi-name").hide();
+      // hide rows with undefined data
+      if (this.model.label == undefined)
+      this.$el.find(".chebi-name").hide();
 
-        if (this.model.description[0] == undefined)
-            this.$el.find(".chemical-description").hide();
+      if (this.model.description[0] == undefined)
+      this.$el.find(".chemical-description").hide();
 
-        if (this.model.obo_id == undefined)
-            this.$el.find(".chebi-id").hide();
+      if (this.model.obo_id == undefined)
+      this.$el.find(".chebi-id").hide();
 
-        var expanderOpts = {slicePoint: 150,
-            expandPrefix: ' ',
-            expandText: ' (...)',
-            userCollapseText: ' (show less)',
-            moreClass: 'expander-read-more',
-            lessClass: 'expander-read-less',
-            detailClass: 'expander-details',
-            // do not use default effects
-            // (see https://github.com/kswedberg/jquery-expander/issues/46)
-            expandEffect: 'fadeIn',
-            collapseEffect: 'fadeOut'};
+      var expanderOpts = {slicePoint: 150,
+        expandPrefix: ' ',
+        expandText: ' (...)',
+        userCollapseText: ' (show less)',
+        moreClass: 'expander-read-more',
+        lessClass: 'expander-read-less',
+        detailClass: 'expander-details',
+        // do not use default effects
+        // (see https://github.com/kswedberg/jquery-expander/issues/46)
+        expandEffect: 'fadeIn',
+        collapseEffect: 'fadeOut'};
 
         $(".chemical-description .expandable").expander(expanderOpts);
 
         expanderOpts.slicePoint = 2; // show comma and the space
         expanderOpts.widow = 0; // hide everything else in any case
-    }
-});
-
-/**
- * SBGN Layout view for the Sample Application.
- */
-var LayoutPropertiesView = Backbone.View.extend({
-  initialize: function () {
-  },
-  copyProperties: function () {
-
-    // use active cy instance
-    var cy = appUtilities.getActiveCy();
-
-    // clone default layout props
-    var clonedProp = _.clone(appUtilities.defaultLayoutProperties);
-
-    // reset current layout props
-    appUtilities.setScratch(cy, 'currentLayoutProperties', clonedProp);
-
-    // return cloned props to make them accessible
-    return clonedProp;
-  },
-  applyLayout: function (preferences, notUndoable, _chiseInstance) {
-
-    // if chise instance param is not set use the recently active chise instance
-    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
-
-    // get associated cy instance
-    var cy = chiseInstance.getCy();
-
-    var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
-
-    // if preferences param is not set use an empty map not to override any layout option
-    if (preferences === undefined) {
-      preferences = {};
-    }
-
-    var options = $.extend({}, currentLayoutProperties, preferences);
-    var verticalPaddingPercent = options.tilingPaddingVertical;
-    var horizontalPaddingPercent = options.tilingPaddingHorizontal;
-
-    // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
-    // in dialog, in layout options we use a function using these values
-    options.tilingPaddingVertical = function () {
-      return chiseInstance.calculatePaddings(verticalPaddingPercent);
-    };
-
-    options.tilingPaddingHorizontal = function () {
-      return chiseInstance.calculatePaddings(horizontalPaddingPercent);
-    };
-
-    chiseInstance.performLayout(options, notUndoable);
-  },
-  render: function () {
-    var self = this;
-
-    // use active cy instance
-    var cy = appUtilities.getActiveCy();
-
-    // get current layout props for cy
-    var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
-
-    self.template = _.template($("#layout-settings-template").html());
-    self.template = self.template(currentLayoutProperties);
-    $(self.el).html(self.template);
-
-    $(self.el).modal('show');
-
-    $(document).off("click", "#save-layout").on("click", "#save-layout", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      // get current layout props for cy
-      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
-
-      currentLayoutProperties.nodeRepulsion = Number(document.getElementById("node-repulsion").value);
-      currentLayoutProperties.idealEdgeLength = Number(document.getElementById("ideal-edge-length").value);
-      currentLayoutProperties.edgeElasticity = Number(document.getElementById("edge-elasticity").value);
-      currentLayoutProperties.nestingFactor = Number(document.getElementById("nesting-factor").value);
-      currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
-      currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
-      currentLayoutProperties.tile = document.getElementById("tile").checked;
-      currentLayoutProperties.animate = document.getElementById("animate").checked ? 'during' : 'end';
-      currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
-      currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
-      currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
-      currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
-      currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
-      currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
-      currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
-      currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
-
-      // reset currentLayoutProperties in scratch pad
-      appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');
-
-      $(self.el).modal('toggle');
-      $(document).trigger('saveLayout', cy);
-    });
-
-    $(document).off("click", "#default-layout").on("click", "#default-layout", function (evt) {
-      // reset current layout props for active cy instance and get new props
-      var currentLayoutProperties = self.copyProperties();
-
-      self.template = _.template($("#layout-settings-template").html());
-      self.template = self.template(currentLayoutProperties);
-      $(self.el).html(self.template);
-    });
-
-    return this;
-  }
-});
-
-
-var ColorSchemeInspectorView = Backbone.View.extend({
-  initialize: function () {
-    var self = this;
-
-    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    // it was a dead variable that is just set somewhere but never utilized
-    // var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
-
-    var schemes = appUtilities.mapColorSchemes;
-    var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
-    for(var id in schemes) {
-      var previewColors = schemes[id].preview;
-      if(invertedScheme[id]) { // this scheme is the complement of a previous one
-        schemes[id].isDisplayed = false;
       }
-      else if (schemes[id].invert) { // this scheme has a complement
-        invertedScheme[schemes[id].invert] = id;
-        schemes[id].isDisplayed = true;
+    });
+
+    /**
+    * SBGN Layout view for the Sample Application.
+    */
+    var LayoutPropertiesView = Backbone.View.extend({
+      initialize: function () {
+      },
+      copyProperties: function () {
+
+        // use active cy instance
+        var cy = appUtilities.getActiveCy();
+
+        // clone default layout props
+        var clonedProp = _.clone(appUtilities.defaultLayoutProperties);
+
+        // reset current layout props
+        appUtilities.setScratch(cy, 'currentLayoutProperties', clonedProp);
+
+        // return cloned props to make them accessible
+        return clonedProp;
+      },
+      applyLayout: function (preferences, notUndoable, _chiseInstance) {
+
+        // if chise instance param is not set use the recently active chise instance
+        var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+        // get associated cy instance
+        var cy = chiseInstance.getCy();
+
+        var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+        // if preferences param is not set use an empty map not to override any layout option
+        if (preferences === undefined) {
+          preferences = {};
+        }
+
+        var options = $.extend({}, currentLayoutProperties, preferences);
+        var verticalPaddingPercent = options.tilingPaddingVertical;
+        var horizontalPaddingPercent = options.tilingPaddingHorizontal;
+
+        // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
+        // in dialog, in layout options we use a function using these values
+        options.tilingPaddingVertical = function () {
+          return chiseInstance.calculatePaddings(verticalPaddingPercent);
+        };
+
+        options.tilingPaddingHorizontal = function () {
+          return chiseInstance.calculatePaddings(horizontalPaddingPercent);
+        };
+
+        chiseInstance.performLayout(options, notUndoable);
+      },
+      render: function () {
+        var self = this;
+
+        // use active cy instance
+        var cy = appUtilities.getActiveCy();
+
+        // get current layout props for cy
+        var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+        self.template = _.template($("#layout-settings-template").html());
+        self.template = self.template(currentLayoutProperties);
+        $(self.el).html(self.template);
+
+        $(self.el).modal('show');
+
+        $(document).off("click", "#save-layout").on("click", "#save-layout", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          // get current layout props for cy
+          var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+          currentLayoutProperties.nodeRepulsion = Number(document.getElementById("node-repulsion").value);
+          currentLayoutProperties.idealEdgeLength = Number(document.getElementById("ideal-edge-length").value);
+          currentLayoutProperties.edgeElasticity = Number(document.getElementById("edge-elasticity").value);
+          currentLayoutProperties.nestingFactor = Number(document.getElementById("nesting-factor").value);
+          currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
+          currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
+          currentLayoutProperties.tile = document.getElementById("tile").checked;
+          currentLayoutProperties.animate = document.getElementById("animate").checked ? 'during' : 'end';
+          currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
+          currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
+          currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
+          currentLayoutProperties.gravityRange = Number(document.getElementById("gravity-range").value);
+          currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
+          currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);
+          currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
+          currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
+
+          // reset currentLayoutProperties in scratch pad
+          appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');
+
+          $(self.el).modal('toggle');
+          $(document).trigger('saveLayout', cy);
+        });
+
+        $(document).off("click", "#default-layout").on("click", "#default-layout", function (evt) {
+          // reset current layout props for active cy instance and get new props
+          var currentLayoutProperties = self.copyProperties();
+
+          self.template = _.template($("#layout-settings-template").html());
+          self.template = self.template(currentLayoutProperties);
+          $(self.el).html(self.template);
+        });
+
+        return this;
       }
-      else { // scheme has no complement, display it normally
-        schemes[id].isDisplayed = true;
+    });
+
+
+    var ColorSchemeInspectorView = Backbone.View.extend({
+      initialize: function () {
+        var self = this;
+
+        var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+        // it was a dead variable that is just set somewhere but never utilized
+        // var currentScheme = appUtilities.getScratch(cy, 'currentGeneralProperties').mapColorScheme;
+
+        var schemes = appUtilities.mapColorSchemes;
+        var invertedScheme = {}; // key: scheme_id, value: scheme that is inverse of another scheme
+        for(var id in schemes) {
+          var previewColors = schemes[id].preview;
+          if(invertedScheme[id]) { // this scheme is the complement of a previous one
+            schemes[id].isDisplayed = false;
+          }
+          else if (schemes[id].invert) { // this scheme has a complement
+            invertedScheme[schemes[id].invert] = id;
+            schemes[id].isDisplayed = true;
+          }
+          else { // scheme has no complement, display it normally
+            schemes[id].isDisplayed = true;
+          }
+
+          var colorCount = previewColors.length;
+          var html = "";
+          for(var i=0; i < colorCount; i++) {
+            var color = chroma(previewColors[i]);
+            // apply default alpha of elements backgrounds, to make it look more like reality
+            color = color.alpha(0.5);
+            var prct = 100/colorCount;
+            html += "<div style='float:left; width:"+prct+"%; height:100%; background-color:"+color.css()+"'></div>";
+          }
+          schemes[id].previewHtml = html;
+        }
+        this.schemes = schemes;
+
+        // attach events
+        $(document).on("click", "div.color-scheme-choice", function (evt) {
+          var raw_id = $(this).attr('id');
+          var scheme_id = raw_id.replace("map-color-scheme_", "");
+
+          // currentScheme = scheme_id;
+          appUtilities.applyMapColorScheme(scheme_id);
+        });
+
+        $(document).on("click", "div.color-scheme-invert-button", function (evt) {
+          var raw_id = $(this).attr('id');
+          var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
+          var inverted_id = schemes[scheme_id].invert;
+
+          // currentScheme = inverted_id;
+          appUtilities.applyMapColorScheme(inverted_id, self);
+        });
+
+        $(document).on("click", "#map-color-scheme-default-button", function (evt) {
+          appUtilities.applyMapColorScheme(defaultColorScheme);
+          // currentScheme = defaultColorScheme;
+        });
+
+      },
+      render: function () {
+        this.template = _.template($("#color-scheme-inspector-template").html());
+        this.$el.empty();
+        this.$el.html(this.template({schemes: this.schemes}));
+        return this;
       }
+    });
 
-      var colorCount = previewColors.length;
-      var html = "";
-      for(var i=0; i < colorCount; i++) {
-        var color = chroma(previewColors[i]);
-        // apply default alpha of elements backgrounds, to make it look more like reality
-        color = color.alpha(0.5);
-        var prct = 100/colorCount;
-        html += "<div style='float:left; width:"+prct+"%; height:100%; background-color:"+color.css()+"'></div>";
+    // provide common functions for different views tied to
+    // inspector map panels
+    var GeneralPropertiesParentView = Backbone.View.extend({
+      // Apply the properties as they are set
+      applyUpdate: function() {
+
+        // use active chise instance
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+        // use the associated cy instance
+        var cy = appUtilities.getActiveCy();
+
+        // get currentGeneralProperties for cy
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+        chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
+        chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
+
+        if (currentGeneralProperties.enablePorts) {
+          chiseInstance.enablePorts();
+        }
+        else {
+          chiseInstance.disablePorts();
+        }
+
+        if (currentGeneralProperties.allowCompoundNodeResize) {
+          chiseInstance.considerCompoundSizes();
+        }
+        else {
+          chiseInstance.omitCompoundSizes();
+        }
+
+        // Refresh resize grapples
+        cy.nodeResize('get').refreshGrapples();
+
+        cy.style().update();
+
+        $(document).trigger('saveGeneralProperties', cy);
+      },
+      setPropertiesToDefault: function () {
+        var cy = appUtilities.getActiveCy();
+        var clonedProps = _.clone(appUtilities.defaultGeneralProperties);
+        appUtilities.setScratch(cy, 'currentGeneralProperties', clonedProps);
       }
-      schemes[id].previewHtml = html;
-    }
-    this.schemes = schemes;
-
-    // attach events
-    $(document).on("click", "div.color-scheme-choice", function (evt) {
-      var raw_id = $(this).attr('id');
-      var scheme_id = raw_id.replace("map-color-scheme_", "");
-
-      // currentScheme = scheme_id;
-      appUtilities.applyMapColorScheme(scheme_id);
     });
 
-    $(document).on("click", "div.color-scheme-invert-button", function (evt) {
-      var raw_id = $(this).attr('id');
-      var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
-      var inverted_id = schemes[scheme_id].invert;
+    // inherit from GeneralPropertiesParentView
+    var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
+      initialize: function() {
+        var self = this;
+        // initialize undo-redo parameters
+        self.params = {};
+        self.params.compoundPadding = {id: "compound-padding", type: "text",
+        property: "currentGeneralProperties.compoundPadding", update: self.applyUpdate};
 
-      // currentScheme = inverted_id;
-      appUtilities.applyMapColorScheme(inverted_id, self);
-    });
+        self.params.arrowScale = {id: "arrow-scale", type: "range",
+        property: "currentGeneralProperties.arrowScale"};
 
-    $(document).on("click", "#map-color-scheme-default-button", function (evt) {
-      appUtilities.applyMapColorScheme(defaultColorScheme);
-      // currentScheme = defaultColorScheme;
-    });
+        self.params.allowCompoundNodeResize = {id: "allow-compound-node-resize", type: "checkbox",
+        property: "currentGeneralProperties.allowCompoundNodeResize", update: self.applyUpdate};
 
-  },
-  render: function () {
-    this.template = _.template($("#color-scheme-inspector-template").html());
-    this.$el.empty();
-    this.$el.html(this.template({schemes: this.schemes}));
-    return this;
-  }
-});
+        self.params.inferNestingOnLoad = {id: "infer-nesting-on-load", type: "checkbox",
+        property: "currentGeneralProperties.inferNestingOnLoad"};
 
-// provide common functions for different views tied to
-// inspector map panels
-var GeneralPropertiesParentView = Backbone.View.extend({
-  // Apply the properties as they are set
-  applyUpdate: function() {
+        self.params.enablePorts = {id: "enable-ports", type: "checkbox",
+        property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
 
-    // use active chise instance
-    var chiseInstance = appUtilities.getActiveChiseInstance();
+        self.params.mapName = {id: "map-name", type: "text",
+        property: "currentGeneralProperties.mapName"};
 
-    // use the associated cy instance
-    var cy = appUtilities.getActiveCy();
+        self.params.mapDescription = {id: "map-description", type: "text",
+        property: "currentGeneralProperties.mapDescription"};
 
-    // get currentGeneralProperties for cy
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        // general properties part
+        $(document).on("change", "#map-name", function (evt) {
 
-    chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
-    chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-    if (currentGeneralProperties.enablePorts) {
-      chiseInstance.enablePorts();
-    }
-    else {
-      chiseInstance.disablePorts();
-    }
+          self.params.mapName.value = $('#map-name').val();
 
-    if (currentGeneralProperties.allowCompoundNodeResize) {
-      chiseInstance.considerCompoundSizes();
-    }
-    else {
-      chiseInstance.omitCompoundSizes();
-    }
+          // TODO while making such calls appUtilities.undoable flag should be checked
+          // if it is not true then the operation should not be undoable
+          cy.undoRedo().do("changeMenu", self.params.mapName);
 
-    // Refresh resize grapples
-    cy.nodeResize('get').refreshGrapples();
+          // use the panel id as the network key
+          var networkKey = cy.container().id;
 
-    cy.style().update();
+          // update the network tab description as the map name is just changed
+          appUtilities.updateNetworkTabDesc(networkKey);
 
-    $(document).trigger('saveGeneralProperties', cy);
-  },
-  setPropertiesToDefault: function () {
-    var cy = appUtilities.getActiveCy();
-    var clonedProps = _.clone(appUtilities.defaultGeneralProperties);
-    appUtilities.setScratch(cy, 'currentGeneralProperties', clonedProps);
-  }
-});
+          $('#map-name').blur();
+        });
 
-// inherit from GeneralPropertiesParentView
-var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
-  initialize: function() {
-    var self = this;
-    // initialize undo-redo parameters
-    self.params = {};
-    self.params.compoundPadding = {id: "compound-padding", type: "text",
-      property: "currentGeneralProperties.compoundPadding", update: self.applyUpdate};
+        $(document).on("change", "#map-description", function (evt) {
 
-    self.params.arrowScale = {id: "arrow-scale", type: "range",
-      property: "currentGeneralProperties.arrowScale"};
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-    self.params.allowCompoundNodeResize = {id: "allow-compound-node-resize", type: "checkbox",
-      property: "currentGeneralProperties.allowCompoundNodeResize", update: self.applyUpdate};
+          self.params.mapDescription.value = $('#map-description').val();
+          cy.undoRedo().do("changeMenu", self.params.mapDescription);
+          $('#map-description').blur();
+        });
 
-    self.params.inferNestingOnLoad = {id: "infer-nesting-on-load", type: "checkbox",
-      property: "currentGeneralProperties.inferNestingOnLoad"};
+        $(document).on("change", "#compound-padding", function (evt) {
 
-    self.params.enablePorts = {id: "enable-ports", type: "checkbox",
-      property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-    self.params.mapName = {id: "map-name", type: "text",
-      property: "currentGeneralProperties.mapName"};
+          self.params.compoundPadding.value = Number($('#compound-padding').val());
+          cy.undoRedo().do("changeMenu", self.params.compoundPadding);
+          $('#compound-padding').blur();
+        });
 
-    self.params.mapDescription = {id: "map-description", type: "text",
-      property: "currentGeneralProperties.mapDescription"};
+        $(document).on("change", "#arrow-scale", function (evt) {
 
-    // general properties part
-    $(document).on("change", "#map-name", function (evt) {
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.mapName.value = $('#map-name').val();
-
-      // TODO while making such calls appUtilities.undoable flag should be checked
-      // if it is not true then the operation should not be undoable
-      cy.undoRedo().do("changeMenu", self.params.mapName);
-
-      // use the panel id as the network key
-      var networkKey = cy.container().id;
-
-      // update the network tab description as the map name is just changed
-      appUtilities.updateNetworkTabDesc(networkKey);
-
-      $('#map-name').blur();
-    });
-
-    $(document).on("change", "#map-description", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.mapDescription.value = $('#map-description').val();
-      cy.undoRedo().do("changeMenu", self.params.mapDescription);
-      $('#map-description').blur();
-    });
-
-    $(document).on("change", "#compound-padding", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.compoundPadding.value = Number($('#compound-padding').val());
-      cy.undoRedo().do("changeMenu", self.params.compoundPadding);
-      $('#compound-padding').blur();
-    });
-
-    $(document).on("change", "#arrow-scale", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.arrowScale.value = Number($('#arrow-scale').val());
-      var ur = cy.undoRedo();
-      var actions = [];
-      actions.push({name: "changeMenu", param: self.params.arrowScale});
-      actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
+          self.params.arrowScale.value = Number($('#arrow-scale').val());
+          var ur = cy.undoRedo();
+          var actions = [];
+          actions.push({name: "changeMenu", param: self.params.arrowScale});
+          actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
           valueMap: self.params.arrowScale.value}});
-      ur.do("batch", actions);
-      $('#arrow-scale').blur();
-    });
+          ur.do("batch", actions);
+          $('#arrow-scale').blur();
+        });
 
-    $(document).on("change", "#allow-compound-node-resize", function (evt) {
+        $(document).on("change", "#allow-compound-node-resize", function (evt) {
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-      self.params.allowCompoundNodeResize.value = $('#allow-compound-node-resize').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
-      $('#allow-compound-node-resize').blur();
-    });
+          self.params.allowCompoundNodeResize.value = $('#allow-compound-node-resize').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
+          $('#allow-compound-node-resize').blur();
+        });
 
-    $(document).on("change", "#infer-nesting-on-load", function (evt) {
+        $(document).on("change", "#infer-nesting-on-load", function (evt) {
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-      self.params.inferNestingOnLoad.value = $('#infer-nesting-on-load').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
-      $('#infer-nesting-on-load').blur();
-    });
+          self.params.inferNestingOnLoad.value = $('#infer-nesting-on-load').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
+          $('#infer-nesting-on-load').blur();
+        });
 
-    $(document).on("change", "#enable-ports", function (evt) {
+        $(document).on("change", "#enable-ports", function (evt) {
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-      self.params.enablePorts.value = $('#enable-ports').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.enablePorts);
-      $('#enable-ports').blur();
-    });
+          self.params.enablePorts.value = $('#enable-ports').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.enablePorts);
+          $('#enable-ports').blur();
+        });
 
-    $(document).on("click", "#inspector-map-tab", function (evt) {
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
-    });
+        $(document).on("click", "#inspector-map-tab", function (evt) {
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+        });
 
-    $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
-    });
+        $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+        });
 
-    $(document).on("click", "#map-general-default-button", function (evt) {
+        $(document).on("click", "#map-general-default-button", function (evt) {
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
 
-      var ur = cy.undoRedo();
-      var actions = [];
+          var ur = cy.undoRedo();
+          var actions = [];
 
-      self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
-      self.params.inferNestingOnLoad.value = appUtilities.defaultGeneralProperties.inferNestingOnLoad;
-      self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
-      self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
-      self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
-      actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
-      actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
-      actions.push({name: "changeMenu", param: self.params.enablePorts});
-      actions.push({name: "changeMenu", param: self.params.compoundPadding});
-      actions.push({name: "changeMenu", param: self.params.arrowScale});
-      actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
+          self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
+          self.params.inferNestingOnLoad.value = appUtilities.defaultGeneralProperties.inferNestingOnLoad;
+          self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
+          self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
+          self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
+          actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
+          actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
+          actions.push({name: "changeMenu", param: self.params.enablePorts});
+          actions.push({name: "changeMenu", param: self.params.compoundPadding});
+          actions.push({name: "changeMenu", param: self.params.arrowScale});
+          actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
           valueMap: self.params.arrowScale.value}});
-      ur.do("batch", actions);
-    });
-  },
-  render: function() {
+          ur.do("batch", actions);
+        });
+      },
+      render: function() {
 
-    // use active cy instance
-    var cy = appUtilities.getActiveCy();
+        // use active cy instance
+        var cy = appUtilities.getActiveCy();
 
-    // get current general properties for cy
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        // get current general properties for cy
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-    this.template = _.template($("#map-tab-general-template").html());
-    this.$el.empty();
-    this.$el.html(this.template(currentGeneralProperties));
-    return this;
-  }
-});
-
-// inherit from GeneralPropertiesParentView
-var MapTabLabelPanel = GeneralPropertiesParentView.extend({
-  initialize: function() {
-    var self = this;
-    // initialize undo-redo parameters
-    self.params = {};
-    self.params.dynamicLabelSize = {id: "dynamic-label-size-select", type: "select",
-      property: "currentGeneralProperties.dynamicLabelSize"};
-
-    self.params.showComplexName = {id: "show-complex-name", type: "checkbox",
-      property: "currentGeneralProperties.showComplexName", update: self.applyUpdate};
-
-    self.params.adjustAutomatically = {id: "adjust-node-label-font-size-automatically", type: "checkbox",
-      property: "currentGeneralProperties.adjustNodeLabelFontSizeAutomatically"};
-
-    self.params.fitLabelsToNodes = {id: "fit-labels-to-nodes", type: "checkbox",
-      property: "currentGeneralProperties.fitLabelsToNodes"};
-
-    self.params.fitLabelsToInfoboxes = {id: "fit-labels-to-infoboxes", type: "checkbox",
-      property: "currentGeneralProperties.fitLabelsToInfoboxes"};
-
-    $(document).on("change", 'select[name="dynamic-label-size"]', function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.dynamicLabelSize.value = $('#dynamic-label-size-select option:selected').val();
-      cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
-      $('#dynamic-label-size-select').blur();
-      self.applyUpdate();
+        this.template = _.template($("#map-tab-general-template").html());
+        this.$el.empty();
+        this.$el.html(this.template(currentGeneralProperties));
+        return this;
+      }
     });
 
-    $(document).on("change", "#show-complex-name", function (evt) {
+    // inherit from GeneralPropertiesParentView
+    var MapTabLabelPanel = GeneralPropertiesParentView.extend({
+      initialize: function() {
+        var self = this;
+        // initialize undo-redo parameters
+        self.params = {};
+        self.params.dynamicLabelSize = {id: "dynamic-label-size-select", type: "select",
+        property: "currentGeneralProperties.dynamicLabelSize"};
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
+        self.params.showComplexName = {id: "show-complex-name", type: "checkbox",
+        property: "currentGeneralProperties.showComplexName", update: self.applyUpdate};
 
-      self.params.showComplexName.value = $('#show-complex-name').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.showComplexName);
-      $('#show-complex-name').blur();
+        self.params.adjustAutomatically = {id: "adjust-node-label-font-size-automatically", type: "checkbox",
+        property: "currentGeneralProperties.adjustNodeLabelFontSizeAutomatically"};
+
+        self.params.fitLabelsToNodes = {id: "fit-labels-to-nodes", type: "checkbox",
+        property: "currentGeneralProperties.fitLabelsToNodes"};
+
+        self.params.fitLabelsToInfoboxes = {id: "fit-labels-to-infoboxes", type: "checkbox",
+        property: "currentGeneralProperties.fitLabelsToInfoboxes"};
+
+        $(document).on("change", 'select[name="dynamic-label-size"]', function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.dynamicLabelSize.value = $('#dynamic-label-size-select option:selected').val();
+          cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
+          $('#dynamic-label-size-select').blur();
+          self.applyUpdate();
+        });
+
+        $(document).on("change", "#show-complex-name", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.showComplexName.value = $('#show-complex-name').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.showComplexName);
+          $('#show-complex-name').blur();
+        });
+
+        $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.adjustAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.adjustAutomatically);
+          $('#adjust-node-label-font-size-automatically').blur();
+          self.applyUpdate();
+        });
+
+        $(document).on("change", "#fit-labels-to-nodes", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.fitLabelsToNodes.value = $('#fit-labels-to-nodes').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
+          $('#fit-labels-to-nodes').blur();
+          self.applyUpdate();
+        });
+
+        $(document).on("change", "#fit-labels-to-infoboxes", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.fitLabelsToInfoboxes.value = $('#fit-labels-to-infoboxes').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
+          $('#fit-labels-to-infoboxes').blur();
+          self.applyUpdate();
+        });
+        $(document).on("click", "#map-label-default-button", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          var ur = cy.undoRedo();
+          var actions = [];
+          self.params.dynamicLabelSize.value = appUtilities.defaultGeneralProperties.dynamicLabelSize;
+          self.params.adjustAutomatically.value = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+          self.params.fitLabelsToNodes.value = appUtilities.defaultGeneralProperties.fitLabelsToNodes;
+          self.params.fitLabelsToInfoboxes.value = appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
+          self.params.showComplexName.value = appUtilities.defaultGeneralProperties.showComplexName;
+
+          actions.push({name: "changeMenu", param: self.params.dynamicLabelSize});
+          actions.push({name: "changeMenu", param: self.params.adjustAutomatically});
+          actions.push({name: "changeMenu", param: self.params.fitLabelsToNodes});
+          actions.push({name: "changeMenu", param: self.params.fitLabelsToInfoboxes});
+          actions.push({name: "changeMenu", param: self.params.showComplexName});
+          ur.do("batch", actions);
+        });
+      },
+      render: function() {
+
+        // use the active cy instance
+        var cy = appUtilities.getActiveCy();
+
+        // get current general properties of cy
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+        this.template = _.template($("#map-tab-label-template").html());
+        this.$el.empty();
+        this.$el.html(this.template(currentGeneralProperties));
+        return this;
+      }
     });
 
-    $(document).on("change", "#adjust-node-label-font-size-automatically", function (evt) {
+    // inherit from GeneralPropertiesParentView
+    var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
+      initialize: function() {
+        var self = this;
+        // initialize undo-redo parameters
+        self.params = {};
+        self.params.recalculateLayoutOnComplexityManagement = {id: "recalculate-layout-on-complexity-management", type: "checkbox",
+        property: "currentGeneralProperties.recalculateLayoutOnComplexityManagement"};
 
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
+        self.params.rearrangeOnComplexityManagement = {id: "rearrange-on-complexity-management", type: "checkbox",
+        property: "currentGeneralProperties.rearrangeOnComplexityManagement"};
 
-      self.params.adjustAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.adjustAutomatically);
-      $('#adjust-node-label-font-size-automatically').blur();
-      self.applyUpdate();
+        self.params.animateOnDrawingChanges = {id: "animate-on-drawing-changes", type: "checkbox",
+        property: "currentGeneralProperties.animateOnDrawingChanges"};
+
+        $(document).on("change", "#recalculate-layout-on-complexity-management", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.recalculateLayoutOnComplexityManagement.value = $('#recalculate-layout-on-complexity-management').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.recalculateLayoutOnComplexityManagement);
+          $('#recalculate-layout-on-complexity-management').blur();
+        });
+
+        $(document).on("change", "#rearrange-on-complexity-management", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.rearrangeOnComplexityManagement.value = $('#rearrange-on-complexity-management').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.rearrangeOnComplexityManagement);
+          $('#rearrange-on-complexity-management').blur();
+        });
+
+        $(document).on("change", "#animate-on-drawing-changes", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          self.params.animateOnDrawingChanges.value = $('#animate-on-drawing-changes').prop('checked');
+          cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
+          $('#animate-on-drawing-changes').blur();
+        });
+
+        $(document).on("click", "#map-rearrangement-default-button", function (evt) {
+
+          // use active cy instance
+          var cy = appUtilities.getActiveCy();
+
+          var ur = cy.undoRedo();
+          var actions = [];
+          self.params.recalculateLayoutOnComplexityManagement.value = appUtilities.defaultGeneralProperties.recalculateLayoutOnComplexityManagement;
+          self.params.rearrangeOnComplexityManagement.value = appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
+          self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
+          actions.push({name: "changeMenu", param: self.params.recalculateLayoutOnComplexityManagement});
+          actions.push({name: "changeMenu", param: self.params.rearrangeOnComplexityManagement});
+          actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});
+          ur.do("batch", actions);
+        });
+      },
+      render: function() {
+
+        // use the active cy instance
+        var cy = appUtilities.getActiveCy();
+
+        // get current general properties of cy
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+        this.template = _.template($("#map-tab-rearrangement-template").html());
+        this.$el.empty();
+        this.$el.html(this.template(currentGeneralProperties));
+
+        return this;
+      }
     });
 
-    $(document).on("change", "#fit-labels-to-nodes", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.fitLabelsToNodes.value = $('#fit-labels-to-nodes').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
-      $('#fit-labels-to-nodes').blur();
-      self.applyUpdate();
-    });
-
-    $(document).on("change", "#fit-labels-to-infoboxes", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.fitLabelsToInfoboxes.value = $('#fit-labels-to-infoboxes').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
-      $('#fit-labels-to-infoboxes').blur();
-      self.applyUpdate();
-    });
-    $(document).on("click", "#map-label-default-button", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      var ur = cy.undoRedo();
-      var actions = [];
-      self.params.dynamicLabelSize.value = appUtilities.defaultGeneralProperties.dynamicLabelSize;
-      self.params.adjustAutomatically.value = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
-      self.params.fitLabelsToNodes.value = appUtilities.defaultGeneralProperties.fitLabelsToNodes;
-      self.params.fitLabelsToInfoboxes.value = appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
-      self.params.showComplexName.value = appUtilities.defaultGeneralProperties.showComplexName;
-
-      actions.push({name: "changeMenu", param: self.params.dynamicLabelSize});
-      actions.push({name: "changeMenu", param: self.params.adjustAutomatically});
-      actions.push({name: "changeMenu", param: self.params.fitLabelsToNodes});
-      actions.push({name: "changeMenu", param: self.params.fitLabelsToInfoboxes});
-      actions.push({name: "changeMenu", param: self.params.showComplexName});
-      ur.do("batch", actions);
-    });
-  },
-  render: function() {
-
-    // use the active cy instance
-    var cy = appUtilities.getActiveCy();
-
-    // get current general properties of cy
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-    this.template = _.template($("#map-tab-label-template").html());
-    this.$el.empty();
-    this.$el.html(this.template(currentGeneralProperties));
-    return this;
-  }
-});
-
-// inherit from GeneralPropertiesParentView
-var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
-  initialize: function() {
-    var self = this;
-    // initialize undo-redo parameters
-    self.params = {};
-    self.params.recalculateLayoutOnComplexityManagement = {id: "recalculate-layout-on-complexity-management", type: "checkbox",
-      property: "currentGeneralProperties.recalculateLayoutOnComplexityManagement"};
-
-    self.params.rearrangeOnComplexityManagement = {id: "rearrange-on-complexity-management", type: "checkbox",
-      property: "currentGeneralProperties.rearrangeOnComplexityManagement"};
-
-    self.params.animateOnDrawingChanges = {id: "animate-on-drawing-changes", type: "checkbox",
-      property: "currentGeneralProperties.animateOnDrawingChanges"};
-
-    $(document).on("change", "#recalculate-layout-on-complexity-management", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.recalculateLayoutOnComplexityManagement.value = $('#recalculate-layout-on-complexity-management').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.recalculateLayoutOnComplexityManagement);
-      $('#recalculate-layout-on-complexity-management').blur();
-    });
-
-    $(document).on("change", "#rearrange-on-complexity-management", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.rearrangeOnComplexityManagement.value = $('#rearrange-on-complexity-management').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.rearrangeOnComplexityManagement);
-      $('#rearrange-on-complexity-management').blur();
-    });
-
-    $(document).on("change", "#animate-on-drawing-changes", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.animateOnDrawingChanges.value = $('#animate-on-drawing-changes').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
-      $('#animate-on-drawing-changes').blur();
-    });
-
-    $(document).on("click", "#map-rearrangement-default-button", function (evt) {
-
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      var ur = cy.undoRedo();
-      var actions = [];
-      self.params.recalculateLayoutOnComplexityManagement.value = appUtilities.defaultGeneralProperties.recalculateLayoutOnComplexityManagement;
-      self.params.rearrangeOnComplexityManagement.value = appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
-      self.params.animateOnDrawingChanges.value = appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
-      actions.push({name: "changeMenu", param: self.params.recalculateLayoutOnComplexityManagement});
-      actions.push({name: "changeMenu", param: self.params.rearrangeOnComplexityManagement});
-      actions.push({name: "changeMenu", param: self.params.animateOnDrawingChanges});
-      ur.do("batch", actions);
-    });
-  },
-  render: function() {
-
-    // use the active cy instance
-    var cy = appUtilities.getActiveCy();
-
-    // get current general properties of cy
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-    this.template = _.template($("#map-tab-rearrangement-template").html());
-    this.$el.empty();
-    this.$el.html(this.template(currentGeneralProperties));
-
-    return this;
-  }
-});
-
-/**
- * SBGN Properties view for the Sample Application.
- */
-/*var GeneralPropertiesView = Backbone.View.extend({
-  initialize: function () {
+    /**
+    * SBGN Properties view for the Sample Application.
+    */
+    /*var GeneralPropertiesView = Backbone.View.extend({
+    initialize: function () {
     var self = this;
 
     $(document).on("click", "#default-sbgn", function (evt) {
-      self.setPropertiesToDefault();
-      self.applyUpdate();
-      self.render();
-    });
+    self.setPropertiesToDefault();
+    self.applyUpdate();
+    self.render();
+  });
 
-  },
-  // Apply the properties as they are set
-  applyUpdate: function() {
-    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
-    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+},
+// Apply the properties as they are set
+applyUpdate: function() {
+chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
+appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
 
-    if (appUtilities.currentGeneralProperties.enablePorts) {
-      chise.enablePorts();
-    }
-    else {
-      chise.disablePorts();
-    }
+if (appUtilities.currentGeneralProperties.enablePorts) {
+chise.enablePorts();
+}
+else {
+chise.disablePorts();
+}
 
-    cy.style().update();
+cy.style().update();
 
-    $(document).trigger('saveGeneralProperties');
-  },
-  setPropertiesToDefault: function () {
-    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
-  },
-  render: function () {
-    console.log("render general", appUtilities.currentGeneralProperties);
-    this.template = _.template($("#general-properties-template").html());
-    this.$el.empty();
-    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+$(document).trigger('saveGeneralProperties');
+},
+setPropertiesToDefault: function () {
+appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
+},
+render: function () {
+console.log("render general", appUtilities.currentGeneralProperties);
+this.template = _.template($("#general-properties-template").html());
+this.$el.empty();
+this.$el.html(this.template(appUtilities.currentGeneralProperties));
 
-    return this;
-  }
+return this;
+}
 });*/
 
 
 String.prototype.replaceAll = function(search, replace)
 {
-    //if replace is not sent, return original string otherwise it will
-    //replace search string with 'undefined'.
-    if (replace === undefined) {
-        return this.toString();
-    }
+  //if replace is not sent, return original string otherwise it will
+  //replace search string with 'undefined'.
+  if (replace === undefined) {
+    return this.toString();
+  }
 
-    return this.replace(new RegExp('[' + search + ']', 'g'), replace);
+  return this.replace(new RegExp('[' + search + ']', 'g'), replace);
 };
 
 //Global variable used to check which PathwayCommon dialog was open recently
@@ -870,8 +870,8 @@ String.prototype.replaceAll = function(search, replace)
 var PCdialog = "";
 
 /**
- * Neighborhood Query view for the Sample Application.
- */
+* Neighborhood Query view for the Sample Application.
+*/
 var NeighborhoodQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
@@ -910,8 +910,8 @@ var NeighborhoodQueryView = Backbone.View.extend({
 
       var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
       if (geneSymbols.length === 0) {
-          document.getElementById("query-neighborhood-gene-symbols").focus();
-          return;
+        document.getElementById("query-neighborhood-gene-symbols").focus();
+        return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
       geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
@@ -928,7 +928,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
       }
 
       var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit="
-          + self.currentQueryParameters.lengthLimit;
+      + self.currentQueryParameters.lengthLimit;
       var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
@@ -936,15 +936,15 @@ var NeighborhoodQueryView = Backbone.View.extend({
       for (var i = 0; i < geneSymbolsArray.length; i++) {
         var currentGeneSymbol = geneSymbolsArray[i];
         if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-            || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-            continue;
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
         }
         sources = sources + "&source=" + currentGeneSymbol;
 
         if (filename == '') {
-            filename = currentGeneSymbol;
+          filename = currentGeneSymbol;
         } else {
-            filename = filename + '_' + currentGeneSymbol;
+          filename = filename + '_' + currentGeneSymbol;
         }
       }
       filename = filename + '_NEIGHBORHOOD.sbgnml';
@@ -959,20 +959,20 @@ var NeighborhoodQueryView = Backbone.View.extend({
         url: queryURL,
         type: 'GET',
         success: function (data) {
-            if (data == null)
-            {
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('neighborhood-spinner');
-            }
-            else
-            {
-                $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                chiseInstance.endSpinner('neighborhood-spinner');
-                $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-            }
+          if (data == null)
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner('neighborhood-spinner');
+          }
+          else
+          {
+            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            chiseInstance.endSpinner('neighborhood-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+          }
         }
       });
       $(self.el).modal('toggle');
@@ -987,391 +987,391 @@ var NeighborhoodQueryView = Backbone.View.extend({
 });
 
 /**
- * Paths Between Query view for the Sample Application.
- */
+* Paths Between Query view for the Sample Application.
+*/
 var PathsBetweenQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        geneSymbols: "",
-        lengthLimit: 1
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-pathsbetween-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-pathsbetween-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
 
-        var self = this;
-        self.template = _.template($("#query-pathsbetween-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
+    var self = this;
+    self.template = _.template($("#query-pathsbetween-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
 
-        $(self.el).modal('show');
-        PCdialog = "PathsBetween";
+    $(self.el).modal('show');
+    PCdialog = "PathsBetween";
 
-        $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
+    $(document).off("click", "#save-query-pathsbetween").on("click", "#save-query-pathsbetween", function (evt) {
 
-            // use active chise instance
-            var chiseInstance = appUtilities.getActiveChiseInstance();
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
-            // use the associated cy instance
-            var cy = chiseInstance.getCy();
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
-            self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
-            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-length-limit").value);
 
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-                document.getElementById("query-pathsbetween-gene-symbols").focus();
-                return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 3) {
-                $(self.el).modal('toggle');
-                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-                document.getElementById("query-pathsbetween-length-limit").focus();
-                return;
-            }
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-pathsbetween-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-pathsbetween-length-limit").focus();
+        return;
+      }
 
-            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
-                + self.currentQueryParameters.lengthLimit;
-            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit="
+      + self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
-            var filename = "";
-            var sources = "";
-            for (var i = 0; i < geneSymbolsArray.length; i++) {
-                var currentGeneSymbol = geneSymbolsArray[i];
-                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                    continue;
-                }
-                sources = sources + "&source=" + currentGeneSymbol;
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArray.length; i++) {
+        var currentGeneSymbol = geneSymbolsArray[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
 
-                if (filename == '') {
-                    filename = currentGeneSymbol;
-                } else {
-                    filename = filename + '_' + currentGeneSymbol;
-                }
-            }
-            filename = filename + '_PATHSBETWEEN.sbgnml';
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_PATHSBETWEEN.sbgnml';
 
-            chiseInstance.startSpinner('paths-between-spinner');
-            queryURL = queryURL + sources;
+      chiseInstance.startSpinner('paths-between-spinner');
+      queryURL = queryURL + sources;
 
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
-            $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    if (data == null)
-                    {
-                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                        chiseInstance.endSpinner('paths-between-spinner');
-                    }
-                    else
-                    {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                        chiseInstance.endSpinner('paths-between-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                    }
-                }
-            });
-            $(self.el).modal('toggle');
-        });
+      $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null)
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner('paths-between-spinner');
+          }
+          else
+          {
+            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            chiseInstance.endSpinner('paths-between-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+          }
+        }
+      });
+      $(self.el).modal('toggle');
+    });
 
-        $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
-            $(self.el).modal('toggle');
-        });
+    $(document).off("click", "#cancel-query-pathsbetween").on("click", "#cancel-query-pathsbetween", function (evt) {
+      $(self.el).modal('toggle');
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 /**
- * Paths From To Query view for the Sample Application.
- */
+* Paths From To Query view for the Sample Application.
+*/
 var PathsFromToQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        sourceSymbols: "",
-        targetSymbols: "",
-        lengthLimit: 1
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-pathsfromto-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
+  defaultQueryParameters: {
+    sourceSymbols: "",
+    targetSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-pathsfromto-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
 
-        var self = this;
-        self.template = _.template($("#query-pathsfromto-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
+    var self = this;
+    self.template = _.template($("#query-pathsfromto-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
 
-        $(self.el).modal('show');
-        PCdialog = "PathsFromTo";
+    $(self.el).modal('show');
+    PCdialog = "PathsFromTo";
 
-        $(document).off("click", "#save-query-pathsfromto").on("click", "#save-query-pathsfromto", function (evt) {
+    $(document).off("click", "#save-query-pathsfromto").on("click", "#save-query-pathsfromto", function (evt) {
 
-            // use active chise instance
-            var chiseInstance = appUtilities.getActiveChiseInstance();
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
-            // use the associated cy instance
-            var cy = chiseInstance.getCy();
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
-            self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols").value;
-            self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols").value;
-            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit").value);
+      self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols").value;
+      self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit").value);
 
-            var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
-            if (sourceSymbols.length === 0) {
-                document.getElementById("query-pathsfromto-source-symbols").focus();
-                return;
-            }
-            // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (sourceSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
+      var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+      if (sourceSymbols.length === 0) {
+        document.getElementById("query-pathsfromto-source-symbols").focus();
+        return;
+      }
+      // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (sourceSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
 
-            var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
-            if (targetSymbols.length === 0) {
-                document.getElementById("query-pathsfromto-target-symbols").focus();
-                return;
-            }
-            // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (targetSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
+      var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+      if (targetSymbols.length === 0) {
+        document.getElementById("query-pathsfromto-target-symbols").focus();
+        return;
+      }
+      // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (targetSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
 
-            if (self.currentQueryParameters.lengthLimit > 3) {
-                $(self.el).modal('toggle');
-                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-                document.getElementById("query-pathsfromto-length-limit").focus();
-                return;
-            }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-pathsfromto-length-limit").focus();
+        return;
+      }
 
-            var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit="
-                + self.currentQueryParameters.lengthLimit;
-            var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
-            var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit="
+      + self.currentQueryParameters.lengthLimit;
+      var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
-            var filename = "";
-            var sources = "";
-            var targets = "";
-            for (var i = 0; i < sourceSymbolsArray.length; i++) {
-                var currentGeneSymbol = sourceSymbolsArray[i];
-                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                    continue;
-                }
-                sources = sources + "&source=" + currentGeneSymbol;
+      var filename = "";
+      var sources = "";
+      var targets = "";
+      for (var i = 0; i < sourceSymbolsArray.length; i++) {
+        var currentGeneSymbol = sourceSymbolsArray[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
 
-                if (filename == '') {
-                    filename = currentGeneSymbol;
-                } else {
-                    filename = filename + '_' + currentGeneSymbol;
-                }
-            }
-            for (var i = 0; i < targetSymbolsArray.length; i++) {
-                var currentGeneSymbol = targetSymbolsArray[i];
-                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                    continue;
-                }
-                targets = targets + "&target=" + currentGeneSymbol;
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      for (var i = 0; i < targetSymbolsArray.length; i++) {
+        var currentGeneSymbol = targetSymbolsArray[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        targets = targets + "&target=" + currentGeneSymbol;
 
-                if (filename == '') {
-                    filename = currentGeneSymbol;
-                } else {
-                    filename = filename + '_' + currentGeneSymbol;
-                }
-            }
-            filename = filename + '_PATHSFROMTO.sbgnml';
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_PATHSFROMTO.sbgnml';
 
-            chiseInstance.startSpinner('paths-fromto-spinner');
-            queryURL = queryURL + sources + targets;
+      chiseInstance.startSpinner('paths-fromto-spinner');
+      queryURL = queryURL + sources + targets;
 
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
-            $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    if (data == null)
-                    {
-                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                        chiseInstance.endSpinner('paths-fromto-spinner');
-                    }
-                    else
-                    {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                        chiseInstance.endSpinner('paths-fromto-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                    }
-                }
-            });
-            $(self.el).modal('toggle');
-        });
+      $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null)
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner('paths-fromto-spinner');
+          }
+          else
+          {
+            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            chiseInstance.endSpinner('paths-fromto-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+          }
+        }
+      });
+      $(self.el).modal('toggle');
+    });
 
-        $(document).off("click", "#cancel-query-pathsfromto").on("click", "#cancel-query-pathsfromto", function (evt) {
-            $(self.el).modal('toggle');
-        });
+    $(document).off("click", "#cancel-query-pathsfromto").on("click", "#cancel-query-pathsfromto", function (evt) {
+      $(self.el).modal('toggle');
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 /**
- * Common Stream Query view for the Sample Application.
- */
+* Common Stream Query view for the Sample Application.
+*/
 var CommonStreamQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        geneSymbols: "",
-        lengthLimit: 1
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-commonstream-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-commonstream-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
 
-        var self = this;
-        self.template = _.template($("#query-commonstream-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
+    var self = this;
+    self.template = _.template($("#query-commonstream-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
 
-        $(self.el).modal('show');
-        PCdialog = "CommonStream";
+    $(self.el).modal('show');
+    PCdialog = "CommonStream";
 
-        $(document).off("click", "#save-query-commonstream").on("click", "#save-query-commonstream", function (evt) {
+    $(document).off("click", "#save-query-commonstream").on("click", "#save-query-commonstream", function (evt) {
 
-            // use active chise instance
-            var chiseInstance = appUtilities.getActiveChiseInstance();
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
 
-            // use the associated cy instance
-            var cy = chiseInstance.getCy();
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
 
-            self.currentQueryParameters.geneSymbols = document.getElementById("query-commonstream-gene-symbols").value;
-            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-commonstream-length-limit").value);
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-commonstream-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-commonstream-length-limit").value);
 
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-                document.getElementById("query-commonstream-gene-symbols").focus();
-                return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 3) {
-                $(self.el).modal('toggle');
-                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-                document.getElementById("query-commonstream-length-limit").focus();
-                return;
-            }
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-commonstream-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-commonstream-length-limit").focus();
+        return;
+      }
 
-            var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
-                + self.currentQueryParameters.lengthLimit;
-            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var queryURL = "http://beta.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
+      + self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
-            var filename = "";
-            var sources = "";
-            for (var i = 0; i < geneSymbolsArray.length; i++) {
-                var currentGeneSymbol = geneSymbolsArray[i];
-                if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                    || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                    continue;
-                }
-                sources = sources + "&source=" + currentGeneSymbol;
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArray.length; i++) {
+        var currentGeneSymbol = geneSymbolsArray[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
 
-                if (filename == '') {
-                    filename = currentGeneSymbol;
-                } else {
-                    filename = filename + '_' + currentGeneSymbol;
-                }
-            }
-            filename = filename + '_COMMONSTREAM.sbgnml';
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_COMMONSTREAM.sbgnml';
 
-            chiseInstance.startSpinner('common-stream-spinner');
-            queryURL = queryURL + sources;
+      chiseInstance.startSpinner('common-stream-spinner');
+      queryURL = queryURL + sources;
 
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
-            $.ajax({
-                url: queryURL,
-                type: 'GET',
-                success: function (data) {
-                    if (data == null)
-                    {
-                        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                        chiseInstance.endSpinner('common-stream-spinner');
-                    }
-                    else
-                    {
-                        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                        currentGeneralProperties.inferNestingOnLoad = false;
-                        chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-                        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                        chiseInstance.endSpinner('common-stream-spinner');
-                        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                    }
-                }
-            });
-            $(self.el).modal('toggle');
-        });
+      $.ajax({
+        url: queryURL,
+        type: 'GET',
+        success: function (data) {
+          if (data == null)
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner('common-stream-spinner');
+          }
+          else
+          {
+            $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+            currentGeneralProperties.inferNestingOnLoad = false;
+            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
+            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+            chiseInstance.endSpinner('common-stream-spinner');
+            $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+          }
+        }
+      });
+      $(self.el).modal('toggle');
+    });
 
-        $(document).off("click", "#cancel-query-commonstream").on("click", "#cancel-query-commonstream", function (evt) {
-            $(self.el).modal('toggle');
-        });
+    $(document).off("click", "#cancel-query-commonstream").on("click", "#cancel-query-commonstream", function (evt) {
+      $(self.el).modal('toggle');
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 /**
- * Neighborhood Query view for the Sample Application.
- */
+* Neighborhood Query view for the Sample Application.
+*/
 var DbNeighborhoodQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
@@ -1410,8 +1410,8 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
 
       var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
       if (geneSymbols.length === 0) {
-          document.getElementById("query-Dbneighborhood-gene-symbols").focus();
-          return;
+        document.getElementById("query-Dbneighborhood-gene-symbols").focus();
+        return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
       geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
@@ -1428,59 +1428,58 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
       }
 
 
-     // var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
 
 
-     var limit = self.currentQueryParameters.lengthLimit;
-   var geneSymbolsArray = geneSymbols;
-  //    var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var limit = self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols;
+      //    var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
-           var filename = "";
-           var sources = "";
-           for (var i = 0; i < geneSymbolsArray.length; i++) {
-             var currentGeneSymbol = geneSymbolsArray[i];
-             if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                 || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                 continue;
-             }
-             sources = sources + "&source=" + currentGeneSymbol;
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = geneSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
 
-             if (filename == '') {
-                 filename = currentGeneSymbol;
-             } else {
-                 filename = filename + '_' + currentGeneSymbol;
-             }
-           }
-           filename = filename + '_NEIGHBORHOOD.sbgnml';
-
-          // chiseInstance.startSpinner('neighborhood-spinner');
-          // queryURL = queryURL + sources;
-
-
-	  // var geneSymbolsArray = "enes";
-
-     $.ajax({
-      type: 'post',
-      url: "/utilities/AddSBGNML2",
-      data: {sbgnml: geneSymbolsArray, limit:limit},
-     success: function(data){
-
-		 appUtilities.createNewNetwork();
-		var chiseInstance = appUtilities.getActiveChiseInstance();
-
-	  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-
-      },
-      error: function(req, status, err) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-   //
-	//  chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
-
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
       }
-    });
+      filename = filename + '_NEIGHBORHOOD.sbgnml';
+
+      appUtilities.createNewNetwork();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = chiseInstance.getCy();
+      chiseInstance.startSpinner('Dbneighborhood-spinner');
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+
+      $.ajax({
+        type: 'post',
+        url: "/utilities/AddSBGNML2",
+        data: {sbgnml: geneSymbolsArray, limit:limit},
+        success: function(data){
+
+          $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('Dbneighborhood-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+        },
+        error: function(req, status, err) {
+          //  chiseInstance.endSpinner('Dbneighborhood-spinner');
+        }
+      });
       $(self.el).modal('toggle');
     });
 
@@ -1493,352 +1492,424 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
 });
 
 /**
- * Paths Between Query view for the Sample Application. GOI
- */
-var DbPathsBetweenQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        geneSymbols: "",
-        lengthLimit: 1
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-Dbpathsbetween-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
-
-        var self = this;
-        self.template = _.template($("#query-Dbpathsbetween-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
-
-        $(self.el).modal('show');
-        PCdialog = "DbPathsBetween";
-
-        $(document).off("click", "#save-query-Dbpathsbetween").on("click", "#save-query-Dbpathsbetween", function (evt) {
-
-            // use active chise instance
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-
-            // use the associated cy instance
-            var cy = chiseInstance.getCy();
-
-            self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbpathsbetween-gene-symbols").value;
-            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbpathsbetween-length-limit").value);
-
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-                document.getElementById("query-Dbpathsbetween-gene-symbols").focus();
-                return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 4) {
-                $(self.el).modal('toggle');
-                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-                document.getElementById("query-Dbpathsbetween-length-limit").focus();
-                return;
-            }
-
-           var limit = self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols;
-	   // var targetSymbolsArray = targetSymbols;
-		var  direction = 0;
-			 $.ajax({
-      type: 'post',
-      url: "/utilities/GOI",
-      data: {genes: geneSymbolsArray, limit:limit, direction: direction},
-     success: function(data){
-
-		 appUtilities.createNewNetwork();
-		var chiseInstance = appUtilities.getActiveChiseInstance();
-
-	  //chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
-
-	  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
-      },
-      error: function(req, status, err) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-   //
-	//  chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
-
-      }
-    });
-            $(self.el).modal('toggle');
-        });
-
-        $(document).off("click", "#cancel-query-Dbpathsbetween").on("click", "#cancel-query-Dbpathsbetween", function (evt) {
-            $(self.el).modal('toggle');
-        });
-
-        return this;
-    }
-});
-
-/**
- * Paths From To Query view for the Sample Application.
- */
-var DbPathsFromToQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        sourceSymbols: "",
-        targetSymbols: "",
-        lengthLimit: 1
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-Dbpathsfromto-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
-
-        var self = this;
-        self.template = _.template($("#query-Dbpathsfromto-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
-
-        $(self.el).modal('show');
-        PCdialog = "DbPathsFromTo";
-
-        $(document).off("click", "#save-query-Dbpathsfromto").on("click", "#save-query-Dbpathsfromto", function (evt) {
-
-            // use active chise instance
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-
-            // use the associated cy instance
-            var cy = chiseInstance.getCy();
-
-            self.currentQueryParameters.sourceSymbols = document.getElementById("query-Dbpathsfromto-source-symbols").value;
-            self.currentQueryParameters.targetSymbols = document.getElementById("query-Dbpathsfromto-target-symbols").value;
-            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbpathsfromto-length-limit").value);
-			self.currentQueryParameters.addition = Number(document.getElementById("query-Dbpathsfromto-addition").value);
-
-            var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
-            if (sourceSymbols.length === 0) {
-                document.getElementById("query-Dbpathsfromto-source-symbols").focus();
-                return;
-            }
-            // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (sourceSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
-
-            var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
-            if (targetSymbols.length === 0) {
-                document.getElementById("query-Dbpathsfromto-target-symbols").focus();
-                return;
-            }
-            // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (targetSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
-
-            if (self.currentQueryParameters.lengthLimit > 8) {
-                $(self.el).modal('toggle');
-                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-                document.getElementById("query-Dbpathsfromto-length-limit").focus();
-                return;
-            }
-
-		var limit = self.currentQueryParameters.lengthLimit;
-      var sourceSymbolsArray = sourceSymbols;
-	    var targetSymbolsArray = targetSymbols;
-		var  addition = self.currentQueryParameters.addition;
-			 $.ajax({
-      type: 'post',
-      url: "/utilities/PathsTo",
-      data: {target: targetSymbolsArray, source: sourceSymbolsArray, limit:limit, addition: addition},
-     success: function(data){
-
-		 appUtilities.createNewNetwork();
-		var chiseInstance = appUtilities.getActiveChiseInstance();
-
-	  //chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
-
-	  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
-      },
-      error: function(req, status, err) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-   //
-	//  chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
-
-      }
-    });
-
-            $(self.el).modal('toggle');
-        });
-
-        $(document).off("click", "#cancel-query-Dbpathsfromto").on("click", "#cancel-query-Dbpathsfromto", function (evt) {
-            $(self.el).modal('toggle');
-        });
-
-        return this;
-    }
-});
-
-/**
- * Common Stream Query view for the Sample Application.
- */
-var DbCommonStreamQueryView = Backbone.View.extend({
-    defaultQueryParameters: {
-        geneSymbols: "",
-        lengthLimit: 1
-    },
-    currentQueryParameters: null,
-    initialize: function () {
-        var self = this;
-        self.copyProperties();
-        self.template = _.template($("#query-Dbcommonstream-template").html());
-        self.template = self.template(self.currentQueryParameters);
-    },
-    copyProperties: function () {
-        this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-    },
-    render: function () {
-
-        var self = this;
-        self.template = _.template($("#query-Dbcommonstream-template").html());
-        self.template = self.template(self.currentQueryParameters);
-        $(self.el).html(self.template);
-
-        $(self.el).modal('show');
-        PCdialog = "DbCommonStream";
-
-        $(document).off("click", "#save-query-Dbcommonstream").on("click", "#save-query-Dbcommonstream", function (evt) {
-
-            // use active chise instance
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-
-            // use the associated cy instance
-            var cy = chiseInstance.getCy();
-
-            self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbcommonstream-gene-symbols").value;
-            self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbcommonstream-length-limit").value);
-			self.currentQueryParameters.direction = Number(document.getElementById("query-Dbcommonstream-direction").value);
-
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-                document.getElementById("query-Dbcommonstream-gene-symbols").focus();
-                return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-                $(self.el).modal('toggle');
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 3) {
-                $(self.el).modal('toggle');
-                new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
-                document.getElementById("query-Dbcommonstream-length-limit").focus();
-                return;
-            }
-
-
-
-            appUtilities.createNewNetwork();
-
-     var limit = self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols;
-	  // var geneSymbolsArray = "enes";
-
-	 var dir= self.currentQueryParameters.direction;
-
-	  /*$.when(ReadFromDB()).done(function(a1){
-
-
-});
+* Paths Between Query view for the Sample Application. GOI
 */
+var DbPathsBetweenQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbpathsbetween-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbpathsbetween-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbPathsBetween";
+
+    $(document).off("click", "#save-query-Dbpathsbetween").on("click", "#save-query-Dbpathsbetween", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbpathsbetween-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbpathsbetween-length-limit").value);
+
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-Dbpathsbetween-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 4) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbpathsbetween-length-limit").focus();
+        return;
+      }
+
+      var limit = self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols;
+
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = geneSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_PATHSBETWEEN.sbgnml';
+      appUtilities.createNewNetwork();
+      chiseInstance.startSpinner('DbPathsBetween-spinner');
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+      // var targetSymbolsArray = targetSymbols;
+      var  direction = 0;
+      $.ajax({
+        type: 'post',
+        url: "/utilities/GOI",
+        data: {genes: geneSymbolsArray, limit:limit, direction: direction},
+        success: function(data){
+          $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('DbPathsBetween-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+        },
+        error: function(req, status, err) {
+
+        }
+      });
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#cancel-query-Dbpathsbetween").on("click", "#cancel-query-Dbpathsbetween", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
+/**
+* Paths From To Query view for the Sample Application.
+*/
+var DbPathsFromToQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    sourceSymbols: "",
+    targetSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbpathsfromto-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbpathsfromto-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbPathsFromTo";
+
+    $(document).off("click", "#save-query-Dbpathsfromto").on("click", "#save-query-Dbpathsfromto", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.sourceSymbols = document.getElementById("query-Dbpathsfromto-source-symbols").value;
+      self.currentQueryParameters.targetSymbols = document.getElementById("query-Dbpathsfromto-target-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbpathsfromto-length-limit").value);
+      self.currentQueryParameters.addition = Number(document.getElementById("query-Dbpathsfromto-addition").value);
+
+      var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+      if (sourceSymbols.length === 0) {
+        document.getElementById("query-Dbpathsfromto-source-symbols").focus();
+        return;
+      }
+      // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (sourceSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+
+      var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+      if (targetSymbols.length === 0) {
+        document.getElementById("query-Dbpathsfromto-target-symbols").focus();
+        return;
+      }
+      // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (targetSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+
+      if (self.currentQueryParameters.lengthLimit > 8) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbpathsfromto-length-limit").focus();
+        return;
+      }
+
+      var limit = self.currentQueryParameters.lengthLimit;
+      var sourceSymbolsArray = sourceSymbols;
+      var targetSymbolsArray = targetSymbols;
+
+      var sourceSymbolsArrayforFile = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var targetSymbolsArrayForFile = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      var targets = "";
+      for (var i = 0; i < sourceSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = sourceSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      for (var i = 0; i < targetSymbolsArrayForFile.length; i++) {
+        var currentGeneSymbol = targetSymbolsArrayForFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        targets = targets + "&target=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_PATHSFROMTO.sbgnml';
+
+      appUtilities.createNewNetwork();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('DbPathsFromTo-spinner');
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+      var  addition = self.currentQueryParameters.addition;
+      $.ajax({
+        type: 'post',
+        url: "/utilities/PathsTo",
+        data: {target: targetSymbolsArray, source: sourceSymbolsArray, limit:limit, addition: addition},
+        success: function(data){
 
 
- $.ajax({
+          $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('DbPathsFromTo-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+        },
+        error: function(req, status, err) {
+
+        }
+      });
+
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#cancel-query-Dbpathsfromto").on("click", "#cancel-query-Dbpathsfromto", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
+/**
+* Common Stream Query view for the Sample Application.
+*/
+var DbCommonStreamQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbcommonstream-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbcommonstream-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbCommonStream";
+
+    $(document).off("click", "#save-query-Dbcommonstream").on("click", "#save-query-Dbcommonstream", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbcommonstream-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbcommonstream-length-limit").value);
+      self.currentQueryParameters.direction = Number(document.getElementById("query-Dbcommonstream-direction").value);
+
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-Dbcommonstream-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 3) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbcommonstream-length-limit").focus();
+        return;
+      }
+      appUtilities.createNewNetwork();
+      var limit = self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols;
+
+      var dir= self.currentQueryParameters.direction;
+
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = geneSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_COMMONSTREAM.sbgnml';
+
+      appUtilities.createNewNetwork();
+      chiseInstance.startSpinner('DbCommonStream-spinner');
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+    $.ajax({
       type: 'post',
       url: "/utilities/Stream2",
       data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},
-     success: function(data){
+      success: function(data){
 
-		// appUtilities.createNewNetwork();
-		var chiseInstance = appUtilities.getActiveChiseInstance();
+        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+        currentGeneralProperties.inferNestingOnLoad = false;
+        chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+        chiseInstance.endSpinner('DbCommonStream-spinner');
+        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
 
-	  //chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
 
-	  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+        $.ajax({
+          type: 'post',
+          url: "/utilities/Stream",
+          data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},
+          success: function(data){
 
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = chiseInstance.getCy();
+            var stringa = data;
+            var array = stringa.split(",");
+            var index;
+            for (index = 0; index < array.length; ++index) {
+              chiseInstance.highlightSelected(cy.elements(array[index]));
+            }
+          },
+          error: function(req, status, err) {
 
-	   $.ajax({
-      type: 'post',
-      url: "/utilities/Stream",
-      data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},
-     success: function(data){
+          }
+        });
 
-	//	 appUtilities.createNewNetwork();
-		var chiseInstance = appUtilities.getActiveChiseInstance();
-
-	  //chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
- var cy = chiseInstance.getCy();
-	  var stringa = data;
-		var array = stringa.split(",");
-
-		var index;
-
-for (index = 0; index < array.length; ++index) {
-   chiseInstance.highlightSelected(cy.elements(array[index]));
-}
-	 // chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
       },
       error: function(req, status, err) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
-   //
-	//  chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
+        //
+        //  chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
 
       }
     });
+    $(self.el).modal('toggle');
+  });
 
-	  },
-      error: function(req, status, err) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-   //
-	//  chiseInstance.getSbgnvizInstance().loadSBGNMLText("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><sbgn   xmlns=\"http://sbgn.org/libsbgn/0.3\">  <map id=\"gly\" language=\"process description\">    <extension>      <renderInformation         xmlns=\"http://www.sbml.org/sbml/level3/version1/render/version1\" id=\"renderInformation\" programName=\"sbgnviz\" programVersion=\"4.1.0\" backgroundColor=\"#000000\">        <listOfColorDefinitions>          <colorDefinition id=\"color_1\" value=\"#ffffff7f\"/>          <colorDefinition id=\"color_2\" value=\"#555555\"/>        </listOfColorDefinitions>        <listOfStyles>          <style id=\"nodeffffff0.55555551.2511normalnormalHelvetica\" idList=\"glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5\">            <g fontSize=\"11\" fontFamily=\"Helvetica\" fontWeight=\"normal\" fontStyle=\"normal\" stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"nodeffffff0.55555551.25\" idList=\"glyph8 glyph10 glyph11 glyph16 glyph20 glyph31 glyph32 glyph33 glyph34 glyph14\">            <g stroke=\"color_2\" strokeWidth=\"1.25\" fill=\"color_1\"/>          </style>          <style id=\"edge5555551.25\" idList=\"f58fd051-70b2-4f4f-a75f-04d442d486ae _4a2452a5-80cf-4b3a-9469-09d479a848c2 a8ecfde2-b558-485e-bf1a-f050e068da4d f4edba5d-82c0-466d-989f-2967e4d6dbe5 _0256a519-fbdd-47e5-b989-65fceeb9be2b _0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7 _959a75d5-b615-4761-abf3-ad2105a044f8 _685a3c56-02f3-470e-a263-f53033bfce1e _2d6de60d-1386-4337-86f7-4b879b324ed8 _99e148d2-ff28-4bca-ba79-8389aaefc8e6 _9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc c4694210-3890-477c-b17d-6b2b856080e7 _25258eef-e524-496f-856b-58c50656e29f bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc _1e3385ff-6751-48f8-8956-b216d43840b8 f1f388bc-cc6b-47ac-821b-8037aa452e3c _4544d16e-3e08-4e04-913b-504ad4b81f72 bb409d93-f527-40e2-af6d-79740790c156 d2703827-9b63-4e78-978e-4cc5cd1feff6 e704169a-bd58-4e57-a497-42c079b2df1b f9c598f3-8c60-419a-9775-d2bbdfb18f22 _820fbd73-82ef-41bc-a7ef-58615edc06e0 _3cecee18-495f-47a6-ab14-410a4ce0547e _50d9673e-973b-4985-956e-afe770731642 e1e603a7-e681-46e1-bac6-887674cb5e1b d7e5d61d-9b85-4f2d-92b2-8add8a8db09c _1281b2ec-97d2-4802-8301-9b32364f382c _5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669 _2b0a2f73-7fbc-4907-857b-046dd1c80462 _978c4f3c-9c62-4a41-8c5b-ea216310ac65 _5280e682-f58d-41e0-8425-185de6e8508c d13ecda0-799a-4d14-891f-d1f5f6447764 _2dade40f-5091-4ca1-9104-9a682e49f9a5 a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137 _3e8a670e-bec3-44cd-8d66-96e8c8075840 _6f2e2d5d-6852-4a66-89aa-d25dd1a9e270 _716d7259-74e7-493b-a074-3ae9d320b37b _6aad03a2-9603-4fca-864a-b7fadde71398 _296c2cb1-721c-4209-9077-c962aa3d67f5 fe64d11e-3fb5-45d0-8efa-e62acb34c913 _7574124a-ee7a-4aab-83bb-e8d53b2f7a91 _67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf _90406689-30d9-4546-a85e-280293431b9b b1cde550-e4ab-4b19-99e2-4de33f301cec\">            <g stroke=\"color_2\" strokeWidth=\"1.25\"/>          </style>        </listOfStyles>      </renderInformation>      <mapProperties>        <compoundPadding>10</compoundPadding>        <extraCompartmentPadding>14</extraCompartmentPadding>        <extraComplexPadding>10</extraComplexPadding>        <arrowScale>1.25</arrowScale>        <showComplexName>true</showComplexName>        <dynamicLabelSize>regular</dynamicLabelSize>        <inferNestingOnLoad>false</inferNestingOnLoad>        <fitLabelsToNodes>false</fitLabelsToNodes>        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>        <animateOnDrawingChanges>true</animateOnDrawingChanges>        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>        <enablePorts>true</enablePorts>        <allowCompoundNodeResize>true</allowCompoundNodeResize>        <mapColorScheme>black_white</mapColorScheme>        <defaultInfoboxHeight>12</defaultInfoboxHeight>        <defaultInfoboxWidth>30</defaultInfoboxWidth>        <mapName>Glycolysis</mapName>        <mapDescription>This example illustrates how SBGN can be used to describe metabolicpathways</mapDescription>        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>      </mapProperties>    </extension>    <glyph id=\"glyph9\" class=\"macromolecule\">      <label text=\"hexokinase\"/>      <bbox x=\"53.324697717076916\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph0\" class=\"simple chemical\">      <label text=\"glucose\"/>      <bbox x=\"-18.635842004116014\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph6\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-12.135842004116014\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph8\" class=\"process\">      <bbox x=\"81.18184057421978\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph8.1\" x=\"98.32469771707692\" y=\"128.283717413862\"/>      <port id=\"glyph8.2\" x=\"78.32469771707692\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph7\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"153.2667770493495\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph12\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"488.7858513347395\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph13\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"318.26415637028\" y=\"166.26409787306358\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph1\" class=\"simple chemical\">      <label text=\"glucose&#xA;6P\"/>      <bbox x=\"147.28523743826983\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph2\" class=\"simple chemical\">      <label text=\"fructose&#xA;6P\"/>      <bbox x=\"313.20631688065566\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph15\" class=\"macromolecule\">      <label text=\"triose-P&#xA;isomerase\"/>      <bbox x=\"774.7899455213721\" y=\"110.26658024258396\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph3\" class=\"simple chemical\">      <label text=\"fructose&#xA;1,6P\"/>      <bbox x=\"482.2858513347395\" y=\"110.78371741386201\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph17\" class=\"macromolecule\">      <label text=\"glucose-6P&#xA;isomerase\"/>      <bbox x=\"218.3772700391366\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph10\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph10.1\" x=\"262.88576831157434\" y=\"128.283717413862\"/>      <port id=\"glyph10.2\" x=\"242.88576831157434\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph19\" class=\"macromolecule\">      <label text=\"phospho&#xA;fructokinase\"/>      <bbox x=\"383.15104270142336\" y=\"35.98323077999954\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph11\" class=\"process\">      <bbox x=\"413.89227365674986\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph11.1\" x=\"431.03513079960703\" y=\"128.283717413862\"/>      <port id=\"glyph11.2\" x=\"411.03513079960703\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph18\" class=\"macromolecule\">      <label text=\"adolase\"/>      <bbox x=\"556.5382207947348\" y=\"35.983230779999516\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph16\" class=\"process\">      <bbox x=\"584.3953636518776\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph16.1\" x=\"601.5382207947347\" y=\"128.283717413862\"/>      <port id=\"glyph16.2\" x=\"581.5382207947347\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph22\" class=\"macromolecule\">      <label text=\"GAPDH\"/>      <bbox x=\"775.9300198297399\" y=\"250.63747473904266\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph4\" class=\"simple chemical\">      <label text=\"GA-3P\"/>      <bbox x=\"683.0047105160871\" y=\"177.0868730968662\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph23\" class=\"simple chemical\">      <label text=\"Pi\"/>      <bbox x=\"620.4581980388436\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph24\" class=\"simple chemical\">      <label text=\"NAD\"/>      <bbox x=\"740.443976326979\" y=\"195.8176721876209\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph25\" class=\"simple chemical\">      <label text=\"H+\"/>      <bbox x=\"771.8433789799271\" y=\"306.2103344903014\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph20\" class=\"process\">      <bbox x=\"693.36185337323\" y=\"260.9946175961855\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph20.1\" x=\"700.5047105160871\" y=\"278.13747473904266\"/>      <port id=\"glyph20.2\" x=\"700.5047105160871\" y=\"258.13747473904266\"/>    </glyph>    <glyph id=\"glyph26\" class=\"simple chemical\">      <label text=\"NADH\"/>      <bbox x=\"751.8184840967929\" y=\"348.61599424282105\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph35\" class=\"macromolecule\">      <label text=\"PGK1\"/>      <bbox x=\"555.2723651417102\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph36\" class=\"macromolecule\">      <label text=\"PG mutase\"/>      <bbox x=\"369.15863622787424\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph37\" class=\"macromolecule\">      <label text=\"enolase\"/>      <bbox x=\"217.88576831157434\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph38\" class=\"macromolecule\">      <label text=\"pyruvate&#xA;kinase\"/>      <bbox x=\"16.222939763508755\" y=\"406.445133940345\" w=\"70\" h=\"35\"/>    </glyph>    <glyph id=\"glyph21\" class=\"simple chemical\">      <label text=\"1,3 BPG\"/>      <bbox x=\"676.5047105160871\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph42\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"625.7794398323597\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph41\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"489.1389806297966\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph31\" class=\"process\">      <bbox x=\"583.1295079988531\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph31.1\" x=\"580.2723651417102\" y=\"349.6249043390634\"/>      <port id=\"glyph31.2\" x=\"600.2723651417102\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph27\" class=\"simple chemical\">      <label text=\"3 PG\"/>      <bbox x=\"454.9788658291559\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph32\" class=\"process\">      <bbox x=\"397.0157790850171\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph32.1\" x=\"394.15863622787424\" y=\"349.6249043390634\"/>      <port id=\"glyph32.2\" x=\"414.15863622787424\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph28\" class=\"simple chemical\">      <label text=\"2 PG\"/>      <bbox x=\"318.26415637028003\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph43\" class=\"simple chemical\">      <label text=\"H2O\"/>      <bbox x=\"153.2667770493495\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph33\" class=\"process\">      <bbox x=\"245.7429111687172\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph33.1\" x=\"242.88576831157434\" y=\"349.6249043390634\"/>      <port id=\"glyph33.2\" x=\"262.88576831157434\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph29\" class=\"simple chemical\">      <label text=\"PEP\"/>      <bbox x=\"115.90276341382432\" y=\"332.1249043390634\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph39\" class=\"simple chemical\">      <label text=\"ADP\"/>      <clone/>      <bbox x=\"86.04901679447991\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph40\" class=\"simple chemical\">      <label text=\"ATP\"/>      <clone/>      <bbox x=\"-29.581923360913365\" y=\"276.5413095934183\" w=\"35\" h=\"35\"/>    </glyph>    <glyph id=\"glyph34\" class=\"process\">      <bbox x=\"42.94879208876826\" y=\"342.4820471962062\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph34.1\" x=\"40.091649231625404\" y=\"349.6249043390634\"/>      <port id=\"glyph34.2\" x=\"60.091649231625404\" y=\"349.6249043390634\"/>    </glyph>    <glyph id=\"glyph30\" class=\"simple chemical\">      <label text=\"pyruvate\"/>      <bbox x=\"-63.94745709793577\" y=\"332.1249043390634\" w=\"48\" h=\"35\"/>    </glyph>    <glyph id=\"glyph14\" class=\"process\">      <bbox x=\"708.3492986452685\" y=\"121.14086027100487\" w=\"14.285714285714286\" h=\"14.285714285714286\"/>      <port id=\"glyph14.1\" x=\"705.4921557881256\" y=\"128.283717413862\"/>      <port id=\"glyph14.2\" x=\"725.4921557881256\" y=\"128.283717413862\"/>    </glyph>    <glyph id=\"glyph5\" class=\"simple chemical\">      <label text=\"DHA-P\"/>      <bbox x=\"683.0047105160871\" y=\"35.983230779999516\" w=\"35\" h=\"35\"/>    </glyph>    <arc id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae\" class=\"catalysis\" source=\"glyph9\" target=\"glyph8\">      <glyph id=\"f58fd051-70b2-4f4f-a75f-04d442d486ae_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"88.32469771707692\" y=\"71.48323077999953\"/>      <end x=\"88.32469771707692\" y=\"117.56943169957628\"/>    </arc>    <arc id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2\" class=\"consumption\" source=\"glyph0\" target=\"glyph8.2\">      <glyph id=\"_4a2452a5-80cf-4b3a-9469-09d479a848c2_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"30.364157995883986\" y=\"128.283717413862\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d\" class=\"production\" source=\"glyph8.1\" target=\"glyph1\">      <glyph id=\"a8ecfde2-b558-485e-bf1a-f050e068da4d_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"143.16023743826983\" y=\"128.283717413862\"/>    </arc>    <arc id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5\" class=\"consumption\" source=\"glyph6\" target=\"glyph8.2\">      <glyph id=\"f4edba5d-82c0-466d-989f-2967e4d6dbe5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"20.742241299753502\" y=\"173.47990836201072\"/>      <end x=\"77.69969771707692\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b\" class=\"production\" source=\"glyph8.1\" target=\"glyph7\">      <glyph id=\"_0256a519-fbdd-47e5-b989-65fceeb9be2b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"98.94969771707692\" y=\"128.283717413862\"/>      <end x=\"152.82598636853953\" y=\"171.690628829439\"/>    </arc>    <arc id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7\" class=\"production\" source=\"glyph11.1\" target=\"glyph12\">      <glyph id=\"_0eb3bb26-bc95-417f-89cc-d8cb7dcc33e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"488.16105991623\" y=\"171.9686512500855\"/>    </arc>    <arc id=\"_959a75d5-b615-4761-abf3-ad2105a044f8\" class=\"consumption\" source=\"glyph13\" target=\"glyph11.2\">      <glyph id=\"_959a75d5-b615-4761-abf3-ad2105a044f8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"351.27085401599305\" y=\"173.67487946307577\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_685a3c56-02f3-470e-a263-f53033bfce1e\" class=\"consumption\" source=\"glyph1\" target=\"glyph10.2\">      <glyph id=\"_685a3c56-02f3-470e-a263-f53033bfce1e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"196.28523743826983\" y=\"128.283717413862\"/>      <end x=\"242.26076831157434\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8\" class=\"production\" source=\"glyph10.1\" target=\"glyph2\">      <glyph id=\"_2d6de60d-1386-4337-86f7-4b879b324ed8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"263.51076831157434\" y=\"128.283717413862\"/>      <end x=\"309.08131688065566\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6\" class=\"consumption\" source=\"glyph2\" target=\"glyph11.2\">      <glyph id=\"_99e148d2-ff28-4bca-ba79-8389aaefc8e6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"362.20631688065566\" y=\"128.283717413862\"/>      <end x=\"410.41013079960703\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc\" class=\"production\" source=\"glyph11.1\" target=\"glyph3\">      <glyph id=\"_9fdb206a-6c1c-4224-b7ed-e8b76ec52cdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"431.66013079960703\" y=\"128.283717413862\"/>      <end x=\"478.1608513347395\" y=\"128.283717413862\"/>    </arc>    <arc id=\"c4694210-3890-477c-b17d-6b2b856080e7\" class=\"production\" source=\"glyph14.1\" target=\"glyph4\">      <glyph id=\"c4694210-3890-477c-b17d-6b2b856080e7_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"705.2726236849584\" y=\"173.49403950310491\"/>    </arc>    <arc id=\"_25258eef-e524-496f-856b-58c50656e29f\" class=\"catalysis\" source=\"glyph15\" target=\"glyph14\">      <glyph id=\"_25258eef-e524-496f-856b-58c50656e29f_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"774.2899455213721\" y=\"127.96126528909781\"/>      <end x=\"729.2421087966899\" y=\"128.20831149157934\"/>    </arc>    <arc id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc\" class=\"consumption\" source=\"glyph3\" target=\"glyph16.2\">      <glyph id=\"bd4943b0-9e11-47e4-ab32-9d1fa91d9fdc_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"531.2858513347395\" y=\"128.283717413862\"/>      <end x=\"580.9132207947347\" y=\"128.283717413862\"/>    </arc>    <arc id=\"_1e3385ff-6751-48f8-8956-b216d43840b8\" class=\"production\" source=\"glyph16.1\" target=\"glyph5\">      <glyph id=\"_1e3385ff-6751-48f8-8956-b216d43840b8_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.6761026666984\" y=\"65.72175059052856\"/>    </arc>    <arc id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c\" class=\"production\" source=\"glyph16.1\" target=\"glyph4\">      <glyph id=\"f1f388bc-cc6b-47ac-821b-8037aa452e3c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"602.1632207947347\" y=\"128.283717413862\"/>      <end x=\"682.0308393010595\" y=\"183.34602315877993\"/>    </arc>    <arc id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72\" class=\"catalysis\" source=\"glyph17\" target=\"glyph10\">      <glyph id=\"_4544d16e-3e08-4e04-913b-504ad4b81f72_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"253.25899499181736\" y=\"71.48323077999953\"/>      <end x=\"252.95616968218533\" y=\"117.5694991597125\"/>    </arc>    <arc id=\"bb409d93-f527-40e2-af6d-79740790c156\" class=\"catalysis\" source=\"glyph19\" target=\"glyph11\">      <glyph id=\"bb409d93-f527-40e2-af6d-79740790c156_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"418.8450700815047\" y=\"71.48323077999953\"/>      <end x=\"420.6221087278667\" y=\"117.57175200054542\"/>    </arc>    <arc id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6\" class=\"catalysis\" source=\"glyph18\" target=\"glyph16\">      <glyph id=\"d2703827-9b63-4e78-978e-4cc5cd1feff6_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"591.5382207947348\" y=\"71.4832307799995\"/>      <end x=\"591.5382207947347\" y=\"117.5694316995763\"/>    </arc>    <arc id=\"e704169a-bd58-4e57-a497-42c079b2df1b\" class=\"catalysis\" source=\"glyph22\" target=\"glyph20\">      <glyph id=\"e704169a-bd58-4e57-a497-42c079b2df1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"775.4300198297399\" y=\"268.13747473904266\"/>      <end x=\"711.2189962303728\" y=\"268.13747473904266\"/>    </arc>    <arc id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22\" class=\"consumption\" source=\"glyph4\" target=\"glyph20.2\">      <glyph id=\"f9c598f3-8c60-419a-9775-d2bbdfb18f22_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"213.0868730968662\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0\" class=\"production\" source=\"glyph20.1\" target=\"glyph21\">      <glyph id=\"_820fbd73-82ef-41bc-a7ef-58615edc06e0_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"700.5047105160871\" y=\"327.9999043390634\"/>    </arc>    <arc id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e\" class=\"consumption\" source=\"glyph23\" target=\"glyph20.2\">      <glyph id=\"_3cecee18-495f-47a6-ab14-410a4ce0547e_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"651.8707642606824\" y=\"225.51154364515853\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"_50d9673e-973b-4985-956e-afe770731642\" class=\"consumption\" source=\"glyph24\" target=\"glyph20.2\">      <glyph id=\"_50d9673e-973b-4985-956e-afe770731642_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"744.560899454655\" y=\"226.09042652760039\"/>      <end x=\"700.5047105160871\" y=\"257.51247473904266\"/>    </arc>    <arc id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b\" class=\"production\" source=\"glyph20.1\" target=\"glyph25\">      <glyph id=\"e1e603a7-e681-46e1-bac6-887674cb5e1b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"771.0099332393493\" y=\"312.2418824466607\"/>    </arc>    <arc id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c\" class=\"production\" source=\"glyph20.1\" target=\"glyph26\">      <glyph id=\"d7e5d61d-9b85-4f2d-92b2-8add8a8db09c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"700.5047105160871\" y=\"278.76247473904266\"/>      <end x=\"756.8896400898324\" y=\"348.41954087920493\"/>    </arc>    <arc id=\"_1281b2ec-97d2-4802-8301-9b32364f382c\" class=\"catalysis\" source=\"glyph35\" target=\"glyph31\">      <glyph id=\"_1281b2ec-97d2-4802-8301-9b32364f382c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"590.2723651417102\" y=\"405.945133940345\"/>      <end x=\"590.2723651417102\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669\" class=\"catalysis\" source=\"glyph36\" target=\"glyph32\">      <glyph id=\"_5df3836d-5fc8-4b0c-8b3e-c18b4aa6d669_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"404.15863622787424\" y=\"405.945133940345\"/>      <end x=\"404.15863622787424\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462\" class=\"catalysis\" source=\"glyph37\" target=\"glyph33\">      <glyph id=\"_2b0a2f73-7fbc-4907-857b-046dd1c80462_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"252.88576831157434\" y=\"405.945133940345\"/>      <end x=\"252.88576831157434\" y=\"360.3391900533491\"/>    </arc>    <arc id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65\" class=\"catalysis\" source=\"glyph38\" target=\"glyph34\">      <glyph id=\"_978c4f3c-9c62-4a41-8c5b-ea216310ac65_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"50.94894667060328\" y=\"405.945133940345\"/>      <end x=\"50.254734848427255\" y=\"360.33882807817764\"/>    </arc>    <arc id=\"_5280e682-f58d-41e0-8425-185de6e8508c\" class=\"consumption\" source=\"glyph21\" target=\"glyph31.2\">      <glyph id=\"_5280e682-f58d-41e0-8425-185de6e8508c_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"675.5047105160871\" y=\"349.6249043390634\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"d13ecda0-799a-4d14-891f-d1f5f6447764\" class=\"consumption\" source=\"glyph42\" target=\"glyph31.2\">      <glyph id=\"d13ecda0-799a-4d14-891f-d1f5f6447764_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"630.5119405796297\" y=\"307.42939992891945\"/>      <end x=\"600.8973651417102\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5\" class=\"production\" source=\"glyph31.1\" target=\"glyph41\">      <glyph id=\"_2dade40f-5091-4ca1-9104-9a682e49f9a5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"524.6491446756188\" y=\"306.0110471027614\"/>    </arc>    <arc id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137\" class=\"production\" source=\"glyph31.1\" target=\"glyph27\">      <glyph id=\"a61fff88-a2bd-4f9b-9ef6-1bc4c46ef137_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"579.6473651417102\" y=\"349.6249043390634\"/>      <end x=\"494.1038658291559\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840\" class=\"consumption\" source=\"glyph27\" target=\"glyph32.2\">      <glyph id=\"_3e8a670e-bec3-44cd-8d66-96e8c8075840_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"453.9788658291559\" y=\"349.6249043390634\"/>      <end x=\"414.78363622787424\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270\" class=\"production\" source=\"glyph32.1\" target=\"glyph28\">      <glyph id=\"_6f2e2d5d-6852-4a66-89aa-d25dd1a9e270_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"393.53363622787424\" y=\"349.6249043390634\"/>      <end x=\"357.38915637028003\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_716d7259-74e7-493b-a074-3ae9d320b37b\" class=\"consumption\" source=\"glyph28\" target=\"glyph33.2\">      <glyph id=\"_716d7259-74e7-493b-a074-3ae9d320b37b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"317.26415637028003\" y=\"349.6249043390634\"/>      <end x=\"263.51076831157434\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_6aad03a2-9603-4fca-864a-b7fadde71398\" class=\"production\" source=\"glyph33.1\" target=\"glyph43\">      <glyph id=\"_6aad03a2-9603-4fca-864a-b7fadde71398_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"188.67511465279387\" y=\"306.1628635070493\"/>    </arc>    <arc id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5\" class=\"production\" source=\"glyph33.1\" target=\"glyph29\">      <glyph id=\"_296c2cb1-721c-4209-9077-c962aa3d67f5_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"242.26076831157434\" y=\"349.6249043390634\"/>      <end x=\"155.02776341382432\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913\" class=\"consumption\" source=\"glyph29\" target=\"glyph34.2\">      <glyph id=\"fe64d11e-3fb5-45d0-8efa-e62acb34c913_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"114.90276341382432\" y=\"349.6249043390634\"/>      <end x=\"60.71664923162541\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91\" class=\"consumption\" source=\"glyph39\" target=\"glyph34.2\">      <glyph id=\"_7574124a-ee7a-4aab-83bb-e8d53b2f7a91_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"90.72505928529361\" y=\"307.37533050995296\"/>      <end x=\"60.716649231625404\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf\" class=\"production\" source=\"glyph34.1\" target=\"glyph40\">      <glyph id=\"_67b66b4c-792c-4d90-ae4e-d1b9e5d6fcaf_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.466649231625404\" y=\"349.6249043390634\"/>      <end x=\"4.039767510003706\" y=\"308.4542103584478\"/>    </arc>    <arc id=\"_90406689-30d9-4546-a85e-280293431b9b\" class=\"production\" source=\"glyph34.1\" target=\"glyph30\">      <glyph id=\"_90406689-30d9-4546-a85e-280293431b9b_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"39.46664923162541\" y=\"349.6249043390634\"/>      <end x=\"-11.822457097935775\" y=\"349.6249043390634\"/>    </arc>    <arc id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec\" class=\"production\" source=\"glyph14.1\" target=\"glyph5\">      <glyph id=\"b1cde550-e4ab-4b19-99e2-4de33f301cec_card\" class=\"cardinality\">        <label text=\"0\"/>        <bbox x=\"0\" y=\"0\" w=\"0\" h=\"0\"/>      </glyph>      <start x=\"704.8671557881256\" y=\"128.283717413862\"/>      <end x=\"704.7531757868935\" y=\"74.68679575956726\"/>    </arc>  </map></sbgn>");
+  $(document).off("click", "#cancel-query-Dbcommonstream").on("click", "#cancel-query-Dbcommonstream", function (evt) {
+    $(self.el).modal('toggle');
+  });
 
-      }
-    });
-            $(self.el).modal('toggle');
-        });
-
-        $(document).off("click", "#cancel-query-Dbcommonstream").on("click", "#cancel-query-Dbcommonstream", function (evt) {
-            $(self.el).modal('toggle');
-        });
-
-        return this;
-    }
+  return this;
+}
 });
 /**
- * Paths By URI Query view for the Sample Application.
- */
+* Paths By URI Query view for the Sample Application.
+*/
 var PathsByURIQueryView = Backbone.View.extend({
   defaultQueryParameters: {
-      URI: ""
+    URI: ""
   },
   currentQueryParameters: null,
   initialize: function () {
@@ -1870,26 +1941,26 @@ var PathsByURIQueryView = Backbone.View.extend({
       var uri = self.currentQueryParameters.URI.trim();
 
       if (uri.length === 0) {
-          document.getElementById("query-pathsbyURI-URI").focus();
-          return;
+        document.getElementById("query-pathsbyURI-URI").focus();
+        return;
       }
       // uri is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
       uri = uri.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
       if (uri.length === 0) {
-          $(self.el).modal('toggle');
-          new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
-          return;
+        $(self.el).modal('toggle');
+        new PromptInvalidURIView({el: '#prompt-invalidURI-table'}).render();
+        return;
       }
 
       var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
-          + uri + "&format=SBGN";
+      + uri + "&format=SBGN";
 
       var filename = "";
 
       if (filename == '') {
-          filename = uri;
+        filename = uri;
       } else {
-          filename = filename + '_' + uri;
+        filename = filename + '_' + uri;
       }
 
       filename = filename + '_URI.sbgnml';
@@ -1920,10 +1991,10 @@ var PathsByURIQueryView = Backbone.View.extend({
         }
       });
       $(self.el).modal('toggle');
-  });
+    });
 
     $(document).off("click", "#cancel-query-pathsbyURI").on("click", "#cancel-query-pathsbyURI", function (evt) {
-        $(self.el).modal('toggle');
+      $(self.el).modal('toggle');
     });
 
     return this;
@@ -1931,11 +2002,11 @@ var PathsByURIQueryView = Backbone.View.extend({
 });
 
 /*
-  There was a side effect of using this modal prompt when clicking on New.
-  If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
-  but the map was already wiped at this point, so after setting the filename and clicking on save
-  the user would end up saving an empty map.
-  So this PromptSaveView isn't used for now, replaced by PromptConfirmationView.
+There was a side effect of using this modal prompt when clicking on New.
+If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
+but the map was already wiped at this point, so after setting the filename and clicking on save
+the user would end up saving an empty map.
+So this PromptSaveView isn't used for now, replaced by PromptConfirmationView.
 */
 var PromptSaveView = Backbone.View.extend({
 
@@ -1970,7 +2041,7 @@ var PromptSaveView = Backbone.View.extend({
 });
 
 /*
-  Ask for filename before saving and triggering the actual browser download popup.
+Ask for filename before saving and triggering the actual browser download popup.
 */
 var FileSaveView = Backbone.View.extend({
   initialize: function () {
@@ -1978,9 +2049,9 @@ var FileSaveView = Backbone.View.extend({
     self.template = _.template($("#file-save-template").html());
   },
   /*
-    possibility to use different export format here in the future
-    fileformat: sbgnml
-    version: for sbgnml: 0.2, 0.3
+  possibility to use different export format here in the future
+  fileformat: sbgnml
+  version: for sbgnml: 0.2, 0.3
   */
   render: function (fileformat, version, text) {
     var self = this;
@@ -1997,7 +2068,7 @@ var FileSaveView = Backbone.View.extend({
 
     var filename = document.getElementById('file-name').innerHTML;
     if (fileformat === "celldesigner")
-      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".xml");
+    filename = filename.substring(0, filename.lastIndexOf('.')).concat(".xml");
     $("#file-save-filename").val(filename);
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
@@ -2028,7 +2099,7 @@ var FileSaveView = Backbone.View.extend({
       }
       else if(fileformat === "celldesigner") {
         var blob = new Blob([text], {
-            type: "text/plain;charset=utf-8;",
+          type: "text/plain;charset=utf-8;",
         });
         FileSaver.saveAs(blob, filename);
       }
@@ -2048,7 +2119,7 @@ var FileSaveView = Backbone.View.extend({
 });
 
 /*
-  Simple Yes/No confirmation modal box. See PromptSaveView.
+Simple Yes/No confirmation modal box. See PromptSaveView.
 */
 var PromptConfirmationView = Backbone.View.extend({
   initialize: function () {
@@ -2102,103 +2173,103 @@ var PromptMapTypeView = Backbone.View.extend({
 
 var PromptInvalidQueryView = Backbone.View.extend({
   initialize: function () {
-      var self = this;
-      self.template = _.template($("#prompt-invalidQuery-template").html());
+    var self = this;
+    self.template = _.template($("#prompt-invalidQuery-template").html());
   },
   render: function () {
-      var self = this;
-      self.template = _.template($("#prompt-invalidQuery-template").html());
+    var self = this;
+    self.template = _.template($("#prompt-invalidQuery-template").html());
 
-      $(self.el).html(self.template);
-      $(self.el).modal('show');
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
 
-      $(document).off("click", "#prompt-invalidQuery-confirm").on("click", "#prompt-invalidQuery-confirm", function (evt) {
-          $(self.el).modal('toggle');
-          if (PCdialog == "Neighborhood")
-            appUtilities.neighborhoodQueryView.render();
-          else if (PCdialog == "PathsBetween")
-              appUtilities.pathsBetweenQueryView.render();
-          else if (PCdialog == "PathsFromTo")
-              appUtilities.pathsFromToQueryView.render();
-          else if (PCdialog == "CommonStream")
-              appUtilities.commonStreamQueryView.render();
-      });
+    $(document).off("click", "#prompt-invalidQuery-confirm").on("click", "#prompt-invalidQuery-confirm", function (evt) {
+      $(self.el).modal('toggle');
+      if (PCdialog == "Neighborhood")
+      appUtilities.neighborhoodQueryView.render();
+      else if (PCdialog == "PathsBetween")
+      appUtilities.pathsBetweenQueryView.render();
+      else if (PCdialog == "PathsFromTo")
+      appUtilities.pathsFromToQueryView.render();
+      else if (PCdialog == "CommonStream")
+      appUtilities.commonStreamQueryView.render();
+    });
 
-      return this;
+    return this;
   }
 });
 
 var PromptInvalidLengthLimitView = Backbone.View.extend({
-    initialize: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidLengthLimit-template").html());
-    },
-    render: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidLengthLimit-template").html());
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidLengthLimit-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidLengthLimit-template").html());
 
-        $(self.el).html(self.template);
-        if (PCdialog == "Neighborhood")
-          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
-        else
-            document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
-        $(self.el).modal('show');
+    $(self.el).html(self.template);
+    if (PCdialog == "Neighborhood")
+    document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
+    else
+    document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
+    $(self.el).modal('show');
 
-        $(document).off("click", "#prompt-invalidLengthLimit-confirm").on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
-            $(self.el).modal('toggle');
-            if (PCdialog == "Neighborhood")
-                appUtilities.neighborhoodQueryView.render();
-            else if (PCdialog == "PathsBetween")
-                appUtilities.pathsBetweenQueryView.render();
-            else if (PCdialog == "PathsFromTo")
-                appUtilities.pathsFromToQueryView.render();
-            else if (PCdialog == "CommonStream")
-                appUtilities.commonStreamQueryView.render();
-        });
+    $(document).off("click", "#prompt-invalidLengthLimit-confirm").on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
+      $(self.el).modal('toggle');
+      if (PCdialog == "Neighborhood")
+      appUtilities.neighborhoodQueryView.render();
+      else if (PCdialog == "PathsBetween")
+      appUtilities.pathsBetweenQueryView.render();
+      else if (PCdialog == "PathsFromTo")
+      appUtilities.pathsFromToQueryView.render();
+      else if (PCdialog == "CommonStream")
+      appUtilities.commonStreamQueryView.render();
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 var PromptInvalidURIView = Backbone.View.extend({
-    initialize: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidURI-template").html());
-    },
-    render: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidURI-template").html());
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURI-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURI-template").html());
 
-        $(self.el).html(self.template);
-        $(self.el).modal('show');
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
 
-        $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
-            $(self.el).modal('toggle');
-            appUtilities.pathsByURIQueryView.render();
-        });
+    $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
+      $(self.el).modal('toggle');
+      appUtilities.pathsByURIQueryView.render();
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 var PromptInvalidURIWarning = Backbone.View.extend({
-    initialize: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidURI-template").html());
-    },
-    render: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidURI-template").html());
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURI-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidURI-template").html());
 
-        $(self.el).html(self.template);
-        $(self.el).modal('show');
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
 
-        $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
-            $(self.el).modal('toggle');
-        });
+    $(document).off("click", "#prompt-invalidURI-confirm").on("click", "#prompt-invalidURI-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
 
-        return this;
-    }
+    return this;
+  }
 });
 
 var PromptInvalidFileView = Backbone.View.extend({
@@ -2222,23 +2293,23 @@ var PromptInvalidFileView = Backbone.View.extend({
 });
 
 var PromptFileConversionErrorView = Backbone.View.extend({
-   initialize: function () {
-     var self = this;
-     self.template = _.template($("#prompt-fileConversionError-template").html());
-   },
-   render: function() {
-     var self = this;
-     self.template = _.template($("#prompt-fileConversionError-template").html());
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-fileConversionError-template").html());
+  },
+  render: function() {
+    var self = this;
+    self.template = _.template($("#prompt-fileConversionError-template").html());
 
-     $(self.el).html(self.template);
-     $(self.el).modal('show');
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
 
-     $(document).off("click", "#prompt-fileConversionError-confirm").on("click", "#prompt-fileConversionError-confirm", function (evt) {
-         $(self.el).modal('toggle');
-     });
+    $(document).off("click", "#prompt-fileConversionError-confirm").on("click", "#prompt-fileConversionError-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
 
-     return this;
-   }
+    return this;
+  }
 });
 
 var PromptInvalidURLWarning = Backbone.View.extend({
@@ -2289,27 +2360,27 @@ var PromptInvalidImageWarning = Backbone.View.extend({
 var ReactionTemplateView = Backbone.View.extend({
   addMacromolecule: function (type, i) {
     var html = "<tr><td>"
-        + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
-        + i + "' value=''></input>"
-        + "</td><td>";
+    + "<input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='"
+    + i + "' value=''></input>"
+    + "</td><td>";
     if( type == "reaction"){
       html +=  "<select class='template-reaction-molecule-type sbgn-output-medium layout-text' name='" + i + "' style='width: 120px'>"
-             + "<option value='Macromolecule' selected> Macromolecule </option>"
-             + "<option value='Simple Chemical'> Simple Chemical </option></td>";
+      + "<option value='Macromolecule' selected> Macromolecule </option>"
+      + "<option value='Simple Chemical'> Simple Chemical </option></td>";
       html +=  "<td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'style='margin-right: 30px'/></td></tr>";
       $('#template-reaction-dissociated-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
     else if( type == "left"){
       html +=  "<select class='template-reaction-molecule-type sbgn-output-medium layout-text' name='" + i + "' style='width: 120px'>"
-             + "<option value='Macromolecule'> Macromolecule </option>"
-             + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
+      + "<option value='Macromolecule'> Macromolecule </option>"
+      + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
       html += "<td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg' style='margin-right: 30px'/></td></tr>";
       $('#template-reversible-input-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
     else{
       html +=  "<select class='template-reaction-molecule-type sbgn-output-medium layout-text' name='" + i + "' style='width: 120px'>"
-             + "<option value='Macromolecule'> Macromolecule </option>"
-             + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
+      + "<option value='Macromolecule'> Macromolecule </option>"
+      + "<option value='Simple Chemical' selected> Simple Chemical </option></td>";
       html += "<td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='" + i + "' src='app/img/toolbar/delete-simple.svg'/></td></tr>";
       $('#template-reversible-output-table :input.template-reaction-textbox').last().closest('tr').after(html);
     }
@@ -2347,13 +2418,13 @@ var ReactionTemplateView = Backbone.View.extend({
     var templateType = $('#reaction-template-type-select').val();
     var templateReactionComplexName = $('#template-reaction-complex-name').val();
     var nodeNames = $('#template-reaction-dissociated-table  :input.template-reaction-textbox').map(function(){
-        return {
-            name: $(this).val(),
-            id: $(this).attr('name').charAt(0)
-        };
+      return {
+        name: $(this).val(),
+        id: $(this).attr('name').charAt(0)
+      };
     }).toArray();
     var nodeTypes = $('#template-reaction-dissociated-table  :input.template-reaction-molecule-type :selected').map(function(){
-        return $(this).val();
+      return $(this).val();
     }).toArray();
     var nodeList = [];
     for( var i = 0; i < nodeNames.length; i++){
@@ -2594,17 +2665,17 @@ var GridPropertiesView = Backbone.View.extend({
       $("#snap-to-alignment-location").val("disabled");
 
       if ($("#snap-to-grid").val() == "disabled" && $("#snap-to-alignment-location").val() == "disabled")
-        $("#no-snap").prop('checked', true);
+      $("#no-snap").prop('checked', true);
       else
-        $("#no-snap").prop('checked', false);
+      $("#no-snap").prop('checked', false);
     });
 
     $(document).off("change", "#snap-to-alignment-location").on("change", "#snap-to-alignment-location", function(event){
       $("#snap-to-grid").val("disabled");
       if ($("#snap-to-grid").val() == "disabled" && $("#snap-to-alignment-location").val() == "disabled")
-        $("#no-snap").prop('checked', true);
+      $("#no-snap").prop('checked', true);
       else
-        $("#no-snap").prop('checked', false);
+      $("#no-snap").prop('checked', false);
     });
 
     $(document).off("click", "#no-snap").on("click", "#no-snap", function(event){
@@ -2639,7 +2710,7 @@ var GridPropertiesView = Backbone.View.extend({
       currentGridProperties.geometricAlignmentRange = Number(document.getElementById("geometric-alignment-range").value);
       currentGridProperties.distributionAlignmentRange = Number(document.getElementById("distribution-alignment-range").value);
 
-	  // Line styles for guidelines
+      // Line styles for guidelines
       currentGridProperties.initPosAlignmentLine = $('select[name="init-Pos-Alignment-Line"] option:selected').val().split(',').map(Number);
       currentGridProperties.lineDash = $('select[id="geometric-Alignment-Line"] option:selected').val().split(',').map(Number),
       currentGridProperties.horizontalDistLine = $('select[name="horizontal-Dist-Alignment-Line"] option:selected').val().split(',').map(Number);
@@ -2658,14 +2729,14 @@ var GridPropertiesView = Backbone.View.extend({
         initPosAlignment: currentGridProperties.showInitPosAlignment,
         guidelinesTolerance: currentGridProperties.guidelineTolerance,
         guidelinesStyle: {
-		  initPosAlignmentLine: currentGridProperties.initPosAlignmentLine,
-		  lineDash: currentGridProperties.lineDash,
-		  horizontalDistLine: currentGridProperties.horizontalDistLine,
-		  verticalDistLine: currentGridProperties.verticalDistLine,
+          initPosAlignmentLine: currentGridProperties.initPosAlignmentLine,
+          lineDash: currentGridProperties.lineDash,
+          horizontalDistLine: currentGridProperties.horizontalDistLine,
+          verticalDistLine: currentGridProperties.verticalDistLine,
           strokeStyle: currentGridProperties.guidelineColor,
-		  horizontalDistColor: currentGridProperties.horizontalGuidelineColor,
-		  verticalDistColor: currentGridProperties.verticalGuidelineColor,
-		  initPosAlignmentColor: currentGridProperties.initPosAlignmentColor,
+          horizontalDistColor: currentGridProperties.horizontalGuidelineColor,
+          verticalDistColor: currentGridProperties.verticalGuidelineColor,
+          initPosAlignmentColor: currentGridProperties.initPosAlignmentColor,
           geometricGuidelineRange: currentGridProperties.geometricAlignmentRange,
           range: currentGridProperties.distributionAlignmentRange
         }
@@ -2701,9 +2772,9 @@ var FontPropertiesView = Backbone.View.extend({
     this.currentFontProperties = _.clone(this.defaultFontProperties);
   },
   fontFamilies: ["", "Helvetica", "Arial", "Calibri", "Cambria", "Comic Sans MS", "Consolas", "Corsiva"
-    ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact"
-    ,"Lato", "Roboto", "Source Sans Pro", "Syncopate", "Times New Roman"
-    ,"Trebuchet MS", "Ubuntu", "Verdana"],
+  ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact"
+  ,"Lato", "Roboto", "Source Sans Pro", "Syncopate", "Times New Roman"
+  ,"Trebuchet MS", "Ubuntu", "Verdana"],
   getOptionIdByFontFamily: function(fontfamily) {
     var id = "font-properties-font-family-" + fontfamily;
     return id;
@@ -2729,7 +2800,7 @@ var FontPropertiesView = Backbone.View.extend({
       var fontFamily = fontFamilies[i];
       var optionId = self.getOptionIdByFontFamily(fontFamily);
       var optionStr = "<option id='" + optionId + "'"
-              + " value='" + fontFamily + "' style='" + "font-family: " + fontFamily + "'";
+      + " value='" + fontFamily + "' style='" + "font-family: " + fontFamily + "'";
 
       if (fontFamily === self.currentFontProperties.fontFamily) {
         optionStr += " selected";
@@ -2862,7 +2933,7 @@ var FontPropertiesView = Backbone.View.extend({
 
 
       $(self.el).modal('toggle');
-	    $(document).trigger('saveFontProperties', cy);
+      $(document).trigger('saveFontProperties', cy);
     });
 
     return this;
@@ -2916,10 +2987,10 @@ var AnnotationElementView = Backbone.View.extend({
   tagName: 'div',
   initialize: function () {
     /**
-     * We need to debounce the text input, but if we do that when defining events normally, we lose the context (this)
-     * So we need to bind this event manually here, after other events have been defined (this is done before initialize)
-     * This is done through delegateEvents
-     */
+    * We need to debounce the text input, but if we do that when defining events normally, we lose the context (this)
+    * So we need to bind this event manually here, after other events have been defined (this is done before initialize)
+    * This is done through delegateEvents
+    */
     var eventsHash = this.events; // get all defined events
     eventsHash["input .annotations-object-identifier"] = _.debounce(this.valueChangeHandler, 1000); // add the one that need debounce
     this.delegateEvents(eventsHash); // redefine all events with delegate
