@@ -1819,7 +1819,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
         document.getElementById("query-Dbcommonstream-length-limit").focus();
         return;
       }
-      appUtilities.createNewNetwork();
+    
       var limit = self.currentQueryParameters.lengthLimit;
       var geneSymbolsArray = geneSymbols;
 
