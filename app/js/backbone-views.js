@@ -1426,15 +1426,9 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
         document.getElementById("query-Dbneighborhood-length-limit").focus();
         return;
       }
-
-
       var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
-
-
-
       var limit = self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols;
-      //    var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");
 
       var filename = "";
       var sources = "";
@@ -1454,6 +1448,7 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
       }
       filename = filename + '_NEIGHBORHOOD.sbgnml';
 
+//filename= geneSymbolsArray;
       appUtilities.createNewNetwork();
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = chiseInstance.getCy();
@@ -1542,7 +1537,7 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
         return;
       }
-      if (self.currentQueryParameters.lengthLimit > 4) {
+      if (self.currentQueryParameters.lengthLimit > 5) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
         document.getElementById("query-Dbpathsbetween-length-limit").focus();
@@ -1550,7 +1545,7 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
       }
 
       var limit = self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
 
       var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
@@ -1684,8 +1679,8 @@ var DbPathsFromToQueryView = Backbone.View.extend({
       }
 
       var limit = self.currentQueryParameters.lengthLimit;
-      var sourceSymbolsArray = sourceSymbols;
-      var targetSymbolsArray = targetSymbols;
+      var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
+      var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
 
       var sourceSymbolsArrayforFile = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
       var targetSymbolsArrayForFile = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
@@ -1819,9 +1814,9 @@ var DbCommonStreamQueryView = Backbone.View.extend({
         document.getElementById("query-Dbcommonstream-length-limit").focus();
         return;
       }
-    
+
       var limit = self.currentQueryParameters.lengthLimit;
-      var geneSymbolsArray = geneSymbols;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");
 
       var dir= self.currentQueryParameters.direction;
 
