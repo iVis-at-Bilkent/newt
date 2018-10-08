@@ -20,7 +20,7 @@
     "bootstrap": "3.3.7",
     "chise": "^1.2.0",
     "chroma-js": "^1.3.4",
-    "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#unstable",
+    "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#master",
     "cytoscape-autopan-on-drag": "^2.0.2",
     "cytoscape-clipboard": "^2.2.0",
     "cytoscape-context-menus": "^3.0.6",
