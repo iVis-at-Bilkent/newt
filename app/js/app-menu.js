@@ -1162,8 +1162,16 @@ module.exports = function() {
       e.preventDefault();
       $('.edge-palette img').removeClass('selected-mode');// Make any image inside edge palettes non selected
       $(this).addClass('selected-mode'); // Make clicked element selected
-      var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
+
+      var elementType = $(this).attr('value');
       var language = $(this).attr('language');
+
+      // Html values includes '-' instead of ' ' while original
+      // edge class names includes '-' for the languages except SIF
+      if ( language !== 'SIF' ) {
+        elementType = elementType.replace(/-/gi, ' ');
+      }
+
       modeHandler.setAddEdgeMode(elementType, language); // Set add edge mode and set selected edge type
 
       // Update the some attributes of add edge mode icon
