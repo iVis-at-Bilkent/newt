@@ -9,7 +9,7 @@ var session = driver.session();
 
 /*
 	functions in this file all have to take the same arguments:
-	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
+	 - req: the ajax request object, contains parameters sent threw ajax call in req.query
 	 - res: the response object that MUST be called through res.send to send the result back
 	The only cases where res.send doesn't need to be used is in case of errors.
 	Then it is possible to throw the error and let it be handled by the server.js call.
@@ -19,36 +19,36 @@ var session = driver.session();
 
 exports.ReadFromDb = function (req, res) {
 	//var url = req.query.url;
-	//request.get(url, {timeout: 5000}, 
-	
-	
+	//request.get(url, {timeout: 5000},
+
+
 	if(req.method == 'GET') {
 			const resultPromise3 = session.run(
-  'call ReadGraphFromDb() yield out return out'  
+  'call ReadGraphFromDb() yield out return out'
 	);
 
 	resultPromise3.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
   res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+//  res.sendStatus(200)  ;
+
+
 //	}
 });
 	}
-	 
- 	
-	
+
+
+
 };
 
 exports.AddSBGNML = function (req, res) {
 	var sbgnml;
-	
-	
+
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
@@ -62,23 +62,23 @@ exports.AddSBGNML = function (req, res) {
 			resultPromise.then( function(){
 				var post = querystring.parse(body);
 			sbgnml = post.sbgnml;
-			
+
 			 session.run(
   'call InsertGraph($name2)',
   {name2: sbgnml});
-				
+
 			}
-			
-			
-			
-			
-			
+
+
+
+
+
 			);
-			
-			
+
+
 		});
 	}
-	
+
 
 
 };
@@ -86,9 +86,9 @@ exports.AddSBGNML = function (req, res) {
 exports.Neighbors = function (req, res) {
 	var sbgnml;
 	var limit;
-	
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
-	
+
 	if(req.method == 'POST') {
 		var body = '';
 		req.on('data', function (data) {
@@ -100,7 +100,7 @@ exports.Neighbors = function (req, res) {
 				res.status(413);
 				res.send("Error: Too much data passed");
 				return;
-			}			 
+			}
 		});
 		var post = querystring.parse(body);
 			sbgnml = post.sbgnml;
@@ -110,26 +110,26 @@ exports.Neighbors = function (req, res) {
   {name: sbgnml});
 
 	resultPromise3.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
   res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+//  res.sendStatus(200)  ;
+
+
 //	}
 });
 	}
-	
+
 };
 
 exports.AddSBGNML2 = function (req, res) {
 	var sbgnml;
 	var limit;
-	
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
@@ -142,7 +142,7 @@ exports.AddSBGNML2 = function (req, res) {
 				res.status(413);
 				res.send("Error: Too much data passed");
 				return;
-			}			 
+			}
 		});
 
 		req.on('end', function () {
@@ -152,28 +152,28 @@ exports.AddSBGNML2 = function (req, res) {
 			const rrd =	 session.run(
   'call Neighbors($name, $limit)',
   {name: sbgnml, limit: neo4j.int(limit)});
-  
+
   rrd.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
   res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+  //res.sendStatus(200)  ;
+
+
 //	}
 });
-  
-  
+
+
 		});
 	}
 	else if(req.method == 'GET') {
 		sbgnml = req.query.sbgnml;
-		
-	
+
+
 	}
 
 
@@ -184,7 +184,7 @@ exports.AddSBGNML2 = function (req, res) {
 exports.PathsTo	 = function (req, res) {
 	var sbgnml;
 	var limit;
-	
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
@@ -197,7 +197,7 @@ exports.PathsTo	 = function (req, res) {
 				res.status(413);
 				res.send("Error: Too much data passed");
 				return;
-			}			 
+			}
 		});
 
 		req.on('end', function () {
@@ -209,28 +209,28 @@ exports.PathsTo	 = function (req, res) {
 			const rrd =	 session.run(
   'call PathsBetween($source, $target, $limit, $addition)',
   {source: source, target: target,limit: neo4j.int(limit), addition: neo4j.int(addition)});
-  
+
   rrd.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
    res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+//  res.sendStatus(200)  ;
+
+
 //	}
 });
-  
-  
+
+
 		});
 	}
 	else if(req.method == 'GET') {
 		sbgnml = req.query.sbgnml;
-		
-	
+
+
 	}
 
 
@@ -239,7 +239,7 @@ exports.PathsTo	 = function (req, res) {
 exports.GOI	 = function (req, res) {
 	var sbgnml;
 	var limit;
-	
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
@@ -252,39 +252,39 @@ exports.GOI	 = function (req, res) {
 				res.status(413);
 				res.send("Error: Too much data passed");
 				return;
-			}			 
+			}
 		});
 
 		req.on('end', function () {
-			var post = querystring.parse(body);		
+			var post = querystring.parse(body);
 			genes = post.genes;
 			limit = post.limit;
 			direction = post.direction;
 			const rrd =	 session.run(
   'call GOI($genes, $limit, $direction)',
   {genes: genes ,limit: neo4j.int(limit), direction: neo4j.int(direction)});
-  
+
   rrd.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
    res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+  //res.sendStatus(200)  ;
+
+
 //	}
 });
-  
-  
+
+
 		});
 	}
 	else if(req.method == 'GET') {
 		sbgnml = req.query.sbgnml;
-		
-	
+
+
 	}
 
 
@@ -294,7 +294,7 @@ exports.GOI	 = function (req, res) {
 exports.Stream = function (req, res) {
 	var sbgnml;
 	var limit;
-	
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
@@ -307,7 +307,7 @@ exports.Stream = function (req, res) {
 				res.status(413);
 				res.send("Error: Too much data passed");
 				return;
-			}			 
+			}
 		});
 
 		req.on('end', function () {
@@ -318,28 +318,28 @@ exports.Stream = function (req, res) {
 			const rrd =	 session.run(
   'call StreamHighlight($name, $limit, $dir)',
   {name: sbgnml, limit: neo4j.int(limit),dir: neo4j.int(dir) });
-  
+
   rrd.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
   res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+//  res.sendStatus(200)  ;
+
+
 //	}
 });
-  
-  
+
+
 		});
 	}
 	else if(req.method == 'GET') {
 		sbgnml = req.query.sbgnml;
-		
-	
+
+
 	}
 
 
@@ -348,7 +348,7 @@ exports.Stream = function (req, res) {
 exports.Stream2 = function (req, res) {
 	var sbgnml;
 	var limit;
-	
+
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
@@ -361,7 +361,7 @@ exports.Stream2 = function (req, res) {
 				res.status(413);
 				res.send("Error: Too much data passed");
 				return;
-			}			 
+			}
 		});
 
 		req.on('end', function () {
@@ -372,28 +372,28 @@ exports.Stream2 = function (req, res) {
 			const rrd =	 session.run(
   'call StreamPaths($name, $limit, $dir)',
   {name: sbgnml, limit: neo4j.int(limit),dir: neo4j.int(dir) });
-  
+
   rrd.then(result3 => {
-  
+
 
   var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
   res.send(datas);
-  
-  res.sendStatus(200)  ;
 
-  
+  //res.sendStatus(200)  ;
+
+
 //	}
 });
-  
-  
+
+
 		});
 	}
 	else if(req.method == 'GET') {
 		sbgnml = req.query.sbgnml;
-		
-	
+
+
 	}
 
 
