@@ -2643,7 +2643,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
       //Else If a info-box contained by event move info-box
       var instance = appUtilities.getActiveSbgnvizInstance();
       var position = node.position();
-      selectedBox.dashed = true;
+      selectedBox.style.dashed = true;
       var last_mouse_x = mouse_down_x;
       var last_mouse_y = mouse_down_y;
       var parentWidth = node.width();
@@ -2794,7 +2794,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
     cy.on("mouseup", function(event){
       appUtilities.disableInfoBoxRelocationDrag();
       if (selectedBox !== undefined && oldAnchorSide !== undefined) {
-        selectedBox.dashed = false;
+        selectedBox.style.dashed = false;
         instance.classes.AuxUnitLayout.modifyUnits(node, selectedBox, oldAnchorSide, cy); //Modify aux unit layouts
         selectedBox = undefined;
         anchorSide = undefined;

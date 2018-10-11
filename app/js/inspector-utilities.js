@@ -23,16 +23,40 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     return this.context.measureText(txt).width;
   };
 
+  function sanitizeInfoboxVal(value) {
+    return (value || '').toString().replace(/'/g, "&#039;");
+  }
+
+  function getInfoboxDetailsBtnHtml(width, index) {
+
+    var html = "<label id='inspector-infobox-'" + index + " style='cursor: pointer;width: "
+                + width + "px;'>" + "..." + "<label/>";
+
+    return html;
+  }
+
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
       var state = stateAndInfos[i];
       if (state.clazz == "state variable") {
-        $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
-                + width / 5 + "px;' value='" + (state.state.value || '').toString().replace(/'/g, "&#039;") + "'/>"
-                + "<span style='font: 10pt Helvetica;'>@</span>"
-                + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
-                + width / 2.5 + "px;' value='" + (state.state.variable || '').toString().replace(/'/g, "&#039;")
-                + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
+        $("#inspector-state-variables").append(
+            "<div>"
+            // state variable - value
+            + "<input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
+            + width / 5 + "px;' value='" + sanitizeInfoboxVal(state.state.value) + "'/>"
+
+            + "<span style='font: 10pt Helvetica;'>@</span>"
+
+            // state variable - variable
+            + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
+            + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.state.variable) + "'/>"
+
+            // TODO: maybe update the width
+            + getInfoboxDetailsBtnHtml( '16px', i )
+
+            + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
+            + "</div>"
+        );
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
           chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
@@ -45,14 +69,18 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       else if (state.clazz == "unit of information") {
 
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
-        if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
-          $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;")
-			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
-        } else {
-          $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;") + "'/></div>");
+
+        var uioHtml = "<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
+                + total + "px;' value='" + sanitizeInfoboxVal(state.label.text) + "'/>";
+
+        uioHtml += getInfoboxDetailsBtnHtml( '16px', i );
+
+        if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)) {
+          uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
+                + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
         }
+
+        uioHtml += "</div>";
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
           chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val());
