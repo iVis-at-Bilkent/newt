@@ -1420,7 +1420,7 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
         return;
       }
-      if (self.currentQueryParameters.lengthLimit > 10) {
+      if (self.currentQueryParameters.lengthLimit > 8) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
         document.getElementById("query-Dbneighborhood-length-limit").focus();
@@ -1671,7 +1671,7 @@ var DbPathsFromToQueryView = Backbone.View.extend({
         return;
       }
 
-      if (self.currentQueryParameters.lengthLimit > 8) {
+      if (self.currentQueryParameters.lengthLimit > 5) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
         document.getElementById("query-Dbpathsfromto-length-limit").focus();
@@ -1808,7 +1808,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
         return;
       }
-      if (self.currentQueryParameters.lengthLimit > 3) {
+      if (self.currentQueryParameters.lengthLimit > 5) {
         $(self.el).modal('toggle');
         new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
         document.getElementById("query-Dbcommonstream-length-limit").focus();
@@ -2206,6 +2206,14 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
     $(self.el).html(self.template);
     if (PCdialog == "Neighborhood")
     document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
+    else if (PCdialog == "DbNeighborhood")
+    document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 8.";
+    else if (PCdialog == "DbPathsBetween")
+    document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 5.";
+    else if (PCdialog == "DbPathsFromTo")
+    document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 5.";
+    else if (PCdialog == "DbCommonStream")
+    document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 5.";
     else
     document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
     $(self.el).modal('show');
@@ -2220,6 +2228,14 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
       appUtilities.pathsFromToQueryView.render();
       else if (PCdialog == "CommonStream")
       appUtilities.commonStreamQueryView.render();
+      else if (PCdialog == "DbPathsBetween")
+      appUtilities.DbpathsBetweenQueryView.render();
+      else if (PCdialog == "DbPathsFromTo")
+      appUtilities.DbpathsFromToQueryView.render();
+      else if (PCdialog == "DbCommonStream")
+      appUtilities.DbcommonStreamQueryView.render();
+      else if (PCdialog == "DbNeighborhood")
+      appUtilities.DbneighborhoodQueryView.render();
     });
 
     return this;
