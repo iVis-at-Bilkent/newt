@@ -11,7 +11,7 @@ var _ = require('underscore');
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+   var layoutPropertiesView, generalPropertiesView,DbneighborhoodQueryView, DbpathsBetweenQueryView, DbpathsFromToQueryView, DbcommonStreamQueryView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
@@ -32,6 +32,38 @@ module.exports = function() {
       }
     });
   }
+
+  function AddSBGNML(xml) {
+     $.ajax({
+       type: 'post',
+       url: "/utilities/AddSBGNML",
+       data: {sbgnml: xml},
+      success: function(data){
+         if(data.length == 0) {
+           console.log("Xsd validation OK");
+         }
+         else {
+           console.error("Xsd validation failed. Errors:", data);
+         }
+       },
+       error: function(req, status, err) {
+         console.error("Error during file validation", status, err);
+       }
+     });
+   }
+    function ReadFromDB() {
+     $.ajax({
+       type: 'get',
+       url: "/utilities/ReadFromDb",
+ 	    success: function(data){
+         var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+       },
+       error: function(req, status, err) {
+         var chiseInstance = appUtilities.getActiveChiseInstance();
+        }
+     });
+   }
 
   function cd2sbgnml(xml) {
 
@@ -121,6 +153,10 @@ module.exports = function() {
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
+  DbneighborhoodQueryView = appUtilities.DbneighborhoodQueryView = new BackboneViews.DbNeighborhoodQueryView({el: '#query-Dbneighborhood-table'});
+  DbpathsBetweenQueryView = appUtilities.DbpathsBetweenQueryView = new BackboneViews.DbPathsBetweenQueryView({el: '#query-Dbpathsbetween-table'});
+  DbpathsFromToQueryView = appUtilities.DbpathsFromToQueryView = new BackboneViews.DbPathsFromToQueryView({el: '#query-Dbpathsfromto-table'});
+  DbcommonStreamQueryView = appUtilities.DbcommonStreamQueryView = new BackboneViews.DbCommonStreamQueryView({el: '#query-Dbcommonstream-table'});
   toolbarButtonsAndMenu();
 
   keyboardShortcuts();
@@ -259,6 +295,20 @@ module.exports = function() {
       appUtilities.createNewNetwork();
 
     });
+
+    $("#read-db").click(function () {
+
+       ReadFromDB();
+
+        });
+
+     	$("#save-to-db").click(function () {
+     	  var chiseInstance = appUtilities.getActiveChiseInstance();
+    	 var sbgnml =  chiseInstance.getSbgnvizInstance().createSbgnml();
+    	AddSBGNML(sbgnml);
+
+        });
+
 
     // close the active file
     $("#close-file").click(function () {
@@ -698,6 +748,22 @@ module.exports = function() {
     $("#grid-properties").click(function (e) {
       gridPropertiesView.render();
     });
+
+    $("#query-Dbneighborhood").click(function (e) {
+        DbneighborhoodQueryView.render();
+     });
+
+    $("#query-Dbpathsbetween").click(function (e) {
+        DbpathsBetweenQueryView.render();
+     });
+
+     $("#query-Dbpathsfromto").click(function (e) {
+       DbpathsFromToQueryView.render();
+     });
+
+     $("#query-Dbcommonstream").click(function (e) {
+       DbcommonStreamQueryView.render();
+     });
 
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
 
