@@ -27,10 +27,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     return (value || '').toString().replace(/'/g, "&#039;");
   }
 
-  function getInfoboxDetailsBtnHtml(width, index) {
-
-    var html = "<label id='inspector-infobox-'" + index + " style='cursor: pointer;width: "
-                + width + "px;'>" + "..." + "<label/>";
+  function getInfoboxDetailsBtnHtml(index) {
+    var html = "<label id='inspector-infobox-" + index + "' style='cursor: pointer;font: 10pt Helvetica;'>" + "..." + "</label>";
 
     return html;
   }
@@ -52,7 +50,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
             + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.state.variable) + "'/>"
 
             // TODO: maybe update the width
-            + getInfoboxDetailsBtnHtml( '16px', i )
+            + getInfoboxDetailsBtnHtml( i )
 
             + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
             + "</div>"
@@ -73,7 +71,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         var uioHtml = "<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                 + total + "px;' value='" + sanitizeInfoboxVal(state.label.text) + "'/>";
 
-        uioHtml += getInfoboxDetailsBtnHtml( '16px', i );
+        uioHtml += getInfoboxDetailsBtnHtml( i );
 
         if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)) {
           uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
@@ -82,14 +80,20 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
         uioHtml += "</div>";
 
+        $('#inspector-unit-of-informations').append( uioHtml );
+
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
-          chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val());
+          chiseInstance.changeStateOrInfoBox(nodes[0], i, $(this).val());
         });
       }
 
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
         inspectorUtilities.handleSBGNInspector();
+      });
+
+      $("#inspector-infobox-" + i).unbind('click').on('click', function () {
+        appUtilities.infoboxPropertiesView.render( nodes, i );
       });
     })(i);
   }
