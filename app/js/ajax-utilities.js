@@ -110,7 +110,12 @@ exports.ReadFromDb = function (req, res) {
    rrd.then(result3 => {
    var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
-   res.send(datas);
+  if(datas == null){
+      res.send("null")
+  }
+  else{
+  res.send(datas);
+  }
    //res.sendStatus(200)  ;
  //	}
 });
@@ -149,7 +154,12 @@ exports.ReadFromDb = function (req, res) {
    rrd.then(result3 => {
    var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
-    res.send(datas);
+  if(datas == null){
+      res.send("null")
+  }
+  else{
+  res.send(datas);
+  }
  //  res.sendStatus(200)  ;
  //	}
 });
@@ -187,7 +197,14 @@ exports.ReadFromDb = function (req, res) {
    rrd.then(result3 => {
    var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
-    res.send(datas);
+
+  if(datas == null){
+      res.send("null")
+  }
+  else{
+  res.send(datas);
+  }
+
    //res.sendStatus(200)  ;
  //	}
 });
@@ -263,7 +280,12 @@ exports.ReadFromDb = function (req, res) {
    rrd.then(result3 => {
    var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
-   res.send(datas);
+  if(datas == null){
+      res.send("null")
+  }
+  else{
+  res.send(datas);
+  }
    //res.sendStatus(200)  ;
  //	}
 });

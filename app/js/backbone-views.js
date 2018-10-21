@@ -1259,6 +1259,7 @@ var CommonStreamQueryView = Backbone.View.extend({
     defaultQueryParameters: {
         geneSymbols: "",
         lengthLimit: 1
+
     },
     currentQueryParameters: null,
     initialize: function () {
@@ -1459,6 +1460,12 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
         url: "/utilities/AddSBGNML2",
         data: {sbgnml: geneSymbolsArray, limit:limit},
         success: function(data){
+          if (data == "null")
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner("Dbneighborhood-spinner");
+          }
+          else {
 
           $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
           currentGeneralProperties.inferNestingOnLoad = false;
@@ -1466,7 +1473,7 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('Dbneighborhood-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-
+          }
         },
         error: function(req, status, err) {
           //  chiseInstance.endSpinner('Dbneighborhood-spinner');
@@ -1577,13 +1584,22 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
         url: "/utilities/GOI",
         data: {genes: geneSymbolsArray, limit:limit, direction: direction},
         success: function(data){
+
+
+          if (data == "null")
+          {
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              chiseInstance.endSpinner("DbPathsBetween-spinner");
+          }
+          else {
+
           $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
           currentGeneralProperties.inferNestingOnLoad = false;
           chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('DbPathsBetween-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-
+          }
         },
         error: function(req, status, err) {
 
@@ -1607,7 +1623,8 @@ var DbPathsFromToQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     sourceSymbols: "",
     targetSymbols: "",
-    lengthLimit: 1
+    lengthLimit: 1,
+    addition: 0
   },
   currentQueryParameters: null,
   initialize: function () {
@@ -1729,13 +1746,19 @@ var DbPathsFromToQueryView = Backbone.View.extend({
         data: {target: targetSymbolsArray, source: sourceSymbolsArray, limit:limit, addition: addition},
         success: function(data){
 
-
+          if (data == "null")
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner("DbPathsFromTo-spinner");
+          }
+          else {
           $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
           currentGeneralProperties.inferNestingOnLoad = false;
           chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('DbPathsFromTo-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+          }
         },
         error: function(req, status, err) {
 
@@ -1759,7 +1782,8 @@ var DbPathsFromToQueryView = Backbone.View.extend({
 var DbCommonStreamQueryView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
-    lengthLimit: 1
+    lengthLimit: 1,
+    direction: 0
   },
   currentQueryParameters: null,
   initialize: function () {
@@ -1850,6 +1874,13 @@ var DbCommonStreamQueryView = Backbone.View.extend({
       data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},
       success: function(data){
 
+        if (data == "null")
+        {
+          new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+          chiseInstance.endSpinner("DbCommonStream-spinner");
+        }
+        else {
+
         $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
         currentGeneralProperties.inferNestingOnLoad = false;
         chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
@@ -1877,7 +1908,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
 
           }
         });
-
+      }
       },
       error: function(req, status, err) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -2184,6 +2215,14 @@ var PromptInvalidQueryView = Backbone.View.extend({
               appUtilities.pathsFromToQueryView.render();
           else if (PCdialog == "CommonStream")
               appUtilities.commonStreamQueryView.render();
+          else if (PCdialog == "DbPathsBetween")
+              appUtilities.DbpathsBetweenQueryView.render();
+          else if (PCdialog == "DbPathsFromTo")
+              appUtilities.DbpathsFromToQueryView.render();
+          else if (PCdialog == "DbCommonStream")
+              appUtilities.DbcommonStreamQueryView.render();
+          else if (PCdialog == "DbNeighborhood")
+              appUtilities.DbneighborhoodQueryView.render();
       });
 
       return this;
