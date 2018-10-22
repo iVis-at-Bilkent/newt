@@ -333,6 +333,10 @@ module.exports = function() {
       $("#simple-af-file-input").trigger('click');
     });
 
+    $("#import-sif-file").click(function () {
+      $("#sif-file-input").trigger('click');
+    });
+
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -350,6 +354,32 @@ module.exports = function() {
           promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
         else
           chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning);
+
+        $(this).val("");
+      }
+    });
+
+    // TODO: eliminate code replication in similar functions.
+    $("#sif-file-input").change(function () {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+
+      var loadCallbackInvalidityWarning  = function () {
+        promptInvalidFileView.render();
+      }
+
+      if ($(this).val() != "") {
+        var file = this.files[0];
+
+        var loadFcn = function() {
+          chiseInstance.loadSIFFile(file, loadCallbackInvalidityWarning);
+        };
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( loadFcn );
+        else
+          loadFcn();
 
         $(this).val("");
       }
