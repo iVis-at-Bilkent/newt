@@ -6,6 +6,7 @@ var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
+var sifFormatFactory = require('./sif-format-factory');
 var _ = require('underscore');
 
 // Handle sbgnviz menu functions which are to be triggered on events
@@ -337,6 +338,10 @@ module.exports = function() {
       $("#sif-file-input").trigger('click');
     });
 
+    $("#import-sif-format").click(function () {
+      $("#sif-format-input").trigger('click');
+    });
+
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -354,6 +359,27 @@ module.exports = function() {
           promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
         else
           chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning);
+
+        $(this).val("");
+      }
+    });
+
+    $("#sif-format-input").change(function () {
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          //Get the text result of the file.
+          var text = this.result;
+
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          var sifFormat = sifFormatFactory();
+          sifFormat( chiseInstance );
+          sifFormat.apply( text );
+        };
+
+        reader.readAsText( file );
 
         $(this).val("");
       }
