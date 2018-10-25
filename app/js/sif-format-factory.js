@@ -49,11 +49,16 @@ module.exports = function() {
       }
 
       var nameMapping = {
-        'color': 'background-color',
-        'bordercolor': 'border-color',
-        'borderwidth': 'border-width',
-        'textcolor': 'font-color',
-        // TODO: check possible shape options from file
+        node: {
+          'color': 'background-color',
+          'bordercolor': 'border-color',
+          'borderwidth': 'border-width',
+          'textcolor': 'font-color'
+        },
+        edge: {
+          'color': 'line-color',
+          'width': 'width'
+        }
       };
 
       var sanitizeFeatureVal = function( name, val ) {
@@ -66,10 +71,9 @@ module.exports = function() {
         }
       };
 
-      if ( nameMapping[ featureName ] ) {
-        var name = nameMapping[ featureName ];
+      if ( nameMapping[ eleType ][ featureName ] ) {
+        var name = nameMapping[ eleType ][ featureName ];
         var val = sanitizeFeatureVal( name, featureVal );
-        // console.log( name, val );
         actions.push( {
           name: 'changeData',
           param: {
@@ -84,8 +88,14 @@ module.exports = function() {
 
         // we are not able to use every feature now
         var value = infoboxFeatures[ 1 ];
-        var bgColor = infoboxFeatures[ 2 ];
-        var borderColor = infoboxFeatures[ 3 ];
+
+        // TODO: adding more then one infobox where the second has no value
+        // must be a repetition of same nodes and infoboxes in format file
+        // so infobox is being added but the operations are done in the first
+        // added one since index remains the same
+
+        var bgColor = sanitizeFeatureVal( 'background-color', infoboxFeatures[ 2 ] );
+        var borderColor = sanitizeFeatureVal( 'border-color', infoboxFeatures[ 3 ] );
         var type = 'unit of information';
 
         selectedEles.forEach( function( ele ) {
