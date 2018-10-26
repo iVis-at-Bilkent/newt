@@ -10,6 +10,10 @@ module.exports = function() {
     tdParser = chiseInstance.tdParser;
   }
 
+  sifFormat.initVariables = function() {
+    sifFormat.newInfoboxCountMap = {};
+  };
+
   sifFormat.apply = function( formatText ) {
     if ( elementUtilities.fileFormat != 'sif' ) {
       console.log( 'Map type must be sif to apply sif style!!!' );
@@ -19,6 +23,8 @@ module.exports = function() {
     if ( formatText == undefined ) {
       return;
     }
+
+    sifFormat.initVariables();
 
     var lines = tdParser.getLinesArray( formatText );
     var actions = [];
@@ -89,19 +95,15 @@ module.exports = function() {
         // we are not able to use every feature now
         var value = infoboxFeatures[ 1 ];
 
-        // TODO: adding more then one infobox where the second has no value
-        // must be a repetition of same nodes and infoboxes in format file
-        // so infobox is being added but the operations are done in the first
-        // added one since index remains the same
-
         var bgColor = sanitizeFeatureVal( 'background-color', infoboxFeatures[ 2 ] );
         var borderColor = sanitizeFeatureVal( 'border-color', infoboxFeatures[ 3 ] );
         var type = 'unit of information';
 
         selectedEles.forEach( function( ele ) {
           // the new infoboxes index is equal to the current number
-          // of infoboxes
-          var index = ele.data('statesandinfos').length;
+          // of infoboxes plus the number of new infoboxes so far
+          var index = ele.data('statesandinfos').length + sifFormat.getNewInfoboxCount( ele );
+          sifFormat.incrementNewInfoboxCount( ele );
 
           var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
@@ -152,6 +154,26 @@ module.exports = function() {
 
     var ur = cy.undoRedo();
     ur.do("batch", actions);
+  };
+
+  sifFormat.getNewInfoboxCount = function( ele ) {
+    var id = ele.id();
+
+    if ( !sifFormat.newInfoboxCountMap[ id ] ) {
+      sifFormat.newInfoboxCountMap[ id ] = 0;
+    }
+
+    return sifFormat.newInfoboxCountMap[ id ];
+  };
+
+  sifFormat.incrementNewInfoboxCount = function( ele ) {
+    var id = ele.id();
+
+    if ( !sifFormat.newInfoboxCountMap[ id ] ) {
+      sifFormat.newInfoboxCountMap[ id ] = 0;
+    }
+
+    sifFormat.newInfoboxCountMap[ id ]++;
   };
 
   sifFormat.getNodesByName = memoize( function( name ) {
