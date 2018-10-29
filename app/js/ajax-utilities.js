@@ -214,6 +214,7 @@ exports.ReadFromDb = function (req, res) {
 		sbgnml = req.query.sbgnml;
  	}
  };
+
  exports.Stream = function (req, res) {
 	var sbgnml;
 	var limit;
@@ -252,6 +253,44 @@ exports.ReadFromDb = function (req, res) {
 		sbgnml = req.query.sbgnml;
  	}
  };
+
+ exports.HighlightSeeds = function (req, res) {
+  var sbgnml;
+  var limit;
+  // passing the entire map for validation is too big to use GET request. POST should be prefered.
+  if(req.method == 'POST') {
+    var body = '';
+    req.on('data', function (data) {
+      body += data;
+      // Security: too much POST data, kill the connection!
+      // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+      if (body.length > 1e8) { // kill if more than 100MB
+        req.connection.destroy();
+        res.status(413);
+        res.send("Error: Too much data passed");
+        return;
+      }
+    });
+    req.on('end', function () {
+      var post = querystring.parse(body);
+      sbgnml = post.sbgnml;    
+      const rrd =	 session.run(
+  'call ReturnIdSForHighlight($name)',
+  {name: sbgnml});
+   rrd.then(result3 => {
+   var singleRecord = result3.records[0];
+  var datas = singleRecord.get(0);
+   res.send(datas);
+ //  res.sendStatus(200)  ;
+ //	}
+ });
+    });
+  }
+  else if(req.method == 'GET') {
+    sbgnml = req.query.sbgnml;
+  }
+ };
+
  exports.Stream2 = function (req, res) {
 	var sbgnml;
 	var limit;

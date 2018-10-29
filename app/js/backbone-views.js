@@ -1424,9 +1424,10 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
         document.getElementById("query-Dbneighborhood-length-limit").focus();
         return;
       }
-      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
       var limit = self.currentQueryParameters.lengthLimit;
+
       var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
       var sources = "";
@@ -1445,15 +1446,12 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
         }
       }
       filename = filename + '_NEIGHBORHOOD.sbgnml';
-
-//filename= geneSymbolsArray;
       appUtilities.createNewNetwork();
+      chiseInstance.startSpinner('Dbneighborhood-spinner');
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = chiseInstance.getCy();
-      chiseInstance.startSpinner('Dbneighborhood-spinner');
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-
 
       $.ajax({
         type: 'post',
@@ -1473,6 +1471,27 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('Dbneighborhood-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: geneSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+                chiseInstance.highlightSelected(cy.elements(array[index]));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+
           }
         },
         error: function(req, status, err) {
@@ -1599,6 +1618,26 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('DbPathsBetween-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: geneSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+                chiseInstance.highlightSelected(cy.elements(array[index]));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+
           }
         },
         error: function(req, status, err) {
@@ -1758,6 +1797,26 @@ var DbPathsFromToQueryView = Backbone.View.extend({
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('DbPathsFromTo-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+          var sourceAndTargetArray = targetSymbolsArray+ " "+sourceSymbolsArray;
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: sourceAndTargetArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+                chiseInstance.highlightSelected(cy.elements(array[index]));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
           }
         },
         error: function(req, status, err) {
