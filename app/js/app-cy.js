@@ -274,7 +274,40 @@ module.exports = function (chiseInstance) {
             collection = collection.add(cyTarget);
             appUtilities.resizeNodesToContent(collection);
         }
-      }
+      },
+      {
+        id: 'ctx-menu-query-pcids',
+        content: 'Query PC IDs',
+        selector: 'edge',
+        onClickFunction: function (event) {
+          var edge = event.target || event.cyTarget;
+          var qUrl = 'http://www.pathwaycommons.org/pc2/get?';
+          var pcIDSet = edge.data( 'pcIDSet' );
+
+          for ( var pcID in pcIDSet ) {
+            qUrl += ( 'uri=' + pcID + '&' );
+          }
+
+          qUrl += 'format=sbgn';
+
+          $.ajax({
+            type: 'get',
+            url: "/utilities/testURL",
+            data: { url: qUrl },
+            success: function( data ) {
+              if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                var xml = $.parseXML(data.response.body);
+                appUtilities.createNewNetwork();
+                var activeChise = appUtilities.getActiveChiseInstance();
+                activeChise.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+              }
+            },
+            error: function(xhr, options, err){
+              console.log( err );
+            }
+          });
+        }
+      },
     ]);
 
     cy.clipboard({
@@ -502,7 +535,7 @@ module.exports = function (chiseInstance) {
       },
 
       resizeToContentCueEnabled: function (node){
-        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature", 
+        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
           "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
         var node_class = node.data('class');
         var result = false;
@@ -766,7 +799,7 @@ module.exports = function (chiseInstance) {
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
       if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
-        
+
         var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
         if (appUtilities.ctrlKeyDown ) {
           var newParent;
@@ -901,7 +934,7 @@ module.exports = function (chiseInstance) {
       if (modeProperties.mode === "add-node-mode") {
         var nodeType = modeProperties.selectedNodeType;
         var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
-        
+
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
