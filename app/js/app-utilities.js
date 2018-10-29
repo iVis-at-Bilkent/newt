@@ -2806,6 +2806,36 @@ appUtilities.enableInfoBoxRelocation = function(node){
     });
 }
 
+appUtilities.getDefaultEmptyInfoboxObj = function( type ) {
+  var cy = appUtilities.getActiveCy();
+
+  // access current general properties for active instance
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+  var obj = {};
+  obj.clazz = type;
+  obj.bbox = {
+    w: currentGeneralProperties.defaultInfoboxWidth,
+    h: currentGeneralProperties.defaultInfoboxHeight
+  };
+
+  switch (type) {
+    case 'unit of information':
+      obj.label = {
+        text: ""
+      };
+      break;
+    case 'state variable':
+      obj.state = {
+        value: "",
+        variable: ""
+      };
+      break;
+  }
+
+  return obj;
+};
+
 //Disables info-box relocation
 appUtilities.disableInfoBoxRelocation = function(color){
   var cy = this.getActiveCy();

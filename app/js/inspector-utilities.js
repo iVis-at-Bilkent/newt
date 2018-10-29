@@ -104,20 +104,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   };
   $("#inspector-add-state-variable").click(function () {
 
-    // access current general properties for active instance
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-    var obj = {};
-    obj.clazz = "state variable";
-
-    obj.state = {
-      value: "",
-      variable: ""
-    };
-    obj.bbox = {
-      w: currentGeneralProperties.defaultInfoboxWidth,
-      h: currentGeneralProperties.defaultInfoboxHeight
-    };
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -125,18 +112,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
   $("#inspector-add-unit-of-information").click(function () {
 
-    // access current general properties for active instance
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-    var obj = {};
-    obj.clazz = "unit of information";
-    obj.label = {
-      text: ""
-    };
-    obj.bbox = {
-      w: currentGeneralProperties.defaultInfoboxWidth,
-      h: currentGeneralProperties.defaultInfoboxHeight
-    };
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -606,7 +582,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         if(!fit){
           return;
         }
-        
+
         var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
         if(bgObj === undefined){
           return;
@@ -633,7 +609,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             obj['background-height'] = bgHeight;
           }
         });
-        
+
         chiseInstance.updateBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
@@ -685,7 +661,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
           else if(fit)
             bgFit = fit;
-          
+
           var bgObj = {
             'background-image' : url,
             'background-fit' : bgFit,

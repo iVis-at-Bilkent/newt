@@ -107,16 +107,7 @@ module.exports = function() {
 
           var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-          // TODO: make a refactoring to share this code with add menu function
-          var obj = {};
-          obj.clazz = type;
-          obj.label = {
-            text: ""
-          };
-          obj.bbox = {
-            w: currentGeneralProperties.defaultInfoboxWidth,
-            h: currentGeneralProperties.defaultInfoboxHeight
-          };
+          var obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
 
           actions.push( {
             name: 'addStateOrInfoBox',
