@@ -342,6 +342,10 @@ module.exports = function() {
       $("#sif-format-input").trigger('click');
     });
 
+    $("#import-sif-layout").click(function () {
+      $("#sif-layout-input").trigger('click');
+    });
+
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -377,6 +381,25 @@ module.exports = function() {
           var sifFormat = sifFormatFactory();
           sifFormat( chiseInstance );
           sifFormat.apply( text );
+        };
+
+        reader.readAsText( file );
+
+        $(this).val("");
+      }
+    });
+
+    $("#sif-layout-input").change(function () {
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          //Get the text result of the file.
+          var text = this.result;
+
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.loadLayoutData( text, true );
         };
 
         reader.readAsText( file );
@@ -1060,6 +1083,13 @@ module.exports = function() {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var sbgnml = chiseInstance.createSbgnml();
         sbgnml2cd(sbgnml);
+    });
+
+    $("#export-to-sif-layout").click(function (evt) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var filename = document.getElementById('file-name').innerHTML;
+        filename = filename.substring(0,filename.lastIndexOf('.')) + ".txt";
+        chiseInstance.exportLayoutData( filename, true );
     });
 
     $("#export-as-sbgnml-plain-file").click(function (evt) {
