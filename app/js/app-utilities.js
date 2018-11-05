@@ -775,7 +775,7 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-appUtilities.triggerIncrementalLayout = function (_cy) {
+appUtilities.triggerLayout = function (_cy, randomize) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
   var cy = _cy || this.getActiveCy();
@@ -789,10 +789,16 @@ appUtilities.triggerIncrementalLayout = function (_cy) {
   // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
   // If it is 'during' use it as is. Set 'randomize' and 'fit' options to false
   var preferences = {
-    randomize: false,
-    animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false,
-    fit: false
+    animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
   };
+
+  // if randomize parameter is defined set it as a preference
+  // 'fit' preference must be the same of 'randomize' parameter
+  // in that case
+  if ( randomize !== undefined ) {
+    preferences.randomize = randomize;
+    fit = randomize;
+  }
 
   if (currentLayoutProperties.animate === 'during') {
     delete preferences.animate;
@@ -833,7 +839,7 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
         cy.trigger('fit-units-after-expandcollapse');
         return;
       }
-      self.triggerIncrementalLayout(cy);
+      self.triggerLayout(cy, false);
       cy.trigger('fit-units-after-expandcollapse');
     },
     expandCollapseCueSize: 12,
@@ -1006,7 +1012,7 @@ appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
     if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
         //Put them near node, show and perform incremental layout
-        chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerIncrementalLayout.bind(this, cy));
+        chiseInstance.showAndPerformLayout(eles, extendedList, this.triggerLayout.bind(this, cy, false));
     }
     else
     {
@@ -1030,7 +1036,7 @@ appUtilities.showAll = function (_chiseInstance) {
     if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
       //Show all and perform incremental layout
-     chiseInstance.showAllAndPerformLayout(this.triggerIncrementalLayout.bind(this, cy));
+     chiseInstance.showAllAndPerformLayout(this.triggerLayout.bind(this, cy, false));
     }
     else
     {
@@ -1054,7 +1060,7 @@ appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
     if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
         //Put them near node and perform incremental layout
-        chiseInstance.hideAndPerformLayout(eles, this.triggerIncrementalLayout.bind(this, cy));
+        chiseInstance.hideAndPerformLayout(eles, this.triggerLayout.bind(this, cy, false));
     }
     else
     {

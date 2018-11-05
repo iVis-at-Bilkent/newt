@@ -423,7 +423,10 @@ module.exports = function() {
         var file = this.files[0];
 
         var loadFcn = function() {
-          chiseInstance.loadSIFFile(file, loadCallbackInvalidityWarning);
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
         };
         if( cy.elements().length != 0)
           promptConfirmationView.render( loadFcn );
