@@ -797,7 +797,7 @@ appUtilities.triggerLayout = function (_cy, randomize) {
   // in that case
   if ( randomize !== undefined ) {
     preferences.randomize = randomize;
-    fit = randomize;
+    preferences.fit = randomize;
   }
 
   if (currentLayoutProperties.animate === 'during') {
