@@ -73,8 +73,25 @@ module.exports = function() {
         }
         else if ( name.endsWith( '-color' ) ) {
           var arr = val.split( ' ' );
-          return 'rgb(' + arr.join( ',' ) + ')';
+          return rgbToHex( arr[ 0 ], arr[ 1 ], arr[ 2 ] );
+          // return 'rgb(' + arr.join( ',' ) + ')';
         }
+      };
+
+      var decimalToHex = function (dec) {
+        var hex = Number(dec).toString(16);
+        if (hex.length < 2) {
+             hex = "0" + hex;
+        }
+        return hex;
+      };
+
+      var rgbToHex = function( r, g, b ) {
+        var hexR = decimalToHex( r );
+        var hexG = decimalToHex( g );
+        var hexB = decimalToHex( b );
+
+        return '#' + hexR + hexG + hexB;
       };
 
       if ( nameMapping[ eleType ][ featureName ] ) {
