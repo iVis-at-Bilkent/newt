@@ -747,8 +747,6 @@ appUtilities.defaultGeneralProperties = {
   allowCompoundNodeResize: true,
   mapColorScheme: 'black_white',
   mapColorSchemeStyle: 'solid',
-  defaultInfoboxHeight: 12,
-  defaultInfoboxWidth: 12,
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: ""
@@ -2820,10 +2818,6 @@ appUtilities.getDefaultEmptyInfoboxObj = function( type ) {
 
   var obj = {};
   obj.clazz = type;
-  obj.bbox = {
-    w: currentGeneralProperties.defaultInfoboxWidth,
-    h: currentGeneralProperties.defaultInfoboxHeight
-  };
 
   switch (type) {
     case 'unit of information':
