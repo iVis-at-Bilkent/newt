@@ -41,11 +41,18 @@ exports.ReadFromDb = function (req, res) {
 			var resultPromise = session.run(
   'MATCH (n) OPTIONAL MATCH (n)-[r]-()DELETE n,r' );
 			resultPromise.then( function(){
+        session.close();
+        driver.close();
 				var post = querystring.parse(body);
 			sbgnml = post.sbgnml;
  			 session.run(
   'call InsertGraph($name2)',
-  {name2: sbgnml});
+  {name2: sbgnml}).then( ( result ) => {
+        console.log( result );
+        session.close();
+        driver.close();
+    } )
+    .catch( ( err ) => { console.log( err ); } );
  			}
  			);
  		});
@@ -273,7 +280,7 @@ exports.ReadFromDb = function (req, res) {
     });
     req.on('end', function () {
       var post = querystring.parse(body);
-      sbgnml = post.sbgnml;    
+      sbgnml = post.sbgnml;
       const rrd =	 session.run(
   'call ReturnIdSForHighlight($name)',
   {name: sbgnml});

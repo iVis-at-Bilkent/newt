@@ -1412,7 +1412,7 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
         return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+    //  geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (geneSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1427,6 +1427,7 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
       var limit = self.currentQueryParameters.lengthLimit;
 
       var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
@@ -1449,10 +1450,12 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
       appUtilities.createNewNetwork();
       chiseInstance.startSpinner('Dbneighborhood-spinner');
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      var cy = chiseInstance.getCy();
+      //var cy = chiseInstance.getCy();
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
+
+      var t0= performance.now();
       $.ajax({
         type: 'post',
         url: "/utilities/AddSBGNML2",
@@ -1492,6 +1495,9 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
             }
           });
 
+                console.log("genelist "+ geneSymbolsArray);
+            var t1= performance.now();
+            console.log("neighborhood "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
           }
         },
         error: function(req, status, err) {
@@ -1554,7 +1560,9 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
         return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      //geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+
+      console.log( "after trim "+ geneSymbols);
       if (geneSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1570,6 +1578,7 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
       var limit = self.currentQueryParameters.lengthLimit;
       var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
 
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
@@ -1596,8 +1605,10 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
+    console.log("genelist 2 "+ geneSymbolsArray);
       // var targetSymbolsArray = targetSymbols;
       var  direction = 0;
+      var t0= performance.now();
       $.ajax({
         type: 'post',
         url: "/utilities/GOI",
@@ -1637,13 +1648,16 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
 
             }
           });
-
+          var t1= performance.now();
+          console.log("pathsbetween "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
           }
         },
         error: function(req, status, err) {
 
         }
       });
+
+
       $(self.el).modal('toggle');
     });
 
@@ -1704,7 +1718,7 @@ var DbPathsFromToQueryView = Backbone.View.extend({
         return;
       }
       // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      //sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (sourceSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1717,7 +1731,7 @@ var DbPathsFromToQueryView = Backbone.View.extend({
         return;
       }
       // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+    //  targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (targetSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1735,6 +1749,8 @@ var DbPathsFromToQueryView = Backbone.View.extend({
       var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
       var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
 
+      sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       var sourceSymbolsArrayforFile = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
       var targetSymbolsArrayForFile = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
@@ -1779,6 +1795,7 @@ var DbPathsFromToQueryView = Backbone.View.extend({
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
       var  addition = self.currentQueryParameters.addition;
+      var t0= performance.now();
       $.ajax({
         type: 'post',
         url: "/utilities/PathsTo",
@@ -1817,6 +1834,8 @@ var DbPathsFromToQueryView = Backbone.View.extend({
 
             }
           });
+          var t1= performance.now();
+          console.log("pathsfromto "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
           }
         },
         error: function(req, status, err) {
@@ -1882,7 +1901,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
         return;
       }
       // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+    //  geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       if (geneSymbols.length === 0) {
         $(self.el).modal('toggle');
         new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -1900,6 +1919,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
 
       var dir= self.currentQueryParameters.direction;
 
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
       var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
 
       var filename = "";
@@ -1926,7 +1946,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
       var cy = chiseInstance.getCy();
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-
+  var t0= performance.now();
     $.ajax({
       type: 'post',
       url: "/utilities/Stream2",
@@ -1967,6 +1987,9 @@ var DbCommonStreamQueryView = Backbone.View.extend({
 
           }
         });
+
+        var t1= performance.now();
+        console.log("commonstream "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
       }
       },
       error: function(req, status, err) {
