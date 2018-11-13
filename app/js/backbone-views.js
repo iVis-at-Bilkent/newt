@@ -2580,6 +2580,29 @@ var AnnotationElementView = Backbone.View.extend({
   }
 });
 
+var PromptInvalidSchematronFileView = Backbone.View.extend({
+    initialize: function () {
+        var self = this;
+        self.template = _.template($("#prompt-invalidSchematronFile-template").html());
+    },
+    render: function (errors) {
+        var self = this;
+        self.template = _.template($("#prompt-invalidSchematronFile-template").html());
+
+        $(self.el).html(self.template);
+        if (errors.length!=0)
+          document.getElementById("invalidSchematronFileMessage").innerHTML = errors;
+        else
+            document.getElementById("invalidSchematronFileMessage").innerHTML = "File is valid";
+        $(self.el).modal('show');
+	 $(document).off("click", "#prompt-invalidSchematronFile-confirm").on("click", "#prompt-invalidSchematronFile-confirm", function (evt) {
+      		$(self.el).modal('toggle');
+    	});
+
+        return this;
+    }
+});
+
 module.exports = {
   BioGeneView: BioGeneView,
   ChemicalView: ChemicalView,
@@ -2608,5 +2631,6 @@ module.exports = {
   PromptInvalidURIView: PromptInvalidURIView,
   PromptInvalidURIWarning: PromptInvalidURIWarning,
   PromptInvalidURLWarning: PromptInvalidURLWarning,
-  PromptInvalidImageWarning: PromptInvalidImageWarning
+  PromptInvalidImageWarning: PromptInvalidImageWarning,
+  PromptInvalidSchematronFileView : PromptInvalidSchematronFileView
 };

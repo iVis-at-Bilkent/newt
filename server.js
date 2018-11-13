@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var port = process.env.port || 80;
+var port = process.env.port || 8080;
 
 var ajaxUtilities = require('./app/js/ajax-utilities');
 

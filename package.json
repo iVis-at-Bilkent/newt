@@ -42,7 +42,7 @@
     "lodash.set": "^4.3.2",
     "mousetrap": "^1.6.0",
     "request": "^2.81.0",
-    "sbgnviz": "^4.2.0",
+    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#sbgnviz_libsbgn_upgrade ",
     "underscore": "1.8.3"
   },
   "devDependencies": {

@@ -237,6 +237,7 @@
                                 <li><a href="#" id="highlight-selected">Selected</a></li>
                                 <li><a href="#" id="highlight-neighbors-of-selected">Neighbors of Selected</a></li>
                                 <li><a href="#" id="highlight-processes-of-selected">Processes of Selected</a></li>
+				<li><a href="#" id="highlight-errors-of-validation">Errors of Validation</a></li>
                                 <li><a href="#" id="remove-highlights">Remove Highlights</a></li>
                             </ul>
                         </li>
@@ -653,6 +654,10 @@
 
         <div id="font-properties-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- sbgn properties table will be shown here -->
+        </div>
+
+	 <div id="prompt-invalidSchematronFile-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- sbgn schematron validation message dialog will be shown here -->
         </div>
 
         <div id="box">
@@ -2320,6 +2325,35 @@
             <div style='text-align: center; margin-top: 5px;'>
               <button class='btn btn-default' style='align: center;' id='map-color-scheme-default-button'>Default</button>
             <div>
+        </script>
+        <script type="text/template" id="prompt-invalidSchematronFile-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text" id="invalidSchematronFileMessage">File is invalid.</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidSchematronFile-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidSchematronFile-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
         </script>
     </body>
 </html>
