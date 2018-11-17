@@ -2,11 +2,15 @@ var isEqual = require('lodash.isequal');
 
 module.exports = function() {
 
-  var cy, chiseInstance;
+  var cy, chiseInstance, elementUtilities;
+  // TODO: update it as 'topology group' when fix the related bug or
+  // apply a temporary a solution
+  var GROUP_COMPOUND_TYPE = 'compartment';
 
   function topologyGrouping( _chiseInstance ) {
     chiseInstance = _chiseInstance;
     cy = chiseInstance.getCy();
+    elementUtilities = chiseInstance.elementUtilities;
   }
 
   topologyGrouping.apply = function() {
@@ -19,9 +23,26 @@ module.exports = function() {
   	// apply grouping in cy level
   	applyGrouping( groups );
 
-    console.log( groups );
   	return groups;
   };
+
+  topologyGrouping.unapply = function() {
+    var metaEdges = cy.edges('[sif-meta]');
+    metaEdges.forEach( function( edge ) {
+      var toRestore = edge.data('toRestore');
+      edge.remove();
+      toRestore.restore();
+    } );
+
+    var parents = getGroupCompounds();
+    elementUtilities.changeParent( parents.children(), null );
+    parents.remove();
+  };
+
+  function getGroupCompounds() {
+    var className = GROUP_COMPOUND_TYPE;
+    return cy.nodes('[class="' + className + '"]');
+  }
 
   function getNodeGroups( list ) {
     if ( list.length <= 1 ) {
@@ -63,20 +84,10 @@ module.exports = function() {
       createGroupCompound( group );
     } );
 
-    var childrenEdges = cy.nodes(':parent').children().connectedEdges();
+    var childrenEdges = getGroupCompounds().children().connectedEdges();
     var edgesMap = [];
 
     childrenEdges.forEach( function( edge ){
-      // var src = edge.source();
-      // var tgt = edge.target();
-
-      // do not make changes for inner edges of groups
-      // if ( src.data( 'parent' ) === tgt.data( 'parent' ) ) {
-      //   // TODO: maybe add self edges of compounds here
-      //   // or make another traversal throught the parents
-      //   return;
-      // }
-
       var key = calcGroupingKey( edge );
       addToMapChain( edgesMap, key, edge );
       edge.remove();
@@ -102,8 +113,7 @@ module.exports = function() {
       collection = collection.add( node );
     } );
 
-    // TODO: switch to 'group' node type when it is implemented
-    chiseInstance.elementUtilities.createCompoundForGivenNodes( collection, 'compartment' );
+    elementUtilities.createCompoundForGivenNodes( collection, GROUP_COMPOUND_TYPE );
   }
 
   function createMetaEdgeFor( edges ) {
@@ -111,11 +121,11 @@ module.exports = function() {
     var srcId = getParentOrSelf( edges.source() ).id();
     var tgtId = getParentOrSelf( edges.target() ).id();
     var type = edges.data( 'class' );
-    var removedEdges = edges.remove();
+    cy.remove( edges );
 
-    var metaEdge = chiseInstance.elementUtilities.addEdge( srcId, tgtId, type );
-    metaEdge.data( 'toRestore', removedEdges );
-    metaEdge.data( 'meta', true );
+    var metaEdge = elementUtilities.addEdge( srcId, tgtId, type );
+    metaEdge.data( 'toRestore', edges );
+    metaEdge.data( 'sif-meta', true );
 
     return metaEdge;
   }
@@ -250,9 +260,8 @@ module.exports = function() {
     return edge.data( 'class' );
   }
 
-  // TODO: implement this function
   function isUndirectedEdge( edge ) {
-    return false;
+    return elementUtilities.isUndirectedEdge( edge );
   }
 
   // get halves of a list. It is assumed that list size is at least 2.
