@@ -483,6 +483,9 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     // get currentGeneralProperties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
+    // get topologyGrouping instance for cy
+    var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
+
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
@@ -491,6 +494,13 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     }
     else {
       chiseInstance.disablePorts();
+    }
+
+    if (currentGeneralProperties.enableSIFTopologyGrouping) {
+      topologyGrouping.apply();
+    }
+    else {
+      topologyGrouping.unapply();
     }
 
     if (currentGeneralProperties.allowCompoundNodeResize) {
@@ -534,6 +544,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
+
+    self.params.enableSIFTopologyGrouping = {id: "enable-sif-topology-grouping", type: "checkbox",
+      property: "currentGeneralProperties.enableSIFTopologyGrouping", update: self.applyUpdate};
 
     self.params.mapName = {id: "map-name", type: "text",
       property: "currentGeneralProperties.mapName"};
@@ -627,6 +640,16 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#enable-ports').blur();
     });
 
+    $(document).on("change", "#enable-sif-topology-grouping", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.enableSIFTopologyGrouping.value = $('#enable-sif-topology-grouping').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
+      $('#enable-sif-topology-grouping').blur();
+    });
+
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
@@ -648,11 +671,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
       self.params.inferNestingOnLoad.value = appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
+      self.params.enableSIFTopologyGrouping.value = appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
+      actions.push({name: "changeMenu", param: self.params.enableSIFTopologyGrouping});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
       actions.push({name: "changeMenu", param: self.params.arrowScale});
       actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",

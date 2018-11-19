@@ -419,7 +419,7 @@ appUtilities.createNewNetwork = function () {
       'width': function(ele){
         return Math.max(ele.data("width"), 3);
       }
-    });;
+    });
 
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
@@ -428,6 +428,16 @@ appUtilities.createNewNetwork = function () {
 
   // init the current file name for the map
   appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.sbgnml');
+
+  var topologyGroupingFactory = require('./topology-grouping-factory');
+  // init the topologyGrouping instance for the map
+  var topologyGrouping = topologyGroupingFactory();
+  // Topology grouping should be aplied if the map type is sif
+  var shouldApply = function() {
+    return newInst.elementUtilities.mapType === 'SIF';
+  };
+  topologyGrouping(newInst, { metaEdgeIdentifier: 'sif-meta', lockGraphTopology: true, shouldApply });
+  appUtilities.setScratch(newInst.getCy(), 'sifTopologyGrouping', topologyGrouping);
 
   // register cy extensions, bind cy events etc.
   var appCy = require('./app-cy');
@@ -744,6 +754,7 @@ appUtilities.defaultGeneralProperties = {
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
+  enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,
   mapColorScheme: 'black_white',
   mapColorSchemeStyle: 'solid',
@@ -2289,6 +2300,14 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     }
     else {
       chiseInstance.disablePorts();
+    }
+
+    var topologyGrouping = appUtilities.getScratch(chiseInstance.getCy(), 'sifTopologyGrouping');
+    if (currentGeneralProperties.enableSIFTopologyGrouping) {
+      topologyGrouping.apply();
+    }
+    else {
+      chiseInstance.unapply();
     }
 
     if (currentGeneralProperties.allowCompoundNodeResize) {

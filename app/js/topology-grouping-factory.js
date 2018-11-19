@@ -3,17 +3,28 @@ var isEqual = require('lodash.isequal');
 module.exports = function() {
 
   var cy, chiseInstance, elementUtilities;
+  var groupCompoundType, metaEdgeIdentifier, lockGraphTopology, shouldApply;
   // TODO: update it as 'topology group' when fix the related bug or
   // apply a temporary a solution
-  var GROUP_COMPOUND_TYPE = 'compartment';
+  var DEFAULT_GROUP_COMPOUND_TYPE = 'compartment';
 
-  function topologyGrouping( _chiseInstance ) {
+  function topologyGrouping( _chiseInstance, props ) {
     chiseInstance = _chiseInstance;
     cy = chiseInstance.getCy();
     elementUtilities = chiseInstance.elementUtilities;
+    groupCompoundType = props.groupCompoundType || DEFAULT_GROUP_COMPOUND_TYPE;
+    metaEdgeIdentifier = props.metaEdgeIdentifier;
+    lockGraphTopology = props.lockGraphTopology;
+    shouldApply = props.shouldApply || true;
+
+    topologyGrouping.applied = false;
   }
 
   topologyGrouping.apply = function() {
+    if ( topologyGrouping.applied || !evalOpt( shouldApply ) ) {
+      return;
+    }
+
     var list = cy.nodes().map( function( node ) {
       return [ node ];
     } );
@@ -23,11 +34,22 @@ module.exports = function() {
   	// apply grouping in cy level
   	applyGrouping( groups );
 
+    topologyGrouping.applied = true;
+
+    if ( lockGraphTopology ) {
+      // TODO: implement
+      elementUtilities.lockGraphTopology();
+    }
+
   	return groups;
   };
 
   topologyGrouping.unapply = function() {
-    var metaEdges = cy.edges('[sif-meta]');
+    if ( !topologyGrouping.applied ) {
+      return;
+    }
+
+    var metaEdges = cy.edges('[' + metaEdgeIdentifier + ']');
     metaEdges.forEach( function( edge ) {
       var toRestore = edge.data('toRestore');
       edge.remove();
@@ -37,10 +59,25 @@ module.exports = function() {
     var parents = getGroupCompounds();
     elementUtilities.changeParent( parents.children(), null );
     parents.remove();
+
+    topologyGrouping.applied = false;
+
+    if ( lockGraphTopology ) {
+      // TODO: implement
+      elementUtilities.unlockGraphTopology();
+    }
   };
 
+  function evalOpt( opt ) {
+    if ( typeof opt === 'function' ) {
+      return opt();
+    }
+
+    return opt;
+  }
+
   function getGroupCompounds() {
-    var className = GROUP_COMPOUND_TYPE;
+    var className = groupCompoundType;
     return cy.nodes('[class="' + className + '"]');
   }
 
@@ -113,7 +150,7 @@ module.exports = function() {
       collection = collection.add( node );
     } );
 
-    elementUtilities.createCompoundForGivenNodes( collection, GROUP_COMPOUND_TYPE );
+    elementUtilities.createCompoundForGivenNodes( collection, groupCompoundType );
   }
 
   function createMetaEdgeFor( edges ) {
@@ -125,7 +162,7 @@ module.exports = function() {
 
     var metaEdge = elementUtilities.addEdge( srcId, tgtId, type );
     metaEdge.data( 'toRestore', edges );
-    metaEdge.data( 'sif-meta', true );
+    metaEdge.data( metaEdgeIdentifier, true );
 
     return metaEdge;
   }
