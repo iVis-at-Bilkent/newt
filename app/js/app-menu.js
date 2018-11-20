@@ -140,6 +140,11 @@ module.exports = function() {
     //clean and reset things
     cy.elements().unselect();
     appUtilities.disableInfoBoxRelocation();
+
+    // a new file is being loaded clear the applied flag of topologyGrouping
+    var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
+    topologyGrouping.clearAppliedFlag();
+
     // if the event is triggered for the active instance do the followings
     if ( isActiveInstance ) {
 

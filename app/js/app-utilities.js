@@ -2307,7 +2307,7 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
       topologyGrouping.apply();
     }
     else {
-      chiseInstance.unapply();
+      topologyGrouping.unapply();
     }
 
     if (currentGeneralProperties.allowCompoundNodeResize) {

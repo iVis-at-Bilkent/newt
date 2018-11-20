@@ -68,6 +68,10 @@ module.exports = function() {
     }
   };
 
+  topologyGrouping.clearAppliedFlag = function() {
+    topologyGrouping.applied = false;
+  };
+
   function evalOpt( opt ) {
     if ( typeof opt === 'function' ) {
       return opt();
