@@ -36,6 +36,7 @@ module.exports = function (chiseInstance) {
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
     ur.action("relocateInfoBoxes", appUndoActions.relocateInfoBoxes, appUndoActions.relocateInfoBoxes);
+    ur.action("applySIFTopologyGrouping", appUndoActions.applySIFTopologyGrouping, appUndoActions.applySIFTopologyGrouping);
   }
 
   function cytoscapeExtensionsAndContextMenu() {

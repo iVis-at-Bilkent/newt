@@ -7,6 +7,7 @@ module.exports = function() {
   // TODO: update it as 'topology group' when fix the related bug or
   // apply a temporary a solution
   var DEFAULT_GROUP_COMPOUND_TYPE = 'compartment';
+  var EDGE_STYLE_NAMES = [ 'line-color', 'width' ];
 
   function topologyGrouping( _chiseInstance, props ) {
     chiseInstance = _chiseInstance;
@@ -18,6 +19,7 @@ module.exports = function() {
     shouldApply = props.shouldApply || true;
 
     topologyGrouping.applied = false;
+    initMetaStyleMap();
   }
 
   topologyGrouping.apply = function() {
@@ -37,7 +39,6 @@ module.exports = function() {
     topologyGrouping.applied = true;
 
     if ( lockGraphTopology ) {
-      // TODO: implement
       elementUtilities.lockGraphTopology();
     }
 
@@ -49,12 +50,23 @@ module.exports = function() {
       return;
     }
 
-    var metaEdges = cy.edges('[' + metaEdgeIdentifier + ']');
+    var metaEdges = topologyGrouping.getMetaEdges();
     metaEdges.forEach( function( edge ) {
       var toRestore = edge.data('toRestore');
       edge.remove();
       toRestore.restore();
+
+      EDGE_STYLE_NAMES.forEach( function( name ) {
+        var oldVal = topologyGrouping.metaStyleMap[ name ][ edge.id() ];
+        var newVal = edge.data( name );
+
+        if ( oldVal !== newVal ) {
+          toRestore.data( name, newVal );
+        }
+      } );
     } );
+
+    initMetaStyleMap();
 
     var parents = getGroupCompounds();
     elementUtilities.changeParent( parents.children(), null );
@@ -63,14 +75,25 @@ module.exports = function() {
     topologyGrouping.applied = false;
 
     if ( lockGraphTopology ) {
-      // TODO: implement
       elementUtilities.unlockGraphTopology();
     }
   };
 
+  topologyGrouping.getMetaEdges = function() {
+    var metaEdges = cy.edges('[' + metaEdgeIdentifier + ']');
+    return metaEdges;
+  }
+
   topologyGrouping.clearAppliedFlag = function() {
     topologyGrouping.applied = false;
   };
+
+  function initMetaStyleMap() {
+    topologyGrouping.metaStyleMap = {};
+    EDGE_STYLE_NAMES.forEach( function( name ) {
+      topologyGrouping.metaStyleMap[ name ] = {};
+    } );
+  }
 
   function evalOpt( opt ) {
     if ( typeof opt === 'function' ) {
@@ -158,7 +181,6 @@ module.exports = function() {
   }
 
   function createMetaEdgeFor( edges ) {
-    // TODO: give more details to meta edge
     var srcId = getParentOrSelf( edges.source() ).id();
     var tgtId = getParentOrSelf( edges.target() ).id();
     var type = edges.data( 'class' );
@@ -167,6 +189,17 @@ module.exports = function() {
     var metaEdge = elementUtilities.addEdge( srcId, tgtId, type );
     metaEdge.data( 'toRestore', edges );
     metaEdge.data( metaEdgeIdentifier, true );
+
+    EDGE_STYLE_NAMES.forEach( function( styleName ) {
+      edges.forEach( function( edge ) {
+        topologyGrouping.metaStyleMap[ styleName ][ edge.id() ] = edge.data( styleName );
+      } );
+
+      var commonVal = elementUtilities.getCommonProperty(edges, styleName, 'data');
+      if ( commonVal ) {
+        metaEdge.data( styleName, commonVal );
+      }
+    } );
 
     return metaEdge;
   }

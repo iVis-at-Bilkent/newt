@@ -496,13 +496,6 @@ var GeneralPropertiesParentView = Backbone.View.extend({
       chiseInstance.disablePorts();
     }
 
-    if (currentGeneralProperties.enableSIFTopologyGrouping) {
-      topologyGrouping.apply();
-    }
-    else {
-      topologyGrouping.unapply();
-    }
-
     if (currentGeneralProperties.allowCompoundNodeResize) {
       chiseInstance.considerCompoundSizes();
     }
@@ -644,9 +637,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
+      var actions = [];
 
       self.params.enableSIFTopologyGrouping.value = $('#enable-sif-topology-grouping').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
+      var apply = self.params.enableSIFTopologyGrouping.value;
+
+      actions.push({name: "changeMenu", param: self.params.enableSIFTopologyGrouping});
+      actions.push({name: "applySIFTopologyGrouping", param: { apply }});
+      cy.undoRedo().do("batch", actions);
+      // cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
       $('#enable-sif-topology-grouping').blur();
     });
 
@@ -678,6 +677,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
       actions.push({name: "changeMenu", param: self.params.enableSIFTopologyGrouping});
+      actions.push({name: "applySIFTopologyGrouping", param: { apply: self.params.enableSIFTopologyGrouping.value }});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
       actions.push({name: "changeMenu", param: self.params.arrowScale});
       actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
