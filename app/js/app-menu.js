@@ -307,10 +307,10 @@ module.exports = function() {
           promptInvalidFileView.render();
         }
         if(cy.elements().length != 0) {
-          promptConfirmationView.render(function(){chiseInstance.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+          promptConfirmationView.render(function(){chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
         }
         else {
-          chiseInstance.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
         $(this).val("");
       }
@@ -1077,7 +1077,7 @@ module.exports = function() {
     });
 
     //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
-    $("#save-as-sbgnml, #save-icon").click(function (evt) {
+    $("#save-as-sbgnml").click(function (evt) {
       //var filename = document.getElementById('file-name').innerHTML;
       //chise.saveAsSbgnml(filename);
       fileSaveView.render("sbgnml", "0.2");
@@ -1085,6 +1085,16 @@ module.exports = function() {
 
     $("#export-as-sbgnml3-file").click(function (evt) {
       fileSaveView.render("sbgnml", "0.3");
+    });
+
+    $("#save-as-nwt, #save-icon").click(function (evt) {
+      //var filename = document.getElementById('file-name').innerHTML;
+      //chise.saveAsSbgnml(filename);
+      fileSaveView.render("nwt", "0.2");
+    });
+
+    $("#export-as-nwt3-file").click(function (evt) {
+      fileSaveView.render("nwt", "0.3");
     });
 
     $("#export-as-celldesigner-file").click(function (evt) {

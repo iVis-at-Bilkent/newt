@@ -1848,8 +1848,21 @@ var FileSaveView = Backbone.View.extend({
     });
 
     var filename = document.getElementById('file-name').innerHTML;
-    if (fileformat === "celldesigner")
-      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".xml");
+    var fExt;
+    switch (fileformat) {
+      case 'nwt':
+        fExt = 'nwt';
+        break;
+      case 'sbgnml':
+        fExt = 'sbgnml'
+        break;
+      case 'celldesigner':
+      default:
+        fExt = 'xml'
+        break;
+    }
+
+    filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
     $("#file-save-filename").val(filename);
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
@@ -1866,16 +1879,22 @@ var FileSaveView = Backbone.View.extend({
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
 
-      if(fileformat === "sbgnml") {
+      if(fileformat === "sbgnml" || fileformat === "nwt") {
         var renderInfo = appUtilities.getAllStyles();
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
+
+        var saveAsFcn = chiseInstance.saveAsNwt;
+        if ( fileformat === "sbgnml" ) {
+          saveAsFcn = chiseInstance.saveAsSbgnml;
+        }
+
         // Exclude extensions if the version is plain
         if (version === "plain") {
-          chiseInstance.saveAsSbgnml(filename, version);
+          saveAsFcn(filename, version);
         }
         else {
-          chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+          saveAsFcn(filename, version, renderInfo, properties);
         }
       }
       else if(fileformat === "celldesigner") {
