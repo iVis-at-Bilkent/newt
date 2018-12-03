@@ -2424,7 +2424,7 @@ appUtilities.launchWithModelFile = function() {
           });
 
           currentGeneralProperties.inferNestingOnLoad = true;
-          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
         else {
           loadCallbackInvalidityWarning();
