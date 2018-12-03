@@ -52,7 +52,7 @@ module.exports = function() {
 
     var metaEdges = topologyGrouping.getMetaEdges();
     metaEdges.forEach( function( edge ) {
-      var toRestore = edge.data('toRestore');
+      var toRestore = edge.data('tg-to-restore');
       edge.remove();
       toRestore.restore();
 
@@ -187,7 +187,7 @@ module.exports = function() {
     cy.remove( edges );
 
     var metaEdge = elementUtilities.addEdge( srcId, tgtId, type );
-    metaEdge.data( 'toRestore', edges );
+    metaEdge.data( 'tg-to-restore', edges );
     metaEdge.data( metaEdgeIdentifier, true );
 
     EDGE_STYLE_NAMES.forEach( function( styleName ) {
