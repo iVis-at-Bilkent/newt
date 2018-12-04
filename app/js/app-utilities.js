@@ -2032,16 +2032,19 @@ appUtilities.removeDragImage = function () {
   $(document).off("mousemove", appUtilities.dragImageMouseMoveHandler);
 };
 
-appUtilities.getAllStyles = function (_cy) {
+appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
 
   // use _cy param if it is set else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCy();
+  var elementUtilities = this.getChiseInstance(cy).elementUtilities;
+  var nodes = _nodes || cy.nodes();
+  var edges = _edges || cy.edges();
 
-  var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively();
+  var collapsedChildren = elementUtilities.getAllCollapsedChildrenRecursively(nodes);
   var collapsedChildrenNodes = collapsedChildren.filter("node");
-  var nodes = cy.nodes().union(collapsedChildrenNodes);
+  var allNodes = nodes.union(collapsedChildrenNodes);
   var collapsedChildrenEdges = collapsedChildren.filter("edge");
-  var edges = cy.edges().union(collapsedChildrenEdges);
+  var allEdges = edges.union(collapsedChildrenEdges);
 
   // first get all used colors and background images, then deal with them and keep reference to them
   var colorUsed = appUtilities.getColorsFromElements(nodes, edges);
@@ -2113,8 +2116,8 @@ appUtilities.getAllStyles = function (_cy) {
 
   // populate the style structure for nodes
   var styles = {}; // list of styleKey pointing to a list of properties and a list of nodes
-  for(var i=0; i<nodes.length; i++) {
-    var node = nodes[i];
+  for(var i=0; i<allNodes.length; i++) {
+    var node = allNodes[i];
     var styleKey = "node"+getStyleHash(node, nodePropertiesToXml);
     if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
       var properties = getStyleProperties(node, nodePropertiesToXml);
@@ -2129,8 +2132,8 @@ appUtilities.getAllStyles = function (_cy) {
   }
 
   // populate the style structure for edges
-  for(var i=0; i<edges.length; i++) {
-    var edge = edges[i];
+  for(var i=0; i<allEdges.length; i++) {
+    var edge = allEdges[i];
     var styleKey = "edge"+getStyleHash(edge, edgePropertiesToXml);
     if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
       var properties = getStyleProperties(edge, edgePropertiesToXml);

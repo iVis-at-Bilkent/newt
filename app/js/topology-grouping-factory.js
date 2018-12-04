@@ -68,7 +68,7 @@ module.exports = function() {
 
     initMetaStyleMap();
 
-    var parents = getGroupCompounds();
+    var parents = topologyGrouping.getGroupCompounds();
     elementUtilities.changeParent( parents.children(), null );
     parents.remove();
 
@@ -82,10 +82,19 @@ module.exports = function() {
   topologyGrouping.getMetaEdges = function() {
     var metaEdges = cy.edges('[' + metaEdgeIdentifier + ']');
     return metaEdges;
-  }
+  };
+
+  topologyGrouping.getGroupCompounds = function() {
+    var className = groupCompoundType;
+    return cy.nodes('[class="' + className + '"]');
+  };
 
   topologyGrouping.clearAppliedFlag = function() {
     topologyGrouping.applied = false;
+  };
+
+  topologyGrouping.setAppliedFlag = function(applied) {
+    topologyGrouping.applied = applied;
   };
 
   function initMetaStyleMap() {
@@ -101,11 +110,6 @@ module.exports = function() {
     }
 
     return opt;
-  }
-
-  function getGroupCompounds() {
-    var className = groupCompoundType;
-    return cy.nodes('[class="' + className + '"]');
   }
 
   function getNodeGroups( list ) {
@@ -148,7 +152,7 @@ module.exports = function() {
       createGroupCompound( group );
     } );
 
-    var childrenEdges = getGroupCompounds().children().connectedEdges();
+    var childrenEdges = topologyGrouping.getGroupCompounds().children().connectedEdges();
     var edgesMap = [];
 
     childrenEdges.forEach( function( edge ){

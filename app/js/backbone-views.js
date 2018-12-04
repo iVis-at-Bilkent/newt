@@ -1880,7 +1880,7 @@ var FileSaveView = Backbone.View.extend({
       appUtilities.setFileContent(filename);
 
       if(fileformat === "sbgnml" || fileformat === "nwt") {
-        var renderInfo = appUtilities.getAllStyles();
+        var renderInfo;
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
 
@@ -1889,12 +1889,45 @@ var FileSaveView = Backbone.View.extend({
           saveAsFcn = chiseInstance.saveAsSbgnml;
         }
 
+        var nodes, edges;
+
+        if ( fileformat === "sbgnml" ) {
+          if (chiseInstance.elementUtilities.mapType === 'SIF') {
+            properties.mapType = 'Unknown';
+          }
+
+          nodes = cy.nodes().filter( function( node ) {
+            return !chiseInstance.elementUtilities.isSIFNode( node );
+          } );
+
+          edges = cy.edges().filter( function( edge ) {
+            return !chiseInstance.elementUtilities.isSIFEdge( edge )
+              && !chiseInstance.elementUtilities.isSIFNode( edge.data('source') )
+              && !chiseInstance.elementUtilities.isSIFNode( edge.data('target') );
+          } );
+        }
+        else if ( chiseInstance.elementUtilities.mapType === 'SIF' && properties.enableSIFTopologyGrouping ) {
+          // get topologyGrouping instance for cy
+          var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
+          var compoundGroups = topologyGrouping.getGroupCompounds();
+          var metaEdges = topologyGrouping.getMetaEdges();
+
+          nodes = cy.nodes().not( compoundGroups );
+          edges = cy.edges().not( metaEdges );
+
+          metaEdges.forEach( function( edge ) {
+            edges = edges.union( edge.data('tg-to-restore') );
+          } );
+        }
+
+        renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
+
         // Exclude extensions if the version is plain
         if (version === "plain") {
-          saveAsFcn(filename, version);
+          saveAsFcn(filename, version, null, null, nodes, edges);
         }
         else {
-          saveAsFcn(filename, version, renderInfo, properties);
+          saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
         }
       }
       else if(fileformat === "celldesigner") {
