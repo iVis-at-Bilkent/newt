@@ -2072,17 +2072,37 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
     'line-color': 'stroke',
     'width': 'strokeWidth'
   };
+  var infoboxPropertiesToXml = {
+    'background-color': 'fill',
+    'border-color': 'stroke',
+    'border-width': 'strokeWidth',
+    'font-size': 'fontSize',
+    'font-weight': 'fontWeight',
+    'font-style': 'fontStyle',
+    'font-family': 'fontFamily',
+    'font-color': 'fontColor',
+    'shape-name': 'shapeName'
+  };
 
-  function getStyleHash (element, properties) {
+  function getInfoboxStyle( infobox, propName ) {
+    return infobox.style && infobox.style[ propName ];
+  }
+
+  function getElementData( ele, propName ) {
+    return ele.data(propName);
+  }
+
+  function getStyleHash (member, properties, _getFcn) {
+    var getFcn = _getFcn || getElementData;
     var hash = "";
     for(var cssProp in properties){
-      if (element.data(cssProp)) {
+      if (getFcn(member, cssProp)) {
         if(cssProp === 'background-image'){
-          var imgs = appUtilities.elementValidImages(element);
-          hash += appUtilities.elementValidImageIDs(imgs, imagesUsed);
+          var imgs = appUtilities.getValidImages(member);
+          hash += appUtilities.getValidImageIDs(imgs, imagesUsed);
         }
         else
-          hash += element.data(cssProp).toString();
+          hash += getFcn(member, cssProp).toString();
       }
       else {
         hash += "";
@@ -2091,61 +2111,63 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
     return hash;
   }
 
-  function getStyleProperties (element, properties) {
+  function getStyleProperties (member, properties, _getFcn) {
+    getFcn = _getFcn || getElementData;
     var props = {};
     for(var cssProp in properties){
-      if (element.data(cssProp)) {
+      if (getFcn(member, cssProp)) {
         //if it is a color property, replace it with corresponding id
         if (cssProp == 'background-color' || cssProp == 'border-color' || cssProp == 'line-color') {
-          var validColor = appUtilities.elementValidColor(element, cssProp);
+          var validColor = appUtilities.getValidColor(member, cssProp, getFcn);
           var colorID = colorUsed[validColor];
           props[properties[cssProp]] = colorID;
         }
         //if it is background image property, replace it with corresponding id
         else if(cssProp == 'background-image'){
-          var imgs = appUtilities.elementValidImages(element);
-          props[properties[cssProp]] = appUtilities.elementValidImageIDs(imgs, imagesUsed);
+          var imgs = appUtilities.getValidImages(member);
+          props[properties[cssProp]] = appUtilities.getValidImageIDs(imgs, imagesUsed);
         }
         else{
-          props[properties[cssProp]] = element.data(cssProp);
+          props[properties[cssProp]] = getFcn(member, cssProp);
         }
       }
     }
     return props;
   }
 
-  // populate the style structure for nodes
-  var styles = {}; // list of styleKey pointing to a list of properties and a list of nodes
-  for(var i=0; i<allNodes.length; i++) {
-    var node = allNodes[i];
-    var styleKey = "node"+getStyleHash(node, nodePropertiesToXml);
-    if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
-      var properties = getStyleProperties(node, nodePropertiesToXml);
-      styles[styleKey] = {
-        idList: [],
-        properties: properties
-      };
+  var styles = {}; // list of styleKey pointing to a list of properties and a list of elements
+  function populateStyleStructure(list, propertiesToXml, type) {
+    function getKeyPrefix(type) {
+      return type;
     }
-    var currentNodeStyle = styles[styleKey];
-    // add current node id to this style
-    currentNodeStyle.idList.push(node.data('id'));
+
+    var getFcn = type === 'infobox' ? getInfoboxStyle : undefined;
+
+    for(var i=0; i<list.length; i++) {
+      // a member is either an element or infobox
+      var member = list[i];
+      var styleKey = getKeyPrefix(type) + getStyleHash(member, propertiesToXml, getFcn);
+      if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
+        var properties = getStyleProperties(member, propertiesToXml, getFcn);
+        styles[styleKey] = {
+          idList: [],
+          properties: properties
+        };
+      }
+      var currentMemberStyle = styles[styleKey];
+      var id = type === 'infobox' ? member.id : member.data('id');
+      // add current node id to this style
+      currentMemberStyle.idList.push(id);
+
+      if ( type === 'node' ) {
+        var infoboxes = member.data('statesandinfos');
+        populateStyleStructure(infoboxes, infoboxPropertiesToXml, 'infobox')
+      }
+    }
   }
 
-  // populate the style structure for edges
-  for(var i=0; i<allEdges.length; i++) {
-    var edge = allEdges[i];
-    var styleKey = "edge"+getStyleHash(edge, edgePropertiesToXml);
-    if (!styles.hasOwnProperty(styleKey)) { // new style encountered, init this new style
-      var properties = getStyleProperties(edge, edgePropertiesToXml);
-      styles[styleKey] = {
-        idList: [],
-        properties: properties
-      };
-    }
-    var currentEdgeStyle = styles[styleKey];
-    // add current node id to this style
-    currentEdgeStyle.idList.push(edge.data('id'));
-  }
+  populateStyleStructure( allNodes, nodePropertiesToXml, 'node' );
+  populateStyleStructure( allEdges, edgePropertiesToXml, 'edge' );
 
   var containerBgColor = $(cy.container()).css('background-color');
   if (containerBgColor == "transparent") {
@@ -2176,18 +2198,23 @@ function getXmlValidColor(color, opacity) {
   }
 }
 
-appUtilities.elementValidColor = function (ele, colorProperty) {
-  if (ele.data(colorProperty)) {
+appUtilities.getValidColor = function (member, colorProperty, _getFcn) {
+  function getElementData( ele, propName ) {
+    return ele.data(propName);
+  }
+
+  var getFcn = _getFcn || getElementData;
+  if (getFcn(member, colorProperty)) {
     if (colorProperty == 'background-color') { // special case, take in count the opacity
-      if (ele.data('background-opacity')) {
-        return getXmlValidColor(ele.data('background-color'), ele.data('background-opacity'));
+      if (getFcn(member, 'background-opacity')) {
+        return getXmlValidColor(getFcn(member, 'background-color'), getFcn(member, 'background-opacity'));
       }
       else {
-        return getXmlValidColor(ele.data('background-color'));
+        return getXmlValidColor(getFcn(member, 'background-color'));
       }
     }
     else { // general case
-      return getXmlValidColor(ele.data(colorProperty));
+      return getXmlValidColor(getFcn(member, colorProperty));
     }
   }
   else { // element don't have that property
@@ -2195,7 +2222,7 @@ appUtilities.elementValidColor = function (ele, colorProperty) {
   }
 };
 
-appUtilities.elementValidImages = function (ele) {
+appUtilities.getValidImages = function (ele) {
   if (ele.isNode() && ele.data('background-image')) {
     return ele.data('background-image').split(" ");
   }
@@ -2204,7 +2231,7 @@ appUtilities.elementValidImages = function (ele) {
   }
 };
 
-appUtilities.elementValidImageIDs = function (imgs, imagesUsed) {
+appUtilities.getValidImageIDs = function (imgs, imagesUsed) {
   if(imgs && imagesUsed && imgs.length > 0){
     var ids = [];
     imgs.forEach(function(img){
@@ -2225,28 +2252,36 @@ appUtilities.elementValidImageIDs = function (imgs, imagesUsed) {
 appUtilities.getColorsFromElements = function (nodes, edges) {
   var colorHash = {};
   var colorID = 0;
-  for(var i=0; i<nodes.length; i++) {
-    var node = nodes[i];
-    var bgValidColor = appUtilities.elementValidColor(node, 'background-color');
-    if (!colorHash[bgValidColor]) {
-      colorID++;
-      colorHash[bgValidColor] = 'color_' + colorID;
-    }
 
-    var borderValidColor = appUtilities.elementValidColor(node, 'border-color');
-    if (!colorHash[borderValidColor]) {
-      colorID++;
-      colorHash[borderValidColor] = 'color_' + colorID;
-    }
+  var nodePropNames = ['background-color', 'border-color'];
+  var edgePropNames = ['border-color'];
+  var infoboxPropNames = ['background-color', 'border-color'];
+  var infoboxGetFcn = function( infobox, propName ) {
+    return infobox && infobox.style && infobox.style[ propName ];
+  };
+
+  nodes.forEach( function( n ) {
+    processMember( n, nodePropNames );
+    var infoboxes = n.data('statesandinfos');
+    infoboxes.forEach( function( i ) {
+      processMember( i, infoboxPropNames, infoboxGetFcn );
+    } );
+  } );
+
+  edges.forEach( function( e ) {
+    processMember( e, edgePropNames );
+  } );
+
+  function processMember(m, propNames, getFcn) {
+    propNames.forEach( function( propName ) {
+      var validColor = appUtilities.getValidColor(m, propName, getFcn);
+      if (!colorHash[validColor]) {
+        colorID++;
+        colorHash[validColor] = 'color_' + colorID;
+      }
+    } );
   }
-  for(var i=0; i<edges.length; i++) {
-    var edge = edges[i];
-    var lineValidColor = appUtilities.elementValidColor(edge, 'line-color');
-    if (!colorHash[lineValidColor]) {
-      colorID++;
-      colorHash[lineValidColor] = 'color_' + colorID;
-    }
-  }
+
   return colorHash;
 }
 
@@ -2255,7 +2290,7 @@ appUtilities.getImagesFromElements = function (nodes) {
   var imageID = 0;
   for(var i=0; i<nodes.length; i++) {
     var node = nodes[i];
-    var validImages = appUtilities.elementValidImages(node);
+    var validImages = appUtilities.getValidImages(node);
     if(!validImages)
       continue;
     validImages.forEach(function(img){
