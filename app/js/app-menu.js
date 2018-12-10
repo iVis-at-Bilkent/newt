@@ -1110,6 +1110,13 @@ module.exports = function() {
         chiseInstance.exportLayoutData( filename, true );
     });
 
+    $("#export-to-plain-sif").click(function (evt) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var filename = document.getElementById('file-name').innerHTML;
+        filename = filename.substring(0,filename.lastIndexOf('.')) + ".sif";
+        chiseInstance.saveAsPlainSif( filename, true );
+    });
+
     $("#export-as-sbgnml-plain-file").click(function (evt) {
       fileSaveView.render("sbgnml", "plain");
     });
