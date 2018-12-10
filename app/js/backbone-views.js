@@ -3019,6 +3019,20 @@ var InfoboxPropertiesView = Backbone.View.extend({
     self.currentProperties.generateFontPropertiesRows = function() {
       return generateFontPropertiesRows( self.selectorPrefix, self.fontLabelPrefix, self.currentProperties );
     };
+
+    self.currentProperties.generateSetAsDefaultText = function() {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var parent = chiseInstance.classes.getAuxUnitClass(infobox).getParent(infobox, cy);
+      var classInfo = appUtilities.transformClassInfo( parent.data('class') );
+      var infoboxInfoMap = {
+        'state variable': 'State Variable',
+        'unit of information': 'Unit of Information'
+      };
+      var infoboxInfo = infoboxInfoMap[ infobox.clazz ];
+
+      return 'Set as Default for ' + infoboxInfo + ' of ' + classInfo;
+    }
   },
   render: function (node, index) {
     var self = this;
@@ -3043,8 +3057,8 @@ var InfoboxPropertiesView = Backbone.View.extend({
 
     $(self.el).modal('show');
 
-    $(document).off("click", "#set-infobox-properties").on("click", "#set-infobox-properties", function( evt ) {
-      var newProps = {};
+    function readInfoboxProps() {
+      var props = {};
 
       for ( prop in self.propsMap ) {
         var mappedProp = self.propsMap[ prop ];
@@ -3057,9 +3071,15 @@ var InfoboxPropertiesView = Backbone.View.extend({
           val = $( generateSelectBoxNameSelector( mappedProp, self.selectorPrefix ) ).val();
         }
 
-        newProps[ mappedProp ] = val;
+        props[ mappedProp ] = val;
       }
 
+      return props;
+    }
+
+    $(document).off("click", "#set-infobox-properties").on("click", "#set-infobox-properties", function( evt ) {
+      var newProps = readInfoboxProps();
+      // TODO: do it over chise instance
       appUtilities.getActiveCy().undoRedo().do('updateInfoboxStyle', {
         node: node,
         index: index,
@@ -3067,6 +3087,18 @@ var InfoboxPropertiesView = Backbone.View.extend({
       });
 
       $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#set-as-default-infobox-properties").on("click", "#set-as-default-infobox-properties", function( evt ) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var parent = chiseInstance.classes.getAuxUnitClass(infoboxObj).getParent(infoboxObj, cy);
+      var parentClass = parent.data('class');
+
+      var updates = readInfoboxProps();
+      var currentDefaults = chiseInstance.elementUtilities.getDefaultProperties( parentClass )[ infoboxObj.clazz ];
+      var infoboxStyle = $.extend( {}, currentDefaults, updates );
+      chiseInstance.setDefaultProperty( parentClass, infoboxObj.clazz, infoboxStyle );
     });
   }
 });

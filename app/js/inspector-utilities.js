@@ -229,25 +229,8 @@ inspectorUtilities.handleSBGNInspector = function () {
     var classInfo = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
       return ele.data('class').replace(' multimer', '');
     }) || "";
-    if (classInfo == 'and' || classInfo == 'or' || classInfo == 'not') {
-      classInfo = classInfo.toUpperCase();
-    }
-    else {
-      classInfo = classInfo.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      });
-      classInfo = classInfo.replace(' Of ', ' of ');
-      classInfo = classInfo.replace(' And ', ' and ');
-      classInfo = classInfo.replace(' Or ', ' or ');
-      classInfo = classInfo.replace(' Not ', ' not ');
-    }
 
-    if (classInfo == "Ba Plain"){
-      classInfo = "BA";
-    }
-    else if (classInfo.includes("Ba ")){
-      classInfo = "BA " + classInfo.substr(3);
-    }
+    classInfo = appUtilities.transformClassInfo( classInfo );
 
     var title = classInfo=="" ? "Visual Properties":classInfo + " Visual Properties";
 

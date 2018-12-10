@@ -2938,4 +2938,29 @@ appUtilities.resizeNodesToContent = function(nodes){
 
 };
 
+appUtilities.transformClassInfo = function( classInfo ) {
+  var res = classInfo.replace(' multimer', '');
+  if (res == 'and' || res == 'or' || res == 'not') {
+    res = res.toUpperCase();
+  }
+  else {
+    res = res.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+    res = res.replace(' Of ', ' of ');
+    res = res.replace(' And ', ' and ');
+    res = res.replace(' Or ', ' or ');
+    res = res.replace(' Not ', ' not ');
+  }
+
+  if (res == "Ba Plain"){
+    res = "BA";
+  }
+  else if (res.includes("Ba ")){
+    res = "BA " + res.substr(3);
+  }
+
+  return res;
+};
+
 module.exports = appUtilities;
