@@ -4,6 +4,80 @@ var fillBioGeneContainer = require('./fill-biogene-container');
 var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
 
+inspectorUtilities.updateInputBoxesFromSet = function( ele, fieldName, parentSelector, subId, width ) {
+
+  var set = ele.data( fieldName );
+
+  if ( !set ) {
+    return;
+  }
+
+  var callback = function() {
+    inspectorUtilities.updateInputBoxesFromSet( ele, fieldName, parentSelector, subId, width );
+  };
+
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+
+  var keys = Object.keys( set );
+  var parentComponent = $( parentSelector );
+  parentComponent.html('');
+
+  keys.forEach( function( key, i ) {
+    ( function( key, i ) {
+      var id = "inspector-" + subId + "-" + i;
+      var delId = "inspector-delete-" + subId + "-" + i;
+      var memberHtml = "<div>";
+
+      memberHtml += "<input"
+          + " type='text'"
+          + " id='" + id + "'"
+          + " class='inspector-input-box'"
+          + " style='width: " + width + "px;'"
+          + " value='" + key + "'"
+          + "/>";
+
+      memberHtml += "<img"
+          + " width='16px'"
+          + " height='16px'"
+          + " id='" + delId + "'"
+          + " class='pointer-button'"
+          + " src='app/img/toolbar/delete-simple.svg'"
+          + ">"
+          + "</img>";
+
+      memberHtml += "</div>";
+
+      parentComponent.append( memberHtml );
+
+      $( '#' + delId ).unbind('click').click(function (event) {
+        var oldVal = key;
+        chiseInstance.updateSetField( ele, fieldName, oldVal, null, callback );
+      });
+
+      $( '#' + id ).unbind('change').on('change', function () {
+        var oldVal = key;
+        var newVal = $(this).val();
+        chiseInstance.updateSetField( ele, fieldName, oldVal, newVal, callback );
+      });
+    })( key, i );
+  } );
+
+  var addId = "inspector-add-" + subId;
+  parentComponent.append( "<img width='16px' height='16px' id='" + addId + "' src='app/img/add.svg' class='pointer-button'/>" );
+
+  $( '#' + addId ).unbind('click').click(function (event) {
+    chiseInstance.updateSetField( ele, fieldName, null, '', callback );
+  });
+};
+
+inspectorUtilities.updatePCIDs = function(ele, width) {
+  inspectorUtilities.updateInputBoxesFromSet( ele, 'pcIDSet', '#inspector-pc-ids', 'pc-ids', width );
+};
+
+inspectorUtilities.updateSiteLocations = function(ele, width) {
+  inspectorUtilities.updateInputBoxesFromSet( ele, 'siteLocSet', '#inspector-site-locations', 'site-locations', width );
+};
+
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
 
   // use the active chise instance
@@ -191,6 +265,8 @@ inspectorUtilities.handleSBGNInspector = function () {
     html += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
     var type;
     var fillStateAndInfos;
+    var fillPCIDs;
+    var fillSiteLocations;
     var multimerCheck;
     var clonedCheck;
     var commonIsMultimer;
@@ -464,6 +540,28 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
 
         html += "</td></tr>";
+      }
+
+      var sbgnclass = selectedEles.data('class');
+      if (selectedEles.length === 1 && ( sbgnclass == 'phosphorylates' || sbgnclass == 'dephosphorylates' )) {
+        fillPCIDs = true;
+        fillSiteLocations = true;
+
+        html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>PC IDs</font>" + "</td>"
+                + "<td id='inspector-pc-ids' style='padding-left: 5px; width: '" + width + "'>"
+                // + inspectorUtilities.generateSetToInputBoxes( selectedEles.data('pcIDSet'), 'pc-ids', 0.8 * width )
+                + "</td></tr>";
+
+        html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Site Locations</font>" + "</td>"
+                + "<td id='inspector-site-locations' style='padding-left: 5px; width: '" + width + "'>"
+                // + inspectorUtilities.generateSetToInputBoxes( selectedEles.data('siteLocSet'), 'site-locations', 0.8 * width )
+                + "</td></tr>";
+
+        html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
       }
 
     }
@@ -940,6 +1038,14 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
     }
     else {
+      if ( fillPCIDs ) {
+        inspectorUtilities.updatePCIDs( selectedEles, width );
+      }
+
+      if ( fillSiteLocations ) {
+        inspectorUtilities.updateSiteLocations( selectedEles, width );
+      }
+
       $('#inspector-set-as-default-button').on('click', function () {
         var sbgnclass = selectedEles.data('class');
 
