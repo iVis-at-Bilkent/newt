@@ -123,7 +123,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
             + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
             + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.state.variable) + "'/>"
 
-            // TODO: maybe update the width
             + getInfoboxDetailsBtnHtml( i )
 
             + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"

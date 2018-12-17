@@ -4,9 +4,8 @@ module.exports = function() {
 
   var cy, chiseInstance, elementUtilities;
   var groupCompoundType, metaEdgeIdentifier, lockGraphTopology, shouldApply;
-  // TODO: update it as 'topology group' when fix the related bug or
-  // apply a temporary a solution
-  var DEFAULT_GROUP_COMPOUND_TYPE = 'compartment';
+
+  var DEFAULT_GROUP_COMPOUND_TYPE = 'topology group';
   var EDGE_STYLE_NAMES = [ 'line-color', 'width' ];
 
   function topologyGrouping( _chiseInstance, props ) {
@@ -40,6 +39,7 @@ module.exports = function() {
 
     if ( lockGraphTopology ) {
       elementUtilities.lockGraphTopology();
+      cy.expandCollapse('get').disableCue();
     }
 
   	return groups;
@@ -76,6 +76,7 @@ module.exports = function() {
 
     if ( lockGraphTopology ) {
       elementUtilities.unlockGraphTopology();
+      cy.expandCollapse('get').enableCue();
     }
   };
 
@@ -238,7 +239,7 @@ module.exports = function() {
 
       // if gr1 is not merged push it to notMergedGrs
       if ( !merged ) {
-        notMergedGrs.push( gr1 )
+        notMergedGrs.push( gr1 );
       }
     } );
 
@@ -289,22 +290,26 @@ module.exports = function() {
       return;
     }
 
-    var notPassed = false;
+    var failed = false;
 
-    // TODO: make an early termination in a way
     Object.keys( map1 ).forEach( function( key ) {
+      // if already failed just return
+      if ( failed ) {
+        return;
+      }
+
       // if key is id2 use id1 instead because comparison is relative to nodes
       var otherKey = ( key == id2 ) ? id1 : key;
 
       // check if the sets have the same content
   		// if check fails return false
       if ( !isEqual( map1[ key ], map2[ otherKey ] ) ) {
-        notPassed = true;
+        failed = true;
       }
     } );
 
     // if check passes for each key return true
-    return !notPassed;
+    return !failed;
   }
 
   function fillIdToTypeSetMap( edgeGroup, node ) {

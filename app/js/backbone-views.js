@@ -3079,12 +3079,8 @@ var InfoboxPropertiesView = Backbone.View.extend({
 
     $(document).off("click", "#set-infobox-properties").on("click", "#set-infobox-properties", function( evt ) {
       var newProps = readInfoboxProps();
-      // TODO: do it over chise instance
-      appUtilities.getActiveCy().undoRedo().do('updateInfoboxStyle', {
-        node: node,
-        index: index,
-        newProps: newProps
-      });
+
+      appUtilities.getActiveChiseInstance().updateInfoboxStyle(node, index, newProps);
 
       $(self.el).modal('toggle');
     });
