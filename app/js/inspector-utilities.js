@@ -32,7 +32,7 @@ inspectorUtilities.updateInputBoxesFromSet = function( ele, fieldName, parentSel
           + " type='text'"
           + " id='" + id + "'"
           + " class='inspector-input-box'"
-          + " style='width: " + width + "px;'"
+          + " style='width: " + width * 0.9 + "px;'"
           + " value='" + key + "'"
           + "/>";
 
