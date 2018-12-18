@@ -39,7 +39,6 @@ module.exports = function() {
 
     if ( lockGraphTopology ) {
       elementUtilities.lockGraphTopology();
-      cy.expandCollapse('get').disableCue();
     }
 
   	return groups;
@@ -76,7 +75,6 @@ module.exports = function() {
 
     if ( lockGraphTopology ) {
       elementUtilities.unlockGraphTopology();
-      cy.expandCollapse('get').enableCue();
     }
   };
 
@@ -153,7 +151,10 @@ module.exports = function() {
       createGroupCompound( group );
     } );
 
-    var childrenEdges = topologyGrouping.getGroupCompounds().children().connectedEdges();
+    var compounds = topologyGrouping.getGroupCompounds();
+    compounds.unselect();
+
+    var childrenEdges = compounds.children().connectedEdges();
     var edgesMap = [];
 
     childrenEdges.forEach( function( edge ){

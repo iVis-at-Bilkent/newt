@@ -463,6 +463,9 @@ module.exports = function() {
       // get the network id for cy
       var networkId = cy.container().id;
 
+      // unlock graph topolpgy in case it is locked
+      chiseInstance.elementUtilities.unlockGraphTopology();
+
       // reset map name and description
       // default map name should be a string that contains the network id
       currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
