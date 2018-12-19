@@ -160,9 +160,13 @@ module.exports = function() {
       }
     } );
 
+    cy.startBatch();
+
     // TODO: do this in a way that considers 'undoable' flag
     var ur = cy.undoRedo();
     ur.do("batch", actions);
+
+    cy.endBatch();
   };
 
   sifFormat.getNewInfoboxCount = function( ele ) {
