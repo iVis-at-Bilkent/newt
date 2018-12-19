@@ -152,8 +152,6 @@ module.exports = function() {
     } );
 
     var compounds = topologyGrouping.getGroupCompounds();
-    compounds.unselect();
-
     var childrenEdges = compounds.children().connectedEdges();
     var edgesMap = [];
 
