@@ -652,17 +652,14 @@ module.exports = function() {
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
-
-      if ($(this).val() != "") {
-        var file = this.files[0];
+        var file = chiseInstance.getSbgnvizInstance().createSbgnml();
         var errors = chiseInstance.doSchematronValidation(file);
 	promptInvalidSchematronFileView.render(errors); 
-	if(erros.length !=0){
+	if(errors.length !=0){
 	
 	   chiseInstance.highlightProcesses(cy.nodes(':selected'));	
 	
 	}
-      }	
 
     });
 
@@ -1222,3 +1219,4 @@ module.exports = function() {
     });
   }
 };
+
