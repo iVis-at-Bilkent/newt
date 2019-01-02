@@ -2023,7 +2023,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
             var array = stringa.split(",");
             var index;
             for (index = 0; index < array.length; ++index) {
-            chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#CCFF33'));
+            chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
             }
           },
           error: function(req, status, err) {
