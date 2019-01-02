@@ -39,7 +39,7 @@ exports.ReadFromDb = function (req, res) {
 		});
  		req.on('end', function () {
 			var resultPromise = session.run(
-  'MATCH (n) OPTIONAL MATCH (n)-[r]-()DELETE n,r' );
+  'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r');
 			resultPromise.then( function(){
         session.close();
         driver.close();
@@ -133,6 +133,7 @@ exports.ReadFromDb = function (req, res) {
  	}
  };
  exports.PathsTo	 = function (req, res) {
+     req.setTimeout(0);
 	var sbgnml;
 	var limit;
  	// passing the entire map for validation is too big to use GET request. POST should be prefered.
@@ -177,12 +178,14 @@ exports.ReadFromDb = function (req, res) {
  	}
  };
  exports.GOI	 = function (req, res) {
+     req.setTimeout(0);
 	var sbgnml;
 	var limit;
  	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
 		var body = '';
 		req.on('data', function (data) {
+
 			body += data;
 			// Security: too much POST data, kill the connection!
 			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
@@ -205,6 +208,7 @@ exports.ReadFromDb = function (req, res) {
    var singleRecord = result3.records[0];
   var datas = singleRecord.get(0);
 
+
   if(datas == null){
       res.send("null")
   }
@@ -212,10 +216,19 @@ exports.ReadFromDb = function (req, res) {
   res.send(datas);
   }
 
+
+  session.close();
+  driver.close();
+
    //res.sendStatus(200)  ;
  //	}
-});
+}).catch(( err ) => { console.log( err ); })   ;
  		});
+
+
+
+
+
 	}
 	else if(req.method == 'GET') {
 		sbgnml = req.query.sbgnml;

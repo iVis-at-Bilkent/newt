@@ -1448,9 +1448,10 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
       }
       filename = filename + '_NEIGHBORHOOD.sbgnml';
       appUtilities.createNewNetwork();
-      chiseInstance.startSpinner('Dbneighborhood-spinner');
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      //var cy = chiseInstance.getCy();
+      chiseInstance.startSpinner('Dbneighborhood-spinner');
+
+      var cy = chiseInstance.getCy();
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
@@ -1487,7 +1488,7 @@ var DbNeighborhoodQueryView = Backbone.View.extend({
               var array = stringa.split(",");
               var index;
               for (index = 0; index < array.length; ++index) {
-                chiseInstance.highlightSelected(cy.elements(array[index]));
+                    chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
               }
             },
             error: function(req, status, err) {
@@ -1599,8 +1600,9 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
       }
       filename = filename + '_PATHSBETWEEN.sbgnml';
       appUtilities.createNewNetwork();
-      chiseInstance.startSpinner('DbPathsBetween-spinner');
       var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('DbPathsBetween-spinner');
+
       var cy = chiseInstance.getCy();
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
@@ -1641,7 +1643,7 @@ var DbPathsBetweenQueryView = Backbone.View.extend({
               var array = stringa.split(",");
               var index;
               for (index = 0; index < array.length; ++index) {
-                chiseInstance.highlightSelected(cy.elements(array[index]));
+                chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
               }
             },
             error: function(req, status, err) {
@@ -1815,11 +1817,13 @@ var DbPathsFromToQueryView = Backbone.View.extend({
           chiseInstance.endSpinner('DbPathsFromTo-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
 
-          var sourceAndTargetArray = targetSymbolsArray+ " "+sourceSymbolsArray;
+          var sourceAndTargetArray = targetSymbolsArray+ ", "+sourceSymbolsArray;
+
+          console.log("sourceAndTargetArray" + sourceAndTargetArray);
           $.ajax({
             type: 'post',
             url: "/utilities/HighlightSeeds",
-            data: {sbgnml: sourceAndTargetArray},
+            data: {sbgnml: targetSymbolsArray},
             success: function(data){
               var chiseInstance = appUtilities.getActiveChiseInstance();
               var cy = chiseInstance.getCy();
@@ -1827,7 +1831,26 @@ var DbPathsFromToQueryView = Backbone.View.extend({
               var array = stringa.split(",");
               var index;
               for (index = 0; index < array.length; ++index) {
-                chiseInstance.highlightSelected(cy.elements(array[index]));
+              chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: sourceSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+              chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#EF1FE8'));
               }
             },
             error: function(req, status, err) {
@@ -1941,8 +1964,9 @@ var DbCommonStreamQueryView = Backbone.View.extend({
       filename = filename + '_COMMONSTREAM.sbgnml';
 
       appUtilities.createNewNetwork();
-      chiseInstance.startSpinner('DbCommonStream-spinner');
       var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('DbCommonStream-spinner');
+
       var cy = chiseInstance.getCy();
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
@@ -1980,13 +2004,33 @@ var DbCommonStreamQueryView = Backbone.View.extend({
             var array = stringa.split(",");
             var index;
             for (index = 0; index < array.length; ++index) {
-              chiseInstance.highlightSelected(cy.elements(array[index]));
+              chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#EF1FE8'));
             }
           },
           error: function(req, status, err) {
 
           }
         });
+
+        $.ajax({
+          type: 'post',
+          url: "/utilities/HighlightSeeds",
+          data: {sbgnml: geneSymbolsArray},
+          success: function(data){
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = chiseInstance.getCy();
+            var stringa = data;
+            var array = stringa.split(",");
+            var index;
+            for (index = 0; index < array.length; ++index) {
+            chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#CCFF33'));
+            }
+          },
+          error: function(req, status, err) {
+
+          }
+        });
+
 
         var t1= performance.now();
         console.log("commonstream "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
