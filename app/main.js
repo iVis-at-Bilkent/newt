@@ -25,6 +25,7 @@ var cyEdgehandles = require('cytoscape-edgehandles');
 var cyGridGuide = require('cytoscape-grid-guide');
 var cyAutopanOnDrag = require('cytoscape-autopan-on-drag');
 var cyNodeResize = require('cytoscape-node-resize');
+var cyPopper = require('cytoscape-popper');
 
 // Register cy extensions
 cyPanzoom( cytoscape, $ );
@@ -40,6 +41,7 @@ cyEdgehandles( cytoscape );
 cyGridGuide( cytoscape, $ );
 cyAutopanOnDrag( cytoscape );
 cyNodeResize( cytoscape, $, konva );
+cyPopper( cytoscape );
 
 // Libraries to pass sbgnviz
 var libs = {};

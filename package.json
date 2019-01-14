@@ -31,6 +31,7 @@
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-node-resize": "github:iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
     "cytoscape-panzoom": "~2.5.2",
+    "cytoscape-popper": "^1.0.2",
     "cytoscape-undo-redo": "github:iVis-at-Bilkent/cytoscape.js-undo-redo#master",
     "cytoscape-view-utilities": "github:iVis-at-Bilkent/cytoscape.js-view-utilities#unstable",
     "filesaverjs": "~0.2.2",
@@ -45,6 +46,7 @@
     "mousetrap": "^1.6.0",
     "request": "^2.81.0",
     "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
+    "tippy.js": "^3.4.0",
     "underscore": "1.8.3"
   },
   "devDependencies": {

@@ -59,7 +59,8 @@ module.exports = function() {
           'color': 'background-color',
           'bordercolor': 'border-color',
           'borderwidth': 'border-width',
-          'textcolor': 'font-color'
+          'textcolor': 'font-color',
+          'tooltip': 'tooltip'
         },
         edge: {
           'color': 'line-color',
@@ -76,6 +77,9 @@ module.exports = function() {
           return rgbToHex( arr[ 0 ], arr[ 1 ], arr[ 2 ] );
           // return 'rgb(' + arr.join( ',' ) + ')';
         }
+
+        // return the value directly by default
+        return val;
       };
 
       var decimalToHex = function (dec) {
@@ -109,7 +113,7 @@ module.exports = function() {
       else if ( featureName === 'rppasite' ) {
         var infoboxFeatures = featureVal.split( '|' );
 
-        // we are not able to use every feature now
+        var tooltip = infoboxFeatures[ 0 ] + ', ' + infoboxFeatures[ 4 ];
         var value = infoboxFeatures[ 1 ];
 
         var bgColor = sanitizeFeatureVal( 'background-color', infoboxFeatures[ 2 ] );
@@ -142,6 +146,17 @@ module.exports = function() {
               newProps: {
                 'border-color': borderColor,
                 'background-color': bgColor
+              }
+            }
+          } );
+
+          actions.push( {
+            name: 'updateInfoboxObj',
+            param: {
+              node: ele,
+              index,
+              newProps: {
+                tooltip
               }
             }
           } );
