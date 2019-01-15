@@ -248,7 +248,7 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class^="protein"],[class^="small macromolecule"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -1270,28 +1270,54 @@ module.exports = function (chiseInstance) {
         }
 
         var modelPos = chiseInstance.classes.AuxiliaryUnit.getAbsoluteCoord(infobox, node.cy());
-        modelPos.x -= node.outerWidth() / 2;
+        var modelW = infobox.bbox.w;
+        var modelH = infobox.bbox.h;
+        var renderedW = modelW * zoom;
+        var renderedH = modelH * zoom;
+        modelPos.x -= modelW / 2;
+        modelPos.y -= modelH / 2;
         var renderedPos = chiseInstance.elementUtilities.convertToRenderedPosition(modelPos, pan, zoom);
+
+        var renderedDims = { w: renderedW, h: renderedH };
 
         ref = node.popperRef({
           renderedPosition: function() {
             return renderedPos;
+          },
+          renderedDimensions: function() {
+            return renderedDims;
           }
         });
       }
 
-      let tippy = Tippy.one(ref, {
+      var placement = infobox ? infobox.anchorSide : 'bottom';
+      var destroyTippy;
+
+      var tippy = Tippy.one(ref, {
         content: (() => {
           var content = document.createElement('div');
 
+          content.style['font-size'] = 12 * zoom + 'px';
           content.innerHTML = tooltipContent;
 
           return content;
         })(),
         trigger: 'manual',
         hideOnClick: true,
-        arrow: true
+        arrow: true,
+        placement,
+        onHidden: function() {
+          cy.off('pan zoom', destroyTippy);
+          node.off('position', destroyTippy);
+        }
       });
+
+      destroyTippy = function(){
+        tippy.destroy();
+      };
+
+      cy.on('pan zoom', destroyTippy);
+      node.on('position', destroyTippy);
 
       setTimeout( () => tippy.show(), 0 );
     });
