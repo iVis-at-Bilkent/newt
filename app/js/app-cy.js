@@ -163,7 +163,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-collapse',
         content: 'Collapse',
         image: {src : "app/img/toolbar/collapse-selected.svg", width : 16, height : 16, x : 2, y : 3},
-        selector: 'node:parent',
+        selector: 'node:parent[class!="topology group"]',
         onClickFunction: function (event) {
           cy.undoRedo().do("collapse", {
             nodes: event.target || event.cyTarget
@@ -248,7 +248,7 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class^="protein"],[class^="small macromolecule"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="protein"],[class="small macromolecule"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -257,7 +257,7 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-tile-info-boxes',
         content: 'Tile Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="protein"],[class="small macromolecule"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           var locations = ["top", "bottom", "right", "left"]; //Fit all locations
@@ -268,7 +268,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="protein"],[class="small macromolecule"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
