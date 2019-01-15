@@ -192,6 +192,17 @@ module.exports = function() {
           $("#AF-palette-heading").click();
         }
       }
+      else if(chiseInstance.elementUtilities.mapType == "SIF"){
+        if($("#SIF-palette-heading").hasClass("collapsed")) { // expand PD
+          $("#SIF-palette-heading").click();
+        }
+        if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse AF
+          $("#SIF-palette-heading").click();
+        }
+      }
+      else {
+        console.warn('invalid map type!');
+      }
 
     }
 
