@@ -4,7 +4,6 @@ var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
-var Tippy = require('tippy.js');
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -1241,85 +1240,6 @@ module.exports = function (chiseInstance) {
       });
 
       node.style(opt);
-    });
-
-    cy.on('tap', 'node', function(event) {
-      var pos = event.position || event.cyPosition;
-      var node = event.target || event.cyTarget;
-      var ref; // used only for positioning
-      var pan = cy.pan();
-      var zoom = cy.zoom();
-
-      var infobox = chiseInstance.classes.AuxiliaryUnit.checkPoint(pos.x, pos.y, node, 0);
-      var tooltipContent;
-
-      if (!infobox) {
-        tooltipContent = node.data('tooltip');
-
-        if ( tooltipContent == undefined ) {
-          return;
-        }
-
-        ref = node.popperRef();
-      }
-      else {
-        tooltipContent = infobox['tooltip'];
-
-        if ( tooltipContent == undefined ) {
-          return;
-        }
-
-        var modelPos = chiseInstance.classes.AuxiliaryUnit.getAbsoluteCoord(infobox, node.cy());
-        var modelW = infobox.bbox.w;
-        var modelH = infobox.bbox.h;
-        var renderedW = modelW * zoom;
-        var renderedH = modelH * zoom;
-        modelPos.x -= modelW / 2;
-        modelPos.y -= modelH / 2;
-        var renderedPos = chiseInstance.elementUtilities.convertToRenderedPosition(modelPos, pan, zoom);
-
-        var renderedDims = { w: renderedW, h: renderedH };
-
-        ref = node.popperRef({
-          renderedPosition: function() {
-            return renderedPos;
-          },
-          renderedDimensions: function() {
-            return renderedDims;
-          }
-        });
-      }
-
-      var placement = infobox ? infobox.anchorSide : 'bottom';
-      var destroyTippy;
-
-      var tippy = Tippy.one(ref, {
-        content: (() => {
-          var content = document.createElement('div');
-
-          content.style['font-size'] = 12 * zoom + 'px';
-          content.innerHTML = tooltipContent;
-
-          return content;
-        })(),
-        trigger: 'manual',
-        hideOnClick: true,
-        arrow: true,
-        placement,
-        onHidden: function() {
-          cy.off('pan zoom', destroyTippy);
-          node.off('position', destroyTippy);
-        }
-      });
-
-      destroyTippy = function(){
-        tippy.destroy();
-      };
-
-      cy.on('pan zoom', destroyTippy);
-      node.on('position', destroyTippy);
-
-      setTimeout( () => tippy.show(), 0 );
     });
   }
 

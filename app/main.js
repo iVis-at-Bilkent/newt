@@ -2,6 +2,7 @@ var chise = require('chise');
 var sbgnviz = require('sbgnviz');
 var filesaverjs = require('filesaverjs');
 var konva = require('konva');
+var tippy = require('tippy.js');
 window.jQuery = window.jquery = window.$ = require('jquery'); // jquery should be global because jquery.qtip extension is not compatible with commonjs
 var cytoscape = require('cytoscape');
 
@@ -50,6 +51,7 @@ libs.filesaverjs = filesaverjs;
 libs.jquery = jquery;
 libs.cytoscape = cytoscape;
 libs.sbgnviz = sbgnviz;
+libs.tippy = tippy;
 
 
 $(document).ready(function () {
@@ -58,7 +60,7 @@ $(document).ready(function () {
   chise.register(libs);
 
   appMenu();
-  
+
   // create a new network and access the related chise.js instance
   appUtilities.createNewNetwork();
 
