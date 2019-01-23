@@ -135,6 +135,8 @@ module.exports = function() {
     // check if the event is triggered for the active instance
     var isActiveInstance = ( cy == appUtilities.getActiveCy() );
 
+    var chiseInstance = appUtilities.getChiseInstance(cy);
+
     // set the current file name for cy
     appUtilities.setScratch(cy, 'currentFileName', filename);
     //clean and reset things
@@ -142,7 +144,7 @@ module.exports = function() {
     appUtilities.disableInfoBoxRelocation();
 
     // a new file is being loaded clear the applied flag of topologyGrouping
-    var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
+    var topologyGrouping = chiseInstance.sifTopologyGrouping;
     topologyGrouping.clearAppliedFlag();
 
     // if the event is triggered for the active instance do the followings

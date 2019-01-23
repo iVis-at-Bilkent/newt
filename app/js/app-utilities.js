@@ -429,16 +429,6 @@ appUtilities.createNewNetwork = function () {
   // init the current file name for the map
   appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.sbgnml');
 
-  var topologyGroupingFactory = require('./topology-grouping-factory');
-  // init the topologyGrouping instance for the map
-  var topologyGrouping = topologyGroupingFactory();
-  // Topology grouping should be aplied if the map type is sif
-  var shouldApply = function() {
-    return newInst.elementUtilities.mapType === 'SIF';
-  };
-  topologyGrouping(newInst, { metaEdgeIdentifier: 'sif-meta', lockGraphTopology: true, shouldApply });
-  appUtilities.setScratch(newInst.getCy(), 'sifTopologyGrouping', topologyGrouping);
-
   // register cy extensions, bind cy events etc.
   var appCy = require('./app-cy');
   appCy(newInst);
@@ -2340,7 +2330,7 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
       chiseInstance.disablePorts();
     }
 
-    var topologyGrouping = appUtilities.getScratch(chiseInstance.getCy(), 'sifTopologyGrouping');
+    var topologyGrouping = chiseInstance.sifTopologyGrouping;
     if (currentGeneralProperties.enableSIFTopologyGrouping) {
       topologyGrouping.apply();
     }

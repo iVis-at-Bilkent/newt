@@ -6,34 +6,6 @@ var appUtilities = require('./app-utilities');
 module.exports = function (cy) {
   var appUndoActions = {};
 
-  appUndoActions.applySIFTopologyGrouping = function(param) {
-    var oldEles, newEles;
-    if ( param.firstTime ) {
-      oldEles = cy.elements();
-      // get topologyGrouping instance for cy
-      var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
-
-      if (param.apply) {
-        topologyGrouping.apply();
-      }
-      else {
-        topologyGrouping.unapply();
-      }
-
-      newEles = cy.elements();
-    }
-    else {
-      oldEles = param.oldEles;
-      newEles = param.newEles;
-
-      oldEles.remove();
-      newEles.restore();
-    }
-
-    var result = { oldEles: newEles, newEles: oldEles };
-    return result;
-  };
-
   appUndoActions.changeDataDirty = function (param) {
     var result = {};
     var eles = param.eles; // a pure array of nodes, not a cy collection
@@ -133,7 +105,7 @@ module.exports = function (cy) {
         appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
         param.self.render();
     }
-    
+
     else if(param.scheme_type == 'gradient'){
         var inverted_id = param.self.schemes_gradient[param.value].invert;
         param.self.schemes_gradient[param.value].isDisplayed = true;

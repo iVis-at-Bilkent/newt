@@ -484,7 +484,7 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     // get topologyGrouping instance for cy
-    var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
+    var topologyGrouping = chiseInstance.sifTopologyGrouping;
 
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
@@ -1908,7 +1908,7 @@ var FileSaveView = Backbone.View.extend({
         }
         else if ( chiseInstance.elementUtilities.mapType === 'SIF' && properties.enableSIFTopologyGrouping ) {
           // get topologyGrouping instance for cy
-          var topologyGrouping = appUtilities.getScratch(cy, 'sifTopologyGrouping');
+          var topologyGrouping = chiseInstance.sifTopologyGrouping;
           var compoundGroups = topologyGrouping.getGroupCompounds();
           var metaEdges = topologyGrouping.getMetaEdges();
 
