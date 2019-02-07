@@ -2591,7 +2591,7 @@ var PromptInvalidSchematronFileView = Backbone.View.extend({
 
         $(self.el).html(self.template);
         if (errors.length!=0)
-          document.getElementById("invalidSchematronFileMessage").innerHTML = errors;
+          document.getElementById("invalidSchematronFileMessage").innerHTML = "File is invalid";
         else
             document.getElementById("invalidSchematronFileMessage").innerHTML = "File is valid";
         $(self.el).modal('show');

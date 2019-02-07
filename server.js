@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var port = process.env.port || 8080;
+var cors = require('cors');
 
 var ajaxUtilities = require('./app/js/ajax-utilities');
 
@@ -28,12 +29,15 @@ function requestHandler(req, res){
 		}
 	}
 }
-
+app.use(cors());
 app.get('/utilities/:fn', requestHandler);
 app.post('/utilities/:fn', requestHandler);
 
 server.listen(port, function(){
   console.log('server listening on port: %d', port);
 });
-
 app.use(express.static(__dirname));
+
+
+
+

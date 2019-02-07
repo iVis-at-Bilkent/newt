@@ -653,7 +653,7 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
         var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-        var errors = chiseInstance.doSchematronValidation(file);
+        var errors = chiseInstance.doValidation(file);
 	promptInvalidSchematronFileView.render(errors); 
 	if(errors.length !=0){
 	

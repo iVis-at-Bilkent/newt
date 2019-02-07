@@ -49,6 +49,7 @@
     "express": "4.14.0",
     "browserify": "^11.2.0",
     "nodemon": "1.11.0",
-    "parallelshell": "^2.0.0"
+    "parallelshell": "^2.0.0",
+     "cors": "^2.8.5"
   }
 }
