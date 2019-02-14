@@ -47,7 +47,7 @@ module.exports = function (chiseInstance) {
 
     cy.autopanOnDrag();
 
-    cy.edgeEditing({
+    cy.edgeBendEditing({
       // this function specifies the positions of bend points
       bendPositionsFunction: function (ele) {
         return ele.data('bendPointPositions');
