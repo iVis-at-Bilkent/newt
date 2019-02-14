@@ -13,7 +13,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView, promptInvalidSchematronFileView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -123,6 +123,7 @@ module.exports = function() {
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
+  promptInvalidSchematronFileView = appUtilities.promptInvalidSchematronFileView = new BackboneViews.PromptInvalidSchematronFileView({el: '#prompt-invalidSchematronFile-table'});		
   toolbarButtonsAndMenu();
 
   keyboardShortcuts();
@@ -679,6 +680,24 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
+    });
+
+    $("#highlight-errors-of-validation").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+        var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+        var errors = chiseInstance.doValidation(file);
+	promptInvalidSchematronFileView.render(errors); 
+	if(errors.length !=0){
+	
+	   chiseInstance.highlightProcesses(cy.nodes(':selected'));	
+	
+	}
+
     });
 
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
@@ -1272,3 +1291,4 @@ module.exports = function() {
     });
   }
 };
+
