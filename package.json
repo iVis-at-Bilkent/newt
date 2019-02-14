@@ -42,14 +42,13 @@
     "lodash.set": "^4.3.2",
     "mousetrap": "^1.6.0",
     "request": "^2.81.0",
-    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#sbgnviz_libsbgn_upgrade ",
+    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable ",
     "underscore": "1.8.3"
   },
   "devDependencies": {
     "express": "4.14.0",
     "browserify": "^11.2.0",
     "nodemon": "1.11.0",
-    "parallelshell": "^2.0.0",
-     "cors": "^2.8.5"
+    "parallelshell": "^2.0.0"
   }
 }
