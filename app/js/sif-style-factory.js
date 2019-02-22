@@ -4,17 +4,17 @@ var memoize = require('lodash.memoize');
 module.exports = function() {
   var cy, elementUtilities, tdParser;
 
-  function sifFormat( chiseInstance ) {
+  function sifStyle( chiseInstance ) {
     cy = chiseInstance.getCy();
     elementUtilities = chiseInstance.elementUtilities;
     tdParser = chiseInstance.tdParser;
   }
 
-  sifFormat.initVariables = function() {
-    sifFormat.newInfoboxCountMap = {};
+  sifStyle.initVariables = function() {
+    sifStyle.newInfoboxCountMap = {};
   };
 
-  sifFormat.apply = function( formatText ) {
+  sifStyle.apply = function( formatText ) {
     if ( elementUtilities.fileFormat != 'sif' ) {
       console.log( 'Map type must be sif to apply sif style!!!' );
       return;
@@ -24,7 +24,7 @@ module.exports = function() {
       return;
     }
 
-    sifFormat.initVariables();
+    sifStyle.initVariables();
 
     var lines = tdParser.getLinesArray( formatText );
     var actions = [];
@@ -47,10 +47,10 @@ module.exports = function() {
       }
       else {
         if ( eleType === 'node' ) {
-          selectedEles = sifFormat.getNodesByName( eleSelector );
+          selectedEles = sifStyle.getNodesByName( eleSelector );
         }
         else if ( eleType === 'edge' ) {
-          selectedEles = sifFormat.getEdgesByProps( eleSelector );
+          selectedEles = sifStyle.getEdgesByProps( eleSelector );
         }
       }
 
@@ -123,8 +123,8 @@ module.exports = function() {
         selectedEles.forEach( function( ele ) {
           // the new infoboxes index is equal to the current number
           // of infoboxes plus the number of new infoboxes so far
-          var index = ele.data('statesandinfos').length + sifFormat.getNewInfoboxCount( ele );
-          sifFormat.incrementNewInfoboxCount( ele );
+          var index = ele.data('statesandinfos').length + sifStyle.getNewInfoboxCount( ele );
+          sifStyle.incrementNewInfoboxCount( ele );
 
           var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
@@ -184,31 +184,31 @@ module.exports = function() {
     cy.endBatch();
   };
 
-  sifFormat.getNewInfoboxCount = function( ele ) {
+  sifStyle.getNewInfoboxCount = function( ele ) {
     var id = ele.id();
 
-    if ( !sifFormat.newInfoboxCountMap[ id ] ) {
-      sifFormat.newInfoboxCountMap[ id ] = 0;
+    if ( !sifStyle.newInfoboxCountMap[ id ] ) {
+      sifStyle.newInfoboxCountMap[ id ] = 0;
     }
 
-    return sifFormat.newInfoboxCountMap[ id ];
+    return sifStyle.newInfoboxCountMap[ id ];
   };
 
-  sifFormat.incrementNewInfoboxCount = function( ele ) {
+  sifStyle.incrementNewInfoboxCount = function( ele ) {
     var id = ele.id();
 
-    if ( !sifFormat.newInfoboxCountMap[ id ] ) {
-      sifFormat.newInfoboxCountMap[ id ] = 0;
+    if ( !sifStyle.newInfoboxCountMap[ id ] ) {
+      sifStyle.newInfoboxCountMap[ id ] = 0;
     }
 
-    sifFormat.newInfoboxCountMap[ id ]++;
+    sifStyle.newInfoboxCountMap[ id ]++;
   };
 
-  sifFormat.getNodesByName = memoize( function( name ) {
+  sifStyle.getNodesByName = memoize( function( name ) {
     return cy.nodes().filter( '[label="' + name + '"]' );
   } );
 
-  sifFormat.getEdgesByProps = memoize( function( propsStr ) {
+  sifStyle.getEdgesByProps = memoize( function( propsStr ) {
     var props = propsStr.split( ' ' );
     var srcName = props[ 0 ];
     var type = props[ 1 ];
@@ -217,8 +217,8 @@ module.exports = function() {
       return node.id();
     };
 
-    var srcIds = sifFormat.getNodesByName( srcName ).map( getId );
-    var tgtIds = sifFormat.getNodesByName( tgtName ).map( getId );
+    var srcIds = sifStyle.getNodesByName( srcName ).map( getId );
+    var tgtIds = sifStyle.getNodesByName( tgtName ).map( getId );
 
     var srcStr = srcIds.map( function( srcId ) {
       return '[source="' + srcId + '"]';
@@ -233,5 +233,5 @@ module.exports = function() {
                      .filter( '[class="' + type + '"]' );
   } );
 
-  return sifFormat;
+  return sifStyle;
 };

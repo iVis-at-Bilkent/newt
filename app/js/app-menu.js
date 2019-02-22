@@ -6,7 +6,7 @@ var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
-var sifFormatFactory = require('./sif-format-factory');
+var sifStyleFactory = require('./sif-style-factory');
 var _ = require('underscore');
 
 // Handle sbgnviz menu functions which are to be triggered on events
@@ -356,8 +356,8 @@ module.exports = function() {
       $("#sif-file-input").trigger('click');
     });
 
-    $("#import-sif-format").click(function () {
-      $("#sif-format-input").trigger('click');
+    $("#import-sif-style").click(function () {
+      $("#sif-style-input").trigger('click');
     });
 
     $("#import-sif-layout").click(function () {
@@ -386,7 +386,7 @@ module.exports = function() {
       }
     });
 
-    $("#sif-format-input").change(function () {
+    $("#sif-style-input").change(function () {
       if ($(this).val() != "") {
         var file = this.files[0];
         var reader = new FileReader();
@@ -396,9 +396,9 @@ module.exports = function() {
           var text = this.result;
 
           var chiseInstance = appUtilities.getActiveChiseInstance();
-          var sifFormat = sifFormatFactory();
-          sifFormat( chiseInstance );
-          sifFormat.apply( text );
+          var sifStyle = sifStyleFactory();
+          sifStyle( chiseInstance );
+          sifStyle.apply( text );
         };
 
         reader.readAsText( file );
@@ -1090,17 +1090,6 @@ module.exports = function() {
       var filename = document.getElementById('file-name').innerHTML;
       filename = filename.substring(0,filename.lastIndexOf('.')) + ".svg";
       chiseInstance.saveAsSvg(filename); // the default filename is 'network.jpg'
-    });
-
-    //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
-    $("#save-as-sbgnml").click(function (evt) {
-      //var filename = document.getElementById('file-name').innerHTML;
-      //chise.saveAsSbgnml(filename);
-      fileSaveView.render("sbgnml", "0.2");
-    });
-
-    $("#export-as-sbgnml3-file").click(function (evt) {
-      fileSaveView.render("sbgnml", "0.3");
     });
 
     $("#save-as-nwt, #save-icon").click(function (evt) {

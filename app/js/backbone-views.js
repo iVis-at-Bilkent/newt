@@ -1924,7 +1924,7 @@ var FileSaveView = Backbone.View.extend({
 
         // Exclude extensions if the version is plain
         if (version === "plain") {
-          saveAsFcn(filename, version, null, null, nodes, edges);
+          saveAsFcn(filename, version, undefined, undefined, nodes, edges);
         }
         else {
           saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
