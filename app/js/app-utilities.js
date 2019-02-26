@@ -2949,6 +2949,9 @@ appUtilities.transformClassInfo = function( classInfo ) {
   else if (res.includes("Ba ")){
     res = "BA " + res.substr(3);
   }
+  else if (res.includes("Sif ")) {
+    res = "SIF " + res.substr(3); 
+  }
 
   return res;
 };
