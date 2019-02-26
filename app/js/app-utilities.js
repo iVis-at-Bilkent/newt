@@ -2010,9 +2010,24 @@ appUtilities.dragImageMouseMoveHandler = function (e) {
       $("#drag-image").css({left:e.pageX, top:e.pageY});
 };
 
-appUtilities.addDragImage = function (img, width, height){
+// get drag image for the given html value
+// html value corresponds to sbgnclass where space char is
+// replaced by '-' char
+appUtilities.getDragImagePath = function (htmlValue) {
+  var imgNameMap = {
+    'SIF-macromolecule': 'macromolecule',
+    'SIF-simple-chemical': 'simple-chemical'
+  };
+
+  var imgName = imgNameMap[ htmlValue ] || htmlValue;
+  var imgPath = 'app/img/nodes/' + imgName + '.svg';
+
+  return imgPath;
+}
+
+appUtilities.addDragImage = function (imgPath, width, height){
   // see: http://stackoverflow.com/questions/38838508/make-a-dynamic-image-follow-mouse
-  $(document.body).append('<img id="drag-image" src="app/img/nodes/'+img+'" style="position: absolute;'+
+  $(document.body).append('<img id="drag-image" src="'+imgPath+'" style="position: absolute;'+
                                 'width:'+width+'; height:'+height+'; left: -100px; top: -100px;" >');
   $(document).on("mousemove", appUtilities.dragImageMouseMoveHandler);
 };
@@ -2950,7 +2965,7 @@ appUtilities.transformClassInfo = function( classInfo ) {
     res = "BA " + res.substr(3);
   }
   else if (res.includes("Sif ")) {
-    res = "SIF " + res.substr(3); 
+    res = "SIF " + res.substr(3);
   }
 
   return res;
