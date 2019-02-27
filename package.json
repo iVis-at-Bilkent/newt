@@ -18,9 +18,9 @@
   "dependencies": {
     "backbone": "1.3.3",
     "bootstrap": "3.3.7",
-    "chise": "^1.2.0",
+    "chise": "github:iVis-at-Bilkent/chise.js#unstable",
     "chroma-js": "^1.3.4",
-    "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#master",
+    "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#unstable",
     "cytoscape-autopan-on-drag": "^2.0.2",
     "cytoscape-clipboard": "github:iVis-at-Bilkent/cytoscape.js-clipboard#master",
     "cytoscape-context-menus": "^3.0.6",
@@ -50,6 +50,6 @@
     "express": "4.14.0",
     "browserify": "^11.2.0",
     "nodemon": "1.11.0",
-    "parallelshell": "^2.0.0"
+    "parallelshell": "^3.0.2"
   }
 }
