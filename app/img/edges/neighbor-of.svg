@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="inhibition.svg"
+   sodipodi:docname="consumption.svg"
    inkscape:export-filename="C:\Users\ugur\Desktop\interaction-legend.2016.04.01.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
@@ -30,7 +30,7 @@
       <path
          id="path4133"
          d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#CC8E12;stroke-width:1pt"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#FC002C;stroke-width:1pt"
          transform="matrix(0.8,0,0,0.8,-4.8,0)"
          inkscape:connector-curvature="0" />
     </marker>
@@ -44,7 +44,7 @@
       <path
          id="path4115"
          d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         style="fill-rule:evenodd;stroke:#CC8E12;stroke-width:1pt"
+         style="fill-rule:evenodd;stroke:#FC002C;stroke-width:1pt"
          transform="scale(0.8,0.8)"
          inkscape:connector-curvature="0" />
     </marker>
@@ -58,7 +58,7 @@
       <path
          id="path4079"
          d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 Z"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#CC8E12;stroke-width:1pt"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#FC002C;stroke-width:1pt"
          transform="scale(0.8,0.8)"
          inkscape:connector-curvature="0" />
     </marker>
@@ -71,8 +71,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.919596"
-     inkscape:cx="-10.495583"
-     inkscape:cy="21.591352"
+     inkscape:cx="39.518515"
+     inkscape:cy="37.468231"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -103,24 +103,14 @@
      id="layer1"
      transform="translate(-275.2906,-267.82635)">
     <path
-       style="fill:none;stroke:#CC8E12;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4 4;stroke-opacity:1"
-       d="m 275.2906,291.82635 58.41978,0"
+       style="fill:none;stroke:#FC002C;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:none"
+       d="m 275.2906,291.82635 60,0"
        id="path3787-4"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="38.150002"
        inkscape:export-ydpi="38.150002"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="-2.7158975"
+       inkscape:transform-center-x="-2.7893599"
        inkscape:transform-center-y="-62.257366" />
-    <path
-       style="fill:none;stroke:#CC8E12;stroke-width:5.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:none"
-       d="m 332.30695,306.12552 0,-28.59834"
-       id="path3787-4-8"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="38.150002"
-       inkscape:export-ydpi="38.150002"
-       inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
-       inkscape:transform-center-x="62.257365"
-       inkscape:transform-center-y="-1.329521" />
   </g>
 </svg>
