@@ -579,6 +579,11 @@ module.exports = function() {
       $("#AF_legend_modal").modal('show');
     });
 
+    $("#SIF-legend").click(function (e) {
+      e.preventDefault();
+      $("#SIF_legend_modal").modal('show');
+    });
+
     $("#quick-help, #quick-help-icon").click(function (e) {
       e.preventDefault();
       $("#quick_help_modal").modal('show');
