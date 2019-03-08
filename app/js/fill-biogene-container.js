@@ -60,7 +60,7 @@ var fillBioGeneContainer = function (node) {
       }
     },
     error: function(xhr, options, err){
-      $('#biogene-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + error + "</span>");
+      $('#biogene-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + err + "</span>");
     }
   });
   $('#biogene-title').html("<b>" + node.data('label') + "</b>");
