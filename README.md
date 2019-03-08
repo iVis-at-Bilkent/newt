@@ -59,8 +59,9 @@ Third-party libraries:
 [express](https://github.com/expressjs/express),
 [browserify](https://github.com/browserify/browserify),
 [nodemon](https://github.com/remy/nodemon),
-[Parallel Shell](https://github.com/darkguy2008/parallelshell) licensed with [MIT](https://opensource.org/licenses/MIT);
 [chroma-js](https://github.com/gka/chroma.js) licensed with [BSD](https://opensource.org/licenses/BSD-3-Clause); 
+[Parallel Shell](https://github.com/darkguy2008/parallelshell),
+[Tippyjs](https://github.com/atomiks/tippyjs) licensed with [MIT](https://opensource.org/licenses/MIT);
 [Mousetrap](https://github.com/ccampbell/mousetrap),
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) and
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU LGPL](https://www.gnu.org/licenses/lgpl-3.0.html).
