@@ -357,27 +357,18 @@ module.exports = function (chiseInstance) {
       }
     });
 
-    // local utility function to avoid code duplication
-    function highlightColor(ele) {
-      if (ele.selected()){
-        return '#d67614'; // default select color
-      }
-      else {
-        return '#0B9BCD'; // highlight color
-      }
-    };
     cy.viewUtilities({
       node: {
         highlighted: { // styles for when nodes are highlighted.
           'border-width': function(ele) {
             return Math.max(parseFloat(ele.data('border-width')) + 2, 3);
           },
-          'border-color': highlightColor
+          'border-color': '#0B9BCD'
         },
-        unhighlighted: {// styles for when nodes are unhighlighted.
-          'opacity': function (ele) {
-            // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
-            return ele.css('opacity');
+        selected: {
+          'border-color': '#d67614',
+          'background-color': function (ele) {
+            return ele.css('background-color');
           }
         }
       },
@@ -386,14 +377,16 @@ module.exports = function (chiseInstance) {
           'width': function(ele) { // styles for when edges are highlighted.
             return parseFloat(ele.data('width')) + 2;
           },
-          'line-color': highlightColor,
-          'source-arrow-color': highlightColor,
-          'target-arrow-color': highlightColor
+          'line-color': '#0B9BCD',
+          'source-arrow-color': '#0B9BCD',
+          'target-arrow-color': '#0B9BCD'
         },
-        unhighlighted: {// styles for when edges are unhighlighted.
-          'opacity': function (ele) {
-            // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
-            return ele.css('opacity');
+        selected: {
+          'line-color': '#d67614',
+          'source-arrow-color': '#d67614',
+          'target-arrow-color': '#d67614',
+          'width': function (ele) {
+            return parseFloat(ele.data('width')) + 2;
           }
         }
       },
@@ -512,7 +505,7 @@ module.exports = function (chiseInstance) {
       },
 
       resizeToContentCueEnabled: function (node){
-        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature", 
+        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
           "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
         var node_class = node.data('class');
         var result = false;
@@ -776,7 +769,7 @@ module.exports = function (chiseInstance) {
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
       if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
-        
+
         var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
         if (appUtilities.ctrlKeyDown ) {
           var newParent;
@@ -911,7 +904,7 @@ module.exports = function (chiseInstance) {
       if (modeProperties.mode === "add-node-mode") {
         var nodeType = modeProperties.selectedNodeType;
         var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
-        
+
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
