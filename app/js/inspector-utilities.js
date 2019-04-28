@@ -1103,7 +1103,9 @@ inspectorUtilities.handleNavigate = function (cy, id,eles,navCount) {
                          easing: 'ease',
                         });
                       }
-                      navCount = navCount +1 ;
+                        navCount = navCount +1 ; 
+
+
                 });
 };
 ;
