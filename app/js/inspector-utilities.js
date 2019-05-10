@@ -976,7 +976,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
   inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,file,chiseInstance) {
 
-   var title = "Validation Result";
+   var title = "Validation Results";
 
     var html = "";
 
@@ -986,89 +986,37 @@ inspectorUtilities.handleSBGNInspector = function () {
         if(errors.length !=0) {
             var cy = appUtilities.getActiveCy();
             var id=errors[currentPage].role; 
+            var eles =  cy.elements('[id="' + id + '"]');
             if(!highlighted.includes(id)) {
                var instance = cy.viewUtilities('get');
-               var eles =  cy.elements('[id="' + id + '"]').select();
                var args = {eles: eles, option: "highlighted4"};
                instance.highlight( args);
                highlighted.push(id);
-               cy.center(eles);
-               if(eles.isEdge()){
-                   var exceed = true;
-                   var source_node = eles.source();
-                   var target_node = eles.target();
-                   var source_loc = Math.pow(source_node._private.position.x, 2) + Math.pow(source_node._private.position.y, 2);
-                   var target_loc = Math.pow(target_node._private.position.x, 2) + Math.pow(target_node._private.position.y, 2);
-                   var source_to_target = source_loc < target_loc;
-                   var start_node = source_to_target ? source_node : target_node;
-                   var end_node = source_to_target ? target_node : source_node;
-                   var renderedStartPosition = start_node.renderedPosition();
-                   var renderedEndPosition = end_node.renderedPosition();
-                   var maxRenderedX = cy.width();
-                   var maxRenderedY = cy.height();
-                   exceed = false;
-                   if( ( renderedEndPosition.x >= maxRenderedX ) || ( renderedStartPosition.x <= 0 )
-                          || ( renderedEndPosition.y >= maxRenderedY ) || ( renderedStartPosition.y <= 0 ) ){
-                     exceed = true;
-                   }
-                  if( exceed ) {
-                      // save the node who is currently being dragged to the scratch pad
-                      cy.fit(eles);
-                  }
-               }
-               else {
-                    var renderedPosition = eles.renderedPosition();
-                    var renderedWidth = eles.renderedWidth();
-                    var renderedHeight = eles.renderedHeight();
-
-                    var maxRenderedX = cy.width();
-                    var maxRenderedY = cy.height();
-
-                    var topLeftRenderedPosition = {
-                      x: renderedPosition.x - renderedWidth / 2,
-                      y: renderedPosition.y - renderedHeight / 2
-                    };
-
-                    var bottomRightRenderedPosition = {
-                      x: renderedPosition.x + renderedWidth / 2,
-                      y: renderedPosition.y + renderedHeight / 2
-                    };
-
-                    var exceed = false;
-
-                    if( ( bottomRightRenderedPosition.x >= maxRenderedX ) || ( topLeftRenderedPosition.x <= 0 )
-                            || ( bottomRightRenderedPosition.y >= maxRenderedY ) || ( topLeftRenderedPosition.y <= 0 ) ){
-                      exceed = true;
-                    } 
-                    if( exceed ) {
-                      // save the node who is currently being dragged to the scratch pad
-                      cy.fit(eles);
-                    }
-               }
            }
-          html += "<p class='panel-body' style=color:red > File is invalid</p>";
-          html += "<p class='panel-body' style=color:red >" + errors[currentPage].text + "</p>";
+          inspectorUtilities.handleNavigate (cy,eles);
+          html += "<p class='panel-body' style=\"color:red; text-align:center\" > Map is invalid</p>";
+          html += "<p class='panel-body' style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
          var next = "Next";
          if(currentPage == 0) {
              if(errors.length !=1) {
-                 html += "<div id = 'altItems' style='position:fixed;  bottom:22px; left:90%; transform: translate(-50%, -50%); margin:0 auto; ' ><button class='btn btn-default' style='align: center;' id='inspector-next-button'"
+                 html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; ' ><button class='btn btn-default' style='align: center;' id='inspector-next-button'"
                  + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
              }else {
-                  html += "<div id = 'altItems' style='position:fixed;  bottom:22px; left:90%; transform: translate(-50%, -50%); margin:0 auto; ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                  html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
              } 
          }else { 
             var back = "Back";
             if(currentPage + 1 !== errors.length) {
-                  html += "<div id = 'altItems' style='position:fixed;  bottom:22px; left:88%; transform: translate(-50%, -50%); margin:0 auto; ' >\n\
+                  html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' >\n\
                 <button class='btn btn-default' style='align: center;' id='inspector-back-button'"
                  + ">" + back + "</button> <button class='btn btn-default' style='align: center;' id='inspector-next-button'"
                  + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>"; 
             }
             else {
-                  html += "<div id = 'altItems' style='position:fixed;  bottom:22px; left:90%; transform: translate(-50%, -50%); margin:0 auto; ' ><button class='btn btn-default' style='align: center;' id='inspector-back-button'"
+                  html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; ' ><button class='btn btn-default' style='align: center;' id='inspector-back-button'"
                 + ">" + back + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                 + ">" + dismiss + "</button> </div>"; 
             }
@@ -1076,8 +1024,8 @@ inspectorUtilities.handleSBGNInspector = function () {
          }
     }
     else {
-          html += "<p class='panel-body' style=color:green > File is valid</p>";
-           html += "<div id = 'altItems' style='position:fixed;  bottom:21px; left:90%; transform: translate(-50%, -50%); margin:0 auto; ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+          html += "<p class='panel-body' style=\"color:green; text-align:center\" > Map is valid</p>";
+           html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
       }
     $("#sbgn-inspector-console-panel-group").html(html);
@@ -1102,7 +1050,55 @@ inspectorUtilities.handleSBGNInspector = function () {
 
 }; 
 inspectorUtilities.handleNavigate = function (cy,eles) {
-    cy.center(eles);
+        cy.center(eles);
+        var exceed = false;
+        if(eles.isEdge()){
+            var source_node = eles.source();
+            var target_node = eles.target();
+            var source_loc = Math.pow(source_node._private.position.x, 2) + Math.pow(source_node._private.position.y, 2);
+            var target_loc = Math.pow(target_node._private.position.x, 2) + Math.pow(target_node._private.position.y, 2);
+            var source_to_target = source_loc < target_loc;
+            var start_node = source_to_target ? source_node : target_node;
+            var end_node = source_to_target ? target_node : source_node;
+            var renderedStartPosition = start_node.renderedPosition();
+            var renderedEndPosition = end_node.renderedPosition();
+            var maxRenderedX = cy.width();
+            var maxRenderedY = cy.height();
+            if( ( renderedEndPosition.x >= maxRenderedX ) || ( renderedStartPosition.x <= 0 )
+                   || ( renderedEndPosition.y >= maxRenderedY ) || ( renderedStartPosition.y <= 0 ) ){
+              exceed = true;
+            }
+           if( exceed ) {
+               // save the node who is currently being dragged to the scratch pad
+               cy.fit(eles);
+           }
+        }
+        else {
+             var renderedPosition = eles.renderedPosition();
+             var renderedWidth = eles.renderedWidth();
+             var renderedHeight = eles.renderedHeight();
+
+             var maxRenderedX = cy.width();
+             var maxRenderedY = cy.height();
+
+             var topLeftRenderedPosition = {
+               x: renderedPosition.x - renderedWidth / 2,
+               y: renderedPosition.y - renderedHeight / 2
+             };
+
+             var bottomRightRenderedPosition = {
+               x: renderedPosition.x + renderedWidth / 2,
+               y: renderedPosition.y + renderedHeight / 2
+             };
+             if( ( bottomRightRenderedPosition.x >= maxRenderedX ) || ( topLeftRenderedPosition.x <= 0 )
+                     || ( bottomRightRenderedPosition.y >= maxRenderedY ) || ( topLeftRenderedPosition.y <= 0 ) ){
+               exceed = true;
+             } 
+             if( exceed ) {
+               // save the node who is currently being dragged to the scratch pad
+               cy.fit(eles);
+             }
+        }
 };
 ;
 module.exports = inspectorUtilities;

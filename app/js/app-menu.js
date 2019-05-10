@@ -685,7 +685,8 @@ module.exports = function() {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-
+      if(chiseInstance.elementUtilities.mapType != "PD")
+          return;
       // use cy instance associated with chise instance
       var file = chiseInstance.getSbgnvizInstance().createSbgnml();
       var errors = chiseInstance.doValidation(file);
