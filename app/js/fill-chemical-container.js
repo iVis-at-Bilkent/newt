@@ -27,32 +27,29 @@ var fillChemicalContainer = function (node) {
     queryFields: 'label',
     q: geneName
   };
-  
+
   $.ajax({
-    type: "GET", //"POST",
-    url: queryScriptURL,
-    async: true,
-    data: queryParams,
-  })
-          .then(
-              function (queryResult) {
-            // - json parse is not required when no PHP involved
-            if (queryResult.response.numFound > 0)
-            {
-              var info = (new ChemicalView(
-                      {
-                        el: '#chemical-container',
-                        model: queryResult.response.docs[0]
-                      })).render();
-            }
-            else {
-              $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
-            }
-          },
-          function (xhr, status, error) {
-            $('#chemical-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + error + "</span>");
-          }
-          );
+    type: 'get',
+    url: "/utilities/testURL",
+    data: {url: queryScriptURL, qs: queryParams},
+    success: function(data){
+      if (!data.error && data.response.statusCode == 200 && data.response.body) {
+        var json = JSON.parse(data.response.body);
+        if(json.response.numFound > 0){
+          new ChemicalView({
+            el: '#chemical-container',
+            model: json.response.docs[0]
+          }).render();
+        }  
+      }
+      else {
+        $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
+      }
+    },
+    error: function(xhr, options, err){
+      $('#chemical-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + error + "</span>");
+    }
+  });
   $('#chemical-title').html("<b>" + node.data('label') + "</b>");
 };
 

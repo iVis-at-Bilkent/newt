@@ -18,6 +18,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="node_modules/intro.js/introjs.css" rel="stylesheet" type="text/css" />
         <!--cytoscape.js plugins -->
         <link href="node_modules/cytoscape-panzoom/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
         <link href="node_modules/cytoscape-panzoom/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css" />
@@ -62,13 +63,16 @@
                                         <li><a href="#" id="load-sample7">PolyQ proteins interference</a></li>
                                         <li><a href="#" id="load-sample8">Glycolysis</a></li>
                                         <li><a href="#" id="load-sample9">MAPK cascade</a></li>
+                                        <li><a href="#" id="load-sample10">Drosophila cell cycle</a></li>
+                                        <li><a href="#" id="load-sample11">Mammalian cholesterol biosynthesis</a></li>
+                                        <li><a href="#" id="load-sample12">Two gene system behavior</a></li>                                       
                                         <li class="divider" style="margin-bottom: 0"></li>
                                         <li><a class="title"><i>AF</i></a></li>
                                         <li class="divider" style="margin-top: 0"></li>
-                                        <li><a href="#" id="load-sample10">Transforming growth factor beta (TGFB) signaling</a></li>
-                                        <li><a href="#" id="load-sample11">Repressilator</a></li>
-                                        <li><a href="#" id="load-sample12">Epidermal growth factor receptor</a></li>
-                                        <li><a href="#" id="load-sample13">Regulation of TGF-beta induced metastasis</a></li>
+                                        <li><a href="#" id="load-sample13">Transforming growth factor beta (TGFB) signaling</a></li>
+                                        <li><a href="#" id="load-sample14">Repressilator</a></li>
+                                        <li><a href="#" id="load-sample15">Epidermal growth factor receptor</a></li>
+                                        <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#" id="save-as-sbgnml">Save...</a></li>
@@ -84,7 +88,6 @@
                                         <input id="celldesigner-file-input" type="file" style="display:none" />
                                         <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
                                         <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
-                                        <li><a href="#" id="read-db">Read from Graph DB</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -96,7 +99,6 @@
                                         <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
                                         <li><a href="#" id="export-as-sbgnml3-file">SBGN-ML 0.3</a></li>
                                         <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
-                                        <li><a href="#" id="save-to-db">Save to Graph DB</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -251,6 +253,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#" id="perform-layout">Perform Layout</a></li>
+                                <li><a href="#" id="perform-static-layout">Perform Static Layout</a></li>
                                 <li><a href="#" id="layout-properties">Layout Properties...</a></li>
                             </ul>
                         </li>
@@ -273,18 +276,6 @@
                                         <li><a href="#" id="query-neighborhood">Neighborhood...</a></li>
                                         <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
                                     </ul>
-                                  </li>
-                        <li class="dropdown-submenu">
-                                <a href="#" id="query-Db" class="dropdown-toggle" data-toggle="dropdown">
-                                   Graph DB
-                                    <!--<b class="right-caret"></b>-->
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" id="query-Dbpathsbetween">Paths Between...</a></li>
-                                    <li><a href="#" id="query-Dbpathsfromto">Paths From To...</a></li>
-                                    <li><a href="#" id="query-Dbcommonstream">Common Stream...</a></li>
-                                    <li><a href="#" id="query-Dbneighborhood">Neighborhood...</a></li>
-                                </ul>
                                 </li>
                             </ul>
                         </li>
@@ -308,6 +299,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#" id="quick-help">Quick Help</a></li>
+                                <li><a href="#" id="quick-tutorial">Quick Tutorial</a></li>
+                                <li><a href="#" id="ui-guide">UI Guide</a></li>
                                 <li><a href="#" id="about">About</a></li>
                             </ul>
                         </li>
@@ -333,7 +326,7 @@
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="select-mode-icon" src="app/img/toolbar/select.svg" title="Select / Edit" ></div>
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" ></div>
                     <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-edge-mode-icon" src="app/img/edges/consumption.svg" title="Create a new Consumption" ></div>
-                    <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to specified area specified by Shift + drag" ></div>
+                    <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to area specified by Shift + left click and drag" ></div>
 
                     <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
 
@@ -388,7 +381,7 @@
 
                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                 <div class="inside-menu">
-                    <img id="search-by-label-icon" class="sbgn-toolbar-element" src="app/img/toolbar/search.svg" title="Search: Search and find (case insensitive) all nodes with specified label text, selecting them and highlighting them along with their processes" >
+                    <img id="search-by-label-icon" class="sbgn-toolbar-element" src="app/img/toolbar/search.svg" title="Search: Search (case insensitive) and highlight all nodes with specified label text" >
                     <input id="search-by-label-text-box" class="sbgn-toolbar-element" type="label">
                     <img id="highlight-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/highlight-selected.svg" title="Highlight Selected: Highlight selected nodes and edges" >
                     <img id="remove-highlights-icon" class="sbgn-toolbar-element" src="app/img/toolbar/remove-highlights.svg" title="Remove Highlights: Remove any highlights" >
@@ -397,6 +390,7 @@
                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                 <div class="inside-menu">
                     <img id="perform-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-cose.svg" title="Perform Layout: Perform a force-directed layout of current map, maintaining compound structures" >
+                    <img id="perform-static-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-static.svg" title="Perform Static Layout: Re-calculate layout of current map from scratch, ignoring current positions and maintaining compound structures" >
                     <img id="layout-properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
                 </div>
 
@@ -424,7 +418,7 @@
                     <div id="sbgn-inspector">
                         <ul class="nav nav-tabs">
                             <li id='inspector-style-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-style"><img width="18px" height="18px" src="app/img/tabs/properties.svg"/>&nbsp;Object</a></li>
-							              <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map"><img width="18px" height="18px" src="app/img/toolbar/settings.svg"/>&nbsp;Map</a></li>
+                            <li id='inspector-map-tab' class="chise-tab"><a data-toggle="tab" href="#sbgn-inspector-map"><img width="18px" height="18px" src="app/img/toolbar/settings.svg"/>&nbsp;Map</a></li>
                             <li id='inspector-palette-tab' class="chise-tab active"><a data-toggle="tab" href="#sbgn-inspector-palette"><img width="18px" height="18px" src="app/img/tabs/palette.svg"/>&nbsp;Palette</a></li>
                             <li id='inspector-console-tab' class="chise-tab" style="display:none;"> <a data-toggle="tab" href="#sbgn-inspector-console"><img width="18px" height="18px" src="app/img/tabs/console.svg" />&nbsp;Console</a></li>
                         </ul>
@@ -619,22 +613,6 @@
             <!-- paths by URI query table will be shown here-->
         </div>
 
-        <div id="query-Dbneighborhood-table" tabindex="-1" class="modal fade" role="dialog">
-                  <!-- neighborhood query table will be shown here-->
-        </div>
-
-        <div id="query-Dbpathsbetween-table" tabindex="-1" class="modal fade" role="dialog">
-                <!-- paths between query table will be shown here-->
-        </div>
-
-        <div id="query-Dbpathsfromto-table" tabindex="-1" class="modal fade" role="dialog">
-                  <!-- paths from to query table will be shown here-->
-        </div>
-
-        <div id="query-Dbcommonstream-table" tabindex="-1" class="modal fade" role="dialog">
-                  <!-- common stream query table will be shown here-->
-        </div>
-
         <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- sbgn properties table will be shown here-->
         </div>
@@ -676,6 +654,10 @@
         </div>
 
         <div id="prompt-invalidImage-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
+
+        <div id="prompt-invalidEdge-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
@@ -737,7 +719,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 1.1.0</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 1.2.0</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -750,7 +732,11 @@
                                         <p class="address-text marg">in collaboration with the Demir Lab at OHSU, USA,</p>
                                         <p class="address-text">and EISBM, Lyon, France</p>
                                     </td></tr>
-
+                                <tr><td>
+                                        <p class="address-text">
+                                          See <a href="https://github.com/iVis-at-Bilkent/newt#credits" target="_blank">here</a> for third-party libraries used
+                                        </p>
+                                    </td></tr>
                                 <tr><td>
                                         <p class="address-text marg">
                                             <a href="mailto:ivis@cs.bilkent.edu.tr" target="_top">ivis@cs.bilkent.edu.tr</a>
@@ -1435,202 +1421,6 @@
             </div>
         </script>
 
-        <script type="text/template" id="query-Dbneighborhood-template">
-           <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
-           <div class="modal-content">
-           <div class="modal-header">
-           <button type="button" class="close" data-dismiss="modal">&times;</button>
-           <h4 class="modal-title">Neighborhood Query</h4>
-           </div>
-           <div class="modal-body">
-           <table class="table-condensed layout-table">
-           <tbody>
-           <tr>
-           <th colspan=2 style="padding-left: 0px;" align="left">
-               <!--&emsp; are added to fill the row so that the distance between the -->
-           <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</span>
-           </th>
-           </tr>
-            <tr>
-           <td style="padding-left: 40px;">
-           <span class="add-on layout-text"> Gene Symbols: </span><br>
-           <textarea id="query-Dbneighborhood-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
-           </td>
-            <td style="padding-right: 5px;">
-           <table frame="box" style="border-color: rgb(204, 204, 204)">
-           <tbody>
-           <caption style="text-align: left;">Stop Distance</caption>
-           <tr>
-           <td colspan=2>Length limit</td>
-           <td style="padding: 10px;"><input id="query-Dbneighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-           </tr>
-           </tbody>
-           </table>
-           </td>
-            </tr>
-           </tbody>
-           </table>
-           </div>
-           <div class="modal-footer" style="text-align: center">
-           <button id="save-query-Dbneighborhood" class="btn btn-default" >OK</button>
-           <button id="cancel-query-Dbneighborhood" class="btn btn-default">Cancel</button>
-           </div>
-           </div>
-           </div>
-       </script>
-        <script type="text/template" id="query-Dbpathsbetween-template">
-           <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                       <h4 class="modal-title">Paths Between Query</h4>
-                   </div>
-                   <div class="modal-body">
-                       <table class="table-condensed layout-table">
-                           <tbody>
-                           <tr>
-                               <th colspan=2 style="padding-left: 0px;" align="left">
-                                   <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
-                               </th>
-                           </tr>
-                            <tr>
-                               <td style="padding-left: 40px;">
-                                   <span class="add-on layout-text"> Gene Symbols: </span><br>
-                                   <textarea id="query-Dbpathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
-                               </td>
-                                <td style="padding-right: 5px;">
-                                   <table frame="box" style="border-color: rgb(204, 204, 204)">
-                                       <tbody>
-                                       <caption style="text-align: left;">Stop Distance</caption>
-                                       <tr>
-                                           <td colspan=2>Length limit</td>
-                                           <td style="padding: 10px;"><input id="query-Dbpathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-                                       </tr>
-                                       </tbody>
-                                   </table>
-                               </td>
-                            </tr>
-                           </tbody>
-                       </table>
-                   </div>
-                   <div class="modal-footer" style="text-align: center">
-                       <button id="save-query-Dbpathsbetween" class="btn btn-default" >OK</button>
-                       <button id="cancel-query-Dbpathsbetween" class="btn btn-default">Cancel</button>
-                   </div>
-               </div>
-           </div>
-       </script>
-        <script type="text/template" id="query-Dbpathsfromto-template">
-           <div class="modal-dialog sbgn-modal-dialog" style="width: 620px;">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                       <h4 class="modal-title">Paths From To Query</h4>
-                   </div>
-                   <div class="modal-body">
-                       <table class="table-condensed layout-table">
-                           <tbody>
-                           <tr>
-                               <th colspan=4 style="padding-left: 0px;" align="left">
-                                   <span class="add-on layout-text"> Find all paths of specified length limit from a set of source entities to a set of target entities </span>
-                               </th>
-                           </tr>
-                            <tr>
-                               <td style="padding-left: 5px;">
-                                   <span class="add-on layout-text"> Source Symbols: </span><br>
-                                   <textarea id="query-Dbpathsfromto-source-symbols" rows="4" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
-                               </td>
-                                <td style="padding-left: 5px;">
-                                   <span class="add-on layout-text"> Target Symbols: </span><br>
-                                   <textarea id="query-Dbpathsfromto-target-symbols" rows="4" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
-                               </td>
-                                <td style="padding-right: 5px;">
-                                   <table frame="box" style="border-color: rgb(204, 204, 204)">
-                                       <tbody>
-                                       <caption style="text-align: left;">Stop Distance</caption>
-                                       <tr>
-                                           <td colspan=2>Length limit</td>
-                                           <td style="padding: 10px;"><input id="query-Dbpathsfromto-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-                                       </tr>
-                                       </tbody>
-                                   </table>
-                               </td>
-                <td style="padding-right: 5px;">
-                                   <table frame="box" style="border-color: rgb(204, 204, 204)">
-                                       <tbody>
-                                       <caption style="text-align: left;">Extra Length</caption>
-                                       <tr>
-                                           <td colspan=2>Addition</td>
-                                           <td style="padding: 10px;"><input id="query-Dbpathsfromto-addition" type="text" min="0" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= addition %> > </td>
-                                       </tr>
-                                       </tbody>
-                                   </table>
-                               </td>
-                            </tr>
-                           </tbody>
-                       </table>
-                   </div>
-                   <div class="modal-footer" style="text-align: center">
-                       <button id="save-query-Dbpathsfromto" class="btn btn-default" >OK</button>
-                       <button id="cancel-query-Dbpathsfromto" class="btn btn-default">Cancel</button>
-                   </div>
-               </div>
-           </div>
-       </script>
-        <script type="text/template" id="query-Dbcommonstream-template">
-           <div class="modal-dialog sbgn-modal-dialog" style="width: 550px;">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                       <h4 class="modal-title">Common Stream Query</h4>
-                   </div>
-                   <div class="modal-body">
-                       <table class="table-condensed layout-table">
-                           <tbody>
-                           <tr>
-                               <th colspan=4 style="padding-left: 0px;" align="left">
-                                   <span class="add-on layout-text"> Find molecules within the specified distance that are affecting or affected by a specific set of molecules in common</span>
-                               </th>
-                           </tr>
-                            <tr>
-                               <td style="padding-left: 25px;">
-                                   <span class="add-on layout-text"> Gene Symbols: </span><br>
-                                   <textarea id="query-Dbcommonstream-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
-                               </td>
-                                <td style="padding-right: 5px;">
-                                   <table frame="box" style="border-color: rgb(204, 204, 204)">
-                                       <tbody>
-                                       <caption style="text-align: left;">Stop Distance</caption>
-                                       <tr>
-                                           <td colspan=2>Length limit</td>
-                                           <td style="padding: 10px;"><input id="query-Dbcommonstream-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-                                       </tr>
-                                       </tbody>
-                                   </table>
-                               </td>
-               <td style="padding-right: 25px;">
-                                   <table frame="box" style="border-color: rgb(204, 204, 204)">
-                                       <tbody>
-                                       <caption style="text-align: left;">Direction</caption>
-                                       <tr>
-                                           <td colspan=2> Direction</td>
-                                           <td style="padding: 10px;"><input id="query-Dbcommonstream-direction" type="text" min="0" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= direction %> > </td>
-                                       </tr>
-                                       </tbody>
-                                   </table>
-                               </td>
-                            </tr>
-                           </tbody>
-                       </table>
-                   </div>
-                   <div class="modal-footer" style="text-align: center">
-                       <button id="save-query-Dbcommonstream" class="btn btn-default" >OK</button>
-                       <button id="cancel-query-Dbcommonstream" class="btn btn-default">Cancel</button>
-                   </div>
-               </div>
-           </div>
-       </script>
-
         <script type="text/template" id="prompt-save-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 350px;">
             <div class="modal-content">
@@ -1941,6 +1731,37 @@
             </div>
             <div class="modal-footer" style="text-align: center">
             <button id="prompt-invalidURL-confirm" class="btn btn-default">OK</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <!-- Invalid edge warning -->
+        <script type="text/template" id="prompt-invalidEdge-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 335px;">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+            <tbody>
+            <tr>
+            <th style="padding-left: 0px;" align="left">
+            <span class="add-on layout-text centered">Invalid edge type! Refer to Legend menu for help.</span>
+            </th>
+            </tr>
+
+            <tr id="prompt-invalidEdge-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+            <td>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="prompt-invalidEdge-confirm" class="btn btn-default">OK</button>
             </div>
             </div>
             </div>
@@ -2315,7 +2136,7 @@
             <tbody>
             <tr>
             <td>
-            <span class="add-on layout-text"> Font Family </span>
+            <span class="add-on layout-text"> Family </span>
             </td>
 
             <td>
@@ -2325,7 +2146,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Font Size </span>
+            <span class="add-on layout-text"> Size </span>
             </td>
             <td>
             <input id="font-properties-font-size" type="text" min="1" class="sbgn-input-small layout-text integer-input" value= <%= fontSize %> >
@@ -2334,7 +2155,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Font Weight </span>
+            <span class="add-on layout-text"> Weight </span>
             </td>
 
             <td>
@@ -2350,7 +2171,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text"> Font Type </span>
+            <span class="add-on layout-text"> Type </span>
             </td>
 
             <td>
@@ -2362,6 +2183,17 @@
             </select>
             </td>
             </tr>
+
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Color </span>
+            </td>
+
+            <td>
+            <input id="font-properties-font-color" class="inspector-input-box" type='color' name="font-color-select" value= <%= fontColor %> />
+            </td>
+            </tr>
+
             </tbody>
             </table>
             </div>
@@ -2533,29 +2365,85 @@
         </script>
 
         <script type="text/template" id="color-scheme-inspector-template">
-            <div style="margin-top:5px;">
-                <% for(var scheme_id in schemes) { %>
-                    <% if(schemes[scheme_id].isDisplayed) {%>
-                        <div style="display:block; width:70%; margin:0 auto;">
-                            <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
-                                <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:1px solid black; display:block;'>
-                                    <%= schemes[scheme_id].previewHtml %>
-                                </div>
-                            </div>
-                            <% if(schemes[scheme_id].invert) {%>
-                                <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
-                                    <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
-                                </div>
-                            <% } %>
-                            <div style="clear:both"></div>
-                        </div>
-                    <% } %>
-                <% } %>
-            </div>
+          <div style="margin-top:5px;">
 
-            <div style='text-align: center; margin-top: 5px;'>
-              <button class='btn btn-default' style='align: center;' id='map-color-scheme-default-button'>Default</button>
-            <div>
+              <div style="margin-bottom:5px; text-align: center;">
+                <class="add-on layout-text">Style</>
+                <class="add-on layout-text" style="margin-left:2%;"></>
+                <select id="color-scheme-inspector-style-select" class="color-scheme-type-select" style="margin-left: %7;">
+                  <option id="color-scheme-inspector-style-solid" value="solid" <% if (scheme_type == 'solid') print('selected')%>> Solid </option>
+                  <option id="color-scheme-inspector-style-gradient" value="gradient" <% if (scheme_type == 'gradient') print('selected')%>> Gradient </option>
+                  <option id="color-scheme-inspector-style-3D" value="3D" <% if (scheme_type == '3D') print('selected')%>> 3D </option>
+                </select>
+              </div>
+
+
+              <div id='solid-color-scheme-display' <% if (scheme_type == 'solid') {print('style="display: block;"');} else { print('style="display: none;"'); }%>>
+                  <% for(var scheme_id in schemes) { %>
+                      <% if(schemes[scheme_id].isDisplayed) {%>
+                          <div style="display:block; width:70%; margin:0 auto;">
+                              <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
+                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
+                                      <%= schemes[scheme_id].previewHtml %>
+                                  </div>
+                              </div>
+                              <% if(schemes[scheme_id].invert) {%>
+                                  <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
+                                      <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
+                                  </div>
+                              <% } %>
+                              <div style="clear:both"></div>
+                          </div>
+                      <% } %>
+                  <% } %>
+              </div>
+
+              <div id='gradient-color-scheme-display' <% if (scheme_type == 'gradient') {print('style="display: block;"');} else { print('style="display: none;"'); }%>>
+                  <% for(var scheme_id in schemes_gradient) { %>
+                      <% if(schemes_gradient[scheme_id].isDisplayed) {%>
+                          <div style="display:block; width:70%; margin:0 auto;">
+                              <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
+                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
+                                      <%= schemes_gradient[scheme_id].previewHtml %>
+                                  </div>
+                              </div>
+                              <% if(schemes_gradient[scheme_id].invert) {%>
+                                  <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
+                                      <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
+                                  </div>
+                              <% } %>
+                              <div style="clear:both"></div>
+                          </div>
+                      <% } %>
+                  <% } %>
+              </div>
+
+              <div id='3D-color-scheme-display'  <% if (scheme_type == '3D') {print('style="display: block;"');} else { print('style="display: none;"'); }%>>
+                  <% for(var scheme_id in schemes_3D) { %>
+                      <% if(schemes_3D[scheme_id].isDisplayed) {%>
+                          <div style="display:block; width:70%; margin:0 auto;">
+                              <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
+                                  <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
+                                      <%= schemes_3D[scheme_id].previewHtml %>
+                                  </div>
+                              </div>
+                              <% if(schemes_3D[scheme_id].invert) {%>
+                                  <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
+                                      <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
+                                  </div>
+                              <% } %>
+                              <div style="clear:both"></div>
+                          </div>
+                      <% } %>
+                  <% } %>
+              </div>
+
+          </div>
+
+          <div style='text-align: center; margin-top: 5px;'>
+            <button class='btn btn-default' style='align: center;' id='map-color-scheme-default-button'>Default</button>
+          <div>
+
         </script>
         <script type="text/template" id="prompt-invalidSchematronFile-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">

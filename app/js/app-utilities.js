@@ -6,6 +6,7 @@
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
+var tutorial = require('./tutorial');
 
 var appUtilities = {};
 
@@ -62,7 +63,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
   // refresh color schema menu
-  appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView});
+  appUndoActions.refreshColorSchemeMenu({value: generalProperties.mapColorScheme, self: appUtilities.colorSchemeInspectorView, scheme_type: generalProperties.mapColorSchemeStyle});
 
   // set the file content by the current file name for cy
   var fileName = appUtilities.getScratch(cy, 'currentFileName');
@@ -251,7 +252,9 @@ appUtilities.updateNetworkTabDesc = function (networkKey) {
     mapName = "Pathway";
 
   // update the content of 'a' element that is contained by the related tab
-  $('#' + tabId + ' a').text(mapName);
+  var relatedTab = document.getElementById(tabId).childNodes[1];
+  var relatedTabTextField = relatedTab.childNodes[2];
+  relatedTabTextField.nodeValue = mapName;
 };
 
 // map given chise instance to the given network id
@@ -403,14 +406,20 @@ appUtilities.createNewNetwork = function () {
     }
   });
 
-  //set border-width of selected nodes to a fixed value 
+  //set border-width of selected nodes to a fixed value
   newInst.getCy().style()
     .selector('node:selected')
     .css({
       'border-width': function(ele){
         return Math.max(ele.data("border-width"), 3);
       }
-    });
+    })
+    .selector('edge:selected')
+    .css({
+      'width': function(ele){
+        return Math.max(ele.data("width"), 3);
+      }
+    });;
 
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
@@ -574,8 +583,23 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
-  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab"><a data-toggle="tab" href="#' + panelId + '">' + tabDesc + '</a></li>';
+  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab">\n\
+                  <a data-toggle="tab" href="#' + panelId + '">\n\
+                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '</a></li>';
 
+  $('ul').on('click', 'button.' + tabId +'closeTab', function() {
+    var networkId = tabId.substring(17);
+    appUtilities.setActiveNetwork(networkId);
+    appUtilities.closeActiveNetwork();
+  });
+
+  $('ul').on('mousedown', '#' + tabId, function(e) {
+    if( e.which == 2 ) {
+     var networkId = tabId.substring(17);
+     appUtilities.setActiveNetwork(networkId);
+     appUtilities.closeActiveNetwork();
+    }
+  });
   // create new tab inside the list of network tabs
   tabsList.append(newTabStr);
 };
@@ -720,10 +744,11 @@ appUtilities.defaultGeneralProperties = {
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
   enablePorts: true,
-  allowCompoundNodeResize: false,
+  allowCompoundNodeResize: true,
   mapColorScheme: 'black_white',
+  mapColorSchemeStyle: 'solid',
   defaultInfoboxHeight: 12,
-  defaultInfoboxWidth: 8,
+  defaultInfoboxWidth: 12,
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: ""
@@ -736,12 +761,15 @@ appUtilities.setFileContent = function (fileName) {
     span.removeChild(span.firstChild);
   }
   while (displayedSpan.firstChild) {
-      displayedSpan.removeChild(displayedSpan.firstChild);
+    displayedSpan.removeChild(displayedSpan.firstChild);
   }
   span.appendChild(document.createTextNode(fileName));
-  if (fileName.length <= 40)
-      displayedSpan.appendChild(document.createTextNode(fileName));
-  else displayedSpan.appendChild(document.createTextNode(fileName.substring(0, 34) + "...xml"));
+  if (fileName.length <= 40) {
+    displayedSpan.appendChild(document.createTextNode(fileName));
+  }
+  else {
+    displayedSpan.appendChild(document.createTextNode(fileName.substring(0, 34) + "..." + fileName.substring(fileName.lastIndexOf('.')+1, fileName.length)));
+  };
 
   displayedSpan.style.display = 'block';
   span.style.display = 'none';
@@ -1034,6 +1062,69 @@ appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
         chiseInstance.hideNodesSmart(eles);
     }
 };
+
+appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
+  '#000000' : 'http://newteditor.org/color-scheme-images/bw2_gradient.png',
+  '#80cdc1' : 'http://newteditor.org/color-scheme-images/gb5_gradient.png',
+  '#92c5de' : 'http://newteditor.org/color-scheme-images/rb5_gradient.png',
+  '#9ecae1' : 'http://newteditor.org/color-scheme-images/blue4_gradient.png',
+  '#a6dba0' : 'http://newteditor.org/color-scheme-images/pg1_gradient.png',
+  '#b2abd2' : 'http://newteditor.org/color-scheme-images/pb5_gradient.png',
+  '#bababa' : 'http://newteditor.org/color-scheme-images/gr1_gradient.png',
+  '#bdbdbd' : 'http://newteditor.org/color-scheme-images/grey4_gradient.png',
+  '#c2a5cf' : 'http://newteditor.org/color-scheme-images/pg5_gradient.png',
+  '#c6dbef' : 'http://newteditor.org/color-scheme-images/blue3_gradient.png',
+  '#c7eae5' : 'http://newteditor.org/color-scheme-images/gb4_gradient.png',
+  '#d1e5f0' : 'http://newteditor.org/color-scheme-images/rb4_gradient.png',
+  '#d8daeb' : 'http://newteditor.org/color-scheme-images/pb4_gradient.png',
+  '#d9d9d9' : 'http://newteditor.org/color-scheme-images/grey3_gradient.png',
+  '#d9f0d3' : 'http://newteditor.org/color-scheme-images/pg2_gradient.png',
+  '#dfc27d' : 'http://newteditor.org/color-scheme-images/gb1_gradient.png',
+  '#e0e0e0' : 'http://newteditor.org/color-scheme-images/gr2_gradient.png',
+  '#e7d4e8' : 'http://newteditor.org/color-scheme-images/pg4_gradient.png',
+  '#eff3ff' : 'http://newteditor.org/color-scheme-images/blue2_gradient.png',
+  '#f0f0f0' : 'http://newteditor.org/color-scheme-images/grey2_gradient.png',
+  '#f4a582' : 'http://newteditor.org/color-scheme-images/rb1_gradient.png',
+  '#f5f5f5' : 'http://newteditor.org/color-scheme-images/gb3_gradient.png',
+  '#f6e8c3' : 'http://newteditor.org/color-scheme-images/gb2_gradient.png',
+  '#f7f7f7' : 'http://newteditor.org/color-scheme-images/rb3_gradient.png',
+  '#fdb863' : 'http://newteditor.org/color-scheme-images/pb1_gradient.png',
+  '#fddbc7' : 'http://newteditor.org/color-scheme-images/rb2_gradient.png',
+  '#fee0b6' : 'http://newteditor.org/color-scheme-images/pb2_gradient.png',
+  '#ffffff' : 'http://newteditor.org/color-scheme-images/bw1_gradient.png',
+};
+
+appUtilities.colorCodeTo3DImage = colorCodeTo3DImage ={
+  '#000000' : 'http://newteditor.org/color-scheme-images/bw2_3d.png',
+  '#80cdc1' : 'http://newteditor.org/color-scheme-images/gb5_3d.png',
+  '#92c5de' : 'http://newteditor.org/color-scheme-images/rb5_3d.png',
+  '#9ecae1' : 'http://newteditor.org/color-scheme-images/blue4_3d.png',
+  '#a6dba0' : 'http://newteditor.org/color-scheme-images/pg1_3d.png',
+  '#b2abd2' : 'http://newteditor.org/color-scheme-images/pb5_3d.png',
+  '#bababa' : 'http://newteditor.org/color-scheme-images/gr1_3d.png',
+  '#bdbdbd' : 'http://newteditor.org/color-scheme-images/grey4_3d.png',
+  '#c2a5cf' : 'http://newteditor.org/color-scheme-images/pg5_3d.png',
+  '#c6dbef' : 'http://newteditor.org/color-scheme-images/blue3_3d.png',
+  '#c7eae5' : 'http://newteditor.org/color-scheme-images/gb4_3d.png',
+  '#d1e5f0' : 'http://newteditor.org/color-scheme-images/rb4_3d.png',
+  '#d8daeb' : 'http://newteditor.org/color-scheme-images/pb4_3d.png',
+  '#d9d9d9' : 'http://newteditor.org/color-scheme-images/grey3_3d.png',
+  '#d9f0d3' : 'http://newteditor.org/color-scheme-images/pg2_3d.png',
+  '#dfc27d' : 'http://newteditor.org/color-scheme-images/gb1_3d.png',
+  '#e0e0e0' : 'http://newteditor.org/color-scheme-images/gr2_3d.png',
+  '#e7d4e8' : 'http://newteditor.org/color-scheme-images/pg4_3d.png',
+  '#eff3ff' : 'http://newteditor.org/color-scheme-images/blue2_3d.png',
+  '#f0f0f0' : 'http://newteditor.org/color-scheme-images/grey2_3d.png',
+  '#f4a582' : 'http://newteditor.org/color-scheme-images/rb1_3d.png',
+  '#f5f5f5' : 'http://newteditor.org/color-scheme-images/gb3_3d.png',
+  '#f6e8c3' : 'http://newteditor.org/color-scheme-images/gb2_3d.png',
+  '#f7f7f7' : 'http://newteditor.org/color-scheme-images/rb3_3d.png',
+  '#fdb863' : 'http://newteditor.org/color-scheme-images/pb1_3d.png',
+  '#fddbc7' : 'http://newteditor.org/color-scheme-images/rb2_3d.png',
+  '#fee0b6' : 'http://newteditor.org/color-scheme-images/pb2_3d.png',
+  '#ffffff' : 'http://newteditor.org/color-scheme-images/bw1_3d.png',
+};
+
 
 appUtilities.mapColorSchemes = mapColorSchemes = {
   'black_white': {
@@ -1694,6 +1785,49 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'BA complex': '#e0e0e0',
       'delay': '#ffffff'
     }
+  },
+  'pure_white': {
+    'name': 'Pure White',
+    'preview': ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+    'values': {
+      'unspecified entity': '#ffffff',
+      'simple chemical': '#ffffff',
+      'macromolecule': '#ffffff',
+      'nucleic acid feature': '#ffffff',
+      'perturbing agent': '#ffffff',
+      'source and sink': '#ffffff',
+      'complex': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'association': '#ffffff',
+      'dissociation': '#ffffff',
+      'phenotype': '#ffffff',
+      'tag': '#ffffff',
+      'consumption': '#ffffff',
+      'production': '#ffffff',
+      'modulation': '#ffffff',
+      'stimulation': '#ffffff',
+      'catalysis': '#ffffff',
+      'inhibition': '#ffffff',
+      'necessary stimulation': '#ffffff',
+      'logic arc': '#ffffff',
+      'equivalence arc': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'compartment': '#ffffff',
+      'submap': '#ffffff',
+      // AF
+      'BA plain': '#ffffff',
+      'BA unspecified entity': '#ffffff',
+      'BA simple chemical': '#ffffff',
+      'BA macromolecule': '#ffffff',
+      'BA nucleic acid feature': '#ffffff',
+      'BA perturbing agent': '#ffffff',
+      'BA complex': '#ffffff',
+      'delay': '#ffffff'
+    }
   }
 };
 // set multimers to be the same as their original elements
@@ -1717,37 +1851,152 @@ appUtilities.mapEleClassToId = function(eles, classMap) {
   return result;
 };
 
+// go through eles, mapping the id of these elements to URL's that were mapped to their data().class color.
+// this function can only be used with gradient and 3D type color schemes since, solid color schemes does
+// not have a default background image.
+// classMap is of the form: {ele.data().class: value}
+// return object of the form: {ele.id: value}
+appUtilities.mapEleClassToBackgroundImage = function(eles, classMap, scheme_type){
+  result = {};
+  if(scheme_type == 'gradient'){
+    for( var i = 0; i < eles.length; i++ ){
+      ele = eles[i];
+      result[ele.id()] = colorCodeToGradientImage[ classMap[ele.data().class] ];
+    }
+  }
+  else if (scheme_type == '3D'){
+    for( var i = 0; i < eles.length; i++ ){
+      ele = eles[i];
+      result[ele.id()] = colorCodeTo3DImage[ classMap[ele.data().class ]];
+    }
+  }
+  return result;
+}
+
+appUtilities.mapBgImgCoverToEle = function(){
+  result = {};
+  for( var i = 0; i < eles.length; i++ ){
+    ele = eles[i];
+    result[ele.id()] = classMap[ele.data().class];
+  }
+  return result;
+}
+
 // change the global style of the map by applying the current color scheme
-appUtilities.applyMapColorScheme = function(newColorScheme, self, _cy) {
+appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
 
   // if _cy param is set use it else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCy();
-
   var eles = cy.nodes();
-  var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
-  var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
-  var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
-  var chiseInstance = appUtilities.getActiveChiseInstance();
 
-  var actions = [];
-  // edit style of the current map elements
-  actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
-  // collapsed nodes' style should also be changed, special edge case
-  actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+  if(scheme_type == 'solid'){
 
-  actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self}});
-  // set to be the default as well
-  for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
-    classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
-    // nodeClass may not be defined in the defaultProperties (for edges, for example)
-    if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
-      actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+    var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
+    var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
+    var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+    var clearBgImg = function(eles){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = '';
+      }
+      return result;
+    };
+
+    var actions = [];
+
+    //first clear the background images of already present elementUtilities
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: clearBgImg(eles)}});
+    // edit style of the current map elements
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+    // collapsed nodes' style should also be changed, special edge case
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+
+    actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
+
+    // set to be the default as well
+    for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
+      classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
+      // nodeClass may not be defined in the defaultProperties (for edges, for example)
+      if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+      }
+    }
+
+  }
+
+  // no need to handle 3D and Gradient color schemes separately
+  else {
+
+    var colorIDMap = appUtilities.mapEleClassToId(eles, mapColorSchemes['pure_white']['values']);
+    var backgroundImgMap = appUtilities.mapEleClassToBackgroundImage(eles, mapColorSchemes[newColorScheme]['values'], scheme_type);
+    var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
+    var collapsedColorIDMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes['pure_white']['values']);
+    var collapsedBackgroundImgMap = appUtilities.mapEleClassToBackgroundImage(collapsedChildren, mapColorSchemes[newColorScheme]['values'], scheme_type);
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+    //utility functions to set background image Properties
+    var mapCovertoBgFit = function(eles){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = 'none';
+      }
+      return result;
+    };
+
+    var mapPercentToPosition = function(eles,percent){
+      result = {};
+      for( var i = 0; i < eles.length; i++ ){
+        ele = eles[i];
+        result[ele.id()] = percent + '%';
+      }
+      return result;
+    };
+
+    var actions = [];
+
+    // edit style of the current map elements
+    // change background color of the current map elements to #ffffff
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: colorIDMap}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: backgroundImgMap}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
+
+    // collapsed nodes' style should also be changed, special edge case
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedColorIDMap}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: collapsedBackgroundImgMap}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
+
+
+    actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
+
+    // set to be the default as well
+    for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
+      classBgColor = mapColorSchemes[newColorScheme]['values'][nodeClass];
+      classBgImg = scheme_type == 'gradient' ? colorCodeToGradientImage[mapColorSchemes[newColorScheme]['values'][nodeClass]] : colorCodeTo3DImage[mapColorSchemes[newColorScheme]['values'][nodeClass]];
+      // nodeClass may not be defined in the defaultProperties (for edges, for example)
+      if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: '#ffffff'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: 'cover'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: '50%'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: '50%'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: classBgImg}});
+      }
     }
   }
 
   cy.undoRedo().do("batch", actions);
-  // ensure the menu is updated accordingly
-  document.getElementById("map-color-scheme_preview_" + newColorScheme).style.border = "3px solid";
+
 };
 
 // the 3 following functions are related to the handling of the dynamic image
@@ -1792,6 +2041,7 @@ appUtilities.getAllStyles = function (_cy) {
     'font-weight': 'fontWeight',
     'font-style': 'fontStyle',
     'font-family': 'fontFamily',
+    'color': 'fontColor',
     'background-image': 'backgroundImage',
     'background-fit': 'backgroundFit',
     'background-position-x': 'backgroundPosX',
@@ -1833,7 +2083,7 @@ appUtilities.getAllStyles = function (_cy) {
           var colorID = colorUsed[validColor];
           props[properties[cssProp]] = colorID;
         }
-        //if it is background image property, replace it with corresponding id 
+        //if it is background image property, replace it with corresponding id
         else if(cssProp == 'background-image'){
           var imgs = appUtilities.elementValidImages(element);
           props[properties[cssProp]] = appUtilities.elementValidImageIDs(imgs, imagesUsed);
@@ -1947,7 +2197,7 @@ appUtilities.elementValidImageIDs = function (imgs, imagesUsed) {
   else{
     return undefined;
   }
-} 
+}
 
 /*
   returns: {
@@ -1997,7 +2247,7 @@ appUtilities.getImagesFromElements = function (nodes) {
       }
     });
   }
-  
+
   return imageHash;
 }
 
@@ -2090,6 +2340,8 @@ appUtilities.launchWithModelFile = function() {
     loadFromURL(url_path, chiseInstance, promptInvalidURLWarning);
   else if(uri_path != undefined)
     loadFromURI(uri_path, chiseInstance, promptInvalidURIWarning);
+  else
+    tutorial.introduction(true);
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
     // get current general properties
@@ -2131,24 +2383,31 @@ appUtilities.launchWithModelFile = function() {
       filename = 'remote';
 
     var fileExtension = filename.split('.');
-    if(fileExtension.length > 0)
+    if(fileExtension.length > 0 && filename.indexOf('.') > -1)
       fileExtension = fileExtension[fileExtension.length - 1];
     else
       fileExtension = 'txt';
 
     $.ajax({
       type: 'get',
-      url: filepath,
-      success: function(result){
-        var fileToLoad = new File([result], filename, {
-          type: 'text/' + fileExtension,
-          lastModified: Date.now()
-        });
+      url: "/utilities/testURL",
+      data: {url: filepath},
+      success: function(data){
+        // here we can get 404 as well, for example, so there are still error cases to handle
+        if (!data.error && data.response.statusCode == 200 && data.response.body) {
+          var fileToLoad = new File([data.response.body], filename, {
+            type: 'text/' + fileExtension,
+            lastModified: Date.now()
+          });
 
-        currentGeneralProperties.inferNestingOnLoad = true;
-        chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          currentGeneralProperties.inferNestingOnLoad = true;
+          chiseInstance.loadSBGNMLFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+        }
+        else {
+          loadCallbackInvalidityWarning();
+        }
       },
-      error: function(xhr, ajaxOptions, thrownError){
+      error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
       }
     });
@@ -2174,23 +2433,29 @@ appUtilities.launchWithModelFile = function() {
     var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
     $.ajax({
-        url: queryURL,
-        type: 'GET',
-        success: function (data) {
-          if (data == null) {
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            promptInvalidURIWarning.render();
-          }
-          else {
-            $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
-            currentGeneralProperties.inferNestingOnLoad = false;
-            chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(data), undefined, true);
-            currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-            chiseInstance.endSpinner('paths-byURI-spinner');
-            $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
-          }
+      type: 'get',
+      url: "/utilities/testURL",
+      data: {url: queryURL},
+      success: function(data){
+        // here we can get 404 as well, for example, so there are still error cases to handle
+        if (data.response.statusCode == 200 && data.response.body) {
+          var xml = $.parseXML(data.response.body);
+          $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('paths-byURI-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
-      });
+        else {
+          chiseInstance.endSpinner('paths-byURI-spinner');
+          promptInvalidURIWarning.render();
+        }
+      },
+      error: function(xhr, options, err){
+        chiseInstance.endSpinner('paths-byURI-spinner');
+        promptInvalidURIWarning.render();      }
+    });
   }
 
   // returns an object that contains name-value pairs of query parameters
@@ -2314,22 +2579,21 @@ appUtilities.relocateInfoBoxes = function(node){
     return;
   }
   cy.nodes(":selected").unselect();
+
   relocatedNode = node;
-  this.enableInfoBoxRelocation(node);
+
+  //Call undo-redo relocate function
+  cy.undoRedo().do("relocateInfoBoxes", {node});
+
 }
 
 //Checks whether a info-box is selected in a given mouse position
-appUtilities.checkMouseContainsInfoBox = function(unit, mouse_down_x, mouse_down_y){
+appUtilities.checkMouseContainsInfoBox = function(cy, unit, mouse_down_x, mouse_down_y){
   var box = unit.bbox;
   var instance = this.getActiveSbgnvizInstance();
-  var cy = this.getActiveCy();
   var coords = instance.classes.AuxiliaryUnit.getAbsoluteCoord(unit, cy);
-  var x_loc = coords.x;
-  var y_loc = coords.y;
-  var width = box.w;
-  var height = box.h;
-  return ((mouse_down_x >= x_loc - width / 2) && (mouse_down_x <= x_loc + width / 2))
-    && ( (mouse_down_y >= y_loc - height / 2) && (mouse_down_y <= y_loc + height / 2));
+  return ((mouse_down_x >= coords.x - box.w / 2) && (mouse_down_x <= coords.x + box.w / 2))
+    && ( (mouse_down_y >= coords.y - box.h / 2) && (mouse_down_y <= coords.y + box.h / 2));
 }
 
 //Enables info-box appUtilities.RelocationHandler
@@ -2337,74 +2601,42 @@ appUtilities.enableInfoBoxRelocation = function(node){
   var cy = this.getActiveCy();
   //Disable box movements
   var oldColor = node.data("border-color");
+  var oldWidth = node.data("border-width");
   node.data("border-color", "#d67614");
+  node.data("border-width", Math.max(3, oldWidth));
   var selectedBox;
   var anchorSide;
-  cy.on('mousedown', appUtilities.RelocationHandler = function(event){
+  $(document).on('mousedown', appUtilities.RelocationHandler = function(event){
       //Check whether event contained by infobox of a node
       //Lock the node so that it won't change position when
       //Info boxes are dragged
       cy.autounselectify(true);
       cy.autolock(true);
-      var top = node.data('auxunitlayouts').top;
-      var bottom = node.data('auxunitlayouts').bottom;
-      var right = node.data('auxunitlayouts').right;
-      var left = node.data('auxunitlayouts').left;
+      var statesandinfos = node.data('statesandinfos');
+
+      //Check if event is on cy canvas
+      var containerPos = $(cy.container()).position();
+      var containerWidth = $(cy.container()).width();
+      var containerHeight = $(cy.container()).height();
 
       //Get mouse positions
-      var mouse_down_x = event.position.x;
-      var mouse_down_y = event.position.y;
+      var mouse_down_x = (event.pageX - containerPos.left - cy.pan().x)/cy.zoom();
+      var mouse_down_y = (event.pageY - containerPos.top - cy.pan().y)/cy.zoom();
       var instance = appUtilities.getActiveSbgnvizInstance();
       var oldAnchorSide; //Hold old anchor side to modify units
-      //Check top units
-      if (top !== undefined && selectedBox === undefined) {
-        var units = top.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
-        }
-      }
-      //Check right units
-      if (right !== undefined && selectedBox === undefined) {
-        var units = right.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
-        }
-      }
-      //Check bottom units
-      if (bottom !== undefined && selectedBox === undefined) {
-        var units = bottom.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
-        }
-      }
-      //Check left units
-      if (left !== undefined && selectedBox === undefined) {
-        var units = left.units;
-        for (var i = units.length-1; i >= 0 ; i--) {
-          if (appUtilities.checkMouseContainsInfoBox(units[i], mouse_down_x, mouse_down_y)) {
-            selectedBox = units[i];
-            oldAnchorSide = selectedBox.anchorSide;
-            break;
-          }
+      for (var i = 0; i < statesandinfos.length && selectedBox === undefined; i++) {
+        if(appUtilities.checkMouseContainsInfoBox(cy, statesandinfos[i], mouse_down_x, mouse_down_y)) {
+          selectedBox = statesandinfos[i];
+          oldAnchorSide = selectedBox.anchorSide;
+          break;
         }
       }
 
       //If no info-box found abort
-      if (selectedBox === undefined) {
+      if (selectedBox === undefined || event.which !== 1) { //If event is not a right left click disable relocation
         appUtilities.disableInfoBoxRelocation();
         node.data("border-color", oldColor);
+        node.data("border-width", oldWidth);
         relocatedNode = undefined;
         return;
       }
@@ -2414,17 +2646,9 @@ appUtilities.enableInfoBoxRelocation = function(node){
       selectedBox.dashed = true;
       var last_mouse_x = mouse_down_x;
       var last_mouse_y = mouse_down_y;
-      if ((node.data("class") === "compartment" || node.data("class") === "complex")
-        && node._private.children !== undefined && node._private.children.length !== 0) {
-        var parentWidth = node._private.autoWidth;
-        var parentHeight = node._private.autoHeight;
-        var padding = node._private.autoPadding;
-      }
-      else {
-        var parentWidth = node.data("bbox").w;
-        var parentHeight = node.data("bbox").h;
-        var padding = 0;
-      }
+      var parentWidth = node.width();
+      var parentHeight = node.height();
+      var padding = node.padding();
       var parentX1 = position.x - parentWidth/2 - padding;
       var parentX2 = position.x + parentWidth/2 + padding;
       var parentY1 = position.y - parentHeight/2 - padding;
@@ -2433,6 +2657,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
         if (selectedBox === undefined) { //If selected box is undefined somehow abort
           appUtilities.disableInfoBoxRelocation();
           node.data("border-color", oldColor);
+          node.data("border-width", oldWidth);
           relocatedNode = undefined;
           return;
         }
@@ -2441,29 +2666,22 @@ appUtilities.enableInfoBoxRelocation = function(node){
         var drag_x = event.position.x;
         var drag_y = event.position.y;
         var anchorSide = selectedBox.anchorSide;
-        var gap, shift_x, shift_y, box_new_x, box_new_y;
+        var shift_x, shift_y, box_new_x, box_new_y;
 
         //If anchor side is top or bottom only move in x direction
         if (anchorSide === "top" || anchorSide === "bottom") {
-          if (anchorSide === "top") {
-            gap = instance.classes.AuxUnitLayout.getCurrentTopGap();
-          }
-          else {
-            gap = instance.classes.AuxUnitLayout.getCurrentBottomGap();
-          }
-
           shift_x = drag_x - last_mouse_x;
           box_new_x = selectedBox.bbox.x + shift_x; //Calculate new box position
           //Get absolute position
           var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, box_new_x, selectedBox.bbox.y, cy);
           var newRelativeCoords;
-          if (absoluteCoords.x - selectedBox.bbox.w/2 < (parentX1) + gap) { //Box cannot go futher than parentBox + margin on left side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox,((parentX1) + gap + selectedBox.bbox.w/2),
+          if (absoluteCoords.x < (parentX1)) {
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox,((parentX1)),
               absoluteCoords.y, cy);
             selectedBox.bbox.x = newRelativeCoords.x;
           }
-          else if (absoluteCoords.x + selectedBox.bbox.w/2 > (parentX2) - gap) { //Box cannot go futher than parentBox - margin on right side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, ((parentX2) - gap - selectedBox.bbox.w/2),
+          else if (absoluteCoords.x > (parentX2)) { //Box cannot go futher than parentBox - margin on right side
+            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, ((parentX2)),
               absoluteCoords.y, cy);
             selectedBox.bbox.x = newRelativeCoords.x;
           }
@@ -2473,36 +2691,36 @@ appUtilities.enableInfoBoxRelocation = function(node){
           //If box is at margin points allow it to change anchor side
           //If it on left it can pass left anchor side
           absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
-          if (absoluteCoords.x === (parentX1) + gap + selectedBox.bbox.w/2) { //If it is on the left margin allow it to change anchor sides
+          if (absoluteCoords.x === (parentX1)) { //If it is on the left margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_y < drag_y  && anchorSide === "top") {
               selectedBox.anchorSide = "left"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1),
-                (parentY1 + instance.classes.AuxUnitLayout.getCurrentLeftGap()), cy);
+                (parentY1), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
             else if (last_mouse_y > drag_y && anchorSide === "bottom") { //If it is in the bottom and mouse moves up it can go left anchor side
               selectedBox.anchorSide = "left"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1),
-                (parentY2 - instance.classes.AuxUnitLayout.getCurrentLeftGap()), cy);
+                (parentY2), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
           }
-          //If it on right it can pass right anchor side, * 2 for relaxation
-          else if (absoluteCoords.x  === (parentX2) - gap - selectedBox.bbox.w/2) {
+          //If it on right it can pass right anchor side
+          else if (absoluteCoords.x  === (parentX2)) {
             if (last_mouse_y < drag_y && anchorSide === "top") {
               selectedBox.anchorSide = "right"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2),
-              (parentY1 + instance.classes.AuxUnitLayout.getCurrentRightGap()), cy);
+              (parentY1), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
             else if (last_mouse_y > drag_y && anchorSide === "bottom") { //If it is in the bottom and mouse moves up it can go left anchor side
               selectedBox.anchorSide = "right"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2),
-                (parentY2 - instance.classes.AuxUnitLayout.getCurrentRightGap()), cy);
+                (parentY2), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
@@ -2510,27 +2728,20 @@ appUtilities.enableInfoBoxRelocation = function(node){
         }
         else {
            //If anchor side left or right only move in y direction
-          if (anchorSide === "right") {
-            gap = instance.classes.AuxUnitLayout.getCurrentRightGap();
-          }
-          else {
-            gap = instance.classes.AuxUnitLayout.getCurrentLeftGap();
-          }
-
           shift_y = drag_y - last_mouse_y;
           box_new_y = selectedBox.bbox.y + shift_y; //Calculate new box position
 
           //Get absolute position
           var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, box_new_y, cy);
           var newRelativeCoords;
-          if (absoluteCoords.y - selectedBox.bbox.h/2 < (parentY1) + gap) { //Box cannot go futher than parentBox + margin on left side
+          if (absoluteCoords.y< (parentY1)) { //Box cannot go futher than parentBox + margin on left side
             newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
-              (parentY1) + gap + selectedBox.bbox.h/2, cy);
+              (parentY1), cy);
             selectedBox.bbox.y = newRelativeCoords.y;
           }
-          else if (absoluteCoords.y + selectedBox.bbox.h/2 > (parentY2) - gap) { //Box cannot go futher than parentBox - margin on right side
+          else if (absoluteCoords.y > (parentY2)) { //Box cannot go futher than parentBox - margin on right side
             newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
-              (parentY2) - gap - selectedBox.bbox.h/2, cy);
+              (parentY2), cy);
             selectedBox.bbox.y = newRelativeCoords.y;
           }
           else { //Else it is already relative
@@ -2539,36 +2750,32 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
           absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
           //Set anchor side changes
-          if (absoluteCoords.y  === (parentY1) + gap + selectedBox.bbox.h / 2) { //If it is on the top margin allow it to change anchor sides
+          if (absoluteCoords.y  === (parentY1)) { //If it is on the top margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_x < drag_x  && anchorSide === "left") {
               selectedBox.anchorSide = "top"; //Set new anchor side
-              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1)
-                + instance.classes.AuxUnitLayout.getCurrentTopGap(), (parentY1), cy);
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1), (parentY1), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
             else if (last_mouse_x > drag_x && anchorSide === "right") { //If it is in the right and mouse moves up it can go top anchor side
               selectedBox.anchorSide = "top"; //Set new anchor side
-              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2)
-                - instance.classes.AuxUnitLayout.getCurrentTopGap(), (parentY1), cy);
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2), (parentY1), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
           }
           //If it on right it can pass right anchor side
-          else if (absoluteCoords.y === (parentY2) - gap - selectedBox.bbox.h/2) {
+          else if (absoluteCoords.y === (parentY2)) {
             if (last_mouse_x < drag_x && anchorSide === "left") {
               selectedBox.anchorSide = "bottom"; //Set new anchor side
-              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1)
-                + instance.classes.AuxUnitLayout.getCurrentBottomGap(), (parentY2), cy);
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1), (parentY2), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
             else if (last_mouse_x > drag_x && anchorSide === "right") { //If it is in the bottom and mouse moves up it can go left anchor side
               selectedBox.anchorSide = "bottom"; //Set new anchor side
-              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2)
-                - instance.classes.AuxUnitLayout.getCurrentBottomGap(), (parentY2), cy);
+              newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2), (parentY2), cy);
               selectedBox.bbox.x = newRelativeCoords.x;
               selectedBox.bbox.y = newRelativeCoords.y;
             }
@@ -2578,8 +2785,11 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
         last_mouse_x = drag_x;
         last_mouse_y = drag_y;
-        cy.style().update();
-      });
+
+        //TODO find a way to elimate this redundancy to update info-box positions
+        node.data('border-width', node.data('border-width'));
+
+    });
 
     cy.on("mouseup", function(event){
       appUtilities.disableInfoBoxRelocationDrag();
@@ -2601,7 +2811,7 @@ appUtilities.disableInfoBoxRelocation = function(color){
   var cy = this.getActiveCy();
   if (appUtilities.RelocationHandler !== undefined) {
     //Remove listerners
-    cy.off('mousedown', appUtilities.RelocationHandler);
+    $(document).off('mousedown', appUtilities.RelocationHandler);
     appUtilities.disableInfoBoxRelocationDrag();
     if (relocatedNode !== undefined) {
       relocatedNode.data("border-color", color);
@@ -2609,9 +2819,9 @@ appUtilities.disableInfoBoxRelocation = function(color){
     }
     relocatedNode = undefined;
     appUtilities.RelocationHandler = undefined;
-    cy.autolock(false); //Make the nodes moveable again
-    cy.autounselectify(false); //Make the nodes selectable
   }
+  cy.autolock(false); //Make the nodes moveable again
+  cy.autounselectify(false); //Make the nodes selectable
 
 };
 
@@ -2625,90 +2835,20 @@ appUtilities.disableInfoBoxRelocationDrag = function(){
   }
 };
 
-appUtilities.resizeNodesToContent = function(collection){
+appUtilities.modifyUnits = function (node, ele, anchorSide) {
+    var cy = this.getActiveCy();
+    var instance = appUtilities.getActiveSbgnvizInstance();
+    instance.classes.AuxUnitLayout.modifyUnits(node, ele, anchorSide, cy); //Modify aux unit layouts
+};
+
+appUtilities.resizeNodesToContent = function(nodes){
 
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var cy = appUtilities.getActiveCy();
 
-    var actions = [];
-    collection.forEach(function( node ){
-        var bbox = node.data('bbox');
-        bbox.w = calculateWidth(node);
-        bbox.h = calculateHeight(node);
-
-        chiseInstance.classes.AuxUnitLayout.fitUnits(node);
-        chiseInstance.resizeNodesToContent(node, bbox, actions);
-    });
-
-    cy.undoRedo().do("batch", actions);
-    cy.style().update();
+    chiseInstance.resizeNodesToContent(nodes, false);
     cy.nodeResize('get').refreshGrapples();
 
-    function calculateWidth(cyTarget) {
-        // Label width calculation
-        var labelText = cyTarget._private.style.label.value;
-        var labelFontSize = cyTarget._private.style['font-size'].value * 80/100;
-        var labelWidth = labelText.length * labelFontSize * 80/100;
-        var labelWidth = (labelWidth === 0) ? 15 : labelWidth;
-
-        // Separation of info boxes based on their locations
-        var statesandinfos = cyTarget._private.data.statesandinfos;
-        var bottomInfoBoxes = statesandinfos.filter(box => box.anchorSide === "bottom");
-        var topInfoBoxes = statesandinfos.filter(box => box.anchorSide === "top");
-        var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
-        var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
-
-        var horizontalMargin = 10;
-
-        var bottomWidth = horizontalMargin;
-        var topWidth = horizontalMargin;
-        var middleWidth = 0;
-        var leftWidth = 0;
-        var rightWidth = 0;
-
-        bottomInfoBoxes.forEach(function (infoBox) {
-            bottomWidth += infoBox.bbox.w;
-        });
-
-        topInfoBoxes.forEach(function (infoBox) {
-            topWidth += infoBox.bbox.w;
-        });
-
-        leftInfoBoxes.forEach(function (infoBox) {
-            leftWidth = (leftWidth > infoBox.bbox.w/2) ? leftWidth : infoBox.bbox.w/2;
-        });
-
-        rightInfoBoxes.forEach(function (infoBox) {
-            rightWidth = (rightWidth > infoBox.bbox.w/2) ? rightWidth : infoBox.bbox.w/2;
-        });
-
-        middleWidth = labelWidth + leftWidth + rightWidth + 3*horizontalMargin;
-        var width = Math.max(bottomWidth, topWidth, labelWidth);
-        return width + 2*horizontalMargin;
-    }
-
-    function calculateHeight(cyTarget) {
-        var defaultHeight = 30;
-        var infoBoxHeight = 0;
-        var margin = 10;
-
-        var statesandinfos = cyTarget._private.data.statesandinfos;
-        var leftInfoBoxes = statesandinfos.filter(box => box.anchorSide === "left");
-        var rightInfoBoxes = statesandinfos.filter(box => box.anchorSide === "right");
-
-        var leftHeight = 2*margin;
-        var rightHeight = 2*margin;
-        leftInfoBoxes.forEach(function (infoBox) {
-            leftHeight += infoBox.bbox.h;
-        });
-
-        rightInfoBoxes.forEach(function (infoBox) {
-            rightHeight += infoBox.bbox.h;
-        });
-
-        var height = Math.max(leftHeight, rightHeight, defaultHeight);
-        return height;
-    }
 };
 
 module.exports = appUtilities;
