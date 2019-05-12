@@ -19,7 +19,7 @@ var cyUndoRedo = require('cytoscape-undo-redo');
 var cyClipboard = require('cytoscape-clipboard');
 var cyContextMenus = require('cytoscape-context-menus');
 var cyExpandCollapse = require('cytoscape-expand-collapse');
-var cyEdgeBendEditing = require('cytoscape-edge-bend-editing');
+var cyEdgeEditing = require('cytoscape-edge-editing');
 var cyViewUtilities = require('cytoscape-view-utilities');
 var cyEdgehandles = require('cytoscape-edgehandles');
 var cyGridGuide = require('cytoscape-grid-guide');
@@ -34,7 +34,7 @@ cyUndoRedo( cytoscape );
 cyClipboard( cytoscape, $ );
 cyContextMenus( cytoscape, $ );
 cyExpandCollapse( cytoscape, $ );
-cyEdgeBendEditing( cytoscape, $ );
+cyEdgeEditing( cytoscape, $ );
 cyViewUtilities( cytoscape, $ );
 cyEdgehandles( cytoscape );
 cyGridGuide( cytoscape, $ );
@@ -56,7 +56,7 @@ $(document).ready(function () {
   chise.register(libs);
 
   appMenu();
-
+  
   // create a new network and access the related chise.js instance
   appUtilities.createNewNetwork();
 
