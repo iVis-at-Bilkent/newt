@@ -5,14 +5,14 @@ var appUndoActionsFactory = require('./app-undo-actions-factory');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
-var tutorial = require('./tutorial');
 var _ = require('underscore');
+var IsLocalDBMode = true;
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+   var layoutPropertiesView, generalPropertiesView,DbneighborhoodQueryView, DbpathsBetweenQueryView, DbpathsFromToQueryView, DbcommonStreamQueryView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
@@ -34,6 +34,38 @@ module.exports = function() {
     });
   }
 
+  function AddSBGNML(xml) {
+     $.ajax({
+       type: 'post',
+       url: "/utilities/AddSBGNML",
+       data: {sbgnml: xml},
+      success: function(data){
+         if(data.length == 0) {
+           console.log("Xsd validation OK");
+         }
+         else {
+           console.error("Xsd validation failed. Errors:", data);
+         }
+       },
+       error: function(req, status, err) {
+         console.error("Error during file validation", status, err);
+       }
+     });
+   }
+    function ReadFromDB() {
+     $.ajax({
+       type: 'get',
+       url: "/utilities/ReadFromDb",
+ 	    success: function(data){
+         var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+       },
+       error: function(req, status, err) {
+         var chiseInstance = appUtilities.getActiveChiseInstance();
+        }
+     });
+   }
+
   function cd2sbgnml(xml) {
 
     $.ajax({
@@ -46,11 +78,11 @@ module.exports = function() {
             chiseInstance.endSpinner("load-spinner");
             if (cy.elements().length !== 0) {
                 promptConfirmationView.render(function() {
-                    chiseInstance.loadSBGNMLText(data, true);
+                    chiseInstance.loadSBGNMLText(data);
                 });
             }
             else {
-                chiseInstance.loadSBGNMLText(data, true);
+                chiseInstance.loadSBGNMLText(data);
             }
         },
         error: function (XMLHttpRequest) {
@@ -122,10 +154,15 @@ module.exports = function() {
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
-  promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
+  DbneighborhoodQueryView = appUtilities.DbneighborhoodQueryView = new BackboneViews.DbNeighborhoodQueryView({el: '#query-Dbneighborhood-table'});
+  DbpathsBetweenQueryView = appUtilities.DbpathsBetweenQueryView = new BackboneViews.DbPathsBetweenQueryView({el: '#query-Dbpathsbetween-table'});
+  DbpathsFromToQueryView = appUtilities.DbpathsFromToQueryView = new BackboneViews.DbPathsFromToQueryView({el: '#query-Dbpathsfromto-table'});
+  DbcommonStreamQueryView = appUtilities.DbcommonStreamQueryView = new BackboneViews.DbCommonStreamQueryView({el: '#query-Dbcommonstream-table'});
   toolbarButtonsAndMenu();
 
   keyboardShortcuts();
+
+  SetDBLocalMode();
 
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
@@ -189,6 +226,13 @@ module.exports = function() {
     }
 
   });
+
+function SetDBLocalMode(){
+  if(!IsLocalDBMode){
+  $("#save-to-db").hide();
+  $("#read-db").hide();
+  $("#query-Db").hide()}
+}
 
   function toolbarButtonsAndMenu() {
 
@@ -262,6 +306,20 @@ module.exports = function() {
 
     });
 
+    $("#read-db").click(function () {
+
+       ReadFromDB();
+
+        });
+
+     	$("#save-to-db").click(function () {
+     	  var chiseInstance = appUtilities.getActiveChiseInstance();
+    	 var sbgnml =  chiseInstance.getSbgnvizInstance().createSbgnml();
+    	AddSBGNML(sbgnml);
+
+        });
+
+
     // close the active file
     $("#close-file").click(function () {
 
@@ -314,7 +372,7 @@ module.exports = function() {
     });
 
     $('#celldesigner-file-input').change(function (e, fileObject) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
+
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
         appUtilities.setFileContent(file.name);
@@ -423,42 +481,20 @@ module.exports = function() {
 
         if (mapPropertiesExist){
           // update map panel
-          appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView, scheme_type: currentGeneralProperties.mapColorSchemeStyle});
+          appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView});
         }
       }
 
       if (mapPropertiesExist) {
 
-        // set default colors(or background images) according to the specified color scheme style
-        if(currentGeneralProperties.mapColorSchemeStyle == 'solid'){
-          for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
-            classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
-            // nodeClass may not be defined in the defaultProperties (for edges, for example)
-            if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
-            }
+        // set default colors according to the color scheme
+        for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
+          classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
+          // nodeClass may not be defined in the defaultProperties (for edges, for example)
+          if(nodeClass in chiseInstance.elementUtilities.defaultProperties){
+            chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
           }
         }
-
-        else{
-          for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
-            classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
-            classBgImg = currentGeneralProperties.mapColorSchemeStyle == 'gradient'
-                       ? appUtilities.colorCodeToGradientImage[appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass]]
-                       : appUtilities.colorCodeTo3DImage[appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass]];
-            // nodeClass may not be defined in the defaultProperties (for edges, for example)
-            if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: '#ffffff'});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-fit', value: 'cover'});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-opacity', value: '1'});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-x', value: '50%'});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-y', value: '50%'});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: classBgImg});
-            }
-          }
-        }
-
       };
 
       // reset current general properties at the scratch pad of cy
@@ -480,16 +516,6 @@ module.exports = function() {
       $("#quick_help_modal").modal('show');
     });
 
-    $("#quick-tutorial").click(function (e) {
-      e.preventDefault();
-      tutorial.introduction();
-    });
-
-    $("#ui-guide").click(function (e) {
-      e.preventDefault();
-      tutorial.UIGuide();
-    });
-
     $("#about, #about-icon").click(function (e) {
       e.preventDefault();
       $("#about_modal").modal('show');
@@ -500,22 +526,19 @@ module.exports = function() {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signaling.sbgnml',
-      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgnml',
-      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgnml',
-      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgnml',
-      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgnml',
-      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgnml',
-      "#load-sample7" : 'polyq_proteins_interference.sbgnml',
-      "#load-sample8" : 'glycolysis.sbgnml',
-      "#load-sample9" : 'mapk_cascade.sbgnml',
-      "#load-sample10" : 'drosophila_cell_cycle.sbgnml',
-      "#load-sample11" : 'mammalian_cholesterol.sbgnml',
-      "#load-sample12" : 'two_gene_system_behavior.sbgnml',
-      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
-      "#load-sample14" : 'repressilator.sbgnml',
-      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
-      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgnml'
+      "#load-sample1" : 'neuronal_muscle_signaling.xml',
+      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.xml',
+      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.xml',
+      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.xml',
+      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.xml',
+      "#load-sample6" : 'insulin-like_growth_factor_signaling.xml',
+      "#load-sample7" : 'polyq_proteins_interference.xml',
+      "#load-sample8" : 'glycolysis.xml',
+      "#load-sample9" : 'mapk_cascade.xml',
+      "#load-sample10" : 'transforming_growth_factor_beta_signaling.xml',
+      "#load-sample11" : 'repressilator.xml',
+      "#load-sample12" : 'epidermal_growth_factor_receptor.xml',
+      "#load-sample13" : 'regulation_of_tgfbeta-induced_metastasis.xml'
     };
 
     for ( var selector in selectorToSampleFileName ) {
@@ -754,6 +777,22 @@ module.exports = function() {
       gridPropertiesView.render();
     });
 
+    $("#query-Dbneighborhood").click(function (e) {
+        DbneighborhoodQueryView.render();
+     });
+
+    $("#query-Dbpathsbetween").click(function (e) {
+        DbpathsBetweenQueryView.render();
+     });
+
+     $("#query-Dbpathsfromto").click(function (e) {
+       DbpathsFromToQueryView.render();
+     });
+
+     $("#query-Dbcommonstream").click(function (e) {
+       DbcommonStreamQueryView.render();
+     });
+
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
 
       // use active chise instance
@@ -912,11 +951,6 @@ module.exports = function() {
       // use the associated cy instance
       var cy = chiseInstance.getCy();
 
-      // if there is no element in the cy instance, then return directly
-      if(cy.elements().length == 0) {
-        return;
-      }
-
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
@@ -934,29 +968,6 @@ module.exports = function() {
       if (currentLayoutProperties.animate == 'during') {
         delete preferences.animate;
       }
-      layoutPropertiesView.applyLayout(preferences);
-    });
-
-    $("#perform-static-layout, #perform-static-layout-icon").click(function (e) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      // use the associated cy instance
-      var cy = chiseInstance.getCy();
-
-      // if there is no element in the cy instance, then return directly
-      if(cy.elements().length == 0) {
-        return;
-      }
-
-      // TODO think whether here is the right place to start the spinner
-      chiseInstance.startSpinner("layout-spinner");
-
-      var preferences = {
-        randomize: true
-      };
-
       layoutPropertiesView.applyLayout(preferences);
     });
 
@@ -1220,13 +1231,6 @@ module.exports = function() {
       // Go to inspector palette tab when the icon is clicked
       if (!$('#inspector-palette-tab').hasClass('active')) {
         $('#inspector-palette-tab a').tab('show');
-      }
-    });
-
-    $('#network-tabs-list').on('mousedown', function(e) {
-      if( e.which == 2 ) {
-        if(e.target != this) return;
-        appUtilities.createNewNetwork();
       }
     });
 

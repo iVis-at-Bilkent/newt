@@ -1,0 +1,132 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn 
+  xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="repressilator.xml" language="activity flow">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ececa57f"/>
+          <colorDefinition id="color_2" value="#ffcc66"/>
+          <colorDefinition id="color_3" value="#e9967d7f"/>
+          <colorDefinition id="color_4" value="#ff6666"/>
+          <colorDefinition id="color_5" value="#66ffff7f"/>
+          <colorDefinition id="color_6" value="#66ccff"/>
+        </listOfColorDefinitions>
+        <listOfStyles>
+          <style id="nodeececa50.5ffcc66211normalnormalHelvetica" idList="nwtN_373486e4-8b5f-4f1c-b149-2ef86ff5c0d8 nwtN_5aaf9d6e-a017-400d-be2a-11ecdd8b78f9">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="2" fill="color_1"/>
+          </style>
+          <style id="nodee9967d0.5ff6666211normalnormalHelvetica" idList="nwtN_aeb15979-46af-41f9-bee6-9017621af4f9 nwtN_604ada15-23e0-4180-bfd7-e0d807b71b8c">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_4" strokeWidth="2" fill="color_3"/>
+          </style>
+          <style id="node66ffff0.566ccff211normalnormalHelvetica" idList="nwtN_36bd6fde-ccfb-40df-82ec-56984a85fb13 nwtN_4cdac9ea-e826-4468-9644-1713b2313056">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_6" strokeWidth="2" fill="color_5"/>
+          </style>
+          <style id="edgeff66662" idList="nwtE_46b068cc-de40-41aa-bc82-c019797db870 nwtE_d785679b-7f1d-4822-a587-c123adcd0de2">
+            <g stroke="color_4" strokeWidth="2"/>
+          </style>
+          <style id="edge66ccff2" idList="nwtE_6b2c5607-6677-4738-b621-5307a0d75cb1 nwtE_aaaff41d-5cc6-4d80-bd4b-afde48bd8af6">
+            <g stroke="color_6" strokeWidth="2"/>
+          </style>
+          <style id="edgeffcc662" idList="nwtE_b5217a64-16e5-4558-ae11-b74b5b52439b nwtE_ca6f9df3-5c00-403c-99ee-422ebe0e202c">
+            <g stroke="color_2" strokeWidth="2"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Repressilator</mapName>
+        <mapDescription>Elowitz and Leibler, Nature, 2000</mapDescription>
+      </mapProperties>
+    </extension>
+    <glyph id="nwtN_373486e4-8b5f-4f1c-b149-2ef86ff5c0d8" class="biological activity">
+      <label text="Tetm"/>
+      <bbox x="903.3517073397005" y="338.70779204728126" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_5aaf9d6e-a017-400d-be2a-11ecdd8b78f9" class="biological activity">
+      <label text="Tetp"/>
+      <bbox x="903.3517073397005" y="437.74802607715117" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_aeb15979-46af-41f9-bee6-9017621af4f9" class="biological activity">
+      <label text="Laclm"/>
+      <bbox x="1040.9013317168508" y="338.70779204728126" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_604ada15-23e0-4180-bfd7-e0d807b71b8c" class="biological activity">
+      <label text="Laclp"/>
+      <bbox x="1039.8316264294265" y="239.66755801741124" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_36bd6fde-ccfb-40df-82ec-56984a85fb13" class="biological activity">
+      <label text="Clp"/>
+      <bbox x="1178.5655225565004" y="338.70779204728126" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_4cdac9ea-e826-4468-9644-1713b2313056" class="biological activity">
+      <label text="Clm"/>
+      <bbox x="1178.5655225565004" y="437.7480260771512" w="70" h="35"/>
+    </glyph>
+    <arc id="nwtE_46b068cc-de40-41aa-bc82-c019797db870" class="necessary stimulation" source="nwtN_aeb15979-46af-41f9-bee6-9017621af4f9" target="nwtN_604ada15-23e0-4180-bfd7-e0d807b71b8c">
+      <glyph id="nwtE_46b068cc-de40-41aa-bc82-c019797db870_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1075.7015184994125" y="337.70779204728126"/>
+      <end x="1075.085440069516" y="280.66726640434274"/>
+    </arc>
+    <arc id="nwtE_6b2c5607-6677-4738-b621-5307a0d75cb1" class="necessary stimulation" source="nwtN_4cdac9ea-e826-4468-9644-1713b2313056" target="nwtN_36bd6fde-ccfb-40df-82ec-56984a85fb13">
+      <glyph id="nwtE_6b2c5607-6677-4738-b621-5307a0d75cb1_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1213.5655225565004" y="436.7480260771512"/>
+      <end x="1213.5655225565004" y="379.70779204728126"/>
+    </arc>
+    <arc id="nwtE_b5217a64-16e5-4558-ae11-b74b5b52439b" class="necessary stimulation" source="nwtN_373486e4-8b5f-4f1c-b149-2ef86ff5c0d8" target="nwtN_5aaf9d6e-a017-400d-be2a-11ecdd8b78f9">
+      <glyph id="nwtE_b5217a64-16e5-4558-ae11-b74b5b52439b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="938.3517073397005" y="374.70779204728126"/>
+      <end x="938.3517073397005" y="431.74802607715117"/>
+    </arc>
+    <arc id="nwtE_aaaff41d-5cc6-4d80-bd4b-afde48bd8af6" class="negative influence" source="nwtN_36bd6fde-ccfb-40df-82ec-56984a85fb13" target="nwtN_aeb15979-46af-41f9-bee6-9017621af4f9">
+      <glyph id="nwtE_aaaff41d-5cc6-4d80-bd4b-afde48bd8af6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1177.5655225565004" y="356.20779204728126"/>
+      <end x="1112.9013317168508" y="356.20779204728126"/>
+    </arc>
+    <arc id="nwtE_d785679b-7f1d-4822-a587-c123adcd0de2" class="negative influence" source="nwtN_604ada15-23e0-4180-bfd7-e0d807b71b8c" target="nwtN_373486e4-8b5f-4f1c-b149-2ef86ff5c0d8">
+      <glyph id="nwtE_d785679b-7f1d-4822-a587-c123adcd0de2_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1038.8316264294265" y="257.2739784603515"/>
+      <next x="939.5398947293437" y="257.5674970733466"/>
+      <end x="938.5865968228655" y="336.7078645883415"/>
+    </arc>
+    <arc id="nwtE_ca6f9df3-5c00-403c-99ee-422ebe0e202c" class="negative influence" source="nwtN_5aaf9d6e-a017-400d-be2a-11ecdd8b78f9" target="nwtN_4cdac9ea-e826-4468-9644-1713b2313056">
+      <glyph id="nwtE_ca6f9df3-5c00-403c-99ee-422ebe0e202c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="974.3517073397005" y="455.24802607715117"/>
+      <end x="1176.5655225565004" y="455.2480260771512"/>
+    </arc>
+  </map>
+</sbgn>

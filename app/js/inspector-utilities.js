@@ -28,10 +28,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       var state = stateAndInfos[i];
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
-                + width / 5 + "px;' value='" + (state.state.value || '').toString().replace(/'/g, "&#039;") + "'/>"
+                + width / 5 + "px;' value='" + (state.state.value || '') + "'/>"
                 + "<span style='font: 10pt Helvetica;'>@</span>"
                 + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
-                + width / 2.5 + "px;' value='" + (state.state.variable || '').toString().replace(/'/g, "&#039;")
+                + width / 2.5 + "px;' value='" + (state.state.variable || '')
                 + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
@@ -43,15 +43,14 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
         });
       }
       else if (state.clazz == "unit of information") {
-
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
         if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;")
+                  + total + "px;' value='" + (state.label.text || '')
 			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
         } else {
           $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;") + "'/></div>");
+                  + total + "px;' value='" + (state.label.text || '') + "'/></div>");
         }
 
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
@@ -191,6 +190,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     var commonSBGNCardinality;
     var imageFromURL;
     var imageURL;
+    var hasBackgroundImage;
 
     if (allNodes) {
       type = "node";
@@ -216,7 +216,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Label</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel.replace(/'/g, "&#039;")
+              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel
               + "'/>" + "</td></tr>";
       }
 
@@ -292,26 +292,24 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "..." + "<label/>" + "</td></tr>";
       }
 
-      if(selectedEles.length > 0){
-
-        var hasBackgroundImage = chiseInstance.elementUtilities.anyHasBackgroundImage(selectedEles);
+      if(selectedEles.length == 1){
+        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
         var display = hasBackgroundImage ? "" : 'display: none;';
 
         var removeBtn = "<img id='inspector-delete-bg' width='16px' height='16px' class='pointer-button' "
                       + 'style="' + display + '"'
                       + "src='app/img/toolbar/delete-simple.svg'>";
 
-        var options = '<option value="none">None</option>'
+        var options = '<option value="none">None</option>'  
                     + '<option value="fit" selected>Fit</option>'
                     + '<option value="cover">Cover</option>'
                     + '<option value="contain">Contain</option>';
-
         if(hasBackgroundImage){
-          var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles);
+          var tmp = chiseInstance.elementUtilities.getBackgroundFitOptions(selectedEles[0]);
           options = tmp ? tmp : options;
         }
-
-        var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px; margin-bottom: 2px;'
+        
+        var fitSelection = '<select id="inspector-fit-selector" style="margin-right: 3px;'
                         + display + '">'
                         + options
                         + '</select>';
@@ -320,8 +318,8 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "<div><button id='inspector-image-file' class='btn btn-default' style='width: "
               + width / 1.5 + "px;padding:2px;margin-bottom:2px;padding-bottom=0.5px;padding-top=0.5px;'>Choose...</button>"
               + "<input id='inspector-image-url' class='inspector-input-box' type='text' style='display: none; width: " + width / 1.5 + "px;' placeholder='Enter a URL...'/>"
-              + "<label class='sbgn-label-font' style='font-weight: initial;'>"
-              + "<input type='checkbox' id='inspector-image-from-url' style='margin: 0px 1px 0px 5px; vertical-align:text-bottom;'>URL</label>"
+              + "<input type='checkbox' id='inspector-image-from-url' style='margin-left: 3px;'>"
+              + "<font class='sbgn-label-font'>URL</font></div>"
               + fitSelection
               + removeBtn
               + "</td></tr><input id='inspector-image-load' type='file' style='display:none;'>";
@@ -435,7 +433,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           + "'/>" + "</td></tr>";
 
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
-          + "<input id='inspector-edge-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
+          + "<input id='inspector-edge-width' class='inspector-input-box float-input' type='text' min='0' style='width: " + buttonwidth + "px;'";
       if(commonLineWidth){
           html += " value='" + parseFloat(commonLineWidth) + "'";
       }
@@ -467,7 +465,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             + ">" + setAsDefaultTitle + "</button></div>";
     }
 
-    // html += "<hr class='inspector-divider' style='border-width: 3px;'>";
+//    html += "<hr class='inspector-divider' style='border-width: 3px;'>";
     html += "</div>";
 
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
@@ -527,7 +525,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       function updateBackgroundDeleteInfo(){
-        var hasBackgroundImage = chiseInstance.elementUtilities.anyHasBackgroundImage(selectedEles);
+        hasBackgroundImage = chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0]);
 
         if(!hasBackgroundImage){
           $('#inspector-delete-bg').hide();
@@ -537,7 +535,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         else{
           $('#inspector-delete-bg').show();
           $('#inspector-fit-selector').show();
-          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
           imageURL = imageURL ? imageURL : "";
           $('#inspector-image-url').val(imageURL);
         }
@@ -550,7 +548,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       $('#inspector-image-from-url').on('click', function() {
         imageFromURL = !imageFromURL;
         if(imageFromURL){
-          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
+          imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
           imageURL = imageURL ? imageURL : "";
 
           $('#inspector-image-url').val(imageURL);
@@ -564,7 +562,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-delete-bg').on('click', function () {
-        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
         chiseInstance.removeBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
@@ -575,15 +573,15 @@ inspectorUtilities.handleSBGNInspector = function () {
           return;
         }
         
-        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
-        if(bgObj === undefined){
+        var bgObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+        if(!bgObj || bgObj === {}){
           return;
         }
 
         var bgWidth = "auto";
         var bgHeight = "auto";
         var bgFit = "none";
-
+        
         if(fit === "fit"){
           bgWidth = "100%";
           bgHeight = "100%";
@@ -593,66 +591,31 @@ inspectorUtilities.handleSBGNInspector = function () {
           bgFit = fit;
         }
 
-        selectedEles.forEach(function(ele){
-          if(bgObj[ele.data('id')]){
-            var obj = bgObj[ele.data('id')];
-            obj['background-fit'] = bgFit;
-            obj['background-width'] = bgWidth;
-            obj['background-height'] = bgHeight;
-          }
-        });
-        
+        bgObj['background-fit'] = bgFit;
+        bgObj['background-width'] = bgWidth;
+        bgObj['background-height'] = bgHeight;
         chiseInstance.updateBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
 
-      function validateBgImageURL(node, bgObj, applyBackground, promptInvalidImage){
-        var url = bgObj['background-image'];
-        var extension = (url.split(/[?#]/)[0]).split(".").pop();
-        var validExtensions = ["png", "svg", "jpg", "jpeg"];
-
-        if(!validExtensions.includes(extension)){
-          if(typeof promptInvalidImage === 'function')
-            promptInvalidImage("Invalid URL is given!");
-          return;
-        }
-
-        $.ajax({
-          url: "/utilities/testURL",
-          type: 'GET',
-          data: {url: url},
-          success: function(data){
-            console.log(data);
-            // here we can get 404 as well, for example, so there are still error cases to handle
-            if (!data.error && data.response.statusCode == 200 && typeof applyBackground === 'function')
-              applyBackground(node, bgObj);
-            else if(typeof promptInvalidImage === 'function')
-              promptInvalidImage("Invalid URL is given!");
-          },
-          error: function(jqXHR, status, error) {
-            if(typeof promptInvalidImage === 'function')
-              promptInvalidImage("Invalid URL is given!");
-          }
-        });
-      }
-
       $("#inspector-image-url").on('change', function () {
         var url = $(this).val().trim();
-        imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles);
+        imageURL = chiseInstance.elementUtilities.getBackgroundImageURL(selectedEles[0]);
 
         if (url && imageURL !== url){
           var fit = $("#inspector-fit-selector").val();
           var bgWidth = "auto";
           var bgHeight = "auto";
           var bgFit = "none";
-
+          
           if(fit === "fit"){
             bgWidth = "100%";
             bgHeight = "100%";
             bgFit = "none"
           }
-          else if(fit)
+          else if(fit){
             bgFit = fit;
+          }
           
           var bgObj = {
             'background-image' : url,
@@ -665,22 +628,20 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : false
           };
 
-          var obj = {};
-          for(var i = 0; i < selectedEles.length; i++){
-            var node = selectedEles[i];
-            if(node.isNode()){
-                bgObj['background-image-opacity'] = node.data('background-opacity');
-                obj[node.data('id')] = bgObj;
-            }
-
-          }
-
           // If there is a background image change it, don't add
-          var oldObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
-          if(oldObj !== undefined)
-            chiseInstance.changeBackgroundImage(selectedEles, oldObj, obj, updateBackgroundDeleteInfo, promptInvalidImage, validateBgImageURL);
-          else
-            chiseInstance.addBackgroundImage(selectedEles, obj, updateBackgroundDeleteInfo, promptInvalidImage, validateBgImageURL);
+          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
+            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          }
+          else{
+            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          }
+        }
+      });
+
+      $("#inspector-image-url").on('keydown', function (e) {
+        if (e.keyCode == 13 ){
+          $(this).trigger("change");
         }
       });
 
@@ -696,7 +657,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           var bgWidth = "auto";
           var bgHeight = "auto";
           var bgFit = "none";
-
+          
           if(fit === "fit"){
             bgWidth = "100%";
             bgHeight = "100%";
@@ -705,7 +666,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           else if(fit){
             bgFit = fit;
           }
-
+          
           var bgObj = {
             'background-image' : file,
             'background-fit' : bgFit,
@@ -717,22 +678,14 @@ inspectorUtilities.handleSBGNInspector = function () {
             'fromFile' : true
           };
 
-          var obj = {};
-          for(var i = 0; i < selectedEles.length; i++){
-            var node = selectedEles[i];
-            if(node.isNode()){
-              bgObj['background-image-opacity'] = node.data('background-opacity');
-              obj[node.data('id')] = bgObj;
-            }
-
-          }
-
           // If there is a background image change it, don't add
-          var oldObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
-          if(oldObj !== undefined)
-            chiseInstance.changeBackgroundImage(selectedEles, oldObj, obj, updateBackgroundDeleteInfo, promptInvalidImage);
-          else
-            chiseInstance.addBackgroundImage(selectedEles, obj, updateBackgroundDeleteInfo, promptInvalidImage);
+          if(chiseInstance.elementUtilities.hasBackgroundImage(selectedEles[0])){
+            var oldObj = chiseInstance.elementUtilities.getBackgroundImageObj(selectedEles[0]);
+            chiseInstance.changeBackgroundImage(selectedEles, oldObj, bgObj, true);
+          }
+          else{
+            chiseInstance.addBackgroundImage(selectedEles, bgObj, updateBackgroundDeleteInfo, promptInvalidImage);
+          }
           $(this).val("");
         }
       });
@@ -745,59 +698,77 @@ inspectorUtilities.handleSBGNInspector = function () {
           sbgnclass = sbgnclass.replace(' multimer', '');
           multimer = true;
         }
-
-        var nameToVal = {
-          'width': selected.width(),
-          'height': selected.height(),
-          'border-width': selected.data('border-width'),
-          'border-color': selected.data('border-color'),
-          'background-color': selected.data('background-color'),
-          'background-opacity': selected.data('background-opacity'),
-          'background-image': selected.data('background-image'),
-          'background-fit': selected.data('background-fit'),
-          'background-position-x': selected.data('background-position-x'),
-          'background-position-y': selected.data('background-position-y'),
-          'background-width': selected.data('background-width'),
-          'background-height': selected.data('background-height'),
-          'background-image-opacity': selected.data('background-image-opacity')
-        };
-
-        // Push this action if the node can be multimer
-        if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
-          nameToVal['multimer'] = multimer;
-        }
-
-        // Push this action if the node can be cloned
-        if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
-          nameToVal['clonemarker'] = selected.data('clonemarker');
-        }
-
-        // Push this action if the node can have label
-        if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
-          var fontProps = ['font-size', 'font-family', 'font-weight', 'font-style', 'color'];
-          fontProps.forEach( function(name) {
-            nameToVal[name] = selected.data(name);
-          } );
-        }
-
-        // Push this action if the node can have ports
-        if (chiseInstance.elementUtilities.canHavePorts(sbgnclass)) {
-          nameToVal['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
+        if (chiseInstance.elementUtilities.defaultProperties[sbgnclass] == null) {
+          chiseInstance.elementUtilities.defaultProperties[sbgnclass] = {};
         }
 
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
 
-          Object.keys(nameToVal).forEach( function(name) {
-            var value = nameToVal[name];
-            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: name, value: value}});
-          } );
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selected.width()}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'height', value: selected.height()}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-width', value: selected.data('border-width')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'border-color', value: selected.data('border-color')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-color', value: selected.data('background-color')}});
+          actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'background-opacity', value: selected.data('background-opacity')}});
+
+          // Push this action if the node can be multimer
+          if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'multimer', value: multimer}});
+          }
+
+          // Push this action if the node can be cloned
+          if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'clonemarker', value: selected._private.data.clonemarker}});
+          }
+
+          // Push this action if the node can have label
+          if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-size', value: selected.data('font-size')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-family', value: selected.data('font-family')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-weight', value: selected.data('font-weight')}});
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'font-style', value: selected.data('font-style')}});
+          }
+
+          // Push this action if the node can have ports
+          if (chiseInstance.elementUtilities.canHavePorts(selected)) {
+            actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'ports-ordering', value: chiseInstance.elementUtilities.getPortsOrdering(selected)}});
+          }
 
           ur.do("batch", actions);
         }
         else {
-          chiseInstance.elementUtilities.setDefaultProperties( sbgnclass, nameToVal );
+          var defaults = chiseInstance.elementUtilities.defaultProperties[sbgnclass];
+          defaults['width'] = selected.width();
+          defaults['height'] = selected.height();
+          defaults['border-width'] = selected.data('border-width');
+          defaults['border-color'] = selected.data('border-color');
+          defaults['background-color'] = selected.data('background-color');
+          defaults['background-opacity'] = selected.data('background-opacity');
+
+          // Set this if the node can be multimer
+          if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
+            defaults['multimer'] = multimer;
+          }
+
+          // Set this if the node can be cloned
+          if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
+            defaults['clonemarker'] = selected._private.data.clonemarker;
+          }
+
+          // Set this if the node can have label
+          if (chiseInstance.elementUtilities.canHaveSBGNLabel(sbgnclass)) {
+            defaults['font-size'] = selected.data('font-size');
+            defaults['font-family'] = selected.data('font-family');
+            defaults['font-weight'] = selected.data('font-weight');
+            defaults['font-style'] = selected.data('font-style');
+          }
+
+          // Set this if the node can have ports
+          if (chiseInstance.elementUtilities.canHavePorts(selected)) {
+            defaults['ports-ordering'] = chiseInstance.elementUtilities.getPortsOrdering(selected);
+          }
         }
       });
 
@@ -913,7 +884,6 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $("#inspector-background-opacity").on('change', function () {
         chiseInstance.changeData(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
-        chiseInstance.changeData(selectedEles, "background-image-opacity", $("#inspector-background-opacity").val());
       });
 
       $("#inspector-fill-color").on('change', function () {
@@ -921,9 +891,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-border-width").change( function () {
-        var inputVal = $("#inspector-border-width").val();
-        if(inputVal || inputVal === 0)
-          chiseInstance.changeData(selectedEles, "border-width", inputVal);
+        chiseInstance.changeData(selectedEles, "border-width", $("#inspector-border-width").val());
       });
 
       // Open font properties dialog
@@ -934,6 +902,9 @@ inspectorUtilities.handleSBGNInspector = function () {
     else {
       $('#inspector-set-as-default-button').on('click', function () {
         var sbgnclass = selectedEles.data('class');
+        if (chiseInstance.elementUtilities.defaultProperties[sbgnclass] == null) {
+          chiseInstance.elementUtilities.defaultProperties[sbgnclass] = {};
+        }
 
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
@@ -943,7 +914,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           ur.do("batch", actions);
         }
         else {
-          var defaults = chiseInstance.elementUtilities.getDefaultProperties( sbgnclass );
+          var defaults = chiseInstance.elementUtilities.defaultProperties[sbgnclass];
           defaults['width'] = selectedEles.data('width');
           defaults['line-color'] = selectedEles.data('line-color');
         }
