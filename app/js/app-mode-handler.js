@@ -35,12 +35,9 @@ var modeHandler = {
 
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
-    $(cy.container()).find('canvas').removeClass('add-edge-cursor');
-    $(cy.container()).find('canvas').removeClass('zoom-cursor');
-    $(cy.container()).find('canvas').addClass('add-node-cursor');
+
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
-
 
     var typeChange = nodeType && nodeType != modeProperties.selectedNodeType; // See if the type will change
     // Handle sustainable mode
@@ -98,9 +95,7 @@ var modeHandler = {
   setAddEdgeMode: function (edgeType, language, _cy) {
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
-    $(cy.container()).find('canvas').removeClass('add-node-cursor');
-    $(cy.container()).find('canvas').removeClass('zoom-cursor');
-    $(cy.container()).find('canvas').addClass('add-edge-cursor');
+
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
@@ -159,9 +154,7 @@ var modeHandler = {
 
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
-    $(cy.container()).find('canvas').removeClass('add-edge-cursor');
-    $(cy.container()).find('canvas').removeClass('zoom-cursor');
-    $(cy.container()).find('canvas').removeClass('add-node-cursor');
+
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
@@ -197,9 +190,7 @@ var modeHandler = {
   setMarqueeZoomMode: function(_cy){
     // if _cy param is not set use the active cy instance
     var cy = _cy || appUtilities.getActiveCy();
-    $(cy.container()).find('canvas').removeClass('add-edge-cursor');
-    $(cy.container()).find('canvas').removeClass('add-node-cursor');
-    $(cy.container()).find('canvas').addClass('zoom-cursor');
+
     // access mode properties of the cy
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 

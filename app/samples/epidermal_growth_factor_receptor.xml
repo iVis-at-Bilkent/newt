@@ -1,0 +1,571 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn 
+  xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="epidermal_growth_factor_receptor.xml" language="activity flow">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#eff3ff7f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#9ecae1ff"/>
+          <colorDefinition id="color_4" value="#9ecae17f"/>
+        </listOfColorDefinitions>
+        <listOfStyles>
+          <style id="nodeeff3ff0.5555555514normalnormalHelvetica" idList="glyph0 glyph1">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="5" fill="color_1"/>
+          </style>
+          <style id="node9ecae115555551.2511normalnormalHelvetica" idList="glyph30 glyph39 glyph45 glyph38 glyph13 glyph9 glyph42 glyph36 glyph23 glyph4 glyph21 glyph28 glyph7 glyph22 glyph33 glyph26 glyph34 glyph14 glyph47 glyph25 glyph29 glyph41 glyph15 glyph40 glyph3 glyph20 glyph2 glyph27 glyph24 glyph12 glyph44 glyph11 glyph16 glyph35 glyph17 glyph37 glyph5 glyph10 glyph8 glyph46 glyph6 glyph18">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3"/>
+          </style>
+          <style id="node9ecae115555551.2514normalnormalHelvetica" idList="glyph31 glyph19">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3"/>
+          </style>
+          <style id="node9ecae10.55555551.2511normalnormalHelvetica" idList="nwtN_f115569d-d684-479d-abcd-fd3564adc78d nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_4"/>
+          </style>
+          <style id="edge5555551.25" idList="arc17 arc26 arc64 arc46 arc50 arc62 arc47 arc42 arc51 arc52 arc53 arc54 arc4 arc5 arc6 arc7 arc8 arc9 arc55 arc56 arc12 arc13 arc14 arc15 arc45 arc44 arc43 arc20 arc48 arc22 arc23 arc24 arc61 arc18 arc27 arc28 arc29 arc30 arc31 arc32 arc33 arc34 arc19 arc21 nwtE_c091768a-1db1-4ac0-8ddc-4b56c00594ba arc39 nwtE_4c2d735a-ac50-442f-bedf-1d0af7c9a47b arc41 arc0 arc57 arc58 arc59 arc60 arc1 arc2 arc3 arc10 arc11 arc16 nwtE_03a840dc-1e50-4903-bb7c-db449b5b5d5e nwtE_aa7b59da-58e2-4aa8-9fb8-d75affbb518d nwtE_00a0dc10-5205-474f-8e4d-dcd587cb7f69 nwtE_1e5c4254-df58-4ba7-82c0-0b7e54139304 nwtE_0145f98d-24de-4b28-970e-043ac4e575d1 nwtE_60c9d82e-133f-4eae-acfc-a19fe0445e5a">
+            <g stroke="color_2" strokeWidth="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>blue_scale</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Epidermal growth factor receptor</mapName>
+        <mapDescription>Oda et al., Mol Sys Biol, 2005</mapDescription>
+      </mapProperties>
+    </extension>
+    <glyph id="glyph0" class="compartment">
+      <label text="cytosol"/>
+      <bbox x="377.875" y="230.875" w="1197.25" h="955.7500000000002"/>
+    </glyph>
+    <glyph id="glyph30" class="biological activity" compartmentRef="glyph0">
+      <label text="Vav"/>
+      <bbox x="1250" y="232.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph39" class="biological activity" compartmentRef="glyph0">
+      <label text="Nck"/>
+      <bbox x="1384" y="232.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph45" class="biological activity" compartmentRef="glyph0">
+      <label text="Rac"/>
+      <bbox x="1209" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph38" class="biological activity" compartmentRef="glyph0">
+      <label text="Rho"/>
+      <bbox x="1297" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph13" class="biological activity" compartmentRef="glyph0">
+      <label text="N-WASP"/>
+      <bbox x="1384" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph9" class="biological activity" compartmentRef="glyph0">
+      <label text="Actin"/>
+      <bbox x="1297" y="418.5000000000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph42" class="biological activity" compartmentRef="glyph0">
+      <label text="Grb7"/>
+      <bbox x="589" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph36" class="biological activity" compartmentRef="glyph0">
+      <label text="RasGAP1"/>
+      <bbox x="923" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph23" class="biological activity" compartmentRef="glyph0">
+      <label text="C-Src"/>
+      <bbox x="813" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph4" class="biological activity" compartmentRef="glyph0">
+      <label text="Shc"/>
+      <bbox x="682" y="324.1666600000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph21" class="biological activity" compartmentRef="glyph0">
+      <label text="SOS"/>
+      <bbox x="677" y="516.1667000000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph28" class="biological activity" compartmentRef="glyph0">
+      <label text="Ras"/>
+      <bbox x="677" y="604.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph7" class="biological activity" compartmentRef="glyph0">
+      <label text="Raf-1"/>
+      <bbox x="677" y="686.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph22" class="biological activity" compartmentRef="glyph0">
+      <label text="MAPKK"/>
+      <bbox x="677" y="772.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph33" class="biological activity" compartmentRef="glyph0">
+      <label text="ErbB3"/>
+      <bbox x="430.9999999999999" y="232.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph26" class="biological activity" compartmentRef="glyph0">
+      <label text="GAB1"/>
+      <bbox x="578" y="516.1667000000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph34" class="biological activity" compartmentRef="glyph0">
+      <label text="p85 PI3K"/>
+      <bbox x="503.9999999999999" y="604.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph14" class="biological activity" compartmentRef="glyph0">
+      <label text="PI3K 1a"/>
+      <bbox x="503.9999999999999" y="686.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph47" class="biological activity" compartmentRef="glyph0">
+      <label text="GRP1"/>
+      <bbox x="401.9999999999999" y="866.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph25" class="biological activity" compartmentRef="glyph0">
+      <label text="ARF"/>
+      <bbox x="401.9999999999999" y="955.2500000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph29" class="biological activity" compartmentRef="glyph0">
+      <label text="PDK1"/>
+      <bbox x="613" y="866.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph41" class="biological activity" compartmentRef="glyph0">
+      <label text="p7056K"/>
+      <bbox x="625" y="955.2500000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph15" class="biological activity" compartmentRef="glyph0">
+      <label text="MAPK"/>
+      <bbox x="756" y="866.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph40" class="biological activity" compartmentRef="glyph0">
+      <label text="Cbl"/>
+      <bbox x="1025" y="418.5000000000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph3" class="biological activity" compartmentRef="glyph0">
+      <label text="FKHR/DAF16"/>
+      <bbox x="497.9999999999999" y="1047.6666000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph31" class="biological activity" compartmentRef="glyph0">
+      <label text="DAG"/>
+      <bbox x="1110" y="955.2500000000002" w="70" h="35"/>
+      <glyph id="glyph31_0" class="unit of information">
+        <label text=""/>
+        <entity name="simple chemical"/>
+        <bbox x="1149.15" y="945.7500000000002" w="19" h="19"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph19" class="biological activity" compartmentRef="glyph0">
+      <label text="Ca++"/>
+      <bbox x="1025" y="955.2500000000002" w="70" h="35"/>
+      <glyph id="glyph19_0" class="unit of information">
+        <label text=""/>
+        <entity name="simple chemical"/>
+        <bbox x="1064.15" y="945.7500000000002" w="19" h="19"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph20" class="biological activity" compartmentRef="glyph0">
+      <label text="p90RSK"/>
+      <bbox x="717" y="955.2500000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph2" class="biological activity" compartmentRef="glyph0">
+      <label text="eEF2K"/>
+      <bbox x="756" y="1047.6666000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph27" class="biological activity" compartmentRef="glyph0">
+      <label text="Akt"/>
+      <bbox x="517.9999999999999" y="955.2500000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph24" class="biological activity" compartmentRef="glyph0">
+      <label text="BAD"/>
+      <bbox x="628" y="1047.6666000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph12" class="biological activity" compartmentRef="glyph0">
+      <label text="JNK"/>
+      <bbox x="503.9999999999999" y="866.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph44" class="biological activity" compartmentRef="glyph0">
+      <label text="MSK1"/>
+      <bbox x="824" y="955.2500000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph11" class="biological activity" compartmentRef="glyph0">
+      <label text="MSK2"/>
+      <bbox x="915.7306543498476" y="955.2500000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph16" class="biological activity" compartmentRef="glyph0">
+      <label text="STAT"/>
+      <bbox x="1481" y="232.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph35" class="biological activity" compartmentRef="glyph0">
+      <label text="PKC"/>
+      <bbox x="1119" y="1047.6666000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph17" class="biological activity" compartmentRef="glyph0">
+      <label text="PLC gamma"/>
+      <bbox x="1025" y="866.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph37" class="biological activity" compartmentRef="glyph0">
+      <label text="ErbB2"/>
+      <bbox x="754" y="232.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph5" class="biological activity" compartmentRef="glyph0">
+      <label text="Grb2"/>
+      <bbox x="578" y="418.5000000000001" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
+      <label text="nucleus"/>
+      <bbox x="400.375" y="1125.8750000000002" w="1152.25" h="38.25"/>
+    </glyph>
+    <glyph id="glyph10" class="biological activity" compartmentRef="glyph1">
+      <label text="c-Jun"/>
+      <bbox x="401.9999999999999" y="1127.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph8" class="biological activity" compartmentRef="glyph1">
+      <label text="CREB"/>
+      <bbox x="866" y="1127.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph46" class="biological activity" compartmentRef="glyph1">
+      <label text="p21"/>
+      <bbox x="1481" y="1127.5000000000002" w="70" h="35"/>
+    </glyph>
+    <glyph id="nwtN_f115569d-d684-479d-abcd-fd3564adc78d" class="biological activity" compartmentRef="glyph0">
+      <label text="Spry"/>
+      <bbox x="484.00534157646575" y="516.1667000000001" w="70" h="35"/>
+      <glyph id="nwtN_f115569d-d684-479d-abcd-fd3564adc78d_0" class="unit of information">
+        <label text=""/>
+        <entity name="unspecified entity"/>
+        <bbox x="521.5053415764658" y="510.1667000000001" w="30" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f" class="biological activity" compartmentRef="glyph0">
+      <label text="PI3,4,5P3"/>
+      <bbox x="503.9999999999999" y="772.5000000000002" w="70" h="35"/>
+      <glyph id="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f_0" class="unit of information">
+        <label text=""/>
+        <entity name="simple chemical"/>
+        <bbox x="541.4999999999999" y="766.5000000000002" w="30" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph6" class="biological activity">
+      <label text="EGF"/>
+      <bbox x="1025" y="104.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph18" class="biological activity">
+      <label text="EFGR"/>
+      <bbox x="1025" y="198.6901444779761" w="70" h="35"/>
+    </glyph>
+    <arc id="arc17" class="positive influence" source="glyph18" target="glyph23">
+      <start x="1029.587934569874" y="234.1901444779761"/>
+      <end x="881.1013279324036" y="322.07496524476494"/>
+    </arc>
+    <arc id="arc26" class="negative influence" source="glyph40" target="glyph18">
+      <start x="1063.2755583151177" y="418.0000000000001"/>
+      <end x="1063.4545935385045" y="235.17398714262671"/>
+    </arc>
+    <arc id="arc64" class="positive influence" source="glyph37" target="glyph5">
+      <start x="786.3694516434672" y="268"/>
+      <next x="773.1456418807976" y="358.48629542845254"/>
+      <end x="651.31283320584" y="417.4558198428718"/>
+    </arc>
+    <arc id="arc46" class="positive influence" source="glyph15" target="glyph11">
+      <start x="823.3960763751803" y="902.0000000000002"/>
+      <end x="915.6029145194617" y="953.2322253897585"/>
+    </arc>
+    <arc id="arc50" class="positive influence" source="glyph18" target="glyph17">
+      <start x="1065.6627544431608" y="234.1901444779761"/>
+      <next x="1131.5281141868513" y="443.55406574394476"/>
+      <end x="1063.4241226199035" y="862.9154110453559"/>
+    </arc>
+    <arc id="arc62" class="positive influence" source="glyph37" target="glyph17">
+      <start x="790.7152236419247" y="268"/>
+      <next x="799.3376810413168" y="358.48629542845197"/>
+      <end x="1049.6831334670385" y="863.2004660552179"/>
+    </arc>
+    <arc id="arc47" class="positive influence" source="glyph17" target="glyph19">
+      <start x="1060" y="902.0000000000002"/>
+      <end x="1060" y="951.6250000000002"/>
+    </arc>
+    <arc id="arc42" class="positive influence" source="glyph15" target="glyph41">
+      <start x="764.430985915493" y="902.0000000000002"/>
+      <end x="689.1561860353635" y="952.9972403768055"/>
+    </arc>
+    <arc id="arc51" class="unknown influence" source="glyph40" target="glyph17">
+      <start x="1060" y="454.0000000000001"/>
+      <end x="1060" y="864.4375000000002"/>
+    </arc>
+    <arc id="arc52" class="negative influence" source="glyph27" target="glyph3">
+      <start x="549.1045959275714" y="990.7500000000002"/>
+      <end x="537.1069190505154" y="1046.1892252438065"/>
+    </arc>
+    <arc id="arc53" class="positive influence" source="glyph31" target="glyph35">
+      <start x="1146.7529318325928" y="990.7500000000002"/>
+      <end x="1151.944172643939" y="1044.0563139517624"/>
+    </arc>
+    <arc id="arc54" class="positive influence" source="glyph19" target="glyph35">
+      <start x="1078.3083991404142" y="990.7500000000002"/>
+      <end x="1133.4632035541508" y="1044.9757393359848"/>
+    </arc>
+    <arc id="arc4" class="positive influence" source="glyph30" target="glyph45">
+      <start x="1276.9490903235703" y="268"/>
+      <end x="1253.3268262288811" y="320.8140012487331"/>
+    </arc>
+    <arc id="arc5" class="positive influence" source="glyph30" target="glyph38">
+      <start x="1294.2290915802976" y="268"/>
+      <end x="1321.3451241096998" y="320.8858752004606"/>
+    </arc>
+    <arc id="arc6" class="positive influence" source="glyph39" target="glyph13">
+      <start x="1419" y="268"/>
+      <end x="1419" y="320.5416600000001"/>
+    </arc>
+    <arc id="arc7" class="positive influence" source="glyph45" target="glyph9">
+      <start x="1260.7915182479492" y="359.6666600000001"/>
+      <end x="1313.0768127481929" y="415.71491526240476"/>
+    </arc>
+    <arc id="arc8" class="positive influence" source="glyph38" target="glyph9">
+      <start x="1332" y="359.6666600000001"/>
+      <end x="1332" y="414.8750000000001"/>
+    </arc>
+    <arc id="arc9" class="positive influence" source="glyph13" target="glyph9">
+      <start x="1402.3992944594138" y="359.6666600000001"/>
+      <end x="1350.7193191551057" y="415.70280576520577"/>
+    </arc>
+    <arc id="arc55" class="positive influence" source="glyph20" target="glyph2">
+      <start x="759.5960379412356" y="990.7500000000002"/>
+      <end x="782.1889623184222" y="1044.2874680768386"/>
+    </arc>
+    <arc id="arc56" class="positive influence" source="glyph27" target="glyph24">
+      <start x="574.424722398357" y="990.7500000000002"/>
+      <end x="639.18262773511" y="1045.1564130394963"/>
+    </arc>
+    <arc id="arc12" class="positive influence" source="glyph37" target="glyph4">
+      <start x="774.8618171535867" y="268"/>
+      <end x="733.0684805834031" y="321.2091051895082"/>
+    </arc>
+    <arc id="arc13" class="positive influence" source="glyph37" target="glyph42">
+      <start x="756.5999976436362" y="268"/>
+      <end x="659.1317438911002" y="322.1490259244088"/>
+    </arc>
+    <arc id="arc14" class="positive influence" source="glyph37" target="glyph23">
+      <start x="800.5854553880331" y="268"/>
+      <end x="834.7232284668154" y="321.0389091181337"/>
+    </arc>
+    <arc id="arc15" class="positive influence" source="glyph37" target="glyph36">
+      <start x="822.1854569589423" y="268"/>
+      <end x="922.0676069328872" y="322.176704625625"/>
+    </arc>
+    <arc id="arc45" class="positive influence" source="glyph15" target="glyph44">
+      <start x="804.7915492957746" y="902.0000000000002"/>
+      <end x="843.3078356867073" y="952.2694178999308"/>
+    </arc>
+    <arc id="arc44" class="positive influence" source="glyph15" target="glyph20">
+      <start x="783.0901408450704" y="902.0000000000002"/>
+      <end x="761.1670668116983" y="951.8890466785072"/>
+    </arc>
+    <arc id="arc43" class="positive influence" source="glyph29" target="glyph41">
+      <start x="650.4338028169014" y="902.0000000000002"/>
+      <end x="657.1474722189771" y="951.6531799528516"/>
+    </arc>
+    <arc id="arc20" class="positive influence" source="glyph4" target="glyph5">
+      <start x="697.1554784342418" y="359.6666600000001"/>
+      <end x="635.1591826181683" y="415.90048357652165"/>
+    </arc>
+    <arc id="arc48" class="positive influence" source="glyph17" target="glyph31">
+      <start x="1077.2394366197184" y="902.0000000000002"/>
+      <end x="1125.5990496170643" y="952.4931253354646"/>
+    </arc>
+    <arc id="arc22" class="positive influence" source="glyph5" target="glyph40">
+      <start x="648.5" y="436.0000000000001"/>
+      <end x="1021.375" y="436.0000000000001"/>
+    </arc>
+    <arc id="arc23" class="positive influence" source="glyph5" target="glyph26">
+      <start x="613" y="454.0000000000001"/>
+      <end x="613" y="512.5417000000001"/>
+    </arc>
+    <arc id="arc24" class="positive influence" source="glyph5" target="glyph21">
+      <start x="631.2457275611852" y="454.0000000000001"/>
+      <end x="691.5296341720573" y="513.4720224423443"/>
+    </arc>
+    <arc id="arc61" class="negative influence" source="glyph35" target="glyph18">
+      <start x="1164.499066933696" y="1047.1666000000002"/>
+      <next x="1202.286426319337" y="982.3825126866245"/>
+      <next x="1202.3434256055364" y="437.81228373702385"/>
+      <end x="1072.101450415471" y="235.0315438457715"/>
+    </arc>
+    <arc id="arc18" class="positive influence" source="glyph18" target="glyph4">
+      <start x="1024.5" y="229.1767809241331"/>
+      <end x="755.4347900793076" y="327.60641646072315"/>
+    </arc>
+    <arc id="arc27" class="negative influence" source="glyph15" target="glyph21">
+      <start x="790.6155198521243" y="866.0000000000002"/>
+      <next x="783.4976572902751" y="532.7668621613292"/>
+      <end x="748.4999208112852" y="533.2073281674218"/>
+    </arc>
+    <arc id="arc28" class="positive influence" source="glyph21" target="glyph28">
+      <start x="712" y="551.6667000000001"/>
+      <end x="712" y="600.875"/>
+    </arc>
+    <arc id="arc29" class="positive influence" source="glyph28" target="glyph7">
+      <start x="712" y="640"/>
+      <end x="712" y="682.8750000000002"/>
+    </arc>
+    <arc id="arc30" class="positive influence" source="glyph7" target="glyph22">
+      <start x="712" y="722.0000000000002"/>
+      <end x="712" y="768.8750000000002"/>
+    </arc>
+    <arc id="arc31" class="positive influence" source="glyph22" target="glyph15">
+      <start x="727.1276595744681" y="808.0000000000002"/>
+      <end x="773.8617683540261" y="863.6076737377022"/>
+    </arc>
+    <arc id="arc32" class="positive influence" source="glyph33" target="glyph34">
+      <start x="465.89728728512966" y="268"/>
+      <next x="464.24233123673116" y="558.0245496267032"/>
+      <end x="515.5920519166601" y="601.9681551642739"/>
+    </arc>
+    <arc id="arc33" class="positive influence" source="glyph26" target="glyph34">
+      <start x="597.9207490266976" y="551.6667000000001"/>
+      <end x="556.0860449378816" y="601.6045036039002"/>
+    </arc>
+    <arc id="arc34" class="positive influence" source="glyph34" target="glyph14">
+      <start x="538.9999999999999" y="640"/>
+      <end x="538.9999999999999" y="682.8750000000002"/>
+    </arc>
+    <arc id="arc19" class="positive influence" source="glyph18" target="glyph40">
+      <start x="1056.7244416848823" y="234.1901444779761"/>
+      <end x="1056.1649566117983" y="414.925491672967"/>
+    </arc>
+    <arc id="arc21" class="positive influence" source="glyph18" target="glyph5">
+      <start x="1055.583663359379" y="234.1901444779761"/>
+      <next x="1028.4865745834475" y="344.63181540507725"/>
+      <next x="950.1884133961452" y="400.2647194065813"/>
+      <end x="651.6075967882759" y="431.9083608764288"/>
+    </arc>
+    <arc id="nwtE_c091768a-1db1-4ac0-8ddc-4b56c00594ba" class="negative influence" source="nwtN_f115569d-d684-479d-abcd-fd3564adc78d" target="glyph5">
+      <glyph id="nwtE_c091768a-1db1-4ac0-8ddc-4b56c00594ba_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="550.6183562454931" y="515.6667000000001"/>
+      <end x="603.1840587922115" y="454.88732189140853"/>
+    </arc>
+    <arc id="arc39" class="positive influence" source="glyph47" target="glyph25">
+      <start x="436.9999999999999" y="902.0000000000002"/>
+      <end x="436.9999999999999" y="951.6250000000002"/>
+    </arc>
+    <arc id="nwtE_4c2d735a-ac50-442f-bedf-1d0af7c9a47b" class="positive influence" source="glyph5" target="nwtN_f115569d-d684-479d-abcd-fd3564adc78d">
+      <glyph id="nwtE_4c2d735a-ac50-442f-bedf-1d0af7c9a47b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="581.3869853309726" y="454.0000000000001"/>
+      <end x="529.8012277750325" y="512.8938190893488"/>
+    </arc>
+    <arc id="arc41" class="positive influence" source="glyph29" target="glyph27">
+      <start x="628.7323943661971" y="902.0000000000002"/>
+      <end x="574.5511539189588" y="952.6166851546571"/>
+    </arc>
+    <arc id="arc0" class="positive influence" source="glyph6" target="glyph18">
+      <start x="1060" y="140"/>
+      <end x="1060" y="195.0651444779761"/>
+    </arc>
+    <arc id="arc57" class="positive influence" source="glyph12" target="glyph10">
+      <start x="531.9655172413792" y="902.0000000000002"/>
+      <end x="445.1719691797115" y="1124.0893729813265"/>
+    </arc>
+    <arc id="arc58" class="positive influence" source="glyph44" target="glyph8">
+      <start x="863.3889695210449" y="990.7500000000002"/>
+      <end x="895.8707452977314" y="1123.9639494651012"/>
+    </arc>
+    <arc id="arc59" class="positive influence" source="glyph11" target="glyph8">
+      <start x="945.5338370592974" y="990.7500000000002"/>
+      <end x="907.0636387149294" y="1123.9976266690774"/>
+    </arc>
+    <arc id="arc60" class="positive influence" source="glyph16" target="glyph46">
+      <start x="1516" y="268"/>
+      <end x="1516" y="1123.8750000000002"/>
+    </arc>
+    <arc id="arc1" class="positive influence" source="glyph18" target="glyph16">
+      <start x="1095.5" y="216.7057378710477"/>
+      <next x="1436.2191666310744" y="221.65426044028266"/>
+      <end x="1477.5553370863786" y="236.34079945779197"/>
+    </arc>
+    <arc id="arc2" class="positive influence" source="glyph18" target="glyph39">
+      <start x="1095.5" y="217.5574536386204"/>
+      <next x="1326.2085828419047" y="226.44336796985968"/>
+      <end x="1380.4710803264443" y="240.2187981273912"/>
+    </arc>
+    <arc id="arc3" class="positive influence" source="glyph18" target="glyph30">
+      <start x="1095.5" y="221.52458834922876"/>
+      <end x="1246.4096946029106" y="244.201188222105"/>
+    </arc>
+    <arc id="arc10" class="positive influence" source="glyph18" target="glyph33">
+      <start x="1024.5" y="216.89145611209452"/>
+      <next x="668.5472680765512" y="223.9233939175634"/>
+      <end x="504.59941937247805" y="245.03058291753177"/>
+    </arc>
+    <arc id="arc11" class="positive influence" source="glyph18" target="glyph37">
+      <start x="1024.5" y="220.61911079174678"/>
+      <end x="827.6009600225959" y="245.18415910931589"/>
+    </arc>
+    <arc id="arc16" class="positive influence" source="glyph18" target="glyph36">
+      <start x="1045.3677798402225" y="234.1901444779761"/>
+      <end x="974.6034079450667" y="321.2417798555132"/>
+    </arc>
+    <arc id="nwtE_03a840dc-1e50-4903-bb7c-db449b5b5d5e" class="positive influence" source="glyph14" target="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f">
+      <glyph id="nwtE_03a840dc-1e50-4903-bb7c-db449b5b5d5e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="538.9999999999999" y="722.0000000000002"/>
+      <end x="538.9999999999999" y="768.8750000000002"/>
+    </arc>
+    <arc id="nwtE_aa7b59da-58e2-4aa8-9fb8-d75affbb518d" class="positive influence" source="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f" target="glyph47">
+      <glyph id="nwtE_aa7b59da-58e2-4aa8-9fb8-d75affbb518d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="519.4680851063829" y="808.0000000000002"/>
+      <end x="458.8299023808944" y="863.8822468254504"/>
+    </arc>
+    <arc id="nwtE_00a0dc10-5205-474f-8e4d-dcd587cb7f69" class="positive influence" source="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f" target="glyph12">
+      <glyph id="nwtE_00a0dc10-5205-474f-8e4d-dcd587cb7f69_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="538.9999999999999" y="808.0000000000002"/>
+      <end x="538.9999999999999" y="862.8750000000002"/>
+    </arc>
+    <arc id="nwtE_1e5c4254-df58-4ba7-82c0-0b7e54139304" class="positive influence" source="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f" target="glyph29">
+      <glyph id="nwtE_1e5c4254-df58-4ba7-82c0-0b7e54139304_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="559.8723404255318" y="808.0000000000002"/>
+      <end x="624.7611237313523" y="863.959134227038"/>
+    </arc>
+    <arc id="nwtE_0145f98d-24de-4b28-970e-043ac4e575d1" class="positive influence" source="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f" target="glyph17">
+      <glyph id="nwtE_0145f98d-24de-4b28-970e-043ac4e575d1_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="574.4999999999999" y="796.4049904030712"/>
+      <end x="1021.4246537839094" y="877.0401486673467"/>
+    </arc>
+    <arc id="nwtE_60c9d82e-133f-4eae-acfc-a19fe0445e5a" class="positive influence" source="nwtN_7ff0c32c-d666-4dac-8a68-2d228f8a154f" target="glyph27">
+      <glyph id="nwtE_60c9d82e-133f-4eae-acfc-a19fe0445e5a_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="549.4146845724965" y="808.0000000000002"/>
+      <next x="595.293961249666" y="887.2944783339788"/>
+      <end x="563.294783154769" y="951.949251171199"/>
+    </arc>
+  </map>
+</sbgn>
