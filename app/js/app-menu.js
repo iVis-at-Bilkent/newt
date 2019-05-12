@@ -6,12 +6,13 @@ var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var _ = require('underscore');
+var IsLocalDBMode = true;
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView,DbneighborhoodQueryView, DbpathsBetweenQueryView, DbpathsFromToQueryView, DbcommonStreamQueryView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+   var layoutPropertiesView, generalPropertiesView,DbneighborhoodQueryView, DbpathsBetweenQueryView, DbpathsFromToQueryView, DbcommonStreamQueryView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
@@ -33,41 +34,37 @@ module.exports = function() {
     });
   }
 
-   function AddSBGNML(xml) {
-    $.ajax({
-      type: 'post',
-      url: "/utilities/AddSBGNML",
-      data: {sbgnml: xml},
-     success: function(data){
-        if(data.length == 0) {
-          console.log("Xsd validation OK");
+  function AddSBGNML(xml) {
+     $.ajax({
+       type: 'post',
+       url: "/utilities/AddSBGNML",
+       data: {sbgnml: xml},
+      success: function(data){
+         if(data.length == 0) {
+           console.log("Xsd validation OK");
+         }
+         else {
+           console.error("Xsd validation failed. Errors:", data);
+         }
+       },
+       error: function(req, status, err) {
+         console.error("Error during file validation", status, err);
+       }
+     });
+   }
+    function ReadFromDB() {
+     $.ajax({
+       type: 'get',
+       url: "/utilities/ReadFromDb",
+ 	    success: function(data){
+         var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+       },
+       error: function(req, status, err) {
+         var chiseInstance = appUtilities.getActiveChiseInstance();
         }
-        else {
-          console.error("Xsd validation failed. Errors:", data);
-        }
-      },
-      error: function(req, status, err) {
-        console.error("Error during file validation", status, err);
-      }
-    });
-  }
-
-
-  function ReadFromDB() {
-    $.ajax({
-      type: 'get',
-      url: "/utilities/ReadFromDb",
-	    success: function(data){
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-
-chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
-      },
-      error: function(req, status, err) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      }
-    });
-  }
+     });
+   }
 
   function cd2sbgnml(xml) {
 
@@ -161,9 +158,15 @@ chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
+  DbneighborhoodQueryView = appUtilities.DbneighborhoodQueryView = new BackboneViews.DbNeighborhoodQueryView({el: '#query-Dbneighborhood-table'});
+  DbpathsBetweenQueryView = appUtilities.DbpathsBetweenQueryView = new BackboneViews.DbPathsBetweenQueryView({el: '#query-Dbpathsbetween-table'});
+  DbpathsFromToQueryView = appUtilities.DbpathsFromToQueryView = new BackboneViews.DbPathsFromToQueryView({el: '#query-Dbpathsfromto-table'});
+  DbcommonStreamQueryView = appUtilities.DbcommonStreamQueryView = new BackboneViews.DbCommonStreamQueryView({el: '#query-Dbcommonstream-table'});
   toolbarButtonsAndMenu();
 
   keyboardShortcuts();
+
+  SetDBLocalMode();
 
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
@@ -227,6 +230,13 @@ chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
     }
 
   });
+
+function SetDBLocalMode(){
+  if(!IsLocalDBMode){
+  $("#save-to-db").hide();
+  $("#read-db").hide();
+  $("#query-Db").hide()}
+}
 
   function toolbarButtonsAndMenu() {
 
@@ -300,21 +310,19 @@ chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
 
     });
 
-	$("#read-db").click(function () {
+    $("#read-db").click(function () {
 
-	//var chiseInstance = appUtilities.getActiveChiseInstance();
-	"save-to-db"
-   ReadFromDB();
-//chiseInstance.getSbgnvizInstance().loadSBGNMLText(ggb);
-    });
+       ReadFromDB();
 
-	$("#save-to-db").click(function () {
+        });
 
-	  var chiseInstance = appUtilities.getActiveChiseInstance();
-	 var sbgnml =  chiseInstance.getSbgnvizInstance().createSbgnml();
-	AddSBGNML(sbgnml);
-//chiseInstance.getSbgnvizInstance().loadSBGNMLText(ggb);
-    });
+     	$("#save-to-db").click(function () {
+     	  var chiseInstance = appUtilities.getActiveChiseInstance();
+    	 var sbgnml =  chiseInstance.getSbgnvizInstance().createSbgnml();
+    	AddSBGNML(sbgnml);
+
+        });
+
 
     // close the active file
     $("#close-file").click(function () {
@@ -771,6 +779,22 @@ chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
     $("#grid-properties").click(function (e) {
       gridPropertiesView.render();
     });
+
+    $("#query-Dbneighborhood").click(function (e) {
+        DbneighborhoodQueryView.render();
+     });
+
+    $("#query-Dbpathsbetween").click(function (e) {
+        DbpathsBetweenQueryView.render();
+     });
+
+     $("#query-Dbpathsfromto").click(function (e) {
+       DbpathsFromToQueryView.render();
+     });
+
+     $("#query-Dbcommonstream").click(function (e) {
+       DbcommonStreamQueryView.render();
+     });
 
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
 

@@ -56,7 +56,7 @@ $(document).ready(function () {
   chise.register(libs);
 
   appMenu();
-  
+
   // create a new network and access the related chise.js instance
   appUtilities.createNewNetwork();
 
