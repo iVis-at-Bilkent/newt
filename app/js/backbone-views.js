@@ -1992,7 +1992,7 @@ var DbCommonStreamQueryView = Backbone.View.extend({
         $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
 
 
-        $.ajax({
+    $.ajax({
           type: 'post',
           url: "/utilities/Stream",
           data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},

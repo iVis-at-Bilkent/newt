@@ -6,6 +6,7 @@ var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var _ = require('underscore');
+var IsLocalDBMode = true;
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
@@ -161,6 +162,8 @@ module.exports = function() {
 
   keyboardShortcuts();
 
+  SetDBLocalMode();
+
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
@@ -223,6 +226,13 @@ module.exports = function() {
     }
 
   });
+
+function SetDBLocalMode(){
+  if(!IsLocalDBMode){
+  $("#save-to-db").hide();
+  $("#read-db").hide();
+  $("#query-Db").hide()}
+}
 
   function toolbarButtonsAndMenu() {
 
