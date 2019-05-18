@@ -974,7 +974,7 @@ inspectorUtilities.handleSBGNInspector = function () {
   }
 };
 
-  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,file,chiseInstance) {
+  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data) {
 
    var title = "Validation Results";
 
@@ -984,7 +984,6 @@ inspectorUtilities.handleSBGNInspector = function () {
     html += "<div class='panel-body'>";
     var dismiss = "Dismiss";
         if(errors.length !=0) {
-            var cy = appUtilities.getActiveCy();
             var id=errors[currentPage].role; 
             var eles =  cy.elements('[id="' + id + '"]');
             if(!highlighted.includes(id)) {
@@ -994,7 +993,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                highlighted.push(id);
            }
           inspectorUtilities.handleNavigate (cy,eles);
-          html += "<p class='panel-body' style=\"color:red; text-align:center\" > Map is invalid</p>";
+          html += "<p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p>";
           html += "<p class='panel-body' style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
          var next = "Next";
          if(currentPage == 0) {
@@ -1024,23 +1023,24 @@ inspectorUtilities.handleSBGNInspector = function () {
          }
     }
     else {
-          html += "<p class='panel-body' style=\"color:green; text-align:center\" > Map is valid</p>";
+          html += "<p class='panel-body' style=\"color:green; text-align:center\" > Map is Valid</p>";
            html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
       }
     $("#sbgn-inspector-console-panel-group").html(html);
     $('#inspector-next-button').on('click', function () {
               currentPage = currentPage + 1;
-              inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,file);
+              var cy = appUtilities.getActiveCy();
+              inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,cy,data);
       });
      $('#inspector-back-button').on('click', function () {
               currentPage = currentPage - 1;
-              inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,file);
+              var cy = appUtilities.getActiveCy();
+              inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,cy,data);
       });
      $('#inspector-dismiss-button').on('click', function () {
             var chiseInstance = appUtilities.getActiveChiseInstance();
-            chiseInstance.removeHighlights();  
-            chiseInstance.loadSBGNMLText(file);
+            chiseInstance.loadSBGNMLText(data, true);
             $("#sbgn-inspector-console-panel-group").html("");
             $('#inspector-console-tab')[0].style.display = "none";
             if (!$('#inspector-map-tab').hasClass('active')) {
@@ -1050,55 +1050,66 @@ inspectorUtilities.handleSBGNInspector = function () {
 
 }; 
 inspectorUtilities.handleNavigate = function (cy,eles) {
-        cy.center(eles);
-        var exceed = false;
-        if(eles.isEdge()){
-            var source_node = eles.source();
-            var target_node = eles.target();
-            var source_loc = Math.pow(source_node._private.position.x, 2) + Math.pow(source_node._private.position.y, 2);
-            var target_loc = Math.pow(target_node._private.position.x, 2) + Math.pow(target_node._private.position.y, 2);
-            var source_to_target = source_loc < target_loc;
-            var start_node = source_to_target ? source_node : target_node;
-            var end_node = source_to_target ? target_node : source_node;
-            var renderedStartPosition = start_node.renderedPosition();
-            var renderedEndPosition = end_node.renderedPosition();
-            var maxRenderedX = cy.width();
-            var maxRenderedY = cy.height();
-            if( ( renderedEndPosition.x >= maxRenderedX ) || ( renderedStartPosition.x <= 0 )
-                   || ( renderedEndPosition.y >= maxRenderedY ) || ( renderedStartPosition.y <= 0 ) ){
-              exceed = true;
-            }
-           if( exceed ) {
-               // save the node who is currently being dragged to the scratch pad
-               cy.fit(eles);
-           }
-        }
-        else {
-             var renderedPosition = eles.renderedPosition();
-             var renderedWidth = eles.renderedWidth();
-             var renderedHeight = eles.renderedHeight();
+          var zoomLevel = 7 ;
+          if(zoomLevel<cy.zoom())
+              zoomLevel = cy.zoom();
+          cy.animate({
+            duration: 1400,
+            center: {eles:eles},
+            easing: 'ease',
+            zoom :zoomLevel,
+            complete: function(){
+                var exceed = false;
+                if(eles.isEdge()){
+                    var source_node = eles.source();
+                    var target_node = eles.target();
+                    var source_loc = Math.pow(source_node._private.position.x, 2) + Math.pow(source_node._private.position.y, 2);
+                    var target_loc = Math.pow(target_node._private.position.x, 2) + Math.pow(target_node._private.position.y, 2);
+                    var source_to_target = source_loc < target_loc;
+                    var start_node = source_to_target ? source_node : target_node;
+                    var end_node = source_to_target ? target_node : source_node;
+                    var renderedStartPosition = start_node.renderedPosition();
+                    var renderedEndPosition = end_node.renderedPosition();
+                    var maxRenderedX = cy.width();
+                    var maxRenderedY = cy.height();
+                    if( ( renderedEndPosition.x >= maxRenderedX ) || ( renderedStartPosition.x <= 0 )
+                           || ( renderedEndPosition.y >= maxRenderedY ) || ( renderedStartPosition.y <= 0 ) ){
+                      exceed = true;
+                    }
+                   if( exceed ) {
+                       // save the node who is currently being dragged to the scratch pad
+                       cy.fit(eles);
+                   }
+                }
+                else {
+                     var renderedPosition = eles.renderedPosition();
+                     var renderedWidth = eles.renderedWidth();
+                     var renderedHeight = eles.renderedHeight();
 
-             var maxRenderedX = cy.width();
-             var maxRenderedY = cy.height();
+                     var maxRenderedX = cy.width();
+                     var maxRenderedY = cy.height();
 
-             var topLeftRenderedPosition = {
-               x: renderedPosition.x - renderedWidth / 2,
-               y: renderedPosition.y - renderedHeight / 2
-             };
+                     var topLeftRenderedPosition = {
+                       x: renderedPosition.x - renderedWidth / 2,
+                       y: renderedPosition.y - renderedHeight / 2
+                     };
 
-             var bottomRightRenderedPosition = {
-               x: renderedPosition.x + renderedWidth / 2,
-               y: renderedPosition.y + renderedHeight / 2
-             };
-             if( ( bottomRightRenderedPosition.x >= maxRenderedX ) || ( topLeftRenderedPosition.x <= 0 )
-                     || ( bottomRightRenderedPosition.y >= maxRenderedY ) || ( topLeftRenderedPosition.y <= 0 ) ){
-               exceed = true;
-             } 
-             if( exceed ) {
-               // save the node who is currently being dragged to the scratch pad
-               cy.fit(eles);
-             }
-        }
+                     var bottomRightRenderedPosition = {
+                       x: renderedPosition.x + renderedWidth / 2,
+                       y: renderedPosition.y + renderedHeight / 2
+                     };
+                     if( ( bottomRightRenderedPosition.x >= maxRenderedX ) || ( topLeftRenderedPosition.x <= 0 )
+                             || ( bottomRightRenderedPosition.y >= maxRenderedY ) || ( topLeftRenderedPosition.y <= 0 ) ){
+                       exceed = true;
+                     } 
+                     if( exceed ) {
+                       // save the node who is currently being dragged to the scratch pad
+                       cy.fit(eles);
+                     }
+                }
+                    }
+                });
+     
 };
 ;
 module.exports = inspectorUtilities;

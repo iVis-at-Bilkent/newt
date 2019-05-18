@@ -687,11 +687,11 @@ module.exports = function() {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       if(chiseInstance.elementUtilities.mapType != "PD")
           return;
-      // use cy instance associated with chise instance
+      var cy = appUtilities.getActiveCy();
       var file = chiseInstance.getSbgnvizInstance().createSbgnml();
       var errors = chiseInstance.doValidation(file);
       var highlighted = [] ;
-      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,file);
+      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file);
       $('#inspector-console-tab')[0].style.display = "block";
       if (!$('#inspector-console-tab').hasClass('active')) {
         $('#inspector-console-tab a').tab('show');
