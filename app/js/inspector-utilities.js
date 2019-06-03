@@ -1039,13 +1039,26 @@ inspectorUtilities.handleSBGNInspector = function () {
               inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,cy,data);
       });
      $('#inspector-dismiss-button').on('click', function () {
+            var cy = appUtilities.getActiveCy();
             var chiseInstance = appUtilities.getActiveChiseInstance();
-            chiseInstance.loadSBGNMLText(data, true);
-            $("#sbgn-inspector-console-panel-group").html("");
-            $('#inspector-console-tab')[0].style.display = "none";
-            if (!$('#inspector-map-tab').hasClass('active')) {
-                 $('#inspector-map-tab a').tab('show');
+             if(errors.length!=0) {
+                var id=errors[currentPage].role; 
+                var eles =  cy.elements('[id="' + id + '"]');
+                cy.animate({
+                 duration: 100,
+                 easing: 'ease',
+                 zoom :4.6,
+                 center: {eles:eles},
+                 complete: function(){
+                      chiseInstance.removeHighlights();
+                 }
+              });
             }
+             $("#sbgn-inspector-console-panel-group").html("");
+             $('#inspector-console-tab')[0].style.display = "none";
+             if (!$('#inspector-map-tab').hasClass('active')) {
+                 $('#inspector-map-tab a').tab('show');
+              }
       });
 
 }; 
