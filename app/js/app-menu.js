@@ -147,6 +147,11 @@ module.exports = function() {
       if (!$('#inspector-map-tab').hasClass('active')) {
         $('#inspector-map-tab a').tab('show');
       }
+      
+       if ( $('#inspector-console-tab')[0].style.display == "block") {
+            $('#inspector-console-tab')[0].style.display = "none";
+
+      }
 
     }
 

@@ -1006,7 +1006,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                  + ">" + dismiss + "</button> </div>";
              } 
          }else { 
-            var back = "Back";
+            var back = "Previous";
             if(currentPage + 1 !== errors.length) {
                   html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' >\n\
                 <button class='btn btn-default' style='align: center;' id='inspector-back-button'"
