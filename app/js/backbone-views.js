@@ -1611,6 +1611,711 @@ var CommonStreamQueryView = Backbone.View.extend({
     }
 });
 
+
+var DbNeighborhoodQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbneighborhood-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbneighborhood-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbNeighborhood";
+
+    $(document).off("click", "#save-query-Dbneighborhood").on("click", "#save-query-Dbneighborhood", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbneighborhood-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbneighborhood-length-limit").value);
+
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-Dbneighborhood-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+    //  geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 8) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbneighborhood-length-limit").focus();
+        return;
+      }
+      var limit = self.currentQueryParameters.lengthLimit;
+
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = geneSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_NEIGHBORHOOD.sbgnml';
+      appUtilities.createNewNetwork();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('Dbneighborhood-spinner');
+
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+
+      var t0= performance.now();
+      $.ajax({
+        type: 'post',
+        url: "/utilities/AddSBGNML2",
+        data: {sbgnml: geneSymbolsArray, limit:limit},
+        success: function(data){
+          if (data == "null")
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner("Dbneighborhood-spinner");
+          }
+          else {
+
+          $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('Dbneighborhood-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: geneSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+                    chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+
+                console.log("genelist "+ geneSymbolsArray);
+            var t1= performance.now();
+            console.log("neighborhood "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
+          }
+        },
+        error: function(req, status, err) {
+          //  chiseInstance.endSpinner('Dbneighborhood-spinner');
+        }
+      });
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#cancel-query-Dbneighborhood").on("click", "#cancel-query-Dbneighborhood", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+							  
+											
+										
+										  
+																							   
+															   
+																			   
+																		  
+																										 
+																							  
+																		
+																				  
+					 
+						  
+																							  
+																		
+					 
+					
+													 
+																							
+																	  
+  }
+});
+
+/**
+* Paths Between Query view for the Sample Application. GOI
+*/
+var DbPathsBetweenQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbpathsbetween-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbpathsbetween-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbPathsBetween";
+
+    $(document).off("click", "#save-query-Dbpathsbetween").on("click", "#save-query-Dbpathsbetween", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbpathsbetween-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbpathsbetween-length-limit").value);
+
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-Dbpathsbetween-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      //geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+
+      console.log( "after trim "+ geneSymbols);
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 5) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbpathsbetween-length-limit").focus();
+        return;
+      }
+
+      var limit = self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
+
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = geneSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_PATHSBETWEEN.sbgnml';
+      appUtilities.createNewNetwork();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('DbPathsBetween-spinner');
+
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+    console.log("genelist 2 "+ geneSymbolsArray);
+      // var targetSymbolsArray = targetSymbols;
+      var  direction = 0;
+      var t0= performance.now();
+      $.ajax({
+        type: 'post',
+        url: "/utilities/GOI",
+        data: {genes: geneSymbolsArray, limit:limit, direction: direction},
+        success: function(data){
+
+
+          if (data == "null")
+          {
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              chiseInstance.endSpinner("DbPathsBetween-spinner");
+          }
+          else {
+
+          $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('DbPathsBetween-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: geneSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+                chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+          var t1= performance.now();
+          console.log("pathsbetween "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
+          }
+        },
+        error: function(req, status, err) {
+
+        }
+      });
+
+
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#cancel-query-Dbpathsbetween").on("click", "#cancel-query-Dbpathsbetween", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
+/**
+* Paths From To Query view for the Sample Application.
+*/
+var DbPathsFromToQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    sourceSymbols: "",
+    targetSymbols: "",
+    lengthLimit: 1,
+    addition: 0
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbpathsfromto-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbpathsfromto-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbPathsFromTo";
+
+    $(document).off("click", "#save-query-Dbpathsfromto").on("click", "#save-query-Dbpathsfromto", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.sourceSymbols = document.getElementById("query-Dbpathsfromto-source-symbols").value;
+      self.currentQueryParameters.targetSymbols = document.getElementById("query-Dbpathsfromto-target-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbpathsfromto-length-limit").value);
+      self.currentQueryParameters.addition = Number(document.getElementById("query-Dbpathsfromto-addition").value);
+
+      var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+      if (sourceSymbols.length === 0) {
+        document.getElementById("query-Dbpathsfromto-source-symbols").focus();
+        return;
+      }
+      // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      //sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (sourceSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+
+      var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+      if (targetSymbols.length === 0) {
+        document.getElementById("query-Dbpathsfromto-target-symbols").focus();
+        return;
+      }
+      // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+    //  targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (targetSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+
+      if (self.currentQueryParameters.lengthLimit > 5) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbpathsfromto-length-limit").focus();
+        return;
+      }
+
+      var limit = self.currentQueryParameters.lengthLimit;
+      var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
+      var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ");;
+
+      sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      var sourceSymbolsArrayforFile = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+      var targetSymbolsArrayForFile = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      var targets = "";
+      for (var i = 0; i < sourceSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = sourceSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      for (var i = 0; i < targetSymbolsArrayForFile.length; i++) {
+        var currentGeneSymbol = targetSymbolsArrayForFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        targets = targets + "&target=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_PATHSFROMTO.sbgnml';
+
+      appUtilities.createNewNetwork();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('DbPathsFromTo-spinner');
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+      var  addition = self.currentQueryParameters.addition;
+      var t0= performance.now();
+      $.ajax({
+        type: 'post',
+        url: "/utilities/PathsTo",
+        data: {target: targetSymbolsArray, source: sourceSymbolsArray, limit:limit, addition: addition},
+        success: function(data){
+
+          if (data == "null")
+          {
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner("DbPathsFromTo-spinner");
+          }
+          else {
+          $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+          currentGeneralProperties.inferNestingOnLoad = false;
+          chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+          chiseInstance.endSpinner('DbPathsFromTo-spinner');
+          $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+          var sourceAndTargetArray = targetSymbolsArray+ ", "+sourceSymbolsArray;
+
+          console.log("sourceAndTargetArray" + sourceAndTargetArray);
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: targetSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+              chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+
+          $.ajax({
+            type: 'post',
+            url: "/utilities/HighlightSeeds",
+            data: {sbgnml: sourceSymbolsArray},
+            success: function(data){
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              var cy = chiseInstance.getCy();
+              var stringa = data;
+              var array = stringa.split(",");
+              var index;
+              for (index = 0; index < array.length; ++index) {
+              chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#EF1FE8'));
+              }
+            },
+            error: function(req, status, err) {
+
+            }
+          });
+          var t1= performance.now();
+          console.log("pathsfromto "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
+          }
+        },
+        error: function(req, status, err) {
+
+        }
+      });
+
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#cancel-query-Dbpathsfromto").on("click", "#cancel-query-Dbpathsfromto", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
+/**
+* Common Stream Query view for the Sample Application.
+*/
+var DbCommonStreamQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1,
+    direction: 0
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-Dbcommonstream-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-Dbcommonstream-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "DbCommonStream";
+
+    $(document).off("click", "#save-query-Dbcommonstream").on("click", "#save-query-Dbcommonstream", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-Dbcommonstream-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-Dbcommonstream-length-limit").value);
+      self.currentQueryParameters.direction = Number(document.getElementById("query-Dbcommonstream-direction").value);
+
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+        document.getElementById("query-Dbcommonstream-gene-symbols").focus();
+        return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+    //  geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 5) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-Dbcommonstream-length-limit").focus();
+        return;
+      }
+
+      var limit = self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ");
+
+      var dir= self.currentQueryParameters.direction;
+
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      var geneSymbolsArrayforFile = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArrayforFile.length; i++) {
+        var currentGeneSymbol = geneSymbolsArrayforFile[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+        || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+          continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+          filename = currentGeneSymbol;
+        } else {
+          filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_COMMONSTREAM.sbgnml';
+
+      appUtilities.createNewNetwork();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner('DbCommonStream-spinner');
+
+      var cy = chiseInstance.getCy();
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+  var t0= performance.now();
+    $.ajax({
+      type: 'post',
+      url: "/utilities/Stream2",
+      data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},
+      success: function(data){
+
+        if (data == "null")
+        {
+          new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+          chiseInstance.endSpinner("DbCommonStream-spinner");
+        }
+        else {
+
+        $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+        currentGeneralProperties.inferNestingOnLoad = false;
+        chiseInstance.getSbgnvizInstance().loadSBGNMLText(data);
+        currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+        chiseInstance.endSpinner('DbCommonStream-spinner');
+        $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+
+
+    $.ajax({
+          type: 'post',
+          url: "/utilities/Stream",
+          data: {sbgnml: geneSymbolsArray, limit:limit, dir:dir},
+          success: function(data){
+
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = chiseInstance.getCy();
+            var stringa = data;
+            var array = stringa.split(",");
+            var index;
+            for (index = 0; index < array.length; ++index) {
+              chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#EF1FE8'));
+            }
+          },
+          error: function(req, status, err) {
+
+          }
+        });
+
+        $.ajax({
+          type: 'post',
+          url: "/utilities/HighlightSeeds",
+          data: {sbgnml: geneSymbolsArray},
+          success: function(data){
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = chiseInstance.getCy();
+            var stringa = data;
+            var array = stringa.split(",");
+            var index;
+            for (index = 0; index < array.length; ++index) {
+            chiseInstance.highlightSelected(cy.elements(array[index]).data('color', '#57D011'));
+            }
+          },
+          error: function(req, status, err) {
+
+          }
+        });
+
+
+        var t1= performance.now();
+        console.log("commonstream "+ filename +" "+ limit + " time: "+ (t1 -t0) +" miliseconds" );
+      }
+      },
+      error: function(req, status, err) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      }
+    });
+    $(self.el).modal('toggle');
+  });
+
+  $(document).off("click", "#cancel-query-Dbcommonstream").on("click", "#cancel-query-Dbcommonstream", function (evt) {
+    $(self.el).modal('toggle');
+  });
+
+  return this;
+}
+});
+
+
 /**
  * Paths By URI Query view for the Sample Application.
  */
@@ -1949,6 +2654,14 @@ var PromptInvalidQueryView = Backbone.View.extend({
               appUtilities.pathsFromToQueryView.render();
           else if (PCdialog == "CommonStream")
               appUtilities.commonStreamQueryView.render();
+		  else if (PCdialog == "DbPathsBetween")
+              appUtilities.DbpathsBetweenQueryView.render();
+          else if (PCdialog == "DbPathsFromTo")
+              appUtilities.DbpathsFromToQueryView.render();
+          else if (PCdialog == "DbCommonStream")
+              appUtilities.DbcommonStreamQueryView.render();
+          else if (PCdialog == "DbNeighborhood")
+              appUtilities.DbneighborhoodQueryView.render();								
       });
 
       return this;
@@ -1967,6 +2680,14 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
         $(self.el).html(self.template);
         if (PCdialog == "Neighborhood")
           document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
+		else if (PCdialog == "DbNeighborhood")
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 8.";
+        else if (PCdialog == "DbPathsBetween")
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 5.";
+        else if (PCdialog == "DbPathsFromTo")
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 5.";
+        else if (PCdialog == "DbCommonStream")
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 5.";									  
         else
             document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
         $(self.el).modal('show');
@@ -1981,6 +2702,14 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
                 appUtilities.pathsFromToQueryView.render();
             else if (PCdialog == "CommonStream")
                 appUtilities.commonStreamQueryView.render();
+			         else if (PCdialog == "DbPathsBetween")
+                appUtilities.DbpathsBetweenQueryView.render();
+            else if (PCdialog == "DbPathsFromTo")
+                appUtilities.DbpathsFromToQueryView.render();
+            else if (PCdialog == "DbCommonStream")
+                appUtilities.DbcommonStreamQueryView.render();
+            else if (PCdialog == "DbNeighborhood")
+                appUtilities.DbneighborhoodQueryView.render();							  
         });
 
         return this;
@@ -2920,6 +3649,10 @@ module.exports = {
   PathsFromToQueryView: PathsFromToQueryView,
   CommonStreamQueryView: CommonStreamQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
+  DbNeighborhoodQueryView: DbNeighborhoodQueryView,
+  DbPathsBetweenQueryView: DbPathsBetweenQueryView,
+  DbPathsFromToQueryView: DbPathsFromToQueryView,
+  DbCommonStreamQueryView: DbCommonStreamQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   PromptConfirmationView: PromptConfirmationView,
