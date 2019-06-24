@@ -427,7 +427,7 @@ appUtilities.createNewNetwork = function () {
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
 
   // init the current file name for the map
-  appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.sbgnml');
+  appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.sbgn');
 
   // register cy extensions, bind cy events etc.
   var appCy = require('./app-cy');
@@ -2424,7 +2424,7 @@ appUtilities.launchWithModelFile = function() {
     var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
           + uri + "&format=SBGN";
 
-    var filename = uri + '.sbgnml';
+    var filename = uri + '.sbgn';
     var cyInstance = chiseInstance.getCy();
 
     chiseInstance.startSpinner('paths-byURI-spinner');

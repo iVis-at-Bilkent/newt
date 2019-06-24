@@ -501,22 +501,22 @@ module.exports = function() {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signaling.sbgnml',
-      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgnml',
-      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgnml',
-      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgnml',
-      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgnml',
-      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgnml',
-      "#load-sample7" : 'polyq_proteins_interference.sbgnml',
-      "#load-sample8" : 'glycolysis.sbgnml',
-      "#load-sample9" : 'mapk_cascade.sbgnml',
-      "#load-sample10" : 'drosophila_cell_cycle.sbgnml',
-      "#load-sample11" : 'mammalian_cholesterol.sbgnml',
-      "#load-sample12" : 'two_gene_system_behavior.sbgnml',
-      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
-      "#load-sample14" : 'repressilator.sbgnml',
-      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
-      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgnml'
+      "#load-sample1" : 'neuronal_muscle_signaling.sbgn',
+      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgn',
+      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgn',
+      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgn',
+      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgn',
+      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgn',
+      "#load-sample7" : 'polyq_proteins_interference.sbgn',
+      "#load-sample8" : 'glycolysis.sbgn',
+      "#load-sample9" : 'mapk_cascade.sbgn',
+      "#load-sample10" : 'drosophila_cell_cycle.sbgn',
+      "#load-sample11" : 'mammalian_cholesterol.sbgn',
+      "#load-sample12" : 'two_gene_system_behavior.sbgn',
+      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgn',
+      "#load-sample14" : 'repressilator.sbgn',
+      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgn',
+      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn'
     };
 
     for ( var selector in selectorToSampleFileName ) {
