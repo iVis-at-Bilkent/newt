@@ -1281,6 +1281,16 @@ module.exports = function() {
         cy.trigger('tapend', {x: relX, y: relY});
       }
     });
+    // handle ctrl+shift press for zoom shortcut 
+    $(document).on("keydown", function (event){
+      
+      if(event.shiftKey  && event.ctrlKey && !appUtilities.zoomShortcut) {
+        //variable toggle to prevent multiple calls at the same time
+        appUtilities.zoomShortcut = true; 
+        //enable zoom shortcut mode      
+        modeHandler.setShortcutZoomMode();
+      }   
+    });
 
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
