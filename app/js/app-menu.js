@@ -1283,13 +1283,20 @@ module.exports = function() {
     });
     // handle ctrl+shift press for zoom shortcut 
     $(document).on("keydown", function (event){
-      
-      if(event.shiftKey  && event.ctrlKey && !appUtilities.zoomShortcut) {
-        //variable toggle to prevent multiple calls at the same time
-        appUtilities.zoomShortcut = true; 
-        //enable zoom shortcut mode      
-        modeHandler.setShortcutZoomMode();
-      }   
+      if(!appUtilities.zoomShortcut){
+        if(event.shiftKey){
+          //left command key code in webkit browsers (chrome, safari, opera) = 91
+          //right command key code in webkit browsers = 93
+          //command key code in firefox = 224
+          if(event.ctrlKey || event.keyCode == "91" || event.keyCode == "93" || event.keyCode == "224"){
+              //variable toggle to prevent multiple calls at the same time
+              appUtilities.zoomShortcut = true; 
+              //enable zoom shortcut mode      
+               modeHandler.setShortcutZoomMode();
+          }
+        }
+      }
+     
     });
 
     // on active network tab change

@@ -289,7 +289,7 @@ var modeHandler = {
 
     //handler to handle shift+ctrl key up, if shift or ctrl key is up then exit zoom shortcut mode
     document.addEventListener('keyup', modeHandler.zoomShortcutKeyUpHandler = function(event){
-      if(event.shiftKey || event.ctrlKey) {       
+      if(event.shiftKey || event.ctrlKey || event.keyCode == "91" || event.keyCode == "93" || event.keyCode == "224") {       
         ctrlShiftKeyDown = false;
         var cy = appUtilities.getActiveCy();
         cy.autounselectify(false);
