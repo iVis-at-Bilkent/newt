@@ -236,15 +236,15 @@ var modeHandler = {
   },
 
  //function to set the mode to the previous mode
-  setPreviousMode: function(cy){
+  setPreviousMode: function(){
     if(modeHandler.perviousMode == 'selection-mode'){
-      modeHandler.setSelectionMode(cy);
+      modeHandler.setSelectionMode();
     }else if(modeHandler.perviousMode == 'add-node-mode'){
-      modeHandler.setAddNodeMode(cy);
+      modeHandler.setAddNodeMode();
     }else if(modeHandler.perviousMode == 'add-edge-mode'){
-      modeHandler.setAddEdgeMode(cy);
+      modeHandler.setAddEdgeMode();
     }else{//marquee zoom mode
-      modeHandler.setMarqueeZoomMode(cy);
+      modeHandler.setMarqueeZoomMode();
     }
 
   },
@@ -253,8 +253,8 @@ var modeHandler = {
    zoomShortcutTabEndHandler:undefined,
    zoomShortcutKeyUpHandler:undefined,
    perviousMode : 'selection-mode',
-  setShortcutZoomMode: function(_cy){
-    
+  setShortcutZoomMode: function(_cy){  
+   
     //shift+control pressed tracking variable
     var ctrlShiftKeyDown = true;  
 
@@ -264,15 +264,14 @@ var modeHandler = {
     modeHandler.zoomShortcutKeyUpHandler = undefined;
 
     var rect_start_pos_x , rect_start_pos_y,rect_end_pos_x,rect_end_pos_y;
-    var cy = _cy || appUtilities.getActiveCy();
-
-    //disable cytoscape shift+drage selection
-    cy.autounselectify(true);
+    var cy = _cy || appUtilities.getActiveCy();   
 
     //store the current mode to return to it after zoom shortcut terminates
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
     modeHandler.perviousMode = modeProperties.mode;
-
+    modeHandler.setSelectionMode();
+    //disable cytoscape shift+drage selection
+    cy.autounselectify(true);
     //change the curser to zoom curser
     $(cy.container()).find('canvas').removeClass('add-edge-cursor');
     $(cy.container()).find('canvas').removeClass('add-node-cursor');
@@ -371,10 +370,10 @@ var modeHandler = {
   //function to reset shortcut zoom mode resources and remove handlers
   endShorcutZoomMode : function(){
     var cy = appUtilities.getActiveCy();
-    cy.off('tapstart', modeHandler.shortcutTabStartHandler );
-    cy.off('tapend', modeHandler.shortcutTabEndHandler); 
-    document.removeEventListener('keyup', modeHandler.shortcutKeyUpHandler);
-    modeHandler.setPreviousMode(cy);
+    cy.removeListener('tapstart', modeHandler.zoomShortcutTabStartHandler );
+    cy.removeListener('tapend', modeHandler.zoomShortcutTabEndHandler); 
+    document.removeEventListener('keyup', modeHandler.zoomShortcutKeyUpHandler);
+    modeHandler.setPreviousMode();
     appUtilities.zoomShortcut = false;
   },
   autoEnableMenuItems: function (enable) {
