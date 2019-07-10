@@ -191,12 +191,7 @@ module.exports = function() {
 
   });
 
-	function SetDBLocalMode(){
-  if(!IsLocalDBMode){
-  $("#save-to-db").hide();
-  $("#read-db").hide();
-  $("#query-Db").hide()}
-}					   
+			   
   function toolbarButtonsAndMenu() {
 
     // menu behavior: on first click, triggers the other menus on hover.
