@@ -975,13 +975,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 };
 
   inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data) {
-
-   var title = "Validation Results";
-
-    var html = "";
-
-    html += "<div  class='panel-heading' data-toggle='collapse' data-target='#inspector-console-properties-toggle'><p class='panel-title accordion-toggle'>" + title + "</p></div>"
-    html += "<div class='panel-body'>";
+	var html = "";
     var dismiss = "Dismiss";
         if(errors.length !=0) {
             var id=errors[currentPage].role; 
@@ -994,7 +988,7 @@ inspectorUtilities.handleSBGNInspector = function () {
            }
           inspectorUtilities.handleNavigate (cy,eles);
           html += "<p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p>";
-          html += "<p class='panel-body' style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
+          html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
          var next = "Next";
          if(currentPage == 0) {
              if(errors.length !=1) {

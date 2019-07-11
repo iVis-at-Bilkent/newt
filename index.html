@@ -228,7 +228,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="#" id="grid-properties" style="padding-right: 30px;">Grid and Guidelines...</a></li>
-                                <li><a href="#" id="highlight-errors-of-validation">Validate Map</a></li>
+                                <li><a href="#" id="highlight-errors-of-validation"> <img width="18px" height="18px" src="app/img/check.svg"/>&nbsp; Validate Map</a></li>
                             </ul>
                         </li>
 
@@ -564,10 +564,19 @@
                             <!-- AF Edges End -->
                           </div>
                         </div>
-                        <div id="sbgn-inspector-console" class="tab-pane fade">
-                            <div id="sbgn-inspector-console-panel-group" class="panel-group">
-                             </div>
-                       </div>
+						   <div id="sbgn-inspector-console" class="tab-pane fade">
+                            <div class="panel-group">
+                                <div class="panel">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#sbgn-inspector-console-panel-group">
+                                        <p class="panel-title accordion-toggle">Validation Results</p>
+                                    </div>
+                                    <div id="sbgn-inspector-console-panel-group" class="panel-collapse collapse in">
+                                        <div id="sbgn-inspector-tab-validation-container" >
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+						</div>
                       </div>
                     </div>
                 </td>
