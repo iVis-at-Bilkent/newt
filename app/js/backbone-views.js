@@ -1610,7 +1610,6 @@ var CommonStreamQueryView = Backbone.View.extend({
         return this;
     }
 });
-
 /**
  * Paths By URI Query view for the Sample Application.
  */
@@ -1966,7 +1965,7 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
 
         $(self.el).html(self.template);
         if (PCdialog == "Neighborhood")
-          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";
+          document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 2.";								  
         else
             document.getElementById("length-limit-constant").innerHTML = "Length limit can be at most 3.";
         $(self.el).modal('show');
@@ -1981,6 +1980,7 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
                 appUtilities.pathsFromToQueryView.render();
             else if (PCdialog == "CommonStream")
                 appUtilities.commonStreamQueryView.render();
+			     				  
         });
 
         return this;
@@ -2906,29 +2906,6 @@ var AnnotationElementView = Backbone.View.extend({
   }
 });
 
-var PromptInvalidSchematronFileView = Backbone.View.extend({
-    initialize: function () {
-        var self = this;
-        self.template = _.template($("#prompt-invalidSchematronFile-template").html());
-    },
-    render: function (errors) {
-        var self = this;
-        self.template = _.template($("#prompt-invalidSchematronFile-template").html());
-
-        $(self.el).html(self.template);
-        if (errors.length!=0)
-          document.getElementById("invalidSchematronFileMessage").innerHTML = "File is invalid";
-        else
-            document.getElementById("invalidSchematronFileMessage").innerHTML = "File is valid";
-        $(self.el).modal('show');
-	 $(document).off("click", "#prompt-invalidSchematronFile-confirm").on("click", "#prompt-invalidSchematronFile-confirm", function (evt) {
-      		$(self.el).modal('toggle');
-    	});
-
-        return this;
-    }
-});
-
 module.exports = {
   BioGeneView: BioGeneView,
   ChemicalView: ChemicalView,
@@ -2958,7 +2935,5 @@ module.exports = {
   PromptInvalidURIWarning: PromptInvalidURIWarning,
   PromptInvalidURLWarning: PromptInvalidURLWarning,
   PromptInvalidImageWarning: PromptInvalidImageWarning,
-  PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
-  PromptInvalidSchematronFileView : PromptInvalidSchematronFileView
-
+  PromptInvalidEdgeWarning: PromptInvalidEdgeWarning
 };

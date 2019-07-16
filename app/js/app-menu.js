@@ -7,13 +7,12 @@ var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
 var _ = require('underscore');
-
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView, promptInvalidSchematronFileView;
+  var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -33,7 +32,6 @@ module.exports = function() {
       }
     });
   }
-
   function cd2sbgnml(xml) {
 
     $.ajax({
@@ -123,11 +121,8 @@ module.exports = function() {
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
-  promptInvalidSchematronFileView = appUtilities.promptInvalidSchematronFileView = new BackboneViews.PromptInvalidSchematronFileView({el: '#prompt-invalidSchematronFile-table'});		
   toolbarButtonsAndMenu();
-
   keyboardShortcuts();
-
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
@@ -147,6 +142,11 @@ module.exports = function() {
 
       if (!$('#inspector-map-tab').hasClass('active')) {
         $('#inspector-map-tab a').tab('show');
+      }
+      
+       if ( $('#inspector-console-tab')[0].style.display == "block") {
+            $('#inspector-console-tab')[0].style.display = "none";
+
       }
 
     }
@@ -191,6 +191,7 @@ module.exports = function() {
 
   });
 
+			   
   function toolbarButtonsAndMenu() {
 
     // menu behavior: on first click, triggers the other menus on hover.
@@ -262,7 +263,6 @@ module.exports = function() {
       appUtilities.createNewNetwork();
 
     });
-
     // close the active file
     $("#close-file").click(function () {
 
@@ -668,7 +668,7 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
-      chiseInstance.highlightSelected(cy.elements(':selected'));
+      chiseInstance.highlightSelected(cy.e(':selected'));
     });
 
     $("#highlight-processes-of-selected").click(function (e) {
@@ -686,26 +686,26 @@ module.exports = function() {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      // use cy instance associated with chise instance
-      var cy = chiseInstance.getCy();
-        var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-        var errors = chiseInstance.doValidation(file);
-	promptInvalidSchematronFileView.render(errors); 
-	if(errors.length !=0){
-	
-	   chiseInstance.highlightProcesses(cy.nodes(':selected'));	
-	
-	}
-
-    });
+      if(chiseInstance.elementUtilities.mapType != "PD")
+          return;
+      var cy = appUtilities.getActiveCy();
+      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+      var errors = chiseInstance.doValidation(file);
+      var highlighted = [] ;
+      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file);
+      $('#inspector-console-tab')[0].style.display = "block";
+      if (!$('#inspector-console-tab').hasClass('active')) {
+        $('#inspector-console-tab a').tab('show');
+      }
+ });
 
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
+       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-      chiseInstance.removeHighlights();
+       chiseInstance.removeHighlights();
+      
     });
 
     $("#layout-properties, #layout-properties-icon").click(function (e) {
@@ -753,8 +753,7 @@ module.exports = function() {
 
     $("#grid-properties").click(function (e) {
       gridPropertiesView.render();
-    });
-
+    });												
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
 
       // use active chise instance

@@ -1105,9 +1105,9 @@ module.exports = function (chiseInstance) {
     // and unfortunetaly the inspector is refreshed many times. This seriously decreases the performance. To handle this
     // problem we call the method used to refresh the inspector in a throttled way and decrease the number of calls.
     cy.on('select', function() {
-      handleInspectorThrottled();
       // Go to inspector style/properties tab when a node is selected
       if (!$('#inspector-style-tab').hasClass('active')) {
+        handleInspectorThrottled();  
         $('#inspector-style-tab a').tab('show');
         $('#inspector-palette-tab a').blur();
         $('#inspector-map-tab a').blur();
