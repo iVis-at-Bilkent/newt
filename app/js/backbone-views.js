@@ -1875,6 +1875,284 @@ var FileSaveView = Backbone.View.extend({
 });
 
 /*
+  User Preferences View (Style, Map Properties, Layout etc)
+*/
+var SaveUserPreferencesView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#save-user-preferences-template").html());
+  },
+  
+  render: function () {
+    var self = this;
+    self.template = _.template($("#save-user-preferences-template").html());
+    var param ={};
+    var stagedObjects = [];
+    if (typeof appUtilities.stagedElementStyles !== 'undefined') {
+      appUtilities.stagedElementStyles.forEach(function(item, index){
+        stagedObjects.push(item["element"]); 
+      });
+    } 
+    param.stagedObjects = stagedObjects;
+    self.template = self.template(param);
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $("#user-preferences-save-table").keyup(function(e){
+      if (e.which == 13 && $(self.el).data('bs.modal').isShown && !$("#save-user-preferences-accept").is(":focus") && !$("#save-user-preferences-cancel").is(":focus")){
+        $("#save-user-preferences-accept").click();
+      }
+    });
+
+    var filename = document.getElementById('file-name').innerHTML; 
+    if(filename.lastIndexOf('.') != -1){
+      filename = filename.substring(0, filename.lastIndexOf('.'));    
+    }    
+    filename = filename.concat(".newtp");
+
+    $("#save-user-preferences-filename").val(filename);
+
+    $(document).off("click", "#save-user-preferences-accept").on("click", "#save-user-preferences-accept", function (evt) {
+
+       // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = appUtilities.getActiveCy();
+      var preferences = {};
+      //get grid properties
+      if(document.getElementById("user-prefrences-grid-check").checked){
+        var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');        
+        preferences.currentGridProperties = currentGridProperties;
+      }
+
+      // get currentGeneralProperties for cy
+      if(document.getElementById("user-prefrences-map-check").checked){
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        delete currentGeneralProperties.mapName;
+        delete currentGeneralProperties.mapDescription;
+        preferences.currentGeneralProperties = currentGeneralProperties;
+      }
+
+      if(document.getElementById("user-prefrences-layout-check").checked){
+        var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+        delete currentLayoutProperties.animationEasing;
+        delete currentLayoutProperties.animationDuration;
+        delete currentLayoutProperties.name;  
+        preferences.currentLayoutProperties = currentLayoutProperties;
+      }
+
+      if (typeof appUtilities.stagedElementStyles !== 'undefined') {
+        preferences.elementsStyles = [];     
+        appUtilities.stagedElementStyles.forEach(function(element){
+          if(document.getElementById("user-prefrences-object-"+element['element']+"-check").checked){
+            preferences.elementsStyles.push(element);
+          }        
+        });
+      }    
+      var blob = new Blob([JSON.stringify(preferences, null, 2)], {type: "application/json"});
+      filename = $("#save-user-preferences-filename").val(); 
+      FileSaver.saveAs(blob, filename);    
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#save-user-preferences-cancel").on("click", "#save-user-preferences-cancel", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    return this;
+  }
+});
+
+var LoadUserPreferencesView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#load-user-preferences-template").html());
+  },  
+  render: function (param) {
+    var self = this;
+    self.template = _.template($("#load-user-preferences-template").html());   
+    self.template = self.template(param);
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $("#user-preferences-load-table").keyup(function(e){
+      if (e.which == 13 && $(self.el).data('bs.modal').isShown && !$("#load-user-preferences-accept").is(":focus") && !$("#load-user-preferences-cancel").is(":focus")){
+        $("#load-user-preferences-accept").click();
+      }
+    });   
+
+    $(document).off("click", "#load-user-preferences-accept").on("click", "#load-user-preferences-accept", function (evt) {
+      var preferences = appUtilities.loadedUserPreferences;
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      //apply grid properties if check
+      if(document.getElementById("load-user-prefrences-grid-check").checked){
+        if(typeof preferences.currentGridProperties !== 'undefined'){
+          var currentGridProperties = appUtilities.getScratch(cy, 'currentGridProperties');    
+          $.extend( currentGridProperties, preferences.currentGridProperties);         
+          appUtilities.setScratch(cy, currentGridProperties, 'currentGridProperties');    
+
+          cy.gridGuide({
+            drawGrid: currentGridProperties.showGrid,
+            gridColor: currentGridProperties.gridColor,
+            snapToGridOnRelease: currentGridProperties.snapToGridOnRelease,
+            snapToGridDuringDrag: currentGridProperties.snapToGridDuringDrag,
+            snapToAlignmentLocationOnRelease: currentGridProperties.snapToAlignmentLocationOnRelease,
+            snapToAlignmentLocationDuringDrag: currentGridProperties.snapToAlignmentLocationDuringDrag,
+            gridSpacing: currentGridProperties.gridSize,
+            resize: currentGridProperties.autoResizeNodes,
+            geometricGuideline: currentGridProperties.showGeometricGuidelines,
+            distributionGuidelines: currentGridProperties.showDistributionGuidelines,
+            initPosAlignment: currentGridProperties.showInitPosAlignment,
+            guidelinesTolerance: currentGridProperties.guidelineTolerance,
+            guidelinesStyle: {
+              initPosAlignmentLine: currentGridProperties.initPosAlignmentLine,
+              lineDash: currentGridProperties.lineDash,
+              horizontalDistLine: currentGridProperties.horizontalDistLine,
+              verticalDistLine: currentGridProperties.verticalDistLine,
+              strokeStyle: currentGridProperties.guidelineColor,
+              horizontalDistColor: currentGridProperties.horizontalGuidelineColor,
+              verticalDistColor: currentGridProperties.verticalGuidelineColor,
+              initPosAlignmentColor: currentGridProperties.initPosAlignmentColor,
+              geometricGuidelineRange: currentGridProperties.geometricAlignmentRange,
+              range: currentGridProperties.distributionAlignmentRange
+            }
+          });         
+        }
+      }           
+      //apply layout properties if checked by user
+      if(document.getElementById("load-user-prefrences-layout-check").checked){
+        if(typeof preferences.currentLayoutProperties !== 'undefined'){
+          var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');    
+          $.extend( currentLayoutProperties, preferences.currentLayoutProperties);         
+          appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');    
+          $(document).trigger('saveLayout', cy);
+        }
+      }      
+      //apply map properties if checked by user
+      if(document.getElementById("load-user-prefrences-map-check").checked){
+        if(typeof preferences.currentGeneralProperties !== 'undefined'){
+          var ur = cy.undoRedo();
+          var actions = [];  
+          mapTabGeneralPanel.params.allowCompoundNodeResize.value = preferences.currentGeneralProperties.allowCompoundNodeResize;
+          mapTabGeneralPanel.params.inferNestingOnLoad.value = preferences.currentGeneralProperties.inferNestingOnLoad;
+          mapTabGeneralPanel.params.enablePorts.value = preferences.currentGeneralProperties.enablePorts;
+          mapTabGeneralPanel.params.compoundPadding.value = preferences.currentGeneralProperties.compoundPadding;
+          mapTabGeneralPanel.params.arrowScale.value = preferences.currentGeneralProperties.arrowScale;
+          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.allowCompoundNodeResize});
+          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.inferNestingOnLoad});
+          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.enablePorts});
+          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.compoundPadding});
+          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.arrowScale});
+          actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale", valueMap: mapTabGeneralPanel.params.arrowScale.value}});
+  
+          mapTabLabelPanel.params.dynamicLabelSize.value =  preferences.currentGeneralProperties.dynamicLabelSize;
+          mapTabLabelPanel.params.adjustAutomatically.value =  preferences.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+          mapTabLabelPanel.params.fitLabelsToNodes.value =  preferences.currentGeneralProperties.fitLabelsToNodes;
+          mapTabLabelPanel.params.fitLabelsToInfoboxes.value =  preferences.currentGeneralProperties.fitLabelsToInfoboxes;
+          mapTabLabelPanel.params.showComplexName.value =  preferences.currentGeneralProperties.showComplexName;
+
+          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.dynamicLabelSize});
+          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.adjustAutomatically});
+          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.fitLabelsToNodes});
+          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.fitLabelsToInfoboxes});
+          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.showComplexName});  
+  
+          mapTabRearrangementPanel.params.recalculateLayoutOnComplexityManagement.value = preferences.currentGeneralProperties.recalculateLayoutOnComplexityManagement;
+          mapTabRearrangementPanel.params.rearrangeOnComplexityManagement.value = preferences.currentGeneralProperties.rearrangeOnComplexityManagement;
+          mapTabRearrangementPanel.params.animateOnDrawingChanges.value = preferences.currentGeneralProperties.animateOnDrawingChanges;
+          actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params.recalculateLayoutOnComplexityManagement});
+          actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params.rearrangeOnComplexityManagement});
+          actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params.animateOnDrawingChanges});  
+  
+          var defaultColorScheme = preferences.currentGeneralProperties.mapColorScheme;
+          var defaultColorSchemeStyle = preferences.currentGeneralProperties.mapColorSchemeStyle;
+          appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, colorSchemeInspectorView); // default color scheme
+          ur.do("batch", actions);  
+        }  
+      }        
+      
+      
+      if(typeof preferences.elementsStyles !== 'undefined'){        
+        preferences.elementsStyles.forEach(function(item, index){
+          var sbgnClass = item["element"];           
+          if(document.getElementById("load-user-prefrences-object-"+sbgnClass+"-check").checked){
+            var nameToValue = {};
+            item.styles.forEach(function(style, index){
+              nameToValue[style.name] = style.value;
+            });
+
+            var targetNodes =cy.elements('[class="' + sbgnClass + '"]')
+            
+            //apply changes to exisiting elements only if user check the option and there are elements on canvas of this sbgn class type
+            //else just set the styles as default values 
+            if(targetNodes.length > 0 && document.getElementById("load-user-prefrences-apply-changes").checked)
+            {
+
+              if(item['type'] == 'node')
+              {
+                 // apply node width and height change to existing elements              
+                targetNodes.forEach(function(node) {
+                  cy.trigger('noderesize.resizestart', [null, node]);
+                  chiseInstance.resizeNodes(node, nameToValue["width"], nameToValue["height"], false);
+                  cy.trigger('noderesize.resizeend', [null, node]);
+                });
+                
+                chiseInstance.changeData(targetNodes, "border-color", nameToValue["border-color"]);
+                chiseInstance.changeData(targetNodes, "border-width", nameToValue["border-width"]);
+                chiseInstance.changeData(targetNodes, "background-color",  nameToValue["background-color"]);
+
+                //hande opacity
+                chiseInstance.changeData(targetNodes, "background-opacity",  nameToValue["background-opacity"]);
+                chiseInstance.changeData(targetNodes, "background-image-opacity",  nameToValue["background-image-opacity"]);
+
+                //handel font
+                var data = {};            
+                data['font-size'] = nameToValue['font-size'] != '' ? nameToValue['font-size'] : undefined;
+                data['font-family'] = nameToValue['font-sifamilyze'] != '' ? nameToValue['font-family'] : undefined;
+                data['font-weight'] = nameToValue['font-weight'] != '' ? nameToValue['font-weight'] : undefined;
+                data['font-style'] = nameToValue['font-style'] != '' ? nameToValue['font-style'] : undefined;
+                data['color'] = nameToValue['color'] != '' ? nameToValue['color'] : undefined; 
+                chiseInstance.changeFontProperties(targetNodes, data);
+
+                targetNodes.forEach(function(node) {
+                  node.data('background-image', nameToValue['background-image']);
+                  node.data('background-position-x', nameToValue['background-position-x']);
+                  node.data('background-position-y', nameToValue['background-position-y']);
+                  node.data('background-width', nameToValue['background-width']);
+                  node.data('background-height', nameToValue['background-height']);
+                  node.data('background-fit', nameToValue['background-fit']);
+                  node.data('background-image-opacity', nameToValue['background-image-opacity']);
+                });
+
+                chiseInstance.setMultimerStatus(targetNodes,nameToValue['multimer'] );
+                chiseInstance.setCloneMarkerStatus(targetNodes,nameToValue['clonemarker'] ); 
+              }
+              else
+              {
+                //if type is edge only apply width and line-color
+                chiseInstance.changeData(targetNodes, "width", nameToValue['width']);
+                chiseInstance.changeData(targetNodes, "line-color", nameToValue['line-color']);
+              }             
+            }
+            //set the loaded styles as default values
+            chiseInstance.elementUtilities.setDefaultProperties( sbgnClass, nameToValue );
+          }  
+        });
+      }
+       
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#load-user-preferences-cancel").on("click", "#load-user-preferences-cancel", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    return this;
+  }
+});
+
+/*
   Simple Yes/No confirmation modal box. See PromptSaveView.
 */
 var PromptConfirmationView = Backbone.View.extend({
@@ -2945,6 +3223,8 @@ module.exports = {
   PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
+  SaveUserPreferencesView:SaveUserPreferencesView,
+  LoadUserPreferencesView:LoadUserPreferencesView,
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
   PromptInvalidFileView: PromptInvalidFileView,

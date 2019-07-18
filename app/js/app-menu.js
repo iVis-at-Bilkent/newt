@@ -13,7 +13,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView, promptInvalidSchematronFileView;
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView, saveUserPreferencesView, loadUserPreferencesView,promptInvalidSchematronFileView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -111,6 +111,8 @@ module.exports = function() {
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
+  saveUserPreferencesView =  appUtilities.saveUserPreferencesView = new BackboneViews.SaveUserPreferencesView({el: '#user-preferences-save-table'});
+  loadUserPreferencesView =  appUtilities.loadUserPreferencesView = new BackboneViews.LoadUserPreferencesView({el: '#user-preferences-load-table'});
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
@@ -1013,7 +1015,31 @@ module.exports = function() {
       //chise.saveAsSbgnml(filename);
       fileSaveView.render("sbgnml", "0.2");
     });
+    //save-user-preferences
+    $("#save-user-preferences").click(function (evt) {      
+      saveUserPreferencesView.render();
+    });
 
+    $("#load-user-preferences").click(function () {
+      $("#user-preferences-file-input").trigger('click');
+    });
+
+    $("#user-preferences-file-input").change(function () {
+      
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.addEventListener("loadend", function(e){
+          var text = e.srcElement.result;
+          var preferences = JSON.parse(text);  
+          appUtilities.loadedUserPreferences = preferences;
+          loadUserPreferencesView.render(preferences);
+        });
+        //start the reading process.
+        reader.readAsText(file); 
+        $(this).val("");
+      }
+    });
     $("#export-as-sbgnml3-file").click(function (evt) {
       fileSaveView.render("sbgnml", "0.3");
     });

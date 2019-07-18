@@ -75,7 +75,7 @@
                                         <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#" id="save-as-sbgnml">Save...</a></li>
+                                <li><a href="#" id="save-as-sbgnml">Save...</a></li>                               
                                 <li><a href="#" type="file" id="close-file">Close</a></li>
                                 <li class="divider"></li>
                                 <li class="dropdown-submenu">
@@ -114,6 +114,11 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li><a href="#" id="general-properties">Map Properties...</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" id="save-user-preferences">Save Preferences...</a></li>
+                                <input id="user-preferences-file-input" type="file" style="display:none" />
+                                <li><a href="#" id="load-user-preferences">Load Preferences...</a></li>
+
                             </ul>
                         </li>
 
@@ -615,7 +620,12 @@
         <div id="file-save-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- save dialog will be shown here-->
         </div>
-
+        <div id="user-preferences-save-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- save dialog will be shown here-->
+        </div>
+        <div id="user-preferences-load-table" tabindex="-1" class="modal fade" role="dialog">
+                <!-- load dialog will be shown here-->
+        </div>
         <div id="prompt-confirmation-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- confirmation dialog will be shown here-->
         </div>
@@ -1481,7 +1491,157 @@
             </div>
             </div>
         </script>
+        <script type="text/template" id="save-user-preferences-template">
+            <div class="modal-dialog" style="width: 350px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Save</h4>
+                    </div>
+                    <div class="modal-body">
+                    <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" style="font-weight:bold;"> Filename :</span>
+                                </td>
+                                <td>
+                                    <input id="save-user-preferences-filename" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Layout properties" style="font-weight:bold;"> Grid Properties :</span>
+                                </td>        
+                                <td>
+                                    <input id="user-prefrences-grid-check" type="checkbox" class="layout-text" checked>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Layout properties" style="font-weight:bold;"> Layout Properties :</span>
+                                </td>        
+                                <td>
+                                    <input id="user-prefrences-layout-check" type="checkbox" class="layout-text" checked>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Map properties" style="font-weight:bold;"> Map Properties :</span>
+                                </td>        
+                                <td>
+                                    <input id="user-prefrences-map-check" type="checkbox" class="layout-text" checked>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Object properties" style="font-weight:bold;"> Object Properties : </span>
+                                </td> 
+                                <% if(stagedObjects.length <= 0) { %>
+                                <td>
+                                    <span class="add-on layout-text"  > none specified </span>
+                                </td> 
+                                <% } %>
+                            </tr>                
+                            <% stagedObjects.forEach(function(element) { %>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <span class="add-on layout-text" title="save <%= element %> properties"> <%= element %> </span>
+                                </td>
+                                <td>
+                                    <input id="user-prefrences-object-<%= element %>-check" type="checkbox" class="layout-text" checked>
+                                </td>
+                            </tr>
+                            <% }); %>                
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="save-user-preferences-accept" class="btn btn-default">Save</button>
+                        <button id="save-user-preferences-cancel" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
 
+        <script type="text/template" id="load-user-preferences-template">
+            <div class="modal-dialog" style="width: 350px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Load Properties</h4>
+                    </div>
+                    <div class="modal-body">
+                    <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+                        <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="add-on layout-text" title="save Grid properties" style="font-weight:bold;"> Load Grid Properties :</span>
+                                    </td>            
+                                    <td>
+                                        <input id="load-user-prefrences-grid-check" type="checkbox" class="layout-text"  <% if(typeof currentGridProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
+                                    </td>
+                                </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Layout properties" style="font-weight:bold;"> Load Layout Properties :</span>
+                                </td>            
+                                <td>
+                                    <input id="load-user-prefrences-layout-check" type="checkbox" class="layout-text"  <% if(typeof currentLayoutProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
+                                </td>
+                            </tr>
+                        <tr>
+                            <td style="border-top: thin solid;  border-color: #dedede">
+                                <span class="add-on layout-text" title="load Map properties" style="font-weight:bold;"> Load Map Properties :</span>
+                            </td>        
+                            <td>
+                                <input id="load-user-prefrences-map-check" type="checkbox" class="layout-text" <% if(typeof currentGeneralProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top: thin solid;  border-color: #dedede">
+                                <span class="add-on layout-text" title="save Object properties" style="font-weight:bold;"> Object Properties : </span>
+                            </td>                 
+                        </tr> 
+                        <% if(typeof elementsStyles !== 'undefined') { %>               
+                            <% elementsStyles.forEach(function(element) { %>
+                        <tr>                    
+                            <td>
+                                <span class="add-on layout-text" title="load <%= element['element'] %> properties"> <%= "-  "+element['element'] %> </span>
+                            </td>
+                            <td>
+                                <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" class="layout-text" checked>
+                            </td>
+                        </tr>
+                            <% }); %>
+
+                            <% if(elementsStyles.length > 0) { %>
+                        <tr>
+                            <td style="border-top: thin solid;  border-color: #dedede">
+                                <span class="add-on layout-text" title="apply changes to existing elements" style="font-weight:bold;"> Apply to existing elements : </span>
+                            </td> 
+                            <td>
+                                <input id="load-user-prefrences-apply-changes" type="checkbox" class="layout-text" checked >                           
+                            </td>                
+                        </tr>
+                        <tr>   
+                            <td colspan="2">                    
+                                <span class="add-on layout-text" style="font-size: 10px !important; color:red">caution: checking this options will apply the selected element styles to the existing elements on canvas</span>
+                            </td>
+                        </tr>
+                            <% } %>
+                        <% } %>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="load-user-preferences-accept" class="btn btn-default">Load</button>
+                        <button id="load-user-preferences-cancel" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
         <script type="text/template" id="prompt-confirmation-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
             <div class="modal-content">
