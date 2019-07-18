@@ -45,7 +45,7 @@
     "request": "^2.81.0",
     "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable ",
     "underscore": "1.8.3"
-  },
+	},
   "devDependencies": {
     "express": "4.14.0",
     "browserify": "^11.2.0",

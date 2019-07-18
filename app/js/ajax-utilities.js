@@ -2,7 +2,6 @@ var libxmljs = require('libxmljs');
 var fs = require('fs');
 var request = require('request');
 var querystring = require('querystring');
-
 /*
 	functions in this file all have to take the same arguments:
 	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
@@ -10,11 +9,6 @@ var querystring = require('querystring');
 	The only cases where res.send doesn't need to be used is in case of errors.
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
-
-
-/**
- * 100MB limit to map size, to avoid potential flood.
- */
 exports.validateSBGNML = function (req, res) {
 	var sbgnml;
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
@@ -114,3 +108,4 @@ exports.testURL = function (req, res) {
 		res.send({error: error, response: response});
 	});
 };
+
