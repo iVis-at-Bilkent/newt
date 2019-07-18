@@ -974,10 +974,10 @@ inspectorUtilities.handleSBGNInspector = function () {
   }
 };
 
-  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data) {
+  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data,notPD) {
 	var html = "";
     var dismiss = "Dismiss";
-        if(errors.length !=0) {
+        if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
             var eles =  cy.elements('[id="' + id + '"]');
             if(!highlighted.includes(id)) {
@@ -987,7 +987,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                highlighted.push(id);
            }
           inspectorUtilities.handleNavigate (cy,eles);
-          html += "<p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p>";
+          html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
          var next = "Next";
          if(currentPage == 0) {
@@ -1015,9 +1015,13 @@ inspectorUtilities.handleSBGNInspector = function () {
             }
             
          }
+    } else if (notPD) {
+        html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Can only validate maps of type PD</p></b>";
+           html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                 + ">" + dismiss + "</button> </div>";
     }
     else {
-          html += "<p class='panel-body' style=\"color:green; text-align:center\" > Map is Valid</p>";
+          html += "<b><p class='panel-body' style=\"color:green; text-align:center\" > Map is Valid</p></b>";
            html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
       }
@@ -1049,6 +1053,10 @@ inspectorUtilities.handleSBGNInspector = function () {
               });
             }
              $("#sbgn-inspector-console-panel-group").html("");
+             var tabContents = document.getElementsByClassName('chise-tab');
+             for (var i = 0; i < tabContents.length; i++) { 
+                 tabContents[i].style.display = 'block';
+             }
              $('#inspector-console-tab')[0].style.display = "none";
              if (!$('#inspector-map-tab').hasClass('active')) {
                  $('#inspector-map-tab a').tab('show');

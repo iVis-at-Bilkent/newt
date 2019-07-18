@@ -219,16 +219,6 @@ module.exports = function (chiseInstance) {
         }
       },
       {
-        id: 'ctx-menu-highlight-errors-of-validation',
-        content: 'Highlight Errors Of Validation',
-        selector: 'node[class="unspecified entity"],[class^="simple chemical"],[class^="macromolecule"],[class^="nucleic acid feature"],[class^="complex"]',
-        onClickFunction: function (event) {
-          var cyTarget = event.target || event.cyTarget;
-          cyTarget.select();
-          $("#highlight-errors-of-validation").trigger('click');
-        }
-      },
-      {
         id: 'ctx-menu-animate-edge',
         content: 'Navigate to Other End',
         selector: 'edge',
