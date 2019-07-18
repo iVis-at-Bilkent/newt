@@ -686,13 +686,44 @@ module.exports = function() {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      if(chiseInstance.elementUtilities.mapType != "PD")
-          return;
       var cy = appUtilities.getActiveCy();
       var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-      var errors = chiseInstance.doValidation(file);
       var highlighted = [] ;
-      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file);
+      if(chiseInstance.elementUtilities.mapType != "PD"){
+         inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
+     }else {
+         var errors = chiseInstance.doValidation(file);
+         inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
+     }
+         var tabContents = document.getElementsByClassName('chise-tab');
+     for (var i = 0; i < tabContents.length; i++) { 
+        tabContents[i].style.display = 'none';
+     }
+
+      $('#inspector-console-tab')[0].style.display = "block";
+      if (!$('#inspector-console-tab').hasClass('active')) {
+        $('#inspector-console-tab a').tab('show');
+      }
+ });
+ 
+  $("#highlight-errors-of-validation-icon").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+      var highlighted = [] ;
+      if(chiseInstance.elementUtilities.mapType != "PD"){
+         inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
+     }else {
+         var errors = chiseInstance.doValidation(file);
+         inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
+     }
+     var tabContents = document.getElementsByClassName('chise-tab');
+     for (var i = 0; i < tabContents.length; i++) { 
+        tabContents[i].style.display = 'none';
+     }
+
       $('#inspector-console-tab')[0].style.display = "block";
       if (!$('#inspector-console-tab').hasClass('active')) {
         $('#inspector-console-tab a').tab('show');
