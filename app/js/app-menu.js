@@ -12,8 +12,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView, saveUserPreferencesView, loadUserPreferencesView;
-
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -110,8 +109,6 @@ module.exports = function() {
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
-  saveUserPreferencesView =  appUtilities.saveUserPreferencesView = new BackboneViews.SaveUserPreferencesView({el: '#user-preferences-save-table'});
-  loadUserPreferencesView =  appUtilities.loadUserPreferencesView = new BackboneViews.LoadUserPreferencesView({el: '#user-preferences-load-table'});
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
@@ -504,22 +501,22 @@ module.exports = function() {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signaling.sbgn',
-      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgn',
-      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgn',
-      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgn',
-      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgn',
-      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgn',
-      "#load-sample7" : 'polyq_proteins_interference.sbgn',
-      "#load-sample8" : 'glycolysis.sbgn',
-      "#load-sample9" : 'mapk_cascade.sbgn',
-      "#load-sample10" : 'drosophila_cell_cycle.sbgn',
-      "#load-sample11" : 'mammalian_cholesterol.sbgn',
-      "#load-sample12" : 'two_gene_system_behavior.sbgn',
-      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgn',
-      "#load-sample14" : 'repressilator.sbgn',
-      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgn',
-      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn'
+      "#load-sample1" : 'neuronal_muscle_signaling.sbgnml',
+      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgnml',
+      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgnml',
+      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgnml',
+      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgnml',
+      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgnml',
+      "#load-sample7" : 'polyq_proteins_interference.sbgnml',
+      "#load-sample8" : 'glycolysis.sbgnml',
+      "#load-sample9" : 'mapk_cascade.sbgnml',
+      "#load-sample10" : 'drosophila_cell_cycle.sbgnml',
+      "#load-sample11" : 'mammalian_cholesterol.sbgnml',
+      "#load-sample12" : 'two_gene_system_behavior.sbgnml',
+      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
+      "#load-sample14" : 'repressilator.sbgnml',
+      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
+      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgnml'
     };
 
     for ( var selector in selectorToSampleFileName ) {
@@ -1046,31 +1043,7 @@ module.exports = function() {
       //chise.saveAsSbgnml(filename);
       fileSaveView.render("sbgnml", "0.2");
     });
-    //save-user-preferences
-    $("#save-user-preferences").click(function (evt) {      
-      saveUserPreferencesView.render();
-    });
 
-    $("#load-user-preferences").click(function () {
-      $("#user-preferences-file-input").trigger('click');
-    });
-
-    $("#user-preferences-file-input").change(function () {
-      
-      if ($(this).val() != "") {
-        var file = this.files[0];
-        var reader = new FileReader();
-        reader.addEventListener("loadend", function(e){
-          var text = e.srcElement.result;
-          var preferences = JSON.parse(text);  
-          appUtilities.loadedUserPreferences = preferences;
-          loadUserPreferencesView.render(preferences);
-        });
-        //start the reading process.
-        reader.readAsText(file); 
-        $(this).val("");
-      }
-    });
     $("#export-as-sbgnml3-file").click(function (evt) {
       fileSaveView.render("sbgnml", "0.3");
     });
@@ -1338,23 +1311,6 @@ module.exports = function() {
         cy.trigger('tapend', {x: relX, y: relY});
       }
     });
-    // handle ctrl+shift press for zoom shortcut 
-    $(document).on("keydown", function (event){
-      if(!appUtilities.zoomShortcut){
-        if(event.shiftKey){
-          //left command key code in webkit browsers (chrome, safari, opera) = 91
-          //right command key code in webkit browsers = 93
-          //command key code in firefox = 224
-          if(event.ctrlKey || event.keyCode == "91" || event.keyCode == "93" || event.keyCode == "224"){
-              //variable toggle to prevent multiple calls at the same time
-              appUtilities.zoomShortcut = true; 
-              //enable zoom shortcut mode      
-               modeHandler.setShortcutZoomMode();
-          }
-        }
-      }
-     
-    });
 
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
@@ -1365,4 +1321,3 @@ module.exports = function() {
     });
   }
 };
-

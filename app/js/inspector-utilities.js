@@ -788,24 +788,12 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
-          //check if staged default element styles is set
-          if (typeof appUtilities.stagedElementStyles === 'undefined') {
-            appUtilities.stagedElementStyles = [];
-          } 
-          var elementStyles = [];
+
           Object.keys(nameToVal).forEach( function(name) {
             var value = nameToVal[name];
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: name, value: value}});
-            elementStyles.push({name: name, value: value})
           } );
-          //push the staged defaults 
-          var  stagedElement =  appUtilities.stagedElementStyles.find(b => b.element === sbgnclass);
-          if(stagedElement){
-            stagedElement.styles = elementStyles;
-          }else{
-            appUtilities.stagedElementStyles.push({element : sbgnclass, type: "node",styles: elementStyles});
-          }
-          
+
           ur.do("batch", actions);
         }
         else {
@@ -950,18 +938,9 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
-          //push the default styles of edges
-          if (typeof appUtilities.stagedElementStyles === 'undefined') {
-            appUtilities.stagedElementStyles = [];
-          } 
-          var elementStyles = [];
-          elementStyles.push({name:  'width', value: selectedEles.data('width')})
-          elementStyles.push({name: 'line-color', value: selectedEles.data('line-color')})
-          appUtilities.stagedElementStyles.push({element : sbgnclass, type:"edge",styles: elementStyles});
-          
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
-         ur.do("batch", actions);
+          ur.do("batch", actions);
         }
         else {
           var defaults = chiseInstance.elementUtilities.getDefaultProperties( sbgnclass );
