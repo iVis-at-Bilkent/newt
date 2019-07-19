@@ -1553,7 +1553,7 @@
                             </tr>                           
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Object properties" > Object Properties </span>
+                                    <span class="add-on layout-text" title="save Object properties" > Object Properties: </span>
                                 </td> 
                                 <% if(stagedObjects.length <= 0) { %>
                                 <td>
@@ -1562,13 +1562,13 @@
                                 <% } %>
                             </tr>                
                             <% stagedObjects.forEach(function(element) { %>
-                            <tr>                               
+                            <tr>                            
                                 <td>
-                                    <span class="add-on layout-text" title="save <%= element %> properties"> <%= (element.charAt(0).toUpperCase() + element.slice(1)) %> </span>
-                                </td>
+                                    <span class="add-on layout-text" title="save <%= element %> properties" style="font-size: 11px !important; font-style: italic !important;"> <%= (element.charAt(0).toUpperCase() + element.slice(1)) %> </span>
+                                </td>                               
                                 <td>
                                     <input id="user-prefrences-object-<%= element %>-check" type="checkbox" class="layout-text" checked>
-                                </td>
+                                </td>  
                             </tr>
                             <% }); %>                
                         </tbody>
@@ -1619,19 +1619,17 @@
                         
                         <tr>
                             <td>
-                                <span class="add-on layout-text" title="save Object properties"> Object Properties </span>
+                                <span class="add-on layout-text" title="save Object properties"> Object Properties: </span>
                             </td>                 
                         </tr> 
                         <% if(typeof elementsStyles !== 'undefined') { %>               
                             <% elementsStyles.forEach(function(element) { %>
                         <tr>                    
                             <td>
-                                <span class="add-on layout-text" title="load <%= element['element'] %> properties"> <%= (element['element'].charAt(0).toUpperCase() + element['element'].slice(1)) %> </span>
-                            </td>
+                                <span class="add-on layout-text" title="load <%= element['element'] %> properties" style="font-size: 11px !important; font-style: italic !important;"> <%= (element['element'].charAt(0).toUpperCase() + element['element'].slice(1)) %> </span>
+                            </td>                           
                             <td>
                                 <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" class="layout-text" checked>
-
-                               
                             </td>
                         </tr>
                             <% }); %>
