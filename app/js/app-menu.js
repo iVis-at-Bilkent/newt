@@ -12,8 +12,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView, saveUserPreferencesView, loadUserPreferencesView;
-
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -504,7 +503,7 @@ module.exports = function() {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signaling.sbgn',
+     "#load-sample1" : 'neuronal_muscle_signaling.sbgn',
       "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgn',
       "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgn',
       "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgn',
@@ -689,13 +688,44 @@ module.exports = function() {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      if(chiseInstance.elementUtilities.mapType != "PD")
-          return;
       var cy = appUtilities.getActiveCy();
       var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-      var errors = chiseInstance.doValidation(file);
       var highlighted = [] ;
-      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file);
+      if(chiseInstance.elementUtilities.mapType != "PD"){
+         inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
+     }else {
+         var errors = chiseInstance.doValidation(file);
+         inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
+     }
+         var tabContents = document.getElementsByClassName('chise-tab');
+     for (var i = 0; i < tabContents.length; i++) { 
+        tabContents[i].style.display = 'none';
+     }
+
+      $('#inspector-console-tab')[0].style.display = "block";
+      if (!$('#inspector-console-tab').hasClass('active')) {
+        $('#inspector-console-tab a').tab('show');
+      }
+ });
+ 
+  $("#highlight-errors-of-validation-icon").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+      var highlighted = [] ;
+      if(chiseInstance.elementUtilities.mapType != "PD"){
+         inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
+     }else {
+         var errors = chiseInstance.doValidation(file);
+         inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
+     }
+     var tabContents = document.getElementsByClassName('chise-tab');
+     for (var i = 0; i < tabContents.length; i++) { 
+        tabContents[i].style.display = 'none';
+     }
+
       $('#inspector-console-tab')[0].style.display = "block";
       if (!$('#inspector-console-tab').hasClass('active')) {
         $('#inspector-console-tab a').tab('show');
@@ -1015,8 +1045,8 @@ module.exports = function() {
       //chise.saveAsSbgnml(filename);
       fileSaveView.render("sbgnml", "0.2");
     });
-    //save-user-preferences
-    $("#save-user-preferences").click(function (evt) {      
+    
+     $("#save-user-preferences").click(function (evt) {      
       saveUserPreferencesView.render();
     });
 
@@ -1025,7 +1055,7 @@ module.exports = function() {
     });
 
     $("#user-preferences-file-input").change(function () {
-      
+
       if ($(this).val() != "") {
         var file = this.files[0];
         var reader = new FileReader();
@@ -1040,6 +1070,7 @@ module.exports = function() {
         $(this).val("");
       }
     });
+
     $("#export-as-sbgnml3-file").click(function (evt) {
       fileSaveView.render("sbgnml", "0.3");
     });
@@ -1307,8 +1338,8 @@ module.exports = function() {
         cy.trigger('tapend', {x: relX, y: relY});
       }
     });
-    // handle ctrl+shift press for zoom shortcut 
-    $(document).on("keydown", function (event){
+    
+      $(document).on("keydown", function (event){
       if(!appUtilities.zoomShortcut){
         if(event.shiftKey){
           //left command key code in webkit browsers (chrome, safari, opera) = 91
@@ -1322,7 +1353,7 @@ module.exports = function() {
           }
         }
       }
-     
+
     });
 
     // on active network tab change
@@ -1334,4 +1365,3 @@ module.exports = function() {
     });
   }
 };
-

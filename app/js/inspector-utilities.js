@@ -788,7 +788,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
-          //check if staged default element styles is set
+                    //check if staged default element styles is set
           if (typeof appUtilities.stagedElementStyles === 'undefined') {
             appUtilities.stagedElementStyles = [];
           } 
@@ -805,7 +805,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           }else{
             appUtilities.stagedElementStyles.push({element : sbgnclass, type: "node",styles: elementStyles});
           }
-          
+
           ur.do("batch", actions);
         }
         else {
@@ -958,10 +958,9 @@ inspectorUtilities.handleSBGNInspector = function () {
           elementStyles.push({name:  'width', value: selectedEles.data('width')})
           elementStyles.push({name: 'line-color', value: selectedEles.data('line-color')})
           appUtilities.stagedElementStyles.push({element : sbgnclass, type:"edge",styles: elementStyles});
-          
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
-         ur.do("batch", actions);
+          ur.do("batch", actions);
         }
         else {
           var defaults = chiseInstance.elementUtilities.getDefaultProperties( sbgnclass );
@@ -995,10 +994,10 @@ inspectorUtilities.handleSBGNInspector = function () {
   }
 };
 
-  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data) {
+  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data,notPD) {
 	var html = "";
     var dismiss = "Dismiss";
-        if(errors.length !=0) {
+        if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
             var eles =  cy.elements('[id="' + id + '"]');
             if(!highlighted.includes(id)) {
@@ -1008,7 +1007,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                highlighted.push(id);
            }
           inspectorUtilities.handleNavigate (cy,eles);
-          html += "<p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p>";
+          html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
          var next = "Next";
          if(currentPage == 0) {
@@ -1036,9 +1035,13 @@ inspectorUtilities.handleSBGNInspector = function () {
             }
             
          }
+    } else if (notPD) {
+        html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Can only validate maps of type PD</p></b>";
+           html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                 + ">" + dismiss + "</button> </div>";
     }
     else {
-          html += "<p class='panel-body' style=\"color:green; text-align:center\" > Map is Valid</p>";
+          html += "<b><p class='panel-body' style=\"color:green; text-align:center\" > Map is Valid</p></b>";
            html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
       }
@@ -1070,6 +1073,10 @@ inspectorUtilities.handleSBGNInspector = function () {
               });
             }
              $("#sbgn-inspector-console-panel-group").html("");
+             var tabContents = document.getElementsByClassName('chise-tab');
+             for (var i = 0; i < tabContents.length; i++) { 
+                 tabContents[i].style.display = 'block';
+             }
              $('#inspector-console-tab')[0].style.display = "none";
              if (!$('#inspector-map-tab').hasClass('active')) {
                  $('#inspector-map-tab a').tab('show');

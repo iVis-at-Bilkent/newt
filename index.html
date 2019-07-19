@@ -75,7 +75,7 @@
                                         <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#" id="save-as-sbgnml">Save...</a></li>                               
+                                <li><a href="#" id="save-as-sbgnml">Save...</a></li>
                                 <li><a href="#" type="file" id="close-file">Close</a></li>
                                 <li class="divider"></li>
                                 <li class="dropdown-submenu">
@@ -111,7 +111,7 @@
                                         <li><a href="#" id="save-as-jpg">JPG</a></li>
                                         <li><a href="#" id="save-as-svg">SVG</a></li>
                                     </ul>
-                                </li>                                
+                                </li>
                                 <li class="divider"></li>
                                 <input id="user-preferences-file-input" type="file" style="display:none" />
                                 <li><a href="#" id="load-user-preferences">Load Preferences...</a></li>
@@ -231,10 +231,11 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="#" id="highlight-errors-of-validation"> <img width="18px" height="18px" src="app/img/check.svg"/>&nbsp; Validate Map</a></li>
+                                <li><a href="#" id="highlight-errors-of-validation"> Validate Map</a></li>
                                 <li class="divider"></li>                          
                                 <li><a href="#" id="grid-properties" style="padding-right: 30px;">Grid and Guidelines...</a></li>
                                 <li><a href="#" id="general-properties">Map Properties...</a></li>
+                                
                             </ul>
                         </li>
 
@@ -377,6 +378,7 @@
                     </div>
 
                     <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
+                    <img id="highlight-errors-of-validation-icon" class="sbgn-toolbar-element" src="app/img/check.svg" title="Validate Map" >
                     <img id="toggle-grid-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid during drag" >
                     <img id="toggle-guidelines-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/guidelines.svg" title="Enable Guidelines: Enable and snap to alignment guidelines during drag" >
                     <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Map Properties: Modify general properties of current SBGN map" >
@@ -633,12 +635,14 @@
         <div id="file-save-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- save dialog will be shown here-->
         </div>
+    
         <div id="user-preferences-save-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- save dialog will be shown here-->
         </div>
         <div id="user-preferences-load-table" tabindex="-1" class="modal fade" role="dialog">
                 <!-- load dialog will be shown here-->
         </div>
+
         <div id="prompt-confirmation-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- confirmation dialog will be shown here-->
         </div>
@@ -1666,6 +1670,7 @@
                 </div>
             </div>
         </script>
+
         <script type="text/template" id="prompt-confirmation-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
             <div class="modal-content">
