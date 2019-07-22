@@ -69,8 +69,8 @@ Thanks to JetBrains for an [Open Source License](https://www.jetbrains.com/buy/o
 
 ## Team
 
-  * [Hasan Balci](https://github.com/hasanbalci), [Ahmet Candiroglu](https://github.com/ahmetcandiroglu), [Kaan Sancak](https://github.com/kaansancak), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Metin Can Siper](https://github.com/metincansiper), [Ozgun Babur](https://github.com/ozgunbabur), and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/), and [Alexander Mazein](https://github.com/amazein) of [EISBM](http://eisbm.org)
+  * [Hasan Balci](https://github.com/hasanbalci), [Nasim Saleh](https://github.com/nasimsaleh), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Metin Can Siper](https://github.com/metincansiper), [Ozgun Babur](https://github.com/ozgunbabur), and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/), and [Alexander Mazein](https://github.com/amazein) of [EISBM](http://eisbm.org)
 
 #### Alumni
 
-  * [Ilkin Safarli](https://github.com/kinimesi), [Ludovic Roy](https://github.com/royludo), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), Alper Karacelik, Selim Firat Yilmaz
+  * [Ilkin Safarli](https://github.com/kinimesi), [Ahmet Candiroglu](https://github.com/ahmetcandiroglu), [Kaan Sancak](https://github.com/kaansancak), [Ludovic Roy](https://github.com/royludo), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), Alper Karacelik, Selim Firat Yilmaz
