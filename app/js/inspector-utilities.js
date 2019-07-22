@@ -1073,14 +1073,18 @@ inspectorUtilities.handleSBGNInspector = function () {
               });
             }
              $("#sbgn-inspector-console-panel-group").html("");
-             var tabContents = document.getElementsByClassName('chise-tab');
-             for (var i = 0; i < tabContents.length; i++) { 
-                 tabContents[i].style.display = 'block';
-             }
              $('#inspector-console-tab')[0].style.display = "none";
-             if (!$('#inspector-map-tab').hasClass('active')) {
-                 $('#inspector-map-tab a').tab('show');
-              }
+
+             var tabContents = document.getElementsByClassName('chise-tab');
+             for (var i = 0; i < tabContents.length; i++) {
+               $(tabContents[i]).removeClass('active');
+               $($(tabContents[i]).children('a')[0]).attr("data-toggle", "tab");   
+              } 
+              $('.readModeDiv').css('display','none');
+              $('#inspector-map-tab a').click();
+            
+             
+          
       });
 
 }; 

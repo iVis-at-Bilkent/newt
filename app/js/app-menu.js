@@ -684,53 +684,36 @@ module.exports = function() {
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
     });
 
-    $("#highlight-errors-of-validation").click(function (e) {
 
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      var cy = appUtilities.getActiveCy();
-      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-      var highlighted = [] ;
-      if(chiseInstance.elementUtilities.mapType != "PD"){
-         inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
-     }else {
-         var errors = chiseInstance.doValidation(file);
-         inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
-     }
-         var tabContents = document.getElementsByClassName('chise-tab');
-     for (var i = 0; i < tabContents.length; i++) { 
-        tabContents[i].style.display = 'none';
-     }
+  $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
+    //enable read mode    
+    $('.readModeDiv').css('display','block');  
+      
+    // use active chise instance
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = appUtilities.getActiveCy();
+    var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+    var highlighted = [] ;
+    if(chiseInstance.elementUtilities.mapType != "PD")
+    {
+        inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
+    }else 
+    {
+      var errors = chiseInstance.doValidation(file);
+      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
+    }
+    
+    var tabContents = document.getElementsByClassName('chise-tab');
+    for (var i = 0; i < tabContents.length; i++) {       
+      $(tabContents[i]).removeClass('active');
+      $($(tabContents[i]).children('a')[0]).removeAttr("data-toggle");
+    } 
 
-      $('#inspector-console-tab')[0].style.display = "block";
-      if (!$('#inspector-console-tab').hasClass('active')) {
-        $('#inspector-console-tab a').tab('show');
-      }
- });
- 
-  $("#highlight-errors-of-validation-icon").click(function (e) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      var cy = appUtilities.getActiveCy();
-      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-      var highlighted = [] ;
-      if(chiseInstance.elementUtilities.mapType != "PD"){
-         inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
-     }else {
-         var errors = chiseInstance.doValidation(file);
-         inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
-     }
-     var tabContents = document.getElementsByClassName('chise-tab');
-     for (var i = 0; i < tabContents.length; i++) { 
-        tabContents[i].style.display = 'none';
-     }
-
-      $('#inspector-console-tab')[0].style.display = "block";
-      if (!$('#inspector-console-tab').hasClass('active')) {
-        $('#inspector-console-tab a').tab('show');
-      }
- });
+    $('#inspector-console-tab')[0].style.display = "block";
+    if (!$('#inspector-console-tab').hasClass('active')) {
+      $('#inspector-console-tab a').tab('show');
+    }
+  });
 
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
 
