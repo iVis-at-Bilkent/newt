@@ -1061,12 +1061,11 @@ inspectorUtilities.handleSBGNInspector = function () {
             var chiseInstance = appUtilities.getActiveChiseInstance();
              if(errors.length!=0) {
                 var id=errors[currentPage].role; 
-                var eles =  cy.elements('[id="' + id + '"]');
+                //var eles =  cy.elements('[id="' + id + '"]');
                 cy.animate({
                  duration: 100,
                  easing: 'ease',
-                 zoom :4.6,
-                 center: {eles:eles},
+                 fit :{eles:{},padding:20}, 
                  complete: function(){
                       chiseInstance.removeHighlights();
                  }
