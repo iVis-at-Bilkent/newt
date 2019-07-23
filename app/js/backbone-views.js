@@ -1910,6 +1910,18 @@ var SaveUserPreferencesView = Backbone.View.extend({
     filename = filename.concat(".newtp");
 
     $("#save-user-preferences-filename").val(filename);
+    $("#save-user-prefrences-object-check").off('change').on("change", function(){
+      if(document.getElementById("save-user-prefrences-object-check").checked){
+          $(".save-preferences-object-styles").prop("checked", true);
+          $(".save-preferences-object-styles").attr('disabled','disabled');
+      }else{
+        $(".save-preferences-object-styles").prop("checked", false);
+   
+        $(".save-preferences-object-styles").removeAttr('disabled');
+      }
+
+
+    });
 
     $(document).off("click", "#save-user-preferences-accept").on("click", "#save-user-preferences-accept", function (evt) {
 
@@ -1927,10 +1939,16 @@ var SaveUserPreferencesView = Backbone.View.extend({
 
       // get currentGeneralProperties for cy
       if(document.getElementById("user-prefrences-map-check").checked){
+        preferences.currentGeneralProperties = {}
         var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
         delete currentGeneralProperties.mapName;
         delete currentGeneralProperties.mapDescription;
-        preferences.currentGeneralProperties = currentGeneralProperties;
+        Object.keys(currentGeneralProperties).forEach(function(key,index) {
+          if(currentGeneralProperties[key] !== appUtilities.defaultGeneralProperties[key]){
+            preferences.currentGeneralProperties[key] = currentGeneralProperties[key];
+          }          
+      });
+       
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
@@ -1941,8 +1959,9 @@ var SaveUserPreferencesView = Backbone.View.extend({
         preferences.currentLayoutProperties = currentLayoutProperties;
       }
 
+      preferences.elementsStyles = [];
       if (typeof appUtilities.stagedElementStyles !== 'undefined') {
-        preferences.elementsStyles = [];     
+        
         appUtilities.stagedElementStyles.forEach(function(element){
           if(document.getElementById("user-prefrences-object-"+element['element']+"-check").checked){
             preferences.elementsStyles.push(element);
@@ -1979,7 +1998,16 @@ var LoadUserPreferencesView = Backbone.View.extend({
         $("#load-user-preferences-accept").click();
       }
     });   
-
+    $("#load-user-prefrences-object-check").off('change').on("change", function(){
+      if(document.getElementById("load-user-prefrences-object-check").checked){
+          $(".load-preferences-object-styles").prop("checked", true);
+          $(".load-preferences-object-styles").attr('disabled','disabled');
+      }else{
+        $(".load-preferences-object-styles").prop("checked", false);
+   
+        $(".load-preferences-object-styles").removeAttr('disabled');
+      }
+    });
     $(document).off("click", "#load-user-preferences-accept").on("click", "#load-user-preferences-accept", function (evt) {
       var preferences = appUtilities.loadedUserPreferences;
       var cy = appUtilities.getActiveCy();
@@ -2034,40 +2062,48 @@ var LoadUserPreferencesView = Backbone.View.extend({
         if(typeof preferences.currentGeneralProperties !== 'undefined'){
           var ur = cy.undoRedo();
           var actions = [];  
-          mapTabGeneralPanel.params.allowCompoundNodeResize.value = preferences.currentGeneralProperties.allowCompoundNodeResize;
-          mapTabGeneralPanel.params.inferNestingOnLoad.value = preferences.currentGeneralProperties.inferNestingOnLoad;
-          mapTabGeneralPanel.params.enablePorts.value = preferences.currentGeneralProperties.enablePorts;
-          mapTabGeneralPanel.params.compoundPadding.value = preferences.currentGeneralProperties.compoundPadding;
-          mapTabGeneralPanel.params.arrowScale.value = preferences.currentGeneralProperties.arrowScale;
-          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.allowCompoundNodeResize});
-          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.inferNestingOnLoad});
-          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.enablePorts});
-          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.compoundPadding});
-          actions.push({name: "changeMenu", param: mapTabGeneralPanel.params.arrowScale});
-          actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale", valueMap: mapTabGeneralPanel.params.arrowScale.value}});
-  
-          mapTabLabelPanel.params.dynamicLabelSize.value =  preferences.currentGeneralProperties.dynamicLabelSize;
-          mapTabLabelPanel.params.adjustAutomatically.value =  preferences.currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
-          mapTabLabelPanel.params.fitLabelsToNodes.value =  preferences.currentGeneralProperties.fitLabelsToNodes;
-          mapTabLabelPanel.params.fitLabelsToInfoboxes.value =  preferences.currentGeneralProperties.fitLabelsToInfoboxes;
-          mapTabLabelPanel.params.showComplexName.value =  preferences.currentGeneralProperties.showComplexName;
 
-          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.dynamicLabelSize});
-          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.adjustAutomatically});
-          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.fitLabelsToNodes});
-          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.fitLabelsToInfoboxes});
-          actions.push({name: "changeMenu", param: mapTabLabelPanel.params.showComplexName});  
+          Object.keys( mapTabGeneralPanel.params).forEach(function(key,index) {
+            if(typeof preferences.currentGeneralProperties[key] !== 'undefined'){
+              mapTabGeneralPanel.params[key].value = preferences.currentGeneralProperties[key];
+              actions.push({name: "changeMenu", param: mapTabGeneralPanel.params[key]});
+
+              if(key == "arrowScale"){              
+                actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale", valueMap: mapTabGeneralPanel.params.arrowScale.value}});
+              }
+            }          
+        });         
   
-          mapTabRearrangementPanel.params.recalculateLayoutOnComplexityManagement.value = preferences.currentGeneralProperties.recalculateLayoutOnComplexityManagement;
-          mapTabRearrangementPanel.params.rearrangeOnComplexityManagement.value = preferences.currentGeneralProperties.rearrangeOnComplexityManagement;
-          mapTabRearrangementPanel.params.animateOnDrawingChanges.value = preferences.currentGeneralProperties.animateOnDrawingChanges;
-          actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params.recalculateLayoutOnComplexityManagement});
-          actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params.rearrangeOnComplexityManagement});
-          actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params.animateOnDrawingChanges});  
-  
-          var defaultColorScheme = preferences.currentGeneralProperties.mapColorScheme;
-          var defaultColorSchemeStyle = preferences.currentGeneralProperties.mapColorSchemeStyle;
-          appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, colorSchemeInspectorView); // default color scheme
+          Object.keys( mapTabLabelPanel.params).forEach(function(key,index) {
+            if(typeof preferences.currentGeneralProperties[key] !== 'undefined'){
+              mapTabLabelPanel.params[key].value = preferences.currentGeneralProperties[key];              
+                actions.push({name: "changeMenu", param: mapTabLabelPanel.params[key]});            
+            }          
+        });
+        
+ 
+          Object.keys( mapTabRearrangementPanel.params).forEach(function(key,index) {
+            if(typeof preferences.currentGeneralProperties[key] !== 'undefined'){
+              mapTabRearrangementPanel.params[key].value = preferences.currentGeneralProperties[key];              
+                actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params[key]});            
+            }          
+        });
+          
+          var applyColorScheme = false;
+          var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+          var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+          if(typeof preferences.currentGeneralProperties.mapColorScheme !== 'undefined'){
+            applyColorScheme = true;
+           defaultColorScheme = preferences.currentGeneralProperties.mapColorScheme;          
+          }
+
+          if(typeof preferences.currentGeneralProperties.mapColorSchemeStyle !== 'undefined'){
+            applyColorScheme = true;
+            defaultColorSchemeStyle = preferences.currentGeneralProperties.mapColorSchemeStyle;          
+          }
+          if(applyColorScheme){
+            appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, colorSchemeInspectorView); // default color scheme
+          }
           ur.do("batch", actions);  
         }  
       }        

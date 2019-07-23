@@ -1539,6 +1539,10 @@
                                     <input id="save-user-preferences-filename" type="text" />
                                 </td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <table class="table-condensed layout-table dialog-table" style="white-space: nowrap;">
+                        <tbody>
                             <tr>
                                 <td>
                                     <span class="add-on layout-text" title="save Map properties" > Map Properties </span>
@@ -1571,20 +1575,32 @@
                                 <td>
                                     <span class="add-on layout-text"  > none specified </span>
                                 </td> 
+                                <% } else { %>
+                                    <td>
+                                        <input id="save-user-prefrences-object-check" type="checkbox" class="layout-text" checked>
+                                    </td>
+                                    <td>
+                                        <span class="add-on layout-text"  style="font-size: 11px !important; font-style: italic !important;""> select/deselect all </span>
+                                    </td>
                                 <% } %>
-                            </tr>                
+                            </tr>  
+                                 
                             <% stagedObjects.forEach(function(element) { %>
-                            <tr>                            
+                   
+                            <tr> 
+                                <td></td> 
+                                <td>
+                                        <input id="user-prefrences-object-<%= element %>-check" type="checkbox" disabled="disabled" class="layout-text save-preferences-object-styles" checked>
+                                </td>                            
                                 <td>
                                     <span class="add-on layout-text" title="save <%= element %> properties" style="font-size: 11px !important; font-style: italic !important; text-transform: capitalize; "> <%= element %> </span>
                                 </td>                               
-                                <td>
-                                    <input id="user-prefrences-object-<%= element %>-check" type="checkbox" class="layout-text" checked>
-                                </td>  
+                               
                             </tr>
+                    
                             <% }); %>                
                         </tbody>
-                    </table>
+                    </table>    
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button id="save-user-preferences-accept" class="btn btn-default">Save</button>
@@ -1632,25 +1648,40 @@
                         <tr>
                             <td>
                                 <span class="add-on layout-text" title="save Object properties"> Object Properties: </span>
-                            </td>                 
+                            </td>   
+                            <% if(elementsStyles.length <= 0) { %>
+                                <td>
+                                    <span class="add-on layout-text"  > none specified </span>
+                                </td> 
+                            <% } else { %>
+                                <td>
+                                    <input id="load-user-prefrences-object-check" type="checkbox" class="layout-text" checked>
+                                </td>
+                                <td>
+                                    <span class="add-on layout-text"  style="font-size: 11px !important; font-style: italic !important;""> select/deselect all </span>
+                                </td>      
+                            <% } %>                                
+                              
                         </tr> 
-                        <% if(typeof elementsStyles !== 'undefined') { %>               
+                                 
                             <% elementsStyles.forEach(function(element) { %>
-                        <tr>                    
+                        <tr>
+                            <td></td> 
+                            <td>
+                                    <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" disabled="disabled" class="layout-text load-preferences-object-styles" checked>
+                            </td>                   
                             <td>
                                 <span class="add-on layout-text" title="load <%= element['element'] %> properties" style="font-size: 11px !important; font-style: italic !important; text-transform: capitalize; "> <%= (element['element']) %> </span>
                             </td>                           
-                            <td>
-                                <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" class="layout-text" checked>
-                            </td>
+                            
                         </tr>
                             <% }); %>
 
                            
-                        <% } %>
+                      
                         </tbody>
                     </table>
-                <% if(typeof elementsStyles !== 'undefined') { %> 
+               
                     <% if(elementsStyles.length > 0) { %>
                         <table class="table-condensed layout-table dialog-table" >
                             <tbody>
@@ -1671,7 +1702,7 @@
                         </table>
                 
                     <% } %>
-                <% } %>
+               
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button id="load-user-preferences-accept" class="btn btn-default">Load</button>
