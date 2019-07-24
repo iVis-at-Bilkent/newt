@@ -842,8 +842,7 @@ img#template-reversible-output-add-button:hover {
 }
 
 .read-mode-div
-{
-   
+{   
     z-index:2000;   
     position: absolute; 
     top: 0%; 
@@ -863,6 +862,13 @@ img#template-reversible-output-add-button:hover {
     position: static;
 }
 
+.save-load-prefrences-object-name
+{
+    font-size: 11px !important; 
+    font-style: italic !important; 
+    text-transform: capitalize !important; 
+    padding-left:10px !important;
+}
 
 /*
   Palettes on right pane

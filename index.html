@@ -1580,28 +1580,25 @@
                                     <td>
                                         <input id="save-user-prefrences-object-check" type="checkbox" class="layout-text" checked>
                                     </td>
-                                    <td>
-                                        <span class="add-on layout-text"  style="font-size: 11px !important; font-style: italic !important;""> select/deselect all </span>
-                                    </td>
+                                  
                                 <% } %>
-                            </tr>  
-                                 
-                            <% stagedObjects.forEach(function(element) { %>
-                   
+                            </tr>                        
+
+                    <% if(stagedObjects.length > 0) { %>                 
+                            <% stagedObjects.forEach(function(element) { %>                   
                             <tr> 
-                                <td></td> 
                                 <td>
-                                        <input id="user-prefrences-object-<%= element %>-check" type="checkbox" disabled="disabled" class="layout-text save-preferences-object-styles" checked>
-                                </td>                            
+                                    <span class="add-on layout-text save-load-prefrences-object-name" title="save <%= element %> properties"> <%= element %> </span>
+                                </td> 
                                 <td>
-                                    <span class="add-on layout-text" title="save <%= element %> properties" style="font-size: 11px !important; font-style: italic !important; text-transform: capitalize; "> <%= element %> </span>
-                                </td>                               
-                               
-                            </tr>
-                    
-                            <% }); %>                
+                                    <input id="user-prefrences-object-<%= element %>-check" type="checkbox" disabled="disabled" class="layout-text save-preferences-object-styles" checked>
+                                </td> 
+                            </tr>                    
+                            <% }); %>                       
+                    <% } %> 
                         </tbody>
-                    </table>    
+                    </table>              
+                           
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button id="save-user-preferences-accept" class="btn btn-default">Save</button>
@@ -1621,89 +1618,78 @@
                     <div class="modal-body">
                     <table class="table-condensed layout-table dialog-table">
                         <tbody>
-                                <tr>
-                                        <td>
-                                            <span class="add-on layout-text" title="load Map properties" > Map Properties </span>
-                                        </td>        
-                                        <td>
-                                            <input id="load-user-prefrences-map-check" type="checkbox" class="layout-text" <% if(typeof currentGeneralProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td>
-                                        <span class="add-on layout-text" title="save Grid properties"> Grid Properties </span>
-                                    </td>            
-                                    <td>
-                                        <input id="load-user-prefrences-grid-check" type="checkbox" class="layout-text"  <% if(typeof currentGridProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="add-on layout-text" title="save Layout properties"> Layout Properties </span>
-                                    </td>            
-                                    <td>
-                                        <input id="load-user-prefrences-layout-check" type="checkbox" class="layout-text"  <% if(typeof currentLayoutProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="load Map properties" > Map Properties </span>
+                                </td>        
+                                <td>
+                                    <input id="load-user-prefrences-map-check" type="checkbox" class="layout-text" <% if(typeof currentGeneralProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Grid properties"> Grid Properties </span>
+                                </td>            
+                                <td>
+                                    <input id="load-user-prefrences-grid-check" type="checkbox" class="layout-text"  <% if(typeof currentGridProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Layout properties"> Layout Properties </span>
+                                </td>            
+                                <td>
+                                    <input id="load-user-prefrences-layout-check" type="checkbox" class="layout-text"  <% if(typeof currentLayoutProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
+                                </td>
+                            </tr>
                         
-                        <tr>
-                            <td>
-                                <span class="add-on layout-text" title="save Object properties"> Object Properties: </span>
-                            </td>   
-                            <% if(elementsStyles.length <= 0) { %>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="save Object properties"> Object Properties: </span>
+                                </td>   
+                                <% if(elementsStyles.length <= 0) { %>
                                 <td>
                                     <span class="add-on layout-text"  > none specified </span>
                                 </td> 
-                            <% } else { %>
+                                <% } else { %>
                                 <td>
                                     <input id="load-user-prefrences-object-check" type="checkbox" class="layout-text" checked>
-                                </td>
+                                </td>                                    
+                                <% } %>
+                            </tr>                                 
+                        <% elementsStyles.forEach(function(element) { %>
+                            <tr>
                                 <td>
-                                    <span class="add-on layout-text"  style="font-size: 11px !important; font-style: italic !important;""> select/deselect all </span>
-                                </td>      
-                            <% } %>                                
-                              
-                        </tr> 
-                                 
-                            <% elementsStyles.forEach(function(element) { %>
-                        <tr>
-                            <td></td> 
-                            <td>
+                                    <span class="add-on layout-text save-load-prefrences-object-name" title="load <%= element['element'] %> properties" > <%= (element['element']) %> </span>
+                                </td>  
+                                <td>
                                     <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" disabled="disabled" class="layout-text load-preferences-object-styles" checked>
-                            </td>                   
-                            <td>
-                                <span class="add-on layout-text" title="load <%= element['element'] %> properties" style="font-size: 11px !important; font-style: italic !important; text-transform: capitalize; "> <%= (element['element']) %> </span>
-                            </td>                           
-                            
-                        </tr>
-                            <% }); %>
-
-                           
+                                </td> 
+                            </tr>
+                        <% }); %>                           
                       
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
                
-                    <% if(elementsStyles.length > 0) { %>
-                        <table class="table-condensed layout-table dialog-table" >
-                            <tbody>
-                                    <tr>
-                                            <td>
-                                                <span class="add-on layout-text" title="apply changes to existing elements"> Apply to existing elements </span>
-                                            </td> 
-                                            <td>
-                                                <input id="load-user-prefrences-apply-changes" type="checkbox" class="layout-text" checked >                           
-                                            </td>                
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">                    
-                                                <span class="add-on layout-text" style="font-size: 10px !important;"><strong>Caution: </strong> When checked the selected preferences will be applied to existing map objects!</span>
-                                            </td>
-                                        </tr>
-                            </tbody>
-                        </table>
-                
-                    <% } %>
-               
+                <% if(elementsStyles.length > 0) { %>
+                <table class="table-condensed layout-table dialog-table" >
+                    <tbody>
+                            <tr>
+                                <td>
+                                    <span class="add-on layout-text" title="apply changes to existing elements"> Apply to existing elements </span>
+                                </td> 
+                                <td>
+                                    <input id="load-user-prefrences-apply-changes" type="checkbox" class="layout-text" checked >                           
+                                </td>                
+                            </tr>
+                            <tr>
+                                <td colspan="2">                    
+                                    <span class="add-on layout-text" style="font-size: 10px !important;"><strong>Caution: </strong> When checked the selected preferences will be applied to existing map objects!</span>
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>                
+                 <% } %>               
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button id="load-user-preferences-accept" class="btn btn-default">Load</button>
