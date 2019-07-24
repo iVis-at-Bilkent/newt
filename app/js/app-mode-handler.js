@@ -367,6 +367,19 @@ var modeHandler = {
     
   },
 
+  //function to enable read mode
+  enableReadMode: function(){
+    //enable read mode  
+    $('.read-mode-off').removeClass("read-mode-off").addClass("read-mode-on");
+    $('.read-mode-on').prepend('<div class="read-mode-div"></div>');   
+  },
+
+  //disable read mode
+  disableReadMode:function(){
+    $('.read-mode-on').find('.read-mode-div').remove();  
+    $('.read-mode-on').removeClass("read-mode-on").addClass("read-mode-off");
+    
+  },
   //function to reset shortcut zoom mode resources and remove handlers
   endShorcutZoomMode : function(){
     var cy = appUtilities.getActiveCy();

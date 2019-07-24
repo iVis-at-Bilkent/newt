@@ -670,7 +670,7 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
-      chiseInstance.highlightSelected(cy.e(':selected'));
+      chiseInstance.highlightSelected(cy.elements(':selected'));
     });
 
     $("#highlight-processes-of-selected").click(function (e) {
@@ -686,9 +686,7 @@ module.exports = function() {
 
 
   $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
-    //enable read mode    
-    $('.readModeDiv').css('display','block');  
-      
+   modeHandler.enableReadMode();
     // use active chise instance
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var cy = appUtilities.getActiveCy();

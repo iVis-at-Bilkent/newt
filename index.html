@@ -34,297 +34,296 @@
 
     <body>
          
-        <div style="position: relative;">
-                <div id="newt-main-nav-menu-read-mode" class = "readModeDiv"></div>
-                <div class="nav-menu sbgn-nav-menu" id="newt-main-nav-menu">
-              
-                        <nav class="navbar navbar-default sbgn-nav-bar" role="navigation">
-                            <div>
-                                   
-                                <ul class="nav navbar-nav navbar-left">
+       
+               <div class="read-mode-off">
+                    <div class="nav-menu sbgn-nav-menu">
+                            <nav class="navbar navbar-default sbgn-nav-bar" role="navigation">
+                                <div>
                                        
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            File
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <input id="file-input" type="file" style="display:none" />
-                                            <li><a href="#" type="file" id="new-file">New</a></li>
-                                            <li><a href="#" type="file" id="load-file">Load...</a></li>
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Samples
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="title"><i>PD</i></a></li>
-                                                    <li class="divider" style="margin-top: 0"></li>
-                                                    <li><a href="#" id="load-sample1">Neuronal muscle signaling</a></li>
-                                                    <li><a href="#" id="load-sample2">CaM-CaMK dependent signaling to nucleus</a></li>
-                                                    <li><a href="#" id="load-sample3">ATM mediated phosphorylation of repair proteins</a></li>
-                                                    <li><a href="#" id="load-sample4">Activated STAT1alpha induction of the IRF1 gene</a></li>
-                                                    <li><a href="#" id="load-sample5">Vitamins B6 activation to pyridoxal phosphate</a></li>
-                                                    <li><a href="#" id="load-sample6">Insulin-like growth factor (IGF) signaling</a></li>
-                                                    <li><a href="#" id="load-sample7">PolyQ proteins interference</a></li>
-                                                    <li><a href="#" id="load-sample8">Glycolysis</a></li>
-                                                    <li><a href="#" id="load-sample9">MAPK cascade</a></li>
-                                                    <li><a href="#" id="load-sample10">Drosophila cell cycle</a></li>
-                                                    <li><a href="#" id="load-sample11">Mammalian cholesterol biosynthesis</a></li>
-                                                    <li><a href="#" id="load-sample12">Two gene system behavior</a></li>                                       
-                                                    <li class="divider" style="margin-bottom: 0"></li>
-                                                    <li><a class="title"><i>AF</i></a></li>
-                                                    <li class="divider" style="margin-top: 0"></li>
-                                                    <li><a href="#" id="load-sample13">Transforming growth factor beta (TGFB) signaling</a></li>
-                                                    <li><a href="#" id="load-sample14">Repressilator</a></li>
-                                                    <li><a href="#" id="load-sample15">Epidermal growth factor receptor</a></li>
-                                                    <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#" id="save-as-sbgnml">Save...</a></li>
-                                            <li><a href="#" type="file" id="close-file">Close</a></li>
-                                            <li class="divider"></li>
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Import
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <input id="simple-af-file-input" type="file" style="display:none" />
-                                                    <input id="celldesigner-file-input" type="file" style="display:none" />
-                                                    <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
-                                                    <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Export
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
-                                                    <li><a href="#" id="export-as-sbgnml3-file">SBGN-ML 0.3</a></li>
-                                                    <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Export as Image
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="save-as-png">PNG</a></li>
-                                                    <li><a href="#" id="save-as-jpg">JPG</a></li>
-                                                    <li><a href="#" id="save-as-svg">SVG</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="divider"></li>
-                                            <input id="user-preferences-file-input" type="file" style="display:none" />
-                                            <li><a href="#" id="load-user-preferences">Load Preferences...</a></li>
-                                            <li><a href="#" id="save-user-preferences">Save Preferences...</a></li>
+                                    <ul class="nav navbar-nav navbar-left">
                                            
-            
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Edit
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" id="add-complex-for-selected" >Add Complex for Selected</a></li>
-                                            <li><a href="#" id="add-compartment-for-selected" >Add Compartment for Selected</a></li>
-                                            <li><a href="#" id="add-submap-for-selected" >Add Submap for Selected</a></li>
-                                            <li><a href="#" id="create-reaction-template" >Add from Template...</a></li>
-                                            <li><a href="#" id="clone-selected" >Clone Selected</a></li>
-            
-                                            <li class="divider"></li>
-                                            <li><a href="#" id="delete-selected-simple">Delete Selected Simple</a></li>
-                                            <li><a href="#" id="delete-selected-smart">Delete Selected Smart</a></li>
-            
-                                            <li class="divider"></li>
-                                            <li><a href="#" id="resize-nodes-to-content">Resize Nodes To Content</a></li>
-            
-                                            <li class="divider"></li>
-                                            <li class="disabled"><a href="#" id="undo-last-action" >Undo</a></li>
-                                            <li class="disabled"><a href="#" id="redo-last-action" >Redo</a></li>
-            
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            View
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Select
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="select-all">All Nodes and Edges</a></li>
-                                                    <li><a href="#" id="select-all-nodes">All Nodes</a></li>
-                                                    <li><a href="#" id="select-all-edges">All Edges</a></li>
-                                                </ul>
-                                            </li>
-            
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Zoom
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="zoom-to-selected">Zoom to Selected</a></li>
-                                                </ul>
-                                            </li>
-            
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Hide/Show
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="hide-selected">Hide Selected</a></li>
-                                                    <li><a href="#" id="show-selected">Show Selected</a></li>
-                                                    <li><a href="#" id="show-hidden-neighbors-of-selected">Show Hidden Neighbors of Selected</a></li>
-                                                    <li><a href="#" id="show-all">Show All</a></li>
-                                                </ul>
-                                            </li>
-            
-                                            <li class="dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Collapse/Expand
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="collapse-selected">Collapse Selected</a></li>
-                                                    <li><a href="#" id="expand-selected">Expand Selected</a></li>
-                                                    <li><a href="#" id="collapse-complexes">Collapse Complexes</a></li>
-                                                    <li><a href="#" id="expand-complexes">Expand Complexes</a></li>
-                                                    <li><a href="#" id="collapse-all">Collapse All</a></li>
-                                                    <li><a href="#" id="expand-all">Expand All</a></li>
-                                                </ul>
-                                            </li>
-            
-                                            <li class="dropdown-submenu">
-                                                <a href="#" id="add-node-menu-option" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Align
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu" id="add-node-submenu">
-                                                    <li class="dropdown-submenu">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                            Horizontal
-                                                            <!--<b class="right-caret"></b>-->
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="#" id="align-horizontal-top">Top</a></li>
-                                                            <li><a href="#" id="align-horizontal-middle">Middle</a></li>
-                                                            <li><a href="#" id="align-horizontal-bottom">Bottom</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="dropdown-submenu">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                            Vertical
-                                                            <!--<b class="right-caret"></b>-->
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="#" id="align-vertical-left">Left</a></li>
-                                                            <li><a href="#" id="align-vertical-center">Center</a></li>
-                                                            <li><a href="#" id="align-vertical-right">Right</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#" id="highlight-errors-of-validation"> Validate Map</a></li>
-                                            <li class="divider"></li>                          
-                                            <li><a href="#" id="grid-properties" style="padding-right: 30px;">Grid and Guidelines...</a></li>
-                                            <li><a href="#" id="general-properties">Map Properties...</a></li>
-                                            
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Highlight
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" id="highlight-search-menu-item">Search...</a></li>
-                                            <li><a href="#" id="highlight-selected">Selected</a></li>
-                                            <li><a href="#" id="highlight-neighbors-of-selected">Neighbors of Selected</a></li>
-                                            <li><a href="#" id="highlight-processes-of-selected">Processes of Selected</a></li>
-                                            <li><a href="#" id="remove-highlights">Remove Highlights</a></li>
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Layout
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" id="perform-layout">Perform Layout</a></li>
-                                            <li><a href="#" id="perform-static-layout">Perform Static Layout</a></li>
-                                            <li><a href="#" id="layout-properties">Layout Properties...</a></li>
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Query
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="dropdown-submenu">
-                                                <a href="#" id="query-pathwaycommons" class="dropdown-toggle" data-toggle="dropdown">
-                                                    Pathway Commons
-                                                    <!--<b class="right-caret"></b>-->
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" id="query-pathsbetween">Paths Between...</a></li>
-                                                    <li><a href="#" id="query-pathsfromto">Paths From To...</a></li>
-                                                    <li><a href="#" id="query-commonstream">Common Stream...</a></li>
-                                                    <li><a href="#" id="query-neighborhood">Neighborhood...</a></li>
-                                                    <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
-                                                </ul>
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Legend
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" id="PD-legend">Process Description</a></li>
-                                            <li><a href="#" id="AF-legend">Activity Flow</a></li>
-                                        </ul>
-                                    </li>
-            
-            
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Help
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" id="quick-help">Quick Help</a></li>
-                                            <li><a href="#" id="quick-tutorial">Quick Tutorial</a></li>
-                                            <li><a href="#" id="ui-guide">UI Guide</a></li>
-                                            <li><a href="#" id="about">About</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <a href="http://newteditor.org" target="_blank"><img class="newt-logo" height="25" width="auto" src="app/img/newt-logo.png"/></a>
-                                <span class="input-file" id="displayed-file-name"></span>
-                                <span class="input-file" id="file-name"></span>
-                            </div>
-                        </nav>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                File
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <input id="file-input" type="file" style="display:none" />
+                                                <li><a href="#" type="file" id="new-file">New</a></li>
+                                                <li><a href="#" type="file" id="load-file">Load...</a></li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Samples
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="title"><i>PD</i></a></li>
+                                                        <li class="divider" style="margin-top: 0"></li>
+                                                        <li><a href="#" id="load-sample1">Neuronal muscle signaling</a></li>
+                                                        <li><a href="#" id="load-sample2">CaM-CaMK dependent signaling to nucleus</a></li>
+                                                        <li><a href="#" id="load-sample3">ATM mediated phosphorylation of repair proteins</a></li>
+                                                        <li><a href="#" id="load-sample4">Activated STAT1alpha induction of the IRF1 gene</a></li>
+                                                        <li><a href="#" id="load-sample5">Vitamins B6 activation to pyridoxal phosphate</a></li>
+                                                        <li><a href="#" id="load-sample6">Insulin-like growth factor (IGF) signaling</a></li>
+                                                        <li><a href="#" id="load-sample7">PolyQ proteins interference</a></li>
+                                                        <li><a href="#" id="load-sample8">Glycolysis</a></li>
+                                                        <li><a href="#" id="load-sample9">MAPK cascade</a></li>
+                                                        <li><a href="#" id="load-sample10">Drosophila cell cycle</a></li>
+                                                        <li><a href="#" id="load-sample11">Mammalian cholesterol biosynthesis</a></li>
+                                                        <li><a href="#" id="load-sample12">Two gene system behavior</a></li>                                       
+                                                        <li class="divider" style="margin-bottom: 0"></li>
+                                                        <li><a class="title"><i>AF</i></a></li>
+                                                        <li class="divider" style="margin-top: 0"></li>
+                                                        <li><a href="#" id="load-sample13">Transforming growth factor beta (TGFB) signaling</a></li>
+                                                        <li><a href="#" id="load-sample14">Repressilator</a></li>
+                                                        <li><a href="#" id="load-sample15">Epidermal growth factor receptor</a></li>
+                                                        <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" id="save-as-sbgnml">Save...</a></li>
+                                                <li><a href="#" type="file" id="close-file">Close</a></li>
+                                                <li class="divider"></li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Import
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <input id="simple-af-file-input" type="file" style="display:none" />
+                                                        <input id="celldesigner-file-input" type="file" style="display:none" />
+                                                        <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
+                                                        <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Export
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
+                                                        <li><a href="#" id="export-as-sbgnml3-file">SBGN-ML 0.3</a></li>
+                                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Export as Image
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="save-as-png">PNG</a></li>
+                                                        <li><a href="#" id="save-as-jpg">JPG</a></li>
+                                                        <li><a href="#" id="save-as-svg">SVG</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <input id="user-preferences-file-input" type="file" style="display:none" />
+                                                <li><a href="#" id="load-user-preferences">Load Preferences...</a></li>
+                                                <li><a href="#" id="save-user-preferences">Save Preferences...</a></li>
+                                               
+                
+                                            </ul>
+                                        </li>
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Edit
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" id="add-complex-for-selected" >Add Complex for Selected</a></li>
+                                                <li><a href="#" id="add-compartment-for-selected" >Add Compartment for Selected</a></li>
+                                                <li><a href="#" id="add-submap-for-selected" >Add Submap for Selected</a></li>
+                                                <li><a href="#" id="create-reaction-template" >Add from Template...</a></li>
+                                                <li><a href="#" id="clone-selected" >Clone Selected</a></li>
+                
+                                                <li class="divider"></li>
+                                                <li><a href="#" id="delete-selected-simple">Delete Selected Simple</a></li>
+                                                <li><a href="#" id="delete-selected-smart">Delete Selected Smart</a></li>
+                
+                                                <li class="divider"></li>
+                                                <li><a href="#" id="resize-nodes-to-content">Resize Nodes To Content</a></li>
+                
+                                                <li class="divider"></li>
+                                                <li class="disabled"><a href="#" id="undo-last-action" >Undo</a></li>
+                                                <li class="disabled"><a href="#" id="redo-last-action" >Redo</a></li>
+                
+                                            </ul>
+                                        </li>
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                View
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Select
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="select-all">All Nodes and Edges</a></li>
+                                                        <li><a href="#" id="select-all-nodes">All Nodes</a></li>
+                                                        <li><a href="#" id="select-all-edges">All Edges</a></li>
+                                                    </ul>
+                                                </li>
+                
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Zoom
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="zoom-to-selected">Zoom to Selected</a></li>
+                                                    </ul>
+                                                </li>
+                
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Hide/Show
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="hide-selected">Hide Selected</a></li>
+                                                        <li><a href="#" id="show-selected">Show Selected</a></li>
+                                                        <li><a href="#" id="show-hidden-neighbors-of-selected">Show Hidden Neighbors of Selected</a></li>
+                                                        <li><a href="#" id="show-all">Show All</a></li>
+                                                    </ul>
+                                                </li>
+                
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Collapse/Expand
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="collapse-selected">Collapse Selected</a></li>
+                                                        <li><a href="#" id="expand-selected">Expand Selected</a></li>
+                                                        <li><a href="#" id="collapse-complexes">Collapse Complexes</a></li>
+                                                        <li><a href="#" id="expand-complexes">Expand Complexes</a></li>
+                                                        <li><a href="#" id="collapse-all">Collapse All</a></li>
+                                                        <li><a href="#" id="expand-all">Expand All</a></li>
+                                                    </ul>
+                                                </li>
+                
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" id="add-node-menu-option" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Align
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu" id="add-node-submenu">
+                                                        <li class="dropdown-submenu">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                                Horizontal
+                                                                <!--<b class="right-caret"></b>-->
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="#" id="align-horizontal-top">Top</a></li>
+                                                                <li><a href="#" id="align-horizontal-middle">Middle</a></li>
+                                                                <li><a href="#" id="align-horizontal-bottom">Bottom</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="dropdown-submenu">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                                Vertical
+                                                                <!--<b class="right-caret"></b>-->
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="#" id="align-vertical-left">Left</a></li>
+                                                                <li><a href="#" id="align-vertical-center">Center</a></li>
+                                                                <li><a href="#" id="align-vertical-right">Right</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" id="highlight-errors-of-validation"> Validate Map</a></li>
+                                                <li class="divider"></li>                          
+                                                <li><a href="#" id="grid-properties" style="padding-right: 30px;">Grid and Guidelines...</a></li>
+                                                <li><a href="#" id="general-properties">Map Properties...</a></li>
+                                                
+                                            </ul>
+                                        </li>
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Highlight
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" id="highlight-search-menu-item">Search...</a></li>
+                                                <li><a href="#" id="highlight-selected">Selected</a></li>
+                                                <li><a href="#" id="highlight-neighbors-of-selected">Neighbors of Selected</a></li>
+                                                <li><a href="#" id="highlight-processes-of-selected">Processes of Selected</a></li>
+                                                <li><a href="#" id="remove-highlights">Remove Highlights</a></li>
+                                            </ul>
+                                        </li>
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Layout
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" id="perform-layout">Perform Layout</a></li>
+                                                <li><a href="#" id="perform-static-layout">Perform Static Layout</a></li>
+                                                <li><a href="#" id="layout-properties">Layout Properties...</a></li>
+                                            </ul>
+                                        </li>
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Query
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" id="query-pathwaycommons" class="dropdown-toggle" data-toggle="dropdown">
+                                                        Pathway Commons
+                                                        <!--<b class="right-caret"></b>-->
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="query-pathsbetween">Paths Between...</a></li>
+                                                        <li><a href="#" id="query-pathsfromto">Paths From To...</a></li>
+                                                        <li><a href="#" id="query-commonstream">Common Stream...</a></li>
+                                                        <li><a href="#" id="query-neighborhood">Neighborhood...</a></li>
+                                                        <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
+                                                    </ul>
+                                            </ul>
+                                        </li>
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Legend
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" id="PD-legend">Process Description</a></li>
+                                                <li><a href="#" id="AF-legend">Activity Flow</a></li>
+                                            </ul>
+                                        </li>
+                
+                
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Help
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" id="quick-help">Quick Help</a></li>
+                                                <li><a href="#" id="quick-tutorial">Quick Tutorial</a></li>
+                                                <li><a href="#" id="ui-guide">UI Guide</a></li>
+                                                <li><a href="#" id="about">About</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <a href="http://newteditor.org" target="_blank"><img class="newt-logo" height="25" width="auto" src="app/img/newt-logo.png"/></a>
+                                    <span class="input-file" id="displayed-file-name"></span>
+                                    <span class="input-file" id="file-name"></span>
+                                </div>
+                            </nav>
                     </div>
-            
-                    <div id="sbgn-toolbar">
+                
+                    <div id="sbgn-toolbar" class="read-mode-off">
                             <div class="inside-menu">
                                 <img id="new-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/new.svg" title="New: Create a blank SBGN map">
                                 <img id="load-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/load.svg" title="Load: Load an SBGN map from SBGN-ML file">
@@ -411,24 +410,26 @@
                                 <img id="query-pathsbetween-icon" class="sbgn-toolbar-element" src="app/img/toolbar/PC-logo.svg" title="Perform PC Query: Perform a PathwayCommons query to get a map of interest between specified genes" >
                             </div>
             
-                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
+                                <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
                                 <img id="quick-help-icon" class="sbgn-toolbar-element" src="app/img/toolbar/quick-help.svg" title="Quick Help" >
                                 <img id="about-icon" class="sbgn-toolbar-element" src="app/img/toolbar/about.svg" title="About" >
                             </div>
             
-                    </div></div>
-       
+                    </div>
+               </div>
+               
+             
 
         <table id="sbgn-inspector-and-canvas">
         <tbody>
             <tr>
                 <td>
-                    <div style="position: relative;">
-                            <div class="readModeDiv"></div>
-                            <div id="network-panels-container" class="tab-content">
+                  
+                            
+                            <div id="network-panels-container" class="tab-content read-mode-off">
                             </div>
-                    </div>
+                 
                    
                 </td>
                 <td>

@@ -841,9 +841,9 @@ img#template-reversible-output-add-button:hover {
   overflow: hidden;
 }
 
-.readModeDiv
+.read-mode-div
 {
-    display: none;  
+   
     z-index:2000;   
     position: absolute; 
     top: 0%; 
@@ -854,6 +854,15 @@ img#template-reversible-output-add-button:hover {
     opacity:0.2; 
     filter: alpha(opacity=0.2); 
 }
+.read-mode-on
+{
+    position: relative;
+}
+.read-mode-off
+{
+    position: static;
+}
+
 
 /*
   Palettes on right pane

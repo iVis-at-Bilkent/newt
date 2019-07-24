@@ -3,6 +3,7 @@ var inspectorUtilities = {};
 var fillBioGeneContainer = require('./fill-biogene-container');
 var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
+var modeHandler = require('./app-mode-handler');
 
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
 
@@ -1079,7 +1080,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                $(tabContents[i]).removeClass('active');
                $($(tabContents[i]).children('a')[0]).attr("data-toggle", "tab");   
               } 
-              $('.readModeDiv').css('display','none');
+              modeHandler.disableReadMode();
               $('#inspector-map-tab a').click();
             
              
