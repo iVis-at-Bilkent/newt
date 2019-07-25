@@ -38,18 +38,18 @@
     "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",
     "konva": "^1.6.3",
-    "libxmljs": "^0.18.4",
+    "libxmljs": "0.19.3",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "mousetrap": "^1.6.0",
     "request": "^2.81.0",
-    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable ",
+    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
     "underscore": "1.8.3"
-	},
+  },
   "devDependencies": {
     "express": "4.14.0",
     "browserify": "^11.2.0",
     "nodemon": "1.11.0",
-    "parallelshell": "^3.0.2"
+    "parallelshell": "3.0.1"
   }
 }
