@@ -1010,11 +1010,28 @@ inspectorUtilities.handleSBGNInspector = function () {
           inspectorUtilities.handleNavigate (cy,eles);
           html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
+          if(errors[currentPage].pattern == "pd10101") {
+              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
+                 "<p style=\"text-align:center\" > Looks like the consumption source and target are mixed up, would you like to reverse the consumption edge?" +
+                "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
+                 + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";
+          }
+          else if(errors[currentPage].pattern == "pd10102") {
+              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
+                 "<p style=\"text-align:center\" > Looks like the consumption source and target are mixed up, would you like to reverse the consumption arc?" +
+                "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
+                 + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";
+          } else if(errors[currentPage].pattern == "pd10103") {
+              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
+                 "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each consumption arc?" +
+                "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
+                 + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";
+          }
          var next = "Next";
          if(currentPage == 0) {
              if(errors.length !=1) {
                  html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; ' ><button class='btn btn-default' style='align: center;' id='inspector-next-button'"
-                 + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                 + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-fix-button'"
                  + ">" + dismiss + "</button> </div>";
              }else {
                   html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
@@ -1056,6 +1073,66 @@ inspectorUtilities.handleSBGNInspector = function () {
               currentPage = currentPage - 1;
               var cy = appUtilities.getActiveCy();
               inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,cy,data);
+      });
+      
+        $('#inspector-fix-button').on('click', function () {
+               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
+                   var targetTmp = eles.target();
+                   var sourceTmp = eles.source();
+                   var chiseInstance = appUtilities.getActiveChiseInstance();
+                   if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
+                      var cy = appUtilities.getActiveCy();
+                      var sourceNew = targetTmp.id();
+                      var targetNew = sourceTmp.id();
+                     eles = eles.move({
+                         target: targetNew,
+                         source : sourceNew
+                     
+                      });
+                      var tmpPort = eles.data().portsource; 
+                      eles.data('portsource',eles.data().porttarget);
+                      eles.data('porttarget',tmpPort);
+                      var file = chiseInstance.createSbgnml();
+                      var errorsNew = chiseInstance.doValidation(file);
+                      chiseInstance.removeHighlights();
+                      inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
+
+                   }
+               }else if(errors[currentPage].pattern == "pd10103" ){
+                        var chiseInstance = appUtilities.getActiveChiseInstance();
+                        var cy = appUtilities.getActiveCy();
+                        var edges = cy.edges('[source = "' + id +'"]');
+                        var addedNodeNum = edges.length;
+                        var nodeParams = {class : eles.data().class, language : eles.data().language};
+                        var edgeParams = {class : edges[0].data().class, language : edges[0].data().language};
+                        var promptInvalidEdge = function(){
+                            appUtilities.promptInvalidEdgeWarning.render();
+                        }
+                        for (var i = 0 ; i<addedNodeNum;i++){
+                            var target = edges[i].target();
+                            if(i!=0)
+                                eles.shift({ x: -11*1.5, y: -11*1.5 });
+                            var cX = eles.position().x;
+                            var cY = eles.position().y;
+                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
+                            cy.remove(edges[i]);
+                            var node = cy.nodes()[cy.nodes().length-1];
+                            chiseInstance.addEdge(node.id(),target.id(), edgeParams, promptInvalidEdge);
+                            var edge = cy.edges()[cy.edges().length-1];
+                            edge.data('porttarget',edges[i].data().porttarget);
+                        }
+                        cy.remove(eles);
+                        var file = chiseInstance.createSbgnml();
+                        var errorsNew = chiseInstance.doValidation(file);
+                        chiseInstance.removeHighlights();
+                        inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
+                        cy.animate({
+                            duration: 100,
+                            easing: 'ease',
+                            zoom :4.6,
+                            fit: {}
+                         });
+               }
       });
      $('#inspector-dismiss-button').on('click', function () {
             var cy = appUtilities.getActiveCy();
