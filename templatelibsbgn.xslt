@@ -297,18 +297,6 @@
 			</svrl:text> <svrl:diagnostic-reference diagnostic="id">
 <axsl:text/><axsl:value-of select="$id"/><axsl:text/></svrl:diagnostic-reference></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*" mode="M25"/></axsl:template><axsl:template match="text()" priority="-1" mode="M25"/><axsl:template match="@*|node()" priority="-2" mode="M25"><axsl:apply-templates select="*" mode="M25"/></axsl:template>
 
-<!--PATTERN pd10130-->
-
-
-	<!--RULE -->
-<axsl:template match="sbgn:arc[@source = //sbgn:glyph[@class='complex']/sbgn:glyph/@id]" priority="1000" mode="M26"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="sbgn:arc[@source = //sbgn:glyph[@class='complex']/sbgn:glyph/@id]"/><axsl:variable name="id" select="//sbgn:glyph[@class='complex']/sbgn:glyph[not(@class='complex')]/@id"/><axsl:variable name="class" select="@class"/>
-
-		<!--ASSERT error-->
-<axsl:choose><axsl:when test="@class = 'modulation'"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="@class = 'modulation'"><axsl:attribute name="id">pd10130</axsl:attribute><axsl:attribute name="role">error</axsl:attribute><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-select-full-path"/></axsl:attribute><svrl:text>[NOT SURE]
-			</svrl:text> <svrl:diagnostic-reference diagnostic="id">
-<axsl:text/><axsl:value-of select="$id"/><axsl:text/></svrl:diagnostic-reference> <svrl:diagnostic-reference diagnostic="class">
-<axsl:text/><axsl:value-of select="$class"/><axsl:text/></svrl:diagnostic-reference></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*" mode="M26"/></axsl:template><axsl:template match="text()" priority="-1" mode="M26"/><axsl:template match="@*|node()" priority="-2" mode="M26"><axsl:apply-templates select="*" mode="M26"/></axsl:template>
-
 <!--PATTERN pd10131-->
 
 

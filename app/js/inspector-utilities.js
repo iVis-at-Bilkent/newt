@@ -1076,12 +1076,12 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
       
         $('#inspector-fix-button').on('click', function () {
-               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
+               var cy = appUtilities.getActiveCy();
+			   if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
                    var targetTmp = eles.target();
                    var sourceTmp = eles.source();
                    var chiseInstance = appUtilities.getActiveChiseInstance();
                    if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
-                      var cy = appUtilities.getActiveCy();
                       var sourceNew = targetTmp.id();
                       var targetNew = sourceTmp.id();
                      eles = eles.move({
@@ -1100,7 +1100,6 @@ inspectorUtilities.handleSBGNInspector = function () {
                    }
                }else if(errors[currentPage].pattern == "pd10103" ){
                         var chiseInstance = appUtilities.getActiveChiseInstance();
-                        var cy = appUtilities.getActiveCy();
                         var edges = cy.edges('[source = "' + id +'"]');
                         var addedNodeNum = edges.length;
                         var nodeParams = {class : eles.data().class, language : eles.data().language};
@@ -1126,13 +1125,12 @@ inspectorUtilities.handleSBGNInspector = function () {
                         var errorsNew = chiseInstance.doValidation(file);
                         chiseInstance.removeHighlights();
                         inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
-                        cy.animate({
-                            duration: 100,
-                            easing: 'ease',
-                            zoom :4.6,
-                            fit: {}
-                         });
                }
+			    cy.animate({
+                 duration: 100,
+                 easing: 'ease',
+                 fit :{eles:{},padding:20}
+              });
       });
      $('#inspector-dismiss-button').on('click', function () {
             var cy = appUtilities.getActiveCy();
