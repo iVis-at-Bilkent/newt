@@ -1000,14 +1000,14 @@ inspectorUtilities.handleSBGNInspector = function () {
     var dismiss = "Dismiss";
         if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
+            var unhighlighted = ["pd10104","pd10107"];
             var eles =  cy.elements('[id="' + id + '"]');
-            if(!highlighted.includes(id)) {
+            if(!highlighted.includes(id) && !unhighlighted.includes(errors[currentPage].pattern)) {
                var instance = cy.viewUtilities('get');
                var args = {eles: eles, option: "highlighted4"};
                instance.highlight( args);
                highlighted.push(id);
            }
-          inspectorUtilities.handleNavigate (cy,eles);
           html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
           if(errors[currentPage].pattern == "pd10101") {
@@ -1026,7 +1026,45 @@ inspectorUtilities.handleSBGNInspector = function () {
                  "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each consumption arc?" +
                 "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
                  + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";
+          }else if(errors[currentPage].pattern == "pd10104") {
+              var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
+              var connectedNodes = [];
+              for(var i=0; i<connectedEdges.length;i++) {
+                    var node = connectedEdges[i].source();
+                    var instance = cy.viewUtilities('get');
+                    var args = {eles: node, option: "highlighted4"};
+                    instance.highlight( args);
+                    highlighted.push(node.id());
+                    connectedNodes.push(node);
+              }
+              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
+                 "<p style=\"text-align:center\" > Would you like to choose one of the consumption glyphs which are connected to dissociation glyph ? " +
+                    "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
+                 + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";     
+          }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
+                 "<p style=\"text-align:center\" > Looks like the production source and target are mixed up, would you like to reverse the production arc?" +
+                "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
+                 + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";
           }
+          else if(errors[currentPage].pattern == "pd10107") {
+              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
+                 "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each production arc?" +
+                "<button class='btn btn-default' style='text-align: center; margin-left: 5px; width : 40px; ' id='inspector-fix-button'"
+                 + "> <img src=\"app/img/fix-error.svg\"/> </button></p>  </div>";
+               var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+               for(var i=0; i<connectedEdges.length;i++) {
+                    var instance = cy.viewUtilities('get');
+                    var args = {eles: connectedEdges[i], option: "highlighted4"};
+                    instance.highlight( args);
+                    highlighted.push(connectedEdges[i].id());
+              }
+              args = {eles: eles, option: "highlighted4"};
+              instance.highlight( args);
+              highlighted.push(eles.id());
+          }
+         if(!unhighlighted.includes(errors[currentPage].pattern)) 
+            inspectorUtilities.handleNavigate (cy,eles);
          var next = "Next";
          if(currentPage == 0) {
              if(errors.length !=1) {
@@ -1077,7 +1115,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       
         $('#inspector-fix-button').on('click', function () {
                var cy = appUtilities.getActiveCy();
-			   if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
+               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
                    var targetTmp = eles.target();
                    var sourceTmp = eles.source();
                    var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1100,7 +1138,7 @@ inspectorUtilities.handleSBGNInspector = function () {
                    }
                }else if(errors[currentPage].pattern == "pd10103" ){
                         var chiseInstance = appUtilities.getActiveChiseInstance();
-                        var edges = cy.edges('[source = "' + id +'"]');
+                       var edges = eles.connectedEdges().filter('[class="production"]');
                         var addedNodeNum = edges.length;
                         var nodeParams = {class : eles.data().class, language : eles.data().language};
                         var edgeParams = {class : edges[0].data().class, language : edges[0].data().language};
@@ -1126,7 +1164,86 @@ inspectorUtilities.handleSBGNInspector = function () {
                         chiseInstance.removeHighlights();
                         inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
                }
-			    cy.animate({
+               else if(errors[currentPage].pattern == "pd10104" ){
+                        var chiseInstance = appUtilities.getActiveChiseInstance();
+                        var tabContents = document.getElementsByClassName('chise-tab');
+                        for (var i = 0; i < tabContents.length; i++) {
+                             $(tabContents[i]).removeClass('active');
+                             $($(tabContents[i]).children('a')[0]).attr("data-toggle", "tab");   
+                        } 
+                        modeHandler.disableReadMode();
+                        cy.nodes().on('click', function(e){
+                            var clickedNode = e.target;
+                            if(connectedNodes.includes(clickedNode)){
+                                for(var i = 0 ; i< connectedNodes.length;i++ )
+                                {
+                                    if(connectedNodes[i]!=clickedNode) {
+                                        cy.remove(connectedNodes[i]);
+                                    }
+                                }
+                                 var file = chiseInstance.createSbgnml();
+                                 var errorsNew = chiseInstance.doValidation(file);
+                                 chiseInstance.removeHighlights();
+                                inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
+                               $('#inspector-console-tab')[0].style.display = "block";
+                               if (!$('#inspector-console-tab').hasClass('active')) {
+                                    $('#inspector-console-tab a').tab('show');
+                               }
+
+                            }
+                        });
+                         
+               } if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+                   var targetTmp = eles.target();
+                   var sourceTmp = eles.source();
+                   var chiseInstance = appUtilities.getActiveChiseInstance();
+                   if(chiseInstance.elementUtilities.isPNClass(targetTmp) && chiseInstance.elementUtilities.isEPNClass(sourceTmp)) {
+                      var sourceNew = targetTmp.id();
+                      var targetNew = sourceTmp.id();
+                     eles = eles.move({
+                         target: targetNew,
+                         source : sourceNew
+                     
+                      });
+                      var tmpPort = eles.data().portsource; 
+                      eles.data('portsource',eles.data().porttarget);
+                      eles.data('porttarget',tmpPort);
+                      var file = chiseInstance.createSbgnml();
+                      var errorsNew = chiseInstance.doValidation(file);
+                      chiseInstance.removeHighlights();
+                      inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
+
+                   }
+               }
+               else if(errors[currentPage].pattern == "pd10107" ){
+                        var chiseInstance = appUtilities.getActiveChiseInstance();
+                        var edges = cy.edges('[target = "' + id +'"]');
+                        var addedNodeNum = edges.length;
+                        var nodeParams = {class : eles.data().class, language : eles.data().language};
+                        var edgeParams = {class : edges[0].data().class, language : edges[0].data().language};
+                        var promptInvalidEdge = function(){
+                            appUtilities.promptInvalidEdgeWarning.render();
+                        }
+                        for (var i = 0 ; i<addedNodeNum;i++){
+                            var source = edges[i].source();
+                            if(i!=0)
+                                eles.shift({ x: -11*1.5, y: -11*1.5 });
+                            var cX = eles.position().x;
+                            var cY = eles.position().y;
+                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
+                            cy.remove(edges[i]);
+                            var node = cy.nodes()[cy.nodes().length-1];
+                            chiseInstance.addEdge(source.id(),node.id(), edgeParams, promptInvalidEdge);
+                            var edge = cy.edges()[cy.edges().length-1];
+                            edge.data('portsource',edges[i].data().portsource);
+                        }
+                        cy.remove(eles);
+                        var file = chiseInstance.createSbgnml();
+                        var errorsNew = chiseInstance.doValidation(file);
+                        chiseInstance.removeHighlights();
+                        inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
+               }
+	    cy.animate({
                  duration: 100,
                  easing: 'ease',
                  fit :{eles:{},padding:20}
@@ -1136,8 +1253,6 @@ inspectorUtilities.handleSBGNInspector = function () {
             var cy = appUtilities.getActiveCy();
             var chiseInstance = appUtilities.getActiveChiseInstance();
              if(errors.length!=0) {
-                var id=errors[currentPage].role; 
-                //var eles =  cy.elements('[id="' + id + '"]');
                 cy.animate({
                  duration: 100,
                  easing: 'ease',
