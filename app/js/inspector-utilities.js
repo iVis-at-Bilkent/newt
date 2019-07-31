@@ -1001,8 +1001,14 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
         var connectedEdges = eles.connectedEdges().filter('[class="production"]');
     else if(errorCode == "pd10111")
         var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
-    else if(errorCode == "pd10112")
-        var listedNodes = cy.nodes('[class= "compartment"]');
+    else if(errorCode == "pd10112"){
+        var compartments = cy.nodes('[class= "compartment"]');
+        var listedNodes = [];
+        for(var i =0;i<compartments.length;i++ ) {
+            if(compartments[i].parent().length ==0)
+                listedNodes.push(compartments[i]);
+        }
+    }
     else {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var sourcePos = eles.source().position();
@@ -1031,19 +1037,18 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
             }
         }
     }
-    html+="<table style=\"width:100%\"> <tr> <td colspan=\"2\" >";
     if(errorCode == "pd10104")
-        html+="<p style=\"text-align:center\" > If you want to choose one of the consumption glyphs which are connected to dissociation glyph, </p>  </td> </tr>" ;
+        html+="<p style=\"text-align:center\" > To fix, choose one of the consumption glyphs which are connected to dissociation glyph: </p>  " ;
     else if(errorCode == "pd10108")
-        html+="<p style=\"text-align:center\" > If you want to choose one of the production glyphs which are connected to association glyph, </p>  </td> </tr>" ;
+        html+="<p style=\"text-align:center\" > To fix, choose one of the production glyphs which are connected to association glyph: </p> " ;
     else if(errorCode == "pd10109")
-        html+="<p style=\"text-align:center\" > If you want to choose one of the glyph of EPN classes or a logical operator as a source reference to modulation, </p>  </td> </tr>" ;
+        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes or a logical operator as a source reference to modulation: </p>  " ;
     else if(errorCode == "pd10111")
-        html+="<p style=\"text-align:center\" > If you want to choose one of the arcs whose source is " + eles.data().class.toUpperCase() + ",</p>  </td> </tr>" ;
+        html+="<p style=\"text-align:center\" > To fix, choose one of the arcs whose source is " + eles.data().class.charAt(0).toUpperCase() + eles.data().class.slice(1)+ ":</p>  " ;
      else if(errorCode == "pd10112")
-        html+="<p style=\"text-align:center\" > If you want to choose one of the listed compartments to place such glyph(s) inside it, </p>  </td> </tr>" ;
+        html+="<p style=\"text-align:center\" > To fix, choose one of the listed compartments to place such glyph(s) inside it: </p>  " ;
     else
-        html+="<p style=\"text-align:center\" > If you want to choose one of the glyph of PN classes as a target reference to modulation, </p> </td> </tr>" ;
+        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of PN classes as a target reference to modulation: </p> " ;
     var instance = cy.viewUtilities('get');
     if(errorCode == "pd10104" || errorCode == "pd10108" || errorCode == "pd10111"){
          for(var i=0; i<connectedEdges.length;i++) {
@@ -1053,30 +1058,37 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
                 highlighted.push(connectedEdges[i].id());
             }
             if(i==0)
-                 html+="<tr><td  style=\"width:90%\"><div style=\"text-align: center; width: 100%;\" class=\"btn-group\" id=\"errors"+ errorCode +"\">";
+                 html+="<div style=\"text-align: center; width: 100%;\" class=\"btn-group\" id=\"errors"+ errorCode +"\">";
             if(errorCode == "pd10104")
                html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10104\" value=\""+ connectedEdges[i].source().data().label + "\" checked>" + connectedEdges[i].source().data().label + " to dissociation </label></div>"
             else if(errorCode == "pd10111")
-               html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.toUpperCase() + " to " + connectedEdges[i].target().data().class + " </label></div>" 
+               html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.charAt(0).toUpperCase() + eles.data().class.slice(1) + " to " + connectedEdges[i].target().data().class.charAt(0).toUpperCase() + connectedEdges[i].target().data().class.slice(1) + " </label></div>" 
             else
                html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> association to " + connectedEdges[i].target().data().label + " </label></div>"
         }
         if(connectedEdges.length > 0) 
-            html+="</div> </td>";
+            html+="</div>";
       }else {
           for(var i=0; i<listedNodes.length;i++) {
             if(i==0)
-                 html+="<tr><td style=\"width:90%\"><div style=\"text-align: center; width: 100%;\"class=\"btn-group\" id=\"errors"+ errorCode +"\">";
-            if(errorCode == "pd10109" || errorCode == "pd10112") 
-                html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\" ><label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].data().label + "\" checked>" + listedNodes[i].data().label + " </label></div>"
+                 html+="<div style=\"text-align: center; width: 100%;\"class=\"btn-group\" id=\"errors"+ errorCode +"\">";
+            if(errorCode == "pd10109") {
+                if(i==listedNodes.length-1) {
+                    var args = {eles: listedNodes[i], option: "highlighted4"};
+                    instance.highlight( args);
+                    highlighted.push(listedNodes[i].id());
+                }
+                html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\" ><label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label></div>"
+            }
+            else if(errorCode == "pd10112")
+                 html+="<div style=\"margin: 0 auto; text-align:center; \" class=\"radio\" ><label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label></div>"
             else
-                 html+="<div style=\"margin: 0 auto; text-align:center; \" class=\"radio\" ><label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class + " </label></div>"
+                 html+="<div style=\"margin: 0 auto; text-align:center; \" class=\"radio\" ><label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label></div>"
 
         }
         if(listedNodes.length > 0) 
-            html+="</div></td>";
+            html+="</div>";
       }
-        html+="<td  style=\"width:10%\"><div style =' width: 10%; float: left; padding: 10px; position: relative;text-align:center;'><img id=\"fix-errors-of-validation-icon\" class=\"center\" style='vertical-align: bottom;'  src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\" ></div></td></tr></table>";
      return html;
 }
 
@@ -1108,16 +1120,19 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
         var nodes = cy.nodes();
         if(errorCode == "pd10109") {
             var radioChecked = $('#errorspd10109 input:radio:checked').val();
-            for(var i=0;i<nodes.length;i++) {
-                if(nodes[i].data().label == radioChecked){
-                    eles = eles.move({
-                             target: eles.target().id(),
-                             source : nodes[i].id()
-
-                    });
-                    eles.data('portsource', nodes[i].id());
-                }
-            }
+            var node = cy.nodes('[id = "' + radioChecked +'"]');
+            eles = eles.move({
+                 target: eles.target().id(),
+                 source : node.id()                
+            });
+            eles.data('portsource', node.id());
+        }
+        else if(errorCode == "pd10112") {
+            var radioChecked = $('#errorspd10112 input:radio:checked').val();
+            var compartment = cy.nodes('[id = "' + radioChecked +'"]');
+             eles = eles.move({
+               parent : compartment.id()
+           });
         }
         else {
             var radioChecked = $('#errorspd10110 input:radio:checked').val(); 
@@ -1139,7 +1154,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
 	var html = "";
         var dismiss = "Dismiss";
         var radioButtonRules = ["pd10104","pd10108","pd10109","pd10110","pd10111","pd10112"];
-        var radioButtonChangeEvent = ["pd10104","pd10108","pd10111"];
+        var radioButtonChangeEvent = ["pd10104","pd10108","pd10111","pd10109"];
         if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
             var unhighlighted = ["pd10107"];
@@ -1150,48 +1165,37 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                instance.highlight( args);
                highlighted.push(id);
            }
-          html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p></b>";
+          html += "<table style=\"width:100%\"> <tr> <td style=\"width:90%\"> <b><p class='panel-body' style=\"color:red; text-align:center\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
           if(errors[currentPage].pattern == "pd10101") {
-              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
-                 "<p style=\"text-\align:center\" > Looks like the consumption source and target are mixed up, would you like to reverse the consumption edge?</p>" +
-                " <img id=\"fix-errors-of-validation-icon\" class=\"center\" src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\" > </div>";           
-     }
-          else if(errors[currentPage].pattern == "pd10102") {
-              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
-                 "<p style=\"text-align:center\" > Looks like the consumption source and target are mixed up, would you like to reverse the consumption arc?</p>"+
-                 " <img id=\"fix-errors-of-validation-icon\" class=\"center\" src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\" > </div>";   
-          } else if(errors[currentPage].pattern == "pd10103") {
-              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
-                 "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each consumption arc?</p> " + 
-                 " <img id=\"fix-errors-of-validation-icon\" class=\"center\" src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\" > </div>";           
-          }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
-             html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,highlighted);
-          }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
-              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
-                 "<p style=\"text-align:center\" > Looks like the production source and target are mixed up, would you like to reverse the production arc?</p>"+
-                 " <img id=\"fix-errors-of-validation-icon\" class=\"center\" src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\" > </div>";   
-          }
-          else if(errors[currentPage].pattern == "pd10107") {
-              html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '> " +
-                 "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each production arc?</p>"+
-                 " <img id=\"fix-errors-of-validation-icon\" class=\"center\" src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\" > </div>";   
-                var connectedEdges = eles.connectedEdges().filter('[class="production"]');
-                for(var i=0; i<connectedEdges.length;i++) {
-                    var instance = cy.viewUtilities('get');
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
-                    highlighted.push(connectedEdges[i].id());
-              }
-              args = {eles: eles, option: "highlighted4"};
-              instance.highlight( args);
-              highlighted.push(eles.id());
-          }
-         inspectorUtilities.handleNavigate (cy,eles);
+              html += "<p style=\"text-\align:center\" > Looks like the consumption source and target are mixed up, would you like to reverse the consumption edge?</p>" ;
+            }
+            else if(errors[currentPage].pattern == "pd10102") {
+                     html +="<p style=\"text-align:center\" > Looks like the consumption source and target are mixed up, would you like to reverse the consumption arc?</p>";
+            } else if(errors[currentPage].pattern == "pd10103") {
+                     html += "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each consumption arc?</p> ";       
+            }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
+                    html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,highlighted);
+            }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+                     html += "<p style=\"text-align:center\" > Looks like the production source and target are mixed up, would you like to reverse the production arc?</p>";
+            }
+            else if(errors[currentPage].pattern == "pd10107") {
+                     html += "<p style=\"text-align:center\" > Would you like to split the ‘source and sink’ glyph for each production arc?</p>";
+                       var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+                       for(var i=0; i<connectedEdges.length;i++) {
+                           var instance = cy.viewUtilities('get');
+                           var args = {eles: connectedEdges[i], option: "highlighted4"};
+                           instance.highlight( args);
+                           highlighted.push(connectedEdges[i].id());
+                     }
+                     args = {eles: eles, option: "highlighted4"};
+                     instance.highlight( args);
+                     highlighted.push(eles.id());
+           }
          var next = "Next";
          if(currentPage == 0) {
              if(errors.length !=1) {
-                 html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; ' ><button class='btn btn-default' style='align: center;' id='inspector-next-button'"
+                 html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '><button class='btn btn-default' style='align: center;' id='inspector-next-button'"
                  + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
                  + ">" + dismiss + "</button> </div>";
              }else {
@@ -1214,6 +1218,9 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             }
             
          }
+           html+="</td> <td style=\"width:10%\text-align: right; vertical-align: middle;\"><img id=\"fix-errors-of-validation-icon\" src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\">";
+           html+="</td></tr></table>";
+           inspectorUtilities.handleNavigate (cy,eles);
     } else if (notPD) {
         html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Can only validate maps of type PD</p></b>";
            html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
@@ -1313,7 +1320,9 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                }
                else if(errors[currentPage].pattern == "pd10107" ){
                         var chiseInstance = appUtilities.getActiveChiseInstance();
-                        var edges = cy.edges('[target = "' + id +'"]');
+                        var edges = cy.edges('[target = "' + id +'"]').sort(function( a, b ){
+                                return b.source().position().y - a.source().position().y;
+                        });;
                         var addedNodeNum = edges.length;
                         var nodeParams = {class : eles.data().class, language : eles.data().language};
                         var edgeParams = {class : edges[0].data().class, language : edges[0].data().language};
@@ -1327,9 +1336,9 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                             var cX = eles.position().x;
                             var cY = eles.position().y;
                             chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
-                            cy.remove(edges[i]);
                             var node = cy.nodes('[id = "node' + i +'"]');
-                            chiseInstance.addEdge(source.id(),node.id(), edgeParams, promptInvalidEdge);
+                            cy.remove(edges[i]);
+                            chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
                             var edge = cy.edges()[cy.edges().length-1];
                             edge.data('portsource',edges[i].data().portsource);
                         }
@@ -1402,6 +1411,12 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                 }
             }
          }
+          else if(errors[currentPage].pattern == "pd10109" ) {
+              var node = cy.nodes('[id = "' + this.value +'"]');
+              var args = {eles: node, option: "highlighted4"};
+              instance.highlight( args);
+              highlighted.push(node.id());
+         }
          else if(errors[currentPage].pattern == "pd10111" ) {
               var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
                for(var i=0; i<connectedEdges.length;i++) {
@@ -1418,7 +1433,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
 
 }; 
 inspectorUtilities.handleNavigate = function (cy,eles) {
-          var zoomLevel = 3.5 ;
+          var zoomLevel = 4 ;
           if(zoomLevel<cy.zoom())
               zoomLevel = cy.zoom();
           cy.animate({
