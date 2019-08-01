@@ -1058,9 +1058,9 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
             if(errorCode == "pd10104")
                html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10104\" value=\""+ connectedEdges[i].source().data().label + "\" checked>" + connectedEdges[i].source().data().label + " to dissociation </label></div>"
             else if(errorCode == "pd10111")
-               html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.charAt(0).toUpperCase() + eles.data().class.slice(1) + " to " + connectedEdges[i].target().data().class.charAt(0).toUpperCase() + connectedEdges[i].target().data().class.slice(1) + " </label></div>" 
+               html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.toUpperCase()  + " to " + connectedEdges[i].target().data().class.charAt(0).toUpperCase() + connectedEdges[i].target().data().class.slice(1) + " </label></div>" 
             else
-               html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> association to " + connectedEdges[i].target().data().label + " </label></div>"
+               html+="<div style=\"margin: 0 auto;  text-align:center; \" class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> Association to " + connectedEdges[i].target().data().label + " </label></div>"
         }
         if(connectedEdges.length > 0) 
             html+="</div>";
