@@ -1275,12 +1275,14 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                         var shiftY = 11;
                         for (var i = 0 ; i<addedNodeNum;i++){
                            var target = edges[i].target();
+                           var x2 = edges[i].boundingBox().x1;
+                           var y2 = edges[i].boundingBox().y1;
                            if(eles.position().x > target.position().x)
                                shiftX *= -1;
                             if(eles.position().y> target.position().y)
                                shiftY *= -1;
-                            var cX = eles.position().x+shiftX;
-                            var cY = eles.position().y+shiftY;
+                            var cX = x2+shiftX;
+                            var cY =y2+shiftY;
                             chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
                             cy.remove(edges[i]);
                             var node = cy.nodes('[id = "node' + i +'"]');
@@ -1423,6 +1425,17 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var args = {eles: node, option: "highlighted4"};
               instance.highlight( args);
               highlighted.push(node.id());
+              if(errors[currentPage].pattern == "pd10124"){
+                    var zoomLevel = 4 ;
+                    if(zoomLevel<cy.zoom())
+                        zoomLevel = cy.zoom();
+                    cy.animate({
+                      duration: 1400,
+                      center: {eles:node},
+                      easing: 'ease',
+                      zoom :zoomLevel
+                  });
+              }
          }
          else if(errors[currentPage].pattern == "pd10111" ) {
               var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
