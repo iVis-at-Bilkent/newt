@@ -1331,15 +1331,21 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                            var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
                            var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
                            var ratio = ydiff/xdiff;
-                           if(xdiff ==0)
+                           if(xdiff ==0){
                                shiftX =0;
-                           if(ydiff==0)
+                               shiftY = 22;
+                           }
+                           else if(ydiff==0){
                                shiftY=0;
-                           var result = 22*22;
-                           var ratiosquare = ratio * ratio;
-                           var dx = Math.sqrt(result/(ratiosquare+1));
-                           shiftX = dx;
-                           shiftY = shiftX*ratio;
+                               shiftX=22;
+                           }
+                           else {
+                                var result = 22*22;
+                                var ratiosquare = ratio * ratio;
+                                var dx = Math.sqrt(result/(ratiosquare+1));
+                                shiftX = dx;
+                                shiftY = shiftX*ratio;
+                           }
                            if(eles.position().x > target.position().x)
                                shiftX *= -1;
                             if(eles.position().y> target.position().y)
@@ -1383,18 +1389,22 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                             appUtilities.promptInvalidEdgeWarning.render();
                         }
                         for (var i = 0 ; i<addedNodeNum;i++){
-                            var shiftX = 22;
-                            var shiftY = 22;
+                           var shiftX = 22;
+                           var shiftY = 22;
                            var source = edges[i].source();
                            var x = edges[i].targetEndpoint().x;
                            var y = edges[i].targetEndpoint().y;
                            var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
                            var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
                            var ratio = ydiff/xdiff;
-                           if(xdiff ==0)
+                           if(xdiff ==0){
                                shiftX =0;
-                           else if(ydiff==0)
+                               shiftY = 22;
+                           }
+                           else if(ydiff==0){
                                shiftY=0;
+                               shiftX=22;
+                           }
                            else {
                                 var result = 22*22;
                                 var ratiosquare = ratio * ratio;
