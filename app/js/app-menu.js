@@ -691,14 +691,13 @@ module.exports = function() {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var cy = appUtilities.getActiveCy();
     var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-    var highlighted = [] ;
     if(chiseInstance.elementUtilities.mapType != "PD")
     {
-        inspectorUtilities.handleSBGNConsole([],0,highlighted,cy,file,true);
+        inspectorUtilities.handleSBGNConsole([],0,cy,file,true);
     }else 
     {
       var errors = chiseInstance.doValidation(file);
-      inspectorUtilities.handleSBGNConsole(errors,0,highlighted,cy,file,false);
+      inspectorUtilities.handleSBGNConsole(errors,0,cy,file,false);
     }
     
     var tabContents = document.getElementsByClassName('chise-tab');

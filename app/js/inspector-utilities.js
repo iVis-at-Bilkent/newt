@@ -994,7 +994,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
   }
 };
-inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlighted,params) {
+inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params) {
     if(errorCode == "pd10104")          
         var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
     else if(errorCode == "pd10108") 
@@ -1043,7 +1043,6 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
             if(i==connectedEdges.length-1) {
                 var args = {eles: connectedEdges[i], option: "highlighted4"};
                 instance.highlight( args);
-                highlighted.push(connectedEdges[i].id());
             }
             if(i==0){
                  if(errorCode == "pd10104")
@@ -1069,7 +1068,12 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
             html+="</div>";
         else
             params.handled = false;
-      }else {
+      } else if (errorCode == "pd10142") {
+          html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
+          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio\" id=\"errors"+ errorCode +"\">";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+        }else {
           for(var i=0; i<listedNodes.length;i++) {
             if(i==0){
                     if(errorCode == "pd10109")
@@ -1093,7 +1097,6 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
                 if(i==listedNodes.length-1) {
                     var args = {eles: listedNodes[i], option: "highlighted4"};
                     instance.highlight( args);
-                    highlighted.push(listedNodes[i].id());
                 }
                 if(errorCode == "pd10110" || errorCode == "pd10128")
                     html+="<label  class=\"radio\">  <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label>"
@@ -1114,7 +1117,6 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,highlig
 }
 
 inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
-    var chiseInstance = appUtilities.getActiveChiseInstance();
     if(errorCode == "pd10104") {         
          var radioChecked = $('#errorspd10104 input:radio:checked').val();
          var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
@@ -1163,6 +1165,24 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                parent : compartment.id()
            });
         }
+         else if(errorCode == "pd10142") {
+            var radioChecked = $('#errorspd10142 input:radio:checked').val();
+            var edgeParams = {class : radioChecked, language :eles.data().language};
+            var promptInvalidEdge = function(){
+                appUtilities.promptInvalidEdgeWarning.render();
+            }
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var source = eles.source();
+            var target = eles.target();
+            var portsource = eles.data().portsource;
+            var porttarget = eles.data().porttarget;
+            cy.remove(eles);
+            chiseInstance.addEdge(source.id(),target.id(),edgeParams, promptInvalidEdge);
+            var edge = cy.edges()[cy.edges().length-1];
+            edge.data('portsource',portsource);
+            edge.data('porttarget',porttarget);
+
+        }
         else {
             var radioChecked = $('#errors'+errorCode+ ' input:radio:checked').val();
             var node = cy.nodes('[id = "' + radioChecked +'"]');
@@ -1174,26 +1194,24 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
         }
     
      }
-     var file = chiseInstance.createSbgnml();
-     var errorsNew = chiseInstance.doValidation(file);
-     chiseInstance.removeHighlights();
-     inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false); }
+ }
 
-  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,highlighted,cy,data,notPD) {
+  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,cy,data,notPD) {
 	var html = "";
         var handled = true;
         var dismiss = "Dismiss";
-        var radioButtonRules = ["pd10104","pd10108","pd10109","pd10110","pd10111","pd10112","pd10124","pd10125","pd10126","pd10127","pd10128"];
+        var radioButtonRules = ["pd10104","pd10108","pd10109","pd10110","pd10111","pd10112","pd10124","pd10125","pd10126","pd10127","pd10128","pd10142"];
         var radioButtonChangeEvent = ["pd10104","pd10108","pd10110","pd10111","pd10109","pd10124","pd10125","pd10126","pd10127","pd10128"];
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        chiseInstance.removeHighlights();
         if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
             var unhighlighted = ["pd10107"];
             var eles =  cy.elements('[id="' + id + '"]');
-            if(!highlighted.includes(id) && !unhighlighted.includes(errors[currentPage].pattern)) {
+            if( !unhighlighted.includes(errors[currentPage].pattern)) {
                var instance = cy.viewUtilities('get');
                var args = {eles: eles, option: "highlighted4"};
                instance.highlight( args);
-               highlighted.push(id);
            }
           html += "<b><p class='panel-body' style=\"color:red; text-align:center;\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
@@ -1207,7 +1225,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                      html += "<p style=\"text-align:center\" > To fix, split the ‘source and sink’ glyph for each consumption arc:</p> ";       
             }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
                     var params = { handled: handled };
-                    html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,highlighted,params);
+                    html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,params);
                     handled = params.handled;
             }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
                      html += "<p style=\"text-align:center\" > To fix, reverse the production arc:</p>";
@@ -1219,16 +1237,14 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                            var instance = cy.viewUtilities('get');
                            var args = {eles: connectedEdges[i], option: "highlighted4"};
                            instance.highlight( args);
-                           highlighted.push(connectedEdges[i].id());
                      }
                      args = {eles: eles, option: "highlighted4"};
                      instance.highlight( args);
-                     highlighted.push(eles.id());
            }
            else
                handled = false;
            if(handled)
-                html+="</td> <td style=\"width:10% text-align: right; vertical-align:middle;\"><img id=\"fix-errors-of-validation-icon\" style=\"text-align: right; vertical-align:middle;\"src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\">";
+                html+="</td> <td style=\"width:10% text-align: right; vertical-align:middle;\"><div class=\"menu-break-small sbgn-toolbar-element\">&nbsp</div><img id=\"fix-errors-of-validation-icon\" class=\"sbgn-toolbar-element\" style=\"text-align: right; vertical-align:middle;opacity: 1.0;filter: alpha(opacity=100);\"src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\">";
            html+="</td></tr></table>";
            var next = "Next";
            if(currentPage == 0) {
@@ -1271,20 +1287,21 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
     $('#inspector-next-button').on('click', function () {
               currentPage = currentPage + 1;
               var cy = appUtilities.getActiveCy();
-              inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,cy,data);
+              inspectorUtilities.handleSBGNConsole(errors,currentPage,cy,data,false);
       });
      $('#inspector-back-button').on('click', function () {
               currentPage = currentPage - 1;
               var cy = appUtilities.getActiveCy();
-              inspectorUtilities.handleSBGNConsole(errors,currentPage,highlighted,cy,data);
+              inspectorUtilities.handleSBGNConsole(errors,currentPage,cy,data,false);
       });
       
         $('#fix-errors-of-validation-icon').on('click', function () {
                var cy = appUtilities.getActiveCy();
+               var chiseInstance = appUtilities.getActiveChiseInstance();
+               var errorsNew = [];
                if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
                    var targetTmp = eles.target();
                    var sourceTmp = eles.source();
-                   var chiseInstance = appUtilities.getActiveChiseInstance();
                    if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
                       var sourceNew = targetTmp.id();
                       var targetNew = sourceTmp.id();
@@ -1296,14 +1313,8 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                       var tmpPort = eles.data().portsource; 
                       eles.data('portsource',eles.data().porttarget);
                       eles.data('porttarget',tmpPort);
-                      var file = chiseInstance.createSbgnml();
-                      var errorsNew = chiseInstance.doValidation(file);
-                      chiseInstance.removeHighlights();
-                      inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
-
                    }
                }else if(errors[currentPage].pattern == "pd10103" ){
-                        var chiseInstance = appUtilities.getActiveChiseInstance();
                         var edges = cy.edges('[source = "' + id +'"]');
                         var addedNodeNum = edges.length;
                         var nodeParams = {class : eles.data().class, language : eles.data().language};
@@ -1320,6 +1331,14 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                            var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
                            var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
                            var ratio = ydiff/xdiff;
+                           if(xdiff ==0)
+                               shiftX =0;
+                           if(ydiff==0)
+                               shiftY=0;
+                           var result = 22*22;
+                           var ratiosquare = ratio * ratio;
+                           var dx = Math.sqrt(result/(ratiosquare+1));
+                           shiftX = dx;
                            shiftY = shiftX*ratio;
                            if(eles.position().x > target.position().x)
                                shiftX *= -1;
@@ -1335,10 +1354,6 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                             edge.data('porttarget',edges[i].data().porttarget);
                         }
                         cy.remove(eles);
-                        var file = chiseInstance.createSbgnml();
-                        var errorsNew = chiseInstance.doValidation(file);
-                        chiseInstance.removeHighlights();
-                        inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
                }
                else if(radioButtonRules.includes(errors[currentPage].pattern)){
                       inspectorUtilities.fixRadioButtons(errors[currentPage].pattern ,eles,cy);                       
@@ -1357,15 +1372,9 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                       var tmpPort = eles.data().portsource; 
                       eles.data('portsource',eles.data().porttarget);
                       eles.data('porttarget',tmpPort);
-                      var file = chiseInstance.createSbgnml();
-                      var errorsNew = chiseInstance.doValidation(file);
-                      chiseInstance.removeHighlights();
-                      inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
-
                    }
                }
                else if(errors[currentPage].pattern == "pd10107" ){
-                        var chiseInstance = appUtilities.getActiveChiseInstance();
                         var edges = cy.edges('[target = "' + id +'"]');
                         var addedNodeNum = edges.length;
                         var nodeParams = {class : eles.data().class, language : eles.data().language};
@@ -1382,7 +1391,17 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                            var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
                            var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
                            var ratio = ydiff/xdiff;
-                           shiftY = shiftX*ratio;
+                           if(xdiff ==0)
+                               shiftX =0;
+                           else if(ydiff==0)
+                               shiftY=0;
+                           else {
+                                var result = 22*22;
+                                var ratiosquare = ratio * ratio;
+                                var dx = Math.sqrt(result/(ratiosquare+1));
+                                shiftX = dx;
+                                shiftY = shiftX*ratio;
+                           }
                            if(eles.position().x > source.position().x){
                                shiftX *= -1;
                            }
@@ -1400,22 +1419,23 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                             
                         }
                         cy.remove(eles);
-                        var file = chiseInstance.createSbgnml();
-                        var errorsNew = chiseInstance.doValidation(file);
-                        chiseInstance.removeHighlights();
-                        inspectorUtilities.handleSBGNConsole(errorsNew,0,[],cy,file,false);
+               } 
+               var file = chiseInstance.createSbgnml();
+               errorsNew = chiseInstance.doValidation(file);
+               chiseInstance.removeHighlights();
+               if(errorsNew.length ==0){
+                    cy.animate({
+                      duration: 100,
+                      easing: 'ease',
+                      fit :{eles:{},padding:20}
+                   });
                }
-               cy.animate({
-                 duration: 100,
-                 easing: 'ease',
-                 fit :{eles:{},padding:20}
-              });
+               inspectorUtilities.handleSBGNConsole(errorsNew,0,cy,file,false);
 
       });
      $('#inspector-dismiss-button').on('click', function () {
             var cy = appUtilities.getActiveCy();
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-             if(errors.length!=0) {
+            if(errors.length!=0) {
                 cy.animate({
                  duration: 100,
                  easing: 'ease',
@@ -1442,21 +1462,17 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
       $('input[type=radio]').change(function() {
           if(!radioButtonChangeEvent.includes(errors[currentPage].pattern))
               return;
-          var group = ["pd10109","pd10110","pd10124","pd10127","pd10125","pd10128"];
-          var chiseInstance = appUtilities.getActiveChiseInstance();
           chiseInstance.removeHighlights();
-          highlighted = [];
+          var group = ["pd10109","pd10110","pd10124","pd10127","pd10125","pd10128"];
           var instance = cy.viewUtilities('get');
           var args = {eles: eles, option: "highlighted4"};
           instance.highlight( args);
-          highlighted.push(eles.id());
           if(errors[currentPage].pattern == "pd10104" ){
             var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
             for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].source().data().label == this.value){
                     var args = {eles: connectedEdges[i], option: "highlighted4"};
                     instance.highlight( args);
-                    highlighted.push(connectedEdges[i].id());
                 }
             }
           }
@@ -1466,7 +1482,6 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                 if(connectedEdges[i].target().data().label == this.value){
                     var args = {eles: connectedEdges[i], option: "highlighted4"};
                     instance.highlight( args);
-                    highlighted.push(connectedEdges[i].id());
                 }
             }
          }
@@ -1476,7 +1491,6 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                 if(connectedEdges[i].id() == this.value){
                     var args = {eles: connectedEdges[i], option: "highlighted4"};
                     instance.highlight( args);
-                    highlighted.push(connectedEdges[i].id());
                 }
             }
          }
@@ -1484,7 +1498,6 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var node = cy.nodes('[id = "' + this.value +'"]');
               var args = {eles: node, option: "highlighted4"};
               instance.highlight( args);
-              highlighted.push(node.id());
               if(errors[currentPage].pattern == "pd10124"){
                     var zoomLevel = 4 ;
                     if(zoomLevel<cy.zoom())
@@ -1503,7 +1516,6 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                 if(connectedEdges[i].target().id() == this.value){
                     var args = {eles: connectedEdges[i], option: "highlighted4"};
                     instance.highlight( args);
-                    highlighted.push(connectedEdges[i].id());
                 }
             }
          }
