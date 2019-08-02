@@ -1311,18 +1311,22 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                         var promptInvalidEdge = function(){
                             appUtilities.promptInvalidEdgeWarning.render();
                         }
-                        var shiftX = 11;
-                        var shiftY = 11;
-                        for (var i = 0 ; i<addedNodeNum;i++){
+                        for (var i = 0 ; i<addedNodeNum;i++){ 
+                           var shiftX = 22;
+                           var shiftY = 22;
                            var target = edges[i].target();
-                           var x2 = edges[i].boundingBox().x1;
-                           var y2 = edges[i].boundingBox().y1;
+                           var x = edges[i].sourceEndpoint().x;
+                           var y = edges[i].sourceEndpoint().y;
+                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
+                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
+                           var ratio = ydiff/xdiff;
+                           shiftY = shiftX*ratio;
                            if(eles.position().x > target.position().x)
                                shiftX *= -1;
                             if(eles.position().y> target.position().y)
                                shiftY *= -1;
-                            var cX = x2+shiftX;
-                            var cY =y2+shiftY;
+                            var cX = x+shiftX;
+                            var cY =y+shiftY;
                             chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
                             cy.remove(edges[i]);
                             var node = cy.nodes('[id = "node' + i +'"]');
@@ -1369,16 +1373,16 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                         var promptInvalidEdge = function(){
                             appUtilities.promptInvalidEdgeWarning.render();
                         }
-                        var shiftX = 22;
-                        var shiftY = 22;
                         for (var i = 0 ; i<addedNodeNum;i++){
+                            var shiftX = 22;
+                            var shiftY = 22;
                            var source = edges[i].source();
-                           var x = edges[i].boundingBox().x2;
-                           var y = edges[i].boundingBox().y2;
-                           if(Math.abs(edges[i].boundingBox().x1-eles.position().x ) < Math.abs(x-eles.position().x ))
-                               x = edges[i].boundingBox().x1;
-                           if(Math.abs(edges[i].boundingBox().y1-eles.position().y ) < Math.abs(y-eles.position().y))
-                               y = edges[i].boundingBox().y1;
+                           var x = edges[i].targetEndpoint().x;
+                           var y = edges[i].targetEndpoint().y;
+                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
+                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
+                           var ratio = ydiff/xdiff;
+                           shiftY = shiftX*ratio;
                            if(eles.position().x > source.position().x){
                                shiftX *= -1;
                            }
@@ -1393,6 +1397,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                             chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
                             var edge = cy.edges()[cy.edges().length-1];
                             edge.data('portsource',edges[i].data().portsource);
+                            
                         }
                         cy.remove(eles);
                         var file = chiseInstance.createSbgnml();
