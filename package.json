@@ -27,7 +27,7 @@
     "cytoscape-cose-bilkent": "github:cytoscape/cytoscape.js-cose-bilkent#unstable",
     "cytoscape-edge-editing": "github:iVis-at-Bilkent/cytoscape.js-edge-editing#unstable",
     "cytoscape-edgehandles": "~2.13.1",
-    "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#enable-disable-cue",
+    "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#unstable",
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-node-resize": "github:iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
     "cytoscape-panzoom": "~2.5.2",
