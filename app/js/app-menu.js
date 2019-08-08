@@ -8,13 +8,12 @@ var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
 var sifStyleFactory = require('./sif-style-factory');
 var _ = require('underscore');
-
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView;
+  var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -34,7 +33,6 @@ module.exports = function() {
       }
     });
   }
-
   function cd2sbgnml(xml) {
 
     $.ajax({
@@ -112,6 +110,8 @@ module.exports = function() {
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
+  saveUserPreferencesView =  appUtilities.saveUserPreferencesView = new BackboneViews.SaveUserPreferencesView({el: '#user-preferences-save-table'});
+  loadUserPreferencesView =  appUtilities.loadUserPreferencesView = new BackboneViews.LoadUserPreferencesView({el: '#user-preferences-load-table'});
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
@@ -126,9 +126,7 @@ module.exports = function() {
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
   toolbarButtonsAndMenu();
-
   keyboardShortcuts();
-
   // Events triggered by sbgnviz module
   $(document).on('sbgnvizLoadSample sbgnvizLoadFile', function(event, filename, cy) {
 
@@ -155,6 +153,11 @@ module.exports = function() {
 
       if (!$('#inspector-map-tab').hasClass('active')) {
         $('#inspector-map-tab a').tab('show');
+      }
+      
+       if ( $('#inspector-console-tab')[0].style.display == "block") {
+            $('#inspector-console-tab')[0].style.display = "none";
+
       }
 
     }
@@ -210,6 +213,7 @@ module.exports = function() {
 
   });
 
+			   
   function toolbarButtonsAndMenu() {
 
     // menu behavior: on first click, triggers the other menus on hover.
@@ -281,7 +285,6 @@ module.exports = function() {
       appUtilities.createNewNetwork();
 
     });
-
     // close the active file
     $("#close-file").click(function () {
 
@@ -609,22 +612,22 @@ module.exports = function() {
     });
 
     var selectorToSampleFileName = {
-      "#load-sample1" : 'neuronal_muscle_signaling.sbgnml',
-      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgnml',
-      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgnml',
-      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgnml',
-      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgnml',
-      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgnml',
-      "#load-sample7" : 'polyq_proteins_interference.sbgnml',
-      "#load-sample8" : 'glycolysis.sbgnml',
-      "#load-sample9" : 'mapk_cascade.sbgnml',
-      "#load-sample10" : 'drosophila_cell_cycle.sbgnml',
-      "#load-sample11" : 'mammalian_cholesterol.sbgnml',
-      "#load-sample12" : 'two_gene_system_behavior.sbgnml',
-      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgnml',
-      "#load-sample14" : 'repressilator.sbgnml',
-      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgnml',
-      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgnml'
+     "#load-sample1" : 'neuronal_muscle_signaling.sbgn',
+      "#load-sample2" : 'cam-camk_dependent_signaling_to_the_nucleus.sbgn',
+      "#load-sample3" : 'atm_mediated_phosphorylation_of_repair_proteins.sbgn',
+      "#load-sample4" : 'activated_stat1alpha_induction_of_the_irf1_gene.sbgn',
+      "#load-sample5" : 'vitamins_b6_activation_to_pyridoxal_phosphate.sbgn',
+      "#load-sample6" : 'insulin-like_growth_factor_signaling.sbgn',
+      "#load-sample7" : 'polyq_proteins_interference.sbgn',
+      "#load-sample8" : 'glycolysis.sbgn',
+      "#load-sample9" : 'mapk_cascade.sbgn',
+      "#load-sample10" : 'drosophila_cell_cycle.sbgn',
+      "#load-sample11" : 'mammalian_cholesterol.sbgn',
+      "#load-sample12" : 'two_gene_system_behavior.sbgn',
+      "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgn',
+      "#load-sample14" : 'repressilator.sbgn',
+      "#load-sample15" : 'epidermal_growth_factor_receptor.sbgn',
+      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn'
     };
 
     for ( var selector in selectorToSampleFileName ) {
@@ -790,12 +793,41 @@ module.exports = function() {
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
     });
 
+
+  $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
+   modeHandler.enableReadMode();
+    // use active chise instance
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = appUtilities.getActiveCy();
+    var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+    if(chiseInstance.elementUtilities.mapType != "PD")
+    {
+        inspectorUtilities.handleSBGNConsole([],0,cy,file,true);
+    }else 
+    {
+      var errors = chiseInstance.doValidation(file);
+      inspectorUtilities.handleSBGNConsole(errors,0,cy,file,false);
+    }
+    
+    var tabContents = document.getElementsByClassName('chise-tab');
+    for (var i = 0; i < tabContents.length; i++) {       
+      $(tabContents[i]).removeClass('active');
+      $($(tabContents[i]).children('a')[0]).removeAttr("data-toggle");
+    } 
+
+    $('#inspector-console-tab')[0].style.display = "block";
+    if (!$('#inspector-console-tab').hasClass('active')) {
+      $('#inspector-console-tab a').tab('show');
+    }
+  });
+
     $("#remove-highlights, #remove-highlights-icon").click(function (e) {
 
       // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
+       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-      chiseInstance.removeHighlights();
+       chiseInstance.removeHighlights();
+      
     });
 
     $("#layout-properties, #layout-properties-icon").click(function (e) {
@@ -843,8 +875,7 @@ module.exports = function() {
 
     $("#grid-properties").click(function (e) {
       gridPropertiesView.render();
-    });
-
+    });												
     $("#collapse-selected,#collapse-selected-icon").click(function (e) {
 
       // use active chise instance
@@ -1101,6 +1132,31 @@ module.exports = function() {
       //var filename = document.getElementById('file-name').innerHTML;
       //chise.saveAsSbgnml(filename);
       fileSaveView.render("nwt", "0.2");
+    });
+    
+     $("#save-user-preferences").click(function (evt) {      
+      saveUserPreferencesView.render();
+    });
+
+    $("#load-user-preferences").click(function () {
+      $("#user-preferences-file-input").trigger('click');
+    });
+
+    $("#user-preferences-file-input").change(function () {
+
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.addEventListener("loadend", function(e){
+          var text = e.srcElement.result;
+          var preferences = JSON.parse(text);  
+          appUtilities.loadedUserPreferences = preferences;
+          loadUserPreferencesView.render(preferences);
+        });
+        //start the reading process.
+        reader.readAsText(file); 
+        $(this).val("");
+      }
     });
 
     $("#export-as-nwt3-file").click(function (evt) {
@@ -1392,6 +1448,23 @@ module.exports = function() {
         // see: http://stackoverflow.com/questions/34409733/find-element-at-x-y-position-in-cytoscape-js
         cy.trigger('tapend', {x: relX, y: relY});
       }
+    });
+    
+      $(document).on("keydown", function (event){
+      if(!appUtilities.zoomShortcut){
+        if(event.shiftKey){
+          //left command key code in webkit browsers (chrome, safari, opera) = 91
+          //right command key code in webkit browsers = 93
+          //command key code in firefox = 224
+          if(event.ctrlKey || event.keyCode == "91" || event.keyCode == "93" || event.keyCode == "224"){
+              //variable toggle to prevent multiple calls at the same time
+              appUtilities.zoomShortcut = true; 
+              //enable zoom shortcut mode      
+               modeHandler.setShortcutZoomMode();
+          }
+        }
+      }
+
     });
 
     // on active network tab change

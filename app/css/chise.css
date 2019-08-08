@@ -841,6 +841,35 @@ img#template-reversible-output-add-button:hover {
   overflow: hidden;
 }
 
+.read-mode-div
+{   
+    z-index:2000;   
+    position: absolute; 
+    top: 0%; 
+    left: 0%; 
+    width: 100%; 
+    height: 100%;
+    background-color:#555; 
+    opacity:0.2; 
+    filter: alpha(opacity=0.2); 
+}
+.read-mode-on
+{
+    position: relative;
+}
+.read-mode-off
+{
+    position: static;
+}
+
+.save-load-prefrences-object-name
+{
+    font-size: 11px !important; 
+    font-style: italic !important; 
+    text-transform: capitalize !important; 
+    padding-left:10px !important;
+}
+
 /*
   Palettes on right pane
 */

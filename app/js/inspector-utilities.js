@@ -3,6 +3,7 @@ var inspectorUtilities = {};
 var fillBioGeneContainer = require('./fill-biogene-container');
 var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
+var modeHandler = require('./app-mode-handler');
 
 inspectorUtilities.updateInputBoxesFromSet = function( ele, fieldName, parentSelector, subId, width ) {
 
@@ -876,11 +877,23 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
-
+                    //check if staged default element styles is set
+          if (typeof appUtilities.stagedElementStyles === 'undefined') {
+            appUtilities.stagedElementStyles = [];
+          } 
+          var elementStyles = [];
           Object.keys(nameToVal).forEach( function(name) {
             var value = nameToVal[name];
             actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: name, value: value}});
+            elementStyles.push({name: name, value: value})
           } );
+          //push the staged defaults 
+          var  stagedElement =  appUtilities.stagedElementStyles.find(b => b.element === sbgnclass);
+          if(stagedElement){
+            stagedElement.styles = elementStyles;
+          }else{
+            appUtilities.stagedElementStyles.push({element : sbgnclass, type: "node",styles: elementStyles});
+          }
 
           ur.do("batch", actions);
         }
@@ -1034,6 +1047,14 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
+          //push the default styles of edges
+          if (typeof appUtilities.stagedElementStyles === 'undefined') {
+            appUtilities.stagedElementStyles = [];
+          } 
+          var elementStyles = [];
+          elementStyles.push({name:  'width', value: selectedEles.data('width')})
+          elementStyles.push({name: 'line-color', value: selectedEles.data('line-color')})
+          appUtilities.stagedElementStyles.push({element : sbgnclass, type:"edge",styles: elementStyles});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'width', value: selectedEles.data('width')}});
           actions.push({name: "setDefaultProperty", param: {class: sbgnclass, name: 'line-color', value: selectedEles.data('line-color')}});
           ur.do("batch", actions);
@@ -1069,5 +1090,636 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
   }
 };
+inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params) {
+    if(errorCode == "pd10104")          
+        var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
+    else if(errorCode == "pd10108") 
+        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+    else if(errorCode == "pd10111")
+        var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
+    else if(errorCode == "pd10126")
+        var connectedEdges = eles.connectedEdges().filter('[class="logic arc"]');
+    else if(errorCode == "pd10112"){
+        var compartments = cy.nodes('[class= "compartment"]');
+        var listedNodes = [];
+        for(var i =0;i<compartments.length;i++ ) {
+            if(compartments[i].parent().length ==0)
+                listedNodes.push(compartments[i]);
+        }
+    }
+    else {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var sourcePosX = eles.source().position().x;
+        var targetPosX = eles.target().position().x;
+        var sourcePosY = eles.source().position().y;
+        var targetPosY = eles.target().position().y;
+        var minX = Math.min(sourcePosX,targetPosX)-150;
+        var maxX = Math.max(sourcePosX,targetPosX)+150;
+        var minY = Math.min(sourcePosY,targetPosY)-150;
+        var maxY = Math.max(sourcePosY,targetPosY)+150;
+        var nodes = cy.nodes();
+        var listedNodes = [];
+        var groupEPN = ["pd10109","pd10124","pd10127"];
+        var typeGroup = ["tag","submap","terminal"];
+        for(var i=0;i<nodes.length;i++) {
+            if(nodes[i].position().x >= minX && nodes[i].position().x<=maxX && nodes[i].position().y>=minY && nodes[i].position().y<=maxY)
+                    if(groupEPN.includes(errorCode) && chiseInstance.elementUtilities.isEPNClass(nodes[i]))
+                         listedNodes.push(nodes[i]);
+                    else if(errorCode == "pd10110" && chiseInstance.elementUtilities.isPNClass(nodes[i]))
+                         listedNodes.push(nodes[i]);
+                    else if(errorCode == "pd10125" && chiseInstance.elementUtilities.isLogicalOperator(nodes[i]))
+                         listedNodes.push(nodes[i]);  
+                   else if (errorCode == "pd10128" && typeGroup.includes(nodes[i].data().class))
+                          listedNodes.push(nodes[i]); 
+            }
+     }
+    var instance = cy.viewUtilities('get');
+    if(errorCode == "pd10104" || errorCode == "pd10108" || errorCode == "pd10111" || errorCode == "pd10126"){
+         for(var i=0; i<connectedEdges.length;i++) {
+            if(i==connectedEdges.length-1) {
+                var args = {eles: connectedEdges[i], option: "highlighted4"};
+                instance.highlight( args);
+            }
+            if(i==0){
+                 if(errorCode == "pd10104")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the consumption glyphs which are connected to dissociation glyph: </p>  " ;
+                 else if(errorCode == "pd10108")
+                     html+="<p style=\"text-align:center\" > To fix, choose one of the production glyphs which are connected to association glyph: </p> " ;
+                 else if(errorCode == "pd10111")
+                    html+="<p style=\"text-align:center\" > To fix, choose one of the arcs whose source is " + eles.data().class.toUpperCase() + ":</p>  " ;
+                else if(errorCode == "pd10126")
+                     html+="<p style=\"text-align:center\" > To fix, choose one of the logic arcs connected to logical operator: </p>  " ;
+                 html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio\" id=\"errors"+ errorCode +"\">";
+             }
+            if(errorCode == "pd10104")
+               html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10104\" value=\""+ connectedEdges[i].source().data().label + "\" checked>" + connectedEdges[i].source().data().label + " to dissociation </label>";
+            else if(errorCode == "pd10111")
+               html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.toUpperCase()  + " to " + connectedEdges[i].target().data().class.charAt(0).toUpperCase() + connectedEdges[i].target().data().class.slice(1) + " </label>" ;
+            else if(errorCode == "pd10126")
+               html+="<label class=\"radio\"><input  type=\"radio\" name=\"optpd10126\" value=\""+ connectedEdges[i].id() + "\" checked>" + connectedEdges[i].source().data().label  + " to " + eles.data().class.toUpperCase() + " </label>" ;
+            else
+               html+="<<label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> Association to " + connectedEdges[i].target().data().label + " </label>";
+        }
+        if(connectedEdges.length > 0) 
+            html+="</div>";
+        else
+            params.handled = false;
+      } else if (errorCode == "pd10142") {
+          html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
+          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio\" id=\"errors"+ errorCode +"\">";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+        }else {
+          for(var i=0; i<listedNodes.length;i++) {
+            if(i==0){
+                    if(errorCode == "pd10109")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes or a logical operator as a source reference to modulation: </p>  " ;
+                     else if(errorCode == "pd10112")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the listed compartments to place such glyph(s) inside it: </p>  " ;
+                      else if(errorCode == "pd10124")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes as a source reference to logic arc: </p>  " ;
+                      else if(errorCode == "pd10125")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the logical operators as a target reference to logic arc: </p>  " ;
+                    else if(errorCode == "pd10128")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the elements of tag ,submap or terminal classes as a target reference to equivalence arc: </p>  " ;
+                     else if(errorCode == "pd10127")
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes as a source reference to equivalence arc: </p>  " ;
+                    else
+                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of PN classes as a target reference to modulation: </p> " ;
+                     html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio\" id=\"errors"+ errorCode +"\">";
 
+             }
+            if(errorCode != "pd10112" ) {
+                if(i==listedNodes.length-1) {
+                    var args = {eles: listedNodes[i], option: "highlighted4"};
+                    instance.highlight( args);
+                }
+                if(errorCode == "pd10110" || errorCode == "pd10128")
+                    html+="<label  class=\"radio\">  <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label>"
+                else if(errorCode == "pd10125")
+                    html+="<label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.toUpperCase() + " </label>"
+                else
+                    html+="<label class=\"radio\"> <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label>"
+            }
+            else 
+                 html+="<label class=\"radio\"> <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label>"
+        }
+        if(listedNodes.length > 0) 
+            html+="</div>";
+        else
+            params.handled = false;
+      }
+     return html;
+}
+
+inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
+    if(errorCode == "pd10104") {         
+         var radioChecked = $('#errorspd10104 input:radio:checked').val();
+         var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
+         for(var i=0; i<connectedEdges.length;i++) { 
+            if(connectedEdges[i].source().data().label != radioChecked)
+                cy.remove(connectedEdges[i].source());
+        }
+     }
+     else if(errorCode == "pd10108"){
+         var radioChecked = $('#errorspd10108 input:radio:checked').val();
+         var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+         for(var i=0; i<connectedEdges.length;i++) { 
+              if(connectedEdges[i].target().data().label != radioChecked)
+                cy.remove(connectedEdges[i].target());
+         }
+     } else if(errorCode == "pd10111"){
+         var radioChecked = $('#errorspd10111 input:radio:checked').val();
+         var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
+         for(var i=0; i<connectedEdges.length;i++) { 
+              if(connectedEdges[i].target().id() != radioChecked)
+                cy.remove(connectedEdges[i]);
+         }
+     }else if(errorCode == "pd10126"){
+         var radioChecked = $('#errorspd10126 input:radio:checked').val();
+         var connectedEdges =  eles.connectedEdges().filter('[class="logic arc"]');
+         for(var i=0; i<connectedEdges.length;i++) { 
+              if(connectedEdges[i].id() != radioChecked){              
+                cy.remove(connectedEdges[i]);
+                cy.remove(connectedEdges[i].source());
+            }
+         }
+     } else {
+        if(errorCode == "pd10109" || errorCode == "pd10124" || errorCode == "pd10127") {
+            var radioChecked = $('#errors'+errorCode+ ' input:radio:checked').val();
+            var node = cy.nodes('[id = "' + radioChecked +'"]');
+            eles = eles.move({
+                 target: eles.target().id(),
+                 source : node.id()                
+            });
+            eles.data('portsource', node.id());
+        }
+        else if(errorCode == "pd10112") {
+            var radioChecked = $('#errorspd10112 input:radio:checked').val();
+            var compartment = cy.nodes('[id = "' + radioChecked +'"]');
+             eles = eles.move({
+               parent : compartment.id()
+           });
+        }
+        else if(errorCode == "pd10125") {
+            var radioChecked = $('#errorspd10125 input:radio:checked').val();
+             var edgeParams = {class : eles.data().class, language :eles.data().language};
+            var promptInvalidEdge = function(){
+                appUtilities.promptInvalidEdgeWarning.render();
+            }
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var source = eles.source();
+            var target =  cy.nodes('[id = "' + radioChecked +'"]');;
+            cy.remove(eles);
+            chiseInstance.addEdge(source.id(),target.id(),edgeParams, promptInvalidEdge);
+       }
+         else if(errorCode == "pd10142") {
+            var radioChecked = $('#errorspd10142 input:radio:checked').val();
+            var edgeParams = {class : radioChecked, language :eles.data().language};
+            var promptInvalidEdge = function(){
+                appUtilities.promptInvalidEdgeWarning.render();
+            }
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var source = eles.source();
+            var target = eles.target();
+            cy.remove(eles);
+            if(target.data().class != 'process')
+                target = cy.nodes('[class = "process"]');
+            chiseInstance.addEdge(source.id(),target.id(),edgeParams, promptInvalidEdge);
+            var edge = cy.edges()[cy.edges().length-1];
+       }
+        else {
+            var radioChecked = $('#errors'+errorCode+ ' input:radio:checked').val();
+            var node = cy.nodes('[id = "' + radioChecked +'"]');
+            eles = eles.move({
+                source: eles.source().id(),
+                target : node.id()
+           });
+           eles.data('porttarget', node.id());
+        }
+    
+     }
+ }
+
+  inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,cy,data,notPD) {
+	var html = "";
+        var handled = true;
+        var dismiss = "Dismiss";
+        var radioButtonRules = ["pd10104","pd10108","pd10109","pd10110","pd10111","pd10112","pd10124","pd10125","pd10126","pd10127","pd10128","pd10142"];
+        var radioButtonChangeEvent = ["pd10104","pd10108","pd10110","pd10111","pd10109","pd10124","pd10125","pd10126","pd10127","pd10128"];
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        chiseInstance.removeHighlights();
+        if(errors.length !=0 && !notPD) {
+            var id=errors[currentPage].role; 
+            var unhighlighted = ["pd10107"];
+            var eles =  cy.elements('[id="' + id + '"]');
+            if( !unhighlighted.includes(errors[currentPage].pattern)) {
+               var instance = cy.viewUtilities('get');
+               var args = {eles: eles, option: "highlighted4"};
+               instance.highlight( args);
+           }
+          html += "<b><p class='panel-body' style=\"color:red; text-align:center;\" > Map is Invalid</p></b>";
+          html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
+          html+="<table style=\"width:100%\"> <tr> <td style=\"width:90% text-align:center;\">";
+          if(errors[currentPage].pattern == "pd10101") {
+              html += "<p style=\"text-\align:center\" > To fix, reverse the consumption edge:</p>" ;
+            }
+            else if(errors[currentPage].pattern == "pd10102") {
+                     html +="<p style=\"text-align:center\" > To fix, reverse the consumption arc:</p>";
+            } else if(errors[currentPage].pattern == "pd10103") {
+                     html += "<p style=\"text-align:center\" > To fix, split the ‘source and sink’ glyph for each consumption arc:</p> ";       
+            }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
+                    var params = { handled: handled };
+                    html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,params);
+                    handled = params.handled;
+            }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+                     html += "<p style=\"text-align:center\" > To fix, reverse the production arc:</p>";
+            }
+            else if(errors[currentPage].pattern == "pd10107") {
+                     html += "<p style=\"text-align:center\" > To fix, split the ‘source and sink’ glyph for each production arc:</p>";
+                       var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+                       for(var i=0; i<connectedEdges.length;i++) {
+                           var instance = cy.viewUtilities('get');
+                           var args = {eles: connectedEdges[i], option: "highlighted4"};
+                           instance.highlight( args);
+                     }
+                     args = {eles: eles, option: "highlighted4"};
+                     instance.highlight( args);
+           }
+           else
+               handled = false;
+           if(handled)
+                html+="</td> <td style=\"width:10% text-align: right; vertical-align:middle;\"><div class=\"menu-break-small sbgn-toolbar-element\">&nbsp</div><img id=\"fix-errors-of-validation-icon\" class=\"sbgn-toolbar-element\" style=\"text-align: right; vertical-align:middle;opacity: 1.0;filter: alpha(opacity=100);\"src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\">";
+           html+="</td></tr></table>";
+           var next = "Next";
+           if(currentPage == 0) {
+                if(errors.length !=1) {
+                    html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; '><button class='btn btn-default' style='align: center;' id='inspector-next-button'"
+                    + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                    + ">" + dismiss + "</button> </div>";
+                }else {
+                     html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                    + ">" + dismiss + "</button> </div>";
+                } 
+            }else { 
+               var back = "Previous";
+               if(currentPage + 1 !== errors.length) {
+                     html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' >\n\
+                   <button class='btn btn-default' style='align: center;' id='inspector-back-button'"
+                    + ">" + back + "</button> <button class='btn btn-default' style='align: center;' id='inspector-next-button'"
+                    + ">" + next + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                    + ">" + dismiss + "</button> </div>"; 
+               }
+               else {
+                     html += "<div id = 'altItems' style='text-align: center; margin-top: 5px; ' ><button class='btn btn-default' style='align: center;' id='inspector-back-button'"
+                   + ">" + back + "</button> <button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                   + ">" + dismiss + "</button> </div>"; 
+               }
+
+            }
+           inspectorUtilities.handleNavigate (cy,eles);
+    } else if (notPD) {
+        html += "<b><p class='panel-body' style=\"color:red; text-align:center\" > Can only validate maps of type PD</p></b>";
+           html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                 + ">" + dismiss + "</button> </div>";
+    }
+    else {
+          html += "<b><p class='panel-body' style=\"color:green; text-align:center\" > Map is Valid</p></b>";
+           html += "<div id = 'altItems' style='text-align: center; margin-top: 5px;  ' ><button class='btn btn-default' style='align: center;' id='inspector-dismiss-button'"
+                 + ">" + dismiss + "</button> </div>";
+      }
+    $("#sbgn-inspector-console-panel-group").html(html);
+    $('#inspector-next-button').on('click', function () {
+              currentPage = currentPage + 1;
+              var cy = appUtilities.getActiveCy();
+              inspectorUtilities.handleSBGNConsole(errors,currentPage,cy,data,false);
+      });
+     $('#inspector-back-button').on('click', function () {
+              currentPage = currentPage - 1;
+              var cy = appUtilities.getActiveCy();
+              inspectorUtilities.handleSBGNConsole(errors,currentPage,cy,data,false);
+      });
+      
+        $('#fix-errors-of-validation-icon').on('click', function () {
+               var cy = appUtilities.getActiveCy();
+               var chiseInstance = appUtilities.getActiveChiseInstance();
+               var errorsNew = [];
+               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
+                   var targetTmp = eles.target();
+                   var sourceTmp = eles.source();
+                   if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
+                      var sourceNew = targetTmp.id();
+                      var targetNew = sourceTmp.id();
+                     eles = eles.move({
+                         target: targetNew,
+                         source : sourceNew
+                     
+                      });
+                      var tmpPort = eles.data().portsource; 
+                      eles.data('portsource',eles.data().porttarget);
+                      eles.data('porttarget',tmpPort);
+                   }
+               }else if(errors[currentPage].pattern == "pd10103" ||  errors[currentPage].pattern == "pd10107"){
+                        var edges = cy.nodes('[id = "' + id +'"]').connectedEdges();
+                        var addedNodeNum = edges.length;
+                        var promptInvalidEdge = function(){
+                            appUtilities.promptInvalidEdgeWarning.render();
+                        }
+                        var nodeParams = {class : eles.data().class, language : eles.data().language};
+                        for (var i = 0 ; i<addedNodeNum;i++){ 
+                           var edgeParams = {class : edges[i].data().class, language : edges[i].data().language};
+                           var shiftX = 22;
+                           var shiftY = 22;
+                           var target = edges[i].target();
+                           var source = edges[i].source();
+                           var x = edges[i].sourceEndpoint().x;
+                           var y = edges[i].sourceEndpoint().y;
+                           if(edges[i].data().class != 'consumption'){
+                                x = edges[i].targetEndpoint().x;
+                                y = edges[i].targetEndpoint().y;
+                           }
+                               
+                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
+                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
+                           var ratio = ydiff/xdiff;
+                           if(xdiff ==0){
+                               shiftX =0;
+                               shiftY = 22;
+                           }
+                           else if(ydiff==0){
+                               shiftY=0;
+                               shiftX=22;
+                           }
+                           else {
+                                var result = 22*22;
+                                var ratiosquare = ratio * ratio;
+                                var dx = Math.sqrt(result/(ratiosquare+1));
+                                shiftX = dx;
+                                shiftY = shiftX*ratio;
+                           }
+                           if(edges[i].data().class == 'consumption'){
+                                if(eles.position().x > target.position().x)
+                                    shiftX *= -1;
+                                if(eles.position().y> target.position().y)
+                                    shiftY *= -1;
+                           }else {
+                                if(eles.position().x > source.position().x)
+                                    shiftX *= -1;
+                                if(eles.position().y> source.position().y)
+                                    shiftY *= -1;
+                           }
+                            var cX = x+shiftX;
+                            var cY =y+shiftY;
+                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
+                            var node = cy.nodes('[id = "node' + i +'"]');
+                            if(edges[i].data().class == 'consumption'){
+                                chiseInstance.addEdge(node.id(),target.id(), edgeParams, promptInvalidEdge);
+                                var edge = cy.edges()[cy.edges().length-1];
+                                edge.data('porttarget',edges[i].data().porttarget);
+                            }
+                            else{
+                                chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
+                                var edge = cy.edges()[cy.edges().length-1];
+                                edge.data('portsource',edges[i].data().portsource);
+                            }
+                            cy.remove(edges[i]);
+                        }
+                        cy.remove(eles);
+               }
+               else if(radioButtonRules.includes(errors[currentPage].pattern)){
+                      inspectorUtilities.fixRadioButtons(errors[currentPage].pattern ,eles,cy);                       
+               } if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+                   var targetTmp = eles.target();
+                   var sourceTmp = eles.source();
+                   var chiseInstance = appUtilities.getActiveChiseInstance();
+                   if(chiseInstance.elementUtilities.isPNClass(targetTmp) && chiseInstance.elementUtilities.isEPNClass(sourceTmp)) {
+                      var sourceNew = targetTmp.id();
+                      var targetNew = sourceTmp.id();
+                     eles = eles.move({
+                         target: targetNew,
+                         source : sourceNew
+                     
+                      });
+                      var tmpPort = eles.data().portsource; 
+                      eles.data('portsource',eles.data().porttarget);
+                      eles.data('porttarget',tmpPort);
+                   }
+               }
+    /*           else if(errors[currentPage].pattern == "pd10107" ){
+                        var edges = cy.edges('[target = "' + id +'"]');
+                        var addedNodeNum = edges.length;
+                        var nodeParams = {class : eles.data().class, language : eles.data().language};
+                        var edgeParams = {class : edges[0].data().class, language : edges[0].data().language};
+                        var promptInvalidEdge = function(){
+                            appUtilities.promptInvalidEdgeWarning.render();
+                        }
+                        for (var i = 0 ; i<addedNodeNum;i++){
+                           var shiftX = 22;
+                           var shiftY = 22;
+                           var source = edges[i].source();
+                           var x = edges[i].targetEndpoint().x;
+                           var y = edges[i].targetEndpoint().y;
+                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
+                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
+                           var ratio = ydiff/xdiff;
+                           if(xdiff ==0){
+                               shiftX =0;
+                               shiftY = 22;
+                           }
+                           else if(ydiff==0){
+                               shiftY=0;
+                               shiftX=22;
+                           }
+                           else {
+                                var result = 22*22;
+                                var ratiosquare = ratio * ratio;
+                                var dx = Math.sqrt(result/(ratiosquare+1));
+                                shiftX = dx;
+                                shiftY = shiftX*ratio;
+                           }
+                           if(eles.position().x > source.position().x){
+                               shiftX *= -1;
+                           }
+                            if(eles.position().y> source.position().y){
+                               shiftY *= -1;
+                            }                            
+                            var cX = x+shiftX;
+                            var cY = y+shiftY;
+                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
+                            var node = cy.nodes('[id = "node' + i +'"]');
+                            cy.remove(edges[i]);
+                            chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
+                            var edge = cy.edges()[cy.edges().length-1];
+                            edge.data('portsource',edges[i].data().portsource);
+                            
+                        }
+                        cy.remove(eles);
+               } */
+               var file = chiseInstance.createSbgnml();
+               errorsNew = chiseInstance.doValidation(file);
+               chiseInstance.removeHighlights();
+               if(errorsNew.length ==0){
+                    cy.animate({
+                      duration: 100,
+                      easing: 'ease',
+                      fit :{eles:{},padding:20}
+                   });
+               }
+               inspectorUtilities.handleSBGNConsole(errorsNew,0,cy,file,false);
+
+      });
+     $('#inspector-dismiss-button').on('click', function () {
+            var cy = appUtilities.getActiveCy();
+            if(errors.length!=0) {
+                cy.animate({
+                 duration: 100,
+                 easing: 'ease',
+                 fit :{eles:{},padding:20}, 
+                 complete: function(){
+                      chiseInstance.removeHighlights();
+                 }
+              });
+            }
+             $("#sbgn-inspector-console-panel-group").html("");
+             $('#inspector-console-tab')[0].style.display = "none";
+
+             var tabContents = document.getElementsByClassName('chise-tab');
+             for (var i = 0; i < tabContents.length; i++) {
+               $(tabContents[i]).removeClass('active');
+               $($(tabContents[i]).children('a')[0]).attr("data-toggle", "tab");   
+              } 
+              modeHandler.disableReadMode();
+              $('#inspector-map-tab a').click();
+            
+             
+          
+      });
+      $('input[type=radio]').change(function() {
+          if(!radioButtonChangeEvent.includes(errors[currentPage].pattern))
+              return;
+          chiseInstance.removeHighlights();
+          var group = ["pd10109","pd10110","pd10124","pd10127","pd10125","pd10128"];
+          var instance = cy.viewUtilities('get');
+          var args = {eles: eles, option: "highlighted4"};
+          instance.highlight( args);
+          if(errors[currentPage].pattern == "pd10104" ){
+            var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
+            for(var i=0; i<connectedEdges.length;i++) {
+                if(connectedEdges[i].source().data().label == this.value){
+                    var args = {eles: connectedEdges[i], option: "highlighted4"};
+                    instance.highlight( args);
+                }
+            }
+          }
+          else if(errors[currentPage].pattern == "pd10108" ) {
+              var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+              for(var i=0; i<connectedEdges.length;i++) {
+                if(connectedEdges[i].target().data().label == this.value){
+                    var args = {eles: connectedEdges[i], option: "highlighted4"};
+                    instance.highlight( args);
+                }
+            }
+         }
+         else if(errors[currentPage].pattern == "pd10126" ) {
+              var connectedEdges = eles.connectedEdges().filter('[class="logic arc"]');
+              for(var i=0; i<connectedEdges.length;i++) {
+                if(connectedEdges[i].id() == this.value){
+                    var args = {eles: connectedEdges[i], option: "highlighted4"};
+                    instance.highlight( args);
+                }
+            }
+         }
+         else if(group.includes(errors[currentPage].pattern)) {
+              var node = cy.nodes('[id = "' + this.value +'"]');
+              var args = {eles: node, option: "highlighted4"};
+              instance.highlight( args);
+              if(errors[currentPage].pattern == "pd10124"){
+                    var zoomLevel = 4 ;
+                    if(zoomLevel<cy.zoom())
+                        zoomLevel = cy.zoom();
+                    cy.animate({
+                      duration: 1400,
+                      center: {eles:node},
+                      easing: 'ease',
+                      zoom :zoomLevel
+                  });
+              }
+         }
+         else if(errors[currentPage].pattern == "pd10111" ) {
+              var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
+               for(var i=0; i<connectedEdges.length;i++) {
+                if(connectedEdges[i].target().id() == this.value){
+                    var args = {eles: connectedEdges[i], option: "highlighted4"};
+                    instance.highlight( args);
+                }
+            }
+         }
+         
+      });
+
+
+}; 
+inspectorUtilities.handleNavigate = function (cy,eles) {
+          var zoomLevel = 4 ;
+          if(zoomLevel<cy.zoom())
+              zoomLevel = cy.zoom();
+          cy.animate({
+            duration: 1400,
+            center: {eles:eles},
+            easing: 'ease',
+            zoom :zoomLevel,
+            complete: function(){
+                var exceed = false;
+                if(eles.isEdge()){
+                    var source_node = eles.source();
+                    var target_node = eles.target();
+                    var source_loc = Math.pow(source_node._private.position.x, 2) + Math.pow(source_node._private.position.y, 2);
+                    var target_loc = Math.pow(target_node._private.position.x, 2) + Math.pow(target_node._private.position.y, 2);
+                    var source_to_target = source_loc < target_loc;
+                    var start_node = source_to_target ? source_node : target_node;
+                    var end_node = source_to_target ? target_node : source_node;
+                    var renderedStartPosition = start_node.renderedPosition();
+                    var renderedEndPosition = end_node.renderedPosition();
+                    var maxRenderedX = cy.width();
+                    var maxRenderedY = cy.height();
+                    if( ( renderedEndPosition.x >= maxRenderedX ) || ( renderedStartPosition.x <= 0 )
+                           || ( renderedEndPosition.y >= maxRenderedY ) || ( renderedStartPosition.y <= 0 ) ){
+                      exceed = true;
+                    }
+                   if( exceed ) {
+                       // save the node who is currently being dragged to the scratch pad
+                       cy.fit(eles);
+                   }
+                }
+                else {
+                     var renderedPosition = eles.renderedPosition();
+                     var renderedWidth = eles.renderedWidth();
+                     var renderedHeight = eles.renderedHeight();
+
+                     var maxRenderedX = cy.width();
+                     var maxRenderedY = cy.height();
+
+                     var topLeftRenderedPosition = {
+                       x: renderedPosition.x - renderedWidth / 2,
+                       y: renderedPosition.y - renderedHeight / 2
+                     };
+
+                     var bottomRightRenderedPosition = {
+                       x: renderedPosition.x + renderedWidth / 2,
+                       y: renderedPosition.y + renderedHeight / 2
+                     };
+                     if( ( bottomRightRenderedPosition.x >= maxRenderedX ) || ( topLeftRenderedPosition.x <= 0 )
+                             || ( bottomRightRenderedPosition.y >= maxRenderedY ) || ( topLeftRenderedPosition.y <= 0 ) ){
+                       exceed = true;
+                     } 
+                     if( exceed ) {
+                       // save the node who is currently being dragged to the scratch pad
+                       cy.fit(eles);
+                     }
+                }
+                    }
+                });
+     
+};
+;
 module.exports = inspectorUtilities;

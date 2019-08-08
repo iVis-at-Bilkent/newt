@@ -23,11 +23,11 @@
     "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#unstable",
     "cytoscape-autopan-on-drag": "^2.0.2",
     "cytoscape-clipboard": "github:iVis-at-Bilkent/cytoscape.js-clipboard#master",
-    "cytoscape-context-menus": "^3.0.2",
+    "cytoscape-context-menus": "^3.0.6",
     "cytoscape-cose-bilkent": "github:cytoscape/cytoscape.js-cose-bilkent#unstable",
     "cytoscape-edge-editing": "github:iVis-at-Bilkent/cytoscape.js-edge-editing#unstable",
     "cytoscape-edgehandles": "~2.13.1",
-    "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#unstable",
+    "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#enable-disable-cue",
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-node-resize": "github:iVis-at-Bilkent/cytoscape.js-node-resize#unstable",
     "cytoscape-panzoom": "~2.5.2",
@@ -39,7 +39,7 @@
     "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",
     "konva": "^1.6.3",
-    "libxmljs": "^0.18.4",
+    "libxmljs": "0.19.3",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "mousetrap": "^1.6.0",
@@ -52,6 +52,6 @@
     "express": "4.14.0",
     "browserify": "^11.2.0",
     "nodemon": "1.11.0",
-    "parallelshell": "^3.0.2"
+    "parallelshell": "3.0.1"
   }
 }
