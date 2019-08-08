@@ -161,7 +161,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-collapse',
         content: 'Collapse',
         image: {src : "app/img/toolbar/collapse-selected.svg", width : 16, height : 16, x : 2, y : 3},
-        selector: 'node:parent',
+        selector: 'node:parent[class!="topology group"]',
         onClickFunction: function (event) {
           cy.undoRedo().do("collapse", {
             nodes: event.target || event.cyTarget
@@ -246,7 +246,7 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -255,7 +255,7 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-tile-info-boxes',
         content: 'Tile Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           var locations = ["top", "bottom", "right", "left"]; //Fit all locations
@@ -266,7 +266,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
@@ -274,7 +274,40 @@ module.exports = function (chiseInstance) {
             collection = collection.add(cyTarget);
             appUtilities.resizeNodesToContent(collection);
         }
-      }
+      },
+      {
+        id: 'ctx-menu-query-pcids',
+        content: 'Query PC IDs',
+        selector: 'edge',
+        onClickFunction: function (event) {
+          var edge = event.target || event.cyTarget;
+          var qUrl = 'http://www.pathwaycommons.org/pc2/get?';
+          var pcIDSet = edge.data( 'pcIDSet' );
+
+          for ( var pcID in pcIDSet ) {
+            qUrl += ( 'uri=' + pcID + '&' );
+          }
+
+          qUrl += 'format=sbgn';
+
+          $.ajax({
+            type: 'get',
+            url: "/utilities/testURL",
+            data: { url: qUrl },
+            success: function( data ) {
+              if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                var xml = $.parseXML(data.response.body);
+                appUtilities.createNewNetwork();
+                var activeChise = appUtilities.getActiveChiseInstance();
+                activeChise.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+              }
+            },
+            error: function(xhr, options, err){
+              console.log( err );
+            }
+          });
+        }
+      },
     ]);
 
     cy.clipboard({

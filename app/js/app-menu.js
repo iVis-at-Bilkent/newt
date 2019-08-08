@@ -6,6 +6,7 @@ var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
 var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
+var sifStyleFactory = require('./sif-style-factory');
 var _ = require('underscore');
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
@@ -118,6 +119,7 @@ module.exports = function() {
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
+  fontPropertiesView = appUtilities.infoboxPropertiesView = new BackboneViews.InfoboxPropertiesView({el: '#infobox-properties-table'});
   promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
@@ -131,11 +133,18 @@ module.exports = function() {
     // check if the event is triggered for the active instance
     var isActiveInstance = ( cy == appUtilities.getActiveCy() );
 
+    var chiseInstance = appUtilities.getChiseInstance(cy);
+
     // set the current file name for cy
     appUtilities.setScratch(cy, 'currentFileName', filename);
     //clean and reset things
     cy.elements().unselect();
     appUtilities.disableInfoBoxRelocation();
+
+    // a new file is being loaded clear the applied flag of topologyGrouping
+    var topologyGrouping = chiseInstance.sifTopologyGrouping;
+    topologyGrouping.clearAppliedFlag();
+
     // if the event is triggered for the active instance do the followings
     if ( isActiveInstance ) {
 
@@ -187,6 +196,17 @@ module.exports = function() {
         if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
           $("#AF-palette-heading").click();
         }
+      }
+      else if(chiseInstance.elementUtilities.mapType == "SIF"){
+        if($("#SIF-palette-heading").hasClass("collapsed")) { // expand PD
+          $("#SIF-palette-heading").click();
+        }
+        if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse AF
+          $("#SIF-palette-heading").click();
+        }
+      }
+      else {
+        console.warn('invalid map type!');
       }
 
     }
@@ -303,10 +323,10 @@ module.exports = function() {
           promptInvalidFileView.render();
         }
         if(cy.elements().length != 0) {
-          promptConfirmationView.render(function(){chiseInstance.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+          promptConfirmationView.render(function(){chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
         }
         else {
-          chiseInstance.loadSBGNMLFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
         $(this).val("");
       }
@@ -335,6 +355,18 @@ module.exports = function() {
       $("#simple-af-file-input").trigger('click');
     });
 
+    $("#import-sif-file").click(function () {
+      $("#sif-file-input").trigger('click');
+    });
+
+    $("#import-sif-style").click(function () {
+      $("#sif-style-input").trigger('click');
+    });
+
+    $("#import-sif-layout").click(function () {
+      $("#sif-layout-input").trigger('click');
+    });
+
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -352,6 +384,75 @@ module.exports = function() {
           promptConfirmationView.render( function(){ chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning); })
         else
           chiseInstance.loadTDFile(file, loadCallbackInvalidityWarning);
+
+        $(this).val("");
+      }
+    });
+
+    $("#sif-style-input").change(function () {
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          //Get the text result of the file.
+          var text = this.result;
+
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          var sifStyle = sifStyleFactory();
+          sifStyle( chiseInstance );
+          sifStyle.apply( text );
+        };
+
+        reader.readAsText( file );
+
+        $(this).val("");
+      }
+    });
+
+    $("#sif-layout-input").change(function () {
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          //Get the text result of the file.
+          var text = this.result;
+
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.loadLayoutData( text, true );
+        };
+
+        reader.readAsText( file );
+
+        $(this).val("");
+      }
+    });
+
+    // TODO: eliminate code replication in similar functions.
+    $("#sif-file-input").change(function () {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+
+      var loadCallbackInvalidityWarning  = function () {
+        promptInvalidFileView.render();
+      }
+
+      if ($(this).val() != "") {
+        var file = this.files[0];
+
+        var loadFcn = function() {
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
+        };
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( loadFcn );
+        else
+          loadFcn();
 
         $(this).val("");
       }
@@ -377,6 +478,9 @@ module.exports = function() {
 
       // get the network id for cy
       var networkId = cy.container().id;
+
+      // unlock graph topolpgy in case it is locked
+      chiseInstance.elementUtilities.unlockGraphTopology();
 
       // reset map name and description
       // default map name should be a string that contains the network id
@@ -476,6 +580,11 @@ module.exports = function() {
     $("#AF-legend").click(function (e) {
       e.preventDefault();
       $("#AF_legend_modal").modal('show');
+    });
+
+    $("#SIF-legend").click(function (e) {
+      e.preventDefault();
+      $("#SIF_legend_modal").modal('show');
     });
 
     $("#quick-help, #quick-help-icon").click(function (e) {
@@ -1019,11 +1128,10 @@ module.exports = function() {
       chiseInstance.saveAsSvg(filename); // the default filename is 'network.jpg'
     });
 
-    //TODO: could simply keep/store original input SBGN-ML data and use it here instead of converting from JSON
-    $("#save-as-sbgnml, #save-icon").click(function (evt) {
+    $("#save-as-nwt, #save-icon").click(function (evt) {
       //var filename = document.getElementById('file-name').innerHTML;
       //chise.saveAsSbgnml(filename);
-      fileSaveView.render("sbgnml", "0.2");
+      fileSaveView.render("nwt", "0.2");
     });
     
      $("#save-user-preferences").click(function (evt) {      
@@ -1051,14 +1159,28 @@ module.exports = function() {
       }
     });
 
-    $("#export-as-sbgnml3-file").click(function (evt) {
-      fileSaveView.render("sbgnml", "0.3");
+    $("#export-as-nwt3-file").click(function (evt) {
+      fileSaveView.render("nwt", "0.3");
     });
 
     $("#export-as-celldesigner-file").click(function (evt) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var sbgnml = chiseInstance.createSbgnml();
         sbgnml2cd(sbgnml);
+    });
+
+    $("#export-to-sif-layout").click(function (evt) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var filename = document.getElementById('file-name').innerHTML;
+        filename = filename.substring(0,filename.lastIndexOf('.')) + ".txt";
+        chiseInstance.exportLayoutData( filename, true );
+    });
+
+    $("#export-to-plain-sif").click(function (evt) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var filename = document.getElementById('file-name').innerHTML;
+        filename = filename.substring(0,filename.lastIndexOf('.')) + ".sif";
+        chiseInstance.saveAsPlainSif( filename, true );
     });
 
     $("#export-as-sbgnml-plain-file").click(function (evt) {
@@ -1195,7 +1317,8 @@ module.exports = function() {
     $(document).on('mousedown', '.node-palette img', function (e) {
       e.preventDefault(); // needed for dragging, otherwise the mouse release event cannot be fired on another element
       dragAndDropPlacement = true;
-      appUtilities.addDragImage($(this).attr('value')+".svg", $(this).css('width'), $(this).css('height'));
+      var imgPath = appUtilities.getDragImagePath( $(this).attr('value') );
+      appUtilities.addDragImage(imgPath, $(this).css('width'), $(this).css('height'));
 
       $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
       $(this).addClass('selected-mode'); // Make clicked element selected
@@ -1218,8 +1341,16 @@ module.exports = function() {
       e.preventDefault();
       $('.edge-palette img').removeClass('selected-mode');// Make any image inside edge palettes non selected
       $(this).addClass('selected-mode'); // Make clicked element selected
-      var elementType = $(this).attr('value').replace(/-/gi, ' '); // Html values includes '-' instead of ' '
+
+      var elementType = $(this).attr('value');
       var language = $(this).attr('language');
+
+      // Html values includes '-' instead of ' ' while original
+      // edge class names includes '-' for the languages except SIF
+      if ( language !== 'SIF' ) {
+        elementType = elementType.replace(/-/gi, ' ');
+      }
+
       modeHandler.setAddEdgeMode(elementType, language); // Set add edge mode and set selected edge type
 
       // Update the some attributes of add edge mode icon

@@ -1,0 +1,1652 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1033.2793"
+   height="429.18671"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="sif-legend.2019.03.03.svg"
+   inkscape:export-filename="C:\Users\ugur\Desktop\node-legend.2016.04.01.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.1360799"
+     inkscape:cx="561.02257"
+     inkscape:cy="242.00552"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1833"
+     inkscape:window-height="1295"
+     inkscape:window-x="889"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     fit-margin-top="6"
+     fit-margin-right="6"
+     fit-margin-bottom="6"
+     fit-margin-left="6"
+     showguides="true"
+     objecttolerance="1"
+     gridtolerance="1"
+     guidetolerance="1" />
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="StopL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker13176"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path13174"
+         d="M 0,5.65 V -5.65"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#cc8e12;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="StopL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker12908"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path12906"
+         d="M 0,5.65 V -5.65"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#cc8e12;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="StopL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="StopL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path12517"
+         d="M 0,5.65 V -5.65"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#4886a5;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="DotL"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="DotL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="matrix(0.8,0,0,0.8,5.92,0.8)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="path4034" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Sstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Sstart">
+      <path
+         inkscape:connector-curvature="0"
+         transform="matrix(0.2,0,0,0.2,1.2,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path3985" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyTriangleOutL"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyTriangleOutL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4133" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4115" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyDiamondL"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyDiamondL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         id="path4079" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyDiamondL-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyDiamondL">
+      <path
+         transform="scale(0.8)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         id="path4079-7"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyDiamondL-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyDiamondL">
+      <path
+         transform="scale(0.8)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         id="path4079-6"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL">
+      <path
+         transform="scale(0.8)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4115-9"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyTriangleOutL-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyTriangleOutL">
+      <path
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4133-1"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyTriangleOutL-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyTriangleOutL">
+      <path
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4133-7"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4115-2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyTriangleOutL-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyTriangleOutL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4133-4" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="EmptyDiamondL-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyDiamondL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         id="path4079-64" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker4217"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyTriangleOutL">
+      <path
+         inkscape:connector-curvature="0"
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4219" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1f"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL-1f">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:none;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1.00000003pt;stroke-opacity:0"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path2107" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1O"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1O"
+       style="overflow:visible">
+      <path
+         id="path3880"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:none;fill-opacity:0;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1Oc"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL-1Oc">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:none;fill-opacity:0;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4032" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1OcU"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1OcU"
+       style="overflow:visible">
+      <path
+         id="path4186"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:none;fill-opacity:0;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1OcUh"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL-1OcUh">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:none;fill-opacity:0;fill-rule:evenodd;stroke:none;stroke-width:1.00000003pt;stroke-opacity:0"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path4342" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1OcUhN"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1OcUhN"
+       style="overflow:visible">
+      <path
+         id="path4500"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:none;fill-opacity:0;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1K"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1K"
+       style="overflow:visible">
+      <path
+         id="path5585"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1KD"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL-1KD">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path5873" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1KDY"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1KDY"
+       style="overflow:visible">
+      <path
+         id="path6169"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1KDYH"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL-1KDYH">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path6473" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1KDYHU"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1KDYHU"
+       style="overflow:visible">
+      <path
+         id="path6785"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#b4e1cd;fill-opacity:1;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1g"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1g"
+       style="overflow:visible">
+      <path
+         id="path7105"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#f0e7c8;fill-opacity:1;fill-rule:evenodd;stroke:#b4e1cd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleOutL-1gm"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL-1gm">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:#f0e7c8;fill-opacity:1;fill-rule:evenodd;stroke:#f0e7c8;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path7433" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1H"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1H"
+       style="overflow:visible">
+      <path
+         id="path7769"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#d970a1;fill-opacity:1;fill-rule:evenodd;stroke:#d970a1;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-11"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-11"
+       style="overflow:visible">
+      <path
+         id="path8113"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#6a0f30;fill-opacity:1;fill-rule:evenodd;stroke:#6a0f30;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1b"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1b"
+       style="overflow:visible">
+      <path
+         id="path8465"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#8ec3ed;fill-opacity:1;fill-rule:evenodd;stroke:#8ec3ed;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1e"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1e"
+       style="overflow:visible">
+      <path
+         id="path8825"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#32d849;fill-opacity:1;fill-rule:evenodd;stroke:#32d849;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1l"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1l"
+       style="overflow:visible">
+      <path
+         id="path9193"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#32d849;fill-opacity:1;fill-rule:evenodd;stroke:#32d849;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1gF"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1gF"
+       style="overflow:visible">
+      <path
+         id="path9569"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#cc8e12;fill-opacity:1;fill-rule:evenodd;stroke:#cc8e12;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1k"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1k"
+       style="overflow:visible">
+      <path
+         id="path9955"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#4886a5;fill-opacity:1;fill-rule:evenodd;stroke:#4886a5;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1S"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1S"
+       style="overflow:visible">
+      <path
+         id="path10347"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#62392d;fill-opacity:1;fill-rule:evenodd;stroke:#62392d;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1m"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1m"
+       style="overflow:visible">
+      <path
+         id="path10747"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#d95f23;fill-opacity:1;fill-rule:evenodd;stroke:#d95f23;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1J"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1J"
+       style="overflow:visible">
+      <path
+         id="path11155"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#3f00ff;fill-opacity:1;fill-rule:evenodd;stroke:#3f00ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-10"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-10"
+       style="overflow:visible">
+      <path
+         id="path11571"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#a9a9f7;fill-opacity:1;fill-rule:evenodd;stroke:#a9a9f7;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1v"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1v"
+       style="overflow:visible">
+      <path
+         id="path11995"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#ff2f07;fill-opacity:1;fill-rule:evenodd;stroke:#ff2f07;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL-1gy"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-1gy"
+       style="overflow:visible">
+      <path
+         id="path13533"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#2d5207;fill-opacity:1;fill-rule:evenodd;stroke:#2d5207;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-32.260788,-133.81499)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <g
+       id="g14209"
+       transform="translate(1.1299713e-5)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect2985-0"
+         width="38.406395"
+         height="30.406368"
+         x="582.18304"
+         y="-175.01819"
+         ry="14.699811"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="626.44159"
+         y="164.00446"
+         id="text5915"><tspan
+           style="font-size:15px;line-height:1.25"
+           sodipodi:role="line"
+           x="626.44159"
+           y="164.00446"
+           id="tspan5929">simple chemical</tspan></text>
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect2985"
+         width="48.039204"
+         height="38.039204"
+         x="363.65045"
+         y="-178.83459"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="418.99094"
+         y="163.95317"
+         id="text6104"><tspan
+           style="font-size:15px;line-height:1.25"
+           sodipodi:role="line"
+           x="418.99094"
+           y="163.95317"
+           id="tspan6126">macromolecule</tspan></text>
+    </g>
+    <g
+       id="g14035">
+      <text
+         id="text1412"
+         y="232.24249"
+         x="49.16655"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="232.24249"
+           x="49.16655"
+           id="tspan1410"
+           sodipodi:role="line">controls state change of</tspan></text>
+      <path
+         style="fill:none;fill-opacity:1;stroke:#b4e1cd;stroke-width:2.70700002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1KDYHU)"
+         d="m 111.16655,257.00172 h 43.7938"
+         id="path3787-1"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="37.616287"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-276.02133"
+         x="169.85303"
+         height="38.039204"
+         width="48.039204"
+         id="rect1416"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-276.02133"
+         x="63.495056"
+         height="38.039204"
+         width="48.039204"
+         id="rect1418"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="63.507355"
+         y="302.24249"
+         id="text1485"><tspan
+           sodipodi:role="line"
+           id="tspan1483"
+           x="63.507355"
+           y="302.24249"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">controls transport of</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path1481"
+         d="m 111.16655,327.00172 h 43.7938"
+         style="fill:none;stroke:#f0e7c8;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1gm)" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1487"
+         width="48.039204"
+         height="38.039204"
+         x="169.85303"
+         y="-346.02133"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1489"
+         width="48.039204"
+         height="38.039204"
+         x="63.495056"
+         y="-346.02133"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <text
+         id="text1497"
+         y="372.24249"
+         x="37.491745"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="372.24249"
+           x="37.491745"
+           id="tspan1495"
+           sodipodi:role="line">controls phosphorylation of</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path1493"
+         d="m 111.16655,397.00172 h 43.7938"
+         style="fill:none;stroke:#d970a1;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1H)" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-416.02133"
+         x="169.85303"
+         height="38.039204"
+         width="48.039204"
+         id="rect1499"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-416.02133"
+         x="63.495056"
+         height="38.039204"
+         width="48.039204"
+         id="rect1501"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="57.691925"
+         y="442.24249"
+         id="text1509"><tspan
+           sodipodi:role="line"
+           id="tspan1507"
+           x="57.691925"
+           y="442.24249"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">controls expression of</tspan></text>
+      <path
+         style="fill:none;stroke:#6a0f30;stroke-width:2.70700002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.41400003, 2.70700002;stroke-dashoffset:0;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-11)"
+         d="m 111.16655,467.00172 h 43.7938"
+         id="path1505"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="37.616287"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1511"
+         width="48.039204"
+         height="38.039204"
+         x="169.85303"
+         y="-486.0213"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1513"
+         width="48.039204"
+         height="38.039204"
+         x="63.495056"
+         y="-486.0213"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <text
+         id="text1521"
+         y="512.24249"
+         x="71.216095"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="512.24249"
+           x="71.216095"
+           id="tspan1519"
+           sodipodi:role="line">catalysis precedes</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path1517"
+         d="m 111.16655,537.00172 h 43.7938"
+         style="fill:none;stroke:#8ec3ed;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1b)" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-556.0213"
+         x="169.85303"
+         height="38.039204"
+         width="48.039204"
+         id="rect1523"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-556.0213"
+         x="63.495056"
+         height="38.039204"
+         width="48.039204"
+         id="rect1525"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <g
+       id="g14062"
+       transform="translate(2.0751556,-0.03661346)">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="286.73489"
+         y="232.24248"
+         id="text4397"><tspan
+           sodipodi:role="line"
+           id="tspan4399"
+           x="286.73489"
+           y="232.24248"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">in complex with</tspan></text>
+      <path
+         style="fill:none;stroke:#b4987a;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
+         d="m 317.64524,257.00172 h 57.67514"
+         id="path3787-4"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="38.150002"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:transform-center-x="-2.6812787"
+         inkscape:transform-center-y="-62.257366" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect2985-7-3"
+         width="48.039204"
+         height="38.039204"
+         x="375.29736"
+         y="-276.02136"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect2985-7-0"
+         width="48.039204"
+         height="38.039204"
+         x="268.93936"
+         y="-276.02136"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <text
+         id="text1447"
+         y="302.24252"
+         x="294.689"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           id="tspan1743"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="302.24252"
+           x="294.689"
+           sodipodi:role="line">interacts with</tspan></text>
+      <path
+         inkscape:transform-center-y="-62.257366"
+         inkscape:transform-center-x="-2.6812787"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-xdpi="38.150002"
+         inkscape:connector-curvature="0"
+         id="path1449"
+         d="m 317.64524,327.00176 h 57.67514"
+         style="fill:none;stroke:#b57261;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-346.02133"
+         x="375.29736"
+         height="38.039204"
+         width="48.039204"
+         id="rect1451"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-346.02133"
+         x="268.93936"
+         height="38.039204"
+         width="48.039204"
+         id="rect1453"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="302.28787"
+         y="372.24252"
+         id="text1459"><tspan
+           sodipodi:role="line"
+           id="tspan1457"
+           x="302.28787"
+           y="372.24252"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">neighbor of</tspan></text>
+      <path
+         style="fill:none;stroke:#fc002c;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
+         d="m 317.64524,397.00176 h 57.67514"
+         id="path1461"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="38.150002"
+         inkscape:export-ydpi="38.150002"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+         inkscape:transform-center-x="-2.6812787"
+         inkscape:transform-center-y="-62.257366" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1463"
+         width="48.039204"
+         height="38.039204"
+         x="375.29736"
+         y="-416.02133"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1465"
+         width="48.039204"
+         height="38.039204"
+         x="268.93936"
+         y="-416.02133"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="311.79468"
+         y="442.24252"
+         id="text1533"><tspan
+           sodipodi:role="line"
+           id="tspan1531"
+           x="311.79468"
+           y="442.24252"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">activates</tspan></text>
+      <path
+         style="fill:none;stroke:#32d849;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1e)"
+         d="m 316.61088,467.00173 h 43.7938"
+         id="path1529"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="37.616287"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1535"
+         width="48.039204"
+         height="38.039204"
+         x="375.29736"
+         y="-486.0213"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <rect
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1537"
+         width="48.039204"
+         height="38.039204"
+         x="268.93939"
+         y="-486.0213"
+         ry="9.8165531"
+         inkscape:export-xdpi="53.959999"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         transform="scale(1,-1)" />
+      <text
+         id="text1617"
+         y="512.24249"
+         x="318.42313"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="512.24249"
+           x="318.42313"
+           id="tspan1615"
+           sodipodi:role="line">inhibits</tspan></text>
+      <path
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+         inkscape:export-ydpi="37.616287"
+         inkscape:export-xdpi="37.616287"
+         inkscape:connector-curvature="0"
+         id="path1613"
+         d="m 316.61087,537.00173 h 54.41785"
+         style="fill:none;stroke:#4886a5;stroke-width:3.01785707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#StopL)" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-556.0213"
+         x="375.29736"
+         height="38.039204"
+         width="48.039204"
+         id="rect1619"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <rect
+         transform="scale(1,-1)"
+         inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+         inkscape:export-ydpi="53.959999"
+         inkscape:export-xdpi="53.959999"
+         ry="9.8165531"
+         y="-556.0213"
+         x="268.93939"
+         height="38.039204"
+         width="48.039204"
+         id="rect1621"
+         style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <g
+       id="g14127"
+       transform="translate(-6.5540301,-0.03662109)">
+      <text
+         id="text1471"
+         y="477.24249"
+         x="458.63794"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="477.24249"
+           x="458.63794"
+           sodipodi:role="line"
+           id="tspan1050">downregulates expression</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="498.80029"
+         y="267.24249"
+         id="text1545"><tspan
+           sodipodi:role="line"
+           id="tspan1543"
+           x="498.80029"
+           y="267.24249"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">phosphorylates</tspan></text>
+      <g
+         transform="translate(-0.32595253)"
+         id="g14067">
+        <path
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-xdpi="37.616287"
+           inkscape:connector-curvature="0"
+           id="path1541"
+           d="m 527.38723,292.00172 h 43.7938"
+           style="fill:none;stroke:#62392d;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1S)" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="9.8165531"
+           y="-311.02133"
+           x="586.07373"
+           height="38.039204"
+           width="48.039204"
+           id="rect1547"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="9.8165531"
+           y="-311.02133"
+           x="479.71573"
+           height="38.039204"
+           width="48.039204"
+           id="rect1549"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      </g>
+      <text
+         id="text1557"
+         y="337.24249"
+         x="489.94165"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="337.24249"
+           x="489.94165"
+           id="tspan1555"
+           sodipodi:role="line">dephosphorylates</tspan></text>
+      <g
+         transform="translate(-0.32595253)"
+         id="g14078">
+        <path
+           style="fill:none;stroke:#cc8e12;stroke-width:3.0121603;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#marker12908)"
+           d="m 527.38723,362.00173 h 54.2126"
+           id="path1553"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="37.616287"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect1559"
+           width="48.039204"
+           height="38.039204"
+           x="586.07373"
+           y="-381.02133"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           transform="scale(1,-1)" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect1561"
+           width="48.039204"
+           height="38.039204"
+           x="479.71573"
+           y="-381.02133"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           transform="scale(1,-1)" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="469.07861"
+         y="407.24249"
+         id="text1569"><tspan
+           sodipodi:role="line"
+           id="tspan1567"
+           x="469.07861"
+           y="407.24249"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">upregulates expression</tspan></text>
+      <g
+         transform="translate(-0.32595253)"
+         id="g14083">
+        <path
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-xdpi="37.616287"
+           inkscape:connector-curvature="0"
+           id="path1565"
+           d="m 527.38724,432.00173 h 43.7938"
+           style="fill:none;stroke:#32d849;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.41457367, 2.70728683;stroke-dashoffset:0;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1l)" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="9.8165531"
+           y="-451.02133"
+           x="586.07373"
+           height="38.039204"
+           width="48.039204"
+           id="rect1571"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="9.8165531"
+           y="-451.02133"
+           x="479.71573"
+           height="38.039204"
+           width="48.039204"
+           id="rect1573"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      </g>
+      <g
+         transform="translate(-0.32593727)"
+         id="g14100">
+        <g
+           id="g14094">
+          <rect
+             transform="scale(1,-1)"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+             inkscape:export-ydpi="53.959999"
+             inkscape:export-xdpi="53.959999"
+             ry="9.8165531"
+             y="-521.0213"
+             x="586.07373"
+             height="38.039204"
+             width="48.039204"
+             id="rect1475"
+             style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+          <rect
+             transform="scale(1,-1)"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+             inkscape:export-ydpi="53.959999"
+             inkscape:export-xdpi="53.959999"
+             ry="9.8165531"
+             y="-521.0213"
+             x="479.7157"
+             height="38.039204"
+             width="48.039204"
+             id="rect1477"
+             style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+          <path
+             style="fill:none;stroke:#cc8e12;stroke-width:3.0121603;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:6.02432077, 3.01216038;stroke-dashoffset:0;stroke-opacity:1;marker-start:none;marker-end:url(#marker13176)"
+             d="m 527.38723,502.00173 h 54.2126"
+             id="path9886"
+             inkscape:connector-curvature="0"
+             inkscape:export-xdpi="37.616287"
+             inkscape:export-ydpi="37.616287"
+             inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g14173"
+       transform="translate(-8.0753924)">
+      <g
+         id="g14132">
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect1645"
+           width="48.039204"
+           height="38.039204"
+           x="818.08264"
+           y="-311.02133"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           transform="scale(1,-1)" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="14.699811"
+           y="-307.2049"
+           x="720.22095"
+           height="30.406368"
+           width="38.406395"
+           id="rect2985-0-9-2"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#d95f23;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1m)"
+           d="m 759.39616,292.00172 h 43.7938"
+           id="path1637"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="37.616287"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+      </g>
+      <text
+         id="text1641"
+         y="267.24249"
+         x="732.54541"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="267.24249"
+           x="732.54541"
+           id="tspan1639"
+           sodipodi:role="line">chemical affects</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="680.98291"
+         y="337.24249"
+         id="text1677"><tspan
+           sodipodi:role="line"
+           id="tspan1675"
+           x="680.98291"
+           y="337.24249"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">controls transport of chemical</tspan></text>
+      <text
+         id="text1689"
+         y="407.24249"
+         x="710.16626"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="407.24249"
+           x="710.16626"
+           id="tspan1687"
+           sodipodi:role="line">controls production of</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="693.36084"
+         y="477.24249"
+         id="text1701"><tspan
+           sodipodi:role="line"
+           id="tspan1699"
+           x="693.36084"
+           y="477.24249"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">consumption controlled by</tspan></text>
+      <g
+         transform="translate(9.3398424)"
+         id="g14137">
+        <path
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-xdpi="37.616287"
+           inkscape:connector-curvature="0"
+           id="path1673"
+           d="m 759.39625,362.00173 h 43.7938"
+           style="fill:none;stroke:#3f00ff;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1J)" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="9.8165531"
+           y="-381.02133"
+           x="711.72473"
+           height="38.039204"
+           width="48.039204"
+           id="rect1679"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect13990"
+           width="38.406395"
+           height="30.406368"
+           x="817.89917"
+           y="-377.20493"
+           ry="14.699811"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           transform="scale(1,-1)" />
+      </g>
+      <g
+         transform="translate(9.3398424)"
+         id="g14142">
+        <path
+           style="fill:none;stroke:#2d5207;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1gy)"
+           d="m 759.39624,432.00173 h 43.7938"
+           id="path1685"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="37.616287"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect1691"
+           width="48.039204"
+           height="38.039204"
+           x="711.72473"
+           y="-451.02133"
+           ry="9.8165531"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           transform="scale(1,-1)" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="14.699811"
+           y="-447.20493"
+           x="817.89917"
+           height="30.406368"
+           width="38.406395"
+           id="rect13992"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      </g>
+      <g
+         transform="translate(-0.66000366)"
+         id="g14147">
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\macromolecule.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="9.8165531"
+           y="-521.0213"
+           x="818.08264"
+           height="38.039204"
+           width="48.039204"
+           id="rect1703"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.96079445;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <path
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-xdpi="37.616287"
+           inkscape:connector-curvature="0"
+           id="path1697"
+           d="m 759.39618,502.00172 h 43.7938"
+           style="fill:none;stroke:#a9a9f7;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-10)" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect13994"
+           width="38.406395"
+           height="30.406368"
+           x="721.54095"
+           y="-517.2049"
+           ry="14.699811"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           transform="scale(1,-1)" />
+      </g>
+    </g>
+    <g
+       id="g14201"
+       transform="translate(-4.4072015e-5,1.9633487)">
+      <text
+         id="text1722"
+         y="407.24252"
+         x="930.25867"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start"
+           y="407.24252"
+           x="930.25867"
+           id="tspan1720"
+           sodipodi:role="line">used to produce</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="949.81799"
+         y="337.24252"
+         id="text1660"><tspan
+           sodipodi:role="line"
+           id="tspan1658"
+           x="949.81799"
+           y="337.24252"
+           style="font-size:15px;line-height:1.25;text-align:start;text-anchor:start">reacts with</tspan></text>
+      <g
+         transform="translate(-0.04392624)"
+         id="g14182">
+        <path
+           style="fill:none;stroke:#4e214b;stroke-width:3.00999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:none"
+           d="m 962.24552,362.00176 h 57.67508"
+           id="path1736"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="38.150002"
+           inkscape:export-ydpi="38.150002"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\consumption.png"
+           inkscape:transform-center-x="-2.6812787"
+           inkscape:transform-center-y="-62.257366" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="14.699811"
+           y="-377.20496"
+           x="924.02258"
+           height="30.406368"
+           width="38.406395"
+           id="rect13996"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect13998"
+           width="38.406395"
+           height="30.406368"
+           x="1020.3808"
+           y="-377.20496"
+           ry="14.699811"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           transform="scale(1,-1)" />
+      </g>
+      <g
+         transform="translate(-0.04392624)"
+         id="g14187">
+        <path
+           style="fill:none;stroke:#ff2f07;stroke-width:2.70728683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:none;marker-end:url(#TriangleOutL-1v)"
+           d="m 961.87777,432.00175 h 43.79383"
+           id="path1718"
+           inkscape:connector-curvature="0"
+           inkscape:export-xdpi="37.616287"
+           inkscape:export-ydpi="37.616287"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\edges\production.png" />
+        <rect
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect14004"
+           width="38.406395"
+           height="30.406368"
+           x="924.02258"
+           y="-447.20493"
+           ry="14.699811"
+           inkscape:export-xdpi="53.959999"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           transform="scale(1,-1)" />
+        <rect
+           transform="scale(1,-1)"
+           inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\simplechemical.png"
+           inkscape:export-ydpi="53.959999"
+           inkscape:export-xdpi="53.959999"
+           ry="14.699811"
+           y="-447.20493"
+           x="1020.3808"
+           height="30.406368"
+           width="38.406395"
+           id="rect14006"
+           style="fill:none;stroke:#c7c7c7;stroke-width:1.59360588;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      </g>
+    </g>
+  </g>
+</svg>

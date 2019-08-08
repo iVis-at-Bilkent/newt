@@ -483,6 +483,9 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     // get currentGeneralProperties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
+    // get topologyGrouping instance for cy
+    var topologyGrouping = chiseInstance.sifTopologyGrouping;
+
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
@@ -534,6 +537,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     self.params.enablePorts = {id: "enable-ports", type: "checkbox",
       property: "currentGeneralProperties.enablePorts", update: self.applyUpdate};
+
+    self.params.enableSIFTopologyGrouping = {id: "enable-sif-topology-grouping", type: "checkbox",
+      property: "currentGeneralProperties.enableSIFTopologyGrouping", update: self.applyUpdate};
 
     self.params.mapName = {id: "map-name", type: "text",
       property: "currentGeneralProperties.mapName"};
@@ -627,6 +633,22 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#enable-ports').blur();
     });
 
+    $(document).on("change", "#enable-sif-topology-grouping", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+      var actions = [];
+
+      self.params.enableSIFTopologyGrouping.value = $('#enable-sif-topology-grouping').prop('checked');
+      var apply = self.params.enableSIFTopologyGrouping.value;
+
+      actions.push({name: "changeMenu", param: self.params.enableSIFTopologyGrouping});
+      actions.push({name: "applySIFTopologyGrouping", param: { apply }});
+      cy.undoRedo().do("batch", actions);
+      // cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
+      $('#enable-sif-topology-grouping').blur();
+    });
+
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
@@ -648,11 +670,14 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.allowCompoundNodeResize.value = appUtilities.defaultGeneralProperties.allowCompoundNodeResize;
       self.params.inferNestingOnLoad.value = appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value = appUtilities.defaultGeneralProperties.enablePorts;
+      self.params.enableSIFTopologyGrouping.value = appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
+      actions.push({name: "changeMenu", param: self.params.enableSIFTopologyGrouping});
+      actions.push({name: "applySIFTopologyGrouping", param: { apply: self.params.enableSIFTopologyGrouping.value }});
       actions.push({name: "changeMenu", param: self.params.compoundPadding});
       actions.push({name: "changeMenu", param: self.params.arrowScale});
       actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
@@ -1822,8 +1847,21 @@ var FileSaveView = Backbone.View.extend({
     });
 
     var filename = document.getElementById('file-name').innerHTML;
-    if (fileformat === "celldesigner")
-      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".xml");
+    var fExt;
+    switch (fileformat) {
+      case 'nwt':
+        fExt = 'nwt';
+        break;
+      case 'sbgnml':
+        fExt = 'sbgnml'
+        break;
+      case 'celldesigner':
+      default:
+        fExt = 'xml'
+        break;
+    }
+
+    filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
     $("#file-save-filename").val(filename);
 
     $(document).off("click", "#file-save-accept").on("click", "#file-save-accept", function (evt) {
@@ -1840,16 +1878,55 @@ var FileSaveView = Backbone.View.extend({
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
 
-      if(fileformat === "sbgnml") {
-        var renderInfo = appUtilities.getAllStyles();
+      if(fileformat === "sbgnml" || fileformat === "nwt") {
+        var renderInfo;
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
+
+        var saveAsFcn = chiseInstance.saveAsNwt;
+        if ( fileformat === "sbgnml" ) {
+          saveAsFcn = chiseInstance.saveAsSbgnml;
+        }
+
+        var nodes, edges;
+
+        if ( fileformat === "sbgnml" ) {
+          if (chiseInstance.elementUtilities.mapType === 'SIF') {
+            properties.mapType = 'Unknown';
+          }
+
+          nodes = cy.nodes().filter( function( node ) {
+            return !chiseInstance.elementUtilities.isSIFNode( node );
+          } );
+
+          edges = cy.edges().filter( function( edge ) {
+            return !chiseInstance.elementUtilities.isSIFEdge( edge )
+              && !chiseInstance.elementUtilities.isSIFNode( edge.data('source') )
+              && !chiseInstance.elementUtilities.isSIFNode( edge.data('target') );
+          } );
+        }
+        else if ( chiseInstance.elementUtilities.mapType === 'SIF' && properties.enableSIFTopologyGrouping ) {
+          // get topologyGrouping instance for cy
+          var topologyGrouping = chiseInstance.sifTopologyGrouping;
+          var compoundGroups = topologyGrouping.getGroupCompounds();
+          var metaEdges = topologyGrouping.getMetaEdges();
+
+          nodes = cy.nodes().not( compoundGroups );
+          edges = cy.edges().not( metaEdges );
+
+          metaEdges.forEach( function( edge ) {
+            edges = edges.union( edge.data('tg-to-restore') );
+          } );
+        }
+
+        renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
+
         // Exclude extensions if the version is plain
         if (version === "plain") {
-          chiseInstance.saveAsSbgnml(filename, version);
+          saveAsFcn(filename, version, undefined, undefined, nodes, edges);
         }
         else {
-          chiseInstance.saveAsSbgnml(filename, version, renderInfo, properties);
+          saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
         }
       }
       else if(fileformat === "celldesigner") {
@@ -2854,6 +2931,198 @@ var GridPropertiesView = Backbone.View.extend({
   }
 });
 
+// If the value includes ' ' char/s replace them with '_' char
+// to use it as part of html selector
+function sanitizeForHtml( val ) {
+  return val.replaceAll( ' ', '_' );
+}
+
+function getFontFamilyOptions() {
+  return [
+    { value: '', label: '' },
+    { value: 'Helvetica', label: 'Helvetica' },
+    { value: 'Arial', label: 'Arial' },
+    { value: 'Calibri', label: 'Calibri' },
+    { value: 'Cambria', label: 'Cambria' },
+    { value: 'Comic Sans MS', label: 'Comic Sans MS' },
+    { value: 'Consolas', label: 'Consolas' },
+    { value: 'Corsiva', label: 'Corsiva' },
+    { value: 'Courier New', label: 'Courier New' },
+    { value: 'Droid Sans', label: 'Droid Sans' },
+    { value: 'Droid Serif', label: 'Droid Serif' },
+    { value: 'Georgia', label: 'Georgia' },
+    { value: 'Impact', label: 'Impact' },
+    { value: 'Lato', label: 'Lato' },
+    { value: 'Roboto', label: 'Roboto' },
+    { value: 'Source Sans Pro', label: 'Source Sans Pro' },
+    { value: 'Syncopate', label: 'Syncopate' },
+    { value: 'Times New Roman', label: 'Times New Roman' },
+    { value: 'Trebuchet MS', label: 'Trebuchet MS' },
+    { value: 'Ubuntu', label: 'Ubuntu' },
+    { value: 'Verdana', label: 'Verdana' }
+  ];
+}
+
+function getFontWeightOptions() {
+  return [
+    { value: '', label: '' },
+    { value: 'lighter', label: 'Lighter' },
+    { value: 'normal', label: 'Normal' },
+    { value: 'bold', label: 'Bold' },
+    { value: 'bolder', label: 'Bolder' }
+  ];
+}
+
+function getFontStyleOptions() {
+  return [
+    { value: '', label: '' },
+    { value: 'normal', label: 'Normal' },
+    { value: 'italic', label: 'Italic' },
+    { value: 'oblique', label: 'Oblique' }
+  ];
+}
+
+function generateFontPropertiesRows(selectorPrefix, labelPrefix, properties) {
+  var html = "";
+
+  var familyOptStyle = [{
+    name: 'font-family',
+    value: function(ff) {
+      return ff;
+    }
+  }];
+
+  html += wrapToTr( [ generateLabelTd( 'Family', labelPrefix ),
+          generateSelectListTd( getFontFamilyOptions(), properties.fontFamily, selectorPrefix, 'font-family', familyOptStyle ) ] );
+
+  html += wrapToTr( [ generateLabelTd( 'Size', labelPrefix ),
+          generateIntegerInputBoxTd( selectorPrefix, 'font-size', properties.fontSize ) ] );
+
+  html += wrapToTr( [ generateLabelTd( 'Weight', labelPrefix  ),
+          generateSelectListTd( getFontWeightOptions(), properties.fontWeight, selectorPrefix, 'font-weight' ) ] );
+
+  html += wrapToTr( [ generateLabelTd( 'Type', labelPrefix ),
+          generateSelectListTd( getFontStyleOptions(), properties.fontStyle, selectorPrefix, 'font-style' ) ] );
+
+  html += wrapToTr( [ generateLabelTd( 'Color', labelPrefix ),
+          generateColorInputBoxTd( selectorPrefix, 'font-color', properties.fontColor ) ] );
+
+  return html;
+}
+
+function generateColorInputBoxTd(selectorPrefix, propName, value) {
+  var id = generateInputId( propName, selectorPrefix );
+  var html = '<input id="' + id + '"'
+          + ' class="inspector-input-box"'
+          + ' type="color"'
+          + ' name="' + id + '"'
+          + ' value="' + value +  '"'
+          + '/>';
+
+  return wrapToTd( html );
+}
+
+function generateIntegerInputBoxTd(selectorPrefix, propName, value) {
+  var html = '<input id="' + generateInputId( propName, selectorPrefix ) + '"'
+          + ' type="text"'
+          + ' min="1"'
+          + ' class="sbgn-input-small layout-text integer-input"'
+          + ' value="' + value + '"'
+          + '/>';
+
+  return wrapToTd( html );
+}
+
+function generateInputId( propName, selectorPrefix, selectorPostfix ) {
+  var pretext = selectorPrefix ? selectorPrefix + '-' : '';
+  var posttext = selectorPostfix ? '-' + selectorPostfix : '';
+  return pretext + propName + posttext;
+}
+
+function generateSelectBoxNameSelector( propName, selectorPrefix ) {
+  var id = generateInputId( propName, selectorPrefix, 'select-box' );
+  var selector = 'select[name="' + id + '"] option:selected';
+
+  return selector;
+}
+
+function generateSelectListTd(options, selectedVal, selectorPrefix, propName, optionStyle) {
+  var html = '';
+  var selectboxId = generateInputId( propName, selectorPrefix, 'select-box' );
+  var selectBoxOpenHtml = '<select id="' + selectboxId + '"'
+    + ' class="input-medium layout-text"'
+    + ' name="' + selectboxId + '"'
+    + '>';
+
+  html += selectBoxOpenHtml;
+
+  var getSelectedStr = function( optionVal ) {
+    return optionVal === selectedVal ? ' selected' : '';
+  };
+
+  options.forEach( function( option ) {
+    var optionVal = option.value;
+    var postfix = optionVal ? optionVal : 'none';
+    postfix = sanitizeForHtml( postfix );
+    var optionLabel = option.label;
+
+    var styleStr = '';
+
+    if ( optionStyle && optionStyle.length > 0 ) {
+      var styleStr = ' style="';
+      optionStyle.forEach( function( style ) {
+        var val = typeof style.value == 'function' ?
+                  style.value( optionVal ) : optionVal;
+        styleStr += ( style.name + ': ' + val + ';' );
+      } );
+      styleStr += '"';
+    }
+
+    var optionId = generateInputId( propName, selectorPrefix, postfix );
+    var optionHtml = '<option id="' + optionId + '"'
+      + ' value="' + optionVal + '"'
+      + styleStr
+      + getSelectedStr( optionVal )
+      + '>'
+      + option.label
+      + '</option>';
+
+    html += optionHtml;
+  } );
+
+  html += '</select>';
+
+  return wrapToTd( html );
+}
+
+function generateLabelTd(mainText, prefix, postfix) {
+  prefix = prefix ? prefix + ' ' : '';
+  postfix = postfix ? ' ' + postfix : '';
+  label = prefix + mainText + postfix;
+
+  return wrapToTd( '<span class="add-on layout-text">' + label + '</span>' );
+}
+
+function wrapToTd(innerHtml){
+  var html = '<td>';
+  html += innerHtml;
+  html += '</td>';
+
+  return html;
+}
+
+function wrapToTr(tdList) {
+  var html = '<tr>';
+
+  tdList.forEach( function( td ) {
+    html += td;
+  } );
+
+  html += '</tr>';
+
+  return html;
+}
+
 var FontPropertiesView = Backbone.View.extend({
   defaultFontProperties: {
     fontFamily: "",
@@ -2863,63 +3132,16 @@ var FontPropertiesView = Backbone.View.extend({
     fontColor: ""
   },
   currentFontProperties: undefined,
+  selectorPrefix: 'font-properties',
   copyProperties: function () {
     this.currentFontProperties = _.clone(this.defaultFontProperties);
   },
-  fontFamilies: ["", "Helvetica", "Arial", "Calibri", "Cambria", "Comic Sans MS", "Consolas", "Corsiva"
-    ,"Courier New" ,"Droid Sans", "Droid Serif", "Georgia", "Impact"
-    ,"Lato", "Roboto", "Source Sans Pro", "Syncopate", "Times New Roman"
-    ,"Trebuchet MS", "Ubuntu", "Verdana"],
-  getOptionIdByFontFamily: function(fontfamily) {
-    var id = "font-properties-font-family-" + fontfamily;
-    return id;
-  },
-  getFontFamilyByOptionId: function(id) {
-    var lastIndex = id.lastIndexOf("-");
-    var fontfamily = id.substr(lastIndex + 1);
-    return fontfamily;
-  },
-  getFontFamilyHtml: function(self) {
-    if(self == null){
-      self = this;
-    }
-
-    var fontFamilies = self.fontFamilies;
-
-    var html = "";
-    html += "<select id='font-properties-select-font-family' class='input-medium layout-text' name='font-family-select'>";
-
-    var optionsStr = "";
-
-    for ( var i = 0; i < fontFamilies.length; i++ ) {
-      var fontFamily = fontFamilies[i];
-      var optionId = self.getOptionIdByFontFamily(fontFamily);
-      var optionStr = "<option id='" + optionId + "'"
-              + " value='" + fontFamily + "' style='" + "font-family: " + fontFamily + "'";
-
-      if (fontFamily === self.currentFontProperties.fontFamily) {
-        optionStr += " selected";
-      }
-
-      optionStr += "> ";
-      optionStr += fontFamily;
-      optionStr += " </option>";
-
-      optionsStr += optionStr;
-    }
-
-    html += optionsStr;
-
-    html += "</select>";
-
-    return html;
-  },
   initialize: function () {
     var self = this;
-    self.defaultFontProperties.getFontFamilyHtml = function(){
-      return self.getFontFamilyHtml(self);
-    };
     self.copyProperties();
+    self.defaultFontProperties.generateFontPropertiesRows = function() {
+      return generateFontPropertiesRows( self.selectorPrefix, '', self.currentFontProperties );
+    };
     self.template = _.template($("#font-properties-template").html());
     self.template = self.template(self.defaultFontProperties);
   },
@@ -2978,11 +3200,11 @@ var FontPropertiesView = Backbone.View.extend({
 
       var data = {};
 
-      var fontsize = $('#font-properties-font-size').val();
-      var fontfamily = $('select[name="font-family-select"] option:selected').val();
-      var fontweight = $('select[name="font-weight-select"] option:selected').val();
-      var fontstyle = $('select[name="font-style-select"] option:selected').val();
-      var fontcolor = $('#font-properties-font-color').val();
+      var fontsize = $( '#' + generateInputId( 'font-size', self.selectorPrefix ) ).val();
+      var fontfamily = $( generateSelectBoxNameSelector( 'font-family', self.selectorPrefix ) ).val();
+      var fontweight = $( generateSelectBoxNameSelector( 'font-weight', self.selectorPrefix ) ).val();
+      var fontstyle = $( generateSelectBoxNameSelector( 'font-style', self.selectorPrefix ) ).val();
+      var fontcolor = $( '#' + generateInputId( 'font-color', self.selectorPrefix ) ).val();
 
       if ( fontsize != '' ) {
         data['font-size'] = parseInt(fontsize);
@@ -3042,6 +3264,152 @@ var FontPropertiesView = Backbone.View.extend({
     });
 
     return this;
+  }
+});
+
+var InfoboxPropertiesView = Backbone.View.extend({
+  currentProperties: null,
+  initialize: function () {
+  },
+  propsMap: {
+    'fontFamily': 'font-family',
+    'fontSize': 'font-size',
+    'fontWeight': 'font-weight',
+    'fontStyle': 'font-style',
+    'fontColor': 'font-color',
+    'borderColor': 'border-color',
+    'fillColor': 'background-color',
+    'borderWidth': 'border-width',
+    'shapeName': 'shape-name'
+  },
+  selectorPrefix: 'infobox-properties',
+  fontLabelPrefix: 'Font ',
+  updateCurrentProperties: function(infobox) {
+    var self = this;
+    var infoboxStyle = infobox.style;
+
+    self.currentProperties = {};
+
+    for ( var prop in this.propsMap ) {
+      var mappedProp = this.propsMap[ prop ];
+      self.currentProperties[ prop ] = infoboxStyle[ mappedProp ];
+    }
+
+    self.currentProperties.generateSelectShapeRow = function() {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var elementUtilities = chiseInstance.elementUtilities;
+      var parent = chiseInstance.classes.getAuxUnitClass(infobox).getParent(infobox, cy);
+      var shapeListFcn;
+
+      switch (infobox.clazz) {
+        case 'state variable':
+          shapeListFcn = elementUtilities.getStateVarShapeOptions;
+          break;
+        case 'unit of information':
+          shapeListFcn = elementUtilities.getUnitOfInfoShapeOptions;
+          break;
+      }
+
+      shapeList = shapeListFcn( parent.data( 'class' ) );
+
+      if ( shapeList.length <= 1 ) {
+        return "";
+      }
+
+      var options = [];
+
+      shapeList.forEach( function( shapeName ) {
+        options.push( {
+          value: shapeName,
+          label: shapeName
+        } );
+      } );
+
+      return wrapToTr( [ generateLabelTd( 'Shape', null ),
+              generateSelectListTd( options, self.currentProperties.shapeName, self.selectorPrefix, 'shape-name' ) ] );
+    };
+
+    self.currentProperties.generateFontPropertiesRows = function() {
+      return generateFontPropertiesRows( self.selectorPrefix, self.fontLabelPrefix, self.currentProperties );
+    };
+
+    self.currentProperties.generateSetAsDefaultText = function() {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var parent = chiseInstance.classes.getAuxUnitClass(infobox).getParent(infobox, cy);
+      var classInfo = appUtilities.transformClassInfo( parent.data('class') );
+      var infoboxInfoMap = {
+        'state variable': 'State Variable',
+        'unit of information': 'Unit of Information'
+      };
+      var infoboxInfo = infoboxInfoMap[ infobox.clazz ];
+
+      return 'Set as Default for ' + infoboxInfo + ' of ' + classInfo;
+    }
+  },
+  render: function (node, index) {
+    var self = this;
+    var infoboxObj = node.data('statesandinfos')[index];
+
+    var inputTypes = {
+      'font-size': 'regular',
+      'font-family': 'selectbox',
+      'font-weight': 'selectbox',
+      'font-style': 'selectbox',
+      'font-color': 'regular',
+      'border-color': 'regular',
+      'background-color': 'regular',
+      'border-width': 'regular',
+      'shape-name': 'selectbox'
+    };
+
+    self.updateCurrentProperties(infoboxObj);
+    self.template = _.template($("#infobox-properties-template").html());
+    self.template = self.template(self.currentProperties);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+
+    function readInfoboxProps() {
+      var props = {};
+
+      for ( prop in self.propsMap ) {
+        var mappedProp = self.propsMap[ prop ];
+        var val;
+
+        if ( inputTypes[ mappedProp ] == 'regular' ) {
+          val = $( '#' + generateInputId( mappedProp, self.selectorPrefix ) ).val();
+        }
+        else if ( inputTypes[ mappedProp ] == 'selectbox' ) {
+          val = $( generateSelectBoxNameSelector( mappedProp, self.selectorPrefix ) ).val();
+        }
+
+        props[ mappedProp ] = val;
+      }
+
+      return props;
+    }
+
+    $(document).off("click", "#set-infobox-properties").on("click", "#set-infobox-properties", function( evt ) {
+      var newProps = readInfoboxProps();
+
+      appUtilities.getActiveChiseInstance().updateInfoboxStyle(node, index, newProps);
+
+      $(self.el).modal('toggle');
+    });
+
+    $(document).off("click", "#set-as-default-infobox-properties").on("click", "#set-as-default-infobox-properties", function( evt ) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var parent = chiseInstance.classes.getAuxUnitClass(infoboxObj).getParent(infoboxObj, cy);
+      var parentClass = parent.data('class');
+
+      var updates = readInfoboxProps();
+      var currentDefaults = chiseInstance.elementUtilities.getDefaultProperties( parentClass )[ infoboxObj.clazz ];
+      var infoboxStyle = $.extend( {}, currentDefaults, updates );
+      chiseInstance.setDefaultProperty( parentClass, infoboxObj.clazz, infoboxStyle );
+    });
   }
 });
 
@@ -3245,6 +3613,7 @@ module.exports = {
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
+  InfoboxPropertiesView: InfoboxPropertiesView,
   AnnotationListView: AnnotationListView,
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,

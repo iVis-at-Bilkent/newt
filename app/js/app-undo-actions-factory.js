@@ -105,7 +105,7 @@ module.exports = function (cy) {
         appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
         param.self.render();
     }
-    
+
     else if(param.scheme_type == 'gradient'){
         var inverted_id = param.self.schemes_gradient[param.value].invert;
         param.self.schemes_gradient[param.value].isDisplayed = true;

@@ -5,6 +5,80 @@ var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
 var modeHandler = require('./app-mode-handler');
 
+inspectorUtilities.updateInputBoxesFromSet = function( ele, fieldName, parentSelector, subId, width ) {
+
+  var set = ele.data( fieldName );
+
+  if ( !set ) {
+    return;
+  }
+
+  var callback = function() {
+    inspectorUtilities.updateInputBoxesFromSet( ele, fieldName, parentSelector, subId, width );
+  };
+
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+
+  var keys = Object.keys( set );
+  var parentComponent = $( parentSelector );
+  parentComponent.html('');
+
+  keys.forEach( function( key, i ) {
+    ( function( key, i ) {
+      var id = "inspector-" + subId + "-" + i;
+      var delId = "inspector-delete-" + subId + "-" + i;
+      var memberHtml = "<div>";
+
+      memberHtml += "<input"
+          + " type='text'"
+          + " id='" + id + "'"
+          + " class='inspector-input-box'"
+          + " style='width: " + width * 0.9 + "px;'"
+          + " value='" + key + "'"
+          + "/>";
+
+      memberHtml += "<img"
+          + " width='16px'"
+          + " height='16px'"
+          + " id='" + delId + "'"
+          + " class='pointer-button'"
+          + " src='app/img/toolbar/delete-simple.svg'"
+          + ">"
+          + "</img>";
+
+      memberHtml += "</div>";
+
+      parentComponent.append( memberHtml );
+
+      $( '#' + delId ).unbind('click').click(function (event) {
+        var oldVal = key;
+        chiseInstance.updateSetField( ele, fieldName, oldVal, null, callback );
+      });
+
+      $( '#' + id ).unbind('change').on('change', function () {
+        var oldVal = key;
+        var newVal = $(this).val();
+        chiseInstance.updateSetField( ele, fieldName, oldVal, newVal, callback );
+      });
+    })( key, i );
+  } );
+
+  var addId = "inspector-add-" + subId;
+  parentComponent.append( "<img width='16px' height='16px' id='" + addId + "' src='app/img/add.svg' class='pointer-button'/>" );
+
+  $( '#' + addId ).unbind('click').click(function (event) {
+    chiseInstance.updateSetField( ele, fieldName, null, '', callback );
+  });
+};
+
+inspectorUtilities.updatePCIDs = function(ele, width) {
+  inspectorUtilities.updateInputBoxesFromSet( ele, 'pcIDSet', '#inspector-pc-ids', 'pc-ids', width );
+};
+
+inspectorUtilities.updateSiteLocations = function(ele, width) {
+  inspectorUtilities.updateInputBoxesFromSet( ele, 'siteLocSet', '#inspector-site-locations', 'site-locations', width );
+};
+
 inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, width) {
 
   // use the active chise instance
@@ -24,16 +98,37 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     return this.context.measureText(txt).width;
   };
 
+  function sanitizeInfoboxVal(value) {
+    return (value || '').toString().replace(/'/g, "&#039;");
+  }
+
+  function getInfoboxDetailsBtnHtml(index) {
+    var html = "<label id='inspector-infobox-" + index + "' style='cursor: pointer;font: 10pt Helvetica;'>" + "..." + "</label>";
+
+    return html;
+  }
+
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
       var state = stateAndInfos[i];
       if (state.clazz == "state variable") {
-        $("#inspector-state-variables").append("<div><input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
-                + width / 5 + "px;' value='" + (state.state.value || '').toString().replace(/'/g, "&#039;") + "'/>"
-                + "<span style='font: 10pt Helvetica;'>@</span>"
-                + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
-                + width / 2.5 + "px;' value='" + (state.state.variable || '').toString().replace(/'/g, "&#039;")
-                + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
+        $("#inspector-state-variables").append(
+            "<div>"
+            // state variable - value
+            + "<input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
+            + width / 5 + "px;' value='" + sanitizeInfoboxVal(state.state.value) + "'/>"
+
+            + "<span style='font: 10pt Helvetica;'>@</span>"
+
+            // state variable - variable
+            + "<input type='text' id='inspector-state-variable-variable" + i + "' class='inspector-input-box' style='width: "
+            + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.state.variable) + "'/>"
+
+            + getInfoboxDetailsBtnHtml( i )
+
+            + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
+            + "</div>"
+        );
 
         $("#inspector-state-variable-value" + i).unbind('change').on('change', function () {
           chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
@@ -46,23 +141,33 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       else if (state.clazz == "unit of information") {
 
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
-        if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
-          $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;")
-			  + "'/><img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img></div>");
-        } else {
-          $("#inspector-unit-of-informations").append("<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
-                  + total + "px;' value='" + (state.label.text || '').replace(/'/g, "&#039;") + "'/></div>");
+
+        var uioHtml = "<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
+                + total + "px;' value='" + sanitizeInfoboxVal(state.label.text) + "'/>";
+
+        uioHtml += getInfoboxDetailsBtnHtml( i );
+
+        if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)) {
+          uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
+                + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
         }
 
+        uioHtml += "</div>";
+
+        $('#inspector-unit-of-informations').append( uioHtml );
+
         $("#inspector-unit-of-information-label" + i).unbind('change').on('change', function () {
-          chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val());
+          chiseInstance.changeStateOrInfoBox(nodes[0], i, $(this).val());
         });
       }
 
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
         inspectorUtilities.handleSBGNInspector();
+      });
+
+      $("#inspector-infobox-" + i).unbind('click').on('click', function () {
+        appUtilities.infoboxPropertiesView.render( nodes, i );
       });
     })(i);
   }
@@ -73,20 +178,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   };
   $("#inspector-add-state-variable").click(function () {
 
-    // access current general properties for active instance
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-    var obj = {};
-    obj.clazz = "state variable";
-
-    obj.state = {
-      value: "",
-      variable: ""
-    };
-    obj.bbox = {
-      w: currentGeneralProperties.defaultInfoboxWidth,
-      h: currentGeneralProperties.defaultInfoboxHeight
-    };
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -94,18 +186,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
   $("#inspector-add-unit-of-information").click(function () {
 
-    // access current general properties for active instance
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-    var obj = {};
-    obj.clazz = "unit of information";
-    obj.label = {
-      text: ""
-    };
-    obj.bbox = {
-      w: currentGeneralProperties.defaultInfoboxWidth,
-      h: currentGeneralProperties.defaultInfoboxHeight
-    };
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -148,25 +229,8 @@ inspectorUtilities.handleSBGNInspector = function () {
     var classInfo = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
       return ele.data('class').replace(' multimer', '');
     }) || "";
-    if (classInfo == 'and' || classInfo == 'or' || classInfo == 'not') {
-      classInfo = classInfo.toUpperCase();
-    }
-    else {
-      classInfo = classInfo.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      });
-      classInfo = classInfo.replace(' Of ', ' of ');
-      classInfo = classInfo.replace(' And ', ' and ');
-      classInfo = classInfo.replace(' Or ', ' or ');
-      classInfo = classInfo.replace(' Not ', ' not ');
-    }
 
-    if (classInfo == "Ba Plain"){
-      classInfo = "BA";
-    }
-    else if (classInfo.includes("Ba ")){
-      classInfo = "BA " + classInfo.substr(3);
-    }
+    classInfo = appUtilities.transformClassInfo( classInfo );
 
     var title = classInfo=="" ? "Visual Properties":classInfo + " Visual Properties";
 
@@ -184,6 +248,8 @@ inspectorUtilities.handleSBGNInspector = function () {
     html += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
     var type;
     var fillStateAndInfos;
+    var fillPCIDs;
+    var fillSiteLocations;
     var multimerCheck;
     var clonedCheck;
     var commonIsMultimer;
@@ -459,6 +525,28 @@ inspectorUtilities.handleSBGNInspector = function () {
         html += "</td></tr>";
       }
 
+      var sbgnclass = selectedEles.data('class');
+      if (selectedEles.length === 1 && ( sbgnclass == 'phosphorylates' || sbgnclass == 'dephosphorylates' )) {
+        fillPCIDs = true;
+        fillSiteLocations = true;
+
+        html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>PC IDs</font>" + "</td>"
+                + "<td id='inspector-pc-ids' style='padding-left: 5px; width: '" + width + "'>"
+                // + inspectorUtilities.generateSetToInputBoxes( selectedEles.data('pcIDSet'), 'pc-ids', 0.8 * width )
+                + "</td></tr>";
+
+        html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Site Locations</font>" + "</td>"
+                + "<td id='inspector-site-locations' style='padding-left: 5px; width: '" + width + "'>"
+                // + inspectorUtilities.generateSetToInputBoxes( selectedEles.data('siteLocSet'), 'site-locations', 0.8 * width )
+                + "</td></tr>";
+
+        html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+      }
+
     }
     html += "</table></div>";
 
@@ -575,7 +663,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         if(!fit){
           return;
         }
-        
+
         var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(selectedEles);
         if(bgObj === undefined){
           return;
@@ -602,7 +690,7 @@ inspectorUtilities.handleSBGNInspector = function () {
             obj['background-height'] = bgHeight;
           }
         });
-        
+
         chiseInstance.updateBackgroundImage(selectedEles, bgObj);
         updateBackgroundDeleteInfo();
       });
@@ -654,7 +742,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           }
           else if(fit)
             bgFit = fit;
-          
+
           var bgObj = {
             'background-image' : url,
             'background-fit' : bgFit,
@@ -945,6 +1033,14 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
     }
     else {
+      if ( fillPCIDs ) {
+        inspectorUtilities.updatePCIDs( selectedEles, width );
+      }
+
+      if ( fillSiteLocations ) {
+        inspectorUtilities.updateSiteLocations( selectedEles, width );
+      }
+
       $('#inspector-set-as-default-button').on('click', function () {
         var sbgnclass = selectedEles.data('class');
 
