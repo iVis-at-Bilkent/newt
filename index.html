@@ -80,7 +80,7 @@
                                                         <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="#" id="save-as-sbgnml">Save...</a></li>
+                                                <li><a href="#" id="save-as-nwt">Save...</a></li>
                                                 <li><a href="#" type="file" id="close-file">Close</a></li>
                                                 <li class="divider"></li>
                                                 <li class="dropdown-submenu">
@@ -90,9 +90,15 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <input id="simple-af-file-input" type="file" style="display:none" />
+                                                        <input id="sif-file-input" type="file" style="display:none" />
                                                         <input id="celldesigner-file-input" type="file" style="display:none" />
-                                                        <li><a href="#" id="import-celldesigner-file">CellDesigner File</a></li>
-                                                        <li><a href="#" id="import-simple-af-file">Simple AF File</a></li>
+                                                        <input id="sif-style-input" type="file" style="display:none" />
+                                                        <input id="sif-layout-input" type="file" style="display:none" />
+                                                        <li><a href="#" id="import-celldesigner-file">CellDesigner</a></li>
+                                                        <li><a href="#" id="import-simple-af-file">Simple AF</a></li>
+                                                        <li><a href="#" id="import-sif-file">SIF</a></li>
+                                                        <li><a href="#" id="import-sif-style">SIF Style</a></li>
+                                                        <li><a href="#" id="import-sif-layout">SIF Layout</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="dropdown-submenu">
@@ -102,8 +108,10 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
-                                                        <li><a href="#" id="export-as-sbgnml3-file">SBGN-ML 0.3</a></li>
-                                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner File</a></li>
+                                                        <li><a href="#" id="export-as-nwt3-file">NWT 0.3</a></li>
+                                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner</a></li>
+                                                        <li><a href="#" id="export-to-plain-sif">SIF</a></li>
+                                                        <li><a href="#" id="export-to-sif-layout">SIF Layout</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="dropdown-submenu">
@@ -299,6 +307,7 @@
                                             <ul class="dropdown-menu">
                                                 <li><a href="#" id="PD-legend">Process Description</a></li>
                                                 <li><a href="#" id="AF-legend">Activity Flow</a></li>
+                                                <li><a href="#" id="SIF-legend">SIF</a></li>
                                             </ul>
                                         </li>
 
@@ -582,6 +591,53 @@
                                 </div>
                             </div>
                             <!-- AF Edges End -->
+
+                            <!-- SIF Start -->
+                            <div class="panel">
+                                <div id="SIF-palette-heading" class="panel-heading" data-toggle="collapse" data-target="#expand-collapse-sif-nodes-palette">
+                                    <p class="panel-title accordion-toggle">
+                                        SIF
+                                    </p>
+                                </div>
+                                <div id="expand-collapse-sif-nodes-palette" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                      <div id="sif-node-palette" class="element-palette node-palette">
+                                        <div class="paletteWrapper">
+                                            <div class="paletteCol"><img src="app/img/nodes/macromolecule.svg" language="SIF" value="SIF-macromolecule" title="Macromolecule"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/simple-chemical.svg" language="SIF" value="SIF-simple-chemical" title="Simple Chemical"/></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="panel-body" style="padding-bottom: 0px;">
+                                      <div id="sif-edge-palette" class="element-palette edge-palette">
+                                        <div class="paletteWrapper">
+                                          <div class="paletteCol"><img src="app/img/edges/controls-state-change-of.svg" language="SIF" value="controls-state-change-of" title="Controls State Change of"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/controls-transport-of.svg" language="SIF" value="controls-transport-of" title="Controls Transport of"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/controls-phosphorylation-of.svg" language="SIF" value="controls-phosphorylation-of" title="Controls Phosphorylation of"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/controls-expression-of.svg" language="SIF" value="controls-expression-of" title="Controls Expression of"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/catalysis-precedes.svg" language="SIF" value="catalysis-precedes" title="Catalysis Precedes"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/in-complex-with.svg" language="SIF" value="in-complex-with" title="In Complex With"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/interacts-with.svg" language="SIF" value="interacts-with" title="Interacts With"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/neighbor-of.svg" language="SIF" value="neighbor-of" title="Neighbor of"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/consumption-controled-by.svg" language="SIF" value="consumption-controled-by" title="Consumption Controled By"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/controls-production-of.svg" language="SIF" value="controls-production-of" title="Controls Production of"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/controls-transport-of-chemical.svg" language="SIF" value="controls-transport-of-chemical" title="Controls Transport of Chemical"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/chemical-affects.svg" language="SIF" value="chemical-affects" title="Chemical Affects"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/reacts-with.svg" language="SIF" value="reacts-with" title="Reacts With"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/used-to-produce.svg" language="SIF" value="used-to-produce" title="Used to Produce"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/activates.svg" language="SIF" value="activates" title="Activates"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/inhibits.svg" language="SIF" value="inhibits" title="Inhibits"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/phosphorylates.svg" language="SIF" value="phosphorylates" title="Phosphorylates"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/dephosphorylates.svg" language="SIF" value="dephosphorylates" title="Dephosphorylates"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/upregulates-expression.svg" language="SIF" value="upregulates-expression" title="Upregulates Expression"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/downregulates-expression.svg" language="SIF" value="downregulates-expression" title="Downregulates Expression"/></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SIF End -->
+
                           </div>
                         </div>
 						   <div id="sbgn-inspector-console" class="tab-pane fade">
@@ -712,6 +768,10 @@
             <!-- sbgn schematron validation message dialog will be shown here -->
         </div>
 
+        <div id="infobox-properties-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- infobox properties table will be shown here -->
+        </div>
+
         <div id="box">
         </div>
 
@@ -738,6 +798,19 @@
                         <div class="sbgn-frame">
                             <h2 class="sbgn-text">Activity Flow</h2>
                             <img src="app/img/af-legend.svg" alt="" class="centered img-responsive sbgn-legend">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id='SIF_legend_modal' class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 750px;">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="sbgn-frame">
+                            <h2 class="sbgn-text">Simple Interaction Format</h2>
+                            <img src="app/img/sif-legend.svg" alt="" class="centered img-responsive sbgn-legend">
                         </div>
                     </div>
                 </div>
@@ -1110,6 +1183,16 @@
 
             <td>
             <input id="enable-ports" type="checkbox" class="layout-text" <% if (enablePorts){ %> checked<%}%>>
+            </td>
+            </tr>
+
+            <tr>
+            <td class="header">
+            <span class="add-on layout-text"> Enable Topology Grouping of SIF Nodes </span>
+            </td>
+
+            <td>
+            <input id="enable-sif-topology-grouping" type="checkbox" class="layout-text" <% if (enableSIFTopologyGrouping){ %> checked<%}%>>
             </td>
             </tr>
 
@@ -2346,71 +2429,65 @@
             <div class="modal-body">
             <table class="table-condensed layout-table">
             <tbody>
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Family </span>
-            </td>
 
-            <td>
-            <%= getFontFamilyHtml() %>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Size </span>
-            </td>
-            <td>
-            <input id="font-properties-font-size" type="text" min="1" class="sbgn-input-small layout-text integer-input" value= <%= fontSize %> >
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Weight </span>
-            </td>
-
-            <td>
-            <select id="font-properties-select-font-weight" class='input-medium layout-text' name="font-weight-select">
-            <option id="font-properties-font-weight-none" value="" <% if (fontWeight == ''){ %> selected<%}%> >  </option>
-            <option id="font-properties-font-weight-lighter" value="lighter" <% if (fontWeight == 'lighter'){ %> selected<%}%> > Lighter </option>
-            <option id="font-properties-font-weight-normal" value="normal" <% if (fontWeight == 'normal'){ %> selected<%}%> > Normal </option>
-            <option id="font-properties-font-weight-bold" value="bold" <% if (fontWeight == 'bold'){ %> selected<%}%> > Bold </option>
-            <option id="font-properties-font-weight-bolder" value="bolder" <% if (fontWeight == 'bolder'){ %> selected<%}%> > Bolder </option>
-            </select>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Type </span>
-            </td>
-
-            <td>
-            <select id="font-properties-select-font-style" class='input-medium layout-text' name="font-style-select">
-            <option id="font-properties-font-style-none" value="" <% if (fontStyle == ''){ %> selected<%}%> >  </option>
-            <option id="font-properties-font-style-normal" value="normal" <% if (fontStyle == 'normal'){ %> selected<%}%> > Normal </option>
-            <option id="font-properties-font-style-italic" value="italic" <% if (fontStyle == 'italic'){ %> selected<%}%> > Italic </option>
-            <option id="font-properties-font-style-oblique" value="oblique" <% if (fontStyle == 'oblique'){ %> selected<%}%> > Oblique </option>
-            </select>
-            </td>
-            </tr>
-
-            <tr>
-            <td>
-            <span class="add-on layout-text"> Color </span>
-            </td>
-
-            <td>
-            <input id="font-properties-font-color" class="inspector-input-box" type='color' name="font-color-select" value= <%= fontColor %> />
-            </td>
-            </tr>
+            <%= generateFontPropertiesRows() %>
 
             </tbody>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
             <button id="set-font-properties" class="btn btn-default" >Set</button>
+            </div>
+            </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="infobox-properties-template">
+            <div class="modal-dialog modal-sm sbgn-modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Infobox Properties</h4>
+            </div>
+            <div class="modal-body">
+            <table class="table-condensed layout-table">
+            <tbody>
+
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Border Color </span>
+            </td>
+            <td>
+            <input id="infobox-properties-border-color" type="color" class="inspector-input-box" value= <%= borderColor %> >
+            </td>
+            </tr>
+
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Fill Color </span>
+            </td>
+            <td>
+            <input id="infobox-properties-background-color" type="color" class="inspector-input-box" value= <%= fillColor %> >
+            </td>
+            </tr>
+
+            <tr>
+            <td>
+            <span class="add-on layout-text"> Border Width </span>
+            </td>
+            <td>
+            <input id="infobox-properties-border-width" type="text" min="1" class="sbgn-input-small layout-text integer-input" value= <%= borderWidth %> >
+            </td>
+            </tr>
+
+            <%= generateFontPropertiesRows() %>
+            <%= generateSelectShapeRow() %>
+            </tbody>
+            </table>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+            <button id="set-as-default-infobox-properties" class="btn btn-default" style="margin-bottom: 2px; white-space:normal !important; word-wrap: break-word;"><%= generateSetAsDefaultText() %></button>
+            <button id="set-infobox-properties" class="btn btn-default" >Set</button>
             </div>
             </div>
             </div>
