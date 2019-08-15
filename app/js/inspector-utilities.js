@@ -1158,7 +1158,7 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
             else if(errorCode == "pd10126")
                html+="<label class=\"radio\"><input  type=\"radio\" name=\"optpd10126\" value=\""+ connectedEdges[i].id() + "\" checked>" + connectedEdges[i].source().data().label  + " to " + eles.data().class.toUpperCase() + " </label>" ;
             else
-               html+="<<label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> Association to " + connectedEdges[i].target().data().label + " </label>";
+               html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> Association to " + connectedEdges[i].target().data().label + " </label>";
         }
         if(connectedEdges.length > 0) 
             html+="</div>";
@@ -1345,7 +1345,9 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                      }
                      args = {eles: eles, option: "highlighted4"};
                      instance.highlight( args);
-           }
+           }else if(errors[currentPage].pattern == "pd10140") {
+                     html += "<p style=\"text-align:center\" > To fix, delete the glyph:</p>";
+            }
            else
                handled = false;
            if(handled)
@@ -1505,56 +1507,9 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                       eles.data('porttarget',tmpPort);
                    }
                }
-    /*           else if(errors[currentPage].pattern == "pd10107" ){
-                        var edges = cy.edges('[target = "' + id +'"]');
-                        var addedNodeNum = edges.length;
-                        var nodeParams = {class : eles.data().class, language : eles.data().language};
-                        var edgeParams = {class : edges[0].data().class, language : edges[0].data().language};
-                        var promptInvalidEdge = function(){
-                            appUtilities.promptInvalidEdgeWarning.render();
-                        }
-                        for (var i = 0 ; i<addedNodeNum;i++){
-                           var shiftX = 22;
-                           var shiftY = 22;
-                           var source = edges[i].source();
-                           var x = edges[i].targetEndpoint().x;
-                           var y = edges[i].targetEndpoint().y;
-                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
-                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
-                           var ratio = ydiff/xdiff;
-                           if(xdiff ==0){
-                               shiftX =0;
-                               shiftY = 22;
-                           }
-                           else if(ydiff==0){
-                               shiftY=0;
-                               shiftX=22;
-                           }
-                           else {
-                                var result = 22*22;
-                                var ratiosquare = ratio * ratio;
-                                var dx = Math.sqrt(result/(ratiosquare+1));
-                                shiftX = dx;
-                                shiftY = shiftX*ratio;
-                           }
-                           if(eles.position().x > source.position().x){
-                               shiftX *= -1;
-                           }
-                            if(eles.position().y> source.position().y){
-                               shiftY *= -1;
-                            }                            
-                            var cX = x+shiftX;
-                            var cY = y+shiftY;
-                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
-                            var node = cy.nodes('[id = "node' + i +'"]');
-                            cy.remove(edges[i]);
-                            chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
-                            var edge = cy.edges()[cy.edges().length-1];
-                            edge.data('portsource',edges[i].data().portsource);
-                            
-                        }
-                        cy.remove(eles);
-               } */
+               if(errors[currentPage].pattern == "pd10140" ) {
+                    cy.remove(eles);
+               }
                var file = chiseInstance.createSbgnml();
                errorsNew = chiseInstance.doValidation(file);
                chiseInstance.removeHighlights();
