@@ -66,8 +66,6 @@ Third-party libraries:
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) and
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU LGPL](https://www.gnu.org/licenses/lgpl-3.0.html).
 
-Thanks to JetBrains for an [Open Source License](https://www.jetbrains.com/buy/opensource/)
-
 ## Team
 
   * [Hasan Balci](https://github.com/hasanbalci), [Nasim Saleh](https://github.com/nasimsaleh), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Metin Can Siper](https://github.com/metincansiper), [Ozgun Babur](https://github.com/ozgunbabur), and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/), and [Alexander Mazein](https://github.com/amazein) of [EISBM](http://eisbm.org)
