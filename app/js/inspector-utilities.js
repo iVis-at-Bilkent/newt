@@ -1149,7 +1149,7 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
                     html+="<p style=\"text-align:center\" > To fix, choose one of the arcs whose source is " + eles.data().class.toUpperCase() + ":</p>  " ;
                 else if(errorCode == "pd10126")
                      html+="<p style=\"text-align:center\" > To fix, choose one of the logic arcs connected to logical operator: </p>  " ;
-                 html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio\" id=\"errors"+ errorCode +"\">";
+                 html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
              }
             if(errorCode == "pd10104")
                html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10104\" value=\""+ connectedEdges[i].source().data().label + "\" checked>" + connectedEdges[i].source().data().label + " to dissociation </label>";
@@ -1166,7 +1166,7 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
             params.handled = false;
       } else if (errorCode == "pd10142") {
           html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
-          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio\" id=\"errors"+ errorCode +"\">";
+          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
           html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
           html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
         }else {
@@ -1186,7 +1186,7 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
                         html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes as a source reference to equivalence arc: </p>  " ;
                     else
                         html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of PN classes as a target reference to modulation: </p> " ;
-                     html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio\" id=\"errors"+ errorCode +"\">";
+                     html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
 
              }
             if(errorCode != "pd10112" ) {
@@ -1351,7 +1351,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
            else
                handled = false;
            if(handled)
-                html+="</td> <td style=\"width:10% text-align: right; vertical-align:middle;\"><div class=\"menu-break-small sbgn-toolbar-element\">&nbsp</div><img id=\"fix-errors-of-validation-icon\" class=\"sbgn-toolbar-element\" style=\"text-align: right; vertical-align:middle;opacity: 1.0;filter: alpha(opacity=100);\"src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\">";
+                html+="</td> <td style=\"width:10% text-align: right; vertical-align:middle;\"><img id=\"fix-errors-of-validation-icon\" class=\"sbgn-toolbar-element\" style=\"text-align: right; vertical-align:middle;opacity: 0.7;filter: alpha(opacity=70);\"src=\"app/img/fix-error.svg\" title=\"Execute\"width=\"24\"></div>";
            html+="</td></tr></table>";
            var next = "Next";
            if(currentPage == 0) {
