@@ -68,6 +68,8 @@ module.exports = function (chiseInstance) {
       },
       // function that handles edge reconnection
       handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
+      zIndex: 900
+      // whether to start the plugin in the enabled state
     });
 
     contextMenus.appendMenuItems([
