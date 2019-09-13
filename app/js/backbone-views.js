@@ -2275,6 +2275,20 @@ var LoadUserPreferencesView = Backbone.View.extend({
               var infoboxStyle = $.extend( {}, currentDefaults, infoStyle.styles );
               chiseInstance.setDefaultProperty( infoStyle.element, infoStyle.clazz, infoboxStyle );
 
+              //statesandinfos
+
+              targetNodes.forEach(function(node) {
+                var infoboxesIndices = node.data("statesandinfos").length;
+                for(var i = 0 ; i< infoboxesIndices ; i++){
+                  if(node.data('statesandinfos')[i].clazz == infoStyle.clazz){
+                    appUtilities.getActiveChiseInstance().updateInfoboxStyle(node, i, infoboxStyle);
+
+                  }
+
+                }
+              });
+              
+
             });
 
             }
