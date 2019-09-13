@@ -2044,7 +2044,19 @@ var SaveUserPreferencesView = Backbone.View.extend({
             preferences.elementsStyles.push(element);
           }        
         });
-      }    
+      }
+      
+      //stagedElementInfoBoxStyles
+      preferences.elementInfoBoxStyles = [];
+      if (typeof appUtilities.stagedElementInfoBoxStyles !== 'undefined') {
+        
+        appUtilities.stagedElementInfoBoxStyles.forEach(function(infoStyle){
+          if(document.getElementById("user-prefrences-object-"+infoStyle['element']+"-check").checked){
+            preferences.elementInfoBoxStyles.push(infoStyle);
+          }        
+        });
+      }
+
       var blob = new Blob([JSON.stringify(preferences, null, 2)], {type: "application/json"});
       filename = $("#save-user-preferences-filename").val(); 
       FileSaver.saveAs(blob, filename);    
@@ -2250,6 +2262,24 @@ var LoadUserPreferencesView = Backbone.View.extend({
             }
             //set the loaded styles as default values
             chiseInstance.elementUtilities.setDefaultProperties( sbgnClass, nameToValue );
+
+
+            //set info boxes styles
+            if(typeof preferences.elementInfoBoxStyles !== 'undefined'){ 
+
+            var infoStyles =  preferences.elementInfoBoxStyles.filter(b => b.element == sbgnClass);
+
+            infoStyles.forEach(function(infoStyle){
+
+              var currentDefaults = chiseInstance.elementUtilities.getDefaultProperties( infoStyle.element )[ infoStyle.clazz ];
+              var infoboxStyle = $.extend( {}, currentDefaults, infoStyle.styles );
+              chiseInstance.setDefaultProperty( infoStyle.element, infoStyle.clazz, infoboxStyle );
+
+            });
+
+            }
+
+
           }  
         });
       }
@@ -3400,15 +3430,27 @@ var InfoboxPropertiesView = Backbone.View.extend({
     });
 
     $(document).off("click", "#set-as-default-infobox-properties").on("click", "#set-as-default-infobox-properties", function( evt ) {
+
+      if (typeof appUtilities.stagedElementInfoBoxStyles === 'undefined') {
+        appUtilities.stagedElementInfoBoxStyles = [];
+      } 
+     
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
       var parent = chiseInstance.classes.getAuxUnitClass(infoboxObj).getParent(infoboxObj, cy);
       var parentClass = parent.data('class');
 
+     
       var updates = readInfoboxProps();
       var currentDefaults = chiseInstance.elementUtilities.getDefaultProperties( parentClass )[ infoboxObj.clazz ];
       var infoboxStyle = $.extend( {}, currentDefaults, updates );
       chiseInstance.setDefaultProperty( parentClass, infoboxObj.clazz, infoboxStyle );
+      var  stagedElement =  appUtilities.stagedElementInfoBoxStyles.find(b => b.element == parentClass && b.clazz == infoboxObj.clazz);
+      if(stagedElement){
+        stagedElement.styles = infoboxStyle;
+      }else{
+        appUtilities.stagedElementInfoBoxStyles.push({element : parentClass, clazz: infoboxObj.clazz,styles: infoboxStyle});
+      }
     });
   }
 });
