@@ -103,7 +103,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   }
 
   function getInfoboxDetailsBtnHtml(index) {
-    var html = "<label id='inspector-infobox-" + index + "' style='cursor: pointer;font: 10pt Helvetica;'>" + "..." + "</label>";
+    var html = "<label id='inspector-infobox-" + index + "' style='cursor: pointer;font: 10pt Helvetica; font-weight:bold !important; margin:5px !important;'>" + "..." + "</label>";
 
     return html;
   }
@@ -1308,15 +1308,17 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
         var radioButtonRules = ["pd10104","pd10108","pd10109","pd10110","pd10111","pd10112","pd10124","pd10125","pd10126","pd10127","pd10128","pd10142"];
         var radioButtonChangeEvent = ["pd10104","pd10108","pd10110","pd10111","pd10109","pd10124","pd10125","pd10126","pd10127","pd10128"];
         var chiseInstance = appUtilities.getActiveChiseInstance();
-        chiseInstance.removeHighlights();
+       // chiseInstance.removeHighlights();
+
+        var viewUtilitilesInstance = cy.viewUtilities('get');
+        viewUtilitilesInstance.removeHighlights();
         if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
             var unhighlighted = ["pd10107"];
             var eles =  cy.elements('[id="' + id + '"]');
             if( !unhighlighted.includes(errors[currentPage].pattern)) {
-               var instance = cy.viewUtilities('get');
                var args = {eles: eles, option: "highlighted4"};
-               instance.highlight( args);
+               viewUtilitilesInstance.highlight( args);
            }
           html += "<b><p class='panel-body' style=\"color:red; text-align:center;\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
@@ -1339,12 +1341,11 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                      html += "<p style=\"text-align:center\" > To fix, split the ‘source and sink’ glyph for each production arc:</p>";
                        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
                        for(var i=0; i<connectedEdges.length;i++) {
-                           var instance = cy.viewUtilities('get');
                            var args = {eles: connectedEdges[i], option: "highlighted4"};
-                           instance.highlight( args);
+                           viewUtilitilesInstance.highlight( args);
                      }
                      args = {eles: eles, option: "highlighted4"};
-                     instance.highlight( args);
+                     viewUtilitilesInstance.highlight( args);
            }else if(errors[currentPage].pattern == "pd10140") {
                      html += "<p style=\"text-align:center\" > To fix, delete the glyph:</p>";
             }
@@ -1402,6 +1403,130 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               inspectorUtilities.handleSBGNConsole(errors,currentPage,cy,data,false);
       });
       
+        /*$('#fix-errors-of-validation-icon').on('click', function () {
+              var actions = [];
+               var cy = appUtilities.getActiveCy();
+               var chiseInstance = appUtilities.getActiveChiseInstance();
+               var errorsNew = [];
+               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
+                   var targetTmp = eles.target();
+                   var sourceTmp = eles.source();
+                   if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
+                      var sourceNew = targetTmp.id();
+                      var targetNew = sourceTmp.id();
+                   
+                      var tmpPort = eles.data().portsource;
+                
+                     actions.push({name: "moveEdge", param: {edge: eles, source: sourceNew, target: targetNew, portsource: eles.data().porttarget, porttarget:eles.data().portsource}});  
+
+                      cy.undoRedo().do("batch", actions);
+                   
+                   }
+               }else if(errors[currentPage].pattern == "pd10103" ||  errors[currentPage].pattern == "pd10107"){
+                        var edges = cy.nodes('[id = "' + id +'"]').connectedEdges();
+                        var addedNodeNum = edges.length;
+                        var promptInvalidEdge = function(){
+                            appUtilities.promptInvalidEdgeWarning.render();
+                        }
+                        var nodeParams = {class : eles.data().class, language : eles.data().language};
+                        for (var i = 0 ; i<addedNodeNum;i++){ 
+                           var edgeParams = {class : edges[i].data().class, language : edges[i].data().language};
+                           var shiftX = 22;
+                           var shiftY = 22;
+                           var target = edges[i].target();
+                           var source = edges[i].source();
+                           var x = edges[i].sourceEndpoint().x;
+                           var y = edges[i].sourceEndpoint().y;
+                           if(edges[i].data().class != 'consumption'){
+                                x = edges[i].targetEndpoint().x;
+                                y = edges[i].targetEndpoint().y;
+                           }
+                               
+                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
+                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
+                           var ratio = ydiff/xdiff;
+                           if(xdiff ==0){
+                               shiftX =0;
+                               shiftY = 22;
+                           }
+                           else if(ydiff==0){
+                               shiftY=0;
+                               shiftX=22;
+                           }
+                           else {
+                                var result = 22*22;
+                                var ratiosquare = ratio * ratio;
+                                var dx = Math.sqrt(result/(ratiosquare+1));
+                                shiftX = dx;
+                                shiftY = shiftX*ratio;
+                           }
+                           if(edges[i].data().class == 'consumption'){
+                                if(eles.position().x > target.position().x)
+                                    shiftX *= -1;
+                                if(eles.position().y> target.position().y)
+                                    shiftY *= -1;
+                           }else {
+                                if(eles.position().x > source.position().x)
+                                    shiftX *= -1;
+                                if(eles.position().y> source.position().y)
+                                    shiftY *= -1;
+                           }
+                            var cX = x+shiftX;
+                            var cY =y+shiftY;
+
+                            //actions.push({name: "addNode", param: {newNode : {x:cX,y:cY,}}});
+
+                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
+                            var node = cy.nodes('[id = "node' + i +'"]');
+                            if(edges[i].data().class == 'consumption'){
+                                chiseInstance.addEdge(node.id(),target.id(), edgeParams, promptInvalidEdge);
+                                var edge = cy.edges()[cy.edges().length-1];
+                                edge.data('porttarget',edges[i].data().porttarget);
+                            }
+                            else{
+                                chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
+                                var edge = cy.edges()[cy.edges().length-1];
+                                edge.data('portsource',edges[i].data().portsource);
+                            }
+                            cy.remove(edges[i]);
+                        }
+                        cy.remove(eles);
+               } // put batch here
+               else if(radioButtonRules.includes(errors[currentPage].pattern)){
+                      inspectorUtilities.fixRadioButtons(errors[currentPage].pattern ,eles,cy);                       
+               } if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+                   var targetTmp = eles.target();
+                   var sourceTmp = eles.source();
+                   var chiseInstance = appUtilities.getActiveChiseInstance();
+                   if(chiseInstance.elementUtilities.isPNClass(targetTmp) && chiseInstance.elementUtilities.isEPNClass(sourceTmp)) {
+                      var sourceNew = targetTmp.id();
+                      var targetNew = sourceTmp.id();
+                     eles = eles.move({
+                         target: targetNew,
+                         source : sourceNew
+                     
+                      });
+                      var tmpPort = eles.data().portsource; 
+                      eles.data('portsource',eles.data().porttarget);
+                      eles.data('porttarget',tmpPort);
+                   }
+               }
+               if(errors[currentPage].pattern == "pd10140" ) {
+                    cy.remove(eles);
+               }
+               var file = chiseInstance.createSbgnml();
+               errorsNew = chiseInstance.doValidation(file);
+               viewUtilitilesInstance.removeHighlights();
+               if(errorsNew.length ==0){
+                    cy.animate({
+                      duration: 100,
+                      easing: 'ease',
+                      fit :{eles:{},padding:20}
+                   });
+               }
+               inspectorUtilities.handleSBGNConsole(errorsNew,0,cy,file,false);
+
+      });*/
         $('#fix-errors-of-validation-icon').on('click', function () {
                var cy = appUtilities.getActiveCy();
                var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1420,6 +1545,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                       var tmpPort = eles.data().portsource; 
                       eles.data('portsource',eles.data().porttarget);
                       eles.data('porttarget',tmpPort);
+               
                    }
                }else if(errors[currentPage].pattern == "pd10103" ||  errors[currentPage].pattern == "pd10107"){
                         var edges = cy.nodes('[id = "' + id +'"]').connectedEdges();
