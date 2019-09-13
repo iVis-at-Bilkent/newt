@@ -72,4 +72,4 @@ Third-party libraries:
 
 #### Alumni
 
-  * [Ilkin Safarli](https://github.com/kinimesi), [Ahmet Candiroglu](https://github.com/ahmetcandiroglu), [Kaan Sancak](https://github.com/kaansancak), [Ludovic Roy](https://github.com/royludo), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), Alper Karacelik, Selim Firat Yilmaz, [Alexander Mazein](https://github.com/amazein)
+  * [Ilkin Safarli](https://github.com/kinimesi), [Ahmet Candiroglu](https://github.com/ahmetcandiroglu), [Kaan Sancak](https://github.com/kaansancak), [Ludovic Roy](https://github.com/royludo), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), [Alper Karacelik](https://github.com/alperkaracelik), [Selim Firat Yilmaz](https://github.com/mrsfy), [Alexander Mazein](https://github.com/amazein)
