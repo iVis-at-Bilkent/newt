@@ -1968,7 +1968,7 @@ var SaveUserPreferencesView = Backbone.View.extend({
       appUtilities.stagedElementStyles.forEach(function(item, index){
         stagedObjects.push(item["element"]); 
       });
-    } 
+    }    
     param.stagedObjects = stagedObjects;
     self.template = self.template(param);
     $(self.el).html(self.template);
@@ -2044,7 +2044,8 @@ var SaveUserPreferencesView = Backbone.View.extend({
             preferences.elementsStyles.push(element);
           }        
         });
-      }    
+      }     
+     
       var blob = new Blob([JSON.stringify(preferences, null, 2)], {type: "application/json"});
       filename = $("#save-user-preferences-filename").val(); 
       FileSaver.saveAs(blob, filename);    
@@ -2188,71 +2189,106 @@ var LoadUserPreferencesView = Backbone.View.extend({
       
       if(typeof preferences.elementsStyles !== 'undefined'){        
         preferences.elementsStyles.forEach(function(item, index){
-          var sbgnClass = item["element"];           
+          var sbgnClass = item["element"];
           if(document.getElementById("load-user-prefrences-object-"+sbgnClass+"-check").checked){
-            var nameToValue = {};
-            item.styles.forEach(function(style, index){
-              nameToValue[style.name] = style.value;
-            });
-
             var targetNodes =cy.elements('[class="' + sbgnClass + '"]')
-            
-            //apply changes to exisiting elements only if user check the option and there are elements on canvas of this sbgn class type
-            //else just set the styles as default values 
-            if(targetNodes.length > 0 && document.getElementById("load-user-prefrences-apply-changes").checked)
-            {
-
-              if(item['type'] == 'node')
+            if(item.styles.length > 0){
+              var nameToValue = {};
+              item.styles.forEach(function(style, index){
+                nameToValue[style.name] = style.value;
+              });
+  
+              //apply changes to exisiting elements only if user check the option and there are elements on canvas of this sbgn class type
+              //else just set the styles as default values 
+              if(targetNodes.length > 0 && document.getElementById("load-user-prefrences-apply-changes").checked)
               {
-                 // apply node width and height change to existing elements              
-                targetNodes.forEach(function(node) {
-                  cy.trigger('noderesize.resizestart', [null, node]);
-                  chiseInstance.resizeNodes(node, nameToValue["width"], nameToValue["height"], false);
-                  cy.trigger('noderesize.resizeend', [null, node]);
-                });
-                
-                chiseInstance.changeData(targetNodes, "border-color", nameToValue["border-color"]);
-                chiseInstance.changeData(targetNodes, "border-width", nameToValue["border-width"]);
-                chiseInstance.changeData(targetNodes, "background-color",  nameToValue["background-color"]);
-
-                //hande opacity
-                chiseInstance.changeData(targetNodes, "background-opacity",  nameToValue["background-opacity"]);
-                chiseInstance.changeData(targetNodes, "background-image-opacity",  nameToValue["background-image-opacity"]);
-
-                //handel font
-                var data = {};            
-                data['font-size'] = nameToValue['font-size'] != '' ? nameToValue['font-size'] : undefined;
-                data['font-family'] = nameToValue['font-sifamilyze'] != '' ? nameToValue['font-family'] : undefined;
-                data['font-weight'] = nameToValue['font-weight'] != '' ? nameToValue['font-weight'] : undefined;
-                data['font-style'] = nameToValue['font-style'] != '' ? nameToValue['font-style'] : undefined;
-                data['color'] = nameToValue['color'] != '' ? nameToValue['color'] : undefined; 
-                chiseInstance.changeFontProperties(targetNodes, data);
-
-                targetNodes.forEach(function(node) {
-                  node.data('background-image', nameToValue['background-image']);
-                  node.data('background-position-x', nameToValue['background-position-x']);
-                  node.data('background-position-y', nameToValue['background-position-y']);
-                  node.data('background-width', nameToValue['background-width']);
-                  node.data('background-height', nameToValue['background-height']);
-                  node.data('background-fit', nameToValue['background-fit']);
-                  node.data('background-image-opacity', nameToValue['background-image-opacity']);
-                });
-
-                chiseInstance.setMultimerStatus(targetNodes,nameToValue['multimer'] );
-                chiseInstance.setCloneMarkerStatus(targetNodes,nameToValue['clonemarker'] ); 
+  
+                if(item['type'] == 'node')
+                {
+                   // apply node width and height change to existing elements              
+                  targetNodes.forEach(function(node) {
+                    cy.trigger('noderesize.resizestart', [null, node]);
+                    chiseInstance.resizeNodes(node, nameToValue["width"], nameToValue["height"], false);
+                    cy.trigger('noderesize.resizeend', [null, node]);
+                  });
+                  
+                  chiseInstance.changeData(targetNodes, "border-color", nameToValue["border-color"]);
+                  chiseInstance.changeData(targetNodes, "border-width", nameToValue["border-width"]);
+                  chiseInstance.changeData(targetNodes, "background-color",  nameToValue["background-color"]);
+  
+                  //hande opacity
+                  chiseInstance.changeData(targetNodes, "background-opacity",  nameToValue["background-opacity"]);
+                  chiseInstance.changeData(targetNodes, "background-image-opacity",  nameToValue["background-image-opacity"]);
+  
+                  //handel font
+                  var data = {};            
+                  data['font-size'] = nameToValue['font-size'] != '' ? nameToValue['font-size'] : undefined;
+                  data['font-family'] = nameToValue['font-sifamilyze'] != '' ? nameToValue['font-family'] : undefined;
+                  data['font-weight'] = nameToValue['font-weight'] != '' ? nameToValue['font-weight'] : undefined;
+                  data['font-style'] = nameToValue['font-style'] != '' ? nameToValue['font-style'] : undefined;
+                  data['color'] = nameToValue['color'] != '' ? nameToValue['color'] : undefined; 
+                  chiseInstance.changeFontProperties(targetNodes, data);
+  
+                  targetNodes.forEach(function(node) {
+                    node.data('background-image', nameToValue['background-image']);
+                    node.data('background-position-x', nameToValue['background-position-x']);
+                    node.data('background-position-y', nameToValue['background-position-y']);
+                    node.data('background-width', nameToValue['background-width']);
+                    node.data('background-height', nameToValue['background-height']);
+                    node.data('background-fit', nameToValue['background-fit']);
+                    node.data('background-image-opacity', nameToValue['background-image-opacity']);
+                  });
+  
+                  chiseInstance.setMultimerStatus(targetNodes,nameToValue['multimer'] );
+                  chiseInstance.setCloneMarkerStatus(targetNodes,nameToValue['clonemarker'] ); 
+                }
+                else
+                {
+                  //if type is edge only apply width and line-color
+                  chiseInstance.changeData(targetNodes, "width", nameToValue['width']);
+                  chiseInstance.changeData(targetNodes, "line-color", nameToValue['line-color']);
+                }             
               }
-              else
-              {
-                //if type is edge only apply width and line-color
-                chiseInstance.changeData(targetNodes, "width", nameToValue['width']);
-                chiseInstance.changeData(targetNodes, "line-color", nameToValue['line-color']);
-              }             
+              //set the loaded styles as default values
+              chiseInstance.elementUtilities.setDefaultProperties( sbgnClass, nameToValue );
+  
+  
+            
+  
             }
-            //set the loaded styles as default values
-            chiseInstance.elementUtilities.setDefaultProperties( sbgnClass, nameToValue );
-          }  
+
+            if(item.infoBoxStyles.length > 0){
+                //set info boxes styles 
+              var infoStyles =  item.infoBoxStyles;
+  
+             
+              infoStyles.forEach(function(infoStyle){
+  
+                var currentDefaults = chiseInstance.elementUtilities.getDefaultProperties( sbgnClass )[ infoStyle.clazz ];
+                var infoboxStyle = $.extend( {}, currentDefaults, infoStyle.styles );
+                chiseInstance.setDefaultProperty( sbgnClass, infoStyle.clazz, infoboxStyle );
+  
+                //statesandinfos
+
+                if(targetNodes.length > 0 && document.getElementById("load-user-prefrences-apply-changes").checked){
+                  targetNodes.forEach(function(node) {
+                    var infoboxesIndices = node.data("statesandinfos").length;
+                    for(var i = 0 ; i< infoboxesIndices ; i++){
+                      if(node.data('statesandinfos')[i].clazz == infoStyle.clazz){
+                        appUtilities.getActiveChiseInstance().updateInfoboxStyle(node, i, infoboxStyle);    
+                      }
+    
+                    }
+                  });
+                } 
+              });
+      
+            }  
+         
+        }
         });
       }
+    
        
       $(self.el).modal('toggle');
     });
@@ -3400,15 +3436,41 @@ var InfoboxPropertiesView = Backbone.View.extend({
     });
 
     $(document).off("click", "#set-as-default-infobox-properties").on("click", "#set-as-default-infobox-properties", function( evt ) {
+
+      if (typeof appUtilities.stagedElementStyles === 'undefined') {
+        appUtilities.stagedElementStyles = [];
+      } 
+     
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
       var parent = chiseInstance.classes.getAuxUnitClass(infoboxObj).getParent(infoboxObj, cy);
       var parentClass = parent.data('class');
 
+     
       var updates = readInfoboxProps();
       var currentDefaults = chiseInstance.elementUtilities.getDefaultProperties( parentClass )[ infoboxObj.clazz ];
       var infoboxStyle = $.extend( {}, currentDefaults, updates );
       chiseInstance.setDefaultProperty( parentClass, infoboxObj.clazz, infoboxStyle );
+
+      var  stagedElement =  appUtilities.stagedElementStyles.find(b => b.element == parentClass);
+      if(stagedElement)
+      {
+        var stagedElementInfoboxStyles = stagedElement.infoBoxStyles.find(b=>b.clazz == infoboxObj.clazz);
+        if(stagedElementInfoboxStyles)
+        {
+          stagedElementInfoboxStyles.styles = infoboxStyle;
+        }
+        else
+        {
+          stagedElement.infoBoxStyles.push({clazz:infoboxObj.clazz,styles:infoboxStyle});
+        }
+      }
+      else
+      {
+            appUtilities.stagedElementStyles.push({element : parentClass, type:'node',styles:[], infoBoxStyles:[{clazz:infoboxObj.clazz,styles:infoboxStyle}]});
+      }
+
+     
     });
   }
 });

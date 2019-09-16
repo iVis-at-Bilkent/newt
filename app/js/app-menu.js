@@ -119,7 +119,7 @@ module.exports = function() {
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
-  fontPropertiesView = appUtilities.infoboxPropertiesView = new BackboneViews.InfoboxPropertiesView({el: '#infobox-properties-table'});
+  infoboxPropertiesView = appUtilities.infoboxPropertiesView = new BackboneViews.InfoboxPropertiesView({el: '#infobox-properties-table'});
   promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
@@ -1200,9 +1200,15 @@ module.exports = function() {
 
     $("#add-compartment-for-selected").click(function (e) {
 
+     
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == 'SIF'){
+        return;
+      }
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
@@ -1214,6 +1220,11 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == 'SIF'){
+        return;
+      }
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
@@ -1221,6 +1232,15 @@ module.exports = function() {
     });
 
     $("#create-reaction-template").click(function (e) {
+
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == 'SIF' || mapType == 'AF'){
+        return;
+      }
+
       reactionTemplateView.render();
     });
 
