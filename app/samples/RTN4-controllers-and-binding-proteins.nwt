@@ -1,0 +1,470 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="RTN4-controllers-and-binding-proteins.nwt" language="sif">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#d9d9d9ff"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="undefined"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="noded9d9d915555551.2511normalnormalHelvetica000" id-list="nwtN_a396da01-f35d-484b-b3d0-a7bc839e9c9f nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317 nwtN_6ffc7aef-2aa7-43a6-aa1a-fccdb10fd4d5 nwtN_63c9cccb-d993-4c7e-8378-aa152731c25a nwtN_b3e7c52f-5a41-445a-9e0a-3baa17a92b16 nwtN_249fc299-65dc-4e80-95fb-0b43ba2a96f8 nwtN_bdcaedf9-fe5b-4184-a3d4-01c936032416 nwtN_6d301440-ad4a-4f1a-893c-807faef0ae25 nwtN_9f4b21b6-4ef0-44c4-ac74-ebc72eaec1ba nwtN_fd1cefbd-2a5f-460c-a4e5-f93ee0e056df nwtN_cac03763-cd02-469f-8e6d-cd8d730be0b7 nwtN_78a45cbe-3e53-4a7a-ae77-4f0568d30d10 nwtN_6598a9f3-ed47-41c6-b330-802c9197227b nwtN_77c24807-efa4-414d-9954-bf9a866f55c7 nwtN_10cdfb6a-cd17-4746-aec9-42bd3a867376 nwtN_25747237-5aca-48de-ad1a-ebcdd47252dd nwtN_47ce51b3-a15e-45d5-88fc-ed31ce473429 nwtN_bac51b6c-e105-4a1b-8832-eaa22a4744d9 nwtN_507247d6-f2b5-4acf-aa76-ad02b52f2495 nwtN_445a077d-3131-4727-b6b1-03b6b45b3bb0 nwtN_00ae0b30-9617-431d-b364-08e9363f0ed0 nwtN_8ba8922c-5768-45e6-b482-946ee6cb18ad nwtN_66fd6139-6ef4-4f5e-bf4b-454bb18c15a3 nwtN_4bf8358e-eca7-4c5a-8158-48221f0b948d nwtN_c6e841c2-7dbd-43de-80e8-d5c553db4e75 nwtN_794ade0f-eda5-4733-8da3-cd7f7604c4b2 nwtN_dbdf7c9b-fc04-4772-b0e3-33f132da4a49 nwtN_84c1c2ce-f523-41c6-9835-511d414e49ee nwtN_2957ca73-8f89-43a2-bfb5-f481d72a621c nwtN_8079f6e6-4274-4c75-be2c-f467f0b61607 nwtN_ba163e8b-7e6f-434c-97dc-c75f8c9bb8a6 nwtN_aca6817a-c7a4-43ea-b6d0-cd0958dc432b nwtN_13033192-67d1-493f-b0f9-c24363c0a1e4 nwtN_9e195833-dce8-4449-b411-b0e9e38abe8f nwtN_826b292e-6f75-4001-bbac-a0622ff2e7b6 nwtN_9c57127b-06f3-45d5-9043-3405bfc121c7 nwtN_7197f18a-bc46-4d75-a740-47edc410b96d nwtN_00d0c825-d5e1-4de6-a471-37c14626cfc3 nwtN_7fad6d89-0418-4a55-94b6-6c510aab52de nwtN_313aaec6-68a6-4991-916b-efbf0cc45b8c nwtN_3bc14f69-8ac0-4863-8e2e-161fef057981 nwtN_870c86dd-da6b-491b-bffb-dba880634294 nwtN_056b661d-439e-44d5-aa64-16d309f07c33 nwtN_0c25d7d1-7b8a-44a9-b90c-50e5a981c53f nwtN_3393048f-88cb-40b5-b436-290867d07be8 nwtN_10314662-41c1-4787-b303-0f1dae26d2b9 nwtN_5ba0e589-6b1b-4f35-94e8-2b882fa68f07">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1"/>
+          </style>
+          <style id="edgeB4E1CD1.25" id-list="nwtE_3f7b98fa-d195-484c-b08f-e5e66dcca0a9 nwtE_d54b79c6-a6e5-4506-9fb4-5d49f2b821f0 nwtE_5707e8af-26b6-449d-aded-ca9cc5cef8c3 nwtE_a6a09746-0d7c-4f35-950b-8b102d8ca079 nwtE_3e53cf23-7c1e-426c-8f24-3c19d424345f nwtE_a7bf3479-c271-48c7-afad-60aca3a987ff nwtE_dea5f194-7ed7-4316-839e-b22bc5ce30cf nwtE_3228e438-976a-493f-af92-41db81890c07 nwtE_249b8ed1-86b6-4f53-9ff7-624bf8ad3fe8 nwtE_e869d92f-29a6-4afd-a2a9-17836f5f9322 nwtE_fafda089-06aa-4cc3-8340-f652358d96cf nwtE_116024bc-5768-4766-a1f1-79538c9a8953 nwtE_0d4ed74a-9559-4862-8e2d-e1b772a72b30 nwtE_58f7eca4-fbcf-4d3a-b98c-7724c636e429">
+            <g stroke-width="1.25"/>
+          </style>
+          <style id="edge6A0F301.25" id-list="nwtE_008d4a1d-5c65-46ea-aa0c-8042a35dfbda nwtE_49f58389-97fc-4fc5-b9b5-95e72a7335f8 nwtE_189ea3c9-e862-4e2a-ac82-5ef71502ad73 nwtE_9e40724b-2f74-4cd3-ae54-5c40b5237c46 nwtE_5329e9c8-aee8-4d92-8ab1-ea587fce67eb nwtE_dd371df3-1c49-4c74-abf5-6f9e4fef3e9e nwtE_257c859d-73a7-482f-b866-913a2b07b70b nwtE_e6680eaa-1025-4c24-98bf-68b44bc60ad4 nwtE_1e906957-add1-4f8f-bd14-7e94e9ca0e5a nwtE_2dbc7a76-d2bc-4409-8e42-599521549ee7 nwtE_538c5138-b3c2-4056-a543-27a74b91fba9 nwtE_f6753fcf-1793-4518-b65f-e87fa1b05eec nwtE_2908cdb1-32de-41ed-9745-bb683e16f920 nwtE_9d59106d-e029-44d3-829c-717b79ac3793 nwtE_ad19b5f2-95fa-4c7d-a6a0-76f0a36a3f6d nwtE_8c30a44c-849a-4a24-b4cb-b643e3fb8d63 nwtE_4d6492ad-ccf3-4efd-a4b8-216bce2650f1 nwtE_bd088b43-e333-4642-af63-ba38334c403d nwtE_8e4ba785-cf1c-4d31-a397-f1f391248ff3 nwtE_1ab963dc-cdbc-42e2-861a-527dda7f8c76 nwtE_0009fcaa-9bbc-4e4c-a4ca-10197436f093 nwtE_79c575c1-d431-4d81-ae0d-d5d5187954fb nwtE_e91d9886-e16f-43b2-9d39-dbef008616ec nwtE_7be09e62-5463-42e6-a9e1-7e81e540fdfb nwtE_9cabd923-a371-4aa5-8fd7-ccb3f6a0f85e">
+            <g stroke-width="1.25"/>
+          </style>
+          <style id="edgeB4987A1.25" id-list="nwtE_c5ab0aa6-6874-4256-87e6-6abf9893bedd nwtE_46c3b4d1-77bc-4a88-b875-e6e13d226466 nwtE_f0712c41-3b75-429d-980b-bf6bce5f23ca nwtE_10633e15-dc93-4936-bd9b-0e07d064207c nwtE_fe8962e7-ce83-4c05-80a6-313185c49957 nwtE_b93b6c11-c5c7-455d-a0a6-e057465d82bb nwtE_30fa1752-e46f-47a5-b8eb-f948401641bd">
+            <g stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>large</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>1</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>greyscale</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapDescription/>
+      </mapProperties>
+    </extension>
+    <glyph id="nwtN_a396da01-f35d-484b-b3d0-a7bc839e9c9f" class="SIF macromolecule">
+      <label text="ABCB1"/>
+      <bbox x="102.05445681990369" y="221.7906550362705" w="59.189453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317" class="SIF macromolecule">
+      <label text="RTN4"/>
+      <bbox x="222.7962405306716" y="154.08107681903866" w="48.90625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6ffc7aef-2aa7-43a6-aa1a-fccdb10fd4d5" class="SIF macromolecule">
+      <label text="ALAD"/>
+      <bbox x="50.08771134026897" y="257.93686915941635" w="49.1845703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_63c9cccb-d993-4c7e-8378-aa152731c25a" class="SIF macromolecule">
+      <label text="GSTT1"/>
+      <bbox x="352.0996853048844" y="180.27318896587477" w="58.33984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b3e7c52f-5a41-445a-9e0a-3baa17a92b16" class="SIF macromolecule">
+      <label text="SLC11A2"/>
+      <bbox x="33.50291398733688" y="33.91854547705549" w="73.10546875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_249fc299-65dc-4e80-95fb-0b43ba2a96f8" class="SIF macromolecule">
+      <label text="ALDH2"/>
+      <bbox x="124.49603692906473" y="180.3443332852441" w="58.3544921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_bdcaedf9-fe5b-4184-a3d4-01c936032416" class="SIF macromolecule">
+      <label text="TRPC1"/>
+      <bbox x="123.8412744553876" y="22.14506355488571" w="59.1748046875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6d301440-ad4a-4f1a-893c-807faef0ae25" class="SIF macromolecule">
+      <label text="GCLM"/>
+      <bbox x="275.0923279391586" y="239.4168955272091" w="53.33740234375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_9f4b21b6-4ef0-44c4-ac74-ebc72eaec1ba" class="SIF macromolecule">
+      <label text="STIM1"/>
+      <bbox x="407.3728820662213" y="100.2430259914244" w="54.17236328125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_fd1cefbd-2a5f-460c-a4e5-f93ee0e056df" class="SIF macromolecule">
+      <label text="MAPKAPK2"/>
+      <bbox x="419.2533696544436" y="198.16876281069744" w="90.86669921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_cac03763-cd02-469f-8e6d-cd8d730be0b7" class="SIF macromolecule">
+      <label text="VDR"/>
+      <bbox x="172.86030005476516" y="213.94843110637584" w="41.669921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_78a45cbe-3e53-4a7a-ae77-4f0568d30d10" class="SIF macromolecule">
+      <label text="FYN"/>
+      <bbox x="354.3182774561126" y="13.069586701696537" w="40" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6598a9f3-ed47-41c6-b330-802c9197227b" class="SIF macromolecule">
+      <label text="MYL2"/>
+      <bbox x="294.97447328375847" y="156.8521067811942" w="49.1845703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_77c24807-efa4-414d-9954-bf9a866f55c7" class="SIF macromolecule">
+      <label text="MT2A"/>
+      <bbox x="115.23609415253992" y="97.04689747526984" w="50.0048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_10cdfb6a-cd17-4746-aec9-42bd3a867376" class="SIF macromolecule">
+      <label text="SLC4A7"/>
+      <bbox x="226.1997697550995" y="77.16878152469714" w="65.869140625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_25747237-5aca-48de-ad1a-ebcdd47252dd" class="SIF macromolecule">
+      <label text="JUN"/>
+      <bbox x="224.81793075032797" y="206.77606847881307" w="39.1650390625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_47ce51b3-a15e-45d5-88fc-ed31ce473429" class="SIF macromolecule">
+      <label text="POU1F1"/>
+      <bbox x="257.92126974499047" y="279.7969678593858" w="68.35205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_bac51b6c-e105-4a1b-8832-eaa22a4744d9" class="SIF macromolecule">
+      <label text="BACH1"/>
+      <bbox x="334.789701551942" y="309.0257959030561" w="60.01708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_507247d6-f2b5-4acf-aa76-ad02b52f2495" class="SIF macromolecule">
+      <label text="NR2F2"/>
+      <bbox x="173.05813199988282" y="112.21165374610325" w="57.51220703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_445a077d-3131-4727-b6b1-03b6b45b3bb0" class="SIF macromolecule">
+      <label text="PAX4"/>
+      <bbox x="410.27093059395077" y="27.597490640474703" w="47.2509765625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_00ae0b30-9617-431d-b364-08e9363f0ed0" class="SIF macromolecule">
+      <label text="AR"/>
+      <bbox x="164.96076595839344" y="253.91383853894467" w="30.83740234375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_8ba8922c-5768-45e6-b482-946ee6cb18ad" class="SIF macromolecule">
+      <label text="HNF4A"/>
+      <bbox x="32.90839990004854" y="208.08096933795625" w="59.1748046875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_66fd6139-6ef4-4f5e-bf4b-454bb18c15a3" class="SIF macromolecule">
+      <label text="BACH2"/>
+      <bbox x="287.4187130408429" y="42.70630346572005" w="60.01708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4bf8358e-eca7-4c5a-8158-48221f0b948d" class="SIF macromolecule">
+      <label text="FOXM1"/>
+      <bbox x="408.6918148924549" y="240.8241439111243" w="61.67236328125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c6e841c2-7dbd-43de-80e8-d5c553db4e75" class="SIF macromolecule">
+      <label text="MYC"/>
+      <bbox x="74.11023241353267" y="168.45594394453497" w="43.33251953125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_794ade0f-eda5-4733-8da3-cd7f7604c4b2" class="SIF macromolecule">
+      <label text="HNF1A"/>
+      <bbox x="195.48921135726115" y="-11.07035722105401" w="59.1748046875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_dbdf7c9b-fc04-4772-b0e3-33f132da4a49" class="SIF macromolecule">
+      <label text="PITX2"/>
+      <bbox x="347.65070267397067" y="223.53731485426036" w="51.68212890625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_84c1c2ce-f523-41c6-9835-511d414e49ee" class="SIF macromolecule">
+      <label text="LEF1"/>
+      <bbox x="358.72741078634743" y="62.34679223717315" w="45.85205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_2957ca73-8f89-43a2-bfb5-f481d72a621c" class="SIF macromolecule">
+      <label text="ARNT"/>
+      <bbox x="135.76986553073658" y="309.05580094860795" w="50.83251953125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_8079f6e6-4274-4c75-be2c-f467f0b61607" class="SIF macromolecule">
+      <label text="POU6F1"/>
+      <bbox x="42.37972069673502" y="129.95721589077672" w="68.35205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_ba163e8b-7e6f-434c-97dc-c75f8c9bb8a6" class="SIF macromolecule">
+      <label text="IRF1"/>
+      <bbox x="318.45588252154704" y="85.61224809866066" w="42.5048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_aca6817a-c7a4-43ea-b6d0-cd0958dc432b" class="SIF macromolecule">
+      <label text="MYB"/>
+      <bbox x="104.44890488916505" y="65.60711755997413" w="42.5048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_13033192-67d1-493f-b0f9-c24363c0a1e4" class="SIF macromolecule">
+      <label text="SP1"/>
+      <bbox x="126.37109178277916" y="139.51744750216227" w="38.35205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_9e195833-dce8-4449-b411-b0e9e38abe8f" class="SIF macromolecule">
+      <label text="SREBF1"/>
+      <bbox x="-6.602201487814778" y="166.04334427070927" w="68.35205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_826b292e-6f75-4001-bbac-a0622ff2e7b6" class="SIF macromolecule">
+      <label text="SP3"/>
+      <bbox x="116.04423615892006" y="266.3307676833074" w="38.35205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_9c57127b-06f3-45d5-9043-3405bfc121c7" class="SIF macromolecule">
+      <label text="PPARA"/>
+      <bbox x="338.6247070148793" y="266.3116639549879" w="59.74609375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7197f18a-bc46-4d75-a740-47edc410b96d" class="SIF macromolecule">
+      <label text="TCF3"/>
+      <bbox x="273.24048012175837" y="116.75778770148776" w="47.5" h="30"/>
+    </glyph>
+    <glyph id="nwtN_00d0c825-d5e1-4de6-a471-37c14626cfc3" class="SIF macromolecule">
+      <label text="SOX9"/>
+      <bbox x="195.87323533658275" y="290.1112689768974" w="50.01953125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7fad6d89-0418-4a55-94b6-6c510aab52de" class="SIF macromolecule">
+      <label text="AHR"/>
+      <bbox x="216.08156661423533" y="250.33859396619863" w="41.669921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_313aaec6-68a6-4991-916b-efbf0cc45b8c" class="SIF macromolecule">
+      <label text="NOG"/>
+      <bbox x="353.0360699264294" y="126.7945322897065" w="44.16748046875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3bc14f69-8ac0-4863-8e2e-161fef057981" class="SIF macromolecule">
+      <label text="KCNA2"/>
+      <bbox x="254.9510268870962" y="321.83781730881583" w="60.01708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_870c86dd-da6b-491b-bffb-dba880634294" class="SIF macromolecule">
+      <label text="RHOA"/>
+      <bbox x="161.7554893926407" y="62.37423687958366" w="53.33740234375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_056b661d-439e-44d5-aa64-16d309f07c33" class="SIF macromolecule">
+      <label text="KCNA1"/>
+      <bbox x="279.0151610709995" y="198.4147277294374" w="60.01708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_0c25d7d1-7b8a-44a9-b90c-50e5a981c53f" class="SIF macromolecule">
+      <label text="ARHGDIA"/>
+      <bbox x="411.99734118820083" y="145.27920724010826" w="78.34228515625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3393048f-88cb-40b5-b436-290867d07be8" class="SIF macromolecule">
+      <label text="CNTNAP1"/>
+      <bbox x="11.419118698382434" y="89.00330263946455" w="80.01220703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_10314662-41c1-4787-b303-0f1dae26d2b9" class="SIF macromolecule">
+      <label text="LINGO1"/>
+      <bbox x="213.01734423808517" y="27.70655287290633" w="65.01953125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5ba0e589-6b1b-4f35-94e8-2b882fa68f07" class="SIF macromolecule">
+      <label text="NGFR"/>
+      <bbox x="286.4873740843367" y="-3.551157942017362" w="52.4951171875" h="30"/>
+    </glyph>
+    <arc id="nwtE_3f7b98fa-d195-484c-b08f-e5e66dcca0a9" class="controls-state-change-of" source="nwtN_a396da01-f35d-484b-b3d0-a7bc839e9c9f" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="157.09265763788" y="221.88785057520408"/>
+      <end x="221.88594186884586" y="183.93699388052326"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/Control_311920948285d60edcb4765c88386130;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a</pcIDs>
+    </arc>
+    <arc id="nwtE_d54b79c6-a6e5-4506-9fb4-5d49f2b821f0" class="controls-state-change-of" source="nwtN_6ffc7aef-2aa7-43a6-aa1a-fccdb10fd4d5" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="97.19540547386646" y="259.3866333771478"/>
+      <end x="222.1400130738599" y="184.19240108910597"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Control_c7cf17bd53002102c67a4c1fe90e5952;http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_57c300eeee873ed586a738bd066696f2;http://pathwaycommons.org/pc11/Control_3b4309c0094617445b2fb14c9aa32a80;http://pathwaycommons.org/pc11/Control_cd28754769b9a14a5a52acb4028ae110</pcIDs>
+    </arc>
+    <arc id="nwtE_5707e8af-26b6-449d-aded-ca9cc5cef8c3" class="controls-state-change-of" source="nwtN_63c9cccb-d993-4c7e-8378-aa152731c25a" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="351.4746853048844" y="189.45024815071915"/>
+      <end x="275.39446859926926" y="174.5815869426249"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_64c35b70e5118f05e46302011d50d97a;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a</pcIDs>
+    </arc>
+    <arc id="nwtE_a6a09746-0d7c-4f35-950b-8b102d8ca079" class="controls-state-change-of" source="nwtN_b3e7c52f-5a41-445a-9e0a-3baa17a92b16" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="93.09653972701389" y="64.54354547705549"/>
+      <end x="223.42428673212044" y="152.9242862532853"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_6a1a8b4116fa573c267f049b33f5d25b</pcIDs>
+    </arc>
+    <arc id="nwtE_3e53cf23-7c1e-426c-8f24-3c19d424345f" class="controls-state-change-of" source="nwtN_249fc299-65dc-4e80-95fb-0b43ba2a96f8" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="183.4307563518982" y="186.99253939857044"/>
+      <end x="219.16249574196243" y="176.9639956677931"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/Control_21c0ae9004b8b6891f4db890c7fd52f6;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_b7aceaec8f33dc5500b00de2293f777d</pcIDs>
+    </arc>
+    <arc id="nwtE_a7bf3479-c271-48c7-afad-60aca3a987ff" class="controls-state-change-of" source="nwtN_bdcaedf9-fe5b-4184-a3d4-01c936032416" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="164.53973150787132" y="52.77006355488571"/>
+      <end x="234.327305095185" y="150.90933708799656"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Transport_6ba5ed6c787d67b73000798702cdae55;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/Catalysis_eca9d1748898140214e3e1bcf72c1548;http://pathwaycommons.org/pc11/Catalysis_ecbd8dc5220a9cb07be76544f0f84811</pcIDs>
+    </arc>
+    <arc id="nwtE_dea5f194-7ed7-4316-839e-b22bc5ce30cf" class="controls-state-change-of" source="nwtN_6d301440-ad4a-4f1a-893c-807faef0ae25" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="291.7799361029975" y="238.7918955272091"/>
+      <end x="258.91273999696574" y="187.33962083712552"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_7e015ff8ca13e24bdaf026c76ebb315d</pcIDs>
+    </arc>
+    <arc id="nwtE_3228e438-976a-493f-af92-41db81890c07" class="controls-state-change-of" source="nwtN_9f4b21b6-4ef0-44c4-ac74-ebc72eaec1ba" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="406.7478820662213" y="123.21224991623008"/>
+      <end x="275.3307670775581" y="161.00538448834976"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Transport_6ba5ed6c787d67b73000798702cdae55;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/Control_610e6cd759170410d81ac976d55a0f6d</pcIDs>
+    </arc>
+    <arc id="nwtE_249b8ed1-86b6-4f53-9ff7-624bf8ad3fe8" class="controls-state-change-of" source="nwtN_fd1cefbd-2a5f-460c-a4e5-f93ee0e056df" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="418.82980110667984" y="203.87079549484093"/>
+      <end x="275.39016854568933" y="174.78691744659633"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_c2a3d281fedee6f85b750fa1169de709;http://pathwaycommons.org/pc11/BiochemicalReaction_90eb0826844e76ec0c7242ca477121fa</pcIDs>
+    </arc>
+    <arc id="nwtE_e869d92f-29a6-4afd-a2a9-17836f5f9322" class="controls-state-change-of" source="nwtN_cac03763-cd02-469f-8e6d-cd8d730be0b7" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="207.6725428243035" y="213.32343110637584"/>
+      <end x="231.18859658939968" y="187.03517674511687"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Control_c7cf17bd53002102c67a4c1fe90e5952;http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_c9131c6c24380824644c96f31a4daeca;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a</pcIDs>
+    </arc>
+    <arc id="nwtE_fafda089-06aa-4cc3-8340-f652358d96cf" class="controls-state-change-of" source="nwtN_78a45cbe-3e53-4a7a-ae77-4f0568d30d10" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="360.3575086262467" y="43.562194500512334"/>
+      <end x="263.4213929113407" y="151.1345811371942"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_754f13c820d614c20f194e2750ba76fd;http://pathwaycommons.org/pc11/BiochemicalReaction_e45807fa08a4d44ef219ec537ee21b17</pcIDs>
+    </arc>
+    <arc id="nwtE_116024bc-5768-4766-a1f1-79538c9a8953" class="controls-state-change-of" source="nwtN_6598a9f3-ed47-41c6-b330-802c9197227b" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="294.34947328375847" y="170.88584057715954"/>
+      <end x="275.4501989295172" y="170.16166547360933"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/Control_b2c45eebe2f6b54a7c6f2d4e088cd482;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_c1c839910ae196aeda951b50910125dd</pcIDs>
+    </arc>
+    <arc id="nwtE_0d4ed74a-9559-4862-8e2d-e1b772a72b30" class="controls-state-change-of" source="nwtN_77c24807-efa4-414d-9954-bf9a866f55c7" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="164.00944928796258" y="124.71621848839655"/>
+      <end x="221.10611285465467" y="155.14735663253782"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_1edac0262b2986720c690bba93149585</pcIDs>
+    </arc>
+    <arc id="nwtE_58f7eca4-fbcf-4d3a-b98c-7724c636e429" class="controls-state-change-of" source="nwtN_10cdfb6a-cd17-4746-aec9-42bd3a867376" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="256.7198661992951" y="107.79378152469714"/>
+      <end x="250.1410700370942" y="150.367731644347"/>
+      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c92af68d9d2d66f1735721d30e89843;http://pathwaycommons.org/pc11/SmallMolecule_418a6c33dfd0b46dc9447c8e62e212dc;http://pathwaycommons.org/pc11/Control_858bde2fe3cf94b5dec21e6d7960ff99;http://pathwaycommons.org/pc11/BiochemicalReaction_8f452149d6c748ccd95d6c537a56e71a;http://pathwaycommons.org/pc11/Control_2151eb48f727cd56663e9f4d445d811f</pcIDs>
+    </arc>
+    <arc id="nwtE_008d4a1d-5c65-46ea-aa0c-8042a35dfbda" class="controls-expression-of" source="nwtN_25747237-5aca-48de-ad1a-ebcdd47252dd" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="245.2452042015424" y="206.15106847881307"/>
+      <end x="246.23590720351115" y="187.82651970795564"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_d0464ebcef61c778b4d1df6e8230d203;http://pathwaycommons.org/pc11/TemplateReactionRegulation_acd3c666dad247f1d61ec6c1347c35f2;http://pathwaycommons.org/pc11/TemplateReaction_f139a651ec01d1312be6732267fbd5fd;http://pathwaycommons.org/pc11/TemplateReaction_81dfd20cdfc1323839d46ba385e837bf;http://pathwaycommons.org/pc11/TemplateReactionRegulation_5d445709b3b448260981165ab0391d15;http://pathwaycommons.org/pc11/TemplateReaction_797288365ab7292f0a8328dc54431069;http://pathwaycommons.org/pc11/TemplateReactionRegulation_483762f3848a633f978ca47e0559ef0d;http://pathwaycommons.org/pc11/TemplateReaction_72319491c4fbe8b8f42c0999f311d0f3;http://pathwaycommons.org/pc11/TemplateReactionRegulation_1df509d8f34f6b3a2a96243dce2fbd76;http://pathwaycommons.org/pc11/TemplateReaction_e07b9501dd63bb59450115418b6f4140</pcIDs>
+    </arc>
+    <arc id="nwtE_49f58389-97fc-4fc5-b9b5-95e72a7335f8" class="controls-expression-of" source="nwtN_47ce51b3-a15e-45d5-88fc-ed31ce473429" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="286.5232273365625" y="279.1719678593858"/>
+      <end x="253.87343378486682" y="187.64939536180654"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_5e40a998d5e187672fc6ef9d1203c793;http://pathwaycommons.org/pc11/TemplateReaction_17b2ef8edce725f749ab49dcab4bc227</pcIDs>
+    </arc>
+    <arc id="nwtE_189ea3c9-e862-4e2a-ac82-5ef71502ad73" class="controls-expression-of" source="nwtN_bac51b6c-e105-4a1b-8832-eaa22a4744d9" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="352.9443331840023" y="308.4007959030561"/>
+      <end x="260.99203360281456" y="187.19570136346948"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_d66478983b269c31d2cd3b1b3815d49d;http://pathwaycommons.org/pc11/TemplateReaction_ce8f3b1cc80f75d24705f9c53359f7db</pcIDs>
+    </arc>
+    <arc id="nwtE_9e40724b-2f74-4cd3-ae54-5c40b5237c46" class="controls-expression-of" source="nwtN_507247d6-f2b5-4acf-aa76-ad02b52f2495" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="218.76990039893042" y="142.83665374610325"/>
+      <end x="227.99565853279287" y="151.33838292232318"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_fbd2089b236b913bfe1d22be79871203;http://pathwaycommons.org/pc11/TemplateReactionRegulation_89039ce2fb69bb94f59eb5bb214e599e</pcIDs>
+    </arc>
+    <arc id="nwtE_5329e9c8-aee8-4d92-8ab1-ea587fce67eb" class="controls-expression-of" source="nwtN_445a077d-3131-4727-b6b1-03b6b45b3bb0" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="413.060122395913" y="56.71745371599863"/>
+      <end x="271.082872946285" y="152.93001825624594"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_63b9f593f24bc99d9d056f299cb5ea8a;http://pathwaycommons.org/pc11/TemplateReaction_92b2d740706715dbf511d2746225dd62</pcIDs>
+    </arc>
+    <arc id="nwtE_dd371df3-1c49-4c74-abf5-6f9e4fef3e9e" class="controls-expression-of" source="nwtN_00ae0b30-9617-431d-b364-08e9363f0ed0" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="190.61870712813436" y="253.627265187523"/>
+      <end x="235.0443402713409" y="187.30245007736636"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_fce54b7215404e0f37bb1f60fb902f77;http://pathwaycommons.org/pc11/TemplateReactionRegulation_454eb6c6fcbb7d810e069968812638a5</pcIDs>
+    </arc>
+    <arc id="nwtE_257c859d-73a7-482f-b866-913a2b07b70b" class="controls-expression-of" source="nwtN_8ba8922c-5768-45e6-b482-946ee6cb18ad" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="92.60354479988271" y="214.2810586185547"/>
+      <end x="219.17173604932844" y="177.28762475892484"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_9b9dfda60d029cf464380cb9d6d55c9a;http://pathwaycommons.org/pc11/TemplateReaction_d843aa9102ff17e5748b0d9f7bbbc614;http://pathwaycommons.org/pc11/TemplateReactionRegulation_9c62ed5b66b53a26c2ba693ee5e0a064;http://pathwaycommons.org/pc11/TemplateReactionRegulation_aeee87ff5be395bee53d2c6f9bba5d54;http://pathwaycommons.org/pc11/TemplateReactionRegulation_981964a5f047bc7406b790f116782494;http://pathwaycommons.org/pc11/TemplateReaction_d148d3e2dcdec03071bc69f0d1156c02</pcIDs>
+    </arc>
+    <arc id="nwtE_e6680eaa-1025-4c24-98bf-68b44bc60ad4" class="controls-expression-of" source="nwtN_66fd6139-6ef4-4f5e-bf4b-454bb18c15a3" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="307.58185458962043" y="73.33130346572005"/>
+      <end x="258.76071185262873" y="150.8121670075767"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_a1d9ca9b1ed60c2e8f10ba8055b0fc68;http://pathwaycommons.org/pc11/TemplateReactionRegulation_6c6403e9fadb35c93613b05d837c41ed</pcIDs>
+    </arc>
+    <arc id="nwtE_1e906957-add1-4f8f-bd14-7e94e9ca0e5a" class="controls-expression-of" source="nwtN_4bf8358e-eca7-4c5a-8158-48221f0b948d" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="410.3608601204296" y="242.66591172725333"/>
+      <end x="274.4007218901429" y="181.32992586717467"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_ecc79e135cd157a1245b9696296c53f4;http://pathwaycommons.org/pc11/TemplateReactionRegulation_28a04b2383a675f15489cdd8df6a838b</pcIDs>
+    </arc>
+    <arc id="nwtE_2dbc7a76-d2bc-4409-8e42-599521549ee7" class="controls-expression-of" source="nwtN_c6e841c2-7dbd-43de-80e8-d5c553db4e75" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="118.06775194478266" y="181.3404899355048"/>
+      <end x="219.0602182570151" y="171.756243913146"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_b52d8d4ba3b153ea1a6af74cd3f77b48;http://pathwaycommons.org/pc11/TemplateReactionRegulation_1d876fad503140471433d94ea2d6107d</pcIDs>
+    </arc>
+    <arc id="nwtE_538c5138-b3c2-4056-a543-27a74b91fba9" class="controls-expression-of" source="nwtN_794ade0f-eda5-4733-8da3-cd7f7604c4b2" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="227.1743808160962" y="19.554642778945976"/>
+      <end x="244.7357758496601" y="150.35886571973236"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_2c419660e16f93a990381557dfe69e6d;http://pathwaycommons.org/pc11/TemplateReactionRegulation_afee45f2f37974c1c2959d24fea6ec93</pcIDs>
+    </arc>
+    <arc id="nwtE_f6753fcf-1793-4518-b65f-e87fa1b05eec" class="controls-expression-of" source="nwtN_dbdf7c9b-fc04-4772-b0e3-33f132da4a49" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="349.4097188643516" y="225.2878166241805"/>
+      <end x="273.1478595100538" y="183.3299499380421"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_c588dfe42ecb633bce910d1fe1b39f77;http://pathwaycommons.org/pc11/TemplateReaction_c3931b4d179cf053c8013b2d68c25637</pcIDs>
+    </arc>
+    <arc id="nwtE_2908cdb1-32de-41ed-9745-bb683e16f920" class="controls-expression-of" source="nwtN_84c1c2ce-f523-41c6-9835-511d414e49ee" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="361.2527183626527" y="91.2708143642861"/>
+      <end x="270.9973446133101" y="152.87246155214007"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_81b5585390b28d2a2ec4cc5a4cf4be7d;http://pathwaycommons.org/pc11/TemplateReactionRegulation_81b79d53f7a8f178914bd65ca49dc42d</pcIDs>
+    </arc>
+    <arc id="nwtE_9d59106d-e029-44d3-829c-717b79ac3793" class="controls-expression-of" source="nwtN_2957ca73-8f89-43a2-bfb5-f481d72a621c" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="169.8632701418449" y="308.43080094860795"/>
+      <end x="237.05504225134786" y="187.4380714383397"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_28df0bf18cf1f5c5dd92898d08405b4e;http://pathwaycommons.org/pc11/TemplateReactionRegulation_e951bf94b38d1684480d9e6b07781c39</pcIDs>
+    </arc>
+    <arc id="nwtE_ad19b5f2-95fa-4c7d-a6a0-76f0a36a3f6d" class="controls-expression-of" source="nwtN_8079f6e6-4274-4c75-be2c-f467f0b61607" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="111.356771477985" y="149.87559010665166"/>
+      <end x="219.0769896043554" y="165.09951921259938"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_9bab9632bee991e23c39c8fe69df7329;http://pathwaycommons.org/pc11/TemplateReaction_b862fd0d396e795d016c58e645e0a90e</pcIDs>
+    </arc>
+    <arc id="nwtE_8c30a44c-849a-4a24-b4cb-b643e3fb8d63" class="controls-expression-of" source="nwtN_ba163e8b-7e6f-434c-97dc-c75f8c9bb8a6" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="320.94435106316365" y="114.50757275356557"/>
+      <end x="269.9516314399645" y="152.26931965613102"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_ca5ecc817aaa468e639ee6aa9e760109;http://pathwaycommons.org/pc11/TemplateReactionRegulation_f681cae1013d63216a850f37040b504e</pcIDs>
+    </arc>
+    <arc id="nwtE_4d6492ad-ccf3-4efd-a4b8-216bce2650f1" class="controls-expression-of" source="nwtN_aca6817a-c7a4-43ea-b6d0-cd0958dc432b" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="144.62017913366395" y="94.37800462412771"/>
+      <end x="224.31561879431524" y="152.3877618051355"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_d83f6dc4c686f9b041d6bfce20cf4af2;http://pathwaycommons.org/pc11/TemplateReactionRegulation_bd5d4f382b5ecc5dad2e11ea352fcc5f</pcIDs>
+    </arc>
+    <arc id="nwtE_bd088b43-e333-4642-af63-ba38334c403d" class="controls-expression-of" source="nwtN_13033192-67d1-493f-b0f9-c24363c0a1e4" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="165.34814256402916" y="157.3529285120815"/>
+      <end x="219.0777964567214" y="165.04694487117328"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_d4e3c1d30ad3a1a0fc5e350ae0597312;http://pathwaycommons.org/pc11/TemplateReactionRegulation_eb95345a4421c833ebff222718f972b8</pcIDs>
+    </arc>
+    <arc id="nwtE_8e4ba785-cf1c-4d31-a397-f1f391248ff3" class="controls-expression-of" source="nwtN_9e195833-dce8-4449-b411-b0e9e38abe8f" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="62.37484929343523" y="179.1482804405253"/>
+      <end x="219.05086347955958" y="170.61660517495966"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_8a0bc672944e3cc9ceb18a68d378d598;http://pathwaycommons.org/pc11/TemplateReaction_5eecb7ea91bd0d1318eb2366a67dff2f</pcIDs>
+    </arc>
+    <arc id="nwtE_1ab963dc-cdbc-42e2-861a-527dda7f8c76" class="controls-expression-of" source="nwtN_826b292e-6f75-4001-bbac-a0622ff2e7b6" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="150.1402160584165" y="266.3814355739305"/>
+      <end x="229.44753662695925" y="186.9179577745175"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_0f67055c34b7909e5304891d3aae289f;http://pathwaycommons.org/pc11/TemplateReaction_67a102c577dbcb63e3096cc7c8a4571d</pcIDs>
+    </arc>
+    <arc id="nwtE_0009fcaa-9bbc-4e4c-a4ca-10197436f093" class="controls-expression-of" source="nwtN_9c57127b-06f3-45d5-9043-3405bfc121c7" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="351.6172749005131" y="265.6866639549879"/>
+      <end x="266.42319019110386" y="186.82885580729965"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_a4b6a4c63fc997bdef6890e3a498152b;http://pathwaycommons.org/pc11/TemplateReaction_2c98094a9372b4db71bd500df20c0365;http://pathwaycommons.org/pc11/TemplateReactionRegulation_509ba4e6518960b822265f35b78334a9;http://pathwaycommons.org/pc11/TemplateReaction_2b8f65fb0c737e628124647f1e3a1282;http://pathwaycommons.org/pc11/TemplateReactionRegulation_b10b627c556dd702f484d68c2130a9fa;http://pathwaycommons.org/pc11/TemplateReaction_a63abb8e9a01fcf901adadbd8d939996</pcIDs>
+    </arc>
+    <arc id="nwtE_79c575c1-d431-4d81-ae0d-d5d5187954fb" class="controls-expression-of" source="nwtN_7197f18a-bc46-4d75-a740-47edc410b96d" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="277.2298378206937" y="146.58520304620347"/>
+      <end x="269.7706115618952" y="152.18224003540382"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReactionRegulation_6620d478741e388c1fdef07433c4e3ce;http://pathwaycommons.org/pc11/TemplateReaction_e20e6e1407f7994ff6a8ebb4f526fd7d</pcIDs>
+    </arc>
+    <arc id="nwtE_e91d9886-e16f-43b2-9d39-dbef008616ec" class="controls-expression-of" source="nwtN_00d0c825-d5e1-4de6-a471-37c14626cfc3" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="223.9115524901576" y="289.4862689768974"/>
+      <end x="243.6261707915042" y="187.77397910758958"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_edf699d9dae9790dc0688edce74c3d20;http://pathwaycommons.org/pc11/TemplateReactionRegulation_b49868d17788c8aa183fb2555da7c2ad</pcIDs>
+    </arc>
+    <arc id="nwtE_7be09e62-5463-42e6-a9e1-7e81e540fdfb" class="controls-expression-of" source="nwtN_7fad6d89-0418-4a55-94b6-6c510aab52de" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="238.59380531876988" y="249.71359396619863"/>
+      <end x="245.23854841218244" y="187.8132260753556"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_5271923f3785b8910c035b9108b86c3c;http://pathwaycommons.org/pc11/TemplateReactionRegulation_8257922f2256faba539b3f91d82d2e96;http://pathwaycommons.org/pc11/TemplateReactionRegulation_1bfd1ec5a5fd73263e79aadf00f867f0;http://pathwaycommons.org/pc11/TemplateReaction_b7ff52653a334c99bb4b52ed1a014f60</pcIDs>
+    </arc>
+    <arc id="nwtE_9cabd923-a371-4aa5-8fd7-ccb3f6a0f85e" class="controls-expression-of" source="nwtN_313aaec6-68a6-4991-916b-efbf0cc45b8c" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="352.4110699264294" y="146.64039838020642"/>
+      <end x="275.3836814835144" y="163.0774356549675"/>
+      <pcIDs>http://pathwaycommons.org/pc11/TemplateReaction_15cc2201b7a13253668ed7807044196e;http://pathwaycommons.org/pc11/TemplateReactionRegulation_10835583973d9a2e5aec8dd225c6faaa</pcIDs>
+    </arc>
+    <arc id="nwtE_c5ab0aa6-6874-4256-87e6-6abf9893bedd" class="in-complex-with" source="nwtN_3bc14f69-8ac0-4863-8e2e-161fef057981" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="281.4472123569566" y="321.21281730881583"/>
+      <end x="250.76172498268622" y="184.70607681903866"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_e63dc266-29bc-4987-acf2-a32ae05924ec___null__1787_</pcIDs>
+    </arc>
+    <arc id="nwtE_46c3b4d1-77bc-4a88-b875-e6e13d226466" class="in-complex-with" source="nwtN_870c86dd-da6b-491b-bffb-dba880634294" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="198.44681656987152" y="92.99923687958366"/>
+      <end x="237.2267395253158" y="153.45607681903869"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_3d137be9decd68a540aae9574f3af90d</pcIDs>
+    </arc>
+    <arc id="nwtE_f0712c41-3b75-429d-980b-bf6bce5f23ca" class="in-complex-with" source="nwtN_056b661d-439e-44d5-aa64-16d309f07c33" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="287.2518904554467" y="197.7897277294374"/>
+      <end x="267.8301186044387" y="183.8512858640673"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_e63dc266-29bc-4987-acf2-a32ae05924ec___null__1787_</pcIDs>
+    </arc>
+    <arc id="nwtE_10633e15-dc93-4936-bd9b-0e07d064207c" class="in-complex-with" source="nwtN_0c25d7d1-7b8a-44a9-b90c-50e5a981c53f" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="411.37234118820083" y="161.99694935152903"/>
+      <end x="272.32749053067164" y="167.99861634429774"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_3d137be9decd68a540aae9574f3af90d;http://pathwaycommons.org/pc11/Complex_38804fe95d3227e0aaee4daf5b3e4091</pcIDs>
+    </arc>
+    <arc id="nwtE_fe8962e7-ce83-4c05-80a6-313185c49957" class="in-complex-with" source="nwtN_3393048f-88cb-40b5-b436-290867d07be8" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="90.05656625550165" y="116.84156579336165"/>
+      <end x="222.2127609722436" y="160.76072126899845"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_e63dc266-29bc-4987-acf2-a32ae05924ec___null__1787_</pcIDs>
+    </arc>
+    <arc id="nwtE_b93b6c11-c5c7-455d-a0a6-e057465d82bb" class="in-complex-with" source="nwtN_10314662-41c1-4787-b303-0f1dae26d2b9" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="245.74005028783017" y="58.33155287290633"/>
+      <end x="247.0364251059266" y="153.45607681903866"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_2b1fd9e3ea35a50b5b7d106be143ad10</pcIDs>
+    </arc>
+    <arc id="nwtE_30fa1752-e46f-47a5-b8eb-f948401641bd" class="in-complex-with" source="nwtN_5ba0e589-6b1b-4f35-94e8-2b882fa68f07" target="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317">
+      <start x="306.2437984996658" y="27.07384205798263"/>
+      <end x="253.74049970909255" y="153.45607681903866"/>
+      <pcIDs>http://pathwaycommons.org/pc11/Complex_2b1fd9e3ea35a50b5b7d106be143ad10</pcIDs>
+    </arc>
+  </map>
+</sbgn>

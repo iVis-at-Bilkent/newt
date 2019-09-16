@@ -627,7 +627,9 @@ module.exports = function() {
       "#load-sample13" : 'transforming_growth_factor_beta_signaling.sbgn',
       "#load-sample14" : 'repressilator.sbgn',
       "#load-sample15" : 'epidermal_growth_factor_receptor.sbgn',
-      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn'
+      "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn',
+      "#load-sample17" : 'RTN4-controllers-and-binding-proteins.nwt',
+      "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {
