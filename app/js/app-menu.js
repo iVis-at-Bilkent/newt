@@ -1200,9 +1200,15 @@ module.exports = function() {
 
     $("#add-compartment-for-selected").click(function (e) {
 
+     
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == 'SIF'){
+        return;
+      }
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
@@ -1214,6 +1220,11 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == 'SIF'){
+        return;
+      }
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
@@ -1221,6 +1232,15 @@ module.exports = function() {
     });
 
     $("#create-reaction-template").click(function (e) {
+
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == 'SIF' || mapType == 'AF'){
+        return;
+      }
+
       reactionTemplateView.render();
     });
 
