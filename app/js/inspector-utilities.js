@@ -892,7 +892,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           if(stagedElement){
             stagedElement.styles = elementStyles;
           }else{
-            appUtilities.stagedElementStyles.push({element : sbgnclass, type: "node",styles: elementStyles});
+            appUtilities.stagedElementStyles.push({element : sbgnclass, type: "node",styles: elementStyles, infoBoxStyles:[]});
           }
 
           ur.do("batch", actions);
