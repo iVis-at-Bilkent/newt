@@ -712,7 +712,7 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
     self.params.showComplexName = {id: "show-complex-name", type: "checkbox",
       property: "currentGeneralProperties.showComplexName", update: self.applyUpdate};
 
-    self.params.adjustAutomatically = {id: "adjust-node-label-font-size-automatically", type: "checkbox",
+    self.params.adjustNodeLabelFontSizeAutomatically = {id: "adjust-node-label-font-size-automatically", type: "checkbox",
       property: "currentGeneralProperties.adjustNodeLabelFontSizeAutomatically"};
 
     self.params.fitLabelsToNodes = {id: "fit-labels-to-nodes", type: "checkbox",
@@ -747,8 +747,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.adjustAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
-      cy.undoRedo().do("changeMenu", self.params.adjustAutomatically);
+      self.params.adjustNodeLabelFontSizeAutomatically.value = $('#adjust-node-label-font-size-automatically').prop('checked');
+      cy.undoRedo().do("changeMenu", self.params.adjustNodeLabelFontSizeAutomatically);
       $('#adjust-node-label-font-size-automatically').blur();
       self.applyUpdate();
     });
@@ -782,13 +782,13 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       var ur = cy.undoRedo();
       var actions = [];
       self.params.dynamicLabelSize.value = appUtilities.defaultGeneralProperties.dynamicLabelSize;
-      self.params.adjustAutomatically.value = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
+      self.params.adjustNodeLabelFontSizeAutomatically.value = appUtilities.defaultGeneralProperties.adjustNodeLabelFontSizeAutomatically;
       self.params.fitLabelsToNodes.value = appUtilities.defaultGeneralProperties.fitLabelsToNodes;
       self.params.fitLabelsToInfoboxes.value = appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
       self.params.showComplexName.value = appUtilities.defaultGeneralProperties.showComplexName;
 
       actions.push({name: "changeMenu", param: self.params.dynamicLabelSize});
-      actions.push({name: "changeMenu", param: self.params.adjustAutomatically});
+      actions.push({name: "changeMenu", param: self.params.adjustNodeLabelFontSizeAutomatically});
       actions.push({name: "changeMenu", param: self.params.fitLabelsToNodes});
       actions.push({name: "changeMenu", param: self.params.fitLabelsToInfoboxes});
       actions.push({name: "changeMenu", param: self.params.showComplexName});
