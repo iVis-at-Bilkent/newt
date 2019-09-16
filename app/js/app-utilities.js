@@ -2606,7 +2606,7 @@ appUtilities.navigateToOtherEnd = function(edge, mouse_rend, mouse_normal) {
   var s_rendered = start_node.renderedPosition();
   var zoom_level = cy.zoom();
   var finished = (edge_pts.length-starting_point-1)/2;
-
+  start_node.select();
   // Animate for each bend point
   for(var i = starting_point; i < edge_pts.length-1; i=i+2){
     // Convert normal position into rendered position
