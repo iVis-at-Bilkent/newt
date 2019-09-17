@@ -310,6 +310,17 @@ module.exports = function (chiseInstance) {
           });
         }
       },
+      {
+        id: 'ctx-menu-clone',
+        content: 'Clone',
+        selector: '[class="simple chemical"]'   ,
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;           
+            if(cyTarget.connectedEdges().length  > 1){
+              cy.undoRedo().do("cloneHighDegreeNode", cyTarget);
+            }
+        }
+      }
     ]);
 
     cy.clipboard({
