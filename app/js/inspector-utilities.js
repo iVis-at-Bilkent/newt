@@ -1213,53 +1213,67 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
 }
 
 inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
-    if(errorCode == "pd10104") {         
+  var errorFixParam = {};
+  errorFixParam.errorCode = errorCode;
+    if(errorCode == "pd10104") {  
+        errorFixParam.nodes = []; 
+        errorFixParam.edges = [];      
          var radioChecked = $('#errorspd10104 input:radio:checked').val();
          var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
          for(var i=0; i<connectedEdges.length;i++) { 
-            if(connectedEdges[i].source().data().label != radioChecked)
-                cy.remove(connectedEdges[i].source());
+            if(connectedEdges[i].source().data().label != radioChecked){
+              errorFixParam.nodes.push(connectedEdges[i].source()); 
+              errorFixParam.edges.push(connectedEdges[i]);
+            }
         }
      }
      else if(errorCode == "pd10108"){
+      errorFixParam.nodes = []; 
+      errorFixParam.edges = []; 
          var radioChecked = $('#errorspd10108 input:radio:checked').val();
          var connectedEdges = eles.connectedEdges().filter('[class="production"]');
          for(var i=0; i<connectedEdges.length;i++) { 
-              if(connectedEdges[i].target().data().label != radioChecked)
-                cy.remove(connectedEdges[i].target());
+              if(connectedEdges[i].target().data().label != radioChecked) {
+                errorFixParam.nodes.push(connectedEdges[i].target());
+                errorFixParam.edges.push(connectedEdges[i]);
+              }               
          }
      } else if(errorCode == "pd10111"){
+      errorFixParam.edges = []; 
          var radioChecked = $('#errorspd10111 input:radio:checked').val();
          var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
          for(var i=0; i<connectedEdges.length;i++) { 
-              if(connectedEdges[i].target().id() != radioChecked)
-                cy.remove(connectedEdges[i]);
+              if(connectedEdges[i].target().id() != radioChecked){
+                errorFixParam.edges.push(connectedEdges[i]);
+              }
+              
          }
      }else if(errorCode == "pd10126"){
+        errorFixParam.edges = []; 
+        errorFixParam.nodes = []; 
          var radioChecked = $('#errorspd10126 input:radio:checked').val();
          var connectedEdges =  eles.connectedEdges().filter('[class="logic arc"]');
          for(var i=0; i<connectedEdges.length;i++) { 
-              if(connectedEdges[i].id() != radioChecked){              
-                cy.remove(connectedEdges[i]);
-                cy.remove(connectedEdges[i].source());
+              if(connectedEdges[i].id() != radioChecked){     
+                errorFixParam.edges.push(connectedEdges[i]);
+                errorFixParam.nodes.push(connectedEdges[i].source());
             }
          }
      } else {
         if(errorCode == "pd10109" || errorCode == "pd10124" || errorCode == "pd10127") {
             var radioChecked = $('#errors'+errorCode+ ' input:radio:checked').val();
             var node = cy.nodes('[id = "' + radioChecked +'"]');
-            eles = eles.move({
-                 target: eles.target().id(),
-                 source : node.id()                
-            });
-            eles.data('portsource', node.id());
+            errorFixParam.newTarget = eles.target().id();
+            errorFixParam.newSource = node.id();
+            errorFixParam.edge = eles;
+            errorFixParam.portsource = node.id();           
         }
         else if(errorCode == "pd10112") {
             var radioChecked = $('#errorspd10112 input:radio:checked').val();
             var compartment = cy.nodes('[id = "' + radioChecked +'"]');
-             eles = eles.move({
-               parent : compartment.id()
-           });
+            errorFixParam.node = eles;
+            errorFixParam.parent = compartment.id();
+            
         }
         else if(errorCode == "pd10125") {
             var radioChecked = $('#errorspd10125 input:radio:checked').val();
@@ -1269,9 +1283,11 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             }
             var chiseInstance = appUtilities.getActiveChiseInstance();
             var source = eles.source();
-            var target =  cy.nodes('[id = "' + radioChecked +'"]');;
-            cy.remove(eles);
-            chiseInstance.addEdge(source.id(),target.id(),edgeParams, promptInvalidEdge);
+            var target =  cy.nodes('[id = "' + radioChecked +'"]');
+
+            errorFixParam.edge = eles;
+            errorFixParam.newEdge = {source:source.id(),target:target.id(),edgeParams:edgeParams};
+           
        }
          else if(errorCode == "pd10142") {
             var radioChecked = $('#errorspd10142 input:radio:checked').val();
@@ -1279,36 +1295,36 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             var promptInvalidEdge = function(){
                 appUtilities.promptInvalidEdgeWarning.render();
             }
-            var chiseInstance = appUtilities.getActiveChiseInstance();
             var source = eles.source();
             var target = eles.target();
-            cy.remove(eles);
+            errorFixParam.edge = eles;
+           
             if(target.data().class != 'process')
                 target = cy.nodes('[class = "process"]');
-            chiseInstance.addEdge(source.id(),target.id(),edgeParams, promptInvalidEdge);
-            var edge = cy.edges()[cy.edges().length-1];
+            errorFixParam.newEdge = {source:source.id(),target:target.id(),edgeParams:edgeParams}  ; 
+            
+        
+           
        }
         else {
             var radioChecked = $('#errors'+errorCode+ ' input:radio:checked').val();
-            var node = cy.nodes('[id = "' + radioChecked +'"]');
-            eles = eles.move({
-                source: eles.source().id(),
-                target : node.id()
-           });
-           eles.data('porttarget', node.id());
-        }
+            var node = cy.nodes('[id = "' + radioChecked +'"]');            
+
+           errorFixParam.newTarget = node.id();
+           errorFixParam.newSource = eles.source().id();
+           errorFixParam.edge = eles;
+           errorFixParam.porttarget = node.id();        
+        }        
     
      }
- }
-
+     cy.undoRedo().do("fixError", errorFixParam);
+ } 
   inspectorUtilities.handleSBGNConsole = function ( errors,currentPage,cy,data,notPD) {
 	var html = "";
         var handled = true;
         var dismiss = "Dismiss";
         var radioButtonRules = ["pd10104","pd10108","pd10109","pd10110","pd10111","pd10112","pd10124","pd10125","pd10126","pd10127","pd10128","pd10142"];
-        var radioButtonChangeEvent = ["pd10104","pd10108","pd10110","pd10111","pd10109","pd10124","pd10125","pd10126","pd10127","pd10128"];
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-       // chiseInstance.removeHighlights();
+        var radioButtonChangeEvent = ["pd10104","pd10108","pd10110","pd10111","pd10109","pd10124","pd10125","pd10126","pd10127","pd10128"];      
 
         var viewUtilitilesInstance = cy.viewUtilities('get');
         viewUtilitilesInstance.removeHighlights();
@@ -1403,152 +1419,28 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               inspectorUtilities.handleSBGNConsole(errors,currentPage,cy,data,false);
       });
       
-        /*$('#fix-errors-of-validation-icon').on('click', function () {
-              var actions = [];
-               var cy = appUtilities.getActiveCy();
-               var chiseInstance = appUtilities.getActiveChiseInstance();
-               var errorsNew = [];
-               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
-                   var targetTmp = eles.target();
-                   var sourceTmp = eles.source();
-                   if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
-                      var sourceNew = targetTmp.id();
-                      var targetNew = sourceTmp.id();
-                   
-                      var tmpPort = eles.data().portsource;
-                
-                     actions.push({name: "moveEdge", param: {edge: eles, source: sourceNew, target: targetNew, portsource: eles.data().porttarget, porttarget:eles.data().portsource}});  
-
-                      cy.undoRedo().do("batch", actions);
-                   
-                   }
-               }else if(errors[currentPage].pattern == "pd10103" ||  errors[currentPage].pattern == "pd10107"){
-                        var edges = cy.nodes('[id = "' + id +'"]').connectedEdges();
-                        var addedNodeNum = edges.length;
-                        var promptInvalidEdge = function(){
-                            appUtilities.promptInvalidEdgeWarning.render();
-                        }
-                        var nodeParams = {class : eles.data().class, language : eles.data().language};
-                        for (var i = 0 ; i<addedNodeNum;i++){ 
-                           var edgeParams = {class : edges[i].data().class, language : edges[i].data().language};
-                           var shiftX = 22;
-                           var shiftY = 22;
-                           var target = edges[i].target();
-                           var source = edges[i].source();
-                           var x = edges[i].sourceEndpoint().x;
-                           var y = edges[i].sourceEndpoint().y;
-                           if(edges[i].data().class != 'consumption'){
-                                x = edges[i].targetEndpoint().x;
-                                y = edges[i].targetEndpoint().y;
-                           }
-                               
-                           var xdiff = Math.abs(edges[i].targetEndpoint().x-edges[i].sourceEndpoint().x);
-                           var ydiff = Math.abs(edges[i].targetEndpoint().y-edges[i].sourceEndpoint().y);
-                           var ratio = ydiff/xdiff;
-                           if(xdiff ==0){
-                               shiftX =0;
-                               shiftY = 22;
-                           }
-                           else if(ydiff==0){
-                               shiftY=0;
-                               shiftX=22;
-                           }
-                           else {
-                                var result = 22*22;
-                                var ratiosquare = ratio * ratio;
-                                var dx = Math.sqrt(result/(ratiosquare+1));
-                                shiftX = dx;
-                                shiftY = shiftX*ratio;
-                           }
-                           if(edges[i].data().class == 'consumption'){
-                                if(eles.position().x > target.position().x)
-                                    shiftX *= -1;
-                                if(eles.position().y> target.position().y)
-                                    shiftY *= -1;
-                           }else {
-                                if(eles.position().x > source.position().x)
-                                    shiftX *= -1;
-                                if(eles.position().y> source.position().y)
-                                    shiftY *= -1;
-                           }
-                            var cX = x+shiftX;
-                            var cY =y+shiftY;
-
-                            //actions.push({name: "addNode", param: {newNode : {x:cX,y:cY,}}});
-
-                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
-                            var node = cy.nodes('[id = "node' + i +'"]');
-                            if(edges[i].data().class == 'consumption'){
-                                chiseInstance.addEdge(node.id(),target.id(), edgeParams, promptInvalidEdge);
-                                var edge = cy.edges()[cy.edges().length-1];
-                                edge.data('porttarget',edges[i].data().porttarget);
-                            }
-                            else{
-                                chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
-                                var edge = cy.edges()[cy.edges().length-1];
-                                edge.data('portsource',edges[i].data().portsource);
-                            }
-                            cy.remove(edges[i]);
-                        }
-                        cy.remove(eles);
-               } // put batch here
-               else if(radioButtonRules.includes(errors[currentPage].pattern)){
-                      inspectorUtilities.fixRadioButtons(errors[currentPage].pattern ,eles,cy);                       
-               } if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
-                   var targetTmp = eles.target();
-                   var sourceTmp = eles.source();
-                   var chiseInstance = appUtilities.getActiveChiseInstance();
-                   if(chiseInstance.elementUtilities.isPNClass(targetTmp) && chiseInstance.elementUtilities.isEPNClass(sourceTmp)) {
-                      var sourceNew = targetTmp.id();
-                      var targetNew = sourceTmp.id();
-                     eles = eles.move({
-                         target: targetNew,
-                         source : sourceNew
-                     
-                      });
-                      var tmpPort = eles.data().portsource; 
-                      eles.data('portsource',eles.data().porttarget);
-                      eles.data('porttarget',tmpPort);
-                   }
-               }
-               if(errors[currentPage].pattern == "pd10140" ) {
-                    cy.remove(eles);
-               }
-               var file = chiseInstance.createSbgnml();
-               errorsNew = chiseInstance.doValidation(file);
-               viewUtilitilesInstance.removeHighlights();
-               if(errorsNew.length ==0){
-                    cy.animate({
-                      duration: 100,
-                      easing: 'ease',
-                      fit :{eles:{},padding:20}
-                   });
-               }
-               inspectorUtilities.handleSBGNConsole(errorsNew,0,cy,file,false);
-
-      });*/
         $('#fix-errors-of-validation-icon').on('click', function () {
+             
+              var actions = [];
+              var errorFixParam = {};
+              errorFixParam.errorCode = errors[currentPage].pattern;
                var cy = appUtilities.getActiveCy();
                var chiseInstance = appUtilities.getActiveChiseInstance();
+               viewUtilitilesInstance.removeHighlights();
                var errorsNew = [];
                if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
-                   var targetTmp = eles.target();
-                   var sourceTmp = eles.source();
+                var targetTmp = eles.target(); 
                    if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
-                      var sourceNew = targetTmp.id();
-                      var targetNew = sourceTmp.id();
-                     eles = eles.move({
-                         target: targetNew,
-                         source : sourceNew
-                     
-                      });
-                      var tmpPort = eles.data().portsource; 
-                      eles.data('portsource',eles.data().porttarget);
-                      eles.data('porttarget',tmpPort);
-               
+                      errorFixParam.edge = eles;
+                                     
                    }
                }else if(errors[currentPage].pattern == "pd10103" ||  errors[currentPage].pattern == "pd10107"){
+                        errorFixParam.newEdges = [];
+                        errorFixParam.newNodes = [];
+                        errorFixParam.oldEdges = [];
+                        errorFixParam.node = eles; 
                         var edges = cy.nodes('[id = "' + id +'"]').connectedEdges();
+                  
                         var addedNodeNum = edges.length;
                         var promptInvalidEdge = function(){
                             appUtilities.promptInvalidEdgeWarning.render();
@@ -1598,47 +1490,42 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                            }
                             var cX = x+shiftX;
                             var cY =y+shiftY;
-                            chiseInstance.addNode(cX, cY, nodeParams, "node"+i, undefined);
-                            var node = cy.nodes('[id = "node' + i +'"]');
+
+                            errorFixParam.newNodes.push({x:cX,y:cY,class:nodeParams,id:"node"+i});  
                             if(edges[i].data().class == 'consumption'){
-                                chiseInstance.addEdge(node.id(),target.id(), edgeParams, promptInvalidEdge);
-                                var edge = cy.edges()[cy.edges().length-1];
-                                edge.data('porttarget',edges[i].data().porttarget);
+                              errorFixParam.newEdges.push({source:"node"+i, target: target.id(),class:edgeParams,property:'porttarget', value:edges[i].data().porttarget});
                             }
                             else{
-                                chiseInstance.addEdge(source.id(),node.id(),edgeParams, promptInvalidEdge);
-                                var edge = cy.edges()[cy.edges().length-1];
-                                edge.data('portsource',edges[i].data().portsource);
+                              errorFixParam.newEdges.push({source:source.id(), target: "node"+i,class:edgeParams,property:'portsource', value:edges[i].data().portsource});
+                              
                             }
-                            cy.remove(edges[i]);
+                            errorFixParam.oldEdges.push(edges[i]); 
                         }
-                        cy.remove(eles);
-               }
-               else if(radioButtonRules.includes(errors[currentPage].pattern)){
-                      inspectorUtilities.fixRadioButtons(errors[currentPage].pattern ,eles,cy);                       
-               } if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
+                       
+
+               }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
                    var targetTmp = eles.target();
                    var sourceTmp = eles.source();
                    var chiseInstance = appUtilities.getActiveChiseInstance();
                    if(chiseInstance.elementUtilities.isPNClass(targetTmp) && chiseInstance.elementUtilities.isEPNClass(sourceTmp)) {
-                      var sourceNew = targetTmp.id();
-                      var targetNew = sourceTmp.id();
-                     eles = eles.move({
-                         target: targetNew,
-                         source : sourceNew
-                     
-                      });
-                      var tmpPort = eles.data().portsource; 
-                      eles.data('portsource',eles.data().porttarget);
-                      eles.data('porttarget',tmpPort);
+                      errorFixParam.edge = eles;
+                      
                    }
+               }else if(errors[currentPage].pattern == "pd10140" ) {
+                  errorFixParam.node = eles;
+                  
                }
-               if(errors[currentPage].pattern == "pd10140" ) {
-                    cy.remove(eles);
+               
+
+
+               if(radioButtonRules.includes(errors[currentPage].pattern)){
+                inspectorUtilities.fixRadioButtons(errors[currentPage].pattern ,eles,cy);                       
+               }else{
+                cy.undoRedo().do("fixError", errorFixParam);
                }
                var file = chiseInstance.createSbgnml();
                errorsNew = chiseInstance.doValidation(file);
-               chiseInstance.removeHighlights();
+               viewUtilitilesInstance.removeHighlights(eles);
                if(errorsNew.length ==0){
                     cy.animate({
                       duration: 100,
@@ -1649,6 +1536,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                inspectorUtilities.handleSBGNConsole(errorsNew,0,cy,file,false);
 
       });
+        
      $('#inspector-dismiss-button').on('click', function () {
             var cy = appUtilities.getActiveCy();
             if(errors.length!=0) {
@@ -1657,7 +1545,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                  easing: 'ease',
                  fit :{eles:{},padding:20}, 
                  complete: function(){
-                      chiseInstance.removeHighlights();
+                      viewUtilitilesInstance.removeHighlights();
                  }
               });
             }
@@ -1678,7 +1566,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
       $('input[type=radio]').change(function() {
           if(!radioButtonChangeEvent.includes(errors[currentPage].pattern))
               return;
-          chiseInstance.removeHighlights();
+          viewUtilitilesInstance.removeHighlights();
           var group = ["pd10109","pd10110","pd10124","pd10127","pd10125","pd10128"];
           var instance = cy.viewUtilities('get');
           var args = {eles: eles, option: "highlighted4"};
