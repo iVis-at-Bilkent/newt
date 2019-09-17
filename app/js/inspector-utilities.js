@@ -1142,13 +1142,13 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
             }
             if(i==0){
                  if(errorCode == "pd10104")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the consumption glyphs which are connected to dissociation glyph: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a consumption glyph connected to the dissociation glyph: </p>  " ;
                  else if(errorCode == "pd10108")
-                     html+="<p style=\"text-align:center\" > To fix, choose one of the production glyphs which are connected to association glyph: </p> " ;
+                     html+="<p style=\"text-align:center\" > To fix, choose a production glyph connected to the association glyph: </p> " ;
                  else if(errorCode == "pd10111")
-                    html+="<p style=\"text-align:center\" > To fix, choose one of the arcs whose source is " + eles.data().class.toUpperCase() + ":</p>  " ;
+                    html+="<p style=\"text-align:center\" > To fix, choose an arcs whose source is " + eles.data().class.toUpperCase() + ":</p>  " ;
                 else if(errorCode == "pd10126")
-                     html+="<p style=\"text-align:center\" > To fix, choose one of the logic arcs connected to logical operator: </p>  " ;
+                     html+="<p style=\"text-align:center\" > To fix, choose a logic arc connected to the logical operator: </p>  " ;
                  html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
              }
             if(errorCode == "pd10104")
@@ -1173,19 +1173,19 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
           for(var i=0; i<listedNodes.length;i++) {
             if(i==0){
                     if(errorCode == "pd10109")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes or a logical operator as a source reference to modulation: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class or a logical operator as a source reference to modulation: </p>  " ;
                      else if(errorCode == "pd10112")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the listed compartments to place such glyph(s) inside it: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a compartment to place top level glyph inside: </p>  " ;
                       else if(errorCode == "pd10124")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes as a source reference to logic arc: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the logic arc: </p>  " ;
                       else if(errorCode == "pd10125")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the logical operators as a target reference to logic arc: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a logical operator as a target reference to the logic arc: </p>  " ;
                     else if(errorCode == "pd10128")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the elements of tag ,submap or terminal classes as a target reference to equivalence arc: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of tag, submap or terminal class as a target reference to the equivalence arc: </p>  " ;
                      else if(errorCode == "pd10127")
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of EPN classes as a source reference to equivalence arc: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the equivalence arc: </p>  " ;
                     else
-                        html+="<p style=\"text-align:center\" > To fix, choose one of the glyph of PN classes as a target reference to modulation: </p> " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of PN class as a target reference to the modulation: </p> " ;
                      html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
 
              }
@@ -1345,7 +1345,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             else if(errors[currentPage].pattern == "pd10102") {
                      html +="<p style=\"text-align:center\" > To fix, reverse the consumption arc:</p>";
             } else if(errors[currentPage].pattern == "pd10103") {
-                     html += "<p style=\"text-align:center\" > To fix, split the ‘source and sink’ glyph for each consumption arc:</p> ";       
+                     html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each consumption arc:</p> ";       
             }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
                     var params = { handled: handled };
                     html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,params);
@@ -1354,7 +1354,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                      html += "<p style=\"text-align:center\" > To fix, reverse the production arc:</p>";
             }
             else if(errors[currentPage].pattern == "pd10107") {
-                     html += "<p style=\"text-align:center\" > To fix, split the ‘source and sink’ glyph for each production arc:</p>";
+                     html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each production arc:</p>";
                        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
                        for(var i=0; i<connectedEdges.length;i++) {
                            var args = {eles: connectedEdges[i], option: "highlighted4"};
