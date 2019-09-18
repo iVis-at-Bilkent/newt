@@ -1271,8 +1271,10 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
         else if(errorCode == "pd10112") {
             var radioChecked = $('#errorspd10112 input:radio:checked').val();
             var compartment = cy.nodes('[id = "' + radioChecked +'"]');
-            errorFixParam.node = eles;
-            errorFixParam.parent = compartment.id();
+            errorFixParam.node = eles
+            errorFixParam.parentId = compartment.id();
+            errorFixParam.diffX = 0;
+            errorFixParam.diffY = 0;
             
         }
         else if(errorCode == "pd10125") {
