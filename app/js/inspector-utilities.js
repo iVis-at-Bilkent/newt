@@ -1173,7 +1173,7 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
           for(var i=0; i<listedNodes.length;i++) {
             if(i==0){
                     if(errorCode == "pd10109")
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class or a logical operator as a source reference to modulation: </p>  " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class or a logical operator as a source reference to "+ eles.data().class +": </p>  " ;
                      else if(errorCode == "pd10112")
                         html+="<p style=\"text-align:center\" > To fix, choose a compartment to place top level glyph inside: </p>  " ;
                       else if(errorCode == "pd10124")
@@ -1185,7 +1185,7 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
                      else if(errorCode == "pd10127")
                         html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the equivalence arc: </p>  " ;
                     else
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of PN class as a target reference to the modulation: </p> " ;
+                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of PN class as a target reference to the "+ eles.data().class +": </p> " ;
                      html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
 
              }
@@ -1338,6 +1338,14 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                var args = {eles: eles, option: "highlighted4"};
                viewUtilitilesInstance.highlight( args);
            }
+
+           
+           if(errors[currentPage].pattern == "pd10109" || (errors[currentPage].pattern == 'pd10110')){
+            var elesClass = eles.data().class;
+            errors[currentPage].text[0] = errors[currentPage].text[0].replace(new RegExp("modulation", 'i'), elesClass.charAt(0).toUpperCase() + elesClass.slice(1));
+           }
+          
+          
           html += "<b><p class='panel-body' style=\"color:red; text-align:center;\" > Map is Invalid</p></b>";
           html += "<p style=\"text-align:center\" >" + errors[currentPage].text + "</p>";
           html+="<table style=\"width:100%\"> <tr> <td style=\"width:90% text-align:center;\">";
