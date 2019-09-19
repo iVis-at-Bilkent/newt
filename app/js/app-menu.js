@@ -1186,7 +1186,7 @@ module.exports = function() {
     });
 
     $("#export-as-sbgnml-plain-file").click(function (evt) {
-      fileSaveView.render("sbgnml", "plain");
+      fileSaveView.render("sbgn", "plain");
     });
 
     $("#add-complex-for-selected").click(function (e) {

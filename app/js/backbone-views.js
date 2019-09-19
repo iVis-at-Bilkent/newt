@@ -1025,7 +1025,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
             filename = filename + '_' + currentGeneSymbol;
         }
       }
-      filename = filename + '_NEIGHBORHOOD.sbgnml';
+      filename = filename + '_NEIGHBORHOOD.nwt';
       queryURL = queryURL + sources;
 
       if(cy.nodes().length == 0){
@@ -1189,7 +1189,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     filename = filename + '_' + currentGeneSymbol;
                 }
             }
-            filename = filename + '_PATHSBETWEEN.sbgnml';
+            filename = filename + '_PATHSBETWEEN.nwt';
             queryURL = queryURL + sources;
 
             if(cy.nodes().length == 0){
@@ -1385,7 +1385,7 @@ var PathsFromToQueryView = Backbone.View.extend({
                     filename = filename + '_' + currentGeneSymbol;
                 }
             }
-            filename = filename + '_PATHSFROMTO.sbgnml';
+            filename = filename + '_PATHSFROMTO.nwt';
             queryURL = queryURL + sources + targets;
 
             if(cy.nodes().length == 0){
@@ -1551,7 +1551,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                     filename = filename + '_' + currentGeneSymbol;
                 }
             }
-            filename = filename + '_COMMONSTREAM.sbgnml';
+            filename = filename + '_COMMONSTREAM.nwt';
             queryURL = queryURL + sources;
 
             if(cy.nodes().length == 0){
@@ -1696,7 +1696,7 @@ var PathsByURIQueryView = Backbone.View.extend({
           filename = filename + '_' + uri;
       }
 
-      filename = filename + '_URI.sbgnml';
+      filename = filename + '_URI.nwt';
 
       if(cy.nodes().length == 0){
 
@@ -1852,8 +1852,8 @@ var FileSaveView = Backbone.View.extend({
       case 'nwt':
         fExt = 'nwt';
         break;
-      case 'sbgnml':
-        fExt = 'sbgnml'
+      case 'sbgn':
+        fExt = 'sbgn'
         break;
       case 'celldesigner':
       default:
@@ -1878,19 +1878,19 @@ var FileSaveView = Backbone.View.extend({
       filename = $("#file-save-filename").val();
       appUtilities.setFileContent(filename);
 
-      if(fileformat === "sbgnml" || fileformat === "nwt") {
+      if(fileformat === "sbgn" || fileformat === "nwt") {
         var renderInfo;
         var properties = jquery.extend(true, {}, currentGeneralProperties);
         delete properties.mapType; // already stored in sbgn file, no need to store in extension as property
 
         var saveAsFcn = chiseInstance.saveAsNwt;
-        if ( fileformat === "sbgnml" ) {
+        if ( fileformat === "sbgn" ) {
           saveAsFcn = chiseInstance.saveAsSbgnml;
         }
 
         var nodes, edges;
 
-        if ( fileformat === "sbgnml" ) {
+        if ( fileformat === "sbgn" ) {
           if (chiseInstance.elementUtilities.mapType === 'SIF') {
             properties.mapType = 'Unknown';
           }
