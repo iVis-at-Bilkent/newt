@@ -1,12 +1,14 @@
-<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
     <extension>
-      <renderInformation
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="4.0.2" backgroundColor="#000000">
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#ffffffff"/>
           <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#ffffff"/>
+          <colorDefinition id="color_4" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
@@ -15,26 +17,32 @@
           <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/gr2_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_1none5050100100" idList="glyph8 glyph7">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph8 glyph7">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.25image_1none5050100100" idList="glyph6 glyph5 glyph9">
-            <g stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.25image_1none5050100100" id-list="glyph6 glyph5 glyph9">
+            <g stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_2none5050100100" idList="glyph3 glyph14 glyph12 glyph2">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_2" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2none5050100100" id-list="glyph3 glyph14 glyph12 glyph2">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_3none5050100100" idList="glyph15 glyph10 glyph1">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_3" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0frectangle" id-list="glyph3_0 glyph15_0 glyph14_0 glyph10_2 glyph12_0 glyph1_0 glyph2_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3" shape-name="rectangle"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_4none5050100100" idList="glyph13 glyph11 glyph0">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_4" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph15 glyph10 glyph1">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.25" idList="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac">
-            <g stroke="color_2" strokeWidth="1.25" fill="color_1"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_4none5050100100" id-list="glyph13 glyph11 glyph0">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="edge5555551.25" idList="_5491eb3b-6a5f-4f9d-b67d-e922e04d3020 _0459b128-2bee-44af-8ba9-383b6910c1e1 _4ee2bde6-472d-4524-9553-049e291af07d _0ad8dcf1-cac1-41b3-95a5-cbf68587f704 be7ed04d-e856-4c84-b27c-2fa49b5177d6 b4225995-e295-4243-bf85-798329327c1b _3efdeb75-2c5a-42cf-983a-e1965f773e4a nwtE_7a07ebe7-6e47-4960-a9ea-cec4309acd73 nwtE_e68abc8b-12b6-4f69-ae3d-395949f338df _4766ca86-a8d5-4b08-adc5-f3cc051ad699 nwtE_e03c5f9a-c251-43c8-a559-1b2a93a5ccff">
-            <g stroke="color_2" strokeWidth="1.25"/>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph10_0 glyph10_1 glyph1_1 glyph1_2">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3" shape-name="stadium"/>
+          </style>
+          <style id="nodeffffff15555551.25cover5050" id-list="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac">
+            <g stroke="color_2" stroke-width="1.25" fill="color_1" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          </style>
+          <style id="edge5555551.25" id-list="_5491eb3b-6a5f-4f9d-b67d-e922e04d3020 _0459b128-2bee-44af-8ba9-383b6910c1e1 _4ee2bde6-472d-4524-9553-049e291af07d _0ad8dcf1-cac1-41b3-95a5-cbf68587f704 be7ed04d-e856-4c84-b27c-2fa49b5177d6 b4225995-e295-4243-bf85-798329327c1b _3efdeb75-2c5a-42cf-983a-e1965f773e4a nwtE_7a07ebe7-6e47-4960-a9ea-cec4309acd73 nwtE_e68abc8b-12b6-4f69-ae3d-395949f338df _4766ca86-a8d5-4b08-adc5-f3cc051ad699 nwtE_e03c5f9a-c251-43c8-a559-1b2a93a5ccff">
+            <g stroke="color_2" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
@@ -53,14 +61,15 @@
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
         <mapColorScheme>opposed_grey_red2</mapColorScheme>
         <mapColorSchemeStyle>3D</mapColorSchemeStyle>
-        <defaultInfoboxHeight>12</defaultInfoboxHeight>
-        <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>Activated STAT1alpha induction of the IRF1 gene</mapName>
         <mapDescription>An example of gene regulation
 using logical operators</mapDescription>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
       </mapProperties>
     </extension>
@@ -175,11 +184,11 @@ using logical operators</mapDescription>
       <port id="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac.2" x="306.48014703667945" y="350.45196881648906"/>
     </glyph>
     <arc id="_5491eb3b-6a5f-4f9d-b67d-e922e04d3020" class="consumption" source="glyph2" target="glyph9.1">
-      <start x="237.76401832505422" y="95.84609843233484"/>
+      <start x="237.63246369050356" y="95.97109843233484"/>
       <end x="194.69557595308527" y="126.14368025458344"/>
     </arc>
     <arc id="_0459b128-2bee-44af-8ba9-383b6910c1e1" class="necessary stimulation" source="glyph3" target="glyph5">
-      <start x="409.1620543768622" y="452.5211623750535"/>
+      <start x="409.1620543768622" y="452.6461623750535"/>
       <end x="409.1620543768622" y="499.2911951254143"/>
     </arc>
     <arc id="_4ee2bde6-472d-4524-9553-049e291af07d" class="consumption" source="glyph8" target="glyph6.1">
@@ -188,7 +197,7 @@ using logical operators</mapDescription>
     </arc>
     <arc id="_0ad8dcf1-cac1-41b3-95a5-cbf68587f704" class="production" source="glyph6.2" target="glyph3">
       <start x="317.549783012962" y="437.0211623750535"/>
-      <end x="375.5370543768622" y="437.0211623750535"/>
+      <end x="375.4120543768622" y="437.0211623750535"/>
     </arc>
     <arc id="be7ed04d-e856-4c84-b27c-2fa49b5177d6" class="consumption" source="glyph7" target="glyph5.1">
       <start x="344.7087185192559" y="510.0054808397"/>
@@ -196,29 +205,25 @@ using logical operators</mapDescription>
     </arc>
     <arc id="b4225995-e295-4243-bf85-798329327c1b" class="production" source="glyph5.2" target="glyph15">
       <start x="419.7870543768622" y="510.0054808397"/>
-      <end x="482.40412179116584" y="510.0054808397"/>
+      <end x="482.27912179116584" y="510.0054808397"/>
     </arc>
     <arc id="_3efdeb75-2c5a-42cf-983a-e1965f773e4a" class="production" source="glyph9.2" target="glyph13">
       <start x="194.69557595308527" y="147.39368025458344"/>
-      <end x="193.91299872786536" y="177.34227561476405"/>
+      <end x="193.9154097085114" y="177.21727561476405"/>
     </arc>
     <arc id="nwtE_7a07ebe7-6e47-4960-a9ea-cec4309acd73" class="logic arc" source="glyph14" target="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac.2">
-      <start x="359.398053629011" y="314.5166944941331"/>
+      <start x="359.2681880611497" y="314.6416944941331"/>
       <end x="306.48014703667945" y="349.82696881648906"/>
     </arc>
     <arc id="nwtE_e68abc8b-12b6-4f69-ae3d-395949f338df" class="logic arc" source="glyph13" target="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac.2">
-      <start x="254.03205075874027" y="311.6540129588613"/>
+      <start x="254.11931612953057" y="311.7435242833677"/>
       <end x="306.48014703667945" y="349.82696881648906"/>
     </arc>
     <arc id="_4766ca86-a8d5-4b08-adc5-f3cc051ad699" class="consumption" source="glyph0" target="glyph9.1">
-      <start x="145.85910439867763" y="95.34609843233484"/>
+      <start x="146.00647712813463" y="95.47109843233484"/>
       <end x="194.69557595308527" y="126.14368025458344"/>
     </arc>
     <arc id="nwtE_e03c5f9a-c251-43c8-a559-1b2a93a5ccff" class="necessary stimulation" source="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac.1" target="glyph6">
-      <glyph id="nwtE_e03c5f9a-c251-43c8-a559-1b2a93a5ccff_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="306.48014703667945" y="381.07696881648906"/>
       <end x="306.858219037075" y="426.3069369673069"/>
     </arc>

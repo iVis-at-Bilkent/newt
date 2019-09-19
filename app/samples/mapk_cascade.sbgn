@@ -1,57 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
-    <extension>
-      <renderInformation
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="4.0.2" backgroundColor="#000000">
-        <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#ffffffff"/>
-          <colorDefinition id="color_2" value="#555555"/>
-        </listOfColorDefinitions>
-        <listOfBackgroundImages>
-          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/grey4_3d.png"/>
-          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
-        </listOfBackgroundImages>
-        <listOfStyles>
-          <style id="nodeffffff15555551.2514normalnormalHelveticaimage_1none5050100100" idList="glyph4 glyph5 glyph7 glyph6 glyph10 glyph9 glyph2 glyph18 glyph16 glyph15 glyph17 glyph12 glyph19 glyph1 glyph24 glyph25 glyph23 glyph22 glyph21">
-            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
-          </style>
-          <style id="nodeffffff15555551.2514normalnormalHelveticaimage_2none5050100100" idList="glyph20 glyph0">
-            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_2" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
-          </style>
-          <style id="nodeffffff15555551.25image_2none5050100100" idList="glyph11 glyph3 glyph8 glyph13 glyph14">
-            <g stroke="color_2" strokeWidth="1.25" fill="color_1" backgroundImage="image_2" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
-          </style>
-          <style id="edge5555551.25" idList="71683490-4e4e-4d59-ae45-f02b1207cfe2 80d68006-906e-4f82-aca0-6dc0dfa5ddf9 a387f0f2-0df9-4373-a35c-35babc7c69ce 6f654e59-3ebb-46c3-ad76-13f125b0ffb7 a21961f1-f7d0-4455-9f7c-5c6b8cd7b947 5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6 aee723a4-2d8a-4480-8cdf-882601705ac0 6b514356-6708-4b90-881c-323c091dfe0d ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783 69eb919d-6711-4187-ba2c-d60d53b2654b a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af 61110232-ba80-4615-936f-bc21c393870c 7ada8b74-27e7-4e68-9c3d-bc406684ccb1 7d519bfc-0843-408a-95a0-34d0f7f17168 fc9c53a3-8627-41cf-9972-0bfa282538a0 0e18c34a-d3bc-4af5-b973-af8d56f4ec66 72badb00-9293-4106-9edc-dd830d41c62d 31a70df8-a7f0-4e03-8cf1-a6ced51843ea 7a83e4b9-1830-4fef-9a89-1be72e62f78a 47a398c9-b511-467a-9820-8c5844d9a9c8 80054f2d-3fd0-4dbd-b3b4-906a529e3ab7 6926ebfd-f318-4081-916b-2954f17ea6f5 e5e14893-b88e-4930-9b85-9938c3671ea4 4bb4836b-50b0-473e-8359-dda084e66be4 22d6d63b-53d4-40b6-8c82-86e65e0cb25b be003e1b-ca84-4eb1-83f9-a6de90fb0f8a f0c8409c-d838-4830-9fc3-edc71afbf61d">
-            <g stroke="color_2" strokeWidth="1.25"/>
-          </style>
-        </listOfStyles>
-      </renderInformation>
-      <mapProperties>
-        <compoundPadding>10</compoundPadding>
-        <extraCompartmentPadding>14</extraCompartmentPadding>
-        <extraComplexPadding>10</extraComplexPadding>
-        <arrowScale>1.25</arrowScale>
-        <showComplexName>true</showComplexName>
-        <dynamicLabelSize>regular</dynamicLabelSize>
-        <inferNestingOnLoad>false</inferNestingOnLoad>
-        <fitLabelsToNodes>false</fitLabelsToNodes>
-        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
-        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
-        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
-        <animateOnDrawingChanges>true</animateOnDrawingChanges>
-        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
-        <enablePorts>true</enablePorts>
-        <allowCompoundNodeResize>true</allowCompoundNodeResize>
-        <mapColorScheme>greyscale</mapColorScheme>
-        <mapColorSchemeStyle>3D</mapColorSchemeStyle>
-        <defaultInfoboxHeight>12</defaultInfoboxHeight>
-        <defaultInfoboxWidth>30</defaultInfoboxWidth>
-        <mapName>MAPK cascade</mapName>
-        <mapDescription/>
-        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
-    </extension>
     <glyph id="glyph4" class="simple chemical">
       <label text="ATP"/>
       <clone/>
@@ -209,117 +158,117 @@
     </glyph>
     <arc id="71683490-4e4e-4d59-ae45-f02b1207cfe2" class="production" source="glyph3.2" target="glyph2">
       <start x="390.625" y="152"/>
-      <end x="477.78480944651267" y="152"/>
+      <end x="477.65980944651267" y="152"/>
     </arc>
     <arc id="80d68006-906e-4f82-aca0-6dc0dfa5ddf9" class="consumption" source="glyph4" target="glyph3.1">
-      <start x="316.12414743680415" y="187.93016706679765"/>
+      <start x="315.79730661038246" y="188.11401503165987"/>
       <end x="369.375" y="152"/>
     </arc>
     <arc id="a387f0f2-0df9-4373-a35c-35babc7c69ce" class="production" source="glyph3.2" target="glyph5">
       <start x="390.625" y="152"/>
-      <end x="441.1521790096816" y="186.3981006929459"/>
+      <end x="441.4790198361033" y="186.58194865780814"/>
     </arc>
     <arc id="6f654e59-3ebb-46c3-ad76-13f125b0ffb7" class="catalysis" source="glyph1" target="glyph3">
-      <start x="380" y="75.5"/>
+      <start x="380" y="75.625"/>
       <end x="380" y="143.5625"/>
     </arc>
     <arc id="a21961f1-f7d0-4455-9f7c-5c6b8cd7b947" class="consumption" source="glyph7" target="glyph8.1">
-      <start x="202.6938658249118" y="333.35885086301573"/>
+      <start x="202.39601719332575" y="333.58669114185665"/>
       <end x="261.6223144467498" y="280.15371426741484"/>
     </arc>
     <arc id="5b63eda6-899a-4ba9-9b7f-d0f51b64a0e6" class="production" source="glyph8.2" target="glyph6">
       <start x="282.8723144467498" y="280.15371426741484"/>
-      <end x="341.64070307173387" y="331.7034125481812"/>
+      <end x="341.94173134216624" y="331.92703495403646"/>
     </arc>
     <arc id="aee723a4-2d8a-4480-8cdf-882601705ac0" class="consumption" source="glyph10" target="glyph11.1">
-      <start x="441.19492954815496" y="333.32881351581557"/>
+      <start x="440.8975476579672" y="333.55726265980246"/>
       <end x="499.7901999743807" y="280.15371426741484"/>
     </arc>
     <arc id="6b514356-6708-4b90-881c-323c091dfe0d" class="production" source="glyph11.2" target="glyph12">
       <start x="521.0401999743807" y="280.15371426741484"/>
-      <end x="609.2513427766252" y="280.15371426741484"/>
+      <end x="609.1263427766252" y="280.15371426741484"/>
     </arc>
     <arc id="ebb45daf-7a2e-4164-b1c0-4c7a8c5a9783" class="production" source="glyph11.2" target="glyph9">
       <start x="521.0401999743807" y="280.15371426741484"/>
-      <end x="591.6152937924335" y="332.8299155308004"/>
+      <end x="591.9298938911559" y="333.03400320285306"/>
     </arc>
     <arc id="69eb919d-6711-4187-ba2c-d60d53b2654b" class="catalysis" source="glyph2" target="glyph11">
-      <start x="511.28951291897016" y="167.5"/>
+      <start x="511.28854278568355" y="167.625"/>
       <end x="510.48068324082203" y="271.7163083790227"/>
     </arc>
     <arc id="a545d089-8ad2-4bf9-9e1b-c0d70ccdf5af" class="catalysis" source="glyph2" target="glyph8">
-      <start x="508.26250690030815" y="167.5"/>
+      <start x="508.23712542816133" y="167.625"/>
       <next x="493.90226330161306" y="238.22207787846648"/>
       <next x="273.39735821953184" y="237.49217874439927"/>
       <end x="272.47473685629444" y="271.7173491192872"/>
     </arc>
     <arc id="61110232-ba80-4615-936f-bc21c393870c" class="production" source="glyph13.2" target="glyph19">
       <start x="517.625" y="438"/>
-      <end x="610.886632895616" y="438"/>
+      <end x="610.761632895616" y="438"/>
     </arc>
     <arc id="7ada8b74-27e7-4e68-9c3d-bc406684ccb1" class="production" source="glyph13.2" target="glyph18">
       <start x="517.625" y="438"/>
-      <end x="590.3912414036042" y="497.44722159464857"/>
+      <end x="590.6965955989175" y="497.66489983289165"/>
     </arc>
     <arc id="7d519bfc-0843-408a-95a0-34d0f7f17168" class="production" source="glyph14.2" target="glyph16">
       <start x="267.625" y="438"/>
-      <end x="329.1876814511337" y="496.3990231964228"/>
+      <end x="329.4792245473568" y="496.63487828550217"/>
     </arc>
     <arc id="fc9c53a3-8627-41cf-9972-0bfa282538a0" class="consumption" source="glyph15" target="glyph14.1">
-      <start x="171.06414030211894" y="499.26120691334097"/>
+      <start x="170.7587861068057" y="499.47888515158405"/>
       <end x="246.375" y="438"/>
     </arc>
     <arc id="0e18c34a-d3bc-4af5-b973-af8d56f4ec66" class="consumption" source="glyph17" target="glyph13.1">
-      <start x="432.382792747007" y="498.3644822720842"/>
+      <start x="432.0912496507839" y="498.6003373611636"/>
       <end x="496.375" y="438"/>
     </arc>
     <arc id="72badb00-9293-4106-9edc-dd830d41c62d" class="catalysis" source="glyph12" target="glyph13">
-      <start x="645.2343281524139" y="295.65371426741484"/>
-      <next x="661.1184645490316" y="400.06662398074036"/>
-      <next x="506.7585547281832" y="400.06662398074036"/>
+      <start x="645.253344163509" y="295.77871426741484"/>
+      <next x="661.1184645490315" y="400.06662398074036"/>
+      <next x="506.75855472818324" y="400.06662398074025"/>
       <end x="506.9462958636605" y="429.5625632996412"/>
     </arc>
     <arc id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea" class="catalysis" source="glyph12" target="glyph14">
-      <start x="641.3226411686644" y="295.65371426741484"/>
+      <start x="641.3101113169873" y="295.77871426741484"/>
       <next x="632.0298309160219" y="388.3604207404915"/>
-      <next x="257.11474995619346" y="389.5853955361155"/>
+      <next x="257.11474995619346" y="389.5853955361156"/>
       <end x="257.0199981340112" y="429.56250877749267"/>
     </arc>
     <arc id="7a83e4b9-1830-4fef-9a89-1be72e62f78a" class="equivalence arc" source="glyph19" target="glyph20">
-      <start x="675.011632895616" y="438"/>
+      <start x="675.136632895616" y="438"/>
       <end x="759.6527022450305" y="438"/>
     </arc>
     <arc id="47a398c9-b511-467a-9820-8c5844d9a9c8" class="equivalence arc" source="glyph1" target="glyph0">
-      <start x="349.5" y="60"/>
+      <start x="349.375" y="60"/>
       <end x="288.625" y="60"/>
     </arc>
     <arc id="80054f2d-3fd0-4dbd-b3b4-906a529e3ab7" class="production" source="glyph8.2" target="glyph24">
       <start x="282.8723144467498" y="280.15371426741484"/>
-      <end x="359.1049750958073" y="280.15371426741484"/>
+      <end x="358.9799750958073" y="280.15371426741484"/>
     </arc>
     <arc id="6926ebfd-f318-4081-916b-2954f17ea6f5" class="consumption" source="glyph24" target="glyph11.1">
-      <start x="423.2299750958073" y="280.15371426741484"/>
+      <start x="423.3549750958073" y="280.15371426741484"/>
       <end x="499.7901999743807" y="280.15371426741484"/>
     </arc>
     <arc id="e5e14893-b88e-4930-9b85-9938c3671ea4" class="consumption" source="glyph25" target="glyph3.1">
-      <start x="288.5" y="152"/>
+      <start x="288.625" y="152"/>
       <end x="369.375" y="152"/>
     </arc>
     <arc id="4bb4836b-50b0-473e-8359-dda084e66be4" class="consumption" source="glyph23" target="glyph8.1">
-      <start x="192.45577169574398" y="280.15371426741484"/>
+      <start x="192.58077169574398" y="280.15371426741484"/>
       <end x="261.6223144467498" y="280.15371426741484"/>
     </arc>
     <arc id="22d6d63b-53d4-40b6-8c82-86e65e0cb25b" class="consumption" source="glyph22" target="glyph14.1">
-      <start x="152.2385142930341" y="438"/>
+      <start x="152.3635142930341" y="438"/>
       <end x="246.375" y="438"/>
     </arc>
     <arc id="be003e1b-ca84-4eb1-83f9-a6de90fb0f8a" class="consumption" source="glyph21" target="glyph13.1">
-      <start x="414.5" y="438"/>
+      <start x="414.625" y="438"/>
       <end x="496.375" y="438"/>
     </arc>
     <arc id="f0c8409c-d838-4830-9fc3-edc71afbf61d" class="production" source="glyph14.2" target="glyph21">
       <start x="267.625" y="438"/>
-      <end x="350.375" y="438"/>
+      <end x="350.25" y="438"/>
     </arc>
   </map>
 </sbgn>

@@ -1,13 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
     <extension>
-      <renderInformation
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="4.0.2" backgroundColor="#000000">
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#ffffffff"/>
           <colorDefinition id="color_2" value="#bfbfbf"/>
           <colorDefinition id="color_3" value="#555555"/>
+          <colorDefinition id="color_4" value="#ffffff"/>
+          <colorDefinition id="color_5" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb3_gradient.png"/>
@@ -17,26 +19,32 @@
           <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff1bfbfbf1818normalnormalHelveticaimage_1none5050100100" idList="glyph0 glyph1">
-            <g fontSize="18" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="18" fill="color_1" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff1bfbfbf1818normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="18" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_2none5050100100" idList="glyph3 glyph15 glyph2 glyph11 glyph17 glyph4 glyph14 glyph6 glyph12 glyph10 glyph8 glyph13 glyph5 glyph18 glyph7 glyph16">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_3" strokeWidth="1.25" fill="color_1" backgroundImage="image_2" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2none5050100100" id-list="glyph3 glyph15 glyph2 glyph11 glyph17 glyph4 glyph14 glyph6 glyph12 glyph10 glyph8 glyph13 glyph5 glyph18 glyph7 glyph16">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_3none5050100100" idList="glyph25 glyph37 glyph22 glyph35 glyph45 glyph30 glyph43 glyph33 glyph32 glyph28 glyph42 glyph34 glyph29 glyph44 glyph41 glyph24 glyph40 glyph31 glyph23 glyph38 glyph20 glyph39 glyph46 glyph21 glyph27 b6769d7e-7ff6-11a0-2620-b71d9cf91ded 364697a4-255c-6c48-1fed-a8e91a24fc67">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_3" strokeWidth="1.25" fill="color_1" backgroundImage="image_3" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph25 glyph37 glyph22 glyph35 glyph45 glyph30 glyph43 glyph33 glyph32 glyph28 glyph42 glyph34 glyph29 glyph44 glyph41 glyph24 glyph40 glyph31 glyph23 glyph38 glyph20 glyph39 glyph46 glyph21 glyph27 b6769d7e-7ff6-11a0-2620-b71d9cf91ded 364697a4-255c-6c48-1fed-a8e91a24fc67">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_4none5050100100" idList="glyph57 glyph50 glyph49 glyph53 glyph51 glyph55 glyph56 glyph54 glyph47 glyph52 glyph48">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_3" strokeWidth="1.25" fill="color_1" backgroundImage="image_4" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph25_0 glyph25_1 glyph22_0 glyph22_1 glyph33_0 glyph32_0 glyph28_0 glyph34_0 glyph29_0 glyph24_0 glyph24_1 glyph23_0 glyph23_1 glyph20_0 glyph20_1 glyph21_0 glyph21_1">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4" shape-name="stadium"/>
           </style>
-          <style id="nodeffffff15555551.25image_5none5050100100" idList="glyph61 glyph66 glyph59 glyph60 4ba1b666-0578-952d-af1f-df5986a11cc0 glyph63 glyph62 glyph65 glyph58 glyph68 glyph67 glyph69">
-            <g stroke="color_3" strokeWidth="1.25" fill="color_1" backgroundImage="image_5" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_4none5050100100" id-list="glyph57 glyph50 glyph49 glyph53 glyph51 glyph55 glyph56 glyph54 glyph47 glyph52 glyph48">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_1none5050100100" idList="glyph9 glyph19">
-            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_3" strokeWidth="1.25" fill="color_1" backgroundImage="image_1" backgroundFit="none" backgroundPosX="50%" backgroundPosY="50%" backgroundWidth="100%" backgroundHeight="100%"/>
+          <style id="nodeffffff15555551.25image_5none5050100100" id-list="glyph61 glyph66 glyph59 glyph60 4ba1b666-0578-952d-af1f-df5986a11cc0 glyph63 glyph62 glyph65 glyph58 glyph68 glyph67 glyph69">
+            <g stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="edge5555551.25" idList="arc31 nwtE_2228e5b5-771e-402b-b16e-85358c7b9999 nwtE_9ba5e16e-98ca-4066-be1a-cc272f59a28f arc32 arc34 arc33 nwtE_bc4239e4-7e0c-41ad-8556-fa994251bbe4 nwtE_26d7e29f-37d7-4bc8-9607-d28b1932ef52 arc2 arc3 arc4 arc5 arc6 arc7 arc8 arc9 arc10 arc11 arc12 arc13 arc14 arc15 arc16 arc17 arc18 arc19 arc20 arc21 arc22 arc23 arc24 arc25 nwtE_ebc64e3c-e4b6-4858-8a73-ce7c423e835d nwtE_eef9ec0e-9cf7-4257-88c3-58bfd65ef170 arc29 arc30">
-            <g stroke="color_3" strokeWidth="1.25"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph9 glyph19">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0frectangle" id-list="b6769d7e-7ff6-11a0-2620-b71d9cf91ded_0 364697a4-255c-6c48-1fed-a8e91a24fc67_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4" shape-name="rectangle"/>
+          </style>
+          <style id="edge5555551.25" id-list="arc31 nwtE_2228e5b5-771e-402b-b16e-85358c7b9999 nwtE_9ba5e16e-98ca-4066-be1a-cc272f59a28f arc32 arc34 arc33 nwtE_bc4239e4-7e0c-41ad-8556-fa994251bbe4 nwtE_26d7e29f-37d7-4bc8-9607-d28b1932ef52 arc2 arc3 arc4 arc5 arc6 arc7 arc8 arc9 arc10 arc11 arc12 arc13 arc14 arc15 arc16 arc17 arc18 arc19 arc20 arc21 arc22 arc23 arc24 arc25 nwtE_ebc64e3c-e4b6-4858-8a73-ce7c423e835d nwtE_eef9ec0e-9cf7-4257-88c3-58bfd65ef170 arc29 arc30">
+            <g stroke="color_3" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
@@ -55,13 +63,14 @@
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
         <mapColorScheme>opposed_purple_green2</mapColorScheme>
         <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
-        <defaultInfoboxHeight>12</defaultInfoboxHeight>
-        <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <mapName>CaM-CaMK dependent signaling to nucleus</mapName>
         <mapDescription>Ma et al., Cell, 2014</mapDescription>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
       </mapProperties>
     </extension>
@@ -434,283 +443,147 @@
       <port id="glyph69.2" x="927" y="169"/>
     </glyph>
     <arc id="arc31" class="production" source="glyph68.1" target="glyph7">
-      <glyph id="arc31_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="640" y="304.375"/>
-      <end x="531.7203414832748" y="284.60626149259497"/>
+      <end x="531.8453414832748" y="284.64712066572156"/>
     </arc>
     <arc id="nwtE_2228e5b5-771e-402b-b16e-85358c7b9999" class="catalysis" source="glyph6" target="4ba1b666-0578-952d-af1f-df5986a11cc0">
-      <glyph id="nwtE_2228e5b5-771e-402b-b16e-85358c7b9999_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="994.5" y="1113.2478746770742"/>
+      <start x="994.5" y="1113.3728746770742"/>
       <end x="994.5" y="1177.5316972897863"/>
     </arc>
     <arc id="nwtE_9ba5e16e-98ca-4066-be1a-cc272f59a28f" class="stimulation" source="364697a4-255c-6c48-1fed-a8e91a24fc67" target="glyph69">
-      <glyph id="nwtE_9ba5e16e-98ca-4066-be1a-cc272f59a28f_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="837.8008014066335" y="163.41615555201415"/>
+      <start x="837.9258014066335" y="163.40296014821496"/>
       <end x="916.0797676833589" y="155.15277499999056"/>
     </arc>
     <arc id="arc32" class="catalysis" source="glyph27" target="glyph68">
-      <glyph id="arc32_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="704.279828670823" y="270.7957753568925"/>
+      <start x="704.116530119893" y="270.9207753568925"/>
       <end x="650.2939540386109" y="312.12029593956373"/>
     </arc>
     <arc id="arc34" class="production" source="glyph60.2" target="glyph6">
-      <glyph id="arc34_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="854.6004103538849" y="986.5460162674967"/>
-      <end x="908.3282715018514" y="1012.8622059699011"/>
+      <end x="908.2032715018514" y="1012.8147742755434"/>
     </arc>
     <arc id="arc33" class="consumption" source="glyph4" target="glyph60.1">
-      <glyph id="arc33_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="740.886211133063" y="1026.303017523711"/>
+      <start x="741.011211133063" y="1026.252353177417"/>
       <end x="823.3504103538849" y="986.5460162674967"/>
     </arc>
     <arc id="nwtE_bc4239e4-7e0c-41ad-8556-fa994251bbe4" class="consumption" source="b6769d7e-7ff6-11a0-2620-b71d9cf91ded" target="glyph67.1">
-      <start x="615.795935898724" y="162.74272671045972"/>
+      <start x="615.920935898724" y="162.7271600783452"/>
       <end x="670.375" y="154"/>
     </arc>
     <arc id="nwtE_26d7e29f-37d7-4bc8-9607-d28b1932ef52" class="production" source="glyph67.2" target="364697a4-255c-6c48-1fed-a8e91a24fc67">
       <start x="701.625" y="154"/>
-      <end x="763.6956284854614" y="162.79407592629283"/>
+      <end x="763.5706284854614" y="162.77992764649622"/>
     </arc>
     <arc id="arc2" class="necessary stimulation" source="glyph19" target="glyph67">
-      <glyph id="arc2_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="686" y="96.125"/>
       <end x="686" y="143.0625"/>
     </arc>
     <arc id="arc3" class="consumption" source="glyph48" target="glyph69.1">
-      <glyph id="arc3_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="927" y="101.5"/>
+      <start x="927" y="101.125"/>
       <end x="927" y="138.375"/>
     </arc>
     <arc id="arc4" class="production" source="glyph69.2" target="glyph55">
-      <glyph id="arc4_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="927" y="169.625"/>
-      <end x="927" y="217.875"/>
+      <end x="927" y="218.25"/>
     </arc>
     <arc id="arc5" class="consumption" source="glyph55" target="glyph63.1">
-      <glyph id="arc5_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="942.6736954023489" y="255.97623956700753"/>
+      <start x="942.3938079844498" y="255.7266638604538"/>
       <end x="993.6406295841157" y="285.79847226067875"/>
     </arc>
     <arc id="arc6" class="consumption" source="glyph41" target="glyph63.1">
-      <glyph id="arc6_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="1050.6545628315962" y="260"/>
+      <start x="1050.4825168570076" y="260.125"/>
       <end x="993.6406295841157" y="285.79847226067875"/>
     </arc>
     <arc id="arc7" class="production" source="glyph63.2" target="glyph10">
-      <glyph id="arc7_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="993.6406295841157" y="317.04847226067875"/>
-      <end x="993.7212471676567" y="347.99758563455856"/>
+      <end x="993.7210307985792" y="347.87258563455856"/>
     </arc>
     <arc id="arc8" class="consumption" source="glyph24" target="glyph62.2">
-      <glyph id="arc8_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="967.1367155585245" y="520.6168132336828"/>
+      <start x="966.951677032963" y="520.4918132336828"/>
       <end x="896.8234393725336" y="462.56249999999994"/>
     </arc>
     <arc id="arc9" class="consumption" source="glyph10" target="glyph62.2">
-      <glyph id="arc9_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="948.1823258608974" y="415.3725809530113"/>
+      <start x="948.0048941979461" y="415.4975809530113"/>
       <end x="896.8234393725336" y="462.56249999999994"/>
     </arc>
     <arc id="arc10" class="production" source="glyph62.1" target="glyph5">
-      <glyph id="arc10_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="865.5734393725336" y="462.56249999999994"/>
-      <end x="794.8744185961664" y="460.8970898782382"/>
+      <end x="794.9994185961664" y="460.8995014464593"/>
     </arc>
     <arc id="arc11" class="production" source="glyph65.1" target="glyph8">
-      <glyph id="arc11_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="529.375" y="462.5625"/>
-      <end x="449.87447097463263" y="460.8119260283526"/>
+      <end x="449.99947097463263" y="460.81422637557483"/>
     </arc>
     <arc id="arc12" class="consumption" source="glyph5" target="glyph65.2">
-      <glyph id="arc12_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="627.25" y="460.90625"/>
+      <start x="627.125" y="460.90876709726444"/>
       <end x="560.625" y="462.5625"/>
     </arc>
     <arc id="arc13" class="catalysis" source="glyph31" target="glyph65">
-      <glyph id="arc13_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="545.3586514966889" y="408.75551187558693"/>
+      <start x="545.3578183068255" y="408.88051187558693"/>
       <end x="545.0729036503403" y="451.6250694182217"/>
     </arc>
     <arc id="arc14" class="consumption" source="glyph8" target="glyph58.1">
-      <glyph id="arc14_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="365" y="527.75"/>
+      <start x="365" y="527.875"/>
       <end x="365" y="580.375"/>
     </arc>
     <arc id="arc15" class="production" source="glyph58.2" target="glyph3">
-      <glyph id="arc15_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="365" y="611.625"/>
-      <end x="365" y="682.625"/>
+      <end x="365" y="682.5"/>
     </arc>
     <arc id="arc16" class="consumption" source="glyph3" target="glyph61.1">
-      <glyph id="arc16_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="451.25" y="756.021407511387"/>
+      <start x="451.375" y="756.02397476865"/>
       <end x="510.66093966291146" y="757.5625"/>
     </arc>
     <arc id="arc17" class="production" source="glyph61.2" target="glyph22">
-      <glyph id="arc17_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="541.9109396629115" y="757.5625"/>
-      <end x="594.7417202054755" y="711.7383453132849"/>
+      <end x="594.5549852263729" y="711.8633453132849"/>
     </arc>
     <arc id="arc18" class="production" source="glyph61.2" target="glyph17">
-      <glyph id="arc18_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="541.9109396629115" y="757.5625"/>
-      <end x="594.6522651477118" y="788.9629212483961"/>
+      <end x="594.5311268578055" y="788.9072828430059"/>
     </arc>
     <arc id="arc19" class="consumption" source="glyph35" target="glyph66.1">
-      <glyph id="arc19_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="764.4728312678742" y="710"/>
+      <start x="764.5872259294566" y="710.125"/>
       <end x="792.375" y="757.5625"/>
     </arc>
     <arc id="arc20" class="consumption" source="glyph17" target="glyph66.1">
-      <glyph id="arc20_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="722.9405855817445" y="792.4274464376375"/>
+      <start x="723.0659689657159" y="792.3760531263123"/>
       <end x="792.375" y="757.5625"/>
     </arc>
     <arc id="arc21" class="production" source="glyph66.2" target="glyph2">
-      <glyph id="arc21_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="823.625" y="757.5625"/>
-      <end x="908.125" y="757.5625"/>
+      <end x="908" y="757.5625"/>
     </arc>
     <arc id="arc22" class="consumption" source="glyph17" target="glyph59.1">
-      <glyph id="arc22_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="659.136211133063" y="850.7051787701424"/>
+      <start x="659.136211133063" y="850.8301787701424"/>
       <end x="659.136211133063" y="903.375"/>
     </arc>
     <arc id="arc23" class="consumption" source="glyph33" target="glyph59.1">
-      <glyph id="arc23_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="554.1829283874155" y="883.7999310873219"/>
+      <start x="554.3015843748929" y="883.8397268786191"/>
       <end x="659.136211133063" y="903.375"/>
     </arc>
     <arc id="arc24" class="production" source="glyph59.2" target="glyph4">
-      <glyph id="arc24_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="659.136211133063" y="934.625"/>
-      <end x="659.136211133063" y="990.125"/>
+      <end x="659.136211133063" y="990"/>
     </arc>
     <arc id="arc25" class="catalysis" source="glyph30" target="glyph60">
-      <glyph id="arc25_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="948.6492753321304" y="812.625"/>
+      <start x="948.5704508552702" y="812.75"/>
       <end x="845.5688101307315" y="976.0901908064852"/>
     </arc>
     <arc id="nwtE_ebc64e3c-e4b6-4858-8a73-ce7c423e835d" class="consumption" source="glyph32" target="4ba1b666-0578-952d-af1f-df5986a11cc0.1">
-      <glyph id="nwtE_ebc64e3c-e4b6-4858-8a73-ce7c423e835d_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="883.7491938838532" y="1188.4691972897863"/>
+      <start x="883.8741938838532" y="1188.4691972897863"/>
       <end x="978.875" y="1188.4691972897863"/>
     </arc>
     <arc id="nwtE_eef9ec0e-9cf7-4257-88c3-58bfd65ef170" class="production" source="4ba1b666-0578-952d-af1f-df5986a11cc0.2" target="glyph28">
-      <glyph id="nwtE_eef9ec0e-9cf7-4257-88c3-58bfd65ef170_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
       <start x="1010.125" y="1188.4691972897863"/>
-      <end x="1102.6241938838532" y="1188.4691972897863"/>
+      <end x="1102.4991938838532" y="1188.4691972897863"/>
     </arc>
     <arc id="arc29" class="stimulation" source="glyph28" target="glyph9">
-      <glyph id="arc29_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="1141.2491938838532" y="1206.4691972897863"/>
+      <start x="1141.2491938838532" y="1206.5941972897863"/>
       <end x="1141.2491938838532" y="1285.2191972897863"/>
     </arc>
     <arc id="arc30" class="consumption" source="glyph5" target="glyph68.2">
-      <glyph id="arc30_card" class="cardinality">
-        <label text="0"/>
-        <bbox x="0" y="0" w="0" h="0"/>
-      </glyph>
-      <start x="675.3114901256732" y="390.75"/>
+      <start x="675.2491023339318" y="390.625"/>
       <end x="640" y="335.625"/>
     </arc>
   </map>
