@@ -103,8 +103,9 @@ tutorial.UIGuide = function(){
                 <p style="font-size:12px; margin:0px;">Remaining edit operations:<br>\n\
                 <b>- Delete Selected Simple</b><br>\n\
                 <b>- Delete Selected Smart: </b>Perform deletion on selected objects and associated neighbors, leaving the map intact w.r.t. the map type.<br>\n\
-                <b>- Validate Map: </b>Validate SBGN PD map and fix problems</p>\n\
-                <b>- Undo<br>- Redo</b></p>'             
+                <b>- Validate Map</b><br>\n\
+                <b>- Undo</b><br>\n\
+                <b>- Redo</b></p>'             
       },
       {
         element: document.getElementsByClassName('inside-menu')[2],
