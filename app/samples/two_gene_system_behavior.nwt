@@ -7,38 +7,38 @@
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#ffffffff"/>
           <colorDefinition id="color_2" value="#555555"/>
-          <colorDefinition id="color_3" value="#ffffff"/>
-          <colorDefinition id="color_4" value="undefined"/>
+          <colorDefinition id="color_3" value="#ffffff7f"/>
+          <colorDefinition id="color_4" value="#ffffff"/>
+          <colorDefinition id="color_5" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb5_3d.png"/>
           <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/rb4_3d.png"/>
           <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
-          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/rb3_gradient.png"/>
-          <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/rb3_3d.png"/>
-          <backgroundImage id="image_6" value="http://newteditor.org/color-scheme-images/rb1_3d.png"/>
+          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/rb3_3d.png"/>
+          <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/rb1_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
           <style id="nodeffffff15555551.2518normalnormalHelvetica000image_1none5050100100" id-list="nwtN_246183a2-3d61-4bf1-9aea-a2ab19237362 1ce37109-f4a2-0b67-da7a-cf53bb22059b 43e746d9-ef69-4278-2e57-8c761a1f23e7 nwtN_d44fd76d-db71-479d-a126-1b63a640e677 2f458c4e-8d74-6a06-98b5-9ecc9aea20dd">
             <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2none5050100100" id-list="nwtN_8c3bec67-a333-4934-9f45-175c1e650840 nwtN_d95d79cb-8926-44a3-b13e-70b43b32194b">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff0.55555551.2511normalnormalHelvetica000image_2none5050100100" id-list="nwtN_8c3bec67-a333-4934-9f45-175c1e650840 nwtN_d95d79cb-8926-44a3-b13e-70b43b32194b">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="nodeffffff15555551.25image_3none5050100100" id-list="nwtN_b20b343a-6814-4840-bbae-a78642e2a615 7577063e-d5a2-04a1-85bc-9a6aa8c14dbc 223d7d86-b0aa-51de-4761-e2e627e52bf2 bfedf62c-8db2-49ad-e831-724cc16f5760 05c406aa-93f5-6e10-d0ab-cbc23c8e263f 0bc570c9-96c1-8c16-94f7-dec4d64da0e4 d52341c5-a08f-e44d-e688-d6228f6dbeb1 nwtN_8535b756-986e-4113-98f5-ae813ca9053e nwtN_f8b62c54-617b-4cb2-bda6-c2bafd3e9cdf nwtN_f2be75bb-7085-4407-92d8-1a7600c1c089 c17bb050-c3df-0538-2d62-69e641ca9fb0">
             <g stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555550.00114normalnormalHelvetica000image_4cover5050" id-list="nwtN_bc135f61-d17f-46cc-a3db-730415acb7d0 016cfdd3-afd0-17d8-5111-c03517801c61 b59f25d2-f4d1-a430-7bef-106c88e90e59 0538bf62-e976-107f-0ac7-f5db815a9cc9 4323755a-c2d8-6bf3-cd46-c0db550650d2 a045a874-b8a6-7fa8-1c83-506512001c24 97455257-a31e-b05a-ea0c-ad19e7523650 e21e05be-4e9e-386f-bd31-5edb2153fe02 15bbf3f5-2359-a11a-7283-c0fce6d9be06 9932a69a-de95-f56c-9d29-3ad17a47a32b 751448e7-205d-fecb-0524-2486bdfb3cd5">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="0.001" fill="color_1" background-image="image_4" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="nodeffffff15555550.00114normalnormalHelvetica000" id-list="nwtN_bc135f61-d17f-46cc-a3db-730415acb7d0 016cfdd3-afd0-17d8-5111-c03517801c61 b59f25d2-f4d1-a430-7bef-106c88e90e59 0538bf62-e976-107f-0ac7-f5db815a9cc9 4323755a-c2d8-6bf3-cd46-c0db550650d2 a045a874-b8a6-7fa8-1c83-506512001c24 97455257-a31e-b05a-ea0c-ad19e7523650 e21e05be-4e9e-386f-bd31-5edb2153fe02 15bbf3f5-2359-a11a-7283-c0fce6d9be06 9932a69a-de95-f56c-9d29-3ad17a47a32b 751448e7-205d-fecb-0524-2486bdfb3cd5">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="0.001" fill="color_1"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_5none5050100100" id-list="nwtN_e2b3efa0-7e8f-4193-b3c0-f0b9f2f2eacd a6bc04ad-2b46-5f5c-5675-a4b0c85f6224 66695fa6-6eb2-f620-6c21-230be7556460 bd38443e-4bf5-6108-9efb-b31a4f1674b3 162c5bf0-46dc-e772-33ad-72e39cde6618 aa836434-ceed-871c-589f-b963cc8ac423 d23bc1e5-32db-cd9c-cf9c-d1db8efad09f">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_4none5050100100" id-list="nwtN_e2b3efa0-7e8f-4193-b3c0-f0b9f2f2eacd a6bc04ad-2b46-5f5c-5675-a4b0c85f6224 66695fa6-6eb2-f620-6c21-230be7556460 bd38443e-4bf5-6108-9efb-b31a4f1674b3 162c5bf0-46dc-e772-33ad-72e39cde6618 aa836434-ceed-871c-589f-b963cc8ac423 d23bc1e5-32db-cd9c-cf9c-d1db8efad09f">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555551.2518normalnormalHelvetica000image_6none5050100100" id-list="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa 87e5af5c-b3a9-7377-7929-7c8adbdb6bce 41c8356c-5411-4261-9872-74860971e0a4 0c58af92-034d-0cf9-e67d-95b3d096cd12">
-            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_6" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff15555551.2518normalnormalHelvetica000image_5none5050100100" id-list="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa 87e5af5c-b3a9-7377-7929-7c8adbdb6bce 41c8356c-5411-4261-9872-74860971e0a4 0c58af92-034d-0cf9-e67d-95b3d096cd12">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa_0 41c8356c-5411-4261-9872-74860971e0a4_0 0c58af92-034d-0cf9-e67d-95b3d096cd12_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3" shape-name="stadium"/>
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4" shape-name="stadium"/>
           </style>
           <style id="edge5555551.25" id-list="nwtE_d950668a-cc4f-4322-9d87-68d88a0d33c5 nwtE_5659dfab-6f1b-482d-9f2e-88bd58b4d32a nwtE_ea8e7c61-8012-441b-a6f4-41f7a6a8cd6e nwtE_7705c973-722d-4386-9d4f-6cd55d8dede8 nwtE_5391b17a-6b2c-4dcf-8e86-47e607c264bb nwtE_f4716e45-9e45-4151-9f20-63bee4be6823 nwtE_cedee330-ca75-4117-b0d7-f95aae3cb80a nwtE_d2a0cb80-a73a-499f-b663-fa3a9d5c8e40 nwtE_9226f512-62dc-426e-a507-b588127f550f nwtE_f25bb69a-667b-462e-bf6f-f3460ebdc6b9 nwtE_b14fd3fc-1618-4797-a4bc-e944fa824b1f nwtE_dd6be8b0-130c-49c2-be85-8d30387a93e4 nwtE_551edb3e-f4f7-4932-9b6c-5431d62f8234 nwtE_61188832-2675-4301-b4ab-048984e16590 nwtE_ce608a2a-9db9-487c-ac51-8bda5d3372b3 nwtE_f8e86fd3-7d12-47e9-a698-755793eeda96 nwtE_d3ab2f61-42ba-42b8-832c-afbe6b62150d nwtE_57975a28-1d81-43d5-8613-f2e7f85a6d08 nwtE_332490dd-42d9-4fb6-95d6-385d11bc9f48 nwtE_252ede88-41de-40ae-ab88-d9216d6cb5b9 nwtE_46da6ada-cc1d-4939-8753-5a9e4aa40f5b nwtE_60650407-326b-4c28-b8c7-4e97f51da783 nwtE_6517df72-5477-4ea1-bfa2-30802ddc9b24 nwtE_cc3b05e1-e157-4ccb-93ac-55154b7f6eff nwtE_578e42a5-9568-478d-8e83-10b0e49ca1d3 nwtE_860bb089-81a9-40ac-932b-9cd763f81f7a nwtE_1f527cc8-4123-47da-8419-4f00ee6229e9 nwtE_d0b07128-9a81-4d13-b105-b657daa520c7">
             <g stroke="color_2" stroke-width="1.25"/>

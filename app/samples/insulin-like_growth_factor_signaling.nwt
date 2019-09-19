@@ -5,51 +5,40 @@
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#eff3ffff"/>
+          <colorDefinition id="color_1" value="#eff3ff7f"/>
           <colorDefinition id="color_2" value="#c0c0c0"/>
           <colorDefinition id="color_3" value="#9ecae1ff"/>
           <colorDefinition id="color_4" value="#555555"/>
           <colorDefinition id="color_5" value="#707070ff"/>
           <colorDefinition id="color_6" value="#ffffff"/>
-          <colorDefinition id="color_7" value="#c6dbefff"/>
+          <colorDefinition id="color_7" value="#c6dbef7f"/>
           <colorDefinition id="color_8" value="#ffffffff"/>
-          <colorDefinition id="color_9" value="#e9affeff"/>
+          <colorDefinition id="color_9" value="#e9affe7f"/>
           <colorDefinition id="color_10" value="#bbbbbb"/>
           <colorDefinition id="color_11" value="undefined"/>
         </listOfColorDefinitions>
-        <listOfBackgroundImages>
-          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
-          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/rb1_gradient.png"/>
-          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/gr2_gradient.png"/>
-          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/rb2_gradient.png"/>
-        </listOfBackgroundImages>
+        <listOfBackgroundImages/>
         <listOfStyles>
-          <style id="nodeeff3ff1c0c0c01214normalnormalHelvetica000image_1cover5050" id-list="glyph1 glyph40">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="12" fill="color_1" background-image="image_1" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="nodeeff3ff0.5c0c0c01214normalnormalHelvetica000" id-list="glyph1 glyph40">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="12" fill="color_1"/>
           </style>
-          <style id="node9ecae115555551.2511normalnormalHelvetica000image_2cover5050" id-list="glyph2 glyph12 glyph20 glyph16 nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5 glyph30 glyph35 glyph7 nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113 glyph37 glyph38 glyph39 glyph14 nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9 nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0 glyph0 glyph3 glyph4">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="node9ecae115555551.2511normalnormalHelvetica000" id-list="glyph2 glyph9 glyph10 glyph12 glyph20 glyph16 nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5 glyph22 glyph23 glyph29 glyph28 glyph33 glyph34 glyph30 glyph35 glyph36 glyph7 nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113 glyph37 glyph38 glyph39 glyph14 nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9 nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0 glyph0 glyph3 glyph4">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3"/>
           </style>
-          <style id="node70707015555551.25image_1cover5050" id-list="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac nwtN_edd99deb-c404-4af3-9081-7534757f46f1">
-            <g stroke="color_4" stroke-width="1.25" fill="color_5" background-image="image_1" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
-          </style>
-          <style id="node9ecae115555551.2511normalnormalHelvetica000image_3cover5050" id-list="glyph9 glyph10 glyph22 glyph23 glyph29 glyph28 glyph33 glyph34">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_3" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="node70707015555551.25" id-list="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac nwtN_edd99deb-c404-4af3-9081-7534757f46f1">
+            <g stroke="color_4" stroke-width="1.25" fill="color_5"/>
           </style>
           <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph12_0 glyph20_0 nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5_0 glyph30_0 glyph35_0 glyph7_0 nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113_0 glyph37_0 glyph38_0 glyph39_0 nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9_0 nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0_0">
             <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_6" shape-name="stadium"/>
           </style>
-          <style id="nodec6dbef15555550.0111normalnormalHelvetica000image_4cover5050" id-list="glyph18 glyph5">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="0.01" fill="color_7" background-image="image_4" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="nodec6dbef0.55555550.0111normalnormalHelvetica000" id-list="glyph18 glyph5">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="0.01" fill="color_7"/>
           </style>
-          <style id="nodeffffff15555551.25image_1cover5050" id-list="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589 nwtN_82204400-82b3-4721-9984-827ed5853962 nwtN_d0a6afb3-420b-4888-bb31-fa80ab42128f nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540">
-            <g stroke="color_4" stroke-width="1.25" fill="color_8" background-image="image_1" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="nodeffffff15555551.25" id-list="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589 nwtN_82204400-82b3-4721-9984-827ed5853962 nwtN_d0a6afb3-420b-4888-bb31-fa80ab42128f nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540">
+            <g stroke="color_4" stroke-width="1.25" fill="color_8"/>
           </style>
-          <style id="node9ecae115555551.2511normalnormalHelvetica000image_1cover5050" id-list="glyph36">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
-          </style>
-          <style id="nodee9affe1bbbbbb2.2514normalnormalHelvetica000image_1cover5050" id-list="glyph24">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_10" stroke-width="2.25" fill="color_9" background-image="image_1" background-fit="cover" background-pos-x="50%" background-pos-y="50%"/>
+          <style id="nodee9affe0.5bbbbbb2.2514normalnormalHelvetica000" id-list="glyph24">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_10" stroke-width="2.25" fill="color_9"/>
           </style>
           <style id="edge5555551.25" id-list="nwtE_205f3bda-b313-4d9f-9043-7a3a5f3c474e nwtE_dc05658e-19be-4cea-8dce-c0df93b698f6 nwtE_0dfe1633-d41d-4522-9135-deacd6868b80 nwtE_2a3c3e4b-7ae4-48c6-9426-66a38b59101e nwtE_41e78176-d5ec-4738-86ef-5dd15d8d9510 nwtE_62712dc6-bd0e-4e10-a653-666946a8644f nwtE_460d08a0-eb4e-4042-b6af-2034da151bb1 nwtE_46e7c3ff-9118-47db-b44a-4f0acd238bc7 nwtE_5e455f08-a22a-4e62-8b51-c16c1dfb3a32 nwtE_9f555f8f-1b16-49c3-929e-6c515d18712f nwtE_172d224c-05b3-4a62-8aea-03a1730816d5 nwtE_21f25624-edaf-4d3b-a01c-d69d2eddd581 nwtE_a0f02f26-86e9-4362-b992-147332a1eb26 nwtE_dd0f49d4-6c51-49a4-a43e-fa2c19e49467 nwtE_62a4dd38-160a-4c93-b11d-ce5e608f671e nwtE_6914a35c-25bc-4c40-a67c-9eef9dbe3f2e nwtE_75b49f84-6c31-4b88-874f-ec77e3629610 nwtE_4916caeb-ab01-45d0-86ee-d09f8036a02e 4822874a-0984-4c49-97b3-8c3bc5f00559 nwtE_1233115f-b202-4de8-a32e-f7342d8fca4a nwtE_9c8be502-dda4-4bd6-8773-e9f70b88d068 nwtE_84394666-2c79-4ec4-b255-3dcb332154c7 nwtE_8194a235-55f8-4726-8ec2-bd359dee2bdc nwtE_13e70c5e-bf72-42c1-859f-6149e50cc84a nwtE_4fb12a98-805d-4355-9bf6-e3029c4bec7d nwtE_701c64bf-43b2-4185-a704-6346b85a8719 nwtE_834ec9e7-fd4e-4f27-96d6-d5e421c807eb nwtE_d7413b64-6af7-41eb-8446-e2dbbb807ed0 nwtE_291d921c-6f42-4d7d-baad-bc934b27e69e nwtE_b2e764a9-68c4-4546-b6f6-83ff85296143 nwtE_9c6da152-15f0-483f-9e84-176f4dfc180f nwtE_ce830d52-eea6-49d2-9457-e5036c010b35">
             <g stroke="color_4" stroke-width="1.25"/>
@@ -85,7 +74,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </extension>
     <glyph id="glyph1" class="compartment">
       <label text="cytosol"/>
-      <bbox x="168.83333333333326" y="173.45814255887922" w="850.4114203691795" h="608.9373569191597"/>
+      <bbox x="169.375" y="173.45814255887922" w="850.4114203691795" h="608.9373569191597"/>
     </glyph>
     <glyph id="glyph2" class="macromolecule" compartmentRef="glyph1">
       <label text="IGFR"/>
@@ -124,7 +113,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </glyph>
     <glyph id="glyph18" class="complex" compartmentRef="glyph1">
       <label text="SOS"/>
-      <bbox x="234.1666541344378" y="506.91505516035926" w="160.24139409278052" h="46.77370911391708"/>
+      <bbox x="234.1666541344378" y="505.8236177701362" w="160.24139409278052" h="46.77370911391708"/>
       <glyph id="glyph16" class="macromolecule">
         <label text="SOS"/>
         <bbox x="241.37278184735214" y="519.8357972129285" w="60" h="30"/>
@@ -330,11 +319,11 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </arc>
     <arc id="nwtE_46e7c3ff-9118-47db-b44a-4f0acd238bc7" class="production" source="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.2" target="glyph18">
       <start x="314.2873511808281" y="458.5448141513982"/>
-      <end x="314.28735118082807" y="493.78505516035926"/>
+      <end x="314.28735118082807" y="492.6936177701362"/>
     </arc>
     <arc id="nwtE_5e455f08-a22a-4e62-8b51-c16c1dfb3a32" class="stimulation" source="glyph18" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b">
-      <start x="313.85181039912885" y="563.6937642742763"/>
-      <end x="313.11645478419774" y="620.0716943629899"/>
+      <start x="313.8565740803006" y="562.6023268840532"/>
+      <end x="313.115181146916" y="620.0716885813731"/>
     </arc>
     <arc id="nwtE_9f555f8f-1b16-49c3-929e-6c515d18712f" class="consumption" source="glyph22" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.1">
       <start x="240.71144144676478" y="680.6724785550066"/>
@@ -393,7 +382,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <end x="762.2440678736467" y="569.1184136079155"/>
     </arc>
     <arc id="nwtE_13e70c5e-bf72-42c1-859f-6149e50cc84a" class="consumption" source="glyph37" target="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.1">
-      <start x="806.8510665817881" y="677.8573766260579"/>
+      <start x="812.6936845183867" y="677.8573766260579"/>
       <end x="861.2046883066769" y="677.8573766260579"/>
     </arc>
     <arc id="nwtE_4fb12a98-805d-4355-9bf6-e3029c4bec7d" class="consumption" source="glyph38" target="nwtN_82204400-82b3-4721-9984-827ed5853962.1">
@@ -405,7 +394,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <end x="379.99999999999994" y="260.07142857142856"/>
     </arc>
     <arc id="nwtE_834ec9e7-fd4e-4f27-96d6-d5e421c807eb" class="consumption" source="glyph39" target="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.1">
-      <start x="678.543215855997" y="560.7517169700867"/>
+      <start x="684.3200105193087" y="560.7517169700867"/>
       <end x="759.9547086187061" y="560.7517169700867"/>
     </arc>
     <arc id="nwtE_d7413b64-6af7-41eb-8446-e2dbbb807ed0" class="consumption" source="glyph14" target="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.1">

@@ -5,14 +5,15 @@
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#ffffffff"/>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
           <colorDefinition id="color_2" value="#b6b6b6"/>
           <colorDefinition id="color_3" value="#555555"/>
           <colorDefinition id="color_4" value="#ffc1e0ff"/>
-          <colorDefinition id="color_5" value="#c0c0c0ff"/>
-          <colorDefinition id="color_6" value="#ffffd2ff"/>
-          <colorDefinition id="color_7" value="#ffffff"/>
-          <colorDefinition id="color_8" value="undefined"/>
+          <colorDefinition id="color_5" value="#ffffffff"/>
+          <colorDefinition id="color_6" value="#c0c0c0ff"/>
+          <colorDefinition id="color_7" value="#ffffd2ff"/>
+          <colorDefinition id="color_8" value="#ffffff"/>
+          <colorDefinition id="color_9" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/blue2_gradient.png"/>
@@ -21,29 +22,29 @@
           <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff1b6b6b61214normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
+          <style id="nodeffffff0.5b6b6b61214normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
             <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="12" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="nodeffffff15555550.2511normalnormalHelvetica000image_2none5050100100" id-list="glyph35 glyph38 glyph6 glyph2 glyph5 glyph3 glyph7 glyph4">
+          <style id="nodeffffff0.55555550.2511normalnormalHelvetica000image_2none5050100100" id-list="glyph35 glyph38 glyph6 glyph2 glyph5 glyph3 glyph7 glyph4">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="0.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="nodeffc1e015555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph37 glyph36 glyph45 glyph43 glyph42 glyph46 glyph15 glyph18 glyph16 glyph14 glyph44 glyph17 glyph13 glyph19 glyph21 glyph12 glyph11 glyph20">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph22">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_5" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="nodec0c0c015555551.25image_4none5050100100" id-list="glyph32 glyph25 glyph27 glyph28 glyph33 glyph34 glyph29 glyph26 glyph30 glyph31">
-            <g stroke="color_3" stroke-width="1.25" fill="color_5" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
-          </style>
-          <style id="nodeffffd215555551.25image_4none5050100100" id-list="glyph23">
             <g stroke="color_3" stroke-width="1.25" fill="color_6" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
+          <style id="nodeffffd215555551.25image_4none5050100100" id-list="glyph23">
+            <g stroke="color_3" stroke-width="1.25" fill="color_7" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
           <style id="nodeffffd215555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph24">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_6" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_7" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph13_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_7" shape-name="stadium"/>
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_8" shape-name="stadium"/>
           </style>
           <style id="edge5555551.25" id-list="_959a4490-8a15-4636-a040-ffe80459fa22 _60cdb53c-e509-49d2-b8ff-1d566638eb3e _6f3ba8ff-3c99-43fb-b148-105a92f9c60f _518bcc1a-8395-4fa9-866e-2bb689c00e60 _4894832d-e735-469b-98ca-c43fa3c867de _2ff281e3-14c1-46c0-80b8-b7482d49ab4a c2ba1356-5adc-4ad3-bdd4-19f31fae6ee3 ae59c150-ca22-44f2-8f81-eae3cda3db82 _0bdf1a29-50f5-4c52-88d2-ffdbc465b31f _95ca1f25-381a-49cc-9a60-cdcae14dd33c f801d788-89e8-4082-ab55-e6e6807b6e8b cc43e987-4c20-40b4-8df9-c4b572f4c6a2 _3a28aad6-504c-4a48-8fd1-3ae6d6537134 _09f5ca15-a2a0-412b-be1b-8391e5a142de c8173e7b-7d13-4a3c-b504-28b47e7b71b6 b66594e0-a268-4b1a-860d-90977210b817 be0ba93b-f57b-4876-a357-b07f882b254f _5bca6e61-2ae7-4796-b03d-3221d67fa455 _9af24d05-9d35-4194-8247-c66c4d4b6cca _2c99a565-b610-40a9-a9e6-8555b36e14e0 f52bf077-f247-45ac-b2fc-da59fbbb3538 _97bb18b9-55dc-4bc4-80d4-de0b5cb01b32 _7ce1b829-ab12-4e34-ae64-ccb21fcae1be _06123149-ebf1-4df4-90b5-70243c6158be _0810ebd9-b3e3-4535-8e17-60c0ca789496">
             <g stroke="color_3" stroke-width="1.25"/>
