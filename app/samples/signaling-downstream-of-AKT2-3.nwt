@@ -3,7 +3,7 @@
   <map id="signaling-downstream-of-AKT2-3.nwt" language="sif">
     <extension>
       <renderInformation 
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#000000">
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#92c5deff"/>
           <colorDefinition id="color_2" value="#555555"/>
@@ -11,10 +11,10 @@
         </listOfColorDefinitions>
         <listOfBackgroundImages/>
         <listOfStyles>
-          <style id="node92c5de15555551.2511normalnormalHelvetica000" id-list="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74 nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e nwtN_e6d068f3-11b5-47de-908a-698b9350445e nwtN_33e30131-1134-4c21-bb6b-f291db3662f5 nwtN_79b94284-5721-47dd-95b0-010780bf223a nwtN_fb0dd167-ae70-4646-8066-8703df9102d0 nwtN_e4ea6591-a256-496a-9653-448c9898697a nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388 nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3 nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583 nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8 nwtN_eda59338-6749-4100-876d-da96cb840872 nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0 nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375 nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179 nwtN_6002e583-b5d1-4754-98fd-677a195eeba0 nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861 nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0 nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76 nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a nwtN_ecb64a85-0f22-446d-977a-793100fcc67f nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0 nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5 nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2 nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288 nwtN_29274293-a05a-44ad-9301-062b62c6770f nwtN_3476302c-8b05-49ed-a898-359f96f263e2 nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313 nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8 nwtN_27843559-e42b-4444-8105-900b5337eb38 nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31 nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76 nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90 nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46 nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9 nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5 nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c nwtN_b4c406e0-6e02-4748-9415-74a102bb051d nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c nwtN_61959681-c55b-43a4-acb3-49a426c60226 nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3 nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161 nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1 nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65 nwtN_f224e282-6541-41cc-ba14-1f0eae21b539 nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154 nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9 nwtN_7d137071-5624-4e5e-9789-33e8984edce8 nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42 nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46 nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17 nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228 nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d nwtN_2124bfc2-6811-4d53-bb03-9068322acda5 nwtN_7b22972e-5466-49ff-8101-05c787e0074d nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889 nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e nwtN_29e17591-5041-463d-98e2-f9a769a30a11 nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb nwtN_d21e03d5-62d0-4d4f-9c47-95a2d2a0dd13 nwtN_3c3441d7-49e6-458d-b258-64b3985c2990 nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5 nwtN_66fee535-1f81-49f4-875a-e64fadc840e0 nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93 nwtN_88aecf05-094d-4908-957e-9798b990369e nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4 nwtN_26f30597-e9ad-4bfc-aff0-4c4c5d2fc568 nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2 nwtN_7eb95670-f05c-4bbb-ad83-c5ea63bb0cba nwtN_e24415c5-cad2-4293-ac09-6c179702db22 nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a nwtN_326fd84b-9d5c-492c-9106-605e108b018f nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89 nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc nwtN_13b6ead6-085c-4348-8747-3b5214a20663 nwtN_0e46e1be-6525-4885-92f7-649ec3969629 nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134 nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156 nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57 nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa nwtN_f2001d81-d468-46d4-97bc-1e169556ab67 nwtN_00b47f97-1563-4406-93fc-d13b72a36e80 nwtN_6bb7350f-ca0d-466f-bd44-d7f5475e6afa nwtN_0b329cff-4297-48af-b42a-13a387a590b6">
+          <style id="node92c5de15555551.2511normalnormalHelvetica000" id-list="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74 nwtN_7d137071-5624-4e5e-9789-33e8984edce8 nwtN_d21e03d5-62d0-4d4f-9c47-95a2d2a0dd13 nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179 nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228 nwtN_26f30597-e9ad-4bfc-aff0-4c4c5d2fc568 nwtN_eda59338-6749-4100-876d-da96cb840872 nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76 nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46 nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889 nwtN_66fee535-1f81-49f4-875a-e64fadc840e0 nwtN_7eb95670-f05c-4bbb-ad83-c5ea63bb0cba nwtN_0b329cff-4297-48af-b42a-13a387a590b6 nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861 nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d nwtN_2124bfc2-6811-4d53-bb03-9068322acda5 nwtN_29e17591-5041-463d-98e2-f9a769a30a11 nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba nwtN_88aecf05-094d-4908-957e-9798b990369e nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae nwtN_6bb7350f-ca0d-466f-bd44-d7f5475e6afa nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0 nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375 nwtN_6002e583-b5d1-4754-98fd-677a195eeba0 nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0 nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154 nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9 nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42 nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17 nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d nwtN_7b22972e-5466-49ff-8101-05c787e0074d nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb nwtN_3c3441d7-49e6-458d-b258-64b3985c2990 nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5 nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93 nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4 nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2 nwtN_e24415c5-cad2-4293-ac09-6c179702db22 nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8 nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583 nwtN_00b47f97-1563-4406-93fc-d13b72a36e80 nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a nwtN_326fd84b-9d5c-492c-9106-605e108b018f nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89 nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc nwtN_13b6ead6-085c-4348-8747-3b5214a20663 nwtN_0e46e1be-6525-4885-92f7-649ec3969629 nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134 nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156 nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57 nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa nwtN_f2001d81-d468-46d4-97bc-1e169556ab67 nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3 nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388 nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e nwtN_f224e282-6541-41cc-ba14-1f0eae21b539 nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65 nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1 nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161 nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3 nwtN_61959681-c55b-43a4-acb3-49a426c60226 nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c nwtN_b4c406e0-6e02-4748-9415-74a102bb051d nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5 nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9 nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46 nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90 nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76 nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31 nwtN_27843559-e42b-4444-8105-900b5337eb38 nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8 nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313 nwtN_3476302c-8b05-49ed-a898-359f96f263e2 nwtN_29274293-a05a-44ad-9301-062b62c6770f nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288 nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2 nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5 nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0 nwtN_ecb64a85-0f22-446d-977a-793100fcc67f nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e nwtN_e6d068f3-11b5-47de-908a-698b9350445e nwtN_33e30131-1134-4c21-bb6b-f291db3662f5 nwtN_79b94284-5721-47dd-95b0-010780bf223a nwtN_fb0dd167-ae70-4646-8066-8703df9102d0 nwtN_e4ea6591-a256-496a-9653-448c9898697a">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1"/>
           </style>
-          <style id="edgeB4E1CD1.25" id-list="nwtE_38a747a5-9b07-45ae-8124-10051fcc4a22 nwtE_a97cef7f-ecdc-426f-9fb9-8cc6ea4733d5 nwtE_eedc3513-358b-4c04-a32d-9968ddd868aa nwtE_d5df0c7c-9d09-447c-89ca-3ee1812a8935 nwtE_3242f9a9-59f6-4e40-8430-20bbc32f458c nwtE_66764aa4-5381-4732-a955-e51d646c25a6 nwtE_4555e670-2cda-4ffa-8894-315ba8de8a26 nwtE_089e9b51-7764-4ca8-b48e-a79846f112e8 nwtE_b942a44f-1d8f-42d5-8c9b-b96513674d6b nwtE_e6c1cb5d-7c87-4d10-a4f4-63056f962b0d nwtE_badc64e3-9f2c-4105-82d5-026726076b03 nwtE_4bc653d4-22fe-4bba-afdd-72ae51dac70b nwtE_a7899e75-5ccf-4231-b9ca-2d5f3d55e60c nwtE_3aed6334-9d5d-48e8-8a42-125106d19b0a nwtE_d1c6d1ab-ccc5-4695-9716-c23f8744e85d nwtE_226a095d-eb75-4a8a-942f-d8efcce169a5 nwtE_e5048833-de10-4353-883a-4bd60ae9fb0e nwtE_11d4ebe0-e616-4192-8694-ee8d22270ee1 nwtE_bf192e14-e10a-44ad-8210-a2956a8989f3 nwtE_7498b588-f819-4026-9f49-417989abe372 nwtE_e73444fa-c10b-4100-af28-d398cf24ebdb nwtE_fb5e233f-8256-4a9b-97bc-e2ee9a8130cc nwtE_d81bb580-b213-4b1d-8740-7787004de7ba nwtE_5c8745e5-7f44-4cbc-9fb2-c1b4afe3c135 nwtE_6dce1ae3-d977-4a42-bd6d-240b89341e8c nwtE_3f23522d-2601-432b-bc68-377c6f2fb60d nwtE_9a6def05-a295-4808-8cd1-b0e3863e83a2 nwtE_efe27f84-fc86-46b9-9a51-42f4923679d6 nwtE_c7d9fa11-57d6-458c-a16a-dd16808915d9 nwtE_877a2e46-babe-4e8f-b6ea-7ba13b0aeec5 nwtE_11ad9b2e-ffe8-4f24-b51f-560f5e119abd nwtE_17d87071-6ae6-434c-b28c-22de8e326dae nwtE_b3f0983a-6ef1-4f4f-8d15-bbecbd6cb373 nwtE_558ece02-372d-41a3-9eeb-37de0f418b8a nwtE_75f0904f-a889-46f4-8021-66ded3606723 nwtE_920b2632-65e2-431b-97e8-3a343a02a22e nwtE_98561885-4cbe-4490-8c39-285c3e36f2f3 nwtE_a619f43c-ed38-406e-8642-517784554dce nwtE_49625e40-c4c3-48fb-97ad-e14004317571 nwtE_83dac679-f6f0-4375-bc60-40f6d512f5ef nwtE_247e16be-74bc-469a-b052-c6cc656b91f9 nwtE_c75dc3c1-a242-4f61-84a6-64888b10775f nwtE_c34a4644-9d58-46df-aa9a-217891b32b75 nwtE_a77aa0a7-8be7-4b8b-a544-c243d48f29a1 nwtE_f8577b7d-517e-459b-9bb1-8fb2f6b8f16a nwtE_31bea3b7-47a3-4185-91c7-716d4c178704 nwtE_32754337-996e-4e3e-af9a-7195a0ca04d1 nwtE_151fcc77-7024-4c95-91a3-4de409938ee0 nwtE_eac3adf3-dc2f-4044-892d-f601a6ff62e9 nwtE_66089c21-e248-4563-bfac-ea0afd7de4c1 nwtE_d312a614-2f9a-43b1-9630-abba4f65d69c nwtE_6a89b478-1b81-43ac-89e2-856079c150dd nwtE_ab8db597-f375-4cd8-ae3e-720ea1c3dc23 nwtE_a976e420-f59b-4ea7-baca-e6fcfd80412a nwtE_d86db3ed-b29e-4d8a-a62e-fefd37b6fc2e nwtE_61881d0a-ad9f-44c3-ac83-bc2e7c48a872 nwtE_4523bf9d-87ec-42b8-b80e-2edf958df233 nwtE_484d2f7d-fce0-4156-8753-4975a271ef34 nwtE_352badad-530e-4be3-9b71-7d216aa413d5 nwtE_4db90ffe-bcc6-4b67-9d70-d96088db3545 nwtE_69e9af45-b676-402a-b887-1249507921ea nwtE_71718df2-ca0e-4861-855a-0dc5fd80de29 nwtE_507e650e-1d62-4837-9016-726d6b40d73c nwtE_93ba32c9-6f1e-4e3e-bb6e-20eff5da4d1b nwtE_38ed1d9e-aaa4-4766-afef-3d0eb38526b6 nwtE_523e0654-4015-4ada-889f-2535f286b3ac nwtE_655e7031-fabb-4dcc-a7b7-38ed0c4e077e nwtE_70439a93-26b4-4c9f-b8b2-0c87858f8440 nwtE_b8e039a3-be27-4206-aa13-c96844a178d9 nwtE_1ac9cb0e-b6c1-411b-8835-5bc9b4ef49a6 nwtE_f0b25274-12c3-40d3-8235-a2ea49c0118c nwtE_b098dd95-5911-4780-866f-08c730c91216 nwtE_2c4cc48e-04ac-4667-9cb7-2a058e90eb39 nwtE_8f69e8aa-2bbe-45f0-83ca-de184428d569 nwtE_cd2a025d-fbec-419e-9d4d-6fd22af38b91 nwtE_d086ea11-b985-4138-9bdc-3f3139839c5d nwtE_00b27039-34ab-43d8-a700-499c9adf371e nwtE_15a1ff0b-4977-4bd0-9e93-e40219a3e097 nwtE_337c821f-0253-487f-a86d-16371d58fd84 nwtE_e3a9b5cf-a489-41b9-a919-2f50f5ebfdb9 nwtE_8c29d9fd-f330-4d9c-b306-4e2d7d2a2cc9 nwtE_9331d50b-4632-4bf9-ba32-e1140a73c55c nwtE_d848cd77-aa55-435d-b113-4dde391ead94 nwtE_0ab34789-9acb-4c7c-890d-ccf3f183bd0d nwtE_f2815a2d-4a25-4e5c-9daa-0e58d9d789b7 nwtE_5ebf49e8-1eaa-4232-b5f0-1459331cdf05 nwtE_d7edfc46-7440-448d-84c6-de1fba32dfe3 nwtE_626a7bb2-d1d5-45a7-a433-5148916bcc5e nwtE_c30419d0-5337-4a0c-a3b8-2a33b86194bc nwtE_be77b3ae-1310-49e8-aa79-bf200928e172 nwtE_efe33372-f85d-499c-bd37-a46b6c66eb91 nwtE_74719c4c-018c-4f4d-a0ad-9326712856b3 nwtE_0b2af670-8da1-4a1c-af0a-51a855e79ce0 nwtE_0c12c4a2-117f-484b-ad3f-636dd5792929 nwtE_b3a079c3-66f2-4804-af35-865075a5558d nwtE_c21cb0b2-4dba-4b1d-895e-4939c79c496e nwtE_3625ab78-698f-4e29-97ae-087f46c81651 nwtE_d137f8aa-1c1e-4fdf-8b5d-3e0fd1202bc6 nwtE_6b14f8c7-1132-4794-be8f-0f1b95365d45 nwtE_320b34f3-7a07-4261-a9de-069e923eb429 nwtE_45142fc2-94d3-44db-a949-a39d98541354 nwtE_db45bd25-41bc-46b4-9cbc-c98bc1ce7ff2 nwtE_8df20326-4537-4d2f-b6b0-2cc6a69b8de2 nwtE_f284029d-6e35-48bf-9393-01098f937df3 nwtE_25ed34ff-adbc-4adf-b5d7-a0a11a73117f nwtE_84389e5b-91b5-4e31-9936-5b21657f1263 nwtE_cf35b60c-02a5-4aeb-a531-f469150e7c0c nwtE_379ca9fd-3c3c-488b-84ef-39f8c0944854 nwtE_b16cdd04-7338-42c1-b1df-1b0634cfff69 nwtE_a9a6de3d-b3a0-4e97-b289-a115c3429049 nwtE_353cf9a2-8f2a-4fa3-ba79-22c570ef7f99 nwtE_a0959a48-605e-45cf-847e-7606ff3b6283 nwtE_343e3b98-ef56-4505-8596-33c56cc68e57 nwtE_7aa162c6-e45f-4c71-9750-5ea6fd138400 nwtE_526db763-306a-41c5-9a4e-5af5b78d6061 nwtE_50ce5f93-8167-4e08-8301-f8eed470d9fe nwtE_454e685c-bd07-4925-a580-54c86b1df1ce nwtE_9678f3b6-110c-4ccd-86b4-5e02b9042fe3 nwtE_cbc6c56c-f90d-416d-9664-8f550e2ec6a3 nwtE_230285cc-dcfe-4126-808b-590ec62347fd nwtE_9a260f03-fea2-44e5-9365-896a4d91249e nwtE_a13ce8d8-0245-4ad6-aa2d-2178dc18cbfd nwtE_dffd5608-e9e6-4b99-bb4b-7c4d9e95f464 nwtE_e951889e-0b77-4074-b394-3c3650eda9b5 nwtE_0ed75a60-23e1-47ac-a4a9-62ddf71274bb nwtE_8a02bcfa-8cf0-4f64-b631-106057c3a879 nwtE_86d4a53b-4ca3-41d4-8779-0a0a1aac6e99 nwtE_c05ca5f5-bf67-44c6-82db-2152b8f0568a nwtE_a42a7990-e971-4bdd-9e8d-837a08a6f716 nwtE_e531cd3e-97e3-4236-9aa4-1b0274de3747 nwtE_61026302-c04f-457a-8367-46d280a64531 nwtE_e8bed579-6799-4b2a-bd3f-7c68b452746f nwtE_5441ad35-8649-4a47-ab58-bb636d566245 nwtE_587272f0-45fc-412f-8a56-3b86261b107f nwtE_d35afc7f-3c9c-40ea-a340-f976183e9875 nwtE_d1635e83-d4da-4cb9-8811-6a0a961a661f nwtE_ede6d772-0c87-45e7-9f9a-c9df8f9b0209 nwtE_c4107484-9450-44bc-b270-52ffef622cc6 nwtE_4799517c-24de-46dc-9bf5-059d30b1b41f nwtE_a72dc42e-6c8c-407f-8434-e4f698d7c783 nwtE_ff96ba02-847e-4358-bacf-108bdb691147 nwtE_f5d3941e-6c23-46f8-8d12-a22bfbc5950a nwtE_bf6493ce-533d-4660-9f06-4c62f1ee3fa6 nwtE_709f1ff1-4d8f-4592-8afc-5537f5213f8a nwtE_b060917f-aa69-4228-85d5-d70d93240e3e nwtE_a547e122-5075-4514-8a02-3c459a42a590 nwtE_cce49236-7120-4cd7-b5c3-0db5c082ea2b nwtE_a911f44c-50f5-43cc-a681-376c7f33c67f nwtE_205324fc-0429-427b-a086-2b340cbc81f9 nwtE_3cacadcf-d9f6-4525-b3b2-a38865a7f056 nwtE_b88eadf6-d485-486c-aaa1-e3caae31b24e nwtE_c62106ac-a70f-4e6e-bf94-71e37e4b00c2">
+          <style id="edgeB4E1CD1.25" id-list="nwtE_38a747a5-9b07-45ae-8124-10051fcc4a22 nwtE_a97cef7f-ecdc-426f-9fb9-8cc6ea4733d5 nwtE_eedc3513-358b-4c04-a32d-9968ddd868aa nwtE_d5df0c7c-9d09-447c-89ca-3ee1812a8935 nwtE_3242f9a9-59f6-4e40-8430-20bbc32f458c nwtE_66764aa4-5381-4732-a955-e51d646c25a6 nwtE_4555e670-2cda-4ffa-8894-315ba8de8a26 nwtE_089e9b51-7764-4ca8-b48e-a79846f112e8 nwtE_b942a44f-1d8f-42d5-8c9b-b96513674d6b nwtE_e6c1cb5d-7c87-4d10-a4f4-63056f962b0d nwtE_badc64e3-9f2c-4105-82d5-026726076b03 nwtE_4bc653d4-22fe-4bba-afdd-72ae51dac70b nwtE_a7899e75-5ccf-4231-b9ca-2d5f3d55e60c nwtE_3aed6334-9d5d-48e8-8a42-125106d19b0a nwtE_d1c6d1ab-ccc5-4695-9716-c23f8744e85d nwtE_226a095d-eb75-4a8a-942f-d8efcce169a5 nwtE_e5048833-de10-4353-883a-4bd60ae9fb0e nwtE_11d4ebe0-e616-4192-8694-ee8d22270ee1 nwtE_bf192e14-e10a-44ad-8210-a2956a8989f3 nwtE_7498b588-f819-4026-9f49-417989abe372 nwtE_e73444fa-c10b-4100-af28-d398cf24ebdb nwtE_fb5e233f-8256-4a9b-97bc-e2ee9a8130cc nwtE_d81bb580-b213-4b1d-8740-7787004de7ba nwtE_5c8745e5-7f44-4cbc-9fb2-c1b4afe3c135 nwtE_6dce1ae3-d977-4a42-bd6d-240b89341e8c nwtE_3f23522d-2601-432b-bc68-377c6f2fb60d nwtE_9a6def05-a295-4808-8cd1-b0e3863e83a2 nwtE_efe27f84-fc86-46b9-9a51-42f4923679d6 nwtE_c7d9fa11-57d6-458c-a16a-dd16808915d9 nwtE_877a2e46-babe-4e8f-b6ea-7ba13b0aeec5 nwtE_11ad9b2e-ffe8-4f24-b51f-560f5e119abd nwtE_17d87071-6ae6-434c-b28c-22de8e326dae nwtE_b3f0983a-6ef1-4f4f-8d15-bbecbd6cb373 nwtE_558ece02-372d-41a3-9eeb-37de0f418b8a nwtE_75f0904f-a889-46f4-8021-66ded3606723 nwtE_920b2632-65e2-431b-97e8-3a343a02a22e nwtE_98561885-4cbe-4490-8c39-285c3e36f2f3 nwtE_a619f43c-ed38-406e-8642-517784554dce nwtE_49625e40-c4c3-48fb-97ad-e14004317571 nwtE_83dac679-f6f0-4375-bc60-40f6d512f5ef nwtE_247e16be-74bc-469a-b052-c6cc656b91f9 nwtE_c75dc3c1-a242-4f61-84a6-64888b10775f nwtE_c34a4644-9d58-46df-aa9a-217891b32b75 nwtE_a77aa0a7-8be7-4b8b-a544-c243d48f29a1 nwtE_f8577b7d-517e-459b-9bb1-8fb2f6b8f16a nwtE_31bea3b7-47a3-4185-91c7-716d4c178704 nwtE_32754337-996e-4e3e-af9a-7195a0ca04d1 nwtE_151fcc77-7024-4c95-91a3-4de409938ee0 nwtE_eac3adf3-dc2f-4044-892d-f601a6ff62e9 nwtE_66089c21-e248-4563-bfac-ea0afd7de4c1 nwtE_d312a614-2f9a-43b1-9630-abba4f65d69c nwtE_6a89b478-1b81-43ac-89e2-856079c150dd nwtE_6b14f8c7-1132-4794-be8f-0f1b95365d45 nwtE_320b34f3-7a07-4261-a9de-069e923eb429 nwtE_45142fc2-94d3-44db-a949-a39d98541354 nwtE_db45bd25-41bc-46b4-9cbc-c98bc1ce7ff2 nwtE_8df20326-4537-4d2f-b6b0-2cc6a69b8de2 nwtE_f284029d-6e35-48bf-9393-01098f937df3 nwtE_25ed34ff-adbc-4adf-b5d7-a0a11a73117f nwtE_84389e5b-91b5-4e31-9936-5b21657f1263 nwtE_cf35b60c-02a5-4aeb-a531-f469150e7c0c nwtE_379ca9fd-3c3c-488b-84ef-39f8c0944854 nwtE_b16cdd04-7338-42c1-b1df-1b0634cfff69 nwtE_a9a6de3d-b3a0-4e97-b289-a115c3429049 nwtE_353cf9a2-8f2a-4fa3-ba79-22c570ef7f99 nwtE_a0959a48-605e-45cf-847e-7606ff3b6283 nwtE_343e3b98-ef56-4505-8596-33c56cc68e57 nwtE_7aa162c6-e45f-4c71-9750-5ea6fd138400 nwtE_526db763-306a-41c5-9a4e-5af5b78d6061 nwtE_50ce5f93-8167-4e08-8301-f8eed470d9fe nwtE_454e685c-bd07-4925-a580-54c86b1df1ce nwtE_9678f3b6-110c-4ccd-86b4-5e02b9042fe3 nwtE_cbc6c56c-f90d-416d-9664-8f550e2ec6a3 nwtE_230285cc-dcfe-4126-808b-590ec62347fd nwtE_9a260f03-fea2-44e5-9365-896a4d91249e nwtE_a13ce8d8-0245-4ad6-aa2d-2178dc18cbfd nwtE_dffd5608-e9e6-4b99-bb4b-7c4d9e95f464 nwtE_e951889e-0b77-4074-b394-3c3650eda9b5 nwtE_0ed75a60-23e1-47ac-a4a9-62ddf71274bb nwtE_8a02bcfa-8cf0-4f64-b631-106057c3a879 nwtE_86d4a53b-4ca3-41d4-8779-0a0a1aac6e99 nwtE_c05ca5f5-bf67-44c6-82db-2152b8f0568a nwtE_a42a7990-e971-4bdd-9e8d-837a08a6f716 nwtE_e531cd3e-97e3-4236-9aa4-1b0274de3747 nwtE_61026302-c04f-457a-8367-46d280a64531 nwtE_e8bed579-6799-4b2a-bd3f-7c68b452746f nwtE_5441ad35-8649-4a47-ab58-bb636d566245 nwtE_587272f0-45fc-412f-8a56-3b86261b107f nwtE_d35afc7f-3c9c-40ea-a340-f976183e9875 nwtE_d1635e83-d4da-4cb9-8811-6a0a961a661f nwtE_ede6d772-0c87-45e7-9f9a-c9df8f9b0209 nwtE_c4107484-9450-44bc-b270-52ffef622cc6 nwtE_4799517c-24de-46dc-9bf5-059d30b1b41f nwtE_a72dc42e-6c8c-407f-8434-e4f698d7c783 nwtE_ff96ba02-847e-4358-bacf-108bdb691147 nwtE_f5d3941e-6c23-46f8-8d12-a22bfbc5950a nwtE_bf6493ce-533d-4660-9f06-4c62f1ee3fa6 nwtE_709f1ff1-4d8f-4592-8afc-5537f5213f8a nwtE_b060917f-aa69-4228-85d5-d70d93240e3e nwtE_a547e122-5075-4514-8a02-3c459a42a590 nwtE_cce49236-7120-4cd7-b5c3-0db5c082ea2b nwtE_a911f44c-50f5-43cc-a681-376c7f33c67f nwtE_205324fc-0429-427b-a086-2b340cbc81f9 nwtE_3cacadcf-d9f6-4525-b3b2-a38865a7f056 nwtE_ab8db597-f375-4cd8-ae3e-720ea1c3dc23 nwtE_a976e420-f59b-4ea7-baca-e6fcfd80412a nwtE_d86db3ed-b29e-4d8a-a62e-fefd37b6fc2e nwtE_61881d0a-ad9f-44c3-ac83-bc2e7c48a872 nwtE_4523bf9d-87ec-42b8-b80e-2edf958df233 nwtE_484d2f7d-fce0-4156-8753-4975a271ef34 nwtE_352badad-530e-4be3-9b71-7d216aa413d5 nwtE_4db90ffe-bcc6-4b67-9d70-d96088db3545 nwtE_69e9af45-b676-402a-b887-1249507921ea nwtE_71718df2-ca0e-4861-855a-0dc5fd80de29 nwtE_507e650e-1d62-4837-9016-726d6b40d73c nwtE_93ba32c9-6f1e-4e3e-bb6e-20eff5da4d1b nwtE_38ed1d9e-aaa4-4766-afef-3d0eb38526b6 nwtE_523e0654-4015-4ada-889f-2535f286b3ac nwtE_655e7031-fabb-4dcc-a7b7-38ed0c4e077e nwtE_70439a93-26b4-4c9f-b8b2-0c87858f8440 nwtE_b8e039a3-be27-4206-aa13-c96844a178d9 nwtE_1ac9cb0e-b6c1-411b-8835-5bc9b4ef49a6 nwtE_f0b25274-12c3-40d3-8235-a2ea49c0118c nwtE_b098dd95-5911-4780-866f-08c730c91216 nwtE_2c4cc48e-04ac-4667-9cb7-2a058e90eb39 nwtE_8f69e8aa-2bbe-45f0-83ca-de184428d569 nwtE_cd2a025d-fbec-419e-9d4d-6fd22af38b91 nwtE_d086ea11-b985-4138-9bdc-3f3139839c5d nwtE_00b27039-34ab-43d8-a700-499c9adf371e nwtE_15a1ff0b-4977-4bd0-9e93-e40219a3e097 nwtE_337c821f-0253-487f-a86d-16371d58fd84 nwtE_e3a9b5cf-a489-41b9-a919-2f50f5ebfdb9 nwtE_8c29d9fd-f330-4d9c-b306-4e2d7d2a2cc9 nwtE_9331d50b-4632-4bf9-ba32-e1140a73c55c nwtE_d848cd77-aa55-435d-b113-4dde391ead94 nwtE_0ab34789-9acb-4c7c-890d-ccf3f183bd0d nwtE_f2815a2d-4a25-4e5c-9daa-0e58d9d789b7 nwtE_5ebf49e8-1eaa-4232-b5f0-1459331cdf05 nwtE_d7edfc46-7440-448d-84c6-de1fba32dfe3 nwtE_626a7bb2-d1d5-45a7-a433-5148916bcc5e nwtE_c30419d0-5337-4a0c-a3b8-2a33b86194bc nwtE_be77b3ae-1310-49e8-aa79-bf200928e172 nwtE_efe33372-f85d-499c-bd37-a46b6c66eb91 nwtE_74719c4c-018c-4f4d-a0ad-9326712856b3 nwtE_0b2af670-8da1-4a1c-af0a-51a855e79ce0 nwtE_0c12c4a2-117f-484b-ad3f-636dd5792929 nwtE_b3a079c3-66f2-4804-af35-865075a5558d nwtE_c21cb0b2-4dba-4b1d-895e-4939c79c496e nwtE_3625ab78-698f-4e29-97ae-087f46c81651 nwtE_d137f8aa-1c1e-4fdf-8b5d-3e0fd1202bc6 nwtE_b88eadf6-d485-486c-aaa1-e3caae31b24e nwtE_c62106ac-a70f-4e6e-bf94-71e37e4b00c2">
             <g stroke-width="1.25"/>
           </style>
         </listOfStyles>
@@ -34,7 +34,7 @@
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>1</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
-        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <enableSIFTopologyGrouping>true</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
         <mapColorScheme>opposed_red_blue</mapColorScheme>
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
@@ -44,1171 +44,1019 @@
     </extension>
     <glyph id="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" class="SIF macromolecule">
       <label text="AKT2"/>
-      <bbox x="309.66915784000497" y="223.71570400403377" w="47.5146484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e" class="SIF macromolecule">
-      <label text="USP8"/>
-      <bbox x="383.79179495026636" y="117.96793395860936" w="49.1845703125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_e6d068f3-11b5-47de-908a-698b9350445e" class="SIF macromolecule">
-      <label text="CBFB"/>
-      <bbox x="226.53021012047148" y="67.63468250870982" w="50.0048828125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_33e30131-1134-4c21-bb6b-f291db3662f5" class="SIF macromolecule">
-      <label text="MEAF6"/>
-      <bbox x="187.05218189659678" y="174.07109483931356" w="60.009765625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_79b94284-5721-47dd-95b0-010780bf223a" class="SIF macromolecule">
-      <label text="STAT4"/>
-      <bbox x="120.19007206540726" y="269.33824792630804" w="54.46533203125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_fb0dd167-ae70-4646-8066-8703df9102d0" class="SIF macromolecule">
-      <label text="RORC"/>
-      <bbox x="131.83459217926853" y="342.7613625531854" w="54.1650390625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_e4ea6591-a256-496a-9653-448c9898697a" class="SIF macromolecule">
-      <label text="FOXO1"/>
-      <bbox x="266.85038947560554" y="293.9580011432218" w="60.8447265625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388" class="SIF macromolecule">
-      <label text="PML"/>
-      <bbox x="201.6902378301007" y="323.0008982649823" w="40.84228515625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3" class="SIF macromolecule">
-      <label text="FOXO6"/>
-      <bbox x="257.48625058803856" y="50.903360530186546" w="60.8447265625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e" class="SIF macromolecule">
-      <label text="CDKN1A"/>
-      <bbox x="108.74708880513742" y="145.79407291490708" w="70.849609375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583" class="SIF macromolecule">
-      <label text="AKT1S1"/>
-      <bbox x="85.4151368935436" y="76.35972433665042" w="65.86181640625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8" class="SIF macromolecule">
-      <label text="MDM4"/>
-      <bbox x="332.40943544273574" y="127.15650843116975" w="54.1650390625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_eda59338-6749-4100-876d-da96cb840872" class="SIF macromolecule">
-      <label text="FOXO3"/>
-      <bbox x="76.54197356164325" y="235.78944186860988" w="60.8447265625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0" class="SIF macromolecule">
-      <label text="CREB1"/>
-      <bbox x="120.42955762213268" y="194.4960498553428" w="60.01708984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b" class="SIF macromolecule">
-      <label text="CHUK"/>
-      <bbox x="384.0299339165428" y="304.0722250871849" w="52.50244140625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375" class="SIF macromolecule">
-      <label text="STAT1"/>
-      <bbox x="337.1704065964119" y="193.13833429359505" w="54.46533203125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179" class="SIF macromolecule">
-      <label text="BAD"/>
-      <bbox x="284.64497484398015" y="100.04274064433865" w="40.84228515625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_6002e583-b5d1-4754-98fd-677a195eeba0" class="SIF macromolecule">
-      <label text="BRD1"/>
-      <bbox x="456.05674261625836" y="301.7057016650535" w="50.01220703125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861" class="SIF macromolecule">
-      <label text="TSC1"/>
-      <bbox x="311.09748523204274" y="309.9806975051558" w="48.34228515625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0" class="SIF macromolecule">
-      <label text="PHF20"/>
-      <bbox x="394.87610056069025" y="156.9387180263436" w="56.6845703125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76" class="SIF macromolecule">
-      <label text="TP53"/>
-      <bbox x="473.5093618115053" y="154.9137766515393" w="45.85205078125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea" class="SIF macromolecule">
-      <label text="NOS3"/>
-      <bbox x="215.94340803742784" y="352.56863773151446" w="50.84716796875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d" class="SIF macromolecule">
-      <label text="CDKN1B"/>
-      <bbox x="274.02817241919314" y="379.8707234808686" w="70.849609375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a" class="SIF macromolecule">
-      <label text="ING5"/>
-      <bbox x="349.88501492963195" y="273.213708244434" w="45.009765625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_ecb64a85-0f22-446d-977a-793100fcc67f" class="SIF macromolecule">
-      <label text="STAT5A"/>
-      <bbox x="196.99883141379755" y="135.20476537347918" w="64.47021484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0" class="SIF macromolecule">
-      <label text="ARAF"/>
-      <bbox x="200.369608734796" y="221.79385685815214" w="50.0048828125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5" class="SIF macromolecule">
-      <label text="BRAF"/>
-      <bbox x="169.38608184713854" y="305.8375482836894" w="50.0048828125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e" class="SIF macromolecule">
-      <label text="HTT"/>
-      <bbox x="213.24012583732213" y="280.70463662426806" w="39.15771484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2" class="SIF macromolecule">
-      <label text="RAF1"/>
-      <bbox x="253.98317226323843" y="334.8007790279331" w="48.34228515625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288" class="SIF macromolecule">
-      <label text="RUNX2"/>
-      <bbox x="443.32628386234495" y="127.18748620676763" w="60.8447265625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_29274293-a05a-44ad-9301-062b62c6770f" class="SIF macromolecule">
-      <label text="MTOR"/>
-      <bbox x="335.2749640760703" y="63.19489139230204" w="53.89404296875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_3476302c-8b05-49ed-a898-359f96f263e2" class="SIF macromolecule">
-      <label text="MAP3K8"/>
-      <bbox x="352.29302500799525" y="344.48004743885315" w="69.1943359375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313" class="SIF macromolecule">
-      <label text="NR4A1"/>
-      <bbox x="315.8667357355006" y="79.95864039177286" w="58.3544921875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f" class="SIF macromolecule">
-      <label text="STAT5B"/>
-      <bbox x="449.6782831255584" y="197.8789118913646" w="64.47021484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8" class="SIF macromolecule">
-      <label text="STAT3"/>
-      <bbox x="243.10123993580305" y="253.1722931395356" w="54.46533203125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_27843559-e42b-4444-8105-900b5337eb38" class="SIF macromolecule">
-      <label text="STAT6"/>
-      <bbox x="57.28913969322099" y="217.26231283354585" w="54.46533203125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31" class="SIF macromolecule">
-      <label text="MAP3K1"/>
-      <bbox x="171.92227715569402" y="91.45403498121136" w="69.1943359375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f" class="SIF macromolecule">
-      <label text="MKRN1"/>
-      <bbox x="154.01866477028656" y="110.06187676856538" w="62.50732421875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76" class="SIF macromolecule">
-      <label text="BIRC5"/>
-      <bbox x="410.5135246683941" y="268.956288772008" w="54.1796875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90" class="SIF macromolecule">
-      <label text="GSK3A"/>
-      <bbox x="418.36032045775187" y="73.071689758237" w="60.0244140625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46" class="SIF macromolecule">
-      <label text="KAT6A"/>
-      <bbox x="397.6611252186828" y="88.46433098254256" w="56.41357421875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9" class="SIF macromolecule">
-      <label text="CASP9"/>
-      <bbox x="160.3217275931191" y="42.60754149898794" w="59.189453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5" class="SIF macromolecule">
-      <label text="STAT2"/>
-      <bbox x="84.17327564779386" y="118.99978936683425" w="54.46533203125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c" class="SIF macromolecule">
-      <label text="RPS6KB2"/>
-      <bbox x="400.8209386681032" y="180.30884425606382" w="77.53662109375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_b4c406e0-6e02-4748-9415-74a102bb051d" class="SIF macromolecule">
-      <label text="FOXO4"/>
-      <bbox x="318.48886974125855" y="353.63693230133606" w="60.8447265625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c" class="SIF macromolecule">
-      <label text="DENND1B"/>
-      <bbox x="53.12755199359255" y="167.6750921453025" w="81.68212890625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_61959681-c55b-43a4-acb3-49a426c60226" class="SIF macromolecule">
-      <label text="GSK3B"/>
-      <bbox x="496.8285815257101" y="209.8843001422036" w="60.0244140625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3" class="SIF macromolecule">
-      <label text="BRPF3"/>
-      <bbox x="151.14865596271343" y="212.3215470351784" w="58.34716796875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161" class="SIF macromolecule">
-      <label text="TSC2"/>
-      <bbox x="105.74872133115804" y="309.8674638682117" w="48.34228515625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1" class="SIF macromolecule">
-      <label text="DENND1A"/>
-      <bbox x="412.92301196431185" y="325.56402970586504" w="81.68212890625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65" class="SIF macromolecule">
-      <label text="BRPF1"/>
-      <bbox x="147.31983597876703" y="361.9200448031931" w="58.34716796875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_f224e282-6541-41cc-ba14-1f0eae21b539" class="SIF macromolecule">
-      <label text="MDM2"/>
-      <bbox x="321.7257205525687" y="21.18835492337626" w="54.1650390625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e" class="SIF macromolecule">
-      <label text="IKBKB"/>
-      <bbox x="150.10690801319777" y="255.35940117746168" w="54.18701171875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154" class="SIF macromolecule">
-      <label text="INS"/>
-      <bbox x="258.179756471323" y="115.61748384258831" w="35.0048828125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d" class="SIF macromolecule">
-      <label text="RPTOR"/>
-      <bbox x="388.6210462468181" y="422.7052080438054" w="62.236328125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9" class="SIF macromolecule">
-      <label text="FLNC"/>
-      <bbox x="385.9565260053144" y="224.9116791605766" w="49.169921875" h="30"/>
+      <bbox x="168.34927168646098" y="114.48497247170451" w="47.5146484375" h="30"/>
     </glyph>
     <glyph id="nwtN_7d137071-5624-4e5e-9789-33e8984edce8" class="SIF macromolecule">
       <label text="CASP3"/>
-      <bbox x="487.34325735463403" y="90.6286782884989" w="59.189453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42" class="SIF macromolecule">
-      <label text="CASP8"/>
-      <bbox x="456.4331429153274" y="-4.003401209761053" w="59.189453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af" class="SIF macromolecule">
-      <label text="HIST1H3B"/>
-      <bbox x="596.077592491385" y="93.77225039518656" w="81.689453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c" class="SIF macromolecule">
-      <label text="HIST1H3E"/>
-      <bbox x="632.3473208255247" y="250.35511918606846" w="81.689453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46" class="SIF macromolecule">
-      <label text="PPIF"/>
-      <bbox x="485.8353621706344" y="39.75998600539429" w="43.33984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17" class="SIF macromolecule">
-      <label text="NINL"/>
-      <bbox x="277.43718883519676" y="477.0231553818247" w="44.1748046875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d" class="SIF macromolecule">
-      <label text="HIST1H3G"/>
-      <bbox x="567.4281391819545" y="284.45794591538265" w="83.35205078125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d" class="SIF macromolecule">
-      <label text="RALGAPA2"/>
-      <bbox x="7.7382953311273965" y="324.37891306631036" w="88.09814453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228" class="SIF macromolecule">
-      <label text="PDK1"/>
-      <bbox x="267.5938941784438" y="402.0049853501857" w="49.1845703125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d" class="SIF macromolecule">
-      <label text="RALGAPB"/>
-      <bbox x="103.14140862840372" y="406.4362396055503" w="80.86181640625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_2124bfc2-6811-4d53-bb03-9068322acda5" class="SIF macromolecule">
-      <label text="GAPDH"/>
-      <bbox x="196.56549769825426" y="396.85667588622334" w="63.34228515625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_7b22972e-5466-49ff-8101-05c787e0074d" class="SIF macromolecule">
-      <label text="ELP1"/>
-      <bbox x="386.4068007320987" y="465.64961734953494" w="46.6943359375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889" class="SIF macromolecule">
-      <label text="TBC1D4"/>
-      <bbox x="302.70590322659615" y="-20.398978709027915" w="67.51708984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e" class="SIF macromolecule">
-      <label text="CBY1"/>
-      <bbox x="-2.3465060400723203" y="199.581875031137" w="49.1845703125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_29e17591-5041-463d-98e2-f9a769a30a11" class="SIF macromolecule">
-      <label text="CTNNB1"/>
-      <bbox x="393.25510419249423" y="30.189368072231062" w="70.00732421875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb" class="SIF macromolecule">
-      <label text="KHSRP"/>
-      <bbox x="269.2850688547342" y="160.89595020537627" w="61.6796875" h="30"/>
+      <bbox x="-116.70582050666037" y="183.6555381000283" w="59.189453125" h="30"/>
     </glyph>
     <glyph id="nwtN_d21e03d5-62d0-4d4f-9c47-95a2d2a0dd13" class="SIF macromolecule">
       <label text="MLST8"/>
-      <bbox x="-14.500666270895127" y="241.84761459270464" w="58.34716796875" h="30"/>
+      <bbox x="-122.26490253791037" y="223.70553810002832" w="58.34716796875" h="30"/>
     </glyph>
-    <glyph id="nwtN_3c3441d7-49e6-458d-b258-64b3985c2990" class="SIF macromolecule">
-      <label text="ATP7A"/>
-      <bbox x="603.3272119770429" y="166.24946669316762" w="56.41357421875" h="30"/>
+    <glyph id="nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179" class="SIF macromolecule">
+      <label text="BAD"/>
+      <bbox x="443.2603302048007" y="549.4469183339944" w="40.84228515625" h="30"/>
     </glyph>
-    <glyph id="nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba" class="SIF macromolecule">
-      <label text="PDE3B"/>
-      <bbox x="465.7451218899595" y="359.5927957718239" w="59.189453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5" class="SIF macromolecule">
-      <label text="LNPEP"/>
-      <bbox x="230.25704410133062" y="12.453060566062348" w="59.189453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_66fee535-1f81-49f4-875a-e64fadc840e0" class="SIF macromolecule">
-      <label text="HIST1H3D"/>
-      <bbox x="520.119554281174" y="414.3140119011681" w="82.51708984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93" class="SIF macromolecule">
-      <label text="XIAP"/>
-      <bbox x="389.60135446201156" y="-9.467547527614252" w="44.18212890625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_88aecf05-094d-4908-957e-9798b990369e" class="SIF macromolecule">
-      <label text="HIST1H3F"/>
-      <bbox x="588.0292940946259" y="331.9520728164934" w="80.84716796875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4" class="SIF macromolecule">
-      <label text="EDC3"/>
-      <bbox x="403.9219744318622" y="379.96223090136914" w="50.01220703125" h="30"/>
+    <glyph id="nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228" class="SIF macromolecule">
+      <label text="PDK1"/>
+      <bbox x="13.152480274589621" y="223.70553810002832" w="49.1845703125" h="30"/>
     </glyph>
     <glyph id="nwtN_26f30597-e9ad-4bfc-aff0-4c4c5d2fc568" class="SIF macromolecule">
       <label text="HIST1H3J"/>
-      <bbox x="458.79946859082406" y="452.89541939852694" w="79.1845703125" h="30"/>
+      <bbox x="-76.41529316291037" y="23.455538100028335" w="79.1845703125" h="30"/>
     </glyph>
-    <glyph id="nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e" class="SIF macromolecule">
-      <label text="RACGAP1"/>
-      <bbox x="529.662947555942" y="130.81207543885154" w="81.689453125" h="30"/>
+    <glyph id="nwtN_eda59338-6749-4100-876d-da96cb840872" class="SIF macromolecule">
+      <label text="FOXO3"/>
+      <bbox x="364.8033966110507" y="389.24691833399436" w="60.8447265625" h="30"/>
     </glyph>
-    <glyph id="nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba" class="SIF macromolecule">
-      <label text="PIP5K1C"/>
-      <bbox x="539.5443037567809" y="56.87299308726139" w="71.69921875" h="30"/>
+    <glyph id="nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76" class="SIF macromolecule">
+      <label text="TP53"/>
+      <bbox x="281.4062286423007" y="549.4469183339944" w="45.85205078125" h="30"/>
     </glyph>
-    <glyph id="nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2" class="SIF macromolecule">
-      <label text="ESR1"/>
-      <bbox x="459.9937182992428" y="401.82477603765057" w="49.1845703125" h="30"/>
+    <glyph id="nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46" class="SIF macromolecule">
+      <label text="PPIF"/>
+      <bbox x="-152.26490253791036" y="263.75553810002833" w="43.33984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889" class="SIF macromolecule">
+      <label text="TBC1D4"/>
+      <bbox x="-260.7218361316604" y="143.60553810002833" w="67.51708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_66fee535-1f81-49f4-875a-e64fadc840e0" class="SIF macromolecule">
+      <label text="HIST1H3D"/>
+      <bbox x="-260.7218361316604" y="-16.594461899971662" w="82.51708984375" h="30"/>
     </glyph>
     <glyph id="nwtN_7eb95670-f05c-4bbb-ad83-c5ea63bb0cba" class="SIF macromolecule">
       <label text="MAP3K5"/>
-      <bbox x="-0.2199841396956259" y="135.63366426511283" w="69.1943359375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_e24415c5-cad2-4293-ac09-6c179702db22" class="SIF macromolecule">
-      <label text="GATA6"/>
-      <bbox x="514.9821440214756" y="325.290544718351" w="56.97021484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae" class="SIF macromolecule">
-      <label text="MYO5A"/>
-      <bbox x="229.35800631486927" y="435.58398996036044" w="62.5146484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a" class="SIF macromolecule">
-      <label text="HIST1H3I"/>
-      <bbox x="44.72149173149771" y="367.42459810844844" w="75.85205078125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_326fd84b-9d5c-492c-9106-605e108b018f" class="SIF macromolecule">
-      <label text="ANKRD2"/>
-      <bbox x="451.655850129643" y="242.9478337234534" w="70.849609375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89" class="SIF macromolecule">
-      <label text="HIST1H3C"/>
-      <bbox x="137.2009403587552" y="448.88138228441755" w="82.51708984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc" class="SIF macromolecule">
-      <label text="C2CD5"/>
-      <bbox x="530.3080365276797" y="173.46088627512802" w="59.18212890625" h="30"/>
-    </glyph>
-    <glyph id="nwtN_13b6ead6-085c-4348-8747-3b5214a20663" class="SIF macromolecule">
-      <label text="EZR"/>
-      <bbox x="511.3768072872431" y="276.50659880310616" w="40" h="30"/>
-    </glyph>
-    <glyph id="nwtN_0e46e1be-6525-4885-92f7-649ec3969629" class="SIF macromolecule">
-      <label text="WIPF1"/>
-      <bbox x="318.865188921447" y="436.75763261585786" w="55.8349609375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134" class="SIF macromolecule">
-      <label text="HTRA2"/>
-      <bbox x="163.3685097246049" y="-4.143838713148945" w="59.1748046875" h="30"/>
-    </glyph>
-    <glyph id="nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156" class="SIF macromolecule">
-      <label text="HIST1H3A"/>
-      <bbox x="539.2206681344137" y="246.23147836339513" w="81.689453125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b" class="SIF macromolecule">
-      <label text="DEPTOR"/>
-      <bbox x="33.098585021790655" y="277.3486352436903" w="72.2412109375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57" class="SIF macromolecule">
-      <label text="HIST1H3H"/>
-      <bbox x="578.1856829003725" y="207.0349158708648" w="82.51708984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa" class="SIF macromolecule">
-      <label text="NIN"/>
-      <bbox x="351.56392494543087" y="393.40471500812316" w="35.83251953125" h="30"/>
-    </glyph>
-    <glyph id="nwtN_f2001d81-d468-46d4-97bc-1e169556ab67" class="SIF macromolecule">
-      <label text="SH3RF1"/>
-      <bbox x="534.0207187924211" y="369.85158705210745" w="67.51708984375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" class="SIF macromolecule">
-      <label text="AKT3"/>
-      <bbox x="264.01624841255295" y="198.2214684437522" w="47.5146484375" h="30"/>
-    </glyph>
-    <glyph id="nwtN_6bb7350f-ca0d-466f-bd44-d7f5475e6afa" class="SIF macromolecule">
-      <label text="TBX3"/>
-      <bbox x="24.000942268251322" y="87.20074597265679" w="47.5146484375" h="30"/>
+      <bbox x="-99.76490253791037" y="103.55553810002833" w="69.1943359375" h="30"/>
     </glyph>
     <glyph id="nwtN_0b329cff-4297-48af-b42a-13a387a590b6" class="SIF macromolecule">
       <label text="AGO2"/>
-      <bbox x="89.5610722392875" y="32.767625593557824" w="51.68212890625" h="30"/>
+      <bbox x="243.04275026970197" y="-19.777666301031047" w="51.68212890625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b" class="SIF macromolecule">
+      <label text="CHUK"/>
+      <bbox x="479.6031036423007" y="509.39691833399434" w="52.50244140625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861" class="SIF macromolecule">
+      <label text="TSC1"/>
+      <bbox x="525.8115997360507" y="269.0969183339943" w="48.34228515625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d" class="SIF macromolecule">
+      <label text="RPTOR"/>
+      <bbox x="-260.7218361316604" y="183.6555381000283" w="62.236328125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af" class="SIF macromolecule">
+      <label text="HIST1H3B"/>
+      <bbox x="-168.15474628791037" y="23.455538100028335" w="81.689453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d" class="SIF macromolecule">
+      <label text="HIST1H3G"/>
+      <bbox x="-260.7218361316604" y="-56.64446189997166" w="83.35205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_2124bfc2-6811-4d53-bb03-9068322acda5" class="SIF macromolecule">
+      <label text="GAPDH"/>
+      <bbox x="-105.58765644416037" y="143.60553810002833" w="63.34228515625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_29e17591-5041-463d-98e2-f9a769a30a11" class="SIF macromolecule">
+      <label text="CTNNB1"/>
+      <bbox x="-179.82222675666037" y="103.55553810002833" w="70.00732421875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba" class="SIF macromolecule">
+      <label text="PDE3B"/>
+      <bbox x="-20.520566600410376" y="103.55553810002833" w="59.189453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_88aecf05-094d-4908-957e-9798b990369e" class="SIF macromolecule">
+      <label text="HIST1H3F"/>
+      <bbox x="-77.24292988166037" y="63.50553810002833" w="80.84716796875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba" class="SIF macromolecule">
+      <label text="PIP5K1C"/>
+      <bbox x="-71.66187519416037" y="-96.69446189997166" w="71.69921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae" class="SIF macromolecule">
+      <label text="MYO5A"/>
+      <bbox x="-32.195371287910376" y="143.60553810002833" w="62.5146484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6bb7350f-ca0d-466f-bd44-d7f5475e6afa" class="SIF macromolecule">
+      <label text="TBX3"/>
+      <bbox x="243.04275026970197" y="20.27233369896895" w="47.5146484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0" class="SIF macromolecule">
+      <label text="CREB1"/>
+      <bbox x="435.6981231735507" y="389.24691833399436" w="60.01708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375" class="SIF macromolecule">
+      <label text="STAT1"/>
+      <bbox x="450.7274200485507" y="349.19691833399435" w="54.46533203125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6002e583-b5d1-4754-98fd-677a195eeba0" class="SIF macromolecule">
+      <label text="BRD1"/>
+      <bbox x="505.76521301730077" y="389.24691833399436" w="50.01220703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0" class="SIF macromolecule">
+      <label text="PHF20"/>
+      <bbox x="291.4111114548007" y="469.3469183339944" w="56.6845703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154" class="SIF macromolecule">
+      <label text="INS"/>
+      <bbox x="-2.9425392566603676" y="263.75553810002833" w="35.0048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9" class="SIF macromolecule">
+      <label text="FLNC"/>
+      <bbox x="40.36927714958962" y="143.60553810002833" w="49.169921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42" class="SIF macromolecule">
+      <label text="CASP8"/>
+      <bbox x="-47.466367381660376" y="183.6555381000283" w="59.189453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c" class="SIF macromolecule">
+      <label text="HIST1H3E"/>
+      <bbox x="-260.7218361316604" y="63.50553810002833" w="81.689453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17" class="SIF macromolecule">
+      <label text="NINL"/>
+      <bbox x="-206.48970722541037" y="263.75553810002833" w="44.1748046875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d" class="SIF macromolecule">
+      <label text="RALGAPA2"/>
+      <bbox x="-260.7218361316604" y="-96.69446189997166" w="88.09814453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d" class="SIF macromolecule">
+      <label text="RALGAPB"/>
+      <bbox x="-162.57369160041037" y="-96.69446189997166" w="80.86181640625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7b22972e-5466-49ff-8101-05c787e0074d" class="SIF macromolecule">
+      <label text="ELP1"/>
+      <bbox x="48.71888652458962" y="103.55553810002833" w="46.6943359375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e" class="SIF macromolecule">
+      <label text="CBY1"/>
+      <bbox x="13.654238087089624" y="63.50553810002833" w="49.1845703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb" class="SIF macromolecule">
+      <label text="KHSRP"/>
+      <bbox x="-188.43550800666037" y="183.6555381000283" w="61.6796875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3c3441d7-49e6-458d-b258-64b3985c2990" class="SIF macromolecule">
+      <label text="ATP7A"/>
+      <bbox x="10.087343555839624" y="-96.69446189997166" w="56.41357421875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5" class="SIF macromolecule">
+      <label text="LNPEP"/>
+      <bbox x="6.710878712089624" y="-56.64446189997166" w="59.189453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93" class="SIF macromolecule">
+      <label text="XIAP"/>
+      <bbox x="-260.7218361316604" y="263.75553810002833" w="44.18212890625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4" class="SIF macromolecule">
+      <label text="EDC3"/>
+      <bbox x="12.819277149589624" y="23.455538100028335" w="50.01220703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e" class="SIF macromolecule">
+      <label text="RACGAP1"/>
+      <bbox x="-168.98238300666037" y="63.50553810002833" w="81.689453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2" class="SIF macromolecule">
+      <label text="ESR1"/>
+      <bbox x="21.77308574333962" y="183.6555381000283" w="49.1845703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e24415c5-cad2-4293-ac09-6c179702db22" class="SIF macromolecule">
+      <label text="GATA6"/>
+      <bbox x="-53.867734569160376" y="223.70553810002832" w="56.97021484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e" class="SIF macromolecule">
+      <label text="CDKN1A"/>
+      <bbox x="310.6005645798007" y="269.0969183339943" w="70.849609375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8" class="SIF macromolecule">
+      <label text="MDM4"/>
+      <bbox x="287.2289825485507" y="509.39691833399434" w="54.1650390625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583" class="SIF macromolecule">
+      <label text="AKT1S1"/>
+      <bbox x="302.2582794235507" y="349.19691833399435" w="65.86181640625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" class="SIF macromolecule">
+      <label text="AKT3"/>
+      <bbox x="284.7805114596129" y="106.2148384047429" w="47.5146484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a" class="SIF macromolecule">
+      <label text="HIST1H3I"/>
+      <bbox x="-75.58765644416037" y="-16.594461899971662" w="75.85205078125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_326fd84b-9d5c-492c-9106-605e108b018f" class="SIF macromolecule">
+      <label text="ANKRD2"/>
+      <bbox x="-260.7218361316604" y="103.55553810002833" w="70.849609375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89" class="SIF macromolecule">
+      <label text="HIST1H3C"/>
+      <bbox x="-168.15474628791037" y="-16.594461899971662" w="82.51708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc" class="SIF macromolecule">
+      <label text="C2CD5"/>
+      <bbox x="-260.7218361316604" y="223.70553810002832" w="59.18212890625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_13b6ead6-085c-4348-8747-3b5214a20663" class="SIF macromolecule">
+      <label text="EZR"/>
+      <bbox x="-98.87505878791036" y="263.75553810002833" w="40" h="30"/>
+    </glyph>
+    <glyph id="nwtN_0e46e1be-6525-4885-92f7-649ec3969629" class="SIF macromolecule">
+      <label text="WIPF1"/>
+      <bbox x="10.314394337089624" y="-16.594461899971662" w="55.8349609375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134" class="SIF macromolecule">
+      <label text="HTRA2"/>
+      <bbox x="-191.48970722541037" y="223.70553810002832" w="59.1748046875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156" class="SIF macromolecule">
+      <label text="HIST1H3A"/>
+      <bbox x="-167.31978535041037" y="-56.64446189997166" w="81.689453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b" class="SIF macromolecule">
+      <label text="DEPTOR"/>
+      <bbox x="-75.58033222541037" y="-56.64446189997166" w="72.2412109375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57" class="SIF macromolecule">
+      <label text="HIST1H3H"/>
+      <bbox x="-260.7218361316604" y="23.455538100028335" w="82.51708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa" class="SIF macromolecule">
+      <label text="NIN"/>
+      <bbox x="-48.825058787910365" y="263.75553810002833" w="35.83251953125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_f2001d81-d468-46d4-97bc-1e169556ab67" class="SIF macromolecule">
+      <label text="SH3RF1"/>
+      <bbox x="-183.15474628791037" y="143.60553810002833" w="67.51708984375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3" class="SIF macromolecule">
+      <label text="FOXO6"/>
+      <bbox x="293.9086700485507" y="389.24691833399436" w="60.8447265625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388" class="SIF macromolecule">
+      <label text="PML"/>
+      <bbox x="392.3680450485507" y="549.4469183339944" w="40.84228515625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e" class="SIF macromolecule">
+      <label text="IKBKB"/>
+      <bbox x="461.5745880173007" y="269.0969183339943" w="54.18701171875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_f224e282-6541-41cc-ba14-1f0eae21b539" class="SIF macromolecule">
+      <label text="MDM2"/>
+      <bbox x="351.4440216110507" y="509.39691833399434" w="54.1650390625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65" class="SIF macromolecule">
+      <label text="BRPF1"/>
+      <bbox x="223.01394348605066" y="469.3469183339944" w="58.34716796875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1" class="SIF macromolecule">
+      <label text="DENND1A"/>
+      <bbox x="223.01394348605066" y="229.0469183339943" w="81.68212890625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161" class="SIF macromolecule">
+      <label text="TSC2"/>
+      <bbox x="223.01394348605066" y="549.4469183339944" w="48.34228515625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3" class="SIF macromolecule">
+      <label text="BRPF3"/>
+      <bbox x="430.7176544235507" y="429.29691833399437" w="58.34716796875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_61959681-c55b-43a4-acb3-49a426c60226" class="SIF macromolecule">
+      <label text="GSK3B"/>
+      <bbox x="391.5001739548007" y="269.0969183339943" w="60.0244140625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c" class="SIF macromolecule">
+      <label text="DENND1B"/>
+      <bbox x="223.01394348605066" y="188.99691833399433" w="81.68212890625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b4c406e0-6e02-4748-9415-74a102bb051d" class="SIF macromolecule">
+      <label text="FOXO4"/>
+      <bbox x="389.2662872360507" y="188.99691833399433" w="60.8447265625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c" class="SIF macromolecule">
+      <label text="RPS6KB2"/>
+      <bbox x="223.01394348605066" y="269.0969183339943" w="77.53662109375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5" class="SIF macromolecule">
+      <label text="STAT2"/>
+      <bbox x="460.1610137985507" y="188.99691833399433" w="54.46533203125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9" class="SIF macromolecule">
+      <label text="CASP9"/>
+      <bbox x="293.0737091110507" y="429.29691833399437" w="59.189453125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46" class="SIF macromolecule">
+      <label text="KAT6A"/>
+      <bbox x="358.1456817673007" y="469.3469183339944" w="56.41357421875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90" class="SIF macromolecule">
+      <label text="GSK3A"/>
+      <bbox x="389.2662872360507" y="229.0469183339943" w="60.0244140625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76" class="SIF macromolecule">
+      <label text="BIRC5"/>
+      <bbox x="489.12458801730077" y="469.3469183339944" w="54.1796875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f" class="SIF macromolecule">
+      <label text="MKRN1"/>
+      <bbox x="378.1700958298007" y="349.19691833399435" w="62.50732421875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31" class="SIF macromolecule">
+      <label text="MAP3K1"/>
+      <bbox x="223.01394348605066" y="349.19691833399435" w="69.1943359375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_27843559-e42b-4444-8105-900b5337eb38" class="SIF macromolecule">
+      <label text="STAT6"/>
+      <bbox x="459.3407012985507" y="229.0469183339943" w="54.46533203125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8" class="SIF macromolecule">
+      <label text="STAT3"/>
+      <bbox x="454.0526153610507" y="309.14691833399434" w="54.46533203125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f" class="SIF macromolecule">
+      <label text="STAT5B"/>
+      <bbox x="314.7460723923007" y="229.0469183339943" w="64.47021484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313" class="SIF macromolecule">
+      <label text="NR4A1"/>
+      <bbox x="362.3131622360507" y="429.29691833399437" w="58.3544921875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3476302c-8b05-49ed-a898-359f96f263e2" class="SIF macromolecule">
+      <label text="MAP3K8"/>
+      <bbox x="303.9135528610507" y="309.14691833399434" w="69.1943359375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_29274293-a05a-44ad-9301-062b62c6770f" class="SIF macromolecule">
+      <label text="MTOR"/>
+      <bbox x="415.6590606735507" y="509.39691833399434" w="53.89404296875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288" class="SIF macromolecule">
+      <label text="RUNX2"/>
+      <bbox x="383.1578887985507" y="309.14691833399434" w="60.8447265625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2" class="SIF macromolecule">
+      <label text="RAF1"/>
+      <bbox x="542.1555450485507" y="509.39691833399434" w="48.34228515625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e" class="SIF macromolecule">
+      <label text="HTT"/>
+      <bbox x="494.1526153610507" y="549.4469183339944" w="39.15771484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5" class="SIF macromolecule">
+      <label text="BRAF"/>
+      <bbox x="523.8560333298007" y="229.0469183339943" w="50.0048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0" class="SIF macromolecule">
+      <label text="ARAF"/>
+      <bbox x="518.5679473923007" y="309.14691833399434" w="50.0048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_ecb64a85-0f22-446d-977a-793100fcc67f" class="SIF macromolecule">
+      <label text="STAT5A"/>
+      <bbox x="314.7460723923007" y="188.99691833399433" w="64.47021484375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a" class="SIF macromolecule">
+      <label text="ING5"/>
+      <bbox x="337.3082794235507" y="549.4469183339944" w="45.009765625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d" class="SIF macromolecule">
+      <label text="CDKN1B"/>
+      <bbox x="223.01394348605066" y="309.14691833399434" w="70.849609375" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea" class="SIF macromolecule">
+      <label text="NOS3"/>
+      <bbox x="499.11482239230077" y="429.29691833399437" w="50.84716796875" h="30"/>
+    </glyph>
+    <glyph id="nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e" class="SIF macromolecule">
+      <label text="USP8"/>
+      <bbox x="524.6763458298007" y="188.99691833399433" w="49.1845703125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e6d068f3-11b5-47de-908a-698b9350445e" class="SIF macromolecule">
+      <label text="CBFB"/>
+      <bbox x="515.2427520798007" y="349.19691833399435" w="50.0048828125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_33e30131-1134-4c21-bb6b-f291db3662f5" class="SIF macromolecule">
+      <label text="MEAF6"/>
+      <bbox x="223.01394348605066" y="429.29691833399437" w="60.009765625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_79b94284-5721-47dd-95b0-010780bf223a" class="SIF macromolecule">
+      <label text="STAT4"/>
+      <bbox x="424.6092559860507" y="469.3469183339944" w="54.46533203125" h="30"/>
+    </glyph>
+    <glyph id="nwtN_fb0dd167-ae70-4646-8066-8703df9102d0" class="SIF macromolecule">
+      <label text="RORC"/>
+      <bbox x="223.01394348605066" y="509.39691833399434" w="54.1650390625" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e4ea6591-a256-496a-9653-448c9898697a" class="SIF macromolecule">
+      <label text="FOXO1"/>
+      <bbox x="223.01394348605066" y="389.24691833399436" w="60.8447265625" h="30"/>
     </glyph>
     <arc id="nwtE_38a747a5-9b07-45ae-8124-10051fcc4a22" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e">
-      <start x="344.5020108287061" y="223.09070400403377"/>
-      <end x="395.5013975422004" y="151.14240844632496"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-1358791;http://pathwaycommons.org/pc11/Catalysis_9d1367333f12c9bb1bc235f3a2bef721</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a97cef7f-ecdc-426f-9fb9-8cc6ea4733d5" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e6d068f3-11b5-47de-908a-698b9350445e">
-      <start x="325.22823290710295" y="223.0907040040338"/>
-      <end x="261.18282962730575" y="101.02690626678441"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_ac4a813d0993e7ae89fee40a83b531dc;http://identifiers.org/reactome/R-HSA-8939963</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_eedc3513-358b-4c04-a32d-9968ddd868aa" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_33e30131-1134-4c21-bb6b-f291db3662f5">
-      <start x="309.50736887046935" y="228.51151932352474"/>
-      <end x="248.93697222418405" y="202.67145122881456"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_d5df0c7c-9d09-447c-89ca-3ee1812a8935" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_79b94284-5721-47dd-95b0-010780bf223a">
-      <start x="309.04415784000497" y="244.69614092325128"/>
-      <end x="178.31544181970298" y="276.7609610230718"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_3242f9a9-59f6-4e40-8430-20bbc32f458c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_fb0dd167-ae70-4646-8066-8703df9102d0">
-      <start x="312.5917542007643" y="252.92860210570825"/>
-      <end x="183.74503720877718" y="340.8244110562463"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_758949dc7eadfb9fa9846628b26cb201;http://pathwaycommons.org/pc11/BiochemicalReaction_0c9484421ae2a3d7e3f8a94c8bf5fa8c</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_66764aa4-5381-4732-a955-e51d646c25a6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e4ea6591-a256-496a-9653-448c9898697a">
-      <start x="325.38429034024097" y="254.34070400403377"/>
-      <end x="306.74506787153393" y="290.55444539036324"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/Catalysis_c7220a25af30b60caf2df13f091517ec;http://pathwaycommons.org/pc11/BiochemicalReaction_880328849b56fe8cd5ea37dda7877ed7;http://pathwaycommons.org/pc11/Catalysis_9958de1ce73dc7ea47053adb8682a4aa;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://identifiers.org/reactome/R-HSA-211164;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_4555e670-2cda-4ffa-8894-315ba8de8a26" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388">
-      <start x="316.0026492467951" y="254.25653000028348"/>
-      <end x="240.99937876000328" y="321.15414020834265"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_089e9b51-7764-4ca8-b48e-a79846f112e8" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3">
-      <start x="329.3109387117715" y="223.09070400403377"/>
-      <end x="292.8201182283036" y="84.55029220832316"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_b942a44f-1d8f-42d5-8c9b-b96513674d6b" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e">
-      <start x="309.4038723495347" y="228.82489530162823"/>
-      <end x="180.26962710352683" y="175.65656213058398"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399969;http://pathwaycommons.org/pc11/BiochemicalReaction_5bad31bd76c98776bfa26fb73bfdee66;http://pathwaycommons.org/pc11/Catalysis_2acf384fc7a782d072acb812e938fe29;http://pathwaycommons.org/pc11/Catalysis_6fc8fc1b5fa0b399b76a968d2cc1428f</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_e6c1cb5d-7c87-4d10-a4f4-63056f962b0d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583">
-      <start x="312.6368296140847" y="224.47229048768122"/>
-      <end x="143.73024950470779" y="108.75095880435373"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-200143;http://pathwaycommons.org/pc11/Catalysis_951bce0553481e377cc64cd73ef071ee;http://pathwaycommons.org/pc11/Catalysis_4b0dd80e93d2fd91ba3ad4549e400d4d;http://pathwaycommons.org/pc11/Catalysis_3aab9a2ac962d28569325065a8999f55;http://pathwaycommons.org/pc11/ComplexAssembly_0723f2d7bbbfff1e088d5b30f381b880;http://pathwaycommons.org/pc11/BiochemicalReaction_9ed7d05fd68b199bdc4f849ed4045982</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_badc64e3-9f2c-4105-82d5-026726076b03" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8">
-      <start x="337.644340460373" y="223.09070400403377"/>
-      <end x="354.4596762450548" y="160.7985176340824"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_7434292128490769dc537c0081366247;http://pathwaycommons.org/pc11/BiochemicalReaction_b873524d3ca75af970edee2b6a9677bc</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_4bc653d4-22fe-4bba-afdd-72ae51dac70b" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_eda59338-6749-4100-876d-da96cb840872">
-      <start x="309.04415784000497" y="240.0156377782444"/>
-      <end x="141.13226824777078" y="248.9677923970654"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/BiochemicalReaction_18f7cb879874fe945c2b0f01e492ed5c;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/BiochemicalReaction_880328849b56fe8cd5ea37dda7877ed7;http://pathwaycommons.org/pc11/Catalysis_9958de1ce73dc7ea47053adb8682a4aa;http://pathwaycommons.org/pc11/Catalysis_1f64411ffa48af0273b69431fa950733;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a7899e75-5ccf-4231-b9ca-2d5f3d55e60c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0">
-      <start x="309.04415784000497" y="234.8223251845568"/>
-      <end x="184.15755316194483" y="214.8803845751362"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-442724;http://pathwaycommons.org/pc11/Catalysis_60ac66c50ceb176c0e3e9f3dd3a9ccc4</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_3aed6334-9d5d-48e8-8a42-125106d19b0a" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b">
-      <start x="348.37056179960945" y="254.34070400403377"/>
-      <end x="393.17712279746485" y="301.1888557625884"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_4ecb2a8a0d2930f426ccf4d5acd1340c;http://pathwaycommons.org/pc11/BiochemicalReaction_2f9c7c1941f168eaf2fb11ee86ca72b1;http://pathwaycommons.org/pc11/Catalysis_43104b63c6667a5c13f5d2ed9a2cbe6c;http://pathwaycommons.org/pc11/Catalysis_e613bfda4e57ae4f7be88eabeb7a75bd;http://pathwaycommons.org/pc11/BiochemicalReaction_0303cda976b2cfc135830030d999f244;http://pathwaycommons.org/pc11/Catalysis_431cf1e45475d9d562d879854e535af8;http://pathwaycommons.org/pc11/BiochemicalReaction_4836b90e218f8aa2073178062cb6f4c9;http://identifiers.org/reactome/R-HSA-2400001;http://pathwaycommons.org/pc11/BiochemicalReaction_c2907f3e5a65ac2ba23bc290458be011;http://pathwaycommons.org/pc11/BiochemicalReaction_6237d747762b281e8b553176b5642a05;http://pathwaycommons.org/pc11/Catalysis_d9b02b4c8c483d4b8b5091976760ed5d;http://pathwaycommons.org/pc11/Catalysis_4513ca9e8c9f04134ed41ee90a658d5b;http://pathwaycommons.org/pc11/Catalysis_adee6b1bcdf00bd01e5e5528ed5d961b;http://pathwaycommons.org/pc11/Catalysis_795e3a0ca33855b45f9c581e17eb868d</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_d1c6d1ab-ccc5-4695-9716-c23f8744e85d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375">
-      <start x="349.2554834404466" y="223.09070400403377"/>
-      <end x="346.3500777948443" y="225.9586652934328"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_226a095d-eb75-4a8a-942f-d8efcce169a5" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179">
-      <start x="329.843397402177" y="223.0907040040338"/>
-      <end x="309.3476888277753" y="133.71367913047766"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_e9cac9da00bb30b73d9ac201d37e5730;http://pathwaycommons.org/pc11/Catalysis_f0ea1b1992c6ca98f7fd9f776fcb2ee4;http://identifiers.org/reactome/R-HSA-2399941;http://pathwaycommons.org/pc11/Catalysis_e17985c2e2ac08322768da84ad36c00b;http://pathwaycommons.org/pc11/BiochemicalReaction_f1cadb2f5cef4e7c72c659bf1a559816;http://pathwaycommons.org/pc11/BiochemicalReaction_e0c93ec4924a5987061c2cd3043258e0;http://pathwaycommons.org/pc11/BiochemicalReaction_f46c6d453b72edcbbf3efead6e4c020b;http://pathwaycommons.org/pc11/BiochemicalReaction_84e5a3a3670086ff59e04824e4fd1326;http://pathwaycommons.org/pc11/Catalysis_49cb962eebf0fa5cbc6f138af9242d03;http://pathwaycommons.org/pc11/Catalysis_148a983b853e4459e464086300d2c7cc;http://pathwaycommons.org/pc11/Catalysis_dd04f6a86dc401152d43bd66ef6dff79;http://pathwaycommons.org/pc11/BiochemicalReaction_fa98d7aad6b9ba72f0742f67492d6373;http://pathwaycommons.org/pc11/Catalysis_49b4914a7b79b57818a83bc150a06e8f;http://pathwaycommons.org/pc11/Catalysis_4909c3a1f53b2dacdbce97d244cd3891</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_e5048833-de10-4353-883a-4bd60ae9fb0e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_6002e583-b5d1-4754-98fd-677a195eeba0">
-      <start x="356.3680974515431" y="250.8347814552863"/>
-      <end x="454.46234803303776" y="302.6537924519322"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_11d4ebe0-e616-4192-8694-ee8d22270ee1" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861">
-      <start x="333.7601461117807" y="254.34070400403377"/>
-      <end x="334.8682461569044" y="306.2314097844395"/>
-      <pcIDs>http://pathwaycommons.org/pc11/ComplexAssembly_0af9138215e308aefb9a22a3bd28c2b0;http://pathwaycommons.org/pc11/Catalysis_85086155628b021c9136376edba0d655;http://identifiers.org/reactome/R-HSA-165182;http://pathwaycommons.org/pc11/Catalysis_904846679bb900a95ccf46fb6d8405fd</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_bf192e14-e10a-44ad-8210-a2956a8989f3" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0">
-      <start x="353.2969730181485" y="223.93829710979557"/>
-      <end x="399.7005965982121" y="189.42856967472687"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-6805785;http://pathwaycommons.org/pc11/Catalysis_9decd11e0684e33fb8b421219e2b7440</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_7498b588-f819-4026-9f49-417989abe372" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76">
-      <start x="357.37836448781377" y="228.60622149821518"/>
-      <end x="470.33764531229986" y="180.92897204831203"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_e73444fa-c10b-4100-af28-d398cf24ebdb" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea">
-      <start x="322.2631387788138" y="254.34070400403374"/>
-      <end x="254.34698793608072" y="349.4009229999416"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_4c60671dbfe16ccd92a90b13550d0d83;http://pathwaycommons.org/pc11/BiochemicalReaction_e6aa5bf1cea3d130cb5653a674a4949d;http://pathwaycommons.org/pc11/BiochemicalReaction_f7539b7be918ec19fb71207366657207;http://pathwaycommons.org/pc11/BiochemicalReaction_57d82dedd5d5bb9f411833faf91f8700;http://pathwaycommons.org/pc11/Catalysis_58f19226a4fce5127a6688fe80741005;http://pathwaycommons.org/pc11/Catalysis_12ffeff6a795eccf56c6718b3a030ec3;http://pathwaycommons.org/pc11/BiochemicalReaction_51d576fc0aeab7ef79bddb27881c9741;http://pathwaycommons.org/pc11/Catalysis_2328a0471b4214e8436307db3a7ca4c8;http://pathwaycommons.org/pc11/Catalysis_3b30a974433a656ed4a7f7db0c774cdd</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_fb5e233f-8256-4a9b-97bc-e2ee9a8130cc" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d">
-      <start x="331.027673386892" y="254.34070400403377"/>
-      <end x="312.32599165160633" y="376.15691241672687"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399969;http://pathwaycommons.org/pc11/BiochemicalReaction_1832cd9d657e0f5ae031895fe590af54;http://pathwaycommons.org/pc11/Catalysis_716a94084249e630b07e6a15ca1ccc99;http://pathwaycommons.org/pc11/Catalysis_2acf384fc7a782d072acb812e938fe29</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_d81bb580-b213-4b1d-8740-7787004de7ba" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a">
-      <start x="345.7260359376538" y="254.34070400403377"/>
-      <end x="358.1574399872225" y="270.133202674067"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_5c8745e5-7f44-4cbc-9fb2-c1b4afe3c135" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_ecb64a85-0f22-446d-977a-793100fcc67f">
-      <start x="315.29195523884056" y="223.31053257046037"/>
-      <end x="250.00889652314405" y="167.85296694382723"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_6dce1ae3-d977-4a42-bd6d-240b89341e8c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0">
-      <start x="309.04415784000497" y="238.28204201184957"/>
-      <end x="254.12399738509794" y="237.30523660231293"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_d144efacca0f5f0d11aa71d6531a7461;http://pathwaycommons.org/pc11/Control_228e43b5b4d626cc6d50710433bb9978;http://pathwaycommons.org/pc11/BiochemicalReaction_d67e8be8ddf64444fc43c5384bbb79f8;http://pathwaycommons.org/pc11/Control_8a5d6a08e99e79ada938529e3b193734</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_3f23522d-2601-432b-bc68-377c6f2fb60d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5">
-      <start x="311.2696900831024" y="251.80246560493146"/>
-      <end x="220.011116761417" y="305.7037340923233"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_d144efacca0f5f0d11aa71d6531a7461;http://pathwaycommons.org/pc11/Control_8a5d6a08e99e79ada938529e3b193734</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_9a6def05-a295-4808-8cd1-b0e3863e83a2" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e">
-      <start x="310.95183151359396" y="251.446428461594"/>
-      <end x="254.95109809130383" y="283.16794089124824"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_4b9ac2213a5df802ca75dfa6c98c8659;http://pathwaycommons.org/pc11/Catalysis_3bfc3fefed536d5ef7ca32902c7d4bbf</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_efe27f84-fc86-46b9-9a51-42f4923679d6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2">
-      <start x="325.65201179273646" y="254.34070400403377"/>
-      <end x="287.3208772731182" y="331.3779755319571"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_d144efacca0f5f0d11aa71d6531a7461;http://pathwaycommons.org/pc11/Control_228e43b5b4d626cc6d50710433bb9978;http://pathwaycommons.org/pc11/BiochemicalReaction_d67e8be8ddf64444fc43c5384bbb79f8;http://pathwaycommons.org/pc11/Control_8a5d6a08e99e79ada938529e3b193734</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_c7d9fa11-57d6-458c-a16a-dd16808915d9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288">
-      <start x="354.1734344285123" y="224.44378669313272"/>
-      <end x="448.46008616583015" y="159.58359551255865"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_ac4a813d0993e7ae89fee40a83b531dc;http://identifiers.org/reactome/R-HSA-8939963</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_877a2e46-babe-4e8f-b6ea-7ba13b0aeec5" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_29274293-a05a-44ad-9301-062b62c6770f">
-      <start x="336.22941916636984" y="223.0907040040338"/>
-      <end x="358.86726887904814" y="96.89579195993366"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_3547f382c177cfd897444c6f053c63bf;http://pathwaycommons.org/pc11/Catalysis_758949dc7eadfb9fa9846628b26cb201;http://pathwaycommons.org/pc11/Catalysis_4b0dd80e93d2fd91ba3ad4549e400d4d;http://pathwaycommons.org/pc11/ComplexAssembly_0723f2d7bbbfff1e088d5b30f381b880;http://pathwaycommons.org/pc11/BiochemicalReaction_9056dbaa957c07ac45eeb23894d64cf1;http://pathwaycommons.org/pc11/BiochemicalReaction_0c9484421ae2a3d7e3f8a94c8bf5fa8c</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_11ad9b2e-ffe8-4f24-b51f-560f5e119abd" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_3476302c-8b05-49ed-a898-359f96f263e2">
-      <start x="340.34384242634127" y="254.34070400403377"/>
-      <end x="378.70778735261496" y="340.99755106984486"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-389756;http://pathwaycommons.org/pc11/Catalysis_22969c6067c8e7471b214fd9a2b49721</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_17d87071-6ae6-434c-b28c-22de8e326dae" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313">
-      <start x="334.6891917256942" y="223.09070400403377"/>
-      <end x="343.52955086307077" y="113.69848571498052"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399988;http://pathwaycommons.org/pc11/Catalysis_9548dee1834d84f5e39a91e896151f27</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_b3f0983a-6ef1-4f4f-8d15-bbecbd6cb373" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f">
-      <start x="357.80880627750497" y="234.47316808975432"/>
-      <end x="445.9745418404945" y="219.1322885173629"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_558ece02-372d-41a3-9eeb-37de0f418b8a" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8">
-      <start x="309.8419671289547" y="249.72681512216985"/>
-      <end x="299.4682100735454" y="254.57010284674922"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_a05f0c2ed73217f92820dd0858f30aa1;http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7;http://pathwaycommons.org/pc11/BiochemicalReaction_4b899db29fcf4ef6b7518c36962b3945</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_75f0904f-a889-46f4-8021-66ded3606723" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_27843559-e42b-4444-8105-900b5337eb38">
-      <start x="309.04415784000497" y="238.0835396022366"/>
-      <end x="115.50342191374162" y="233.0655781293053"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_920b2632-65e2-431b-97e8-3a343a02a22e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31">
-      <start x="318.4340623596172" y="223.09070400403377"/>
-      <end x="223.67545743598566" y="124.33391679797067"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_eefda996c8198953e0c819ede70108ee;http://pathwaycommons.org/pc11/Control_7b6463310031b76464500fc727133cf0;http://pathwaycommons.org/pc11/Control_72dd952280f8df6a7b3e24e6d9346698</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_98561885-4cbe-4490-8c39-285c3e36f2f3" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f">
-      <start x="313.9341378980929" y="223.7624985878768"/>
-      <end x="208.1198554509548" y="142.58895227893635"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-8948757;http://pathwaycommons.org/pc11/Catalysis_cbfa01f3e9f956f9194299da726e527d</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a619f43c-ed38-406e-8642-517784554dce" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76">
-      <start x="357.2879589262857" y="249.07795617567103"/>
-      <end x="408.1108797928958" y="271.14867397082986"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_f7400aef073341f31cda2e49069f8d09;http://pathwaycommons.org/pc11/BiochemicalReaction_fce3ac57f4a4d81fa181fc08cb9865cd</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_49625e40-c4c3-48fb-97ad-e14004317571" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90">
-      <start x="345.34884066582936" y="223.09070400403377"/>
-      <end x="434.5545140662416" y="106.18106449240389"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399966;http://pathwaycommons.org/pc11/Catalysis_1d7f494f39b82000c5595b09b8839623;http://pathwaycommons.org/pc11/Catalysis_348fc252571d0778f5a22cde90bd96be;http://pathwaycommons.org/pc11/BiochemicalReaction_06fce1d554689cf681674636b667dacf</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_83dac679-f6f0-4375-bc60-40f6d512f5ef" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46">
-      <start x="344.105836476313" y="223.09070400403377"/>
-      <end x="413.42520696005926" y="121.66929579346163"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_247e16be-74bc-469a-b052-c6cc656b91f9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9">
-      <start x="321.04523896639006" y="223.09070400403374"/>
-      <end x="204.23849721846716" y="75.68181087465342"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_3ce1ac52f3dc24206cc77fac14150d80;http://pathwaycommons.org/pc11/Catalysis_89e4ac9ea712a2682b57cf9112c7f3ea;http://pathwaycommons.org/pc11/Control_a642b6ad202cd1906516d509a8ca1163;http://pathwaycommons.org/pc11/Catalysis_f27eca087c180f896698d37a5b0a9918;http://pathwaycommons.org/pc11/Control_79719e1dc2a21b762d3aaf013f93fd18;http://identifiers.org/reactome/R-HSA-2399985;http://pathwaycommons.org/pc11/BiochemicalReaction_de17e6c43061707d7a52532cc8ae1051</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_c75dc3c1-a242-4f61-84a6-64888b10775f" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5">
-      <start x="309.8865214581723" y="227.61308935214439"/>
-      <end x="140.46632294975484" y="147.7061086140797"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_c34a4644-9d58-46df-aa9a-217891b32b75" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c">
-      <start x="357.4676355934279" y="228.88597737187726"/>
-      <end x="401.2747004850582" y="210.9745459665237"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399999;http://pathwaycommons.org/pc11/Catalysis_04be45b31bbab7663306b54e80f82235</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a77aa0a7-8be7-4b8b-a544-c243d48f29a1" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_b4c406e0-6e02-4748-9415-74a102bb051d">
-      <start x="335.2887584317507" y="254.34070400403377"/>
-      <end x="346.67911892658793" y="349.9088942643952"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_880328849b56fe8cd5ea37dda7877ed7;http://pathwaycommons.org/pc11/Catalysis_9958de1ce73dc7ea47053adb8682a4aa;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_f8577b7d-517e-459b-9bb1-8fb2f6b8f16a" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c">
-      <start x="309.04415784000497" y="233.00947938591864"/>
-      <end x="138.19129264286605" y="193.02457816334766"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-8933446;http://pathwaycommons.org/pc11/Catalysis_fb6da143964687a5586e8a2815e9f642</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_31bea3b7-47a3-4185-91c7-716d4c178704" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_61959681-c55b-43a4-acb3-49a426c60226">
-      <start x="357.80880627750497" y="236.97208028009408"/>
-      <end x="493.0865415343085" y="227.29812687030352"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399966;http://pathwaycommons.org/pc11/Catalysis_73d7ebb8fea83e69f0f8abfa1c069da0;http://pathwaycommons.org/pc11/Catalysis_755a1bf600801035266b509d958b488b;http://pathwaycommons.org/pc11/Catalysis_1d7f494f39b82000c5595b09b8839623;http://pathwaycommons.org/pc11/Catalysis_348fc252571d0778f5a22cde90bd96be;http://pathwaycommons.org/pc11/Catalysis_419753a4dbf61e61d04cc800f0dbf871;http://pathwaycommons.org/pc11/BiochemicalReaction_d142274e7ec20cab1132b244e36fda3a;http://pathwaycommons.org/pc11/BiochemicalReaction_5e587671081f7e98b3422eed61c06c17;http://pathwaycommons.org/pc11/Catalysis_56193d6d3400d430ea0ad3625debb906;http://pathwaycommons.org/pc11/BiochemicalReaction_b35e1fbbc7e671bd14a22c3a2849ca52;http://pathwaycommons.org/pc11/BiochemicalReaction_70363b7b507e6137c53369541a9c34a1;http://pathwaycommons.org/pc11/BiochemicalReaction_06fce1d554689cf681674636b667dacf;http://pathwaycommons.org/pc11/Catalysis_306e7e42e299430514aaa720bd786dd1;http://pathwaycommons.org/pc11/BiochemicalReaction_8ce70a5d3cac70cd0b4407e2f343c864</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_32754337-996e-4e3e-af9a-7195a0ca04d1" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3">
-      <start x="309.04415784000497" y="236.90114925635189"/>
-      <end x="213.23720585105696" y="229.77110873877123"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_151fcc77-7024-4c95-91a3-4de409938ee0" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161">
-      <start x="309.4836062096805" y="248.85159496111436"/>
-      <end x="157.10036386764216" y="313.3609687640527"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_49a72e9975d4853de38c8f8b20539b48;http://pathwaycommons.org/pc11/BiochemicalReaction_d2c09c33fcccbdb791c5033b870bfe2a;http://pathwaycommons.org/pc11/ComplexAssembly_0af9138215e308aefb9a22a3bd28c2b0;http://pathwaycommons.org/pc11/Catalysis_85086155628b021c9136376edba0d655;http://identifiers.org/reactome/R-HSA-165182;http://pathwaycommons.org/pc11/Catalysis_c3e773f7d54af8c06dc956bc0a6821b7;http://identifiers.org/reactome/R-HSA-165162;http://pathwaycommons.org/pc11/BiochemicalReaction_9dbc601d044f9417774a7abcbbba6f93;http://pathwaycommons.org/pc11/Catalysis_904846679bb900a95ccf46fb6d8405fd;http://identifiers.org/reactome/R-HSA-2399982;http://pathwaycommons.org/pc11/Catalysis_4e10d5fb3b4068b451ea914e6130dcd3;http://pathwaycommons.org/pc11/Catalysis_484b6f5744330d5843cb2def74b40d81</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_eac3adf3-dc2f-4044-892d-f601a6ff62e9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1">
-      <start x="351.61336112018665" y="254.1082601874944"/>
-      <end x="432.91721080606726" y="322.9201805831998"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-8933446;http://pathwaycommons.org/pc11/Catalysis_fb6da143964687a5586e8a2815e9f642</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_66089c21-e248-4563-bfac-ea0afd7de4c1" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65">
-      <start x="315.81341040748487" y="254.2267946850343"/>
-      <end x="196.58105170431188" y="359.22971323167747"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_d312a614-2f9a-43b1-9630-abba4f65d69c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_f224e282-6541-41cc-ba14-1f0eae21b539">
-      <start x="334.61318583102377" y="223.09070400403377"/>
-      <end x="347.3848771311104" y="54.929380827041655"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_7434292128490769dc537c0081366247;http://identifiers.org/reactome/R-HSA-2399981;http://pathwaycommons.org/pc11/BiochemicalReaction_b873524d3ca75af970edee2b6a9677bc;http://pathwaycommons.org/pc11/Catalysis_296d30d2c7305bbcfd54abedcebd2cdb</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_6a89b478-1b81-43ac-89e2-856079c150dd" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e">
-      <start x="309.04415784000497" y="243.65436048384078"/>
-      <end x="207.9817227812493" y="264.12462596346154"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_4ecb2a8a0d2930f426ccf4d5acd1340c;http://pathwaycommons.org/pc11/Catalysis_43104b63c6667a5c13f5d2ed9a2cbe6c;http://pathwaycommons.org/pc11/Catalysis_e613bfda4e57ae4f7be88eabeb7a75bd;http://pathwaycommons.org/pc11/BiochemicalReaction_6237d747762b281e8b553176b5642a05;http://pathwaycommons.org/pc11/BiochemicalReaction_c2907f3e5a65ac2ba23bc290458be011;http://pathwaycommons.org/pc11/Catalysis_4513ca9e8c9f04134ed41ee90a658d5b;http://pathwaycommons.org/pc11/BiochemicalReaction_0303cda976b2cfc135830030d999f244;http://pathwaycommons.org/pc11/Catalysis_795e3a0ca33855b45f9c581e17eb868d</pcIDs>
-    </arc>
-    <arc id="nwtE_ab8db597-f375-4cd8-ae3e-720ea1c3dc23" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154">
-      <start x="325.07986507483565" y="223.09070400403377"/>
-      <end x="285.50122717914104" y="148.99886316460413"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Transport_0b314d8ce6c24b0eb27c7f4e336e9072;http://pathwaycommons.org/pc11/SmallMolecule_8ca6e2c056f3b10f7871a3140c2675fd;http://pathwaycommons.org/pc11/Transport_fab97776bd79ecc7654d441bb773e85e;http://pathwaycommons.org/pc11/Catalysis_c6f8c42d3ff45f2466489a4c16e59514;http://pathwaycommons.org/pc11/Control_3bae23877eeb8f43594fb494dca56c43</pcIDs>
-    </arc>
-    <arc id="nwtE_a976e420-f59b-4ea7-baca-e6fcfd80412a" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d">
-      <start x="340.20390675471026" y="254.34070400403377"/>
-      <end x="411.71824424334284" y="419.213288117988"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_4b0dd80e93d2fd91ba3ad4549e400d4d;http://pathwaycommons.org/pc11/ComplexAssembly_0723f2d7bbbfff1e088d5b30f381b880</pcIDs>
-    </arc>
-    <arc id="nwtE_d86db3ed-b29e-4d8a-a62e-fefd37b6fc2e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9">
-      <start x="357.80880627750497" y="239.0938490105502"/>
-      <end x="382.2069017633055" y="239.47223861334993"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_3eba5396d243f324ab44dbef3807a67f;http://pathwaycommons.org/pc11/Catalysis_c407a944ea41d10bb499b2fcd0afc62c</pcIDs>
-    </arc>
-    <arc id="nwtE_61881d0a-ad9f-44c3-ac83-bc2e7c48a872" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7d137071-5624-4e5e-9789-33e8984edce8">
-      <start x="353.5910506378665" y="224.09186609821185"/>
-      <end x="492.8631666667078" y="123.08832408757763"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_3bd63976a7d795018f8343ff4f8069fa;http://pathwaycommons.org/pc11/SmallMolecule_8ca6e2c056f3b10f7871a3140c2675fd;http://pathwaycommons.org/pc11/Transport_fab97776bd79ecc7654d441bb773e85e;http://pathwaycommons.org/pc11/Catalysis_bd65076ea05a2b1b023d47af2678051e;http://pathwaycommons.org/pc11/Control_3bae23877eeb8f43594fb494dca56c43</pcIDs>
-    </arc>
-    <arc id="nwtE_4523bf9d-87ec-42b8-b80e-2edf958df233" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42">
-      <start x="343.8972621726343" y="223.09070400403377"/>
-      <end x="473.8174319382973" y="29.217598990812547"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fcc14dd61e5e3f6f51a384d460f91d20;http://pathwaycommons.org/pc11/SmallMolecule_8ca6e2c056f3b10f7871a3140c2675fd;http://pathwaycommons.org/pc11/Transport_fab97776bd79ecc7654d441bb773e85e;http://pathwaycommons.org/pc11/BiochemicalReaction_dcdaf351dc5f3af71fc024611bc91671;http://pathwaycommons.org/pc11/Control_3bae23877eeb8f43594fb494dca56c43</pcIDs>
-    </arc>
-    <arc id="nwtE_484d2f7d-fce0-4156-8753-4975a271ef34" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af">
-      <start x="357.33421008344885" y="228.47947546716725"/>
-      <end x="598.3619102736934" y="125.28210680401565"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_352badad-530e-4be3-9b71-7d216aa413d5" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c">
-      <start x="357.80880627750497" y="240.6274070259006"/>
-      <end x="628.6068820598639" y="261.8594066968246"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_4db90ffe-bcc6-4b67-9d70-d96088db3545" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46">
-      <start x="348.21254748057083" y="223.09070400403377"/>
-      <end x="490.57128518999957" y="72.65478929288037"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_0835bbbc27add58563fb89c9a22e7d1b;http://pathwaycommons.org/pc11/BiochemicalReaction_866eed67ba89ac24a74560f86ab583d7</pcIDs>
-    </arc>
-    <arc id="nwtE_69e9af45-b676-402a-b887-1249507921ea" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17">
-      <start x="331.3352800743058" y="254.34070400403377"/>
-      <end x="302.03033731453496" y="473.3007729148445"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_1d7f494f39b82000c5595b09b8839623;http://pathwaycommons.org/pc11/BiochemicalReaction_06fce1d554689cf681674636b667dacf</pcIDs>
-    </arc>
-    <arc id="nwtE_71718df2-ca0e-4861-855a-0dc5fd80de29" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d">
-      <start x="357.808806277505" y="244.08805414333816"/>
-      <end x="563.9480826366288" y="289.5083496052618"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_507e650e-1d62-4837-9016-726d6b40d73c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d">
-      <start x="309.13084822915215" y="247.39942846525304"/>
-      <end x="95.36415017996003" y="323.80373706913326"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-1458463;http://pathwaycommons.org/pc11/Catalysis_d126321aa984bf26ded4741e0ec33cec</pcIDs>
-    </arc>
-    <arc id="nwtE_93ba32c9-6f1e-4e3e-bb6e-20eff5da4d1b" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228">
-      <start x="329.81224498741705" y="254.34070400403377"/>
-      <end x="296.50466884613525" y="398.3353747838557"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_1e9951cb34dcb4bd3b7b947effe2df6d;http://pathwaycommons.org/pc11/Catalysis_aeaa31340095c9c155bb6481c2731ec8</pcIDs>
-    </arc>
-    <arc id="nwtE_38ed1d9e-aaa4-4766-afef-3d0eb38526b6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d">
-      <start x="317.1914632530702" y="254.34070400403377"/>
-      <end x="162.0589405925201" y="403.644237038584"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-1458463;http://pathwaycommons.org/pc11/Catalysis_d126321aa984bf26ded4741e0ec33cec</pcIDs>
-    </arc>
-    <arc id="nwtE_523e0654-4015-4ada-889f-2535f286b3ac" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2124bfc2-6811-4d53-bb03-9068322acda5">
-      <start x="323.9336897983074" y="254.34070400403377"/>
-      <end x="239.35201159886262" y="393.5609340066245"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_bf452963e8b6a645cfc2f87b3e46a513;http://pathwaycommons.org/pc11/Catalysis_ff4decd21985108729b75852c2944f46</pcIDs>
-    </arc>
-    <arc id="nwtE_655e7031-fabb-4dcc-a7b7-38ed0c4e077e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7b22972e-5466-49ff-8101-05c787e0074d">
-      <start x="338.35599757103273" y="254.34070400403377"/>
-      <end x="403.88423198944497" y="462.0444144878636"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_0303cda976b2cfc135830030d999f244;http://pathwaycommons.org/pc11/Catalysis_795e3a0ca33855b45f9c581e17eb868d</pcIDs>
-    </arc>
-    <arc id="nwtE_70439a93-26b4-4c9f-b8b2-0c87858f8440" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889">
-      <start x="333.6209325507297" y="223.0907040040338"/>
-      <end x="336.23111056928093" y="13.350779328716442"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_8b2d6e4528c80a77a2a3298ba32cf8d7;http://pathwaycommons.org/pc11/Catalysis_9ba893823a87ef224d464a108f86a63d;http://identifiers.org/reactome/R-HSA-1445144;http://pathwaycommons.org/pc11/Catalysis_79a10779a3f072c2f45792cf0ed57feb</pcIDs>
-    </arc>
-    <arc id="nwtE_b8e039a3-be27-4206-aa13-c96844a178d9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e">
-      <start x="309.04415784000497" y="236.82471642963517"/>
-      <end x="50.57870820419845" y="216.77925442659932"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_c75ad09c4214a0b4700a64fb571f8d8c;http://pathwaycommons.org/pc11/BiochemicalReaction_c61b8b6ea6c8fe91e91ee4bfa0ae61b1;http://identifiers.org/reactome/R-HSA-3769394;http://pathwaycommons.org/pc11/Catalysis_278d164ad3665afa650a9f3dcf6fad89</pcIDs>
-    </arc>
-    <arc id="nwtE_1ac9cb0e-b6c1-411b-8835-5bc9b4ef49a6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_29e17591-5041-463d-98e2-f9a769a30a11">
-      <start x="341.08308566344897" y="223.09070400403374"/>
-      <end x="419.227063837607" y="63.62056267104529"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9ab85f4b7f49057d0b6d05e1ab818e19;http://pathwaycommons.org/pc11/Catalysis_c75ad09c4214a0b4700a64fb571f8d8c;http://identifiers.org/reactome/R-HSA-3769394;http://pathwaycommons.org/pc11/Catalysis_13c742d042c6a946d19dae7cd848a457</pcIDs>
-    </arc>
-    <arc id="nwtE_f0b25274-12c3-40d3-8235-a2ea49c0118c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb">
-      <start x="325.14346610828187" y="223.09070400403377"/>
-      <end x="309.8715897864469" y="194.28198638771184"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_7c329069e1015c3d5ad1c21a76b9e303;http://pathwaycommons.org/pc11/Catalysis_cd1994fa3e9690ab7189b9521d97f20e</pcIDs>
-    </arc>
-    <arc id="nwtE_b098dd95-5911-4780-866f-08c730c91216" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d21e03d5-62d0-4d4f-9c47-95a2d2a0dd13">
-      <start x="309.04415784000497" y="240.1026629972185"/>
-      <end x="47.59145805103526" y="254.9750832805102"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_4b0dd80e93d2fd91ba3ad4549e400d4d;http://pathwaycommons.org/pc11/ComplexAssembly_0723f2d7bbbfff1e088d5b30f381b880</pcIDs>
-    </arc>
-    <arc id="nwtE_2c4cc48e-04ac-4667-9cb7-2a058e90eb39" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_3c3441d7-49e6-458d-b258-64b3985c2990">
-      <start x="357.80880627750497" y="234.0155191723472"/>
-      <end x="599.6337053105979" y="187.3988918089305"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_14344784724e6cf85a451712260b9acf;http://pathwaycommons.org/pc11/BiochemicalReaction_d0f64955f44533747c039fc960460e01;http://pathwaycommons.org/pc11/Catalysis_c03c68abfbf3a28c9947353bdd88ed54;http://pathwaycommons.org/pc11/Catalysis_8ff2ac359278354372d201baea09d99c;http://pathwaycommons.org/pc11/BiochemicalReaction_4a76d10eaa4baa74cfdab55a506bd8f9;http://pathwaycommons.org/pc11/Catalysis_3fd83a5927e7a2dd306d4a15a04a083c</pcIDs>
-    </arc>
-    <arc id="nwtE_8f69e8aa-2bbe-45f0-83ca-de184428d569" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba">
-      <start x="351.73261912687957" y="254.07814579448512"/>
-      <end x="474.3270677423384" y="356.9589487557409"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_705e6e6f97a4fe102cd232aa21027f82;http://identifiers.org/reactome/R-HSA-162363</pcIDs>
-    </arc>
-    <arc id="nwtE_cd2a025d-fbec-419e-9d4d-6fd22af38b91" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5">
-      <start x="327.9848912179056" y="223.09070400403374"/>
-      <end x="266.32113549539235" y="46.02921383622896"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_9ba893823a87ef224d464a108f86a63d;http://identifiers.org/reactome/R-HSA-1445144</pcIDs>
-    </arc>
-    <arc id="nwtE_d086ea11-b985-4138-9bdc-3f3139839c5d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_66fee535-1f81-49f4-875a-e64fadc840e0">
-      <start x="351.78355729885067" y="254.06469570031928"/>
-      <end x="540.2935387302159" y="411.6844745492441"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_00b27039-34ab-43d8-a700-499c9adf371e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93">
-      <start x="338.6708778519708" y="223.09070400403377"/>
-      <end x="405.4536596226921" y="24.120030105360428"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_f0d921372e9796a47eedcbdef66fc950;http://pathwaycommons.org/pc11/BiochemicalReaction_f9c5d84e9c892908ee8e3ae29b82abd3</pcIDs>
-    </arc>
-    <arc id="nwtE_15a1ff0b-4977-4bd0-9e93-e40219a3e097" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_88aecf05-094d-4908-957e-9798b990369e">
-      <start x="357.6871895944308" y="247.61623264792644"/>
-      <end x="587.6030733333223" y="331.9655001165143"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_337c821f-0253-487f-a86d-16371d58fd84" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4">
-      <start x="342.976853931929" y="254.34070400403377"/>
-      <end x="417.7479560309472" y="376.6708588725351"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_68b3386155b2e80a32214f786859e90a;http://pathwaycommons.org/pc11/Catalysis_4c2abc9a0906c306f4c9b3823f4b20ea</pcIDs>
-    </arc>
-    <arc id="nwtE_e3a9b5cf-a489-41b9-a919-2f50f5ebfdb9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_26f30597-e9ad-4bfc-aff0-4c4c5d2fc568">
-      <start x="344.6734738166997" y="254.34070400403377"/>
-      <end x="485.3191313259829" y="449.73414305676533"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_8c29d9fd-f330-4d9c-b306-4e2d7d2a2cc9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e">
-      <start x="357.5687364603493" y="229.25521911205976"/>
-      <end x="530.3184151847262" y="161.56080671462422"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_5afb6c9b529b615b96fb733602fc5f02;http://pathwaycommons.org/pc11/Catalysis_02ca7723a4af51e37675dc5da1015dda</pcIDs>
-    </arc>
-    <arc id="nwtE_9331d50b-4632-4bf9-ba32-e1140a73c55c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba">
-      <start x="354.1485169426931" y="224.42733279466742"/>
-      <end x="550.1607061074255" y="89.27193246682197"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_026ea5c6e33373d68448f195eded707b;http://pathwaycommons.org/pc11/BiochemicalReaction_064bd6d69ff23795d1d51431fe8008f3</pcIDs>
-    </arc>
-    <arc id="nwtE_d848cd77-aa55-435d-b113-4dde391ead94" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2">
-      <start x="346.6872749810731" y="254.34070400403377"/>
-      <end x="469.3031207926188" y="398.8171770195322"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_6b82ac26b4cd9928e4a877aa69ca7e4e;http://pathwaycommons.org/pc11/Catalysis_a906350e8206b87128ccc2b713d5e61d</pcIDs>
-    </arc>
-    <arc id="nwtE_0ab34789-9acb-4c7c-890d-ccf3f183bd0d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7eb95670-f05c-4bbb-ad83-c5ea63bb0cba">
-      <start x="309.04415784000497" y="231.53412938246893"/>
-      <end x="72.1229704877365" y="161.75131576982608"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_00141b324e8b867220a6bfe51f23ed07;http://pathwaycommons.org/pc11/Catalysis_a8ee6d33cfc0c67aac9275ce43c92c57</pcIDs>
-    </arc>
-    <arc id="nwtE_f2815a2d-4a25-4e5c-9daa-0e58d9d789b7" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e24415c5-cad2-4293-ac09-6c179702db22">
-      <start x="356.85063301115764" y="250.0435257827752"/>
-      <end x="513.7142226007836" y="325.90210396798176"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_1091dcdadfb3295a5402dca6d5650c42;http://pathwaycommons.org/pc11/BiochemicalReaction_2000c29307d6004b209b8e4d2dd873dd</pcIDs>
-    </arc>
-    <arc id="nwtE_5ebf49e8-1eaa-4232-b5f0-1459331cdf05" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae">
-      <start x="328.05675795188813" y="254.34070400403377"/>
-      <end x="267.0006972327437" y="432.0036397061956"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_ba958a8ef427e28fe341b839b666e824;http://identifiers.org/reactome/R-HSA-1449597</pcIDs>
-    </arc>
-    <arc id="nwtE_d7edfc46-7440-448d-84c6-de1fba32dfe3" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a">
-      <start x="311.03698709141906" y="251.54600483139873"/>
-      <end x="112.62526117256095" y="365.2458508944536"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_626a7bb2-d1d5-45a7-a433-5148916bcc5e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_326fd84b-9d5c-492c-9106-605e108b018f">
-      <start x="357.80880627750497" y="241.7675184378227"/>
-      <end x="447.9300447889314" y="253.04754629786595"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_ef9f0d7e0253eed2b27f1d1ea51ff1e6;http://pathwaycommons.org/pc11/Catalysis_21ef0a0960297f1552e057e19255405b</pcIDs>
-    </arc>
-    <arc id="nwtE_c30419d0-5337-4a0c-a3b8-2a33b86194bc" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89">
-      <start x="322.6728035090293" y="254.34070400403377"/>
-      <end x="190.98485172983484" y="445.6821354068163"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_be77b3ae-1310-49e8-aa79-bf200928e172" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc">
-      <start x="357.80880627750497" y="233.30520773630565"/>
-      <end x="526.6322454853567" y="195.84288135822024"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_0bce1ca60d4340c728fee060c2078bcc;http://pathwaycommons.org/pc11/Catalysis_7e032e8c0617328a2b20deac190c8051;http://pathwaycommons.org/pc11/Catalysis_894386f5f2e119a0c248b4d9d4942e6e;http://identifiers.org/reactome/R-HSA-5260201</pcIDs>
-    </arc>
-    <arc id="nwtE_efe33372-f85d-499c-bd37-a46b6c66eb91" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_13b6ead6-085c-4348-8747-3b5214a20663">
-      <start x="357.80880627750497" y="245.21816724223845"/>
-      <end x="507.7323388289375" y="285.2009125380211"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_2d1a4fbe7743782424aa06b29b074ace;http://pathwaycommons.org/pc11/Catalysis_aaf0d998840b51b362d311e8f747bc4d</pcIDs>
-    </arc>
-    <arc id="nwtE_74719c4c-018c-4f4d-a0ad-9326712856b3" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_0e46e1be-6525-4885-92f7-649ec3969629">
-      <start x="334.4060564947057" y="254.34070400403377"/>
-      <end x="345.60756394606875" y="433.01375579481453"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_be7ee377e36509f4f6280eb02b91c446;http://pathwaycommons.org/pc11/BiochemicalReaction_64368929e3821d47b65cfaf52206c1f6;http://pathwaycommons.org/pc11/BiochemicalReaction_e7fc0bb908ae3535088670c95d56c75d;http://pathwaycommons.org/pc11/Catalysis_1bace8194b35b731e76fad088a4c08be</pcIDs>
-    </arc>
-    <arc id="nwtE_0b2af670-8da1-4a1c-af0a-51a855e79ce0" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134">
-      <start x="323.794001321162" y="223.09070400403377"/>
-      <end x="204.22830785947642" y="29.141293542437296"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_a1a7df46718fe4599c9ae885627a1be6;http://pathwaycommons.org/pc11/BiochemicalReaction_bbe4378f70a4fcb1852d3f4512c678b2</pcIDs>
-    </arc>
-    <arc id="nwtE_0c12c4a2-117f-484b-ad3f-636dd5792929" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156">
-      <start x="357.80880627750497" y="240.94157706110315"/>
-      <end x="535.4836090910558" y="257.1615876291963"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_b3a079c3-66f2-4804-af35-865075a5558d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b">
-      <start x="309.04415784000497" y="243.66520978990874"/>
-      <end x="109.02733358589472" y="284.2677553075652"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_4b0dd80e93d2fd91ba3ad4549e400d4d;http://pathwaycommons.org/pc11/ComplexAssembly_0723f2d7bbbfff1e088d5b30f381b880</pcIDs>
-    </arc>
-    <arc id="nwtE_c21cb0b2-4dba-4b1d-895e-4939c79c496e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57">
-      <start x="357.80880627750497" y="237.29370697583707"/>
-      <end x="574.4409839399059" y="224.65954174679703"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_12cfe2871c6825304a565b75ee664cdb;http://pathwaycommons.org/pc11/BiochemicalReaction_4a2d3d7d33a173c8a2f40e16818d883d;http://pathwaycommons.org/pc11/Catalysis_e6602ed8c5847e91b8715f25ffb175b4;http://pathwaycommons.org/pc11/Catalysis_32687e37c9087d3c45443d6134f06209;http://pathwaycommons.org/pc11/Catalysis_fa6516acdc5eb5b8570d13bc2d3c8eba;http://pathwaycommons.org/pc11/BiochemicalReaction_0ebe64155c7676f153e7e52315d6c2fd</pcIDs>
-    </arc>
-    <arc id="nwtE_3625ab78-698f-4e29-97ae-087f46c81651" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa">
-      <start x="336.7463146195601" y="254.34070400403377"/>
-      <end x="365.51088337390826" y="389.7229495103206"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_1d7f494f39b82000c5595b09b8839623;http://pathwaycommons.org/pc11/BiochemicalReaction_06fce1d554689cf681674636b667dacf</pcIDs>
-    </arc>
-    <arc id="nwtE_d137f8aa-1c1e-4fdf-8b5d-3e0fd1202bc6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_f2001d81-d468-46d4-97bc-1e169556ab67">
-      <start x="355.12722667657494" y="252.247685383231"/>
-      <end x="540.0703266323178" y="367.5730637924596"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_4a5985fa90c4ad1fc1a0ab92c92b7628;http://pathwaycommons.org/pc11/BiochemicalReaction_4a1f2cca414e509094c0fc6e22cfad7f</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_6b14f8c7-1132-4794-be8f-0f1b95365d45" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e">
-      <start x="308.86240892591576" y="199.18907867730456"/>
-      <end x="384.2675102443197" y="149.01496013911782"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-1358791;http://pathwaycommons.org/pc11/Catalysis_9d1367333f12c9bb1bc235f3a2bef721</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_320b34f3-7a07-4261-a9de-069e923eb429" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_e6d068f3-11b5-47de-908a-698b9350445e">
-      <start x="283.43726564430995" y="197.5964684437522"/>
-      <end x="256.70463514534345" y="101.27087323122294"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_ac4a813d0993e7ae89fee40a83b531dc;http://identifiers.org/reactome/R-HSA-8939963</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_45142fc2-94d3-44db-a949-a39d98541354" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_33e30131-1134-4c21-bb6b-f291db3662f5">
-      <start x="263.43201354665194" y="204.9085898347642"/>
-      <end x="250.1496603848378" y="200.37253735382458"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_db45bd25-41bc-46b4-9cbc-c98bc1ce7ff2" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_79b94284-5721-47dd-95b0-010780bf223a">
-      <start x="264.58981869024626" y="224.9688436687525"/>
-      <end x="175.90516423723827" y="269.90599729830365"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_8df20326-4537-4d2f-b6b0-2cc6a69b8de2" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_fb0dd167-ae70-4646-8066-8703df9102d0">
-      <start x="273.8439775233745" y="228.8464684437522"/>
-      <end x="174.9262363451861" y="339.80372843112076"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_758949dc7eadfb9fa9846628b26cb201;http://pathwaycommons.org/pc11/BiochemicalReaction_0c9484421ae2a3d7e3f8a94c8bf5fa8c</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_f284029d-6e35-48bf-9393-01098f937df3" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_e4ea6591-a256-496a-9653-448c9898697a">
-      <start x="289.3239179934824" y="228.8464684437522"/>
-      <end x="295.4138534629271" y="290.22327133643756"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/Catalysis_c7220a25af30b60caf2df13f091517ec;http://pathwaycommons.org/pc11/BiochemicalReaction_880328849b56fe8cd5ea37dda7877ed7;http://pathwaycommons.org/pc11/Catalysis_9958de1ce73dc7ea47053adb8682a4aa;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://identifiers.org/reactome/R-HSA-211164;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_25ed34ff-adbc-4adf-b5d7-a0a11a73117f" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388">
-      <start x="279.5512898804082" y="228.8464684437522"/>
-      <end x="231.78892651930053" y="319.61042659589634"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_84389e5b-91b5-4e31-9936-5b21657f1263" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3">
-      <start x="287.78789550968776" y="197.5964684437522"/>
-      <end x="287.8914264164303" y="84.65335921726037"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_cf35b60c-02a5-4aeb-a531-f469150e7c0c" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e">
-      <start x="263.5058575505773" y="204.36159225880897"/>
-      <end x="181.41629189108727" y="174.39159362484187"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399969;http://pathwaycommons.org/pc11/BiochemicalReaction_5bad31bd76c98776bfa26fb73bfdee66;http://pathwaycommons.org/pc11/Catalysis_2acf384fc7a782d072acb812e938fe29;http://pathwaycommons.org/pc11/Catalysis_6fc8fc1b5fa0b399b76a968d2cc1428f</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_379ca9fd-3c3c-488b-84ef-39f8c0944854" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583">
-      <start x="267.5147128604634" y="198.65016458764745"/>
-      <end x="142.60682548649413" y="108.80943309840492"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-200143;http://pathwaycommons.org/pc11/Catalysis_951bce0553481e377cc64cd73ef071ee;http://pathwaycommons.org/pc11/Catalysis_3aab9a2ac962d28569325065a8999f55;http://pathwaycommons.org/pc11/BiochemicalReaction_9ed7d05fd68b199bdc4f849ed4045982</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_b16cdd04-7338-42c1-b1df-1b0634cfff69" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8">
-      <start x="303.54224011392745" y="197.5964684437522"/>
-      <end x="341.50348970924017" y="159.9810817549056"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_7434292128490769dc537c0081366247;http://pathwaycommons.org/pc11/BiochemicalReaction_b873524d3ca75af970edee2b6a9677bc</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a9a6de3d-b3a0-4e97-b289-a115c3429049" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_eda59338-6749-4100-876d-da96cb840872">
-      <start x="263.39124841255295" y="218.28755096045614"/>
-      <end x="141.07135346336344" y="243.70279339951026"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/BiochemicalReaction_18f7cb879874fe945c2b0f01e492ed5c;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/BiochemicalReaction_880328849b56fe8cd5ea37dda7877ed7;http://pathwaycommons.org/pc11/Catalysis_9958de1ce73dc7ea47053adb8682a4aa;http://pathwaycommons.org/pc11/Catalysis_1f64411ffa48af0273b69431fa950733;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_353cf9a2-8f2a-4fa3-ba79-22c570ef7f99" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0">
-      <start x="263.39124841255295" y="212.5600634635572"/>
-      <end x="184.19549834651298" y="210.4117668928933"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-442724;http://pathwaycommons.org/pc11/Catalysis_60ac66c50ceb176c0e3e9f3dd3a9ccc4</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a0959a48-605e-45cf-847e-7606ff3b6283" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b">
-      <start x="305.66515952686115" y="228.68041375724658"/>
-      <end x="389.8327761051415" y="301.40412403773723"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_4ecb2a8a0d2930f426ccf4d5acd1340c;http://identifiers.org/reactome/R-HSA-2400001;http://pathwaycommons.org/pc11/Catalysis_43104b63c6667a5c13f5d2ed9a2cbe6c;http://pathwaycommons.org/pc11/Catalysis_e613bfda4e57ae4f7be88eabeb7a75bd;http://pathwaycommons.org/pc11/BiochemicalReaction_6237d747762b281e8b553176b5642a05;http://pathwaycommons.org/pc11/BiochemicalReaction_c2907f3e5a65ac2ba23bc290458be011;http://pathwaycommons.org/pc11/Catalysis_4513ca9e8c9f04134ed41ee90a658d5b;http://pathwaycommons.org/pc11/Catalysis_adee6b1bcdf00bd01e5e5528ed5d961b</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_343e3b98-ef56-4505-8596-33c56cc68e57" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375">
-      <start x="312.15589685005295" y="211.60409360863397"/>
-      <end x="333.42725928245534" y="210.19308102434596"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_7aa162c6-e45f-4c71-9750-5ea6fd138400" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179">
-      <start x="290.5256556783385" y="197.5964684437522"/>
-      <end x="301.7719618875187" y="133.7453667454498"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_e9cac9da00bb30b73d9ac201d37e5730;http://pathwaycommons.org/pc11/BiochemicalReaction_f46c6d453b72edcbbf3efead6e4c020b;http://pathwaycommons.org/pc11/Catalysis_f0ea1b1992c6ca98f7fd9f776fcb2ee4;http://pathwaycommons.org/pc11/Catalysis_49cb962eebf0fa5cbc6f138af9242d03;http://identifiers.org/reactome/R-HSA-2399941;http://pathwaycommons.org/pc11/Catalysis_e17985c2e2ac08322768da84ad36c00b;http://pathwaycommons.org/pc11/Catalysis_dd04f6a86dc401152d43bd66ef6dff79;http://pathwaycommons.org/pc11/BiochemicalReaction_fa98d7aad6b9ba72f0742f67492d6373;http://pathwaycommons.org/pc11/BiochemicalReaction_f1cadb2f5cef4e7c72c659bf1a559816;http://pathwaycommons.org/pc11/Catalysis_49b4914a7b79b57818a83bc150a06e8f;http://pathwaycommons.org/pc11/BiochemicalReaction_e0c93ec4924a5987061c2cd3043258e0;http://pathwaycommons.org/pc11/Catalysis_4909c3a1f53b2dacdbce97d244cd3891</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_526db763-306a-41c5-9a4e-5af5b78d6061" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_6002e583-b5d1-4754-98fd-677a195eeba0">
-      <start x="310.6315510586568" y="225.4592937907271"/>
-      <end x="454.5673135968177" y="302.5203833671238"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_50ce5f93-8167-4e08-8301-f8eed470d9fe" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861">
-      <start x="294.41383172580714" y="228.8464684437522"/>
-      <end x="327.4061112620649" y="306.47963914046244"/>
-      <pcIDs>http://pathwaycommons.org/pc11/ComplexAssembly_0af9138215e308aefb9a22a3bd28c2b0;http://pathwaycommons.org/pc11/Catalysis_85086155628b021c9136376edba0d655</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_454e685c-bd07-4925-a580-54c86b1df1ce" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0">
-      <start x="312.15589685005295" y="205.78988518568698"/>
-      <end x="391.36610041557515" y="181.64709972338906"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-6805785;http://pathwaycommons.org/pc11/Catalysis_9decd11e0684e33fb8b421219e2b7440</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_9678f3b6-110c-4ccd-86b4-5e02b9042fe3" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76">
-      <start x="312.15589685005295" y="208.16092497720908"/>
-      <end x="469.82457009463315" y="175.43684309280832"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_cbc6c56c-f90d-416d-9664-8f550e2ec6a3" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea">
-      <start x="283.0757033709243" y="228.8464684437522"/>
-      <end x="246.96464530124572" y="348.9509777576724"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_4c60671dbfe16ccd92a90b13550d0d83;http://pathwaycommons.org/pc11/BiochemicalReaction_e6aa5bf1cea3d130cb5653a674a4949d;http://pathwaycommons.org/pc11/BiochemicalReaction_f7539b7be918ec19fb71207366657207;http://pathwaycommons.org/pc11/BiochemicalReaction_57d82dedd5d5bb9f411833faf91f8700;http://pathwaycommons.org/pc11/Catalysis_58f19226a4fce5127a6688fe80741005;http://pathwaycommons.org/pc11/Catalysis_12ffeff6a795eccf56c6718b3a030ec3;http://pathwaycommons.org/pc11/BiochemicalReaction_51d576fc0aeab7ef79bddb27881c9741;http://pathwaycommons.org/pc11/Catalysis_2328a0471b4214e8436307db3a7ca4c8;http://pathwaycommons.org/pc11/Catalysis_3b30a974433a656ed4a7f7db0c774cdd</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_230285cc-dcfe-4126-808b-590ec62347fd" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d">
-      <start x="289.6383790399984" y="228.8464684437522"/>
-      <end x="307.21783757567295" y="376.14274452855375"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399969;http://pathwaycommons.org/pc11/BiochemicalReaction_1832cd9d657e0f5ae031895fe590af54;http://pathwaycommons.org/pc11/Catalysis_716a94084249e630b07e6a15ca1ccc99;http://pathwaycommons.org/pc11/Catalysis_2acf384fc7a782d072acb812e938fe29</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_9a260f03-fea2-44e5-9365-896a4d91249e" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a">
-      <start x="305.2925903318697" y="228.74790940833566"/>
-      <end x="352.7836356110245" y="270.83742170155665"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a13ce8d8-0245-4ad6-aa2d-2178dc18cbfd" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_ecb64a85-0f22-446d-977a-793100fcc67f">
-      <start x="273.25866255997283" y="197.5964684437522"/>
-      <end x="245.87572920188586" y="168.11930795033544"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_dffd5608-e9e6-4b99-bb4b-7c4d9e95f464" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0">
-      <start x="263.55988819133285" y="222.36827050538147"/>
-      <end x="253.65245684405642" y="226.1108365612572"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_d144efacca0f5f0d11aa71d6531a7461;http://pathwaycommons.org/pc11/Control_228e43b5b4d626cc6d50710433bb9978;http://pathwaycommons.org/pc11/BiochemicalReaction_d67e8be8ddf64444fc43c5384bbb79f8;http://pathwaycommons.org/pc11/Control_8a5d6a08e99e79ada938529e3b193734</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_e951889e-0b77-4074-b394-3c3650eda9b5" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5">
-      <start x="274.2148052175469" y="228.8464684437522"/>
-      <end x="209.9954233608408" y="302.85229883309887"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_055d621af314b709951a4acc2cd9455d;http://pathwaycommons.org/pc11/BiochemicalReaction_d144efacca0f5f0d11aa71d6531a7461;http://pathwaycommons.org/pc11/BiochemicalReaction_4924fd73d4d3a36676e0e2d5e7a64dc9;http://pathwaycommons.org/pc11/Catalysis_17708ff3ed6cc5ffecbffdacfeeedb7c;http://pathwaycommons.org/pc11/BiochemicalReaction_e8708f6f8d7ed34fccfb16b4875a8242;http://pathwaycommons.org/pc11/Control_8a5d6a08e99e79ada938529e3b193734</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_0ed75a60-23e1-47ac-a4a9-62ddf71274bb" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e">
-      <start x="277.3633825539777" y="228.8464684437522"/>
-      <end x="244.96186508739157" y="277.47898203427155"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_4b9ac2213a5df802ca75dfa6c98c8659;http://pathwaycommons.org/pc11/Catalysis_3bfc3fefed536d5ef7ca32902c7d4bbf</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_8a02bcfa-8cf0-4f64-b631-106057c3a879" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2">
-      <start x="286.6731065187934" y="228.8464684437522"/>
-      <end x="279.47433032787217" y="331.05850087666454"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_d144efacca0f5f0d11aa71d6531a7461;http://pathwaycommons.org/pc11/Control_228e43b5b4d626cc6d50710433bb9978;http://pathwaycommons.org/pc11/BiochemicalReaction_d67e8be8ddf64444fc43c5384bbb79f8;http://pathwaycommons.org/pc11/Control_8a5d6a08e99e79ada938529e3b193734</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_86d4a53b-4ca3-41d4-8779-0a0a1aac6e99" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288">
-      <start x="311.9672071191906" y="203.9806053497728"/>
-      <end x="440.81469635331564" y="154.76675082900496"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_ac4a813d0993e7ae89fee40a83b531dc;http://identifiers.org/reactome/R-HSA-8939963</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_c05ca5f5-bf67-44c6-82db-2152b8f0568a" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_29274293-a05a-44ad-9301-062b62c6770f">
-      <start x="296.3885910774464" y="197.5964684437522"/>
-      <end x="352.0981119524173" y="96.55649167375601"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_3547f382c177cfd897444c6f053c63bf;http://pathwaycommons.org/pc11/Catalysis_758949dc7eadfb9fa9846628b26cb201;http://pathwaycommons.org/pc11/BiochemicalReaction_9056dbaa957c07ac45eeb23894d64cf1;http://pathwaycommons.org/pc11/BiochemicalReaction_0c9484421ae2a3d7e3f8a94c8bf5fa8c</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a42a7990-e971-4bdd-9e8d-837a08a6f716" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_3476302c-8b05-49ed-a898-359f96f263e2">
-      <start x="298.3623340122638" y="228.8464684437522"/>
-      <end x="374.54831769985884" y="341.26811553640334"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-389756;http://pathwaycommons.org/pc11/Catalysis_22969c6067c8e7471b214fd9a2b49721</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_e531cd3e-97e3-4236-9aa4-1b0274de3747" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313">
-      <start x="295.3401948612789" y="197.5964684437522"/>
-      <end x="336.115336457925" y="113.39620469546944"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399988;http://pathwaycommons.org/pc11/Catalysis_9548dee1834d84f5e39a91e896151f27</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_61026302-c04f-457a-8367-46d280a64531" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f">
-      <start x="312.15589685005295" y="213.1784462290761"/>
-      <end x="445.928287990239" y="212.94240701978094"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_e8bed579-6799-4b2a-bd3f-7c68b452746f" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8">
-      <start x="282.8146881490114" y="228.8464684437522"/>
-      <end x="276.2381020605216" y="249.5687010344912"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_a05f0c2ed73217f92820dd0858f30aa1;http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7;http://pathwaycommons.org/pc11/BiochemicalReaction_4b899db29fcf4ef6b7518c36962b3945</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_5441ad35-8649-4a47-ab58-bb636d566245" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_27843559-e42b-4444-8105-900b5337eb38">
-      <start x="263.39124841255295" y="215.50563083181072"/>
-      <end x="115.49084860279868" y="229.3610995473186"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_587272f0-45fc-412f-8a56-3b86261b107f" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31">
-      <start x="275.882346054801" y="197.5964684437522"/>
-      <end x="220.30319348596416" y="124.56579719204528"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_eefda996c8198953e0c819ede70108ee;http://pathwaycommons.org/pc11/Control_7b6463310031b76464500fc727133cf0;http://pathwaycommons.org/pc11/Control_72dd952280f8df6a7b3e24e6d9346698</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_d35afc7f-3c9c-40ea-a340-f976183e9875" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f">
-      <start x="269.8159019668502" y="197.77637895623945"/>
-      <end x="205.8084069711956" y="142.72461269145617"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-8948757;http://pathwaycommons.org/pc11/Catalysis_cbfa01f3e9f956f9194299da726e527d</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_d1635e83-d4da-4cb9-8811-6a0a961a661f" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76">
-      <start x="311.3092659391437" y="224.33269654551592"/>
-      <end x="408.6556779115823" y="270.2900505170554"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_f7400aef073341f31cda2e49069f8d09;http://pathwaycommons.org/pc11/BiochemicalReaction_fce3ac57f4a4d81fa181fc08cb9865cd</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_ede6d772-0c87-45e7-9f9a-c9df8f9b0209" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90">
-      <start x="307.0684009065028" y="198.1856079018458"/>
-      <end x="425.8567403051436" y="105.61754356212266"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_9c3832902ae2d05141129b97c514f559;http://identifiers.org/reactome/R-HSA-2399966;http://pathwaycommons.org/pc11/Control_65c0e7188591e015cb22a2baf8836820;http://pathwaycommons.org/pc11/Catalysis_348fc252571d0778f5a22cde90bd96be</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_c4107484-9450-44bc-b270-52ffef622cc6" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46">
-      <start x="306.8141538092903" y="198.08804812918453"/>
-      <end x="403.7624246262616" y="121.03373359282307"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_4799517c-24de-46dc-9bf5-059d30b1b41f" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9">
-      <start x="277.94786161557045" y="197.5964684437522"/>
-      <end x="201.4057209257408" y="75.87795399083842"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_3ce1ac52f3dc24206cc77fac14150d80;http://pathwaycommons.org/pc11/Catalysis_89e4ac9ea712a2682b57cf9112c7f3ea;http://pathwaycommons.org/pc11/Control_a642b6ad202cd1906516d509a8ca1163;http://pathwaycommons.org/pc11/Catalysis_f27eca087c180f896698d37a5b0a9918;http://pathwaycommons.org/pc11/Control_79719e1dc2a21b762d3aaf013f93fd18;http://identifiers.org/reactome/R-HSA-2399985;http://pathwaycommons.org/pc11/BiochemicalReaction_de17e6c43061707d7a52532cc8ae1051</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a72dc42e-6c8c-407f-8434-e4f698d7c783" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5">
-      <start x="264.03264567500634" y="202.55740222026947"/>
-      <end x="140.80380219687524" y="147.20486481037506"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_fff2797339dce3a86fd8df096c9289cc;http://pathwaycommons.org/pc11/BiochemicalReaction_0c7d5414148d6d242a61586911ec29c7</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_ff96ba02-847e-4358-bacf-108bdb691147" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c">
-      <start x="312.15589685005295" y="210.3446152729789"/>
-      <end x="397.0924664547804" y="200.32300956428017"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-2399999;http://pathwaycommons.org/pc11/Catalysis_04be45b31bbab7663306b54e80f82235</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_f5d3941e-6c23-46f8-8d12-a22bfbc5950a" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_b4c406e0-6e02-4748-9415-74a102bb051d">
-      <start x="293.920167827827" y="228.8464684437522"/>
-      <end x="341.62065179353203" y="350.1038537333545"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_76f37dd25cd3688067745858b6f4a8e2;http://pathwaycommons.org/pc11/BiochemicalReaction_508f25c87f1f2c3c042adcb7882ed2ee;http://pathwaycommons.org/pc11/BiochemicalReaction_9a1a2e8f896fdcbac8142a6d42faceff;http://pathwaycommons.org/pc11/BiochemicalReaction_142452577e29b1b9bbbc83bf4b1f11c4;http://pathwaycommons.org/pc11/Catalysis_951f6726ecb1d55729982076501f5278;http://pathwaycommons.org/pc11/BiochemicalReaction_880328849b56fe8cd5ea37dda7877ed7;http://pathwaycommons.org/pc11/Catalysis_9958de1ce73dc7ea47053adb8682a4aa;http://pathwaycommons.org/pc11/BiochemicalReaction_c91e48b2a40c9bd5c56a0068e541a53b;http://pathwaycommons.org/pc11/Catalysis_b38372117b9517edb34094e25df3c123;http://pathwaycommons.org/pc11/Catalysis_2624e01065557afae676c51275a1654a;http://pathwaycommons.org/pc11/Catalysis_18b305cdbd04b5a1f39d0a2f1bb2e3e6;http://identifiers.org/reactome/R-HSA-2399992</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_bf6493ce-533d-4660-9f06-4c62f1ee3fa6" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c">
-      <start x="263.39124841255295" y="209.3784725509775"/>
-      <end x="138.5215735498902" y="189.69726237084623"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-8933446;http://pathwaycommons.org/pc11/Catalysis_fb6da143964687a5586e8a2815e9f642</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_709f1ff1-4d8f-4592-8afc-5537f5213f8a" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_61959681-c55b-43a4-acb3-49a426c60226">
-      <start x="312.15589685005295" y="214.41095376351595"/>
-      <end x="493.082293574193" y="223.23740078022894"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_56193d6d3400d430ea0ad3625debb906;http://pathwaycommons.org/pc11/BiochemicalReaction_9c3832902ae2d05141129b97c514f559;http://identifiers.org/reactome/R-HSA-2399966;http://pathwaycommons.org/pc11/Catalysis_73d7ebb8fea83e69f0f8abfa1c069da0;http://pathwaycommons.org/pc11/Catalysis_755a1bf600801035266b509d958b488b;http://pathwaycommons.org/pc11/BiochemicalReaction_b35e1fbbc7e671bd14a22c3a2849ca52;http://pathwaycommons.org/pc11/Control_65c0e7188591e015cb22a2baf8836820;http://pathwaycommons.org/pc11/Catalysis_348fc252571d0778f5a22cde90bd96be;http://pathwaycommons.org/pc11/Catalysis_306e7e42e299430514aaa720bd786dd1;http://pathwaycommons.org/pc11/BiochemicalReaction_d142274e7ec20cab1132b244e36fda3a;http://pathwaycommons.org/pc11/BiochemicalReaction_8ce70a5d3cac70cd0b4407e2f343c864;http://pathwaycommons.org/pc11/BiochemicalReaction_5e587671081f7e98b3422eed61c06c17</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_b060917f-aa69-4228-85d5-d70d93240e3e" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3">
-      <start x="263.39124841255295" y="216.4209884416695"/>
-      <end x="213.2192610899995" y="223.00470356798706"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a547e122-5075-4514-8a02-3c459a42a590" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161">
-      <start x="267.32670321855494" y="227.683029767726"/>
-      <end x="153.10453221682877" y="308.46952559524937"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_d2c09c33fcccbdb791c5033b870bfe2a;http://pathwaycommons.org/pc11/ComplexAssembly_0af9138215e308aefb9a22a3bd28c2b0;http://pathwaycommons.org/pc11/Catalysis_85086155628b021c9136376edba0d655;http://pathwaycommons.org/pc11/Catalysis_c3e773f7d54af8c06dc956bc0a6821b7;http://pathwaycommons.org/pc11/BiochemicalReaction_9dbc601d044f9417774a7abcbbba6f93;http://identifiers.org/reactome/R-HSA-2399982;http://pathwaycommons.org/pc11/Catalysis_4e10d5fb3b4068b451ea914e6130dcd3;http://pathwaycommons.org/pc11/Catalysis_484b6f5744330d5843cb2def74b40d81</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_cce49236-7120-4cd7-b5c3-0db5c082ea2b" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1">
-      <start x="307.2653403602998" y="228.17492403019156"/>
-      <end x="430.91753345434415" y="323.0368987523162"/>
-      <pcIDs>http://identifiers.org/reactome/R-HSA-8933446;http://pathwaycommons.org/pc11/Catalysis_fb6da143964687a5586e8a2815e9f642</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_a911f44c-50f5-43cc-a681-376c7f33c67f" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65">
-      <start x="277.15190185010965" y="228.8464684437522"/>
-      <end x="188.87193299826518" y="358.7106434615268"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_d0f563c37680b2e9e44d72fb4a746c4a;http://identifiers.org/reactome/R-HSA-6805620;http://identifiers.org/reactome/R-HSA-6805635;http://identifiers.org/reactome/R-HSA-6805640</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_205324fc-0429-427b-a086-2b340cbc81f9" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_f224e282-6541-41cc-ba14-1f0eae21b539">
-      <start x="293.1605121703615" y="197.5964684437522"/>
-      <end x="342.40274720883735" y="54.767703261314864"/>
-      <pcIDs>http://pathwaycommons.org/pc11/Catalysis_7434292128490769dc537c0081366247;http://identifiers.org/reactome/R-HSA-2399981;http://pathwaycommons.org/pc11/BiochemicalReaction_b873524d3ca75af970edee2b6a9677bc;http://pathwaycommons.org/pc11/Catalysis_296d30d2c7305bbcfd54abedcebd2cdb</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_3cacadcf-d9f6-4525-b3b2-a38865a7f056" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e">
-      <start x="264.7005243060967" y="225.14431027957136"/>
-      <end x="205.41422736483835" y="255.78010367362492"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_4ecb2a8a0d2930f426ccf4d5acd1340c;http://pathwaycommons.org/pc11/Catalysis_43104b63c6667a5c13f5d2ed9a2cbe6c;http://pathwaycommons.org/pc11/Catalysis_e613bfda4e57ae4f7be88eabeb7a75bd;http://pathwaycommons.org/pc11/BiochemicalReaction_6237d747762b281e8b553176b5642a05;http://pathwaycommons.org/pc11/BiochemicalReaction_c2907f3e5a65ac2ba23bc290458be011;http://pathwaycommons.org/pc11/Catalysis_4513ca9e8c9f04134ed41ee90a658d5b</pcIDs>
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_ab8db597-f375-4cd8-ae3e-720ea1c3dc23" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_a976e420-f59b-4ea7-baca-e6fcfd80412a" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_d86db3ed-b29e-4d8a-a62e-fefd37b6fc2e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_61881d0a-ad9f-44c3-ac83-bc2e7c48a872" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7d137071-5624-4e5e-9789-33e8984edce8">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_4523bf9d-87ec-42b8-b80e-2edf958df233" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_484d2f7d-fce0-4156-8753-4975a271ef34" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_352badad-530e-4be3-9b71-7d216aa413d5" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_4db90ffe-bcc6-4b67-9d70-d96088db3545" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_69e9af45-b676-402a-b887-1249507921ea" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_71718df2-ca0e-4861-855a-0dc5fd80de29" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_507e650e-1d62-4837-9016-726d6b40d73c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_93ba32c9-6f1e-4e3e-bb6e-20eff5da4d1b" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_38ed1d9e-aaa4-4766-afef-3d0eb38526b6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_523e0654-4015-4ada-889f-2535f286b3ac" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2124bfc2-6811-4d53-bb03-9068322acda5">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_655e7031-fabb-4dcc-a7b7-38ed0c4e077e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7b22972e-5466-49ff-8101-05c787e0074d">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_70439a93-26b4-4c9f-b8b2-0c87858f8440" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_b8e039a3-be27-4206-aa13-c96844a178d9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_1ac9cb0e-b6c1-411b-8835-5bc9b4ef49a6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_29e17591-5041-463d-98e2-f9a769a30a11">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_f0b25274-12c3-40d3-8235-a2ea49c0118c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_b098dd95-5911-4780-866f-08c730c91216" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d21e03d5-62d0-4d4f-9c47-95a2d2a0dd13">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_2c4cc48e-04ac-4667-9cb7-2a058e90eb39" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_3c3441d7-49e6-458d-b258-64b3985c2990">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_8f69e8aa-2bbe-45f0-83ca-de184428d569" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_cd2a025d-fbec-419e-9d4d-6fd22af38b91" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_d086ea11-b985-4138-9bdc-3f3139839c5d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_66fee535-1f81-49f4-875a-e64fadc840e0">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_00b27039-34ab-43d8-a700-499c9adf371e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_15a1ff0b-4977-4bd0-9e93-e40219a3e097" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_88aecf05-094d-4908-957e-9798b990369e">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_337c821f-0253-487f-a86d-16371d58fd84" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_e3a9b5cf-a489-41b9-a919-2f50f5ebfdb9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_26f30597-e9ad-4bfc-aff0-4c4c5d2fc568">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_8c29d9fd-f330-4d9c-b306-4e2d7d2a2cc9" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_9331d50b-4632-4bf9-ba32-e1140a73c55c" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_d848cd77-aa55-435d-b113-4dde391ead94" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_0ab34789-9acb-4c7c-890d-ccf3f183bd0d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_7eb95670-f05c-4bbb-ad83-c5ea63bb0cba">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_f2815a2d-4a25-4e5c-9daa-0e58d9d789b7" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_e24415c5-cad2-4293-ac09-6c179702db22">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_5ebf49e8-1eaa-4232-b5f0-1459331cdf05" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_d7edfc46-7440-448d-84c6-de1fba32dfe3" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_626a7bb2-d1d5-45a7-a433-5148916bcc5e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_326fd84b-9d5c-492c-9106-605e108b018f">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_c30419d0-5337-4a0c-a3b8-2a33b86194bc" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_be77b3ae-1310-49e8-aa79-bf200928e172" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_efe33372-f85d-499c-bd37-a46b6c66eb91" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_13b6ead6-085c-4348-8747-3b5214a20663">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_74719c4c-018c-4f4d-a0ad-9326712856b3" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_0e46e1be-6525-4885-92f7-649ec3969629">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_0b2af670-8da1-4a1c-af0a-51a855e79ce0" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_0c12c4a2-117f-484b-ad3f-636dd5792929" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_b3a079c3-66f2-4804-af35-865075a5558d" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_c21cb0b2-4dba-4b1d-895e-4939c79c496e" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_3625ab78-698f-4e29-97ae-087f46c81651" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa">
+      <start/>
+      <end/>
+    </arc>
+    <arc id="nwtE_d137f8aa-1c1e-4fdf-8b5d-3e0fd1202bc6" class="controls-state-change-of" source="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" target="nwtN_f2001d81-d468-46d4-97bc-1e169556ab67">
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_b88eadf6-d485-486c-aaa1-e3caae31b24e" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_6bb7350f-ca0d-466f-bd44-d7f5475e6afa">
-      <start x="264.14955318026557" y="202.29401656887666"/>
-      <end x="74.21855901059888" y="114.44013536809878"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_501578e5078cd05c2d52960f796b5748;http://pathwaycommons.org/pc11/Catalysis_0b521544aa8e0f53ca5d90aecbf6b940</pcIDs>
+      <start/>
+      <end/>
     </arc>
     <arc id="nwtE_c62106ac-a70f-4e6e-bf94-71e37e4b00c2" class="controls-state-change-of" source="nwtN_00b47f97-1563-4406-93fc-d13b72a36e80" target="nwtN_0b329cff-4297-48af-b42a-13a387a590b6">
-      <start x="271.49529441093097" y="197.5964684437522"/>
-      <end x="133.9348988441876" y="65.55663280312186"/>
-      <pcIDs>http://pathwaycommons.org/pc11/BiochemicalReaction_baca4ad787e64895fea87c95ca734ef3;http://pathwaycommons.org/pc11/Catalysis_e5fd5475c4eba411866f3e4f1960fd2b</pcIDs>
+      <start/>
+      <end/>
     </arc>
   </map>
 </sbgn>
