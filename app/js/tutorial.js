@@ -89,8 +89,8 @@ tutorial.UIGuide = function(){
       },
       {
         element: document.getElementsByClassName('inside-menu')[0],
-        intro: '<p style="font-size:12px; margin:0px;">This group is for file operations and map properties</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0px;"><b>- New File<br>- Load File<br>- Save File<br>- Map Properties</b></p>'
+        intro: '<p style="font-size:12px; margin:0px;">This group is for file operations</p><hr style="margin: 5px auto;">\n\
+                <p style="font-size:12px; margin:0px;"><b>- New File<br>- Load File<br>- Save File</b></p>'
       },
       {
         element: document.getElementsByClassName('inside-menu')[1],
@@ -103,13 +103,14 @@ tutorial.UIGuide = function(){
                 <p style="font-size:12px; margin:0px;">Remaining edit operations:<br>\n\
                 <b>- Delete Selected Simple</b><br>\n\
                 <b>- Delete Selected Smart: </b>Perform deletion on selected objects and associated neighbors, leaving the map intact w.r.t. the map type.<br>\n\
+                <b>- Validate Map: </b>Validate SBGN PD map and fix problems</p>\n\
                 <b>- Undo<br>- Redo</b></p>'             
       },
       {
         element: document.getElementsByClassName('inside-menu')[2],
         intro: '<p style="font-size:12px; margin:0px;">This group is for view operations</p><hr style="margin: 5px auto;">\n\
                 <p style="font-size:12px; margin:0px;"><b>- Hide Selected<br>- Show Selected<br>- Collapse Selected<br>- Expand Selected<br>\n\
-                - Align to First Selected<br>- Enable Grid<br>- Enable Guidelines</b></p>'
+                - Align to First Selected<br>- Enable Grid<br>- Enable Guidelines<br>- Map Properties</b></p>'
       },
       {
         element: document.getElementsByClassName('inside-menu')[3],
@@ -152,7 +153,9 @@ tutorial.UIGuide = function(){
                 <p style="font-size:12px; margin:0px;">  \n\
                 Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection (Select / Edit) mode. \n\
                 Clicking twice on a tool, on the other hand, puts you in sustained mode so that the user can create multiple objects of that type in a row.\n\
-                When in Select / Edit mode, nodes can also be created by simply clicking on a particular node/edge and dragging onto the canvas.</p>'
+                When in Select / Edit mode, nodes can also be created by simply clicking on a particular node/edge and dragging onto the canvas.</p><br >\n\
+                <p style="font-size:12px; margin:0px;">\n\
+                A Console tab is shown on demand for operations such as map validation.</p>'
       }
     ],
     showStepNumbers: false,
