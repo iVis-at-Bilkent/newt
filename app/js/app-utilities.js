@@ -2307,7 +2307,7 @@ appUtilities.getColorsFromElements = function (nodes, edges) {
   var colorID = 0;
 
   var nodePropNames = ['background-color', 'border-color'];
-  var edgePropNames = ['border-color'];
+  var edgePropNames = ['line-color'];
   var infoboxPropNames = ['background-color', 'border-color'];
   var infoboxGetFcn = function( infobox, propName ) {
     return infobox && infobox.style && infobox.style[ propName ];
