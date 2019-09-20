@@ -583,7 +583,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
 
-          addCollapsibleSection("biogene", "Properties from EntrezGene", true);
+          addCollapsibleSection("biogene", "Properties from MyCancerGenome", true);
           fillBioGeneContainer(selectedEles[0]);
       }
       if (geneClass === 'simple chemical')

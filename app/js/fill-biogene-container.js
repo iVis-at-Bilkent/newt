@@ -1,6 +1,6 @@
 var jquery = $ = require('jquery');
 var _ = require('underscore');
-var BioGeneView = require('./backbone-views').BioGeneView;
+//var BioGeneView = require('./backbone-views').BioGeneView;
 
 /*
  * Copyright 2013 Memorial-Sloan Kettering Cancer Center.
@@ -29,41 +29,46 @@ var fillBioGeneContainer = function (node) {
     return;
   }
 
-  var queryScriptURL = "http://www.pathwaycommons.org/biogene/retrieve.do";
+//  var queryScriptURL = "http://www.pathwaycommons.org/biogene/retrieve.do";
   var geneName = node.data('label');
 
-  // set the query parameters
-  var queryParams = {
-    query: geneName,
-    org: "human",
-    format: "json",
-  };
+//  // set the query parameters
+//  var queryParams = {
+//    query: geneName,
+//    org: "human",
+//    format: "json",
+//  };
+//
+//  $.ajax({
+//    type: 'get',
+//    url: "/utilities/testURL",
+//    data: {url: queryScriptURL, qs: queryParams},
+//    success: function(data){
+//      if (!data.error && data.response.statusCode == 200 && data.response.body && 
+//        queryParams.query != "" && typeof queryParams.query != 'undefined') {
+//        
+//        var json = JSON.parse(data.response.body);
+//        if(json.count > 0){
+//          new BioGeneView({
+//            el: '#biogene-container',
+//            model: json.geneInfo[0]
+//          }).render();
+//        }
+//      }
+//      else {
+//        $('#biogene-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
+//      }
+//    },
+//    error: function(xhr, options, err){
+//      $('#biogene-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + err + "</span>");
+//    }
+//  });
+//  $('#biogene-title').html("<b>" + node.data('label') + "</b>");
 
-  $.ajax({
-    type: 'get',
-    url: "/utilities/testURL",
-    data: {url: queryScriptURL, qs: queryParams},
-    success: function(data){
-      if (!data.error && data.response.statusCode == 200 && data.response.body && 
-        queryParams.query != "" && typeof queryParams.query != 'undefined') {
-        
-        var json = JSON.parse(data.response.body);
-        if(json.count > 0){
-          new BioGeneView({
-            el: '#biogene-container',
-            model: json.geneInfo[0]
-          }).render();
-        }
-      }
-      else {
-        $('#biogene-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");
-      }
-    },
-    error: function(xhr, options, err){
-      $('#biogene-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + err + "</span>");
-    }
-  });
-  $('#biogene-title').html("<b>" + node.data('label') + "</b>");
+  // since biogene service from PC is not available any more, we now give link to gene properties in My Cancer Genome organization
+  var geneLink = 'https://www.mycancergenome.org/content/gene/' + geneName;
+  $('#biogene-title').html('<button class="btn btn-default" style="align: center;" onclick="window.open(\'' + geneLink + '\', \'_blank\')">' + geneName + '</button>');
+
 };
 
 module.exports = fillBioGeneContainer;
