@@ -15,7 +15,6 @@
           <colorDefinition id="color_8" value="#ffffffff"/>
           <colorDefinition id="color_9" value="#e9affe7f"/>
           <colorDefinition id="color_10" value="#bbbbbb"/>
-          <colorDefinition id="color_11" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages/>
         <listOfStyles>
@@ -74,7 +73,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </extension>
     <glyph id="glyph1" class="compartment">
       <label text="cytosol"/>
-      <bbox x="169.375" y="173.45814255887922" w="850.4114203691795" h="608.9373569191597"/>
+      <bbox x="168.83333333333326" y="173.45814255887922" w="850.4114203691795" h="608.9373569191597"/>
     </glyph>
     <glyph id="glyph2" class="macromolecule" compartmentRef="glyph1">
       <label text="IGFR"/>
@@ -113,7 +112,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </glyph>
     <glyph id="glyph18" class="complex" compartmentRef="glyph1">
       <label text="SOS"/>
-      <bbox x="234.1666541344378" y="505.8236177701362" w="160.24139409278052" h="46.77370911391708"/>
+      <bbox x="234.1666541344378" y="506.91505516035926" w="160.24139409278052" h="46.77370911391708"/>
       <glyph id="glyph16" class="macromolecule">
         <label text="SOS"/>
         <bbox x="241.37278184735214" y="519.8357972129285" w="60" h="30"/>
@@ -319,11 +318,11 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </arc>
     <arc id="nwtE_46e7c3ff-9118-47db-b44a-4f0acd238bc7" class="production" source="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.2" target="glyph18">
       <start x="314.2873511808281" y="458.5448141513982"/>
-      <end x="314.28735118082807" y="492.6936177701362"/>
+      <end x="314.28735118082807" y="493.78505516035926"/>
     </arc>
     <arc id="nwtE_5e455f08-a22a-4e62-8b51-c16c1dfb3a32" class="stimulation" source="glyph18" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b">
-      <start x="313.8565740803006" y="562.6023268840532"/>
-      <end x="313.115181146916" y="620.0716885813731"/>
+      <start x="313.85181039912885" y="563.6937642742763"/>
+      <end x="313.11645478419774" y="620.0716943629899"/>
     </arc>
     <arc id="nwtE_9f555f8f-1b16-49c3-929e-6c515d18712f" class="consumption" source="glyph22" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.1">
       <start x="240.71144144676478" y="680.6724785550066"/>
@@ -382,7 +381,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <end x="762.2440678736467" y="569.1184136079155"/>
     </arc>
     <arc id="nwtE_13e70c5e-bf72-42c1-859f-6149e50cc84a" class="consumption" source="glyph37" target="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.1">
-      <start x="812.6936845183867" y="677.8573766260579"/>
+      <start x="806.8510665817881" y="677.8573766260579"/>
       <end x="861.2046883066769" y="677.8573766260579"/>
     </arc>
     <arc id="nwtE_4fb12a98-805d-4355-9bf6-e3029c4bec7d" class="consumption" source="glyph38" target="nwtN_82204400-82b3-4721-9984-827ed5853962.1">
@@ -394,7 +393,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <end x="379.99999999999994" y="260.07142857142856"/>
     </arc>
     <arc id="nwtE_834ec9e7-fd4e-4f27-96d6-d5e421c807eb" class="consumption" source="glyph39" target="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.1">
-      <start x="684.3200105193087" y="560.7517169700867"/>
+      <start x="678.543215855997" y="560.7517169700867"/>
       <end x="759.9547086187061" y="560.7517169700867"/>
     </arc>
     <arc id="nwtE_d7413b64-6af7-41eb-8446-e2dbbb807ed0" class="consumption" source="glyph14" target="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.1">

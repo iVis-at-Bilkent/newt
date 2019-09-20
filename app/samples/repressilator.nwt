@@ -11,7 +11,6 @@
           <colorDefinition id="color_4" value="#ff6666"/>
           <colorDefinition id="color_5" value="#66ffffff"/>
           <colorDefinition id="color_6" value="#66ccff"/>
-          <colorDefinition id="color_7" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages/>
         <listOfStyles>

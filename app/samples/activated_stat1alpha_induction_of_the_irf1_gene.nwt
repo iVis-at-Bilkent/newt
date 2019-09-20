@@ -9,7 +9,6 @@
           <colorDefinition id="color_2" value="#555555"/>
           <colorDefinition id="color_3" value="#ffffff"/>
           <colorDefinition id="color_4" value="#ffffff7f"/>
-          <colorDefinition id="color_5" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>

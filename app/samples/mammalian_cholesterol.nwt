@@ -15,7 +15,6 @@
           <colorDefinition id="color_8" value="#263d61"/>
           <colorDefinition id="color_9" value="#dae1e77f"/>
           <colorDefinition id="color_10" value="#7690a3"/>
-          <colorDefinition id="color_11" value="undefined"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb3_gradient.png"/>
