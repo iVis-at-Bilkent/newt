@@ -1353,9 +1353,10 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
           if(errors[currentPage].pattern == "pd10101") {
               html += "<p style=\"text-\align:center\" > To fix, reverse the consumption edge:</p>" ;
             }
-            else if(errors[currentPage].pattern == "pd10102") {
+          /*   else if(errors[currentPage].pattern == "pd10102") {
                      html +="<p style=\"text-align:center\" > To fix, reverse the consumption arc:</p>";
-            } else if(errors[currentPage].pattern == "pd10103") {
+            }  */
+            else if(errors[currentPage].pattern == "pd10103") {
                      html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each consumption arc:</p> ";       
             }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
                     var params = { handled: handled };
@@ -1439,7 +1440,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                var chiseInstance = appUtilities.getActiveChiseInstance();
                viewUtilitilesInstance.removeHighlights();
                var errorsNew = [];
-               if(errors[currentPage].pattern == "pd10101" || errors[currentPage].pattern == "pd10102") {
+               if(errors[currentPage].pattern == "pd10101") {
                 var targetTmp = eles.target(); 
                    if(chiseInstance.elementUtilities.isEPNClass(targetTmp)) {
                       errorFixParam.edge = eles;
