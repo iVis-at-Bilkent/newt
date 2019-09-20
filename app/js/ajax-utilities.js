@@ -101,7 +101,7 @@ exports.testURL = function (req, res) {
 		url: req.query.url,
 		method: 'GET',
 		qs: req.query.qs,
-		timeout: 5000
+		timeout: 30000
 	};
 	
 	request.get(options, function (error, response, body) {
