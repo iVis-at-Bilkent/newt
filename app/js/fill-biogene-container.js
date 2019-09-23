@@ -66,7 +66,9 @@ var fillBioGeneContainer = function (node) {
 //  $('#biogene-title').html("<b>" + node.data('label') + "</b>");
 
   // since biogene service from PC is not available any more, we now give link to gene properties in My Cancer Genome organization
-  var geneLink = 'https://www.mycancergenome.org/content/gene/' + geneName;
+  
+  var geneLink = 'https://www.genecards.org/cgi-bin/carddisp.pl?gene=' + encodeURI(geneName);
+
   $('#biogene-title').html('<button class="btn btn-default" style="align: center;" onclick="window.open(\'' + geneLink + '\', \'_blank\')">' + geneName + '</button>');
 
 };
