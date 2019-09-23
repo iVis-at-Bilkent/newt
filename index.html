@@ -1646,7 +1646,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Map properties" > Map Properties </span>
+                                    <span class="add-on layout-text" title="Save Map Properties preferences" > Map Properties </span>
                                 </td>
                                 <td>
                                     <input id="user-prefrences-map-check" type="checkbox" class="layout-text" checked>
@@ -1654,7 +1654,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Layout properties" > Grid Properties </span>
+                                    <span class="add-on layout-text" title="Save Layout Properties preferences" > Grid Properties </span>
                                 </td>
                                 <td>
                                     <input id="user-prefrences-grid-check" type="checkbox" class="layout-text" checked>
@@ -1662,7 +1662,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Layout properties" > Layout Properties </span>
+                                    <span class="add-on layout-text" title="Save Layout Properties preferences" > Layout Properties </span>
                                 </td>
                                 <td>
                                     <input id="user-prefrences-layout-check" type="checkbox" class="layout-text" checked>
@@ -1670,7 +1670,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Object properties" > Object Properties: </span>
+                                    <span class="add-on layout-text" title="Save Object Properties preferences" > Object Properties: </span>
                                 </td>
                                 <% if(stagedObjects.length <= 0) { %>
                                 <td>
@@ -1688,7 +1688,7 @@
                             <% stagedObjects.forEach(function(element) { %>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text save-load-prefrences-object-name" title="save <%= element %> properties"> <%= element %> </span>
+                                    <span class="add-on layout-text save-load-prefrences-object-name" title="Save <%= element %> properties preferences"> <%= element %> </span>
                                 </td>
                                 <td>
                                     <input id="user-prefrences-object-<%= element %>-check" type="checkbox" disabled="disabled" class="layout-text save-preferences-object-styles" checked>
@@ -1713,14 +1713,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Load Properties</h4>
+                        <h4 class="modal-title">Load Preferences</h4>
                     </div>
                     <div class="modal-body">
                     <table class="table-condensed layout-table dialog-table">
                         <tbody>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="load Map properties" > Map Properties </span>
+                                    <span class="add-on layout-text" title="Load Map Properties preferences" > Map Properties </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-map-check" type="checkbox" class="layout-text" <% if(typeof currentGeneralProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
@@ -1728,7 +1728,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Grid properties"> Grid Properties </span>
+                                    <span class="add-on layout-text" title="Load Grid Properties preferences"> Grid Properties </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-grid-check" type="checkbox" class="layout-text"  <% if(typeof currentGridProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
@@ -1736,7 +1736,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Layout properties"> Layout Properties </span>
+                                    <span class="add-on layout-text" title="Load Layout Properties preferences"> Layout Properties </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-layout-check" type="checkbox" class="layout-text"  <% if(typeof currentLayoutProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
@@ -1745,7 +1745,7 @@
 
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="save Object properties"> Object Properties: </span>
+                                    <span class="add-on layout-text" title="Load Object Properties preferences"> Object Properties: </span>
                                 </td>
                                 <% if(elementsStyles.length <= 0) { %>
                                 <td>
@@ -1760,7 +1760,7 @@
                         <% elementsStyles.forEach(function(element) { %>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text save-load-prefrences-object-name" title="load <%= element['element'] %> properties" > <%= (element['element']) %> </span>
+                                    <span class="add-on layout-text save-load-prefrences-object-name" title="Load <%= element['element'] %> properties preferences" > <%= (element['element']) %> </span>
                                 </td>
                                 <td>
                                     <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" disabled="disabled" class="layout-text load-preferences-object-styles" checked>
@@ -1776,7 +1776,7 @@
                     <tbody>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="apply changes to existing elements"> Apply to existing elements </span>
+                                    <span class="add-on layout-text" title="Apply changes to existing elements"> Apply to existing elements </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-apply-changes" type="checkbox" class="layout-text" checked >
