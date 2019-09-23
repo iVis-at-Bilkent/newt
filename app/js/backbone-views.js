@@ -2019,22 +2019,25 @@ var SaveUserPreferencesView = Backbone.View.extend({
       if(document.getElementById("user-prefrences-map-check").checked){
         preferences.currentGeneralProperties = {}
         var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-        delete currentGeneralProperties.mapName;
-        delete currentGeneralProperties.mapDescription;
+      
         Object.keys(currentGeneralProperties).forEach(function(key,index) {
           if(currentGeneralProperties[key] !== appUtilities.defaultGeneralProperties[key]){
             preferences.currentGeneralProperties[key] = currentGeneralProperties[key];
           }          
       });
+
+      delete preferences.currentGeneralProperties.mapName;
+      delete preferences.currentGeneralProperties.mapDescription;
        
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
         var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
-        delete currentLayoutProperties.animationEasing;
-        delete currentLayoutProperties.animationDuration;
-        delete currentLayoutProperties.name;  
+       
         preferences.currentLayoutProperties = currentLayoutProperties;
+        delete preferences.currentLayoutProperties.animationEasing;
+        delete preferences.currentLayoutProperties.animationDuration;
+        delete preferences.currentLayoutProperties.name;  
       }
 
       preferences.elementsStyles = [];
