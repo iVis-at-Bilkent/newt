@@ -1091,125 +1091,134 @@ inspectorUtilities.handleSBGNInspector = function () {
   }
 };
 inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params) {
-    if(errorCode == "pd10104")          
-        var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
-    else if(errorCode == "pd10108") 
-        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
-    else if(errorCode == "pd10111")
-        var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
-    else if(errorCode == "pd10126")
-        var connectedEdges = eles.connectedEdges().filter('[class="logic arc"]');
-    else if(errorCode == "pd10112"){
-        var compartments = cy.nodes('[class= "compartment"]');
-        var listedNodes = [];
-        for(var i =0;i<compartments.length;i++ ) {
-            if(compartments[i].parent().length ==0)
-                listedNodes.push(compartments[i]);
-        }
-    }
-    else {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        var sourcePosX = eles.source().position().x;
-        var targetPosX = eles.target().position().x;
-        var sourcePosY = eles.source().position().y;
-        var targetPosY = eles.target().position().y;
-        var minX = Math.min(sourcePosX,targetPosX)-150;
-        var maxX = Math.max(sourcePosX,targetPosX)+150;
-        var minY = Math.min(sourcePosY,targetPosY)-150;
-        var maxY = Math.max(sourcePosY,targetPosY)+150;
-        var nodes = cy.nodes();
-        var listedNodes = [];
-        var groupEPN = ["pd10109","pd10124","pd10127"];
-        var typeGroup = ["tag","submap","terminal"];
-        for(var i=0;i<nodes.length;i++) {
-            if(nodes[i].position().x >= minX && nodes[i].position().x<=maxX && nodes[i].position().y>=minY && nodes[i].position().y<=maxY)
-                    if(groupEPN.includes(errorCode) && chiseInstance.elementUtilities.isEPNClass(nodes[i]))
-                         listedNodes.push(nodes[i]);
-                    else if(errorCode == "pd10110" && chiseInstance.elementUtilities.isPNClass(nodes[i]))
-                         listedNodes.push(nodes[i]);
-                    else if(errorCode == "pd10125" && chiseInstance.elementUtilities.isLogicalOperator(nodes[i]))
-                         listedNodes.push(nodes[i]);  
-                   else if (errorCode == "pd10128" && typeGroup.includes(nodes[i].data().class))
-                          listedNodes.push(nodes[i]); 
-            }
-     }
-    var instance = cy.viewUtilities('get');
-    if(errorCode == "pd10104" || errorCode == "pd10108" || errorCode == "pd10111" || errorCode == "pd10126"){
-         for(var i=0; i<connectedEdges.length;i++) {
-            if(i==connectedEdges.length-1) {
-                var args = {eles: connectedEdges[i], option: "highlighted4"};
-                instance.highlight( args);
-            }
-            if(i==0){
-                 if(errorCode == "pd10104")
-                        html+="<p style=\"text-align:center\" > To fix, choose a consumption glyph connected to the dissociation glyph: </p>  " ;
-                 else if(errorCode == "pd10108")
-                     html+="<p style=\"text-align:center\" > To fix, choose a production glyph connected to the association glyph: </p> " ;
-                 else if(errorCode == "pd10111")
-                    html+="<p style=\"text-align:center\" > To fix, choose an arcs whose source is " + eles.data().class.toUpperCase() + ":</p>  " ;
-                else if(errorCode == "pd10126")
-                     html+="<p style=\"text-align:center\" > To fix, choose a logic arc connected to the logical operator: </p>  " ;
-                 html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
-             }
-            if(errorCode == "pd10104")
-               html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10104\" value=\""+ connectedEdges[i].source().data().label + "\" checked>" + connectedEdges[i].source().data().label + " to dissociation </label>";
-            else if(errorCode == "pd10111")
-               html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.toUpperCase()  + " to " + connectedEdges[i].target().data().class.charAt(0).toUpperCase() + connectedEdges[i].target().data().class.slice(1) + " </label>" ;
-            else if(errorCode == "pd10126")
-               html+="<label class=\"radio\"><input  type=\"radio\" name=\"optpd10126\" value=\""+ connectedEdges[i].id() + "\" checked>" + connectedEdges[i].source().data().label  + " to " + eles.data().class.toUpperCase() + " </label>" ;
-            else
-               html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> Association to " + connectedEdges[i].target().data().label + " </label>";
-        }
-        if(connectedEdges.length > 0) 
-            html+="</div>";
-        else
-            params.handled = false;
-      } else if (errorCode == "pd10142") {
-          html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
-          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
-          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
-          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
-        }else {
-          for(var i=0; i<listedNodes.length;i++) {
-            if(i==0){
-                    if(errorCode == "pd10109")
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class or a logical operator as a source reference to "+ eles.data().class +": </p>  " ;
-                     else if(errorCode == "pd10112")
-                        html+="<p style=\"text-align:center\" > To fix, choose a compartment to place top level glyph inside: </p>  " ;
-                      else if(errorCode == "pd10124")
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the logic arc: </p>  " ;
-                      else if(errorCode == "pd10125")
-                        html+="<p style=\"text-align:center\" > To fix, choose a logical operator as a target reference to the logic arc: </p>  " ;
-                    else if(errorCode == "pd10128")
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of tag, submap or terminal class as a target reference to the equivalence arc: </p>  " ;
-                     else if(errorCode == "pd10127")
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the equivalence arc: </p>  " ;
-                    else
-                        html+="<p style=\"text-align:center\" > To fix, choose a glyph of PN class as a target reference to the "+ eles.data().class +": </p> " ;
-                     html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
-
-             }
-            if(errorCode != "pd10112" ) {
-                if(i==listedNodes.length-1) {
-                    var args = {eles: listedNodes[i], option: "highlighted4"};
-                    instance.highlight( args);
-                }
-                if(errorCode == "pd10110" || errorCode == "pd10128")
-                    html+="<label  class=\"radio\">  <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label>"
-                else if(errorCode == "pd10125")
-                    html+="<label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.toUpperCase() + " </label>"
-                else
-                    html+="<label class=\"radio\"> <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label>"
-            }
-            else 
-                 html+="<label class=\"radio\"> <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label>"
-        }
-        if(listedNodes.length > 0) 
-            html+="</div>";
-        else
-            params.handled = false;
+  if(errorCode == "pd10104")          
+      var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
+  else if(errorCode == "pd10108") 
+      var connectedEdges = eles.connectedEdges().filter('[class="production"]');
+  else if(errorCode == "pd10111")
+      var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
+  else if(errorCode == "pd10126")
+      var connectedEdges = eles.connectedEdges().filter('[class="logic arc"]');
+  else if(errorCode == "pd10112"){
+      var compartments = cy.nodes('[class= "compartment"]');
+      var listedNodes = [];
+      for(var i =0;i<compartments.length;i++ ) {
+          if(compartments[i].parent().length ==0)
+              listedNodes.push(compartments[i]);
       }
-     return html;
+  }
+  else {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var sourcePosX = eles.source().position().x;
+      var targetPosX = eles.target().position().x;
+      var sourcePosY = eles.source().position().y;
+      var targetPosY = eles.target().position().y;
+      var minX = Math.min(sourcePosX,targetPosX)-150;
+      var maxX = Math.max(sourcePosX,targetPosX)+150;
+      var minY = Math.min(sourcePosY,targetPosY)-150;
+      var maxY = Math.max(sourcePosY,targetPosY)+150;
+      var nodes = cy.nodes();
+      var listedNodes = [];
+      var groupEPN = ["pd10109","pd10124"];
+      var typeGroup = ["tag","submap","terminal"];
+      for(var i=0;i<nodes.length;i++) {
+          if(nodes[i].position().x >= minX && nodes[i].position().x<=maxX && nodes[i].position().y>=minY && nodes[i].position().y<=maxY)
+                  if(groupEPN.includes(errorCode) && eles.target().data().id != nodes[i].data().id ){
+                   
+                    if(chiseInstance.elementUtilities.isEPNClass(nodes[i])){
+                      listedNodes.unshift(nodes[i]);
+                    }else if(chiseInstance.elementUtilities.isLogicalOperator(nodes[i])){
+                       listedNodes.push(nodes[i]);
+                    }                      
+                  }
+                       
+                  else if(errorCode == "pd10110" && chiseInstance.elementUtilities.isPNClass(nodes[i]))
+                       listedNodes.push(nodes[i]);
+                  else if(errorCode == "pd10125" && chiseInstance.elementUtilities.isLogicalOperator(nodes[i]))
+                       listedNodes.push(nodes[i]);  
+                 else if (errorCode == "pd10128" && typeGroup.includes(nodes[i].data().class))
+                        listedNodes.push(nodes[i]); 
+          }
+   }
+  var instance = cy.viewUtilities('get');
+  if(errorCode == "pd10104" || errorCode == "pd10108" || errorCode == "pd10111" || errorCode == "pd10126"){
+       for(var i=0; i<connectedEdges.length;i++) {
+          if(i==connectedEdges.length-1) {
+              var args = {eles: connectedEdges[i], option: "highlighted4"};
+              instance.highlight( args);
+          }
+          if(i==0){
+               if(errorCode == "pd10104")
+                      html+="<p style=\"text-align:center\" > To fix, choose a consumption glyph connected to the dissociation glyph: </p>  " ;
+               else if(errorCode == "pd10108")
+                   html+="<p style=\"text-align:center\" > To fix, choose a production glyph connected to the association glyph: </p> " ;
+               else if(errorCode == "pd10111")
+                  html+="<p style=\"text-align:center\" > To fix, choose an arcs whose source is " + eles.data().class.toUpperCase() + ":</p>  " ;
+              else if(errorCode == "pd10126")
+                   html+="<p style=\"text-align:center\" > To fix, choose a logic arc connected to the logical operator: </p>  " ;
+               html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
+           }
+          if(errorCode == "pd10104")
+             html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10104\" value=\""+ connectedEdges[i].source().data().label + "\" checked>" + connectedEdges[i].source().data().label + " to dissociation </label>";
+          else if(errorCode == "pd10111")
+             html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10111\" value=\""+ connectedEdges[i].target().id() + "\" checked>" + eles.data().class.toUpperCase()  + " to " + connectedEdges[i].target().data().class.charAt(0).toUpperCase() + connectedEdges[i].target().data().class.slice(1) + " </label>" ;
+          else if(errorCode == "pd10126")
+             html+="<label class=\"radio\"><input  type=\"radio\" name=\"optpd10126\" value=\""+ connectedEdges[i].id() + "\" checked>" + connectedEdges[i].source().data().label  + " to " + eles.data().class.toUpperCase() + " </label>" ;
+          else
+             html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10108\" value=\""+ connectedEdges[i].target().data().label + "\" checked> Association to " + connectedEdges[i].target().data().label + " </label>";
+      }
+      if(connectedEdges.length > 0) 
+          html+="</div>";
+      else
+          params.handled = false;
+    } else if (errorCode == "pd10142") {
+        html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
+        html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
+        html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
+        html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+      }else {
+        for(var i=0; i<listedNodes.length;i++) {
+          if(i==0){
+                  if(errorCode == "pd10109")
+                      html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class or a logical operator as a source reference to "+ eles.data().class +": </p>  " ;
+                   else if(errorCode == "pd10112")
+                      html+="<p style=\"text-align:center\" > To fix, choose a compartment to place top level glyph inside: </p>  " ;
+                    else if(errorCode == "pd10124")
+                      html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the logic arc: </p>  " ;
+                    else if(errorCode == "pd10125")
+                      html+="<p style=\"text-align:center\" > To fix, choose a logical operator as a target reference to the logic arc: </p>  " ;
+                  else if(errorCode == "pd10128")
+                      html+="<p style=\"text-align:center\" > To fix, choose a glyph of tag, submap or terminal class as a target reference to the equivalence arc: </p>  " ;
+                   else if(errorCode == "pd10127")
+                      html+="<p style=\"text-align:center\" > To fix, choose a glyph of EPN class as a source reference to the equivalence arc: </p>  " ;
+                  else
+                      html+="<p style=\"text-align:center\" > To fix, choose a glyph of PN class as a target reference to the "+ eles.data().class +": </p> " ;
+                   html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
+
+           }
+          if(errorCode != "pd10112" ) {
+              if(i==listedNodes.length-1) {
+                  var args = {eles: listedNodes[i], option: "highlighted4"};
+                  instance.highlight( args);
+              }
+              if(errorCode == "pd10110" || errorCode == "pd10128")
+                  html+="<label  class=\"radio\">  <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label>"
+              else if(errorCode == "pd10125")
+                  html+="<label class=\"radio\"><input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.toUpperCase() + " </label>"
+              else{
+                var radioText = chiseInstance.elementUtilities.isLogicalOperator(listedNodes[i])? listedNodes[i].data().class.toUpperCase() : listedNodes[i].data().label;
+                html+="<label class=\"radio\"> <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + radioText + " </label>"
+              }
+          }
+          else 
+               html+="<label class=\"radio\"> <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().label + " </label>"
+      }
+      if(listedNodes.length > 0) 
+          html+="</div>";
+      else
+          params.handled = false;
+    }
+   return html;
 }
 
 inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
