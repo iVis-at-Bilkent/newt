@@ -11,7 +11,7 @@
           <colorDefinition id="color_4" value="#555555"/>
           <colorDefinition id="color_5" value="#ffffff"/>
           <colorDefinition id="color_6" value="#000000"/>
-          <colorDefinition id="color_7" value="undefined"/>
+          <colorDefinition id="color_7" value="#ff0000"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb3_3d.png"/>
@@ -45,7 +45,7 @@
             <g stroke="color_4" stroke-width="1.25"/>
           </style>
           <style id="edgeff00001.25" id-list="nwtE_1fcb9fb6-ba5a-4ccf-bd50-155ce657fedb nwtE_8a9898a8-7aec-4d2a-be12-2050f58ccc80 nwtE_b9e23793-a56e-4277-b278-6724f6a4d68a nwtE_9f593961-7d71-49ac-8c9b-eb8e899665e4">
-            <g stroke-width="1.25"/>
+            <g stroke="color_7" stroke-width="1.25"/>
           </style>
           <style id="edge0000001.25" id-list="nwtE_68ee44c6-86ba-499b-a798-db1c00254138 nwtE_80c9d1c6-bab7-478d-b509-e6fe7b24b152">
             <g stroke="color_6" stroke-width="1.25"/>
