@@ -1172,10 +1172,15 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
       else
           params.handled = false;
     } else if (errorCode == "pd10142") {
-        html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
-        html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
-        html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
-        html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+        if((chiseInstance.elementUtilities.isPNClass(eles.target())  && chiseInstance.elementUtilities.isEPNClass(eles.source()))  || (chiseInstance.elementUtilities.isPNClass(eles.source())  && chiseInstance.elementUtilities.isEPNClass(eles.target()))){
+          html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
+          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+        }else{
+          params.handled = false;
+        }
+      
       }else {
         for(var i=0; i<listedNodes.length;i++) {
           if(i==0){
