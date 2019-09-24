@@ -1050,14 +1050,12 @@ module.exports = function() {
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
 
-      // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
-      // If it is 'during' use it as is
       var preferences = {
-        animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
+        animate: currentGeneralProperties.animateOnDrawingChanges ? true : false
       };
-      if (currentLayoutProperties.animate == 'during') {
-        delete preferences.animate;
-      }
+//      if (currentLayoutProperties.animate == 'during') {
+//        delete preferences.animate;
+//      }
       layoutPropertiesView.applyLayout(preferences);
     });
 
@@ -1074,10 +1072,15 @@ module.exports = function() {
         return;
       }
 
+      // get current layout properties for cy
+      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
 
       var preferences = {
+        quality: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? "draft" : "default",
+        animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentLayoutProperties.animate,
         randomize: true
       };
 

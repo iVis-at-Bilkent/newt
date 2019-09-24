@@ -301,7 +301,8 @@ module.exports = function (chiseInstance) {
                 var xml = $.parseXML(data.response.body);
                 appUtilities.createNewNetwork();
                 var activeChise = appUtilities.getActiveChiseInstance();
-                activeChise.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+                var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+                activeChise.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
               }
             },
             error: function(xhr, options, err){
@@ -687,7 +688,7 @@ module.exports = function (chiseInstance) {
         }
         var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
-      });
+    });
       cy.style().update();
     });
 
