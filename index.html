@@ -962,7 +962,7 @@
             </div>
             <div class="modal-body">
             <table class="table-condensed layout-table dialog-table">
-            <tbody>
+            <tbody>          
             <tr>
             <td>
             <span class="add-on layout-text" title="Node repulsion (non overlapping) multiplier"> Node Repulsion </span>
@@ -1070,15 +1070,15 @@
             <td>
             <input id="tile" type="checkbox" class="layout-text" <% if (tile){ %> checked<%}%>>
             </td>
-            </tr>
+            </tr>         
 
             <tr>
             <td>
-            <span class="add-on layout-text" title="Whether to perform animation during layout"> Animate </span>
+            <span class="add-on layout-text" title="Whether to perform animation after layout"> Animate </span>
             </td>
 
             <td>
-            <input id="animate" type="checkbox" class="layout-text" <% if (animate === 'during'){ %> checked<%}%>>
+            <input id="animate" type="checkbox" class="layout-text" <% if (animate){ %> checked<%}%>>
             </td>
             </tr>
             <tr>
