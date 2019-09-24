@@ -583,7 +583,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity') {
 
-          addCollapsibleSection("biogene", "Properties from MyCancerGenome", true);
+          addCollapsibleSection("biogene", "Properties from GeneCards", true);
           fillBioGeneContainer(selectedEles[0]);
       }
       if (geneClass === 'simple chemical')
@@ -1172,10 +1172,15 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
       else
           params.handled = false;
     } else if (errorCode == "pd10142") {
-        html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
-        html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
-        html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
-        html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+        if((chiseInstance.elementUtilities.isPNClass(eles.target())  && chiseInstance.elementUtilities.isEPNClass(eles.source()))  || (chiseInstance.elementUtilities.isPNClass(eles.source())  && chiseInstance.elementUtilities.isEPNClass(eles.target()))){
+          html+="<p style=\"text-align:center\" > To fix, choose correct arc type: </p> " ;
+          html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\" class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"consumption\"> consumption </label>";
+          html+="<label class=\"radio\"><input type=\"radio\" name=\"optpd10142\" value=\"production\" checked> production </label>";
+        }else{
+          params.handled = false;
+        }
+      
       }else {
         for(var i=0; i<listedNodes.length;i++) {
           if(i==0){
@@ -1339,6 +1344,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
         var radioButtonChangeEvent = ["pd10104","pd10108","pd10110","pd10111","pd10109","pd10124","pd10125","pd10126","pd10127","pd10128"];      
 
         var viewUtilitilesInstance = cy.viewUtilities('get');
+        var chiseInstance = appUtilities.getActiveChiseInstance();
         viewUtilitilesInstance.removeHighlights();
         if(errors.length !=0 && !notPD) {
             var id=errors[currentPage].role; 
@@ -1372,7 +1378,12 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                     html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,params);
                     handled = params.handled;
             }else if(errors[currentPage].pattern == "pd10105" || errors[currentPage].pattern == "pd10106") {
-                     html += "<p style=\"text-align:center\" > To fix, reverse the production arc:</p>";
+                if(chiseInstance.elementUtilities.isPNClass(eles.target()) && chiseInstance.elementUtilities.isEPNClass(eles.source())) {
+                  html += "<p style=\"text-align:center\" > To fix, reverse the production arc:</p>";
+                }else{
+                  handled = false;
+                }
+                    
             }
             else if(errors[currentPage].pattern == "pd10107") {
                      html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each production arc:</p>";
@@ -1573,7 +1584,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
              $("#sbgn-inspector-console-panel-group").html("");
              $('#inspector-console-tab')[0].style.display = "none";
 
-             var tabContents = document.getElementsByClassName('chise-tab');
+             var tabContents = document.getElementsByClassName('validation-mode-tab');
              for (var i = 0; i < tabContents.length; i++) {
                $(tabContents[i]).removeClass('active');
                $($(tabContents[i]).children('a')[0]).attr("data-toggle", "tab");   

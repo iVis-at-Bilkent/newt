@@ -397,8 +397,8 @@ appUtilities.createNewNetwork = function () {
     },
     // whether to improve flow (swap nodes)
     improveFlow: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
-      return currentGeneralProperties.improveFlow;
+      var currentLayoutProperties = appUtilities.getScratch(newInst.getCy(), 'currentLayoutProperties');
+      return currentLayoutProperties.improveFlow;
     },
     undoable: appUtilities.undoable,
     undoableDrag: function() {
@@ -681,18 +681,26 @@ appUtilities.getActiveNetworkPanel = function () {
 };
 
 appUtilities.defaultLayoutProperties = {
-  name: 'cose-bilkent',
+  name: 'fcose',
+  quality: "default",
+  samplingType: true,
+  sampleSize: 25,
+  nodeSeparation: 75,
+  piTol: 0.0000001,  
+  nodeDimensionsIncludeLabels: false,
   nodeRepulsion: 2000,
   idealEdgeLength: 30,
   edgeElasticity: 0.45,
   nestingFactor: 0.1,
   gravity: 0.25,
   numIter: 2500,
-  tile: true,
+  fit: true, 
+  padding: 10,
   animationEasing: 'cubic-bezier(0.17,0.72,0.41,0.98)',
   animate: 'end',
   animationDuration: 2000,
   randomize: false,
+  tile: true,  
   tilingPaddingVertical: 20,
   tilingPaddingHorizontal: 20,
   gravityRangeCompound: 1.5,
@@ -785,10 +793,9 @@ appUtilities.triggerLayout = function (_cy, randomize) {
   // access the current layout properties of cy
   var currentLayoutProperties = this.getScratch(cy, 'currentLayoutProperties');
 
-  // If 'animate-on-drawing-changes' is false then animate option must be 'end' instead of false
-  // If it is 'during' use it as is. Set 'randomize' and 'fit' options to false
+  // If 'animate-on-drawing-changes' is true then animate option must be true instead of false
   var preferences = {
-    animate: currentGeneralProperties.animateOnDrawingChanges ? 'end' : false
+    animate: currentGeneralProperties.animateOnDrawingChanges ? true : false
   };
 
   // if randomize parameter is defined set it as a preference
@@ -799,9 +806,9 @@ appUtilities.triggerLayout = function (_cy, randomize) {
     preferences.fit = randomize;
   }
 
-  if (currentLayoutProperties.animate === 'during') {
-    delete preferences.animate;
-  }
+//  if (currentLayoutProperties.animate === 'during') {
+//    delete preferences.animate;
+//  }
 
   // access chise instance related to cy
   var chiseInstance = appUtilities.getChiseInstance(cy);
@@ -2545,6 +2552,7 @@ appUtilities.launchWithModelFile = function() {
 
     var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
     var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+    var currentLayoutProperties = appUtilities.getScratch(cyInstance, 'currentLayoutProperties');
 
     $.ajax({
       type: 'get',
@@ -2556,7 +2564,7 @@ appUtilities.launchWithModelFile = function() {
           var xml = $.parseXML(data.response.body);
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
           currentGeneralProperties.inferNestingOnLoad = false;
-          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, true);
+          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
           currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
