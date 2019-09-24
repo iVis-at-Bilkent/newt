@@ -145,6 +145,9 @@ module.exports = function() {
     var topologyGrouping = chiseInstance.sifTopologyGrouping;
     topologyGrouping.clearAppliedFlag();
 
+    // unlock graph topology in case it is locked
+    chiseInstance.elementUtilities.unlockGraphTopology();
+
     // if the event is triggered for the active instance do the followings
     if ( isActiveInstance ) {
 
