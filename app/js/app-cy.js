@@ -1130,6 +1130,7 @@ module.exports = function (chiseInstance) {
         nodeLabelTextbox.val(sbgnlabel);
         nodeLabelTextbox.data('node', this);
         nodeLabelTextbox.focus();
+        nodeLabelTextbox.select();
       }
     });
 

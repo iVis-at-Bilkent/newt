@@ -680,7 +680,7 @@ hr.inspector-divider {
     position: absolute;
     top: 150px;
     left: 150px;
-    z-index: 100;
+    z-index: 1000;
     display: none;
     width: 100px;
     height: 30px;
