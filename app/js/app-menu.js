@@ -811,7 +811,7 @@ module.exports = function() {
       inspectorUtilities.handleSBGNConsole(errors,0,cy,file,false);
     }
     
-    var tabContents = document.getElementsByClassName('chise-tab');
+    var tabContents = document.getElementsByClassName('validation-mode-tab');
     for (var i = 0; i < tabContents.length; i++) {       
       $(tabContents[i]).removeClass('active');
       $($(tabContents[i]).children('a')[0]).removeAttr("data-toggle");

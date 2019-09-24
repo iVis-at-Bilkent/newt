@@ -1584,7 +1584,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
              $("#sbgn-inspector-console-panel-group").html("");
              $('#inspector-console-tab')[0].style.display = "none";
 
-             var tabContents = document.getElementsByClassName('chise-tab');
+             var tabContents = document.getElementsByClassName('validation-mode-tab');
              for (var i = 0; i < tabContents.length; i++) {
                $(tabContents[i]).removeClass('active');
                $($(tabContents[i]).children('a')[0]).attr("data-toggle", "tab");   
