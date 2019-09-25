@@ -682,7 +682,13 @@ module.exports = function (chiseInstance) {
      * (for instance: complexes)
      */
     cy.on("fit-units-after-expandcollapse", function(event) {
-      cy.nodes().forEach(function(ele){
+      var nodesToConsider = cy.nodes().filter(function(node){
+        var sbgnClass = node.data('class');
+        if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
+          return true;
+        }
+      });
+      nodesToConsider.forEach(function(ele){
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
@@ -787,6 +793,10 @@ module.exports = function (chiseInstance) {
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
       if (modeProperties.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
+
+        if(appUtilities.zoomShortcut){
+          return;
+        }
         appUtilities.enableDragAndDropMode(cy);
 
         appUtilities.setScratch(cy, 'mouseDownNode', self);
@@ -1203,7 +1213,13 @@ module.exports = function (chiseInstance) {
       {
         appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
       }
-      cy.nodes().forEach(function(ele){
+      var nodesToConsider = cy.nodes().filter(function(node){
+        var sbgnClass = node.data('class');
+        if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
+          return true;
+        }
+      });
+      nodesToConsider.forEach(function(ele){
         // skip nodes without any auxiliary units
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
@@ -1247,6 +1263,12 @@ module.exports = function (chiseInstance) {
       });
 
       node.style(opt);
+    });
+
+    cy.on('remove', 'node', function(event) {
+      if(cy.elements().length < 1){
+        chiseInstance.resetMapType();
+      }
     });
   }
 

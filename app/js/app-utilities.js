@@ -985,6 +985,7 @@ appUtilities.enableDragAndDropMode = function (_cy) {
 
   cy.autolock(true);
   cy.autounselectify(true);
+  cy.boxSelectionEnabled( false );
 };
 
 // Disable drag and drop mode
@@ -1000,6 +1001,7 @@ appUtilities.disableDragAndDropMode = function (_cy) {
 
   cy.autolock(false);
   cy.autounselectify(false);
+  cy.boxSelectionEnabled( true );
 };
 
 // Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
