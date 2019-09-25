@@ -397,8 +397,8 @@ appUtilities.createNewNetwork = function () {
     },
     // whether to improve flow (swap nodes)
     improveFlow: function () {
-      var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
-      return currentGeneralProperties.improveFlow;
+      var currentLayoutProperties = appUtilities.getScratch(newInst.getCy(), 'currentLayoutProperties');
+      return currentLayoutProperties.improveFlow;
     },
     undoable: appUtilities.undoable,
     undoableDrag: function() {

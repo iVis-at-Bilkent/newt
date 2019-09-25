@@ -256,8 +256,7 @@ var LayoutPropertiesView = Backbone.View.extend({
     // return cloned props to make them accessible
     return clonedProp;
   },
-  applyLayout: function (preferences, notUndoable, _chiseInstance) {
-
+  getLayoutOptions: function (preferences, _chiseInstance) {
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
@@ -285,6 +284,13 @@ var LayoutPropertiesView = Backbone.View.extend({
       return chiseInstance.calculatePaddings(horizontalPaddingPercent);
     };
 
+    return options;
+  },
+  applyLayout: function (preferences, notUndoable, _chiseInstance) {
+
+    // if chise instance param is not set use the recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+    var options = this.getLayoutOptions(preferences, _chiseInstance);
     chiseInstance.performLayout(options, notUndoable);
   },
   render: function () {
@@ -638,13 +644,26 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
       var actions = [];
 
       self.params.enableSIFTopologyGrouping.value = $('#enable-sif-topology-grouping').prop('checked');
       var apply = self.params.enableSIFTopologyGrouping.value;
 
       actions.push({name: "changeMenu", param: self.params.enableSIFTopologyGrouping});
-      actions.push({name: "applySIFTopologyGrouping", param: { apply }});
+      if ( chiseInstance.elementUtilities.mapType === 'SIF' ) {
+        actions.push({name: "applySIFTopologyGrouping", param: { apply }});
+
+        var preferences = { randomize: false };
+        var layoutOptions = appUtilities.layoutPropertiesView.getLayoutOptions(preferences, chiseInstance);
+
+        var layoutParam = {
+          options: layoutOptions
+        };
+
+        actions.push({name: "layout", param: layoutParam});
+      }
+
       cy.undoRedo().do("batch", actions);
       // cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
       $('#enable-sif-topology-grouping').blur();
