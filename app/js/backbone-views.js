@@ -656,7 +656,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       if ( chiseInstance.elementUtilities.mapType === 'SIF' ) {
         actions.push({name: "applySIFTopologyGrouping", param: { apply }});
 
-        if ( currentGeneralProperties.rearrangeOnComplexityManagement ) {
+        if ( currentGeneralProperties.recalculateLayoutOnComplexityManagement ) {
           var preferences = { randomize: false };
           var layoutOptions = appUtilities.layoutPropertiesView.getLayoutOptions(preferences, chiseInstance);
 
