@@ -787,6 +787,10 @@ module.exports = function (chiseInstance) {
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
       if (modeProperties.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
+
+        if(appUtilities.zoomShortcut){
+          return;
+        }
         appUtilities.enableDragAndDropMode(cy);
 
         appUtilities.setScratch(cy, 'mouseDownNode', self);
