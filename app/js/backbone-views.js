@@ -2063,10 +2063,13 @@ var SaveUserPreferencesView = Backbone.View.extend({
       if(document.getElementById("user-prefrences-layout-check").checked){
         var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
        
-        preferences.currentLayoutProperties = currentLayoutProperties;
-        delete preferences.currentLayoutProperties.animationEasing;
-        delete preferences.currentLayoutProperties.animationDuration;
-        delete preferences.currentLayoutProperties.name;  
+        Object.keys(currentLayoutProperties).forEach(function(key,index) {
+          if(currentLayoutProperties[key] !== appUtilities.defaultLayoutProperties[key]){
+            preferences.currentLayoutProperties[key] = currentLayoutProperties[key];
+          }          
+      });
+       
+   
       }
 
       preferences.elementsStyles = [];
