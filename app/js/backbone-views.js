@@ -2061,6 +2061,7 @@ var SaveUserPreferencesView = Backbone.View.extend({
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
+        preferences.currentLayoutProperties = {}
         var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
        
         Object.keys(currentLayoutProperties).forEach(function(key,index) {
