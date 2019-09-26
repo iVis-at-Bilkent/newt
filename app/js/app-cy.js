@@ -1265,11 +1265,13 @@ module.exports = function (chiseInstance) {
       node.style(opt);
     });
 
+    /* removed coz of  complications 
     cy.on('remove', 'node', function(event) {
       if(cy.elements().length < 1){
         chiseInstance.resetMapType();
       }
     });
+    */
   }
 
   function updateInfoBox(node) {
