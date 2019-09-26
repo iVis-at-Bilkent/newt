@@ -645,6 +645,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
       var chiseInstance = appUtilities.getActiveChiseInstance();
+      // get current general properties for cy
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
       var actions = [];
 
       self.params.enableSIFTopologyGrouping.value = $('#enable-sif-topology-grouping').prop('checked');
@@ -654,14 +656,16 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       if ( chiseInstance.elementUtilities.mapType === 'SIF' ) {
         actions.push({name: "applySIFTopologyGrouping", param: { apply }});
 
-        var preferences = { randomize: false };
-        var layoutOptions = appUtilities.layoutPropertiesView.getLayoutOptions(preferences, chiseInstance);
+        if ( currentGeneralProperties.recalculateLayoutOnComplexityManagement ) {
+          var preferences = { randomize: false };
+          var layoutOptions = appUtilities.layoutPropertiesView.getLayoutOptions(preferences, chiseInstance);
 
-        var layoutParam = {
-          options: layoutOptions
-        };
+          var layoutParam = {
+            options: layoutOptions
+          };
 
-        actions.push({name: "layout", param: layoutParam});
+          actions.push({name: "layout", param: layoutParam});
+        }
       }
 
       cy.undoRedo().do("batch", actions);
