@@ -88,9 +88,9 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
-          cy.undoRedo().do("deleteElesSimple", {
-            eles: event.target || event.cyTarget
-          });
+          let eles = event.target || event.cyTarget;
+          
+          chiseInstance.deleteElesSimple(eles);
           $('#inspector-palette-tab a').tab('show');
         }
       },
