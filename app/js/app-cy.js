@@ -154,20 +154,18 @@ module.exports = function (chiseInstance) {
         // If the selector is not truthy no elements will have this menu item on cxttap
         selector: 'node.cy-expand-collapse-collapsed-node',
         onClickFunction: function (event) { // The function to be executed on click
-          cy.undoRedo().do("expand", {
-            nodes: event.target || event.cyTarget
-          });
+          var node = event.target || event.cyTarget;
+          chiseInstance.expandNodes(node);
         }
       },
       {
         id: 'ctx-menu-collapse',
         content: 'Collapse',
         image: {src : "app/img/toolbar/collapse-selected.svg", width : 16, height : 16, x : 2, y : 3},
-        selector: 'node:parent[class!="topology group"]',
+        selector: 'node:parent',
         onClickFunction: function (event) {
-          cy.undoRedo().do("collapse", {
-            nodes: event.target || event.cyTarget
-          });
+          var node = event.target || event.cyTarget;
+          chiseInstance.collapseNodes(node);
         }
       },
       {
