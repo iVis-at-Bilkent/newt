@@ -91,7 +91,9 @@ module.exports = function (chiseInstance) {
           let eles = event.target || event.cyTarget;
           
           chiseInstance.deleteElesSimple(eles);
-          $('#inspector-palette-tab a').tab('show');
+          
+          if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
+            $('#inspector-palette-tab a').tab('show');
         }
       },
       {

@@ -727,9 +727,12 @@ module.exports = function() {
 
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
+      
+      var selectedNodeSize = cy.nodes(':selected').length;
 
       chiseInstance.deleteNodesSmart(cy.nodes(':selected'));
-      $('#inspector-palette-tab a').tab('show');
+      if(!chiseInstance.elementUtilities.isGraphTopologyLocked() && selectedNodeSize > 0)
+        $('#inspector-palette-tab a').tab('show');
     });
 
     $("#resize-nodes-to-content").click(function (e) {
@@ -848,7 +851,9 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.deleteElesSimple(cy.elements(':selected'));
-      $('#inspector-palette-tab a').tab('show');
+      
+      if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
+        $('#inspector-palette-tab a').tab('show');
     });
 
     $("#general-properties, #properties-icon").click(function (e) {
