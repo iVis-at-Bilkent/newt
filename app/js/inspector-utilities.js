@@ -971,7 +971,14 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-is-multimer').on('click', function () {
+
+
+        selectedEles.forEach(function(node){
+
+        });
+        
         chiseInstance.setMultimerStatus(selectedEles, $('#inspector-is-multimer').prop('checked'));
+
       });
 
       $('#inspector-is-clone-marker').on('click', function () {

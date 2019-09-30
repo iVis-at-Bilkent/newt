@@ -1992,10 +1992,10 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
   // no need to handle 3D and Gradient color schemes separately
   else {
 
-    var colorIDMap = appUtilities.mapEleClassToId(eles, mapColorSchemes['pure_white']['values']);
+    var colorIDMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
     var backgroundImgMap = appUtilities.mapEleClassToBackgroundImage(eles, mapColorSchemes[newColorScheme]['values'], scheme_type);
     var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
-    var collapsedColorIDMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes['pure_white']['values']);
+    var collapsedColorIDMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
     var collapsedBackgroundImgMap = appUtilities.mapEleClassToBackgroundImage(collapsedChildren, mapColorSchemes[newColorScheme]['values'], scheme_type);
     var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -2048,7 +2048,7 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       classBgImg = scheme_type == 'gradient' ? colorCodeToGradientImage[mapColorSchemes[newColorScheme]['values'][nodeClass]] : colorCodeTo3DImage[mapColorSchemes[newColorScheme]['values'][nodeClass]];
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
       if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
-        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: '#ffffff'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: 'cover'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: '50%'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: '50%'}});
