@@ -65,6 +65,8 @@ module.exports = function () {
     var cy = chiseInstance.getCy();
 
     chiseInstance.deleteElesSimple(cy.elements(':selected'));
+    
+    if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
     $('#inspector-palette-tab a').tab('show');
     // return false to prevent default browser behavior
     // and stop event from bubbling

@@ -88,10 +88,12 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
-          cy.undoRedo().do("deleteElesSimple", {
-            eles: event.target || event.cyTarget
-          });
-          $('#inspector-palette-tab a').tab('show');
+          let eles = event.target || event.cyTarget;
+          
+          chiseInstance.deleteElesSimple(eles);
+          
+          if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
+            $('#inspector-palette-tab a').tab('show');
         }
       },
       {
@@ -154,20 +156,18 @@ module.exports = function (chiseInstance) {
         // If the selector is not truthy no elements will have this menu item on cxttap
         selector: 'node.cy-expand-collapse-collapsed-node',
         onClickFunction: function (event) { // The function to be executed on click
-          cy.undoRedo().do("expand", {
-            nodes: event.target || event.cyTarget
-          });
+          var node = event.target || event.cyTarget;
+          chiseInstance.expandNodes(node);
         }
       },
       {
         id: 'ctx-menu-collapse',
         content: 'Collapse',
         image: {src : "app/img/toolbar/collapse-selected.svg", width : 16, height : 16, x : 2, y : 3},
-        selector: 'node:parent[class!="topology group"]',
+        selector: 'node:parent',
         onClickFunction: function (event) {
-          cy.undoRedo().do("collapse", {
-            nodes: event.target || event.cyTarget
-          });
+          var node = event.target || event.cyTarget;
+          chiseInstance.collapseNodes(node);
         }
       },
       {
