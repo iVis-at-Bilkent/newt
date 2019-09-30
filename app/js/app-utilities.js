@@ -758,7 +758,8 @@ appUtilities.defaultGeneralProperties = {
   mapColorSchemeStyle: 'solid',
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
-  mapDescription: ""
+  mapDescription: "",
+  enableSIFTopologyGrouping: false
 };
 
 appUtilities.setFileContent = function (fileName) {
