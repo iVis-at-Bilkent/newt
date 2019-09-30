@@ -2053,6 +2053,10 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: '50%'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: '50%'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: classBgImg}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-width', value: '100%'}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-height', value:'100%'}});
+
+
       }
     }
   }
