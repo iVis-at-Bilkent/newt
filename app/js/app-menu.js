@@ -353,7 +353,9 @@ module.exports = function() {
         reader.readAsText(file);
       }
     });
-
+    $("#import-SBML-file").click(function () {
+      $("#sbml-file").trigger('click');
+    });
     $("#import-simple-af-file").click(function () {
       $("#simple-af-file-input").trigger('click');
     });
@@ -370,6 +372,51 @@ module.exports = function() {
       $("#sif-layout-input").trigger('click');
     });
 
+    $("#sbml-file").change(function () {
+     
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var text = this.result;
+          var login = "login=anonymous&password=";
+          var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
+          var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBML:SBGN-ML";
+          var myToken = "MINERVA_AUTH_TOKEN=";
+          $.ajax({
+            type: 'get',
+            url: "/utilities/testURLPost",
+            data: { url: url1, data: login },
+            success: function (data) {
+              var cookieArray = data.response.split(';');
+              myToken += cookieArray[0].split('=')[1];
+
+              $.ajax({
+                type: 'post',
+                url: "/utilities/testURLPost2",
+                data: { url: url2, file: text, token: myToken },
+                success: function (data) {
+
+                  var chiseInstance = appUtilities.getActiveChiseInstance();
+                  var cy = appUtilities.getActiveCy();
+                  chiseInstance.endSpinner("load-spinner");
+                  if (cy.elements().length !== 0) {
+                    promptConfirmationView.render(function () {
+                      chiseInstance.loadSBGNMLText(data.response);
+                    });
+                  }
+                  else {
+                    chiseInstance.loadSBGNMLText(data.response);
+                  }}
+              })
+            }
+          })
+        };
+        reader.readAsText(file);
+        $(this).val("");
+      }
+    });
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
 

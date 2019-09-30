@@ -109,3 +109,35 @@ exports.testURL = function (req, res) {
 	});
 };
 
+exports.testURLPost = function (req, res) {
+	
+	var options = {  
+		url: req.query.url,
+		method: 'POST',
+		timeout: 30000,
+		json: req.query.data,
+	};
+	
+	request.post(options, function (error, response, body) {
+		res.send({error: error, response: response.headers["set-cookie"][1]});
+	});
+};
+exports.testURLPost2 = function (req, res) {
+
+	var headers = {
+		"Cookie" : req.body.token,
+		"Content-Type": "text/plain"
+	}
+	var options = {  
+		url: req.body.url,
+		method: 'POST',
+		qs: req.query.qs,
+		timeout: 30000,
+		body: req.body.file,
+		headers: headers
+	};
+	
+	request.post(options, function (error, response, body) {
+		res.send({error: error, response: response.body});
+	});
+};
