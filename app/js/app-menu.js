@@ -419,8 +419,8 @@ module.exports = function() {
            $.ajax({
             type: 'post',
             url: "/utilities/testURLPost",
-            headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            data: { url: url1, data: JSON.stringify(login) },
+          //  headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            data: { address: url1, param: JSON.stringify(login) },
             
             success: function (data) {
               var cookieArray = data.response.split(';');

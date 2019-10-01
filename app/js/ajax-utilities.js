@@ -115,10 +115,10 @@ exports.testURL = function (req, res) {
 exports.testURLPost = function (req, res) {
 	console.log("in test url post");
 	var options = {  
-		url: req.body.url,
+		url: req.body.address,
 		method: 'POST',
 		timeout: 30000,
-		json: req.body.data,
+		json: req.body.param,
 		contentType: "application/json"
 	};
 	
