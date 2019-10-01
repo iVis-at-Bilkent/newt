@@ -4,7 +4,7 @@ var fillBioGeneContainer = require('./fill-biogene-container');
 var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
 var modeHandler = require('./app-mode-handler');
-const AColorPicker = require('a-color-picker');
+const colorPickerUtils = require('./color-picker-utils');
 
 inspectorUtilities.updateInputBoxesFromSet = function( ele, fieldName, parentSelector, subId, width ) {
 
@@ -337,10 +337,10 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       html += `<tr><td style='width: ${width}px; text-align:right; padding-right: 5px;'> <font class='sbgn-label-font'>Border Color</font> </td><td style='padding-left: 5px;'>
       <input id='inspector-border-color' class='inspector-input-box' type='color' style='width: ${buttonwidth}px;' value='${borderColor}'/>
-      </td></tr> <tr><td colspan='2'><div id='border-color-picker' class='text-center' acp-color='${borderColor}' acp-show-hsl='no' acp-palette-editable></div></td></tr> `;
+      </td></tr>`;
       html += `<tr><td style='width: ${width} px; text-align:right; padding-right: 5px;'><font class='sbgn-label-font'>Fill Color</font></td><td style='padding-left: 5px;'>
       <input id='inspector-fill-color' class='inspector-input-box' type='color' style='width: ${buttonwidth}px;' value='${backgroundColor}'/>
-      </td></tr> <tr><td colspan='2'><div id='fill-color-picker' class='text-center' acp-color='${backgroundColor}' acp-show-hsl='no' acp-palette-editable></div> </td></tr>`;
+      </td></tr>`;
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Width</font>" + "</td><td style='padding-left: 5px;'>"
         + "<input id='inspector-border-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
@@ -564,8 +564,12 @@ inspectorUtilities.handleSBGNInspector = function () {
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
     $("#sbgn-inspector-style-properties-panel").html(html);
 
-    inspectorUtilities.generateColorPicker(chiseInstance, selectedEles, 'background-color', '#inspector-fill-color', '#fill-color-picker');
-    inspectorUtilities.generateColorPicker(chiseInstance, selectedEles, 'border-color', '#inspector-border-color', '#border-color-picker');
+    colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
+      chiseInstance.changeData(selectedEles, 'background-color', $('#inspector-fill-color').val());
+    });
+    colorPickerUtils.bindPicker2Input('#inspector-border-color', function() {
+      chiseInstance.changeData(selectedEles, 'border-color', $('#inspector-border-color').val());
+    });
 
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
@@ -1120,30 +1124,6 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
     }
   }
-};
-
-inspectorUtilities.generateColorPicker = function (chiseInstance, selectedEles, cssName, inputElemId, divElemId) {
-  // generate color picker
-  const picker = AColorPicker.from(divElemId, { palette: inspectorUtilities.pickedColors });
-  picker.on('change', function (_, color) {
-    $(inputElemId).val(AColorPicker.parseColor(color, 'hex'));
-  });
-  picker.on('coloradd', function (_, color) {
-    inspectorUtilities.pickedColors.push(AColorPicker.parseColor(color, 'hex'));
-  });
-  picker.on('colorremove', function (_, color) {
-    inspectorUtilities.pickedColors.pop(AColorPicker.parseColor(color, 'hex'));
-  });
-  // hide picker
-  $(divElemId).hide();
-  $(inputElemId).on('click', function (e) {
-    // do not open OS dependent color picker
-    e.preventDefault();
-    $(divElemId).toggle();
-    if (!$(divElemId).is(':visible')) {
-      chiseInstance.changeData(selectedEles, cssName, $(inputElemId).val());
-    }
-  });
 };
 
 inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params) {
@@ -1778,8 +1758,4 @@ inspectorUtilities.handleNavigate = function (cy,eles) {
                 });
      
 };
-
-inspectorUtilities.pickedColors = [];
-
-;
 module.exports = inspectorUtilities;
