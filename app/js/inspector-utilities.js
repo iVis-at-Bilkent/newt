@@ -570,6 +570,9 @@ inspectorUtilities.handleSBGNInspector = function () {
     colorPickerUtils.bindPicker2Input('#inspector-border-color', function() {
       chiseInstance.changeData(selectedEles, 'border-color', $('#inspector-border-color').val());
     });
+    colorPickerUtils.bindPicker2Input('#inspector-line-color', function() {
+      chiseInstance.changeData(selectedEles, "line-color", $("#inspector-line-color").val());
+    });
 
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
@@ -1099,10 +1102,6 @@ inspectorUtilities.handleSBGNInspector = function () {
           defaults['width'] = selectedEles.data('width');
           defaults['line-color'] = selectedEles.data('line-color');
         }
-      });
-
-      $("#inspector-line-color").on('change', function () {
-        chiseInstance.changeData(selectedEles, "line-color", $("#inspector-line-color").val());
       });
 
       $("#inspector-cardinality").change( function () {
