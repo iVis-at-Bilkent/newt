@@ -47,6 +47,7 @@ Icons made by [Freepik](http://www.freepik.com),
 
 Third-party libraries:
 [Cytoscape.js](https://github.com/cytoscape/cytoscape.js),
+[a-color-picker](https://www.npmjs.com/package/a-color-picker),
 [Backbone](https://github.com/jashkenas/backbone),
 [Bootstrap](https://github.com/twbs/bootstrap),
 [FileSaver.js](https://github.com/eligrey/FileSaver.js),
