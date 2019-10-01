@@ -20,7 +20,7 @@ function requestHandler(req, res){
 	var fn = req.params.fn || "";
 	if (typeof ajaxUtilities[fn] !== "function") {
 		// URL doesn't point to an actual function
-		res.sendStatus(400);
+		res.Status(400).send("error in server.js");
 	}
 	else{
 		try {

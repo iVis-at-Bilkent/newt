@@ -414,12 +414,13 @@ module.exports = function() {
           var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
           var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBML:SBGN-ML";
           var myToken = "MINERVA_AUTH_TOKEN=";
+         
           console.log("making a request");
-          $.ajax({
+           $.ajax({
             type: 'post',
             url: "/utilities/testURLPost",
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: { url: url1, data: login },
+            headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            data: { url: url1, data: JSON.stringify(login) },
             
             success: function (data) {
               var cookieArray = data.response.split(';');
@@ -428,7 +429,7 @@ module.exports = function() {
               $.ajax({
                 type: 'post',
                 url: "/utilities/testURLPost2",
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
                 data: { url: url2, file: text, token: myToken },
                 success: function (data) {
                   console.log("in converter with cookie", myToken, "data is", data);
@@ -450,6 +451,7 @@ module.exports = function() {
         reader.readAsText(file);
         $(this).val("");
       }
+     // });
     });
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
