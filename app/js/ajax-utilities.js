@@ -97,6 +97,7 @@ exports.validateSBGNML = function (req, res) {
  * by the application to other domains than the application's domain.
  */
 exports.testURL = function (req, res) {
+
 	var options = {  
 		url: req.query.url,
 		method: 'GET',
@@ -104,18 +105,20 @@ exports.testURL = function (req, res) {
 		timeout: 30000
 	};
 	
+
 	request.get(options, function (error, response, body) {
 		res.send({error: error, response: response});
 	});
+
 };
 
 exports.testURLPost = function (req, res) {
 	console.log("in test url post");
 	var options = {  
-		url: req.query.url,
+		url: req.body.url,
 		method: 'POST',
 		timeout: 30000,
-		json: req.query.data,
+		json: req.body.data,
 		contentType: "application/json"
 	};
 	
