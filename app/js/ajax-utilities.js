@@ -116,6 +116,7 @@ exports.testURLPost = function (req, res) {
 		method: 'POST',
 		timeout: 30000,
 		json: req.query.data,
+		contentType: "application/json"
 	};
 	
 	request.post(options, function (error, response, body) {

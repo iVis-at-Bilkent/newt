@@ -80,7 +80,37 @@ module.exports = function() {
           }
       })
   }
+/* function sbgnml2sbml(xml) {
 
+    var login = "login=anonymous&password=";
+    var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
+    var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBGN-ML:SBML";
+    var myToken = "MINERVA_AUTH_TOKEN=";
+    $.ajax({
+      type: 'get',
+      url: "/utilities/testURLPost",
+      data: { url: url1, data: login },
+      success: function (data) {
+        var cookieArray = data.response.split(';');
+        myToken += cookieArray[0].split('=')[1];
+
+        $.ajax({
+          type: 'post',
+          url: "/utilities/testURLPost2",
+          data: { url: url2, file: xml, token: myToken },
+          success: function (data) {
+            console.log("no success");
+          fileSaveView.render("sbml", null, data.response);
+        },
+        error: function (XMLHttpRequest) {
+            promptFileConversionErrorView.render();
+            if (XMLHttpRequest.status === 0) {
+                document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            }
+        }
+    })
+}
+    })}*/
   function loadSample(filename) {
 
     // use the active chise instance
@@ -387,17 +417,20 @@ module.exports = function() {
           $.ajax({
             type: 'get',
             url: "/utilities/testURLPost",
+            contentType: "application/json; charset=utf-8",
             data: { url: url1, data: login },
+            
             success: function (data) {
               var cookieArray = data.response.split(';');
               myToken += cookieArray[0].split('=')[1];
-
+              console.log("in take cookie", data);
               $.ajax({
                 type: 'post',
                 url: "/utilities/testURLPost2",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: { url: url2, file: text, token: myToken },
                 success: function (data) {
-
+                  console.log("in converter with cookie", myToken, "data is", data);
                   var chiseInstance = appUtilities.getActiveChiseInstance();
                   var cy = appUtilities.getActiveCy();
                   chiseInstance.endSpinner("load-spinner");
@@ -1246,6 +1279,18 @@ module.exports = function() {
     $("#export-as-sbgnml-plain-file").click(function (evt) {
       fileSaveView.render("sbgn", "plain");
     });
+  /* $("#export-as-sbml").click(function (evt) {
+    //fileSaveView.render("sbml", "plain");
+    var k;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    //console.log("chise is", chiseInstance);
+    var sbgnml2 = chiseInstance.jsonToSbgnml;
+    console.log("normal export");
+    //console.log(sbgnml2);
+      fileSaveView.render("sbml", "plain2");
+     // console.log(sbgnml);
+     // sbgnml2sbml(sbgnml);
+    });*/
 
     $("#add-complex-for-selected").click(function (e) {
 
