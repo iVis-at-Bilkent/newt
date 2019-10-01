@@ -6,6 +6,7 @@ var FileSaver = require('filesaverjs');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
+const colorPickerUtils = require('./color-picker-utils');
 //var annotationsHandler = require('./annotations-handler');
 
 // since biogene service from PC is not available any more, we now give link to gene properties in My Cancer Genome organization
@@ -2903,7 +2904,7 @@ var GridPropertiesView = Backbone.View.extend({
     self.template = _.template($("#grid-properties-template").html());
     self.template = self.template(currentGridProperties);
     $(self.el).html(self.template);
-
+    bindColorPicker2GridColorInputs();
     $(self.el).modal('show');
 
     // The following functions give Snap Policy row a radio button functionality
@@ -3002,6 +3003,7 @@ var GridPropertiesView = Backbone.View.extend({
       self.template = _.template($("#grid-properties-template").html());
       self.template = self.template(currentGridProperties);
       $(self.el).html(self.template);
+      bindColorPicker2GridColorInputs();
     });
 
     return this;
@@ -3264,7 +3266,7 @@ var FontPropertiesView = Backbone.View.extend({
     self.template = _.template($("#font-properties-template").html());
     self.template = self.template(self.currentFontProperties);
     $(self.el).html(self.template);
-
+    colorPickerUtils.bindPicker2Input('#' + generateInputId('font-color', self.selectorPrefix), null);
     $(self.el).modal('show');
 
     $(document).off("click", "#set-font-properties").on("click", "#set-font-properties", function (evt) {
@@ -3445,6 +3447,9 @@ var InfoboxPropertiesView = Backbone.View.extend({
     self.template = _.template($("#infobox-properties-template").html());
     self.template = self.template(self.currentProperties);
     $(self.el).html(self.template);
+    colorPickerUtils.bindPicker2Input('#infobox-properties-border-color', null);
+    colorPickerUtils.bindPicker2Input('#infobox-properties-background-color', null);
+    colorPickerUtils.bindPicker2Input('#' + generateInputId('font-color', self.selectorPrefix), null);
 
     $(self.el).modal('show');
 
@@ -3690,6 +3695,13 @@ var AnnotationElementView = Backbone.View.extend({
     }
   }
 });
+
+function bindColorPicker2GridColorInputs() {
+  const ids = ['#grid-color', '#init-Pos-Alignment-Color', '#geometric-guideline-color', '#horizontal-guideline-color', '#vertical-guideline-color'];
+  for (let i = 0; i < ids.length; i++) {
+    colorPickerUtils.bindPicker2Input(ids[i], null);
+  }
+}
 
 module.exports = {
 //  BioGeneView: BioGeneView,
