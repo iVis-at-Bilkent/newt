@@ -110,7 +110,7 @@ exports.testURL = function (req, res) {
 };
 
 exports.testURLPost = function (req, res) {
-	
+	console.log("in test url post");
 	var options = {  
 		url: req.query.url,
 		method: 'POST',
@@ -120,11 +120,12 @@ exports.testURLPost = function (req, res) {
 	};
 	
 	request.post(options, function (error, response, body) {
+		console.log("testurlpost sent");
 		res.send({error: error, response: response.headers["set-cookie"][1]});
 	});
 };
 exports.testURLPost2 = function (req, res) {
-
+	console.log("in test urlpost2");
 	var headers = {
 		"Cookie" : req.body.token,
 		"Content-Type": "text/plain"
@@ -139,6 +140,7 @@ exports.testURLPost2 = function (req, res) {
 	};
 	
 	request.post(options, function (error, response, body) {
+		console.log("testURLPOST 2 is sent");
 		res.send({error: error, response: response.body});
 	});
 };

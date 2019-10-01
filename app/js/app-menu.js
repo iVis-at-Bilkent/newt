@@ -414,6 +414,7 @@ module.exports = function() {
           var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
           var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBML:SBGN-ML";
           var myToken = "MINERVA_AUTH_TOKEN=";
+          console.log("making a request");
           $.ajax({
             type: 'get',
             url: "/utilities/testURLPost",
