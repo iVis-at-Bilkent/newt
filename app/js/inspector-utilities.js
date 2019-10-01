@@ -4,6 +4,7 @@ var fillBioGeneContainer = require('./fill-biogene-container');
 var fillChemicalContainer = require('./fill-chemical-container');
 var annotHandler = require('./annotations-handler');
 var modeHandler = require('./app-mode-handler');
+const colorPickerUtils = require('./color-picker-utils');
 
 inspectorUtilities.updateInputBoxesFromSet = function( ele, fieldName, parentSelector, subId, width ) {
 
@@ -334,24 +335,25 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
 
-      html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Color</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-border-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + borderColor
-              + "'/>" + "</td></tr>";
-      html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Color</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-fill-color' class='inspector-input-box' type='color' style='width: " + buttonwidth + "px;' value='" + backgroundColor
-              + "'/>" + "</td></tr>";
+      html += `<tr><td style='width: ${width}px; text-align:right; padding-right: 5px;'> <font class='sbgn-label-font'>Border Color</font> </td><td style='padding-left: 5px;'>
+      <input id='inspector-border-color' class='inspector-input-box' type='color' style='width: ${buttonwidth}px;' value='${borderColor}'/>
+      </td></tr>`;
+      html += `<tr><td style='width: ${width} px; text-align:right; padding-right: 5px;'><font class='sbgn-label-font'>Fill Color</font></td><td style='padding-left: 5px;'>
+      <input id='inspector-fill-color' class='inspector-input-box' type='color' style='width: ${buttonwidth}px;' value='${backgroundColor}'/>
+      </td></tr>`;
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Width</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-border-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
+        + "<input id='inspector-border-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
-      if(borderWidth){
+      if (borderWidth) {
         html += " value='" + parseFloat(borderWidth) + "'";
       }
 
       html += "/>" + "</td></tr>";
-
-      html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Fill Opacity</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-background-opacity' class='inspector-input-box' type='range' step='0.01' min='0' max='1' style='width: " + buttonwidth + "px;' value='" + parseFloat(backgroundOpacity)
-              + "'/>" + "</td></tr>";
+      const bgOpacity = parseFloat(backgroundOpacity);
+      html += `<tr><td style='width: ${width}px; text-align:right; padding-right: 5px;'> <font class='sbgn-label-font'>Fill Opacity</font> </td><td style='padding-left: 5px;'>
+      <input id='inspector-background-opacity' class='inspector-input-box' type='range' step='0.01' min='0' max='1' style='width: ${buttonwidth}px; display: inline;' value='${bgOpacity}'/>
+      <input id='inspector-background-opacity-val' class='inspector-input-box' type='number' value='${bgOpacity}' style="width: 50px; display: inline; margin-left: 5px;" />
+      </td></tr>`;
 
       if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Font</font>" + "</td><td style='padding-left: 5px;'>"
@@ -561,6 +563,13 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
     $("#sbgn-inspector-style-properties-panel").html(html);
+
+    colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
+      chiseInstance.changeData(selectedEles, 'background-color', $('#inspector-fill-color').val());
+    });
+    colorPickerUtils.bindPicker2Input('#inspector-border-color', function() {
+      chiseInstance.changeData(selectedEles, 'border-color', $('#inspector-border-color').val());
+    });
 
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
@@ -985,10 +994,6 @@ inspectorUtilities.handleSBGNInspector = function () {
         chiseInstance.setCloneMarkerStatus(selectedEles, $('#inspector-is-clone-marker').prop('checked'));
       });
 
-      $("#inspector-border-color").on('change', function () {
-        chiseInstance.changeData(selectedEles, "border-color", $("#inspector-border-color").val());
-      });
-
       $("#inspector-label").on('change', function () {
         var lines = $(this).val().trim();
         var current_label_data;
@@ -1019,13 +1024,36 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
       });
 
+      function callChise2ChangeBgOpacity(v) {
+        v = parseFloat(v);
+        if (v < 0) {
+          v = 0;
+        }
+        if (v > 1) {
+          v = 1;
+        }
+        chiseInstance.changeData(selectedEles, "background-opacity", v);
+        chiseInstance.changeData(selectedEles, "background-image-opacity", v);
+      }
+
       $("#inspector-background-opacity").on('change', function () {
-        chiseInstance.changeData(selectedEles, "background-opacity", $("#inspector-background-opacity").val());
-        chiseInstance.changeData(selectedEles, "background-image-opacity", $("#inspector-background-opacity").val());
+        const v = $("#inspector-background-opacity").val();
+        $('#inspector-background-opacity-val').val(v);
+        callChise2ChangeBgOpacity(v);
       });
 
-      $("#inspector-fill-color").on('change', function () {
-        chiseInstance.changeData(selectedEles, "background-color", $("#inspector-fill-color").val());
+      $('#inspector-background-opacity-val').keyup(function (e) {
+        if (e.keyCode == 13) {
+          const v = parseFloat($("#inspector-background-opacity-val").val());
+          if (v < 0) {
+            $("#inspector-background-opacity-val").val(0);
+          }
+          if (v > 1) {
+            $("#inspector-background-opacity-val").val(1);
+          }
+          $('#inspector-background-opacity').val(v);
+          callChise2ChangeBgOpacity(v);
+        }
       });
 
       $("#inspector-border-width").change( function () {
@@ -1097,6 +1125,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
   }
 };
+
 inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params) {
   if(errorCode == "pd10104")          
       var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
@@ -1729,5 +1758,4 @@ inspectorUtilities.handleNavigate = function (cy,eles) {
                 });
      
 };
-;
 module.exports = inspectorUtilities;
