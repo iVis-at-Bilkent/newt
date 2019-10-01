@@ -416,9 +416,9 @@ module.exports = function() {
           var myToken = "MINERVA_AUTH_TOKEN=";
           console.log("making a request");
           $.ajax({
-            type: 'get',
+            type: 'post',
             url: "/utilities/testURLPost",
-            contentType: "application/json; charset=utf-8",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             data: { url: url1, data: login },
             
             success: function (data) {
