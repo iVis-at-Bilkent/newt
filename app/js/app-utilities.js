@@ -695,7 +695,7 @@ appUtilities.defaultLayoutProperties = {
   gravity: 0.25,
   numIter: 2500,
   fit: true, 
-  padding: 10,
+  padding: 20,
   animationEasing: 'cubic-bezier(0.17,0.72,0.41,0.98)',
   animate: 'end',
   animationDuration: 2000,

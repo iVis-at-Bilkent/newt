@@ -446,6 +446,11 @@ module.exports = function (chiseInstance) {
       },
       neighborSelectTime: 500 //ms
     });
+    
+    cy.layoutUtilities({
+      componentSpacing: 30,
+      desiredAspectRatio: $(cy.container()).width() / $(cy.container()).height()
+    })
 
     cy.nodeResize({
       padding: 2, // spacing between node and grapples/rectangle
@@ -649,7 +654,7 @@ module.exports = function (chiseInstance) {
     });
 
     var panProps = {
-      fitPadding: 10,
+      fitPadding: 20,
       fitSelector: ':visible',
       animateOnFit: function () {
         var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
