@@ -112,8 +112,9 @@ exports.testURL = function (req, res) {
 
 };
 
-exports.testURLPost = function (req, res) {
-	console.log("in test url post");
+exports.ServerRequest = function (req, res) {
+	//request for taking authentication from minerva api
+	if(req.body.postType === "auth"){
 	var options = {  
 		url: req.body.address,
 		method: 'POST',
@@ -123,27 +124,27 @@ exports.testURLPost = function (req, res) {
 	};
 	
 	request.post(options, function (error, response, body) {
-		console.log("testurlpost sent");
-		res.send({error: error, response: response.headers["set-cookie"][1]});
+		res.send({error: error, response: response});
 	});
-};
-exports.testURLPost2 = function (req, res) {
-	console.log("in test urlpost2");
-	var headers = {
-		"Cookie" : req.body.token,
-		"Content-Type": "text/plain"
+	}else{
+		//request for sending the file to be changed
+		var headers = {
+			"Cookie" : req.body.token,
+			"Content-Type": "text/plain"
+		}
+		var options = {  
+			url: req.body.url,
+			method: 'POST',
+			qs: req.query.qs,
+			timeout: 30000,
+			body: req.body.file,
+			headers: headers
+		};
+		
+		request.post(options, function (error, response, body) {
+			res.send({error: error, response: response.body});
+		});
 	}
-	var options = {  
-		url: req.body.url,
-		method: 'POST',
-		qs: req.query.qs,
-		timeout: 30000,
-		body: req.body.file,
-		headers: headers
-	};
-	
-	request.post(options, function (error, response, body) {
-		console.log("testURLPOST 2 is sent");
-		res.send({error: error, response: response.body});
-	});
+
 };
+

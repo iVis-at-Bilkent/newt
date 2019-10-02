@@ -80,37 +80,88 @@ module.exports = function() {
           }
       })
   }
-/* function sbgnml2sbml(xml) {
+  function sbgnml2sbml(xml) {
 
     var login = "login=anonymous&password=";
     var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
     var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBGN-ML:SBML";
     var myToken = "MINERVA_AUTH_TOKEN=";
-    $.ajax({
-      type: 'get',
-      url: "/utilities/testURLPost",
-      data: { url: url1, data: login },
+   
+     $.ajax({
+      type: 'post',
+      url: "/utilities/ServerRequest",
+      data: { address: url1, param: JSON.stringify(login), postType: "auth" },
       success: function (data) {
-        var cookieArray = data.response.split(';');
+        taken = data.response.headers["set-cookie"][1];
+        var cookieArray = taken.split(';');
         myToken += cookieArray[0].split('=')[1];
 
         $.ajax({
           type: 'post',
-          url: "/utilities/testURLPost2",
-          data: { url: url2, file: xml, token: myToken },
+          url: "/utilities/ServerRequest",
+          headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+          data: { url: url2, file: xml, token: myToken, postType: "sendData" },
           success: function (data) {
-            console.log("no success");
+           
+            console.log(data.response);
           fileSaveView.render("sbml", null, data.response);
         },
         error: function (XMLHttpRequest) {
-            promptFileConversionErrorView.render();
-            if (XMLHttpRequest.status === 0) {
-                document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-            }
-        }
-    })
+          promptFileConversionErrorView.render();
+          if (XMLHttpRequest.status === 0) {
+              document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          }
+      }
+    })}})
 }
-    })}*/
+  //function to make minerva api request to convert sbgn2sbml
+  function sbgn2sbgnml(xml)
+  {
+    var login = "login=anonymous&password=";
+    var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
+    var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBML:SBGN-ML";
+    var myToken = "MINERVA_AUTH_TOKEN=";
+   
+     $.ajax({
+      type: 'post',
+      url: "/utilities/ServerRequest",
+      data: { address: url1, param: JSON.stringify(login), postType: "auth" },
+      success: function (data) {
+        taken = data.response.headers["set-cookie"][1];
+        var cookieArray = taken.split(';');
+        myToken += cookieArray[0].split('=')[1];
+        
+        $.ajax({
+          type: 'post',
+          url: "/utilities/ServerRequest",
+          headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+          data: { url: url2, file: xml, token: myToken, postType: "sendData" },
+          success: function (data) {
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = appUtilities.getActiveCy();
+            chiseInstance.endSpinner("load-spinner");
+            if (cy.elements().length !== 0) {
+              promptConfirmationView.render(function () {
+                chiseInstance.loadSBGNMLText(data.response);
+              });
+            }
+            else {
+              chiseInstance.loadSBGNMLText(data.response);
+            }
+          },
+            error:function (XMLHttpRequest) {
+              var chiseInstance = appUtilities.getActiveChiseInstance();
+              chiseInstance.endSpinner("load-spinner");
+              promptFileConversionErrorView.render();
+              if (XMLHttpRequest.status === 0) {
+                  document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+              }
+            }
+        })
+      }
+    })
+  }
+
   function loadSample(filename) {
 
     // use the active chise instance
@@ -410,48 +461,13 @@ module.exports = function() {
 
         reader.onload = function (e) {
           var text = this.result;
-          var login = "login=anonymous&password=";
-          var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
-          var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBML:SBGN-ML";
-          var myToken = "MINERVA_AUTH_TOKEN=";
-         
-          console.log("making a request");
-           $.ajax({
-            type: 'post',
-            url: "/utilities/testURLPost",
-          //  headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            data: { address: url1, param: JSON.stringify(login) },
-            
-            success: function (data) {
-              var cookieArray = data.response.split(';');
-              myToken += cookieArray[0].split('=')[1];
-              console.log("in take cookie", data);
-              $.ajax({
-                type: 'post',
-                url: "/utilities/testURLPost2",
-                headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-                data: { url: url2, file: text, token: myToken },
-                success: function (data) {
-                  console.log("in converter with cookie", myToken, "data is", data);
-                  var chiseInstance = appUtilities.getActiveChiseInstance();
-                  var cy = appUtilities.getActiveCy();
-                  chiseInstance.endSpinner("load-spinner");
-                  if (cy.elements().length !== 0) {
-                    promptConfirmationView.render(function () {
-                      chiseInstance.loadSBGNMLText(data.response);
-                    });
-                  }
-                  else {
-                    chiseInstance.loadSBGNMLText(data.response);
-                  }}
-              })
-            }
-          })
-        };
+          chiseInstance = appUtilities.getActiveChiseInstance();
+          chiseInstance.startSpinner("load-spinner");
+          sbgn2sbgnml(e.target.result);
+        }
         reader.readAsText(file);
         $(this).val("");
       }
-     // });
     });
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1282,19 +1298,12 @@ module.exports = function() {
     $("#export-as-sbgnml-plain-file").click(function (evt) {
       fileSaveView.render("sbgn", "plain");
     });
-  /* $("#export-as-sbml").click(function (evt) {
-    //fileSaveView.render("sbml", "plain");
-    var k;
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    //console.log("chise is", chiseInstance);
-    var sbgnml2 = chiseInstance.jsonToSbgnml;
-    console.log("normal export");
-    //console.log(sbgnml2);
-      fileSaveView.render("sbml", "plain2");
-     // console.log(sbgnml);
-     // sbgnml2sbml(sbgnml);
-    });*/
 
+   $("#export-as-sbml").click(function (evt) {
+     var chiseInstance = appUtilities.getActiveChiseInstance();
+     var sbgnml = chiseInstance.convertSbgn();
+     sbgnml2sbml(sbgnml);
+    });
     $("#add-complex-for-selected").click(function (e) {
 
       // use active chise instance

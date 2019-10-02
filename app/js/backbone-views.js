@@ -1890,6 +1890,9 @@ var FileSaveView = Backbone.View.extend({
       case 'sbgn':
         fExt = 'sbgn'
         break;
+      case 'sbml':
+        fExt = 'sbml'
+        break;
       case 'celldesigner':
       default:
         fExt = 'xml'
@@ -1969,6 +1972,13 @@ var FileSaveView = Backbone.View.extend({
             type: "text/plain;charset=utf-8;",
         });
         FileSaver.saveAs(blob, filename);
+      }
+      else if(fileformat === "sbml")
+      {
+        var blob = new Blob([text], {
+          type: "text/plain;charset=utf-8;",
+      });
+      FileSaver.saveAs(blob, filename);
       }
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);

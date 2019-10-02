@@ -16,11 +16,12 @@ var ajaxUtilities = require('./app/js/ajax-utilities');
  * located in ajax-utilities. The desired function is passed in the URL.
  */
 function requestHandler(req, res){
+	
 	// :fn holds the name of the function to call in ajax-utilities.js
 	var fn = req.params.fn || "";
 	if (typeof ajaxUtilities[fn] !== "function") {
 		// URL doesn't point to an actual function
-		res.Status(400).send("error in server.js");
+		res.sendStatus(400);
 	}
 	else{
 		try {
