@@ -2854,11 +2854,12 @@ var ReactionTemplateView = Backbone.View.extend({
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
+      var layoutParam = {name: "fcose"};
       if(templateType == "reversible"){
         nodeList = params.reversibleInputNodeList;
         complexName = params.reversibleOutputNodeList;
       }
-      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined, layoutParam);
 
       //Update arrow-scale of newly added edges (newly added elements are selected so we just update selected edges)
       var currentArrowScale = Number($('#arrow-scale').val());
