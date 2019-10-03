@@ -324,6 +324,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
       currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
       currentLayoutProperties.tile = document.getElementById("tile").checked;
+      currentLayoutProperties.packComponents = document.getElementById("pack-components").checked ? true : false;
       currentLayoutProperties.animate = document.getElementById("animate").checked ? true : false;
       currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
       currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);

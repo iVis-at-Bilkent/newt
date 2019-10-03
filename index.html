@@ -96,16 +96,16 @@
                                                     <ul class="dropdown-menu">
                                                         <input id="simple-af-file-input" type="file" style="display:none" />
                                                         <input id="sif-file-input" type="file" style="display:none" />
-                                                        <input id="celldesigner-file-input" type="file" style="display:none" />
                                                         <input id="sif-style-input" type="file" style="display:none" />
                                                         <input id="sif-layout-input" type="file" style="display:none" />
                                                         <input id="sbml-file" type="file" style="display:none" />
-                                                        <li><a href="#" id="import-SBML-file">SBML</a></li>
-                                                        <li><a href="#" id="import-celldesigner-file">CellDesigner</a></li>
+                                                        <input id="celldesigner-file-input" type="file" style="display:none" />
                                                         <li><a href="#" id="import-simple-af-file">Simple AF</a></li>
                                                         <li><a href="#" id="import-sif-file">SIF</a></li>
                                                         <li><a href="#" id="import-sif-style">SIF Style</a></li>
                                                         <li><a href="#" id="import-sif-layout">SIF Layout</a></li>
+                                                        <li><a href="#" id="import-SBML-file">SBML</a></li>
+                                                        <li><a href="#" id="import-celldesigner-file">CellDesigner</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="dropdown-submenu">
@@ -115,11 +115,11 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
-                                                        <li><a href="#" id="export-as-sbml">SBML</a></li>
                                                         <li><a href="#" id="export-as-nwt3-file">NWT 0.3</a></li>
-                                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner</a></li>
                                                         <li><a href="#" id="export-to-plain-sif">SIF</a></li>
                                                         <li><a href="#" id="export-to-sif-layout">SIF Layout</a></li>
+                                                        <li><a href="#" id="export-as-sbml">SBML</a></li>
+                                                        <li><a href="#" id="export-as-celldesigner-file">CellDesigner</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="dropdown-submenu">
@@ -1081,7 +1081,17 @@
             <td>
             <input id="tile" type="checkbox" class="layout-text" <% if (tile){ %> checked<%}%>>
             </td>
-            </tr>         
+            </tr>
+            
+            <tr>
+              <td>
+                <span class="add-on layout-text" title="Whether to pack components"> Pack Components </span>
+              </td>
+  
+              <td>
+                <input id="pack-components" type="checkbox" class="layout-text" <% if (packComponents){ %> checked<%}%>>
+              </td>
+            </tr>
 
             <tr>
             <td>
@@ -2471,8 +2481,8 @@
         </script>
 
         <script type="text/template" id="infobox-properties-template">
-            <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content" style="width:360px!important">
+            <div class="modal-dialog modal-sm sbgn-modal-dialog" style="width:360px!important">
+            <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Infobox Properties</h4>
