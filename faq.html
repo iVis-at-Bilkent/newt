@@ -31,28 +31,34 @@
             A: Newt is an open source <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">project</a>, distributed under <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License.</a></p>
 
 	  <p> <b>Q: Is there anything I need to install to start using Newt?</b><br>
-            A: No, Newt is web based and is expected to work on most major browsers with recent releases without any prior installation or set up.</p>
+            A: No, Newt is web based and is expected to work on most major browsers with recent releases without any prior installation or set up. If you'd like to <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt/blob/master/README.md#Running%20a%20:Local%20Instance">run/deploy it locally</a> rather than using the sample deployment however, some services need to be started.</p>
 
 	  <p> <b>Q: What is the best way to get started with Newt?</b><br>
             A: First, read the <a href="tutorials.html">tutorials page</a> and watch the associated videos.</p>
 
 	  <p> <b>Q: What notation is used in Newt to draw biological maps?</b><br>
-            A: Newt supports <a target="_blank" href="http://sbgn.github.io/sbgn/">SBGN</a> Process Description (PD) and Activity Flow (AF) maps. Users are allowed mix up notation from these two languages at the cost of disabled validation checks during creation.</p>
+            A: Newt supports <a target="_blank" href="http://sbgn.github.io/sbgn/">SBGN</a> Process Description (PD) and Activity Flow (AF) maps. Users are allowed mix up notation from these two languages at the cost of disabled validation checks during creation. In addition, we now support <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">SIF</a> for those preferring a simplified notation. </p>
 
 	  <p> <b>Q: What format does Newt use to save maps?</b><br>
-            A: Newt can read <a target="_blank" href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Models constructed with Newt can be saved in rich SBGNML, with extensions for style and annotations ("File | Save..."), or in plain SBGNML ("Export | SBGN-ML Plain"). In addition, the user can import AF models from simple, tab-delimited text files. We also support importing from and exporting to <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> file format. Maps can also be exported as static (raster or vector) images. </p>
+            A: Newt can read <a target="_blank" href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> and <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">SIF</a> files. Models constructed with Newt can be saved in rich SBGNML, with extensions for style and annotations ("File | Save..."), or in plain SBGNML ("Export | SBGN-ML Plain"). In addition, the user can import AF models or SIF from simple, tab-delimited text files. We also support importing from and exporting to <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> and <a target="_blank" href="http://sbml.org/Main_Page">SBML</a> file formats. Details on file operations are explained <a href="tutorials.html#file-operations">here</a>. Maps can also be exported as static (raster or vector) images. </p>
 
 	  <p> <b>Q: Does Newt save styling information (e.g. color, font, custom annotations, etc.)?</b><br>
-            A: Yes, any style information per node/edge/map is saved as an extension to standard SBGNML. Thus, you can restore such information when you load such files back up on Newt but such information might be lost when imported to other tools (since style information isn't supported by standard SBGNML). If a tool is having difficulty importing our files, try exporting in plain SBGNML ("Export | SBGN-ML Plain"). </p>
+            A: Yes, any style information per node/edge/map is saved as an extension to standard SBGNML with file extension ".nwt". Thus, you can restore such information when you load such files back up on Newt but such information might be lost when imported to other tools (since style information isn't supported by standard SBGNML). If a tool is having difficulty importing our files, try exporting in plain SBGNML ("Export | SBGN-ML Plain") with file extension ".sbgn". </p>
 
 	  <p> <b>Q: How can I create a reversible reaction in Newt?</b><br>
             A: Use of a single process for a reversible reaction is <a href="http://sbgn.github.io/sbgn/faq/pd#can-we-represent-reversible-interactions-with-a-single-association-or-dissociation-glyphs">a controversial issue</a> since it can lead to ambiguities when the process has modulators. In Newt, if a map's type is PD, it doesn't allow connecting production edges to both the input and the output ports of a process. However, one can create reversible reactions using a template ("Edit | Add from Template..."), but Newt will set the map type as "Unknown" and further editing will not go through validation checks. </p>
+
+	  <p> <b>Q: How can I be sure that my map is SBGN compliant?</b><br>
+            A: Newt provides both syntactic and semantic (in SBGN PD maps only) validation. As you're creating map objects and interactions, Newt will warn you if they are incompatiable with the current map type. In addition, for SBGN PD maps, we also provide <a href="tutorials.html#validation">semantic validation</a> with suggestions to fix any problems with your maps with most type of errors in an interactive fashion. </p>
+
+	  <p> <b>Q: I uniformly use a certain style (map and object properties such as colors) in my maps. Can I simply keep these preferences across sessions?</b><br>
+            A: Newt lets you save <a href="tutorials.html#validation">preferences</a> and load them back in your next session, so the look and feel of your maps could be uniform. </p>
 
 	  <p> <b>Q: Can I overlay experimental data on my maps in Newt?</b><br>
             A: Support for this using a simple tab-delimited file is planned for a release in near future. </p>
 
 	  <p> <b>Q: Can I deploy my own Newt instance?</b><br>
-            A: Yes, it is rather straightforward to <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt">deploy</a> and maintain a local copy of Newt. In addition, Newt is specifically designed to be easily customizable (modify menu and toolbars, and other functionality) and embeddable within your own website. </p>
+            A: Yes, it is rather straightforward to <a target="_blank" href="https://github.com/iVis-at-Bilkent/newt/blob/master/README.md#Running%20a%20:Local%20Instance">deploy</a> and maintain a local copy of Newt. In addition, Newt is specifically designed to be easily customizable (modify menu and toolbars, and other functionality) and embeddable within your own website. </p>
 
 	  <p> <b>Q: What if I'd like to contribute to Newt development?</b><br>
             A: We'd love to have more resources. Please contact us privately through <a href="contact.html">this form</a>. </p>

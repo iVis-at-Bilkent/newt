@@ -8,7 +8,7 @@
 <head>
   <title>Newt Editor</title>
   <meta name="description" content="Newt Pathway Viewer & Editor" />
-  <meta name="keywords" content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation" />
+  <meta name="keywords" content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation, SIF, Simple Interaction Format" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="icon" href="style/newt-icon-blue.png">
   <link href="style/lightbox.css" rel="stylesheet">
@@ -36,6 +36,7 @@
         <li> <a href="#file-operations">File operations</a>
         <li> <a href="#convenient-editing">Convenient editing</a>
         <li> <a href="#alignment-grid-and-guidelines">Alignment, grid, and guidelines</a>
+        <li> <a href="#semantic-validation">Semantic validation</a>
         <li> <a href="#complexity-management">Complexity management</a>
              <span style="float: right;">Complexity management video: <a href="tutorials-compl.html"><img src="images/play-button.svg" width=16px/></a></span>
         <li> <a href="#search-and-highlight">Search and highlight</a>
@@ -48,15 +49,15 @@
         <h2 id="introduction">Introduction
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Newt editor is composed of a menu bar and a toolbar laid out horizontally on top of the drawing canvas and a right panel for object inspection, map configuration and the palette. </p>
+        <p> Newt editor is composed of a menu bar and a toolbar laid out horizontally on top of the drawing canvas with pan-zoom controls in its upper left, and a right panel for object inspection, map configuration and the palette. </p>
 
-        <span class="center"><a href="images/newt-ss.png" data-lightbox="image-intro" data-title="Overall look of the Newt editor"><img src="images/newt-ss.png" style="width: 593px;" /></a></span>
+        <span class="center"><a href="images/newt-ss.png" data-lightbox="image-intro" data-title="Overall look and components of the Newt editor"><img src="images/newt-ss.png" style="width: 593px;" /></a></span>
 
-        <p> Newt is a viewer and editor of maps drawn in SBGN notation. Specifically, currently it supports Process Description (PD) and Activity Flow (AF) languages of this notation. Please refer to related <a href="http://sbgn.github.io/sbgn/templates">reference cards</a> and <a href="http://sbgn.github.io/sbgn/specifications">specifications</a> for details of these languages. </p>
+        <p> Newt is a viewer and editor of maps drawn in SBGN Process Description (PD) and Activity Flow (AF) languages or <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a>. Please refer to related <a target="_blank" href="https://sbgn.github.io/referencecards">reference cards</a> and <a target="_blank" href="http://sbgn.github.io/sbgn/specifications">specifications</a> for details of SBGN languages. </p>
 
-        <p> Newt can be launched with a blank model, where a map can be created from scratch or an existing one can be uploaded for editing. In addition, one can launch Newt with a remote SBGN model specified as a URL or as a <a href="http://www.pathwaycommons.org/pc2/" target="_blank">Pathway Commons URI</a>. Examples: launch with <a href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn" target="_blank">URL</a> or <a href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211" target="_blank">URI</a>.
+        <p> Newt can be launched with a blank model, where a map can be created from scratch or an existing one can be uploaded for editing. Some samples are also available under the File menu. In addition, one can launch Newt with a remote SBGN model specified as a URL or as a <a href="http://www.pathwaycommons.org/pc2/" target="_blank">Pathway Commons URI</a>. Examples: launch with <a href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn" target="_blank">URL</a> or <a href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211" target="_blank">URI</a>.
 
-        <p> <a href="tutorials-basics.html">Here</a> is a short tutorial illustrating basics of Newt. </p>
+        <p> <a href="tutorials-basics.html">Here</a> is a short tutorial illustrating basics of Newt. Also refer to "Help | {Quick Help,Quick Tutorial,UI Guide}" for further help.</p>
 
         <h2 id="menubar-and-toolbar">Menubar and toolbar
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
@@ -68,35 +69,39 @@
 
         <p> The panel on the right is composed of the following tabs. </p>
 
-        <h3>Inspector</h3>
-        <span class="left"><a href="images/inspector.png" data-lightbox="image-right-panel" data-title="Editing through object inspector"><img src="images/inspector.png" style="width: 400px;"/></a></span>
+        <h3>Inspector and style editor</h3>
+        <span class="left"><a href="images/inspector.png" data-lightbox="image-right-panel" data-title="Editing through the object inspector"><img src="images/inspector.png" style="width:400px"/></a></span>
         <p> The object inspector on the right panel titled "Object" is activated when a particular object is selected by left-clicking on it, enabling inspection and editing of the style of the underlying object from border color to font type and size to state variables and custom annotations.</p>
-        <p> When multiple objects are selected, inspector only display the common attributes (and their values if all objects have the same value for that attribute) for convenient modification of those attributes. </p>
+        <p> When multiple objects are selected, the inspector will only display the common attributes (and their values if all objects have the same value for that attribute) and will allow convenient simultaneous modification of those attributes. </p>
+	<p> A convenient way to change the style of an entire map is to use one of pre-defined color schmes under Map Properties in the right panel. 3D or gradient coloring of map objects are available through these colors schemes via background images as well as solid fill colors.</p>
 
         <h3>Map settings</h3>
 
-        <span class="right"><a href="images/map-properties.png" data-lightbox="image-right-panel" data-title="Configuring the map through options"><img src="images/map-properties.png" style="width: 400px;"/></a></span>
+        <span class="right"><a href="images/map-properties.png" data-lightbox="image-map-properties" data-title="Configuring the map through settings"><img src="images/map-properties.png" style="width:320px"/></a></span>
         <p> The tab titled "Map" on the right panel is for configuring the drawing of the map. It can be enabled with "File | Map Properties..." or through the associated tool on the toolbar. </p>
         <p> Numerous settings of a map from general properties like compound paddings to label related settings such as whether to fit labels to nodes, to color scheme can be set using this tab. </p>
         <p> Name and description of the map can also be set using this panel.</p>
+        <p> Notice that some of these settings apply to all map types, whereas others only apply to specific map type. </p>
 
         <h3>Palette</h3>
-        <span class="left"><a href="images/palette.png" data-lightbox="image-right-panel" data-title="Constructing map using the palette"><img src="images/palette.png" style="width: 400px;"/></a></span>
-        <p> When Palette tab on the right panel is chosen or when the user clicks in an empty area on the drawing canvas, the palette composed of PD and AF nodes and edges, is displayed. The type of a map (see Type under General Properties) is considered PD (AF) when the user constructs a map using only nodes and edges from the PD (AF) palette. When the user mixes up nodes and/or edges from both palettes though, its type is set as "Unknown", and notation specific checks (e.g. a modulation arc can only go from a source EPN such as macromolecule to a process node) are no longer performed. </p>
+        <span class="left"><a href="images/palette.png" data-lightbox="image-pallette" data-title="Constructing a map using the palette"><img src="images/palette.png" style="width:440px"/></a></span>
+        <p> When Palette tab on the right panel is chosen or when the user clicks in an empty area on the drawing canvas, the palette composed of nodes and edges of available map types: PD, AF and SIF, is displayed. The type of a map (see Type under General Properties) is considered PD (AF or SIF) when the user constructs a map using only nodes and edges from the PD (AF or SIF) palette. When the user mixes up nodes and/or edges from multiple palettes though, its type is set as "Unknown", and notation specific checks (e.g. a modulation arc can only go from a source EPN such as macromolecule to a process node in a PD map) are no longer performed. </p>
 
-        <p> Nodes can either be created by choosing and dragging from the palette onto the canvas or by selecting a particular node on the palette and then clicking on the canvas. Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection mode. Clicking twice on a tool, on the other hand, puts you in sustained mode so that the user can create multiple objects of that type in a row. </p>
+        <p> Nodes can either be created by dragging from the palette onto the canvas or by selecting a particular node on the palette and then clicking on the canvas. Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection mode. Clicking <i>twice</i> on a tool, on the other hand, puts you in <i>sustained mode</i> so that the user can create multiple objects of that type in a row. </p>
+
+	<p> A convenient way to reconnect an edge is by selecting the edge and grabbing it from its reconnection handles at both ends and dragging onto its new source / target. </p>
 
         <h2 id="file-operations">File operations
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
-        <p> Newt can read and write an extended version of <a href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files. Extension includes style of map objects (such as color, font, and optional background image), custom properties (e.g. Uniprot ID associated with a macromolecule), and hidden/collapsed map content; thus, such information is restored upon save-reload. </p>
+        <p> Newt can read and write an extended version of <a href="https://github.com/sbgn/sbgn/wiki/SBGN_ML">SBGNML</a> files with ".nwt" extension. Extension includes style of map objects (such as color, font, and optional background image), custom properties (e.g. Uniprot ID associated with a macromolecule), and hidden/collapsed map content; thus, such information is restored upon save-reload. </p>
 
+        <h3>Import-export</h3>
         <p> If you'd like a version without such style and annotation information to perhaps exchange maps with other tools such as <a href="https://immersive-analytics.infotech.monash.edu/vanted/addons/sbgn-ed/">SBGN-ED</a>, however, you could get your map in plain SBGNML using "Export | SBGN-ML Plain". </p>
 
         <p> Newt supports import and export facilities from and to <a href="http://www.celldesigner.org/">CellDesigner</a> through "{Import,Export} | CellDesigner File".</p>
 
         <p> In addition, AF models can be imported to Newt from simple tab-delimited files. An example model formatted in this manner follows:</p>
-
-        <p style="font-family:courier; margin-left:30px">
+<code>
         SBGNViz AF 1.0<br>
         Sample Pathway title<br>
         This is a sample pathway description.<br>
@@ -107,9 +112,50 @@
         --EDGE_ID	SOURCE	TARGET	EDGE_TYPE--<br>
         11	1	2	NEGATIVE_INFLUENCE<br>
         ...
+</code>
+
+        <p><br>Furthermore, maps may be imported from or exported to <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a> files using the "{Import,Export} | SIF" File menu items. A SIF file is formatted as follows:</p>
+<code>
+        entity_id relationship_type entity_id
+        ...
+</code>
+
+        <p><br>where <code>entity_id</code> is the label and ID of a macromolecule or a simple chemical and <code>relationship_type</code> is one of the predetermined types of relationships between these two entities.
         </p>
 
-        <p> Furthermore, File menu can be used to export the current map as a static image (either as a raster file in PNG or JPG or as scalable vector graphics in SVG).</p>
+        <h3>Static images</h3>
+
+        <p> Finally, File menu can be used to export the current map as a static image (either as a raster file in PNG or JPG or as scalable vector graphics in SVG).</p>
+
+        <h3>Persisting user preferences</h3>
+
+	<p>Users might like to save their preferences (including Map, Layout, Grid, and Object properties) for later use using "File | Save Preferences..." in a file with ".newtp" extension. These preferences can later be loaded using "File | Load Preferences..." to be applied to any map.</p>	
+
+        <h3>Launch with a remote SBGN map</h3>
+
+	<p>As noted above Newt may be launched by a remote file via a URL or by URI as a query to the Pathway Commons database. In such cases, the user might like to change some map properities on launch. Available properties (with default values) include:
+<code>compoundPadding=10,
+  extraCompartmentPadding=14,
+  extraComplexPadding=10,
+  arrowScale=1.25,
+  showComplexName=true,
+  dynamicLabelSize='regular',
+  inferNestingOnLoad=false,
+  fitLabelsToNodes=false,
+  fitLabelsToInfoboxes=false,
+  recalculateLayoutOnComplexityManagement=true,
+  rearrangeAfterExpandCollapse=true,
+  animateOnDrawingChanges=true,
+  adjustNodeLabelFontSizeAutomaticallyi=false,
+  enablePorts=true,
+  allowCompoundNodeResize=false,
+  mapColorScheme='black_white',
+  defaultInfoboxHeight=12,
+  defaultInfoboxWidth=8,
+  mapName="",
+  mapDescription="",</code> and
+  <code>enableSIFTopologyGrouping=false</code>.
+</p>
 
         <h2 id="convenient-editing">Convenient editing
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
@@ -119,10 +165,10 @@
         <table class="plaintable">
           <tr>
             <th class="leftcolumn">
-            <a href="images/template-dialog.png" data-lightbox="image-templates" data-title="Template dialog for convenient editing"><img class="ssthumbnail" src="images/template-dialog.png" style="height: 220px;"></a>
+            <a href="images/template-dialog.png" data-lightbox="image-templates" data-title="Template dialog for convenient editing"><img class="ssthumbnail" src="images/template-dialog.png" style="height: 242px;"></a>
             </th>
             <th class="rightcolumn">
-            <a href="images/template-association-example.png" data-lightbox="image-templates" data-title="Example creation of an association using the template dialog"><img class="ssthumbnail" src="images/template-association-example.png" style="height: 100px;"></a>
+            <a href="images/template-association-example.png" data-lightbox="image-templates" data-title="Example creation of an association using the template dialog"><img class="ssthumbnail" src="images/template-association-example.png" style="height: 110px;"></a>
             </th> 
           </tr>
         </table>
@@ -134,7 +180,7 @@
 
         <p> Another way to perform alignment is through the grid. When you enable the grid tool (<img src="images/enable-grid.svg" title="Tool for enabling the grid" style="height: 16px;">) on the toolbar, a grid is displayed and nodes are snapped to grid as they are dragged. </p>
 
-        <span class="right"><a href="images/guideline-example.png" data-lightbox="image-grid-guide" data-title="An example where the dragged node is snapped to an alignment position"><img src="images/guideline-example.png" style="width: 340px;"/></a></span>
+        <span class="right"><a href="images/guideline-example.png" data-lightbox="image-grid-guide" data-title="An example where the dragged node is snapped to an alignment position"><img src="images/guideline-example.png" style="width: 460px;"/></a></span>
         <p> Yet another way to perform alignment is by enabling the guidelines with the associated tool on the toolbar (<img src="images/enable-guidelines.svg" title="Tool for enabling the guidelines" style="height: 16px;">). Two types of guidelines are enabled with this tool:
 <ul>
  <li> Geometric guidelines (e.g. center of two nodes are in alignment) and
@@ -142,6 +188,12 @@
 </ul>
 Grid and guideline support is rather involved and can be customized using the settings through the View menu.
 </p>
+
+        <h2 id="semantic-validation"> Semantic validation
+          <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+
+	<span class="right"><a href="images/validation-example.png" data-lightbox="image-validation-example" data-title="An example where the user is suggested a fix for a particular error"><img src="images/validation-example.png" style="width: 400px;"/></a></span>
+	<p> SBGN PD maps may be validated using "Edit | Validate Map..." menu item. This will validate the map and show the user any semantic problems with the map in a newly created tab titled "Console" in the right panel. Whenever possible, Newt will suggest a fix for each particular problem, allowing the user to choose from potentially multiple ways to fix the problem in this new tab.  </p>
 
         <h2 id="complexity-management">Complexity management
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
@@ -202,30 +254,30 @@ Grid and guideline support is rather involved and can be customized using the se
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
         <span class="left"><a href="images/before-layout.svg" data-lightbox="image-layout" data-title="A map with random layout"><img src="images/before-layout.svg" style="height: 220px;" /></a></span>
-        <span class="right"><a href="images/after-layout.svg" data-lightbox="image-layout" data-title="After Newt automatic layout performed on the same map"><img src="images/after-layout.svg" style="height: 220px;" /></a></span>
+        <span class="right"><a href="images/after-layout.svg" data-lightbox="image-layout" data-title="After Newt's automatic layout was performed on the same map"><img src="images/after-layout.svg" style="height: 220px;" /></a></span>
 
-        <p> Newt provides automatic layout services to lay out a map from scratch (disable Incremental flag under Layout | Layout Properties...) or incrementally (default). Newt uses a layout algorithm [<a href="#references">5</a>,<a href="#references">4</a>,<a href="#references">6</a>] respecting compound structures (e.g. compartments). </p>
+        <p> Newt provides automatic layout services to lay out a map from scratch (disable Incremental flag under Layout | Layout Properties...) or incrementally (default). Newt uses a layout algorithm [<a href="#references">5</a>,<a href="#references">4</a>,<a href="#references">6</a>] respecting compound structures (e.g. compartments). Please refer to the <a target="_blank" href="https://github.com/iVis-at-Bilkent/cytoscape.js-fcose">related extension</a> for options for configuring automatic layout. </p>
 
         <p> The same algorithm is also applied incrementally after complexity management operations described earlier, if the associated flag (Map Properties... | Arrangement | Rearrange on Complexity Management) is enabled. </p>
 
         <p> <a href="tutorials-layout.html">Here</a> is a short tutorial illustrating automatic layout capabilities of Newt. </p>
 
-        <h2 id="querying-pathway-commons">Querying Pathway Commons
-          <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+        <h2 id="querying-pathway-commons">Querying Pathway Commons <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Newt provides an interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">Pathway Commons</a> database, presenting results in SBGN, and enabling editing on them. </p>
+        <p> Newt provides an interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">Pathway Commons</a> database, presenting results in SBGN, and enabling editing on them. Currently available type of queries include:</p>
+		<ul>
+		 <li> Query Paths Between (find all paths of specified length limit between any two entities of the specified set),
+		 <li> Query From To.. (find all paths of specified length limit from a set of source entities to a set of target entities),
+		 <li> Common Stream (find molecules within the specified distance that are affecting or affected by a specific set of molecules in common),
+		 <li> Neighborhood (find the neighbors of an entity within a certain distance), and
+		 <li> Query by URI
+		</ul> 
+	<p>as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a> [<a href="#references">7</a>].</p>
 
-        <span class="right"><a href="images/PC-query-result.png" data-lightbox="image-layout" data-title="Partial view of the result of sample query"><img src="images/PC-query-result.png" style="height: 240px;" /></a></span>
-        <span class="right"><a href="images/PC-query-dialog.png" data-lightbox="image-layout" data-title="Sample Paths Between query"><img src="images/PC-query-dialog.png" style="height: 140px;" /></a></span>
-        <p> Currently available type of queries include
-<ul>
- <li> Query Paths Between (find all paths of specified length limit between any two entities of the specified set),
- <li> Query From To.. (find all paths of specified length limit from a set of source entities to a set of target entities),
- <li> Common Stream (find molecules within the specified distance that are affecting or affected by a specific set of molecules in common),
- <li> Neighborhood (find the neighbors of an entity within a certain distance), and
- <li> Query by URI
-</ul> 
-as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a> [<a href="#references">7</a>]. For instance, Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
+        <span class="left"><a href="images/PC-query-dialog.png" data-lightbox="image-pc-query" data-title="Sample Paths Between query"><img src="images/PC-query-dialog.png" style="height: 170px;" /></a></span>
+        <span class="right"><a href="images/PC-query-result.png" data-lightbox="image-pc-query" data-title="Partial view of the result of sample query"><img src="images/PC-query-result.png" style="height: 290px;" /></a></span>
+
+	<p>For instance, Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
 
         <h2 id="references">References
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
