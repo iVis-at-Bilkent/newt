@@ -332,7 +332,8 @@ ns.validateAnnotation = function(dbKey, resourceID, callback) {
 		$.ajax({ 
 			type: "GET",
 			dataType: "json",
-			url: validateURL,
+			url: "/utilities/testURL",
+			data: {url: validateURL},
 			success: function(data){
 				// validate url content
 			    testURL(ns.IDToRetrieveURL(dbKey, resourceID), callback);

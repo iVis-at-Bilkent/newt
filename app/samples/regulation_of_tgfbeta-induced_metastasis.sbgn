@@ -1,0 +1,63 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="activity flow">
+    <glyph id="glyph5" class="biological activity">
+      <label text="Ras"/>
+      <bbox x="45" y="77.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph3" class="biological activity">
+      <label text="Mutant p53/&#xA;P-Smad"/>
+      <bbox x="55" y="248.5" w="90" h="45"/>
+    </glyph>
+    <glyph id="glyph4" class="biological activity">
+      <label text="p63"/>
+      <bbox x="55" y="381.5" w="90" h="45"/>
+    </glyph>
+    <glyph id="glyph1" class="biological activity">
+      <label text="Metastatic&#xA;suppressor&#xA;genes&#xA;activity"/>
+      <bbox x="296.1123736019097" y="381.5" w="90" h="45"/>
+    </glyph>
+    <glyph id="glyph0" class="phenotype">
+      <label text="Pro-invasion&#xA;migration&#xA;metastasis&#xA;gene expression&#xA;platform"/>
+      <bbox x="275" y="230.81729273395382" w="130" h="70"/>
+    </glyph>
+    <glyph id="glyph2" class="biological activity">
+      <label text="TGF beta"/>
+      <bbox x="295" y="72.5" w="90" h="45"/>
+    </glyph>
+    <glyph id="nwtN_de202862-0f20-4bc7-881c-dcf8e953dec6" class="and">
+      <bbox x="85.71428571428574" y="166.4940814657006" w="28.571428571428573" h="28.571428571428573"/>
+      <port id="nwtN_de202862-0f20-4bc7-881c-dcf8e953dec6.1" x="100.00000000000003" y="200.77979575141487"/>
+      <port id="nwtN_de202862-0f20-4bc7-881c-dcf8e953dec6.2" x="100.00000000000003" y="160.77979575141487"/>
+    </glyph>
+    <arc id="arc0" class="positive influence" source="glyph2" target="glyph0">
+      <start x="340" y="118.125"/>
+      <end x="340" y="227.06729273395385"/>
+    </arc>
+    <arc id="nwtE_a022382d-db22-40a9-a77c-43818d5ae298" class="positive influence" source="nwtN_de202862-0f20-4bc7-881c-dcf8e953dec6.1" target="glyph3">
+      <start x="100.00000000000003" y="201.40479575141487"/>
+      <end x="100.00000000000001" y="244.75"/>
+    </arc>
+    <arc id="arc2" class="necessary stimulation" source="glyph4" target="glyph1">
+      <start x="145.62499999999997" y="404"/>
+      <end x="292.3623736019097" y="404"/>
+    </arc>
+    <arc id="nwtE_c9bc2701-8b02-453c-be0b-af1c85033d76" class="logic arc" source="glyph5" target="nwtN_de202862-0f20-4bc7-881c-dcf8e953dec6.2">
+      <start x="84.22593685173261" y="113.125"/>
+      <end x="100.00000000000003" y="160.15479575141487"/>
+    </arc>
+    <arc id="arc4" class="negative influence" source="glyph3" target="glyph4">
+      <start x="100" y="294.125"/>
+      <end x="100" y="379.875"/>
+    </arc>
+    <arc id="arc5" class="negative influence" source="glyph1" target="glyph0">
+      <start x="340.92621688191844" y="380.875"/>
+      <end x="340.29483173354515" y="302.4422603341149"/>
+    </arc>
+    <arc id="nwtE_5bfeecd3-ffe5-4345-b449-1647975d3f98" class="logic arc" source="glyph2" target="nwtN_de202862-0f20-4bc7-881c-dcf8e953dec6.2">
+      <start x="294.375" y="95.6025993331892"/>
+      <next x="180.260321966752" y="97.10978681570836"/>
+      <end x="100.00000000000003" y="160.15479575141487"/>
+    </arc>
+  </map>
+</sbgn>

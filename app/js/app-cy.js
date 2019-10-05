@@ -35,6 +35,7 @@ module.exports = function (chiseInstance) {
     ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
+    ur.action("relocateInfoBoxes", appUndoActions.relocateInfoBoxes, appUndoActions.relocateInfoBoxes);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -46,7 +47,7 @@ module.exports = function (chiseInstance) {
 
     cy.autopanOnDrag();
 
-    cy.edgeBendEditing({
+    cy.edgeEditing({
       // this function specifies the positions of bend points
       bendPositionsFunction: function (ele) {
         return ele.data('bendPointPositions');
@@ -56,7 +57,19 @@ module.exports = function (chiseInstance) {
       // title of remove bend point menu item
       removeBendMenuItemTitle: "Delete Bend Point",
       // whether to initilize bend points on creation of this extension automatically
-      initBendPointsAutomatically: false
+      initBendPointsAutomatically: false,
+      // function to validate edge source and target on reconnection
+      validateEdge: chiseInstance.elementUtilities.validateArrowEnds,
+      // function to be called on invalid edge reconnection
+      actOnUnsuccessfulReconnection: function () {
+        if(appUtilities.promptInvalidEdgeWarning){
+          appUtilities.promptInvalidEdgeWarning.render();
+        }
+      },
+      // function that handles edge reconnection
+      handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
+      zIndex: 900
+      // whether to start the plugin in the enabled state
     });
 
     contextMenus.appendMenuItems([
@@ -75,10 +88,12 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
-          cy.undoRedo().do("deleteElesSimple", {
-            eles: event.target || event.cyTarget
-          });
-          $('#inspector-palette-tab a').tab('show');
+          let eles = event.target || event.cyTarget;
+          
+          chiseInstance.deleteElesSimple(eles);
+          
+          if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
+            $('#inspector-palette-tab a').tab('show');
         }
       },
       {
@@ -141,9 +156,8 @@ module.exports = function (chiseInstance) {
         // If the selector is not truthy no elements will have this menu item on cxttap
         selector: 'node.cy-expand-collapse-collapsed-node',
         onClickFunction: function (event) { // The function to be executed on click
-          cy.undoRedo().do("expand", {
-            nodes: event.target || event.cyTarget
-          });
+          var node = event.target || event.cyTarget;
+          chiseInstance.expandNodes(node);
         }
       },
       {
@@ -152,9 +166,8 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/collapse-selected.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node:parent',
         onClickFunction: function (event) {
-          cy.undoRedo().do("collapse", {
-            nodes: event.target || event.cyTarget
-          });
+          var node = event.target || event.cyTarget;
+          chiseInstance.collapseNodes(node);
         }
       },
       {
@@ -235,23 +248,78 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
         }
       },
       {
+        id: 'ctx-menu-tile-info-boxes',
+        content: 'Tile Information Boxes',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        onClickFunction: function (event){
+          var cyTarget = event.target || event.cyTarget;
+          var locations = ["top", "bottom", "right", "left"]; //Fit all locations
+          chiseInstance.fitUnits(cyTarget, locations); //Force fit
+        }
+      },
+      {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
             var collection = cy.collection();
             collection = collection.add(cyTarget);
             appUtilities.resizeNodesToContent(collection);
+        }
+      },
+      {
+        id: 'ctx-menu-query-pcids',
+        content: 'Query PC IDs',
+        selector: 'edge',
+        onClickFunction: function (event) {
+          var edge = event.target || event.cyTarget;
+          var qUrl = 'http://www.pathwaycommons.org/pc2/get?';
+          var pcIDSet = edge.data( 'pcIDSet' );
+
+          for ( var pcID in pcIDSet ) {
+            qUrl += ( 'uri=' + pcID + '&' );
+          }
+
+          qUrl += 'format=sbgn';
+
+          $.ajax({
+            type: 'get',
+            url: "/utilities/testURL",
+            data: { url: qUrl },
+            success: function( data ) {
+              if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                var xml = $.parseXML(data.response.body);
+                appUtilities.createNewNetwork();
+                var activeChise = appUtilities.getActiveChiseInstance();
+                var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+                activeChise.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+              }
+            },
+            error: function(xhr, options, err){
+              console.log( err );
+            }
+          });
+        }
+      },
+      {
+        id: 'ctx-menu-clone',
+        content: 'Clone',
+        selector: '[class="simple chemical"]'   ,
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;           
+            if(cyTarget.connectedEdges().length  > 1){
+              cy.undoRedo().do("cloneHighDegreeNode", cyTarget);
+            }
         }
       }
     ]);
@@ -326,27 +394,18 @@ module.exports = function (chiseInstance) {
       }
     });
 
-    // local utility function to avoid code duplication
-    function highlightColor(ele) {
-      if (ele.selected()){
-        return '#d67614'; // default select color
-      }
-      else {
-        return '#0B9BCD'; // highlight color
-      }
-    };
     cy.viewUtilities({
       node: {
         highlighted: { // styles for when nodes are highlighted.
           'border-width': function(ele) {
-            return parseFloat(ele.data('border-width')) + 2;
+            return Math.max(parseFloat(ele.data('border-width')) + 2, 3);
           },
-          'border-color': highlightColor
+          'border-color': '#0B9BCD'
         },
-        unhighlighted: {// styles for when nodes are unhighlighted.
-          'opacity': function (ele) {
-            // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
-            return ele.css('opacity');
+        selected: {
+          'border-color': '#d67614',
+          'background-color': function (ele) {
+            return ele.css('background-color');
           }
         }
       },
@@ -355,14 +414,16 @@ module.exports = function (chiseInstance) {
           'width': function(ele) { // styles for when edges are highlighted.
             return parseFloat(ele.data('width')) + 2;
           },
-          'line-color': highlightColor,
-          'source-arrow-color': highlightColor,
-          'target-arrow-color': highlightColor
+          'line-color': '#0B9BCD',
+          'source-arrow-color': '#0B9BCD',
+          'target-arrow-color': '#0B9BCD'
         },
-        unhighlighted: {// styles for when edges are unhighlighted.
-          'opacity': function (ele) {
-            // We return the same opacity because to override the unhibhlighted ele opacity in view-utilities
-            return ele.css('opacity');
+        selected: {
+          'line-color': '#d67614',
+          'source-arrow-color': '#d67614',
+          'target-arrow-color': '#d67614',
+          'width': function (ele) {
+            return parseFloat(ele.data('width')) + 2;
           }
         }
       },
@@ -385,6 +446,11 @@ module.exports = function (chiseInstance) {
       },
       neighborSelectTime: 500 //ms
     });
+    
+    cy.layoutUtilities({
+      componentSpacing: 30,
+      desiredAspectRatio: $(cy.container()).width() / $(cy.container()).height()
+    })
 
     cy.nodeResize({
       padding: 2, // spacing between node and grapples/rectangle
@@ -478,7 +544,23 @@ module.exports = function (chiseInstance) {
         s: "s-resize",
         sw: "sw-resize",
         w: "w-resize"
-      }
+      },
+
+      resizeToContentCueEnabled: function (node){
+        var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
+        var node_class = node.data('class');
+        var result = false;
+
+        enabled_classes.forEach(function(enabled_class){
+          if(node_class.indexOf(enabled_class) > -1)
+            result = true;
+        });
+
+        return result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
+      },
+      resizeToContentFunction: appUtilities.resizeNodesToContent,
+      resizeToContentCuePosition: 'bottom-right',
     });
 
     //For adding edges interactively
@@ -502,18 +584,21 @@ module.exports = function (chiseInstance) {
           var source = sourceNode.id();
           var target = targetNodes[0].id();
           var edgeParams = {class : modeProperties.selectedEdgeType, language : modeProperties.selectedEdgeLanguage};
+          var promptInvalidEdge = function(){
+            appUtilities.promptInvalidEdgeWarning.render();
+          }
 
           // if added edge changes map type, warn user
           if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
             appUtilities.promptMapTypeView.render(function(){
-                chiseInstance.addEdge(source, target, edgeParams);
+                chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             });
           }
           else{
-              chiseInstance.addEdge(source, target, edgeParams);
+              chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
@@ -569,7 +654,7 @@ module.exports = function (chiseInstance) {
     });
 
     var panProps = {
-      fitPadding: 10,
+      fitPadding: 20,
       fitSelector: ':visible',
       animateOnFit: function () {
         var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
@@ -582,34 +667,6 @@ module.exports = function (chiseInstance) {
     };
 
     cy.panzoom(panProps);
-
-    //Overwrite the default background-opacity (transparency) of simple nodes from chise
-
-    var sbgnclasses = ['macromolecule', 'simple chemical', 'unspecified entity',
-        'nucleic acid feature', 'perturbing agent', 'source and sink', 'phenotype',
-        'process', 'omitted process', 'uncertain process', 'association',
-        'dissociation', 'tag', 'and', 'or', 'not', 'delay','BA plain',
-        'BA unspecified entity', 'BA simple chemical', 'BA macromolecule',
-        'BA nucleic acid feature', 'BA perturbing agent', 'BA complex'];
-
-    for (i=0; i<sbgnclasses.length; i++)
-    {
-        var sbgnclass = sbgnclasses[i];
-        var param = {class: sbgnclass, name: 'background-opacity', value: 1};
-        chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
-    }
-
-    // set default dimensions to 20x20 for all process nodes.
-    var processNodes = ['process', 'omitted process', 'uncertain process', 'association', 'dissociation'];
-
-    for(i = 0; i < processNodes.length; i++)
-    {
-      var processNode = processNodes[i];
-      var param = {class: processNode, name: 'width', value: 20};
-      chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
-      var param = {class: processNode, name: 'height', value: 20};
-      chiseInstance.undoRedoActionFunctions.setDefaultProperty(param);
-    }
   }
 
   function bindCyEvents() {
@@ -630,18 +687,37 @@ module.exports = function (chiseInstance) {
      * (for instance: complexes)
      */
     cy.on("fit-units-after-expandcollapse", function(event) {
-      cy.nodes().forEach(function(ele){
+      var nodesToConsider = cy.nodes().filter(function(node){
+        var sbgnClass = node.data('class');
+        if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
+          return true;
+        }
+      });
+      nodesToConsider.forEach(function(ele){
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(ele);
-      });
+        var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
+        chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
+    });
       cy.style().update();
     });
 
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeResize('get').refreshGrapples();
+    });
+
+    //Updates arrow-scale of edges after expand
+    cy.on("expandcollapse.afterexpand", function(event) {
+        var currentArrowScale = Number($('#arrow-scale').val());
+        cy.edges().style('arrow-scale', currentArrowScale);
+    });
+
+    //Changes arrow-scale of pasted edges
+    cy.on("pasteClonedElements", function(e) {
+        var currentArrowScale = Number($('#arrow-scale').val());
+        cy.edges(":selected").style('arrow-scale', currentArrowScale);
     });
 
     cy.on("afterDo", function (event, actionName, args, res) {
@@ -722,8 +798,13 @@ module.exports = function (chiseInstance) {
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
       if (modeProperties.mode == 'selection-mode' && appUtilities.ctrlKeyDown) {
+
+        if(appUtilities.zoomShortcut){
+          return;
+        }
         appUtilities.enableDragAndDropMode(cy);
 
+        appUtilities.setScratch(cy, 'mouseDownNode', self);
         var nodesToDragAndDrop = self.union(cy.nodes(':selected'));
         appUtilities.setScratch(cy, 'nodesToDragAndDrop', nodesToDragAndDrop);
 
@@ -740,27 +821,39 @@ module.exports = function (chiseInstance) {
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
       if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
-        var newParent;
-        if (self != cy) {
-          newParent = self;
 
-          if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
-              && newParent.data("class") != "submap") {
-            newParent = newParent.parent()[0];
-          }
-        }
         var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
+        if (appUtilities.ctrlKeyDown ) {
+          var newParent;
+          if( self != cy) {
+            newParent = self;
+            nodes = nodes.difference(newParent);
+            if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
+                && newParent.data("class") != "submap") {
+              newParent = newParent.parent()[0];
+            }
+          }
 
-        appUtilities.disableDragAndDropMode(cy);
+          appUtilities.disableDragAndDropMode(cy);
 
-        var pos = event.position || event.cyPosition;
-        var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+          var mouseDownNode = appUtilities.getScratch(cy, 'mouseDownNode');
+          var pos = event.position || event.cyPosition;
+          var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
 
-        chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
-                              pos.y - dragAndDropStartPosition.y);
+          if( self == cy ||(self != cy && mouseDownNode != self)){
+            chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
+                                  pos.y - dragAndDropStartPosition.y);
+          }
 
-        appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
-        appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
+          appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
+          appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
+        }
+        else {
+          appUtilities.disableDragAndDropMode(cy);
+          appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
+          appUtilities.setScratch(cy, 'nodesToDragAndDrop', null);
+        }
+
       }
 
       nodeToUnselect = undefined;
@@ -862,6 +955,7 @@ module.exports = function (chiseInstance) {
       // else just create a new node with the current selected node type
       if (modeProperties.mode === "add-node-mode") {
         var nodeType = modeProperties.selectedNodeType;
+        var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
 
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
@@ -871,7 +965,7 @@ module.exports = function (chiseInstance) {
                 && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) ||
                   convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
         {
-          chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeType);
+          chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeParams);
           //Update arrow scale of the newly added edge
           var addedEdge = cy.elements()[cy.elements().length - 1];
           var currentArrowScale = Number($('#arrow-scale').val());
@@ -916,7 +1010,6 @@ module.exports = function (chiseInstance) {
 
           // If the parent class is valid for the node type then add the node
           if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
-            var nodeParams = {class : nodeType, language : modeProperties.selectedNodeLanguage};
 
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){
@@ -929,7 +1022,8 @@ module.exports = function (chiseInstance) {
             if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
             {
                 var newEle = cy.nodes()[cy.nodes().length - 1];
-                chiseInstance.elementUtilities.setPortsOrdering(newEle, 'L-to-R');
+                var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
+                chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
             }
 
             // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
@@ -1052,6 +1146,7 @@ module.exports = function (chiseInstance) {
         nodeLabelTextbox.val(sbgnlabel);
         nodeLabelTextbox.data('node', this);
         nodeLabelTextbox.focus();
+        nodeLabelTextbox.select();
       }
     });
 
@@ -1063,13 +1158,13 @@ module.exports = function (chiseInstance) {
     // and unfortunetaly the inspector is refreshed many times. This seriously decreases the performance. To handle this
     // problem we call the method used to refresh the inspector in a throttled way and decrease the number of calls.
     cy.on('select', function() {
-      handleInspectorThrottled();
       // Go to inspector style/properties tab when a node is selected
-      if (!$('#inspector-style-tab').hasClass('active')) {
+     // if (!$('#inspector-style-tab').hasClass('active')) {
+        handleInspectorThrottled();  
         $('#inspector-style-tab a').tab('show');
         $('#inspector-palette-tab a').blur();
         $('#inspector-map-tab a').blur();
-      }
+     // }
       //Remove grapples while node-label-textbox is visible
       if($("#node-label-textbox").is(":visible")){
         cy.nodeResize('get').removeGrapples();
@@ -1123,12 +1218,19 @@ module.exports = function (chiseInstance) {
       {
         appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
       }
-      cy.nodes().forEach(function(ele){
+      var nodesToConsider = cy.nodes().filter(function(node){
+        var sbgnClass = node.data('class');
+        if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
+          return true;
+        }
+      });
+      nodesToConsider.forEach(function(ele){
         // skip nodes without any auxiliary units
         if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
           return;
         }
-        chiseInstance.classes.AuxUnitLayout.fitUnits(ele);
+        var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
+        chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
       });
     });
 
@@ -1153,10 +1255,10 @@ module.exports = function (chiseInstance) {
     // update background image style when data changes
     cy.on('data', 'node', function(event) {
       var node = event.target;
-      
+
       if(!node || !node.isNode())
         return;
-      
+
       var keys = ['background-image', 'background-fit', 'background-image-opacity',
         'background-position-x', 'background-position-y', 'background-height', 'background-width'];
 
@@ -1164,15 +1266,35 @@ module.exports = function (chiseInstance) {
       keys.forEach(function(key){
         opt[key] = node.data(key);
       });
-      
+
       node.style(opt);
     });
+
+    /* removed coz of  complications 
+    cy.on('remove', 'node', function(event) {
+      if(cy.elements().length < 1){
+        chiseInstance.resetMapType();
+      }
+    });
+    */
   }
 
   function updateInfoBox(node) {
-    for(var location in node.data('auxunitlayouts')) {
-      chiseInstance.classes.AuxUnitLayout.update(node.data('auxunitlayouts')[location], cy);
+    var locations = chiseInstance.elementUtilities.checkFit(node); //Fit all locations
+    if (locations !== undefined && locations.length > 0) {
+      var firstTime = true;
+      for (var i = 0; i < locations.length; i++) {
+        if( chiseInstance.classes.AuxUnitLayout.getCurrentGap(locations[i]) < chiseInstance.classes.AuxUnitLayout.unitGap) {
+          firstTime = false;
+          break;
+        }
+      }
+      if (firstTime === true) {
+        chiseInstance.fitUnits(node, locations); //Force fit
+      }
+      else {
+        chiseInstance.elementUtilities.fitUnits(node, locations);
+      }
     }
-    chiseInstance.classes.AuxUnitLayout.fitUnits(node); //Fit infoBoxes
   }
 };

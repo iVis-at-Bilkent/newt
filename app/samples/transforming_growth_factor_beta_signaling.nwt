@@ -1,0 +1,298 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="activity flow">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#ffffffff"/>
+          <colorDefinition id="color_4" value="#ffffff"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb3_3d.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/rb5_3d.png"/>
+          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/rb1_3d.png"/>
+          <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/rb4_3d.png"/>
+        </listOfBackgroundImages>
+        <listOfStyles>
+          <style id="nodeffffff0.55555553.2514normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_1none5050100100" id-list="glyph11 glyph7 glyph8 glyph18 glyph16 glyph19 glyph6 glyph12 glyph10 glyph9 glyph20 glyph17 glyph13 glyph2">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph5">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="nodeffffff15555551.25image_2none5050100100" id-list="glyph21 glyph22">
+            <g stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_3none5050100100" id-list="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4 nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0froundrectangle" id-list="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4_0 nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4" shape-name="roundrectangle"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_4none5050100100" id-list="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0fbottomroundrectangle" id-list="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4" shape-name="bottomroundrectangle"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelveticaimage_5none5050100100" id-list="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          </style>
+          <style id="infoboxffffff5552.259normalnormalArial0f0f0fcomplex" id-list="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4" shape-name="complex"/>
+          </style>
+          <style id="edge5555551.25" id-list="arc0 nwtE_08c3c741-9f52-4e29-9bef-d4b4a12c4831 nwtE_4b4b5d9a-d128-4adf-b0fd-1d1371d2dccd arc19 arc13 arc18 arc21 nwtE_71eb9812-7e46-4cdd-9c1d-fd704c804df6 nwtE_99bcc30c-eef3-44cc-9584-b241cd762539 nwtE_641d87b8-cbd5-4314-9604-8ae680b46777 nwtE_ea81e6a7-f602-4b8b-8682-717d4a6d2673 arc20 arc12 arc9 arc5 arc15 arc22 arc16 arc11 arc10 arc7 arc6 nwtE_d9b5f227-9479-4eac-a4d0-375c7e93c78e nwtE_f1c17a84-ce0f-4e6f-9dac-be6d5bb2cfc8">
+            <g stroke="color_2" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>opposed_red_blue</mapColorScheme>
+        <mapColorSchemeStyle>3D</mapColorSchemeStyle>
+        <mapName>Transforming growth factor beta (TGFB) signaling</mapName>
+        <mapDescription>Chaudhury and Howe, IUBMB Life, 2009</mapDescription>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+      </mapProperties>
+    </extension>
+    <glyph id="glyph0" class="compartment">
+      <label text="cytosol"/>
+      <bbox x="256.375" y="148.36804068522486" w="624.25" h="469.475"/>
+    </glyph>
+    <glyph id="glyph11" class="biological activity" compartmentRef="glyph0">
+      <label text="TAK"/>
+      <bbox x="769" y="210" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph7" class="biological activity" compartmentRef="glyph0">
+      <label text="RAS"/>
+      <bbox x="258" y="210" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph8" class="biological activity" compartmentRef="glyph0">
+      <label text="BAMBI"/>
+      <bbox x="312" y="150" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph18" class="biological activity" compartmentRef="glyph0">
+      <label text="FKBP12"/>
+      <bbox x="711" y="150" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph16" class="biological activity" compartmentRef="glyph0">
+      <label text="Smurf"/>
+      <bbox x="649" y="210" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph19" class="biological activity" compartmentRef="glyph0">
+      <label text="SARA"/>
+      <bbox x="377" y="210" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph6" class="biological activity" compartmentRef="glyph0">
+      <label text="RSmad"/>
+      <bbox x="510" y="210" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph12" class="biological activity" compartmentRef="glyph0">
+      <label text="p42/p44 MAPKs"/>
+      <bbox x="258" y="293" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph10" class="biological activity" compartmentRef="glyph0">
+      <label text="p38"/>
+      <bbox x="731" y="383" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph9" class="biological activity" compartmentRef="glyph0">
+      <label text="JNK"/>
+      <bbox x="819" y="383" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
+      <label text="nucleus"/>
+      <bbox x="419.375" y="364.375" w="157.25" h="231.75"/>
+    </glyph>
+    <glyph id="glyph20" class="biological activity" compartmentRef="glyph1">
+      <label text="co-activator"/>
+      <bbox x="421" y="366" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph17" class="biological activity" compartmentRef="glyph1">
+      <label text="co-repressor"/>
+      <bbox x="421" y="435" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph5" class="phenotype" compartmentRef="glyph1">
+      <label text="Gene&#xA;transcription"/>
+      <bbox x="505" y="559.5" w="70" h="35"/>
+    </glyph>
+    <glyph id="glyph21" class="and" compartmentRef="glyph1">
+      <bbox x="530" y="432" w="20" h="20"/>
+      <port id="glyph21.1" x="540" y="422"/>
+      <port id="glyph21.2" x="540" y="462"/>
+    </glyph>
+    <glyph id="glyph22" class="or" compartmentRef="glyph1">
+      <bbox x="530" y="491" w="20" h="20"/>
+      <port id="glyph22.1" x="540" y="481"/>
+      <port id="glyph22.2" x="540" y="521"/>
+    </glyph>
+    <glyph id="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4" class="biological activity" compartmentRef="glyph0">
+      <label text="RSmad&#xA;Co-Smads"/>
+      <bbox x="505" y="290.5" w="70" h="35"/>
+      <glyph id="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4_0" class="unit of information">
+        <label text=""/>
+        <entity name="macromolecule"/>
+        <bbox x="545.2" y="284.5" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282" class="biological activity" compartmentRef="glyph0">
+      <label text="I-Smad"/>
+      <bbox x="640.9999999999999" y="290.5" w="70" h="35"/>
+      <glyph id="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282_0" class="unit of information">
+        <label text=""/>
+        <entity name="macromolecule"/>
+        <bbox x="681.1999999999999" y="284.5" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068" class="biological activity" compartmentRef="glyph0">
+      <label text="I-Smad"/>
+      <bbox x="642.0035915650764" y="380.5" w="70" h="35"/>
+      <glyph id="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068_0" class="unit of information">
+        <label text=""/>
+        <entity name="nucleic acid feature"/>
+        <bbox x="682.2035915650764" y="374.5" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3" class="biological activity" compartmentRef="glyph0">
+      <label text="TAK&#xA;TAB"/>
+      <bbox x="764" y="290.5" w="70" h="35"/>
+      <glyph id="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3_0" class="unit of information">
+        <label text=""/>
+        <entity name="complex"/>
+        <bbox x="804.2" y="284.5" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="glyph13" class="biological activity">
+      <label text="TGFβ"/>
+      <bbox x="510" y="38" w="60" h="30"/>
+    </glyph>
+    <glyph id="glyph2" class="biological activity">
+      <label text="TGFβ&#xA;receptor"/>
+      <bbox x="510" y="112.28278498382133" w="60" h="30"/>
+    </glyph>
+    <arc id="arc0" class="positive influence" source="glyph13" target="glyph2">
+      <start x="540" y="68.625"/>
+      <end x="540" y="108.53278498382133"/>
+    </arc>
+    <arc id="nwtE_08c3c741-9f52-4e29-9bef-d4b4a12c4831" class="positive influence" source="glyph6" target="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4">
+      <start x="540" y="240.625"/>
+      <end x="540" y="286.75"/>
+    </arc>
+    <arc id="nwtE_4b4b5d9a-d128-4adf-b0fd-1d1371d2dccd" class="negative influence" source="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282" target="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4">
+      <start x="640.3749999999999" y="308"/>
+      <end x="576.625" y="308"/>
+    </arc>
+    <arc id="arc19" class="logic arc" source="glyph10" target="glyph22.1">
+      <start x="761.0692784333347" y="413.625"/>
+      <next x="761.2835206004635" y="461.9449994609094"/>
+      <end x="540" y="480.375"/>
+    </arc>
+    <arc id="arc13" class="positive influence" source="glyph19" target="glyph6">
+      <start x="437.625" y="225"/>
+      <end x="506.25" y="225"/>
+    </arc>
+    <arc id="arc18" class="logic arc" source="glyph12" target="glyph22.1">
+      <start x="287.90461646350576" y="323.625"/>
+      <next x="287.0184272965658" y="468.79371823335987"/>
+      <end x="540" y="480.375"/>
+    </arc>
+    <arc id="arc21" class="logic arc" source="glyph21.2" target="glyph22.1">
+      <start x="540" y="462.625"/>
+      <end x="540" y="480.375"/>
+    </arc>
+    <arc id="nwtE_71eb9812-7e46-4cdd-9c1d-fd704c804df6" class="positive influence" source="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068" target="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282">
+      <start x="676.8014793748873" y="379.875"/>
+      <end x="676.2369569532099" y="329.2498057287598"/>
+    </arc>
+    <arc id="nwtE_99bcc30c-eef3-44cc-9584-b241cd762539" class="positive influence" source="glyph11" target="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3">
+      <start x="799" y="240.625"/>
+      <end x="799" y="286.75"/>
+    </arc>
+    <arc id="nwtE_641d87b8-cbd5-4314-9604-8ae680b46777" class="positive influence" source="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3" target="glyph10">
+      <start x="791.3472222222222" y="326.125"/>
+      <end x="768.8127598379733" y="379.4960951205894"/>
+    </arc>
+    <arc id="nwtE_ea81e6a7-f602-4b8b-8682-717d4a6d2673" class="positive influence" source="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3" target="glyph9">
+      <start x="809.0694444444445" y="326.125"/>
+      <end x="838.8018102845112" y="379.6432585121202"/>
+    </arc>
+    <arc id="arc20" class="logic arc" source="glyph9" target="glyph22.1">
+      <start x="849.0636089091875" y="413.625"/>
+      <next x="849.2997709071765" y="471.6362324785413"/>
+      <end x="540" y="480.375"/>
+    </arc>
+    <arc id="arc12" class="negative influence" source="glyph16" target="glyph6">
+      <start x="648.375" y="225"/>
+      <end x="571.625" y="225"/>
+    </arc>
+    <arc id="arc9" class="positive influence" source="glyph7" target="glyph12">
+      <start x="288" y="240.625"/>
+      <end x="288" y="289.25"/>
+    </arc>
+    <arc id="arc5" class="positive influence" source="glyph2" target="glyph11">
+      <start x="570.625" y="138.83718540803164"/>
+      <end x="765.451175148484" y="212.3424798009432"/>
+    </arc>
+    <arc id="arc15" class="logic arc" source="glyph20" target="glyph21.1">
+      <start x="473.797131147541" y="396.625"/>
+      <end x="540" y="421.375"/>
+    </arc>
+    <arc id="arc22" class="necessary stimulation" source="glyph22.2" target="glyph5">
+      <start x="540" y="521.625"/>
+      <end x="540" y="555.75"/>
+    </arc>
+    <arc id="arc16" class="logic arc" source="glyph17" target="glyph21.1">
+      <start x="481.625" y="447.24719101123594"/>
+      <end x="540" y="421.375"/>
+    </arc>
+    <arc id="arc11" class="negative influence" source="glyph18" target="glyph2">
+      <start x="710.375" y="159.25328502552003"/>
+      <end x="571.6078458584384" y="133.2139288566619"/>
+    </arc>
+    <arc id="arc10" class="negative influence" source="glyph8" target="glyph2">
+      <start x="372.625" y="159.16621358651278"/>
+      <end x="508.3926641049738" y="133.30369752948437"/>
+    </arc>
+    <arc id="arc7" class="positive influence" source="glyph2" target="glyph6">
+      <start x="540" y="142.90778498382133"/>
+      <end x="540" y="206.25"/>
+    </arc>
+    <arc id="arc6" class="positive influence" source="glyph2" target="glyph7">
+      <start x="509.375" y="139.15814097537083"/>
+      <end x="321.5386176741049" y="211.99484002140508"/>
+    </arc>
+    <arc id="nwtE_d9b5f227-9479-4eac-a4d0-375c7e93c78e" class="necessary stimulation" source="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068" target="glyph5">
+      <start x="676.966149490789" y="416.125"/>
+      <next x="676.7072927139895" y="541.4326697483482"/>
+      <next x="635.2272665490605" y="576.5479042975537"/>
+      <end x="578.5845214678286" y="576.8168182604762"/>
+    </arc>
+    <arc id="nwtE_f1c17a84-ce0f-4e6f-9dac-be6d5bb2cfc8" class="logic arc" source="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4" target="glyph21.1">
+      <start x="540" y="326.125"/>
+      <end x="540" y="421.375"/>
+    </arc>
+  </map>
+</sbgn>

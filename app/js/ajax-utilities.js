@@ -2,7 +2,6 @@ var libxmljs = require('libxmljs');
 var fs = require('fs');
 var request = require('request');
 var querystring = require('querystring');
-
 /*
 	functions in this file all have to take the same arguments:
 	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
@@ -10,11 +9,6 @@ var querystring = require('querystring');
 	The only cases where res.send doesn't need to be used is in case of errors.
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
-
-
-/**
- * 100MB limit to map size, to avoid potential flood.
- */
 exports.validateSBGNML = function (req, res) {
 	var sbgnml;
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
@@ -46,7 +40,7 @@ exports.validateSBGNML = function (req, res) {
 	function executeValidate(sbgnml, res) {
 		var xsdString;
 		try {
-			xsdString = fs.readFileSync('app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
+			xsdString = fs.readFileSync('./app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
 		}
 		catch (err) {
 			res.status(500);
@@ -103,8 +97,54 @@ exports.validateSBGNML = function (req, res) {
  * by the application to other domains than the application's domain.
  */
 exports.testURL = function (req, res) {
-	var url = req.query.url;
-	request.get(url, {timeout: 5000}, function (error, response, body) {
+
+	var options = {  
+		url: req.query.url,
+		method: 'GET',
+		qs: req.query.qs,
+		timeout: 30000
+	};
+	
+
+	request.get(options, function (error, response, body) {
 		res.send({error: error, response: response});
 	});
+
 };
+
+exports.ServerRequest = function (req, res) {
+	//request for taking authentication from minerva api
+	if(req.body.postType === "auth"){
+	var options = {  
+		url: req.body.address,
+		method: 'POST',
+		timeout: 30000,
+		json: req.body.param,
+		contentType: "application/json"
+	};
+	
+	request.post(options, function (error, response, body) {
+		res.send({error: error, response: response});
+	});
+	}else{
+		//request for sending the file to be changed
+		var headers = {
+			"Cookie" : req.body.token,
+			"Content-Type": "text/plain"
+		}
+		var options = {  
+			url: req.body.url,
+			method: 'POST',
+			qs: req.query.qs,
+			timeout: 30000,
+			body: req.body.file,
+			headers: headers
+		};
+		
+		request.post(options, function (error, response, body) {
+			res.send({error: error, response: response.body});
+		});
+	}
+
+};
+
