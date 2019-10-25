@@ -334,7 +334,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         html += "</td></tr>";
       }
 
-
+      // borderColor = '#555555';
       html += `<tr><td style='width: ${width}px; text-align:right; padding-right: 5px;'> <font class='sbgn-label-font'>Border Color</font> </td><td style='padding-left: 5px;'>
       <input id='inspector-border-color' class='inspector-input-box' type='color' style='width: ${buttonwidth}px;' value='${borderColor}'/>
       </td></tr>`;

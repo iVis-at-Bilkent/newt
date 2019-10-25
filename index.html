@@ -547,8 +547,8 @@
                                           <div class="paletteCol"><img src="app/img/edges/stimulation.svg" language="PD" value="stimulation" title="Stimulation"/></div>
                                           <div class="paletteCol"><img src="app/img/edges/catalysis.svg" language="PD" value="catalysis" title="Catalysis"/></div>
                                           <div class="paletteCol"><img src="app/img/edges/inhibition.svg" language="PD" value="inhibition" title="Inhibition"/></div>
-                                          <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary-stimulation" title="Necessary Stimulation"/></div>
-                                          <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="logic-arc" title="Logic Arc"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary stimulation" title="Necessary Stimulation"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="logic arc" title="Logic Arc"/></div>
                                           <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="equivalence arc" title="Equivalence Arc"/></div>
                                         </div>
                                       </div>
@@ -591,8 +591,8 @@
                                             <div class="paletteCol"><img src="app/img/edges/stimulation.svg" language="AF" value="positive influence" title="Positive Influence"/></div>
                                             <div class="paletteCol"><img src="app/img/edges/inhibition.svg" language="AF" value="negative influence" title="Negative Influence"/></div>
                                             <div class="paletteCol"><img src="app/img/edges/modulation.svg" language="AF" value="unknown influence" title="Unknown Influence"/></div>
-                                            <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="AF" value="necessary-stimulation" title="Necessary Stimulation"/></div>
-                                            <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="AF" value="logic-arc" title="Logic Arc"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="AF" value="necessary stimulation" title="Necessary Stimulation"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="AF" value="logic arc" title="Logic Arc"/></div>
                                             <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="AF" value="equivalence arc" title="Equivalence Arc"/></div>
                                         </div>
                                       </div>
@@ -1160,7 +1160,14 @@
                 </td>
 
                 <td>
-                    <input id="map-type" type="text" class="sbgn-input-medium layout-text" style='color: #808080;' readonly value= <%= mapType.call() %> >
+                    <select id="map-type" class="sbgn-input-large layout-text">
+                        <option value="PD" selected>PD</option>
+                        <option value="AF">AF</option>
+                        <option value="HybridSbgn">Hybrid(PD,AF)</option>
+                        <option value="SIF">SIF</option>
+                        <option value="HybridAny">Hybrid(PD,AF,SIF)</option>
+
+                    </select>
                 </td>
             </tr>
 
@@ -1854,7 +1861,7 @@
             <tbody>
             <tr>
             <th style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text">Map type will change to &quot;Unknown&quot;. Do you want to continue?</span>
+            <span class="add-on layout-text"><%= message %></span>
             </th>
             </tr>
 
@@ -1866,8 +1873,8 @@
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="prompt-mapType-accept" class="btn btn-default">Yes</button>
-            <button id="prompt-mapType-cancel" class="btn btn-default">No</button>
+            <button id="prompt-mapType-accept" class="btn btn-default">Dismiss</button>
+            <!-- <button id="prompt-mapType-cancel" class="btn btn-default">No</button> -->
             </div>
             </div>
             </div>

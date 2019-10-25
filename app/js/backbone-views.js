@@ -586,6 +586,105 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#map-description').blur();
     });
 
+    $(document).on("change", "#map-type", function (evt) {
+
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var elements = cy.elements();
+      
+      var newMapType = $("#map-type").val();
+      if(cy.elements().length == 0){
+        chiseInstance.elementUtilities.setMapType(newMapType);
+        return;
+      }
+      var currentMapType = chiseInstance.getMapType();
+      var validChange = false;
+      if((currentMapType == 'PD' || currentMapType == 'AF' || currentMapType =='SIF') && newMapType == 'HybridAny' && !validChange){
+        validChange = true;
+
+        //ok
+      }else if((currentMapType == 'PD' || currentMapType == 'AF') && (newMapType == 'HybridAny' || newMapType == 'HybridSbgn')&& !validChange){
+        validChange = true;
+        //ok
+      }else if(currentMapType =='HybridSbgn' && newMapType == 'HybridAny' && !validChange){
+        validChange = true;
+      }else if(currentMapType =='HybridSbgn' && (newMapType == 'PD' || newMapType =='AF')){
+        
+        if(newMapType == 'PD'){
+           //check no AF elements in netwrok     
+          var checkType = true;     
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "AF"){
+              checkType = false;             
+            }
+          }
+          validChange = checkType;     
+          
+         
+        }else{
+          //check no PD elements in netwrok
+          var checkType = true;     
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "PD"){
+              checkType = false;             
+            }
+          }
+          validChange = checkType;     
+        }
+      }else if(currentMapType == 'HybridAny' && !validChange){
+        if(newMapType == 'HybridSbgn'){
+           //check no SIF elements in netwrok
+           var checkType = true;     
+           for(var i = 0 ; i < elements.length && checkType ;i++){
+             if(elements[i].data("language") == "SIF"){
+               checkType = false;             
+             }
+           }
+           validChange = checkType;     
+        }else if(newMapType =='PD'){
+           //check no AF  OR SIF elements in netwrok
+           var checkType = true;  
+          for(var i = 0 ; i < elements.length &&  checkType;i++){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "SIF"){
+              checkType = false;            
+            }
+          }
+          validChange = checkType;  
+
+        }else if(newMapType == 'AF'){
+          //check no PD  OR SIF elements in netwrok
+          var checkType = true;   
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF"){
+              checkType = false;            
+            }
+          }
+
+          validChange = checkType;  
+
+        }else{
+          //check no PD  OR AF elements in netwrok
+          var checkType = true;  
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "PD"){
+              checkType = false;           
+            }
+          }
+
+          validChange = checkType;  
+        }
+      }
+       if(validChange){
+         chiseInstance.elementUtilities.setMapType(newMapType);
+       }else{
+        $("#map-type").val(currentMapType);
+         appUtilities.promptMapTypeView.render("You cannot change map type "+ currentMapType + " to a map of type "+newMapType+"!")
+         
+       }
+    
+      $('#map-type').blur();
+    });
     $(document).on("change", "#compound-padding", function (evt) {
 
       // use active cy instance
@@ -595,6 +694,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
       $('#compound-padding').blur();
     });
+
 
     $(document).on("change", "#arrow-scale", function (evt) {
 
@@ -676,12 +776,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+      //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
     });
 
     $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+      //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
     });
 
     $(document).on("click", "#map-general-default-button", function (evt) {
@@ -714,13 +814,14 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     // use active cy instance
     var cy = appUtilities.getActiveCy();
-
+    var chiseInstance = appUtilities.getActiveChiseInstance();
     // get current general properties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
+    $("#map-type").val(chiseInstance.elementUtilities.getMapType());
     return this;
   }
 });
@@ -2385,15 +2486,19 @@ var PromptMapTypeView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-mapType-template").html());
   },
-  render: function (afterFunction) {
+  render: function (message, afterFunction) {
     var self = this;
     self.template = _.template($("#prompt-mapType-template").html());
+
+    var param = {};
+    param.message = message;
+    self.template = self.template(param);
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
 
     $(document).off("click", "#prompt-mapType-accept").on("click", "#prompt-mapType-accept", function (evt) {
-      afterFunction();
+      //afterFunction();
       $(self.el).modal('toggle');
     });
 

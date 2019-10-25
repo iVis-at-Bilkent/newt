@@ -588,14 +588,27 @@ module.exports = function (chiseInstance) {
             appUtilities.promptInvalidEdgeWarning.render();
           }
 
+          var isMapTypeValid = false;
+          var currentMapType = chiseInstance.getMapType();
+          if(currentMapType == "HybridAny"){
+            isMapTypeValid = true;
+          }else if(currentMapType == "HybridSbgn"){
+              if(edgeParams.language == "PD" || edgeParams.language =="AF"){
+                isMapTypeValid = true;
+              }
+          }else if(currentMapType == edgeParams.language){
+            isMapTypeValid = true;
+          }
+
           // if added edge changes map type, warn user
-          if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
-            appUtilities.promptMapTypeView.render(function(){
+          if (chiseInstance.getMapType() && !isMapTypeValid){
+            appUtilities.promptMapTypeView.render('You cannot add element of type '+ edgeParams.language + ' to a map of type '+currentMapType+'!');;
+           /*  appUtilities.promptMapTypeView.render(function(){
                 chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
-            });
+            }); */
           }
           else{
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
@@ -1011,10 +1024,24 @@ module.exports = function (chiseInstance) {
           // If the parent class is valid for the node type then add the node
           if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
 
+            var isMapTypeValid = false;
+           
+            var currentMapType = chiseInstance.getMapType();
+            if(currentMapType == "HybridAny"){
+              isMapTypeValid = true;
+            }else if(currentMapType == "HybridSbgn"){
+                if(nodeParams.language == "PD" || nodeParams.language =="AF"){
+                  isMapTypeValid = true;
+                }
+            }else if(currentMapType == nodeParams.language){
+              isMapTypeValid = true;
+            }
             // if added node changes map type, warn user
-            if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){
-              appUtilities.promptMapTypeView.render(function(){
-                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
+            if (chiseInstance.getMapType() && !isMapTypeValid){
+
+              appUtilities.promptMapTypeView.render("You cannot add element of type "+ nodeParams.language + " to a map of type "+currentMapType+"! You can change Map Type from map properties.");
+             /*  appUtilities.promptMapTypeView.render(function(){
+                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);}); */
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
