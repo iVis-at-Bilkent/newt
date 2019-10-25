@@ -29,21 +29,21 @@ tutorial.introduction = function(checkCookie){
       { 
         intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
                 <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/2kNerg3j1Bs?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Learn Basics - Tool mode, palette and basic node-edge creation</p>'
+                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/5tJdaWWk-w8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
+                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Tool mode, palette, basic node-edge creation and validation</p>'
 
       },
       {
         intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
                 <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/2IK6RPZDy-A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Learn Basics - Object property editing, compound structures, and persistency</p>'               
+                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/_QrmKO8672A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
+                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Object styling, compound structures and persistency</p>'               
       },
       {
         intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
                 <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/Vc_qI7zjFqI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Learn Basics - Templates, complexity management, highlighting, CellDesigner import, PC queries, annotation, search, and marquee zoom</p>'               
+                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/6pP78sht7PM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
+                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Templates, complexity management, highlighting, import/export, PC queries, annotation and search</p>'               
       }
     ],
     showStepNumbers: false,

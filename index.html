@@ -1081,7 +1081,17 @@
             <td>
             <input id="tile" type="checkbox" class="layout-text" <% if (tile){ %> checked<%}%>>
             </td>
-            </tr>         
+            </tr>
+            
+            <tr>
+              <td>
+                <span class="add-on layout-text" title="Whether to pack components"> Pack Components </span>
+              </td>
+  
+              <td>
+                <input id="pack-components" type="checkbox" class="layout-text" <% if (packComponents){ %> checked<%}%>>
+              </td>
+            </tr>
 
             <tr>
             <td>
@@ -2478,8 +2488,8 @@
         </script>
 
         <script type="text/template" id="infobox-properties-template">
-            <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content" style="width:360px!important">
+            <div class="modal-dialog modal-sm sbgn-modal-dialog" style="width:360px!important">
+            <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Infobox Properties</h4>

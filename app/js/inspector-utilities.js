@@ -1013,6 +1013,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           lines = lines.join("\n");
 
           chiseInstance.changeNodeLabel(selectedEles, lines);
+          inspectorUtilities.handleSBGNInspector();
         }
       });
 
@@ -1029,6 +1030,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       function callChise2ChangeBgOpacity(v) {
         v = parseFloat(v);
+        if (isNaN(v)) {
+          v = 1;
+        }
         if (v < 0) {
           v = 0;
         }
@@ -1047,11 +1051,14 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-background-opacity-val').keyup(function (e) {
         if (e.keyCode == 13) {
-          const v = parseFloat($("#inspector-background-opacity-val").val());
-          if (v < 0) {
+          let v = parseFloat($("#inspector-background-opacity-val").val());
+          if (isNaN(v)) {
+            v = 1;
+          }
+          if (v <= 0) {
             $("#inspector-background-opacity-val").val(0);
           }
-          if (v > 1) {
+          if (v >= 1) {
             $("#inspector-background-opacity-val").val(1);
           }
           $('#inspector-background-opacity').val(v);

@@ -324,6 +324,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       currentLayoutProperties.gravity = Number(document.getElementById("gravity").value);
       currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
       currentLayoutProperties.tile = document.getElementById("tile").checked;
+      currentLayoutProperties.packComponents = document.getElementById("pack-components").checked ? true : false;
       currentLayoutProperties.animate = document.getElementById("animate").checked ? true : false;
       currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
       currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
@@ -2959,11 +2960,12 @@ var ReactionTemplateView = Backbone.View.extend({
       var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
+      var layoutParam = {name: "fcose"};
       if(templateType == "reversible"){
         nodeList = params.reversibleInputNodeList;
         complexName = params.reversibleOutputNodeList;
       }
-      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal);
+      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined, layoutParam);
 
       //Update arrow-scale of newly added edges (newly added elements are selected so we just update selected edges)
       var currentArrowScale = Number($('#arrow-scale').val());
