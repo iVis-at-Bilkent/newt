@@ -715,7 +715,8 @@ appUtilities.defaultLayoutProperties = {
   gravityRange: 3.8,
   initialEnergyOnIncremental: 0.3,
   improveFlow: true,
-  packComponents: true
+  packComponents: true,
+  uniformNodeDimensions : true
 };
 
 appUtilities.defaultGridProperties = {

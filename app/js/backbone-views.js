@@ -334,7 +334,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);    
       currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
       currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
-
+      currentLayoutProperties.uniformNodeDimensions = document.getElementById("uniform-node-dimensions").checked;
       // reset currentLayoutProperties in scratch pad
       appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');
 
