@@ -21,6 +21,13 @@ appUtilities.getScratch = function (cyOrEle, name) {
   return retVal;
 }
 
+appUtilities.mapTypesToViewableText = {
+  'PD': 'PD',
+  'AF': 'AF',
+  'SIF': 'SIF',
+  'HybridSbgn' : 'Hybrid (PD,AF)' ,
+  'HybridAny' : 'Hybrid (PD,AF,SIF)'   
+};
 // Set a single property on scratchpad of an element or the core
 appUtilities.setScratch = function (cyOrEle, name, val) {
   this.getScratch(cyOrEle)[name] = val;

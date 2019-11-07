@@ -589,6 +589,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     $(document).on("change", "#map-type", function (evt) {
 
+      var callback = function(){
+        $('#map-type').val(chiseInstance.getMapType());
+      };
       // use active cy instance
       var cy = appUtilities.getActiveCy();
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -596,7 +599,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       
       var newMapType = $("#map-type").val();
       if(cy.elements().length == 0){
-        chiseInstance.elementUtilities.setMapType(newMapType);
+        //chiseInstance.elementUtilities.setMapType(newMapType);
+        cy.undoRedo().do("changeMapType", {mapType: newMapType, callback : callback});
         return;
       }
       var currentMapType = chiseInstance.getMapType();
@@ -677,10 +681,11 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         }
       }
        if(validChange){
-         chiseInstance.elementUtilities.setMapType(newMapType);
+        cy.undoRedo().do("changeMapType", {mapType: newMapType, callback : callback});
+         //chiseInstance.elementUtilities.setMapType(newMapType);
        }else{
         $("#map-type").val(currentMapType);
-         appUtilities.promptMapTypeView.render("You cannot change map type "+ currentMapType + " to a map of type "+newMapType+"!")
+         appUtilities.promptMapTypeView.render("You cannot change map type "+ appUtilities.mapTypesToViewableText[currentMapType] + " to a map of type "+appUtilities.mapTypesToViewableText[newMapType]+"!");
          
        }
     
@@ -2487,12 +2492,13 @@ var PromptMapTypeView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-mapType-template").html());
   },
-  render: function (message, afterFunction) {
+  render: function (message,suggestion, afterFunction) {
     var self = this;
     self.template = _.template($("#prompt-mapType-template").html());
 
     var param = {};
     param.message = message;
+    param.suggestion =suggestion;
     self.template = self.template(param);
 
     $(self.el).html(self.template);

@@ -239,7 +239,7 @@ module.exports = function (chiseInstance) {
 
           if (consumptionEdges.length > 0) {
             var ur = cy.undoRedo();
-            ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "Unknown"});
+            ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "HybridAny"});
           }
           var currentArrowScale = Number($('#arrow-scale').val());
           cyTarget.connectedEdges().style('arrow-scale', currentArrowScale);
@@ -602,7 +602,8 @@ module.exports = function (chiseInstance) {
 
           // if added edge changes map type, warn user
           if (chiseInstance.getMapType() && !isMapTypeValid){
-            appUtilities.promptMapTypeView.render('You cannot add element of type '+ edgeParams.language + ' to a map of type '+currentMapType+'!');;
+         
+            appUtilities.promptMapTypeView.render('You cannot add element of type '+ appUtilities.mapTypesToViewableText[edgeParams.language]  + ' to a map of type '+appUtilities.mapTypesToViewableText[currentMapType]+'!',"You can change map type from Map Properties.");;
            /*  appUtilities.promptMapTypeView.render(function(){
                 chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
@@ -1039,7 +1040,7 @@ module.exports = function (chiseInstance) {
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && !isMapTypeValid){
 
-              appUtilities.promptMapTypeView.render("You cannot add element of type "+ nodeParams.language + " to a map of type "+currentMapType+"! You can change Map Type from map properties.");
+              appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
              /*  appUtilities.promptMapTypeView.render(function(){
                   chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);}); */
             }

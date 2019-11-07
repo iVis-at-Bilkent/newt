@@ -1170,12 +1170,12 @@
                 </td>
 
                 <td>
-                    <select id="map-type" class="sbgn-input-large layout-text">
+                    <select id="map-type" class="sbgn-input-medium layout-text">
                         <option value="PD" selected>PD</option>
                         <option value="AF">AF</option>
-                        <option value="HybridSbgn">Hybrid(PD,AF)</option>
+                        <option value="HybridSbgn">PD+AF</option>
                         <option value="SIF">SIF</option>
-                        <option value="HybridAny">Hybrid(PD,AF,SIF)</option>
+                        <option value="HybridAny">PD+AF+SIF</option>
 
                     </select>
                 </td>
@@ -1860,7 +1860,7 @@
 
         <!-- Map type change warning -->
         <script type="text/template" id="prompt-mapType-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1872,6 +1872,8 @@
             <tr>
             <th style="padding-left: 0px;" align="left">
             <span class="add-on layout-text"><%= message %></span>
+            <br>
+            <span class="add-on layout-text"><%= suggestion %></span>
             </th>
             </tr>
 
