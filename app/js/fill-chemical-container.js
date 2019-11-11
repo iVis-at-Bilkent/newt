@@ -47,7 +47,7 @@ var fillChemicalContainer = function (node) {
       }
     },
     error: function(xhr, options, err){
-      $('#chemical-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + error + "</span>");
+      $('#chemical-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + err + "</span>");
     }
   });
   $('#chemical-title').html("<b>" + node.data('label') + "</b>");
