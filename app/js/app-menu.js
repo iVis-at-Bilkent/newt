@@ -33,134 +33,6 @@ module.exports = function() {
       }
     });
   }
-  function cd2sbgnml(xml) {
-
-    $.ajax({
-        type: 'post',
-        url: "http://web.newteditor.org:8080/cd2sbgnml",
-        data: xml,
-        success: function (data) {
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-            var cy = appUtilities.getActiveCy();
-            chiseInstance.endSpinner("load-spinner");
-            if (cy.elements().length !== 0) {
-                promptConfirmationView.render(function() {
-                    chiseInstance.loadSBGNMLText(data, true);
-                });
-            }
-            else {
-                chiseInstance.loadSBGNMLText(data, true);
-            }
-        },
-        error: function (XMLHttpRequest) {
-          var chiseInstance = appUtilities.getActiveChiseInstance();
-          chiseInstance.endSpinner("load-spinner");
-          promptFileConversionErrorView.render();
-          if (XMLHttpRequest.status === 0) {
-              document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-          }
-        }
-    })
-  }
-
-  function sbgnml2cd(xml) {
-
-      $.ajax({
-          type: 'post',
-          url: "http://web.newteditor.org:8080/sbgnml2cd",
-          data: xml,
-          success: function (data) {
-            fileSaveView.render("celldesigner", null, data);
-          },
-          error: function (XMLHttpRequest) {
-              promptFileConversionErrorView.render();
-              if (XMLHttpRequest.status === 0) {
-                  document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-              }
-          }
-      })
-  }
-  function sbgnml2sbml(xml) {
-
-    var login = "login=anonymous&password=";
-    var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
-    var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBGN-ML:SBML";
-    var myToken = "MINERVA_AUTH_TOKEN=";
-   
-     $.ajax({
-      type: 'post',
-      url: "/utilities/ServerRequest",
-      data: { address: url1, param: JSON.stringify(login), postType: "auth" },
-      success: function (data) {
-        taken = data.response.headers["set-cookie"][1];
-        var cookieArray = taken.split(';');
-        myToken += cookieArray[0].split('=')[1];
-
-        $.ajax({
-          type: 'post',
-          url: "/utilities/ServerRequest",
-          headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-          data: { url: url2, file: xml, token: myToken, postType: "sendData" },
-          success: function (data) {
-           
-            console.log(data.response);
-          fileSaveView.render("sbml", null, data.response);
-        },
-        error: function (XMLHttpRequest) {
-          promptFileConversionErrorView.render();
-          if (XMLHttpRequest.status === 0) {
-              document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-          }
-      }
-    })}})
-}
-  //function to make minerva api request to convert sbgn2sbml
-  function sbgn2sbgnml(xml)
-  {
-    var login = "login=anonymous&password=";
-    var url1 = "https://minerva-dev.lcsb.uni.lu/minerva/api/doLogin";
-    var url2 = "https://minerva-dev.lcsb.uni.lu/minerva/api/convert/SBML:SBGN-ML";
-    var myToken = "MINERVA_AUTH_TOKEN=";
-   
-     $.ajax({
-      type: 'post',
-      url: "/utilities/ServerRequest",
-      data: { address: url1, param: JSON.stringify(login), postType: "auth" },
-      success: function (data) {
-        taken = data.response.headers["set-cookie"][1];
-        var cookieArray = taken.split(';');
-        myToken += cookieArray[0].split('=')[1];
-        
-        $.ajax({
-          type: 'post',
-          url: "/utilities/ServerRequest",
-          headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-          data: { url: url2, file: xml, token: myToken, postType: "sendData" },
-          success: function (data) {
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-            var cy = appUtilities.getActiveCy();
-            chiseInstance.endSpinner("load-spinner");
-            if (cy.elements().length !== 0) {
-              promptConfirmationView.render(function () {
-                chiseInstance.loadSBGNMLText(data.response);
-              });
-            }
-            else {
-              chiseInstance.loadSBGNMLText(data.response);
-            }
-          },
-            error:function (XMLHttpRequest) {
-              var chiseInstance = appUtilities.getActiveChiseInstance();
-              chiseInstance.endSpinner("load-spinner");
-              promptFileConversionErrorView.render();
-              if (XMLHttpRequest.status === 0) {
-                  document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-              }
-            }
-        })
-      }
-    })
-  }
 
   function loadSample(filename) {
 
@@ -421,18 +293,32 @@ module.exports = function() {
     });
 
     $('#celldesigner-file-input').change(function (e, fileObject) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-      if ($(this).val() != "" || fileObject) {
-        var file = this.files[0] || fileObject;
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      if ($(this).val() != "") {
+        var file = this.files[0];
         appUtilities.setFileContent(file.name);
-        var reader = new FileReader();
-        reader.onload = function(event) {
-          chiseInstance = appUtilities.getActiveChiseInstance();
-          chiseInstance.startSpinner("load-spinner");
-          cd2sbgnml(event.target.result);
-        };
-        reader.readAsText(file);
+        chiseInstance.loadCellDesigner(file,  success = function(data){
+          if (cy.elements().length !== 0) {
+            promptConfirmationView.render(function () {
+              chiseInstance.loadSBGNMLText(data,true);
+            });
+          }
+          else {
+            chiseInstance.loadSBGNMLText(data,true);
+          }
+        },
+        error = function(data){
+          promptFileConversionErrorView.render();          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          
+        });
+       
+        $(this).val("");
       }
+
+
+      
     });
     $("#import-SBML-file").click(function () {
       $("#sbml-file").trigger('click');
@@ -455,17 +341,27 @@ module.exports = function() {
 
     $("#sbml-file").change(function () {
      
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
       if ($(this).val() != "") {
         var file = this.files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-          var text = this.result;
-          chiseInstance = appUtilities.getActiveChiseInstance();
-          chiseInstance.startSpinner("load-spinner");
-          sbgn2sbgnml(e.target.result);
-        }
-        reader.readAsText(file);
+        appUtilities.setFileContent(file.name);
+        chiseInstance.loadSbml(file,  success = function(data){
+          if (cy.elements().length !== 0) {
+            promptConfirmationView.render(function () {
+              chiseInstance.loadSBGNMLText(data);
+            });
+          }
+          else {
+            chiseInstance.loadSBGNMLText(data);
+          }
+        },
+        error = function(data){
+          promptFileConversionErrorView.render();          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          
+        });
+       
         $(this).val("");
       }
     });
@@ -1276,9 +1172,10 @@ module.exports = function() {
     });
 
     $("#export-as-celldesigner-file").click(function (evt) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
+      fileSaveView.render("celldesigner", null, null);
+      /*   var chiseInstance = appUtilities.getActiveChiseInstance();
         var sbgnml = chiseInstance.createSbgnml();
-        sbgnml2cd(sbgnml);
+        sbgnml2cd(sbgnml); */
     });
 
     $("#export-to-sif-layout").click(function (evt) {
@@ -1300,9 +1197,8 @@ module.exports = function() {
     });
 
    $("#export-as-sbml").click(function (evt) {
-     var chiseInstance = appUtilities.getActiveChiseInstance();
-     var sbgnml = chiseInstance.convertSbgn();
-     sbgnml2sbml(sbgnml);
+    fileSaveView.render("sbml", null, null);
+   
     });
     $("#add-complex-for-selected").click(function (e) {
 

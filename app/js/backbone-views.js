@@ -2073,19 +2073,24 @@ var FileSaveView = Backbone.View.extend({
         else {
           saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
         }
-      }
+      } 
       else if(fileformat === "celldesigner") {
-        var blob = new Blob([text], {
-            type: "text/plain;charset=utf-8;",
+       
+        chiseInstance.saveAsCellDesigner(filename, function(){
+          var promptFileConversionErrorView  = new PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
+          promptFileConversionErrorView.render();             
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
         });
-        FileSaver.saveAs(blob, filename);
+       
       }
       else if(fileformat === "sbml")
       {
-        var blob = new Blob([text], {
-          type: "text/plain;charset=utf-8;",
-      });
-      FileSaver.saveAs(blob, filename);
+        chiseInstance.saveAsSbml(filename, function(){
+          var promptFileConversionErrorView  = new PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
+          promptFileConversionErrorView.render();             
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
+        });
+     
       }
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);
