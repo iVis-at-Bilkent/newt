@@ -2803,31 +2803,26 @@ appUtilities.enableInfoBoxRelocation = function(node){
         var drag_x = event.position.x;
         var drag_y = event.position.y;
         var anchorSide = selectedBox.anchorSide;
-        var shift_x, shift_y, box_new_x, box_new_y;
+       
 
         //If anchor side is top or bottom only move in x direction
         if (anchorSide === "top" || anchorSide === "bottom") {
-          shift_x = drag_x - last_mouse_x;
-          box_new_x = selectedBox.bbox.x + shift_x; //Calculate new box position
+         
+         
           //Get absolute position
-          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, box_new_x, selectedBox.bbox.y, cy);
-          var newRelativeCoords;
-          if (absoluteCoords.x < (parentX1)) {
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox,((parentX1)),
-              absoluteCoords.y, cy);
-            selectedBox.bbox.x = newRelativeCoords.x;
+          var newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, drag_x, selectedBox.bbox.y, cy);        
+          if (newRelativeCoords.x < 0) {           
+            selectedBox.bbox.x = 0;
           }
-          else if (absoluteCoords.x > (parentX2)) { //Box cannot go futher than parentBox - margin on right side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, ((parentX2)),
-              absoluteCoords.y, cy);
-            selectedBox.bbox.x = newRelativeCoords.x;
+          else if (newRelativeCoords.x > 100) { //Box cannot go futher than parentBox - margin on right side            
+            selectedBox.bbox.x = 100;
           }
           else { //Else it is already relative
-            selectedBox.bbox.x = box_new_x;
+            selectedBox.bbox.x = newRelativeCoords.x;
           }
           //If box is at margin points allow it to change anchor side
           //If it on left it can pass left anchor side
-          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
           if (absoluteCoords.x === (parentX1)) { //If it is on the left margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_y < drag_y  && anchorSide === "top") {
@@ -2865,27 +2860,24 @@ appUtilities.enableInfoBoxRelocation = function(node){
         }
         else {
            //If anchor side left or right only move in y direction
-          shift_y = drag_y - last_mouse_y;
-          box_new_y = selectedBox.bbox.y + shift_y; //Calculate new box position
+        
 
           //Get absolute position
-          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, box_new_y, cy);
-          var newRelativeCoords;
-          if (absoluteCoords.y< (parentY1)) { //Box cannot go futher than parentBox + margin on left side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
-              (parentY1), cy);
-            selectedBox.bbox.y = newRelativeCoords.y;
+          var newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, selectedBox.bbox.x, drag_y, cy);
+          
+          if (newRelativeCoords.y< 0) { //Box cannot go futher than parentBox + margin on left side
+           
+            selectedBox.bbox.y = 0;
           }
-          else if (absoluteCoords.y > (parentY2)) { //Box cannot go futher than parentBox - margin on right side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
-              (parentY2), cy);
-            selectedBox.bbox.y = newRelativeCoords.y;
+          else if (newRelativeCoords.y > 100) { //Box cannot go futher than parentBox - margin on right side
+            
+            selectedBox.bbox.y = 100;
           }
           else { //Else it is already relative
-            selectedBox.bbox.y = box_new_y;
+            selectedBox.bbox.y = newRelativeCoords.y;
           }
 
-          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
           //Set anchor side changes
           if (absoluteCoords.y  === (parentY1)) { //If it is on the top margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
