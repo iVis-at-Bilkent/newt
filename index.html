@@ -1146,17 +1146,17 @@
             <tbody>
             <tr>
                 <td class="header">
-                    <span class="add-on layout-text"> Name </span>
+                    <span class="add-on layout-text" title="Name of the map"> Name </span>
                 </td>
 
                 <td>
-                    <input id="map-name" type="text" class="sbgn-input-medium layout-text" value="<%= mapName %>" >
+                    <input id="map-name"  type="text" class="sbgn-input-medium layout-text" value="<%= mapName %>" >
                 </td>
             </tr>
 
             <tr>
                 <td class="header">
-                    <span class="add-on layout-text"> Description </span>
+                    <span class="add-on layout-text" title="Description of the map"> Description </span>
                 </td>
 
                 <td>
@@ -1166,7 +1166,7 @@
 
             <tr>
                 <td class="header">
-                    <span class="add-on layout-text"> Type </span>
+                    <span class="add-on layout-text" title="Type of a map is used to check map type specific rules (e.g. target of a consumption is a process node)"> Type </span>
                 </td>
 
                 <td>
@@ -1183,7 +1183,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Compound Padding </span>
+            <span class="add-on layout-text" title="Percentage paddings around compound nodes. Notice, however, that a certain minimal padding is needed for all compound nodes to accommodate for information boxes and visual editing cues (such as expand / collapse cues)"> Compound Padding </span>
             </td>
 
             <td>
@@ -1193,7 +1193,7 @@
 
             <tr>
             <td class="header">
-                <span class="add-on layout-text"> Edge Arrow Size </span>
+                <span class="add-on layout-text" title="Size of various types of arrows on edges"> Edge Arrow Size </span>
             </td>
 
             <td>
@@ -1203,7 +1203,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Allow Compound Resize </span>
+            <span class="add-on layout-text" title="Whether or not compounds should be allowed to be resized (if not, compounds dynamically assume dimensions with respect to their content's geometry)"> Allow Compound Resize </span>
             </td>
 
             <td>
@@ -1213,7 +1213,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Infer Nesting on Load </span>
+            <span class="add-on layout-text" title="Whether or not nesting of nodes inside compounds should be inferred on loading of maps (most data providers will mean for a compound to include processes inside its boundaries but will not correctly set the associated compartment references)"> Infer Nesting on Load </span>
             </td>
 
             <td>
@@ -1223,7 +1223,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Enable Ports </span>
+            <span class="add-on layout-text" title="Whether or not processes should have input and output ports to respectively combine consumption and production edges to a single point of input and output on the process"> Enable Ports </span>
             </td>
 
             <td>
@@ -1233,7 +1233,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Enable Topology Grouping of SIF Nodes </span>
+            <span class="add-on layout-text" title="For maps of type SIF, whether or not macromolecules should be grouped with respect to topology (i.e. if two macromolecules have the same connectivity, they are grouped together with a compound node for reducing edge count)"> Enable Topology Grouping of SIF Nodes </span>
             </td>
 
             <td>
@@ -1254,7 +1254,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Display Labels for Named Complexes </span>
+                <span class="add-on layout-text" title="Whether or not molecular complexes with labels should display these labels"> Display Labels for Named Complexes </span>
                 </td>
 
                 <td>
@@ -1264,7 +1264,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Adjust Node Label Font Size Automatically </span>
+                <span class="add-on layout-text" title="Whether or not the font size of node labels should be calculated with respect to node size"> Adjust Node Label Font Size Automatically </span>
                 </td>
 
                 <td>
@@ -1274,7 +1274,7 @@
 
                 <tr>
                     <td class="header">
-                        <span class="add-on layout-text"> Label Size </span>
+                        <span class="add-on layout-text" title="When Adjust Node Label Font Size Automatically is enabled, label sizes can be set to be uniformly small, medium or large"> Label Size </span>
                     </td>
 
                     <td>
@@ -1288,7 +1288,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Fit Labels to Nodes </span>
+                <span class="add-on layout-text" title="Whether or not long node labels overflowing node width should be truncated with ellipses"> Fit Labels to Nodes </span>
                 </td>
 
                 <td>
@@ -1298,7 +1298,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Fit Labels to Information Boxes </span>
+                <span class="add-on layout-text" title="Whether or not long information box (state variable or units of information) labels overflowing information box width should be truncated with ellipses"> Fit Labels to Information Boxes </span>
                 </td>
 
                 <td>
@@ -1319,7 +1319,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Recalculate Layout on Complexity Management </span>
+                <span class="add-on layout-text" title='Whether or not an incremental layout, which tries to "tidy up" the drawing, should be applied after complexity management (expand/collapse and hide/show) operations'> Recalculate Layout on Complexity Management </span>
                 </td>
 
                 <td>
@@ -1329,7 +1329,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Rearrange on Complexity Management </span>
+                <span class="add-on layout-text" title="Whether or not complexity management operations should try to make room for changes (e.g. move surrounding neighbors away before expanding a collapsed node) prior to recalculating layout on complexity management operations"> Rearrange on Complexity Management </span>
                 </td>
 
                 <td>
@@ -1339,7 +1339,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Animate on Drawing Changes </span>
+                <span class="add-on layout-text" title="Whether or not operations such as layout and complexity management should move map objects to their new locations using animation"> Animate on Drawing Changes </span>
                 </td>
 
                 <td>
@@ -2713,7 +2713,7 @@
           <div style="margin-top:5px;">
 
               <div style="margin-bottom:5px; text-align: center;">
-                <class="add-on layout-text">Style</>
+                <class="add-on layout-text" title="Applies a uniform color scheme to the entire map. The colors may be reversed with the associated icon.">Style</>
                 <class="add-on layout-text" style="margin-left:2%;"></>
                 <select id="color-scheme-inspector-style-select" class="color-scheme-type-select" style="margin-left: %7;">
                   <option id="color-scheme-inspector-style-solid" value="solid" <% if (scheme_type == 'solid') print('selected')%>> Solid </option>

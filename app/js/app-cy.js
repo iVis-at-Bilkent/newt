@@ -132,6 +132,24 @@ module.exports = function (chiseInstance) {
         coreAsWell: true // Whether core instance have this item on cxttap
       },
       {
+        id: 'ctx-menu-tile-all-information-boxes',
+        content: 'Tile Information Boxes',
+        onClickFunction: function () {
+          var cy = appUtilities.getActiveCy();
+          var eles = cy.nodes();   
+          var ur = cy.undoRedo();
+          var actions = [];
+
+         eles.forEach(function(node){
+          actions.push({name: "fitUnits", param: { node: node, locations:["top", "bottom", "right", "left"]}});
+         });
+      
+         ur.do("batch", actions);
+         
+        },
+        coreAsWell: true // Whether core instance have this item on cxttap
+      },
+      {
         id: 'ctx-menu-highlight-selected',
         content: 'Highlight Selected',
         image: {src : "app/img/toolbar/highlight-selected.svg", width : 16, height : 16, x : 2, y : 3},
