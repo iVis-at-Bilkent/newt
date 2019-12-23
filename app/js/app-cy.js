@@ -758,9 +758,9 @@ module.exports = function (chiseInstance) {
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
-        if(node.data('statesandinfos').length > 0) {
+       /*  if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
-        }
+        } */
         // ensure consistency of inspector properties through resizing
         inspectorUtilities.handleSBGNInspector();
       }
@@ -774,9 +774,9 @@ module.exports = function (chiseInstance) {
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
-        if(node.data('statesandinfos').length > 0) {
+       /*  if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
-        }
+        } */
       }
       else if ( actionName === "changeMenu" ) {
 
@@ -802,9 +802,9 @@ module.exports = function (chiseInstance) {
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
-        if(node.data('statesandinfos').length > 0) {
-          updateInfoBox(node);
-        }
+        /* if(node.data('statesandinfos').length > 0) {
+         updateInfoBox(node);
+        } */
       }
       else if ( actionName === "changeMenu" ) {
 
@@ -1247,11 +1247,11 @@ module.exports = function (chiseInstance) {
     });
 
     // infobox refresh when resize happen, for simple nodes
-    cy.on('noderesize.resizedrag', function(e, type, node) {
+    /* cy.on('noderesize.resizedrag', function(e, type, node) {
       if(node.data('statesandinfos').length > 0) {
         updateInfoBox(node);
       }
-    });
+    }); */
 
     cy.on('layoutstop', function (event) {
   		/*
