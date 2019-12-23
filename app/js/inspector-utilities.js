@@ -846,6 +846,9 @@ inspectorUtilities.handleSBGNInspector = function () {
           sbgnclass = sbgnclass.replace(' multimer', '');
           multimer = true;
         }
+        else {
+          multimer = false;        
+        }
 
         var nameToVal = {
           'width': selected.width(),
@@ -870,7 +873,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         // Push this action if the node can be cloned
         if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
-          nameToVal['clonemarker'] = selected.data('clonemarker');
+          nameToVal['clonemarker'] = selected.data('clonemarker') ? true: false;
         }
 
         // Push this action if the node can have label
