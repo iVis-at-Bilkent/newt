@@ -1203,6 +1203,7 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
+      inspectorUtilities.handleSBGNInspector();
     });
 
     $("#add-compartment-for-selected").click(function (e) {
@@ -1220,6 +1221,7 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
+      inspectorUtilities.handleSBGNInspector();
     });
 
     $("#add-submap-for-selected").click(function (e) {
@@ -1236,6 +1238,7 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'submap');
+      inspectorUtilities.handleSBGNInspector();
     });
 
     $("#create-reaction-template").click(function (e) {
