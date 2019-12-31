@@ -40,7 +40,7 @@ exports.validateSBGNML = function (req, res) {
 	function executeValidate(sbgnml, res) {
 		var xsdString;
 		try {
-			xsdString = fs.readFileSync('./app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
+			xsdString = fs.readFileSync('app/resources/libsbgn-0.3.xsd', {encoding: 'utf8'});// function (err, data) {
 		}
 		catch (err) {
 			res.status(500);
