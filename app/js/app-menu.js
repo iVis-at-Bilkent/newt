@@ -1048,18 +1048,13 @@ module.exports = function() {
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-      // get current layout properties for cy
-      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
-
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
 
       var preferences = {
-        animate: currentGeneralProperties.animateOnDrawingChanges ? true : false
+        animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
-//      if (currentLayoutProperties.animate == 'during') {
-//        delete preferences.animate;
-//      }
+
       layoutPropertiesView.applyLayout(preferences);
     });
 
@@ -1075,16 +1070,15 @@ module.exports = function() {
       if(cy.elements().length == 0) {
         return;
       }
-
-      // get current layout properties for cy
-      var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+      // get current general properties for cy
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');      
 
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
 
       var preferences = {
         quality: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? "draft" : "default",
-        animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentLayoutProperties.animate,
+        animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges,
         randomize: true
       };
 
@@ -1210,6 +1204,7 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
+      inspectorUtilities.handleSBGNInspector();
     });
 
     $("#add-compartment-for-selected").click(function (e) {
@@ -1227,6 +1222,7 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'compartment');
+      inspectorUtilities.handleSBGNInspector();
     });
 
     $("#add-submap-for-selected").click(function (e) {
@@ -1243,6 +1239,7 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'submap');
+      inspectorUtilities.handleSBGNInspector();
     });
 
     $("#create-reaction-template").click(function (e) {
