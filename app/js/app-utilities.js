@@ -2998,11 +2998,16 @@ appUtilities.modifyUnits = function (node, ele, anchorSide) {
 
 appUtilities.resizeNodesToContent = function(nodes){
 
+  
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var cy = appUtilities.getActiveCy();
 
+    if(!chiseInstance.areCompoundSizesConsidered()){
+      nodes = nodes.difference(":parent,[class*='compartment'],[class*='submap']");
+    }
     chiseInstance.resizeNodesToContent(nodes, false);
     cy.nodeResize('get').refreshGrapples();
+    cy.expandCollapse('get').clearVisualCue();
 
 };
 
