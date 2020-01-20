@@ -320,6 +320,9 @@ module.exports = function() {
 
       
     });
+    $("#import-experimental-data").click(function () {
+      $("#overlay-data").trigger('click');
+    });
     $("#import-SBML-file").click(function () {
       $("#sbml-file").trigger('click');
     });
@@ -339,6 +342,18 @@ module.exports = function() {
       $("#sif-layout-input").trigger('click');
     });
 
+    //EXPERIMENTAL DATA 
+    $("#overlay-data").change(function () {
+
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        console.log("I took the data");
+        //appUtilities.
+      }
+    });
+    //EXPERIMENTAL DATA
     $("#sbml-file").change(function () {
      
       var chiseInstance = appUtilities.getActiveChiseInstance();
