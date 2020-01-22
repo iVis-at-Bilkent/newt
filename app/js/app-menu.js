@@ -349,8 +349,38 @@ module.exports = function() {
       var cy = appUtilities.getActiveCy();
       if ($(this).val() != "") {
         var file = this.files[0];
+        var reader = new FileReader();
+      reader.onload = function(e) {
+        //Get the text result of the file.
+        var text = this.result;
         console.log("I took the data");
-        //appUtilities.
+      // chiseInstance.experimetalDataOverlay.showGenomicData();
+       console.log(chiseInstance.prepareGenomicDataShareDB(text));
+       console.log(text);
+     
+     
+     
+      };
+
+
+
+      reader.readAsText( file );
+
+      $(this).val("");
+          //Get the text result of the file.
+       
+
+
+        
+
+      
+
+
+
+
+
+        //yyyy
+
       }
     });
     //EXPERIMENTAL DATA
