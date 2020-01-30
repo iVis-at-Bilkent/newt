@@ -746,7 +746,7 @@ appUtilities.defaultGridProperties = {
 };
 
 appUtilities.defaultGeneralProperties = {
-  compoundPadding: 5,
+  compoundPadding: 0,
   extraCompartmentPadding: 14,
   extraComplexPadding: 10,
   arrowScale: 1.25,

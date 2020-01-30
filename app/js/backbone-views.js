@@ -690,11 +690,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#map-type').blur();
     });
     $(document).on("change", "#compound-padding", function (evt) {
-
+      
+      var newValue = Number($('#compound-padding').val());
+      if(newValue < 0 ){
+        newValue = 0;
+      }
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.compoundPadding.value = Number($('#compound-padding').val());
+      self.params.compoundPadding.value = Number(newValue);
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
       $('#compound-padding').blur();
     });
