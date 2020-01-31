@@ -443,6 +443,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
       appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, self); // default color scheme
     });
+  
   },
   changeStyle: function(style) {
     if(style == 'solid'){
@@ -555,6 +556,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.mapDescription = {id: "map-description", type: "text",
       property: "currentGeneralProperties.mapDescription"};
 
+   
     // general properties part
     $(document).on("change", "#map-name", function (evt) {
 
@@ -1017,6 +1019,80 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     return this;
   }
 });
+
+//The render functions for the experimental panel
+
+// inherit from GeneralPropertiesParentView
+var experimentTabPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    var self = this;
+    self.params = {};
+   self.params.experimentDescription = {id: "map-experiment", type: "text",
+   property: "currentGeneralProperties.experimentDescription"};
+  console.log("this is the initial");
+   /*
+    $(document).on("change", "#overlay-data", function(e) {
+     
+      var cy = appUtilities.getActiveCy();
+
+     // self.params.rearrangeOnComplexityManagement.value = $('#rearrange-on-complexity-management').prop('checked');
+      
+     // $('#rearrange-on-complexity-management').blur();
+      var fileNames = appUtilities.getExperimentalData(callback);
+      self.params.experimentDescription.value =  fileNames;
+      cy.undoRedo().do("changeMenu", self.params.experimentDescription);
+      console.log("sampledata added backbone.js");
+      appUtilities.setExperimentNames();
+    });
+ */
+$(document).on("click", "#map-experiment-remove-all-button", function (evt) {
+  console.log("lele");
+});
+$(document).on("click", '[id^="map-experiment-"]', function (evt) {
+  console.log(evt.target.id);
+  console.log("the button");
+});
+$(document).on("click", '[id^="experiment-delete-"]', function (evt) {
+  console.log(evt.target.id);
+  console.log("button delete");
+});
+},
+
+  recalculate: function(){
+    var cy = appUtilities.getActiveCy();
+    var self = this;
+    var fileNames = appUtilities.getExperimentalData();
+    self.params.experimentDescription.value =  fileNames['textname'];
+    cy.undoRedo().do("changeMenu", self.params.experimentDescription);
+    console.log("in recalculate");
+
+  },
+
+ 
+  render: function() {
+    var cy = appUtilities.getActiveCy();
+    var self = this;
+  
+    //console.log(fileNames['textname']);
+    /*  
+    console.log( "inside the backbome files");
+   // 
+   
+    var cy = appUtilities.getActiveCy();
+   
+    //var param ={};
+    */
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+    console.log(currentGeneralProperties);
+    self.template = _.template($("#map-tab-experiment-template").html());
+    console.log("inside render");
+    //self.template = self.template(param);
+    this.$el.html(this.template(currentGeneralProperties));
+    return this;
+  }
+});
+
+//EXPERIMENT TAB PANEL
 
 /**
  * SBGN Properties view for the Sample Application.
@@ -2183,7 +2259,7 @@ var SaveUserPreferencesView = Backbone.View.extend({
 
       delete preferences.currentGeneralProperties.mapName;
       delete preferences.currentGeneralProperties.mapDescription;
-       
+      //CHANGE HERE experimentDescription
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
@@ -2329,6 +2405,13 @@ var LoadUserPreferencesView = Backbone.View.extend({
                 actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params[key]});            
             }          
         });
+        /*
+        Object.keys( experimentTabPanel.params).forEach(function(key,index) {
+          if(typeof preferences.currentGeneralProperties[key] !== 'undefined'){
+            experimentTabPanel.params[key].value = preferences.currentGeneralProperties[key];              
+              actions.push({name: "changeMenu", param: experimentTabPanel.params[key]});            
+          }          
+      });*/
           
           var applyColorScheme = false;
           var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
@@ -3838,6 +3921,7 @@ module.exports = {
   MapTabGeneralPanel: MapTabGeneralPanel,
   MapTabLabelPanel: MapTabLabelPanel,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
+  experimentTabPanel: experimentTabPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
   NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,

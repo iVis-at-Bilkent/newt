@@ -33,6 +33,7 @@ module.exports = function() {
       }
     });
   }
+ 
 
   function loadSample(filename) {
 
@@ -56,6 +57,7 @@ module.exports = function() {
   mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
   mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
+  experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
@@ -171,7 +173,6 @@ module.exports = function() {
 
 			   
   function toolbarButtonsAndMenu() {
-
     // menu behavior: on first click, triggers the other menus on hover.
     var isMenuHoverMode = false;
     $('ul.navbar-nav > li.dropdown').on('mouseenter', function(e){
@@ -315,11 +316,17 @@ module.exports = function() {
         });
        
         $(this).val("");
-      }
+      }  
+    });
+    //LOad Sample Data
+    $("#sample-experiment-data").click(function (){
 
-
+    });
+    //Remove All Data
+      $("#remove-all-experiment").click(function (){
       
     });
+
     $("#import-experimental-data").click(function () {
       $("#overlay-data").trigger('click');
     });
@@ -355,34 +362,21 @@ module.exports = function() {
         var text = this.result;
         console.log("I took the data");
       // chiseInstance.experimetalDataOverlay.showGenomicData();
-       console.log(chiseInstance.prepareGenomicDataShareDB(text));
-       console.log(text);
-     
-     
+      // console.log(chiseInstance.prepareGenomicDataShareDB(text));
+       //console.log(text);
+        chiseInstance.parseData(text, "textname");
+        chiseInstance.showData();
+        experimentTabPanel.recalculate();
+        experimentTabPanel.render();
      
       };
-
-
 
       reader.readAsText( file );
 
       $(this).val("");
-          //Get the text result of the file.
-       
-
-
-        
-
-      
-
-
-
-
-
-        //yyyy
-
       }
     });
+  
     //EXPERIMENTAL DATA
     $("#sbml-file").change(function () {
      
@@ -529,7 +523,7 @@ module.exports = function() {
       // default map name should be a string that contains the network id
       currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
       currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-
+    
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
         currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
@@ -555,7 +549,7 @@ module.exports = function() {
           mapProperties[prop] = mapPropsFromUrl[prop];
         }
       }
-
+      //BURAYA EKLE --
       // some operations are to be performed if there is any map property
       // that comes from URL or read from file
       var mapPropertiesExist = ( !$.isEmptyObject( mapProperties ) );
@@ -570,7 +564,7 @@ module.exports = function() {
         mapTabGeneralPanel.render();
         mapTabRearrangementPanel.render();
         mapTabLabelPanel.render();
-
+        experimentTabPanel.render();
         if (mapPropertiesExist){
           // update map panel
           appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView, scheme_type: currentGeneralProperties.mapColorSchemeStyle});
