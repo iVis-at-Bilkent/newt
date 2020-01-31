@@ -746,9 +746,9 @@ appUtilities.defaultGridProperties = {
 };
 
 appUtilities.defaultGeneralProperties = {
-  compoundPadding: 0,
-  extraCompartmentPadding: 14,
-  extraComplexPadding: 10,
+  compoundPadding: 0, // intial compound padding for all compound nodes 
+  extraCompartmentPadding: 14, // extra padding for compound nodes except for complexes
+  extraComplexPadding: 10,  //extra padding for complex compound nodes, refer to sbgnviz elementUtilities.getComplexPadding() function to see details
   arrowScale: 1.25,
   showComplexName: true,
   dynamicLabelSize: 'regular',
