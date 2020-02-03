@@ -1049,11 +1049,16 @@ $(document).on("click", "#map-experiment-remove-all-button", function (evt) {
   console.log("lele");
 });
 $(document).on("click", '[id^="map-experiment-"]', function (evt) {
-  console.log(evt.target.id);
+  var expName = evt.target.id.substring(15)
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.changeVisExp('textname', expName);
   console.log("the button");
 });
 $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
   console.log(evt.target.id);
+  var expName = evt.target.id.substring(18)
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.removeExp('textname', expName);
   console.log("button delete");
 });
 },
