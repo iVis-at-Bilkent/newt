@@ -1053,7 +1053,32 @@ $(document).on("click", "#map-experiment-remove-all-button", function (evt) {
 });
 //change visibility of the file
 $(document).on("click", '[id^="experiment-file-"]', function (evt) {
-  var fileName = evt.target.id.substring(16)
+
+
+
+  var fileName = evt.target.id.substring(16);
+  var subExperiments = $('[id^="map-experiment-' + filename + '"]')
+  if(evt.target.value === "true")
+  {
+    evt.target.style.backgroundColor = "#777";
+    evt.target.value = false;
+  
+  for (i = 0; i < subExperiments.length; i++)
+  {
+    subExperiments[i].value = false;
+    subExperiments[i].style.backgroundColor = "#777";
+  }
+  }
+  else
+  {
+    evt.target.value = true;
+    evt.target.style.backgroundColor = "";
+    for (i = 0; i < subExperiments.length; i++)
+  {
+    subExperiments[i].value = true;
+    subExperiments[i].style.backgroundColor = "";
+  }
+  }
   var chiseInstance = appUtilities.getActiveChiseInstance();
   chiseInstance.changeVisFile(fileName);
 });
