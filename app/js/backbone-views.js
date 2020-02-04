@@ -1040,7 +1040,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     $(document).on("click", '[id^="experiment-file-"]', function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var fileName = evt.target.id.substring(16);
-      var subExperiments = $('[id^="map-experiment-' + filename + '"]')
+      var subExperiments = $('[id^="map-experiment-' + filename + '"]');
       if(evt.target.value === "true")
       {
         chiseInstance.hideFile(fileName);
@@ -1065,23 +1065,22 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         }
       }
       
-      
     });
     //file delete button
     $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
-      var fileName = evt.target.id.substring(23)
+      var fileName = evt.target.id.substring(23);
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      chiseInstance.removeFile(fileName)
+      chiseInstance.removeFile(fileName);
       self.recalculate();
       self.render();
 
     });
     //change visibilty of the exp
     $(document).on("click", '[id^="map-experiment-"]', function (evt) {
-      var expRep = evt.target.id.substring(15)
-      var index = expRep.indexOf('?')
-      var fileName = expRep.substring(0,index)
-      var expName = expRep.substring(index+1)
+      var expRep = evt.target.id.substring(15);
+      var index = expRep.indexOf('?');
+      var fileName = expRep.substring(0,index);
+      var expName = expRep.substring(index+1);
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
       if(evt.target.value === "true")
@@ -1100,12 +1099,12 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     });
     //remove exp
     $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
-      var expRep = evt.target.id.substring(18)
-      var index = expRep.indexOf('?')
-      var fileName = expRep.substring(0,index)
-      var expName = expRep.substring(index+1)
-      var chiseInstance = appUtilities.getActiveChiseInstance()
-      chiseInstance.removeExp(fileName, expName)
+      var expRep = evt.target.id.substring(18);
+      var index = expRep.indexOf('?');
+      var fileName = expRep.substring(0,index);
+      var expName = expRep.substring(index+1);
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.removeExp(fileName, expName);
       self.recalculate();
       self.render();
     });
@@ -1116,10 +1115,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var self = this;
     var fileNames = chiseInstance.getGroupedDataMap();
-   
     self.params.experimentDescription.value =  fileNames;
-    
-    //console.log(self.params.currentGeneralProperties);
     cy.undoRedo().do("changeMenu", self.params.experimentDescription);
   },
 
@@ -1127,10 +1123,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var cy = appUtilities.getActiveCy();
     var self = this;
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-    //console.log(currentGeneralProperties);
     self.template = _.template($("#map-tab-experiment-template").html());
-    //console.log("inside render");
-    //self.template = self.template(param);
     this.$el.html(this.template(currentGeneralProperties));
     return this;
   }

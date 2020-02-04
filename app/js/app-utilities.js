@@ -3034,26 +3034,26 @@ appUtilities.transformClassInfo = function( classInfo ) {
 
   return res;
 };
-appUtilities.getExperimentalData = function()
-{
-  var chiseInstance = appUtilities.getActiveChiseInstance();
-  var cy = appUtilities.getActiveCy();
-  var experimentNames = chiseInstance.getGroupedDataMap();
-  //console.log(experimentNames.length());
+// appUtilities.getExperimentalData = function()
+// {
+//   var chiseInstance = appUtilities.getActiveChiseInstance();
+//   var cy = appUtilities.getActiveCy();
+//   var experimentNames = chiseInstance.getGroupedDataMap();
+//   //console.log(experimentNames.length());
 
 
   
-  return experimentNames;
-};
-appUtilities.setExperimentNames = function(files)
-{
-  console.log("experiment names in set experimentNames");
+//   return experimentNames;
+// };
+// appUtilities.setExperimentNames = function(files)
+// {
+//   console.log("experiment names in set experimentNames");
  
- // currentExperimentProperties.experimentDescription = files;
-  appUtilities.experimentTabPanel.render();
-}
-appUtilities.hideExperiments = function(){
-  console.log("inapputil");
-}
+//  // currentExperimentProperties.experimentDescription = files;
+//   appUtilities.experimentTabPanel.render();
+// }
+// appUtilities.hideExperiments = function(){
+//   console.log("inapputil");
+// }
 
 module.exports = appUtilities;
