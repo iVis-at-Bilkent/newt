@@ -1047,16 +1047,28 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
  */
 $(document).on("click", "#map-experiment-remove-all-button", function (evt) {
   console.log("lele");
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.clearAllExp();
+  self.render();
 });
-//file hide
+//change visibility of the file
 $(document).on("click", '[id^="experiment-file-"]', function (evt) {
-
-  
+  var fileName = evt.target.id.substring(16)
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.changeVisFile(fileName);
 });
 //file delete button
 $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
+  var fileName = evt.target.id.substring(23)
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.removeFile(fileName)
+  var fileNames = chiseInstance.getGroupedDataMap(); 
+  self.params.experimentDescription.value =  fileNames;
+  console.log(fileNames)
+  self.render();
 
 });
+//change visibilty of the exp
 $(document).on("click", '[id^="map-experiment-"]', function (evt) {
   if(evt.target.value === "true")
   {
@@ -1068,18 +1080,32 @@ $(document).on("click", '[id^="map-experiment-"]', function (evt) {
     evt.target.value = true;
     evt.target.style.backgroundColor = "";
   }
-  var expName = evt.target.id.substring(15)
+ 
+  var expRep = evt.target.id.substring(15)
+  var index = expRep.indexOf('?')
+  var fileName = expRep.substring(0,index)
+  var expName = expRep.substring(index+1)
+  console.log("file          " + fileName)
+  console.log("exp          " + expName)
   var chiseInstance = appUtilities.getActiveChiseInstance();
-  chiseInstance.changeVisExp('textname', expName);
-  console.log(evt.target.value);
+  chiseInstance.changeVisExp(fileName, expName);
   console.log("the button");
 });
+//remove exp
 $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
   console.log(evt.target.id);
-  var expName = evt.target.id.substring(18)
-  var chiseInstance = appUtilities.getActiveChiseInstance();
-  chiseInstance.removeExp('textname', expName);
+  var expRep = evt.target.id.substring(18)
+  var index = expRep.indexOf('?')
+  var fileName = expRep.substring(0,index)
+  var expName = expRep.substring(index+1)
+  var chiseInstance = appUtilities.getActiveChiseInstance()
+  chiseInstance.removeExp(fileName, expName)
   console.log("button delete");
+  var fileNames = chiseInstance.getGroupedDataMap(); 
+  self.params.experimentDescription.value =  fileNames;
+  //console.log(fileNames)
+  //self.recalculate();
+  self.render();
 });
 },
 
