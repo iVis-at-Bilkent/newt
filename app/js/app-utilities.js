@@ -768,7 +768,7 @@ appUtilities.defaultGeneralProperties = {
   mapName: "",
   mapDescription: "",
   enableSIFTopologyGrouping: false,
-  experimentDescription: {},
+  experimentDescription: "",
 };
 
 appUtilities.setFileContent = function (fileName) {
