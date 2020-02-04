@@ -1051,15 +1051,27 @@ $(document).on("click", "#map-experiment-remove-all-button", function (evt) {
 //file hide
 $(document).on("click", '[id^="experiment-file-"]', function (evt) {
 
+  
 });
 //file delete button
 $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
 
 });
 $(document).on("click", '[id^="map-experiment-"]', function (evt) {
+  if(evt.target.value === "true")
+  {
+    evt.target.style.backgroundColor = "#777";
+    evt.target.value = false;
+  }
+  else
+  {
+    evt.target.value = true;
+    evt.target.style.backgroundColor = "";
+  }
   var expName = evt.target.id.substring(15)
   var chiseInstance = appUtilities.getActiveChiseInstance();
   chiseInstance.changeVisExp('textname', expName);
+  console.log(evt.target.value);
   console.log("the button");
 });
 $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
