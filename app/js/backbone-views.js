@@ -1029,7 +1029,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     self.params = {};
    self.params.experimentDescription = {id: "map-experiment", type: "text",
    property: "currentGeneralProperties.experimentDescription"};
-  console.log("this is the initial");
+
    /*
     $(document).on("change", "#overlay-data", function(e) {
      
@@ -1047,6 +1047,14 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
  */
 $(document).on("click", "#map-experiment-remove-all-button", function (evt) {
   console.log("lele");
+});
+//file hide
+$(document).on("click", '[id^="experiment-file-"]', function (evt) {
+
+});
+//file delete button
+$(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
+
 });
 $(document).on("click", '[id^="map-experiment-"]', function (evt) {
   var expName = evt.target.id.substring(15)
@@ -1067,9 +1075,17 @@ $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
     var cy = appUtilities.getActiveCy();
     var self = this;
     var fileNames = appUtilities.getExperimentalData();
-    self.params.experimentDescription.value =  fileNames['textname'];
-    cy.undoRedo().do("changeMenu", self.params.experimentDescription);
+   
+    self.params.experimentDescription.value =  fileNames;
+    //console.log(self.params.experimentDescription);
     console.log("in recalculate");
+    //console.log(self.params.experimentDescription.value);
+    console.log("forEach");
+    //console.log(self.params.experimentDescription.value["textname"]);
+    
+    console.log(self.params.currentGeneralProperties);
+    cy.undoRedo().do("changeMenu", self.params.experimentDescription);
+   
 
   },
 

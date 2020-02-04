@@ -357,20 +357,20 @@ module.exports = function() {
       if ($(this).val() != "") {
         var file = this.files[0];
         var reader = new FileReader();
+
       reader.onload = function(e) {
         //Get the text result of the file.
         var text = this.result;
-        console.log("I took the data");
-      // chiseInstance.experimetalDataOverlay.showGenomicData();
-      // console.log(chiseInstance.prepareGenomicDataShareDB(text));
-       //console.log(text);
-        chiseInstance.parseData(text, "textname");
+
+        
+        chiseInstance.parseData(text, file.name);
+        
         chiseInstance.showData();
         experimentTabPanel.recalculate();
         experimentTabPanel.render();
      
       };
-
+      reader.fileName = file.name;
       reader.readAsText( file );
 
       $(this).val("");

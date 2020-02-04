@@ -768,8 +768,7 @@ appUtilities.defaultGeneralProperties = {
   mapName: "",
   mapDescription: "",
   enableSIFTopologyGrouping: false,
-  experimentDescription: "",
-  experimentFiles: ""
+  experimentDescription: {},
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -3040,9 +3039,6 @@ appUtilities.getExperimentalData = function()
   var chiseInstance = appUtilities.getActiveChiseInstance();
   var cy = appUtilities.getActiveCy();
   var experimentNames = chiseInstance.getGroupedDataMap();
-
-  console.log(experimentNames);
-  console.log(experimentNames.textname);
   //console.log(experimentNames.length());
 
 
