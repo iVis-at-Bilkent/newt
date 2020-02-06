@@ -420,7 +420,7 @@ appUtilities.createNewNetwork = function () {
     .selector('node:selected')
     .css({
       'border-width': function(ele){
-        return Math.max(ele.data("border-width"), 3);
+        return Math.max(ele.data("border-width"), 1);
       }
     })
     .selector('edge:selected')
