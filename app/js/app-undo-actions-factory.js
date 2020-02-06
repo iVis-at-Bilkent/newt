@@ -73,9 +73,16 @@ module.exports = function (cy) {
     }
     lo_set(scratchpad, param.property, param.value);
 
+    if(id == "compound-padding"){
+      var chise = appUtilities.getActiveChiseInstance();
+      chise.setCompoundPadding(param.value);
+    }
     if (param.update){
       param.update.call();
     };
+   
+   
+
     return result;
   }
 

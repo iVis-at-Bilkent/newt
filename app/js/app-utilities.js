@@ -383,10 +383,12 @@ appUtilities.createNewNetwork = function () {
       return currentGeneralProperties.inferNestingOnLoad;
     },
     // percentage used to calculate compound paddings
-    compoundPadding: function () {
+    compoundPadding: currentGeneralProperties.compoundPadding
+    
+    /* function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.compoundPadding;
-    },
+    } */,
     // arrow size changed by a slider on a scale from 0.5-2
     arrowScale: function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');

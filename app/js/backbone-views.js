@@ -699,7 +699,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.compoundPadding.value = Number(newValue);
+     // var ur = cy.undoRedo();
+      //var actions = [];
+      //actions.push({name:"changeMenu", param:self.params.compoundPadding});
+      //actions.push({name:"setCompoundPadding", param:self.params.compoundPadding});
+     // ur.do("batch", actions);
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
+     
       $('#compound-padding').blur();
     });
 
@@ -2015,10 +2021,10 @@ var FileSaveView = Backbone.View.extend({
 
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-
+      
       // use the assocated cy instance
       var cy = chiseInstance.getCy();
-
+      cy.elements().unselect();
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
