@@ -1030,19 +1030,23 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     self.params.experimentDescription = {id: "map-experiment", type: "text",
       property: "currentGeneralProperties.experimentDescription"};
 
-    $(document).on("click", "#map-experiment-remove-all-button", function (evt) {
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      chiseInstance.clearAllExp();
+    $(document).on("click", "#experiment-remove-all-button", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var param = {};
+      cy.undoRedo().do("removeAll", param);
       self.recalculate();
       self.render();
     });
     //change visibility of the file
     $(document).on("click", '[id^="experiment-file-"]', function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
       var fileName = evt.target.id.substring(16);
       var subExperiments = $('[id^="map-experiment-' + filename + '"]');
+      var params = {fileName};
       if(evt.target.value === "true")
       {
+        cy.undoRedo().do("hideFile",params);
         chiseInstance.hideFile(fileName);
         evt.target.style.backgroundColor = "#777";
         evt.target.value = false;
@@ -1055,7 +1059,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       }
       else
       {
-        chiseInstance.unhideFile(fileName);
+        cy.undoRedo().do("unhideFile",params);
         evt.target.value = true;
         evt.target.style.backgroundColor = "";
         for (i = 0; i < subExperiments.length; i++)
@@ -1077,22 +1081,26 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     });
     //change visibilty of the exp
     $(document).on("click", '[id^="map-experiment-"]', function (evt) {
+      
       var expRep = evt.target.id.substring(15);
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
-      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var params = {fileName, expName}
+      var cy = appUtilities.getActiveCy();
 
       if(evt.target.value === "true")
       {
-        chiseInstance.hideExp(fileName, expName);
+        console.log("HERE1")
+        cy.undoRedo().do("hideExperiment",params)
         evt.target.style.backgroundColor = "#777";
         evt.target.value = false;
 
       }
       else
       {
-        chiseInstance.unhideExp(fileName, expName);
+        console.log("HERE2")
+        cy.undoRedo().do("unhideExperiment",params)
         evt.target.value = true;
         evt.target.style.backgroundColor = "";
       }
@@ -1100,11 +1108,14 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     //remove exp
     $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
       var expRep = evt.target.id.substring(18);
+      var cy = appUtilities.getActiveCy();
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      chiseInstance.removeExp(fileName, expName);
+      //var chiseInstance = appUtilities.getActiveChiseInstance();
+      //chiseInstance.removeExp(fileName, expName);
+      var params = {fileName, expName}
+      cy.undoRedo().do("removeExperiment",params)
       self.recalculate();
       self.render();
     });
