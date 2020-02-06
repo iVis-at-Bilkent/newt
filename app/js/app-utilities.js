@@ -414,22 +414,7 @@ appUtilities.createNewNetwork = function () {
       return appUtilities.ctrlKeyDown !== true;
     }
   });
-
-  //set border-width of selected nodes to a fixed value
-  newInst.getCy().style()
-    .selector('node:selected')
-    .css({
-      'border-width': function(ele){
-        return Math.max(ele.data("border-width"), 1);
-      }
-    })
-    .selector('edge:selected')
-    .css({
-      'width': function(ele){
-        return Math.max(ele.data("width"), 3);
-      }
-    });
-
+  
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
