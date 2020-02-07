@@ -360,12 +360,12 @@ module.exports = function() {
 
       reader.onload = function(e) {
         //Get the text result of the file.
-        var text = this.result;
-
-        
-        chiseInstance.parseData(text, file.name);
-        
-        chiseInstance.showData();
+        var data = this.result;
+        var fileName = file.name;
+        //var param = {data, fileName};
+        //cy.undoRedo().do("parseData", param);
+        chiseInstance.parseData(data, file.name);
+        //chiseInstance.showData();
         experimentTabPanel.recalculate();
         experimentTabPanel.render();
      

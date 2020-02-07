@@ -1030,15 +1030,14 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     self.params.experimentDescription = {id: "map-experiment", type: "text",
       property: "currentGeneralProperties.experimentDescription"};
 
-    $(document).on("click", "#experiment-remove-all-button", function (evt) {
+    $(document).on("click", "#experiment-remove-all", function (evt) {
       var cy = appUtilities.getActiveCy();
       var param = {};
       cy.undoRedo().do("removeAll", param);
-      self.recalculate();
       self.render();
     });
     //change visibility of the file
-    $(document).on("click", '[id^="experiment-file-"]', function (evt) {
+    $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
       var fileName = evt.target.id.substring(16);
@@ -1073,14 +1072,13 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     //file delete button
     $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
       var fileName = evt.target.id.substring(23);
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      chiseInstance.removeFile(fileName);
-      self.recalculate();
+      var param = {fileName};
+      var cy = appUtilities.getActiveCy();
+      cy.undoRedo().do("removeFile", param);
       self.render();
-
     });
     //change visibilty of the exp
-    $(document).on("click", '[id^="map-experiment-"]', function (evt) {
+    $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
       
       var expRep = evt.target.id.substring(15);
       var index = expRep.indexOf('?');
@@ -1116,7 +1114,6 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       //chiseInstance.removeExp(fileName, expName);
       var params = {fileName, expName}
       cy.undoRedo().do("removeExperiment",params)
-      self.recalculate();
       self.render();
     });
   },
