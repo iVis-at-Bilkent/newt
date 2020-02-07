@@ -2727,7 +2727,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
   var oldColor = node.data("border-color");
   var oldWidth = node.data("border-width");
   node.data("border-color", "#d67614");
-  node.data("border-width", Math.max(3, oldWidth));
+  node.data("border-width", Math.max(1, oldWidth));
   var selectedBox;
   var anchorSide;
   $(document).on('mousedown', appUtilities.RelocationHandler = function(event){
