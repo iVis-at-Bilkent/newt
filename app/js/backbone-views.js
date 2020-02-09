@@ -1055,7 +1055,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         console.log(subExperiments);
         actions.push({name: "hideFile", param: params});
         actions.push({name: "expButtonChange", param: paramEvt});
-        actions.push({name: "fileButtonChangeHide", param: {subExperiments}});
+        actions.push({name: "fileButtonChangeHide", param: subExperiments});
         cy.undoRedo().do("batch", actions);
         chiseInstance.hideFile(fileName);
       }
@@ -1063,7 +1063,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       {
         actions.push({name: "unhideFile", param: params});
         actions.push({name: "expButtonChange", param: paramEvt});
-        actions.push({name: "fileButtonChangeUnHide", param: {subExperiments}});
+        actions.push({name: "fileButtonChangeUnHide", param: subExperiments});
         cy.undoRedo().do("batch", actions);
       }
 
@@ -1133,8 +1133,6 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
-      //var chiseInstance = appUtilities.getActiveChiseInstance();
-      //chiseInstance.removeExp(fileName, expName);
       var params = {fileName, expName}
       cy.undoRedo().do("removeExperiment",params)
       self.render();
