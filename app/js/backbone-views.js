@@ -1030,43 +1030,68 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     self.params.experimentDescription = {id: "map-experiment", type: "text",
       property: "currentGeneralProperties.experimentDescription"};
 
+    //remove all dan sonra no experiment data to display tok 
     $(document).on("click", "#experiment-remove-all", function (evt) {
       var cy = appUtilities.getActiveCy();
+    
+
       var param = {};
       cy.undoRedo().do("removeAll", param);
       self.render();
     });
     //change visibility of the file
     $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
+      
+      var actions = [];
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
-      var fileName = evt.target.id.substring(16);
-      var subExperiments = $('[id^="map-experiment-' + filename + '"]');
+      var fileName = evt.target.id.substring(20);
+      var subExperiments = $('[id^="experiment-vis-' + filename + '"]');
       var params = {fileName};
+      var paramEvt = {evt};
+
       if(evt.target.value === "true")
       {
-        cy.undoRedo().do("hideFile",params);
+        console.log(subExperiments);
+        actions.push({name: "hideFile", param: params});
+        actions.push({name: "expButtonChange", param: paramEvt});
+        actions.push({name: "fileButtonChangeHide", param: {subExperiments}});
+        cy.undoRedo().do("batch", actions);
         chiseInstance.hideFile(fileName);
-        evt.target.style.backgroundColor = "#777";
-        evt.target.value = false;
-      
-        for (i = 0; i < subExperiments.length; i++)
-        {
-          subExperiments[i].value = false;
-          subExperiments[i].style.backgroundColor = "#777";
-        }
       }
       else
       {
-        cy.undoRedo().do("unhideFile",params);
-        evt.target.value = true;
-        evt.target.style.backgroundColor = "";
-        for (i = 0; i < subExperiments.length; i++)
-        {
-          subExperiments[i].value = true;
-          subExperiments[i].style.backgroundColor = "";
-        }
+        actions.push({name: "unhideFile", param: params});
+        actions.push({name: "expButtonChange", param: paramEvt});
+        actions.push({name: "fileButtonChangeUnHide", param: {subExperiments}});
+        cy.undoRedo().do("batch", actions);
       }
+
+      //if(evt.target.value === "true")
+      //{
+       //console.log(params);
+       // cy.undoRedo().do("hideFile",params);
+       // chiseInstance.hideFile(fileName);
+       // evt.target.style.backgroundColor = "#777";
+       // evt.target.value = false;
+      
+      //  for (i = 0; i < subExperiments.length; i++)
+        //{
+          //subExperiments[i].value = false;
+          //subExperiments[i].style.backgroundColor = "#777";
+       // }
+     // }
+     // else
+    //  {
+      //  cy.undoRedo().do("unhideFile",params);
+        //evt.target.value = true;
+        //evt.target.style.backgroundColor = "";
+       // for (i = 0; i < subExperiments.length; i++)
+        //{
+          //subExperiments[i].value = true;
+          //subExperiments[i].style.backgroundColor = "";
+       // }
+   //   }
       
     });
     //file delete button
@@ -1079,28 +1104,26 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     });
     //change visibilty of the exp
     $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
-      
+      var actions = [];
       var expRep = evt.target.id.substring(15);
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
       var params = {fileName, expName}
+      var paramEvt = {evt};
       var cy = appUtilities.getActiveCy();
-
+   
       if(evt.target.value === "true")
       {
-        console.log("HERE1")
-        cy.undoRedo().do("hideExperiment",params)
-        evt.target.style.backgroundColor = "#777";
-        evt.target.value = false;
-
+        actions.push({name: "hideExperiment", param: params});
+        actions.push({name: "expButtonChange", param: paramEvt});
+        cy.undoRedo().do("batch", actions);
       }
       else
       {
-        console.log("HERE2")
-        cy.undoRedo().do("unhideExperiment",params)
-        evt.target.value = true;
-        evt.target.style.backgroundColor = "";
+        actions.push({name: "unhideExperiment", param: params});
+        actions.push({name: "expButtonChange",param: paramEvt});
+        cy.undoRedo().do("batch", actions);
       }
     });
     //remove exp
