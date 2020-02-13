@@ -167,6 +167,8 @@ module.exports = function() {
 
     }
 
+    cy.fit( cy.elements(":visible"), 20 );
+
   });
 
 			   
