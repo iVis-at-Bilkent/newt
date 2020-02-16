@@ -47,7 +47,116 @@ module.exports = function (cy) {
    * IMPORTANT:
    * value must be the same for the interface menu input and the property stored in the code
    */
+  appUndoActions.updateExperimentPanel = function(param)
+  {
+    console.log("inside the update");
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var fileName =param.fileName
+    var expName = param.expName
+    var params = {fileName, expName}
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeExp(params)
+    neededparams.self = param.self;
+    neededparams.document= param.document;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+   
+    param.self.render();
+    //chiseInstance.buttonUpdate(param.document);
+    return neededparams;
+  }
+  appUndoActions.updateExperimentPanel2 = function(param)
+  {
+    console.log("inside the update2");
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.addExp(param)
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+    param.self.render();
+    //chiseInstance.buttonUpdate(param.document);
+    return param;
+  }
+  appUndoActions.hideExperimentPanel = function(param)
+  {
+    console.log("hide newt")
+    var cy = appUtilities.getActiveCy();
+    evt = param.evt;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.hideExp(param);
+    if(evt.target.value === "true" || evt.target.value == true)
+    {
+      evt.target.style.backgroundColor = "#777";
+      evt.target.value = "false";
+    }
+    else
+    {
+      evt.target.value = "true";
+      evt.target.style.backgroundColor = "";
+    }
+    return param;
+  }
+  appUndoActions.unhideExperimentPanel = function(param)
+  {
+    console.log("unhide newt")
+    var cy = appUtilities.getActiveCy();
+    evt = param.evt;
+    console.log(evt.target.value);
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+  
+    if(evt.target.value === "true" || evt.target.value == true)
+    {
+      console.log(  "true")
+      evt.target.style.backgroundColor = "#777";
+      evt.target.value = "false";
+    }
+    else
+    {
+      evt.target.value = "true";
+      evt.target.style.backgroundColor = "";
+      console.log(evt.target.value);
+    
+    }
+  
+    chiseInstance.undoRedoActionFunctions.unhideExp(param);
+    param.self.render();
+    return param;
+  }
+  appUndoActions.updateRemoveAll = function(param){
+    console.log("removeAll");
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var resparams = chiseInstance.undoRedoActionFunctions.removeAll(param);
+    resparams.self = param.self;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    //console.log(fileNames);
+    param.self.params.experimentDescription.value =  fileNames;
+   // console.log(param.self);
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+    //param.self.recalculate();
+    //param.self.render();
+    return resparams;
+  }
+
+  appUndoActions.updateRestore = function(param){
+    console.log("Restore All");
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.restoreAll(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+    param.self.render();
+    return param;
+  }
   appUndoActions.changeMenu = function (param) {
+    console.log("change menu")
     var id = param.id;
     var jQId = '#'+id;
     var type = param.type;

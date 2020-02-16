@@ -1028,15 +1028,17 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var self = this;
     self.params = {};
     self.params.experimentDescription = {id: "map-experiment", type: "text",
-      property: "currentGeneralProperties.experimentDescription"};
+      property: "currentGeneralProperties.experimentDescription", update: self.applyUpdate};
 
     //remove all dan sonra no experiment data to display tok 
     $(document).on("click", "#experiment-remove-all", function (evt) {
-      var cy = appUtilities.getActiveCy();
-    
 
-      var param = {};
-      cy.undoRedo().do("removeAll", param);
+      console.log("removeall clicked");
+      var cy = appUtilities.getActiveCy();
+      var param = {self};
+      cy.undoRedo().do("updateRemoveAll", param);
+     // console.log(currentGeneralProperties.experimentDescription);
+     self.recalculate();
       self.render();
     });
     //change visibility of the file
@@ -1066,41 +1068,24 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         actions.push({name: "fileButtonChangeUnHide", param: subExperiments});
         cy.undoRedo().do("batch", actions);
       }
-
-      //if(evt.target.value === "true")
-      //{
-       //console.log(params);
-       // cy.undoRedo().do("hideFile",params);
-       // chiseInstance.hideFile(fileName);
-       // evt.target.style.backgroundColor = "#777";
-       // evt.target.value = false;
-      
-      //  for (i = 0; i < subExperiments.length; i++)
-        //{
-          //subExperiments[i].value = false;
-          //subExperiments[i].style.backgroundColor = "#777";
-       // }
-     // }
-     // else
-    //  {
-      //  cy.undoRedo().do("unhideFile",params);
-        //evt.target.value = true;
-        //evt.target.style.backgroundColor = "";
-       // for (i = 0; i < subExperiments.length; i++)
-        //{
-          //subExperiments[i].value = true;
-          //subExperiments[i].style.backgroundColor = "";
-       // }
-   //   }
-      
     });
-    //file delete button
+    //file delete butto
     $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
+      //var actions = [];
+    
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
       var fileName = evt.target.id.substring(23);
       var param = {fileName};
-      var cy = appUtilities.getActiveCy();
+     
+      chiseInstance.buttonUpdate(document);
+      //actions.push({name: "removeFile", param: param})
+      //actions.push({name: "updateExperimentPanel", param: self });
+      //cy.undoRedo().do("batch", actions);
+      
       cy.undoRedo().do("removeFile", param);
       self.render();
+   
     });
     //change visibilty of the exp
     $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
@@ -1111,49 +1096,65 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var expName = expRep.substring(index+1);
       var params = {fileName, expName}
       var paramEvt = {evt};
+      params.evt = evt;
+      params.self=self;
       var cy = appUtilities.getActiveCy();
-   
+      var chiseInstance = appUtilities.getActiveChiseInstance();
       if(evt.target.value === "true")
       {
-        actions.push({name: "hideExperiment", param: params});
-        actions.push({name: "expButtonChange", param: paramEvt});
-        cy.undoRedo().do("batch", actions);
+       // actions.push({name: "hideExperiment", param: params});
+        //actions.push({name: "expButtonChange", param: paramEvt});
+         //cy.undoRedo().do("batch", actions);
+        cy.undoRedo().do("hideExperimentPanel", params);
       }
       else
       {
-        actions.push({name: "unhideExperiment", param: params});
-        actions.push({name: "expButtonChange",param: paramEvt});
-        cy.undoRedo().do("batch", actions);
+        //actions.push({name: "unhideExperiment", param: params});
+        //actions.push({name: "expButtonChange",param: paramEvt});
+        //cy.undoRedo().do("batch", actions);
+        cy.undoRedo().do("unhideExperimentPanel", params);
       }
+      //we do not use render here ıt does not work so maybe write a undo/redo function fot this
+     // self.render();
     });
     //remove exp
     $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
       var expRep = evt.target.id.substring(18);
       var cy = appUtilities.getActiveCy();
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
-      var params = {fileName, expName}
-      cy.undoRedo().do("removeExperiment",params)
-      self.render();
+      var param = {self, fileName, expName, document}
+
+      cy.undoRedo().do("updateExperimentPanel", param);
+     // chiseInstance.buttonUpdate(document);
     });
   },
 
   recalculate: function(){
+  
     var cy = appUtilities.getActiveCy();
+  
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var self = this;
     var fileNames = chiseInstance.getGroupedDataMap();
+    
     self.params.experimentDescription.value =  fileNames;
     cy.undoRedo().do("changeMenu", self.params.experimentDescription);
   },
 
   render: function() {
+    console.log("in rende function");
     var cy = appUtilities.getActiveCy();
     var self = this;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
     self.template = _.template($("#map-tab-experiment-template").html());
     this.$el.html(this.template(currentGeneralProperties));
+    chiseInstance.buttonUpdate(document);
     return this;
   }
 });
@@ -2325,7 +2326,6 @@ var SaveUserPreferencesView = Backbone.View.extend({
 
       delete preferences.currentGeneralProperties.mapName;
       delete preferences.currentGeneralProperties.mapDescription;
-      //CHANGE HERE experimentDescription
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
