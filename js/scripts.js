@@ -56,10 +56,11 @@ document.write("                <h3>Useful Links</h3>");
 document.write("                <ul>");
 document.write("                  <li><a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a></li>");
 document.write("                  <li><a href=\"http://js.cytoscape.org/\" target=\"_blank\">Cytoscape.js</a></li>");
-document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt on Github</a></li>");
-document.write("                  <li><a href=\"https://twitter.com/newteditor\" target=\"_blank\">Newt on Twitter</a></li>");
+document.write("                  <li><a href=\"https://sbgnbricks.org//\" target=\"_blank\">SBGN Bricks</a></li>");
 document.write("                  <li><a href=\"http://www.pathwaycommons.org/\" target=\"_blank\">Pathway Commons</a></li>");
 document.write("                  <li><a href=\"http://disease-maps.org/\" target=\"_blank\">Disease Maps Project</a></li>");
+document.write("                  <li><a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\">Newt on Github</a></li>");
+document.write("                  <li><a href=\"https://twitter.com/newteditor\" target=\"_blank\">Newt on Twitter</a></li>");
 document.write("                  <li><a href=\"http://www.cs.bilkent.edu.tr/~ivis\" target=\"_blank\">i-Vis Research Lab</a></li>");
 document.write("                </ul>");
 }
