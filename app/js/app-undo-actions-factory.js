@@ -47,6 +47,48 @@ module.exports = function (cy) {
    * IMPORTANT:
    * value must be the same for the interface menu input and the property stored in the code
    */
+  appUndoActions.expOnLoad= function(param)
+  {
+    console.log("stop")
+    appUndoActions.changeMenu(param.params.experimentDescription);
+  }
+  appUndoActions.expFileDel = function(param)
+  {
+    console.log(" in delete");
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var fileName =param.fileName
+    var params = {fileName}
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeFile(params)
+    neededparams.self = param.self;
+    neededparams.document= param.document;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    ///jQId = '#' + param.self.params.experimentDescription.id;
+   // $(jQId).val(param.self.params.experimentDescription.value);
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+    
+    return neededparams;
+  }
+  appUndoActions.expFileUndoDel = function(param)
+  {
+    console.log("in undo delete file");
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    //var fileName =param.fileName
+   
+    var neededparams = chiseInstance.undoRedoActionFunctions.addFile(param)
+    neededparams.self = param.self;
+    neededparams.document= param.document;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    //jQId = '#' + param.self.params.experimentDescription.id;
+    //$(jQId).val(param.self.params.experimentDescription.value);
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+    return neededparams;
+  }
   appUndoActions.updateExperimentPanel = function(param)
   {
     console.log("inside the update");
@@ -60,11 +102,10 @@ module.exports = function (cy) {
     neededparams.document= param.document;
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
-    jQId = '#' + param.self.params.experimentDescription.id;
-    $(jQId).val(param.self.params.experimentDescription.value);
-   
+    //jQId = '#' + param.self.params.experimentDescription.id;
+    //$(jQId).val(param.self.params.experimentDescription.value);
+    //appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
-    //chiseInstance.buttonUpdate(param.document);
     return neededparams;
   }
   appUndoActions.updateExperimentPanel2 = function(param)
@@ -75,10 +116,10 @@ module.exports = function (cy) {
     chiseInstance.undoRedoActionFunctions.addExp(param)
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
-    jQId = '#' + param.self.params.experimentDescription.id;
-    $(jQId).val(param.self.params.experimentDescription.value);
+    //jQId = '#' + param.self.params.experimentDescription.id;
+    //$(jQId).val(param.self.params.experimentDescription.alue);
+    //appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
-    //chiseInstance.buttonUpdate(param.document);
     return param;
   }
   appUndoActions.hideExperimentPanel = function(param)
@@ -98,6 +139,7 @@ module.exports = function (cy) {
       evt.target.value = "true";
       evt.target.style.backgroundColor = "";
     }
+    param.self.render();
     return param;
   }
   appUndoActions.unhideExperimentPanel = function(param)
@@ -107,7 +149,7 @@ module.exports = function (cy) {
     evt = param.evt;
     console.log(evt.target.value);
     var chiseInstance = appUtilities.getActiveChiseInstance();
-  
+    chiseInstance.undoRedoActionFunctions.unhideExp(param);
     if(evt.target.value === "true" || evt.target.value == true)
     {
       console.log(  "true")
@@ -122,7 +164,7 @@ module.exports = function (cy) {
     
     }
   
-    chiseInstance.undoRedoActionFunctions.unhideExp(param);
+    
     param.self.render();
     return param;
   }
@@ -136,10 +178,11 @@ module.exports = function (cy) {
     //console.log(fileNames);
     param.self.params.experimentDescription.value =  fileNames;
    // console.log(param.self);
-    jQId = '#' + param.self.params.experimentDescription.id;
-    $(jQId).val(param.self.params.experimentDescription.value);
-    //param.self.recalculate();
-    //param.self.render();
+    //jQId = '#' + param.self.params.experimentDescription.id;
+   // $(jQId).val(param.self.params.experimentDescription.value);
+  
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
     return resparams;
   }
 
@@ -150,13 +193,58 @@ module.exports = function (cy) {
     chiseInstance.undoRedoActionFunctions.restoreAll(param);
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
-    jQId = '#' + param.self.params.experimentDescription.id;
-    $(jQId).val(param.self.params.experimentDescription.value);
+    //jQId = '#' + param.self.params.experimentDescription.id;
+    //$(jQId).val(param.self.params.experimentDescription.value);
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
     return param;
   }
+  
+  appUndoActions.hideFileUI = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.hideFile(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+   params.self = param.self
+    param.self.render();
+    return params;
+  }
+  appUndoActions.hideFileUIredo = function(param){
+    console.log("hide file redo")
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.hideFileUndo(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+    params.self = param.self;
+    param.self.render();
+    return params;
+  }
+  appUndoActions.unhideFileUIredo = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.unhideFileUndo(param);
+    params.self = param.self;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    param.self.render();
+    return params;
+  }
+  appUndoActions.unhideFileUI = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.unhideFile(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self;
+    param.self.render();
+    return params;
+  }
   appUndoActions.changeMenu = function (param) {
-    console.log("change menu")
+    console.log("changeMenu")
     var id = param.id;
     var jQId = '#'+id;
     var type = param.type;
@@ -184,6 +272,7 @@ module.exports = function (cy) {
 
     if (param.update){
       param.update.call();
+
     };
     return result;
   }

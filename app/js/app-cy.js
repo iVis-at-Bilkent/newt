@@ -42,6 +42,14 @@ module.exports = function (chiseInstance) {
     ur.action("updateRestore", appUndoActions.updateRestore, appUndoActions.updateRemoveAll);
     ur.action("unhideExperimentPanel", appUndoActions.unhideExperimentPanel, appUndoActions.hideExperimentPanel);
     ur.action("hideExperimentPanel", appUndoActions.hideExperimentPanel, appUndoActions.unhideExperimentPanel);
+    ur.action("deleteFile", appUndoActions.expFileDel, appUndoActions.expFileUndoDel);
+    ur.action("undodeleteFile", appUndoActions.expFileUndoDel, appUndoActions.expFileDel);
+    ur.action("expOnLoad", appUndoActions.expOnLoad, appUndoActions.expOnLoad);
+    ur.action("fileHide", appUndoActions.hideFileUI, appUndoActions.hideFileUIredo);
+
+    ur.action("fileUnhide", appUndoActions.unhideFileUI, appUndoActions.unhideFileUIredo);
+
+    
   }
 
   function cytoscapeExtensionsAndContextMenu() {

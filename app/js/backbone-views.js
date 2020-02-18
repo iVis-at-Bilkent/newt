@@ -1028,7 +1028,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var self = this;
     self.params = {};
     self.params.experimentDescription = {id: "map-experiment", type: "text",
-      property: "currentGeneralProperties.experimentDescription", update: self.applyUpdate};
+      property: "currentGeneralProperties.experimentDescription"};
 
     //remove all dan sonra no experiment data to display tok 
     $(document).on("click", "#experiment-remove-all", function (evt) {
@@ -1037,8 +1037,10 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       var param = {self};
       cy.undoRedo().do("updateRemoveAll", param);
+     // cy.undoRedo().do("changeMenu", self.params.experimentDescription);
+
      // console.log(currentGeneralProperties.experimentDescription);
-     self.recalculate();
+    // self.recalculate();
       self.render();
     });
     //change visibility of the file
@@ -1050,42 +1052,37 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var fileName = evt.target.id.substring(20);
       var subExperiments = $('[id^="experiment-vis-' + filename + '"]');
       var params = {fileName};
+      params.self = self;
       var paramEvt = {evt};
 
       if(evt.target.value === "true")
       {
-        console.log(subExperiments);
-        actions.push({name: "hideFile", param: params});
-        actions.push({name: "expButtonChange", param: paramEvt});
-        actions.push({name: "fileButtonChangeHide", param: subExperiments});
-        cy.undoRedo().do("batch", actions);
-        chiseInstance.hideFile(fileName);
+        //burayı yeniden yaz
+        cy.undoRedo().do("fileHide", params);
+        //console.log(subExperiments);
+        //actions.push({name: "hideFile", param: params});
+        //actions.push({name: "expButtonChange", param: paramEvt});
+        //actions.push({name: "fileButtonChangeHide", param: subExperiments});
+        //cy.undoRedo().do("batch", actions);
+       
       }
       else
       {
-        actions.push({name: "unhideFile", param: params});
-        actions.push({name: "expButtonChange", param: paramEvt});
-        actions.push({name: "fileButtonChangeUnHide", param: subExperiments});
-        cy.undoRedo().do("batch", actions);
+        cy.undoRedo().do("fileUnhide", params);
+        //actions.push({name: "unhideFile", param: params});
+       // actions.push({name: "expButtonChange", param: paramEvt});
+       // actions.push({name: "fileButtonChangeUnHide", param: subExperiments});
+       // cy.undoRedo().do("batch", actions);
       }
+      self.render();
     });
     //file delete butto
     $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
-      //var actions = [];
-    
       var cy = appUtilities.getActiveCy();
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var fileName = evt.target.id.substring(23);
-      var param = {fileName};
-     
-      chiseInstance.buttonUpdate(document);
-      //actions.push({name: "removeFile", param: param})
-      //actions.push({name: "updateExperimentPanel", param: self });
-      //cy.undoRedo().do("batch", actions);
-      
-      cy.undoRedo().do("removeFile", param);
-      self.render();
-   
+      var param = {fileName, self, document};
+      cy.undoRedo().do("deleteFile", param); 
     });
     //change visibilty of the exp
     $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
@@ -1104,7 +1101,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       {
        // actions.push({name: "hideExperiment", param: params});
         //actions.push({name: "expButtonChange", param: paramEvt});
-         //cy.undoRedo().do("batch", actions);
+         //cy.undoRedo().do("batch", actions)
         cy.undoRedo().do("hideExperimentPanel", params);
       }
       else
@@ -1135,14 +1132,17 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
 
   recalculate: function(){
   
+    console.log("in recalculate");
     var cy = appUtilities.getActiveCy();
   
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var self = this;
     var fileNames = chiseInstance.getGroupedDataMap();
-    
+    param = self;
     self.params.experimentDescription.value =  fileNames;
-    cy.undoRedo().do("changeMenu", self.params.experimentDescription);
+    cy.undoRedo().do("expOnLoad", param);
+    
+    
   },
 
   render: function() {
