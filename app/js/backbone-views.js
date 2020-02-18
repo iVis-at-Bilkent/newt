@@ -1037,10 +1037,6 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       var param = {self};
       cy.undoRedo().do("updateRemoveAll", param);
-     // cy.undoRedo().do("changeMenu", self.params.experimentDescription);
-
-     // console.log(currentGeneralProperties.experimentDescription);
-    // self.recalculate();
       self.render();
     });
     //change visibility of the file
@@ -1059,20 +1055,11 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       {
         //burayı yeniden yaz
         cy.undoRedo().do("fileHide", params);
-        //console.log(subExperiments);
-        //actions.push({name: "hideFile", param: params});
-        //actions.push({name: "expButtonChange", param: paramEvt});
-        //actions.push({name: "fileButtonChangeHide", param: subExperiments});
-        //cy.undoRedo().do("batch", actions);
        
       }
       else
       {
         cy.undoRedo().do("fileUnhide", params);
-        //actions.push({name: "unhideFile", param: params});
-       // actions.push({name: "expButtonChange", param: paramEvt});
-       // actions.push({name: "fileButtonChangeUnHide", param: subExperiments});
-       // cy.undoRedo().do("batch", actions);
       }
       self.render();
     });

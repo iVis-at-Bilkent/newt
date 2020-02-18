@@ -64,8 +64,6 @@ module.exports = function (cy) {
     neededparams.document= param.document;
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
-    ///jQId = '#' + param.self.params.experimentDescription.id;
-   // $(jQId).val(param.self.params.experimentDescription.value);
     appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
     
@@ -211,7 +209,6 @@ module.exports = function (cy) {
     return params;
   }
   appUndoActions.hideFileUIredo = function(param){
-    console.log("hide file redo")
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var params = chiseInstance.undoRedoActionFunctions.hideFileUndo(param);
