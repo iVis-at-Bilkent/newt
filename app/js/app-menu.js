@@ -322,11 +322,6 @@ module.exports = function() {
     $("#sample-experiment-data").click(function (){
 
     });
-    //Remove All Data
-      $("#remove-all-experiment").click(function (){
-      
-    });
-
     $("#import-experimental-data").click(function () {
       $("#overlay-data").trigger('click');
     });
@@ -354,6 +349,7 @@ module.exports = function() {
 
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
+      console.log(cy)
       if ($(this).val() != "") {
         var file = this.files[0];
         var reader = new FileReader();

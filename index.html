@@ -281,7 +281,6 @@
                                                 <li><a href="#" id="import-experimental-data">Load ...</a></li>
                                                 <input id="overlay-data" type="file" style="display:none" />
                                                 <li><a href="#" id="sample-experiment-data">Load Sample Data</a></li>
-                                                <li><a href="#" id="remove-all-experiment">Remove All Data</a></li>
                                             </ul>
                                         </li>
                                         <li class="dropdown">
@@ -1375,7 +1374,7 @@
         </script>
 
         <script type="text/template" id="map-tab-experiment-template">
-            <table class="table-condensed layout-table dialog-table map-panel-table">
+            <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
                
                 <% if( experimentDescription.length  <= 0 || Object.entries(experimentDescription).length == 0){ %>
                     <div style="text-align: center;" id="map-experiment">No experiment data to display!</div>
@@ -1383,8 +1382,8 @@
                     <div><%= experimentDescription.length %></div>
                  <tbody>
                     <tr>
-                        <td >
-                            <div style='text-align: left; margin-top: 5px;' >
+                        <td style='text-align: center;'>
+                            <div style='margin-top: 5px;' >
                                 <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important;;' id='experiment-all-file-vis'> Hide All</button>
                                 <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important;;' id='experiment-remove-all'> Remove All</button>
                             </div>  
@@ -1393,10 +1392,10 @@
                   <% for (filename in experimentDescription) { %>
                     <% if (filename != null) { %>
                     <tr>
-                        <td >
-                            <div style='text-align: left; margin-top: 5px; margin-left: 20px;' >
-                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important;;' title="<%=filename%>" id='experiment-file-vis-<%= filename %>' > <%= filename %></button>
-                                <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style="float:right;margin: 5px;"  id='experiment-file-delete-<%= filename %>'/>
+                        <td style='text-align: center;' >
+                            <div  >
+                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:0px; overflow: hidden; text-overflow: ellipsis; max-width: -webkit-fill-available;' title="<%=filename%>" id='experiment-file-vis-<%= filename %>' > <%= filename %></button>
+                                <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style="margin: 5px;"  id='experiment-file-delete-<%= filename %>'/>
                             </div>  
                     </td>
                     </tr>
@@ -1404,17 +1403,18 @@
                     <% for (element in experimentDescription[filename]) { %> 
                         <% if(element != null) { %>
                         <tr>
-                        <td >
-                            <div style=' margin-top: 5px; margin-left: 40px; ' >
-                                <button class='btn btn-default' value = 'true' style='align: center; border-width: 0px !important;' title="<%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element] %></button>
-                                <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style="float:right; margin: 5px;"  id='experiment-delete-<%= filename %>?<%= experimentDescription[filename][element] %>'/>   
+                        <td style='text-align: center;' >
+                            <div  >
+                                <button class='btn btn-default' value = 'true' style='align: center; border-width: 0px !important; padding: 0px;  overflow: hidden; text-overflow: ellipsis; max-width: -webkit-fill-available;' title="<%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element] %></button>
+                                <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style=" margin: 5px;"  id='experiment-delete-<%= filename %>?<%= experimentDescription[filename][element] %>'/>   
                             </div>  
                     </td>
                     </tr>
                 <% } %>
                     <% } %>
                     <% } %>
-            <% } %>    
+            <% } %>  
+         <div align="center" style = 'margin-top: 5px; text-align: center'> Load Experiment Data <img width='16px' height='16px' id='load-exp-data-util' src='app/img/add.svg' style="margin: 5px;"/> </div> 
         </tbody>
         </table>
         </script>

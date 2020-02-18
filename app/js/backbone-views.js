@@ -1021,28 +1021,25 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
 });
 
 //The render functions for the experimental panel
-
-// inherit from GeneralPropertiesParentView
 var experimentTabPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     var self = this;
     self.params = {};
     self.params.experimentDescription = {id: "map-experiment", type: "text",
-      property: "currentGeneralProperties.experimentDescription"};
+    property: "currentGeneralProperties.experimentDescription"};
 
-    //remove all dan sonra no experiment data to display tok 
+    $(document).on("click","#load-exp-data-util", function (evt) {
+        $("#overlay-data").trigger('click');
+    });
+
     $(document).on("click", "#experiment-remove-all", function (evt) {
-
-      console.log("removeall clicked");
       var cy = appUtilities.getActiveCy();
       var param = {self};
       cy.undoRedo().do("updateRemoveAll", param);
       self.render();
     });
-    //change visibility of the file
+
     $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
-      
-      var actions = [];
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
       var fileName = evt.target.id.substring(20);
@@ -1051,14 +1048,10 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       params.self = self;
       var paramEvt = {evt};
 
-      if(evt.target.value === "true")
-      {
-        //burayı yeniden yaz
+      if(evt.target.value === "true"){
         cy.undoRedo().do("fileHide", params);
-       
       }
-      else
-      {
+      else{
         cy.undoRedo().do("fileUnhide", params);
       }
       self.render();
@@ -1073,33 +1066,21 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     });
     //change visibilty of the exp
     $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
-      var actions = [];
       var expRep = evt.target.id.substring(15);
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
       var params = {fileName, expName}
-      var paramEvt = {evt};
       params.evt = evt;
       params.self=self;
       var cy = appUtilities.getActiveCy();
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      if(evt.target.value === "true")
-      {
-       // actions.push({name: "hideExperiment", param: params});
-        //actions.push({name: "expButtonChange", param: paramEvt});
-         //cy.undoRedo().do("batch", actions)
+      if(evt.target.value === "true"){
         cy.undoRedo().do("hideExperimentPanel", params);
       }
-      else
-      {
-        //actions.push({name: "unhideExperiment", param: params});
-        //actions.push({name: "expButtonChange",param: paramEvt});
-        //cy.undoRedo().do("batch", actions);
+      else{
         cy.undoRedo().do("unhideExperimentPanel", params);
       }
-      //we do not use render here ıt does not work so maybe write a undo/redo function fot this
-     // self.render();
     });
     //remove exp
     $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
@@ -1111,33 +1092,24 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
       var param = {self, fileName, expName, document}
-
       cy.undoRedo().do("updateExperimentPanel", param);
-     // chiseInstance.buttonUpdate(document);
     });
   },
 
   recalculate: function(){
-  
-    console.log("in recalculate");
     var cy = appUtilities.getActiveCy();
-  
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var self = this;
     var fileNames = chiseInstance.getGroupedDataMap();
     param = self;
     self.params.experimentDescription.value =  fileNames;
     cy.undoRedo().do("expOnLoad", param);
-    
-    
   },
 
   render: function() {
-    console.log("in rende function");
     var cy = appUtilities.getActiveCy();
     var self = this;
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
     self.template = _.template($("#map-tab-experiment-template").html());
     this.$el.html(this.template(currentGeneralProperties));
@@ -1145,8 +1117,6 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     return this;
   }
 });
-
-//EXPERIMENT TAB PANEL
 
 /**
  * SBGN Properties view for the Sample Application.
