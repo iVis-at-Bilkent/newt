@@ -46,8 +46,9 @@ module.exports = function (chiseInstance) {
     ur.action("undodeleteFile", appUndoActions.expFileUndoDel, appUndoActions.expFileDel);
     ur.action("expOnLoad", appUndoActions.expOnLoad, appUndoActions.expOnLoad);
     ur.action("fileHide", appUndoActions.hideFileUI, appUndoActions.hideFileUIredo);
-
     ur.action("fileUnhide", appUndoActions.unhideFileUI, appUndoActions.unhideFileUIredo);
+    ur.action("hideAll", appUndoActions.hideAllUI, appUndoActions.hideAllUIUndo);
+    ur.action("unhideAll", appUndoActions.unhideAllUI, appUndoActions.unhideAllUIUndo);
 
     
   }

@@ -169,6 +169,55 @@ module.exports = function (cy) {
 
     return param;
   }
+
+  appUndoActions.hideAllUI = function(param){
+    console.log("hide all ui")
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.hideAll();
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self
+    param.self.render();
+    return params;
+  }
+  appUndoActions.hideAllUIUndo = function(param){
+    console.log("hide all ui undo")
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.hideAllUndo(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+    var params = {};
+    params.self = param.self;
+    param.self.render();
+    return params;
+  }
+  appUndoActions.unhideAllUIUndo = function(param){
+    console.log("unhide all ui undo")
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.unhideAllUndo(param);
+    var params = {};
+    params.self = param.self;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    param.self.render();
+    return params;
+  }
+  appUndoActions.unhideAllUI = function(param){
+    console.log("unhide all ui")
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.unhideAll();
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self;
+    param.self.render();
+    return params;
+  }
   
   appUndoActions.hideFileUI = function(param){
     var cy = appUtilities.getActiveCy();
