@@ -2985,14 +2985,20 @@ appUtilities.modifyUnits = function (node, ele, anchorSide) {
 
 appUtilities.resizeNodesToContent = function(nodes){
 
-  
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    var cy = appUtilities.getActiveCy();
-
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  var cy = appUtilities.getActiveCy();
+  var collection;
+    if(nodes.length == 1){
+      collection = cy.collection();    
+      collection = collection.add(nodes[0]);   
+    }else{
+      collection = nodes;
+    }    
+    
     if(!chiseInstance.areCompoundSizesConsidered()){
-      nodes = nodes.difference(":parent,[class*='compartment'],[class*='submap']");
+      collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
     }
-    chiseInstance.resizeNodesToContent(nodes, false);
+    chiseInstance.resizeNodesToContent(collection, false);
     cy.nodeResize('get').refreshGrapples();
     cy.expandCollapse('get').clearVisualCue();
 
