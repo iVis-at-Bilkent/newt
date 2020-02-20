@@ -319,9 +319,9 @@ module.exports = function() {
       }  
     });
     //LOad Sample Data
-    $("#sample-experiment-data").click(function (){
-
-    });
+    // $("#sample-experiment-data").click(function (){
+    //   $("#overlay-sample-data").trigger('click');
+    // });
     $("#import-experimental-data").click(function () {
       $("#overlay-data").trigger('click');
     });
@@ -372,7 +372,29 @@ module.exports = function() {
       $(this).val("");
       }
     });
-  
+
+    $("#sample-experiment-data").click(function (){
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(function(){loadSample('acc_2016_tp53_rb_pathway.nwt')});
+      }
+      else {
+        loadSample('acc_2016_tp53_rb_pathway.nwt');
+      }
+
+
+      var data ="description\tGlioblastoma\r\nel\tCell\tNature\r\nRB1\t23\t11\r\nTP53\t7\t35\r"
+      chiseInstance.parseData(data, "Sample");
+      experimentTabPanel.recalculate();
+      experimentTabPanel.render();
+
+
+      $(this).val("");
+      
+    });
+    
     //EXPERIMENTAL DATA
     $("#sbml-file").change(function () {
      
