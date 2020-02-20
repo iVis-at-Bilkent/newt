@@ -272,18 +272,6 @@ var LayoutPropertiesView = Backbone.View.extend({
     }
 
     var options = $.extend({}, currentLayoutProperties, preferences);
-    var verticalPaddingPercent = options.tilingPaddingVertical;
-    var horizontalPaddingPercent = options.tilingPaddingHorizontal;
-
-    // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
-    // in dialog, in layout options we use a function using these values
-    options.tilingPaddingVertical = function () {
-      return chiseInstance.calculatePaddings(verticalPaddingPercent);
-    };
-
-    options.tilingPaddingHorizontal = function () {
-      return chiseInstance.calculatePaddings(horizontalPaddingPercent);
-    };
 
     return options;
   },
