@@ -2810,7 +2810,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
           //If box is at margin points allow it to change anchor side
           //If it on left it can pass left anchor side
           var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
-          if (absoluteCoords.x === (parentX1)) { //If it is on the left margin allow it to change anchor sides
+          if (Number(absoluteCoords.x.toFixed(2))=== Number(parentX1.toFixed(2))) { //If it is on the left margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_y < drag_y  && anchorSide === "top") {
               selectedBox.anchorSide = "left"; //Set new anchor side
@@ -2828,7 +2828,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
             }
           }
           //If it on right it can pass right anchor side
-          else if (absoluteCoords.x  === (parentX2)) {
+          else if (Number(absoluteCoords.x.toFixed(2))  === Number(parentX2.toFixed(2))) {
             if (last_mouse_y < drag_y && anchorSide === "top") {
               selectedBox.anchorSide = "right"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2),
@@ -2866,7 +2866,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
 
           var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
           //Set anchor side changes
-          if (absoluteCoords.y  === (parentY1)) { //If it is on the top margin allow it to change anchor sides
+          if (Number(absoluteCoords.y.toFixed(2))  === Number(parentY1.toFixed(2))) { //If it is on the top margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_x < drag_x  && anchorSide === "left") {
               selectedBox.anchorSide = "top"; //Set new anchor side
@@ -2882,7 +2882,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
             }
           }
           //If it on right it can pass right anchor side
-          else if (absoluteCoords.y === (parentY2)) {
+          else if (Number(absoluteCoords.y.toFixed(2)) === Number(parentY2.toFixed(2))) {
             if (last_mouse_x < drag_x && anchorSide === "left") {
               selectedBox.anchorSide = "bottom"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1), (parentY2), cy);
