@@ -36,7 +36,7 @@
       <bbox x="481.40980944651267" y="137" w="60" h="30"/>
       <glyph id="glyph2_0" class="state variable">
         <state value="P"/>
-        <bbox x="515.0098094465126" y="131" w="12" h="12"/>
+        <bbox x="486.40980944651267" y="131" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph18" class="simple chemical">
@@ -64,7 +64,7 @@
       <bbox x="612.8763427766252" y="265.15371426741484" w="60" h="30"/>
       <glyph id="glyph12_0" class="state variable">
         <state value="2P"/>
-        <bbox x="646.4300537141252" y="259.15371426741484" w="12.2314453125" h="12"/>
+        <bbox x="617.8763427766252" y="259.15371426741484" w="12.2314453125" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph19" class="macromolecule">
@@ -72,7 +72,7 @@
       <bbox x="614.511632895616" y="423" w="60" h="30"/>
       <glyph id="glyph19_0" class="state variable">
         <state value="2P"/>
-        <bbox x="648.065343833116" y="417" w="12.2314453125" h="12"/>
+        <bbox x="619.511632895616" y="417" w="12.2314453125" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph20" class="tag">
@@ -84,7 +84,7 @@
       <bbox x="350" y="45" w="60" h="30"/>
       <glyph id="glyph1_0" class="state variable">
         <state value="active"/>
-        <bbox x="380.775390625" y="39" w="26.123046875" h="12"/>
+        <bbox x="355" y="39" w="26.123046875" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph0" class="tag">
@@ -96,7 +96,7 @@
       <bbox x="362.7299750958073" y="265.15371426741484" w="60" h="30"/>
       <glyph id="glyph24_0" class="state variable">
         <state value="P"/>
-        <bbox x="396.32997509580724" y="259.15371426741484" w="12" h="12"/>
+        <bbox x="367.7299750958073" y="259.15371426741484" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph11" class="process">
@@ -109,7 +109,7 @@
       <bbox x="228" y="137" w="60" h="30"/>
       <glyph id="glyph25_0" class="state variable">
         <state/>
-        <bbox x="261.59999999999997" y="131" w="12" h="12"/>
+        <bbox x="233" y="131" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph3" class="process">
@@ -122,7 +122,7 @@
       <bbox x="131.95577169574398" y="265.15371426741484" w="60" h="30"/>
       <glyph id="glyph23_0" class="state variable">
         <state/>
-        <bbox x="165.55577169574397" y="259.15371426741484" w="12" h="12"/>
+        <bbox x="136.95577169574398" y="259.15371426741484" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph8" class="process">
@@ -135,7 +135,7 @@
       <bbox x="91.73851429303409" y="423" w="60" h="30"/>
       <glyph id="glyph22_0" class="state variable">
         <state/>
-        <bbox x="125.33851429303408" y="417" w="12" h="12"/>
+        <bbox x="96.73851429303409" y="417" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph13" class="process">
@@ -153,7 +153,7 @@
       <bbox x="354" y="423" w="60" h="30"/>
       <glyph id="glyph21_0" class="state variable">
         <state value="P"/>
-        <bbox x="387.59999999999997" y="417" w="12" h="12"/>
+        <bbox x="359" y="417" w="12" h="12"/>
       </glyph>
     </glyph>
     <arc id="71683490-4e4e-4d59-ae45-f02b1207cfe2" class="production" source="glyph3.2" target="glyph2">
@@ -224,14 +224,14 @@
     </arc>
     <arc id="72badb00-9293-4106-9edc-dd830d41c62d" class="catalysis" source="glyph12" target="glyph13">
       <start x="645.253344163509" y="295.77871426741484"/>
-      <next x="661.1184645490315" y="400.06662398074036"/>
-      <next x="506.75855472818324" y="400.06662398074025"/>
+      <next x="661.1184645490315" y="400.06662398074025"/>
+      <next x="506.75855472818324" y="400.0666239807402"/>
       <end x="506.9462958636605" y="429.5625632996412"/>
     </arc>
     <arc id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea" class="catalysis" source="glyph12" target="glyph14">
       <start x="641.3101113169873" y="295.77871426741484"/>
       <next x="632.0298309160219" y="388.3604207404915"/>
-      <next x="257.11474995619346" y="389.5853955361156"/>
+      <next x="257.11474995619346" y="389.58539553611564"/>
       <end x="257.0199981340112" y="429.56250877749267"/>
     </arc>
     <arc id="7a83e4b9-1830-4fef-9a89-1be72e62f78a" class="equivalence arc" source="glyph19" target="glyph20">

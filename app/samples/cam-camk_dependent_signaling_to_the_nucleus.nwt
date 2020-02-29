@@ -28,8 +28,8 @@
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph25 glyph37 glyph22 glyph35 glyph45 glyph30 glyph43 glyph33 glyph32 glyph28 glyph42 glyph34 glyph29 glyph44 glyph41 glyph24 glyph40 glyph31 glyph23 glyph38 glyph20 glyph39 glyph46 glyph21 glyph27 b6769d7e-7ff6-11a0-2620-b71d9cf91ded 364697a4-255c-6c48-1fed-a8e91a24fc67">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph25_0 glyph25_1 glyph22_0 glyph22_1 glyph33_0 glyph32_0 glyph28_0 glyph34_0 glyph29_0 glyph24_0 glyph24_1 glyph23_0 glyph23_1 glyph20_0 glyph20_1 glyph21_0 glyph21_1">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_5" shape-name="stadium"/>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fstadium" id-list="glyph25_0 glyph25_1 glyph22_0 glyph22_1 glyph33_0 glyph32_0 glyph28_0 glyph34_0 glyph29_0 glyph24_0 glyph24_1 glyph23_0 glyph23_1 glyph20_0 glyph20_1 glyph21_0 glyph21_1">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="1" fill="color_5"/>
           </style>
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_4none5050100100" id-list="glyph57 glyph50 glyph49 glyph53 glyph51 glyph55 glyph56 glyph54 glyph47 glyph52 glyph48">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_4" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
@@ -40,8 +40,8 @@
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph9 glyph19">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_4" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="infoboxffffff5552.259normalnormalArial0f0f0frectangle" id-list="b6769d7e-7ff6-11a0-2620-b71d9cf91ded_0 364697a4-255c-6c48-1fed-a8e91a24fc67_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_5" shape-name="rectangle"/>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0frectangle" id-list="b6769d7e-7ff6-11a0-2620-b71d9cf91ded_0 364697a4-255c-6c48-1fed-a8e91a24fc67_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="1" fill="color_5"/>
           </style>
           <style id="edge5555551.25" id-list="arc31 nwtE_2228e5b5-771e-402b-b16e-85358c7b9999 nwtE_9ba5e16e-98ca-4066-be1a-cc272f59a28f arc32 arc34 arc33 nwtE_bc4239e4-7e0c-41ad-8556-fa994251bbe4 nwtE_26d7e29f-37d7-4bc8-9607-d28b1932ef52 arc2 arc3 arc4 arc5 arc6 arc7 arc8 arc9 arc10 arc11 arc12 arc13 arc14 arc15 arc16 arc17 arc18 arc19 arc20 arc21 arc22 arc23 arc24 arc25 nwtE_ebc64e3c-e4b6-4858-8a73-ce7c423e835d nwtE_eef9ec0e-9cf7-4257-88c3-58bfd65ef170 arc29 arc30">
             <g stroke="color_3" stroke-width="1.25"/>
@@ -49,7 +49,7 @@
         </listOfStyles>
       </renderInformation>
       <mapProperties>
-        <compoundPadding>10</compoundPadding>
+        <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
         <arrowScale>1.25</arrowScale>
@@ -75,31 +75,79 @@
       </mapProperties>
     </extension>
     <glyph id="glyph0" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>948.2491938838532</w>
+          <h>1163.9691972897863</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0.5</WLBias>
+          <WRBias>0.5</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="neuron"/>
-      <bbox x="248.625" y="185.625" w="958.2491938838532" h="1168.9691972897863"/>
+      <bbox x="239.625" y="171.625" w="976.2491938838532" h="1191.9691972897863"/>
     </glyph>
     <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
+      <extension>
+        <extraInfo>
+          <w>900.2491938838532</w>
+          <h>659.3441972897863</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="nucleus"/>
-      <bbox x="277.625" y="666.25" w="900.2491938838532" h="659.3441972897863"/>
+      <bbox x="263.625" y="652.25" w="928.2491938838532" h="687.3441972897863"/>
     </glyph>
     <glyph id="glyph3" class="complex" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>151.5</w>
+          <h>116</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
-      <bbox x="289.25" y="696.25" w="151.5" h="116"/>
+      <bbox x="279.25" y="686.25" w="171.5" h="136"/>
       <glyph id="glyph25" class="macromolecule">
         <label text="γCaMKII"/>
         <bbox x="292.5" y="704.5" w="70" h="35"/>
         <glyph id="glyph25_0" class="state variable">
           <state variable="T287"/>
-          <bbox x="334.4580027761738" y="698.5" w="32.9443359375" h="12"/>
+          <bbox x="310.23926524965395" y="698.5" w="32.9443359375" h="12"/>
         </glyph>
         <glyph id="glyph25_1" class="state variable">
           <state variable="S334"/>
-          <bbox x="335.0833846817773" y="733.5" w="33.505859375" h="12"/>
+          <bbox x="311.1775806595236" y="733.5" w="33.505859375" h="12"/>
         </glyph>
       </glyph>
       <glyph id="glyph15" class="complex">
+        <extension>
+          <extraInfo>
+            <w>128.25</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="300.875" y="757.375" w="128.25" h="43.25"/>
+        <bbox x="290.875" y="747.375" w="148.25" h="63.25"/>
         <glyph id="glyph57" class="simple chemical">
           <label text="Ca++"/>
           <bbox x="302.5" y="759" w="40" h="40"/>
@@ -115,11 +163,11 @@
       <bbox x="589.2284362022532" y="674.5" w="70" h="35"/>
       <glyph id="glyph22_0" class="state variable">
         <state variable="T287"/>
-        <bbox x="632.3769250485414" y="668.5" w="32.9443359375" h="12"/>
+        <bbox x="607.6940846328347" y="668.5" w="32.9443359375" h="12"/>
       </glyph>
       <glyph id="glyph22_1" class="state variable">
         <state variable="S334"/>
-        <bbox x="632.2926965329164" y="703.5" w="33.505859375" h="12"/>
+        <bbox x="607.4133229140847" y="703.5" w="33.505859375" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph61" class="dissociation" compartmentRef="glyph1">
@@ -137,11 +185,35 @@
       <port id="glyph66.2" x="823" y="757.5625"/>
     </glyph>
     <glyph id="glyph2" class="complex" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>145.5</w>
+          <h>112.375</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKK complex"/>
-      <bbox x="921.75" y="701.375" w="145.5" h="112.375"/>
+      <bbox x="911.75" y="691.375" w="165.5" h="132.375"/>
       <glyph id="glyph11" class="complex">
+        <extension>
+          <extraInfo>
+            <w>122.25</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="933.375" y="713" w="122.25" h="43.25"/>
+        <bbox x="923.375" y="703" w="142.25" h="63.25"/>
         <glyph id="glyph45" class="macromolecule">
           <label text="CaM"/>
           <bbox x="984" y="717.125" w="70" h="35"/>
@@ -157,8 +229,20 @@
       </glyph>
     </glyph>
     <glyph id="glyph17" class="complex" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>119.24999999999989</w>
+          <h>43.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/CaM complex"/>
-      <bbox x="599.511211133063" y="796.9551787701424" w="119.24999999999989" h="43.25"/>
+      <bbox x="589.511211133063" y="786.9551787701424" w="139.2499999999999" h="63.25"/>
       <glyph id="glyph49" class="simple chemical">
         <label text="Ca++"/>
         <bbox x="601.136211133063" y="798.5801787701424" w="40" h="40"/>
@@ -173,7 +257,7 @@
       <bbox x="484" y="854.5" w="70" h="35"/>
       <glyph id="glyph33_0" class="state variable">
         <state variable="T196"/>
-        <bbox x="527.0381989734666" y="883.5" w="32.9443359375" h="12"/>
+        <bbox x="501.63437444293004" y="883.5" w="32.9443359375" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph59" class="association" compartmentRef="glyph1">
@@ -186,7 +270,7 @@
       <bbox x="813.2491938838532" y="1170.9691972897863" w="70" h="35"/>
       <glyph id="glyph32_0" class="state variable">
         <state/>
-        <bbox x="851.8802483049336" y="1164.9691972897863" w="12" h="12"/>
+        <bbox x="843.6955213962095" y="1164.9691972897863" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph28" class="macromolecule" compartmentRef="glyph1">
@@ -194,7 +278,7 @@
       <bbox x="1106.2491938838532" y="1170.9691972897863" w="70" h="35"/>
       <glyph id="glyph28_0" class="state variable">
         <state value="P"/>
-        <bbox x="1143.5616938838532" y="1164.9691972897863" w="12" h="12"/>
+        <bbox x="1135.0549551362924" y="1164.9691972897863" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph9" class="phenotype" compartmentRef="glyph1">
@@ -202,11 +286,35 @@
       <bbox x="1106.2491938838532" y="1288.9691972897863" w="70" h="35"/>
     </glyph>
     <glyph id="glyph4" class="complex" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>142.5</w>
+          <h>111.375</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKIV complex"/>
-      <bbox x="587.886211133063" y="1003.75" w="142.5" h="111.375"/>
+      <bbox x="577.886211133063" y="993.75" w="162.5" h="131.375"/>
       <glyph id="glyph14" class="complex">
+        <extension>
+          <extraInfo>
+            <w>119.24999999999989</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="599.511211133063" y="1015.375" w="119.24999999999989" h="43.25"/>
+        <bbox x="589.511211133063" y="1005.375" w="139.2499999999999" h="63.25"/>
         <glyph id="glyph53" class="simple chemical">
           <label text="Ca++"/>
           <bbox x="601.136211133063" y="1017" w="40" h="40"/>
@@ -221,7 +329,7 @@
         <bbox x="590.511211133063" y="1078.5" w="70" h="35"/>
         <glyph id="glyph34_0" class="state variable">
           <state variable="T196"/>
-          <bbox x="633.1166792170139" y="1072.5" w="32.9443359375" h="12"/>
+          <bbox x="607.6940846328349" y="1072.5" w="32.9443359375" h="12"/>
         </glyph>
       </glyph>
     </glyph>
@@ -231,19 +339,43 @@
       <port id="glyph60.2" x="853.9754103538849" y="986.5460162674967"/>
     </glyph>
     <glyph id="glyph6" class="complex" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>145.5</w>
+          <h>114.375</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKIV complex"/>
-      <bbox x="921.75" y="988.3728746770742" w="145.5" h="114.375"/>
+      <bbox x="911.75" y="978.3728746770742" w="165.5" h="134.375"/>
       <glyph id="glyph29" class="macromolecule">
         <label text="CaMKIV"/>
         <bbox x="925" y="1066.1228746770742" w="70" h="35"/>
         <glyph id="glyph29_0" class="state variable">
           <state value="P" variable="T196"/>
-          <bbox x="962.3442962622348" y="1060.1228746770742" w="39.6142578125" h="12"/>
+          <bbox x="939.6053340657229" y="1060.1228746770742" w="39.6142578125" h="12"/>
         </glyph>
       </glyph>
       <glyph id="glyph12" class="complex">
+        <extension>
+          <extraInfo>
+            <w>122.25</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="933.375" y="999.9978746770742" w="122.25" h="43.25"/>
+        <bbox x="923.375" y="989.9978746770742" w="142.25" h="63.25"/>
         <glyph id="glyph51" class="simple chemical">
           <label text="Ca++"/>
           <bbox x="935" y="1001.6228746770742" w="40" h="40"/>
@@ -277,16 +409,28 @@
       <bbox x="958.7822632393872" y="521.1168132336828" w="70" h="35"/>
       <glyph id="glyph24_0" class="state variable">
         <state variable="T287"/>
-        <bbox x="1001.8095832025226" y="515.1168132336828" w="32.9443359375" h="12"/>
+        <bbox x="976.3205304453168" y="515.1168132336828" w="32.9443359375" h="12"/>
       </glyph>
       <glyph id="glyph24_1" class="state variable">
         <state value="P" variable="S334"/>
-        <bbox x="998.4568945428945" y="550.1168132336828" w="40.17578125" h="12"/>
+        <bbox x="975.1339955339" y="550.1168132336828" w="40.17578125" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph10" class="complex" compartmentRef="glyph0">
+      <extension>
+        <extraInfo>
+          <w>128.2500000000001</w>
+          <h>43.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/CaM complex"/>
-      <bbox x="929.6572632393872" y="361.6225809530113" w="128.2500000000001" h="43.25"/>
+      <bbox x="919.6572632393872" y="351.6225809530113" w="148.2500000000001" h="63.25"/>
       <glyph id="glyph40" class="macromolecule">
         <label text="CaM"/>
         <bbox x="986.2822632393872" y="365.7475809530113" w="70" h="35"/>
@@ -311,23 +455,47 @@
       <port id="glyph65.2" x="560" y="462.5625"/>
     </glyph>
     <glyph id="glyph8" class="complex" compartmentRef="glyph0">
+      <extension>
+        <extraInfo>
+          <w>142.5</w>
+          <h>116</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
-      <bbox x="293.75" y="401.25" w="142.5" h="116"/>
+      <bbox x="283.75" y="391.25" w="162.5" h="136"/>
       <glyph id="glyph23" class="macromolecule">
         <label text="γCaMKII"/>
         <bbox x="297" y="409.5" w="70" h="35"/>
         <glyph id="glyph23_0" class="state variable">
           <state variable="T287"/>
-          <bbox x="339.7074843912079" y="403.5" w="32.9443359375" h="12"/>
+          <bbox x="315.5814638506578" y="403.5" w="32.9443359375" h="12"/>
         </glyph>
         <glyph id="glyph23_1" class="state variable">
           <state variable="S334"/>
-          <bbox x="340.2022233902898" y="438.5" w="33.505859375" h="12"/>
+          <bbox x="315.3007021319078" y="438.5" w="33.505859375" h="12"/>
         </glyph>
       </glyph>
       <glyph id="glyph13" class="complex">
+        <extension>
+          <extraInfo>
+            <w>119.25</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="305.375" y="462.375" w="119.25" h="43.25"/>
+        <bbox x="295.375" y="452.375" w="139.25" h="63.25"/>
         <glyph id="glyph54" class="simple chemical">
           <label text="Ca++"/>
           <bbox x="307" y="464" w="40" h="40"/>
@@ -344,23 +512,47 @@
       <port id="glyph58.2" x="365" y="611"/>
     </glyph>
     <glyph id="glyph5" class="complex" compartmentRef="glyph0">
+      <extension>
+        <extraInfo>
+          <w>143.5</w>
+          <h>116</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
-      <bbox x="637.75" y="401.25" w="143.5" h="116"/>
+      <bbox x="627.75" y="391.25" w="163.5" h="136"/>
       <glyph id="glyph20" class="macromolecule">
         <label text="γCaMKII"/>
         <bbox x="641.915011642421" y="409.5" w="70" h="35"/>
         <glyph id="glyph20_0" class="state variable">
           <state variable="T287"/>
-          <bbox x="684.5879186565626" y="403.5" w="32.9443359375" h="12"/>
+          <bbox x="661.7407174894038" y="403.5" w="32.9443359375" h="12"/>
         </glyph>
         <glyph id="glyph20_1" class="state variable">
           <state value="P" variable="S334"/>
-          <bbox x="682.2766259453559" y="438.5" w="40.17578125" h="12"/>
+          <bbox x="659.3395887055705" y="438.5" w="40.17578125" h="12"/>
         </glyph>
       </glyph>
       <glyph id="glyph18" class="complex">
+        <extension>
+          <extraInfo>
+            <w>120.25</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="649.375" y="462.375" w="120.25" h="43.25"/>
+        <bbox x="639.375" y="452.375" w="140.25" h="63.25"/>
         <glyph id="glyph39" class="macromolecule">
           <label text="CaM"/>
           <bbox x="698" y="466.5" w="70" h="35"/>
@@ -372,11 +564,35 @@
       </glyph>
     </glyph>
     <glyph id="glyph7" class="complex" compartmentRef="glyph0">
+      <extension>
+        <extraInfo>
+          <w>143.5</w>
+          <h>119</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
-      <bbox x="374.75" y="197.25" w="143.5" h="119"/>
+      <bbox x="364.75" y="187.25" w="163.5" h="139"/>
       <glyph id="glyph16" class="complex">
+        <extension>
+          <extraInfo>
+            <w>120.25</w>
+            <h>43.25</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="Ca/CaM complex"/>
-        <bbox x="386.375" y="261.375" w="120.25" h="43.25"/>
+        <bbox x="376.375" y="251.375" w="140.25" h="63.25"/>
         <glyph id="glyph52" class="simple chemical">
           <label text="Ca++"/>
           <bbox x="388" y="263" w="40" h="40"/>
@@ -391,11 +607,11 @@
         <bbox x="378" y="205.5" w="70" h="35"/>
         <glyph id="glyph21_0" class="state variable">
           <state value="P" variable="T287"/>
-          <bbox x="417.5856195796651" y="199.5" w="39.6142578125" h="12"/>
+          <bbox x="392.4096984926569" y="199.5" w="39.6142578125" h="12"/>
         </glyph>
         <glyph id="glyph21_1" class="state variable">
           <state value="P" variable="S334"/>
-          <bbox x="417.4726801265401" y="234.5" w="40.17578125" h="12"/>
+          <bbox x="392.1289367739069" y="234.5" w="40.17578125" h="12"/>
         </glyph>
       </glyph>
     </glyph>
@@ -413,7 +629,7 @@
       <bbox x="545.295935898724" y="149.66365023097822" w="70" h="35"/>
       <glyph id="b6769d7e-7ff6-11a0-2620-b71d9cf91ded_0" class="unit of information">
         <label text="close"/>
-        <bbox x="580.906726914349" y="143.66365023097822" w="23.3447265625" h="12"/>
+        <bbox x="533.623572617474" y="143.66365023097822" w="23.3447265625" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph19" class="perturbing agent">
@@ -434,7 +650,7 @@
       <bbox x="767.3008014066335" y="149.66365023097822" w="70" h="35"/>
       <glyph id="364697a4-255c-6c48-1fed-a8e91a24fc67_0" class="unit of information">
         <label text="open"/>
-        <bbox x="803.0763873441334" y="143.66365023097822" w="22.24609375" h="12"/>
+        <bbox x="756.1777545316335" y="143.66365023097822" w="22.24609375" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph69" class="process">

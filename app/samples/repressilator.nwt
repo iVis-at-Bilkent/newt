@@ -14,14 +14,14 @@
         </listOfColorDefinitions>
         <listOfBackgroundImages/>
         <listOfStyles>
-          <style id="nodeececa51ffcc66211normalnormalHelvetica" id-list="nwtN_373486e4-8b5f-4f1c-b149-2ef86ff5c0d8 nwtN_5aaf9d6e-a017-400d-be2a-11ecdd8b78f9">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_2" stroke-width="2" fill="color_1"/>
+          <style id="nodeececa51ffcc66211normalnormalHelvetica000" id-list="nwtN_373486e4-8b5f-4f1c-b149-2ef86ff5c0d8 nwtN_5aaf9d6e-a017-400d-be2a-11ecdd8b78f9">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="2" fill="color_1"/>
           </style>
-          <style id="nodee9967d1ff6666211normalnormalHelvetica" id-list="nwtN_aeb15979-46af-41f9-bee6-9017621af4f9 nwtN_604ada15-23e0-4180-bfd7-e0d807b71b8c">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_4" stroke-width="2" fill="color_3"/>
+          <style id="nodee9967d1ff6666211normalnormalHelvetica000" id-list="nwtN_aeb15979-46af-41f9-bee6-9017621af4f9 nwtN_604ada15-23e0-4180-bfd7-e0d807b71b8c">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="2" fill="color_3"/>
           </style>
-          <style id="node66ffff166ccff211normalnormalHelvetica" id-list="nwtN_36bd6fde-ccfb-40df-82ec-56984a85fb13 nwtN_4cdac9ea-e826-4468-9644-1713b2313056">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" stroke="color_6" stroke-width="2" fill="color_5"/>
+          <style id="node66ffff166ccff211normalnormalHelvetica000" id-list="nwtN_36bd6fde-ccfb-40df-82ec-56984a85fb13 nwtN_4cdac9ea-e826-4468-9644-1713b2313056">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_6" stroke-width="2" fill="color_5"/>
           </style>
           <style id="edgeff66662" id-list="nwtE_46b068cc-de40-41aa-bc82-c019797db870 nwtE_d785679b-7f1d-4822-a587-c123adcd0de2">
             <g stroke="color_4" stroke-width="2"/>
