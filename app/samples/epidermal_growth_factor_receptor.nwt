@@ -5,9 +5,9 @@
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#ffffff7f"/>
-          <colorDefinition id="color_2" value="#555555"/>
-          <colorDefinition id="color_3" value="#ffffffff"/>
+          <colorDefinition id="color_1" value="#ffffffff"/>
+          <colorDefinition id="color_2" value="#ececec"/>
+          <colorDefinition id="color_3" value="#555555"/>
           <colorDefinition id="color_4" value="#ffffff"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
@@ -15,23 +15,23 @@
           <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/rb2_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff0.5555555514normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
+          <style id="nodeffffff1ececec514normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
             <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="5" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph30 glyph39 glyph45 glyph38 glyph13 glyph9 glyph42 glyph36 glyph23 glyph4 glyph21 glyph28 glyph7 glyph22 glyph33 glyph26 glyph34 glyph14 glyph47 glyph25 glyph29 glyph41 glyph15 glyph40 glyph3 glyph20 glyph2 glyph27 glyph24 glyph12 glyph44 glyph11 glyph16 glyph35 glyph17 glyph37 glyph5 glyph10 glyph8 glyph46 nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54 glyph6 glyph18">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2none5050100100" id-list="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8 nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40 nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
           <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" id-list="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8_0 nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40_0 nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4"/>
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
           </style>
           <style id="infoboxffffff5555552.259normalnormalArial0f0f0fellipse" id-list="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4"/>
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
           </style>
           <style id="edge5555551.25" id-list="arc17 arc26 arc64 arc46 arc50 arc62 nwtE_865ef643-bbd9-4965-a7d7-86ac09fdccee arc42 arc51 arc52 nwtE_2ee4d24b-ece1-4e7b-b1a5-5078fbefc1ab nwtE_3f4674a6-5a2e-4379-b55c-ececa27c044c arc4 arc5 arc6 arc7 arc8 arc9 arc55 arc56 arc12 arc13 arc14 arc15 arc45 arc44 arc43 arc20 nwtE_d2365e40-7fdc-40de-ac2e-069b47737bbd arc22 arc23 arc24 arc61 arc18 arc27 arc28 arc29 arc30 arc31 arc32 arc33 arc34 arc19 arc21 nwtE_246f922b-1bb5-4919-8e18-068385a9d5b3 arc39 nwtE_57728f8d-2d61-4d37-aa3e-d6c925a8221f arc41 arc0 arc57 arc58 arc59 arc60 arc1 arc2 arc3 arc10 arc11 arc16 nwtE_b563cd4f-b5b9-49c8-984d-3e27b68b2a18 nwtE_ace78805-ba20-43c9-83f2-a4fc5f953392 nwtE_d3553fcd-5db0-47a2-99d6-166df0deee43 nwtE_cd2834bc-a01e-44dc-997c-f94bd7beb035 nwtE_8f1e67b8-80bb-4326-84e4-b6accc7a5377 nwtE_6ce94167-d117-4a13-ac18-585a08101fd3">
-            <g stroke="color_2" stroke-width="1.25"/>
+            <g stroke="color_3" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
@@ -307,8 +307,8 @@
     </arc>
     <arc id="arc64" class="positive influence" source="glyph37" target="glyph5">
       <start x="786.7165378849543" y="265.625"/>
-      <next x="773.1456418807978" y="358.48629542845276"/>
-      <end x="646.43783320584" y="419.8154176773703"/>
+      <next x="773.1456418807978" y="358.4862954284528"/>
+      <end x="646.43783320584" y="419.81541767737036"/>
     </arc>
     <arc id="arc46" class="positive influence" source="glyph15" target="glyph11">
       <start x="819.1215940756774" y="899.6250000000002"/>
@@ -479,8 +479,8 @@
     <arc id="arc21" class="positive influence" source="glyph18" target="glyph5">
       <start x="1056.0290474684668" y="237.8151444779761"/>
       <next x="1027.495636278331" y="350.08910048866403"/>
-      <next x="949.0471810802987" y="404.65286534113545"/>
-      <end x="646.736491964725" y="432.8529944124626"/>
+      <next x="949.047181080299" y="404.65286534113534"/>
+      <end x="646.736491964725" y="432.8529944124625"/>
     </arc>
     <arc id="nwtE_246f922b-1bb5-4919-8e18-068385a9d5b3" class="negative influence" source="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54" target="glyph5">
       <start x="549.3943787140508" y="519.2341884639911"/>
@@ -492,7 +492,7 @@
     </arc>
     <arc id="nwtE_57728f8d-2d61-4d37-aa3e-d6c925a8221f" class="positive influence" source="glyph5" target="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54">
       <start x="587.1602689126019" y="451.6250000000001"/>
-      <end x="534.8213924954642" y="511.1708894363965"/>
+      <end x="532.3285279312694" y="516.4121300892677"/>
     </arc>
     <arc id="arc41" class="positive influence" source="glyph29" target="glyph27">
       <start x="631.2746478873239" y="899.6250000000002"/>
@@ -520,13 +520,13 @@
     </arc>
     <arc id="arc1" class="positive influence" source="glyph18" target="glyph16">
       <start x="1090.625" y="222.23217056799731"/>
-      <next x="1435.926847405622" y="222.7060215565217"/>
-      <end x="1482.4171140655471" y="238.5528353128798"/>
+      <next x="1435.9268474056223" y="222.7060215565217"/>
+      <end x="1482.4171140655471" y="238.55283531287978"/>
     </arc>
     <arc id="arc2" class="positive influence" source="glyph18" target="glyph39">
-      <start x="1090.625" y="222.85871549205032"/>
-      <next x="1325.964730953988" y="227.996391331262"/>
-      <end x="1385.3338965626433" y="242.03768879229563"/>
+      <start x="1090.625" y="222.8587154920503"/>
+      <next x="1325.964730953988" y="227.99639133126198"/>
+      <end x="1385.3338965626433" y="242.0376887922956"/>
     </arc>
     <arc id="arc3" class="positive influence" source="glyph18" target="glyph30">
       <start x="1090.625" y="225.97537481291823"/>
@@ -534,7 +534,7 @@
     </arc>
     <arc id="arc10" class="positive influence" source="glyph18" target="glyph33">
       <start x="1029.375" y="222.4859755536687"/>
-      <next x="668.6933864792921" y="225.97008427890555"/>
+      <next x="668.6933864792921" y="225.97008427890552"/>
       <end x="499.72826815271776" y="246.00141151516513"/>
     </arc>
     <arc id="arc11" class="positive influence" source="glyph18" target="glyph37">
