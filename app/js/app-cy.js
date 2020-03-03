@@ -575,7 +575,7 @@ module.exports = function (chiseInstance) {
             result = true;
         });
 
-        return result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
+        return !node.data()["expanding"] && result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
       },
       resizeToContentFunction: appUtilities.resizeNodesToContent,
       resizeToContentCuePosition: 'bottom-right',
@@ -740,6 +740,15 @@ module.exports = function (chiseInstance) {
       cy.nodeResize('get').refreshGrapples();
     });
 
+    cy.on("expandcollapse.beforeexpand",function(event){
+     var node = event.target;
+      node.data("expanding", true);
+
+    });
+   /*  cy.on("expandcollapse.afterexpand",function(event){
+      var node = event.target;
+     node.data("expanding", false);      
+    }); */
     //Updates arrow-scale of edges after expand
     cy.on("expandcollapse.afterexpand", function(event) {
         var currentArrowScale = Number($('#arrow-scale').val());
@@ -1278,6 +1287,8 @@ module.exports = function (chiseInstance) {
         var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
       });
+
+      cy.nodes().forEach(function(node){node.data("expanding", false); });
     });
 
     // if the position of compound changes by repositioning its children
