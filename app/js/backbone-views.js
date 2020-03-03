@@ -1043,6 +1043,23 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       self.render();
     });
 
+    $(document).on("click", "#experiment-hide-all", function (evt) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var params = {};
+      params.self = self;
+
+      console.log("values" + evt.target.value)
+      if(evt.target.value == 'true'){
+        console.log("in first")
+        cy.undoRedo().do("hideAll", params);
+      }
+      else{
+        console.log("in second")
+        cy.undoRedo().do("unhideAll", params);
+      }
+    });
+
     $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
