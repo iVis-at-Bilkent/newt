@@ -171,7 +171,6 @@ module.exports = function (cy) {
   }
 
   appUndoActions.hideAllUI = function(param){
-    console.log("hide all ui")
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var params = chiseInstance.undoRedoActionFunctions.hideAll();

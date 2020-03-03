@@ -1137,10 +1137,12 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     this.$el.html(this.template(currentGeneralProperties));
     chiseInstance.buttonUpdate(document);
     if( currentGeneralProperties.experimentDescription.length  > 0 || Object.entries(currentGeneralProperties.experimentDescription).length != 0){
-     document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "hidden";
+     //document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "hidden";
+     document.getElementById('sbgn-inspector-map-color-scheme').style.display = "none";
     }
     else{
-     document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "initial";
+    document.getElementById('sbgn-inspector-map-color-scheme').style.display = "";
+    // document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "initial";
     }
     return this;
   }
