@@ -218,6 +218,7 @@ module.exports = function (cy) {
     return params;
   }
   appUndoActions.changeMenu = function (param) {
+    
     var id = param.id;
     var jQId = '#'+id;
     var type = param.type;
@@ -251,7 +252,7 @@ module.exports = function (cy) {
   }
 
   appUndoActions.refreshColorSchemeMenu = function (param) {
-
+    
     // get 'currentGeneralProperties' for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 

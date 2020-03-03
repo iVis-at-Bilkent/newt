@@ -506,7 +506,7 @@
                                 </div>
                                 <div class="panel">
                                     <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-experiment">
-                                        <p class="panel-title accordion-toggle">Experiment Data</p>
+                                        <p class="panel-title accordion-toggle">Experiment</p>
                                     </div>
                                     <div id="sbgn-inspector-map-properties-experiment" class="panel-collapse collapse">
                                         <div id="map-tab-experiment-container" >
@@ -1377,7 +1377,6 @@
             <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
                
                 <% if( experimentDescription.length  <= 0 || Object.entries(experimentDescription).length == 0){ %>
-                    <div style="text-align: center;" id="map-experiment">No experiment data to display!</div>
                 <% } else { %>
                     <div><%= experimentDescription.length %></div>
                  <tbody>
@@ -1414,7 +1413,7 @@
                     <% } %>
                     <% } %>
             <% } %>  
-         <div align="center" style = 'margin-top: 5px; text-align: center'> Load Experiment Data <img width='16px' height='16px' id='load-exp-data-util' src='app/img/add.svg' style="margin: 5px;"/> </div> 
+         <div align="center" style = 'margin-top: 10px; text-align: center'> Load Experiment Data <img width='16px' height='16px' id='load-exp-data-util' src='app/img/add.svg' style="margin: 5px;"/> </div> 
         </tbody>
         </table>
         </script>
@@ -2775,7 +2774,7 @@
 
         <script type="text/template" id="color-scheme-inspector-template">
           <div style="margin-top:5px;">
-
+           
               <div style="margin-bottom:5px; text-align: center;">
                 <class="add-on layout-text">Style</>
                 <class="add-on layout-text" style="margin-left:2%;"></>
@@ -2852,7 +2851,7 @@
           <div style='text-align: center; margin-top: 5px;'>
             <button class='btn btn-default' style='align: center;' id='map-color-scheme-default-button'>Default</button>
           <div>
-
+            
         </script>
         <script type="text/template" id="prompt-invalidSchematronFile-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">

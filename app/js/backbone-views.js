@@ -466,13 +466,17 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     }
   },
   render: function () {
+  
+    
     this.template = _.template($("#color-scheme-inspector-template").html());
     var cy = appUtilities.getActiveCy();
     // scheme_type and current_scheme are used to highlight the current color scheme with the javascript embedded to color-scheme-inspector-template div(line: 2337 in index.html)
     var scheme_type = $("#color-scheme-inspector-style-select").val();
     var current_scheme = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
+   
     this.$el.empty();
     this.$el.html(this.template({schemes: this.schemes, schemes_gradient: this.schemes_gradient, schemes_3D: this.schemes_3D, scheme_type: scheme_type, current_scheme: current_scheme}));
+    
     return this;
   }
 });
@@ -1107,6 +1111,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
   },
 
   render: function() {
+    console.log("render in experiment")
     var cy = appUtilities.getActiveCy();
     var self = this;
     var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1114,6 +1119,12 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     self.template = _.template($("#map-tab-experiment-template").html());
     this.$el.html(this.template(currentGeneralProperties));
     chiseInstance.buttonUpdate(document);
+    if( currentGeneralProperties.experimentDescription.length  > 0 || Object.entries(currentGeneralProperties.experimentDescription).length != 0){
+     document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "hidden";
+    }
+    else{
+     document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "initial";
+    }
     return this;
   }
 });
@@ -2428,13 +2439,7 @@ var LoadUserPreferencesView = Backbone.View.extend({
                 actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params[key]});            
             }          
         });
-        /*
-        Object.keys( experimentTabPanel.params).forEach(function(key,index) {
-          if(typeof preferences.currentGeneralProperties[key] !== 'undefined'){
-            experimentTabPanel.params[key].value = preferences.currentGeneralProperties[key];              
-              actions.push({name: "changeMenu", param: experimentTabPanel.params[key]});            
-          }          
-      });*/
+ 
           
           var applyColorScheme = false;
           var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
