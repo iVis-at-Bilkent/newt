@@ -718,7 +718,7 @@ module.exports = function (chiseInstance) {
      * We need to refresh the resize grapples to ensure they are consistent with their parent's status.
      * (for instance: complexes)
      */
-    cy.on("fit-units-after-expandcollapse", function(event) {
+   /*  cy.on("fit-units-after-expandcollapse", function(event) {
       var nodesToConsider = cy.nodes().filter(function(node){
         var sbgnClass = node.data('class');
         if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
@@ -733,7 +733,7 @@ module.exports = function (chiseInstance) {
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
     });
       cy.style().update();
-    });
+    }); */
 
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
@@ -1273,7 +1273,7 @@ module.exports = function (chiseInstance) {
       {
         appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
       }
-      var nodesToConsider = cy.nodes().filter(function(node){
+    /*   var nodesToConsider = cy.nodes().filter(function(node){
         var sbgnClass = node.data('class');
         if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
           return true;
@@ -1286,7 +1286,7 @@ module.exports = function (chiseInstance) {
         }
         var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
-      });
+      }); */
 
       cy.nodes().forEach(function(node){node.data("expanding", false); });
     });
