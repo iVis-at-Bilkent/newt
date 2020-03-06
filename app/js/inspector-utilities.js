@@ -1181,11 +1181,10 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
   var instance = cy.viewUtilities('get');
   if(errorCode == "pd10104" || errorCode == "pd10108" || errorCode == "pd10111" || errorCode == "pd10126"){
        for(var i=0; i<connectedEdges.length;i++) {
-          if(i==connectedEdges.length-1) {
-              var args = {eles: connectedEdges[i], option: "highlighted4"};
-              instance.highlight( args);
+          if (i == connectedEdges.length-1) {
+              instance.highlight(connectedEdges[i], 1);
           }
-          if(i==0){
+          if (i == 0) {
                if(errorCode == "pd10104")
                       html+="<p style=\"text-align:center\" > To fix, choose a consumption glyph connected to the dissociation glyph: </p>  " ;
                else if(errorCode == "pd10108")
@@ -1239,10 +1238,9 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
                    html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
 
            }
-          if(errorCode != "pd10112" ) {
-              if(i==listedNodes.length-1) {
-                  var args = {eles: listedNodes[i], option: "highlighted4"};
-                  instance.highlight( args);
+          if (errorCode != "pd10112" ) {
+              if (i == listedNodes.length-1) {
+                  instance.highlight(listedNodes[i], 1);
               }
               if(errorCode == "pd10110" || errorCode == "pd10128")
                   html+="<label  class=\"radio\">  <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label>"
@@ -1389,8 +1387,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             var unhighlighted = ["pd10107"];
             var eles =  cy.elements('[id="' + id + '"]');
             if( !unhighlighted.includes(errors[currentPage].pattern)) {
-               var args = {eles: eles, option: "highlighted4"};
-               viewUtilitilesInstance.highlight( args);
+               viewUtilitilesInstance.highlight(eles, 1);
            }
 
            
@@ -1426,12 +1423,10 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             else if(errors[currentPage].pattern == "pd10107") {
                      html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each production arc:</p>";
                        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
-                       for(var i=0; i<connectedEdges.length;i++) {
-                           var args = {eles: connectedEdges[i], option: "highlighted4"};
-                           viewUtilitilesInstance.highlight( args);
+                       for (var i = 0; i < connectedEdges.length; i++) {
+                           viewUtilitilesInstance.highlight(connectedEdges[i], 1);
                      }
-                     args = {eles: eles, option: "highlighted4"};
-                     viewUtilitilesInstance.highlight( args);
+                     viewUtilitilesInstance.highlight(eles, 1);
            }else if(errors[currentPage].pattern == "pd10140") {
                      html += "<p style=\"text-align:center\" > To fix, delete the glyph:</p>";
             }
@@ -1639,14 +1634,12 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
           viewUtilitilesInstance.removeHighlights();
           var group = ["pd10109","pd10110","pd10124","pd10127","pd10125","pd10128"];
           var instance = cy.viewUtilities('get');
-          var args = {eles: eles, option: "highlighted4"};
-          instance.highlight( args);
+          instance.highlight(eles, 1);
           if(errors[currentPage].pattern == "pd10104" ){
             var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
             for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].source().data().label == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
           }
@@ -1654,8 +1647,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var connectedEdges = eles.connectedEdges().filter('[class="production"]');
               for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].target().data().label == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
          }
@@ -1663,15 +1655,13 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var connectedEdges = eles.connectedEdges().filter('[class="logic arc"]');
               for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].id() == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
          }
          else if(group.includes(errors[currentPage].pattern)) {
               var node = cy.nodes('[id = "' + this.value +'"]');
-              var args = {eles: node, option: "highlighted4"};
-              instance.highlight( args);
+              instance.highlight(node, 1);
               if(errors[currentPage].pattern == "pd10124"){
                     var zoomLevel = 4 ;
                     if(zoomLevel<cy.zoom())
@@ -1688,8 +1678,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
                for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].target().id() == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
          }

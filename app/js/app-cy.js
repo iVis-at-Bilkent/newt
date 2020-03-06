@@ -413,36 +413,27 @@ module.exports = function (chiseInstance) {
     });
 
     cy.viewUtilities({
-      node: {
-        highlighted: { // styles for when nodes are highlighted.
-          'border-width': function(ele) {
-            return Math.max(parseFloat(ele.data('border-width')) + 2, 3);
-          },
-          'border-color': '#0B9BCD'
-        },
-        selected: {
-          'border-color': '#d67614',
-          'background-color': function (ele) {
-            return ele.css('background-color');
+      highlightStyles: [
+        {
+          node: { 'border-width': function (ele) { return Math.max(parseFloat(ele.data('border-width')) + 2, 3); }, 'border-color': '#0B9BCD' },
+          edge: {
+            'width': function (ele) { return parseFloat(ele.data('width')) + 2; },
+            'line-color': '#0B9BCD',
+            'source-arrow-color': '#0B9BCD',
+            'target-arrow-color': '#0B9BCD'
           }
-        }
-      },
-      edge: {
-        highlighted: {
-          'width': function(ele) { // styles for when edges are highlighted.
-            return parseFloat(ele.data('width')) + 2;
-          },
-          'line-color': '#0B9BCD',
-          'source-arrow-color': '#0B9BCD',
-          'target-arrow-color': '#0B9BCD'
         },
-        selected: {
+        { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
+      ],
+      selectStyles: {
+        node: {
+          'border-color': '#d67614', 'background-color': function (ele) { return ele.css('background-color'); }
+        },
+        edge: {
           'line-color': '#d67614',
           'source-arrow-color': '#d67614',
           'target-arrow-color': '#d67614',
-          'width': function (ele) {
-            return parseFloat(ele.data('width')) + 2;
-          }
+          'width': function (ele) { return parseFloat(ele.data('width')) + 2; }
         }
       },
       neighbor: function(node){ //select and return process-based neighbors
