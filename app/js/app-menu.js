@@ -34,17 +34,18 @@ module.exports = function() {
     });
   }
  
-
-  function loadSample(filename) {
-
+  
+  function loadSample(filename, callback) {
+    console.log("inside newt loadSample ")
+    console.log(callback)
     // use the active chise instance
     var chiseInstance = appUtilities.getActiveChiseInstance();
 
     var textXml = (new XMLSerializer()).serializeToString(chiseInstance.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
-    return chiseInstance.loadSample(filename, 'app/samples/');
+    return chiseInstance.loadSample(filename, 'app/samples/', callback);
   }
-
+  
   console.log('init the sbgnviz template/page');
 
   $(window).on('resize', _.debounce(dynamicResize, 100));
@@ -376,19 +377,28 @@ module.exports = function() {
     $("#sample-experiment-data").click(function (){
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
-
-      if(cy.elements().length != 0) {
-        promptConfirmationView.render(function(){loadSample('acc_2016_tp53_rb_pathway.nwt')});
-      }
-      else {
-        loadSample('acc_2016_tp53_rb_pathway.nwt');
-      }
-
-
+     
+      var overlayExperimentData  = function () {
+        console.log("overlayExperimentData")
+        var chiseInstance = appUtilities.getActiveChiseInstance();
       var data ="description\tGlioblastoma\r\nel\tCell\tNature\r\nRB1\t23\t11\r\nTP53\t7\t35\r"
       chiseInstance.parseData(data, "Sample");
       experimentTabPanel.recalculate();
       experimentTabPanel.render();
+        }
+
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(
+          function(){
+            loadSample('acc_2016_tp53_rb_pathway.nwt', overlayExperimentData);
+          });
+      }
+      else {
+        loadSample('acc_2016_tp53_rb_pathway.nwt', overlayExperimentData);
+      }
+
+
+     
 
 
       $(this).val("");

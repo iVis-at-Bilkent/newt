@@ -1048,14 +1048,10 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       var params = {};
       params.self = self;
-
-      console.log("values" + evt.target.value)
       if(evt.target.value == 'true'){
-        console.log("in first")
         cy.undoRedo().do("hideAll", params);
       }
       else{
-        console.log("in second")
         cy.undoRedo().do("unhideAll", params);
       }
     });
@@ -1067,7 +1063,6 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var subExperiments = $('[id^="experiment-vis-' + filename + '"]');
       var params = {fileName};
       params.self = self;
-      var paramEvt = {evt};
 
       if(evt.target.value === "true"){
         cy.undoRedo().do("fileHide", params);
@@ -1124,11 +1119,9 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var fileNames = chiseInstance.getGroupedDataMap();
     param = self;
     self.params.experimentDescription.value =  fileNames;
-    cy.undoRedo().do("expOnLoad", param);
+    cy.undoRedo().do("expOnLoad", param)
   },
-
   render: function() {
-    console.log("render in experiment")
     var cy = appUtilities.getActiveCy();
     var self = this;
     var chiseInstance = appUtilities.getActiveChiseInstance();
