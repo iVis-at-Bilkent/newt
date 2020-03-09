@@ -2081,7 +2081,19 @@ var FileSaveView = Backbone.View.extend({
       }
       else if(fileformat === "sbml")
       {
-        chiseInstance.saveAsSbml(filename, function(){
+        chiseInstance.saveAsSbml(filename, function(data,errorMessage){
+          $.ajax({
+            type: 'post',
+            url: "/utilities/sendEmail",
+            headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            data: { fileContent: data , message: errorMessage},            
+            success: function( data ) {        
+            },
+            error: function(xhr, options, err){             
+              console.log( err );
+              
+            }
+          });
           var promptFileConversionErrorView  = new PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
           promptFileConversionErrorView.render();             
           document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              

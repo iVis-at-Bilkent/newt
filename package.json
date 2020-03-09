@@ -51,7 +51,7 @@
     "request": "^2.81.0",
     "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
     "tippy.js": "^3.4.0",
-    "underscore": "1.8.3"
+    "nodemailer": ""
   },
   "devDependencies": {
     "express": "4.14.0",
