@@ -61,7 +61,8 @@ Third-party libraries:
 [browserify](https://github.com/browserify/browserify),
 [nodemon](https://github.com/remy/nodemon),
 [Parallel Shell](https://github.com/darkguy2008/parallelshell),
-[Tippyjs](https://github.com/atomiks/tippyjs),[nodemailer](https://nodemailer.com/about/)licensed with [MIT](https://opensource.org/licenses/MIT);
+[Tippyjs](https://github.com/atomiks/tippyjs),
+[nodemailer](https://nodemailer.com/about/) licensed with [MIT](https://opensource.org/licenses/MIT);
 [Mousetrap](https://github.com/ccampbell/mousetrap),
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0),
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), and
