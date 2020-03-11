@@ -749,6 +749,9 @@
         <div id="prompt-fileConversionError-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
+        <div id="prompt-sbmlConversionError-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
 
         <div id="prompt-invalidURL-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
@@ -2039,6 +2042,39 @@
             </div>
         </script>
 
+        <script type="text/template" id="prompt-sbmlConversionError-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Error</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;">
+                               
+                                    <span class="add-on layout-text" id="file-conversion-error-message">Conversion failed!</span>                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                
+                                <td style="text-align: center;">
+                                    <input id="sbml-coversion-user-agree" type="checkbox" class="layout-text" checked>
+                                    <span class="add-on layout-text" >I agree to sending this map for investigation of the conversion problem. </span>
+                                </td>
+                            </tr>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="prompt-sbml-confirm" class="btn btn-default">OK</button>
+                    </div>
+                </div>
+            </div>
+        </script>
         <!-- Invalid URL warning -->
         <script type="text/template" id="prompt-invalidURL-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">

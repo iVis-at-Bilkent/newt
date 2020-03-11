@@ -125,13 +125,14 @@ exports.sendEmail = function(req, res){
 			pass: 'reportbug'
 		}
 	});
+	var attachment = fileContent == "no-data" ? false : true;
 	let mailOptions = {
 		// should be replaced with real recipient's account
-		to: ' minerva@uni.lu',
-		cc: 'newteditor@gmail.com',
+		to: 'replyto.lcsb.gitlab+minerva-core-499-3hxqgkf3oh3yq2zb9veolqjo6-issue@gmail.com',
+		cc: 'newteditor@gmail.com',	
 		subject: "Error Report From Newt",		
-		text: "Input file attached.\n  Error Message : "+ req.body.message,
-		 attachments: [
+		text: req.body.message,
+		 attachments: !attachment ? [] :[
 			{
 			filename: 'input.txt',
 			content: fileContent

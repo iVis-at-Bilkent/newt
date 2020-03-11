@@ -2082,21 +2082,10 @@ var FileSaveView = Backbone.View.extend({
       else if(fileformat === "sbml")
       {
         chiseInstance.saveAsSbml(filename, function(data,errorMessage){
-          $.ajax({
-            type: 'post',
-            url: "/utilities/sendEmail",
-            headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            data: { fileContent: data , message: errorMessage},            
-            success: function( data ) {        
-            },
-            error: function(xhr, options, err){             
-              console.log( err );
-              
-            }
-          });
-          var promptFileConversionErrorView  = new PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
-          promptFileConversionErrorView.render();             
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
+        
+          var promptSbmlConversionErrorView  = new PromptSbmlConversionErrorView({el: '#prompt-sbmlConversionError-table'});
+          promptSbmlConversionErrorView.render(data,errorMessage);             
+          //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
         });
      
       }
@@ -2672,6 +2661,56 @@ var PromptFileConversionErrorView = Backbone.View.extend({
    }
 });
 
+var PromptSbmlConversionErrorView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-sbmlConversionError-template").html());
+  },
+  render: function(data, errorMessage) {
+    var self = this;
+    self.template = _.template($("#prompt-sbmlConversionError-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "prompt-sbml-confirm").on("click", "#prompt-sbml-confirm", function (evt) {   
+      var userAgreed = document.getElementById("sbml-coversion-user-agree").checked ? true : false;
+     
+      if(userAgreed){
+        setTimeout(function(){
+        $.ajax({
+          type: 'post',
+          url: "/utilities/sendEmail",
+          headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+          data: { fileContent: data , message: "Error message: "+ errorMessage},            
+          success: function( data ) {        
+          },
+          error: function(xhr, options, err){             
+            console.log( err );
+            
+          }        })} , 0); 
+      }else{
+        setTimeout(function(){
+          $.ajax({
+            type: 'post',
+            url: "/utilities/sendEmail",
+            headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            data: { fileContent: "no-data" , message: "The user didn't consent to sharing their file." + "\nError message: " + errorMessage},            
+            success: function( data ) {        
+            },
+            error: function(xhr, options, err){             
+              console.log( err );
+              
+            }        })} , 0); 
+      }    
+      
+      $(self.el).modal('toggle');
+        
+    });
+
+    return this;
+  }
+});
 var PromptInvalidURLWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -3871,5 +3910,6 @@ module.exports = {
   PromptInvalidURIWarning: PromptInvalidURIWarning,
   PromptInvalidURLWarning: PromptInvalidURLWarning,
   PromptInvalidImageWarning: PromptInvalidImageWarning,
-  PromptInvalidEdgeWarning: PromptInvalidEdgeWarning
+  PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
+  PromptSbmlConversionErrorView : PromptSbmlConversionErrorView
 };
