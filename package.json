@@ -37,7 +37,7 @@
     "cytoscape-popper": "^1.0.2",
     "cytoscape-undo-redo": "github:iVis-at-Bilkent/cytoscape.js-undo-redo#unstable",
     "cytoscape-view-utilities": "github:iVis-at-Bilkent/cytoscape.js-view-utilities#unstable",
-    "filesaverjs": "~0.2.2",
+    "file-saver": "^2.0.2",
     "intro.js": "2.9.3",
     "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",

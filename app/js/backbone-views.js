@@ -2,7 +2,7 @@ var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var chroma = require('chroma-js');
-var FileSaver = require('filesaverjs');
+var FileSaver = require('file-saver');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
