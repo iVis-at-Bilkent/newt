@@ -2673,7 +2673,7 @@ var PromptSbmlConversionErrorView = Backbone.View.extend({
     $(self.el).html(self.template);
     $(self.el).modal('show');
 
-    $(document).off("click", "prompt-sbml-confirm").on("click", "#prompt-sbml-confirm", function (evt) {   
+    $(document).off("click", "#prompt-sbml-confirm").on("click", "#prompt-sbml-confirm", function (evt) {   
       var userAgreed = document.getElementById("sbml-coversion-user-agree").checked ? true : false;
      
       if(userAgreed){
