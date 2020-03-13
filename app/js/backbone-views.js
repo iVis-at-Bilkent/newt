@@ -1036,14 +1036,14 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         $("#overlay-data").trigger('click');
     });
 
-    $(document).on("click", "#experiment-remove-all", function (evt) {
+    $(document).on("click", "#experiment-remove-all, #experiment-data-remove-all", function (evt) {
       var cy = appUtilities.getActiveCy();
       var param = {self};
       cy.undoRedo().do("updateRemoveAll", param);
       self.render();
     });
 
-    $(document).on("click", "#experiment-hide-all", function (evt) {
+    $(document).on("click", "#experiment-hide-all, #experiment-data-hide-all", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
       var params = {};
