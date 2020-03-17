@@ -382,10 +382,10 @@ module.exports = function() {
       var cy = appUtilities.getActiveCy();
      
       var overlayExperimentData  = function () {
-        console.log("overlayExperimentData")
+       
         var chiseInstance = appUtilities.getActiveChiseInstance();
       var data ="description\tGlioblastoma\r\nel\tCell\tNature\r\nRB1\t23\t11\r\nTP53\t7\t35\r"
-      chiseInstance.parseData(data, "Sample");
+      chiseInstance.parseData(data, "sample.txt");
       experimentTabPanel.recalculate();
       experimentTabPanel.render();
         }
