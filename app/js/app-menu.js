@@ -361,7 +361,10 @@ module.exports = function() {
         var fileName = file.name;
         //var param = {data, fileName};
         //cy.undoRedo().do("parseData", param);
-        chiseInstance.parseData(data, file.name);
+        var errorCallback = function(){
+          promptInvalidFileView.render();
+        };
+        chiseInstance.parseData(data, file.name,errorCallback);
         //chiseInstance.showData();
         experimentTabPanel.recalculate();
         experimentTabPanel.render();
