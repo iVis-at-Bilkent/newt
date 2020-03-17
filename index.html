@@ -1398,16 +1398,16 @@
                   <% for (filename in experimentDescription) { %> 
                     <% if (filename != null) { %>
                  <hr style="margin-top: 10px!important; margin-bottom:10px!important"/>
-                <table align = "center" class="table-condensed layout-table dialog-table map-panel-table" style="table-layout:fixed !important;  width:400px!important; margin-bottom:10px">
+                <table align = "center" class="table-condensed layout-table dialog-table map-panel-table" style="table-layout:fixed !important;  margin-bottom:10px">
                  <tbody>      
                     <div>
                         <tr>
-                        <td style='text-align: right; width:70% !important' >
+                            <td  style='text-align: right; width:50% !important; ' >
                             <div>
-                                <button class='btn btn-default' value="true" style='border-width: 0px !important; padding:3px;'  title="<%=filename%>" id='experiment-file-vis-<%= filename %>' > <b><%= filename.length > 40 ? filename.substring(0, 38) + '..' : filename  %></b></button>
+                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="<%=filename%>" id='experiment-file-vis-<%= filename %>' > <%= filename %></button>
                             </div>  
                         </td>
-                    <td style="width:30% !important">
+                    <td style="width:50% !important">
                         <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style="margin: 5px;"  title= "Remove file" id='experiment-file-delete-<%= filename %>'/>
                           
                     </td>
@@ -1417,12 +1417,12 @@
                     <% for (element in experimentDescription[filename]) { %> 
                         <% if(element != null) { %>
                         <tr>
-                        <td  style='text-align: right; width:70% !important' >
-                            <div >
-                                <button class='btn btn-default' value = 'true' style='border-width: 0px !important; padding: 3px; ' title="<%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element].length > 40? experimentDescription[filename][element].substring(0, 38) + '..' :  experimentDescription[filename][element] %></button>
+                        <td  style='text-align: right; width:50% !important;' >
+                            <div>
+                                <button class='btn btn-default' value = 'true' style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="<%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element] %></button>
                             </div>  
                     </td>
-                    <td style="width:30% !important">
+                    <td style="width:50% !important">
                         <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style=" margin: 5px;"  title= "Remove experiment" id='experiment-delete-<%= filename %>?<%= experimentDescription[filename][element] %>'/>   
 
                     </td>
