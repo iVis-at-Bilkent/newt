@@ -1059,12 +1059,12 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
-      var fileName = evt.target.id.substring(20);
+      var fileName = this.id.substring(20);
       var subExperiments = $('[id^="experiment-vis-' + filename + '"]');
       var params = {fileName};
       params.self = self;
 
-      if(evt.target.value === "true"){
+      if(this.value === "true"){
         cy.undoRedo().do("fileHide", params);
       }
       else{
