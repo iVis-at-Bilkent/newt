@@ -1165,8 +1165,8 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
             button.title = fileTitle[i]
           }
           if(fileDescription[i] != undefined)
-          {
-            button.title = button.title + fileDescription[i];
+          { 
+              button.title = fileDescription[i]; 
           }
        
           if(visibleFiles[i] == true ||visibleFiles[i] === true ){
