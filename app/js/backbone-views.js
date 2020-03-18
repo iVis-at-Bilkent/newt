@@ -1128,7 +1128,90 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
     self.template = _.template($("#map-tab-experiment-template").html());
     this.$el.html(this.template(currentGeneralProperties));
-    chiseInstance.buttonUpdate(document);
+    var refreshButtons = function(param){
+      var document = param.document;
+      var visibleDataMapByExp = param.visibleDataMapByExp;
+      var visibleFiles = param.visibleFiles;
+      var fileDescription = param.fileDescription;
+      var allVis = param.allVis;
+      var fileTitle = param.fileTitle;
+      for (let i in visibleDataMapByExp)
+      {
+        var index = i.indexOf('?');
+        var fileName = i.substring(0,index);
+        var expName = i.substring(index+1);
+        var buttonName = "experiment-vis-"+ fileName+ "?" + expName;
+        var button = document.getElementById(buttonName);
+        if(button != null){
+          if(visibleDataMapByExp[i] == true ||visibleDataMapByExp[i] === true ){
+            button.value = "true";
+            button.style.backgroundColor = "";
+          }
+          else {
+            button.value = "false";
+            button.style.backgroundColor = "#EAEAEA";
+            button.style.color = "#FFFFFF";
+          }
+        }
+      }
+      for (let i in visibleFiles){
+
+        var buttonName = "experiment-file-vis-"+ i;
+        var button = document.getElementById(buttonName);
+        
+        if(button != null){
+          if(fileTitle[i] != undefined)
+          {
+            button.title = fileTitle[i]
+          }
+          if(fileDescription[i] != undefined)
+          {
+            button.title = button.title + fileDescription[i];
+          }
+       
+          if(visibleFiles[i] == true ||visibleFiles[i] === true ){
+            button.value = "true";
+            button.style.backgroundColor = "";
+          }
+          else {
+            button.value = "false";
+            button.style.backgroundColor = "#EAEAEA";
+            button.style.color = "#FFFFFF";
+          }
+        }
+      }
+
+      var buttonName = "experiment-hide-all";
+      var button = document.getElementById(buttonName);
+
+      if(button != null){
+        if(allVis){
+          button.value = "true";
+          button.style.backgroundColor = "";
+        }
+        else {
+          button.value = "false";
+          button.style.backgroundColor = "#EAEAEA";
+          button.style.color = "#FFFFFF";
+        }
+      }
+
+      buttonName = "experiment-data-hide-all";
+      button = document.getElementById(buttonName);
+      if(button != null){
+        if(allVis){
+          button.value = "true";
+         
+        }
+        else {
+          button.value = "false";        
+        }
+      }
+    }
+    var experimentalParams = chiseInstance.getExperimentalData();
+    experimentalParams.document = document;
+    refreshButtons(experimentalParams);
+    //chiseInstance.buttonUpdate(document);
     if( currentGeneralProperties.experimentDescription.length  > 0 || Object.entries(currentGeneralProperties.experimentDescription).length != 0){
      //document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "hidden";
      document.getElementById('sbgn-inspector-map-color-scheme').style.display = "none";
