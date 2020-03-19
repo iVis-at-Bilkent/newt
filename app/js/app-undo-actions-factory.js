@@ -55,9 +55,9 @@ module.exports = function (cy) {
   appUndoActions.expFileDel = function(param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var fileName =param.fileName
-    var params = {fileName}
-    var neededparams = chiseInstance.undoRedoActionFunctions.removeFile(params)
+    var fileName =param.fileName;
+    var params = {fileName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeFile(params);
     neededparams.self = param.self;
     neededparams.document= param.document;
     var fileNames = chiseInstance.getGroupedDataMap();
@@ -71,7 +71,7 @@ module.exports = function (cy) {
   appUndoActions.expFileUndoDel = function(param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var neededparams = chiseInstance.undoRedoActionFunctions.addFile(param)
+    var neededparams = chiseInstance.undoRedoActionFunctions.addFile(param);
     neededparams.self = param.self;
     neededparams.document= param.document;
     var fileNames = chiseInstance.getGroupedDataMap();
@@ -85,10 +85,10 @@ module.exports = function (cy) {
   appUndoActions.updateExperimentPanel = function(param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var fileName =param.fileName
-    var expName = param.expName
-    var params = {fileName, expName}
-    var neededparams = chiseInstance.undoRedoActionFunctions.removeExp(params)
+    var fileName =param.fileName;
+    var expName = param.expName;
+    var params = {fileName, expName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeExp(params);
     neededparams.self = param.self;
     neededparams.document= param.document;
     var fileNames = chiseInstance.getGroupedDataMap();
@@ -101,7 +101,7 @@ module.exports = function (cy) {
   appUndoActions.updateExperimentPanel2 = function(param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    chiseInstance.undoRedoActionFunctions.addExp(param)
+    chiseInstance.undoRedoActionFunctions.addExp(param);
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
     param.self.render();
@@ -131,7 +131,6 @@ module.exports = function (cy) {
     evt = param.evt;
     var chiseInstance = appUtilities.getActiveChiseInstance();
     chiseInstance.undoRedoActionFunctions.unhideExp(param);
-
     if(evt.target.value === "true" || evt.target.value == true){
       evt.target.style.backgroundColor = "#777";
       evt.target.value = "false";
@@ -178,10 +177,10 @@ module.exports = function (cy) {
     param.self.params.experimentDescription.value =  fileNames;
     params.self = param.self
     param.self.render();
+
     return params;
   }
   appUndoActions.hideAllUIUndo = function(param){
-    console.log("hide all ui undo")
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     chiseInstance.undoRedoActionFunctions.hideAllUndo(param);
@@ -192,10 +191,10 @@ module.exports = function (cy) {
     var params = {};
     params.self = param.self;
     param.self.render();
+
     return params;
   }
   appUndoActions.unhideAllUIUndo = function(param){
-    console.log("unhide all ui undo")
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     chiseInstance.undoRedoActionFunctions.unhideAllUndo(param);
@@ -204,10 +203,10 @@ module.exports = function (cy) {
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
     param.self.render();
+
     return params;
   }
   appUndoActions.unhideAllUI = function(param){
-    console.log("unhide all ui")
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var params = chiseInstance.undoRedoActionFunctions.unhideAll();
@@ -215,6 +214,7 @@ module.exports = function (cy) {
     param.self.params.experimentDescription.value =  fileNames;
     params.self = param.self;
     param.self.render();
+
     return params;
   }
   
@@ -224,7 +224,7 @@ module.exports = function (cy) {
     var params = chiseInstance.undoRedoActionFunctions.hideFile(param);
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
-    params.self = param.self
+    params.self = param.self;
     param.self.render();
 
     return params;
@@ -265,76 +265,52 @@ module.exports = function (cy) {
 
     return params;
   }
-  appUndoActions.loadExperimentData = function (param)
-  {
-    console.log("loading data");
-    var cy = appUtilities.getActiveCy();
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-//    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-//    var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
-//    var params = {value: defaultColorScheme, self: param.self2, scheme_type: defaultColorSchemeStyle  }
-//    appUtilities.applyMapColorScheme(params.value, params.scheme_type, params.self);
-    chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
-    appUndoActions.changeMenu(param.self.params.experimentDescription);
-    param.self.render();
-    return param;
-  }
-  appUndoActions.loadMore = function (param)
-  {
-    console.log("loading more");
+
+  appUndoActions.loadExperimentData = function (param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
     appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
+
     return param;
   }
+
+  appUndoActions.loadMore = function (param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+
+    return param;
+  }
+
   appUndoActions.loadMoreUndo = function(param){
-    console.log("loadMOreundo")
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var fileName =param.fileName
-    var params = {fileName}
+    var fileName =param.fileName;
+    var params = {fileName};
     var neededparams = chiseInstance.undoRedoActionFunctions.removeFile(params)
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
     appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
-    console.log(param.data)
+
     return param;
   }
- /*
-  appUndoActions.loadExperimentColorSchemeUndo = function (param){
-    console.log("load experiment color undo to back ")
-    appUtilities.applyMapColorScheme(param.value, param.scheme_type, param.self2);
-    return param;
-  }
-  appUndoActions.loadExperimentColorScheme = function (param){
-    console.log("load experiment color, change to default")
-
-    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
-    var params = {value: defaultColorScheme, self: param.self2, scheme_type: defaultColorSchemeStyle  }
-    appUtilities.applyMapColorScheme(params.value, params.scheme_type, params.self);
-    return param;
-  }*/
-
-  appUndoActions.undoLoadExperiment = function (param)
-  {
-    console.log("undo load experiment")
+ 
+  appUndoActions.undoLoadExperiment = function (param){
     var cy = appUtilities.getActiveCy();
-    
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    
-    var fileName =param.fileName
-    var params = {fileName}
-    var neededparams = chiseInstance.undoRedoActionFunctions.removeAll(params)
-//    appUtilities.applyMapColorScheme(param.value, param.scheme_type, param.self2);
+    var fileName =param.fileName;
+    var params = {fileName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeAll(params);
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
-
     appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
+    
     return param;
   }
 

@@ -50,10 +50,7 @@ module.exports = function (chiseInstance) {
     ur.action("hideAll", appUndoActions.hideAllUI, appUndoActions.hideAllUIUndo);
     ur.action("unhideAll", appUndoActions.unhideAllUI, appUndoActions.unhideAllUIUndo);
     ur.action("loadExperiment", appUndoActions.loadExperimentData, appUndoActions.undoLoadExperiment);
-    // ur.action("loadExperimentColor", appUndoActions.loadExperimentColorScheme, appUndoActions.loadExperimentColorSchemeUndo);
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
- 
-    
   }
 
   function cytoscapeExtensionsAndContextMenu() {

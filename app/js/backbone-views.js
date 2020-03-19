@@ -1072,7 +1072,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       }
       self.render();
     });
-    //file delete butto
+    //file delete button
     $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
       var cy = appUtilities.getActiveCy();
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1080,13 +1080,13 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var param = {fileName, self, document};
       cy.undoRedo().do("deleteFile", param); 
     });
-    //change visibilty of the exp
+    //change experiment visibilty
     $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
       var expRep = evt.target.id.substring(15);
       var index = expRep.indexOf('?');
       var fileName = expRep.substring(0,index);
       var expName = expRep.substring(index+1);
-      var params = {fileName, expName}
+      var params = {fileName, expName};
       params.evt = evt;
       params.self=self;
       var cy = appUtilities.getActiveCy();
@@ -1098,7 +1098,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         cy.undoRedo().do("unhideExperimentPanel", params);
       }
     });
-    //remove exp
+    //remove experiment
     $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
       var cy = appUtilities.getActiveCy();
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1119,10 +1119,10 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var fileNames = chiseInstance.getGroupedDataMap();
     param = self;
     self.params.experimentDescription.value =  fileNames;
-    cy.undoRedo().do("expOnLoad", param)
+    cy.undoRedo().do("expOnLoad", param);
   },
-  loadExperiment: function(params)
-  {
+
+  loadExperiment: function(params){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');

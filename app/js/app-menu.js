@@ -34,13 +34,8 @@ module.exports = function() {
     });
   }
  
-  
   function loadSample(filename, callback) {
-    console.log("inside newt loadSample ")
-    console.log(callback)
-    // use the active chise instance
     var chiseInstance = appUtilities.getActiveChiseInstance();
-
     var textXml = (new XMLSerializer()).serializeToString(chiseInstance.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
     return chiseInstance.loadSample(filename, 'app/samples/', callback);
@@ -319,10 +314,7 @@ module.exports = function() {
         $(this).val("");
       }  
     });
-    //LOad Sample Data
-    // $("#sample-experiment-data").click(function (){
-    //   $("#overlay-sample-data").trigger('click');
-    // });
+
     $("#import-experimental-data").click(function () {
       $("#overlay-data").trigger('click');
     });
@@ -345,33 +337,25 @@ module.exports = function() {
       $("#sif-layout-input").trigger('click');
     });
 
-    //EXPERIMENTAL DATA 
     $("#overlay-data").change(function () {
-
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
-      console.log(cy)
       if ($(this).val() != "") {
         var file = this.files[0];
         var reader = new FileReader();
 
-      reader.onload = function(e) {
-        //Get the text result of the file.
-        var data = this.result;
-        var fileName = file.name;
-        //var param = {data, fileName};
-        //cy.undoRedo().do("parseData", param);
-        var errorCallback = function(){
+        reader.onload = function(e) {
+          var data = this.result;
+          var fileName = file.name;
+          var errorCallback = function(){
           promptInvalidFileView.render();
         };
         var fileName = file.name;
-        params ={data, fileName, errorCallback}
-       // chiseInstance.parseData(data, file.name, errorCallback);
-        //chiseInstance.showData();
+        params ={data, fileName, errorCallback};
         experimentTabPanel.loadExperiment(params);
         experimentTabPanel.render();
-     
       };
+
       reader.fileName = file.name;
       reader.readAsText( file );
 
@@ -382,16 +366,13 @@ module.exports = function() {
     $("#sample-experiment-data").click(function (){
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
-     
       var overlayExperimentData  = function () {
-       
         var chiseInstance = appUtilities.getActiveChiseInstance();
-      var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE1\t0\t7\r"
-      chiseInstance.parseData(data, "acc_2014vs2019.txt");
-      experimentTabPanel.recalculate();
-      experimentTabPanel.render();
-        }
-
+        var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE1\t0\t7\r"
+        chiseInstance.parseData(data, "acc_2014vs2019.txt");
+        experimentTabPanel.recalculate();
+        experimentTabPanel.render();
+      }
       if(cy.elements().length != 0) {
         promptConfirmationView.render(
           function(){
@@ -402,15 +383,10 @@ module.exports = function() {
         loadSample('p53_rb_pathway.nwt', overlayExperimentData);
       }
 
-
-     
-
-
       $(this).val("");
       
     });
     
-    //EXPERIMENTAL DATA
     $("#sbml-file").change(function () {
      
       var chiseInstance = appUtilities.getActiveChiseInstance();
