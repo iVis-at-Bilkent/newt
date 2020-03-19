@@ -1980,6 +1980,12 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
       if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-width', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-height', value:''}});         
       }
     }
 
