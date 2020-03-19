@@ -1954,8 +1954,15 @@ appUtilities.mapBgImgCoverToEle = function(){
   return result;
 }
 
-// change the global style of the map by applying the current color scheme
+// use this function to change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
+  var actions = appUtilities.getActionsToApplyMapColorScheme(newColorScheme, scheme_type, self, _cy);
+  var cy = _cy || appUtilities.getActiveCy();
+  cy.undoRedo().do("batch", actions);
+}
+
+// get the actions required to change the global style of the map by applying the current color scheme
+appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
 
   // if _cy param is set use it else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCy();
@@ -2070,9 +2077,8 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       }
     }
   }
-
-  cy.undoRedo().do("batch", actions);
-
+  
+  return actions;
 };
 
 // the 3 following functions are related to the handling of the dynamic image

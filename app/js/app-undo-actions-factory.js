@@ -270,10 +270,10 @@ module.exports = function (cy) {
     console.log("loading data");
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
-    var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
-    var params = {value: defaultColorScheme, self: param.self2, scheme_type: defaultColorSchemeStyle  }
-    appUtilities.applyMapColorScheme(params.value, params.scheme_type, params.self);
+//    var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+//    var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+//    var params = {value: defaultColorScheme, self: param.self2, scheme_type: defaultColorSchemeStyle  }
+//    appUtilities.applyMapColorScheme(params.value, params.scheme_type, params.self);
     chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
     appUndoActions.changeMenu(param.self.params.experimentDescription);
     param.self.render();
@@ -329,7 +329,7 @@ module.exports = function (cy) {
     var fileName =param.fileName
     var params = {fileName}
     var neededparams = chiseInstance.undoRedoActionFunctions.removeAll(params)
-    appUtilities.applyMapColorScheme(param.value, param.scheme_type, param.self2);
+//    appUtilities.applyMapColorScheme(param.value, param.scheme_type, param.self2);
     var fileNames = chiseInstance.getGroupedDataMap();
     param.self.params.experimentDescription.value =  fileNames;
 
@@ -373,7 +373,7 @@ module.exports = function (cy) {
   }
 
   appUndoActions.refreshColorSchemeMenu = function (param) {
-    
+
     // get 'currentGeneralProperties' for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 

@@ -1141,15 +1141,14 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     //after the deleting the first experiemnt color schme should come back
     if(firstExperiment === undefined)
     {
-     // actions.push({name: "loadExperimentColor", param: params});
-     // actions.push({name: "loadExperiment", param: params});
-     // ur.do("batch", actions);
-     cy.undoRedo().do("loadExperiment", params)
-    }else{
-    cy.undoRedo().do("loadMore", params)
-    //actions.push({name: "loadMore", param: params});
-    //actions.push({name: "expOnLoad", param: params});
-    //ur.do("batch", actions);
+      var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+      var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      actions = appUtilities.getActionsToApplyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+      actions.push({name: "loadExperiment", param: params});
+      ur.do("batch", actions);
+    }
+    else{
+      cy.undoRedo().do("loadMore", params);
     }
   },
 
@@ -1199,7 +1198,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
           if(fileDescription[i] != undefined)
           { 
               button.title = fileDescription[i]; 
-          }
+          }       
        
           if(visibleFiles[i] == true ||visibleFiles[i] === true ){
             button.value = "true";
