@@ -364,9 +364,11 @@ module.exports = function() {
         var errorCallback = function(){
           promptInvalidFileView.render();
         };
-        chiseInstance.parseData(data, file.name,errorCallback);
+        var fileName = file.name;
+        params ={data, fileName, errorCallback}
+       // chiseInstance.parseData(data, file.name, errorCallback);
         //chiseInstance.showData();
-        experimentTabPanel.recalculate();
+        experimentTabPanel.loadExperiment(params);
         experimentTabPanel.render();
      
       };

@@ -1121,6 +1121,38 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     self.params.experimentDescription.value =  fileNames;
     cy.undoRedo().do("expOnLoad", param)
   },
+  loadExperiment: function(params)
+  {
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+    var firstExperiment = this.params.experimentDescription.value;
+    var self = this;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    params.self = self;
+    self.params.experimentDescription.value =  fileNames;
+    params.document = document;
+    params.value = generalProperties.mapColorScheme;
+    params.scheme_type = generalProperties.mapColorSchemeStyle
+    params.self2 = appUtilities.colorSchemeInspectorView
+   
+    var ur = cy.undoRedo();
+    var actions = [];
+    //after the deleting the first experiemnt color schme should come back
+    if(firstExperiment === undefined)
+    {
+     // actions.push({name: "loadExperimentColor", param: params});
+     // actions.push({name: "loadExperiment", param: params});
+     // ur.do("batch", actions);
+     cy.undoRedo().do("loadExperiment", params)
+    }else{
+    cy.undoRedo().do("loadMore", params)
+    //actions.push({name: "loadMore", param: params});
+    //actions.push({name: "expOnLoad", param: params});
+    //ur.do("batch", actions);
+    }
+  },
+
   render: function() {
     var cy = appUtilities.getActiveCy();
     var self = this;
