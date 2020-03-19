@@ -384,8 +384,8 @@ module.exports = function() {
       var overlayExperimentData  = function () {
        
         var chiseInstance = appUtilities.getActiveChiseInstance();
-      var data ="description\tGlioblastoma\r\nel\tCell\tNature\r\nRB1\t23\t11\r\nTP53\t7\t35\r"
-      chiseInstance.parseData(data, "sample.txt");
+      var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE1\t0\t7\r"
+      chiseInstance.parseData(data, "acc_2014vs2019.txt");
       experimentTabPanel.recalculate();
       experimentTabPanel.render();
         }
@@ -393,11 +393,11 @@ module.exports = function() {
       if(cy.elements().length != 0) {
         promptConfirmationView.render(
           function(){
-            loadSample('acc_2016_tp53_rb_pathway.nwt', overlayExperimentData);
+            loadSample('p53_rb_pathway.nwt', overlayExperimentData);
           });
       }
       else {
-        loadSample('acc_2016_tp53_rb_pathway.nwt', overlayExperimentData);
+        loadSample('p53_rb_pathway.nwt', overlayExperimentData);
       }
 
 

@@ -38,7 +38,7 @@
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
         <mapColorScheme>opposed_red_blue</mapColorScheme>
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
-        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapName>TP53 RB Pathway</mapName>
         <mapDescription/>
       </mapProperties>
     </extension>
