@@ -34,7 +34,7 @@
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>1</adjustNodeLabelFontSizeAutomatically>
         <enablePorts>true</enablePorts>
-        <enableSIFTopologyGrouping>true</enableSIFTopologyGrouping>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
         <mapColorScheme>opposed_red_blue</mapColorScheme>
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
