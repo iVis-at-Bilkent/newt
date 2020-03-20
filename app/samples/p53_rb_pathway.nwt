@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="sif">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#92c5deff"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#b4e1cd"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="node92c5de15555551.2511normalnormalHelvetica000" id-list="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74 nwtN_6bb7350f-ca0d-466f-bd44-d7f5475e6afa nwtN_0b329cff-4297-48af-b42a-13a387a590b6 nwtN_df4b7a94-09a2-48c5-ba9e-2704eb5ffc42 nwtN_736a02ed-f233-4bfa-b684-b10f1eee6de0 nwtN_c19aaa7f-2fea-48c9-b865-45db8a5ba861 nwtN_cc389fc6-0181-4936-8b0d-6999dbdb7e17 nwtN_7cba090f-5d45-4ca9-821c-a926a8f4e34d nwtN_1f612559-b3e7-4f4e-900a-600de85cc0b9 nwtN_01c4688c-6b16-440a-a9e5-9e1898e00b6c nwtN_4ce0090c-cb73-4678-a662-3b49b7ae7c4d nwtN_7b22972e-5466-49ff-8101-05c787e0074d nwtN_2be28117-acc6-460d-bf72-d1fa0299b64e nwtN_3c3441d7-49e6-458d-b258-64b3985c2990 nwtN_7804a51a-c2ae-4deb-9737-a5e1b9a78bcb nwtN_e0b17f5e-bc96-4da9-abc9-ce7be2bcfbb5 nwtN_2d790adf-72e8-444e-96e5-1b93f6fc8be4 nwtN_8ae4f24e-d750-483a-9516-b60a62194ea2 nwtN_a9841ef3-f6d0-4fac-9947-aff194f1e09a nwtN_a93d1ad6-671e-4f9b-93d2-1f677ba70a89 nwtN_13b6ead6-085c-4348-8747-3b5214a20663 nwtN_cb88e7cd-cf9b-4aa2-9f0b-ad824e814134 nwtN_141fe1d2-13e8-4d6a-a822-1c6f364f593b nwtN_dff145e3-a0ff-4df4-81c6-bd83a1c06b93 nwtN_4feb114b-6e2f-4e17-b758-3c87a558ca6e nwtN_e24415c5-cad2-4293-ac09-6c179702db22 nwtN_326fd84b-9d5c-492c-9106-605e108b018f nwtN_2dd36b34-ef08-4849-9874-cf051a95dfaa nwtN_a353c5fe-2bee-4d5d-8ac7-b0961a5bb375 nwtN_05f7e7f5-b723-48a1-899b-9598d0cb9de0 nwtN_add867b7-8fe7-40d7-8a64-9e79407e64c8 nwtN_d5d895a5-bc63-4304-9280-ae5829c84bf3 nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e nwtN_4c80d891-5caa-4568-b4ea-74b0f7653e65 nwtN_dc7628cc-78b2-45b9-82db-1552ff9c0161 nwtN_61959681-c55b-43a4-acb3-49a426c60226 nwtN_b4c406e0-6e02-4748-9415-74a102bb051d nwtN_ab4a9e5e-4a46-4b86-93cd-589360d30df5 nwtN_dc715727-f95c-4b45-8c8d-6e268e4c5d46 nwtN_1c570d7a-7f7d-4537-aa7e-43d8e8ea1f76 nwtN_14b43e54-e6fe-4d2f-9264-2c2f95903b31 nwtN_bf9c17a0-da9a-4279-b019-889be48b1fd8 nwtN_8bfe1a75-df84-45d3-85a9-fa09a16b9313 nwtN_29274293-a05a-44ad-9301-062b62c6770f nwtN_b18aded5-c677-4f27-96cf-733fe0bfafdc nwtN_0e46e1be-6525-4885-92f7-649ec3969629 nwtN_59cff2b6-0645-4edd-8d71-1c4953ae6156 nwtN_00b47f97-1563-4406-93fc-d13b72a36e80 nwtN_d6555bc4-2fd5-41f9-81f7-4e1cd27dc5d2 nwtN_e1c23eb6-ed13-4f97-b43b-1e3f25cf8bb5 nwtN_fb0dd167-ae70-4646-8066-8703df9102d0 nwtN_66fee535-1f81-49f4-875a-e64fadc840e0 nwtN_7effbf27-dacf-43ee-a7bc-d25bd45b530d nwtN_250fc158-9e47-4126-a0a7-9bce5ef65d46 nwtN_ecb64a85-0f22-446d-977a-793100fcc67f nwtN_9e7c8b70-daf3-4d6e-8ed0-1f7fc721f228 nwtN_d7928bea-6a3e-40f6-9557-eb9aa72f71ae nwtN_7d137071-5624-4e5e-9789-33e8984edce8 nwtN_53d198a4-32f8-44e0-bbb4-bf67f303cb3e nwtN_79f85b80-6060-46b1-ad28-8f7b171be53d nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57 nwtN_f2001d81-d468-46d4-97bc-1e169556ab67 nwtN_6002e583-b5d1-4754-98fd-677a195eeba0 nwtN_bce96fdb-0720-493b-9cb6-286bc426ad9e nwtN_41cb47e7-7153-4234-ba9a-29cb4b008583 nwtN_6d84abe2-81ab-4e00-bc9a-5468f3586388 nwtN_f224e282-6541-41cc-ba14-1f0eae21b539 nwtN_4bb5ce96-27a5-4c2a-8dd1-39910027f3f1 nwtN_7aaea436-d9a2-42ff-9229-c7852330aeb3 nwtN_70dbe658-c22c-40f7-aaaf-2baf402dd50c nwtN_d79dbe93-f2a8-4ace-8484-ca9ff139273c nwtN_ac0dacaa-2fb7-40f3-8b7f-858d36f1bae9 nwtN_8eb9fb8d-36f0-4f6d-a72c-d19e5878dc90 nwtN_c1cac731-15bd-4ac5-bd9a-7a71b3e0af2f nwtN_27843559-e42b-4444-8105-900b5337eb38 nwtN_556d288c-9c7d-47a4-90fb-24d99e701c3f nwtN_3476302c-8b05-49ed-a898-359f96f263e2 nwtN_3f5005c8-3c2c-407c-93e2-67b4c5970288 nwtN_c39e5c5b-7fb7-4f1a-a1a3-e5044363908e nwtN_33e30131-1134-4c21-bb6b-f291db3662f5 nwtN_5b3b46fb-9e79-44a0-a3ad-6cda75af5889 nwtN_88aecf05-094d-4908-957e-9798b990369e nwtN_26f30597-e9ad-4bfc-aff0-4c4c5d2fc568 nwtN_4f5be579-6149-4cbd-88bf-1e53af46d154 nwtN_d21e03d5-62d0-4d4f-9c47-95a2d2a0dd13 nwtN_29e17591-5041-463d-98e2-f9a769a30a11 nwtN_92c558dd-e06d-4f52-882d-66714d21cd0d nwtN_6512bc64-de9d-4e29-bed3-8927ccd817af nwtN_2124bfc2-6811-4d53-bb03-9068322acda5 nwtN_7eb95670-f05c-4bbb-ad83-c5ea63bb0cba nwtN_1043d781-82bf-47c8-83a4-bc2c4e4209ba nwtN_b971feea-2cae-41b7-ba8e-4c2f56ac13ba nwtN_e4ea6591-a256-496a-9653-448c9898697a nwtN_79b94284-5721-47dd-95b0-010780bf223a nwtN_e6d068f3-11b5-47de-908a-698b9350445e nwtN_b74b358c-865a-465a-bfcc-df703ac2c0ea nwtN_ed646f45-5390-4478-b9e7-fb0b77300e7a nwtN_7154425a-8784-4e8d-b46b-c8572c2497e0 nwtN_902ee81e-d65e-40a1-be20-566aa5f5c179 nwtN_eda59338-6749-4100-876d-da96cb840872 nwtN_41f9361b-1e08-47ae-97ea-e2ce05804b76 nwtN_215c64bc-5dc4-48c6-a7cf-86a48a2df79b">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1"/>
+          </style>
+          <style id="edgeB4E1CD1.25" id-list="nwtE_c62106ac-a70f-4e6e-bf94-71e37e4b00c2 nwtE_b88eadf6-d485-486c-aaa1-e3caae31b24e nwtE_61881d0a-ad9f-44c3-ac83-bc2e7c48a872 nwtE_b098dd95-5911-4780-866f-08c730c91216 nwtE_93ba32c9-6f1e-4e3e-bb6e-20eff5da4d1b nwtE_e3a9b5cf-a489-41b9-a919-2f50f5ebfdb9 nwtE_4db90ffe-bcc6-4b67-9d70-d96088db3545 nwtE_70439a93-26b4-4c9f-b8b2-0c87858f8440 nwtE_d086ea11-b985-4138-9bdc-3f3139839c5d nwtE_0ab34789-9acb-4c7c-890d-ccf3f183bd0d nwtE_a976e420-f59b-4ea7-baca-e6fcfd80412a nwtE_484d2f7d-fce0-4156-8753-4975a271ef34 nwtE_71718df2-ca0e-4861-855a-0dc5fd80de29 nwtE_523e0654-4015-4ada-889f-2535f286b3ac nwtE_1ac9cb0e-b6c1-411b-8835-5bc9b4ef49a6 nwtE_8f69e8aa-2bbe-45f0-83ca-de184428d569 nwtE_15a1ff0b-4977-4bd0-9e93-e40219a3e097 nwtE_9331d50b-4632-4bf9-ba32-e1140a73c55c nwtE_5ebf49e8-1eaa-4232-b5f0-1459331cdf05 nwtE_ab8db597-f375-4cd8-ae3e-720ea1c3dc23 nwtE_d86db3ed-b29e-4d8a-a62e-fefd37b6fc2e nwtE_4523bf9d-87ec-42b8-b80e-2edf958df233 nwtE_352badad-530e-4be3-9b71-7d216aa413d5 nwtE_69e9af45-b676-402a-b887-1249507921ea nwtE_507e650e-1d62-4837-9016-726d6b40d73c nwtE_38ed1d9e-aaa4-4766-afef-3d0eb38526b6 nwtE_655e7031-fabb-4dcc-a7b7-38ed0c4e077e nwtE_b8e039a3-be27-4206-aa13-c96844a178d9 nwtE_f0b25274-12c3-40d3-8235-a2ea49c0118c nwtE_2c4cc48e-04ac-4667-9cb7-2a058e90eb39 nwtE_cd2a025d-fbec-419e-9d4d-6fd22af38b91 nwtE_00b27039-34ab-43d8-a700-499c9adf371e nwtE_337c821f-0253-487f-a86d-16371d58fd84 nwtE_8c29d9fd-f330-4d9c-b306-4e2d7d2a2cc9 nwtE_d848cd77-aa55-435d-b113-4dde391ead94 nwtE_f2815a2d-4a25-4e5c-9daa-0e58d9d789b7 nwtE_d7edfc46-7440-448d-84c6-de1fba32dfe3 nwtE_626a7bb2-d1d5-45a7-a433-5148916bcc5e nwtE_c30419d0-5337-4a0c-a3b8-2a33b86194bc nwtE_be77b3ae-1310-49e8-aa79-bf200928e172 nwtE_efe33372-f85d-499c-bd37-a46b6c66eb91 nwtE_74719c4c-018c-4f4d-a0ad-9326712856b3 nwtE_0b2af670-8da1-4a1c-af0a-51a855e79ce0 nwtE_0c12c4a2-117f-484b-ad3f-636dd5792929 nwtE_b3a079c3-66f2-4804-af35-865075a5558d nwtE_c21cb0b2-4dba-4b1d-895e-4939c79c496e nwtE_3625ab78-698f-4e29-97ae-087f46c81651 nwtE_d137f8aa-1c1e-4fdf-8b5d-3e0fd1202bc6 nwtE_226a095d-eb75-4a8a-942f-d8efcce169a5 nwtE_4bc653d4-22fe-4bba-afdd-72ae51dac70b nwtE_7498b588-f819-4026-9f49-417989abe372 nwtE_3aed6334-9d5d-48e8-8a42-125106d19b0a nwtE_11d4ebe0-e616-4192-8694-ee8d22270ee1 nwtE_a7899e75-5ccf-4231-b9ca-2d5f3d55e60c nwtE_d1c6d1ab-ccc5-4695-9716-c23f8744e85d nwtE_e5048833-de10-4353-883a-4bd60ae9fb0e nwtE_bf192e14-e10a-44ad-8210-a2956a8989f3 nwtE_b942a44f-1d8f-42d5-8c9b-b96513674d6b nwtE_badc64e3-9f2c-4105-82d5-026726076b03 nwtE_e6c1cb5d-7c87-4d10-a4f4-63056f962b0d nwtE_089e9b51-7764-4ca8-b48e-a79846f112e8 nwtE_4555e670-2cda-4ffa-8894-315ba8de8a26 nwtE_6a89b478-1b81-43ac-89e2-856079c150dd nwtE_d312a614-2f9a-43b1-9630-abba4f65d69c nwtE_66089c21-e248-4563-bfac-ea0afd7de4c1 nwtE_eac3adf3-dc2f-4044-892d-f601a6ff62e9 nwtE_151fcc77-7024-4c95-91a3-4de409938ee0 nwtE_32754337-996e-4e3e-af9a-7195a0ca04d1 nwtE_31bea3b7-47a3-4185-91c7-716d4c178704 nwtE_f8577b7d-517e-459b-9bb1-8fb2f6b8f16a nwtE_a77aa0a7-8be7-4b8b-a544-c243d48f29a1 nwtE_c34a4644-9d58-46df-aa9a-217891b32b75 nwtE_c75dc3c1-a242-4f61-84a6-64888b10775f nwtE_247e16be-74bc-469a-b052-c6cc656b91f9 nwtE_83dac679-f6f0-4375-bc60-40f6d512f5ef nwtE_49625e40-c4c3-48fb-97ad-e14004317571 nwtE_a619f43c-ed38-406e-8642-517784554dce nwtE_98561885-4cbe-4490-8c39-285c3e36f2f3 nwtE_920b2632-65e2-431b-97e8-3a343a02a22e nwtE_75f0904f-a889-46f4-8021-66ded3606723 nwtE_558ece02-372d-41a3-9eeb-37de0f418b8a nwtE_b3f0983a-6ef1-4f4f-8d15-bbecbd6cb373 nwtE_17d87071-6ae6-434c-b28c-22de8e326dae nwtE_11ad9b2e-ffe8-4f24-b51f-560f5e119abd nwtE_877a2e46-babe-4e8f-b6ea-7ba13b0aeec5 nwtE_c7d9fa11-57d6-458c-a16a-dd16808915d9 nwtE_efe27f84-fc86-46b9-9a51-42f4923679d6 nwtE_9a6def05-a295-4808-8cd1-b0e3863e83a2 nwtE_3f23522d-2601-432b-bc68-377c6f2fb60d nwtE_6dce1ae3-d977-4a42-bd6d-240b89341e8c nwtE_5c8745e5-7f44-4cbc-9fb2-c1b4afe3c135 nwtE_d81bb580-b213-4b1d-8740-7787004de7ba nwtE_fb5e233f-8256-4a9b-97bc-e2ee9a8130cc nwtE_e73444fa-c10b-4100-af28-d398cf24ebdb nwtE_38a747a5-9b07-45ae-8124-10051fcc4a22 nwtE_a97cef7f-ecdc-426f-9fb9-8cc6ea4733d5 nwtE_eedc3513-358b-4c04-a32d-9968ddd868aa nwtE_d5df0c7c-9d09-447c-89ca-3ee1812a8935 nwtE_3242f9a9-59f6-4e40-8430-20bbc32f458c nwtE_66764aa4-5381-4732-a955-e51d646c25a6 nwtE_7aa162c6-e45f-4c71-9750-5ea6fd138400 nwtE_a9a6de3d-b3a0-4e97-b289-a115c3429049 nwtE_9678f3b6-110c-4ccd-86b4-5e02b9042fe3 nwtE_a0959a48-605e-45cf-847e-7606ff3b6283 nwtE_50ce5f93-8167-4e08-8301-f8eed470d9fe nwtE_353cf9a2-8f2a-4fa3-ba79-22c570ef7f99 nwtE_343e3b98-ef56-4505-8596-33c56cc68e57 nwtE_526db763-306a-41c5-9a4e-5af5b78d6061 nwtE_454e685c-bd07-4925-a580-54c86b1df1ce nwtE_cf35b60c-02a5-4aeb-a531-f469150e7c0c nwtE_b16cdd04-7338-42c1-b1df-1b0634cfff69 nwtE_379ca9fd-3c3c-488b-84ef-39f8c0944854 nwtE_84389e5b-91b5-4e31-9936-5b21657f1263 nwtE_25ed34ff-adbc-4adf-b5d7-a0a11a73117f nwtE_3cacadcf-d9f6-4525-b3b2-a38865a7f056 nwtE_205324fc-0429-427b-a086-2b340cbc81f9 nwtE_a911f44c-50f5-43cc-a681-376c7f33c67f nwtE_cce49236-7120-4cd7-b5c3-0db5c082ea2b nwtE_a547e122-5075-4514-8a02-3c459a42a590 nwtE_b060917f-aa69-4228-85d5-d70d93240e3e nwtE_709f1ff1-4d8f-4592-8afc-5537f5213f8a nwtE_bf6493ce-533d-4660-9f06-4c62f1ee3fa6 nwtE_f5d3941e-6c23-46f8-8d12-a22bfbc5950a nwtE_ff96ba02-847e-4358-bacf-108bdb691147 nwtE_a72dc42e-6c8c-407f-8434-e4f698d7c783 nwtE_4799517c-24de-46dc-9bf5-059d30b1b41f nwtE_c4107484-9450-44bc-b270-52ffef622cc6 nwtE_ede6d772-0c87-45e7-9f9a-c9df8f9b0209 nwtE_d1635e83-d4da-4cb9-8811-6a0a961a661f nwtE_d35afc7f-3c9c-40ea-a340-f976183e9875 nwtE_587272f0-45fc-412f-8a56-3b86261b107f nwtE_5441ad35-8649-4a47-ab58-bb636d566245 nwtE_e8bed579-6799-4b2a-bd3f-7c68b452746f nwtE_61026302-c04f-457a-8367-46d280a64531 nwtE_e531cd3e-97e3-4236-9aa4-1b0274de3747 nwtE_a42a7990-e971-4bdd-9e8d-837a08a6f716 nwtE_c05ca5f5-bf67-44c6-82db-2152b8f0568a nwtE_86d4a53b-4ca3-41d4-8779-0a0a1aac6e99 nwtE_8a02bcfa-8cf0-4f64-b631-106057c3a879 nwtE_0ed75a60-23e1-47ac-a4a9-62ddf71274bb nwtE_e951889e-0b77-4074-b394-3c3650eda9b5 nwtE_dffd5608-e9e6-4b99-bb4b-7c4d9e95f464 nwtE_a13ce8d8-0245-4ad6-aa2d-2178dc18cbfd nwtE_9a260f03-fea2-44e5-9365-896a4d91249e nwtE_230285cc-dcfe-4126-808b-590ec62347fd nwtE_cbc6c56c-f90d-416d-9664-8f550e2ec6a3 nwtE_6b14f8c7-1132-4794-be8f-0f1b95365d45 nwtE_320b34f3-7a07-4261-a9de-069e923eb429 nwtE_45142fc2-94d3-44db-a949-a39d98541354 nwtE_db45bd25-41bc-46b4-9cbc-c98bc1ce7ff2 nwtE_8df20326-4537-4d2f-b6b0-2cc6a69b8de2 nwtE_f284029d-6e35-48bf-9393-01098f937df3">
+            <g stroke="color_3" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>large</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>1</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>true</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>opposed_red_blue</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>TP53 RB Pathway</mapName>
+        <mapDescription/>
+      </mapProperties>
+    </extension>
+
+    <glyph id="expdata1" class="SIF macromolecule">
+      <label text="CDKN2A"/>
+      <bbox x="150" y="100" w="100" h="30"/>
+    </glyph>
+    <glyph id="expdata2" class="SIF macromolecule">
+      <label text="CDK4"/>
+      <bbox x="0" y="200" w="100" h="30"/>
+    </glyph>
+    <glyph id="expdata3" class="SIF macromolecule">
+      <label text="MDM2"/>
+      <bbox x="300" y="200" w="100" h="30"/>
+    </glyph>
+    <glyph id="expdata4" class="SIF macromolecule">
+      <label text="TP53"/>
+      <bbox x="300" y="300" w="100" h="30"/>
+    </glyph>
+    <glyph id="expdata5" class="SIF macromolecule">
+      <label text="RB1"/>
+      <bbox x="0" y="300" w="100" h="30"/>
+    </glyph>
+    <glyph id="expdata6" class="SIF macromolecule">
+      <label text="CCNE"/>
+      <bbox x="-150" y="300" w="100" h="30"/>
+    </glyph>
+  
+    <arc id="arc12" class="inhibits" source="expdata1" target="expdata2">
+      <start/>
+      <end/>
+    </arc>
+
+    <arc id="arc13" class="inhibits" source="expdata1" target="expdata3">
+      <start/>
+      <end/>
+    </arc>
+
+    <arc id="arc34" class="inhibits" source="expdata3" target="expdata4">
+      <start/>
+      <end/>
+    </arc>
+    
+    <arc id="arc25" class="inhibits" source="expdata2" target="expdata5">
+      <start/>
+      <end/>
+    </arc>
+
+    <arc id="arc56" class="inhibits" source="expdata5" target="expdata6">
+      <start/>
+      <end/>
+    </arc>
+  </map>
+</sbgn>

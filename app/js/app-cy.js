@@ -36,6 +36,21 @@ module.exports = function (chiseInstance) {
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
     ur.action("relocateInfoBoxes", appUndoActions.relocateInfoBoxes, appUndoActions.relocateInfoBoxes);
+    ur.action("updateExperimentPanel", appUndoActions.updateExperimentPanel, appUndoActions.updateExperimentPanel2);
+    ur.action("updateExperimentPanel2", appUndoActions.updateExperimentPanel2, appUndoActions.updateExperimentPanel);
+    ur.action("updateRemoveAll", appUndoActions.updateRemoveAll, appUndoActions.updateRestore);
+    ur.action("updateRestore", appUndoActions.updateRestore, appUndoActions.updateRemoveAll);
+    ur.action("unhideExperimentPanel", appUndoActions.unhideExperimentPanel, appUndoActions.hideExperimentPanel);
+    ur.action("hideExperimentPanel", appUndoActions.hideExperimentPanel, appUndoActions.unhideExperimentPanel);
+    ur.action("deleteFile", appUndoActions.expFileDel, appUndoActions.expFileUndoDel);
+    ur.action("undodeleteFile", appUndoActions.expFileUndoDel, appUndoActions.expFileDel);
+    ur.action("expOnLoad", appUndoActions.expOnLoad, appUndoActions.expOnLoad);
+    ur.action("fileHide", appUndoActions.hideFileUI, appUndoActions.hideFileUIredo);
+    ur.action("fileUnhide", appUndoActions.unhideFileUI, appUndoActions.unhideFileUIredo);
+    ur.action("hideAll", appUndoActions.hideAllUI, appUndoActions.hideAllUIUndo);
+    ur.action("unhideAll", appUndoActions.unhideAllUI, appUndoActions.unhideAllUIUndo);
+    ur.action("loadExperiment", appUndoActions.loadExperimentData, appUndoActions.undoLoadExperiment);
+    ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
   }
 
   function cytoscapeExtensionsAndContextMenu() {

@@ -430,6 +430,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
       appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, self); // default color scheme
     });
+  
   },
   changeStyle: function(style) {
     if(style == 'solid'){
@@ -452,13 +453,17 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     }
   },
   render: function () {
+  
+    
     this.template = _.template($("#color-scheme-inspector-template").html());
     var cy = appUtilities.getActiveCy();
     // scheme_type and current_scheme are used to highlight the current color scheme with the javascript embedded to color-scheme-inspector-template div(line: 2337 in index.html)
     var scheme_type = $("#color-scheme-inspector-style-select").val();
     var current_scheme = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
+   
     this.$el.empty();
     this.$el.html(this.template({schemes: this.schemes, schemes_gradient: this.schemes_gradient, schemes_3D: this.schemes_3D, scheme_type: scheme_type, current_scheme: current_scheme}));
+    
     return this;
   }
 });
@@ -542,6 +547,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.mapDescription = {id: "map-description", type: "text",
       property: "currentGeneralProperties.mapDescription"};
 
+   
     // general properties part
     $(document).on("change", "#map-name", function (evt) {
 
@@ -1011,6 +1017,237 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
 
+    return this;
+  }
+});
+
+//The render functions for the experimental panel
+var experimentTabPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    var self = this;
+    self.params = {};
+    self.params.experimentDescription = {id: "map-experiment", type: "text",
+    property: "currentGeneralProperties.experimentDescription"};
+
+    $(document).on("click","#load-exp-data-util", function (evt) {
+        $("#overlay-data").trigger('click');
+    });
+
+    $(document).on("click", "#experiment-remove-all, #experiment-data-remove-all", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var param = {self};
+      cy.undoRedo().do("updateRemoveAll", param);
+      self.render();
+    });
+
+    $(document).on("click", "#experiment-hide-all, #experiment-data-hide-all", function (evt) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var params = {};
+      params.self = self;
+      if(evt.target.value == 'true'){
+        cy.undoRedo().do("hideAll", params);
+      }
+      else{
+        cy.undoRedo().do("unhideAll", params);
+      }
+    });
+
+    $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var fileName = this.id.substring(20);
+      var subExperiments = $('[id^="experiment-vis-' + filename + '"]');
+      var params = {fileName};
+      params.self = self;
+
+      if(this.value === "true"){
+        cy.undoRedo().do("fileHide", params);
+      }
+      else{
+        cy.undoRedo().do("fileUnhide", params);
+      }
+      self.render();
+    });
+    //file delete button
+    $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var fileName = evt.target.id.substring(23);
+      var param = {fileName, self, document};
+      cy.undoRedo().do("deleteFile", param); 
+    });
+    //change experiment visibilty
+    $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
+      var expRep = evt.target.id.substring(15);
+      var index = expRep.indexOf('?');
+      var fileName = expRep.substring(0,index);
+      var expName = expRep.substring(index+1);
+      var params = {fileName, expName};
+      params.evt = evt;
+      params.self=self;
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      if(evt.target.value === "true"){
+        cy.undoRedo().do("hideExperimentPanel", params);
+      }
+      else{
+        cy.undoRedo().do("unhideExperimentPanel", params);
+      }
+    });
+    //remove experiment
+    $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var expRep = evt.target.id.substring(18);
+      var cy = appUtilities.getActiveCy();
+      var index = expRep.indexOf('?');
+      var fileName = expRep.substring(0,index);
+      var expName = expRep.substring(index+1);
+      var param = {self, fileName, expName, document}
+      cy.undoRedo().do("updateExperimentPanel", param);
+    });
+  },
+
+  recalculate: function(){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var self = this;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param = self;
+    self.params.experimentDescription.value =  fileNames;
+    cy.undoRedo().do("expOnLoad", param);
+  },
+
+  loadExperiment: function(params){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+    var firstExperiment = this.params.experimentDescription.value;
+    var self = this;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    params.self = self;
+    self.params.experimentDescription.value =  fileNames;
+    params.document = document;
+    params.value = generalProperties.mapColorScheme;
+    params.scheme_type = generalProperties.mapColorSchemeStyle
+    params.self2 = appUtilities.colorSchemeInspectorView
+   
+    var ur = cy.undoRedo();
+    var actions = [];
+    //after the deleting the first experiemnt color schme should come back
+    if(firstExperiment === undefined)
+    {
+      var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+      var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      actions = appUtilities.getActionsToApplyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+      actions.push({name: "loadExperiment", param: params});
+      ur.do("batch", actions);
+    }
+    else{
+      cy.undoRedo().do("loadMore", params);
+    }
+  },
+
+  render: function() {
+    var cy = appUtilities.getActiveCy();
+    var self = this;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+    self.template = _.template($("#map-tab-experiment-template").html());
+    this.$el.html(this.template(currentGeneralProperties));
+    var refreshButtons = function(param){
+      var document = param.document;
+      var visibleDataMapByExp = param.visibleDataMapByExp;
+      var visibleFiles = param.visibleFiles;
+      var fileDescription = param.fileDescription;
+      var allVis = param.allVis;
+      var fileTitle = param.fileTitle;
+      for (let i in visibleDataMapByExp)
+      {
+        var index = i.indexOf('?');
+        var fileName = i.substring(0,index);
+        var expName = i.substring(index+1);
+        var buttonName = "experiment-vis-"+ fileName+ "?" + expName;
+        var button = document.getElementById(buttonName);
+        if(button != null){
+          if(visibleDataMapByExp[i] == true ||visibleDataMapByExp[i] === true ){
+            button.value = "true";
+            button.style.backgroundColor = "";
+          }
+          else {
+            button.value = "false";
+            button.style.backgroundColor = "#EAEAEA";
+            button.style.color = "#FFFFFF";
+          }
+        }
+      }
+      for (let i in visibleFiles){
+
+        var buttonName = "experiment-file-vis-"+ i;
+        var button = document.getElementById(buttonName);
+        
+        if(button != null){
+          if(fileTitle[i] != undefined)
+          {
+            button.title = fileTitle[i]
+          }
+          if(fileDescription[i] != undefined)
+          { 
+              button.title = fileDescription[i]; 
+          }       
+       
+          if(visibleFiles[i] == true ||visibleFiles[i] === true ){
+            button.value = "true";
+            button.style.backgroundColor = "";
+          }
+          else {
+            button.value = "false";
+            button.style.backgroundColor = "#EAEAEA";
+            button.style.color = "#FFFFFF";
+          }
+        }
+      }
+
+      var buttonName = "experiment-hide-all";
+      var button = document.getElementById(buttonName);
+
+      if(button != null){
+        if(allVis){
+          button.value = "true";
+          button.style.backgroundColor = "";
+        }
+        else {
+          button.value = "false";
+          button.style.backgroundColor = "#EAEAEA";
+          button.style.color = "#FFFFFF";
+        }
+      }
+
+      buttonName = "experiment-data-hide-all";
+      button = document.getElementById(buttonName);
+      if(button != null){
+        if(allVis){
+          button.value = "true";
+         
+        }
+        else {
+          button.value = "false";        
+        }
+      }
+    }
+    var experimentalParams = chiseInstance.getExperimentalData();
+    experimentalParams.document = document;
+    refreshButtons(experimentalParams);
+    //chiseInstance.buttonUpdate(document);
+    if( currentGeneralProperties.experimentDescription.length  > 0 || Object.entries(currentGeneralProperties.experimentDescription).length != 0){
+     //document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "hidden";
+     document.getElementById('sbgn-inspector-map-color-scheme').style.display = "none";
+    }
+    else{
+    document.getElementById('sbgn-inspector-map-color-scheme').style.display = "";
+    // document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "initial";
+    }
     return this;
   }
 });
@@ -2181,7 +2418,6 @@ var SaveUserPreferencesView = Backbone.View.extend({
 
       delete preferences.currentGeneralProperties.mapName;
       delete preferences.currentGeneralProperties.mapDescription;
-       
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
@@ -2327,6 +2563,7 @@ var LoadUserPreferencesView = Backbone.View.extend({
                 actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params[key]});            
             }          
         });
+ 
           
           var applyColorScheme = false;
           var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
@@ -3886,6 +4123,7 @@ module.exports = {
   MapTabGeneralPanel: MapTabGeneralPanel,
   MapTabLabelPanel: MapTabLabelPanel,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
+  experimentTabPanel: experimentTabPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
   NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,

@@ -33,17 +33,14 @@ module.exports = function() {
       }
     });
   }
-
-  function loadSample(filename) {
-
-    // use the active chise instance
+ 
+  function loadSample(filename, callback) {
     var chiseInstance = appUtilities.getActiveChiseInstance();
-
     var textXml = (new XMLSerializer()).serializeToString(chiseInstance.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
-    return chiseInstance.loadSample(filename, 'app/samples/');
+    return chiseInstance.loadSample(filename, 'app/samples/', callback);
   }
-
+  
   console.log('init the sbgnviz template/page');
 
   $(window).on('resize', _.debounce(dynamicResize, 100));
@@ -56,6 +53,7 @@ module.exports = function() {
   mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
   mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
+  experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
@@ -173,7 +171,6 @@ module.exports = function() {
 
 			   
   function toolbarButtonsAndMenu() {
-
     // menu behavior: on first click, triggers the other menus on hover.
     var isMenuHoverMode = false;
     $('ul.navbar-nav > li.dropdown').on('mouseenter', function(e){
@@ -317,10 +314,11 @@ module.exports = function() {
         });
        
         $(this).val("");
-      }
+      }  
+    });
 
-
-      
+    $("#import-experimental-data").click(function () {
+      $("#overlay-data").trigger('click');
     });
     $("#import-SBML-file").click(function () {
       $("#sbml-file").trigger('click');
@@ -341,6 +339,56 @@ module.exports = function() {
       $("#sif-layout-input").trigger('click');
     });
 
+    $("#overlay-data").change(function () {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var data = this.result;
+          var fileName = file.name;
+          var errorCallback = function(){
+          promptInvalidFileView.render();
+        };
+        var fileName = file.name;
+        params ={data, fileName, errorCallback};
+        experimentTabPanel.loadExperiment(params);
+        experimentTabPanel.render();
+      };
+
+      reader.fileName = file.name;
+      reader.readAsText( file );
+
+      $(this).val("");
+      }
+    });
+
+    $("#sample-experiment-data").click(function (){
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var overlayExperimentData  = function () {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+        var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE1\t0\t7\r"
+        chiseInstance.parseData(data, "acc_2014vs2019.txt");
+        experimentTabPanel.recalculate();
+        experimentTabPanel.render();
+      }
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(
+          function(){
+            loadSample('p53_rb_pathway.nwt', overlayExperimentData);
+          });
+      }
+      else {
+        loadSample('p53_rb_pathway.nwt', overlayExperimentData);
+      }
+
+      $(this).val("");
+      
+    });
+    
     $("#sbml-file").change(function () {
      
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -486,7 +534,7 @@ module.exports = function() {
       // default map name should be a string that contains the network id
       currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
       currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-
+    
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
         currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
@@ -512,7 +560,7 @@ module.exports = function() {
           mapProperties[prop] = mapPropsFromUrl[prop];
         }
       }
-
+      //BURAYA EKLE --
       // some operations are to be performed if there is any map property
       // that comes from URL or read from file
       var mapPropertiesExist = ( !$.isEmptyObject( mapProperties ) );
@@ -527,7 +575,7 @@ module.exports = function() {
         mapTabGeneralPanel.render();
         mapTabRearrangementPanel.render();
         mapTabLabelPanel.render();
-
+        experimentTabPanel.render();
         if (mapPropertiesExist){
           // update map panel
           appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView, scheme_type: currentGeneralProperties.mapColorSchemeStyle});

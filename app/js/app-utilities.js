@@ -59,7 +59,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   appUtilities.mapTabGeneralPanel.render();
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
-
+  appUtilities.experimentTabPanel.render();
   // needing an appUndoActions instance here is something unexpected
   // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
   // that uses the active cy instance
@@ -355,7 +355,7 @@ appUtilities.createNewNetwork = function () {
   var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
   var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
   var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
-
+  
   // update the map name with the default map name specific for network id
   currentGeneralProperties.mapName = mapName;
 
@@ -419,7 +419,7 @@ appUtilities.createNewNetwork = function () {
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
-
+  
   // init the current file name for the map
   appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.nwt');
 
@@ -754,7 +754,8 @@ appUtilities.defaultGeneralProperties = {
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: "",
-  enableSIFTopologyGrouping: false
+  enableSIFTopologyGrouping: false,
+  experimentDescription: "",
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -1940,8 +1941,15 @@ appUtilities.mapBgImgCoverToEle = function(){
   return result;
 }
 
-// change the global style of the map by applying the current color scheme
+// use this function to change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
+  var actions = appUtilities.getActionsToApplyMapColorScheme(newColorScheme, scheme_type, self, _cy);
+  var cy = _cy || appUtilities.getActiveCy();
+  cy.undoRedo().do("batch", actions);
+}
+
+// get the actions required to change the global style of the map by applying the current color scheme
+appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
 
   // if _cy param is set use it else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCy();
@@ -2062,9 +2070,8 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       }
     }
   }
-
-  cy.undoRedo().do("batch", actions);
-
+  
+  return actions;
 };
 
 // the 3 following functions are related to the handling of the dynamic image
@@ -3037,5 +3044,26 @@ appUtilities.transformClassInfo = function( classInfo ) {
 
   return res;
 };
+// appUtilities.getExperimentalData = function()
+// {
+//   var chiseInstance = appUtilities.getActiveChiseInstance();
+//   var cy = appUtilities.getActiveCy();
+//   var experimentNames = chiseInstance.getGroupedDataMap();
+//   //console.log(experimentNames.length());
+
+
+  
+//   return experimentNames;
+// };
+// appUtilities.setExperimentNames = function(files)
+// {
+//   console.log("experiment names in set experimentNames");
+ 
+//  // currentExperimentProperties.experimentDescription = files;
+//   appUtilities.experimentTabPanel.render();
+// }
+// appUtilities.hideExperiments = function(){
+//   console.log("inapputil");
+// }
 
 module.exports = appUtilities;
