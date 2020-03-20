@@ -1053,6 +1053,97 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       }
     });
 
+    // Make the DIV element draggable https://www.w3schools.com/howto/howto_js_draggable.asp
+    function makeElementDraggable(elmnt) {
+      var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      if (document.getElementById(elmnt.id + "-header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+      }
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+      }
+
+      function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    $(document).on("click", "#show-experiment-data-as-table", function () {
+      var divId = 'draggable-exp-data-div';
+      
+      if ($('#' + divId).is(':visible')) {
+        return;
+      }
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var data = chiseInstance.getExperimentalData().parsedDataMap;
+      makeElementDraggable(document.getElementById(divId));
+      $('#' + divId).show();
+      fillTable(document.getElementById('map-exp-table'), data);
+    });
+
+    $(document).on("click", "#close-experiment-data-as-table", function () {
+      $('#draggable-exp-data-div').hide();
+    });
+
+    function fillTable(elem, data) {
+      var headers = ['Node'];
+      var experiments = {};
+      var s = '';
+
+      for (var node in data) {
+        for (var exp in data[node]) {
+          experiments[exp] = true;
+        }
+      }
+
+      for (var h in experiments) {
+        headers.push(h);
+      }
+      // insert headers
+      s += '<tr>'
+      for (let i = 0; i < headers.length; i++) {
+        s += `<th>${headers[i]}</th>`
+      }
+      s += '</tr>'
+
+      // insert table columns
+      for (var node in data) {
+        s += `<tr><td>${node}</td>`;
+        for (var exp in experiments) {
+          s += `<td>${data[node][exp]}</td>`
+        }
+        s += '</tr>';
+      }
+      elem.innerHTML = s;
+    }
+
     $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();

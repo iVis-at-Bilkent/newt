@@ -1370,7 +1370,7 @@
               <button class='btn btn-default' style='align: center;' id='map-rearrangement-default-button'>Default</button>
             <div>
         </script>
-
+        
         <script type="text/template" id="map-tab-experiment-template">
             <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
          <div align="center" style = 'margin-top: 10px; text-align: center'> Load... <img width='16px' height='16px' id='load-exp-data-util' title="Load new file" src='app/img/add.svg' style="margin: 5px;"/> </div> 
@@ -1382,6 +1382,7 @@
                     <tr>
                         <td style='text-align: center;'>
                             <div style='margin-top: 0px;' >
+                                <img width='16px' height='16px' style='align: center; border-width: 0px !important; margin-right: 2%; cursor: pointer;' id="show-experiment-data-as-table" src="app/img/toolbar/table-grid.svg" title="Show as table">
                                 <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px; margin-right: 2%' id='experiment-hide-all'> Hide All</button>
                                 <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px;' id='experiment-remove-all'> Remove All</button>
                             </div>  
@@ -1389,6 +1390,16 @@
                     </tr> 
                     </tbody> 
                 </table>
+                <!-- Draggable DIV -->
+                <div id="draggable-exp-data-div" style="display: none;">
+                  <div id="draggable-exp-data-div-header" class="text-center" style="cursor: move;z-index: 1001;">
+                    <span>Experiment Data </span>
+                    <button id="close-experiment-data-as-table" type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped" id="map-exp-table"> <!-- will come from JS --> </table> 
+                  </div>
+                </div>
                            
                   <% for (filename in experimentDescription) { %> 
                     <% if (filename != null) { %>

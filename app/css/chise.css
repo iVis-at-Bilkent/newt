@@ -895,3 +895,12 @@ img#template-reversible-output-add-button:hover {
         width: 200px;
     }
 }
+
+#draggable-exp-data-div {
+  position: absolute;
+  z-index: 1000;
+  background-color: #f1f1f1;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+  transform: translate(-50%, 0);
+}
