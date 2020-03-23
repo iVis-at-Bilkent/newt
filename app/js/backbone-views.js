@@ -1105,15 +1105,16 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       var data = chiseInstance.getExperimentalData().parsedDataMap;
       makeElementDraggable(document.getElementById(divId));
       $('#' + divId).show();
-      fillTable(document.getElementById('map-exp-table'), data);
+      fillTable4ExpData(document.getElementById('map-exp-table'), data);
     });
 
     $(document).on("click", "#close-experiment-data-as-table", function () {
       $('#draggable-exp-data-div').hide();
     });
 
-    function fillTable(elem, data) {
+    function fillTable4ExpData(elem, data) {
       var headers = ['Node'];
+      var fileNames = {};
       var experiments = {};
       var s = '';
 
@@ -1124,12 +1125,29 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       }
 
       for (var h in experiments) {
-        headers.push(h);
+        var arr = h.split('?');
+        if (!fileNames[arr[0]]) {
+          fileNames[arr[0]] = 1; // for colspan
+        } else {
+          fileNames[arr[0]] += 1; // for colspan
+        }
+        headers.push(arr[arr.length-1]);
       }
-      // insert headers
+
+      // insert file names as "headers" of html table
+      s += '<tr><th></th>'
+      for (let i in fileNames) {
+        s += `<th class="text-center" colspan="${fileNames[i]}">${i}</td>`;
+      }
+      s += '</tr>'
+
       s += '<tr>'
       for (let i = 0; i < headers.length; i++) {
-        s += `<th>${headers[i]}</th>`
+        var centerer = '';
+        if (i > 0) {
+          centerer = 'class="text-center"';
+        }
+        s += `<td ${centerer}>${headers[i]}</td>`
       }
       s += '</tr>'
 
@@ -1137,7 +1155,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       for (var node in data) {
         s += `<tr><td>${node}</td>`;
         for (var exp in experiments) {
-          s += `<td>${data[node][exp]}</td>`
+          s += `<td class="text-center">${data[node][exp] || '-'}</td>`
         }
         s += '</tr>';
       }

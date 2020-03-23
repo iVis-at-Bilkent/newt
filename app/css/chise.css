@@ -904,3 +904,7 @@ img#template-reversible-output-add-button:hover {
   border-radius: 4px;
   transform: translate(-50%, 0);
 }
+
+#map-exp-table td {
+  font-size: 11px;
+}
