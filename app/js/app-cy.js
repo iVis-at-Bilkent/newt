@@ -443,7 +443,7 @@ module.exports = function (chiseInstance) {
       ],
       selectStyles: {
         node: {
-          'border-color': '#d67614', 'background-color': function (ele) { return ele.css('background-color'); }
+          'border-color': '#d67614', 'background-color': function (ele) { return ele.data('background-color'); }
         },
         edge: {
           'line-color': '#d67614',
