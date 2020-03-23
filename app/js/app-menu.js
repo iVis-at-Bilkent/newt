@@ -353,7 +353,7 @@ module.exports = function() {
           promptInvalidFileView.render();
         };
         var fileName = file.name;
-        params ={data, fileName, errorCallback};
+        params = {data: data, fileName: fileName, errorCallback: errorCallback};
         experimentTabPanel.loadExperiment(params);
         experimentTabPanel.render();
       };
@@ -370,11 +370,14 @@ module.exports = function() {
       var cy = appUtilities.getActiveCy();
       var overlayExperimentData  = function () {
         var chiseInstance = appUtilities.getActiveChiseInstance();
-        var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE\t0\t7\r"
-        chiseInstance.parseData(data, "acc_2014vs2019.txt");
-        experimentTabPanel.recalculate();
+        var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE\t0\t7\r";
+        var errorCallback = function(){
+          promptInvalidFileView.render();
+        };       
+        params ={data: data, fileName: "acc_2014vs2019.txt", errorCallback: errorCallback};
+        experimentTabPanel.loadExperiment(params);
         experimentTabPanel.render();
-      }
+      };
       if(cy.elements().length != 0) {
         promptConfirmationView.render(
           function(){
