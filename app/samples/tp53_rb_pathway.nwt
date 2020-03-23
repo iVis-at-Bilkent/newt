@@ -58,7 +58,7 @@
       <bbox x="300" y="200" w="100" h="30"/>
     </glyph>
     <glyph id="8b7b2d40-340e-b115-6897-7110db1fe955" class="SIF macromolecule">
-      <label text="TP53"/>
+      <label text="RB1"/>
       <bbox x="0" y="300" w="100" h="30"/>
     </glyph>
     <glyph id="1103de94-b712-392d-a5e2-918cc410056c" class="SIF macromolecule">
@@ -66,7 +66,7 @@
       <bbox x="-150" y="300" w="100" h="30"/>
     </glyph>
     <glyph id="8e862831-83d3-cea5-79f2-8fcfc90b759e" class="SIF macromolecule">
-      <label text="CDKN2A"/>
+      <label text="TP53"/>
       <bbox x="300" y="300" w="100" h="30"/>
     </glyph>
     <arc id="nwtE_9271b454-2dd9-4e78-a776-9600bec0f9df" class="inhibits" source="nwtN_93a97f0a-32f9-47f7-aecb-c472c2e24cfd" target="3d722d45-458c-37df-b97a-90bbe8995bf7">
