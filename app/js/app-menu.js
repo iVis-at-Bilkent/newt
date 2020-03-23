@@ -370,7 +370,7 @@ module.exports = function() {
       var cy = appUtilities.getActiveCy();
       var overlayExperimentData  = function () {
         var chiseInstance = appUtilities.getActiveChiseInstance();
-        var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE1\t0\t7\r"
+        var data ="name\tsample experiment data\r\ndescription\tAdenoid Cystic Carcinoma 2014 vs 2019\r\nel\t2014\t2019\r\nRB1\t36\t12\r\nTP53\t36\t72\r\nCDKN2A\t0\t14\r\nMDM2\t0\t5\r\nCCNE\t0\t7\r"
         chiseInstance.parseData(data, "acc_2014vs2019.txt");
         experimentTabPanel.recalculate();
         experimentTabPanel.render();
@@ -378,11 +378,11 @@ module.exports = function() {
       if(cy.elements().length != 0) {
         promptConfirmationView.render(
           function(){
-            loadSample('p53_rb_pathway.nwt', overlayExperimentData);
+            loadSample('tp53_rb_pathway.nwt', overlayExperimentData);
           });
       }
       else {
-        loadSample('p53_rb_pathway.nwt', overlayExperimentData);
+        loadSample('tp53_rb_pathway.nwt', overlayExperimentData);
       }
 
       $(this).val("");
