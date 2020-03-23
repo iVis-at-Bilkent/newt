@@ -1973,12 +1973,16 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
 
     var actions = [];
 
-    //first clear the background images of already present elementUtilities
+    // first clear the background images of already present elements
     actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: clearBgImg(eles)}});
     // edit style of the current map elements
     actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+    // first clear the background images of already present collapsed elements
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: clearBgImg(collapsedChildren)}});   
     // collapsed nodes' style should also be changed, special edge case
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+    // if background-image isn't deleted from css, it is shown as soon as the node is expanded until the end of animation
+    actions.push({name: "changeCss", param: {eles: collapsedChildren, name: 'background-image', valueMap: ""}});     
 
     actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
 
@@ -2043,13 +2047,17 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
     // collapsed nodes' style should also be changed, special edge case
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedColorIDMap}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: collapsedBackgroundImgMap}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
-
-
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(collapsedChildren)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(collapsedChildren, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(collapsedChildren, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(collapsedChildren, 100)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(collapsedChildren, 100)}});
+    // if background-image isn't brought back into css, it isn't shown as soon as the node is expanded until the end of animation
+    // the reason of for loop is that changeCss function cannot find collapsed nodes if valueMap is an object, but it works if it is a string   
+    for(var i = 0; i < collapsedChildren.length; i++){
+      actions.push({name: "changeCss", param: {eles: collapsedChildren[i], name: 'background-image', valueMap: collapsedBackgroundImgMap[collapsedChildren[i].id()]}});
+    }
+    
     actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
 
     // set to be the default as well
