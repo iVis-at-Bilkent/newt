@@ -1140,9 +1140,9 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       }
 
       // insert file names as "headers" of html table
-      s += '<tr><th></th>'
+      s += '<tr><th style="border: 0px;"></th>'
       for (let i in fileNames) {
-        s += `<th class="text-center" colspan="${fileNames[i]}">${i}</td>`;
+        s += `<th class="text-center" style="border: 0px;" colspan="${fileNames[i]}">${i}</td>`;
       }
       s += '</tr>'
 

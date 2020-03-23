@@ -905,8 +905,8 @@ img#template-reversible-output-add-button:hover {
   transform: translate(-50%, 0);
 }
 
-#map-exp-table td {
-  font-size: 11px;
+#map-exp-table td, #search-exp-table {
+  font-size: 11px !important;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
