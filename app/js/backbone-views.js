@@ -1106,6 +1106,11 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
       makeElementDraggable(document.getElementById(divId));
       $('#' + divId).show();
       fillTable4ExpData(document.getElementById('map-exp-table'), data);
+
+      $(document).off('keyup', '#search-exp-table');
+      $(document).on('keyup', '#search-exp-table', _.debounce(function () {
+        searchTable(document.getElementById('map-exp-table'), $('#search-exp-table').val());
+      }, 250));
     });
 
     $(document).on("click", "#close-experiment-data-as-table", function () {
@@ -1147,19 +1152,142 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         if (i > 0) {
           centerer = 'class="text-center"';
         }
-        s += `<td ${centerer}>${headers[i]}</td>`
+        s += `<th id="sortable-table-header-${i}" style="cursor: pointer;" title="sort" ${centerer}>${headers[i]}</th>`
       }
       s += '</tr>'
 
       // insert table columns
+      var nodeCnt = 0;
+      var nodeLabels = [];
       for (var node in data) {
-        s += `<tr><td>${node}</td>`;
+        nodeLabels.push(node);
+        s += `<tr id="hoverable-table-row-${nodeCnt++}"><td>${node}</td>`;
         for (var exp in experiments) {
           s += `<td class="text-center">${data[node][exp] || '-'}</td>`
         }
         s += '</tr>';
       }
       elem.innerHTML = s;
+
+      // change `let i` to `var i` to see the difference
+      for (let i = 0; i < headers.length; i++) {
+        $(document).off('click', '#sortable-table-header-' + i);
+        $(document).on('click', '#sortable-table-header-' + i, function () {
+          sortTable(document.getElementById('map-exp-table'), i);
+        });
+      }
+
+      for (let i = 0; i < nodeCnt; i++) {
+        $(document).off('mouseenter', '#hoverable-table-row-' + i);
+        $(document).off('mouseleave', '#hoverable-table-row-' + i);
+        $(document).on('mouseenter', '#hoverable-table-row-' + i, () => {
+          var cy = appUtilities.getActiveCy();
+          var vu = cy.viewUtilities('get');
+          var eles = cy.nodes().filter(x => x.data('label') == nodeLabels[i]);
+          vu.highlight(eles, 2);
+        });
+        $(document).on('mouseleave', '#hoverable-table-row-' + i, () => {
+          var cy = appUtilities.getActiveCy();
+          var vu = cy.viewUtilities('get');
+          var eles = cy.nodes().filter(x => x.data('label') == nodeLabels[i]);
+          vu.removeHighlights(eles);
+        });
+      }
+    }
+
+    function searchTable(table, filter, searchIdxes) {
+      if (!searchIdxes) {
+        searchIdxes = [0];
+      }
+      filter = filter.toUpperCase();
+      var rows = table.getElementsByTagName('tr');
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (var i = 0; i < rows.length; i++) {
+        for (var j = 0; j < searchIdxes.length; j++) {
+          var col = rows[i].getElementsByTagName('td')[searchIdxes[0]];
+          if (col) {
+            var txt = col.textContent || col.innerText;
+            if (txt.toUpperCase().indexOf(filter) > -1) {
+              rows[i].style.display = '';
+            } else {
+              rows[i].style.display = 'none';
+            }
+          }
+        }
+      }
+    }
+
+    // makes bubble sort based on column index in specified direction
+    function sortTable(table, colIdx, dir) {
+      var rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+      switching = true;
+      // Set the sorting direction to ascending:
+      if (!dir) {
+        dir = 'asc';
+      }
+      if (!colIdx) {
+        colIdx = 0;
+      }
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < rows.length - 1; i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName('td')[colIdx];
+          y = rows[i + 1].getElementsByTagName('td')[colIdx];
+          if (!x || !y) {
+            continue;
+          }
+          var v1 = x.innerHTML;
+          var v2 = y.innerHTML;
+          if (!isNaN(v1)) {
+            v1 = +v1;
+          }
+          if (!isNaN(v2)) {
+            v2 = +v2;
+          }
+          /* Check if the two rows should switch place,
+          based on the direction, asc or desc: */
+          if (dir == 'asc') {
+            // "-" is special character to show emmptiness
+            if (v1 > v2 || (v1 != '-' && v2 == '-') ) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          } else if (dir == 'desc') {
+            if (v1 < v2 || (v1 == '-' && v2 != '-')) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          // Each time a switch is done, increase this count by 1:
+          switchcount++;
+        } else {
+          /* If no switching has been done AND the direction is "asc",
+          set the direction to "desc" and run the while loop again. */
+          if (switchcount == 0 && dir == 'asc') {
+            dir = 'desc';
+            switching = true;
+          }
+        }
+      }
     }
 
     $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {

@@ -1394,9 +1394,14 @@
                 <div id="draggable-exp-data-div" style="display: none;">
                   <div id="draggable-exp-data-div-header" class="text-center" style="cursor: move;z-index: 1001;">
                     <button id="close-experiment-data-as-table" type="button" class="close">&times;</button>
-                    <span>Experiment Data </span>
+                    <span><b>Experiment Data</b></span>
                   </div>
-                  <table class="table table-condensed table-striped" id="map-exp-table"> <!-- will come from JS --> </table> 
+                  <div>
+                    <input id="search-exp-table" type="label" style="float: right;clear: both; padding: 2px;" placeholder="Search...">
+                  </div>
+                  <div>
+                    <table class="table table-condensed table-striped table-hover" id="map-exp-table"> <!-- will come from JS --> </table> 
+                  </div>
                 </div>
                            
                   <% for (filename in experimentDescription) { %> 

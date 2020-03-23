@@ -908,3 +908,7 @@ img#template-reversible-output-add-button:hover {
 #map-exp-table td {
   font-size: 11px;
 }
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #b5b5b5;
+}
