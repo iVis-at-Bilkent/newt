@@ -1214,20 +1214,20 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-    var firstExperiment = this.params.experimentDescription.value;
+    var firstExperiment = generalProperties.experimentDescription;
     var self = this;
     var fileNames = chiseInstance.getGroupedDataMap();
     params.self = self;
     self.params.experimentDescription.value =  fileNames;
     params.document = document;
     params.value = generalProperties.mapColorScheme;
-    params.scheme_type = generalProperties.mapColorSchemeStyle
-    params.self2 = appUtilities.colorSchemeInspectorView
+    params.scheme_type = generalProperties.mapColorSchemeStyle;
+    params.self2 = appUtilities.colorSchemeInspectorView;
    
     var ur = cy.undoRedo();
     var actions = [];
     //after the deleting the first experiemnt color schme should come back
-    if(firstExperiment === undefined)
+    if(firstExperiment == undefined || Object.keys(firstExperiment).length == 0)
     {
       var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
