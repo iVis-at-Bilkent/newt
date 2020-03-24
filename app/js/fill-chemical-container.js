@@ -5,7 +5,7 @@ var ChemicalView = require('./backbone-views').ChemicalView;
 
 var fillChemicalContainer = function (node) {
   var geneClass = node.data('class');
-  if (geneClass != 'simple chemical') {
+  if (geneClass != 'simple chemical' && geneClass != 'BA simple chemical' && geneClass != 'SIF simple chemical') {
     $("#chemical-container").html("");
     return;
   }

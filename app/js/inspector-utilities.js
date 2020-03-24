@@ -593,18 +593,20 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
-          geneClass === 'unspecified entity') {
+          geneClass === 'unspecified entity' || geneClass === 'BA plain' || 
+          geneClass === 'BA macromolecule' || geneClass === 'BA nucleic acid feature' ||
+          geneClass === 'BA unspecified entity' || geneClass === 'SIF macromolecule') {
 
           addCollapsibleSection("biogene", "Properties from GeneCards", true);
           fillBioGeneContainer(selectedEles[0]);
       }
-      if (geneClass === 'simple chemical')
+      if (geneClass === 'simple chemical' || geneClass === 'BA simple chemical' || geneClass === 'SIF simple chemical')
       {
-
           addCollapsibleSection("chemical", "Properties from ChEBI", true);
           fillChemicalContainer(selectedEles[0]);
       }
-
+     
+      
       // annotations handling part
       addCollapsibleSection("annotations", "Custom Properties", false);
       annotHandler.fillAnnotationsContainer(selectedEles[0]);
