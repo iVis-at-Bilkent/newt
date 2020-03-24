@@ -156,7 +156,10 @@ module.exports = function (chiseInstance) {
           var actions = [];
 
          eles.forEach(function(node){
-          actions.push({name: "fitUnits", param: { node: node, locations:["top", "bottom", "right", "left"]}});
+          if (node.data('auxunitlayouts') !== undefined && node.data('statesandinfos').length > 0) {
+            actions.push({name: "fitUnits", param: { node: node, locations:["top", "bottom", "right", "left"]}});
+          }
+         
          });
       
          ur.do("batch", actions);
