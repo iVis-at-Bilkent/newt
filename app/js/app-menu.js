@@ -1243,6 +1243,9 @@ module.exports = function() {
     $("#export-as-sbgnml-plain-file").click(function (evt) {
       fileSaveView.render("sbgn", "plain");
     });
+    $("#export-as-sbgnml3-plain-file").click(function (evt) {
+      fileSaveView.render("sbgn", "plain3");
+    });
 
    $("#export-as-sbml").click(function (evt) {
     fileSaveView.render("sbml", null, null);
