@@ -1427,11 +1427,11 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         if(button != null){
           if(fileTitle[i] != undefined)
           {
-            button.title = fileTitle[i]
+            button.title = button.title + " \x0A" + fileTitle[i].replace(/(\r\n|\n|\r)/gm,"");
           }
           if(fileDescription[i] != undefined)
           { 
-              button.title = fileDescription[i]; 
+            button.title = button.title + "\x0A" + ("" + fileDescription[i]).replace(/(\r\n|\n|\r)/gm,""); 
           }       
        
           if(visibleFiles[i] == true ||visibleFiles[i] === true ){
