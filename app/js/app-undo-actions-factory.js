@@ -269,8 +269,11 @@ module.exports = function (cy) {
   appUndoActions.loadExperimentData = function (param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
-    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    if(result != "Error"){
+      appUndoActions.changeMenu(param.self.params.experimentDescription);
+    }
+    
     param.self.render();
 
     return param;
@@ -279,8 +282,11 @@ module.exports = function (cy) {
   appUndoActions.loadMore = function (param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
-    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    if(result != "Error"){
+      appUndoActions.changeMenu(param.self.params.experimentDescription);
+    }
+   
     param.self.render();
 
     return param;
