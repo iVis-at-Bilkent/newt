@@ -402,6 +402,9 @@ body {
     filter: alpha(opacity=100) ;
 }
 
+.sbgn-toolbar-element:hover{
+   background-color: #eaeaea !important;
+}
 .menu-break-small {
     min-width: 4px !important;
 }
