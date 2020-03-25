@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
     <glyph id="glyph4" class="simple chemical">
@@ -223,15 +223,15 @@
       <end x="496.375" y="438"/>
     </arc>
     <arc id="72badb00-9293-4106-9edc-dd830d41c62d" class="catalysis" source="glyph12" target="glyph13">
-      <start x="645.253344163509" y="295.77871426741484"/>
-      <next x="661.1184645490315" y="400.06662398074025"/>
-      <next x="506.75855472818324" y="400.0666239807402"/>
+      <start x="645.2533441635089" y="295.77871426741484"/>
+      <next x="661.1184645490314" y="400.0666239807402"/>
+      <next x="506.7585547281833" y="400.06662398074"/>
       <end x="506.9462958636605" y="429.5625632996412"/>
     </arc>
     <arc id="31a70df8-a7f0-4e03-8cf1-a6ced51843ea" class="catalysis" source="glyph12" target="glyph14">
       <start x="641.3101113169873" y="295.77871426741484"/>
       <next x="632.0298309160219" y="388.3604207404915"/>
-      <next x="257.11474995619346" y="389.58539553611564"/>
+      <next x="257.1147499561934" y="389.58539553611564"/>
       <end x="257.0199981340112" y="429.56250877749267"/>
     </arc>
     <arc id="7a83e4b9-1830-4fef-9a89-1be72e62f78a" class="equivalence arc" source="glyph19" target="glyph20">

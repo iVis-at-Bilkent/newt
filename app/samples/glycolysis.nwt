@@ -1,6 +1,6 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
-  <map language="hybrid any">
+  <map language="process description">
     <extension>
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
@@ -10,13 +10,13 @@
         </listOfColorDefinitions>
         <listOfBackgroundImages/>
         <listOfStyles>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000" id-list="glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5">
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000" idList="glyph9 glyph0 glyph6 glyph7 glyph12 glyph13 glyph1 glyph2 glyph15 glyph3 glyph17 glyph19 glyph18 glyph22 glyph4 glyph23 glyph24 glyph25 glyph26 glyph35 glyph36 glyph37 glyph38 glyph21 glyph42 glyph41 glyph27 glyph28 glyph43 glyph29 glyph39 glyph40 glyph30 glyph5">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1"/>
           </style>
-          <style id="nodeffffff15555551.25" id-list="nwtN_57535509-5a21-4dd0-93c6-cc5545c79465 nwtN_d0207fde-c285-468e-ae82-e4424fe06221 nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b nwtN_a7dce40d-5759-4cd1-b831-3383eada22c2 nwtN_e0d4b93b-757a-476c-aa6d-b75c8af79040 nwtN_869f3b7c-8740-4a33-adfa-060d21134b4b nwtN_935eaa4c-cf04-402e-ae38-bd3e0b4d44fa nwtN_658c23cb-1ae8-4551-96bb-3cb97666c5c3 nwtN_f72662af-67d4-4ca2-8504-4ca032ddd111 nwtN_81986acb-aa06-40fc-90cd-cc5d0506eae3">
+          <style id="nodeffffff15555551.25" idList="nwtN_57535509-5a21-4dd0-93c6-cc5545c79465 nwtN_d0207fde-c285-468e-ae82-e4424fe06221 nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b nwtN_a7dce40d-5759-4cd1-b831-3383eada22c2 nwtN_e0d4b93b-757a-476c-aa6d-b75c8af79040 nwtN_869f3b7c-8740-4a33-adfa-060d21134b4b nwtN_935eaa4c-cf04-402e-ae38-bd3e0b4d44fa nwtN_658c23cb-1ae8-4551-96bb-3cb97666c5c3 nwtN_f72662af-67d4-4ca2-8504-4ca032ddd111 nwtN_81986acb-aa06-40fc-90cd-cc5d0506eae3">
             <g stroke="color_2" stroke-width="1.25" fill="color_1"/>
           </style>
-          <style id="edge5555551.25" id-list="nwtE_58fd4bec-8d1f-4867-8874-91365b189283 nwtE_bcc1ee58-5c52-4950-b459-ee1ecee3e8a0 nwtE_148f1df6-50d5-4fd5-9b7e-f12c734951d3 nwtE_de477fbf-8efb-4b8e-aefd-4ec752405004 nwtE_334605a2-73bd-4e52-b0eb-de41efbeda4b nwtE_9db732fa-0625-4c29-a4f7-6146c558c2dc nwtE_73b945a7-5608-45fd-84c1-8e486c02cfc4 nwtE_30045159-f2bd-4bea-b6fa-30e246185213 nwtE_f1dcc491-cc7a-457c-a09f-6d3528e76d15 nwtE_5054b0da-c5f1-4ba8-b03b-8f03813e1018 nwtE_17a4c19e-711d-43f7-b79a-9fd8b0885cb3 nwtE_526babb9-453d-43a9-94b7-3dc0baed829d nwtE_34a64b3c-4eb6-4e8a-bc0e-274a40afe630 nwtE_c3843f81-5bd6-4417-8645-2df6821e9889 nwtE_24c51c6e-6bac-4c6e-861a-bd408b9b2899 nwtE_2c6eacd3-8749-45d8-8828-d6be28c31938 nwtE_5cdbc5f8-5c38-4969-8cb4-4746984e94bf nwtE_22fbad82-b4f8-4913-9405-0756f96eb3ff nwtE_8c7ee891-6257-462b-83d7-9fe84273f2f2 nwtE_f20091b6-3823-4388-94f0-da0310f7809d nwtE_a141bda1-0d23-4c65-be23-f74c9a82700b nwtE_0241f9a8-a7ab-4ef2-af20-d95abe9a4830 nwtE_86d8aa37-afdd-4da7-b353-d753a117362e nwtE_418a3f25-8d0c-4f92-88a7-01035a2b038d nwtE_cfc5aa19-a643-443d-bce5-a7ede8c955bf nwtE_0a8fe49f-dc07-4f8a-8989-0788895c00ff nwtE_f90717a8-460d-4580-81df-a39cf32808f7 nwtE_f8c8be72-5bf4-4c69-b795-26c5364a6b23 nwtE_0cbb5f2b-4c57-4860-9511-19403fe08dbb nwtE_80cba596-750d-485a-be37-d36239cfbbae nwtE_46ec4d6f-5c48-4c9d-82f3-c360d4629689 nwtE_7c2b989d-19de-4d58-b18b-8015bf5fda8d nwtE_6043a685-dfff-4e4f-8f93-74710c7f5da5 nwtE_4e577ac4-9b37-4cbc-abd9-b6c01100c48d nwtE_352b757e-8019-4015-8a6d-5c1ac297c2e6 nwtE_36233fec-d687-414e-b4f1-9e83a12f2d3d nwtE_93129ad3-bff2-47b6-8364-ad69971f6f80 nwtE_24058ce2-7bbe-4738-b329-f34ef58ac095 nwtE_f0a4a22f-3f83-4c66-9761-32c201f9e5a4 nwtE_d5725e19-4725-4f22-ac12-fedb4c0617ce nwtE_322c721b-1233-4684-b436-650c81d5db9a nwtE_ec446baa-ca52-493a-b21a-3bc877c2ddf9 nwtE_2fb09005-3b93-4539-90c9-98c42ad07442 nwtE_93690fe3-cf9c-48e9-927c-cce04ccd8dc5">
+          <style id="edge5555551.25" idList="nwtE_58fd4bec-8d1f-4867-8874-91365b189283 nwtE_bcc1ee58-5c52-4950-b459-ee1ecee3e8a0 nwtE_148f1df6-50d5-4fd5-9b7e-f12c734951d3 nwtE_de477fbf-8efb-4b8e-aefd-4ec752405004 nwtE_334605a2-73bd-4e52-b0eb-de41efbeda4b nwtE_9db732fa-0625-4c29-a4f7-6146c558c2dc nwtE_73b945a7-5608-45fd-84c1-8e486c02cfc4 nwtE_30045159-f2bd-4bea-b6fa-30e246185213 nwtE_f1dcc491-cc7a-457c-a09f-6d3528e76d15 nwtE_5054b0da-c5f1-4ba8-b03b-8f03813e1018 nwtE_17a4c19e-711d-43f7-b79a-9fd8b0885cb3 nwtE_526babb9-453d-43a9-94b7-3dc0baed829d nwtE_34a64b3c-4eb6-4e8a-bc0e-274a40afe630 nwtE_c3843f81-5bd6-4417-8645-2df6821e9889 nwtE_24c51c6e-6bac-4c6e-861a-bd408b9b2899 nwtE_2c6eacd3-8749-45d8-8828-d6be28c31938 nwtE_5cdbc5f8-5c38-4969-8cb4-4746984e94bf nwtE_22fbad82-b4f8-4913-9405-0756f96eb3ff nwtE_8c7ee891-6257-462b-83d7-9fe84273f2f2 nwtE_f20091b6-3823-4388-94f0-da0310f7809d nwtE_a141bda1-0d23-4c65-be23-f74c9a82700b nwtE_0241f9a8-a7ab-4ef2-af20-d95abe9a4830 nwtE_86d8aa37-afdd-4da7-b353-d753a117362e nwtE_418a3f25-8d0c-4f92-88a7-01035a2b038d nwtE_cfc5aa19-a643-443d-bce5-a7ede8c955bf nwtE_0a8fe49f-dc07-4f8a-8989-0788895c00ff nwtE_f90717a8-460d-4580-81df-a39cf32808f7 nwtE_f8c8be72-5bf4-4c69-b795-26c5364a6b23 nwtE_0cbb5f2b-4c57-4860-9511-19403fe08dbb nwtE_80cba596-750d-485a-be37-d36239cfbbae nwtE_46ec4d6f-5c48-4c9d-82f3-c360d4629689 nwtE_7c2b989d-19de-4d58-b18b-8015bf5fda8d nwtE_6043a685-dfff-4e4f-8f93-74710c7f5da5 nwtE_4e577ac4-9b37-4cbc-abd9-b6c01100c48d nwtE_352b757e-8019-4015-8a6d-5c1ac297c2e6 nwtE_36233fec-d687-414e-b4f1-9e83a12f2d3d nwtE_93129ad3-bff2-47b6-8364-ad69971f6f80 nwtE_24058ce2-7bbe-4738-b329-f34ef58ac095 nwtE_f0a4a22f-3f83-4c66-9761-32c201f9e5a4 nwtE_d5725e19-4725-4f22-ac12-fedb4c0617ce nwtE_322c721b-1233-4684-b436-650c81d5db9a nwtE_ec446baa-ca52-493a-b21a-3bc877c2ddf9 nwtE_2fb09005-3b93-4539-90c9-98c42ad07442 nwtE_93690fe3-cf9c-48e9-927c-cce04ccd8dc5">
             <g stroke="color_2" stroke-width="1.25"/>
           </style>
         </listOfStyles>
@@ -107,9 +107,9 @@
       <bbox x="387.38520254683243" y="36.26082446783136" w="69.3076171875" h="36"/>
     </glyph>
     <glyph id="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b" class="process">
-      <bbox x="581.6332008666312" y="342.4820471962062" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.1" x="578.7760580094883" y="349.6249043390634"/>
-      <port id="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.2" x="598.7760580094883" y="349.6249043390634"/>
+      <bbox x="581.6332008666312" y="342.4820471962063" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.1" x="578.7760580094883" y="349.62490433906345"/>
+      <port id="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.2" x="598.7760580094883" y="349.62490433906345"/>
     </glyph>
     <glyph id="glyph18" class="macromolecule">
       <label text="adolase"/>
@@ -352,7 +352,7 @@
     </arc>
     <arc id="nwtE_0cbb5f2b-4c57-4860-9511-19403fe08dbb" class="catalysis" source="glyph35" target="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b">
       <start x="590.0081163467889" y="410.820133940345"/>
-      <end x="588.9917585638443" y="360.3385568904964"/>
+      <end x="588.9917585638443" y="360.3385568904965"/>
     </arc>
     <arc id="nwtE_80cba596-750d-485a-be37-d36239cfbbae" class="catalysis" source="glyph36" target="nwtN_a7dce40d-5759-4cd1-b831-3383eada22c2">
       <start x="404.15863622787424" y="410.820133940345"/>
@@ -368,18 +368,18 @@
     </arc>
     <arc id="nwtE_6043a685-dfff-4e4f-8f93-74710c7f5da5" class="consumption" source="glyph21" target="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.2">
       <start x="674.0908921567121" y="349.6249043390634"/>
-      <end x="599.4010580094883" y="349.6249043390634"/>
+      <end x="599.4010580094883" y="349.62490433906345"/>
     </arc>
     <arc id="nwtE_4e577ac4-9b37-4cbc-abd9-b6c01100c48d" class="consumption" source="glyph42" target="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.2">
       <start x="634.0901720107479" y="303.4127012671608"/>
-      <end x="599.4010580094883" y="349.6249043390634"/>
+      <end x="599.4010580094883" y="349.62490433906345"/>
     </arc>
     <arc id="nwtE_352b757e-8019-4015-8a6d-5c1ac297c2e6" class="production" source="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.1" target="glyph41">
-      <start x="578.1510580094883" y="349.6249043390634"/>
+      <start x="578.1510580094883" y="349.62490433906345"/>
       <end x="520.097043955592" y="303.1486160843014"/>
     </arc>
     <arc id="nwtE_36233fec-d687-414e-b4f1-9e83a12f2d3d" class="production" source="nwtN_de58cb60-7cb4-4f81-9485-123d89bb5c6b.1" target="glyph27">
-      <start x="578.1510580094883" y="349.6249043390634"/>
+      <start x="578.1510580094883" y="349.62490433906345"/>
       <end x="493.7623130947809" y="349.6249043390634"/>
     </arc>
     <arc id="nwtE_93129ad3-bff2-47b6-8364-ad69971f6f80" class="consumption" source="glyph27" target="nwtN_a7dce40d-5759-4cd1-b831-3383eada22c2.2">
