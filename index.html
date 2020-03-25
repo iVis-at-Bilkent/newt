@@ -1256,7 +1256,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text" title="Percentage paddings around compound nodes. Notice, however, that a certain minimal padding is needed for all compound nodes to accommodate for information boxes and visual editing cues (such as expand / collapse cues)"> Additional Compound Padding </span>
+            <span class="add-on layout-text" title="Paddings around compound nodes. Notice, however, that a certain minimal padding is needed and already added for all compound nodes to accommodate for information boxes and visual editing cues (such as expand / collapse cues)"> Additional Compound Padding </span>
             </td>
 
             <td>
@@ -1347,7 +1347,7 @@
 
                 <tr>
                     <td class="header">
-                        <span class="add-on layout-text" title="When Adjust Node Label Font Size Automatically is enabled, label sizes can be set to be uniformly small, medium or large"> Label Size </span>
+                        <span class="add-on layout-text" title="When Adjust Node Label Font Size Automatically is enabled, label sizes can be set to be uniformly small, regular or large"> Label Size </span>
                     </td>
 
                     <td>
@@ -1429,7 +1429,7 @@
         
         <script type="text/template" id="map-tab-experiment-template">
             <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
-         <div align="center" style = 'margin-top: 10px; text-align: center'> Load... <img width='16px' height='16px' id='load-exp-data-util' title="Load new file" src='app/img/add.svg' style="margin: 5px;"/> </div> 
+         <div align="center" style = 'margin-top: 10px; text-align: center'> Load... <img width='16px' height='16px' id='load-exp-data-util' title="Load experiment data from a tab-delimited file" src='app/img/add.svg' style="margin: 5px;"/> </div> 
                
                 <% if( experimentDescription.length  <= 0 || Object.entries(experimentDescription).length == 0){ %>
                 <% } else { %>
@@ -1439,8 +1439,8 @@
                         <td style='text-align: center;'>
                             <div style='margin-top: 0px;' >
                                 <img width='16px' height='16px' style='align: center; margin-right: 2%; cursor: pointer; margin-top: -2px;' id="show-experiment-data-as-table" src="app/img/toolbar/table-grid.svg" title="Show as table">
-                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px; margin-right: 2%' id='experiment-hide-all'> Hide All</button>
-                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px;' id='experiment-remove-all'> Remove All</button>
+                                <button class='btn btn-default' value="true" title="Temporarily hide/show all experiment data" style='align: center; border-width: 0px !important; padding:3px; margin-right: 2%' id='experiment-hide-all'> Hide/Show All</button>
+                                <button class='btn btn-default' value="true" title="Remove all experiment data" style='align: center; border-width: 0px !important; padding:3px;' id='experiment-remove-all'> Remove All</button>
                             </div>  
                     </td>
                     </tr> 
@@ -1471,7 +1471,7 @@
                         <tr>
                             <td  style='text-align: right; width:50% !important; ' >
                             <div>
-                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="<%=filename%>" id='experiment-file-vis-<%= filename %>' > <b><%= filename %></b></button>
+                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="Hide/show " id='experiment-file-vis-<%= filename %>' > <b><%= filename %></b></button>
                             </div>  
                         </td>
                     <td style="width:50% !important">
@@ -1486,7 +1486,7 @@
                         <tr>
                         <td  style='text-align: right; width:50% !important;' >
                             <div>
-                                <button class='btn btn-default' value = 'true' style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="<%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element] %></button>
+                                <button class='btn btn-default' value = 'true' style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="Hide/show <%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element] %></button>
                             </div>  
                     </td>
                     <td style="width:50% !important">

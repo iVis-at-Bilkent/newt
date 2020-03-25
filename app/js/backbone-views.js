@@ -1439,14 +1439,20 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         var button = document.getElementById(buttonName);
         
         if(button != null){
-          if(fileTitle[i] != undefined)
+          if(fileTitle[i] != undefined && fileDescription[i] != undefined)
           {
-            button.title = fileTitle[i]
+            button.title = button.title + i + " \x0A(" + fileTitle[i].replace(/(\r\n|\n|\r)/gm,"") + ":\x0A" + fileDescription[i].replace(/(\r\n|\n|\r)/gm,"") + ")";
           }
-          if(fileDescription[i] != undefined)
+          else if(fileDescription[i] != undefined){
+            button.title = button.title + i + " \x0A(" + fileDescription[i].replace(/(\r\n|\n|\r)/gm,"") + ")";
+          }
+          else if(fileTitle[i] != undefined)
           { 
-              button.title = fileDescription[i]; 
-          }       
+            button.title = button.title + i + " \x0A(" + fileTitle[i].replace(/(\r\n|\n|\r)/gm,"") + ")"; 
+          } 
+          else{
+            button.title = button.title + i;
+          }
        
           if(visibleFiles[i] == true ||visibleFiles[i] === true ){
             button.value = "true";
