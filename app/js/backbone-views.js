@@ -1362,7 +1362,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
    
     var panels =  $("#sbgn-inspector-map").find(".panel-heading");
     for(var i = 0 ; i < panels.length; i++ ){
-      if(!$(panels[i]).hasClass("collapsed")){
+      if(!$(panels[i]).hasClass("collapsed") && panels[i].id != "sbgn-inspector-map-properties-experiment-heading"){
         $(panels[i]).click();
       }
     }
