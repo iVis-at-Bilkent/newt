@@ -1357,6 +1357,19 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
   },
 
   loadExperiment: function(params){
+    $(".validation-mode-tab").removeClass("active");
+    $('#inspector-map-tab a').tab('show');
+   
+    var panels =  $("#sbgn-inspector-map").find(".panel-heading");
+    for(var i = 0 ; i < panels.length; i++ ){
+      if(!$(panels[i]).hasClass("collapsed")){
+        $(panels[i]).click();
+      }
+    }
+  
+    if($("#sbgn-inspector-map-properties-experiment-heading").hasClass("collapsed")) {
+      $('#sbgn-inspector-map-properties-experiment-heading').click();
+    }
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
@@ -1387,6 +1400,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
   },
 
   render: function() {
+   
     var cy = appUtilities.getActiveCy();
     var self = this;
     var chiseInstance = appUtilities.getActiveChiseInstance();
