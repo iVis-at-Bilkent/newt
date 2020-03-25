@@ -356,9 +356,16 @@
 
                     <div id="sbgn-toolbar" class="read-mode-off">
                             <div class="inside-menu">
-                                <img id="new-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/new.svg" title="New: Create a blank map">
-                                <img id="load-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/load.svg" title="Load: Load a map from a Newt file">
-                                <img id="save-icon" class="sbgn-toolbar-element" src="app/img/toolbar/save.svg" title="Save: Save current map to a Newt file">
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="new-file-icon" src="app/img/toolbar/new.svg" title="New: Create a blank map">
+                                </div>
+                                
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="load-file-icon"  src="app/img/toolbar/load.svg" title="Load: Load a map from a Newt file">
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="save-icon" src="app/img/toolbar/save.svg" title="Save: Save current map to a Newt file">
+                                </div>
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
@@ -368,25 +375,45 @@
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" ></div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-edge-mode-icon" src="app/img/edges/consumption.svg" title="Create a new Consumption" ></div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to area specified by Shift + left click and drag" ></div>
-
-
-                                <img id="delete-selected-simple-icon" class="sbgn-toolbar-element" src="app/img/toolbar/delete-simple.svg" title="Delete Selected Simple: Delete selected nodes and edges" >
-                                <img id="delete-selected-smart-icon" class="sbgn-toolbar-element" src="app/img/toolbar/delete-smart.svg" title="Delete Selected Smart: Delete selected nodes and any processes they are involved in" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="delete-selected-simple-icon"  src="app/img/toolbar/delete-simple.svg" title="Delete Selected Simple: Delete selected nodes and edges" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="delete-selected-smart-icon"  src="app/img/toolbar/delete-smart.svg" title="Delete Selected Smart: Delete selected nodes and any processes they are involved in" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="highlight-errors-of-validation-icon"  src="app/img/toolbar/check.svg" title="Validate Map: Validate SBGN PD map and fix problems" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="undo-icon"  src="app/img/toolbar/undo.svg" title="Undo: Undo the last operation" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="redo-icon"  src="app/img/toolbar/redo.svg" title="Redo: Redo the last undone operation" >
+                                </div>
                                 
-                                <img id="highlight-errors-of-validation-icon" class="sbgn-toolbar-element" src="app/img/toolbar/check.svg" title="Validate Map: Validate SBGN PD map and fix problems" >
                                 
-                                <img id="undo-icon" class="sbgn-toolbar-element" src="app/img/toolbar/undo.svg" title="Undo: Undo the last operation" >
-                                <img id="redo-icon" class="sbgn-toolbar-element" src="app/img/toolbar/redo.svg" title="Redo: Redo the last undone operation" >
 
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="hide-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/hide-selected.svg" title="Hide Selected: Hide selected nodes and any processes they are involved in" >
-                                <img id="show-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/show-all.svg" title="Show Selected: Show selected nodes and any processes they are involved in, hiding the remaining nodes and their edges" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="hide-selected-icon"  src="app/img/toolbar/hide-selected.svg" title="Hide Selected: Hide selected nodes and any processes they are involved in" >
 
-                                <img id="collapse-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/collapse-selected.svg" title="Collapse Selected: Collapse selected compound node to hide its members" >
-                                <img id="expand-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/expand-selected.svg" title="Expand Selected: Expand selected collapsed node to show its members" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="show-selected-icon"  src="app/img/toolbar/show-all.svg" title="Show Selected: Show selected nodes and any processes they are involved in, hiding the remaining nodes and their edges" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="collapse-selected-icon"  src="app/img/toolbar/collapse-selected.svg" title="Collapse Selected: Collapse selected compound node to hide its members" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="expand-selected-icon"  src="app/img/toolbar/expand-selected.svg" title="Expand Selected: Expand selected collapsed node to show its members" >
+
+                                </div>
+
 
                                 <div class="btn-group sbgn-toolbar-element sbgn-dd-list" role="group" id="align-list">
                                     <button id="align-button" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
@@ -411,8 +438,9 @@
                                     </ul>
                                 </div>
 
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-                                <img id="toggle-grid-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid during drag" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="toggle-grid-snapping-icon"  src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid during drag" >
+                                </div>
                                 <img id="toggle-guidelines-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/guidelines.svg" title="Enable Guidelines: Enable and snap to alignment guidelines during drag" >
                                 <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Map Properties: Modify general properties of current SBGN map" >
 
@@ -420,28 +448,56 @@
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="search-by-label-icon" class="sbgn-toolbar-element" src="app/img/toolbar/search.svg" title="Search: Search (case insensitive) and highlight all nodes with specified label text" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="search-by-label-icon"  src="app/img/toolbar/search.svg" title="Search: Search (case insensitive) and highlight all nodes with specified label text" >
+
+                                </div>
                                 <input id="search-by-label-text-box" class="sbgn-toolbar-element" type="label">
-                                <img id="highlight-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/highlight-selected.svg" title="Highlight Selected: Highlight selected nodes and edges" >
-                                <img id="remove-highlights-icon" class="sbgn-toolbar-element" src="app/img/toolbar/remove-highlights.svg" title="Remove Highlights: Remove any highlights" >
+
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="highlight-selected-icon" src="app/img/toolbar/highlight-selected.svg" title="Highlight Selected: Highlight selected nodes and edges" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="remove-highlights-icon"  src="app/img/toolbar/remove-highlights.svg" title="Remove Highlights: Remove any highlights" >
+
+                                </div>
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="perform-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-cose.svg" title="Perform Layout: Perform a force-directed layout of current map, maintaining compound structures" >
-                                <img id="perform-static-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-static.svg" title="Perform Static Layout: Re-calculate layout of current map from scratch, ignoring current positions and maintaining compound structures" >
-                                <img id="layout-properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="perform-layout-icon"  src="app/img/toolbar/layout-cose.svg" title="Perform Layout: Perform a force-directed layout of current map, maintaining compound structures" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="perform-static-layout-icon"  src="app/img/toolbar/layout-static.svg" title="Perform Static Layout: Re-calculate layout of current map from scratch, ignoring current positions and maintaining compound structures" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="layout-properties-icon"  src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
+
+                                </div>
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="query-pathsbetween-icon" class="sbgn-toolbar-element" src="app/img/toolbar/PC-logo.svg" title="Perform PC Query: Perform a PathwayCommons query to get a map of interest between specified genes" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="query-pathsbetween-icon"  src="app/img/toolbar/PC-logo.svg" title="Perform PC Query: Perform a PathwayCommons query to get a map of interest between specified genes" >
+
+                                </div>
                             </div>
 
                                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="quick-help-icon" class="sbgn-toolbar-element" src="app/img/toolbar/quick-help.svg" title="Quick Help" >
-                                <img id="about-icon" class="sbgn-toolbar-element" src="app/img/toolbar/about.svg" title="About" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="quick-help-icon"  src="app/img/toolbar/quick-help.svg" title="Quick Help" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="about-icon"  src="app/img/toolbar/about.svg" title="About" >
+
+                                </div>
                             </div>
 
                     </div>

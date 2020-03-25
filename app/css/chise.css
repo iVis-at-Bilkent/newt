@@ -247,6 +247,7 @@ body {
     border-radius: 0.25em;
     float: left;
     padding: 2px;
+    padding-right: 6px !important;
     height: 30px;
     display : flex;
     align-items : center;
@@ -393,7 +394,7 @@ body {
 
 #sbgn-toolbar img, .element-palette img {
     opacity: 0.7;
-    filter: alpha(opacity=70);
+    filter: alpha(opacity=70);   
 }
 
 
@@ -404,6 +405,11 @@ body {
 
 .sbgn-toolbar-element:hover{
    background-color: #eaeaea !important;
+   border-radius: 5px;
+   
+}
+.sbgn-toolbar-element{
+    overflow: visible;
 }
 .menu-break-small {
     min-width: 4px !important;
