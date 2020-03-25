@@ -146,7 +146,7 @@ tutorial.UIGuide = function(){
         intro: '<p style="font-size:12px; margin:0px;">Map Properties</p><hr style="margin: 5px auto;">\n\
                 <p style="font-size:12px; margin:0px;">Map tab is for configuring the drawing of the map. Numerous settings of a map from general \n\
                 properties like compound paddings to label related settings such as whether to fit labels to nodes, to color scheme can be set using this tab. \n\
-                Name and description of the map can also be set using this panel.</p>'
+                Name and description of the map can also be set using this panel. Experiment data may be viewed and manipulated via this panel as well.</p>'
       },
       {
         element: document.getElementById('sbgn-inspector'),
