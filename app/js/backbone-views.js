@@ -1406,6 +1406,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
     self.template = _.template($("#map-tab-experiment-template").html());
+    currentGeneralProperties.experimentDescription = chiseInstance.getGroupedDataMap();
     this.$el.html(this.template(currentGeneralProperties));
     var refreshButtons = function(param){
       var document = param.document;
