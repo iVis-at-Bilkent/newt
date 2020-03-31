@@ -54,7 +54,7 @@
     "nodemailer": "6.4.5"
   },
   "devDependencies": {
-    "express": "4.14.0",
+    "express": "^4.14.0",
     "browserify": "^11.2.0",
     "nodemon": "1.11.0",
     "parallelshell": "3.0.1"
