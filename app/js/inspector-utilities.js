@@ -272,7 +272,8 @@ inspectorUtilities.handleSBGNInspector = function () {
       var borderWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "border-width", "data");
 
       var backgroundOpacity = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "data");
-      backgroundOpacity = backgroundOpacity?backgroundOpacity:0.5;
+      if(!backgroundOpacity && backgroundOpacity !== 0)
+        backgroundOpacity = 0;
 
       var nodeWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
         return ele.width();
