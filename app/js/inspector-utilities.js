@@ -1037,8 +1037,15 @@ inspectorUtilities.handleSBGNInspector = function () {
         if (v > 1) {
           v = 1;
         }
-        chiseInstance.changeData(selectedEles, "background-opacity", v);
-        chiseInstance.changeData(selectedEles, "background-image-opacity", v);
+
+        var actions = [];
+        actions.push({name: "changeData", param: {eles: selectedEles, name: 'background-opacity', valueMap: v}});
+        actions.push({name: "changeData", param: {eles: selectedEles, name: 'background-image-opacity', valueMap: v}});
+
+        cy.undoRedo().do("batch", actions);
+        
+       // chiseInstance.changeData(selectedEles, "background-opacity", v);
+        //chiseInstance.changeData(selectedEles, "background-image-opacity", v);
       }
 
       $("#inspector-background-opacity").on('change', function () {
