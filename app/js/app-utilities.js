@@ -2150,6 +2150,7 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
     'background-height': 'backgroundHeight',
     'background-width': 'backgroundWidth',
     'background-image-opacity': 'backgroundImageOpacity',
+    'background-opacity': 'backgroundOpacity',
   };
   var edgePropertiesToXml = {
     'line-color': 'stroke',
