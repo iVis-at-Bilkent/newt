@@ -13,7 +13,7 @@ Please cite the following when you use this application or underlying libraries 
 M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "[SBGNViz: a tool for visualization and complexity management of SBGN process description maps](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0128985)", PLoS ONE, 10(6), e0128985, 2015.
 
 #### Running a Local Instance
-In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of LTS version 10.19 of node.js):
+In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of LTS version 12.16.1 of node.js):
 
 - Installation
 ```
