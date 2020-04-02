@@ -115,6 +115,7 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" id="export-as-sbgnml-plain-file">SBGN-ML Plain</a></li>
+                                                        <li><a href="#" id="export-as-sbgnml3-plain-file">SBGN-ML Plain 0.3</a></li>
                                                         <li><a href="#" id="export-as-nwt3-file">NWT 0.3</a></li>
                                                         <li><a href="#" id="export-to-plain-sif">SIF</a></li>
                                                         <li><a href="#" id="export-to-sif-layout">SIF Layout</a></li>
@@ -272,7 +273,20 @@
                                                 <li><a href="#" id="remove-highlights">Remove Highlights</a></li>
                                             </ul>
                                         </li>
-
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Experiment
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" id="import-experimental-data">Load...</a></li>
+                                                <input id="overlay-data" type="file" style="display:none" />
+                                                <li><a href="#" id="sample-experiment-data">Load Sample</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#" value="true" id="experiment-data-hide-all">Hide/Show All</a></li>
+                                                <li><a href="#" id="experiment-data-remove-all">Remove All</a></li>
+                                            </ul>
+                                        </li>
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 Layout
@@ -303,6 +317,7 @@
                                                         <li><a href="#" id="query-neighborhood">Neighborhood...</a></li>
                                                         <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
                                                     </ul>
+                                                </li>
                                             </ul>
                                         </li>
 
@@ -341,9 +356,16 @@
 
                     <div id="sbgn-toolbar" class="read-mode-off">
                             <div class="inside-menu">
-                                <img id="new-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/new.svg" title="New: Create a blank map">
-                                <img id="load-file-icon" class="sbgn-toolbar-element" src="app/img/toolbar/load.svg" title="Load: Load a map from a Newt file">
-                                <img id="save-icon" class="sbgn-toolbar-element" src="app/img/toolbar/save.svg" title="Save: Save current map to a Newt file">
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="new-file-icon" src="app/img/toolbar/new.svg" title="New: Create a blank map">
+                                </div>
+                                
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="load-file-icon"  src="app/img/toolbar/load.svg" title="Load: Load a map from a Newt file">
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="save-icon" src="app/img/toolbar/save.svg" title="Save: Save current map to a Newt file">
+                                </div>
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
@@ -353,39 +375,54 @@
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" ></div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="add-edge-mode-icon" src="app/img/edges/consumption.svg" title="Create a new Consumption" ></div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to area specified by Shift + left click and drag" ></div>
-
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-
-                                <img id="delete-selected-simple-icon" class="sbgn-toolbar-element" src="app/img/toolbar/delete-simple.svg" title="Delete Selected Simple: Delete selected nodes and edges" >
-                                <img id="delete-selected-smart-icon" class="sbgn-toolbar-element" src="app/img/toolbar/delete-smart.svg" title="Delete Selected Smart: Delete selected nodes and any processes they are involved in" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="delete-selected-simple-icon"  src="app/img/toolbar/delete-simple.svg" title="Delete Selected Simple: Delete selected nodes and edges" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="delete-selected-smart-icon"  src="app/img/toolbar/delete-smart.svg" title="Delete Selected Smart: Delete selected nodes and any processes they are involved in" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="highlight-errors-of-validation-icon"  src="app/img/toolbar/check.svg" title="Validate Map: Validate SBGN PD map and fix problems" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="undo-icon"  src="app/img/toolbar/undo.svg" title="Undo: Undo the last operation" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="redo-icon"  src="app/img/toolbar/redo.svg" title="Redo: Redo the last undone operation" >
+                                </div>
                                 
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-                                <img id="highlight-errors-of-validation-icon" class="sbgn-toolbar-element" src="app/img/check.svg" title="Validate Map: Validate SBGN PD map and fix problems" >
                                 
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-                                <img id="undo-icon" class="sbgn-toolbar-element" src="app/img/toolbar/undo.svg" title="Undo: Undo the last operation" >
-                                <img id="redo-icon" class="sbgn-toolbar-element" src="app/img/toolbar/redo.svg" title="Redo: Redo the last undone operation" >
 
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="hide-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/hide-selected.svg" title="Hide Selected: Hide selected nodes and any processes they are involved in" >
-                                <img id="show-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/show-all.svg" title="Show Selected: Show selected nodes and any processes they are involved in, hiding the remaining nodes and their edges" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="hide-selected-icon"  src="app/img/toolbar/hide-selected.svg" title="Hide Selected: Hide selected nodes and any processes they are involved in" >
 
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-                                <img id="collapse-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/collapse-selected.svg" title="Collapse Selected: Collapse selected compound node to hide its members" >
-                                <img id="expand-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/expand-selected.svg" title="Expand Selected: Expand selected collapsed node to show its members" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="show-selected-icon"  src="app/img/toolbar/show-all.svg" title="Show Selected: Show selected nodes and any processes they are involved in, hiding the remaining nodes and their edges" >
 
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="collapse-selected-icon"  src="app/img/toolbar/collapse-selected.svg" title="Collapse Selected: Collapse selected compound node to hide its members" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="expand-selected-icon"  src="app/img/toolbar/expand-selected.svg" title="Expand Selected: Expand selected collapsed node to show its members" >
+
+                                </div>
+
+
                                 <div class="btn-group sbgn-toolbar-element sbgn-dd-list" role="group" id="align-list">
-                                    <button id="align-button" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
+                                    <button id="align-button" style="padding:3px" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
                                         <div style="height: 16px;">
-                                            <img style="float: left; height: 16px; width: auto;" id="sbgn-align-img" src="app/img/align/align.svg"/>
+                                            <img style="height: 16px; width: auto;" id="sbgn-align-img" src="app/img/align/align.svg"/>
                                             <!--<span style="float: right;" class="caret"></span>-->
                                         </div>
                                     </button>
-                                    <button id="align-dd-button" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button id="align-dd-button" style="padding:3px; padding-top:4px;" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div style="height: 16px;">
                                             <span class="caret"></span>
                                             <span class="sr-only"></span>
@@ -401,8 +438,9 @@
                                     </ul>
                                 </div>
 
-                                <div class="menu-break-small sbgn-toolbar-element">&nbsp</div>
-                                <img id="toggle-grid-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid during drag" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="toggle-grid-snapping-icon"  src="app/img/toolbar/grid.svg" title="Enable Grid: Show and snap to grid during drag" >
+                                </div>
                                 <img id="toggle-guidelines-snapping-icon" class="sbgn-toolbar-element" src="app/img/toolbar/guidelines.svg" title="Enable Guidelines: Enable and snap to alignment guidelines during drag" >
                                 <img id="properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/settings.svg" title="Map Properties: Modify general properties of current SBGN map" >
 
@@ -410,28 +448,56 @@
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="search-by-label-icon" class="sbgn-toolbar-element" src="app/img/toolbar/search.svg" title="Search: Search (case insensitive) and highlight all nodes with specified label text" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="search-by-label-icon"  src="app/img/toolbar/search.svg" title="Search: Search (case insensitive) and highlight all nodes with specified label text" >
+
+                                </div>
                                 <input id="search-by-label-text-box" class="sbgn-toolbar-element" type="label">
-                                <img id="highlight-selected-icon" class="sbgn-toolbar-element" src="app/img/toolbar/highlight-selected.svg" title="Highlight Selected: Highlight selected nodes and edges" >
-                                <img id="remove-highlights-icon" class="sbgn-toolbar-element" src="app/img/toolbar/remove-highlights.svg" title="Remove Highlights: Remove any highlights" >
+
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="highlight-selected-icon" src="app/img/toolbar/highlight-selected.svg" title="Highlight Selected: Highlight selected nodes and edges" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="remove-highlights-icon"  src="app/img/toolbar/remove-highlights.svg" title="Remove Highlights: Remove any highlights" >
+
+                                </div>
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="perform-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-cose.svg" title="Perform Layout: Perform a force-directed layout of current map, maintaining compound structures" >
-                                <img id="perform-static-layout-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-static.svg" title="Perform Static Layout: Re-calculate layout of current map from scratch, ignoring current positions and maintaining compound structures" >
-                                <img id="layout-properties-icon" class="sbgn-toolbar-element" src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="perform-layout-icon"  src="app/img/toolbar/layout-cose.svg" title="Perform Layout: Perform a force-directed layout of current map, maintaining compound structures" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="perform-static-layout-icon"  src="app/img/toolbar/layout-static.svg" title="Perform Static Layout: Re-calculate layout of current map from scratch, ignoring current positions and maintaining compound structures" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="layout-properties-icon"  src="app/img/toolbar/layout-properties.svg" title="Layout Properties: Modify parameters used during layout" >
+
+                                </div>
                             </div>
 
                             <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="query-pathsbetween-icon" class="sbgn-toolbar-element" src="app/img/toolbar/PC-logo.svg" title="Perform PC Query: Perform a PathwayCommons query to get a map of interest between specified genes" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="query-pathsbetween-icon"  src="app/img/toolbar/PC-logo.svg" title="Perform PC Query: Perform a PathwayCommons query to get a map of interest between specified genes" >
+
+                                </div>
                             </div>
 
                                 <div class="menu-break-large sbgn-toolbar-element">&nbsp</div>
                             <div class="inside-menu">
-                                <img id="quick-help-icon" class="sbgn-toolbar-element" src="app/img/toolbar/quick-help.svg" title="Quick Help" >
-                                <img id="about-icon" class="sbgn-toolbar-element" src="app/img/toolbar/about.svg" title="About" >
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="quick-help-icon"  src="app/img/toolbar/quick-help.svg" title="Quick Help" >
+
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                <img id="about-icon"  src="app/img/toolbar/about.svg" title="About" >
+
+                                </div>
                             </div>
 
                     </div>
@@ -494,6 +560,15 @@
                                     </div>
                                 </div>
                                 <div class="panel">
+                                    <div id ="sbgn-inspector-map-properties-experiment-heading"class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-experiment">
+                                        <p class="panel-title accordion-toggle">Experiment</p>
+                                    </div>
+                                    <div id="sbgn-inspector-map-properties-experiment" class="panel-collapse collapse">
+                                        <div id="map-tab-experiment-container" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
                                     <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
                                         <p class="panel-title accordion-toggle">Color Scheme</p>
                                     </div>
@@ -547,8 +622,8 @@
                                           <div class="paletteCol"><img src="app/img/edges/stimulation.svg" language="PD" value="stimulation" title="Stimulation"/></div>
                                           <div class="paletteCol"><img src="app/img/edges/catalysis.svg" language="PD" value="catalysis" title="Catalysis"/></div>
                                           <div class="paletteCol"><img src="app/img/edges/inhibition.svg" language="PD" value="inhibition" title="Inhibition"/></div>
-                                          <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary-stimulation" title="Necessary Stimulation"/></div>
-                                          <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="logic-arc" title="Logic Arc"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary stimulation" title="Necessary Stimulation"/></div>
+                                          <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="logic arc" title="Logic Arc"/></div>
                                           <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="PD" value="equivalence arc" title="Equivalence Arc"/></div>
                                         </div>
                                       </div>
@@ -591,8 +666,8 @@
                                             <div class="paletteCol"><img src="app/img/edges/stimulation.svg" language="AF" value="positive influence" title="Positive Influence"/></div>
                                             <div class="paletteCol"><img src="app/img/edges/inhibition.svg" language="AF" value="negative influence" title="Negative Influence"/></div>
                                             <div class="paletteCol"><img src="app/img/edges/modulation.svg" language="AF" value="unknown influence" title="Unknown Influence"/></div>
-                                            <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="AF" value="necessary-stimulation" title="Necessary Stimulation"/></div>
-                                            <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="AF" value="logic-arc" title="Logic Arc"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/necessary-stimulation.svg" language="AF" value="necessary stimulation" title="Necessary Stimulation"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="AF" value="logic arc" title="Logic Arc"/></div>
                                             <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="AF" value="equivalence arc" title="Equivalence Arc"/></div>
                                         </div>
                                       </div>
@@ -748,6 +823,9 @@
         <div id="prompt-fileConversionError-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
         </div>
+        <div id="prompt-sbmlConversionError-table" tabindex="-1" class="modal fade" role="dialog">
+            <!-- map type change confirmation dialog will be shown here-->
+        </div>
 
         <div id="prompt-invalidURL-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- map type change confirmation dialog will be shown here-->
@@ -836,7 +914,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 2.0.0</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 3.0</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -901,6 +979,10 @@
                                         <td><b>Shift + drag</b>:
                                             Box selection (select touched nodes and included edges)</td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Ctrl/Cmd + Shift + drag</b>:
+                                            Marquee zoom (zoom to marked area)</td>
+                                    </tr>																		
                                     <tr>
                                         <td><b>Shift + click</b>:
                                             Add/remove an element to/from the current selection</td>
@@ -1091,17 +1173,8 @@
               <td>
                 <input id="pack-components" type="checkbox" class="layout-text" <% if (packComponents){ %> checked<%}%>>
               </td>
-            </tr>
+            </tr>            
 
-            <tr>
-            <td>
-            <span class="add-on layout-text" title="Whether to perform animation after layout"> Animate </span>
-            </td>
-
-            <td>
-            <input id="animate" type="checkbox" class="layout-text" <% if (animate){ %> checked<%}%>>
-            </td>
-            </tr>
             <tr>
             <td>
             <span class="add-on layout-text" title="Whether to enable incremental mode"> Incremental </span>
@@ -1123,7 +1196,7 @@
 
             <tr>
             <td>
-            <span class="add-on layout-text" title="Whether to adjust port orientations to improve flow"> Improve Flow </span>
+            <span class="add-on layout-text" title="Whether to improve flow by swapping degree one nodes"> Improve Flow </span>
             </td>
             <td>
             <input id="improve-flow" type="checkbox" class="layout-text" <% if (improveFlow){ %> checked<%}%>>
@@ -1146,17 +1219,17 @@
             <tbody>
             <tr>
                 <td class="header">
-                    <span class="add-on layout-text"> Name </span>
+                    <span class="add-on layout-text" title="Name of the map"> Name </span>
                 </td>
 
                 <td>
-                    <input id="map-name" type="text" class="sbgn-input-medium layout-text" value="<%= mapName %>" >
+                    <input id="map-name"  type="text" class="sbgn-input-medium layout-text" value="<%= mapName %>" >
                 </td>
             </tr>
 
             <tr>
                 <td class="header">
-                    <span class="add-on layout-text"> Description </span>
+                    <span class="add-on layout-text" title="Description of the map"> Description </span>
                 </td>
 
                 <td>
@@ -1166,27 +1239,34 @@
 
             <tr>
                 <td class="header">
-                    <span class="add-on layout-text"> Type </span>
+                    <span class="add-on layout-text" title="Type of a map is used to check map type specific rules (e.g. target of a consumption is a process node)"> Type </span>
                 </td>
 
                 <td>
-                    <input id="map-type" type="text" class="sbgn-input-medium layout-text" style='color: #808080;' readonly value= <%= mapType.call() %> >
+                    <select id="map-type" class="sbgn-input-medium layout-text">
+                        <option value="PD" selected>PD</option>
+                        <option value="AF">AF</option>
+                        <option value="HybridSbgn">PD+AF</option>
+                        <option value="SIF">SIF</option>
+                        <option value="HybridAny">PD+AF+SIF</option>
+
+                    </select>
                 </td>
             </tr>
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Compound Padding </span>
+            <span class="add-on layout-text" title="Paddings around compound nodes. Notice, however, that a certain minimal padding is needed and already added for all compound nodes to accommodate for information boxes and visual editing cues (such as expand / collapse cues)"> Additional Compound Padding </span>
             </td>
 
             <td>
-            <input id="compound-padding" type="text" class="sbgn-input-small layout-text integer-input" min="0" max="100" value= <%= compoundPadding %> > %
+            <input id="compound-padding" type="number" class="sbgn-input-small layout-text integer-input" min="0" value= <%= compoundPadding %> >
             </td>
             </tr>
 
             <tr>
             <td class="header">
-                <span class="add-on layout-text"> Edge Arrow Size </span>
+                <span class="add-on layout-text" title="Size of various types of arrows on edges"> Edge Arrow Size </span>
             </td>
 
             <td>
@@ -1196,7 +1276,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Allow Compound Resize </span>
+            <span class="add-on layout-text" title="Whether or not compounds should be allowed to be resized (if not, compounds dynamically assume dimensions with respect to their content's geometry)"> Allow Compound Resize </span>
             </td>
 
             <td>
@@ -1206,7 +1286,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Infer Nesting on Load </span>
+            <span class="add-on layout-text" title="Whether or not nesting of nodes inside compounds should be inferred on loading of maps (most data providers will mean for a compound to include processes inside its boundaries but will not correctly set the associated compartment references)"> Infer Nesting on Load </span>
             </td>
 
             <td>
@@ -1216,7 +1296,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Enable Ports </span>
+            <span class="add-on layout-text" title="Whether or not processes should have input and output ports to respectively combine consumption and production edges to a single point of input and output on the process"> Enable Ports </span>
             </td>
 
             <td>
@@ -1226,7 +1306,7 @@
 
             <tr>
             <td class="header">
-            <span class="add-on layout-text"> Enable Topology Grouping of SIF Nodes </span>
+            <span class="add-on layout-text" title="For maps of type SIF, whether or not macromolecules should be grouped with respect to topology (i.e. if two macromolecules have the same connectivity, they are grouped together with a compound node for reducing edge count)"> Enable Topology Grouping of SIF Nodes </span>
             </td>
 
             <td>
@@ -1247,7 +1327,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Display Labels for Named Complexes </span>
+                <span class="add-on layout-text" title="Whether or not molecular complexes with labels should display these labels"> Display Labels for Named Complexes </span>
                 </td>
 
                 <td>
@@ -1257,7 +1337,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Adjust Node Label Font Size Automatically </span>
+                <span class="add-on layout-text" title="Whether or not the font size of node labels should be calculated with respect to node size"> Adjust Node Label Font Size Automatically </span>
                 </td>
 
                 <td>
@@ -1267,7 +1347,7 @@
 
                 <tr>
                     <td class="header">
-                        <span class="add-on layout-text"> Label Size </span>
+                        <span class="add-on layout-text" title="When Adjust Node Label Font Size Automatically is enabled, label sizes can be set to be uniformly small, regular or large"> Label Size </span>
                     </td>
 
                     <td>
@@ -1281,7 +1361,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Fit Labels to Nodes </span>
+                <span class="add-on layout-text" title="Whether or not long node labels overflowing node width should be truncated with ellipses"> Fit Labels to Nodes </span>
                 </td>
 
                 <td>
@@ -1291,7 +1371,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Fit Labels to Information Boxes </span>
+                <span class="add-on layout-text" title="Whether or not long information box (state variable or units of information) labels overflowing information box width should be truncated with ellipses"> Fit Labels to Information Boxes </span>
                 </td>
 
                 <td>
@@ -1312,7 +1392,7 @@
             <tbody>
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Recalculate Layout on Complexity Management </span>
+                <span class="add-on layout-text" title='Whether or not an incremental layout, which tries to "tidy up" the drawing, should be applied after complexity management (expand/collapse and hide/show) operations'> Recalculate Layout on Complexity Management </span>
                 </td>
 
                 <td>
@@ -1322,7 +1402,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Rearrange on Complexity Management </span>
+                <span class="add-on layout-text" title="Whether or not complexity management operations should try to make room for changes (e.g. move surrounding neighbors away before expanding a collapsed node) prior to recalculating layout on complexity management operations"> Rearrange on Complexity Management </span>
                 </td>
 
                 <td>
@@ -1332,7 +1412,7 @@
 
                 <tr>
                 <td class="header">
-                <span class="add-on layout-text"> Animate on Drawing Changes </span>
+                <span class="add-on layout-text" title="Whether or not operations such as layout and complexity management should move map objects to their new locations using animation"> Animate on Drawing Changes </span>
                 </td>
 
                 <td>
@@ -1346,7 +1426,85 @@
               <button class='btn btn-default' style='align: center;' id='map-rearrangement-default-button'>Default</button>
             <div>
         </script>
+        
+        <script type="text/template" id="map-tab-experiment-template">
+            <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
+         <div align="center" style = 'margin-top: 10px; text-align: center'> Load... <img width='16px' height='16px' id='load-exp-data-util' title="Load experiment data from a tab-delimited file" src='app/img/add.svg' style="margin: 5px;"/> </div> 
+               
+                <% if( experimentDescription.length  <= 0 || Object.entries(experimentDescription).length == 0){ %>
+                <% } else { %>
+                <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
+                    <tbody>
+                    <tr>
+                        <td style='text-align: center;'>
+                            <div style='margin-top: 0px;' >
+                                <img width='16px' height='16px' style='align: center; margin-right: 2%; cursor: pointer; margin-top: -2px;' id="show-experiment-data-as-table" src="app/img/toolbar/table-grid.svg" title="Show as table">
+                                <button class='btn btn-default' value="true" title="Temporarily hide/show all experiment data" style='align: center; border-width: 0px !important; padding:3px; margin-right: 2%' id='experiment-hide-all'> Hide/Show All</button>
+                                <button class='btn btn-default' value="true" title="Remove all experiment data" style='align: center; border-width: 0px !important; padding:3px;' id='experiment-remove-all'> Remove All</button>
+                            </div>  
+                    </td>
+                    </tr> 
+                    </tbody> 
+                </table>
+                <!-- Draggable DIV -->
+                <div id="draggable-exp-data-div" style="display: none;">
+                  <div id="draggable-exp-data-div-header" class="text-center" style="cursor: move;z-index: 1001;">
+                    <div style="line-height:24px;">
+                      <button type="button" id="close-experiment-data-as-table" style="padding-right: 2px;" class="close">&times;</button>
+                      <b style="vertical-align: middle; font-size: 16px; font-weight:normal!important ">Experiment Data</b>
+                    </div>
+                  </div>
+                  <div>
+                    <input id="search-exp-table" type="label" style="float: right; clear: both; margin: 10px;" placeholder="Search...">
+                  </div>
+                  <div style="border: 1px solid #d3d3d3; border-bottom-left-radius:4px; border-bottom-right-radius:4px; padding:8px">
+                    <table class="table table-condensed table-striped table-hover" style="margin-bottom: 0px;" id="map-exp-table"> <!-- will come from JS --> </table> 
+                  </div>
+                </div>
+                           
+                  <% for (filename in experimentDescription) { %> 
+                    <% if (filename != null) { %>
+                 <hr style="margin-top: 10px!important; margin-bottom:10px!important"/>
+                <table align = "center" class="table-condensed layout-table dialog-table map-panel-table" style="table-layout:fixed !important;  margin-bottom:10px">
+                 <tbody>      
+                    <div>
+                        <tr>
+                            <td  style='text-align: right; width:50% !important; ' >
+                            <div>
+                                <button class='btn btn-default' value="true" style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="Hide/show " id='experiment-file-vis-<%= filename %>' > <b><%= filename %></b></button>
+                            </div>  
+                        </td>
+                    <td style="width:50% !important">
+                        <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style="margin: 5px;"  title= "Remove file" id='experiment-file-delete-<%= filename %>'/>
+                          
+                    </td>
+                    </tr>
+                    <%}%>
+                </div>
+                    <% for (element in experimentDescription[filename]) { %> 
+                        <% if(element != null) { %>
+                        <tr>
+                        <td  style='text-align: right; width:50% !important;' >
+                            <div>
+                                <button class='btn btn-default' value = 'true' style='align: center; border-width: 0px !important; padding:3px; overflow: hidden; text-overflow: ellipsis; max-width: 80%;' title="Hide/show <%=experimentDescription[filename][element]%>" id='experiment-vis-<%= filename %>?<%= experimentDescription[filename][element] %>' > <%= experimentDescription[filename][element] %></button>
+                            </div>  
+                    </td>
+                    <td style="width:50% !important">
+                        <img width="16px" height="16px" src="app/img/toolbar/delete-simple.svg" style=" margin: 5px;"  title= "Remove experiment" id='experiment-delete-<%= filename %>?<%= experimentDescription[filename][element] %>'/>   
 
+                    </td>
+                    </tr>
+                <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+                    <% } %>
+                   
+            <% } %>  
+            
+        </tbody>
+        </table>
+        </script>
         <script type="text/template" id="general-properties-template">
             <!-- legacy, keep it to know how the default button was designed before
             </tbody>
@@ -1853,7 +2011,7 @@
 
         <!-- Map type change warning -->
         <script type="text/template" id="prompt-mapType-template">
-            <div class="modal-dialog sbgn-modal-dialog" style="width: 400px;">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
             <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1864,7 +2022,9 @@
             <tbody>
             <tr>
             <th style="padding-left: 0px;" align="left">
-            <span class="add-on layout-text">Map type will change to &quot;Unknown&quot;. Do you want to continue?</span>
+            <span class="add-on layout-text"><%= message %></span>
+            <br>
+            <span class="add-on layout-text"><%= suggestion %></span>
             </th>
             </tr>
 
@@ -1876,8 +2036,8 @@
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="prompt-mapType-accept" class="btn btn-default">Yes</button>
-            <button id="prompt-mapType-cancel" class="btn btn-default">No</button>
+            <button id="prompt-mapType-accept" class="btn btn-default">Dismiss</button>
+            <!-- <button id="prompt-mapType-cancel" class="btn btn-default">No</button> -->
             </div>
             </div>
             </div>
@@ -2038,6 +2198,39 @@
             </div>
         </script>
 
+        <script type="text/template" id="prompt-sbmlConversionError-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 450px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Error</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;">
+                               
+                                    <span class="add-on layout-text" id="file-conversion-error-message"><b>Conversion failed!</b></span>                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                
+                                <td style="text-align: center;">
+                                    <input id="sbml-coversion-user-agree" type="checkbox" class="layout-text" checked>
+                                    <span class="add-on layout-text" >I agree to sending this map for investigation of the conversion problem. </span>
+                                </td>
+                            </tr>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button id="prompt-sbml-confirm" class="btn btn-default">OK</button>
+                    </div>
+                </div>
+            </div>
+        </script>
         <!-- Invalid URL warning -->
         <script type="text/template" id="prompt-invalidURL-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
@@ -2136,7 +2329,7 @@
               <div class="modal-content" style="display: inline-block"  id="template-modal-content" align="center">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Template</h4>
+            <h4 class="modal-title">SBGN Bricks</h4>
             </div>
             <div class="modal-body" style="display: inline-block">
             <table class="table-condensed layout-table dialog-table">
@@ -2702,9 +2895,9 @@
 
         <script type="text/template" id="color-scheme-inspector-template">
           <div style="margin-top:5px;">
-
+           
               <div style="margin-bottom:5px; text-align: center;">
-                <class="add-on layout-text">Style</>
+                <class="add-on layout-text" title="Applies a uniform color scheme to the entire map. The colors may be reversed with the associated icon.">Style</>
                 <class="add-on layout-text" style="margin-left:2%;"></>
                 <select id="color-scheme-inspector-style-select" class="color-scheme-type-select" style="margin-left: %7;">
                   <option id="color-scheme-inspector-style-solid" value="solid" <% if (scheme_type == 'solid') print('selected')%>> Solid </option>
@@ -2724,7 +2917,7 @@
                                   </div>
                               </div>
                               <% if(schemes[scheme_id].invert) {%>
-                                  <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
+                                  <div id='map-color-scheme_invert_<%= scheme_id%>' title="Reverse colors" class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
                                       <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
                                   </div>
                               <% } %>
@@ -2744,7 +2937,7 @@
                                   </div>
                               </div>
                               <% if(schemes_gradient[scheme_id].invert) {%>
-                                  <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
+                                  <div id='map-color-scheme_invert_<%= scheme_id%>' title="Reverse colors" class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
                                       <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
                                   </div>
                               <% } %>
@@ -2764,7 +2957,7 @@
                                   </div>
                               </div>
                               <% if(schemes_3D[scheme_id].invert) {%>
-                                  <div id='map-color-scheme_invert_<%= scheme_id%>' class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
+                                  <div id='map-color-scheme_invert_<%= scheme_id%>' title="Reverse colors" class="color-scheme-invert-button pointer-button" style='width:15%; float:left; height:35px; text-align:center; display:flex; align-items:center;'>
                                       <img width="18px" height="18px" src="app/img/tabs/swap.svg" style="margin:auto;"/>
                                   </div>
                               <% } %>
@@ -2779,7 +2972,7 @@
           <div style='text-align: center; margin-top: 5px;'>
             <button class='btn btn-default' style='align: center;' id='map-color-scheme-default-button'>Default</button>
           <div>
-
+            
         </script>
         <script type="text/template" id="prompt-invalidSchematronFile-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">

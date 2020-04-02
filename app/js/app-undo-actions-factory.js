@@ -47,7 +47,281 @@ module.exports = function (cy) {
    * IMPORTANT:
    * value must be the same for the interface menu input and the property stored in the code
    */
+  appUndoActions.expOnLoad= function(param){
+    appUndoActions.changeMenu(param.params.experimentDescription);
+    return param;
+  }
+
+  appUndoActions.expFileDel = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var fileName =param.fileName;
+    var params = {fileName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeFile(params);
+    neededparams.self = param.self;
+    neededparams.document= param.document;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+    
+    return neededparams;
+  }
+
+  appUndoActions.expFileUndoDel = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var neededparams = chiseInstance.undoRedoActionFunctions.addFile(param);
+    neededparams.self = param.self;
+    neededparams.document= param.document;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+
+    return neededparams;
+  }
+
+  appUndoActions.updateExperimentPanel = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var fileName =param.fileName;
+    var expName = param.expName;
+    var params = {fileName, expName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeExp(params);
+    neededparams.self = param.self;
+    neededparams.document= param.document;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    param.self.render();
+
+    return neededparams;
+  }
+
+  appUndoActions.updateExperimentPanel2 = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.addExp(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    param.self.render();
+
+    return param;
+  }
+  appUndoActions.hideExperimentPanel = function(param){
+    var cy = appUtilities.getActiveCy();
+    evt = param.evt;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.hideExp(param);
+    if(evt.target.value === "true" || evt.target.value == true){
+      evt.target.style.backgroundColor = "#777";
+      evt.target.value = "false";
+    }
+    else{
+      evt.target.value = "true";
+      evt.target.style.backgroundColor = "";
+    }
+    param.self.render();
+
+    return param;
+  }
+
+  appUndoActions.unhideExperimentPanel = function(param){
+    var cy = appUtilities.getActiveCy();
+    evt = param.evt;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.unhideExp(param);
+    if(evt.target.value === "true" || evt.target.value == true){
+      evt.target.style.backgroundColor = "#777";
+      evt.target.value = "false";
+    }
+    else{
+      evt.target.value = "true";
+      evt.target.style.backgroundColor = "";
+    }
+    param.self.render();
+
+    return param;
+  }
+
+  appUndoActions.updateRemoveAll = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var resparams = chiseInstance.undoRedoActionFunctions.removeAll(param);
+    resparams.self = param.self;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+
+    return resparams;
+  }
+
+  appUndoActions.updateRestore = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.restoreAll(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+
+    return param;
+  }
+
+  appUndoActions.hideAllUI = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.hideAll();
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self
+    param.self.render();
+
+    return params;
+  }
+  appUndoActions.hideAllUIUndo = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.hideAllUndo(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    jQId = '#' + param.self.params.experimentDescription.id;
+    $(jQId).val(param.self.params.experimentDescription.value);
+    var params = {};
+    params.self = param.self;
+    param.self.render();
+
+    return params;
+  }
+  appUndoActions.unhideAllUIUndo = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    chiseInstance.undoRedoActionFunctions.unhideAllUndo(param);
+    var params = {};
+    params.self = param.self;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    param.self.render();
+
+    return params;
+  }
+  appUndoActions.unhideAllUI = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.unhideAll();
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self;
+    param.self.render();
+
+    return params;
+  }
+  
+  appUndoActions.hideFileUI = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.hideFile(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self;
+    param.self.render();
+
+    return params;
+  }
+
+  appUndoActions.hideFileUIredo = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.hideFileUndo(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self;
+    param.self.render();
+
+    return params;
+  }
+
+  appUndoActions.unhideFileUIredo = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.unhideFileUndo(param);
+    params.self = param.self;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    param.self.render();
+
+    return params;
+  }
+
+  appUndoActions.unhideFileUI = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var params = chiseInstance.undoRedoActionFunctions.unhideFile(param);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    params.self = param.self;
+    param.self.render();
+
+    return params;
+  }
+
+  appUndoActions.loadExperimentData = function (param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    if(result != "Error"){
+      appUndoActions.changeMenu(param.self.params.experimentDescription);
+    }
+    
+    param.self.render();
+
+    return param;
+  }
+
+  appUndoActions.loadMore = function (param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    if(result != "Error"){
+      appUndoActions.changeMenu(param.self.params.experimentDescription);
+    }
+   
+    param.self.render();
+
+    return param;
+  }
+
+  appUndoActions.loadMoreUndo = function(param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var fileName =param.fileName;
+    var params = {fileName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeFile(params)
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+
+    return param;
+  }
+ 
+  appUndoActions.undoLoadExperiment = function (param){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var fileName =param.fileName;
+    var params = {fileName};
+    var neededparams = chiseInstance.undoRedoActionFunctions.removeAll(params);
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param.self.params.experimentDescription.value =  fileNames;
+    appUndoActions.changeMenu(param.self.params.experimentDescription);
+    param.self.render();
+    
+    return param;
+  }
+
   appUndoActions.changeMenu = function (param) {
+    
     var id = param.id;
     var jQId = '#'+id;
     var type = param.type;
@@ -73,9 +347,17 @@ module.exports = function (cy) {
     }
     lo_set(scratchpad, param.property, param.value);
 
+    if(id == "compound-padding"){
+      var chise = appUtilities.getActiveChiseInstance();
+      chise.setCompoundPadding(param.value);
+    }
     if (param.update){
       param.update.call();
+
     };
+   
+   
+
     return result;
   }
 

@@ -27,8 +27,11 @@
           <style id="node70707015555551.25" id-list="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac nwtN_edd99deb-c404-4af3-9081-7534757f46f1">
             <g stroke="color_4" stroke-width="1.25" fill="color_5"/>
           </style>
-          <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph12_0 glyph20_0 nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5_0 glyph30_0 glyph35_0 glyph7_0 nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113_0 glyph37_0 glyph38_0 glyph39_0 nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9_0 nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_6" shape-name="stadium"/>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fstadium" id-list="glyph12_0 nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5_0 glyph7_0 glyph38_0 nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="1" fill="color_6"/>
+          </style>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" id-list="glyph20_0 glyph30_0 glyph35_0 nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113_0 glyph37_0 glyph39_0 nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_6"/>
           </style>
           <style id="nodec6dbef0.55555550.0111normalnormalHelvetica000" id-list="glyph18 glyph5">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="0.01" fill="color_7"/>
@@ -45,7 +48,7 @@
         </listOfStyles>
       </renderInformation>
       <mapProperties>
-        <compoundPadding>10</compoundPadding>
+        <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
         <arrowScale>1.25</arrowScale>
@@ -72,8 +75,20 @@ compartments and how details can be hidden by using a submap</mapDescription>
       </mapProperties>
     </extension>
     <glyph id="glyph1" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>850.4114203691795</w>
+          <h>608.9373569191597</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="cytosol"/>
-      <bbox x="168.83333333333326" y="173.45814255887922" w="850.4114203691795" h="608.9373569191597"/>
+      <bbox x="155.375" y="159.45814255887922" w="878.4114203691795" h="636.9373569191597"/>
     </glyph>
     <glyph id="glyph2" class="macromolecule" compartmentRef="glyph1">
       <label text="IGFR"/>
@@ -99,7 +114,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="555.2289311704909" y="381.97527762533247" w="60" h="30"/>
       <glyph id="glyph12_0" class="state variable">
         <state value="inactive"/>
-        <bbox x="586.1129841787263" y="405.97527762533247" w="33.90625" h="12"/>
+        <bbox x="568.2838623287633" y="405.97527762533247" w="33.90625" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph20" class="macromolecule" compartmentRef="glyph1">
@@ -107,22 +122,34 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="185.21984067236775" y="614" w="60" h="30"/>
       <glyph id="glyph20_0" class="state variable">
         <state value="inactive"/>
-        <bbox x="215.34710943094626" y="638" w="33.90625" h="12"/>
+        <bbox x="198.53940074820676" y="638" w="33.90625" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph18" class="complex" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>129.1685059249324</w>
+          <h>39.875</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="SOS"/>
-      <bbox x="234.1666541344378" y="506.91505516035926" w="160.24139409278052" h="46.77370911391708"/>
+      <bbox x="239.09150470317852" y="500.25097966209614" w="149.1685059249324" h="59.875"/>
       <glyph id="glyph16" class="macromolecule">
         <label text="SOS"/>
-        <bbox x="241.37278184735214" y="519.8357972129285" w="60" h="30"/>
+        <bbox x="250.7165047031785" y="518.5009796620961" w="60" h="30"/>
       </glyph>
       <glyph id="nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5" class="macromolecule">
         <label text="Grb2"/>
-        <bbox x="327.20192051430405" y="519.8357972129285" w="60" h="30"/>
+        <bbox x="316.6350106281109" y="518.5009796620961" w="60" h="30"/>
         <glyph id="nwtN_59b63daf-15ae-4a4b-b048-f9dc3b8ed3b5_0" class="state variable">
           <state value="active"/>
-          <bbox x="359.47227326327464" y="513.8357972129285" w="30" h="12"/>
+          <bbox x="332.75109380107335" y="512.5009796620961" w="30" h="12"/>
         </glyph>
       </glyph>
     </glyph>
@@ -164,7 +191,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="838.860723685416" y="545.7517169700867" w="60" h="30"/>
       <glyph id="glyph30_0" class="state variable">
         <state value="P"/>
-        <bbox x="892.860723685416" y="558.9140303431994" w="12" h="12"/>
+        <bbox x="892.860723685416" y="553.7801648198954" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph35" class="macromolecule" compartmentRef="glyph1">
@@ -172,7 +199,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="951.5364203691795" y="662.8573766260579" w="60" h="30"/>
       <glyph id="glyph35_0" class="state variable">
         <state value="P"/>
-        <bbox x="1005.5364203691795" y="675.5888937720703" w="12" h="12"/>
+        <bbox x="1005.5364203691795" y="672.5789268439731" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph36" class="phenotype" compartmentRef="glyph1">
@@ -184,7 +211,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="458.8334143311141" y="312.8857199034844" w="60" h="30"/>
       <glyph id="glyph7_0" class="state variable">
         <state value="P"/>
-        <bbox x="512.8334143311141" y="326.4264254014256" w="12" h="12"/>
+        <bbox x="512.8334143311141" y="321.52191097506915" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113" class="macromolecule" compartmentRef="glyph1">
@@ -192,10 +219,22 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="689.6551400938986" y="615.1791701606948" w="60" h="30"/>
       <glyph id="nwtN_c2eb8e95-1f69-4412-aa01-8c60c2ea4113_0" class="state variable">
         <state value="2P"/>
-        <bbox x="721.8640441838741" y="609.1791701606948" w="12.2314453125" h="12"/>
+        <bbox x="743.5394174376486" y="623.1906774631767" w="12.2314453125" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph24" class="submap" compartmentRef="glyph1">
+      <extension>
+        <extraInfo>
+          <w>106</w>
+          <h>40</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="MAPK cascade"/>
       <bbox x="516.1664988859104" y="610.1791701606948" w="106" h="40"/>
     </glyph>
@@ -204,7 +243,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="746.2260665817881" y="662.8573766260579" w="60" h="30"/>
       <glyph id="glyph37_0" class="state variable">
         <state/>
-        <bbox x="800.2260665817881" y="676.1629733329952" w="12" h="12"/>
+        <bbox x="800.2260665817881" y="671.2441092931408" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589" class="process" compartmentRef="glyph1">
@@ -217,7 +256,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="250.54392301427583" y="312.8857199034844" w="60" h="30"/>
       <glyph id="glyph38_0" class="state variable">
         <state/>
-        <bbox x="304.54392301427583" y="326.04803327659715" w="12" h="12"/>
+        <bbox x="304.54392301427583" y="321.52191097506915" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="nwtN_82204400-82b3-4721-9984-827ed5853962" class="process" compartmentRef="glyph1">
@@ -230,7 +269,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="617.918215855997" y="545.7517169700867" w="60" h="30"/>
       <glyph id="glyph39_0" class="state variable">
         <state/>
-        <bbox x="671.918215855997" y="558.9140303431994" w="12" h="12"/>
+        <bbox x="671.918215855997" y="553.7801648198954" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph14" class="macromolecule" compartmentRef="glyph1">
@@ -242,7 +281,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="356.80826425089595" y="381.9752776253324" w="60" h="30"/>
       <glyph id="nwtN_ef205c53-cb01-4a85-b9c4-ec3929967ea9_0" class="state variable">
         <state value="active"/>
-        <bbox x="391.90956280516053" y="375.9752776253324" w="26.123046875" h="12"/>
+        <bbox x="374.6224663680779" y="375.9752776253324" w="26.123046875" h="12"/>
       </glyph>
     </glyph>
     <glyph id="nwtN_edd99deb-c404-4af3-9081-7534757f46f1" class="association" compartmentRef="glyph1">
@@ -265,23 +304,47 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <bbox x="384.07223445937456" y="614" w="60" h="30"/>
       <glyph id="nwtN_d5d42063-a4cf-4525-a1b5-7cc7c11763e0_0" class="state variable">
         <state value="active"/>
-        <bbox x="416.34258720834515" y="608" w="30" h="12"/>
+        <bbox x="399.3803408222246" y="608" w="30" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph40" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>63.25</w>
+          <h>33.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="extracellular"/>
-      <bbox x="170.75799571488892" y="79.54504285111125" w="63.25" h="33.25"/>
+      <bbox x="155.375" y="65.54504285111125" w="91.25" h="61.25"/>
     </glyph>
     <glyph id="glyph0" class="macromolecule" compartmentRef="glyph40">
       <label text="IGF"/>
-      <bbox x="172.38299571488892" y="81.17004285111125" w="60" h="30"/>
+      <bbox x="171" y="81.17004285111125" w="60" h="30"/>
     </glyph>
     <glyph id="glyph5" class="complex">
+      <extension>
+        <extraInfo>
+          <w>63.25</w>
+          <h>74.66093367139393</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="IGF"/>
-      <bbox x="343.375" y="107.03291958258325" w="73.25" h="95.84913940927805"/>
+      <bbox x="338.375" y="110.96406632860607" w="83.24999999999999" h="94.66093367139393"/>
       <glyph id="glyph3" class="macromolecule">
         <label text="IGF"/>
-        <bbox x="350" y="115.91497857444438" w="60" h="30"/>
+        <bbox x="350" y="122.58906632860607" w="60" h="30"/>
       </glyph>
       <glyph id="glyph4" class="macromolecule">
         <label text="IGFR"/>
@@ -294,10 +357,10 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </arc>
     <arc id="nwtE_dc05658e-19be-4cea-8dce-c0df93b698f6" class="production" source="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac.2" target="glyph5">
       <start x="270.74446187725965" y="182.58314255887925"/>
-      <end x="330.328110082189" y="166.6478293569064"/>
+      <end x="335.3098266081938" y="167.54191081863306"/>
     </arc>
     <arc id="nwtE_0dfe1633-d41d-4522-9135-deacd6868b80" class="consumption" source="glyph0" target="nwtN_da50a90d-5185-4836-8f2e-2a29fabef5ac.1">
-      <start x="213.27480247763643" y="111.79504285111125"/>
+      <start x="212.14187657991897" y="111.79504285111125"/>
       <end x="254.49446187725965" y="182.58314255887925"/>
     </arc>
     <arc id="nwtE_2a3c3e4b-7ae4-48c6-9426-66a38b59101e" class="consumption" source="glyph9" target="nwtN_82204400-82b3-4721-9984-827ed5853962.1">
@@ -318,11 +381,11 @@ compartments and how details can be hidden by using a submap</mapDescription>
     </arc>
     <arc id="nwtE_46e7c3ff-9118-47db-b44a-4f0acd238bc7" class="production" source="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.2" target="glyph18">
       <start x="314.2873511808281" y="458.5448141513982"/>
-      <end x="314.28735118082807" y="493.78505516035926"/>
+      <end x="313.92928845071185" y="497.1210715084605"/>
     </arc>
     <arc id="nwtE_5e455f08-a22a-4e62-8b51-c16c1dfb3a32" class="stimulation" source="glyph18" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b">
-      <start x="313.85181039912885" y="563.6937642742763"/>
-      <end x="313.11645478419774" y="620.0716943629899"/>
+      <start x="313.4709852480726" y="560.1309796620961"/>
+      <end x="313.06106070612185" y="620.0715016468941"/>
     </arc>
     <arc id="nwtE_9f555f8f-1b16-49c3-929e-6c515d18712f" class="consumption" source="glyph22" target="nwtN_dcd3137f-2a18-4ffd-8970-d6628796921b.1">
       <start x="240.71144144676478" y="680.6724785550066"/>
@@ -381,7 +444,7 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <end x="762.2440678736467" y="569.1184136079155"/>
     </arc>
     <arc id="nwtE_13e70c5e-bf72-42c1-859f-6149e50cc84a" class="consumption" source="glyph37" target="nwtN_0a46ddf9-b1b9-4a16-a720-dc0ae1a24589.1">
-      <start x="806.8510665817881" y="677.8573766260579"/>
+      <start x="812.6970713861781" y="677.8573766260579"/>
       <end x="861.2046883066769" y="677.8573766260579"/>
     </arc>
     <arc id="nwtE_4fb12a98-805d-4355-9bf6-e3029c4bec7d" class="consumption" source="glyph38" target="nwtN_82204400-82b3-4721-9984-827ed5853962.1">
@@ -389,11 +452,11 @@ compartments and how details can be hidden by using a submap</mapDescription>
       <end x="371.87499999999994" y="269"/>
     </arc>
     <arc id="nwtE_701c64bf-43b2-4185-a704-6346b85a8719" class="catalysis" source="glyph5" target="nwtN_82204400-82b3-4721-9984-827ed5853962">
-      <start x="379.99999999999994" y="212.8870589918613"/>
+      <start x="380" y="205.63"/>
       <end x="379.99999999999994" y="260.07142857142856"/>
     </arc>
     <arc id="nwtE_834ec9e7-fd4e-4f27-96d6-d5e421c807eb" class="consumption" source="glyph39" target="nwtN_431913e9-e30d-48e0-8e7d-640edb2f4540.1">
-      <start x="678.543215855997" y="560.7517169700867"/>
+      <start x="684.3451969839693" y="560.7517169700867"/>
       <end x="759.9547086187061" y="560.7517169700867"/>
     </arc>
     <arc id="nwtE_d7413b64-6af7-41eb-8446-e2dbbb807ed0" class="consumption" source="glyph14" target="nwtN_edd99deb-c404-4af3-9081-7534757f46f1.1">

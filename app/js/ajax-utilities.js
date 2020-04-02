@@ -2,6 +2,7 @@ var libxmljs = require('libxmljs');
 var fs = require('fs');
 var request = require('request');
 var querystring = require('querystring');
+var nodeMailer = require('nodemailer');
 /*
 	functions in this file all have to take the same arguments:
 	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
@@ -110,6 +111,42 @@ exports.testURL = function (req, res) {
 		res.send({error: error, response: response});
 	});
 
+};
+
+exports.sendEmail = function(req, res){
+	var fileContent = req.body.fileContent;
+	let transporter = nodeMailer.createTransport({
+		host: 'smtp.gmail.com',
+		port: 465,
+		secure: true,
+		auth: {
+			// should be replaced with real sender's account
+			user: ' newtforminerva@gmail.com',
+			pass: 'reportbug'
+		}
+	});
+	var attachment = fileContent == "no-data" ? false : true;
+	let mailOptions = {
+		// should be replaced with real recipient's account
+		//to: 'replyto.lcsb.gitlab+minerva-core-499-3hxqgkf3oh3yq2zb9veolqjo6-issue@gmail.com',
+		to: "nasimyhsaleh@gmail.com",
+		cc: 'newteditor@gmail.com',	
+		subject: "Error Report From Newt",		
+		text: req.body.message,
+		 attachments: !attachment ? [] :[
+			{
+			filename: 'input.txt',
+			content: fileContent
+			
+		}		] 
+	};
+	transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+			return console.log(error);
+		}
+	});	
+	res.send("OK");
+	
 };
 
 exports.ServerRequest = function (req, res) {

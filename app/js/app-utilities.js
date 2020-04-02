@@ -21,6 +21,13 @@ appUtilities.getScratch = function (cyOrEle, name) {
   return retVal;
 }
 
+appUtilities.mapTypesToViewableText = {
+  'PD': 'PD',
+  'AF': 'AF',
+  'SIF': 'SIF',
+  'HybridSbgn' : 'Hybrid (PD,AF)' ,
+  'HybridAny' : 'Hybrid (PD,AF,SIF)'   
+};
 // Set a single property on scratchpad of an element or the core
 appUtilities.setScratch = function (cyOrEle, name, val) {
   this.getScratch(cyOrEle)[name] = val;
@@ -52,7 +59,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   appUtilities.mapTabGeneralPanel.render();
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
-
+  appUtilities.experimentTabPanel.render();
   // needing an appUndoActions instance here is something unexpected
   // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
   // that uses the active cy instance
@@ -348,7 +355,7 @@ appUtilities.createNewNetwork = function () {
   var currentLayoutProperties = jquery.extend(true, {}, appUtilities.defaultLayoutProperties);
   var currentGridProperties = jquery.extend(true, {}, appUtilities.defaultGridProperties);
   var currentGeneralProperties = jquery.extend(true, {}, appUtilities.defaultGeneralProperties);
-
+  
   // update the map name with the default map name specific for network id
   currentGeneralProperties.mapName = mapName;
 
@@ -376,10 +383,12 @@ appUtilities.createNewNetwork = function () {
       return currentGeneralProperties.inferNestingOnLoad;
     },
     // percentage used to calculate compound paddings
-    compoundPadding: function () {
+    compoundPadding: currentGeneralProperties.compoundPadding
+    
+    /* function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
       return currentGeneralProperties.compoundPadding;
-    },
+    } */,
     // arrow size changed by a slider on a scale from 0.5-2
     arrowScale: function () {
       var currentGeneralProperties = appUtilities.getScratch(newInst.getCy(), 'currentGeneralProperties');
@@ -405,27 +414,12 @@ appUtilities.createNewNetwork = function () {
       return appUtilities.ctrlKeyDown !== true;
     }
   });
-
-  //set border-width of selected nodes to a fixed value
-  newInst.getCy().style()
-    .selector('node:selected')
-    .css({
-      'border-width': function(ele){
-        return Math.max(ele.data("border-width"), 3);
-      }
-    })
-    .selector('edge:selected')
-    .css({
-      'width': function(ele){
-        return Math.max(ele.data("width"), 3);
-      }
-    });
-
+  
   // set scracth pad of the related cy instance with these properties
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
-
+  
   // init the current file name for the map
   appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.nwt');
 
@@ -701,14 +695,14 @@ appUtilities.defaultLayoutProperties = {
   animationDuration: 2000,
   randomize: false,
   tile: true,  
-  tilingPaddingVertical: 20,
-  tilingPaddingHorizontal: 20,
+  tilingPaddingVertical: 12,
+  tilingPaddingHorizontal: 12,
   gravityRangeCompound: 1.5,
   gravityCompound: 1.0,
   gravityRange: 3.8,
   initialEnergyOnIncremental: 0.3,
   improveFlow: true,
-  packComponents: true
+  packComponents: true 
 };
 
 appUtilities.defaultGridProperties = {
@@ -739,9 +733,9 @@ appUtilities.defaultGridProperties = {
 };
 
 appUtilities.defaultGeneralProperties = {
-  compoundPadding: 10,
-  extraCompartmentPadding: 14,
-  extraComplexPadding: 10,
+  compoundPadding: 0, // intial compound padding for all compound nodes 
+  extraCompartmentPadding: 14, // extra padding for compound nodes except for complexes
+  extraComplexPadding: 10,  //extra padding for complex compound nodes, refer to sbgnviz elementUtilities.getComplexPadding() function to see details
   arrowScale: 1.25,
   showComplexName: true,
   dynamicLabelSize: 'regular',
@@ -760,7 +754,8 @@ appUtilities.defaultGeneralProperties = {
   mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
   mapName: "",
   mapDescription: "",
-  enableSIFTopologyGrouping: false
+  enableSIFTopologyGrouping: false,
+  experimentDescription: "",
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -1946,8 +1941,15 @@ appUtilities.mapBgImgCoverToEle = function(){
   return result;
 }
 
-// change the global style of the map by applying the current color scheme
+// use this function to change the global style of the map by applying the current color scheme
 appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
+  var actions = appUtilities.getActionsToApplyMapColorScheme(newColorScheme, scheme_type, self, _cy);
+  var cy = _cy || appUtilities.getActiveCy();
+  cy.undoRedo().do("batch", actions);
+}
+
+// get the actions required to change the global style of the map by applying the current color scheme
+appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_type, self, _cy) {
 
   // if _cy param is set use it else use the recently active cy instance
   var cy = _cy || appUtilities.getActiveCy();
@@ -1971,12 +1973,16 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
 
     var actions = [];
 
-    //first clear the background images of already present elementUtilities
+    // first clear the background images of already present elements
     actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: clearBgImg(eles)}});
     // edit style of the current map elements
     actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+    // first clear the background images of already present collapsed elements
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: clearBgImg(collapsedChildren)}});   
     // collapsed nodes' style should also be changed, special edge case
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+    // if background-image isn't deleted from css, it is shown as soon as the node is expanded until the end of animation
+    actions.push({name: "changeCss", param: {eles: collapsedChildren, name: 'background-image', valueMap: ""}});     
 
     actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
 
@@ -1986,6 +1992,12 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
       if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-color', value: classBgColor}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-fit', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-x', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-width', value: ''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-height', value:''}});         
       }
     }
 
@@ -2035,13 +2047,17 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
     // collapsed nodes' style should also be changed, special edge case
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedColorIDMap}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: collapsedBackgroundImgMap}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(eles)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(eles, 50)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
-
-
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapCovertoBgFit(collapsedChildren)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapPercentToPosition(collapsedChildren, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(collapsedChildren, 50)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(collapsedChildren, 100)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(collapsedChildren, 100)}});
+    // if background-image isn't brought back into css, it isn't shown as soon as the node is expanded until the end of animation
+    // the reason of for loop is that changeCss function cannot find collapsed nodes if valueMap is an object, but it works if it is a string   
+    for(var i = 0; i < collapsedChildren.length; i++){
+      actions.push({name: "changeCss", param: {eles: collapsedChildren[i], name: 'background-image', valueMap: collapsedBackgroundImgMap[collapsedChildren[i].id()]}});
+    }
+    
     actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
 
     // set to be the default as well
@@ -2062,9 +2078,8 @@ appUtilities.applyMapColorScheme = function(newColorScheme, scheme_type, self, _
       }
     }
   }
-
-  cy.undoRedo().do("batch", actions);
-
+  
+  return actions;
 };
 
 // the 3 following functions are related to the handling of the dynamic image
@@ -2135,6 +2150,7 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
     'background-height': 'backgroundHeight',
     'background-width': 'backgroundWidth',
     'background-image-opacity': 'backgroundImageOpacity',
+    'background-opacity': 'backgroundOpacity',
   };
   var edgePropertiesToXml = {
     'line-color': 'stroke',
@@ -2733,7 +2749,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
   var oldColor = node.data("border-color");
   var oldWidth = node.data("border-width");
   node.data("border-color", "#d67614");
-  node.data("border-width", Math.max(3, oldWidth));
+  node.data("border-width", Math.max(1, oldWidth));
   var selectedBox;
   var anchorSide;
   $(document).on('mousedown', appUtilities.RelocationHandler = function(event){
@@ -2796,32 +2812,27 @@ appUtilities.enableInfoBoxRelocation = function(node){
         var drag_x = event.position.x;
         var drag_y = event.position.y;
         var anchorSide = selectedBox.anchorSide;
-        var shift_x, shift_y, box_new_x, box_new_y;
+       
 
         //If anchor side is top or bottom only move in x direction
         if (anchorSide === "top" || anchorSide === "bottom") {
-          shift_x = drag_x - last_mouse_x;
-          box_new_x = selectedBox.bbox.x + shift_x; //Calculate new box position
+         
+         
           //Get absolute position
-          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, box_new_x, selectedBox.bbox.y, cy);
-          var newRelativeCoords;
-          if (absoluteCoords.x < (parentX1)) {
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox,((parentX1)),
-              absoluteCoords.y, cy);
-            selectedBox.bbox.x = newRelativeCoords.x;
+          var newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, drag_x, selectedBox.bbox.y, cy);        
+          if (newRelativeCoords.x < 0) {           
+            selectedBox.bbox.x = 0;
           }
-          else if (absoluteCoords.x > (parentX2)) { //Box cannot go futher than parentBox - margin on right side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, ((parentX2)),
-              absoluteCoords.y, cy);
-            selectedBox.bbox.x = newRelativeCoords.x;
+          else if (newRelativeCoords.x > 100) { //Box cannot go futher than parentBox - margin on right side            
+            selectedBox.bbox.x = 100;
           }
           else { //Else it is already relative
-            selectedBox.bbox.x = box_new_x;
+            selectedBox.bbox.x = newRelativeCoords.x;
           }
           //If box is at margin points allow it to change anchor side
           //If it on left it can pass left anchor side
-          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
-          if (absoluteCoords.x === (parentX1)) { //If it is on the left margin allow it to change anchor sides
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy); //Get current absolute coords
+          if (Number(absoluteCoords.x.toFixed(2))=== Number(parentX1.toFixed(2))) { //If it is on the left margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_y < drag_y  && anchorSide === "top") {
               selectedBox.anchorSide = "left"; //Set new anchor side
@@ -2839,7 +2850,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
             }
           }
           //If it on right it can pass right anchor side
-          else if (absoluteCoords.x  === (parentX2)) {
+          else if (Number(absoluteCoords.x.toFixed(2))  === Number(parentX2.toFixed(2))) {
             if (last_mouse_y < drag_y && anchorSide === "top") {
               selectedBox.anchorSide = "right"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX2),
@@ -2858,29 +2869,26 @@ appUtilities.enableInfoBoxRelocation = function(node){
         }
         else {
            //If anchor side left or right only move in y direction
-          shift_y = drag_y - last_mouse_y;
-          box_new_y = selectedBox.bbox.y + shift_y; //Calculate new box position
+        
 
           //Get absolute position
-          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, box_new_y, cy);
-          var newRelativeCoords;
-          if (absoluteCoords.y< (parentY1)) { //Box cannot go futher than parentBox + margin on left side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
-              (parentY1), cy);
-            selectedBox.bbox.y = newRelativeCoords.y;
+          var newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, selectedBox.bbox.x, drag_y, cy);
+          
+          if (newRelativeCoords.y< 0) { //Box cannot go futher than parentBox + margin on left side
+           
+            selectedBox.bbox.y = 0;
           }
-          else if (absoluteCoords.y > (parentY2)) { //Box cannot go futher than parentBox - margin on right side
-            newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, absoluteCoords.x,
-              (parentY2), cy);
-            selectedBox.bbox.y = newRelativeCoords.y;
+          else if (newRelativeCoords.y > 100) { //Box cannot go futher than parentBox - margin on right side
+            
+            selectedBox.bbox.y = 100;
           }
           else { //Else it is already relative
-            selectedBox.bbox.y = box_new_y;
+            selectedBox.bbox.y = newRelativeCoords.y;
           }
 
-          absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
+          var absoluteCoords = instance.classes.AuxiliaryUnit.convertToAbsoluteCoord(selectedBox, selectedBox.bbox.x, selectedBox.bbox.y, cy);
           //Set anchor side changes
-          if (absoluteCoords.y  === (parentY1)) { //If it is on the top margin allow it to change anchor sides
+          if (Number(absoluteCoords.y.toFixed(2))  === Number(parentY1.toFixed(2))) { //If it is on the top margin allow it to change anchor sides
             //If it is in the top and mouse moves bottom it can go left anchor
             if (last_mouse_x < drag_x  && anchorSide === "left") {
               selectedBox.anchorSide = "top"; //Set new anchor side
@@ -2896,7 +2904,7 @@ appUtilities.enableInfoBoxRelocation = function(node){
             }
           }
           //If it on right it can pass right anchor side
-          else if (absoluteCoords.y === (parentY2)) {
+          else if (Number(absoluteCoords.y.toFixed(2)) === Number(parentY2.toFixed(2))) {
             if (last_mouse_x < drag_x && anchorSide === "left") {
               selectedBox.anchorSide = "bottom"; //Set new anchor side
               newRelativeCoords = instance.classes.AuxiliaryUnit.convertToRelativeCoord(selectedBox, (parentX1), (parentY2), cy);
@@ -2999,11 +3007,22 @@ appUtilities.modifyUnits = function (node, ele, anchorSide) {
 
 appUtilities.resizeNodesToContent = function(nodes){
 
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    var cy = appUtilities.getActiveCy();
-
-    chiseInstance.resizeNodesToContent(nodes, false);
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  var cy = appUtilities.getActiveCy();
+  var collection;
+    if(nodes.length == 1){
+      collection = cy.collection();    
+      collection = collection.add(nodes[0]);   
+    }else{
+      collection = nodes;
+    }    
+    
+    if(!chiseInstance.areCompoundSizesConsidered()){
+      collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
+    }
+    chiseInstance.resizeNodesToContent(collection, false);
     cy.nodeResize('get').refreshGrapples();
+    cy.expandCollapse('get').clearVisualCue();
 
 };
 
@@ -3034,5 +3053,26 @@ appUtilities.transformClassInfo = function( classInfo ) {
 
   return res;
 };
+// appUtilities.getExperimentalData = function()
+// {
+//   var chiseInstance = appUtilities.getActiveChiseInstance();
+//   var cy = appUtilities.getActiveCy();
+//   var experimentNames = chiseInstance.getGroupedDataMap();
+//   //console.log(experimentNames.length());
+
+
+  
+//   return experimentNames;
+// };
+// appUtilities.setExperimentNames = function(files)
+// {
+//   console.log("experiment names in set experimentNames");
+ 
+//  // currentExperimentProperties.experimentDescription = files;
+//   appUtilities.experimentTabPanel.render();
+// }
+// appUtilities.hideExperiments = function(){
+//   console.log("inapputil");
+// }
 
 module.exports = appUtilities;

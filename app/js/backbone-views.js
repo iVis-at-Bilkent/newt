@@ -2,7 +2,7 @@ var jquery = $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var chroma = require('chroma-js');
-var FileSaver = require('filesaverjs');
+var FileSaver = require('file-saver');
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -272,18 +272,6 @@ var LayoutPropertiesView = Backbone.View.extend({
     }
 
     var options = $.extend({}, currentLayoutProperties, preferences);
-    var verticalPaddingPercent = options.tilingPaddingVertical;
-    var horizontalPaddingPercent = options.tilingPaddingHorizontal;
-
-    // In dialog properties we keep tiling padding vertical/horizontal percentadges to be displayed
-    // in dialog, in layout options we use a function using these values
-    options.tilingPaddingVertical = function () {
-      return chiseInstance.calculatePaddings(verticalPaddingPercent);
-    };
-
-    options.tilingPaddingHorizontal = function () {
-      return chiseInstance.calculatePaddings(horizontalPaddingPercent);
-    };
 
     return options;
   },
@@ -325,7 +313,6 @@ var LayoutPropertiesView = Backbone.View.extend({
       currentLayoutProperties.numIter = Number(document.getElementById("num-iter").value);
       currentLayoutProperties.tile = document.getElementById("tile").checked;
       currentLayoutProperties.packComponents = document.getElementById("pack-components").checked ? true : false;
-      currentLayoutProperties.animate = document.getElementById("animate").checked ? true : false;
       currentLayoutProperties.randomize = !document.getElementById("incremental").checked;
       currentLayoutProperties.gravityRangeCompound = Number(document.getElementById("gravity-range-compound").value);
       currentLayoutProperties.gravityCompound = Number(document.getElementById("gravity-compound").value);
@@ -333,8 +320,7 @@ var LayoutPropertiesView = Backbone.View.extend({
       currentLayoutProperties.tilingPaddingVertical = Number(document.getElementById("tiling-padding-vertical").value);
       currentLayoutProperties.tilingPaddingHorizontal = Number(document.getElementById("tiling-padding-horizontal").value);    
       currentLayoutProperties.initialEnergyOnIncremental = Number(document.getElementById("incremental-cooling-factor").value);
-      currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;
-
+      currentLayoutProperties.improveFlow = document.getElementById("improve-flow").checked;      
       // reset currentLayoutProperties in scratch pad
       appUtilities.setScratch(cy, currentLayoutProperties, 'currentLayoutProperties');
 
@@ -444,6 +430,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
       appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, self); // default color scheme
     });
+  
   },
   changeStyle: function(style) {
     if(style == 'solid'){
@@ -466,13 +453,17 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     }
   },
   render: function () {
+  
+    
     this.template = _.template($("#color-scheme-inspector-template").html());
     var cy = appUtilities.getActiveCy();
     // scheme_type and current_scheme are used to highlight the current color scheme with the javascript embedded to color-scheme-inspector-template div(line: 2337 in index.html)
     var scheme_type = $("#color-scheme-inspector-style-select").val();
     var current_scheme = appUtilities.getScratch(cy,'currentGeneralProperties').mapColorScheme;
+   
     this.$el.empty();
     this.$el.html(this.template({schemes: this.schemes, schemes_gradient: this.schemes_gradient, schemes_3D: this.schemes_3D, scheme_type: scheme_type, current_scheme: current_scheme}));
+    
     return this;
   }
 });
@@ -556,6 +547,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.mapDescription = {id: "map-description", type: "text",
       property: "currentGeneralProperties.mapDescription"};
 
+   
     // general properties part
     $(document).on("change", "#map-name", function (evt) {
 
@@ -587,15 +579,130 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#map-description').blur();
     });
 
-    $(document).on("change", "#compound-padding", function (evt) {
+    $(document).on("change", "#map-type", function (evt) {
 
+      var callback = function(){
+        $('#map-type').val(chiseInstance.getMapType());
+      };
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var elements = cy.elements();
+      
+      var newMapType = $("#map-type").val();
+      if(cy.elements().length == 0){
+        //chiseInstance.elementUtilities.setMapType(newMapType);
+        cy.undoRedo().do("changeMapType", {mapType: newMapType, callback : callback});
+        return;
+      }
+      var currentMapType = chiseInstance.getMapType();
+      var validChange = false;
+      if((currentMapType == 'PD' || currentMapType == 'AF' || currentMapType =='SIF') && newMapType == 'HybridAny' && !validChange){
+        validChange = true;
+
+        //ok
+      }else if((currentMapType == 'PD' || currentMapType == 'AF') && (newMapType == 'HybridAny' || newMapType == 'HybridSbgn')&& !validChange){
+        validChange = true;
+        //ok
+      }else if(currentMapType =='HybridSbgn' && newMapType == 'HybridAny' && !validChange){
+        validChange = true;
+      }else if(currentMapType =='HybridSbgn' && (newMapType == 'PD' || newMapType =='AF')){
+        
+        if(newMapType == 'PD'){
+           //check no AF elements in netwrok     
+          var checkType = true;     
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "AF"){
+              checkType = false;             
+            }
+          }
+          validChange = checkType;     
+          
+         
+        }else{
+          //check no PD elements in netwrok
+          var checkType = true;     
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "PD"){
+              checkType = false;             
+            }
+          }
+          validChange = checkType;     
+        }
+      }else if(currentMapType == 'HybridAny' && !validChange){
+        if(newMapType == 'HybridSbgn'){
+           //check no SIF elements in netwrok
+           var checkType = true;     
+           for(var i = 0 ; i < elements.length && checkType ;i++){
+             if(elements[i].data("language") == "SIF"){
+               checkType = false;             
+             }
+           }
+           validChange = checkType;     
+        }else if(newMapType =='PD'){
+           //check no AF  OR SIF elements in netwrok
+           var checkType = true;  
+          for(var i = 0 ; i < elements.length &&  checkType;i++){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "SIF"){
+              checkType = false;            
+            }
+          }
+          validChange = checkType;  
+
+        }else if(newMapType == 'AF'){
+          //check no PD  OR SIF elements in netwrok
+          var checkType = true;   
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF"){
+              checkType = false;            
+            }
+          }
+
+          validChange = checkType;  
+
+        }else{
+          //check no PD  OR AF elements in netwrok
+          var checkType = true;  
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "PD"){
+              checkType = false;           
+            }
+          }
+
+          validChange = checkType;  
+        }
+      }
+       if(validChange){
+        cy.undoRedo().do("changeMapType", {mapType: newMapType, callback : callback});
+         //chiseInstance.elementUtilities.setMapType(newMapType);
+       }else{
+        $("#map-type").val(currentMapType);
+         appUtilities.promptMapTypeView.render("You cannot change map type "+ appUtilities.mapTypesToViewableText[currentMapType] + " to a map of type "+appUtilities.mapTypesToViewableText[newMapType]+"!");
+         
+       }
+    
+      $('#map-type').blur();
+    });
+    $(document).on("change", "#compound-padding", function (evt) {
+      
+      var newValue = Number($('#compound-padding').val());
+      if(newValue < 0 ){
+        newValue = 0;
+      }
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.compoundPadding.value = Number($('#compound-padding').val());
+      self.params.compoundPadding.value = Number(newValue);
+     // var ur = cy.undoRedo();
+      //var actions = [];
+      //actions.push({name:"changeMenu", param:self.params.compoundPadding});
+      //actions.push({name:"setCompoundPadding", param:self.params.compoundPadding});
+     // ur.do("batch", actions);
       cy.undoRedo().do("changeMenu", self.params.compoundPadding);
+     
       $('#compound-padding').blur();
     });
+
 
     $(document).on("change", "#arrow-scale", function (evt) {
 
@@ -677,12 +784,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+      //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
     });
 
     $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+      //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
     });
 
     $(document).on("click", "#map-general-default-button", function (evt) {
@@ -715,13 +822,14 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     // use active cy instance
     var cy = appUtilities.getActiveCy();
-
+    var chiseInstance = appUtilities.getActiveChiseInstance();
     // get current general properties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
+    $("#map-type").val(chiseInstance.elementUtilities.getMapType());
     return this;
   }
 });
@@ -909,6 +1017,495 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
 
+    return this;
+  }
+});
+
+//The render functions for the experimental panel
+var experimentTabPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    var self = this;
+    self.params = {};
+    self.params.experimentDescription = {id: "map-experiment", type: "text",
+    property: "currentGeneralProperties.experimentDescription"};
+
+    $(document).on("click","#load-exp-data-util", function (evt) {
+        $("#overlay-data").trigger('click');
+    });
+
+    $(document).on("click", "#experiment-remove-all, #experiment-data-remove-all", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var param = {self};
+      cy.undoRedo().do("updateRemoveAll", param);
+      self.render();
+    });
+
+    $(document).on("click", "#experiment-hide-all, #experiment-data-hide-all", function (evt) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var params = {};
+      params.self = self;
+      if(evt.target.value == 'true'){
+        cy.undoRedo().do("hideAll", params);
+      }
+      else{
+        cy.undoRedo().do("unhideAll", params);
+      }
+    });
+
+    // Make the DIV element draggable https://www.w3schools.com/howto/howto_js_draggable.asp
+    function makeElementDraggable(elmnt) {
+      var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      if (document.getElementById(elmnt.id + "-header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+      }
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+      }
+
+      function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    $(document).on("click", "#show-experiment-data-as-table", function () {
+      var divId = 'draggable-exp-data-div';
+      
+      if ($('#' + divId).is(':visible')) {
+        return;
+      }
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var data = chiseInstance.getExperimentalData().parsedDataMap;
+      makeElementDraggable(document.getElementById(divId));
+      $('#' + divId).show();
+      fillTable4ExpData(document.getElementById('map-exp-table'), data);
+
+      $(document).off('keyup', '#search-exp-table');
+      $(document).on('keyup', '#search-exp-table', _.debounce(function () {
+        searchTable(document.getElementById('map-exp-table'), $('#search-exp-table').val());
+      }, 250));
+    });
+
+    $(document).on("click", "#close-experiment-data-as-table", function () {
+      $('#draggable-exp-data-div').hide();
+    });
+
+    function fillTable4ExpData(elem, data) {
+      var headers = ['Node'];
+      var fileNames = {};
+      var experiments = {};
+      var s = '';
+
+      for (var node in data) {
+        for (var exp in data[node]) {
+          experiments[exp] = true;
+        }
+      }
+
+      for (var h in experiments) {
+        var arr = h.split('?');
+        if (!fileNames[arr[0]]) {
+          fileNames[arr[0]] = 1; // for colspan
+        } else {
+          fileNames[arr[0]] += 1; // for colspan
+        }
+        headers.push(arr[arr.length-1]);
+      }
+
+      // insert file names as "headers" of html table
+      s += '<tr><th style="border: 0px;"></th>'
+      for (let i in fileNames) {
+        s += `<th class="text-center" style="border: 0px;" colspan="${fileNames[i]}">${i}</td>`;
+      }
+      s += '</tr>'
+
+      s += '<tr>'
+      for (let i = 0; i < headers.length; i++) {
+        var centerer = '';
+        if (i > 0) {
+          centerer = 'class="text-center"';
+        }
+        s += `<th id="sortable-table-header-${i}" style="cursor: pointer;" title="sort" ${centerer}>${headers[i]}</th>`
+      }
+      s += '</tr>'
+
+      // insert table columns
+      var nodeCnt = 0;
+      var nodeLabels = [];
+      for (var node in data) {
+        nodeLabels.push(node);
+        s += `<tr id="hoverable-table-row-${nodeCnt++}"><td>${node}</td>`;
+        for (var exp in experiments) {
+          s += `<td class="text-center">${data[node][exp] || '-'}</td>`
+        }
+        s += '</tr>';
+      }
+      elem.innerHTML = s;
+
+      // change `let i` to `var i` to see the difference
+      for (let i = 0; i < headers.length; i++) {
+        $(document).off('click', '#sortable-table-header-' + i);
+        $(document).on('click', '#sortable-table-header-' + i, function () {
+          sortTable(document.getElementById('map-exp-table'), i);
+        });
+      }
+
+      for (let i = 0; i < nodeCnt; i++) {
+        $(document).off('mouseenter', '#hoverable-table-row-' + i);
+        $(document).off('mouseleave', '#hoverable-table-row-' + i);
+        $(document).on('mouseenter', '#hoverable-table-row-' + i, () => {
+          var cy = appUtilities.getActiveCy();
+          var vu = cy.viewUtilities('get');
+          var eles = cy.nodes().filter(x => x.data('label') == nodeLabels[i]);
+          vu.highlight(eles, 2);
+        });
+        $(document).on('mouseleave', '#hoverable-table-row-' + i, () => {
+          var cy = appUtilities.getActiveCy();
+          var vu = cy.viewUtilities('get');
+          var eles = cy.nodes().filter(x => x.data('label') == nodeLabels[i]);
+          vu.removeHighlights(eles);
+        });
+      }
+    }
+
+    function searchTable(table, filter, searchIdxes) {
+      if (!searchIdxes) {
+        searchIdxes = [0];
+      }
+      filter = filter.toUpperCase();
+      var rows = table.getElementsByTagName('tr');
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (var i = 0; i < rows.length; i++) {
+        for (var j = 0; j < searchIdxes.length; j++) {
+          var col = rows[i].getElementsByTagName('td')[searchIdxes[0]];
+          if (col) {
+            var txt = col.textContent || col.innerText;
+            if (txt.toUpperCase().indexOf(filter) > -1) {
+              rows[i].style.display = '';
+            } else {
+              rows[i].style.display = 'none';
+            }
+          }
+        }
+      }
+    }
+
+    // makes bubble sort based on column index in specified direction
+    function sortTable(table, colIdx, dir) {
+      var rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+      switching = true;
+      // Set the sorting direction to ascending:
+      if (!dir) {
+        dir = 'asc';
+      }
+      if (!colIdx) {
+        colIdx = 0;
+      }
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < rows.length - 1; i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName('td')[colIdx];
+          y = rows[i + 1].getElementsByTagName('td')[colIdx];
+          if (!x || !y) {
+            continue;
+          }
+          var v1 = x.innerHTML;
+          var v2 = y.innerHTML;
+          if (!isNaN(v1)) {
+            v1 = +v1;
+          }
+          if (!isNaN(v2)) {
+            v2 = +v2;
+          }
+          /* Check if the two rows should switch place,
+          based on the direction, asc or desc: */
+          if (dir == 'asc') {
+            // "-" is special character to show emmptiness
+            if (v1 > v2 || (v1 != '-' && v2 == '-') ) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          } else if (dir == 'desc') {
+            if (v1 < v2 || (v1 == '-' && v2 != '-')) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          // Each time a switch is done, increase this count by 1:
+          switchcount++;
+        } else {
+          /* If no switching has been done AND the direction is "asc",
+          set the direction to "desc" and run the while loop again. */
+          if (switchcount == 0 && dir == 'asc') {
+            dir = 'desc';
+            switching = true;
+          }
+        }
+      }
+    }
+
+    $(document).on("click", '[id^="experiment-file-vis-"]', function (evt) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var fileName = this.id.substring(20);
+      var subExperiments = $('[id^="experiment-vis-' + filename + '"]');
+      var params = {fileName};
+      params.self = self;
+
+      if(this.value === "true"){
+        cy.undoRedo().do("fileHide", params);
+      }
+      else{
+        cy.undoRedo().do("fileUnhide", params);
+      }
+      self.render();
+    });
+    //file delete button
+    $(document).on("click", '[id^="experiment-file-delete-"]', function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var fileName = evt.target.id.substring(23);
+      var param = {fileName, self, document};
+      cy.undoRedo().do("deleteFile", param); 
+    });
+    //change experiment visibilty
+    $(document).on("click", '[id^="experiment-vis-"]', function (evt) {
+      var expRep = evt.target.id.substring(15);
+      var index = expRep.indexOf('?');
+      var fileName = expRep.substring(0,index);
+      var expName = expRep.substring(index+1);
+      var params = {fileName, expName};
+      params.evt = evt;
+      params.self=self;
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      if(evt.target.value === "true"){
+        cy.undoRedo().do("hideExperimentPanel", params);
+      }
+      else{
+        cy.undoRedo().do("unhideExperimentPanel", params);
+      }
+    });
+    //remove experiment
+    $(document).on("click", '[id^="experiment-delete-"]', function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var expRep = evt.target.id.substring(18);
+      var cy = appUtilities.getActiveCy();
+      var index = expRep.indexOf('?');
+      var fileName = expRep.substring(0,index);
+      var expName = expRep.substring(index+1);
+      var param = {self, fileName, expName, document}
+      cy.undoRedo().do("updateExperimentPanel", param);
+    });
+  },
+
+  recalculate: function(){
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var self = this;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    param = self;
+    self.params.experimentDescription.value =  fileNames;
+    cy.undoRedo().do("expOnLoad", param);
+  },
+
+  loadExperiment: function(params){
+    $(".validation-mode-tab").removeClass("active");
+    $('#inspector-map-tab a').tab('show');
+   
+    var panels =  $("#sbgn-inspector-map").find(".panel-heading");
+    for(var i = 0 ; i < panels.length; i++ ){
+      if(!$(panels[i]).hasClass("collapsed") && panels[i].id != "sbgn-inspector-map-properties-experiment-heading"){
+        $(panels[i]).click();
+      }
+    }
+  
+    if($("#sbgn-inspector-map-properties-experiment-heading").hasClass("collapsed")) {
+      $('#sbgn-inspector-map-properties-experiment-heading').click();
+    }
+    var cy = appUtilities.getActiveCy();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var generalProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+    var firstExperiment = generalProperties.experimentDescription;
+    var self = this;
+    var fileNames = chiseInstance.getGroupedDataMap();
+    params.self = self;
+    self.params.experimentDescription.value =  fileNames;
+    params.document = document;
+    params.value = generalProperties.mapColorScheme;
+    params.scheme_type = generalProperties.mapColorSchemeStyle;
+    params.self2 = appUtilities.colorSchemeInspectorView;
+   
+    var ur = cy.undoRedo();
+    var actions = [];
+    //after the deleting the first experiemnt color schme should come back
+    if(firstExperiment == undefined || Object.keys(firstExperiment).length == 0)
+    {
+      var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+      var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      actions = appUtilities.getActionsToApplyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+      actions.push({name: "loadExperiment", param: params});
+      ur.do("batch", actions);
+    }
+    else{
+      cy.undoRedo().do("loadMore", params);
+    }
+  },
+
+  render: function() {
+   
+    var cy = appUtilities.getActiveCy();
+    var self = this;
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+    self.template = _.template($("#map-tab-experiment-template").html());
+    currentGeneralProperties.experimentDescription = chiseInstance.getGroupedDataMap();
+    this.$el.html(this.template(currentGeneralProperties));
+    var refreshButtons = function(param){
+      var document = param.document;
+      var visibleDataMapByExp = param.visibleDataMapByExp;
+      var visibleFiles = param.visibleFiles;
+      var fileDescription = param.fileDescription;
+      var allVis = param.allVis;
+      var fileTitle = param.fileTitle;
+      for (let i in visibleDataMapByExp)
+      {
+        var index = i.indexOf('?');
+        var fileName = i.substring(0,index);
+        var expName = i.substring(index+1);
+        var buttonName = "experiment-vis-"+ fileName+ "?" + expName;
+        var button = document.getElementById(buttonName);
+        if(button != null){
+          if(visibleDataMapByExp[i] == true ||visibleDataMapByExp[i] === true ){
+            button.value = "true";
+            button.style.backgroundColor = "";
+          }
+          else {
+            button.value = "false";
+            button.style.backgroundColor = "#EAEAEA";
+            button.style.color = "#FFFFFF";
+          }
+        }
+      }
+      for (let i in visibleFiles){
+
+        var buttonName = "experiment-file-vis-"+ i;
+        var button = document.getElementById(buttonName);
+        
+        if(button != null){
+          if(fileTitle[i] != undefined && fileDescription[i] != undefined)
+          {
+            button.title = button.title + i + " \x0A(" + fileTitle[i].replace(/(\r\n|\n|\r)/gm,"") + ":\x0A" + fileDescription[i].replace(/(\r\n|\n|\r)/gm,"") + ")";
+          }
+          else if(fileDescription[i] != undefined){
+            button.title = button.title + i + " \x0A(" + fileDescription[i].replace(/(\r\n|\n|\r)/gm,"") + ")";
+          }
+          else if(fileTitle[i] != undefined)
+          { 
+            button.title = button.title + i + " \x0A(" + fileTitle[i].replace(/(\r\n|\n|\r)/gm,"") + ")"; 
+          } 
+          else{
+            button.title = button.title + i;
+          }
+       
+          if(visibleFiles[i] == true ||visibleFiles[i] === true ){
+            button.value = "true";
+            button.style.backgroundColor = "";
+          }
+          else {
+            button.value = "false";
+            button.style.backgroundColor = "#EAEAEA";
+            button.style.color = "#FFFFFF";
+          }
+        }
+      }
+
+      var buttonName = "experiment-hide-all";
+      var button = document.getElementById(buttonName);
+
+      if(button != null){
+        if(allVis){
+          button.value = "true";
+          button.style.backgroundColor = "";
+        }
+        else {
+          button.value = "false";
+          button.style.backgroundColor = "#EAEAEA";
+          button.style.color = "#FFFFFF";
+        }
+      }
+
+      buttonName = "experiment-data-hide-all";
+      button = document.getElementById(buttonName);
+      if(button != null){
+        if(allVis){
+          button.value = "true";
+         
+        }
+        else {
+          button.value = "false";        
+        }
+      }
+    }
+    var experimentalParams = chiseInstance.getExperimentalData();
+    experimentalParams.document = document;
+    refreshButtons(experimentalParams);
+    //chiseInstance.buttonUpdate(document);
+    if( currentGeneralProperties.experimentDescription.length  > 0 || Object.entries(currentGeneralProperties.experimentDescription).length != 0){
+     //document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "hidden";
+     document.getElementById('sbgn-inspector-map-color-scheme').style.display = "none";
+    }
+    else{
+    document.getElementById('sbgn-inspector-map-color-scheme').style.display = "";
+    // document.getElementById('sbgn-inspector-map-color-scheme').style.visibility = "initial";
+    }
     return this;
   }
 });
@@ -1907,10 +2504,10 @@ var FileSaveView = Backbone.View.extend({
 
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-
+      
       // use the assocated cy instance
       var cy = chiseInstance.getCy();
-
+      cy.elements().unselect();
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
@@ -1961,25 +2558,31 @@ var FileSaveView = Backbone.View.extend({
         renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
 
         // Exclude extensions if the version is plain
-        if (version === "plain") {
+        if (version === "plain" || version === "plain3") {
           saveAsFcn(filename, version, undefined, undefined, nodes, edges);
         }
         else {
           saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
         }
-      }
+      } 
       else if(fileformat === "celldesigner") {
-        var blob = new Blob([text], {
-            type: "text/plain;charset=utf-8;",
+       
+        chiseInstance.saveAsCellDesigner(filename, function(){
+          var promptFileConversionErrorView  = new PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
+          promptFileConversionErrorView.render();             
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
         });
-        FileSaver.saveAs(blob, filename);
+       
       }
       else if(fileformat === "sbml")
       {
-        var blob = new Blob([text], {
-          type: "text/plain;charset=utf-8;",
-      });
-      FileSaver.saveAs(blob, filename);
+        chiseInstance.saveAsSbml(filename, function(data,errorMessage){
+        
+          var promptSbmlConversionErrorView  = new PromptSbmlConversionErrorView({el: '#prompt-sbmlConversionError-table'});
+          promptSbmlConversionErrorView.render(data,errorMessage);             
+          //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
+        });
+     
       }
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);
@@ -2073,7 +2676,6 @@ var SaveUserPreferencesView = Backbone.View.extend({
 
       delete preferences.currentGeneralProperties.mapName;
       delete preferences.currentGeneralProperties.mapDescription;
-       
       }
 
       if(document.getElementById("user-prefrences-layout-check").checked){
@@ -2219,6 +2821,7 @@ var LoadUserPreferencesView = Backbone.View.extend({
                 actions.push({name: "changeMenu", param: mapTabRearrangementPanel.params[key]});            
             }          
         });
+ 
           
           var applyColorScheme = false;
           var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
@@ -2386,15 +2989,20 @@ var PromptMapTypeView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-mapType-template").html());
   },
-  render: function (afterFunction) {
+  render: function (message,suggestion, afterFunction) {
     var self = this;
     self.template = _.template($("#prompt-mapType-template").html());
+
+    var param = {};
+    param.message = message;
+    param.suggestion =suggestion;
+    self.template = self.template(param);
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
 
     $(document).off("click", "#prompt-mapType-accept").on("click", "#prompt-mapType-accept", function (evt) {
-      afterFunction();
+      //afterFunction();
       $(self.el).modal('toggle');
     });
 
@@ -2548,6 +3156,56 @@ var PromptFileConversionErrorView = Backbone.View.extend({
    }
 });
 
+var PromptSbmlConversionErrorView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-sbmlConversionError-template").html());
+  },
+  render: function(data, errorMessage) {
+    var self = this;
+    self.template = _.template($("#prompt-sbmlConversionError-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#prompt-sbml-confirm").on("click", "#prompt-sbml-confirm", function (evt) {   
+      var userAgreed = document.getElementById("sbml-coversion-user-agree").checked ? true : false;
+     
+      if(userAgreed){
+        setTimeout(function(){
+        $.ajax({
+          type: 'post',
+          url: "/utilities/sendEmail",
+          headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+          data: { fileContent: data , message: "Error message: "+ errorMessage},            
+          success: function( data ) {        
+          },
+          error: function(xhr, options, err){             
+            console.log( err );
+            
+          }        })} , 0); 
+      }else{
+        setTimeout(function(){
+          $.ajax({
+            type: 'post',
+            url: "/utilities/sendEmail",
+            headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            data: { fileContent: "no-data" , message: "The user didn't consent to sharing their file." + "\nError message: " + errorMessage},            
+            success: function( data ) {        
+            },
+            error: function(xhr, options, err){             
+              console.log( err );
+              
+            }        })} , 0); 
+      }    
+      
+      $(self.el).modal('toggle');
+        
+    });
+
+    return this;
+  }
+});
 var PromptInvalidURLWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -3723,6 +4381,7 @@ module.exports = {
   MapTabGeneralPanel: MapTabGeneralPanel,
   MapTabLabelPanel: MapTabLabelPanel,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
+  experimentTabPanel: experimentTabPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
   NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,
@@ -3747,5 +4406,6 @@ module.exports = {
   PromptInvalidURIWarning: PromptInvalidURIWarning,
   PromptInvalidURLWarning: PromptInvalidURLWarning,
   PromptInvalidImageWarning: PromptInvalidImageWarning,
-  PromptInvalidEdgeWarning: PromptInvalidEdgeWarning
+  PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
+  PromptSbmlConversionErrorView : PromptSbmlConversionErrorView
 };

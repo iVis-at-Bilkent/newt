@@ -5,7 +5,7 @@ var ChemicalView = require('./backbone-views').ChemicalView;
 
 var fillChemicalContainer = function (node) {
   var geneClass = node.data('class');
-  if (geneClass != 'simple chemical') {
+  if (geneClass != 'simple chemical' && geneClass != 'BA simple chemical' && geneClass != 'SIF simple chemical') {
     $("#chemical-container").html("");
     return;
   }
@@ -47,7 +47,7 @@ var fillChemicalContainer = function (node) {
       }
     },
     error: function(xhr, options, err){
-      $('#chemical-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + error + "</span>");
+      $('#chemical-container').html("<span style='padding-left: 3px;'>Error retrieving data: " + err + "</span>");
     }
   });
   $('#chemical-title').html("<b>" + node.data('label') + "</b>");

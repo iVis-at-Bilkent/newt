@@ -1,6 +1,6 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
-  <map language="unknown">
+  <map language="process description">
     <glyph id="glyph9" class="macromolecule">
       <label text="hexokinase"/>
       <bbox x="55.499746545201916" y="40.98323077999954" w="65.64990234375" h="25"/>

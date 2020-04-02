@@ -26,8 +26,8 @@
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2none5050100100" id-list="glyph3 glyph14 glyph12 glyph2">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="infoboxffffff5552.259normalnormalArial0f0f0frectangle" id-list="glyph3_0 glyph15_0 glyph14_0 glyph10_2 glyph12_0 glyph1_0 glyph2_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3" shape-name="rectangle"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0frectangle" id-list="glyph3_0 glyph15_0 glyph14_0 glyph10_2 glyph12_0 glyph1_0 glyph2_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3"/>
           </style>
           <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph15 glyph10 glyph1">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
@@ -35,8 +35,8 @@
           <style id="nodeffffff0.55555551.2511normalnormalHelvetica000image_4none5050100100" id-list="glyph13 glyph11 glyph0">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="infoboxffffff5552.259normalnormalArial0f0f0fstadium" id-list="glyph10_0 glyph10_1 glyph1_1 glyph1_2">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3" shape-name="stadium"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" id-list="glyph10_0 glyph10_1 glyph1_1 glyph1_2">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_3"/>
           </style>
           <style id="nodeffffff15555551.25" id-list="nwtN_b4078d10-6b7d-456b-a754-5a3975cbe1ac">
             <g stroke="color_2" stroke-width="1.25" fill="color_1"/>
@@ -47,7 +47,7 @@
         </listOfStyles>
       </renderInformation>
       <mapProperties>
-        <compoundPadding>10</compoundPadding>
+        <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
         <arrowScale>1.25</arrowScale>
@@ -86,7 +86,7 @@ using logical operators</mapDescription>
       <bbox x="379.1620543768622" y="422.0211623750535" w="60" h="30"/>
       <glyph id="glyph3_0" class="unit of information">
         <label text="ct:mRNA"/>
-        <bbox x="404.6870543768622" y="416.0211623750535" w="40" h="12"/>
+        <bbox x="384.1620543768622" y="416.0211623750535" w="40" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph7" class="source and sink">
@@ -102,7 +102,7 @@ using logical operators</mapDescription>
       <bbox x="486.02912179116584" y="495.0054808397" w="60" h="30"/>
       <glyph id="glyph15_0" class="unit of information">
         <label text="mt:prot"/>
-        <bbox x="513.5128178642408" y="489.0054808397" w="31.1181640625" h="12"/>
+        <bbox x="491.02912179116584" y="489.0054808397" w="31.1181640625" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph14" class="nucleic acid feature">
@@ -110,29 +110,53 @@ using logical operators</mapDescription>
       <bbox x="345.5013840438063" y="284.0166944941331" w="60" h="30"/>
       <glyph id="glyph14_0" class="unit of information">
         <label text="ct:gene"/>
-        <bbox x="372.625860816347" y="278.0166944941331" w="32.802734375" h="12"/>
+        <bbox x="350.5013840438063" y="278.0166944941331" w="32.802734375" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph13" class="complex">
+      <extension>
+        <extraInfo>
+          <w>116.5</w>
+          <h>115.22325353322313</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="STAT1α"/>
-      <bbox x="134.2890089090587" y="190.96669449413326" w="116.5" h="115.22325353322313"/>
+      <bbox x="124.28900890905871" y="180.96669449413326" w="136.5" h="135.22325353322313"/>
       <glyph id="glyph11" class="complex">
+        <extension>
+          <extraInfo>
+            <w>93.25</w>
+            <h>46.5</h>
+            <minW>0</minW>
+            <minH>0</minH>
+            <WLBias>0</WLBias>
+            <WRBias>0</WRBias>
+            <HTBias>0</HTBias>
+            <HBBias>0</HBBias>
+          </extraInfo>
+        </extension>
         <label text="STAT1α"/>
-        <bbox x="145.9140089090587" y="202.59169449413324" w="93.25" h="46.5"/>
+        <bbox x="135.9140089090587" y="192.59169449413324" w="113.25" h="66.5"/>
         <glyph id="glyph10" class="macromolecule">
           <label text="STAT1α"/>
           <bbox x="147.5390089090587" y="210.84169449413324" w="90" h="30"/>
           <glyph id="glyph10_0" class="state variable">
             <state value="P" variable="Y701"/>
-            <bbox x="194.2122510965587" y="234.84169449413324" w="40.17578125" h="12"/>
+            <bbox x="150.75515474239205" y="234.84169449413324" w="40.17578125" h="12"/>
           </glyph>
           <glyph id="glyph10_1" class="state variable">
             <state value="P" variable="Y727"/>
-            <bbox x="233.2649854715587" y="234.84169449413324" w="40.17578125" h="12"/>
+            <bbox x="194.14708182572537" y="234.84169449413324" w="40.17578125" h="12"/>
           </glyph>
           <glyph id="glyph10_2" class="unit of information">
             <label text="mt:prot"/>
-            <bbox x="196.27060070593373" y="204.84169449413324" w="31.1181640625" h="12"/>
+            <bbox x="152.5390089090587" y="204.84169449413324" w="31.1181640625" h="12"/>
           </glyph>
         </glyph>
       </glyph>
@@ -141,27 +165,39 @@ using logical operators</mapDescription>
         <bbox x="161.28610914364012" y="274.56494802735637" w="60" h="30"/>
         <glyph id="glyph12_0" class="unit of information">
           <label text="ct:grr"/>
-          <bbox x="191.00746366885215" y="268.56494802735637" w="22.7783203125" h="12"/>
+          <bbox x="166.28610914364012" y="268.56494802735637" w="22.7783203125" h="12"/>
         </glyph>
       </glyph>
     </glyph>
     <glyph id="glyph0" class="complex">
+      <extension>
+        <extraInfo>
+          <w>93.25000000000001</w>
+          <h>46.5</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
       <label text="STAT1α"/>
-      <bbox x="59.44346744528587" y="38.34609843233484" w="93.25000000000001" h="46.5"/>
+      <bbox x="49.44346744528587" y="28.34609843233484" w="113.25000000000001" h="66.5"/>
       <glyph id="glyph1" class="macromolecule">
         <label text="STAT1α"/>
         <bbox x="61.06846744528586" y="46.59609843233484" w="90" h="30"/>
         <glyph id="glyph1_0" class="unit of information">
           <label text="mt:prot"/>
-          <bbox x="109.80005924216087" y="40.59609843233484" w="31.1181640625" h="12"/>
+          <bbox x="66.06846744528586" y="40.59609843233484" w="31.1181640625" h="12"/>
         </glyph>
         <glyph id="glyph1_1" class="state variable">
           <state value="P" variable="Y701"/>
-          <bbox x="107.74170963278587" y="70.59609843233484" w="40.17578125" h="12"/>
+          <bbox x="64.28461327861919" y="70.59609843233484" w="40.17578125" h="12"/>
         </glyph>
         <glyph id="glyph1_2" class="state variable">
           <state value="P" variable="Y727"/>
-          <bbox x="146.79444400778587" y="70.59609843233484" w="40.17578125" h="12"/>
+          <bbox x="107.67654036195252" y="70.59609843233484" w="40.17578125" h="12"/>
         </glyph>
       </glyph>
     </glyph>
@@ -170,7 +206,7 @@ using logical operators</mapDescription>
       <bbox x="224.07679300933827" y="65.34609843233484" w="60" h="30"/>
       <glyph id="glyph2_0" class="unit of information">
         <label text="ct:grr"/>
-        <bbox x="253.31508167883453" y="59.34609843233484" w="22.7783203125" h="12"/>
+        <bbox x="229.07679300933827" y="59.34609843233484" w="22.7783203125" h="12"/>
       </glyph>
     </glyph>
     <glyph id="glyph9" class="association">

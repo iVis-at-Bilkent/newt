@@ -36,6 +36,21 @@ module.exports = function (chiseInstance) {
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
     ur.action("relocateInfoBoxes", appUndoActions.relocateInfoBoxes, appUndoActions.relocateInfoBoxes);
+    ur.action("updateExperimentPanel", appUndoActions.updateExperimentPanel, appUndoActions.updateExperimentPanel2);
+    ur.action("updateExperimentPanel2", appUndoActions.updateExperimentPanel2, appUndoActions.updateExperimentPanel);
+    ur.action("updateRemoveAll", appUndoActions.updateRemoveAll, appUndoActions.updateRestore);
+    ur.action("updateRestore", appUndoActions.updateRestore, appUndoActions.updateRemoveAll);
+    ur.action("unhideExperimentPanel", appUndoActions.unhideExperimentPanel, appUndoActions.hideExperimentPanel);
+    ur.action("hideExperimentPanel", appUndoActions.hideExperimentPanel, appUndoActions.unhideExperimentPanel);
+    ur.action("deleteFile", appUndoActions.expFileDel, appUndoActions.expFileUndoDel);
+    ur.action("undodeleteFile", appUndoActions.expFileUndoDel, appUndoActions.expFileDel);
+    ur.action("expOnLoad", appUndoActions.expOnLoad, appUndoActions.expOnLoad);
+    ur.action("fileHide", appUndoActions.hideFileUI, appUndoActions.hideFileUIredo);
+    ur.action("fileUnhide", appUndoActions.unhideFileUI, appUndoActions.unhideFileUIredo);
+    ur.action("hideAll", appUndoActions.hideAllUI, appUndoActions.hideAllUIUndo);
+    ur.action("unhideAll", appUndoActions.unhideAllUI, appUndoActions.unhideAllUIUndo);
+    ur.action("loadExperiment", appUndoActions.loadExperimentData, appUndoActions.undoLoadExperiment);
+    ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -128,6 +143,27 @@ module.exports = function (chiseInstance) {
         content: 'Collapse Complexes',
         onClickFunction: function () {
           $("#collapse-complexes").trigger('click');
+        },
+        coreAsWell: true // Whether core instance have this item on cxttap
+      },
+      {
+        id: 'ctx-menu-tile-all-information-boxes',
+        content: 'Tile Information Boxes',
+        onClickFunction: function () {
+          var cy = appUtilities.getActiveCy();
+          var eles = cy.nodes();   
+          var ur = cy.undoRedo();
+          var actions = [];
+
+         eles.forEach(function(node){
+          if (node.data('auxunitlayouts') !== undefined && node.data('statesandinfos').length > 0) {
+            actions.push({name: "fitUnits", param: { node: node, locations:["top", "bottom", "right", "left"]}});
+          }
+         
+         });
+      
+         ur.do("batch", actions);
+         
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
@@ -239,7 +275,7 @@ module.exports = function (chiseInstance) {
 
           if (consumptionEdges.length > 0) {
             var ur = cy.undoRedo();
-            ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "Unknown"});
+            ur.do("convertIntoReversibleReaction", {processId: cyTarget.id(), collection: consumptionEdges, mapType: "HybridAny"});
           }
           var currentArrowScale = Number($('#arrow-scale').val());
           cyTarget.connectedEdges().style('arrow-scale', currentArrowScale);
@@ -395,36 +431,28 @@ module.exports = function (chiseInstance) {
     });
 
     cy.viewUtilities({
-      node: {
-        highlighted: { // styles for when nodes are highlighted.
-          'border-width': function(ele) {
-            return Math.max(parseFloat(ele.data('border-width')) + 2, 3);
-          },
-          'border-color': '#0B9BCD'
-        },
-        selected: {
-          'border-color': '#d67614',
-          'background-color': function (ele) {
-            return ele.css('background-color');
+      highlightStyles: [
+        {
+          node: { 'border-width': function (ele) { return Math.max(parseFloat(ele.data('border-width')) + 2, 3); }, 'border-color': '#0B9BCD' },
+          edge: {
+            'width': function (ele) { return parseFloat(ele.data('width')) + 2; },
+            'line-color': '#0B9BCD',
+            'source-arrow-color': '#0B9BCD',
+            'target-arrow-color': '#0B9BCD'
           }
-        }
-      },
-      edge: {
-        highlighted: {
-          'width': function(ele) { // styles for when edges are highlighted.
-            return parseFloat(ele.data('width')) + 2;
-          },
-          'line-color': '#0B9BCD',
-          'source-arrow-color': '#0B9BCD',
-          'target-arrow-color': '#0B9BCD'
         },
-        selected: {
+        { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
+        { node: { 'border-color': '#d67614',  'border-width': 3 }, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
+      ],
+      selectStyles: {
+        node: {
+          'border-color': '#d67614', 'background-color': function (ele) { return ele.data('background-color'); }
+        },
+        edge: {
           'line-color': '#d67614',
           'source-arrow-color': '#d67614',
           'target-arrow-color': '#d67614',
-          'width': function (ele) {
-            return parseFloat(ele.data('width')) + 2;
-          }
+          'width': function (ele) { return parseFloat(ele.data('width')) + 2; }
         }
       },
       neighbor: function(node){ //select and return process-based neighbors
@@ -557,7 +585,7 @@ module.exports = function (chiseInstance) {
             result = true;
         });
 
-        return result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
+        return !node.data()["expanding"] && result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
       },
       resizeToContentFunction: appUtilities.resizeNodesToContent,
       resizeToContentCuePosition: 'bottom-right',
@@ -588,14 +616,28 @@ module.exports = function (chiseInstance) {
             appUtilities.promptInvalidEdgeWarning.render();
           }
 
+          var isMapTypeValid = false;
+          var currentMapType = chiseInstance.getMapType();
+          if(currentMapType == "HybridAny"){
+            isMapTypeValid = true;
+          }else if(currentMapType == "HybridSbgn"){
+              if(edgeParams.language == "PD" || edgeParams.language =="AF"){
+                isMapTypeValid = true;
+              }
+          }else if(currentMapType == edgeParams.language){
+            isMapTypeValid = true;
+          }
+
           // if added edge changes map type, warn user
-          if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && edgeParams.language != chiseInstance.getMapType()){
-            appUtilities.promptMapTypeView.render(function(){
+          if (chiseInstance.getMapType() && !isMapTypeValid){
+         
+            appUtilities.promptMapTypeView.render('You cannot add element of type '+ appUtilities.mapTypesToViewableText[edgeParams.language]  + ' to a map of type '+appUtilities.mapTypesToViewableText[currentMapType]+'!',"You can change map type from Map Properties.");;
+           /*  appUtilities.promptMapTypeView.render(function(){
                 chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
                 var addedEdge = cy.elements()[cy.elements().length - 1];
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
-            });
+            }); */
           }
           else{
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
@@ -686,7 +728,7 @@ module.exports = function (chiseInstance) {
      * We need to refresh the resize grapples to ensure they are consistent with their parent's status.
      * (for instance: complexes)
      */
-    cy.on("fit-units-after-expandcollapse", function(event) {
+   /*  cy.on("fit-units-after-expandcollapse", function(event) {
       var nodesToConsider = cy.nodes().filter(function(node){
         var sbgnClass = node.data('class');
         if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
@@ -701,13 +743,22 @@ module.exports = function (chiseInstance) {
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
     });
       cy.style().update();
-    });
+    }); */
 
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeResize('get').refreshGrapples();
     });
 
+    cy.on("expandcollapse.beforeexpand",function(event){
+     var node = event.target;
+      node.data("expanding", true);
+
+    });
+   /*  cy.on("expandcollapse.afterexpand",function(event){
+      var node = event.target;
+     node.data("expanding", false);      
+    }); */
     //Updates arrow-scale of edges after expand
     cy.on("expandcollapse.afterexpand", function(event) {
         var currentArrowScale = Number($('#arrow-scale').val());
@@ -726,9 +777,9 @@ module.exports = function (chiseInstance) {
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
-        if(node.data('statesandinfos').length > 0) {
+       /*  if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
-        }
+        } */
         // ensure consistency of inspector properties through resizing
         inspectorUtilities.handleSBGNInspector();
       }
@@ -742,9 +793,9 @@ module.exports = function (chiseInstance) {
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
-        if(node.data('statesandinfos').length > 0) {
+       /*  if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
-        }
+        } */
       }
       else if ( actionName === "changeMenu" ) {
 
@@ -770,9 +821,9 @@ module.exports = function (chiseInstance) {
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
-        if(node.data('statesandinfos').length > 0) {
-          updateInfoBox(node);
-        }
+        /* if(node.data('statesandinfos').length > 0) {
+         updateInfoBox(node);
+        } */
       }
       else if ( actionName === "changeMenu" ) {
 
@@ -1011,10 +1062,24 @@ module.exports = function (chiseInstance) {
           // If the parent class is valid for the node type then add the node
           if (chiseInstance.elementUtilities.isValidParent(nodeType, parentClass)) {
 
+            var isMapTypeValid = false;
+           
+            var currentMapType = chiseInstance.getMapType();
+            if(currentMapType == "HybridAny"){
+              isMapTypeValid = true;
+            }else if(currentMapType == "HybridSbgn"){
+                if(nodeParams.language == "PD" || nodeParams.language =="AF"){
+                  isMapTypeValid = true;
+                }
+            }else if(currentMapType == nodeParams.language){
+              isMapTypeValid = true;
+            }
             // if added node changes map type, warn user
-            if (chiseInstance.getMapType() && chiseInstance.getMapType() != "Unknown" && nodeParams.language != chiseInstance.getMapType()){
-              appUtilities.promptMapTypeView.render(function(){
-                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);});
+            if (chiseInstance.getMapType() && !isMapTypeValid){
+
+              appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
+             /*  appUtilities.promptMapTypeView.render(function(){
+                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);}); */
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
@@ -1201,11 +1266,11 @@ module.exports = function (chiseInstance) {
     });
 
     // infobox refresh when resize happen, for simple nodes
-    cy.on('noderesize.resizedrag', function(e, type, node) {
+    /* cy.on('noderesize.resizedrag', function(e, type, node) {
       if(node.data('statesandinfos').length > 0) {
         updateInfoBox(node);
       }
-    });
+    }); */
 
     cy.on('layoutstop', function (event) {
   		/*
@@ -1218,7 +1283,7 @@ module.exports = function (chiseInstance) {
       {
         appUtilities.getChiseInstance(cy).endSpinner('layout-spinner');
       }
-      var nodesToConsider = cy.nodes().filter(function(node){
+    /*   var nodesToConsider = cy.nodes().filter(function(node){
         var sbgnClass = node.data('class');
         if (sbgnClass == 'complex' || sbgnClass == 'complex multimer' || sbgnClass == 'compartment') {
           return true;
@@ -1231,7 +1296,9 @@ module.exports = function (chiseInstance) {
         }
         var locations = chiseInstance.elementUtilities.checkFit(ele); //Fit all locations
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
-      });
+      }); */
+
+      cy.nodes().forEach(function(node){node.data("expanding", false); });
     });
 
     // if the position of compound changes by repositioning its children

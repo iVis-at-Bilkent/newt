@@ -272,7 +272,8 @@ inspectorUtilities.handleSBGNInspector = function () {
       var borderWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "border-width", "data");
 
       var backgroundOpacity = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "background-opacity", "data");
-      backgroundOpacity = backgroundOpacity?backgroundOpacity:0.5;
+      if(!backgroundOpacity && backgroundOpacity !== 0)
+        backgroundOpacity = 0;
 
       var nodeWidth = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
         return ele.width();
@@ -334,7 +335,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         html += "</td></tr>";
       }
 
-
+      // borderColor = '#555555';
       html += `<tr><td style='width: ${width}px; text-align:right; padding-right: 5px;'> <font class='sbgn-label-font'>Border Color</font> </td><td style='padding-left: 5px;'>
       <input id='inspector-border-color' class='inspector-input-box' type='color' style='width: ${buttonwidth}px;' value='${borderColor}'/>
       </td></tr>`;
@@ -593,18 +594,20 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
-          geneClass === 'unspecified entity') {
+          geneClass === 'unspecified entity' || geneClass === 'BA plain' || 
+          geneClass === 'BA macromolecule' || geneClass === 'BA nucleic acid feature' ||
+          geneClass === 'BA unspecified entity' || geneClass === 'SIF macromolecule') {
 
           addCollapsibleSection("biogene", "Properties from GeneCards", true);
           fillBioGeneContainer(selectedEles[0]);
       }
-      if (geneClass === 'simple chemical')
+      if (geneClass === 'simple chemical' || geneClass === 'BA simple chemical' || geneClass === 'SIF simple chemical')
       {
-
           addCollapsibleSection("chemical", "Properties from ChEBI", true);
           fillChemicalContainer(selectedEles[0]);
       }
-
+     
+      
       // annotations handling part
       addCollapsibleSection("annotations", "Custom Properties", false);
       annotHandler.fillAnnotationsContainer(selectedEles[0]);
@@ -846,6 +849,9 @@ inspectorUtilities.handleSBGNInspector = function () {
           sbgnclass = sbgnclass.replace(' multimer', '');
           multimer = true;
         }
+        else {
+          multimer = false;        
+        }
 
         var nameToVal = {
           'width': selected.width(),
@@ -870,7 +876,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         // Push this action if the node can be cloned
         if (chiseInstance.elementUtilities.canBeCloned(sbgnclass)) {
-          nameToVal['clonemarker'] = selected.data('clonemarker');
+          nameToVal['clonemarker'] = selected.data('clonemarker') ? true: false;
         }
 
         // Push this action if the node can have label
@@ -983,14 +989,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $('#inspector-is-multimer').on('click', function () {
-
-
-        selectedEles.forEach(function(node){
-
-        });
-        
         chiseInstance.setMultimerStatus(selectedEles, $('#inspector-is-multimer').prop('checked'));
-
       });
 
       $('#inspector-is-clone-marker').on('click', function () {
@@ -1030,14 +1029,24 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       function callChise2ChangeBgOpacity(v) {
         v = parseFloat(v);
+        if (isNaN(v)) {
+          v = 1;
+        }
         if (v < 0) {
           v = 0;
         }
         if (v > 1) {
           v = 1;
         }
-        chiseInstance.changeData(selectedEles, "background-opacity", v);
-        chiseInstance.changeData(selectedEles, "background-image-opacity", v);
+
+        var actions = [];
+        actions.push({name: "changeData", param: {eles: selectedEles, name: 'background-opacity', valueMap: v}});
+        actions.push({name: "changeData", param: {eles: selectedEles, name: 'background-image-opacity', valueMap: v}});
+
+        cy.undoRedo().do("batch", actions);
+        
+       // chiseInstance.changeData(selectedEles, "background-opacity", v);
+        //chiseInstance.changeData(selectedEles, "background-image-opacity", v);
       }
 
       $("#inspector-background-opacity").on('change', function () {
@@ -1048,11 +1057,14 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-background-opacity-val').keyup(function (e) {
         if (e.keyCode == 13) {
-          const v = parseFloat($("#inspector-background-opacity-val").val());
-          if (v < 0) {
+          let v = parseFloat($("#inspector-background-opacity-val").val());
+          if (isNaN(v)) {
+            v = 1;
+          }
+          if (v <= 0) {
             $("#inspector-background-opacity-val").val(0);
           }
-          if (v > 1) {
+          if (v >= 1) {
             $("#inspector-background-opacity-val").val(1);
           }
           $('#inspector-background-opacity').val(v);
@@ -1179,11 +1191,10 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
   var instance = cy.viewUtilities('get');
   if(errorCode == "pd10104" || errorCode == "pd10108" || errorCode == "pd10111" || errorCode == "pd10126"){
        for(var i=0; i<connectedEdges.length;i++) {
-          if(i==connectedEdges.length-1) {
-              var args = {eles: connectedEdges[i], option: "highlighted4"};
-              instance.highlight( args);
+          if (i == connectedEdges.length-1) {
+              instance.highlight(connectedEdges[i], 1);
           }
-          if(i==0){
+          if (i == 0) {
                if(errorCode == "pd10104")
                       html+="<p style=\"text-align:center\" > To fix, choose a consumption glyph connected to the dissociation glyph: </p>  " ;
                else if(errorCode == "pd10108")
@@ -1237,10 +1248,9 @@ inspectorUtilities.handleRadioButtons = function (errorCode,html,eles,cy,params)
                    html+="<div style=\"margin: 0 auto;width: auto;text-align: left; display: table;\"class=\"radio validation-error-radio\" id=\"errors"+ errorCode +"\">";
 
            }
-          if(errorCode != "pd10112" ) {
-              if(i==listedNodes.length-1) {
-                  var args = {eles: listedNodes[i], option: "highlighted4"};
-                  instance.highlight( args);
+          if (errorCode != "pd10112" ) {
+              if (i == listedNodes.length-1) {
+                  instance.highlight(listedNodes[i], 1);
               }
               if(errorCode == "pd10110" || errorCode == "pd10128")
                   html+="<label  class=\"radio\">  <input type=\"radio\" name=\"optradio\" value=\""+ listedNodes[i].id() + "\" checked>" + listedNodes[i].data().class.charAt(0).toUpperCase() + listedNodes[i].data().class.slice(1) + " </label>"
@@ -1387,8 +1397,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             var unhighlighted = ["pd10107"];
             var eles =  cy.elements('[id="' + id + '"]');
             if( !unhighlighted.includes(errors[currentPage].pattern)) {
-               var args = {eles: eles, option: "highlighted4"};
-               viewUtilitilesInstance.highlight( args);
+               viewUtilitilesInstance.highlight(eles, 1);
            }
 
            
@@ -1424,12 +1433,10 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
             else if(errors[currentPage].pattern == "pd10107") {
                      html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each production arc:</p>";
                        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
-                       for(var i=0; i<connectedEdges.length;i++) {
-                           var args = {eles: connectedEdges[i], option: "highlighted4"};
-                           viewUtilitilesInstance.highlight( args);
+                       for (var i = 0; i < connectedEdges.length; i++) {
+                           viewUtilitilesInstance.highlight(connectedEdges[i], 1);
                      }
-                     args = {eles: eles, option: "highlighted4"};
-                     viewUtilitilesInstance.highlight( args);
+                     viewUtilitilesInstance.highlight(eles, 1);
            }else if(errors[currentPage].pattern == "pd10140") {
                      html += "<p style=\"text-align:center\" > To fix, delete the glyph:</p>";
             }
@@ -1637,14 +1644,12 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
           viewUtilitilesInstance.removeHighlights();
           var group = ["pd10109","pd10110","pd10124","pd10127","pd10125","pd10128"];
           var instance = cy.viewUtilities('get');
-          var args = {eles: eles, option: "highlighted4"};
-          instance.highlight( args);
+          instance.highlight(eles, 1);
           if(errors[currentPage].pattern == "pd10104" ){
             var connectedEdges = eles.connectedEdges().filter('[class="consumption"]');
             for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].source().data().label == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
           }
@@ -1652,8 +1657,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var connectedEdges = eles.connectedEdges().filter('[class="production"]');
               for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].target().data().label == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
          }
@@ -1661,15 +1665,13 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var connectedEdges = eles.connectedEdges().filter('[class="logic arc"]');
               for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].id() == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
          }
          else if(group.includes(errors[currentPage].pattern)) {
               var node = cy.nodes('[id = "' + this.value +'"]');
-              var args = {eles: node, option: "highlighted4"};
-              instance.highlight( args);
+              instance.highlight(node, 1);
               if(errors[currentPage].pattern == "pd10124"){
                     var zoomLevel = 4 ;
                     if(zoomLevel<cy.zoom())
@@ -1686,8 +1688,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
               var connectedEdges = cy.edges('[source = "' + eles.id() +'"]');
                for(var i=0; i<connectedEdges.length;i++) {
                 if(connectedEdges[i].target().id() == this.value){
-                    var args = {eles: connectedEdges[i], option: "highlighted4"};
-                    instance.highlight( args);
+                    instance.highlight(connectedEdges[i], 1);
                 }
             }
          }

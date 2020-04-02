@@ -13,7 +13,7 @@ Please cite the following when you use this application or underlying libraries 
 M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "[SBGNViz: a tool for visualization and complexity management of SBGN process description maps](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0128985)", PLoS ONE, 10(6), e0128985, 2015.
 
 #### Running a Local Instance
-In order to deploy and run a local instance of the tool, please follow the steps below:
+In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of LTS version 12.16.1 of node.js):
 
 - Installation
 ```
@@ -61,7 +61,10 @@ Third-party libraries:
 [browserify](https://github.com/browserify/browserify),
 [nodemon](https://github.com/remy/nodemon),
 [Parallel Shell](https://github.com/darkguy2008/parallelshell),
-[Tippyjs](https://github.com/atomiks/tippyjs) licensed with [MIT](https://opensource.org/licenses/MIT);
+[Tippyjs](https://github.com/atomiks/tippyjs),
+[nodemailer](https://nodemailer.com/about/),
+[body-parser](https://github.com/expressjs/body-parser),
+[multer](https://github.com/expressjs/multer) licensed with [MIT](https://opensource.org/licenses/MIT);
 [Mousetrap](https://github.com/ccampbell/mousetrap),
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0),
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), and
@@ -71,7 +74,7 @@ We refer the user to [GeneCards](https://www.genecards.org/) for detailed proper
 
 ## Team
 
-  * [Hasan Balci](https://github.com/hasanbalci), [Nasim Saleh](https://github.com/nasimsaleh), [Merve Kilicarslan](https://github.com/mervekilicarslan5), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), and [Metin Can Siper](https://github.com/metincansiper), [Ozgun Babur](https://github.com/ozgunbabur), and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/)
+  * [Hasan Balci](https://github.com/hasanbalci), [Nasim Saleh](https://github.com/nasimsaleh), [Merve Kilicarslan](https://github.com/mervekilicarslan5), [Rumeysa Ozaydin](https://github.com/rumeysaozaydin), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), and [Metin Can Siper](https://github.com/metincansiper), [Ozgun Babur](https://github.com/ozgunbabur), and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/)
 
 #### Alumni
 
