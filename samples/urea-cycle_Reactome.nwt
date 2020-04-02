@@ -1,0 +1,997 @@
+﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn 
+  xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="urea-cycle_Reactome.xml" language="process description">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" programName="sbgnviz" programVersion="3.1.0" backgroundColor="#000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#f7f7f77f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#d9f0d37f"/>
+          <colorDefinition id="color_4" value="#e7d4e87f"/>
+          <colorDefinition id="color_5" value="#c2a5cf7f"/>
+          <colorDefinition id="color_6" value="#ffffff7f"/>
+        </listOfColorDefinitions>
+        <listOfStyles>
+          <style id="nodef7f7f70.55553.2514normalnormalHelvetica" idList="cytosol mitochondrial_matrix mitochondrial_inner_membrane">
+            <g fontSize="14" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="3.25" fill="color_1"/>
+          </style>
+          <style id="noded9f0d30.55551.2511normalnormalHelvetica" idList="http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c http___pathwaycommons_org_pc2_SmallMolecule_fd3efee45777114db393a626bcf8fe07 http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc http___pathwaycommons_org_pc2_SmallMolecule_135f5bd49d1ad0b4aead11df6f348f8f http___pathwaycommons_org_pc2_SmallMolecule_d798d1ed9b6258597ef5181fe9ab2aa6 http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c http___pathwaycommons_org_pc2_SmallMolecule_ea2a0793efe887eb7d9f12b70894fb5d http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5 http___pathwaycommons_org_pc2_SmallMolecule_05603245902802548104891a1c6353d9 http___pathwaycommons_org_pc2_SmallMolecule_775492f65959aee6c06a7b68152260a9 http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76 http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c http___pathwaycommons_org_pc2_SmallMolecule_dc2b1425ce8d9ae16a9508015a21429f http___pathwaycommons_org_pc2_SmallMolecule_41f0df0ddac86ed7b855a388ca76abe5http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_d4c9da547867679132dc398c26c6fb3ahttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_fb477e5713a8818e8c087909a1c066f0http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_18f9fba17a3d3f2dde4d2841a69d8873http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_9ee586b1cfc55b40df59c1a085c2b4d5http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_da5ec1cc391593b15f2c4ca0498a82c8 http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9 http___pathwaycommons_org_pc2_SmallMolecule_42381721d5508607851821c415d073bc http___pathwaycommons_org_pc2_SmallMolecule_56900716899c042375a9f4e5033bc28b http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330 http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432 http___pathwaycommons_org_pc2_SmallMolecule_9748e56265624188790017cc40e5918f http___pathwaycommons_org_pc2_SmallMolecule_da5fbdd79df2a38049cbc09ad91cfafc http___pathwaycommons_org_pc2_SmallMolecule_e80942e276c7997f951124a92da55d0c http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4 http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_df9006045c7f6169da4485f60c078a74http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_41612830fe1891f5de3dcaee77c42894http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_267322bd8682049d5ae0484a9c3a77aehttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_6ad6a397c24c568069e7f9c999ed219ehttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_d0f5223d3271f1a1459cab70d70af3abhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_978c69055bcd154602c36081b51906cdhttp___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_3"/>
+          </style>
+          <style id="nodee7d4e80.55551.2511normalnormalHelvetica" idList="http___pathwaycommons_org_pc2_Complex_ac8addafeea2dc4dac38a9627dda117a http___pathwaycommons_org_pc2_Complex_0bd9e03c4829fbaa799301b7dc47c41e http___pathwaycommons_org_pc2_Complex_86dadfbdc386aa35f3f1e7a16ea6fda8 http___pathwaycommons_org_pc2_Complex_fca16fa2834e121744d9aba49a6966d2 http___pathwaycommons_org_pc2_Complex_0ad6391797a21ec06ded756fe0cd2668 http___pathwaycommons_org_pc2_Complex_b72590f23bfe56d48858a38f45cf4da7 http___pathwaycommons_org_pc2_Complex_aa8581817daa3c0d26ea90e032085b1a http___pathwaycommons_org_pc2_Complex_4a73028060a6bf2830ac17c82626fc5f http___pathwaycommons_org_pc2_Complex_c2c346eca5902c0b296e4f3b82dad9a5 http___pathwaycommons_org_pc2_Complex_56eb583e5dd9400e2a14bffaa38faa52">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_4"/>
+          </style>
+          <style id="nodec2a5cf0.55551.2511normalnormalHelvetica" idList="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75 http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5 http___pathwaycommons_org_pc2_Protein_352d81c1840c2eb654019d286fdc9a40">
+            <g fontSize="11" fontFamily="Helvetica" fontWeight="normal" fontStyle="normal" stroke="color_2" strokeWidth="1.25" fill="color_5"/>
+          </style>
+          <style id="nodeffffff0.55551.25" idList="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4 http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+            <g stroke="color_2" strokeWidth="1.25" fill="color_6"/>
+          </style>
+          <style id="edge5551.25" idList="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_da5fbdd79df2a38049cbc09ad91cfafc http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9 http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5 http___pathwaycommons_org_pc2_SmallMolecule_9748e56265624188790017cc40e5918f--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_fd3efee45777114db393a626bcf8fe07--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_Complex_4a73028060a6bf2830ac17c82626fc5f--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5--to--http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_e80942e276c7997f951124a92da55d0c--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_42381721d5508607851821c415d073bc http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_fb477e5713a8818e8c087909a1c066f0http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___pathwaycommons_org_pc2_Complex_ac8addafeea2dc4dac38a9627dda117a--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_56900716899c042375a9f4e5033bc28b http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_d4c9da547867679132dc398c26c6fb3ahttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_135f5bd49d1ad0b4aead11df6f348f8f--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_05603245902802548104891a1c6353d9 http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5 http___pathwaycommons_org_pc2_Complex_86dadfbdc386aa35f3f1e7a16ea6fda8--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432 http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_6ad6a397c24c568069e7f9c999ed219ehttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_da5ec1cc391593b15f2c4ca0498a82c8--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_Complex_0ad6391797a21ec06ded756fe0cd2668--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT http___pathwaycommons_org_pc2_Protein_352d81c1840c2eb654019d286fdc9a40--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4 http___pathwaycommons_org_pc2_Complex_b72590f23bfe56d48858a38f45cf4da7--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_d0f5223d3271f1a1459cab70d70af3abhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75--to--http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4 http___pathwaycommons_org_pc2_Complex_aa8581817daa3c0d26ea90e032085b1a--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330 http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_df9006045c7f6169da4485f60c078a74http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_d798d1ed9b6258597ef5181fe9ab2aa6 http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c--to--http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT http___pathwaycommons_org_pc2_Complex_c2c346eca5902c0b296e4f3b82dad9a5--to--http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_41f0df0ddac86ed7b855a388ca76abe5http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_ea2a0793efe887eb7d9f12b70894fb5d http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76 http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_41612830fe1891f5de3dcaee77c42894http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_Complex_56eb583e5dd9400e2a14bffaa38faa52--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4 http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330--to--http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_775492f65959aee6c06a7b68152260a9 http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_978c69055bcd154602c36081b51906cdhttp___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5 http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_SmallMolecule_dc2b1425ce8d9ae16a9508015a21429f--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_267322bd8682049d5ae0484a9c3a77aehttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT http___pathwaycommons_org_pc2_Complex_fca16fa2834e121744d9aba49a6966d2--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda http___pathwaycommons_org_pc2_SmallMolecule_18f9fba17a3d3f2dde4d2841a69d8873http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_9ee586b1cfc55b40df59c1a085c2b4d5http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-input http___pathwaycommons_org_pc2_Complex_0bd9e03c4829fbaa799301b7dc47c41e--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e">
+            <g stroke="color_2" strokeWidth="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>10</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>opposed_purple_green</mapColorScheme>
+        <defaultInfoboxHeight>12</defaultInfoboxHeight>
+        <defaultInfoboxWidth>30</defaultInfoboxWidth>
+        <mapName>Urea cycle</mapName>
+        <mapDescription>From Reactome</mapDescription>
+      </mapProperties>
+    </extension>
+    <glyph id="cytosol" class="compartment">
+      <label text="cytosol"/>
+      <bbox x="474.2271550385908" y="362.2269970943237" w="569.6318324156957" h="381.4783577255421"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_da5ec1cc391593b15f2c4ca0498a82c8" class="simple chemical" compartmentRef="cytosol">
+      <label text="1PYR-5COOH"/>
+      <bbox x="853.0289364333817" y="710.1475609503149" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9" class="simple chemical" compartmentRef="cytosol">
+      <label text="L-Cit"/>
+      <bbox x="606.9348169878847" y="703.1534987949138" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_42381721d5508607851821c415d073bc" class="simple chemical" compartmentRef="cytosol">
+      <label text="L-Pro"/>
+      <bbox x="976.2290652147365" y="638.375699205441" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_56900716899c042375a9f4e5033bc28b" class="simple chemical" compartmentRef="cytosol">
+      <label text="Urea"/>
+      <bbox x="475.8521550385908" y="566.1853602312415" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330" class="simple chemical" compartmentRef="cytosol">
+      <label text="ARSUA"/>
+      <bbox x="662.6773222724738" y="480.5931916771358" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_b72590f23bfe56d48858a38f45cf4da7" class="complex" compartmentRef="cytosol">
+      <label text="ASS1 tetramer:NMRAL1 dimer:NADPH"/>
+      <bbox x="842.9771706895838" y="506.8695169910618" w="52" h="89"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_aa8581817daa3c0d26ea90e032085b1a" class="complex" compartmentRef="cytosol">
+      <label text="PPA1 dimer"/>
+      <bbox x="906.9639027050113" y="467.40209350773927" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432" class="simple chemical" compartmentRef="cytosol">
+      <label text="L-Orn"/>
+      <bbox x="510.19012218730563" y="627.5346904933416" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_4a73028060a6bf2830ac17c82626fc5f" class="complex" compartmentRef="cytosol">
+      <label text="ARG1 trimer"/>
+      <bbox x="610.703975028427" y="576.6421666575884" w="52" h="59"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_9748e56265624188790017cc40e5918f" class="simple chemical" compartmentRef="cytosol">
+      <label text="L-Asp"/>
+      <bbox x="754.1665525842951" y="578.6875542601975" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_c2c346eca5902c0b296e4f3b82dad9a5" class="complex" compartmentRef="cytosol">
+      <label text="ASL tetramer"/>
+      <bbox x="655.8354064944151" y="389.58225869950155" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_da5fbdd79df2a38049cbc09ad91cfafc" class="simple chemical" compartmentRef="cytosol">
+      <label text="FUMA"/>
+      <bbox x="557.1991041258341" y="400.0410325332232" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_e80942e276c7997f951124a92da55d0c" class="simple chemical" compartmentRef="cytosol">
+      <label text="Mg2+"/>
+      <bbox x="907.1653575309123" y="363.8519970943237" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" class="simple chemical" compartmentRef="cytosol">
+      <label text="L-Arg"/>
+      <bbox x="550.2548518234076" y="485.1635624475587" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_56eb583e5dd9400e2a14bffaa38faa52" class="complex" compartmentRef="cytosol">
+      <label text="PYCRL decamer"/>
+      <bbox x="832.5033306774158" y="648.9809493434637" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="PPi"/>
+      <clone/>
+      <bbox x="792.2397282516216" y="476.2994403184969" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="PPi"/>
+      <clone/>
+      <bbox x="997.2339874542865" y="442.62498104127275" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_df9006045c7f6169da4485f60c078a74http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="TPN"/>
+      <clone/>
+      <bbox x="901.7396424284544" y="617.685735963681" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="H2O"/>
+      <clone/>
+      <bbox x="603.3344013350119" y="518.0750786491407" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_41612830fe1891f5de3dcaee77c42894http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="TPNH"/>
+      <clone/>
+      <bbox x="981.0589286176174" y="693.7258120385394" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_267322bd8682049d5ae0484a9c3a77aehttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="Pi"/>
+      <clone/>
+      <bbox x="819.4568975892595" y="424.03387528564406" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_6ad6a397c24c568069e7f9c999ed219ehttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="AMP"/>
+      <clone/>
+      <bbox x="728.5841150782243" y="458.38025156342894" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_d0f5223d3271f1a1459cab70d70af3abhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="676.9656385293872" y="548.5023175576888" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_978c69055bcd154602c36081b51906cdhttp___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="H+"/>
+      <clone/>
+      <bbox x="931.0891617056504" y="727.0803548198658" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="simple chemical" compartmentRef="cytosol">
+      <label text="H2O"/>
+      <clone/>
+      <bbox x="989.5424443533715" y="381.5735500580148" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" class="process" compartmentRef="cytosol">
+      <bbox x="562.476872932715" y="545.6287878230165" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" x="569.976872932715" y="543.1287878230165"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" x="569.976872932715" y="563.1287878230165"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="process" compartmentRef="cytosol">
+      <bbox x="749.9813638417797" y="517.5319461581499" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" x="757.4813638417797" y="535.0319461581499"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" x="757.4813638417797" y="515.0319461581499"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" class="process" compartmentRef="cytosol">
+      <bbox x="926.1672351906898" y="673.272392842226" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" x="933.6672351906898" y="690.772392842226"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" x="933.6672351906898" y="670.772392842226"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT" class="process" compartmentRef="cytosol">
+      <bbox x="621.4415388158462" y="446.59375637226054" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT" x="638.9415388158462" y="454.09375637226054"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT" x="618.9415388158462" y="454.09375637226054"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="process" compartmentRef="cytosol">
+      <bbox x="934.3424124872046" y="421.5185954442068" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" x="951.8424124872046" y="429.0185954442068"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" x="931.8424124872046" y="429.0185954442068"/>
+    </glyph>
+    <glyph id="mitochondrial_matrix" class="compartment">
+      <label text="mitochondrial matrix"/>
+      <bbox x="-160.99506700055434" y="558.2094781853654" w="578.0061764909991" h="376.69912513502004"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="L-Glu5S"/>
+      <bbox x="227.84311678209303" y="883.7276512482684" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_fd3efee45777114db393a626bcf8fe07" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="Ac-CoA"/>
+      <bbox x="247.18769132629535" y="633.4526452001915" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="Glu"/>
+      <bbox x="243.67285475517713" y="676.6057153853532" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_ac8addafeea2dc4dac38a9627dda117a" class="complex" compartmentRef="mitochondrial_matrix">
+      <label text="PYCR2 decamer"/>
+      <bbox x="5.299873240274977" y="843.2441329575211" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_0bd9e03c4829fbaa799301b7dc47c41e" class="complex" compartmentRef="mitochondrial_matrix">
+      <label text="OTC trimer"/>
+      <bbox x="156.4632573864239" y="862.7374374721063" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_135f5bd49d1ad0b4aead11df6f348f8f" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="HCO3-"/>
+      <bbox x="-139.65398561314692" y="757.9247003224534" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_d798d1ed9b6258597ef5181fe9ab2aa6" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="2OG"/>
+      <bbox x="336.6262319217681" y="754.5591782421494" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="L-Arg"/>
+      <bbox x="68.67385347348578" y="677.0505167807368" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_86dadfbdc386aa35f3f1e7a16ea6fda8" class="complex" compartmentRef="mitochondrial_matrix">
+      <label text="ARG2 trimer"/>
+      <bbox x="177.2807298725638" y="674.2362301903867" w="52" h="59"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_ea2a0793efe887eb7d9f12b70894fb5d" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="L-Pro"/>
+      <bbox x="-99.08932499666935" y="784.1062387472897" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_fca16fa2834e121744d9aba49a6966d2" class="complex" compartmentRef="mitochondrial_matrix">
+      <label text="PYCR1 decamer"/>
+      <bbox x="-159.37006700055437" y="809.2556581641204" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="CAP"/>
+      <bbox x="96.87353769268836" y="826.7066156713279" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="L-Orn"/>
+      <bbox x="307.2064141734796" y="850.142491690831" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Complex_0ad6391797a21ec06ded756fe0cd2668" class="complex" compartmentRef="mitochondrial_matrix">
+      <label text="OAT hexamer"/>
+      <bbox x="307.5101771429923" y="707.908107047586" w="52" h="29"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_05603245902802548104891a1c6353d9" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="Urea"/>
+      <bbox x="100.07080991863857" y="766.5617363302807" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_775492f65959aee6c06a7b68152260a9" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="CoA"/>
+      <bbox x="114.1686219566962" y="599.1376148284902" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="L-Cit"/>
+      <bbox x="330.12361295381726" y="641.8558648856044" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="NAcGlu"/>
+      <bbox x="26.617018702815074" y="636.4119264597931" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="1PYR-5COOH"/>
+      <bbox x="-32.218951042536915" y="913.2836033203854" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_dc2b1425ce8d9ae16a9508015a21429f" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="NH4+"/>
+      <bbox x="-119.21351343221575" y="677.9478923131571" w="48" h="20"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75" class="macromolecule" compartmentRef="mitochondrial_matrix">
+      <label text="NAGS"/>
+      <bbox x="205.6800427927281" y="559.8344781853654" w="48" h="25"/>
+      <glyph id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75_0" class="state variable">
+        <state value="x[19 - 534]"/>
+        <bbox x="225.3800427927281" y="554.8344781853654" w="35" h="10"/>
+      </glyph>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5" class="macromolecule" compartmentRef="mitochondrial_matrix">
+      <label text="CPS1"/>
+      <bbox x="-102.50937705404752" y="605.844056754934" w="48" h="25"/>
+      <glyph id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5_0" class="state variable">
+        <state value="x[39 - 1500]"/>
+        <bbox x="-82.80937705404752" y="600.844056754934" w="35" h="10"/>
+      </glyph>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_41f0df0ddac86ed7b855a388ca76abe5http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="NADH"/>
+      <clone/>
+      <bbox x="-154.25403836235688" y="876.0786914003569" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="H2O"/>
+      <clone/>
+      <bbox x="61.025595152843934" y="883.2638227928636" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_d4c9da547867679132dc398c26c6fb3ahttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="ATP"/>
+      <clone/>
+      <bbox x="-149.7284386673083" y="718.3405163118381" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_fb477e5713a8818e8c087909a1c066f0http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="NAD"/>
+      <clone/>
+      <bbox x="-2.749615355156223" y="808.7967161590957" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="Pi"/>
+      <clone/>
+      <bbox x="21.34188187232897" y="707.4014576840708" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_18f9fba17a3d3f2dde4d2841a69d8873http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="H+"/>
+      <clone/>
+      <bbox x="-95.33367568416381" y="883.1089402374316" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="H2O"/>
+      <clone/>
+      <bbox x="62.88524028097075" y="737.7630591164752" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="Pi"/>
+      <clone/>
+      <bbox x="153.3401834457095" y="758.131975569399" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_9ee586b1cfc55b40df59c1a085c2b4d5http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="simple chemical" compartmentRef="mitochondrial_matrix">
+      <label text="ADP"/>
+      <clone/>
+      <bbox x="-43.996527873387585" y="789.4919359757213" w="45" h="15"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="136.68199903683208" y="712.533782669454" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" x="134.18199903683208" y="720.033782669454"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" x="154.18199903683208" y="720.033782669454"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="-54.75314136017402" y="830.11052378232" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" x="-47.25314136017402" y="847.61052378232"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" x="-47.25314136017402" y="827.61052378232"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" class="and" compartmentRef="mitochondrial_matrix">
+      <bbox x="274.4249136646837" y="590.2005354985805" w="15" h="15"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" class="and" compartmentRef="mitochondrial_matrix">
+      <bbox x="-25.303490356461957" y="642.1502404912684" w="15" h="15"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="290.4378364103497" y="785.6031144903324" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT" x="287.9378364103497" y="793.1031144903324"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT" x="307.9378364103497" y="793.1031144903324"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="-36.93119018558781" y="712.1458777243078" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" x="-39.43119018558781" y="719.6458777243078"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" x="-19.431190185587816" y="719.6458777243078"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="188.85057347359634" y="807.4395060709325" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" x="196.35057347359634" y="824.9395060709325"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" x="196.35057347359634" y="804.9395060709325"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="397.88610949044477" y="723.3652174000099" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT" x="405.38610949044477" y="720.8652174000099"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT" x="405.38610949044477" y="740.8652174000099"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="163.81121740712274" y="646.8722416301149" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" x="181.31121740712274" y="654.3722416301149"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" x="161.31121740712274" y="654.3722416301149"/>
+    </glyph>
+    <glyph id="http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT" class="process" compartmentRef="mitochondrial_matrix">
+      <bbox x="116.59140913076848" y="911.7979887048698" w="15" h="15"/>
+      <port id="InputPort_http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT" x="114.09140913076848" y="919.2979887048698"/>
+      <port id="OutputPort_http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT" x="134.09140913076848" y="919.2979887048698"/>
+    </glyph>
+    <glyph id="mitochondrial_inner_membrane" class="compartment">
+      <label text="mitochondrial inner membrane"/>
+      <bbox x="486.1597403278422" y="824.5681691268279" w="191.69352668142756" h="28.25"/>
+    </glyph>
+    <glyph id="http___pathwaycommons_org_pc2_Protein_352d81c1840c2eb654019d286fdc9a40" class="macromolecule" compartmentRef="mitochondrial_inner_membrane">
+      <label text="Mitochondrial ornithine transporters"/>
+      <bbox x="487.7847403278422" y="826.1931691268279" w="188.44352668142756" h="25"/>
+    </glyph>
+    <arc id="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_da5fbdd79df2a38049cbc09ad91cfafc" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_da5fbdd79df2a38049cbc09ad91cfafc">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_da5fbdd79df2a38049cbc09ad91cfafc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="618.3165388158462" y="454.09375637226054"/>
+      <end x="594.2563014719336" y="422.08912167099544"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" target="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-19.134971478865857" y="657.6654000667654"/>
+      <end x="-27.595310514156065" y="708.5943740414243"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="405.38610949044477" y="741.4902174000099"/>
+      <end x="603.2082909026071" y="715.3307865008293"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="308.5628364103497" y="793.1031144903324"/>
+      <end x="324.48412439408537" y="846.5964326022664"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_9748e56265624188790017cc40e5918f--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_9748e56265624188790017cc40e5918f" target="InputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_9748e56265624188790017cc40e5918f--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="774.6280374069969" y="577.7982973047469"/>
+      <end x="757.4813638417797" y="535.6569461581499"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_fd3efee45777114db393a626bcf8fe07--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_fd3efee45777114db393a626bcf8fe07" target="InputPort_http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_fd3efee45777114db393a626bcf8fe07--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="246.92547398253498" y="646.1052580878206"/>
+      <end x="181.93621740712274" y="654.3722416301149"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_4a73028060a6bf2830ac17c82626fc5f--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_4a73028060a6bf2830ac17c82626fc5f" target="http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_4a73028060a6bf2830ac17c82626fc5f--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="612.0689300993713" y="586.5701048054575"/>
+      <end x="580.3924119441275" y="561.4037300584258"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5--to--http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" class="logic arc" source="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5" target="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e">
+      <glyph id="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5--to--http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-56.39881455330902" y="629.7465313717713"/>
+      <end x="-25.024787815784578" y="645.9261986005291"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c" target="InputPort_http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="106.83180873189949" y="696.116570268423"/>
+      <end x="133.55699903683208" y="720.033782669454"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc" target="InputPort_http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="270.77473616541425" y="697.520716302457"/>
+      <end x="287.3128364103497" y="793.1031144903324"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_e80942e276c7997f951124a92da55d0c--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="stimulation" source="http___pathwaycommons_org_pc2_SmallMolecule_e80942e276c7997f951124a92da55d0c" target="http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_e80942e276c7997f951124a92da55d0c--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="933.2866419170464" y="384.8123269038818"/>
+      <end x="939.7063248717499" y="417.98177976756745"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_42381721d5508607851821c415d073bc" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_42381721d5508607851821c415d073bc">
+      <glyph id="http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_42381721d5508607851821c415d073bc_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="933.6672351906898" y="670.147392842226"/>
+      <end x="980.6539599317504" y="657.9032120236975"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_fb477e5713a8818e8c087909a1c066f0http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_fb477e5713a8818e8c087909a1c066f0http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_fb477e5713a8818e8c087909a1c066f0http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-47.25314136017401" y="826.98552378232"/>
+      <end x="-0.874138530918799" y="822.8573726722472"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" class="stimulation" source="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c" target="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_722ee7ad19aae7eba8026d0ac529eb3c--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="110.84916086571344" y="679.4976479382412"/>
+      <end x="160.45671601476636" y="658.8829012628764"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-18.806190185587816" y="719.6458777243078"/>
+      <end x="17.591139069514124" y="716.6011892051722"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_ac8addafeea2dc4dac38a9627dda117a--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_ac8addafeea2dc4dac38a9627dda117a" target="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_ac8addafeea2dc4dac38a9627dda117a--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="4.799873240274977" y="850.9520238849842"/>
+      <end x="-36.25724086439466" y="840.4288390848897"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_56900716899c042375a9f4e5033bc28b" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_56900716899c042375a9f4e5033bc28b">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_56900716899c042375a9f4e5033bc28b_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="569.976872932715" y="563.7537878230165"/>
+      <end x="522.8471293078918" y="568.6247552807033"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" target="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="274.6937334004136" y="601.4053508766567"/>
+      <end x="182.06119058568817" y="648.864611548945"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9" target="InputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_2fbb495c14c38673f54e2e370a4494d9--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="638.0300854737303" y="702.605815297291"/>
+      <end x="757.4813638417797" y="535.6569461581499"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_d4c9da547867679132dc398c26c6fb3ahttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_d4c9da547867679132dc398c26c6fb3ahttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_d4c9da547867679132dc398c26c6fb3ahttp___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="2"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-104.08069850919192" y="724.3743003740309"/>
+      <end x="-40.05619018558781" y="719.6458777243078"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_135f5bd49d1ad0b4aead11df6f348f8f--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_135f5bd49d1ad0b4aead11df6f348f8f" target="InputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_135f5bd49d1ad0b4aead11df6f348f8f--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-100.20727135790679" y="759.2756049926745"/>
+      <end x="-40.05619018558781" y="719.6458777243078"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_05603245902802548104891a1c6353d9" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_05603245902802548104891a1c6353d9">
+      <glyph id="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_05603245902802548104891a1c6353d9_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="154.80699903683208" y="720.033782669454"/>
+      <end x="128.98471652002289" y="762.749868567305"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5">
+      <glyph id="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="154.80699903683208" y="720.033782669454"/>
+      <end x="316.04430884652186" y="848.7838516873103"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_86dadfbdc386aa35f3f1e7a16ea6fda8--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_86dadfbdc386aa35f3f1e7a16ea6fda8" target="http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_86dadfbdc386aa35f3f1e7a16ea6fda8--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="176.7807298725638" y="711.0440883218199"/>
+      <end x="155.1632984259651" y="717.0054891587152"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="569.976872932715" y="563.7537878230165"/>
+      <end x="539.9946875360954" y="623.8441606836091"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="134.71640913076848" y="919.2979887048698"/>
+      <end x="226.02278300139847" y="898.8957594493457"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_6ad6a397c24c568069e7f9c999ed219ehttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_6ad6a397c24c568069e7f9c999ed219ehttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_6ad6a397c24c568069e7f9c999ed219ehttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="757.4813638417797" y="514.4069461581499"/>
+      <end x="752.3386955761256" y="477.48063872972494"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5" target="InputPort_http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="311.3196793595944" y="853.4765602550592"/>
+      <end x="196.35057347359634" y="825.5645060709325"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432" target="InputPort_http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_33ce1c6dbe62bdd613a9badfddfae432--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="521.2141962290187" y="646.936959735054"/>
+      <end x="405.38610949044477" y="720.2402174000099"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_da5ec1cc391593b15f2c4ca0498a82c8--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_da5ec1cc391593b15f2c4ca0498a82c8" target="InputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_da5ec1cc391593b15f2c4ca0498a82c8--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="890.3988222489221" y="710.8527637349425"/>
+      <end x="933.6672351906898" y="691.397392842226"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_0ad6391797a21ec06ded756fe0cd2668--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_0ad6391797a21ec06ded756fe0cd2668" target="http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_0ad6391797a21ec06ded756fe0cd2668--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="325.9624714380064" y="737.408107047586"/>
+      <end x="303.3521955282976" y="782.3428397865149"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Protein_352d81c1840c2eb654019d286fdc9a40--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Protein_352d81c1840c2eb654019d286fdc9a40" target="http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Protein_352d81c1840c2eb654019d286fdc9a40--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="560.7127195657797" y="825.6931691268279"/>
+      <end x="416.0220821367527" y="737.3585510289527"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-452036LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="100.53126497876006" y="738.7640062390775"/>
+      <end x="133.55699903683208" y="720.033782669454"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="618.3165388158462" y="454.09375637226054"/>
+      <end x="589.3914530233682" y="483.7959461206186"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_b72590f23bfe56d48858a38f45cf4da7--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_b72590f23bfe56d48858a38f45cf4da7" target="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_b72590f23bfe56d48858a38f45cf4da7--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="842.4771706895838" y="545.1096795424222"/>
+      <end x="768.4914133273714" y="527.6327431423492"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1b06ad070f2ae904fc3d4a0dafb0effehttp___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="196.35057347359634" y="804.3145060709325"/>
+      <end x="180.5367717054754" y="776.9227003462895"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="stimulation" source="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" target="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="39.78151402733836" y="656.325037975337"/>
+      <end x="-19.1567746885854" y="710.2460915925801"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_d0f5223d3271f1a1459cab70d70af3abhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_d0f5223d3271f1a1459cab70d70af3abhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_d0f5223d3271f1a1459cab70d70af3abhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="712.6474998586378" y="548.9654816152636"/>
+      <end x="757.4813638417797" y="535.6569461581499"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75--to--http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" class="logic arc" source="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75" target="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4">
+      <glyph id="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75--to--http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="252.26146985079993" y="583.298267805462"/>
+      <end x="274.61585890445537" y="594.1518253791169"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_aa8581817daa3c0d26ea90e032085b1a--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_aa8581817daa3c0d26ea90e032085b1a" target="http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_aa8581817daa3c0d26ea90e032085b1a--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="935.4822241400439" y="466.90209350773927"/>
+      <end x="939.9871452060935" y="440.06921385595257"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="757.4813638417797" y="514.4069461581499"/>
+      <end x="706.2588575790298" y="500.1175588154678"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_df9006045c7f6169da4485f60c078a74http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_df9006045c7f6169da4485f60c078a74http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_df9006045c7f6169da4485f60c078a74http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="933.6672351906898" y="670.147392842226"/>
+      <end x="926.2010953803491" y="636.7507892036904"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_d798d1ed9b6258597ef5181fe9ab2aa6" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_d798d1ed9b6258597ef5181fe9ab2aa6">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_d798d1ed9b6258597ef5181fe9ab2aa6_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="308.5628364103497" y="793.1031144903324"/>
+      <end x="340.4097445243594" y="773.7643608397599"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c--to--http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c" target="InputPort_http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c--to--http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="16.722666258327564" y="922.532281395793"/>
+      <end x="113.46640913076848" y="919.2979887048698"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-70577LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="757.4813638417797" y="514.4069461581499"/>
+      <end x="801.6559287457711" y="493.22125746416975"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_c2c346eca5902c0b296e4f3b82dad9a5--to--http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_c2c346eca5902c0b296e4f3b82dad9a5" target="http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_c2c346eca5902c0b296e4f3b82dad9a5--to--http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="666.6434917988587" y="418.44631335813665"/>
+      <end x="639.1810006736883" y="444.412278247316"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="999.4357925957294" y="396.2469553007214"/>
+      <end x="952.4674124872046" y="429.0185954442068"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_41f0df0ddac86ed7b855a388ca76abe5http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_41f0df0ddac86ed7b855a388ca76abe5http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_41f0df0ddac86ed7b855a388ca76abe5http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-118.74255179909531" y="876.5004920377585"/>
+      <end x="-47.25314136017403" y="848.23552378232"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_ea2a0793efe887eb7d9f12b70894fb5d" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_ea2a0793efe887eb7d9f12b70894fb5d">
+      <glyph id="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_ea2a0793efe887eb7d9f12b70894fb5d_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-47.25314136017402" y="826.98552378232"/>
+      <end x="-66.63009868373908" y="807.3268941898359"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" target="InputPort_http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="573.4434519567806" y="506.1577672672647"/>
+      <end x="569.976872932715" y="542.5037878230165"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_bfafdc3d9aaa48e4e795bdbc42b341dahttp___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70569LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="611.9383689960015" y="532.429789995877"/>
+      <end x="569.976872932715" y="542.5037878230165"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="196.35057347359634" y="804.3145060709325"/>
+      <end x="342.15916840228294" y="664.2230296981247"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_78fffd5746f6b75a3ec334fda2587cedhttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="1000.9263717472994" y="445.0286559324164"/>
+      <end x="952.4674124872046" y="429.0185954442068"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_41612830fe1891f5de3dcaee77c42894http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_41612830fe1891f5de3dcaee77c42894http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_41612830fe1891f5de3dcaee77c42894http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="985.289673475283" y="695.879415127707"/>
+      <end x="933.6672351906898" y="691.397392842226"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_56eb583e5dd9400e2a14bffaa38faa52--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_56eb583e5dd9400e2a14bffaa38faa52" target="http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_56eb583e5dd9400e2a14bffaa38faa52--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="885.0033306774158" y="669.5772698537464"/>
+      <end x="922.6530333862969" y="678.2385775831879"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" class="logic arc" source="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4" target="http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4--to--http___pathwaycommons_org_pc2_Protein_43fa5b8784390981a02d263df156ca75-AND-http___pathwaycommons_org_pc2_SmallMolecule_a5ee543c6d2a1e31ed5e4e9f28ccd9d4_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="554.7062365488016" y="502.0203895321276"/>
+      <end x="289.59194972701897" y="595.0112636605451"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76" target="InputPort_http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_b8dcd8b3deeb3b336d8b60810db60c76--to--http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="360.986408188732" y="662.4332858967356"/>
+      <end x="405.38610949044477" y="720.2402174000099"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330--to--http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330" target="InputPort_http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_9045dffd3b9c5c607e7b97547af40330--to--http___identifiers_org_reactome_R-HSA-70573LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="672.395848675713" y="481.56472284212214"/>
+      <end x="639.5665388158462" y="454.09375637226054"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc" target="InputPort_http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_0a2fe53f41b2539761eab64fa6c707bc--to--http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="247.77109355639186" y="679.9484717463002"/>
+      <end x="181.93621740712274" y="654.3722416301149"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_775492f65959aee6c06a7b68152260a9" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_775492f65959aee6c06a7b68152260a9">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_775492f65959aee6c06a7b68152260a9_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="160.68621740712274" y="654.3722416301149"/>
+      <end x="147.6863120946047" y="622.1278214055751"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70542LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="160.68621740712274" y="654.3722416301149"/>
+      <end x="78.45902840918221" y="648.2482298995369"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c" target="InputPort_http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_e0088792373d535ac5d9e437025c4d9c--to--http___identifiers_org_reactome_R-HSA-70666LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="256.78272737699587" y="882.9445066302893"/>
+      <end x="287.3128364103497" y="793.1031144903324"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_978c69055bcd154602c36081b51906cdhttp___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_978c69055bcd154602c36081b51906cdhttp___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_978c69055bcd154602c36081b51906cdhttp___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783955LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="950.469956447613" y="726.1555632818138"/>
+      <end x="933.6672351906898" y="691.397392842226"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c" target="InputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_2bad8fc8a952787717bca65f493aed9c--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-13.132976011937252" y="912.4981957423204"/>
+      <end x="-47.25314136017401" y="848.23552378232"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70634LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_7c5237bf246aa9db68ffc90eb9b445c5_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="405.38610949044477" y="741.4902174000099"/>
+      <end x="338.88149762830216" y="846.7666768569418"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_384790986f575572b3898259674079a3http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-70667LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="94.27213082690116" y="898.3229816469104"/>
+      <end x="113.46640913076848" y="919.2979887048698"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_dc2b1425ce8d9ae16a9508015a21429f--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_dc2b1425ce8d9ae16a9508015a21429f" target="InputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_dc2b1425ce8d9ae16a9508015a21429f--to--http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-78.35595880020523" y="696.0709030920526"/>
+      <end x="-40.05619018558781" y="719.6458777243078"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_267322bd8682049d5ae0484a9c3a77aehttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_267322bd8682049d5ae0484a9c3a77aehttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_267322bd8682049d5ae0484a9c3a77aehttp___identifiers_org_reactome_R-HSA-6788912LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="2"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="931.2174124872046" y="429.0185954442068"/>
+      <end x="868.524162192597" y="430.8648683213492"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_fca16fa2834e121744d9aba49a6966d2--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_fca16fa2834e121744d9aba49a6966d2" target="http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_fca16fa2834e121744d9aba49a6966d2--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-106.87006700055437" y="828.0190934429819"/>
+      <end x="-58.30721652383532" y="835.8320960831524"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-18.80619018558781" y="719.6458777243078"/>
+      <end x="106.11095400917407" y="825.2091799992023"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_18f9fba17a3d3f2dde4d2841a69d8873http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_18f9fba17a3d3f2dde4d2841a69d8873http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT" target="InputPort_http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_18f9fba17a3d3f2dde4d2841a69d8873http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT--to--http___identifiers_org_reactome_R-HSA-6783939LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-68.79214251652787" y="882.235586685757"/>
+      <end x="-47.25314136017402" y="848.23552378232"/>
+    </arc>
+    <arc id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_9ee586b1cfc55b40df59c1a085c2b4d5http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" class="production" source="OutputPort_http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT" target="http___pathwaycommons_org_pc2_SmallMolecule_9ee586b1cfc55b40df59c1a085c2b4d5http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT">
+      <glyph id="http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT-output--to--http___pathwaycommons_org_pc2_SmallMolecule_9ee586b1cfc55b40df59c1a085c2b4d5http___identifiers_org_reactome_R-HSA-70555LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="2"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="-18.806190185587816" y="719.6458777243078"/>
+      <end x="-22.686822693716493" y="785.3890965747353"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-input" class="consumption" source="http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda" target="InputPort_http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_1f2fdecb2ae2164fa4d76ee8811b7bda--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT-input_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="141.78249634167457" y="830.6766015109448"/>
+      <end x="196.35057347359634" y="825.5645060709325"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_Complex_0bd9e03c4829fbaa799301b7dc47c41e--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT" class="catalysis" source="http___pathwaycommons_org_pc2_Complex_0bd9e03c4829fbaa799301b7dc47c41e" target="http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT">
+      <glyph id="http___pathwaycommons_org_pc2_Complex_0bd9e03c4829fbaa799301b7dc47c41e--to--http___identifiers_org_reactome_R-HSA-70560LEFT_TO_RIGHT_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="185.80702397100202" y="862.2374374721063"/>
+      <end x="193.89426825862998" y="825.9583907007469"/>
+    </arc>
+    <arc id="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" class="logic arc" source="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e" target="http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e">
+      <glyph id="http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e--to--http___pathwaycommons_org_pc2_Protein_50d4bef10571ab37e32745fe313aa0f5-AND-http___pathwaycommons_org_pc2_SmallMolecule_76df9ab97d6d4505c78a466a7537842e_card" class="cardinality">
+        <label text="0"/>
+        <bbox x="0" y="0" w="0" h="0"/>
+      </glyph>
+      <start x="25.760409408100394" y="647.5883793649335"/>
+      <end x="-9.687575458289935" y="649.2661176390072"/>
+    </arc>
+  </map>
+</sbgn>

@@ -5,7 +5,7 @@ html
 { margin: 0;
   padding: 0;}
 
-body
+body, dots, more_news, more_button
 { font: normal .80em 'trebuchet ms', arial, sans-serif;
   background: #F0EFE2 url(background.png) repeat;
   color: #777;}
@@ -357,4 +357,12 @@ input.gsc-search-button {
   padding: 5px !important;
   color: white !important;
   background-color: #0B9BCD;
+}
+
+#more_news {
+  display: none;
+}
+
+#tab {
+  color: #d4d4d4;
 }

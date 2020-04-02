@@ -36,8 +36,8 @@
           <style id="nodeffffff15555551.2518normalnormalHelvetica000image_5none5050100100" id-list="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa 87e5af5c-b3a9-7377-7929-7c8adbdb6bce 41c8356c-5411-4261-9872-74860971e0a4 0c58af92-034d-0cf9-e67d-95b3d096cd12">
             <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" id-list="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa_0 41c8356c-5411-4261-9872-74860971e0a4_0 0c58af92-034d-0cf9-e67d-95b3d096cd12_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_4" shape-name="stadium"/>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fstadium" id-list="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa_0 41c8356c-5411-4261-9872-74860971e0a4_0 0c58af92-034d-0cf9-e67d-95b3d096cd12_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_4"/>
           </style>
           <style id="edge5555551.25" id-list="nwtE_d950668a-cc4f-4322-9d87-68d88a0d33c5 nwtE_5659dfab-6f1b-482d-9f2e-88bd58b4d32a nwtE_ea8e7c61-8012-441b-a6f4-41f7a6a8cd6e nwtE_7705c973-722d-4386-9d4f-6cd55d8dede8 nwtE_5391b17a-6b2c-4dcf-8e86-47e607c264bb nwtE_f4716e45-9e45-4151-9f20-63bee4be6823 nwtE_cedee330-ca75-4117-b0d7-f95aae3cb80a nwtE_d2a0cb80-a73a-499f-b663-fa3a9d5c8e40 nwtE_9226f512-62dc-426e-a507-b588127f550f nwtE_f25bb69a-667b-462e-bf6f-f3460ebdc6b9 nwtE_b14fd3fc-1618-4797-a4bc-e944fa824b1f nwtE_dd6be8b0-130c-49c2-be85-8d30387a93e4 nwtE_551edb3e-f4f7-4932-9b6c-5431d62f8234 nwtE_61188832-2675-4301-b4ab-048984e16590 nwtE_ce608a2a-9db9-487c-ac51-8bda5d3372b3 nwtE_f8e86fd3-7d12-47e9-a698-755793eeda96 nwtE_d3ab2f61-42ba-42b8-832c-afbe6b62150d nwtE_57975a28-1d81-43d5-8613-f2e7f85a6d08 nwtE_332490dd-42d9-4fb6-95d6-385d11bc9f48 nwtE_252ede88-41de-40ae-ab88-d9216d6cb5b9 nwtE_46da6ada-cc1d-4939-8753-5a9e4aa40f5b nwtE_60650407-326b-4c28-b8c7-4e97f51da783 nwtE_6517df72-5477-4ea1-bfa2-30802ddc9b24 nwtE_cc3b05e1-e157-4ccb-93ac-55154b7f6eff nwtE_578e42a5-9568-478d-8e83-10b0e49ca1d3 nwtE_860bb089-81a9-40ac-932b-9cd763f81f7a nwtE_1f527cc8-4123-47da-8419-4f00ee6229e9 nwtE_d0b07128-9a81-4d13-b105-b657daa520c7">
             <g stroke="color_2" stroke-width="1.25"/>
@@ -45,7 +45,7 @@
         </listOfStyles>
       </renderInformation>
       <mapProperties>
-        <compoundPadding>10</compoundPadding>
+        <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
         <arrowScale>1.25</arrowScale>
@@ -63,7 +63,7 @@
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
         <mapColorScheme>opposed_red_blue</mapColorScheme>
         <mapColorSchemeStyle>3D</mapColorSchemeStyle>
-        <mapName>PD map of two-gene system behavior</mapName>
+        <mapName>Two-gene system behavior</mapName>
         <mapDescription>http://sbgn.github.io/sbgn/published_maps
 and
 doi:10.1038/nrg3885</mapDescription>
@@ -77,7 +77,19 @@ doi:10.1038/nrg3885</mapDescription>
       <bbox x="331.01107049749476" y="227.68918509073973" w="35" h="35"/>
     </glyph>
     <glyph id="nwtN_8c3bec67-a333-4934-9f45-175c1e650840" class="complex">
-      <bbox x="399.78125" y="73.375" w="38.25" h="77.25"/>
+      <extension>
+        <extraInfo>
+          <w>38.25</w>
+          <h>77.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <bbox x="394.78125" y="68.375" w="48.25" h="87.25"/>
       <glyph id="1ce37109-f4a2-0b67-da7a-cf53bb22059b" class="macromolecule">
         <label text="B"/>
         <bbox x="401.40625" y="114" w="35" h="35"/>
@@ -149,7 +161,7 @@ doi:10.1038/nrg3885</mapDescription>
       <bbox x="619.5110704974941" y="284.6891850907398" w="50" h="35"/>
       <glyph id="nwtN_91ffcc9b-025c-4bb8-b3b4-3f95e15609fa_0" class="state variable">
         <state value="ct:mRNA"/>
-        <bbox x="633.0110704974941" y="278.6891850907398" w="48" h="12"/>
+        <bbox x="620.4307085844655" y="278.6891850907398" w="48" h="12"/>
       </glyph>
     </glyph>
     <glyph id="162c5bf0-46dc-e772-33ad-72e39cde6618" class="source and sink">
@@ -177,7 +189,19 @@ doi:10.1038/nrg3885</mapDescription>
       <bbox x="557.7587757670492" y="282.44773658832133" w="18" h="18"/>
     </glyph>
     <glyph id="nwtN_d95d79cb-8926-44a3-b13e-70b43b32194b" class="complex">
-      <bbox x="617.8860704974941" y="424.7826009141587" w="53.25" h="77.17887875145925"/>
+      <extension>
+        <extraInfo>
+          <w>53.25</w>
+          <h>77.17887875145925</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <bbox x="612.8860704974941" y="419.7826009141587" w="63.25" h="87.17887875145925"/>
       <glyph id="2f458c4e-8d74-6a06-98b5-9ecc9aea20dd" class="macromolecule">
         <label text="A"/>
         <bbox x="627.0110704974941" y="426.4076009141587" w="35" h="35"/>
@@ -192,7 +216,7 @@ doi:10.1038/nrg3885</mapDescription>
       <bbox x="466.10482049749425" y="445.87204028988833" w="50" h="35"/>
       <glyph id="41c8356c-5411-4261-9872-74860971e0a4_0" class="state variable">
         <state value="ct:gene"/>
-        <bbox x="485.60482049749425" y="439.87204028988833" w="32" h="12"/>
+        <bbox x="475.8419093508765" y="439.87204028988833" w="32" h="12"/>
       </glyph>
     </glyph>
     <glyph id="nwtN_8535b756-986e-4113-98f5-ae813ca9053e" class="association">
@@ -239,7 +263,7 @@ doi:10.1038/nrg3885</mapDescription>
       <bbox x="249.55669025187052" y="461.02194901626603" w="50" h="35"/>
       <glyph id="0c58af92-034d-0cf9-e67d-95b3d096cd12_0" class="state variable">
         <state value="ct:gene"/>
-        <bbox x="269.0566902518705" y="455.02194901626603" w="32" h="12"/>
+        <bbox x="258.72550845134197" y="455.02194901626603" w="32" h="12"/>
       </glyph>
     </glyph>
     <glyph id="751448e7-205d-fecb-0524-2486bdfb3cd5" class="tag">
@@ -362,7 +386,7 @@ doi:10.1038/nrg3885</mapDescription>
       <end x="560.5119765652912" y="449.92876045916387"/>
     </arc>
     <arc id="nwtE_d0b07128-9a81-4d13-b105-b657daa520c7" class="necessary stimulation" source="0c58af92-034d-0cf9-e67d-95b3d096cd12" target="c17bb050-c3df-0538-2d62-69e641ca9fb0">
-      <start x="274.99583833980813" y="460.39694901626603"/>
+      <start x="275.1063233847414" y="455.8368894499806"/>
       <next x="275.5794508410816" y="436.3094558080887"/>
       <end x="339.8376143737744" y="436.49667807718106"/>
     </arc>

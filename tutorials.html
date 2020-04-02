@@ -32,7 +32,7 @@
         <li> <a href="#introduction">Introduction</a> 
              <span style="float: right;">Newt basics video: <a href="tutorials-basics.html"><img src="images/play-button.svg" width=16px/></a></span>
         <li> <a href="#menubar-and-toolbar">Menubar and toolbar</a>
-        <li> <a href="#right-panel">Right panel</a>
+        <li> <a href="#right-panel">Object inspection, Map settings and Palette</a>
         <li> <a href="#file-operations">File operations</a>
         <li> <a href="#convenient-editing">Convenient editing</a>
         <li> <a href="#alignment-grid-and-guidelines">Alignment, grid, and guidelines</a>
@@ -51,7 +51,7 @@
 
         <p> Newt editor is composed of a menu bar and a toolbar laid out horizontally on top of the drawing canvas with pan-zoom controls in its upper left, and a right panel for object inspection, map configuration and the palette. </p>
 
-        <span class="center"><a href="images/newt-ss.png" data-lightbox="image-intro" data-title="Overall look and components of the Newt editor"><img src="images/newt-ss.png" style="width: 593px;" /></a></span>
+        <span class="center"><a href="images/newt-ss.png" data-lightbox="image-intro" data-title="Overall look and components of the Newt editor"><img src="images/newt-ss.png" style="width: 100%;" /></a></span>
 
         <p> Newt is a viewer and editor of maps drawn in SBGN Process Description (PD) and Activity Flow (AF) languages or <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a>. Please refer to related <a target="_blank" href="https://sbgn.github.io/referencecards">reference cards</a> and <a target="_blank" href="http://sbgn.github.io/sbgn/specifications">specifications</a> for details of SBGN languages. </p>
 
@@ -62,34 +62,100 @@
         <h2 id="menubar-and-toolbar">Menubar and toolbar
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Menubar located at the top of the Newt editor is where all capabilities of the tool is assembled in an organized manner. Right below is a toolbar, which compiles most frequently used of all available operations for convenience. </p>
+        <p> Menubar located at the top of the Newt editor is where all capabilities of the tool are assembled in an organized manner. Right below is a toolbar, which compiles most frequently used of all available operations for convenience. </p>
 
         <h2 id="right-panel">Right panel
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
         <p> The panel on the right is composed of the following tabs. </p>
 
-        <h3>Inspector and style editor</h3>
-        <span class="left"><a href="images/inspector.png" data-lightbox="image-right-panel" data-title="Editing through the object inspector"><img src="images/inspector.png" style="width:400px"/></a></span>
-        <p> The object inspector on the right panel titled "Object" is activated when a particular object is selected by left-clicking on it, enabling inspection and editing of the style of the underlying object from border color to font type and size to state variables and custom annotations.</p>
-        <p> When multiple objects are selected, the inspector will only display the common attributes (and their values if all objects have the same value for that attribute) and will allow convenient simultaneous modification of those attributes. </p>
-	<p> A convenient way to change the style of an entire map is to use one of pre-defined color schmes under Map Properties in the right panel. 3D or gradient coloring of map objects are available through these colors schemes via background images as well as solid fill colors.</p>
+        <h3>Object properties inspector and editor</h3>
+        <span class="left"><a href="images/inspector.png" data-lightbox="image-inspector" data-title="Editing through the object inspector"><img src="images/inspector.png" style="width:400px"/></a></span>
+        <p> The object inspector on the right panel titled "Object" is activated when a particular object is selected by left-clicking on it, enabling inspection as well as editing of the style of the underlying object from border color to font type and size to state variables and custom annotations.</p>
+        <p> &#9752; When multiple objects are selected, the inspector will only display the common attributes (and their values if all objects have the same value for that attribute) and will allow convenient simultaneous modification of those attributes. </p>
+	      <p> A convenient way to change the style of an entire map is to use one of pre-defined color schemes (section named Color Schemes) under the Map tab in the right panel. 3D or gradient coloring of map objects are available through these colors schemes via background images as well as solid fill colors.</p>
+        <p> Depending on the type of the object being inspected, a section for additional properties of the object from external web resouces may be presented as follows:
+          <ul>
+          <li> When the object is a <i>macromolecule</i> or a similar entity, a section named "Properties from GeneCards" will appear. If the user clicks on the button titled with the symbol of the entity available under this section, the corresponding page in <a href="https://www.genecards.org/" target="_blank">GeneCards</a>, if any, will be opened in a separate tab. </li>
+          <li> When the object is a <i>simple chemical</i>, a section named "Properties from ChEBI" will appear. If the user unfolds this section, properties of the associated simple chemical from <a href="https://www.ebi.ac.uk/chebi/" target="_blank">CheBI</a>, if any, will be shown in-place in the inspector tab. </li>
+          </ul>
+        </p>
+        <p> A section titled "Custom Properties" in the Object tab is dedicated to annotations of map objects. Here the user can add an annotation of a selected object using a <a href="https://co.mbine.org/standards/qualifiers">BioModels qualifier</a> or a custom key-value pair.
+        </p>
 
-        <h3>Map settings</h3>
+        <h3>Map tab</h3>
 
-        <span class="right"><a href="images/map-properties.png" data-lightbox="image-map-properties" data-title="Configuring the map through settings"><img src="images/map-properties.png" style="width:320px"/></a></span>
+        <span class="right"><a href="images/map-properties.png" data-lightbox="image-map-properties" data-title="Configuring the map through settings"><img src="images/map-properties.png" style="width:360px"/></a></span>
         <p> The tab titled "Map" on the right panel is for configuring the drawing of the map. It can be enabled with "File | Map Properties..." or through the associated tool on the toolbar. </p>
         <p> Numerous settings of a map from general properties like compound paddings to label related settings such as whether to fit labels to nodes, to color scheme can be set using this tab. </p>
-        <p> Name and description of the map can also be set using this panel.</p>
-        <p> Notice that some of these settings apply to all map types, whereas others only apply to specific map type. </p>
+        <p> Name and description of the map can also be set using this panel. </p>
+        <p> &#9752; Notice that some of these settings apply to all map types, whereas others only apply to a specific map type. </p>
+        <p> Type of a map can be one of the following:
+          <ul>
+            <li> <b>PD</b>: A <i>process description</i> map containing nodes/edges <i>only</i> from PD palette. A semantic validation check (Edit | Validate Map...) can be performed only when the map type is PD.
+            <li> <b>AF</b>: An <i>activity flow</i> map containing nodes/edges <i>only</i> from AF palette
+            <li> <b>PD+AF</b>: An <i>SBGN</i> map containing nodes/edges from PD or AF palette
+            <span class="right"><a href="images/map-properties-tooltip.png" data-lightbox="image-map-properties" data-title="Quick help for settings via tooltips"><img src="images/map-properties-tooltip.png" style="width:240px"/></a></span>
+            <li> <b>SIF</b>: A <i>SIF</i> map containing nodes/edges <i>only</i> from SIF palette
+            <li> <b>PD+AF+SIF</b>: A <i>hybrid</i> map containing nodes/edges from any palette
+          </ul>
+        </p>
+        <p> &#9752; When you are over a particular setting in this tab, a tooltip will show an explanation of the associated setting. </p>
+
+        <h4>Experiment data</h4>
+
+        <p> One particular part of this tab that might be interest to most users is for uploading and showing experiment data in the context of your pathways.</p> 
+        <span class="left"><a href="images/map-properties-experiment.png" data-lightbox="image-map-properties" data-title="Support for overlaying experiment data over the pathway"><img src="images/map-properties-experiment.png" style="width:440px"/></a></span>
+        <p> Experiment data files are simple tab-delimited files with possibly multiple studies. Once loaded using "Experiment | Load..." menu or the + icon in the Experiment section of the Map tab, the background of each associated node whose label matches those given in the file will be colored according to the data value. Each file might contain one or more studies, and multiple files may be uploaded for analysis. The node background is split into as many times as studies available in all currently loaded and unhidden study. 
+        </p>  
+        <p>Users may inspect the uploaded experiment in a number of ways. First, it's color coded in the associated section of the node background. Secondly, when the mouse is over a particular node with some experiment data, a tooltip is displayed to show the corresponding values. Finally, a popup table is available through the table icon in the Experiment section of the Map tab. 
+        </p>
+        <p> &#9752; The values table is searchable by node label and could be sorted by node label or by values of a particular experiment by clicking on the associated column header. Another nice feature for locating the associated map object is by hovering a particular row, which will highlight the corresponding object in the map. </p>
+        <p> Each file or study may be temporarilly hidden or unhidden by simply clicking on the file or study name, respectively. </p>
+        <p> Below is a sample <i>tab-delimited</i> experiment data file:</p>
+          <div style="margin-left: 20px;"><code>
+            version<span id="tab">\t</span>1.0<br>
+            name<span id="tab">\t</span>sample experiment data<br>
+            description<span id="tab">\t</span>Adenoid Cystic Carcinoma 2014 vs 2019<br>
+            color<span id="tab">\t</span>0<span id="tab">\t</span>#FFFFFF<span id="tab">\t</span>100<span id="tab">\t</span>#FF0000<br>
+            gene<span id="tab">\t</span>2014<span id="tab">\t</span>2019<br>
+            RB1<span id="tab">\t</span>36<span id="tab">\t</span>12<br>
+            TP53<span id="tab">\t</span>36<span id="tab">\t</span>72<br>
+            CDKN2A<span id="tab">\t</span>0<span id="tab">\t</span>14<br>
+            MDM2<span id="tab">\t</span>0<span id="tab">\t</span>5<br>
+            CCNE<span id="tab">\t</span>0<span id="tab">\t</span>7<br><br>
+          </code></div>
+        <p>
+          where:
+          <ul>
+          <li>The first optional line specifies the <b>version</b> of the file.</li>
+          <li>The second optional line specifies the <b>name</b> of the experiment.</li>
+          <li>The third optional line provides a <b>description</b> of the experiment.</li>
+          <span class="right"><a href="images/map-properties-experiment-color.png" data-lightbox="image-map-properties" data-title="Example of color specification"><img src="images/map-properties-experiment-color.png" style="width:360px"/></a></span>
+          <li>The fourth optional line provides a <b>color mapping</b> for values in the experiment. Here the goal is to map certain control points / values to colors. When these values are sorted in ascending order, anything outside the range is considered invalid and displayed as gray. Values that map to these exact control values are displayed in the color specified. And the values that fall in-between these control points are linearly mapped to the in-between color. For instance, for the color description provided below, values are restricted to be in range [-100, 100] with control points and corresponding colors being {-100, 0, 100} and {red, green, blue}, respectively, yielding a coloring as shown in the figure on the right:
+            <div style="margin-left: 20px;"><code>
+              color	-100	#FF0000	0	#00FF00	100	#0000FF<br><br>
+            </code></div>
+          &#9752; By default colors are expected to be in range [-100, 100] with colors blue and red, respectively at end points, and white at 0 (i.e. blue to white to red uniformly).
+          </li>
+          <li>The fifth mandatory line specifies the <b>names of the studies</b> in the experiment.</li>
+          <li>The lines after the names of the studies will list the <b>data values</b> for each node with the given label in each study (one per column) in the experiment.</li>
+          </ul>
+        </p>
+
+        <h4>Color scheme</h4>
+
+        <span class="right"><a href="images/color-scheme.png" data-lightbox="image-map-properties" data-title="Many pre-defined color schemes with solid, gradient, and 3D style are available"><img src="images/color-scheme.png" style="width:320px"/></a></span>
+        <p> Newt provides a number of pre-defined color schemes with varying styles: <b>solid</b>, <b>gradient</b> or <b>3D</b> available under the Color Scheme section in the Map tab. The chosen color scheme is not only applied to all nodes/edges in the map but also to any new nodes and edges created interactively through the Palette. The icon to the right of each color scheme is for reversing the colors on that particular scheme. </p>
+        <p> &#9752; Notice however that when experiment data overlay feature is in use, this section is disabled and the color scheme defaults to solid black and white as the background of nodes are used for showing color coded experiment values.</p>
 
         <h3>Palette</h3>
         <span class="left"><a href="images/palette.png" data-lightbox="image-pallette" data-title="Constructing a map using the palette"><img src="images/palette.png" style="width:440px"/></a></span>
-        <p> When Palette tab on the right panel is chosen or when the user clicks in an empty area on the drawing canvas, the palette composed of nodes and edges of available map types: PD, AF and SIF, is displayed. The type of a map (see Type under General Properties) is considered PD (AF or SIF) when the user constructs a map using only nodes and edges from the PD (AF or SIF) palette. When the user mixes up nodes and/or edges from multiple palettes though, its type is set as "Unknown", and notation specific checks (e.g. a modulation arc can only go from a source EPN such as macromolecule to a process node in a PD map) are no longer performed. </p>
+        <p> When the Palette tab on the right panel is chosen or when the user clicks in an empty area on the drawing canvas, the palette composed of nodes and edges of available map types: PD, AF and SIF, is displayed. The type of a map (see Type under General Properties) is considered PD (AF or SIF) when the user constructs a map using only nodes and edges from the PD (AF or SIF) palette. If the user wants to mix up nodes and/or edges from multiple palettes though, they should set the map type to be a <i>hybrid</i> one (e.g. PD+AF). The notation specific checks (e.g. a modulation arc can only go from a source EPN such as macromolecule to a process node in a PD map) are no longer performed for hybrid maps though. </p>
 
         <p> Nodes can either be created by dragging from the palette onto the canvas or by selecting a particular node on the palette and then clicking on the canvas. Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection mode. Clicking <i>twice</i> on a tool, on the other hand, puts you in <i>sustained mode</i> so that the user can create multiple objects of that type in a row. </p>
 
-	<p> A convenient way to reconnect an edge is by selecting the edge and grabbing it from its reconnection handles at both ends and dragging onto its new source / target. </p>
+	      <p> A convenient way to reconnect an edge is by selecting the edge and grabbing it from its reconnection handles at both ends and dragging onto its new source / target. </p>
 
         <h2 id="file-operations">File operations
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
@@ -98,34 +164,37 @@
         <h3>Import-export</h3>
         <p> If you'd like a version without such style and annotation information to perhaps exchange maps with other tools such as <a href="https://immersive-analytics.infotech.monash.edu/vanted/addons/sbgn-ed/">SBGN-ED</a>, however, you could get your map in plain SBGNML using "Export | SBGN-ML Plain". </p>
 
-        <p> Newt supports import and export facilities from and to <a href="http://www.celldesigner.org/">CellDesigner</a> through "{Import,Export} | CellDesigner File".</p>
+        <p> &#9752; Newt can support both milestones 0.2 and 0.3 but opts to 0.2 by default. Persistency in milestone 0.3 is available though through the "Export" menu.
+        </p>
+
+        <p> Newt also supports import and export facilities from and to <a href="https://en.wikipedia.org/wiki/SBML">SBML</a> and <a href="http://www.celldesigner.org/">CellDesigner</a> through "{Import, Export} | {SBML, CellDesigner}".</p>
 
         <p> In addition, AF models can be imported to Newt from simple tab-delimited files. An example model formatted in this manner follows:</p>
-<code>
+        <div style="margin-left: 20px;"><code>
         SBGNViz AF 1.0<br>
         Sample Pathway title<br>
         This is a sample pathway description.<br>
-        --NODE_NAME	NODE_ID	NODE_TYPE	PARENT_ID	POSX	POSY	WIDTH	HEIGHT--<br>
-        ERBB2	1	BIOLOGICAL_ACTIVITY	-1<br>
-        NRAS	2	BIOLOGICAL_ACTIVITY	-1<br>
+        --NODE_NAME<span id="tab">\t</span>NODE_ID<span id="tab">\t</span>NODE_TYPE<span id="tab">\t</span>PARENT_ID<span id="tab">\t</span>POSX<span id="tab">\t</span>POSY<span id="tab">\t</span>WIDTH<span id="tab">\t</span>HEIGHT--<br>
+        ERBB2<span id="tab">\t</span>1<span id="tab">\t</span>BIOLOGICAL_ACTIVITY<span id="tab">\t</span>-1<br>
+        NRAS<span id="tab">\t</span>2<span id="tab">\t</span>BIOLOGICAL_ACTIVITY<span id="tab">\t</span>-1<br>
         ...<br>
-        --EDGE_ID	SOURCE	TARGET	EDGE_TYPE--<br>
-        11	1	2	NEGATIVE_INFLUENCE<br>
+        --EDGE_ID<span id="tab">\t</span>SOURCE<span id="tab">\t</span>TARGET<span id="tab">\t</span>EDGE_TYPE--<br>
+        11<span id="tab">\t</span>1<span id="tab">\t</span>2<span id="tab">\t</span>NEGATIVE_INFLUENCE<br>
         ...
-</code>
+        </code></div>
 
         <p><br>Furthermore, maps may be imported from or exported to <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a> files using the "{Import,Export} | SIF" File menu items. A SIF file is formatted as follows:</p>
-<code>
-        entity_id relationship_type entity_id
+        <div style="margin-left: 20px;"><code>
+        entity_id<span id="tab">\t</span>relationship_type<span id="tab">\t</span>entity_id
         ...
-</code>
+        </div></code>
 
         <p><br>where <code>entity_id</code> is the label and ID of a macromolecule or a simple chemical and <code>relationship_type</code> is one of the predetermined types of relationships between these two entities.
         </p>
 
         <h3>Static images</h3>
 
-        <p> Finally, File menu can be used to export the current map as a static image (either as a raster file in PNG or JPG or as scalable vector graphics in SVG).</p>
+        <p> File menu can be used to export the current map as a static image (either as a raster file in PNG or JPG or as scalable vector graphics in SVG).</p>
 
         <h3>Persisting user preferences</h3>
 
@@ -160,15 +229,15 @@
         <h2 id="convenient-editing">Convenient editing
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit menu. However, note that if you create a reversible reaction, which requires using input ports of a process node for production edges, the map type will be set to "Unknown", and no validation checks for linking nodes will be performed for subsequent operations. </p>
+        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit menu inspired by <a href="https://sbgnbricks.org/">SBGN bricks</a>. </p>
 
         <table class="plaintable">
           <tr>
             <th class="leftcolumn">
-            <a href="images/template-dialog.png" data-lightbox="image-templates" data-title="Template dialog for convenient editing"><img class="ssthumbnail" src="images/template-dialog.png" style="height: 242px;"></a>
+            <a href="images/sbgn-bricks-1.png" data-lightbox="image-templates" data-title="Convenient editing using SBGN bricks"><img class="ssthumbnail" src="images/sbgn-bricks-1.png" style="height: 260px;"></a>
             </th>
             <th class="rightcolumn">
-            <a href="images/template-association-example.png" data-lightbox="image-templates" data-title="Example creation of an association using the template dialog"><img class="ssthumbnail" src="images/template-association-example.png" style="height: 110px;"></a>
+            <a href="images/sbgn-bricks-2.png" data-lightbox="image-templates" data-title="Example creation of an association using the template dialog"><img class="ssthumbnail" src="images/sbgn-bricks-2.png" style="height: 110px;"></a>
             </th> 
           </tr>
         </table>
@@ -247,7 +316,7 @@ Grid and guideline support is rather involved and can be customized using the se
 
         <h2 id="search-and-highlight">Search and highlight
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
-        <p> Newt allows users to highlight a specified part of a map through the Highlight menu (Highlight | Selected). To highlight the part of a map involving a certain object, you may use the Search facility (Highlight | Search). Newt looks for node labels with specified keyword and highlights them (all processes involved in case of map type being PD). </p>
+        <p> Newt allows users to highlight a specified part of a map through the Highlight menu (e.g. Highlight | Selected). To highlight the part of a map involving a certain object, you may use the Search facility (Highlight | Search). Newt looks for node labels with specified keyword and highlights them (all processes involved in case of map type being PD). </p>
         <span class="center"><a href="images/search-example.png" data-lightbox="image-search" data-title="Part of the map containing &quot;fructose&quot; in its label is searched for and highlighted"><img src="images/search-example.png" style="width: 500px;" /></a></span>
 
         <h2 id="automatic-layout">Automatic layout
