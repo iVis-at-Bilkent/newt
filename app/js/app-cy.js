@@ -1276,8 +1276,8 @@ module.exports = function (chiseInstance) {
     }); */
     
     cy.on("layoutstart",function(event){   
-     var node = cy.nodes(":selected");
-     if(node.length == 1 && node.data("collapsedChildren") == null)
+     var node = cy.nodes(":selected").nodes(":parent");
+     if(node.length == 1)
       node[0].data("onLayout", true);
     });    
 
