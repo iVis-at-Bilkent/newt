@@ -97,7 +97,7 @@ module.exports = function() {
     topologyGrouping.clearAppliedFlag();
 
     // unlock graph topology in case it is locked
-    chiseInstance.elementUtilities.unlockGraphTopology();
+    chiseInstance.elementUtilities.unlockGraphTopology();    
 
     // if the event is triggered for the active instance do the followings
     if ( isActiveInstance ) {
@@ -109,13 +109,46 @@ module.exports = function() {
         $('#inspector-map-tab a').tab('show');
       }
       
-       if ( $('#inspector-console-tab')[0].style.display == "block") {
-            $('#inspector-console-tab')[0].style.display = "none";
-
+      if ($('#inspector-console-tab')[0].style.display == "block") {
+        $('#inspector-console-tab')[0].style.display = "none";
       }
+    }
+  });
+  
+  // Event triggered before file loaded by URL/URI
+  $(document).on('sbgnvizLoadFromURL sbgnvizLoadFromURI', function(event, filename, cy) {
 
+    var chiseInstance = appUtilities.getChiseInstance(cy);    
+  
+    var urlParams = appUtilities.getScratch(cy, 'urlParams');
+    
+    // get current general properties for cy
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');    
+
+    // inferNestingOnLoad and compoundPadding must be set before file loaded
+    if (urlParams) {
+      // filter map properties from the url parameters
+      var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+      
+      if("inferNestingOnLoad" in mapPropsFromUrl){
+        currentGeneralProperties.inferNestingOnLoad = (mapPropsFromUrl.inferNestingOnLoad == 'true');
+      }
+      else if(event.type == 'sbgnvizLoadFromURL'){
+        currentGeneralProperties.inferNestingOnLoad = true;
+      }
+      else if(event.type == 'sbgnvizLoadFromURI'){
+        currentGeneralProperties.inferNestingOnLoad = false;
+      }
+      
+      if("compoundPadding" in mapPropsFromUrl){
+        currentGeneralProperties.compoundPadding = Number(mapPropsFromUrl.compoundPadding);
+        chiseInstance.setCompoundPadding(Number(mapPropsFromUrl.compoundPadding));
+      }       
     }
 
+    // set 'currentGeneralProperties' on scratchpad of cy
+    appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);    
+    
   });
 
   $(document).on('updateGraphEnd', function(event, cy) {

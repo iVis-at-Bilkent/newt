@@ -2416,7 +2416,7 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     // refresh map with new settings
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
-
+    
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
     }
@@ -2489,9 +2489,6 @@ appUtilities.launchWithModelFile = function() {
     tutorial.introduction(true);
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
-    // get current general properties
-    var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
-    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -2540,12 +2537,12 @@ appUtilities.launchWithModelFile = function() {
       success: function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
+          $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           var fileToLoad = new File([data.response.body], filename, {
             type: 'text/' + fileExtension,
             lastModified: Date.now()
           });
 
-          currentGeneralProperties.inferNestingOnLoad = true;
           chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
         else {
@@ -2555,11 +2552,6 @@ appUtilities.launchWithModelFile = function() {
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
       }
-    });
-
-    $(document).one("sbgnvizLoadFileEnd", function(){
-      currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-      appUtilities.mapTabGeneralPanel.render();
     });
 
   }
@@ -2574,8 +2566,6 @@ appUtilities.launchWithModelFile = function() {
 
     chiseInstance.startSpinner('paths-byURI-spinner');
 
-    var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
-    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
     var currentLayoutProperties = appUtilities.getScratch(cyInstance, 'currentLayoutProperties');
 
     $.ajax({
@@ -2587,9 +2577,8 @@ appUtilities.launchWithModelFile = function() {
         if (data.response.statusCode == 200 && data.response.body) {
           var xml = $.parseXML(data.response.body);
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
-          currentGeneralProperties.inferNestingOnLoad = false;
+          $(document).trigger('sbgnvizLoadFromURI', [filename, cyInstance]);          
           chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
