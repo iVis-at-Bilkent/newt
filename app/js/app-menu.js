@@ -130,13 +130,10 @@ module.exports = function() {
       // filter map properties from the url parameters
       var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
       
-      if("inferNestingOnLoad" in mapPropsFromUrl){
+      if("inferNestingOnLoad" in mapPropsFromUrl) {
         currentGeneralProperties.inferNestingOnLoad = (mapPropsFromUrl.inferNestingOnLoad == 'true');
       }
-      else if(event.type == 'sbgnvizLoadFromURL'){
-        currentGeneralProperties.inferNestingOnLoad = true;
-      }
-      else if(event.type == 'sbgnvizLoadFromURI'){
+      else {
         currentGeneralProperties.inferNestingOnLoad = false;
       }
       
