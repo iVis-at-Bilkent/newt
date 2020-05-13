@@ -2416,6 +2416,8 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     // refresh map with new settings
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
+
+    cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
     
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
@@ -2438,9 +2440,6 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     else {
       chiseInstance.omitCompoundSizes();
     }
-
-    cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
-    cy.style().update();
 
     // reset 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
