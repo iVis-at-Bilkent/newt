@@ -839,11 +839,11 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       var cy = _cy || self.getActiveCy();
 
       if ( !self.getScratch(cy, 'currentGeneralProperties').recalculateLayoutOnComplexityManagement ) {
-        cy.trigger('fit-units-after-expandcollapse');
+//        cy.trigger('fit-units-after-expandcollapse');
         return;
       }
       self.triggerLayout(cy, false);
-      cy.trigger('fit-units-after-expandcollapse');
+//      cy.trigger('fit-units-after-expandcollapse');
     },
     expandCollapseCueSize: 12,
     expandCollapseCuePosition: function (node) {
