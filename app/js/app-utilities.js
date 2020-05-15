@@ -751,11 +751,10 @@ appUtilities.defaultGeneralProperties = {
   allowCompoundNodeResize: true,
   mapColorScheme: 'black_white',
   mapColorSchemeStyle: 'solid',
-  mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
+  mapType: function() {return (appUtilities.getActiveChiseInstance().getMapType() || "Unknown");},
   mapName: "",
   mapDescription: "",
-  enableSIFTopologyGrouping: false,
-  experimentDescription: "",
+  experimentDescription: ""
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -2475,7 +2474,12 @@ appUtilities.launchWithModelFile = function() {
 
   // attach url params to the object to be used on sbgnvizLoadFileEnd event
   // it will be cleared immediately after usage
-  appUtilities.setScratch(cyInstance, 'urlParams', paramObj);
+  if(url_path || uri_path) {
+    appUtilities.setScratch(cyInstance, 'urlParams', paramObj);
+  }
+  else {
+    appUtilities.setScratch(cyInstance, 'urlParams', undefined);
+  }
 
   var promptInvalidURIWarning = this.promptInvalidURIWarning;
   var promptInvalidURLWarning = this.promptInvalidURLWarning;

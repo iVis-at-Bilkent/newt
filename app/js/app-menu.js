@@ -135,12 +135,16 @@ module.exports = function() {
       }
       else {
         currentGeneralProperties.inferNestingOnLoad = false;
-      }
+      }     
       
       if("compoundPadding" in mapPropsFromUrl){
         currentGeneralProperties.compoundPadding = Number(mapPropsFromUrl.compoundPadding);
         chiseInstance.setCompoundPadding(Number(mapPropsFromUrl.compoundPadding));
-      }       
+      }
+      else {
+        currentGeneralProperties.compoundPadding = 0;
+        chiseInstance.setCompoundPadding(currentGeneralProperties.compoundPadding);
+      }
     }
 
     // set 'currentGeneralProperties' on scratchpad of cy
@@ -595,6 +599,14 @@ module.exports = function() {
 
         // filter map properties from the url parameters
         var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+        
+        if(!("inferNestingOnLoad" in mapPropsFromUrl)) {
+          mapPropsFromUrl.inferNestingOnLoad = false;
+        }   
+
+        if(!("compoundPadding" in mapPropsFromUrl)){
+          mapPropsFromUrl.compoundPadding = 0;
+        }              
 
         // merge the map properties coming from url into
         // the map properties read from file
