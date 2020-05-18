@@ -3002,19 +3002,23 @@ appUtilities.resizeNodesToContent = function(nodes){
   var chiseInstance = appUtilities.getActiveChiseInstance();
   var cy = appUtilities.getActiveCy();
   var collection;
-    if(nodes.length == 1){
-      collection = cy.collection();    
-      collection = collection.add(nodes[0]);   
-    }else{
-      collection = nodes;
-    }    
-    
-    if(!chiseInstance.areCompoundSizesConsidered()){
-      collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
-    }
-    chiseInstance.resizeNodesToContent(collection, false);
-    cy.nodeResize('get').refreshGrapples();
-    cy.expandCollapse('get').clearVisualCue();
+  if(nodes.length == 1){
+    collection = cy.collection();    
+    collection = collection.add(nodes[0]);   
+  }else{
+    collection = nodes;
+  }    
+
+  if(!chiseInstance.areCompoundSizesConsidered()){
+    collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
+  }
+  chiseInstance.resizeNodesToContent(collection, false);
+  cy.nodeResize('get').refreshGrapples();
+  cy.expandCollapse('get').clearVisualCue();
+  // To redraw expand/collapse cue after resize to content
+  if(collection.length == 1 && (collection[0].isParent() || collection[0].data('collapsedChildren')) && collection[0].selected()) { 
+    cy.$(':selected').trigger('select'); 
+  };
 
 };
 

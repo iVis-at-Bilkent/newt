@@ -757,7 +757,14 @@ module.exports = function (chiseInstance) {
         if(node.length == 1 && event.target.selected())
          node[0].data("onLayout", true);
       }
-    });    
+    });
+    
+    // To redraw expand/collapse cue after resize
+    cy.on("noderesize.resizeend", function (e, type, node) {
+      if(node.isParent() && node.selected())
+        node.trigger("select");
+    });
+       
    /*  cy.on("expandcollapse.afterexpand",function(event){
       var node = event.target;
      node.data("expanding", false);      
