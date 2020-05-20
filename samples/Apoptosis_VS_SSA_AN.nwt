@@ -1,0 +1,1003 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="process description">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_2" value="#cccc00"/>
+          <colorDefinition id="color_3" value="#ccffccff"/>
+          <colorDefinition id="color_4" value="#000000"/>
+          <colorDefinition id="color_5" value="#ffffffff"/>
+          <colorDefinition id="color_6" value="#660033"/>
+          <colorDefinition id="color_7" value="#f7f7f77f"/>
+          <colorDefinition id="color_8" value="#ff3333ff"/>
+          <colorDefinition id="color_9" value="#cc99ffff"/>
+          <colorDefinition id="color_10" value="#ff0000"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="nodeffffff0.5cccc0013.512normalnormalHelvetica0001" idList="c4_ca4 c5_ca5 c7_ca7">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="13.5" fill="color_1" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="nodeccffcc100000018normalnormalHelvetica0001" idList="s6_sa4 s7_sa5 s23_sa30 s23_sa31 s24_sa24 s9_sa7 s11_sa8 s3_sa1 s8_sa6 s12_sa9 s12_sa10 s14_sa13 s14_sa14 s15_sa15 s15_sa17 s16_sa18 s16_sa19 s19_sa22 s19_sa23 s20_sa25 s21_sa27 s22_sa28 s22_sa29 s26_sa32 s27_sa33 s28_sa34 s26_sa57 s27_sa58 s28_sa59 s29_sa35 s30_sa36 s31_sa37 s29_sa62 s30_sa63 s31_sa64 s34_sa26 s35_sa38 s36_sa39 s36_sa40 s40_sa44 s42_sa45 s43_sa46 s44_sa47 s46_sa49 s46_sa50 s4_sa2 s5_sa3">
+            <g font-size="8" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff10000001121" idList="pr_73455b70-6485-4fc3-8839-841d0347bbff pr_b984479c-ae61-41b8-87cb-a7b0ac818d57 pr_f31a5377-2e2e-45aa-81d9-d1602a068672 pr_ab1e50db-8b22-4519-8f85-2e679090ff89 pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4 pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1 pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814 pr_bade5c29-9c3b-445d-a17e-9ce58b81316e pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde pr_5156a7dc-8a10-4977-a37e-f21d679734ae pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5 pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221 pr_849208a3-097c-4a75-bd7d-8f8dceb53822 pr_1bfd5c6f-bb4e-407c-9759-6cec840028be">
+            <g font-size="12" stroke="color_4" stroke-width="1" fill="color_5" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff0.56600337.512normalnormalHelvetica0001" idList="c6_ca6">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_6" stroke-width="7.5" fill="color_1" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="nodef7f7f70.500000028normalnormalHelvetica0001" idList="s1_csa1 s2_csa2 s25_csa3 s25_csa9 s32_csa4 s32_csa10 s33_csa5 s41_csa6">
+            <g font-size="8" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="2" fill="color_7" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="nodeff3333100000018normalnormalHelvetica0001" idList="s38_sa42 s39_sa43 s45_sa48">
+            <g font-size="8" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1" fill="color_8" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodecc99ff1000000112normalnormalHelvetica0001" idList="s37_sa41">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1" fill="color_9" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge0000001" idList="cons_1b8faf4a-721b-4eff-801f-3590a5e9fa13 cons_53408bbb-2acd-47d3-8718-ab6d77b20ae4 prod_735779d5-35f4-4f09-a0c9-2074baa0a5ff cons_72fc634f-ec57-425b-a559-6703bd13de1f cons_8418b677-3f42-4a6f-a3a6-22381d4d9d7e prod_9fc032de-bc29-4790-aae3-fb99434b185c cons_fd9954ab-e59e-48c1-b662-34c9e8d62b7e prod_de61579e-cad0-41ca-96da-0084dff09756 modif_ca13cebd-94ca-4ce8-80e3-e1c0dde45f77 cons_0f8883d3-b5db-4c78-a4fc-8968ec997e8f prod_f4926f3b-d686-4520-b513-f68a9d90394c modif_e2b3bccc-e989-473b-a6fe-ada9e456c5e1 modif_a425cddd-8343-4b4d-9af4-32546ace80d3 cons_563690f6-f006-4a55-926e-cba1e0b95e63 prod_63e6d4ab-57ea-4d94-9e4a-30143800ec10 modif_f444071d-107a-43a7-9e96-3ff9d4fb4ffc modif_87f3559f-01fd-4654-8f9c-0421688e8616 cons_fdfeb5fd-5724-4f79-bd4f-4fc00617ad29 prod_543ed32a-9150-4805-ae7b-cc1b3c1040f5 modif_7b93b92a-3a1c-46af-82d6-34a2fe8e019e cons_9a3c93d7-983c-43fc-bf58-7960ab12853f prod_adae0485-8710-4636-9b5b-51f621b34ca6 modif_bac9435c-4004-4b57-b815-f171a498ae0b cons_ab9aff92-bb6c-49d6-a0f9-22208d30a979 prod_c91d6e27-455a-4629-8445-b618161dfb76 modif_c2b3453a-0399-45eb-a9e7-e65790048630 modif_1af8d777-3e98-4731-a381-d14ebae72f07 cons_c3ed3dd1-c533-474f-84b4-4949890a5669 prod_6d8b1d23-a427-4fca-8918-f3b8a907b186 modif_1251c91f-5005-4c40-9b59-1b8ad8c6baa9 cons_615a393c-2673-4b9b-96f4-b3fec563748c cons_e3693bf0-2d72-459d-a395-153b45399379 prod_033ea4ca-9bda-43b6-a94c-9a768b452917 addreact_8aab2a8c-d4cc-45fb-938b-03950011c517 cons_eaf7fc94-0204-44cd-8827-40dc4beb300d prod_e60d45e3-2dcc-4fbc-9b82-7fdc7784dc89 modif_f0fd763f-631d-46a7-b28b-a8f128c2482d modif_b99ca09a-d93f-4de9-a572-e74d830d2383 direct_9a2f1beb-a3e0-44cb-b0e8-e929161fd025 direct_c06a0208-d9f4-473a-9f67-5a736975ced7 cons_79f24709-7f18-457c-87c3-4917da84c9da prod_bda168b1-9118-4021-a3b3-b787461752c0 cons_ffee9141-5fd0-4a8a-91a5-2542354d78bd cons_595de58d-93b6-4794-b51b-f0c92d2138e6 prod_dfe82a12-2f78-4f77-ae4d-db96368a5124 modif_788880e5-2c41-4088-85c4-3ab6a896c30f cons_e397116c-acfb-4bd4-9f77-d00c99207896 prod_442a02b3-d2a3-4c51-9121-6cc5d350e7b7 modif_7ad55cb5-5760-4941-8d06-0d4363bf8cd8 cons_a52b3c9f-ddea-4e87-8194-b12b31838a5d prod_d19a6c95-4ead-4dd6-afcc-42e98eab96b7 cons_8605bfce-288e-4881-b80f-4358c0003581 prod_f568f1df-75ba-4273-8add-301b0628eab2">
+            <g stroke="color_4" stroke-width="1"/>
+          </style>
+          <style id="edgeff00001" idList="modif_70171cdc-4e0b-4526-9f93-542f78e07a13 modif_fa58be8d-4b7a-4723-af96-92f0410b4537 modif_281ff0f1-1300-44e4-a933-fe442ed0041b modif_11ccce47-690c-41e0-84c3-658ef0f5c89e modif_792dcea6-502e-44e6-bf00-478e8584ddf7 modif_eb98259e-34bb-44e3-a4d8-46e9658238a6">
+            <g stroke="color_10" stroke-width="1"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>Apoptosis_VS_SSA_AN</mapName>
+        <mapDescription>A modified version of a Covid-19 pathway produced by the COVID-19 Disease Map project (https://covid.pages.uni.lu/) and converted into SBGNML (https://cannin.github.io/covid19-sbgn/).</mapDescription>
+      </mapProperties>
+    </extension>
+    <glyph id="c4_ca4" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>748.4014469592948</w>
+          <h>74.56619294740045</h>
+          <minW>748.4014469592948</minW>
+          <minH>0</minH>
+          <WLBias>0.00003957842312637231</WLBias>
+          <WRBias>0.00006042157687362769</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="Plasma membrane"/>
+      <bbox x="32.07064791261553" y="-183.49341285376698" w="776.4014469592948" h="102.56619294740045"/>
+    </glyph>
+    <glyph id="s6_sa4" class="macromolecule" compartmentRef="c4_ca4">
+      <label text="TNFR1"/>
+      <bbox x="509.25173346097995" y="-167.99341285376698" w="35.77734375" h="22"/>
+    </glyph>
+    <glyph id="s7_sa5" class="macromolecule" compartmentRef="c4_ca4">
+      <label text="FAS"/>
+      <bbox x="209.98272273711558" y="-165.15158353645631" w="30" h="22"/>
+    </glyph>
+    <glyph id="pr_73455b70-6485-4fc3-8839-841d0347bbff" class="process" compartmentRef="c4_ca4">
+      <bbox x="247.29108088101884" y="-117.08541085035651" w="10" h="10"/>
+      <port id="pr_73455b70-6485-4fc3-8839-841d0347bbff_p1" x="252.29108088101884" y="-127.08541085035651"/>
+      <port id="pr_73455b70-6485-4fc3-8839-841d0347bbff_p2" x="252.29108088101884" y="-97.08541085035651"/>
+    </glyph>
+    <glyph id="pr_b984479c-ae61-41b8-87cb-a7b0ac818d57" class="process" compartmentRef="c4_ca4">
+      <bbox x="471.3192870055723" y="-116.42721990636653" w="10" h="10"/>
+      <port id="pr_b984479c-ae61-41b8-87cb-a7b0ac818d57_p1" x="476.3192870055723" y="-126.42721990636653"/>
+      <port id="pr_b984479c-ae61-41b8-87cb-a7b0ac818d57_p2" x="476.3192870055723" y="-96.42721990636653"/>
+    </glyph>
+    <glyph id="c5_ca5" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>748.2089148907662</w>
+          <h>433.7644441486916</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="Cytoplasm"/>
+      <bbox x="30.867743129621772" y="-63.76701380931172" w="776.2089148907662" h="461.7644441486916"/>
+    </glyph>
+    <glyph id="c6_ca6" class="compartment" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>103.38163688700263</w>
+          <h>161.36795897903963</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="Mitochondria"/>
+      <bbox x="442.51936893576965" y="97.53782701217129" w="131.38163688700263" h="189.36795897903963"/>
+    </glyph>
+    <glyph id="s23_sa30" class="macromolecule" compartmentRef="c6_ca6">
+      <label text="BAX"/>
+      <clone/>
+      <bbox x="485.6280418367638" y="113.03782701217128" w="30" h="22"/>
+    </glyph>
+    <glyph id="s23_sa31" class="macromolecule" compartmentRef="c6_ca6">
+      <label text="BAX"/>
+      <clone/>
+      <bbox x="485.6280418367638" y="209.06455368129855" w="30" h="22"/>
+    </glyph>
+    <glyph id="s24_sa24" class="macromolecule" compartmentRef="c6_ca6">
+      <label text="Cytochrome C"/>
+      <bbox x="497.2760058227723" y="245.4057859912109" w="61.125" h="22"/>
+    </glyph>
+    <glyph id="pr_f31a5377-2e2e-45aa-81d9-d1602a068672" class="process" compartmentRef="c6_ca6">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_f31a5377-2e2e-45aa-81d9-d1602a068672">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:pubmed:31226023"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="495.6280418367638" y="163.60406411990417" w="10" h="10"/>
+      <port id="pr_f31a5377-2e2e-45aa-81d9-d1602a068672_p1" x="500.6280418367638" y="153.60406411990417"/>
+      <port id="pr_f31a5377-2e2e-45aa-81d9-d1602a068672_p2" x="500.6280418367638" y="183.60406411990417"/>
+    </glyph>
+    <glyph id="pr_ab1e50db-8b22-4519-8f85-2e679090ff89" class="process" compartmentRef="c6_ca6">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_ab1e50db-8b22-4519-8f85-2e679090ff89">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                  <rdf:li rdf:resource="urn:miriam:pubmed:31226023"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="468.01936893576965" y="251.4057859912109" w="10" h="10"/>
+      <port id="pr_ab1e50db-8b22-4519-8f85-2e679090ff89_p1" x="488.01936893576965" y="256.4057859912109"/>
+      <port id="pr_ab1e50db-8b22-4519-8f85-2e679090ff89_p2" x="458.01936893576965" y="256.4057859912109"/>
+    </glyph>
+    <glyph id="s1_csa1" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>38.77734375</w>
+          <h>51.99999999999996</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="TNFA/TNFR1"/>
+      <bbox x="446.9306151305723" y="-13.303620168724223" w="58.77734375" h="71.99999999999996"/>
+      <glyph id="s9_sa7" class="macromolecule">
+        <label text="TNFA"/>
+        <bbox x="458.4306151305723" y="25.196379831275735" w="30.4453125" h="22"/>
+      </glyph>
+      <glyph id="s11_sa8" class="macromolecule">
+        <label text="TNFR1"/>
+        <bbox x="458.4306151305723" y="-1.8036201687242226" w="35.77734375" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s2_csa2" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>68</w>
+          <h>25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="FAS/FASL"/>
+      <bbox x="208.29108088101884" y="-47.76701380931174" w="88" h="45"/>
+      <glyph id="s3_sa1" class="macromolecule">
+        <label text="FAS"/>
+        <bbox x="219.79108088101884" y="-36.26701380931174" w="30" h="22"/>
+      </glyph>
+      <glyph id="s8_sa6" class="macromolecule">
+        <label text="FASL"/>
+        <bbox x="254.79108088101884" y="-36.26701380931174" w="30" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s12_sa9" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="FADD"/>
+      <clone/>
+      <bbox x="164.91523650271057" y="19.941929323752078" w="31.3359375" h="22"/>
+    </glyph>
+    <glyph id="s12_sa10" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="FADD"/>
+      <clone/>
+      <bbox x="319.2874852399778" y="19.941929323752078" w="31.3359375" h="22"/>
+    </glyph>
+    <glyph id="s14_sa13" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP8"/>
+      <clone/>
+      <bbox x="248.96021030682493" y="53.24635519000104" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s14_sa14" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP8"/>
+      <clone/>
+      <bbox x="248.96021030682493" y="143.89101711050594" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s15_sa15" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP3"/>
+      <clone/>
+      <bbox x="212.24932494834619" y="94.38823587589678" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s15_sa17" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP3"/>
+      <clone/>
+      <bbox x="85.142088081638" y="94.38823587589678" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s16_sa18" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP9"/>
+      <clone/>
+      <bbox x="154.13562885576582" y="260.42591839586834" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s16_sa19" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP9"/>
+      <clone/>
+      <bbox x="154.13562885576582" y="142.23985503013458" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s19_sa22" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="BID"/>
+      <clone/>
+      <bbox x="278.4241977530536" y="181.24687908070752" w="30" h="22"/>
+    </glyph>
+    <glyph id="s19_sa23" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="BID"/>
+      <clone/>
+      <bbox x="382.6454004249425" y="181.24687908070752" w="30" h="22"/>
+    </glyph>
+    <glyph id="s20_sa25" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="Cytochrome C"/>
+      <bbox x="328.0145732988599" y="319.7996215631007" w="61.125" h="22"/>
+    </glyph>
+    <glyph id="s21_sa27" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="APAF1"/>
+      <bbox x="328.0145732988599" y="285.607448424983" w="34.75" h="22"/>
+    </glyph>
+    <glyph id="s22_sa28" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="AKT"/>
+      <clone/>
+      <bbox x="342.39344909705176" y="217.12831092762107" w="30" h="22"/>
+    </glyph>
+    <glyph id="s22_sa29" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="AKT"/>
+      <clone/>
+      <bbox x="239.0975308778467" y="217.12831092762107" w="30" h="22"/>
+    </glyph>
+    <glyph id="s25_csa3" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>71.11328125</w>
+          <h>51.999999999999886</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="BIM/BAD/PUMA"/>
+      <clone/>
+      <bbox x="699.963376770388" y="228.82664678847533" w="91.11328125" h="71.99999999999989"/>
+      <glyph id="s26_sa32" class="macromolecule">
+        <label text="BIM"/>
+        <clone/>
+        <bbox x="749.576658020388" y="240.32664678847533" w="30" h="22"/>
+      </glyph>
+      <glyph id="s27_sa33" class="macromolecule">
+        <label text="BAD"/>
+        <clone/>
+        <bbox x="711.463376770388" y="267.3266467884752" w="30" h="22"/>
+      </glyph>
+      <glyph id="s28_sa34" class="macromolecule">
+        <label text="PUMA"/>
+        <clone/>
+        <bbox x="711.4633767703882" y="240.32664678847533" w="33.11328125" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s25_csa9" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>71.11328125</w>
+          <h>52</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="BIM/BAD/PUMA"/>
+      <clone/>
+      <bbox x="699.963376770388" y="48.08250742810125" w="91.11328125" h="72"/>
+      <glyph id="s26_sa57" class="macromolecule">
+        <label text="BIM"/>
+        <clone/>
+        <bbox x="749.576658020388" y="59.58250742810125" w="30" h="22"/>
+      </glyph>
+      <glyph id="s27_sa58" class="macromolecule">
+        <label text="BAD"/>
+        <clone/>
+        <bbox x="711.463376770388" y="86.58250742810125" w="30" h="22"/>
+      </glyph>
+      <glyph id="s28_sa59" class="macromolecule">
+        <label text="PUMA"/>
+        <clone/>
+        <bbox x="711.4633767703883" y="59.58250742810125" w="33.11328125" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s32_csa4" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>69.3515625</w>
+          <h>52.000000000000085</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="BCL2/BCL-XL/MCL1"/>
+      <clone/>
+      <bbox x="593.3287859891587" y="132.60406411990408" w="89.3515625" h="72.00000000000009"/>
+      <glyph id="s29_sa35" class="macromolecule">
+        <label text="BCL2"/>
+        <clone/>
+        <bbox x="641.1686297391587" y="171.1040641199042" w="30.01171875" h="22"/>
+      </glyph>
+      <glyph id="s30_sa36" class="macromolecule">
+        <label text="BCL-XL"/>
+        <clone/>
+        <bbox x="604.8287859891587" y="144.1040641199041" w="38.01171875" h="22"/>
+      </glyph>
+      <glyph id="s31_sa37" class="macromolecule">
+        <label text="MCL1"/>
+        <clone/>
+        <bbox x="604.8287859891587" y="171.1040641199042" w="31.33984375" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s32_csa10" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>69.35156250000011</w>
+          <h>52</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="BCL2/BCL-XL/MCL1"/>
+      <clone/>
+      <bbox x="593.3287859891589" y="-36.378925926367145" w="89.35156250000011" h="72"/>
+      <glyph id="s29_sa62" class="macromolecule">
+        <label text="BCL2"/>
+        <clone/>
+        <bbox x="641.1686297391589" y="2.1210740736328546" w="30.01171875" h="22"/>
+      </glyph>
+      <glyph id="s30_sa63" class="macromolecule">
+        <label text="BCL-XL"/>
+        <clone/>
+        <bbox x="604.8287859891587" y="-24.878925926367142" w="38.01171875" h="22"/>
+      </glyph>
+      <glyph id="s31_sa64" class="macromolecule">
+        <label text="MCL1"/>
+        <clone/>
+        <bbox x="604.8287859891587" y="2.1210740736328546" w="31.33984375" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s33_csa5" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>64.125</w>
+          <h>52</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="Apoptosome"/>
+      <bbox x="92.67066321356307" y="294.7996215631007" w="84.125" h="72"/>
+      <glyph id="s34_sa26" class="macromolecule">
+        <label text="Cytochrome C"/>
+        <bbox x="104.17066321356307" y="306.2996215631007" w="61.125" h="22"/>
+      </glyph>
+      <glyph id="s35_sa38" class="macromolecule">
+        <label text="APAF1"/>
+        <bbox x="104.17066321356307" y="333.2996215631007" w="34.75" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s36_sa39" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP7"/>
+      <clone/>
+      <bbox x="46.367743129621815" y="166.47538319244356" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s36_sa40" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="CASP7"/>
+      <clone/>
+      <bbox x="46.367743129621815" y="279.909460428698" w="36.234375" h="22"/>
+    </glyph>
+    <glyph id="s38_sa42" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="SARS M"/>
+      <bbox x="290.4176989045327" y="259.4656220196043" w="40.671875" h="22"/>
+    </glyph>
+    <glyph id="s39_sa43" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="SARS E,7a"/>
+      <bbox x="542.4288022871685" y="63.306691831296845" w="50.46484375" h="22"/>
+    </glyph>
+    <glyph id="s40_sa44" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="TRADD"/>
+      <bbox x="377.87384488417365" y="-35.75263522753693" w="37.5546875" h="22"/>
+    </glyph>
+    <glyph id="s41_csa6" class="complex" compartmentRef="c5_ca5">
+      <extension>
+        <extraInfo>
+          <w>40.5546875</w>
+          <h>51.999999999999986</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="TRADD/FADD"/>
+      <bbox x="366.37384488417365" y="69.38823587589678" w="60.5546875" h="71.99999999999999"/>
+      <glyph id="s42_sa45" class="macromolecule">
+        <label text="TRADD"/>
+        <bbox x="377.87384488417365" y="80.8882358758968" w="37.5546875" h="22"/>
+      </glyph>
+      <glyph id="s43_sa46" class="macromolecule">
+        <label text="FADD"/>
+        <bbox x="377.87384488417365" y="107.8882358758968" w="31.3359375" h="22"/>
+      </glyph>
+    </glyph>
+    <glyph id="s44_sa47" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="Pro-casp9"/>
+      <bbox x="328.0145732988599" y="352.402802785629" w="46.4609375" h="22"/>
+    </glyph>
+    <glyph id="s45_sa48" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="SARS 3a"/>
+      <bbox x="517.0113714279477" y="360.4974303393799" w="42.90625" h="22"/>
+    </glyph>
+    <glyph id="s46_sa49" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="MAPK14"/>
+      <clone/>
+      <bbox x="581.7052809063838" y="313.7876488963914" w="41.5703125" h="22"/>
+    </glyph>
+    <glyph id="s46_sa50" class="macromolecule" compartmentRef="c5_ca5">
+      <label text="MAPK14"/>
+      <clone/>
+      <bbox x="452.23421268576965" y="313.7876488963914" w="41.5703125" h="22"/>
+    </glyph>
+    <glyph id="pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="247.29108088101884" y="25.941929323752078" w="10" h="10"/>
+      <port id="pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba_p1" x="237.29108088101884" y="30.941929323752078"/>
+      <port id="pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba_p2" x="267.29108088101884" y="30.941929323752078"/>
+    </glyph>
+    <glyph id="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="262.07739780682493" y="100.38823587589678" w="10" h="10"/>
+      <port id="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4_p1" x="267.07739780682493" y="90.38823587589678"/>
+      <port id="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4_p2" x="267.07739780682493" y="120.38823587589678"/>
+    </glyph>
+    <glyph id="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="167.25281635576582" y="100.38823587589678" w="10" h="10"/>
+      <port id="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1_p1" x="187.25281635576582" y="105.38823587589678"/>
+      <port id="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1_p2" x="157.25281635576582" y="105.38823587589678"/>
+    </glyph>
+    <glyph id="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="167.25281635576582" y="223.12831092762107" w="10" h="10"/>
+      <port id="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf_p1" x="172.25281635576582" y="243.12831092762107"/>
+      <port id="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf_p2" x="172.25281635576582" y="213.12831092762107"/>
+    </glyph>
+    <glyph id="pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="340.26979468637916" y="187.24687908070752" w="10" h="10"/>
+      <port id="pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814_p1" x="330.26979468637916" y="192.24687908070752"/>
+      <port id="pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814_p2" x="360.26979468637916" y="192.24687908070752"/>
+    </glyph>
+    <glyph id="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_bade5c29-9c3b-445d-a17e-9ce58b81316e">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="249.0975308778467" y="325.7996215631007" w="10" h="10"/>
+      <port id="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e_p1" x="269.0975308778467" y="330.7996215631007"/>
+      <port id="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e_p2" x="239.09753087784674" y="330.7996215631007"/>
+    </glyph>
+    <glyph id="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="59.484930629621815" y="221.32902055742696" w="10" h="10"/>
+      <port id="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde_p1" x="64.48493062962181" y="211.32902055742696"/>
+      <port id="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde_p2" x="64.48493062962181" y="241.32902055742696"/>
+    </glyph>
+    <glyph id="pr_5156a7dc-8a10-4977-a37e-f21d679734ae" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_5156a7dc-8a10-4977-a37e-f21d679734ae">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:pubmed:31226023"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="305.7536364045327" y="223.12831092762107" w="10" h="10"/>
+      <port id="pr_5156a7dc-8a10-4977-a37e-f21d679734ae_p1" x="325.7536364045327" y="228.12831092762107"/>
+      <port id="pr_5156a7dc-8a10-4977-a37e-f21d679734ae_p2" x="295.7536364045327" y="228.12831092762107"/>
+    </glyph>
+    <glyph id="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04210"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="391.65118863417365" y="17.696379831275756" w="10" h="10"/>
+      <port id="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5_p1" x="396.65118863417365" y="7.696379831275756"/>
+      <port id="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5_p2" x="396.65118863417365" y="37.696379831275756"/>
+    </glyph>
+    <glyph id="pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221" class="process" compartmentRef="c5_ca5">
+      <extension>
+        <annotation>
+          <rdf:RDF 
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+            xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Description rdf:about="#pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="urn:miriam:pubmed:31226023"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </extension>
+      <bbox x="533.4644964279477" y="319.7876488963914" w="10" h="10"/>
+      <port id="pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221_p1" x="553.4644964279477" y="324.7876488963914"/>
+      <port id="pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221_p2" x="523.4644964279477" y="324.7876488963914"/>
+    </glyph>
+    <glyph id="pr_849208a3-097c-4a75-bd7d-8f8dceb53822" class="process" compartmentRef="c5_ca5">
+      <bbox x="740.520017395388" y="163.60406411990417" w="10" h="10"/>
+      <port id="pr_849208a3-097c-4a75-bd7d-8f8dceb53822_p1" x="745.520017395388" y="153.60406411990417"/>
+      <port id="pr_849208a3-097c-4a75-bd7d-8f8dceb53822_p2" x="745.520017395388" y="183.60406411990417"/>
+    </glyph>
+    <glyph id="pr_1bfd5c6f-bb4e-407c-9759-6cec840028be" class="process" compartmentRef="c5_ca5">
+      <bbox x="633.0045672391587" y="69.30669183129685" w="10" h="10"/>
+      <port id="pr_1bfd5c6f-bb4e-407c-9759-6cec840028be_p1" x="638.0045672391587" y="59.306691831296845"/>
+      <port id="pr_1bfd5c6f-bb4e-407c-9759-6cec840028be_p2" x="638.0045672391587" y="89.30669183129685"/>
+    </glyph>
+    <glyph id="c7_ca7" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>748.3218223872294</w>
+          <h>29</h>
+          <minW>748.3218223872294</minW>
+          <minH>0</minH>
+          <WLBias>0.000002469161282157499</WLBias>
+          <WRBias>0.0000975308387178425</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="phenotypes"/>
+      <bbox x="32.1502724846809" y="416.3137526636595" w="776.3218223872294" h="57"/>
+    </glyph>
+    <glyph id="s37_sa41" class="phenotype" compartmentRef="c7_ca7">
+      <label text="Apoptosis"/>
+      <bbox x="64.50532551694678" y="431.8137526636595" w="62.69921875" h="26"/>
+    </glyph>
+    <glyph id="s4_sa2" class="macromolecule">
+      <label text="FASL"/>
+      <bbox x="292.8212980567918" y="-192.32967771268795" w="30" h="22"/>
+    </glyph>
+    <glyph id="s5_sa3" class="macromolecule">
+      <label text="TNFA"/>
+      <bbox x="432.2724748353219" y="-192.32967771268795" w="30.4453125" h="22"/>
+    </glyph>
+    <arc id="cons_1b8faf4a-721b-4eff-801f-3590a5e9fa13" class="consumption" source="s4_sa2" target="pr_73455b70-6485-4fc3-8839-841d0347bbff_p1">
+      <start x="298.5989100316428" y="-169.82967771268795"/>
+      <end x="252.29108088101884" y="-127.58541085035651"/>
+    </arc>
+    <arc id="cons_53408bbb-2acd-47d3-8718-ab6d77b20ae4" class="consumption" source="s7_sa5" target="pr_73455b70-6485-4fc3-8839-841d0347bbff_p1">
+      <start x="232.448249040122" y="-142.65158353645631"/>
+      <end x="252.29108088101884" y="-127.58541085035651"/>
+    </arc>
+    <arc id="prod_735779d5-35f4-4f09-a0c9-2074baa0a5ff" class="production" source="pr_73455b70-6485-4fc3-8839-841d0347bbff_p2" target="s2_csa2">
+      <start x="252.29108088101884" y="-96.58541085035651"/>
+      <end x="252.29108088101884" y="-51.267013809311734"/>
+    </arc>
+    <arc id="cons_72fc634f-ec57-425b-a559-6703bd13de1f" class="consumption" source="s5_sa3" target="pr_b984479c-ae61-41b8-87cb-a7b0ac818d57_p1">
+      <start x="452.2371359229959" y="-169.82967771268795"/>
+      <end x="476.3192870055723" y="-126.92721990636653"/>
+    </arc>
+    <arc id="cons_8418b677-3f42-4a6f-a3a6-22381d4d9d7e" class="consumption" source="s6_sa4" target="pr_b984479c-ae61-41b8-87cb-a7b0ac818d57_p1">
+      <start x="514.3141667806909" y="-145.49341285376698"/>
+      <end x="476.3192870055723" y="-126.92721990636653"/>
+    </arc>
+    <arc id="prod_9fc032de-bc29-4790-aae3-fb99434b185c" class="production" source="pr_b984479c-ae61-41b8-87cb-a7b0ac818d57_p2" target="s1_csa1">
+      <start x="476.3192870055723" y="-95.92721990636653"/>
+      <end x="476.3192870055723" y="-16.803620168724223"/>
+    </arc>
+    <arc id="cons_fd9954ab-e59e-48c1-b662-34c9e8d62b7e" class="consumption" source="s12_sa9" target="pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba_p1">
+      <start x="196.75117400271057" y="30.941929323752078"/>
+      <end x="236.79108088101884" y="30.941929323752078"/>
+    </arc>
+    <arc id="prod_de61579e-cad0-41ca-96da-0084dff09756" class="production" source="pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba_p2" target="s12_sa10">
+      <start x="267.79108088101884" y="30.941929323752078"/>
+      <end x="316.2874852399778" y="30.941929323752078"/>
+    </arc>
+    <arc id="modif_ca13cebd-94ca-4ce8-80e3-e1c0dde45f77" class="catalysis" source="s2_csa2" target="pr_d5f0918b-ef5b-4959-8443-4dfd7e34a2ba">
+      <start x="252.29108088101884" y="-1.7670138093117416"/>
+      <end x="252.29108088101884" y="23.275262657085413"/>
+    </arc>
+    <arc id="cons_0f8883d3-b5db-4c78-a4fc-8968ec997e8f" class="consumption" source="s14_sa13" target="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4_p1">
+      <start x="267.07739780682493" y="75.74635519000104"/>
+      <end x="267.07739780682493" y="89.88823587589678"/>
+    </arc>
+    <arc id="prod_f4926f3b-d686-4520-b513-f68a9d90394c" class="production" source="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4_p2" target="s14_sa14">
+      <start x="267.07739780682493" y="120.88823587589678"/>
+      <end x="267.07739780682493" y="140.89101711050594"/>
+    </arc>
+    <arc id="modif_e2b3bccc-e989-473b-a6fe-ada9e456c5e1" class="catalysis" source="s12_sa10" target="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4">
+      <start x="324.4700762424666" y="42.44192932375208"/>
+      <end x="273.4726116735573" y="98.37418628813842"/>
+    </arc>
+    <arc id="modif_a425cddd-8343-4b4d-9af4-32546ace80d3" class="catalysis" source="s41_csa6" target="pr_64aadd16-5363-4c18-ad47-3d3c95e0b1f4">
+      <start x="365.37384488417365" y="105.38823587589678"/>
+      <end x="274.7440644734916" y="105.38823587589678"/>
+    </arc>
+    <arc id="cons_563690f6-f006-4a55-926e-cba1e0b95e63" class="consumption" source="s15_sa15" target="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1_p1">
+      <start x="211.74932494834619" y="105.38823587589678"/>
+      <end x="187.75281635576582" y="105.38823587589678"/>
+    </arc>
+    <arc id="prod_63e6d4ab-57ea-4d94-9e4a-30143800ec10" class="production" source="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1_p2" target="s15_sa17">
+      <start x="156.75281635576582" y="105.38823587589678"/>
+      <end x="124.376463081638" y="105.38823587589678"/>
+    </arc>
+    <arc id="modif_f444071d-107a-43a7-9e96-3ff9d4fb4ffc" class="catalysis" source="s14_sa14" target="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1">
+      <start x="249.6562095110525" y="145.79635768933406"/>
+      <end x="179.63566628729473" y="109.2424222003263"/>
+    </arc>
+    <arc id="modif_87f3559f-01fd-4654-8f9c-0421688e8616" class="catalysis" source="s16_sa19" target="pr_1c7705dc-e32f-4052-8f25-42aff10e4fe1">
+      <start x="172.25281635576582" y="141.73985503013458"/>
+      <end x="172.25281635576582" y="113.05490254256345"/>
+    </arc>
+    <arc id="cons_fdfeb5fd-5724-4f79-bd4f-4fc00617ad29" class="consumption" source="s16_sa18" target="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf_p1">
+      <start x="172.25281635576582" y="259.92591839586834"/>
+      <end x="172.25281635576582" y="243.62831092762107"/>
+    </arc>
+    <arc id="prod_543ed32a-9150-4805-ae7b-cc1b3c1040f5" class="production" source="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf_p2" target="s16_sa19">
+      <start x="172.25281635576582" y="212.62831092762107"/>
+      <end x="172.25281635576582" y="167.23985503013458"/>
+    </arc>
+    <arc id="modif_7b93b92a-3a1c-46af-82d6-34a2fe8e019e" class="catalysis" source="s33_csa5" target="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf">
+      <start x="135.07826113434632" y="293.7996215631007"/>
+      <next x="135.1963115047962" y="281.14273943314817"/>
+      <end x="167.2091076822012" y="235.34403010979327"/>
+    </arc>
+    <arc id="modif_70171cdc-4e0b-4526-9f93-542f78e07a13" class="inhibition" source="s22_sa29" target="pr_f23a44c2-1070-4e08-9298-fc58f8a4ffaf">
+      <start x="238.5975308778467" y="228.12831092762107"/>
+      <end x="178.41948302243247" y="228.12831092762107"/>
+    </arc>
+    <arc id="cons_9a3c93d7-983c-43fc-bf58-7960ab12853f" class="consumption" source="s19_sa22" target="pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814_p1">
+      <start x="308.9241977530536" y="192.24687908070752"/>
+      <end x="329.76979468637916" y="192.24687908070752"/>
+    </arc>
+    <arc id="prod_adae0485-8710-4636-9b5b-51f621b34ca6" class="production" source="pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814_p2" target="s19_sa23">
+      <start x="360.76979468637916" y="192.24687908070752"/>
+      <end x="379.6454004249425" y="192.24687908070752"/>
+    </arc>
+    <arc id="modif_bac9435c-4004-4b57-b815-f171a498ae0b" class="catalysis" source="s14_sa14" target="pr_9e4bb1e6-da4e-4173-a0c7-9922baa0a814">
+      <start x="284.8861170440873" y="163.39900617647612"/>
+      <end x="337.8473378716292" y="188.70085308180273"/>
+    </arc>
+    <arc id="cons_ab9aff92-bb6c-49d6-a0f9-22208d30a979" class="consumption" source="s23_sa30" target="pr_f31a5377-2e2e-45aa-81d9-d1602a068672_p1">
+      <start x="500.6280418367638" y="135.53782701217128"/>
+      <end x="500.6280418367638" y="153.10406411990417"/>
+    </arc>
+    <arc id="prod_c91d6e27-455a-4629-8445-b618161dfb76" class="production" source="pr_f31a5377-2e2e-45aa-81d9-d1602a068672_p2" target="s23_sa31">
+      <start x="500.6280418367638" y="184.10406411990417"/>
+      <end x="500.6280418367638" y="206.06455368129855"/>
+    </arc>
+    <arc id="modif_c2b3453a-0399-45eb-a9e7-e65790048630" class="catalysis" source="s19_sa23" target="pr_f31a5377-2e2e-45aa-81d9-d1602a068672">
+      <start x="413.1454004249425" y="188.68838002816344"/>
+      <end x="493.0247641569689" y="170.34962905021254"/>
+    </arc>
+    <arc id="modif_1af8d777-3e98-4731-a381-d14ebae72f07" class="catalysis" source="s25_csa3" target="pr_f31a5377-2e2e-45aa-81d9-d1602a068672">
+      <start x="698.963376770388" y="265.2193718976319"/>
+      <next x="602.668833375863" y="266.03165741819623"/>
+      <end x="507.60287591472576" y="175.2635704567436"/>
+    </arc>
+    <arc id="modif_fa58be8d-4b7a-4723-af96-92f0410b4537" class="inhibition" source="s32_csa4" target="pr_f31a5377-2e2e-45aa-81d9-d1602a068672">
+      <start x="592.3287859891587" y="168.60406411990414"/>
+      <end x="506.7947085034305" y="168.60406411990417"/>
+    </arc>
+    <arc id="cons_c3ed3dd1-c533-474f-84b4-4949890a5669" class="consumption" source="s24_sa24" target="pr_ab1e50db-8b22-4519-8f85-2e679090ff89_p1">
+      <start x="496.7760058227723" y="256.4057859912109"/>
+      <end x="488.51936893576965" y="256.4057859912109"/>
+    </arc>
+    <arc id="prod_6d8b1d23-a427-4fca-8918-f3b8a907b186" class="production" source="pr_ab1e50db-8b22-4519-8f85-2e679090ff89_p2" target="s20_sa25">
+      <start x="457.51936893576965" y="256.4057859912109"/>
+      <end x="378.3639283555367" y="317.93706901311083"/>
+    </arc>
+    <arc id="modif_1251c91f-5005-4c40-9b59-1b8ad8c6baa9" class="catalysis" source="s46_sa50" target="pr_ab1e50db-8b22-4519-8f85-2e679090ff89">
+      <start x="473.01936893576965" y="313.2876488963914"/>
+      <end x="473.01936893576965" y="264.0724526578776"/>
+    </arc>
+    <arc id="cons_615a393c-2673-4b9b-96f4-b3fec563748c" class="consumption" source="s21_sa27" target="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e_p1">
+      <start x="327.62639059406024" y="303.260403079295"/>
+      <end x="269.5975308778467" y="330.7996215631007"/>
+    </arc>
+    <arc id="cons_e3693bf0-2d72-459d-a395-153b45399379" class="consumption" source="s20_sa25" target="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e_p1">
+      <start x="327.5145732988599" y="330.7996215631007"/>
+      <end x="269.5975308778467" y="330.7996215631007"/>
+    </arc>
+    <arc id="prod_033ea4ca-9bda-43b6-a94c-9a768b452917" class="production" source="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e_p2" target="s33_csa5">
+      <start x="238.59753087784674" y="330.7996215631007"/>
+      <end x="180.2956632135631" y="330.7996215631007"/>
+    </arc>
+    <arc id="modif_281ff0f1-1300-44e4-a933-fe442ed0041b" class="inhibition" source="s22_sa29" target="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e">
+      <start x="254.0975308778467" y="239.6283109276211"/>
+      <end x="254.0975308778467" y="324.632954896434"/>
+    </arc>
+    <arc id="addreact_8aab2a8c-d4cc-45fb-938b-03950011c517" class="consumption" source="s44_sa47" target="pr_bade5c29-9c3b-445d-a17e-9ce58b81316e_p1">
+      <start x="327.9766510373043" y="355.5938166390775"/>
+      <end x="269.5975308778467" y="330.7996215631007"/>
+    </arc>
+    <arc id="cons_eaf7fc94-0204-44cd-8827-40dc4beb300d" class="consumption" source="s36_sa39" target="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde_p1">
+      <start x="64.48493062962181" y="188.97538319244356"/>
+      <end x="64.48493062962181" y="210.82902055742696"/>
+    </arc>
+    <arc id="prod_e60d45e3-2dcc-4fbc-9b82-7fdc7784dc89" class="production" source="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde_p2" target="s36_sa40">
+      <start x="64.48493062962181" y="241.82902055742696"/>
+      <end x="64.48493062962181" y="276.909460428698"/>
+    </arc>
+    <arc id="modif_f0fd763f-631d-46a7-b28b-a8f128c2482d" class="catalysis" source="s16_sa19" target="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde">
+      <start x="156.5531539071325" y="163.88750966025975"/>
+      <end x="71.72063494527944" y="221.42169972738355"/>
+    </arc>
+    <arc id="modif_b99ca09a-d93f-4de9-a572-e74d830d2383" class="catalysis" source="s14_sa14" target="pr_176a1f5d-bd4e-43e9-9a93-657a1c17fdde">
+      <start x="248.54983399580578" y="161.424192730688"/>
+      <end x="72.00931124757014" y="223.67577912150142"/>
+    </arc>
+    <arc id="direct_9a2f1beb-a3e0-44cb-b0e8-e929161fd025" class="stimulation" source="s36_sa40" target="s37_sa41">
+      <start x="66.82895264341973" y="302.409460428698"/>
+      <end x="92.60395332204318" y="428.864120862499"/>
+    </arc>
+    <arc id="direct_c06a0208-d9f4-473a-9f67-5a736975ced7" class="stimulation" source="s33_csa5" target="s37_sa41">
+      <start x="122.11635480556782" y="367.7996215631007"/>
+      <end x="101.26523154029825" y="428.9475391558004"/>
+    </arc>
+    <arc id="cons_79f24709-7f18-457c-87c3-4917da84c9da" class="consumption" source="s22_sa28" target="pr_5156a7dc-8a10-4977-a37e-f21d679734ae_p1">
+      <start x="341.89344909705176" y="228.12831092762107"/>
+      <end x="326.2536364045327" y="228.12831092762107"/>
+    </arc>
+    <arc id="prod_bda168b1-9118-4021-a3b3-b787461752c0" class="production" source="pr_5156a7dc-8a10-4977-a37e-f21d679734ae_p2" target="s22_sa29">
+      <start x="295.2536364045327" y="228.12831092762107"/>
+      <end x="272.0975308778467" y="228.12831092762107"/>
+    </arc>
+    <arc id="modif_11ccce47-690c-41e0-84c3-658ef0f5c89e" class="inhibition" source="s38_sa42" target="pr_5156a7dc-8a10-4977-a37e-f21d679734ae">
+      <start x="310.7536364045327" y="258.9656220196043"/>
+      <end x="310.7536364045327" y="234.29497759428773"/>
+    </arc>
+    <arc id="cons_ffee9141-5fd0-4a8a-91a5-2542354d78bd" class="consumption" source="s12_sa10" target="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5_p1">
+      <start x="351.1234227399778" y="28.781102691412475"/>
+      <end x="396.65118863417365" y="7.196379831275756"/>
+    </arc>
+    <arc id="cons_595de58d-93b6-4794-b51b-f0c92d2138e6" class="consumption" source="s40_sa44" target="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5_p1">
+      <start x="396.65118863417365" y="-13.252635227536928"/>
+      <end x="396.65118863417365" y="7.196379831275756"/>
+    </arc>
+    <arc id="prod_dfe82a12-2f78-4f77-ae4d-db96368a5124" class="production" source="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5_p2" target="s41_csa6">
+      <start x="396.65118863417365" y="38.19637983127575"/>
+      <end x="396.65118863417365" y="65.88823587589678"/>
+    </arc>
+    <arc id="modif_788880e5-2c41-4088-85c4-3ab6a896c30f" class="catalysis" source="s1_csa1" target="pr_8075d0a4-91fa-4c3a-8bf7-8f5f78a576a5">
+      <start x="445.9306151305723" y="22.696379831275756"/>
+      <end x="404.31785530084034" y="22.696379831275756"/>
+    </arc>
+    <arc id="cons_e397116c-acfb-4bd4-9f77-d00c99207896" class="consumption" source="s46_sa49" target="pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221_p1">
+      <start x="581.2052809063838" y="324.7876488963914"/>
+      <end x="553.9644964279477" y="324.7876488963914"/>
+    </arc>
+    <arc id="prod_442a02b3-d2a3-4c51-9121-6cc5d350e7b7" class="production" source="pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221_p2" target="s46_sa50">
+      <start x="522.9644964279477" y="324.7876488963914"/>
+      <end x="496.80452518576965" y="324.7876488963914"/>
+    </arc>
+    <arc id="modif_7ad55cb5-5760-4941-8d06-0d4363bf8cd8" class="catalysis" source="s45_sa48" target="pr_630dd82e-7c9c-47f5-9296-d2ab7fabc221">
+      <start x="538.4644964279477" y="359.9974303393799"/>
+      <end x="538.4644964279477" y="332.45431556305806"/>
+    </arc>
+    <arc id="cons_a52b3c9f-ddea-4e87-8194-b12b31838a5d" class="consumption" source="s25_csa9" target="pr_849208a3-097c-4a75-bd7d-8f8dceb53822_p1">
+      <start x="745.520017395388" y="121.08250742810125"/>
+      <end x="745.520017395388" y="153.10406411990417"/>
+    </arc>
+    <arc id="prod_d19a6c95-4ead-4dd6-afcc-42e98eab96b7" class="production" source="pr_849208a3-097c-4a75-bd7d-8f8dceb53822_p2" target="s25_csa3">
+      <start x="745.520017395388" y="184.10406411990417"/>
+      <end x="745.520017395388" y="225.32664678847533"/>
+    </arc>
+    <arc id="modif_792dcea6-502e-44e6-bf00-478e8584ddf7" class="inhibition" source="s32_csa4" target="pr_849208a3-097c-4a75-bd7d-8f8dceb53822">
+      <start x="683.6803484891587" y="168.60406411990414"/>
+      <end x="739.3533507287214" y="168.60406411990417"/>
+    </arc>
+    <arc id="cons_8605bfce-288e-4881-b80f-4358c0003581" class="consumption" source="s32_csa10" target="pr_1bfd5c6f-bb4e-407c-9759-6cec840028be_p1">
+      <start x="638.0045672391589" y="36.62107407363286"/>
+      <end x="638.0045672391587" y="58.806691831296845"/>
+    </arc>
+    <arc id="prod_f568f1df-75ba-4273-8add-301b0628eab2" class="production" source="pr_1bfd5c6f-bb4e-407c-9759-6cec840028be_p2" target="s32_csa4">
+      <start x="638.0045672391587" y="89.80669183129685"/>
+      <end x="638.0045672391587" y="129.10406411990408"/>
+    </arc>
+    <arc id="modif_eb98259e-34bb-44e3-a4d8-46e9658238a6" class="inhibition" source="s39_sa43" target="pr_1bfd5c6f-bb4e-407c-9759-6cec840028be">
+      <start x="593.3936460371685" y="74.30669183129685"/>
+      <end x="631.8379005724921" y="74.30669183129685"/>
+    </arc>
+  </map>
+</sbgn>
