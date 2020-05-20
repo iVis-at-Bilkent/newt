@@ -562,7 +562,7 @@
       <start x="763.375" y="177.75"/>
       <end x="745.2678571428571" y="177.75"/>
     </arc>
-    <arc id="nwtE_1fcb9fb6-ba5a-4ccf-bd50-155ce657fedb" class="stimulation" source="89360553-bab4-532a-c6c7-624272c4e43b" target="nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9.2">
+    <arc id="nwtE_1fcb9fb6-ba5a-4ccf-bd50-155ce657fedb" class="stimulation" source="89360553-bab4-532a-c6c7-624272c4e43b" target="nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9">
       <start x="875.5645730534169" y="135.5"/>
       <next x="847.542424765152" y="213.7471460409822"/>
       <next x="738.497886764629" y="214.7270119241452"/>
@@ -617,13 +617,13 @@
       <start x="799" y="240.43456223215844"/>
       <end x="799" y="260.00000000000006"/>
     </arc>
-    <arc id="nwtE_b9e23793-a56e-4277-b278-6724f6a4d68a" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="9615ba87-e042-ef50-d78e-1ef00df34a6e.2">
+    <arc id="nwtE_b9e23793-a56e-4277-b278-6724f6a4d68a" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="9615ba87-e042-ef50-d78e-1ef00df34a6e">
       <start x="875.7289709255696" y="326.21254896064926"/>
       <next x="847.8464449746845" y="246.47997705747048"/>
       <next x="737.9834983175773" y="247.1334840883929"/>
       <end x="737.9947312772593" y="270.3571432226932"/>
     </arc>
-    <arc id="nwtE_a567dc9c-c17b-4e41-89ad-947bed2f4fd3" class="catalysis" source="7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8" target="93e171d7-e846-2f4e-b4af-cafdabb596dd.1">
+    <arc id="nwtE_a567dc9c-c17b-4e41-89ad-947bed2f4fd3" class="catalysis" source="7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8" target="93e171d7-e846-2f4e-b4af-cafdabb596dd">
       <start x="767.8264939279273" y="298.2980111331645"/>
       <next x="702.9999999999995" y="333.74999999999943"/>
       <next x="702.5266691532668" y="347.96471699095457"/>
@@ -653,12 +653,12 @@
       <start x="804.7678571428571" y="538.75"/>
       <end x="826.75" y="538.75"/>
     </arc>
-    <arc id="nwtE_bd3e280f-efff-4d5b-868c-d834b3d6cad4" class="catalysis" source="a2ee1683-eb5f-030d-3bbe-46c0a02cb659" target="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5.2">
+    <arc id="nwtE_bd3e280f-efff-4d5b-868c-d834b3d6cad4" class="catalysis" source="a2ee1683-eb5f-030d-3bbe-46c0a02cb659" target="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5">
       <start x="763.9884892268863" y="165.05526681360047"/>
       <next x="702.4738258670972" y="142.75082404149953"/>
       <end x="701.2673108079107" y="125.63512177066829"/>
     </arc>
-    <arc id="nwtE_a8832f81-1169-4768-87f4-390a771f7fff" class="catalysis" source="35a3e0be-6e00-7a99-fca5-18ed65c2fac1" target="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d.2">
+    <arc id="nwtE_a8832f81-1169-4768-87f4-390a771f7fff" class="catalysis" source="35a3e0be-6e00-7a99-fca5-18ed65c2fac1" target="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d">
       <start x="631.5622781050293" y="520.625"/>
       <next x="701.7355091200076" y="464.8703837231595"/>
       <end x="701.9129310851106" y="442.6740073154425"/>
@@ -679,7 +679,7 @@
       <start x="1045.767857142857" y="481.75000000000006"/>
       <end x="1070.75" y="481.75000000000006"/>
     </arc>
-    <arc id="nwtE_68ee44c6-86ba-499b-a798-db1c00254138" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c.1">
+    <arc id="nwtE_68ee44c6-86ba-499b-a798-db1c00254138" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c">
       <start x="898.4175879396985" y="445.53125000000006"/>
       <end x="898.8248449738131" y="470.8575468090057"/>
     </arc>
@@ -699,7 +699,7 @@
       <start x="1114.267857142857" y="547.75"/>
       <end x="1139.25" y="547.75"/>
     </arc>
-    <arc id="nwtE_80c9d1c6-bab7-478d-b509-e6fe7b24b152" class="stimulation" source="nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4" target="46137b33-99be-2b1f-5a29-f38f55849a0b.1">
+    <arc id="nwtE_80c9d1c6-bab7-478d-b509-e6fe7b24b152" class="stimulation" source="nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4" target="46137b33-99be-2b1f-5a29-f38f55849a0b">
       <start x="968" y="499.87500000000006"/>
       <end x="968" y="536.8571428571429"/>
     </arc>
@@ -743,7 +743,7 @@
       <start x="733.25" y="596.5178571428571"/>
       <end x="733.25" y="617.5"/>
     </arc>
-    <arc id="nwtE_9f593961-7d71-49ac-8c9b-eb8e899665e4" class="stimulation" source="89360553-bab4-532a-c6c7-624272c4e43b" target="a8404458-8ee5-6465-5d2e-4be53abad9f9.2">
+    <arc id="nwtE_9f593961-7d71-49ac-8c9b-eb8e899665e4" class="stimulation" source="89360553-bab4-532a-c6c7-624272c4e43b" target="a8404458-8ee5-6465-5d2e-4be53abad9f9">
       <start x="895.8985379750443" y="21.375"/>
       <next x="895.8646325311395" y="2.306492411467092"/>
       <next x="334.62761909656433" y="3.77560221892449"/>
@@ -751,7 +751,7 @@
       <next x="676.6188645851402" y="671.4050967869174"/>
       <end x="676.4563459796519" y="649.642770006905"/>
     </arc>
-    <arc id="nwtE_6ae825c1-a694-4326-9f5e-36e516db36f0" class="catalysis" source="2f567801-fc2c-e128-f352-1dfab2f0dbce" target="nwtN_713def92-298d-4eb9-bf64-35bfc38a4646.1">
+    <arc id="nwtE_6ae825c1-a694-4326-9f5e-36e516db36f0" class="catalysis" source="2f567801-fc2c-e128-f352-1dfab2f0dbce" target="nwtN_713def92-298d-4eb9-bf64-35bfc38a4646">
       <start x="609.0574244085002" y="656.875"/>
       <next x="609.1897360308067" y="664.67577341941"/>
       <next x="344.83677141584394" y="660.6017836771279"/>
@@ -767,7 +767,7 @@
       <start x="425.2791845941241" y="387.46875000000006"/>
       <end x="401.2204117739146" y="387.46875000000006"/>
     </arc>
-    <arc id="nwtE_85d06a5e-fd70-4ff6-99d8-ae053b4d75ea" class="catalysis" source="191857cc-7088-9f59-19c8-ad00bcf44b5e" target="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.1">
+    <arc id="nwtE_85d06a5e-fd70-4ff6-99d8-ae053b4d75ea" class="catalysis" source="191857cc-7088-9f59-19c8-ad00bcf44b5e" target="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853">
       <start x="433.04704173698127" y="334.58583432907056"/>
       <end x="433.04704173698127" y="376.5758928571429"/>
     </arc>
@@ -788,7 +788,7 @@
       <start x="985.9921112946669" y="352.6317742742051"/>
       <end x="948.25" y="367.9163358754463"/>
     </arc>
-    <arc id="nwtE_a4ec4de6-fc5e-40a6-ba15-4a0a7de659ed" class="catalysis" source="f0a6c8f2-8384-fb32-c934-e51c7aa67e25" target="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.1">
+    <arc id="nwtE_a4ec4de6-fc5e-40a6-ba15-4a0a7de659ed" class="catalysis" source="f0a6c8f2-8384-fb32-c934-e51c7aa67e25" target="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5">
       <start x="993.759968437524" y="315.7909429932749"/>
       <end x="993.759968437524" y="338.5931394592224"/>
     </arc>

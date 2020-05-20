@@ -585,7 +585,7 @@ module.exports = function (chiseInstance) {
             result = true;
         });
 
-        return !node.data()["expanding"] && result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
+        return !node.data("onLayout") && result && !chiseInstance.elementUtilities.isResizedToContent(node) && (cy.zoom() > 0.5);
       },
       resizeToContentFunction: appUtilities.resizeNodesToContent,
       resizeToContentCuePosition: 'bottom-right',
@@ -751,18 +751,28 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on("expandcollapse.beforeexpand",function(event){
-     var node = event.target;
-      node.data("expanding", true);
-
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if(currentGeneralProperties.recalculateLayoutOnComplexityManagement){
+        var node = cy.nodes(":selected");
+        if(node.length == 1 && event.target.selected())
+         node[0].data("onLayout", true);
+      }
     });
+    
+    // To redraw expand/collapse cue after resize
+    cy.on("noderesize.resizeend", function (e, type, node) {
+      if(node.isParent() && node.selected())
+        node.trigger("select");
+    });
+       
    /*  cy.on("expandcollapse.afterexpand",function(event){
       var node = event.target;
      node.data("expanding", false);      
     }); */
     //Updates arrow-scale of edges after expand
     cy.on("expandcollapse.afterexpand", function(event) {
-        var currentArrowScale = Number($('#arrow-scale').val());
-        cy.edges().style('arrow-scale', currentArrowScale);
+      var currentArrowScale = Number($('#arrow-scale').val());
+      cy.edges().style('arrow-scale', currentArrowScale);
     });
 
     //Changes arrow-scale of pasted edges
@@ -1271,6 +1281,12 @@ module.exports = function (chiseInstance) {
         updateInfoBox(node);
       }
     }); */
+    
+    cy.on("layoutstart",function(event){   
+     var node = cy.nodes(":selected").nodes(":parent");
+     if(node.length == 1)
+      node[0].data("onLayout", true);
+    });    
 
     cy.on('layoutstop', function (event) {
   		/*
@@ -1298,7 +1314,7 @@ module.exports = function (chiseInstance) {
         chiseInstance.elementUtilities.fitUnits(ele, locations); //Force fit
       }); */
 
-      cy.nodes().forEach(function(node){node.data("expanding", false); });
+      cy.nodes("[?onLayout]").forEach(function(node){node.removeData("onLayout"); });
     });
 
     // if the position of compound changes by repositioning its children

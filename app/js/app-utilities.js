@@ -751,11 +751,10 @@ appUtilities.defaultGeneralProperties = {
   allowCompoundNodeResize: true,
   mapColorScheme: 'black_white',
   mapColorSchemeStyle: 'solid',
-  mapType: function() {return appUtilities.getActiveChiseInstance().getMapType() || "Unknown"},
+  mapType: function() {return (appUtilities.getActiveChiseInstance().getMapType() || "Unknown");},
   mapName: "",
   mapDescription: "",
-  enableSIFTopologyGrouping: false,
-  experimentDescription: "",
+  experimentDescription: ""
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -839,11 +838,11 @@ appUtilities.getExpandCollapseOptions = function (_cy) {
       var cy = _cy || self.getActiveCy();
 
       if ( !self.getScratch(cy, 'currentGeneralProperties').recalculateLayoutOnComplexityManagement ) {
-        cy.trigger('fit-units-after-expandcollapse');
+//        cy.trigger('fit-units-after-expandcollapse');
         return;
       }
       self.triggerLayout(cy, false);
-      cy.trigger('fit-units-after-expandcollapse');
+//      cy.trigger('fit-units-after-expandcollapse');
     },
     expandCollapseCueSize: 12,
     expandCollapseCuePosition: function (node) {
@@ -2417,6 +2416,8 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
+    cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
+    
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
     }
@@ -2438,9 +2439,6 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     else {
       chiseInstance.omitCompoundSizes();
     }
-
-    cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
-    cy.style().update();
 
     // reset 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
@@ -2476,7 +2474,12 @@ appUtilities.launchWithModelFile = function() {
 
   // attach url params to the object to be used on sbgnvizLoadFileEnd event
   // it will be cleared immediately after usage
-  appUtilities.setScratch(cyInstance, 'urlParams', paramObj);
+  if(url_path || uri_path) {
+    appUtilities.setScratch(cyInstance, 'urlParams', paramObj);
+  }
+  else {
+    appUtilities.setScratch(cyInstance, 'urlParams', undefined);
+  }
 
   var promptInvalidURIWarning = this.promptInvalidURIWarning;
   var promptInvalidURLWarning = this.promptInvalidURLWarning;
@@ -2489,9 +2492,6 @@ appUtilities.launchWithModelFile = function() {
     tutorial.introduction(true);
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
-    // get current general properties
-    var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
-    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -2540,12 +2540,12 @@ appUtilities.launchWithModelFile = function() {
       success: function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
+          $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           var fileToLoad = new File([data.response.body], filename, {
             type: 'text/' + fileExtension,
             lastModified: Date.now()
           });
 
-          currentGeneralProperties.inferNestingOnLoad = true;
           chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
         }
         else {
@@ -2555,11 +2555,6 @@ appUtilities.launchWithModelFile = function() {
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
       }
-    });
-
-    $(document).one("sbgnvizLoadFileEnd", function(){
-      currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-      appUtilities.mapTabGeneralPanel.render();
     });
 
   }
@@ -2574,8 +2569,6 @@ appUtilities.launchWithModelFile = function() {
 
     chiseInstance.startSpinner('paths-byURI-spinner');
 
-    var currentGeneralProperties = appUtilities.getScratch(cyInstance, 'currentGeneralProperties');
-    var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
     var currentLayoutProperties = appUtilities.getScratch(cyInstance, 'currentLayoutProperties');
 
     $.ajax({
@@ -2587,9 +2580,8 @@ appUtilities.launchWithModelFile = function() {
         if (data.response.statusCode == 200 && data.response.body) {
           var xml = $.parseXML(data.response.body);
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
-          currentGeneralProperties.inferNestingOnLoad = false;
+          $(document).trigger('sbgnvizLoadFromURI', [filename, cyInstance]);          
           chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-          currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
@@ -3010,19 +3002,23 @@ appUtilities.resizeNodesToContent = function(nodes){
   var chiseInstance = appUtilities.getActiveChiseInstance();
   var cy = appUtilities.getActiveCy();
   var collection;
-    if(nodes.length == 1){
-      collection = cy.collection();    
-      collection = collection.add(nodes[0]);   
-    }else{
-      collection = nodes;
-    }    
-    
-    if(!chiseInstance.areCompoundSizesConsidered()){
-      collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
-    }
-    chiseInstance.resizeNodesToContent(collection, false);
-    cy.nodeResize('get').refreshGrapples();
-    cy.expandCollapse('get').clearVisualCue();
+  if(nodes.length == 1){
+    collection = cy.collection();    
+    collection = collection.add(nodes[0]);   
+  }else{
+    collection = nodes;
+  }    
+
+  if(!chiseInstance.areCompoundSizesConsidered()){
+    collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
+  }
+  chiseInstance.resizeNodesToContent(collection, false);
+  cy.nodeResize('get').refreshGrapples();
+  cy.expandCollapse('get').clearVisualCue();
+  // To redraw expand/collapse cue after resize to content
+  if(collection.length == 1 && (collection[0].isParent() || collection[0].data('collapsedChildren')) && collection[0].selected()) { 
+    cy.$(':selected').trigger('select'); 
+  };
 
 };
 
