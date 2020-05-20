@@ -29,7 +29,7 @@
     "cytoscape-edge-editing": "2.0.1",
     "cytoscape-edgehandles": "~2.13.1",
     "cytoscape-expand-collapse": "4.0.0",
-    "cytoscape-fcose": "1.2.2",
+    "cytoscape-fcose": "1.2.3",
     "cytoscape-grid-guide": "2.3.2",
     "cytoscape-layout-utilities": "1.0.2",
     "cytoscape-node-resize": "3.2.1",
