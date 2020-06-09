@@ -1,7 +1,7 @@
 function writeLogo(){
 document.write("      <div id=\"logo\">");
 document.write("        <div id=\"logo_text\">");
-document.write("          <h1><a href=\"index.html\"><img src=\"style/newt-logo.png\" width=140><span class=\"logo_colour\">&nbsp;&nbsp;Pathways Simplified</span></a></h1>");
+document.write("          <h1><a href=\"index.html\"><img src=\"style/newt-logo.png\" width=140 alt=\"newt\"><span class=\"logo_colour\">&nbsp;&nbsp;Pathways Simplified</span></a></h1>");
 document.write("          <h2><b>View, design, and analyze pathways in SBGN and more...</b></h2>");
 document.write("        </div>");
 document.write("      </div>");
@@ -28,7 +28,7 @@ document.write("      </div>");
 
 function writeFooter(){
 document.write("    <div id=\"footer\">");
-document.write("      Copyright &copy; <a href=\"http://www.cs.bilkent.edu.tr/~ivis/\">i-Vis Research Lab</a> | <a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\"><img src=\"images/github.png\" height=12px> Github</a> | <a href=\"https://twitter.com/newteditor\" target=\"_blank\"><img src=\"images/twitter.png\" height=12px> Twitter</a> | <a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a> | <a href=\"http://www.html5webtemplates.co.uk\">Free CSS Templates</a>");
+document.write("      Copyright &copy; <a href=\"http://www.cs.bilkent.edu.tr/~ivis/\">i-Vis Research Lab</a> | <a href=\"https://github.com/iVis-at-Bilkent/newt\" target=\"_blank\"><img src=\"images/github.png\" alt=\"GitHub\" height=12px> Github</a> | <a href=\"https://twitter.com/newteditor\" target=\"_blank\"><img alt=\"twitter\" src=\"images/twitter.png\" height=12px> Twitter</a> | <a href=\"http://sbgn.github.io/sbgn/\" target=\"_blank\">SBGN</a> | <a href=\"http://www.html5webtemplates.co.uk\">Free CSS Templates</a>");
 document.write("    </div>");
 }
 

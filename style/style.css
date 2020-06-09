@@ -6,7 +6,7 @@ html
   padding: 0;}
 
 body, dots, more_news, more_button
-{ font: normal .80em 'trebuchet ms', arial, sans-serif;
+{ font: normal 1em 'trebuchet ms', arial, sans-serif;
   background: #F0EFE2 url(background.png) repeat;
   color: #777;}
 
@@ -96,7 +96,7 @@ ol li
   margin-right: auto;}
 
 #header
-{ background: #1D1D1D url(header.png);
+{ background: #1D1D1D url(header.webp);
   height: 240px;}
 
 #logo
