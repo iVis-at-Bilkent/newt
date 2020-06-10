@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-<script async src="js/scripts.js"></script>
-<script async src="js/gcse.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/gcse.js"></script>
 
 <head>
   <title>Newt Editor</title>
   <meta name="description" content="Newt Pathway Viewer & Editor" />
-  <meta name="keywords" content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation, Biological Map, Disease Map, i-Vis, Bilkent" />
+  <meta name="keywords"
+    content="Pathway, Biological Networks, Visualization, Editor, Curator, SBGN, Systems Biology Graphical Notation, Biological Map, Disease Map, i-Vis, Bilkent" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="style/newt-icon-blue.png">
@@ -22,53 +23,77 @@
     </div>
     <div id="site_content">
       <div class="sidebar">
-      <script> writeNews(); </script>
+        <script> writeNews(); </script>
       </div>
       <div id="content">
         <!-- insert the page content here -->
         <h1>Welcome to Newt Pathway Viewer & Editor</h1>
 
-        <p>Newt is a free, web based, open source viewer and editor for pathways in <a href="http://sbgn.org/">Systems Biological Graphical Notation (SBGN)</a> and <a href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a>. It was written with a series of libraries and extensions based on <a href="http://js.cytoscape.org/">Cytoscape.js</a> with utmost customization in mind.</p>
+        <p>Newt is a free, web based, open source viewer and editor for pathways in <a href="http://sbgn.org/">Systems
+            Biological Graphical Notation (SBGN)</a> and <a
+            href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a>. It
+          was written with a series of libraries and extensions based on <a
+            href="http://js.cytoscape.org/">Cytoscape.js</a> with utmost customization in mind.</p>
 
         <a class="launchlink" target="_blank" href="http://web.newteditor.org/">
-        <table class="launchtable">
-          <tr>
-            <th class="launchtext">Launch</th>
-            <th><img class="launchimage" alt="launch" src="style/newt-logo.png"/></th>
-          </tr>
-        </table>
+          <table class="launchtable">
+            <tr>
+              <th class="launchtext">Launch</th>
+              <th><img class="launchimage" alt="launch" src="style/newt-logo.png" /></th>
+            </tr>
+          </table>
         </a>
 
         <p>What distinguishes Newt from other viewers and editors for biological maps can be summarized as:</p>
         <ul>
-        <li> Rich and refined, yet easy-to-use web based UI
-        <li> Convenient construction and annotation of pathways from scratch as well as viewing and editing existing maps
-        <li> Full support for compound structures (including automatic layout) to properly represent compartments, molecular complexes, and sub-maps
-        <li> Semantic validation and guided fix for SBGN PD maps 
-        <li> State-of-the-art complexity management capabilities through hide-show or highlight parts of a map and collapse-expand compound structures
-        <li> Advanced diagramming through interactive move, resize, and styling of map objects including color schemes, re-routing and re-connection of interactions, and grid  & alignment guideline support
-        <li> Support for experiment data overlay on maps</a>
-        <li> Facilities for querying, viewing, and editing pathways in <a href="http://pathwaycommons.org">Pathway Commons</a>
-        <li> Conversion to and from <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> and <a target="_blank" href="http://sbml.org/Main_Page">SBML</a> file formats
-        <li> Launching with a remote SBGN model specified as a URL (<a href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn" target="_blank">example</a>) or as a URI (<a href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211" target="_blank">example</a>)
-        <li> Support for <a href="https://sbgnbricks.org/">SBGN bricks</a>
+          <li> Rich and refined, yet easy-to-use web based UI
+          <li> Convenient construction and annotation of pathways from scratch as well as viewing and editing existing
+            maps
+          <li> Full support for compound structures (including automatic layout) to properly represent compartments,
+            molecular complexes, and sub-maps
+          <li> Semantic validation and guided fix for SBGN PD maps
+          <li> State-of-the-art complexity management capabilities through hide-show or highlight parts of a map and
+            collapse-expand compound structures
+          <li> Advanced diagramming through interactive move, resize, and styling of map objects including color
+            schemes, re-routing and re-connection of interactions, and grid & alignment guideline support
+          <li> Support for experiment data overlay on maps</a>
+          <li> Facilities for querying, viewing, and editing pathways in <a href="http://pathwaycommons.org">Pathway
+              Commons</a>
+          <li> Conversion to and from <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a> and <a
+              target="_blank" href="http://sbml.org/Main_Page">SBML</a> file formats
+          <li> Launching with a remote SBGN model specified as a URL (<a
+              href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn"
+              target="_blank">example</a>) or as a URI (<a
+              href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211"
+              target="_blank">example</a>)
+          <li> Support for <a href="https://sbgnbricks.org/">SBGN bricks</a>
         </ul>
         <h2>Citation</h2>
-        <p>Please cite the following when you use this application or underlying libraries until a Newt publication is available:
-        
-        M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, <a href="https://doi.org/10.1371/journal.pone.0128985">SBGNViz: a tool for visualization and complexity management of SBGN process description maps</a>, PLoS ONE, 10(6), e0128985, 2015.
+        <p>Please cite the following when you use this application or underlying libraries until a Newt publication is
+          available:
+
+          M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, <a
+            href="https://doi.org/10.1371/journal.pone.0128985">SBGNViz: a tool for visualization and complexity
+            management of SBGN process description maps</a>, PLoS ONE, 10(6), e0128985, 2015.
         </p>
         <h2>Source code</h2>
-        <p>Newt source code can be found on <a href="https://github.com/iVis-at-Bilkent/newt">this</a> Github repository.</p>
+        <p>Newt source code can be found on <a href="https://github.com/iVis-at-Bilkent/newt">this</a> Github
+          repository.</p>
         <h2>License</h2>
-        <p>Newt is distributed under <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>. See <a href="https://github.com/iVis-at-Bilkent/newt#credits" target="_blank">here</a> for third-party libraries used.</p>
+        <p>Newt is distributed under <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public
+            License</a>. See <a href="https://github.com/iVis-at-Bilkent/newt#credits" target="_blank">here</a> for
+          third-party libraries used.</p>
         <h2>Browser compatibility</h2>
-        <p>Newt is expected to work on most major browsers with recent releases without any prior installation or set up.</p>
+        <p>Newt is expected to work on most major browsers with recent releases without any prior installation or set
+          up.</p>
         <h2>About</h2>
-        <p>Newt is mainly developed and maintained by <a href="http://www.cs.bilkent.edu.tr/~ivis/">i-Vis Research Lab</a> in collaboration with the Demir Lab at <a href="http://www.ohsu.edu">OHSU</a>. <a href="http://eisbm.org/">EISBM</a> contributed to the project in the past.</p>
+        <p>Newt is mainly developed and maintained by <a href="http://www.cs.bilkent.edu.tr/~ivis/">i-Vis Research
+            Lab</a> in collaboration with the Demir Lab at <a href="http://www.ohsu.edu">OHSU</a>. <a
+            href="http://eisbm.org/">EISBM</a> contributed to the project in the past.</p>
       </div>
     </div>
     <script> writeFooter(); </script>
   </div>
 </body>
+
 </html>
