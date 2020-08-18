@@ -412,7 +412,9 @@ appUtilities.createNewNetwork = function () {
     undoable: appUtilities.undoable,
     undoableDrag: function() {
       return appUtilities.ctrlKeyDown !== true;
-    }
+    },
+    highlightColor: currentGeneralProperties.highlightColor,
+    highlightThickness: currentGeneralProperties.highlightThickness 
   });
   
   // set scracth pad of the related cy instance with these properties
@@ -754,7 +756,9 @@ appUtilities.defaultGeneralProperties = {
   mapType: function() {return (appUtilities.getActiveChiseInstance().getMapType() || "Unknown");},
   mapName: "",
   mapDescription: "",
-  experimentDescription: ""
+  experimentDescription: "",
+  highlightColor: '#0B9BCD', //the color code used when initializing viewUtilities in app-cy.js
+  highlightThickness: 3
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -2417,7 +2421,24 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
     cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
-    
+
+    //setMapProperties function is called in sbgnvizLoadFileEnd sbgnvizLoadSampleEnd 
+    //event handler
+    if ('highlightColor' in mapProperties && 'highlightThickness' in mapProperties) {
+      var viewUtilities = cy.viewUtilities('get');
+      var highlightColor = currentGeneralProperties.highlightColor[0];
+      var highlightThickness = currentGeneralProperties.highlightThickness;
+
+      viewUtilities.changeHighlightStyle(0, {
+        'border-width': highlightThickness, 'border-color': highlightColor
+      }, {
+        'width': highlightThickness,
+        'line-color': highlightColor,
+        'source-arrow-color': highlightColor,
+        'target-arrow-color': highlightColor
+    });
+    }
+
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
     }

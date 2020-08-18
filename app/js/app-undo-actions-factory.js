@@ -356,7 +356,20 @@ module.exports = function (cy) {
 
     };
    
-   
+   if (id == "highlight-color" || id == "highlight-thickness") {
+    var viewUtilities = cy.viewUtilities('get');
+    var highlightColor = $('#highlight-color').val();
+    var highlightThickness = Number($('#highlight-thickness').val());
+
+    viewUtilities.changeHighlightStyle(0, {
+      'border-width' : highlightThickness, 'border-color': highlightColor
+    }, {
+      'width': highlightThickness,
+      'line-color': highlightColor,
+      'source-arrow-color': highlightColor,
+      'target-arrow-color': highlightColor
+    });
+   }
 
     return result;
   }

@@ -547,6 +547,11 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.mapDescription = {id: "map-description", type: "text",
       property: "currentGeneralProperties.mapDescription"};
 
+    self.params.highlightThickness = {id: "highlight-thickness", type: "range",
+      property: "currentGeneralProperties.highlightThickness"};  
+
+    self.params.highlightColor = {id: "highlight-color", type: "color",
+      property: "currentGeneralProperties.highlightColor"};
    
     // general properties part
     $(document).on("change", "#map-name", function (evt) {
@@ -782,6 +787,44 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#enable-sif-topology-grouping').blur();
     });
 
+    $(document).on("change", "#highlight-thickness", function(evt) {
+      var cy = appUtilities.getActiveCy();
+      var viewUtilities = cy.viewUtilities('get');
+      self.params.highlightThickness.value = Number($('#highlight-thickness').val());
+      var highlightThickness = self.params.highlightThickness.value;
+      var highlightColor = self.params.highlightColor.value;
+      
+      viewUtilities.changeHighlightStyle(0, {
+        'border-width': highlightThickness, 'border-color': highlightColor
+      }, {
+        'width': highlightThickness,
+        'line-color': highlightColor,
+        'source-arrow-color': highlightColor,
+        'target-arrow-color': highlightColor
+      });
+      cy.undoRedo().do("changeMenu", self.params.highlightThickness);
+      $('#highlight-thickness').blur();
+    });
+
+    $(document).on("change", "#highlight-color", function(evt) {
+      var cy = appUtilities.getActiveCy();
+      var viewUtilities = cy.viewUtilities('get');
+      self.params.highlightColor.value = $('#highlight-color').val();
+      var highlightThickness = self.params.highlightThickness.value;
+      var highlightColor = self.params.highlightColor.value;
+
+      viewUtilities.changeHighlightStyle(0, {
+        'border-width' : highlightThickness, 'border-color': highlightColor
+      }, {
+        'width': highlightThickness,
+        'line-color': highlightColor,
+        'source-arrow-color': highlightColor,
+        'target-arrow-color': highlightColor
+      });
+      cy.undoRedo().do("changeMenu", self.params.highlightColor);
+      $('#highlight-color').blur();
+    });
+
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
@@ -806,6 +849,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.enableSIFTopologyGrouping.value = appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
+      self.params.highlightThickness.value = appUtilities.defaultGeneralProperties.highlightThickness;
+      self.params.highlightColor.value = appUtilities.defaultGeneralProperties.highlightColor;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
       actions.push({name: "changeMenu", param: self.params.enablePorts});
@@ -815,6 +860,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       actions.push({name: "changeMenu", param: self.params.arrowScale});
       actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
           valueMap: self.params.arrowScale.value}});
+      actions.push({name: "changeMenu", param: self.params.highlightThickness});
+      actions.push({name: "changeMenu", param: self.params.highlightColor});
       ur.do("batch", actions);
     });
   },
