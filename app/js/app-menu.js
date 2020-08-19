@@ -731,7 +731,9 @@ module.exports = function() {
       "#load-sample15" : 'epidermal_growth_factor_receptor.nwt',
       "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn',
       "#load-sample17" : 'RTN4-controllers-and-binding-proteins.nwt',
-      "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt'
+      "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt',
+      "#load-sample19" : 'pdlearnerscard.nwt',
+      "#load-sample20" : 'aflearnerscard.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {

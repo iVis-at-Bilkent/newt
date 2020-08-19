@@ -1,0 +1,1219 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="process description">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_2" value="#000000"/>
+          <colorDefinition id="color_3" value="#c5dcedff"/>
+          <colorDefinition id="color_4" value="#ffffffff"/>
+          <colorDefinition id="color_5" value="#555555ff"/>
+          <colorDefinition id="color_6" value="#c0c0c0"/>
+          <colorDefinition id="color_7" value="#ffffff"/>
+          <colorDefinition id="color_8" value="#555555"/>
+          <colorDefinition id="color_9" value="#666666"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="nodeffffff000000112normalnormalHelvetica00010.5" idList="n22 n93 n99 n163">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1" fill="color_1" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="nodec5dced000000112normalnormalHelvetica00011" idList="n22::n0 n22::n1 n93::n0 n93::n1 n99::n0 n99::n1 n4 n10 n11 n13 n15 n17 n29 n31 n37 n38 n41 n42 n44 n45 n48 n51 n54 n57 n60 n61 n62 n65 n66 n67 n71 n72 n73 n78 n91 n94 n95 n96 n97 n98 n110 n111 n113 n114 n115 n116 n118 n119 n120 n134 n136 n138 n140 n142 n144 n146 n148 n156">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff000000312normalnormalHelvetica00010.5" idList="n162">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3" fill="color_1" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="nodeffffff000000112normalnormalHelvetica00011" idList="n0 n6 n19 n24 n25 n33 n34 n77 n79 n80 n82 n84 n85 n88 n89 n90 n102 n103 n104 n105 n106 n128 n130 n150 n151 n154">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1" fill="color_4" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="node555555c0c0c0118normalnormalHelveticaffffff11" idList="n1 n2 n69 n70 n132 n149">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#ffffff" stroke="color_6" stroke-width="1" fill="color_5" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffffffffff112normalnormalHelvetica00011" idList="n3 n5 n8 n9 n12 n14 n16 n18 n21 n23 n26 n27 n28 n30 n32 n35 n36 n40 n43 n47 n50 n53 n56 n59 n64 n83 n87 n101 n107 n108 n109 n124 n126 n127 n129 n131 n133 n135 n137 n139 n141 n143 n145 n147 n152 n153 n155 n157 n160 n161">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_7" stroke-width="1" fill="color_4" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fstadium" idList="1 2 3 4 7 8 9 10 11 12 13 14 15 16 17 18 19 20 24 25 26 27 28 29 30 31 32 33 34 35 36 37">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_8" stroke-width="1" fill="color_7"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0frectangle" idList="n17_uof_1 5 6 n78_uof_1 21 22 23 38 39 40 n156_uof_1">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_8" stroke-width="1" fill="color_7"/>
+          </style>
+          <style id="nodeffffff00000011411" idList="n39 n46 n49 n52 n55 n58 n63 n68 n74 n75 n76 n81 n86 n92 n100 n117 n158 n159">
+            <g font-size="14" stroke="color_2" stroke-width="1" fill="color_4" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="node555555666666118normalnormalHelveticaffffff11" idList="n112">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#ffffff" stroke="color_9" stroke-width="1" fill="color_5" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff00000011211" idList="n164 n165 n166">
+            <g font-size="12" stroke="color_2" stroke-width="1" fill="color_4" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge0000001" idList="e53 e52 e51 e50 e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 e10 e11 e12 e13 e14 e15 e16 e17 e18 e19 e20 e21 e22 e23 e25 e28 e29 e49 e48 e33 e34 e35 e36 e37 e38 e39 e40 e41 e42 e43 e44 e45 e46 e47">
+            <g stroke="color_2" stroke-width="1"/>
+          </style>
+          <style id="edge5555551.25" idList="nwtE_48b192fd-fe72-4cfe-a757-b253893b0ff2 nwtE_2545528a-65d7-493d-96ca-0ecf6cf24924 nwtE_763f9615-39ca-4221-9127-463dd37b6eee nwtE_fb1035e2-38f3-4b5d-a7ef-1d5bee2c869a nwtE_f1903c1c-fefb-4b54-adf3-056c380e233e nwtE_78141d97-9728-44dd-a0df-89d70afcee18">
+            <g stroke="color_8" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapDescription/>
+      </mapProperties>
+    </extension>
+    <glyph id="n22" class="complex">
+      <extension>
+        <extraInfo>
+          <w>90</w>
+          <h>111.996315</h>
+          <minW>90</minW>
+          <minH>111.996315</minH>
+          <WLBias>5e-7</WLBias>
+          <WRBias>5e-7</WRBias>
+          <HTBias>4.066115702479339e-7</HTBias>
+          <HBBias>5.933884297520661e-7</HBBias>
+        </extraInfo>
+      </extension>
+      <bbox x="256.96626661586726" y="280.58223817223126" w="100" h="121.996315"/>
+      <glyph id="n22::n0" class="macromolecule">
+        <label text="Protein"/>
+        <bbox x="266.96626661586726" y="294.56359220528907" w="80" h="40"/>
+      </glyph>
+      <glyph id="n22::n1" class="macromolecule">
+        <label text="Protein"/>
+        <bbox x="266.96626661586726" y="345.1606422052891" w="80" h="40"/>
+      </glyph>
+    </glyph>
+    <glyph id="n93" class="complex">
+      <extension>
+        <extraInfo>
+          <w>90</w>
+          <h>111.996315</h>
+          <minW>90</minW>
+          <minH>111.996315</minH>
+          <WLBias>5e-7</WLBias>
+          <WRBias>5e-7</WRBias>
+          <HTBias>3.814943097476496e-7</HTBias>
+          <HBBias>6.185056902523504e-7</HBBias>
+        </extraInfo>
+      </extension>
+      <bbox x="778.4152" y="770.7361295769421" w="100" h="121.996315"/>
+      <glyph id="n93::n0" class="macromolecule">
+        <label text="Protein"/>
+        <bbox x="788.4152" y="785.04297" w="80" h="40"/>
+      </glyph>
+      <glyph id="n93::n1" class="macromolecule">
+        <label text="Protein"/>
+        <bbox x="788.4152" y="833.57544" w="80" h="40"/>
+      </glyph>
+    </glyph>
+    <glyph id="n99" class="complex">
+      <extension>
+        <extraInfo>
+          <w>90</w>
+          <h>111.996315</h>
+          <minW>90</minW>
+          <minH>111.996315</minH>
+          <WLBias>5e-7</WLBias>
+          <WRBias>5e-7</WRBias>
+          <HTBias>4.78328173374613e-7</HTBias>
+          <HBBias>5.216718266253871e-7</HBBias>
+        </extraInfo>
+      </extension>
+      <bbox x="532.4152" y="910.7105022678019" w="100" h="121.996315"/>
+      <glyph id="n99::n0" class="macromolecule">
+        <label text="Protein"/>
+        <bbox x="542.4152" y="926.5988" w="80" h="40"/>
+      </glyph>
+      <glyph id="n99::n1" class="macromolecule">
+        <label text="Protein"/>
+        <bbox x="542.4152" y="975.9678" w="80" h="40"/>
+      </glyph>
+    </glyph>
+    <glyph id="n162" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>84.71796</w>
+          <h>48.132812</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="LABEL"/>
+      <bbox x="24" y="1406.7067" w="84.71796" h="48.132812"/>
+    </glyph>
+    <glyph id="n0" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="271" y="216.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n1" class="macromolecule">
+      <label text="AUXUILIARY UNITS"/>
+      <bbox x="22.28204199999999" y="566.70667" w="484" h="40"/>
+    </glyph>
+    <glyph id="n2" class="macromolecule">
+      <label text="ENTITY POOL NODES"/>
+      <bbox x="24" y="146.7067" w="484.5" h="40"/>
+    </glyph>
+    <glyph id="n3" class="macromolecule">
+      <label text="Simple chemical"/>
+      <bbox x="362" y="216.7067" w="146.5" h="40"/>
+    </glyph>
+    <glyph id="n4" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="24" y="216.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n5" class="macromolecule">
+      <label text="Macromolecule"/>
+      <bbox x="115" y="216.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n6" class="nucleic acid feature">
+      <label text="mRNA"/>
+      <bbox x="24" y="426.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n8" class="macromolecule">
+      <label text="Nucleic acid feature:&#xA;mRNA"/>
+      <bbox x="115" y="426.7067" w="145.5" h="40"/>
+    </glyph>
+    <glyph id="n9" class="macromolecule">
+      <label text="State variable:&#xA;unchanged/default"/>
+      <bbox x="113.28204" y="636.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n10" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="22.282042000000004" y="636.70667" w="80" h="40"/>
+      <glyph id="1" class="state variable">
+        <state/>
+        <bbox x="27.282042000000004" y="627.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n11" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="22.282042000000004" y="706.70667" w="80" h="40"/>
+      <glyph id="2" class="state variable">
+        <state variable="Thr14"/>
+        <bbox x="27.282042000000004" y="697.70667" w="56" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n12" class="macromolecule">
+      <label text="State variable:&#xA;phosphorylated"/>
+      <bbox x="360.28204" y="636.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n13" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="269.28204" y="636.70667" w="80" h="40"/>
+      <glyph id="3" class="state variable">
+        <state value="P"/>
+        <bbox x="274.28204" y="627.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n14" class="macromolecule">
+      <label text="State variable:&#xA;phosphorylated&#xA;at threonine 14"/>
+      <bbox x="360.28204" y="706.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n15" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="269.28204" y="706.70667" w="80" h="40"/>
+      <glyph id="4" class="state variable">
+        <state value="P" variable="Thr14"/>
+        <bbox x="274.28204" y="697.70667" w="56" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n16" class="macromolecule">
+      <label text="State variable:&#xA;unchanged/default&#xA;at threonine 14"/>
+      <bbox x="113.28204" y="706.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n17" class="macromolecule multimer">
+      <label text="Protein"/>
+      <bbox x="24" y="286.7067" w="80" h="40"/>
+      <glyph id="n17_uof_1" class="unit of information">
+        <label text="N:2"/>
+        <bbox x="29" y="278.7067" w="25" h="16"/>
+      </glyph>
+    </glyph>
+    <glyph id="n18" class="macromolecule">
+      <label text="Multimer"/>
+      <bbox x="115.00000000000001" y="286.7067" w="137.43253323173448" h="40"/>
+    </glyph>
+    <glyph id="n19" class="nucleic acid feature">
+      <label text="Gene"/>
+      <bbox x="24" y="356.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n21" class="macromolecule">
+      <label text="Nucleic acid feature:&#xA;gene"/>
+      <bbox x="115.00000000000003" y="356.7067" w="136.08795543702354" h="40"/>
+    </glyph>
+    <glyph id="n23" class="macromolecule">
+      <label text="Complex"/>
+      <bbox x="362" y="321.7067" w="146.5" h="40"/>
+    </glyph>
+    <glyph id="n24" class="nucleic acid feature">
+      <label text="Gene"/>
+      <bbox x="24" y="1126.7067" w="80" h="40"/>
+      <glyph id="5" class="unit of information">
+        <label text="ct:gene"/>
+        <bbox x="28.999999999999993" y="1119.2067" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n25" class="nucleic acid feature">
+      <label text="mRNA"/>
+      <bbox x="268.78204" y="1126.7067" w="80" h="40"/>
+      <glyph id="6" class="unit of information">
+        <label text="ct:mrna"/>
+        <bbox x="273.78204" y="1119.2067" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n26" class="macromolecule">
+      <label text="Unit of information: &#xA;conceptual type - &#xA;messenger RNA"/>
+      <bbox x="360.28204" y="1126.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n27" class="macromolecule">
+      <label text="Unit of information: &#xA;conceptual type - &#xA;gene"/>
+      <bbox x="113.89102" y="1126.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n28" class="macromolecule">
+      <label text="State variable:&#xA;acetylated"/>
+      <bbox x="113.28204" y="776.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n29" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="22.282042000000004" y="776.70667" w="80" h="40"/>
+      <glyph id="7" class="state variable">
+        <state value="Ac"/>
+        <bbox x="27.282042000000004" y="767.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n30" class="macromolecule">
+      <label text="State variable:&#xA;ubiquitinated"/>
+      <bbox x="360.28204" y="776.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n31" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="269.28204" y="776.70667" w="80" h="40"/>
+      <glyph id="8" class="state variable">
+        <state value="Ub"/>
+        <bbox x="274.28204" y="767.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n32" class="macromolecule">
+      <label text="Perterbing agent"/>
+      <bbox x="362" y="426.7067" w="146.5" h="40"/>
+    </glyph>
+    <glyph id="n33" class="perturbing agent">
+      <label text="LABEL"/>
+      <bbox x="271" y="426.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n34" class="source and sink">
+      <bbox x="46" y="498.70669999999996" w="36" h="36"/>
+    </glyph>
+    <glyph id="n35" class="macromolecule">
+      <label text="Empty set&#xA;(previously - &#xA;source/sink)"/>
+      <bbox x="115" y="496.70669999999996" w="145.5" h="40"/>
+    </glyph>
+    <glyph id="n36" class="macromolecule">
+      <label text="Process&#xA;(State transition)"/>
+      <bbox x="883.4152" y="426.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n37" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="543.4152" y="426.7067" w="80" h="40"/>
+      <glyph id="9" class="state variable">
+        <state/>
+        <bbox x="548.4152" y="417.7067" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n38" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="789.4152" y="426.7067" w="80" h="40"/>
+      <glyph id="10" class="state variable">
+        <state value="P"/>
+        <bbox x="794.4152" y="417.7067" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n39" class="process">
+      <bbox x="697.4152" y="437.7067" w="18" h="18"/>
+      <port id="n39.1" x="688.4152" y="446.7067"/>
+      <port id="n39.2" x="724.4152" y="446.7067"/>
+    </glyph>
+    <glyph id="n40" class="macromolecule">
+      <label text="Omitted process"/>
+      <bbox x="884.4152" y="496.70669999999996" w="146" h="40"/>
+    </glyph>
+    <glyph id="n41" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="544.4152" y="496.70669999999996" w="80" h="40"/>
+      <glyph id="11" class="state variable">
+        <state/>
+        <bbox x="549.4152" y="487.70669999999996" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n42" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="790.4152" y="496.70669999999996" w="80" h="40"/>
+      <glyph id="12" class="state variable">
+        <state value="P"/>
+        <bbox x="795.4152" y="487.70669999999996" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n43" class="macromolecule">
+      <label text="Unkown process"/>
+      <bbox x="884.4152" y="566.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n44" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="544.4152" y="566.70667" w="80" h="40"/>
+      <glyph id="13" class="state variable">
+        <state/>
+        <bbox x="549.4152" y="557.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n45" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="790.4152" y="566.70667" w="80" h="40"/>
+      <glyph id="14" class="state variable">
+        <state value="P"/>
+        <bbox x="795.4152" y="557.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n46" class="uncertain process">
+      <label text="?"/>
+      <bbox x="698.4152" y="577.70667" w="18" h="18"/>
+      <port id="n46.1" x="689.4152" y="586.70667"/>
+      <port id="n46.2" x="725.4152" y="586.70667"/>
+    </glyph>
+    <glyph id="n47" class="macromolecule">
+      <label text="Degradation"/>
+      <bbox x="884.4152" y="636.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n48" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="544.4152" y="636.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n49" class="process">
+      <bbox x="698.4152" y="647.70667" w="18" h="18"/>
+      <port id="n49.1" x="689.4152" y="656.70667"/>
+      <port id="n49.2" x="725.4152" y="656.70667"/>
+    </glyph>
+    <glyph id="n50" class="macromolecule">
+      <label text="Homodimer&#xA;formation"/>
+      <bbox x="884.4152" y="706.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n51" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="544.4152" y="706.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n52" class="process">
+      <bbox x="698.4152" y="717.70667" w="18" h="18"/>
+      <port id="n52.1" x="689.4152" y="726.70667"/>
+      <port id="n52.2" x="725.4152" y="726.70667"/>
+    </glyph>
+    <glyph id="n53" class="macromolecule">
+      <label text="Association"/>
+      <bbox x="882.4152" y="811.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n54" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="542.4152" y="776.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n55" class="process">
+      <bbox x="696.4152" y="822.70667" w="18" h="18"/>
+      <port id="n55.1" x="687.4152" y="831.70667"/>
+      <port id="n55.2" x="723.4152" y="831.70667"/>
+    </glyph>
+    <glyph id="n56" class="macromolecule">
+      <label text="Catalysis"/>
+      <bbox x="1396.1332" y="251.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n57" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1181.4152" y="216.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n58" class="process">
+      <bbox x="1212.4152" y="297.7067" w="18" h="18"/>
+      <port id="n58.1" x="1203.4152" y="306.7067"/>
+      <port id="n58.2" x="1239.4152" y="306.7067"/>
+    </glyph>
+    <glyph id="n59" class="macromolecule">
+      <label text="Inhibition"/>
+      <bbox x="1397.1332" y="391.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n60" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1181.4152" y="356.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n61" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1058.4152" y="426.7067" w="80" h="40"/>
+      <glyph id="15" class="state variable">
+        <state/>
+        <bbox x="1063.4152" y="417.7067" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n62" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1304.4152" y="426.7067" w="80" h="40"/>
+      <glyph id="16" class="state variable">
+        <state value="P"/>
+        <bbox x="1309.4152" y="417.7067" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n63" class="process">
+      <bbox x="1212.4152" y="437.7067" w="18" h="18"/>
+      <port id="n63.1" x="1203.4152" y="446.7067"/>
+      <port id="n63.2" x="1239.4152" y="446.7067"/>
+    </glyph>
+    <glyph id="n64" class="macromolecule">
+      <label text="Stimulation"/>
+      <bbox x="1397.1332" y="531.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n65" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1181.4152" y="496.70669999999996" w="80" h="40"/>
+    </glyph>
+    <glyph id="n66" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1058.4152" y="566.70667" w="80" h="40"/>
+      <glyph id="17" class="state variable">
+        <state/>
+        <bbox x="1063.4152" y="557.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n67" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1304.4152" y="566.70667" w="80" h="40"/>
+      <glyph id="18" class="state variable">
+        <state value="P"/>
+        <bbox x="1309.4152" y="557.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n68" class="process">
+      <bbox x="1212.4152" y="577.70667" w="18" h="18"/>
+      <port id="n68.1" x="1203.4152" y="586.70667"/>
+      <port id="n68.2" x="1239.4152" y="586.70667"/>
+    </glyph>
+    <glyph id="n69" class="macromolecule">
+      <label text="PROCESS NODES"/>
+      <bbox x="538.5" y="146.7067" w="489.9152" h="40"/>
+    </glyph>
+    <glyph id="n70" class="macromolecule">
+      <label text="PROCESS REGULATION"/>
+      <bbox x="1058.4152" y="146.7067" w="484.5" h="40"/>
+    </glyph>
+    <glyph id="n71" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1181.4152" y="636.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n72" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1058.4152" y="706.70667" w="80" h="40"/>
+      <glyph id="19" class="state variable">
+        <state/>
+        <bbox x="1063.4152" y="697.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n73" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1304.4152" y="706.70667" w="80" h="40"/>
+      <glyph id="20" class="state variable">
+        <state value="P"/>
+        <bbox x="1309.4152" y="697.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n74" class="process">
+      <bbox x="1212.4152" y="717.70667" w="18" h="18"/>
+      <port id="n74.1" x="1203.4152" y="726.70667"/>
+      <port id="n74.2" x="1239.4152" y="726.70667"/>
+    </glyph>
+    <glyph id="n75" class="process">
+      <bbox x="1212.4152" y="857.70667" w="18" h="18"/>
+      <port id="n75.1" x="1203.4152" y="866.70667"/>
+      <port id="n75.2" x="1239.4152" y="866.70667"/>
+    </glyph>
+    <glyph id="n76" class="omitted process">
+      <label text="\\"/>
+      <bbox x="697.4152" y="507.70669999999996" w="18" h="18"/>
+      <port id="n76.1" x="688.4152" y="516.7067"/>
+      <port id="n76.2" x="724.4152" y="516.7067"/>
+    </glyph>
+    <glyph id="n77" class="source and sink">
+      <bbox x="812.4152" y="638.70667" w="36" h="36"/>
+    </glyph>
+    <glyph id="n78" class="macromolecule multimer">
+      <label text="Protein"/>
+      <bbox x="790.4152" y="706.70667" w="80" h="40"/>
+      <glyph id="n78_uof_1" class="unit of information">
+        <label text="N:2"/>
+        <bbox x="795.4152" y="698.70667" w="25" h="16"/>
+      </glyph>
+    </glyph>
+    <glyph id="n79" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="543.4152" y="216.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n80" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="789.4152" y="216.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n81" class="process">
+      <bbox x="697.4152" y="227.7067" w="18" h="18"/>
+      <port id="n81.1" x="688.4152" y="236.7067"/>
+      <port id="n81.2" x="724.4152" y="236.7067"/>
+    </glyph>
+    <glyph id="n82" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="1304.4152" y="286.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n83" class="macromolecule">
+      <label text="Process&#xA;(Metabolic reaction)"/>
+      <bbox x="883.4152" y="216.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n84" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="543.4152" y="356.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n85" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="789.4152" y="356.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n86" class="process">
+      <bbox x="697.4152" y="367.7067" w="18" h="18"/>
+      <port id="n86.1" x="688.4152" y="376.7067"/>
+      <port id="n86.2" x="724.4152" y="376.7067"/>
+    </glyph>
+    <glyph id="n87" class="macromolecule">
+      <label text="Process&#xA;(Metabolic reaction)"/>
+      <bbox x="883.4152" y="356.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n88" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="605.4152" y="297.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n89" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="727.4152" y="297.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n90" class="simple chemical">
+      <label text="Metabolite"/>
+      <bbox x="1058.4152" y="286.7067" w="80" h="40"/>
+    </glyph>
+    <glyph id="n91" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1304.4152" y="986.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n92" class="process">
+      <bbox x="1212.4152" y="997.70667" w="18" h="18"/>
+      <port id="n92.1" x="1203.4152" y="1006.70667"/>
+      <port id="n92.2" x="1239.4152" y="1006.70667"/>
+    </glyph>
+    <glyph id="n94" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="542.4152" y="846.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n95" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="788.4152" y="916.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n96" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="788.4152" y="986.70667" w="80" h="40"/>
+    </glyph>
+    <glyph id="n97" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="605.4152" y="1178.3317" w="80" h="40"/>
+    </glyph>
+    <glyph id="n98" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="725.4152" y="1178.3317" w="80" h="40"/>
+    </glyph>
+    <glyph id="n100" class="process">
+      <bbox x="693.8392488731535" y="962.7066700000001" w="18" h="18"/>
+      <port id="n100.1" x="684.8392488731535" y="971.7066700000001"/>
+      <port id="n100.2" x="720.8392488731535" y="971.7066700000001"/>
+    </glyph>
+    <glyph id="n101" class="macromolecule">
+      <label text="Dissociation"/>
+      <bbox x="882.4152" y="946.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n102" class="source and sink">
+      <bbox x="1080.4152" y="848.70667" w="36" h="36"/>
+    </glyph>
+    <glyph id="n103" class="nucleic acid feature">
+      <label text="mRNA"/>
+      <bbox x="1304.4152" y="846.70667" w="80" h="40"/>
+      <glyph id="21" class="unit of information">
+        <label text="ct:mrna"/>
+        <bbox x="1309.4152" y="839.20667" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n104" class="nucleic acid feature">
+      <label text="Gene"/>
+      <bbox x="1181.4152" y="776.70667" w="80" h="40"/>
+      <glyph id="22" class="unit of information">
+        <label text="ct:gene"/>
+        <bbox x="1186.4152" y="769.20667" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n105" class="nucleic acid feature">
+      <label text="mRNA"/>
+      <bbox x="1181.4152" y="916.70667" w="80" h="40"/>
+      <glyph id="23" class="unit of information">
+        <label text="ct:mrna"/>
+        <bbox x="1186.4152" y="909.20667" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n106" class="source and sink">
+      <bbox x="1080.4152" y="988.70667" w="36" h="36"/>
+    </glyph>
+    <glyph id="n107" class="macromolecule">
+      <label text="Modulation"/>
+      <bbox x="1396.1332" y="671.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n108" class="macromolecule">
+      <label text="Necessary stimulation&#xA;(transctiption)"/>
+      <bbox x="1397.1332" y="811.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n109" class="macromolecule">
+      <label text="Necessary stimulation&#xA;(translation)"/>
+      <bbox x="1397.1332" y="951.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n110" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="540.7924514878705" y="1296.7275474743958" w="80" h="40"/>
+      <glyph id="24" class="state variable">
+        <state/>
+        <bbox x="545.7924514878705" y="1287.7275474743958" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n111" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="786.7924514878705" y="1296.7275474743958" w="80" h="40"/>
+      <glyph id="25" class="state variable">
+        <state value="P"/>
+        <bbox x="791.7924514878705" y="1287.7275474743958" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n112" class="macromolecule">
+      <label text="LOGICAL OPERATORS"/>
+      <bbox x="538.2820399999999" y="1125.7067" w="1004.85114" h="40"/>
+    </glyph>
+    <glyph id="n113" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="603.7924514878705" y="1374.0299157789786" w="80" h="40"/>
+    </glyph>
+    <glyph id="n114" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="723.7924514878705" y="1374.0299157789786" w="80" h="40"/>
+    </glyph>
+    <glyph id="n115" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="539.9810772318058" y="1496.7348860215689" w="80" h="40"/>
+      <glyph id="26" class="state variable">
+        <state/>
+        <bbox x="544.9810772318058" y="1487.7348860215689" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n116" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="785.9810772318058" y="1496.7348860215689" w="80" h="40"/>
+      <glyph id="27" class="state variable">
+        <state value="P"/>
+        <bbox x="790.9810772318058" y="1487.7348860215689" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n117" class="process">
+      <bbox x="693.9810772318058" y="1507.7348860215689" w="18" h="18"/>
+      <port id="n117.1" x="684.9810772318058" y="1516.7348860215689"/>
+      <port id="n117.2" x="720.9810772318058" y="1516.7348860215689"/>
+    </glyph>
+    <glyph id="n118" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1181.4152" y="1178.3317" w="80" h="40"/>
+    </glyph>
+    <glyph id="n119" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1060.8577936268002" y="1299.6817139618033" w="80" h="40"/>
+      <glyph id="28" class="state variable">
+        <state/>
+        <bbox x="1065.8577936268002" y="1290.6817139618033" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n120" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="1306.8577936268002" y="1299.6817139618033" w="80" h="40"/>
+      <glyph id="29" class="state variable">
+        <state value="P"/>
+        <bbox x="1311.8577936268002" y="1290.6817139618033" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n124" class="macromolecule">
+      <label text="NOT operator"/>
+      <bbox x="1399.6364968134" y="1246.0548553876017" w="146" h="40"/>
+    </glyph>
+    <glyph id="n126" class="macromolecule">
+      <label text="OR operator"/>
+      <bbox x="882.4152" y="1225.5817" w="146" h="40"/>
+    </glyph>
+    <glyph id="n127" class="macromolecule">
+      <label text="AND operator"/>
+      <bbox x="879.9810772318058" y="1461.7348860215689" w="146" h="40"/>
+    </glyph>
+    <glyph id="n128" class="phenotype">
+      <label text="LABEL"/>
+      <bbox x="645.4152" y="1048.0226" w="120" h="50"/>
+    </glyph>
+    <glyph id="n129" class="macromolecule">
+      <label text="Phenotype"/>
+      <bbox x="882.4152" y="1055.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n130" class="unspecified entity">
+      <label text="LABEL"/>
+      <bbox x="271" y="496.70669999999996" w="80" h="40"/>
+    </glyph>
+    <glyph id="n131" class="macromolecule">
+      <label text="Unspecified entitty"/>
+      <bbox x="362" y="496.70669999999996" w="146.5" h="40"/>
+    </glyph>
+    <glyph id="n132" class="macromolecule">
+      <label text="ENCAPSULATION NODE"/>
+      <bbox x="268.78203999999994" y="1336.7067" w="232.92307" h="40"/>
+    </glyph>
+    <glyph id="n133" class="macromolecule">
+      <label text="State variable:&#xA;glycosylated"/>
+      <bbox x="114.28204" y="846.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n134" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="23.282042000000004" y="846.70667" w="80" h="40"/>
+      <glyph id="30" class="state variable">
+        <state value="G"/>
+        <bbox x="28.282042000000004" y="837.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n135" class="macromolecule">
+      <label text="State variable:&#xA;hydroxylated"/>
+      <bbox x="361.28204" y="846.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n136" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="270.28204" y="846.70667" w="80" h="40"/>
+      <glyph id="31" class="state variable">
+        <state value="OH"/>
+        <bbox x="275.28204" y="837.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n137" class="macromolecule">
+      <label text="State variable:&#xA;methylated"/>
+      <bbox x="116.28204" y="916.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n138" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="25.282042000000004" y="916.70667" w="80" h="40"/>
+      <glyph id="32" class="state variable">
+        <state value="Me"/>
+        <bbox x="30.282042000000004" y="907.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n139" class="macromolecule">
+      <label text="State variable:&#xA;myristoylated"/>
+      <bbox x="363.28204" y="916.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n140" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="272.28204" y="916.70667" w="80" h="40"/>
+      <glyph id="33" class="state variable">
+        <state value="My"/>
+        <bbox x="277.28204" y="907.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n141" class="macromolecule">
+      <label text="State variable:&#xA;palmytoylated"/>
+      <bbox x="116.28204" y="986.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n142" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="25.282042000000004" y="986.70667" w="80" h="40"/>
+      <glyph id="34" class="state variable">
+        <state value="Pa"/>
+        <bbox x="30.282042000000004" y="977.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n143" class="macromolecule">
+      <label text="State variable:&#xA;prenylated"/>
+      <bbox x="363.28204" y="986.70667" w="146" h="40"/>
+    </glyph>
+    <glyph id="n144" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="272.28204" y="986.70667" w="80" h="40"/>
+      <glyph id="35" class="state variable">
+        <state value="Pr"/>
+        <bbox x="277.28204" y="977.70667" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n145" class="macromolecule">
+      <label text="State variable:&#xA;protonated"/>
+      <bbox x="116.28204" y="1056.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n146" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="25.282042000000004" y="1056.7067" w="80" h="40"/>
+      <glyph id="36" class="state variable">
+        <state value="H"/>
+        <bbox x="30.282042000000004" y="1047.7067" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n147" class="macromolecule">
+      <label text="State variable:&#xA;sulfatied"/>
+      <bbox x="363.28204" y="1056.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n148" class="macromolecule">
+      <label text="Protein"/>
+      <bbox x="272.28204" y="1056.7067" w="80" h="40"/>
+      <glyph id="37" class="state variable">
+        <state value="S"/>
+        <bbox x="277.28204" y="1047.7067" w="18" h="18"/>
+      </glyph>
+    </glyph>
+    <glyph id="n149" class="macromolecule">
+      <label text="CONTAINER NODE"/>
+      <bbox x="24" y="1336.7067" w="235.28204" h="40"/>
+    </glyph>
+    <glyph id="n150" class="nucleic acid feature">
+      <label text="Gene region"/>
+      <bbox x="24" y="1196.7067" w="80" h="40"/>
+      <glyph id="38" class="unit of information">
+        <label text="ct:grr"/>
+        <bbox x="28.999999999999993" y="1189.2067" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n151" class="nucleic acid feature">
+      <label text="Start site"/>
+      <bbox x="268.78204" y="1196.7067" w="80" h="40"/>
+      <glyph id="39" class="unit of information">
+        <label text="ct:tss"/>
+        <bbox x="273.78204" y="1189.2067" w="45.435917" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n152" class="macromolecule">
+      <label text="Unit of information: &#xA;conceptual type - &#xA;transcription start site"/>
+      <bbox x="360.28204" y="1196.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n153" class="macromolecule">
+      <label text="Unit of information: &#xA;conceptual type - &#xA;gene regulatory region"/>
+      <bbox x="113.89102" y="1196.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n154" class="nucleic acid feature">
+      <label text="Gene region"/>
+      <bbox x="24" y="1266.7067" w="80" h="40"/>
+      <glyph id="40" class="unit of information">
+        <label text="ct:coding"/>
+        <bbox x="29" y="1259.2067" w="56" h="15"/>
+      </glyph>
+    </glyph>
+    <glyph id="n155" class="macromolecule">
+      <label text="Unit of information: &#xA;conceptual type - &#xA;gene coding region"/>
+      <bbox x="113.89102" y="1266.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n156" class="macromolecule multimer">
+      <label text="Protein"/>
+      <bbox x="268.78204" y="1266.7067" w="80" h="40"/>
+      <glyph id="n156_uof_1" class="unit of information">
+        <label text="N:3"/>
+        <bbox x="273.78204" y="1258.7067" w="25" h="16"/>
+      </glyph>
+    </glyph>
+    <glyph id="n157" class="macromolecule">
+      <label text="Unit of information: &#xA;multimer cardinality"/>
+      <bbox x="359.78204" y="1266.7067" w="145.5" h="40"/>
+    </glyph>
+    <glyph id="n158" class="process">
+      <bbox x="1209.9726063731996" y="1311.9030107752035" w="18" h="18"/>
+      <port id="n158.1" x="1200.9726063731996" y="1320.9030107752035"/>
+      <port id="n158.2" x="1236.9726063731996" y="1320.9030107752035"/>
+    </glyph>
+    <glyph id="n159" class="process">
+      <bbox x="694.7924514878705" y="1307.7275474743958" w="18" h="18"/>
+      <port id="n159.1" x="685.7924514878705" y="1316.7275474743958"/>
+      <port id="n159.2" x="721.7924514878705" y="1316.7275474743958"/>
+    </glyph>
+    <glyph id="n160" class="macromolecule">
+      <label text="Compartment"/>
+      <bbox x="116.58173" y="1406.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n161" class="macromolecule">
+      <label text="Submap"/>
+      <bbox x="357.0641" y="1406.7067" w="146" h="40"/>
+    </glyph>
+    <glyph id="n163" class="submap">
+      <extension>
+        <extraInfo>
+          <w>80</w>
+          <h>47.05486</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="LABEL"/>
+      <bbox x="268.78204" y="1406.7067" w="80" h="47.05486"/>
+    </glyph>
+    <glyph id="n164" class="not">
+      <bbox x="1205.821241908313" y="1247.8453313720322" w="30" h="30"/>
+      <port id="n164.1" x="1220.821241908313" y="1292.8453313720322"/>
+      <port id="n164.2" x="1220.821241908313" y="1232.8453313720322"/>
+    </glyph>
+    <glyph id="n165" class="and">
+      <bbox x="687.9810772318058" y="1444.7585429893395" w="30" h="30"/>
+      <port id="n165.1" x="702.9810772318058" y="1489.7585429893395"/>
+      <port id="n165.2" x="702.9810772318058" y="1429.7585429893395"/>
+    </glyph>
+    <glyph id="n166" class="or">
+      <bbox x="688.7924514878705" y="1243.4319336334245" w="30" h="30"/>
+      <port id="n166.1" x="703.7924514878705" y="1288.4319336334245"/>
+      <port id="n166.2" x="703.7924514878705" y="1228.4319336334245"/>
+    </glyph>
+    <arc id="e53" class="logic arc" source="n118" target="n164.2">
+      <start x="1221.2264625096334" y="1218.8317"/>
+      <end x="1220.821241908313" y="1232.3453313720322"/>
+    </arc>
+    <arc id="e52" class="catalysis" source="n164.1" target="n158">
+      <start x="1220.821241908313" y="1293.3453313720322"/>
+      <end x="1219.3467020430655" y="1309.1542771526726"/>
+    </arc>
+    <arc id="e51" class="consumption" source="n119" target="n158.1">
+      <start x="1141.3577936268002" y="1320.1004804127895"/>
+      <end x="1200.4726063731996" y="1320.9030107752035"/>
+    </arc>
+    <arc id="e50" class="production" source="n158.2" target="n120">
+      <start x="1237.4726063731996" y="1320.9030107752035"/>
+      <end x="1303.8579076208725" y="1320.0923606120011"/>
+    </arc>
+    <arc id="e0" class="production" source="n39.2" target="n38">
+      <start x="724.9152" y="446.7067"/>
+      <end x="786.4152" y="446.7067"/>
+    </arc>
+    <arc id="e1" class="consumption" source="n37" target="n39.1">
+      <start x="623.9152" y="446.7067"/>
+      <end x="687.9152" y="446.7067"/>
+    </arc>
+    <arc id="e2" class="production" source="n46.2" target="n45">
+      <start x="725.9152" y="586.70667"/>
+      <end x="787.4152" y="586.70667"/>
+    </arc>
+    <arc id="e3" class="consumption" source="n44" target="n46.1">
+      <start x="624.9152" y="586.70667"/>
+      <end x="688.9152" y="586.70667"/>
+    </arc>
+    <arc id="e4" class="consumption" source="n48" target="n49.1">
+      <start x="624.9152" y="656.70667"/>
+      <end x="688.9152" y="656.70667"/>
+    </arc>
+    <arc id="e5" class="consumption" source="n51" target="n52.1">
+      <start x="624.9152" y="726.70667"/>
+      <end x="688.9152" y="726.70667"/>
+    </arc>
+    <arc id="e6" class="production" source="n55.2" target="n93">
+      <start x="723.9152" y="831.70667"/>
+      <end x="775.4152000630166" y="831.7223870356723"/>
+    </arc>
+    <arc id="e7" class="consumption" source="n54" target="n55.1">
+      <start x="622.59210358503" y="811.0279299512172"/>
+      <next x="680.6043" y="831.70667"/>
+      <end x="686.9152" y="831.70667"/>
+    </arc>
+    <arc id="e8" class="production" source="n63.2" target="n62">
+      <start x="1239.9152" y="446.7067"/>
+      <end x="1301.4152" y="446.7067"/>
+    </arc>
+    <arc id="e9" class="consumption" source="n61" target="n63.1">
+      <start x="1138.9152" y="446.7067"/>
+      <end x="1202.9152" y="446.7067"/>
+    </arc>
+    <arc id="e10" class="production" source="n68.2" target="n67">
+      <start x="1239.9152" y="586.70667"/>
+      <end x="1301.4152" y="586.70667"/>
+    </arc>
+    <arc id="e11" class="consumption" source="n66" target="n68.1">
+      <start x="1138.9152" y="586.70667"/>
+      <end x="1202.9152" y="586.70667"/>
+    </arc>
+    <arc id="e12" class="catalysis" source="n57" target="n58">
+      <start x="1221.4152" y="257.2067"/>
+      <end x="1221.4152" y="294.9567"/>
+    </arc>
+    <arc id="e13" class="inhibition" source="n60" target="n63">
+      <start x="1221.4152" y="397.2067"/>
+      <end x="1221.4152" y="436.4567"/>
+    </arc>
+    <arc id="e14" class="production" source="n74.2" target="n73">
+      <start x="1239.9152" y="726.70667"/>
+      <end x="1301.4152" y="726.70667"/>
+    </arc>
+    <arc id="e15" class="consumption" source="n72" target="n74.1">
+      <start x="1138.9152" y="726.70667"/>
+      <end x="1202.9152" y="726.70667"/>
+    </arc>
+    <arc id="e16" class="production" source="n76.2" target="n42">
+      <start x="724.9152" y="516.7067"/>
+      <end x="787.4152" y="516.7067"/>
+    </arc>
+    <arc id="e17" class="consumption" source="n41" target="n76.1">
+      <start x="624.9152" y="516.7067"/>
+      <end x="687.9152" y="516.7067"/>
+    </arc>
+    <arc id="e18" class="production" source="n49.2" target="n77">
+      <start x="725.9152" y="656.70667"/>
+      <end x="809.4152" y="656.70667"/>
+    </arc>
+    <arc id="e19" class="production" source="n52.2" target="n78">
+      <start x="725.9152" y="726.70667"/>
+      <end x="787.4152" y="726.70667"/>
+    </arc>
+    <arc id="e20" class="consumption" source="n90" target="n58.1">
+      <start x="1138.9152" y="306.7067"/>
+      <end x="1202.9152" y="306.7067"/>
+    </arc>
+    <arc id="e21" class="production" source="n58.2" target="n82">
+      <start x="1239.9152" y="306.7067"/>
+      <end x="1301.4152" y="306.7067"/>
+    </arc>
+    <arc id="e22" class="consumption" source="n79" target="n81.1">
+      <start x="623.9152" y="236.7067"/>
+      <end x="687.9152" y="236.7067"/>
+    </arc>
+    <arc id="e23" class="production" source="n81.2" target="n80">
+      <start x="724.9152" y="236.7067"/>
+      <end x="786.4152" y="236.7067"/>
+    </arc>
+    <arc id="nwtE_48b192fd-fe72-4cfe-a757-b253893b0ff2" class="consumption" source="n88" target="n86.1">
+      <start x="664.1940147169743" y="335.8698158737948"/>
+      <end x="687.9152" y="376.7067"/>
+    </arc>
+    <arc id="e25" class="production" source="n86.2" target="n85">
+      <start x="724.9152" y="376.7067"/>
+      <end x="786.4152" y="376.7067"/>
+    </arc>
+    <arc id="nwtE_2545528a-65d7-493d-96ca-0ecf6cf24924" class="production" source="n100.2" target="n96">
+      <start x="721.3392488731535" y="971.7066700000001"/>
+      <end x="784.9049358365369" y="994.5796724972462"/>
+    </arc>
+    <arc id="nwtE_763f9615-39ca-4221-9127-463dd37b6eee" class="consumption" source="n99" target="n100.1">
+      <start x="632.9152" y="971.707825355781"/>
+      <end x="684.3392488731535" y="971.7066700000001"/>
+    </arc>
+    <arc id="e28" class="production" source="n92.2" target="n91">
+      <start x="1239.9152" y="1006.70667"/>
+      <end x="1301.4152" y="1006.70667"/>
+    </arc>
+    <arc id="e29" class="consumption" source="n94" target="n55.1">
+      <start x="622.6582037318917" y="852.6323292671358"/>
+      <next x="682.4913" y="831.7066700000005"/>
+      <end x="686.9152" y="831.70667"/>
+    </arc>
+    <arc id="nwtE_fb1035e2-38f3-4b5d-a7ef-1d5bee2c869a" class="production" source="n100.2" target="n95">
+      <start x="721.3392488731535" y="971.7066700000001"/>
+      <end x="784.9049358365369" y="948.833667502754"/>
+    </arc>
+    <arc id="e49" class="catalysis" source="n165.1" target="n117">
+      <start x="702.9810772318058" y="1490.2585429893395"/>
+      <end x="702.9810772318058" y="1504.9848860215689"/>
+    </arc>
+    <arc id="e48" class="logic arc" source="n114" target="n165.2">
+      <start x="744.826085915385" y="1414.5299157789786"/>
+      <end x="702.9810772318058" y="1429.2585429893395"/>
+    </arc>
+    <arc id="e33" class="stimulation" source="n65" target="n68">
+      <start x="1221.4152" y="537.2067"/>
+      <end x="1221.4152" y="574.95667"/>
+    </arc>
+    <arc id="e34" class="modulation" source="n71" target="n74">
+      <start x="1221.4152" y="677.20667"/>
+      <end x="1221.4152" y="716.20667"/>
+    </arc>
+    <arc id="e35" class="consumption" source="n102" target="n75.1">
+      <start x="1116.9152" y="866.70667"/>
+      <end x="1202.9152" y="866.70667"/>
+    </arc>
+    <arc id="e36" class="production" source="n75.2" target="n103">
+      <start x="1239.9152" y="866.70667"/>
+      <end x="1301.4152" y="866.70667"/>
+    </arc>
+    <arc id="e37" class="necessary stimulation" source="n104" target="n75">
+      <start x="1221.4152" y="817.20667"/>
+      <end x="1221.4152" y="854.95667"/>
+    </arc>
+    <arc id="e38" class="necessary stimulation" source="n105" target="n92">
+      <start x="1221.4152" y="957.20667"/>
+      <end x="1221.4152" y="994.95667"/>
+    </arc>
+    <arc id="e39" class="consumption" source="n106" target="n92.1">
+      <start x="1116.9152" y="1006.70667"/>
+      <end x="1202.9152" y="1006.70667"/>
+    </arc>
+    <arc id="e40" class="production" source="n159.2" target="n111">
+      <start x="722.2924514878705" y="1316.7275474743958"/>
+      <end x="783.7924514878705" y="1316.7275474743958"/>
+    </arc>
+    <arc id="e41" class="consumption" source="n110" target="n159.1">
+      <start x="621.2924514878705" y="1316.7275474743958"/>
+      <end x="685.2924514878705" y="1316.7275474743958"/>
+    </arc>
+    <arc id="e42" class="logic arc" source="n97" target="n166.2">
+      <start x="665.3274962283426" y="1218.8317"/>
+      <end x="703.7924514878705" y="1227.9319336334245"/>
+    </arc>
+    <arc id="e43" class="logic arc" source="n98" target="n166.2">
+      <start x="744.3958749803367" y="1218.8317"/>
+      <end x="703.7924514878705" y="1227.9319336334245"/>
+    </arc>
+    <arc id="e44" class="catalysis" source="n166.1" target="n159">
+      <start x="703.7924514878705" y="1288.9319336334245"/>
+      <end x="703.7924514878705" y="1304.9775474743958"/>
+    </arc>
+    <arc id="e45" class="production" source="n117.2" target="n116">
+      <start x="721.4810772318058" y="1516.7348860215689"/>
+      <end x="782.9810772318058" y="1516.7348860215689"/>
+    </arc>
+    <arc id="e46" class="consumption" source="n115" target="n117.1">
+      <start x="620.4810772318058" y="1516.7348860215689"/>
+      <end x="684.4810772318058" y="1516.7348860215689"/>
+    </arc>
+    <arc id="e47" class="logic arc" source="n113" target="n165.2">
+      <start x="662.2527005338054" y="1414.5299157789786"/>
+      <end x="702.9810772318058" y="1429.2585429893395"/>
+    </arc>
+    <arc id="nwtE_f1903c1c-fefb-4b54-adf3-056c380e233e" class="production" source="n86.2" target="n89">
+      <start x="724.9152" y="376.7067"/>
+      <end x="746.3901600676934" y="338.0423943607556"/>
+    </arc>
+    <arc id="nwtE_78141d97-9728-44dd-a0df-89d70afcee18" class="consumption" source="n84" target="n86.1">
+      <start x="623.9152" y="376.7067"/>
+      <end x="687.9152" y="376.7067"/>
+    </arc>
+  </map>
+</sbgn>
