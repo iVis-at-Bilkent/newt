@@ -797,7 +797,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       
       viewUtilities.changeHighlightStyle(0, {
         'border-width' : function (ele) { 
-          console.log(highlightColor);
           return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
         }, 'border-color': highlightColor
       }, {
