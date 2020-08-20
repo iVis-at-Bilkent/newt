@@ -362,7 +362,9 @@ module.exports = function (cy) {
     var highlightThickness = Number($('#highlight-thickness').val());
 
     viewUtilities.changeHighlightStyle(0, {
-      'border-width' : highlightThickness, 'border-color': highlightColor
+      'border-width' : function (ele) { 
+        return Math.max(parseFloat(ele.data('border-width')) + highlightThickness, 3); 
+      }, 'border-color': highlightColor
     }, {
       'width': highlightThickness,
       'line-color': highlightColor,
