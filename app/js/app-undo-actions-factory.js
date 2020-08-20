@@ -359,14 +359,14 @@ module.exports = function (cy) {
    if (id == "highlight-color" || id == "highlight-thickness") {
     var viewUtilities = cy.viewUtilities('get');
     var highlightColor = $('#highlight-color').val();
-    var highlightThickness = Number($('#highlight-thickness').val());
+    var extraHighlightThickness = Number($('#highlight-thickness').val());
 
     viewUtilities.changeHighlightStyle(0, {
       'border-width' : function (ele) { 
-        return Math.max(parseFloat(ele.data('border-width')) + highlightThickness, 3); 
+        return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
       }, 'border-color': highlightColor
     }, {
-      'width': highlightThickness,
+      'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
       'line-color': highlightColor,
       'source-arrow-color': highlightColor,
       'target-arrow-color': highlightColor

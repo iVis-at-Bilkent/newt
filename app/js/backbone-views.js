@@ -547,8 +547,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     self.params.mapDescription = {id: "map-description", type: "text",
       property: "currentGeneralProperties.mapDescription"};
 
-    self.params.highlightThickness = {id: "highlight-thickness", type: "range",
-      property: "currentGeneralProperties.highlightThickness"};  
+    self.params.extraHighlightThickness = {id: "highlight-thickness", type: "range",
+      property: "currentGeneralProperties.extraHighlightThickness"};  
 
     self.params.highlightColor = {id: "highlight-color", type: "color",
       property: "currentGeneralProperties.highlightColor"};
@@ -790,19 +790,22 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     $(document).on("change", "#highlight-thickness", function(evt) {
       var cy = appUtilities.getActiveCy();
       var viewUtilities = cy.viewUtilities('get');
-      self.params.highlightThickness.value = Number($('#highlight-thickness').val());
-      var highlightThickness = self.params.highlightThickness.value;
+      self.params.extraHighlightThickness.value = Number($('#highlight-thickness').val());
+      var extraHighlightThickness = self.params.extraHighlightThickness.value;
       var highlightColor = self.params.highlightColor.value;
       
       viewUtilities.changeHighlightStyle(0, {
-        'border-width': highlightThickness, 'border-color': highlightColor
+        'border-width': function (ele) { 
+          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
+        }, 
+        'border-color': highlightColor
       }, {
-        'width': highlightThickness,
+        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
         'line-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
       });
-      cy.undoRedo().do("changeMenu", self.params.highlightThickness);
+      cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
       $('#highlight-thickness').blur();
     });
 
@@ -810,13 +813,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       var viewUtilities = cy.viewUtilities('get');
       self.params.highlightColor.value = $('#highlight-color').val();
-      var highlightThickness = self.params.highlightThickness.value;
+      var extraHighlightThickness = self.params.extraHighlightThickness.value;
       var highlightColor = self.params.highlightColor.value;
 
       viewUtilities.changeHighlightStyle(0, {
-        'border-width' : highlightThickness, 'border-color': highlightColor
+        'border-width': function (ele) { 
+          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
+        }, 'border-color': highlightColor
       }, {
-        'width': highlightThickness,
+        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
         'line-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
@@ -849,7 +854,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.enableSIFTopologyGrouping.value = appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
       self.params.compoundPadding.value = appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value = appUtilities.defaultGeneralProperties.arrowScale;
-      self.params.highlightThickness.value = appUtilities.defaultGeneralProperties.highlightThickness;
+      self.params.extraHighlightThickness.value = appUtilities.defaultGeneralProperties.extraHighlightThickness;
       self.params.highlightColor.value = appUtilities.defaultGeneralProperties.highlightColor;
       actions.push({name: "changeMenu", param: self.params.allowCompoundNodeResize});
       actions.push({name: "changeMenu", param: self.params.inferNestingOnLoad});
@@ -860,7 +865,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       actions.push({name: "changeMenu", param: self.params.arrowScale});
       actions.push({name: "changeCss", param: { eles: cy.edges(), name: "arrow-scale",
           valueMap: self.params.arrowScale.value}});
-      actions.push({name: "changeMenu", param: self.params.highlightThickness});
+      actions.push({name: "changeMenu", param: self.params.extraHighlightThickness});
       actions.push({name: "changeMenu", param: self.params.highlightColor});
       ur.do("batch", actions);
     });

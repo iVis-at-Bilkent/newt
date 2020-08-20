@@ -414,7 +414,7 @@ appUtilities.createNewNetwork = function () {
       return appUtilities.ctrlKeyDown !== true;
     },
     highlightColor: currentGeneralProperties.highlightColor,
-    highlightThickness: currentGeneralProperties.highlightThickness 
+    extraHighlightThickness: currentGeneralProperties.extraHighlightThickness 
   });
   
   // set scracth pad of the related cy instance with these properties
@@ -758,7 +758,7 @@ appUtilities.defaultGeneralProperties = {
   mapDescription: "",
   experimentDescription: "",
   highlightColor: '#0B9BCD', //the color code used when initializing viewUtilities in app-cy.js
-  highlightThickness: 3
+  extraHighlightThickness: 3
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -2424,17 +2424,17 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
 
     //setMapProperties function is called in sbgnvizLoadFileEnd sbgnvizLoadSampleEnd 
     //event handler
-    if ('highlightColor' in mapProperties && 'highlightThickness' in mapProperties) {
+    if ('highlightColor' in mapProperties && 'extraHighlightThickness' in mapProperties) {
       var viewUtilities = cy.viewUtilities('get');
       var highlightColor = currentGeneralProperties.highlightColor[0];
-      var highlightThickness = currentGeneralProperties.highlightThickness;
+      var extraHighlightThickness = currentGeneralProperties.extraHighlightThickness;
 
       viewUtilities.changeHighlightStyle(0, {
         'border-width': function (ele) {
-          return Math.max(parseFloat(ele.data('border-width')) + highlightThickness, 3);
+          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3);
         }, 'border-color': highlightColor
       }, {
-        'width': highlightThickness,
+        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
         'line-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
