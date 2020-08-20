@@ -2424,6 +2424,7 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
 
     //setMapProperties function is called in sbgnvizLoadFileEnd sbgnvizLoadSampleEnd 
     //event handler
+    
     if ('highlightColor' in mapProperties && 'extraHighlightThickness' in mapProperties) {
       var viewUtilities = cy.viewUtilities('get');
       var highlightColor = currentGeneralProperties.highlightColor[0];
@@ -2440,6 +2441,7 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
         'target-arrow-color': highlightColor
     });
     }
+    
 
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();

@@ -791,6 +791,31 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       var viewUtilities = cy.viewUtilities('get');
       self.params.extraHighlightThickness.value = Number($('#highlight-thickness').val());
+      self.params.highlightColor.value = $('#highlight-color').val();
+      var extraHighlightThickness = self.params.extraHighlightThickness.value;
+      var highlightColor = self.params.highlightColor.value;
+      
+      viewUtilities.changeHighlightStyle(0, {
+        'border-width' : function (ele) { 
+          console.log(highlightColor);
+          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
+        }, 'border-color': highlightColor
+      }, {
+        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
+        'line-color': highlightColor,
+        'source-arrow-color': highlightColor,
+        'target-arrow-color': highlightColor
+      });
+      
+      cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
+      $('#highlight-thickness').blur();
+    });
+    
+    $(document).on("change", "#highlight-color", function(evt) {
+      var cy = appUtilities.getActiveCy();
+      var viewUtilities = cy.viewUtilities('get');
+      self.params.extraHighlightThickness.value = Number($('#highlight-thickness').val());
+      self.params.highlightColor.value = $('#highlight-color').val();
       var extraHighlightThickness = self.params.extraHighlightThickness.value;
       var highlightColor = self.params.highlightColor.value;
       
@@ -805,27 +830,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
       });
-      cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
-      $('#highlight-thickness').blur();
-    });
-
-    $(document).on("change", "#highlight-color", function(evt) {
-      var cy = appUtilities.getActiveCy();
-      var viewUtilities = cy.viewUtilities('get');
-      self.params.highlightColor.value = $('#highlight-color').val();
-      var extraHighlightThickness = self.params.extraHighlightThickness.value;
-      var highlightColor = self.params.highlightColor.value;
-
-      viewUtilities.changeHighlightStyle(0, {
-        'border-width': function (ele) { 
-          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
-        }, 'border-color': highlightColor
-      }, {
-        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
-        'line-color': highlightColor,
-        'source-arrow-color': highlightColor,
-        'target-arrow-color': highlightColor
-      });
+      
       cy.undoRedo().do("changeMenu", self.params.highlightColor);
       $('#highlight-color').blur();
     });
