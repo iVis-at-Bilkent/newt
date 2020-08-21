@@ -732,8 +732,8 @@ module.exports = function() {
       "#load-sample16" : 'regulation_of_tgfbeta-induced_metastasis.sbgn',
       "#load-sample17" : 'RTN4-controllers-and-binding-proteins.nwt',
       "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt',
-      "#load-sample19" : 'pdlearnerscard.nwt',
-      "#load-sample20" : 'aflearnerscard.nwt'
+      "#load-sample19" : 'pd_learners_card.nwt',
+      "#load-sample20" : 'af_learners_card.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {
