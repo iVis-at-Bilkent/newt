@@ -1,0 +1,8 @@
+name	sample experiment data
+description	Adenoid Cystic Carcinoma 2014 vs 2019
+el	2014	2019
+RB1	36	12
+TP53	36	72
+CDKN2A	0	14
+MDM2	0	5
+CCNE	0	7
