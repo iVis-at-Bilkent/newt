@@ -11,7 +11,7 @@ module.exports = function (chiseInstance) {
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
 
   // use chise instance associated with chise instance
-  cy = chiseInstance.getCy();
+  var cy = chiseInstance.getCy();
 
   // register extensions and bind events when cy is ready
   cy.ready(function () {
