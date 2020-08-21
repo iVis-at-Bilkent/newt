@@ -800,7 +800,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
         }, 'border-color': highlightColor
       }, {
-        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
+        'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
         'line-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
@@ -824,7 +824,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         }, 
         'border-color': highlightColor
       }, {
-        'width': function (ele) { return parseFloat(ele.data('width')) + extraHighlightThickness; },
+        'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
         'line-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor

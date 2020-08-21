@@ -435,7 +435,7 @@ module.exports = function (chiseInstance) {
         {
           node: { 'border-width': function (ele) { return Math.max(parseFloat(ele.data('border-width')) + 2, 3); }, 'border-color': '#0B9BCD' },
           edge: {
-            'width': function (ele) { return parseFloat(ele.data('width')) + 2; },
+            'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + 2, 3); },
             'line-color': '#0B9BCD',
             'source-arrow-color': '#0B9BCD',
             'target-arrow-color': '#0B9BCD'
@@ -452,7 +452,6 @@ module.exports = function (chiseInstance) {
           'line-color': '#d67614',
           'source-arrow-color': '#d67614',
           'target-arrow-color': '#d67614',
-          'width': function (ele) { return parseFloat(ele.data('width')) + 2; }
         }
       },
       neighbor: function(node){ //select and return process-based neighbors
