@@ -833,7 +833,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy.undoRedo().do("changeMenu", self.params.highlightColor);
       $('#highlight-color').blur();
     });
-
+  
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
@@ -881,10 +881,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     var chiseInstance = appUtilities.getActiveChiseInstance();
     // get current general properties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
+    colorPickerUtils.bindPicker2Input('#highlight-color', function(evt) {
+      $('#highlight-color').trigger("change");
+    });
     $("#map-type").val(chiseInstance.elementUtilities.getMapType());
     return this;
   }
