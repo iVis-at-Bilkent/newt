@@ -1,0 +1,489 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.3">
+  <map id="aflearnerscard.nwt" language="hybrid sbgn">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#555555ff"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#ffffffff"/>
+          <colorDefinition id="color_4" value="#000000"/>
+          <colorDefinition id="color_5" value="#ffffff"/>
+          <colorDefinition id="color_6" value="#c5dcedff"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="node5555555555551.2518normalnormalHelveticaffffff11" idList="60a70c60-a024-940a-7aa7-bdc502a4e11c c6afe0b4-eab4-8b7d-5a4f-9dfcf5901ef6 705a8930-f363-15fa-1225-b406e40d9d21 6ea62366-d601-feaf-7603-52ad3a79cfc6 d2eb927a-2133-ef65-8893-5eac965d8cde 65d31dad-0dca-3db5-51f8-69c8e54a4b8a">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#ffffff" stroke="color_2" stroke-width="1.25" fill="color_1" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff0000001.2512normalnormalHelvetica00000011" idList="nwtN_4f49d4eb-8913-4120-acae-16931038f642 nwtN_fb2044aa-c92d-4b8f-9610-2659980d5eac nwtN_07429732-69bb-4bc3-8e1d-94246b0aebaf nwtN_f3a775e1-2e2d-45a4-bc9d-a4fb776b2c7e 9f92c503-3f01-cd04-8dd8-74b2462cca96 d722a571-d8ee-7d49-938f-3316397451fd 531f3167-2912-f1d5-4009-4543d9170da3 50b57d58-3c68-70d3-5486-cb05fc40959e 10105820-0629-b5d5-8b77-329339f298d0">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fellipse" idList="nwtUOI_d1324175-1eb5-4696-8bde-91bb65b10771">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_5"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fperturbingagent" idList="nwtUOI_b628ae5d-766a-4e00-bb1a-31ce7b42e714 50b57d58-3c68-70d3-5486-cb05fc40959e_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_5"/>
+          </style>
+          <style id="nodec5dced0000001.2512normalnormalHelvetica00000011" idList="nwtN_7fcd45fb-3ab6-403d-ab0a-613b10964827 nwtN_b646dd7e-b034-4692-bb22-c373ab25758f nwtN_6cea8e8f-a108-4f7c-8f58-8ecda6ba0dd9 nwtN_c97d0970-c8af-4213-8343-4e44b5d420bd 435fb0e4-fd5d-a6a1-f9f8-1ec3b11777c3 f631e915-6938-113b-7992-3e4c818b4573 216301f1-e727-0c74-0929-caf196fd69d0 581ec18b-eb31-94fc-000e-13ed9c5ed320 e4cab642-eedd-19ff-66ff-b8ef7c263303 565db2a9-b23c-7060-3066-82ef92e53502 f2828e73-8455-95a7-3257-78096a2a5d2b 888ebe15-5add-2e21-8b30-edfb8f11bc48 d68ff71e-cca8-3b8f-ba39-be1eeb98b84b 584ce460-cfd7-fa0b-e179-e2466cae2a23 855b7181-3117-624a-7f69-ba6e6ecb9ed2 960e3cf0-f0d5-cd0c-518a-01404cc1e1d1 f38750b1-b0c5-bc6b-5a5d-904e962f076c 900fa384-89c5-180e-211d-301841c19651 c10d2bca-c5fd-c381-719f-e9c3c3692b9f ed0491a2-677f-9e81-2b29-d51e637190f5 829c5d58-0c3d-1514-932b-fb956c9d863e d7531b7f-d10e-cae7-44c6-40cca5b5df94 f449e232-58d2-4bcc-7c67-af72d3cd7adf">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_4" stroke-width="1.25" fill="color_6" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fstadium" idList="nwtUOI_2cb891db-407c-4a42-b962-5ab1456b0905">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_5"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0froundrectangle" idList="nwtUOI_9e5c0af5-8011-4817-b1fc-5bb57a74b8d4">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_5"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fcomplex" idList="nwtUOI_94d18419-3f9a-4e68-b39f-02d0338741d5">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_5"/>
+          </style>
+          <style id="nodeffffff5555551.2511" idList="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245 nwtN_90c39fe6-d628-4a95-a48a-68b402205dec nwtN_994f1e09-66b9-4ffe-bfe1-7d4f09cb4231">
+            <g stroke="color_2" stroke-width="1.25" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="infoboxffffff55555519normalnormalArial0f0f0fbottomroundrectangle" idList="nwtUOI_ea2cdfb5-8841-4a2f-a788-b8136e7de505 9f92c503-3f01-cd04-8dd8-74b2462cca96_0 d722a571-d8ee-7d49-938f-3316397451fd_0 531f3167-2912-f1d5-4009-4543d9170da3_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="1" fill="color_5"/>
+          </style>
+          <style id="nodeffffff0000003.2512normalnormalHelvetica00000011" idList="nwtN_a84230a9-1748-472e-b10c-c9e06317036e">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_4" stroke-width="3.25" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff0000002.2512normalnormalHelvetica00000011" idList="nwtN_66245041-19e3-4975-b185-6b0cb39421f4">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_4" stroke-width="2.25" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffffffffff1.2512normalnormalHelvetica00000011" idList="b2f43fc0-f3a6-8f4c-4856-c0aac83371f1 1d483a26-edb4-2d72-6b6f-4da476bb8cae f160512f-dad8-31e8-1dd6-c5103788df03 98ffb654-d3fe-7f0c-a530-2f17191244c5 dff5a328-6225-47b7-d0cd-5beb98b3c1b1 9e837abd-c4bb-fa2b-3baf-96d565cd8002 e5099511-a4be-d814-644d-56d80ae5109f ccf17d86-59ff-126f-f410-53abb484399f c4430d77-4310-5f9c-0300-b0cbff6f8972 7eb41e6e-816a-8546-a1d3-e0118eef8c3e 97fcdd80-932d-e443-ae49-41efaa166dce 9f43d001-98b1-2e40-139b-310c818b4ab9 e2bd60ba-784d-ad95-a89a-4bb37674d275 fbcde33a-e6d6-1de7-c364-85bae6e8388e dbedc9ce-eb27-e89b-b9d8-6dfa719e486c ad90ced4-1dee-6bfa-2e0c-5f9c4f293492 c4cf7171-478d-5af0-12f6-17e08feab21c bf2aaba0-7b58-d482-c704-9487a83f9956 6e18821a-4628-dc13-aa02-9495b3209f64 d36fa844-1387-7683-13a8-1007c6aa414d ccc599ec-72c8-15a4-ea1a-73095a95cd00">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_5" stroke-width="1.25" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge5555551.25" idList="nwtE_33a7a8f1-aab1-493f-b9ab-e9dd0fb656ec nwtE_6b8f52c5-dc29-4c8e-a6f0-27638b507149 nwtE_414dcf72-5141-42b6-acf8-be76ce0b8b7b nwtE_778cdca3-9e91-44d0-bfdc-acd2a42a1b76 nwtE_64dc150c-eff0-47ab-9e55-f093c3f6ff7f nwtE_f6771327-5248-4956-9a69-c81cc73d1880 nwtE_172ddf1a-abbb-4def-b4bf-9e73aa46bf59 nwtE_67dd0836-b03e-4670-9f9e-f9dfa914b8e7 nwtE_e0c94d2e-6d1f-4961-88cd-c3db8b6eebed nwtE_85a1d7cc-4142-4a40-9c02-736fc83342c7 nwtE_dadb9321-1c47-45e4-b34e-fd8fcc5b58c3 nwtE_52cd445e-0d03-4bac-b661-2a506b259610 nwtE_e4f4cf46-9f22-4fa4-bd69-53c79c3c589e nwtE_8ab656e5-1c24-4a1b-9277-3297132c7550 nwtE_5b2df9ca-b19c-4fbf-9664-83aa0b9ff431 nwtE_be471d60-33f3-4e8f-8937-2ee9bba57a6c nwtE_e680432f-c28a-456c-b7d1-b272533f9044">
+            <g stroke="color_2" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapDescription/>
+      </mapProperties>
+    </extension>
+    <glyph id="60a70c60-a024-940a-7aa7-bdc502a4e11c" class="biological activity">
+      <label text="LOGICAL OPERATORS"/>
+      <bbox x="-505" y="745" w="1000" h="40"/>
+    </glyph>
+    <glyph id="c6afe0b4-eab4-8b7d-5a4f-9dfcf5901ef6" class="biological activity">
+      <label text="ACTIVITY NODES"/>
+      <bbox x="-504.8551115912327" y="185" w="479.71022318246537" h="40"/>
+    </glyph>
+    <glyph id="nwtN_4f49d4eb-8913-4120-acae-16931038f642" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-265" y="395" w="80" h="40"/>
+      <glyph id="nwtUOI_d1324175-1eb5-4696-8bde-91bb65b10771" class="unit of information">
+        <label text=""/>
+        <entity name="unspecified entity"/>
+        <bbox x="-256.3333333333333" y="389" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_fb2044aa-c92d-4b8f-9610-2659980d5eac" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-265" y="535" w="80" h="40"/>
+      <glyph id="nwtUOI_b628ae5d-766a-4e00-bb1a-31ce7b42e714" class="unit of information">
+        <label text=""/>
+        <entity name="perturbation"/>
+        <bbox x="-256.3333333333333" y="529" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_7fcd45fb-3ab6-403d-ab0a-613b10964827" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="465" w="80" h="40"/>
+      <glyph id="nwtUOI_2cb891db-407c-4a42-b962-5ab1456b0905" class="unit of information">
+        <label text=""/>
+        <entity name="simple chemical"/>
+        <bbox x="-496.3333333333333" y="459" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_b646dd7e-b034-4692-bb22-c373ab25758f" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="395" w="80" h="40"/>
+      <glyph id="nwtUOI_9e5c0af5-8011-4817-b1fc-5bb57a74b8d4" class="unit of information">
+        <label text=""/>
+        <entity name="macromolecule"/>
+        <bbox x="-496.3333333333333" y="389" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_6cea8e8f-a108-4f7c-8f58-8ecda6ba0dd9" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="535" w="80" h="40"/>
+      <glyph id="nwtUOI_94d18419-3f9a-4e68-b39f-02d0338741d5" class="unit of information">
+        <label text=""/>
+        <entity name="complex"/>
+        <bbox x="-496.3333333333333" y="529" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="nwtN_c97d0970-c8af-4213-8343-4e44b5d420bd" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="255" w="80" h="40"/>
+    </glyph>
+    <glyph id="705a8930-f363-15fa-1225-b406e40d9d21" class="biological activity">
+      <label text="AUXUILIARY UNITS"/>
+      <bbox x="-504.8551115912327" y="325" w="479.71022318246537" h="40"/>
+    </glyph>
+    <glyph id="nwtN_07429732-69bb-4bc3-8e1d-94246b0aebaf" class="phenotype">
+      <label text="LABEL"/>
+      <bbox x="-265" y="255" w="80" h="40"/>
+    </glyph>
+    <glyph id="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f" class="and">
+      <bbox x="-362.85714285714283" y="857.1428571428571" w="35.714285714285715" h="35.714285714285715"/>
+      <port id="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f.1" x="-370" y="875"/>
+      <port id="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f.2" x="-320" y="875"/>
+    </glyph>
+    <glyph id="nwtN_f3a775e1-2e2d-45a4-bc9d-a4fb776b2c7e" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-265" y="465" w="80" h="40"/>
+      <glyph id="nwtUOI_ea2cdfb5-8841-4a2f-a788-b8136e7de505" class="unit of information">
+        <label text=""/>
+        <entity name="nucleic acid feature"/>
+        <bbox x="-256.3333333333333" y="459" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="6ea62366-d601-feaf-7603-52ad3a79cfc6" class="biological activity">
+      <label text="MODULATING ARCS"/>
+      <bbox x="5.144888408767315" y="185" w="479.71022318246537" h="40"/>
+    </glyph>
+    <glyph id="435fb0e4-fd5d-a6a1-f9f8-1ec3b11777c3" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="325" w="80" h="40"/>
+    </glyph>
+    <glyph id="f631e915-6938-113b-7992-3e4c818b4573" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="395" w="80" h="40"/>
+    </glyph>
+    <glyph id="216301f1-e727-0c74-0929-caf196fd69d0" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="255" w="80" h="40"/>
+    </glyph>
+    <glyph id="581ec18b-eb31-94fc-000e-13ed9c5ed320" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-265" y="955" w="80" h="40"/>
+    </glyph>
+    <glyph id="nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245" class="or">
+      <bbox x="137.14285714285714" y="857.1428571428571" w="35.714285714285715" h="35.714285714285715"/>
+      <port id="nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245.1" x="130" y="875"/>
+      <port id="nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245.2" x="180" y="875"/>
+    </glyph>
+    <glyph id="e4cab642-eedd-19ff-66ff-b8ef7c263303" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="955" w="80" h="40"/>
+    </glyph>
+    <glyph id="nwtN_90c39fe6-d628-4a95-a48a-68b402205dec" class="not">
+      <bbox x="-362.85714285714283" y="957.1428571428571" w="35.714285714285715" h="35.714285714285715"/>
+      <port id="nwtN_90c39fe6-d628-4a95-a48a-68b402205dec.1" x="-370" y="975"/>
+      <port id="nwtN_90c39fe6-d628-4a95-a48a-68b402205dec.2" x="-320" y="975"/>
+    </glyph>
+    <glyph id="565db2a9-b23c-7060-3066-82ef92e53502" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="245" y="465" w="80" h="40"/>
+    </glyph>
+    <glyph id="f2828e73-8455-95a7-3257-78096a2a5d2b" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="605" w="80" h="40"/>
+    </glyph>
+    <glyph id="888ebe15-5add-2e21-8b30-edfb8f11bc48" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="245" y="255" w="80" h="40"/>
+    </glyph>
+    <glyph id="nwtN_994f1e09-66b9-4ffe-bfe1-7d4f09cb4231" class="delay">
+      <bbox x="137" y="957" w="36" h="36"/>
+    </glyph>
+    <glyph id="d68ff71e-cca8-3b8f-ba39-be1eeb98b84b" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="245" y="325" w="80" h="40"/>
+    </glyph>
+    <glyph id="584ce460-cfd7-fa0b-e179-e2466cae2a23" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="245" y="395" w="80" h="40"/>
+    </glyph>
+    <glyph id="9f92c503-3f01-cd04-8dd8-74b2462cca96" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="465" w="80" h="40"/>
+      <glyph id="9f92c503-3f01-cd04-8dd8-74b2462cca96_0" class="unit of information">
+        <label text="mRNA"/>
+        <entity name="nucleic acid feature"/>
+        <bbox x="13.66666666666669" y="459" w="28.4990234375" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="d722a571-d8ee-7d49-938f-3316397451fd" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="535" w="80" h="40"/>
+      <glyph id="d722a571-d8ee-7d49-938f-3316397451fd_0" class="unit of information">
+        <label text="gene"/>
+        <entity name="nucleic acid feature"/>
+        <bbox x="16.90543619791669" y="529" w="22.021484375" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="531f3167-2912-f1d5-4009-4543d9170da3" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="245" y="535" w="80" h="40"/>
+      <glyph id="531f3167-2912-f1d5-4009-4543d9170da3_0" class="unit of information">
+        <label text="mRNA"/>
+        <entity name="nucleic acid feature"/>
+        <bbox x="253.66666666666669" y="529" w="28.4990234375" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="50b57d58-3c68-70d3-5486-cb05fc40959e" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="5" y="675" w="80" h="40"/>
+      <glyph id="50b57d58-3c68-70d3-5486-cb05fc40959e_0" class="unit of information">
+        <label text=""/>
+        <entity name="perturbation"/>
+        <bbox x="13.666666666666686" y="669" w="12" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="855b7181-3117-624a-7f69-ba6e6ecb9ed2" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="245" y="675" w="80" h="40"/>
+    </glyph>
+    <glyph id="960e3cf0-f0d5-cd0c-518a-01404cc1e1d1" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="815" w="80" h="40"/>
+    </glyph>
+    <glyph id="f38750b1-b0c5-bc6b-5a5d-904e962f076c" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="235" y="855" w="80" h="40"/>
+    </glyph>
+    <glyph id="900fa384-89c5-180e-211d-301841c19651" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-5" y="885" w="80" h="40"/>
+    </glyph>
+    <glyph id="c10d2bca-c5fd-c381-719f-e9c3c3692b9f" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-5" y="955" w="80" h="40"/>
+    </glyph>
+    <glyph id="ed0491a2-677f-9e81-2b29-d51e637190f5" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-5" y="815" w="80" h="40"/>
+    </glyph>
+    <glyph id="d2eb927a-2133-ef65-8893-5eac965d8cde" class="biological activity">
+      <label text="CONTAINER NODE"/>
+      <bbox x="-504.7360054982773" y="605" w="230" h="40"/>
+    </glyph>
+    <glyph id="65d31dad-0dca-3db5-51f8-69c8e54a4b8a" class="biological activity">
+      <label text="ENCAPSULATION NODE"/>
+      <bbox x="-260" y="605" w="230" h="40"/>
+    </glyph>
+    <glyph id="nwtN_a84230a9-1748-472e-b10c-c9e06317036e" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>86.26289567355363</w>
+          <h>48.685521632231705</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="LABEL"/>
+      <bbox x="-508.13144783677683" y="670.6572391838841" w="86.26289567355363" h="48.685521632231705"/>
+    </glyph>
+    <glyph id="nwtN_66245041-19e3-4975-b185-6b0cb39421f4" class="submap">
+      <extension>
+        <extraInfo>
+          <w>80</w>
+          <h>45.55407379545484</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="LABEL"/>
+      <bbox x="-265" y="672.2229631022726" w="80" h="45.55407379545484"/>
+    </glyph>
+    <glyph id="10105820-0629-b5d5-8b77-329339f298d0" class="phenotype">
+      <label text="LABEL"/>
+      <bbox x="245" y="605" w="80" h="40"/>
+    </glyph>
+    <glyph id="829c5d58-0c3d-1514-932b-fb956c9d863e" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-265" y="855" w="80" h="40"/>
+    </glyph>
+    <glyph id="d7531b7f-d10e-cae7-44c6-40cca5b5df94" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="-505" y="885" w="80" h="40"/>
+    </glyph>
+    <glyph id="f449e232-58d2-4bcc-7c67-af72d3cd7adf" class="biological activity">
+      <label text="LABEL"/>
+      <bbox x="235" y="955" w="80" h="40"/>
+    </glyph>
+    <glyph id="b2f43fc0-f3a6-8f4c-4856-c0aac83371f1" class="biological activity">
+      <label text="Positive influence&#xA;(perturbation)"/>
+      <bbox x="340" y="675" w="150" h="40"/>
+    </glyph>
+    <glyph id="1d483a26-edb4-2d72-6b6f-4da476bb8cae" class="biological activity">
+      <label text="Phenotype"/>
+      <bbox x="-180" y="255" w="150" h="40"/>
+    </glyph>
+    <glyph id="f160512f-dad8-31e8-1dd6-c5103788df03" class="biological activity">
+      <label text="Biological activity&#xA;(by default: &#xA;macromolecule)"/>
+      <bbox x="-420" y="255" w="150" h="40"/>
+    </glyph>
+    <glyph id="98ffb654-d3fe-7f0c-a530-2f17191244c5" class="biological activity">
+      <label text="AND operator"/>
+      <bbox x="322.385909259451" y="855" w="145.22818148109798" h="40"/>
+    </glyph>
+    <glyph id="dff5a328-6225-47b7-d0cd-5beb98b3c1b1" class="biological activity">
+      <label text="AND operator"/>
+      <bbox x="322.385909259451" y="955" w="145.22818148109798" h="40"/>
+    </glyph>
+    <glyph id="9e837abd-c4bb-fa2b-3baf-96d565cd8002" class="biological activity">
+      <label text="Positive influence"/>
+      <bbox x="330" y="255" w="150" h="40"/>
+    </glyph>
+    <glyph id="e5099511-a4be-d814-644d-56d80ae5109f" class="biological activity">
+      <label text="Macromolecule"/>
+      <bbox x="-420" y="395" w="150" h="40"/>
+    </glyph>
+    <glyph id="ccf17d86-59ff-126f-f410-53abb484399f" class="biological activity">
+      <label text="Simple chemical"/>
+      <bbox x="-420" y="465" w="150" h="40"/>
+    </glyph>
+    <glyph id="c4430d77-4310-5f9c-0300-b0cbff6f8972" class="biological activity">
+      <label text="Complex"/>
+      <bbox x="-420" y="535" w="150" h="40"/>
+    </glyph>
+    <glyph id="7eb41e6e-816a-8546-a1d3-e0118eef8c3e" class="biological activity">
+      <label text="Perturbation"/>
+      <bbox x="-180" y="535" w="150" h="40"/>
+    </glyph>
+    <glyph id="97fcdd80-932d-e443-ae49-41efaa166dce" class="biological activity">
+      <label text="Nucleic acid feature"/>
+      <bbox x="-180" y="465" w="150" h="40"/>
+    </glyph>
+    <glyph id="9f43d001-98b1-2e40-139b-310c818b4ab9" class="biological activity">
+      <label text="Unspecified"/>
+      <bbox x="-180" y="395" w="150" h="40"/>
+    </glyph>
+    <glyph id="e2bd60ba-784d-ad95-a89a-4bb37674d275" class="biological activity">
+      <label text="Negative influence"/>
+      <bbox x="330" y="325" w="150" h="40"/>
+    </glyph>
+    <glyph id="fbcde33a-e6d6-1de7-c364-85bae6e8388e" class="biological activity">
+      <label text="Unknown influence"/>
+      <bbox x="330" y="395" w="150" h="40"/>
+    </glyph>
+    <glyph id="dbedc9ce-eb27-e89b-b9d8-6dfa719e486c" class="biological activity">
+      <label text="Necessary stimulation&#xA;(translaltion)"/>
+      <bbox x="330" y="465" w="150" h="40"/>
+    </glyph>
+    <glyph id="ad90ced4-1dee-6bfa-2e0c-5f9c4f293492" class="biological activity">
+      <label text="Necessary stimulation&#xA;(transcription)"/>
+      <bbox x="330" y="535" w="150" h="40"/>
+    </glyph>
+    <glyph id="c4cf7171-478d-5af0-12f6-17e08feab21c" class="biological activity">
+      <label text="Positive influence&#xA;(phenotype)"/>
+      <bbox x="330" y="605" w="150" h="40"/>
+    </glyph>
+    <glyph id="bf2aaba0-7b58-d482-c704-9487a83f9956" class="biological activity">
+      <label text="Compartment"/>
+      <bbox x="-412.8422722216469" y="675" w="142.8422722216469" h="40"/>
+    </glyph>
+    <glyph id="6e18821a-4628-dc13-aa02-9495b3209f64" class="biological activity">
+      <label text="Submap"/>
+      <bbox x="-175.22818148109798" y="675" w="145.22818148109798" h="40"/>
+    </glyph>
+    <glyph id="d36fa844-1387-7683-13a8-1007c6aa414d" class="biological activity">
+      <label text="AND operator"/>
+      <bbox x="-177.614090740549" y="855" w="145.22818148109798" h="40"/>
+    </glyph>
+    <glyph id="ccc599ec-72c8-15a4-ea1a-73095a95cd00" class="biological activity">
+      <label text="AND operator"/>
+      <bbox x="-177.614090740549" y="955" w="145.22818148109798" h="40"/>
+    </glyph>
+    <arc id="nwtE_33a7a8f1-aab1-493f-b9ab-e9dd0fb656ec" class="positive influence" source="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f.2" target="829c5d58-0c3d-1514-932b-fb956c9d863e">
+      <start x="-319.375" y="875"/>
+      <end x="-268.75" y="875"/>
+    </arc>
+    <arc id="nwtE_6b8f52c5-dc29-4c8e-a6f0-27638b507149" class="logic arc" source="d7531b7f-d10e-cae7-44c6-40cca5b5df94" target="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f.1">
+      <start x="-424.375" y="894.84375"/>
+      <end x="-370.625" y="875"/>
+    </arc>
+    <arc id="nwtE_414dcf72-5141-42b6-acf8-be76ce0b8b7b" class="positive influence" source="216301f1-e727-0c74-0929-caf196fd69d0" target="888ebe15-5add-2e21-8b30-edfb8f11bc48">
+      <start x="85.625" y="275"/>
+      <end x="241.25" y="275"/>
+    </arc>
+    <arc id="nwtE_778cdca3-9e91-44d0-bfdc-acd2a42a1b76" class="negative influence" source="435fb0e4-fd5d-a6a1-f9f8-1ec3b11777c3" target="d68ff71e-cca8-3b8f-ba39-be1eeb98b84b">
+      <start x="85.625" y="345"/>
+      <end x="243.375" y="345"/>
+    </arc>
+    <arc id="nwtE_64dc150c-eff0-47ab-9e55-f093c3f6ff7f" class="unknown influence" source="f631e915-6938-113b-7992-3e4c818b4573" target="584ce460-cfd7-fa0b-e179-e2466cae2a23">
+      <start x="85.625" y="415"/>
+      <end x="242.8125" y="415"/>
+    </arc>
+    <arc id="nwtE_f6771327-5248-4956-9a69-c81cc73d1880" class="necessary stimulation" source="9f92c503-3f01-cd04-8dd8-74b2462cca96" target="565db2a9-b23c-7060-3066-82ef92e53502">
+      <start x="85.625" y="485"/>
+      <end x="241.25" y="485"/>
+    </arc>
+    <arc id="nwtE_172ddf1a-abbb-4def-b4bf-9e73aa46bf59" class="necessary stimulation" source="d722a571-d8ee-7d49-938f-3316397451fd" target="531f3167-2912-f1d5-4009-4543d9170da3">
+      <start x="85.625" y="555"/>
+      <end x="241.25" y="555"/>
+    </arc>
+    <arc id="nwtE_67dd0836-b03e-4670-9f9e-f9dfa914b8e7" class="positive influence" source="50b57d58-3c68-70d3-5486-cb05fc40959e" target="855b7181-3117-624a-7f69-ba6e6ecb9ed2">
+      <start x="85.625" y="695"/>
+      <end x="241.25" y="695"/>
+    </arc>
+    <arc id="nwtE_e0c94d2e-6d1f-4961-88cd-c3db8b6eebed" class="logic arc" source="ed0491a2-677f-9e81-2b29-d51e637190f5" target="nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245.1">
+      <start x="75.625" y="848.5416666666666"/>
+      <end x="129.375" y="875"/>
+    </arc>
+    <arc id="nwtE_85a1d7cc-4142-4a40-9c02-736fc83342c7" class="logic arc" source="e4cab642-eedd-19ff-66ff-b8ef7c263303" target="nwtN_90c39fe6-d628-4a95-a48a-68b402205dec.1">
+      <start x="-424.375" y="975"/>
+      <end x="-370.625" y="975"/>
+    </arc>
+    <arc id="nwtE_dadb9321-1c47-45e4-b34e-fd8fcc5b58c3" class="positive influence" source="nwtN_90c39fe6-d628-4a95-a48a-68b402205dec.2" target="581ec18b-eb31-94fc-000e-13ed9c5ed320">
+      <start x="-319.375" y="975"/>
+      <end x="-268.75" y="975"/>
+    </arc>
+    <arc id="nwtE_52cd445e-0d03-4bac-b661-2a506b259610" class="logic arc" source="c10d2bca-c5fd-c381-719f-e9c3c3692b9f" target="nwtN_994f1e09-66b9-4ffe-bfe1-7d4f09cb4231">
+      <start x="75.625" y="975"/>
+      <end x="136.375" y="975"/>
+    </arc>
+    <arc id="nwtE_e4f4cf46-9f22-4fa4-bd69-53c79c3c589e" class="logic arc" source="900fa384-89c5-180e-211d-301841c19651" target="nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245.1">
+      <start x="75.62500000000001" y="894.84375"/>
+      <end x="129.375" y="875"/>
+    </arc>
+    <arc id="nwtE_8ab656e5-1c24-4a1b-9277-3297132c7550" class="positive influence" source="f2828e73-8455-95a7-3257-78096a2a5d2b" target="10105820-0629-b5d5-8b77-329339f298d0">
+      <start x="85.625" y="625"/>
+      <end x="241.25" y="625"/>
+    </arc>
+    <arc id="nwtE_5b2df9ca-b19c-4fbf-9664-83aa0b9ff431" class="logic arc" source="960e3cf0-f0d5-cd0c-518a-01404cc1e1d1" target="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f.1">
+      <start x="-424.375" y="848.5416666666666"/>
+      <end x="-370.625" y="875"/>
+    </arc>
+    <arc id="nwtE_be471d60-33f3-4e8f-8937-2ee9bba57a6c" class="positive influence" source="nwtN_994f1e09-66b9-4ffe-bfe1-7d4f09cb4231" target="f449e232-58d2-4bcc-7c67-af72d3cd7adf">
+      <start x="173.625" y="975"/>
+      <end x="231.25" y="975"/>
+    </arc>
+    <arc id="nwtE_e680432f-c28a-456c-b7d1-b272533f9044" class="positive influence" source="nwtN_f5899cbc-6e96-4972-aee8-6f99f7fb4245.2" target="f38750b1-b0c5-bc6b-5a5d-904e962f076c">
+      <start x="180.625" y="875"/>
+      <end x="231.25" y="875"/>
+    </arc>
+  </map>
+</sbgn>

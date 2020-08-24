@@ -412,7 +412,9 @@ appUtilities.createNewNetwork = function () {
     undoable: appUtilities.undoable,
     undoableDrag: function() {
       return appUtilities.ctrlKeyDown !== true;
-    }
+    },
+    highlightColor: currentGeneralProperties.highlightColor,
+    extraHighlightThickness: currentGeneralProperties.extraHighlightThickness 
   });
   
   // set scracth pad of the related cy instance with these properties
@@ -754,7 +756,9 @@ appUtilities.defaultGeneralProperties = {
   mapType: function() {return (appUtilities.getActiveChiseInstance().getMapType() || "Unknown");},
   mapName: "",
   mapDescription: "",
-  experimentDescription: ""
+  experimentDescription: "",
+  highlightColor: '#0B9BCD', //the color code used when initializing viewUtilities in app-cy.js
+  extraHighlightThickness: 2
 };
 
 appUtilities.setFileContent = function (fileName) {
@@ -2417,7 +2421,28 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
     cy.edges().css('arrow-scale', currentGeneralProperties.arrowScale);
+
+    //setMapProperties function is called in sbgnvizLoadFileEnd sbgnvizLoadSampleEnd 
+    //event handler
     
+    if ('highlightColor' in mapProperties && 'extraHighlightThickness' in mapProperties) {
+      var viewUtilities = cy.viewUtilities('get');
+      var highlightColor = currentGeneralProperties.highlightColor[0];
+      var extraHighlightThickness = currentGeneralProperties.extraHighlightThickness;
+
+      viewUtilities.changeHighlightStyle(0, {
+        'border-width': function (ele) {
+          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3);
+        }, 'border-color': highlightColor
+      }, {
+        'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
+        'line-color': highlightColor,
+        'source-arrow-color': highlightColor,
+        'target-arrow-color': highlightColor
+    });
+    }
+    
+
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
     }
