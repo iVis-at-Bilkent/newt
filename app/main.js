@@ -25,7 +25,7 @@ var cyViewUtilities = require('cytoscape-view-utilities');
 var cyEdgehandles = require('cytoscape-edgehandles');
 var cyGridGuide = require('cytoscape-grid-guide');
 var cyAutopanOnDrag = require('cytoscape-autopan-on-drag');
-var cyNodeEditing = require('cytoscape-node-resize');
+var cyNodeEditing = require('cytoscape-node-editing');
 var cyPopper = require('cytoscape-popper');
 var cyLayoutUtilities = require('cytoscape-layout-utilities');
 
