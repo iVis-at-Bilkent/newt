@@ -25,7 +25,7 @@ var cyViewUtilities = require('cytoscape-view-utilities');
 var cyEdgehandles = require('cytoscape-edgehandles');
 var cyGridGuide = require('cytoscape-grid-guide');
 var cyAutopanOnDrag = require('cytoscape-autopan-on-drag');
-var cyNodeResize = require('cytoscape-node-resize');
+var cyNodeEditing = require('cytoscape-node-resize');
 var cyPopper = require('cytoscape-popper');
 var cyLayoutUtilities = require('cytoscape-layout-utilities');
 
@@ -42,7 +42,7 @@ cyViewUtilities( cytoscape, $ );
 cyEdgehandles( cytoscape );
 cyGridGuide( cytoscape, $ );
 cyAutopanOnDrag( cytoscape );
-cyNodeResize( cytoscape, $, konva );
+cyNodeEditing( cytoscape, $, konva );
 cyPopper( cytoscape );
 cyLayoutUtilities( cytoscape );
 

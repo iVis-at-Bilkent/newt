@@ -479,7 +479,7 @@ module.exports = function (chiseInstance) {
       desiredAspectRatio: $(cy.container()).width() / $(cy.container()).height()
     })
 
-    cy.nodeResize({
+    cy.nodeEditing({
       padding: 2, // spacing between node and grapples/rectangle
       undoable: appUtilities.undoable, // and if cy.undoRedo exists
 
@@ -714,9 +714,9 @@ module.exports = function (chiseInstance) {
 
     // Expand collapse extension is supposed to clear expand collapse cue on node position event.
     // If compounds are resized position event is not triggered though the position of the node is changed.
-    // Therefore, we listen to noderesize.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
+    // Therefore, we listen to nodeediting.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
     // expand collapse extension.
-    cy.on("noderesize.resizedrag", function(e, type, node){
+    cy.on("nodeediting.resizedrag", function(e, type, node){
         if (node.isParent()) {
             cy.expandCollapse('get').clearVisualCue();
         }
@@ -746,7 +746,7 @@ module.exports = function (chiseInstance) {
 
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
-      cy.nodeResize('get').refreshGrapples();
+      cy.nodeEditing('get').refreshGrapples();
     });
 
     cy.on("expandcollapse.beforeexpand",function(event){
@@ -759,7 +759,7 @@ module.exports = function (chiseInstance) {
     });
     
     // To redraw expand/collapse cue after resize
-    cy.on("noderesize.resizeend", function (e, type, node) {
+    cy.on("nodeediting.resizeend", function (e, type, node) {
       if(node.isParent() && node.selected())
         node.trigger("select");
     });
@@ -1241,7 +1241,7 @@ module.exports = function (chiseInstance) {
      // }
       //Remove grapples while node-label-textbox is visible
       if($("#node-label-textbox").is(":visible")){
-        cy.nodeResize('get').removeGrapples();
+        cy.nodeEditing('get').removeGrapples();
       }
     });
 
@@ -1275,7 +1275,7 @@ module.exports = function (chiseInstance) {
     });
 
     // infobox refresh when resize happen, for simple nodes
-    /* cy.on('noderesize.resizedrag', function(e, type, node) {
+    /* cy.on('nodeediting.resizedrag', function(e, type, node) {
       if(node.data('statesandinfos').length > 0) {
         updateInfoBox(node);
       }
@@ -1330,7 +1330,7 @@ module.exports = function (chiseInstance) {
       currentPos = parent.position();
       if (currentPos.x != oldPos.x || currentPos.y != oldPos.y){
           oldPos = {x : currentPos.x, y : currentPos.y};
-          cy.trigger('noderesize.resizedrag', ['unknown', parent]);
+          cy.trigger('nodeediting.resizedrag', ['unknown', parent]);
       }
     });
 

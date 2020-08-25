@@ -504,7 +504,7 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     }
 
     // Refresh resize grapples
-    cy.nodeResize('get').refreshGrapples();
+    cy.nodeEditing('get').refreshGrapples();
 
     cy.style().update();
 
@@ -2921,9 +2921,9 @@ var LoadUserPreferencesView = Backbone.View.extend({
                 {
                    // apply node width and height change to existing elements              
                   targetNodes.forEach(function(node) {
-                    cy.trigger('noderesize.resizestart', [null, node]);
+                    cy.trigger('nodeediting.resizestart', [null, node]);
                     chiseInstance.resizeNodes(node, nameToValue["width"], nameToValue["height"], false);
-                    cy.trigger('noderesize.resizeend', [null, node]);
+                    cy.trigger('nodeediting.resizeend', [null, node]);
                   });
                   
                   chiseInstance.changeData(targetNodes, "border-color", nameToValue["border-color"]);

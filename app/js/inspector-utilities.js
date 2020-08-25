@@ -940,9 +940,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         // trigger resize event accordingly
         selectedEles.forEach(function(node) {
-          cy.trigger('noderesize.resizestart', [null, node]);
+          cy.trigger('nodeediting.resizestart', [null, node]);
           chiseInstance.resizeNodes(node, w, h, useAspectRatio);
-          cy.trigger('noderesize.resizeend', [null, node]);
+          cy.trigger('nodeediting.resizeend', [null, node]);
         });
 
         // if aspect ratio used, must correctly update the other side length
@@ -985,7 +985,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         $(this).attr('title', title);
 
         //Refresh grapples when the lock icon is clicked
-        cy.nodeResize('get').refreshGrapples();
+        cy.nodeEditing('get').refreshGrapples();
       });
 
       $('#inspector-is-multimer').on('click', function () {

@@ -3038,7 +3038,7 @@ appUtilities.resizeNodesToContent = function(nodes){
     collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
   }
   chiseInstance.resizeNodesToContent(collection, false);
-  cy.nodeResize('get').refreshGrapples();
+  cy.nodeEditing('get').refreshGrapples();
   cy.expandCollapse('get').clearVisualCue();
   // To redraw expand/collapse cue after resize to content
   if(collection.length == 1 && (collection[0].isParent() || collection[0].data('collapsedChildren')) && collection[0].selected()) { 
