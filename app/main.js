@@ -37,7 +37,7 @@ cyUndoRedo( cytoscape );
 cyClipboard( cytoscape, $ );
 cyContextMenus( cytoscape, $ );
 cyExpandCollapse( cytoscape, $ );
-cyEdgeEditing( cytoscape, $ );
+cyEdgeEditing( cytoscape, $, konva );
 cyViewUtilities( cytoscape, $ );
 cyEdgehandles( cytoscape );
 cyGridGuide( cytoscape, $ );
