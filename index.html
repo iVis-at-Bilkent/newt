@@ -71,6 +71,7 @@
                                                         <li><a href="#" id="load-sample10">Drosophila cell cycle</a></li>
                                                         <li><a href="#" id="load-sample11">Mammalian cholesterol biosynthesis</a></li>
                                                         <li><a href="#" id="load-sample12">Two gene system behavior</a></li>
+                                                        <li><a href="#" id="load-sample19">PD Learner's Reference Card</a></li>
                                                         <li class="divider" style="margin-bottom: 0"></li>
                                                         <li><a class="title"><i>AF</i></a></li>
                                                         <li class="divider" style="margin-top: 0"></li>
@@ -78,6 +79,7 @@
                                                         <li><a href="#" id="load-sample14">Repressilator</a></li>
                                                         <li><a href="#" id="load-sample15">Epidermal growth factor receptor</a></li>
                                                         <li><a href="#" id="load-sample16">Regulation of TGF-beta induced metastasis</a></li>
+                                                        <li><a href="#" id="load-sample20">AF Learner's Reference Card</a></li>
                                                         <li class="divider" style="margin-bottom: 0"></li>
                                                         <li><a class="title"><i>SIF</i></a></li>
                                                         <li class="divider" style="margin-top: 0"></li>
@@ -869,9 +871,10 @@
             <div class="modal-dialog sbgn-modal-dialog" style="width: 540px;">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div class="sbgn-frame">
-                            <h2 class="sbgn-text">Process Description</h2>
-                            <img src="app/img/pd-legend.svg" alt="" class="centered img-responsive sbgn-legend">
+                        <div class="sbgn-frame" style="text-align:center;">
+                          <h2 class="sbgn-text">Process Description</h2>
+                          <img src="app/img/pd-legend.svg" alt="" class="centered img-responsive sbgn-legend">
+                          <p class="address-text" style="margin-top: 20px;margin-bottom: 10px;"><a href="https://sbgn.github.io/referencecards" target="_blank" rel="nofollow">Reference Card</a> - <a href="https://sbgn.github.io/specifications" target="_blank" rel="nofollow">Specifications</a></p>
                         </div>
                     </div>
                 </div>
@@ -882,9 +885,10 @@
             <div class="modal-dialog sbgn-modal-dialog" style="width: 600px;">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div class="sbgn-frame">
+                        <div class="sbgn-frame" style="text-align: center;">
                             <h2 class="sbgn-text">Activity Flow</h2>
                             <img src="app/img/af-legend.svg" alt="" class="centered img-responsive sbgn-legend">
+                            <p class="address-text" style="margin-top: 20px; margin-bottom: 10px;"><a href="https://sbgn.github.io/referencecards" target="_blank" rel="nofollow">Reference Card</a> - <a href="https://sbgn.github.io/specifications" target="_blank" rel="nofollow">Specifications</a></p>
                         </div>
                     </div>
                 </div>
@@ -894,10 +898,11 @@
         <div id='SIF_legend_modal' class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 750px;">
                 <div class="modal-content">
-                    <div class="modal-body">
+                    <div class="modal-body" style="text-align: center;">
                         <div class="sbgn-frame">
                             <h2 class="sbgn-text">Simple Interaction Format</h2>
                             <img src="app/img/sif-legend.svg" alt="" class="centered img-responsive sbgn-legend">
+                            <p class="address-text" style="margin-top: 20px; margin-bottom: 10px"><a href="http://www.pathwaycommons.org/pc2/formats#sif_relations" target="_blank" rel="nofollow">SIF Relations</a></p>
                         </div>
                     </div>
                 </div>
@@ -914,7 +919,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 3.0.1</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 3.0.2</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -955,6 +960,14 @@
                             <div class="quick-help-content">
                                 <table align="center" valign="center">
                                 <tbody>
+                                  <tr>
+                                    <td><b>SBGN notation:</b>:
+                                        <a href="https://sbgn.github.io/learning" target="_blank" rel="nofollow">Learning SBGN</a> - <a href="https://sbgn.github.io/learnerscards" target="_blank" rel="nofollow">Learner's Cards</a></td>
+                                  </tr>
+                                  <tr>
+                                    <td><b>SIF notation:</b>:
+                                        <a href="http://www.pathwaycommons.org/pc2/formats#sif_relations" target="_blank" rel="nofollow">SIF Relations</a> </td>
+                                  </tr>
                                     <tr>
                                         <td><b>File > Samples</b>:
                                             Load a sample model</td>
@@ -1311,6 +1324,17 @@
 
             <td>
             <input id="enable-sif-topology-grouping" type="checkbox" class="layout-text" <% if (enableSIFTopologyGrouping){ %> checked<%}%>>
+            </td>
+            </tr>
+
+            <tr>
+            <td class="header">
+            <span class="add-on layout-text" title="Highlight thickness and color">Highlight Style</span>
+            </td>
+
+            <td>
+            <input id="highlight-thickness"  type='range' class="sbgn-input-small" style="display:inline;vertical-align:top" step='0.5' min='1' max='10' value= <%= extraHighlightThickness %>>
+            <input id="highlight-color" type="color" class="sbgn-input-small layout-text" value= <%= highlightColor %>>
             </td>
             </tr>
 
