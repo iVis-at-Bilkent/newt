@@ -161,6 +161,11 @@ appUtilities.adjustUIComponents = function (_cy) {
     $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
 
   }
+  else if( mode === 'lasso-mode'){
+
+    $('#lasso-mode-icon').parent().addClass('selected-mode');
+
+  }
 
   // adjust status of grid guide related icons in toolbar
 

@@ -1512,6 +1512,10 @@ module.exports = function() {
       modeHandler.setMarqueeZoomMode();
     });
 
+    $('#lasso-mode-icon').click(function(e){
+      modeHandler.setLassoMode();
+    });
+
     $('#add-node-mode-icon').click(function (e) {
       modeHandler.setAddNodeMode();
 
