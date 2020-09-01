@@ -113,6 +113,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   $('#add-edge-mode-icon').parent().removeClass('selected-mode-sustainable');
   $('#add-node-mode-icon').parent().removeClass('selected-mode-sustainable');
   $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
+  $('#lasso-mode-icon').parent().removeClass('selected-mode');
   $('.node-palette img').addClass('inactive-palette-element');
   $('.edge-palette img').addClass('inactive-palette-element');
   $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
@@ -159,6 +160,11 @@ appUtilities.adjustUIComponents = function (_cy) {
   else if( mode === 'marquee-zoom-mode'){
 
     $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
+
+  }
+  else if( mode === 'lasso-mode'){
+
+    $('#lasso-mode-icon').parent().addClass('selected-mode');
 
   }
 

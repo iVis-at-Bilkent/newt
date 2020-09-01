@@ -38,6 +38,7 @@
     "cytoscape-undo-redo": "github:iVis-at-Bilkent/cytoscape.js-undo-redo#unstable",
     "cytoscape-view-utilities": "github:iVis-at-Bilkent/cytoscape.js-view-utilities#unstable",
     "file-saver": "^2.0.2",
+    "geometric": "^2.2.3",
     "intro.js": "2.9.3",
     "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",
