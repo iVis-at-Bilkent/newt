@@ -72,7 +72,7 @@ module.exports = function (chiseInstance) {
       // title of remove bend point menu item
       removeBendMenuItemTitle: "Delete Bend Point",
       // whether to initilize bend points on creation of this extension automatically
-      initBendPointsAutomatically: false,
+      initAnchorsAutomatically: false,
       // function to validate edge source and target on reconnection
       validateEdge: chiseInstance.elementUtilities.validateArrowEnds,
       // function to be called on invalid edge reconnection
@@ -83,8 +83,8 @@ module.exports = function (chiseInstance) {
       },
       // function that handles edge reconnection
       handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
-      zIndex: 999
-      // whether to start the plugin in the enabled state
+      zIndex: 999,
+      enableMultipleAnchorRemovalOption: true,
     });
 
     contextMenus.appendMenuItems([
