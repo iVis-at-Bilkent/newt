@@ -69,8 +69,6 @@ module.exports = function (chiseInstance) {
       },
       // whether the bend editing operations are undoable (requires cytoscape-undo-redo.js)
       undoable: appUtilities.undoable,
-      // title of remove bend point menu item
-      removeBendMenuItemTitle: "Delete Bend Point",
       // whether to initilize bend points on creation of this extension automatically
       initAnchorsAutomatically: false,
       // function to validate edge source and target on reconnection
