@@ -321,7 +321,7 @@ var modeHandler = {
     //store the current mode to return to it after zoom shortcut terminates
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
     modeHandler.perviousMode = modeProperties.mode;
-
+    modeHandler.setSelectionMode();
     //change the cursor to zoom cursor
     $(cy.container()).find('canvas').removeClass('add-edge-cursor');
     $(cy.container()).find('canvas').removeClass('add-node-cursor');
