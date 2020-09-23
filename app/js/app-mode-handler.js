@@ -322,6 +322,8 @@ var modeHandler = {
     var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
     modeHandler.perviousMode = modeProperties.mode;
     modeHandler.setSelectionMode();
+    $("#select-mode-icon").parent().removeClass("selected-mode");
+    $("#marquee-zoom-mode-icon").parent().addClass("selected-mode");
     //change the cursor to zoom cursor
     $(cy.container()).find('canvas').removeClass('add-edge-cursor');
     $(cy.container()).find('canvas').removeClass('add-node-cursor');
@@ -351,6 +353,8 @@ var modeHandler = {
   //function to reset shortcut zoom mode resources and remove handlers
   endShorcutZoomMode : function(){
     document.removeEventListener('keyup', modeHandler.zoomShortcutKeyUpHandler);
+    $("#select-mode-icon").parent().addClass("selected-mode");
+    $("#marquee-zoom-mode-icon").parent().removeClass("selected-mode");
     modeHandler.setPreviousMode();
     appUtilities.zoomShortcut = false;
   },
