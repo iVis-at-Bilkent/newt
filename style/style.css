@@ -11,7 +11,7 @@ body, dots, more_news, more_button
   color: #777;}
 
 p
-{ padding: 0 0 20px 0;
+{ padding: 0 0 6px 0;
   line-height: 1.7em;}
 
 img
@@ -20,7 +20,7 @@ img
 h1, h2, h3, h4, h5, h6 
 { font: normal 175% 'century gothic', arial, sans-serif;
   color: #43423F;
-  margin: 0 0 15px 0;
+  margin: 0 0 4px 0;
   padding: 15px 0 5px 0;}
 
 h2
