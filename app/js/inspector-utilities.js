@@ -937,14 +937,9 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
 
         var useAspectRatio = appUtilities.nodeResizeUseAspectRatio;
-
-        // trigger resize event accordingly
-        selectedEles.forEach(function(node) {
-          cy.trigger('nodeediting.resizestart', [null, node]);
-          chiseInstance.resizeNodes(node, w, h, useAspectRatio);
-          cy.trigger('nodeediting.resizeend', [null, node]);
-        });
-
+        
+        chiseInstance.resizeNodes(selectedEles, w, h, useAspectRatio);
+        
         // if aspect ratio used, must correctly update the other side length
         if(useAspectRatio){
           if( $(this).attr('id') === 'inspector-node-width' ) {
