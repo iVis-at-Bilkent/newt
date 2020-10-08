@@ -289,8 +289,8 @@ inspectorUtilities.handleSBGNInspector = function () {
               + "'/>" + "</td></tr>";
       }
 
-      // if at least one node is not a non-resizable parent node
-      if( selectedEles.filter(':parent').length != selectedEles.length ) {
+      // if at least one node is a parent node don't show width and height editing fields
+      if( selectedEles.filter(':parent').length < 1 ) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Width</font>" + "</td><td style='padding-left: 5px;'>"
                 + "<input id='inspector-node-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
