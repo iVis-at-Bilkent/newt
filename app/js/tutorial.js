@@ -33,6 +33,12 @@ tutorial.introduction = function(checkCookie){
                 <br><p style="text-align:center; margin: 0px; font-size: 12px;">Newt Basics</p>'
 
       },
+      { 
+        intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
+                <hr style="margin:10px auto;">\n\
+                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BQ8RDtpzLsw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
+                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Newt Advanced</p>'
+      },
       {
         intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
                 <hr style="margin:10px auto;">\n\
