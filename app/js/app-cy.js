@@ -428,6 +428,24 @@ module.exports = function (chiseInstance) {
       }
     });
 
+    function getProcessBasedNeighbors(node) {
+      var nodesToSelect = node;
+      if(chiseInstance.elementUtilities.isPNClass(node) || chiseInstance.elementUtilities.isLogicalOperator(node)){
+          nodesToSelect = nodesToSelect.union(node.openNeighborhood());
+      }
+      node.openNeighborhood().forEach(function(ele){
+          if(chiseInstance.elementUtilities.isPNClass(ele) || chiseInstance.elementUtilities.isLogicalOperator(ele)){
+              nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
+              ele.openNeighborhood().forEach(function(ele2){
+                  if(chiseInstance.elementUtilities.isPNClass(ele2) || chiseInstance.elementUtilities.isLogicalOperator(ele2)){
+                      nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
+                  }
+              });
+          }
+      });
+      return nodesToSelect;
+    }
+
     cy.viewUtilities({
       highlightStyles: [
         {
@@ -452,22 +470,17 @@ module.exports = function (chiseInstance) {
           'target-arrow-color': '#d67614',
         }
       },
-      neighbor: function(node){ //select and return process-based neighbors
-        var nodesToSelect = node;
-        if(chiseInstance.elementUtilities.isPNClass(node) || chiseInstance.elementUtilities.isLogicalOperator(node)){
-            nodesToSelect = nodesToSelect.union(node.openNeighborhood());
+      neighbor: function(ele){ //select and return process-based neighbors
+        if (ele.isNode()) {
+          return getProcessBasedNeighbors(ele);
         }
-        node.openNeighborhood().forEach(function(ele){
-            if(chiseInstance.elementUtilities.isPNClass(ele) || chiseInstance.elementUtilities.isLogicalOperator(ele)){
-                nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
-                ele.openNeighborhood().forEach(function(ele2){
-                    if(chiseInstance.elementUtilities.isPNClass(ele2) || chiseInstance.elementUtilities.isLogicalOperator(ele2)){
-                        nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
-                    }
-                });
-            }
-        });
-        return nodesToSelect;
+        else if (ele.isEdge()) {
+          var sourceNode = ele.source();
+          var targetNode = ele.target();
+          var elementsToSelect = getProcessBasedNeighbors(sourceNode)
+                                .union(getProcessBasedNeighbors(targetNode));
+          return elementsToSelect;
+        }
       },
       neighborSelectTime: 500 //ms
     });
