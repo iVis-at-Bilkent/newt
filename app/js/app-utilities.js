@@ -3102,4 +3102,13 @@ appUtilities.transformClassInfo = function( classInfo ) {
 //   console.log("inapputil");
 // }
 
+// unselect all elements and then select all elements with
+// sbgn class matching the given element
+appUtilities.selectAllElementsOfSameType = function(ele) {
+  var cy = appUtilities.getActiveCy();
+  var sbgnclass = ele.data('class');
+  cy.elements().unselect();
+  cy.elements('[class="' + sbgnclass + '"]').select();
+};
+
 module.exports = appUtilities;

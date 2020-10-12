@@ -219,10 +219,7 @@ module.exports = function (chiseInstance) {
         selector: 'node, edge',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          var sbgnclass = cyTarget.data('class');
-
-          cy.elements().unselect();
-          cy.elements('[class="' + sbgnclass + '"]').select();
+          appUtilities.selectAllElementsOfSameType(cyTarget);
         }
       },
       {
@@ -997,6 +994,16 @@ module.exports = function (chiseInstance) {
 
     cy.on('tapend', function (event, relPos) {
 
+      // This is a bit of a patch
+      // Without this the alt + taphold shortcut for selection of objects of same type doesn't work
+      // as all the elements except the original event target will be unselected without this
+      if (altTapholdSelection) {
+        setTimeout(function() {
+          cy.autounselectify(false);
+        }, 100);
+        altTapholdSelection = null;
+      }
+
       relPos = relPos || false;
       $('input').blur();
 
@@ -1361,6 +1368,17 @@ module.exports = function (chiseInstance) {
       });
 
       node.style(opt);
+    });
+
+    // Select elements of same type (sbgn class) on taphold + alt key down
+    var altTapholdSelection;
+    cy.on('taphold', 'node, edge', function (event) {
+      if (appUtilities.altKeyDown) {
+        var cyTarget = event.target || event.cyTarget;
+        appUtilities.selectAllElementsOfSameType(cyTarget);
+        cy.autounselectify(true);
+        altTapholdSelection = true;
+      }
     });
 
     /* removed coz of  complications 

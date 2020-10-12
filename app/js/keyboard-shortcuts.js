@@ -80,6 +80,15 @@ module.exports = function () {
     // when cy param is not specified uses active cy instance
     appUtilities.disableDragAndDropMode();
   }, "keyup");
+
+  mt.bind("alt", function() {
+    appUtilities.altKeyDown = true;
+  }, "keydown");
+
+  mt.bind("alt", function () {
+    appUtilities.altKeyDown = null;
+  }, "keyup");
+
   mt.bind(["esc"], function () {
 
     // use active cy instance
