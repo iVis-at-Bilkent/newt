@@ -2144,7 +2144,6 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
 
   var nodePropertiesToXml = {
     'background-color': 'fill',
-    'background-opacity': 'background-opacity', // not an sbgnml XML attribute, but used with fill
     'border-color': 'stroke',
     'border-width': 'strokeWidth',
     'font-size': 'fontSize',
