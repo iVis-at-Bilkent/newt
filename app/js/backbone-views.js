@@ -1226,12 +1226,24 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
         s += '</tr>';
       }
       elem.innerHTML = s;
-
+      var tableInitialOrderHtml = s;
+      var tableOrdering = 'initialOrder';
       // change `let i` to `var i` to see the difference
       for (let i = 0; i < headers.length; i++) {
         $(document).off('click', '#sortable-table-header-' + i);
         $(document).on('click', '#sortable-table-header-' + i, function () {
-          sortTable(document.getElementById('map-exp-table'), i);
+          if (tableOrdering === 'initialOrder') {
+            sortTable(document.getElementById('map-exp-table'), i, 'asc');
+            tableOrdering = 'ascendingOrder';
+          }
+          else if (tableOrdering === 'ascendingOrder') {
+            sortTable(document.getElementById('map-exp-table'), i, 'desc');
+            tableOrdering = 'descendingOrder';
+          }
+          else if (tableOrdering === 'descendingOrder') {
+            elem.innerHTML = tableInitialOrderHtml;
+            tableOrdering = 'initialOrder';
+          }
         });
       }
 
