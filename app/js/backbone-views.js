@@ -802,6 +802,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       }, {
         'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
         'line-color': highlightColor,
+        'color': highlightColor,
+        'text-border-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
       });
@@ -826,6 +828,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       }, {
         'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
         'line-color': highlightColor,
+        'color': highlightColor,
+        'text-border-color': highlightColor,
         'source-arrow-color': highlightColor,
         'target-arrow-color': highlightColor
       });

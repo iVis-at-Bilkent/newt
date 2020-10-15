@@ -450,6 +450,8 @@ module.exports = function (chiseInstance) {
           edge: {
             'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + 2, 3); },
             'line-color': '#0B9BCD',
+            'color': '#0B9BCD',
+            'text-border-color': '#0B9BCD',
             'source-arrow-color': '#0B9BCD',
             'target-arrow-color': '#0B9BCD'
           }
@@ -463,6 +465,8 @@ module.exports = function (chiseInstance) {
         },
         edge: {
           'line-color': '#d67614',
+          'color': '#d67614',
+          'text-border-color': '#d67614',
           'source-arrow-color': '#d67614',
           'target-arrow-color': '#d67614',
         }

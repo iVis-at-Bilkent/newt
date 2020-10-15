@@ -38,7 +38,6 @@ exports.bindPicker2Input = function (inputElemId, onModalClosed) {
   $(inputElemId).off('click');
   $(inputElemId).on('click', function (e) {
     activeColorInputElemId = inputElemId;
-    debugger;
     picker[0].color = $(inputElemId).val();
     // do not open OS dependent color picker
     e.preventDefault();
