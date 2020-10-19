@@ -578,11 +578,18 @@ inspectorUtilities.handleSBGNInspector = function () {
     if (selectedEles.length === 1) {
       var geneClass = selectedEles[0]._private.data.class;
 
-      function addCollapsibleSection(identifier, title, hasSubtitleSection) {
-        html =  "<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#"+identifier+"-collapsable'>"+
-                  "<p class='panel-title accordion-toggle'>"+title+"</p>"+
-                "</div>"+
-                "<div style='margin-top: 5px;align: center;text-align: center;' id='"+identifier+"-collapsable' class='panel-collapse collapse'>";
+      function addCollapsibleSection(identifier, title, hasSubtitleSection, openByDefault) {
+
+        var panelHeadingClass = openByDefault ? "panel-heading" : "panel-heading collapsed";
+        var panelHeadingId = identifier + "-heading";
+        var collapsibleClass = openByDefault ? "panel-collapse collapse in" : "panel-collapse collapse";
+        var collapsibleId = identifier + "-collapsible";
+
+        html = "<div id='" + panelHeadingId + "' class='" + panelHeadingClass +"' data-toggle='collapse' data-target='#"+ collapsibleId + "'>" +
+               "<p class='panel-title accordion-toggle'>" + title + "</p> </div>" +
+               "<div style='margin-top: 5px;align: center;text-align: center;'" + 
+               " id='" + collapsibleId + "' class='" + collapsibleClass + "'>";
+
         if (hasSubtitleSection) {
           html += "<div class='panel-body' style='padding-top: 3px; padding-left: 3px;' id='"+identifier+"-title'></div>";
         }
@@ -598,18 +605,22 @@ inspectorUtilities.handleSBGNInspector = function () {
           geneClass === 'BA macromolecule' || geneClass === 'BA nucleic acid feature' ||
           geneClass === 'BA unspecified entity' || geneClass === 'SIF macromolecule') {
 
-          addCollapsibleSection("biogene", "Properties from GeneCards", true);
+          addCollapsibleSection("biogene", "Properties from GeneCards", true, true);
           fillBioGeneContainer(selectedEles[0]);
       }
       if (geneClass === 'simple chemical' || geneClass === 'BA simple chemical' || geneClass === 'SIF simple chemical')
       {
-          addCollapsibleSection("chemical", "Properties from ChEBI", true);
-          fillChemicalContainer(selectedEles[0]);
+          addCollapsibleSection("chemical", "Properties from ChEBI", true, false);
+          fillChemicalContainer(selectedEles[0], function () { //callback on successful fetch, auto open collapsed panel
+            $("#chemical-collapsible").removeClass("collapse");
+            $("#chemical-collapsible").addClass("collapse in");
+            $("#chemical-heading").removeClass("collapsed");
+          });
       }
      
       
       // annotations handling part
-      addCollapsibleSection("annotations", "Custom Properties", false);
+      addCollapsibleSection("annotations", "Custom Properties", false, false);
       annotHandler.fillAnnotationsContainer(selectedEles[0]);
     }
 
