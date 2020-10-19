@@ -2631,9 +2631,14 @@ var FileSaveView = Backbone.View.extend({
 
         renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
 
-        // Exclude extensions if the version is plain
-        if (version === "plain" || version === "plain3") {
+        // If the version is plain, exclude all extensions
+        if (version === "plain") {
           saveAsFcn(filename, version, undefined, undefined, nodes, edges);
+        }
+        // If the version is plain3, write renderInfo but not map properties
+        // which are specific to newt
+        else if (version === "plain3") {
+          saveAsFcn(filename, version, renderInfo, undefined, nodes, edges);
         }
         else {
           saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
