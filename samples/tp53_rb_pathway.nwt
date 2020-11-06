@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="sif">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.2" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffffff"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#4886a5"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000000image_1contain1001001001001" idList="nwtN_93a97f0a-32f9-47f7-aecb-c472c2e24cfd">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="contain" background-pos-x="100%" background-pos-y="100%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica0001" idList="2e74b0a6-089e-0c17-eb42-c66eeb684ba1">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2contain1001001001001" idList="3d722d45-458c-37df-b97a-90bbe8995bf7">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="contain" background-pos-x="100%" background-pos-y="100%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3contain1001001001001" idList="8b7b2d40-340e-b115-6897-7110db1fe955">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="contain" background-pos-x="100%" background-pos-y="100%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_4contain1001001001001" idList="1103de94-b712-392d-a5e2-918cc410056c">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_4" background-fit="contain" background-pos-x="100%" background-pos-y="100%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_5contain1001001001001" idList="8e862831-83d3-cea5-79f2-8fcfc90b759e">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_5" background-fit="contain" background-pos-x="100%" background-pos-y="100%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge4886a51.25" idList="nwtE_9271b454-2dd9-4e78-a776-9600bec0f9df nwtE_28fc53b6-dca0-4bd5-a284-5af0e6126dbc nwtE_71297697-1683-482b-a56f-6d1c2db0d3e3 nwtE_17842ff4-b8a9-4e9e-b6dc-baba32a66c0e nwtE_b71fcd5b-33e8-435a-ad77-691eb080793f">
+            <g stroke="color_3" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>large</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>true</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>Pathway #1</mapName>
+        <mapDescription/>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+      </mapProperties>
+    </extension>
+    <glyph id="nwtN_93a97f0a-32f9-47f7-aecb-c472c2e24cfd" class="SIF macromolecule">
+      <label text="CDKN2A"/>
+      <bbox x="150" y="100" w="100" h="30"/>
+      <tooltip>(0,14)</tooltip>
+    </glyph>
+    <glyph id="2e74b0a6-089e-0c17-eb42-c66eeb684ba1" class="SIF macromolecule">
+      <label text="CDK4"/>
+      <bbox x="0" y="200" w="100" h="30"/>
+    </glyph>
+    <glyph id="3d722d45-458c-37df-b97a-90bbe8995bf7" class="SIF macromolecule">
+      <label text="MDM2"/>
+      <bbox x="300" y="200" w="100" h="30"/>
+      <tooltip>(0,5)</tooltip>
+    </glyph>
+    <glyph id="8b7b2d40-340e-b115-6897-7110db1fe955" class="SIF macromolecule">
+      <label text="RB1"/>
+      <bbox x="0" y="300" w="100" h="30"/>
+      <tooltip>(36,12)</tooltip>
+    </glyph>
+    <glyph id="1103de94-b712-392d-a5e2-918cc410056c" class="SIF macromolecule">
+      <label text="CCNE"/>
+      <bbox x="-150" y="300" w="100" h="30"/>
+      <tooltip>(0,7)</tooltip>
+    </glyph>
+    <glyph id="8e862831-83d3-cea5-79f2-8fcfc90b759e" class="SIF macromolecule">
+      <label text="TP53"/>
+      <bbox x="300" y="300" w="100" h="30"/>
+      <tooltip>(36,72)</tooltip>
+    </glyph>
+    <arc id="nwtE_9271b454-2dd9-4e78-a776-9600bec0f9df" class="inhibits" source="nwtN_93a97f0a-32f9-47f7-aecb-c472c2e24cfd" target="3d722d45-458c-37df-b97a-90bbe8995bf7">
+      <start x="223.4375" y="130.625"/>
+      <end x="325.7304497056622" y="198.8202998037748"/>
+    </arc>
+    <arc id="nwtE_28fc53b6-dca0-4bd5-a284-5af0e6126dbc" class="inhibits" source="nwtN_93a97f0a-32f9-47f7-aecb-c472c2e24cfd" target="2e74b0a6-089e-0c17-eb42-c66eeb684ba1">
+      <start x="176.5625" y="130.625"/>
+      <end x="74.26955029433785" y="198.8202998037748"/>
+    </arc>
+    <arc id="nwtE_71297697-1683-482b-a56f-6d1c2db0d3e3" class="inhibits" source="3d722d45-458c-37df-b97a-90bbe8995bf7" target="8e862831-83d3-cea5-79f2-8fcfc90b759e">
+      <start x="350" y="230.625"/>
+      <end x="350" y="298.375"/>
+    </arc>
+    <arc id="nwtE_17842ff4-b8a9-4e9e-b6dc-baba32a66c0e" class="inhibits" source="2e74b0a6-089e-0c17-eb42-c66eeb684ba1" target="8b7b2d40-340e-b115-6897-7110db1fe955">
+      <start x="50" y="230.625"/>
+      <end x="50" y="298.375"/>
+    </arc>
+    <arc id="nwtE_b71fcd5b-33e8-435a-ad77-691eb080793f" class="inhibits" source="8b7b2d40-340e-b115-6897-7110db1fe955" target="1103de94-b712-392d-a5e2-918cc410056c">
+      <start x="-0.625" y="315"/>
+      <end x="-48.375" y="315"/>
+    </arc>
+  </map>
+</sbgn>
