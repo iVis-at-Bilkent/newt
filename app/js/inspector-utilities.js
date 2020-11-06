@@ -285,8 +285,8 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveSBGNLabel)) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Label</font>" + "</td><td style='padding-left: 5px;'>"
-              + "<input id='inspector-label' class='inspector-input-box' type='text' style='width: " + width / 1.5 + "px;' value='" + sbgnlabel.replace(/'/g, "&#039;")
-              + "'/>" + "</td></tr>";
+              + "<textarea id='inspector-label'  cols='8' rows='1' style='min-width: " + width / 1.5 + "px;' class='inspector-input-box'>" + sbgnlabel.replace(/'/g, "&#039;") 
+              + "</textarea>" + "</td></tr>";
       }
 
       // if at least one node is a parent node don't show width and height editing fields
