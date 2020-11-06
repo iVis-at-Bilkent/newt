@@ -92,6 +92,10 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/settings.svg", width : 16, height : 16, x : 2, y : 3},
         coreAsWell: true,
         onClickFunction: function (event) {
+          // take focus away from other tabs before showing properties tab
+          $('a[data-toggle="tab"]').one('show.bs.tab', function (e) {
+            e.relatedTarget.blur();
+          });
           $("#general-properties").trigger("click");
         }
       },
