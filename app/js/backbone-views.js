@@ -397,6 +397,20 @@ var ColorSchemeInspectorView = Backbone.View.extend({
     this.schemes_gradient = schemes_gradient;
     this.schemes_3D = schemes_3D;
 
+    // clone markers that are background images (unspecified entity and perturbing agent)
+    // get removed when color scheme is updated
+    var updateCloneMarkers = function () {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var nodesThatNeedCloneMarkerUpdate = cy.nodes().filter(function(node) {
+        return ((node.data('class') === "unspecified entity") || 
+                (node.data('class') === "perturbing agent")) 
+                && 
+                node.data('clonemarker');  
+      });
+      chiseInstance.setCloneMarkerStatus(nodesThatNeedCloneMarkerUpdate, true);
+    }
+
     // attach events
     $(document).on("click", "div.color-scheme-choice", function (evt) {
       var cy = appUtilities.getActiveCy();
@@ -404,6 +418,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var raw_id = $(this).attr('id');
       var scheme_id = raw_id.replace("map-color-scheme_", "");
       appUtilities.applyMapColorScheme(scheme_id, scheme_type, self);
+      updateCloneMarkers();
     });
 
     $(document).on("change", "#color-scheme-inspector-style-select", function (event) {
@@ -413,6 +428,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var selected_style = $('#color-scheme-inspector-style-select').val();
       //change to the color scheme choice to match current style
       appUtilities.applyMapColorScheme(current_scheme_id,selected_style,self);
+      updateCloneMarkers();
     });
 
     $(document).on("click", "div.color-scheme-invert-button", function (evt) {
@@ -422,6 +438,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
       appUtilities.applyMapColorScheme(inverted_id, scheme_type, self);
+      updateCloneMarkers();
     });
 
     $(document).on("click", "#map-color-scheme-default-button", function (evt) {
@@ -429,6 +446,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
       appUtilities.applyMapColorScheme(defaultColorScheme, defaultColorSchemeStyle, self); // default color scheme
+      updateCloneMarkers();
     });
   
   },
