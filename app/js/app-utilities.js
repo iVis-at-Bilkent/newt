@@ -1083,6 +1083,16 @@ appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
     }
 };
 
+// Hides nodes and perform incremental layout afterward if Rearrange option is checked
+appUtilities.hideElesSimple = function(eles, _chiseInstance) {
+
+  // check _chiseInstance param if it is set use it else use recently active chise instance
+  var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+  chiseInstance.hideElesSimple(eles);
+  
+};
+
 appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
   '#000000' : 'http://newteditor.org/color-scheme-images/bw2_gradient.png',
   '#80cdc1' : 'http://newteditor.org/color-scheme-images/gb5_gradient.png',

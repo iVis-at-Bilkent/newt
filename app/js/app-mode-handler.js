@@ -367,7 +367,8 @@ var modeHandler = {
       $("#perform-layout").parent("li").removeClass("disabled");
       $("#delete-selected-simple").parent("li").removeClass("disabled");
       $("#delete-selected-smart").parent("li").removeClass("disabled");
-      $("#hide-selected").parent("li").removeClass("disabled");
+      $("#hide-selected-simple").parent("li").removeClass("disabled");
+      $("#hide-selected-smart").parent("li").removeClass("disabled");
       $("#show-selected").parent("li").removeClass("disabled");
       $("#show-all").parent("li").removeClass("disabled");
       $("#make-compound-complex").parent("li").removeClass("disabled");
@@ -384,7 +385,8 @@ var modeHandler = {
       $("#perform-layout").parent("li").addClass("disabled");
       $("#delete-selected-simple").parent("li").addClass("disabled");
       $("#delete-selected-smart").parent("li").addClass("disabled");
-      $("#hide-selected").parent("li").addClass("disabled");
+      $("#hide-selected-simple").parent("li").addClass("disabled");
+      $("#hide-selected-smart").parent("li").addClass("disabled");
       $("#show-selected").parent("li").addClass("disabled");
       $("#show-all").parent("li").addClass("disabled");
       $("#make-compound-complex").parent("li").addClass("disabled");

@@ -125,9 +125,9 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-hide-selected',
         content: 'Hide Selected',
-        image: {src : "app/img/toolbar/hide-selected.svg", width : 16, height : 16, x : 2, y : 3},
+        image: {src : "app/img/toolbar/hide-selected-smart.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
-          $("#hide-selected").trigger('click');
+          $("#hide-selected-smart").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },

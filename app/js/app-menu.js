@@ -780,12 +780,19 @@ module.exports = function() {
       cy.edges().select();
     });
 
-    $("#hide-selected, #hide-selected-icon").click(function(e) {
+    $("#hide-selected-smart, #hide-selected-smart-icon").click(function(e) {
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
       appUtilities.hideNodesSmart(cy.nodes(":selected"));
+      $('#inspector-palette-tab a').tab('show');
+    });
+
+    $("#hide-selected-simple, #hide-selected-simple-icon").click(function(e) {
+      var cy = appUtilities.getActiveCy();
+      
+      appUtilities.hideElesSimple(cy.elements(":selected"));
       $('#inspector-palette-tab a').tab('show');
     });
 
