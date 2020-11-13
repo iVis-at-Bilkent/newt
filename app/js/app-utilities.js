@@ -1089,7 +1089,20 @@ appUtilities.hideElesSimple = function(eles, _chiseInstance) {
   // check _chiseInstance param if it is set use it else use recently active chise instance
   var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
-  chiseInstance.hideElesSimple(eles);
+  // get the associated cy instance
+  var cy = chiseInstance.getCy();
+
+  // get current general properties for cy instance
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+  if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
+  {
+      chiseInstance.hideSimpleAndPerformLayout(eles, this.triggerLayout.bind(this, cy, false));
+  }
+  else
+  {
+      chiseInstance.hideElesSimple(eles);
+  }
   
 };
 
