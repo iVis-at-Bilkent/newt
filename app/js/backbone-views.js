@@ -408,7 +408,7 @@ var ColorSchemeInspectorView = Backbone.View.extend({
                 && 
                 node.data('clonemarker');  
       });
-      chiseInstance.setCloneMarkerStatus(nodesThatNeedCloneMarkerUpdate, true);
+      chiseInstance.redrawCloneMarkers(nodesThatNeedCloneMarkerUpdate, true);
     }
 
     // attach events
