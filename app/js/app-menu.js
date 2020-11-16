@@ -838,7 +838,7 @@ module.exports = function() {
       
       var selectedNodeSize = cy.nodes(':selected').length;
 
-      chiseInstance.deleteNodesSmart(cy.nodes(':selected'));
+      appUtilities.deleteNodesSmart(cy.nodes(':selected'));
       if(!chiseInstance.elementUtilities.isGraphTopologyLocked() && selectedNodeSize > 0)
         $('#inspector-palette-tab a').tab('show');
     });

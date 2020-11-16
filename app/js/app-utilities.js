@@ -1059,51 +1059,49 @@ appUtilities.showAll = function (_chiseInstance) {
     }
 };
 
-// Hides nodes and perform incremental layout afterward if Rearrange option is checked
-appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
-
-    // check _chiseInstance param if it is set use it else use recently active chise instance
-    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
-
-    // get the associated cy instance
-    var cy = chiseInstance.getCy();
-
-    // get current general properties for cy instance
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+appUtilities.deleteNodesSmart = function(nodes) {
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  var cy = chiseInstance.getCy();
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
         //Put them near node and perform incremental layout
-        chiseInstance.hideAndPerformLayout(eles, this.triggerLayout.bind(this, cy, false));
+        chiseInstance.deleteAndPerformLayout(nodes, this.triggerLayout.bind(this, cy, false));
     }
     else
     {
         //Just show them
-        chiseInstance.hideNodesSmart(eles);
+        chiseInstance.deleteNodesSmart(nodes);
+    }
+};
+
+// Hides nodes and perform incremental layout afterward if Rearrange option is checked
+appUtilities.hideNodesSmart = function(nodes, _chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    var cy = chiseInstance.getCy();
+
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
+    {
+        chiseInstance.hideAndPerformLayout(nodes, this.triggerLayout.bind(this, cy, false));
+    }
+    else
+    {
+        chiseInstance.hideNodesSmart(nodes);
     }
 };
 
 // Hides nodes and perform incremental layout afterward if Rearrange option is checked
 appUtilities.hideElesSimple = function(eles, _chiseInstance) {
-
   // check _chiseInstance param if it is set use it else use recently active chise instance
   var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
-  // get the associated cy instance
-  var cy = chiseInstance.getCy();
-
-  // get current general properties for cy instance
-  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-  if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
-  {
-      chiseInstance.hideSimpleAndPerformLayout(eles, this.triggerLayout.bind(this, cy, false));
-  }
-  else
-  {
-      chiseInstance.hideElesSimple(eles);
-  }
-  
+  chiseInstance.hideElesSimple(eles);
 };
 
 appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
