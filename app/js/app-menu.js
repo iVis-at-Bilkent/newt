@@ -664,6 +664,8 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-x', value: '50%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-y', value: '50%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: classBgImg});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-width', value: '100%'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-height', value: '100%'});
             }
           }
         }
