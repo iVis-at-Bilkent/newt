@@ -1618,6 +1618,11 @@ module.exports = function() {
 
     });
 
+    // Update inspector on tab change
+    $('#sbgn-inspector a[data-toggle="tab"]').on('shown.bs.tab', function () {
+      inspectorUtilities.handleSBGNInspector();
+    });
+
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
       var target = $(e.target).attr("href"); // activated tab
