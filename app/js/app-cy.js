@@ -72,7 +72,9 @@ module.exports = function (chiseInstance) {
       // whether to initilize bend points on creation of this extension automatically
       initAnchorsAutomatically: false,
       // function to validate edge source and target on reconnection
-      validateEdge: chiseInstance.elementUtilities.validateArrowEnds,
+      validateEdge: function (edge, newSource, newTarget) {
+        return chiseInstance.elementUtilities.validateArrowEnds(edge, newSource, newTarget, true);
+      },
       // function to be called on invalid edge reconnection
       actOnUnsuccessfulReconnection: function () {
         if(appUtilities.promptInvalidEdgeWarning){
