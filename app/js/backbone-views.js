@@ -3408,22 +3408,32 @@ var ReactionTemplateView = Backbone.View.extend({
       $('#template-reversible-output-table :input.template-reaction-textbox[name="'+i+'"]').closest('tr').remove();
     }
   },
-  switchInputOutput: function (e) {
+  changeTemplateHTMLContent: function (templateType) {
     var self = this;
-    if(e == "association") {
-      $('#reaction-template-left-td').html(self.associatedHTMLContent);
-      $('#reaction-template-right-td').html(self.dissociatedHTMLContent);
-    }
-    else if(e == "dissociation"){
-      $('#reaction-template-left-td').html(self.dissociatedHTMLContent);
-      $('#reaction-template-right-td').html(self.associatedHTMLContent);
-    }
-    else{
-      $('#reaction-template-left-td').html(self.reversibleInputHTMLContent);
-      $('#reaction-template-right-td').html(self.reversibleOutputHTMLContent);
+
+    $('#reaction-template-left-td').html(self.reactionTemplatesHTMLContent[templateType]["input-side"]);
+    $('#reaction-template-right-td').html(self.reactionTemplatesHTMLContent[templateType]["output-side"]);
+    $('#reaction-template-help-link').attr('href', self.reactionTemplatesHTMLContent[templateType]["help-link"]);
+
+    if (templateType === "reversible" || templateType === "irreversible" || templateType === "catalytic") {
       self.disableDeleteButtonStyle("left");
-      self.disableDeleteButtonStyle("right");
+      self.disableDeleteButtonStyle("right")
     }
+    if (templateType === "catalytic" || templateType === "activation" || templateType === "deactivation") {
+      $('#reaction-special-input-row').html(self.reactionTemplatesHTMLContent[templateType]["special-input"]);
+      $('#reaction-special-input-row').removeClass("hide");
+    }
+    else {
+      $('#reaction-special-input-row').addClass("hide");
+    }
+
+    if (templateType === "transcription" || templateType === "translation") {
+      $('#template-input-side-indicator').html("<b> Necessary Stimulation </b>")
+    }
+    else {
+      $('#template-input-side-indicator').html("<b> Input </b>")
+    }
+
   },
   getAllParameters: function () {
     var templateType = $('#reaction-template-type-select').val();
@@ -3489,6 +3499,47 @@ var ReactionTemplateView = Backbone.View.extend({
       templateReactionEnableComplexName: templateReactionEnableComplexName
     }
   },
+  getCatalyticActivityParameters: function () {
+    var catalyticInputNodeNames = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var catalyticInputNodeTypes = $('#template-reversible-input-table :input.template-reaction-molecule-type :selected').map(function(){
+      return $(this).val();
+    }).toArray();
+    var catalyticOutputNodeNames = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+    var catalyticOutputNodeTypes = $('#template-reversible-output-table :input.template-reaction-molecule-type :selected').map(function(){
+      return $(this).val();
+    }).toArray();
+
+    var catalyticInputNodeList = [];
+    for(var i = 0; i < catalyticInputNodeNames.length; i++){
+      catalyticInputNodeList.push(
+        {
+          name: catalyticInputNodeNames[i],
+          type: catalyticInputNodeTypes[i]
+        }
+      );
+    }
+    var catalyticOutputNodeList = [];
+    for(var i = 0; i < catalyticOutputNodeNames.length; i++){
+      catalyticOutputNodeList.push(
+        {
+          name: catalyticOutputNodeNames[i],
+          type: catalyticOutputNodeTypes[i]
+        }
+      );
+    }
+
+    var catalystName = $('#catalytic-reaction-catalyst-name').val();
+
+    return {
+      inputNodeData: catalyticInputNodeList,
+      outputNodeData: catalyticOutputNodeList,
+      catalystName: catalystName
+    };
+  },
   disableDeleteButtonStyle: function (type) {
     if(type == "reaction"){
       $("img.template-reaction-delete-button").css("opacity", 0.2);
@@ -3523,10 +3574,21 @@ var ReactionTemplateView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
 
+    $(document).on("input", "#template-activation-protein-name", function() {
+      var value = $(this).val();
+      $('#template-activation-protein-name-input').val(value);
+      $('#template-activation-protein-name-output').val(value);
+    });
+
+    $(document).on("input", "#template-deactivation-protein-name", function() {
+      var value = $(this).val();
+      $('#template-deactivation-protein-name-input').val(value);
+      $('#template-deactivation-protein-name-output').val(value);
+    });
 
     $(document).on('change', '#reaction-template-type-select', function (e) {
       var valueSelected = $(this).val();
-      self.switchInputOutput(valueSelected);
+      self.changeTemplateHTMLContent(valueSelected);
       self.disableDeleteButtonStyle("reaction");
     });
 
@@ -3602,21 +3664,49 @@ var ReactionTemplateView = Backbone.View.extend({
 
       // get current layout properties for cy
       var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
-
-      var params = self.getAllParameters();
-
-      var templateType = params.templateType;
-      var nodeList = params.nodeList;
-      var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
-      var layoutParam = {name: "fcose"};
-      if(templateType == "reversible"){
-        nodeList = params.reversibleInputNodeList;
-        complexName = params.reversibleOutputNodeList;
-      }
-      chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined, layoutParam);
 
+      var templateType = $('#reaction-template-type-select').val();
+      var layoutParam = {name: "fcose"};
+
+      if (templateType === "activation") {
+        const proteinName = $("#template-activation-protein-name").val();
+        chiseInstance.createActivationReaction(proteinName, undefined, undefined, false);
+      }
+      else if (templateType === "deactivation") {
+        const proteinName = $('#template-deactivation-protein-name').val();
+        chiseInstance.createActivationReaction(proteinName, undefined, undefined, true);
+      }
+      else if (templateType === "catalytic") {
+        var params = self.getCatalyticActivityParameters();
+        chiseInstance.createMetabolicCatalyticActivity(params.inputNodeData, params.outputNodeData, params.catalystName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined);
+      }
+      else if (templateType === "transcription") {
+        const geneName = $('#template-transcription-gene-name').val();
+        const mRnaName = $('#template-transcription-mrna-name').val();
+        chiseInstance.createTranscriptionReaction(geneName, mRnaName, undefined, undefined);
+      }
+      else if (templateType === "translation") {
+        const mRnaName = $('#template-translation-mrna-name').val();
+        const proteinName = $('#template-translation-protein-name').val();
+        chiseInstance.createTranslationReaction(mRnaName, proteinName, undefined, undefined);
+      }
+      else { // association, dissociation, reversible, irreversible handled here 
+        var params = self.getAllParameters();
+      
+        var templateType = params.templateType;
+        var nodeList = params.nodeList;
+        var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
+      
+        if(templateType === "reversible" || templateType === "irreversible"){
+          nodeList = params.reversibleInputNodeList;
+          complexName = params.reversibleOutputNodeList;
+        }
+        chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined, layoutParam);
+
+      }
+      
       //Update arrow-scale of newly added edges (newly added elements are selected so we just update selected edges)
       var currentArrowScale = Number($('#arrow-scale').val());
       cy.edges(":selected").style('arrow-scale', currentArrowScale);
@@ -3635,10 +3725,57 @@ var ReactionTemplateView = Backbone.View.extend({
     self.disableDeleteButtonStyle("reaction");
 
     $(self.el).modal('show');
-    self.associatedHTMLContent = $('#reaction-template-left-td').html();
-    self.dissociatedHTMLContent = $('#reaction-template-right-td').html();
-    self.reversibleInputHTMLContent = $('#reversible-template-left-td').html();
-    self.reversibleOutputHTMLContent = $('#reversible-template-right-td').html();
+    
+    self.reactionTemplatesHTMLContent = {
+      "association": {
+        "input-side": $('#reaction-template-left-td').html(),
+        "output-side": $("#reaction-template-right-td").html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/"
+      },
+      "dissociation": {
+        "input-side": $('#reaction-template-right-td').html(),
+        "output-side": $('#reaction-template-left-td').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/"
+      },
+      "reversible": {
+        "input-side": $('#reversible-template-left-td').html(),
+        "output-side": $('#reversible-template-right-td').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000514/"
+      },
+      "irreversible": {
+        "input-side": $('#reversible-template-left-td').html(),
+        "output-side": $('#reversible-template-right-td').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000511/"
+      },
+      "activation": {
+        "input-side": $('#activation-template-left-td').html(),
+        "output-side": $('#activation-template-right-td').html(),
+        "special-input": $('#activation-special-input-row').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/SBO:0000656/"
+      },
+      "deactivation": {
+        "input-side": $('#deactivation-template-left-td').html(),
+        "output-side": $('#deactivation-template-right-td').html(),
+        "special-input": $('#deactivation-special-input-row').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000208/"
+      },
+      "catalytic": {
+        "input-side": $('#catalytic-template-left-td').html(),
+        "output-side": $('#catalytic-template-right-td').html(),
+        "special-input": $('#reaction-special-input-row').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000196/"
+      },
+      "transcription": {
+        "input-side": $('#transcription-template-left-td').html(),
+        "output-side": $('#transcription-template-right-td').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000573/"
+      },
+      "translation": {
+        "input-side": $('#translation-template-left-td').html(),
+        "output-side": $('#translation-template-right-td').html(),
+        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000589/"
+      }
+    };
     return this;
   }
 });

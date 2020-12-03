@@ -2376,17 +2376,37 @@
             <tr align="center">
             <td style="padding-bottom: 10px;" colspan=100%>
             <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b> Type:</b> </span>
-            <select id="reaction-template-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: 18%">
+            <select id="reaction-template-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: fit-content;">
             <option id="reaction-template-type-association" value="association" selected> Association </option>
             <option id="reaction-template-type-dissociation" value="dissociation"> Dissociation </option>
             <option id="reaction-template-type-reversible" value="reversible"> Reversible </option>
+            <option id="reaction-template-type-irreversible" value="irreversible"> Irreversible </option>
+            <option id="reaction-template-type-activation" value="activation"> Activation </option>
+            <option id="reaction-template-type-deactivation" value="deactivation"> Deactivation </option>
+            <option id="reaction-template-type-catalytic" value="catalytic"> Metabolic Catalytic Activity </option>
+            <option id="reaction-template-type-transcription" value="transcription"> Transcription </option>
+            <option id="reaction-template-type-translation" value="translation"> Translation </option>
             </select>
+            <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
+            <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/" target="_blank">
+            <img id="reaction-template-help" src="app/img/toolbar/quick-help.svg" title="SBGN Bricks Page" style="width: 23px;"> 
+            </img>
+            </a>
+            </td>
+            
+            </tr>
+
+
+            <tr id="reaction-special-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">
+            <td colspan=100%>
+                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Catalyst: </b> </span> 
+                <input type='text' class='sbgn-input-medium layout-text' id='catalytic-reaction-catalyst-name' value=''></input>
             </td>
             </tr>
 
-            <tr style="height: 40px; vertical-align:bottom; width: 100%;">
+            <tr style="height: 40px; vertical-align:middle; width: 100%;">
             <td align="center" style="margin-left: 5px; width: 16.25%;">
-            <span class="add-on layout-text"> <b> Input </b> </span>
+            <span id="template-input-side-indicator" class="add-on layout-text"> <b> Input </b> </span>
             </td>
 
             <td style="margin-left: 25%;">
@@ -2396,7 +2416,6 @@
             <span class="add-on layout-text"> <b> Output </b> </span>
             </td>
             </tr>
-
 
             <tr>
             <td id ='reaction-template-left-td'>
@@ -2432,7 +2451,7 @@
             </td>
 
             <!-- Blank space between input and output -->
-            <td style="width: 45px; margin-left: 50%;"></td>
+            <td id='reaction-template-middle-td' style="width: 45px; vertical-align: top;" align="center"></td>
 
             <td id ='reaction-template-right-td'>
 
@@ -2490,6 +2509,182 @@
               <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
               </td></tr>
               </table>
+            </td>
+
+            <td id ='activation-template-left-td' class="hide">
+            <table id='template-activation-input-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-activation-protein-name-input' value='' readonly></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px' disabled>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+            <tr id="activation-special-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">
+            <td colspan=100%>
+                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Protein: </b> </span> 
+                <input type='text' class='sbgn-input-medium layout-text' id='template-activation-protein-name' value=''></input>
+            </td>
+            </tr>
+
+            <td id ='activation-template-right-td' class="hide">
+            <table id='template-activation-output-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-activation-protein-name-output' value='' readonly></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px' disabled>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+            <td id ='deactivation-template-left-td' class="hide">
+            <table id='template-deactivation-input-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-deactivation-protein-name-input' value='' readonly></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px' disabled>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+            <tr id="deactivation-special-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">
+            <td colspan=100%>
+                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Protein: </b> </span> 
+                <input type='text' class='sbgn-input-medium layout-text' id='template-deactivation-protein-name' value=''></input>
+            </td>
+            </tr>
+
+            <td id ='deactivation-template-right-td' class="hide">
+            <table id='template-deactivation-output-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-deactivation-protein-name-output' value='' readonly></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px' disabled>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+
+            <td id ='catalytic-template-left-td' class="hide">
+            <table id='template-reversible-input-table'>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule"> Macromolecule </option>
+            <option value="Simple Chemical" selected> Simple Chemical </option>
+            </td>
+            <td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
+            </td>
+            </tr>
+            <tr><td>
+            <img width="16px" height="16px" id='template-reversible-input-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
+            </td></tr>
+            </table>
+            </td>
+
+
+            <td id ='catalytic-template-right-td' class="hide">
+            <table id='template-reversible-output-table'>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule"> Macromolecule </option>
+            <option value="Simple Chemical" selected> Simple Chemical </option>
+            </td>
+            <td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
+            </td>
+            </tr>
+            <tr><td>
+            <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
+            </td></tr>
+            </table>
+            </td>
+
+            <td id ='transcription-template-left-td' class="hide">
+            <table id='template-transcrition-input-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-transcription-gene-name' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
+            <option value="Macromolecule" selected> Nucleic Acid Feature </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+            <td id ='transcription-template-right-td' class="hide">
+            <table id='template-transcription-output-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-transcription-mrna-name' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
+            <option value="Macromolecule" selected> Nucleic Acid Feature </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+            <td id ='translation-template-left-td' class="hide">
+            <table id='template-translation-input-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-translation-mrna-name' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
+            <option value="Macromolecule" selected> Nucleic Acid Feature </option>
+            </td>
+            </tr>
+            </table>
+            </td>
+
+            <td id ='translation-template-right-td' class="hide">
+            <table id='template-translation-output-table'>
+            <tr>
+            <td style="width: 50px; margin-left: 50%;"></td>
+            <td>
+            <input type='text' class='sbgn-input-medium layout-text' id='template-translation-protein-name' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
+            <option value="Macromolecule" selected> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
             </td>
 
             </tr>
