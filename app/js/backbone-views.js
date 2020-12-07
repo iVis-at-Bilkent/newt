@@ -863,7 +863,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
     $(document).on("shown.bs.tab", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
+      if (chiseInstance.getMapType()) {
+        document.getElementById('map-type').value = chiseInstance.getMapType();
+      }
     });
 
     $(document).on("click", "#map-general-default-button", function (evt) {
@@ -3533,11 +3535,13 @@ var ReactionTemplateView = Backbone.View.extend({
     }
 
     var catalystName = $('#catalytic-reaction-catalyst-name').val();
+    var catalystType = $('#catalyst-type-select :selected').val();
 
     return {
       inputNodeData: catalyticInputNodeList,
       outputNodeData: catalyticOutputNodeList,
-      catalystName: catalystName
+      catalystName: catalystName,
+      catalystType: catalystType
     };
   },
   disableDeleteButtonStyle: function (type) {
@@ -3680,7 +3684,7 @@ var ReactionTemplateView = Backbone.View.extend({
       }
       else if (templateType === "catalytic") {
         var params = self.getCatalyticActivityParameters();
-        chiseInstance.createMetabolicCatalyticActivity(params.inputNodeData, params.outputNodeData, params.catalystName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined);
+        chiseInstance.createMetabolicCatalyticActivity(params.inputNodeData, params.outputNodeData, params.catalystName, params.catalystType, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined);
       }
       else if (templateType === "transcription") {
         const geneName = $('#template-transcription-gene-name').val();

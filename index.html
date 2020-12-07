@@ -154,7 +154,7 @@
                                                 <li><a href="#" id="add-complex-for-selected" >Add Complex for Selected</a></li>
                                                 <li><a href="#" id="add-compartment-for-selected" >Add Compartment for Selected</a></li>
                                                 <li><a href="#" id="add-submap-for-selected" >Add Submap for Selected</a></li>
-                                                <li><a href="#" id="create-reaction-template" >Add from Template...</a></li>
+                                                <li><a href="#" id="create-reaction-template" >Add using SBGN Bricks...</a></li>
                                                 <li><a href="#" id="clone-selected" >Clone Selected</a></li>
 
                                                 <li class="divider"></li>
@@ -2389,7 +2389,7 @@
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/" target="_blank">
-            <img id="reaction-template-help" src="app/img/toolbar/quick-help.svg" title="SBGN Bricks Page" style="width: 23px;"> 
+            <img id="reaction-template-help" src="app/img/toolbar/quick-help.svg" title="SBGN Bricks Page" style="width: 21px; margin-left: 5px; margin-bottom: 1px;"> 
             </img>
             </a>
             </td>
@@ -2401,6 +2401,14 @@
             <td colspan=100%>
                 <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Catalyst: </b> </span> 
                 <input type='text' class='sbgn-input-medium layout-text' id='catalytic-reaction-catalyst-name' value=''></input>
+                
+                <select id="catalyst-type-select" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content'>
+                <option value="macromolecule" selected> Macromolecule </option>
+                <option value="simple chemical"> Simple Chemical </option>
+                <option value="unspecified entity"> Unspecified Entity </option>
+                <option value="nucleic acid feature"> Nucleic Acid Feature </option>
+                <option value="perturbing agent"> Perturbing Agent </option>
+            
             </td>
             </tr>
 
@@ -2528,7 +2536,7 @@
 
             <tr id="activation-special-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">
             <td colspan=100%>
-                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Protein: </b> </span> 
+                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Label: </b> </span> 
                 <input type='text' class='sbgn-input-medium layout-text' id='template-activation-protein-name' value=''></input>
             </td>
             </tr>
@@ -2565,7 +2573,7 @@
 
             <tr id="deactivation-special-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">
             <td colspan=100%>
-                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Protein: </b> </span> 
+                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Label: </b> </span> 
                 <input type='text' class='sbgn-input-medium layout-text' id='template-deactivation-protein-name' value=''></input>
             </td>
             </tr>
