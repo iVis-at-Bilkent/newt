@@ -817,6 +817,11 @@ module.exports = function (chiseInstance) {
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
 
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      if (chiseInstance.getMapType()) {
+        document.getElementById('map-type').value = chiseInstance.getMapType();
+      }
+
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
@@ -844,6 +849,11 @@ module.exports = function (chiseInstance) {
       refreshUndoRedoButtonsStatus(cy);
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
+
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      if (chiseInstance.getMapType()) {
+        document.getElementById('map-type').value = chiseInstance.getMapType();
+      }
 
       if(actionName == "resize") {
         var node = res.node;
