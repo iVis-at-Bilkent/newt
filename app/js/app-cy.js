@@ -1125,23 +1125,21 @@ module.exports = function (chiseInstance) {
             if (chiseInstance.getMapType() && !isMapTypeValid){
 
               appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
-             /*  appUtilities.promptMapTypeView.render(function(){
-                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);}); */
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-            }
-            if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
-            {
-                var newEle = cy.nodes()[cy.nodes().length - 1];
-                var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
-                chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
-            }
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+                {
+                    var newEle = cy.nodes()[cy.nodes().length - 1];
+                    var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
+                    chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
+                }
 
-            // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
-            // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
-            if (parent) {
-              cy.expandCollapse('get').clearVisualCue();
+                // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
+                // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
+                if (parent) {
+                  cy.expandCollapse('get').clearVisualCue();
+                }
             }
           }
         }
