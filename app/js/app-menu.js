@@ -40,6 +40,68 @@ module.exports = function() {
     validateSBGNML(textXml);
     return chiseInstance.loadSample(filename, 'app/samples/', callback);
   }
+
+  function updatePalette(mapType) {
+
+    if(mapType === "AF") {
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }        
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }        
+    }
+    else if(mapType === "PD"){
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }        
+    }
+    else if(mapType === "SIF"){
+      if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
+        $("#SIF-palette-heading").click();
+      }
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }        
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+    }
+    else if (mapType === "HybridSbgn") {
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }
+    }
+    else if (mapType === "HybridAny") {
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }
+      if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
+        $("#SIF-palette-heading").click();
+      }
+    }
+    else {
+      console.warn('invalid map type!');
+    }
+  }
   
   console.log('init the sbgnviz template/page');
 
@@ -169,42 +231,7 @@ module.exports = function() {
     if ( isActiveInstance ) {
 
       // select appropriate palette depending on the map
-      if(chiseInstance.elementUtilities.mapType == "AF") {
-        if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
-          $("#AF-palette-heading").click();
-        }        
-        if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
-          $("#PD-palette-heading").click();
-        }
-        if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
-          $("#SIF-palette-heading").click();
-        }        
-      }
-      else if(chiseInstance.elementUtilities.mapType == "PD"){
-        if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
-          $("#PD-palette-heading").click();
-        }
-        if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
-          $("#AF-palette-heading").click();
-        }
-        if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
-          $("#SIF-palette-heading").click();
-        }        
-      }
-      else if(chiseInstance.elementUtilities.mapType == "SIF"){
-        if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
-          $("#SIF-palette-heading").click();
-        }
-        if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
-          $("#PD-palette-heading").click();
-        }        
-        if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
-          $("#AF-palette-heading").click();
-        }
-      }
-      else {
-        console.warn('invalid map type!');
-      }
+      updatePalette(chiseInstance.elementUtilities.mapType)
 
     }
 
@@ -1630,5 +1657,9 @@ module.exports = function() {
       appUtilities.setActiveNetwork(target);
       inspectorUtilities.handleSBGNInspector();
     });
+
+    $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
+      updatePalette(newMapType);
+    }); 
   }
 };

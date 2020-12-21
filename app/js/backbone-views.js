@@ -616,6 +616,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       if(cy.elements().length == 0){
         //chiseInstance.elementUtilities.setMapType(newMapType);
         cy.undoRedo().do("changeMapType", {mapType: newMapType, callback : callback});
+        $(document).trigger("changeMapTypeFromMenu", [newMapType]);
         return;
       }
       var currentMapType = chiseInstance.getMapType();
@@ -697,11 +698,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       }
        if(validChange){
         cy.undoRedo().do("changeMapType", {mapType: newMapType, callback : callback});
-         //chiseInstance.elementUtilities.setMapType(newMapType);
+        $(document).trigger("changeMapTypeFromMenu", [newMapType]);
        }else{
         $("#map-type").val(currentMapType);
          appUtilities.promptMapTypeView.render("You cannot change map type "+ appUtilities.mapTypesToViewableText[currentMapType] + " to a map of type "+appUtilities.mapTypesToViewableText[newMapType]+"!");
-         
        }
     
       $('#map-type').blur();
