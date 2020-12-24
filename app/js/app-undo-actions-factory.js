@@ -269,7 +269,7 @@ module.exports = function (cy) {
   appUndoActions.loadExperimentData = function (param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback, param.sampleExperiment);
     if(result != "Error"){
       appUndoActions.changeMenu(param.self.params.experimentDescription);
     }

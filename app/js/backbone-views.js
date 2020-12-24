@@ -1480,7 +1480,7 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     var ur = cy.undoRedo();
     var actions = [];
     //after the deleting the first experiemnt color schme should come back
-    if(firstExperiment == undefined || Object.keys(firstExperiment).length == 0)
+    if(firstExperiment == undefined || Object.keys(firstExperiment).length == 0 || params.sampleExperiment)
     {
       var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;

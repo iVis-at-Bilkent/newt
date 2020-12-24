@@ -444,7 +444,7 @@ module.exports = function() {
         var errorCallback = function(){
           promptInvalidFileView.render();
         };       
-        params ={data: data, fileName: "acc_2014vs2019.txt", errorCallback: errorCallback};
+        params ={data: data, fileName: "acc_2014vs2019.txt", errorCallback: errorCallback, sampleExperiment: true};
         experimentTabPanel.loadExperiment(params);
         experimentTabPanel.render();
       };
