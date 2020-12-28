@@ -2635,20 +2635,21 @@ var FileSaveView = Backbone.View.extend({
               && !chiseInstance.elementUtilities.isSIFNode( edge.data('target') );
           } );
         }
+        
         else if ( chiseInstance.elementUtilities.mapType === 'SIF' && properties.enableSIFTopologyGrouping ) {
           // get topologyGrouping instance for cy
           var topologyGrouping = chiseInstance.sifTopologyGrouping;
-          var compoundGroups = topologyGrouping.getGroupCompounds();
           var metaEdges = topologyGrouping.getMetaEdges();
 
-          nodes = cy.nodes().not( compoundGroups );
-          edges = cy.edges().not( metaEdges );
-
+          nodes = cy.nodes();
+          edges = metaEdges;
+          
           metaEdges.forEach( function( edge ) {
             edges = edges.union( edge.data('tg-to-restore') );
           } );
+          
         }
-
+        
         renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
 
         // If the version is plain, exclude all extensions
