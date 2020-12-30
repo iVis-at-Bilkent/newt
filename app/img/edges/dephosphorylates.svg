@@ -30,7 +30,7 @@
       <path
          id="path4133"
          d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#CC8E12;stroke-width:1pt"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#960000;stroke-width:1pt"
          transform="matrix(0.8,0,0,0.8,-4.8,0)"
          inkscape:connector-curvature="0" />
     </marker>
@@ -44,7 +44,7 @@
       <path
          id="path4115"
          d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         style="fill-rule:evenodd;stroke:#CC8E12;stroke-width:1pt"
+         style="fill-rule:evenodd;stroke:#960000;stroke-width:1pt"
          transform="scale(0.8,0.8)"
          inkscape:connector-curvature="0" />
     </marker>
@@ -58,7 +58,7 @@
       <path
          id="path4079"
          d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 Z"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#CC8E12;stroke-width:1pt"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#960000;stroke-width:1pt"
          transform="scale(0.8,0.8)"
          inkscape:connector-curvature="0" />
     </marker>
@@ -103,7 +103,7 @@
      id="layer1"
      transform="translate(-275.2906,-267.82635)">
     <path
-       style="fill:none;stroke:#CC8E12;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#960000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 275.2906,291.82635 58.41978,0"
        id="path3787-4"
        inkscape:connector-curvature="0"
@@ -113,7 +113,7 @@
        inkscape:transform-center-x="-2.7158975"
        inkscape:transform-center-y="-62.257366" />
     <path
-       style="fill:none;stroke:#CC8E12;stroke-width:5.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:none"
+       style="fill:none;stroke:#960000;stroke-width:5.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:none"
        d="m 332.30695,306.12552 0,-28.59834"
        id="path3787-4-8"
        inkscape:connector-curvature="0"
