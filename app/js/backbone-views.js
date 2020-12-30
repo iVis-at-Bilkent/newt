@@ -2637,17 +2637,17 @@ var FileSaveView = Backbone.View.extend({
         }
         
         else if ( chiseInstance.elementUtilities.mapType === 'SIF' && properties.enableSIFTopologyGrouping ) {
-          // get topologyGrouping instance for cy
+          
+          // get nodes and edges
+          
+          edges = cy.edges();
           var topologyGrouping = chiseInstance.sifTopologyGrouping;
           var metaEdges = topologyGrouping.getMetaEdges();
-
-          nodes = cy.nodes();
-          edges = metaEdges;
-          
           metaEdges.forEach( function( edge ) {
             edges = edges.union( edge.data('tg-to-restore') );
           } );
           
+          nodes = cy.nodes();
         }
         
         renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
