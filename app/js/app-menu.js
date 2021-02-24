@@ -1197,8 +1197,10 @@ module.exports = function() {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
 
-      // set to false to apply incremental packing at the end of the layout
-      cy.layoutUtilities("get").setOption("randomize", false);
+      // set layoutUtilities options to apply incremental packing at the end of the layout
+      var layoutUtilities = cy.layoutUtilities("get");
+      layoutUtilities.setOption("randomize", false);
+      layoutUtilities.setOption("componentSpacing", undefined);
 
       layoutPropertiesView.applyLayout(preferences);
     });
@@ -1227,8 +1229,10 @@ module.exports = function() {
         randomize: true
       };
 
-      // set to true to apply randomized packing at the end of the layout
-      cy.layoutUtilities("get").setOption("randomize", true);
+      // set layoutUtilities options to apply randomized packing at the end of the layout
+      var layoutUtilities = cy.layoutUtilities("get");
+      layoutUtilities.setOption("randomize", true);
+      layoutUtilities.setOption("componentSpacing", 30);
 
       layoutPropertiesView.applyLayout(preferences);
     });
