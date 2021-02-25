@@ -493,9 +493,8 @@ module.exports = function (chiseInstance) {
     });
     
     cy.layoutUtilities({
-      componentSpacing: 30,
       desiredAspectRatio: $(cy.container()).width() / $(cy.container()).height()
-    })
+    });
 
     cy.nodeEditing({
       padding: 2, // spacing between node and grapples/rectangle
