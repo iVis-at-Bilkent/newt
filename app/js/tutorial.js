@@ -105,7 +105,8 @@ tutorial.UIGuide = function(){
                 <b>- Select/Edit: </b>Select a particular object to edit its properties.<br>\n\
                 <b>- Add Node: </b>Create a new node with type that is currently selected in the palette.<br>\n\
                 <b>- Add Edge: </b>Create a new edge with type that is currently selected in the palette.<br>\n\
-                <b>- Activate Marquee Zoom: </b>Mark the zoom area by using Shift + left click and drag.</p>\n\
+                <b>- Activate Marquee Zoom: </b>Mark the zoom area by using Shift + left click and drag.<br>\n\
+                <b>- Activate Lasso Tool: </b>Mark the area of selection in free form. Start with a left click, end with another left click.</p>\n\
                 <p style="font-size:12px; margin:0px;">Remaining edit operations:<br>\n\
                 <b>- Delete Selected Simple</b><br>\n\
                 <b>- Delete Selected Smart: </b>Perform deletion on selected objects and associated neighbors, leaving the map intact w.r.t. the map type.<br>\n\
