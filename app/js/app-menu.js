@@ -629,7 +629,8 @@ module.exports = function() {
         // get applyLayout value before map properties are filtered, apply layout
         // isn't really a map property so its not added to sbgnviz 
         // validMapProperties
-        const applyLayout = urlParams.applyLayout;
+        const applyLayout = urlParams.applyLayoutOnURL;
+        const fromURL = urlParams.url !== undefined;
         var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
         
         if(!("inferNestingOnLoad" in mapPropsFromUrl)) {
@@ -640,7 +641,7 @@ module.exports = function() {
           mapPropsFromUrl.compoundPadding = 0;
         }
 
-        if (applyLayout) {
+        if (fromURL && applyLayout) {
           let currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
 
           // Below is copied from sbgnviz.graphUtilities.updateGraph
@@ -651,10 +652,7 @@ module.exports = function() {
           preferences.animate = false;
           preferences.randomize = true;
           preferences = $.extend({}, currentLayoutProperties, preferences);
-          let layout = cy.layout(preferences);
-          if (layout && layout.run) {
-            layout.run();
-          }
+          layoutPropertiesView.applyLayout(preferences);
         }
 
         // merge the map properties coming from url into
