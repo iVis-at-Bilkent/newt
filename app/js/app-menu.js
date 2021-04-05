@@ -629,7 +629,7 @@ module.exports = function() {
         // get applyLayout value before map properties are filtered, apply layout
         // isn't really a map property so its not added to sbgnviz 
         // validMapProperties
-        const applyLayout = urlParams.applyLayoutOnURL;
+        const applyLayout = urlParams.applyLayoutOnURL === "true";
         const fromURL = urlParams.url !== undefined;
         var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
         
