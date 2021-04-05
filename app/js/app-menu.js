@@ -472,11 +472,11 @@ module.exports = function() {
         chiseInstance.loadSbml(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data);
+              chiseInstance.loadSBGNMLText(data.message);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data);
+            chiseInstance.loadSBGNMLText(data.message);
           }
         },
         error = function(data){
