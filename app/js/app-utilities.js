@@ -2620,7 +2620,23 @@ appUtilities.launchWithModelFile = function() {
             lastModified: Date.now()
           });
 
-          chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          if (fileExtension === "xml" || fileExtension === "xml#" 
+              || fileExtension === "sbml" || fileExtension === "sbml#") {
+            chiseInstance.loadSbml(fileToLoad,  success = function(data){
+              var cy = appUtilities.getActiveCy();
+              if (cy.elements().length !== 0) {
+                promptConfirmationView.render(function () {
+                  chiseInstance.loadSBGNMLText(data.message);
+                });
+              }
+              else {
+                chiseInstance.loadSBGNMLText(data.message);
+              }
+            });
+          }
+          else {
+            chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          }
         }
         else {
           loadCallbackInvalidityWarning();
