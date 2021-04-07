@@ -2696,7 +2696,7 @@ appUtilities.launchWithModelFile = function() {
     // Parse the query sting into an object please see:
     // https://stevenbenner.com/2010/03/javascript-regex-trick-parse-a-query-string-into-an-object/
     url.replace(
-        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+        new RegExp("([^?=&]+)(=([^&#]*))?", "g"),
         function($0, name, $2, value) {
           if (value !== undefined) {
             var lowerCaseName = name.toLowerCase();

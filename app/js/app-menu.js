@@ -631,6 +631,10 @@ module.exports = function() {
         // validMapProperties
         const applyLayout = urlParams.applyLayoutOnURL === "true";
         const fromURL = urlParams.url !== undefined;
+        if (urlParams.compoundPadding) {
+          const compoundPadding = urlParams.compoundPadding;
+          chiseInstance.setCompoundPadding(Number(compoundPadding));
+        }
         var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
         
         if(!("inferNestingOnLoad" in mapPropsFromUrl)) {
@@ -695,6 +699,7 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
             }
           }
+          appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, 'solid', appUtilities.colorSchemeInspectorView);
         }
 
         else{
@@ -714,6 +719,7 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-width', value: '100%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-height', value: '100%'});
             }
+            appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
           }
         }
 
