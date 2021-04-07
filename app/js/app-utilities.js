@@ -2626,11 +2626,11 @@ appUtilities.launchWithModelFile = function() {
               var cy = appUtilities.getActiveCy();
               if (cy.elements().length !== 0) {
                 promptConfirmationView.render(function () {
-                  chiseInstance.loadSBGNMLText(data.message);
+                  chiseInstance.loadSBGNMLText(data.message, false, filename, cy);
                 });
               }
               else {
-                chiseInstance.loadSBGNMLText(data.message);
+                chiseInstance.loadSBGNMLText(data.message, false, filename, cy);
               }
             });
           }

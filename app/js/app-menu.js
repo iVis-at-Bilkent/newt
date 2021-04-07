@@ -370,11 +370,11 @@ module.exports = function() {
         chiseInstance.loadCellDesigner(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data,true);
+              chiseInstance.loadSBGNMLText(data, true, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data,true);
+            chiseInstance.loadSBGNMLText(data, true, file.name, cy);
           }
         },
         error = function(data){
@@ -472,11 +472,11 @@ module.exports = function() {
         chiseInstance.loadSbml(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data.message);
+              chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data.message);
+            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
           }
         },
         error = function(data){
