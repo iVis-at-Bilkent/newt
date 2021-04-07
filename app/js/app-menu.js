@@ -658,6 +658,9 @@ module.exports = function() {
           preferences = $.extend({}, currentLayoutProperties, preferences);
           layoutPropertiesView.applyLayout(preferences);
         }
+        if (urlParams.mapColorScheme) {
+          appUtilities.applyMapColorScheme(urlParams.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+        }
 
         // merge the map properties coming from url into
         // the map properties read from file
@@ -699,7 +702,6 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
             }
           }
-          appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, 'solid', appUtilities.colorSchemeInspectorView);
         }
 
         else{
@@ -719,7 +721,6 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-width', value: '100%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-height', value: '100%'});
             }
-            appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
           }
         }
 
