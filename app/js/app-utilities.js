@@ -2571,7 +2571,23 @@ appUtilities.launchWithModelFile = function() {
             lastModified: Date.now()
           });
 
-          chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          if (fileExtension === "xml" || fileExtension === "xml#" 
+              || fileExtension === "sbml" || fileExtension === "sbml#") {
+            chiseInstance.loadSbml(fileToLoad,  success = function(data){
+              var cy = appUtilities.getActiveCy();
+              if (cy.elements().length !== 0) {
+                promptConfirmationView.render(function () {
+                  chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                });
+              }
+              else {
+                chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+              }
+            });
+          }
+          else {
+            chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
+          }
         }
         else {
           loadCallbackInvalidityWarning();
@@ -2606,7 +2622,7 @@ appUtilities.launchWithModelFile = function() {
           var xml = $.parseXML(data.response.body);
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
           $(document).trigger('sbgnvizLoadFromURI', [filename, cyInstance]);          
-          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml, paramObj), undefined, currentLayoutProperties);
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
@@ -2631,7 +2647,7 @@ appUtilities.launchWithModelFile = function() {
     // Parse the query sting into an object please see:
     // https://stevenbenner.com/2010/03/javascript-regex-trick-parse-a-query-string-into-an-object/
     url.replace(
-        new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+        new RegExp("([^?=&]+)(=([^&#]*))?", "g"),
         function($0, name, $2, value) {
           if (value !== undefined) {
             var lowerCaseName = name.toLowerCase();
