@@ -2626,16 +2626,16 @@ appUtilities.launchWithModelFile = function() {
               var cy = appUtilities.getActiveCy();
               if (cy.elements().length !== 0) {
                 promptConfirmationView.render(function () {
-                  chiseInstance.loadSBGNMLText(data.message, false, filename, cy);
+                  chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                 });
               }
               else {
-                chiseInstance.loadSBGNMLText(data.message, false, filename, cy);
+                chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
               }
             });
           }
           else {
-            chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+            chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
           }
         }
         else {
@@ -2671,7 +2671,7 @@ appUtilities.launchWithModelFile = function() {
           var xml = $.parseXML(data.response.body);
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
           $(document).trigger('sbgnvizLoadFromURI', [filename, cyInstance]);          
-          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+          chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml, paramObj), undefined, currentLayoutProperties);
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
