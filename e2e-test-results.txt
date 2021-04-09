@@ -1,5 +1,4 @@
 
-
 ====================================================================================================
 
   (Run Starting)
@@ -17,24 +16,26 @@
 
 
   Import / Export
-    √ TC1: File -> Import -> Simple AF (7954ms)
-    √ TC2: File -> Import -> SIF (4474ms)
+    ✓ TC1: File -> Import -> Simple AF (5101ms)
+    ✓ TC2: File -> Import -> SIF (6004ms)
+    ✓ TC3: File -> Import -> SBML (3728ms)
+    ✓ TC5: File -> Export -> SBGN-ML Plain (6813ms)
 
 
-  2 passing (15s)
+  4 passing (23s)
 
 
   (Results)
 
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ Tests:        2                                                                                │
-  │ Passing:      2                                                                                │
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
   │ Failing:      0                                                                                │
   │ Pending:      0                                                                                │
   │ Skipped:      0                                                                                │
   │ Screenshots:  0                                                                                │
   │ Video:        false                                                                            │
-  │ Duration:     14 seconds                                                                       │
+  │ Duration:     22 seconds                                                                       │
   │ Spec Ran:     import-export.spec.js                                                            │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -46,7 +47,7 @@
 
        Spec                                              Tests  Passing  Failing  Pending  Skipped  
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ √  import-export.spec.js                    00:14        2        2        -        -        - │
+  │ ✔  import-export.spec.js                    00:22        4        4        -        -        - │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
-    √  All specs passed!                        00:14        2        2        -        -        -  
+    ✔  All specs passed!                        00:22        4        4        -        -        -  
 
