@@ -50,7 +50,7 @@
                                             <ul class="dropdown-menu">
                                                 <input id="file-input" type="file" style="display:none" />
                                                 <li><a href="#" type="file" id="new-file">New</a></li>
-                                                <li><a href="#" type="file" id="load-file">Load...</a></li>
+                                                <li><a href="#" type="file" id="load-file">Open...</a></li>
                                                 <li class="dropdown-submenu">
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                         Samples
@@ -138,7 +138,7 @@
                                                 </li>
                                                 <li class="divider"></li>
                                                 <input id="user-preferences-file-input" type="file" style="display:none" />
-                                                <li><a href="#" id="load-user-preferences">Load Preferences...</a></li>
+                                                <li><a href="#" id="load-user-preferences">Open Preferences...</a></li>
                                                 <li><a href="#" id="save-user-preferences">Save Preferences...</a></li>
 
 
@@ -282,9 +282,9 @@
                                                 <b class="caret"></b>
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#" id="import-experimental-data">Load...</a></li>
+                                                <li><a href="#" id="import-experimental-data">Open...</a></li>
                                                 <input id="overlay-data" type="file" style="display:none" />
-                                                <li><a href="#" id="sample-experiment-data">Load Sample</a></li>
+                                                <li><a href="#" id="sample-experiment-data">Open Sample</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#" value="true" id="experiment-data-hide-all">Hide/Show All</a></li>
                                                 <li><a href="#" id="experiment-data-remove-all">Remove All</a></li>
@@ -364,7 +364,7 @@
                                 </div>
                                 
                                 <div style="padding: 1px;" class="sbgn-toolbar-element">
-                                    <img id="load-file-icon"  src="app/img/toolbar/load.svg" title="Load: Load a map from a Newt file">
+                                    <img id="load-file-icon"  src="app/img/toolbar/load.svg" title="Open: Open a map from a Newt file">
                                 </div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element">
                                     <img id="save-icon" src="app/img/toolbar/save.svg" title="Save: Save current map to a Newt file">
@@ -978,7 +978,7 @@
                                   </tr>
                                     <tr>
                                         <td><b>File > Samples</b>:
-                                            Load a sample model</td>
+                                            Open a sample model</td>
                                     </tr>
                                     <tr>
                                         <td><b>Double-click on node</b>:
@@ -1469,7 +1469,7 @@
         
         <script type="text/template" id="map-tab-experiment-template">
             <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
-         <div align="center" style = 'margin-top: 10px; text-align: center'> Load... <img width='16px' height='16px' id='load-exp-data-util' title="Load experiment data from a tab-delimited file" src='app/img/add.svg' style="margin: 5px;"/> </div> 
+         <div align="center" style = 'margin-top: 10px; text-align: center'> Open... <img width='16px' height='16px' id='load-exp-data-util' title="Open experiment data from a tab-delimited file" src='app/img/add.svg' style="margin: 5px;"/> </div> 
                
                 <% if( experimentDescription.length  <= 0 || Object.entries(experimentDescription).length == 0){ %>
                 <% } else { %>
@@ -1932,14 +1932,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Load Preferences</h4>
+                        <h4 class="modal-title">Open Preferences</h4>
                     </div>
                     <div class="modal-body">
                     <table class="table-condensed layout-table dialog-table">
                         <tbody>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="Load Map Properties preferences" > Map Properties </span>
+                                    <span class="add-on layout-text" title="Open Map Properties preferences" > Map Properties </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-map-check" type="checkbox" class="layout-text" <% if(typeof currentGeneralProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
@@ -1947,7 +1947,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="Load Grid Properties preferences"> Grid Properties </span>
+                                    <span class="add-on layout-text" title="Open Grid Properties preferences"> Grid Properties </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-grid-check" type="checkbox" class="layout-text"  <% if(typeof currentGridProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
@@ -1955,7 +1955,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="Load Layout Properties preferences"> Layout Properties </span>
+                                    <span class="add-on layout-text" title="Open Layout Properties preferences"> Layout Properties </span>
                                 </td>
                                 <td>
                                     <input id="load-user-prefrences-layout-check" type="checkbox" class="layout-text"  <% if(typeof currentLayoutProperties !== 'undefined') { %> checked <% }else{ %> disabled <% } %>>
@@ -1964,7 +1964,7 @@
 
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text" title="Load Object Properties preferences"> Object Properties: </span>
+                                    <span class="add-on layout-text" title="Open Object Properties preferences"> Object Properties: </span>
                                 </td>
                                 <% if(elementsStyles.length <= 0) { %>
                                 <td>
@@ -1979,7 +1979,7 @@
                         <% elementsStyles.forEach(function(element) { %>
                             <tr>
                                 <td>
-                                    <span class="add-on layout-text save-load-prefrences-object-name" title="Load <%= element['element'] %> properties preferences" > <%= (element['element']) %> </span>
+                                    <span class="add-on layout-text save-load-prefrences-object-name" title="Open <%= element['element'] %> properties preferences" > <%= (element['element']) %> </span>
                                 </td>
                                 <td>
                                     <input title="<%= element['element'] %>" id="load-user-prefrences-object-<%= element['element'] %>-check" type="checkbox" disabled="disabled" class="layout-text load-preferences-object-styles" checked>
@@ -2011,7 +2011,7 @@
                  <% } %>
                     </div>
                     <div class="modal-footer" style="text-align: center">
-                        <button id="load-user-preferences-accept" class="btn btn-default">Load</button>
+                        <button id="load-user-preferences-accept" class="btn btn-default">Open</button>
                         <button id="load-user-preferences-cancel" class="btn btn-default">Cancel</button>
                     </div>
                 </div>

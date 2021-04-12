@@ -96,7 +96,7 @@ tutorial.UIGuide = function(){
       {
         element: document.getElementsByClassName('inside-menu')[0],
         intro: '<p style="font-size:12px; margin:0px;">This group is for file operations</p><hr style="margin: 5px auto;">\n\
-                <p style="font-size:12px; margin:0px;"><b>- New File<br>- Load File<br>- Save File</b></p>'
+                <p style="font-size:12px; margin:0px;"><b>- New File<br>- Open File<br>- Save File</b></p>'
       },
       {
         element: document.getElementsByClassName('inside-menu')[1],
