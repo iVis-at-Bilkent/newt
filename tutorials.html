@@ -239,24 +239,30 @@
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a>
         </h3>
 
-	<p>As noted above Newt may be launched by a remote file via a URL or by URI as a query to the Pathway Commons database. In such cases, the user might like to change some map properities on launch. In case a map property is also specified inside the file, they will be overwritten by these parameters passed during remote launch. In the case of <code>compoundPadding</code> and <code>inferNestingOnLoad</code>, however, any values specified inside the file will be ignored. Available properties (with default values) include:
-<code>compoundPadding=0,
-  inferNestingOnLoad=false,
-  arrowScale=1.25,
-  showComplexName=true,
-  dynamicLabelSize=regular,
-  fitLabelsToNodes=false,
-  fitLabelsToInfoboxes=false,
-  recalculateLayoutOnComplexityManagement=true,
-  rearrangeOnComplexityManagement=true,
-  animateOnDrawingChanges=true,
-  adjustNodeLabelFontSizeAutomatically=false,
-  enablePorts=true,
-  allowCompoundNodeResize=false,
-  mapColorScheme=black_white,
-  mapName="",
-  mapDescription="",</code> and
-  <code>enableSIFTopologyGrouping=false</code>.
+	<p>As noted above Newt may be launched by a remote file via a URL or by URI as a query to the Pathway Commons database. In the event that the provided URL is a file containing
+    an SBML model as opposed to an SBGN map, Newt will automatically apply a conversion and display the provided SBML model as an SBGN map. The user might like to change some map 
+    properities on a remote launch. In case a map property is also specified inside the file, they will be overwritten by these parameters passed during remote launch. In the case of 
+    <code>compoundPadding</code> and <code>inferNestingOnLoad</code>, however, any values specified inside the file will be ignored. Available properties (with default values listed 
+    first) include:
+    <ul>
+    <li><code>compoundPadding=0</code>,
+    <li><code>inferNestingOnLoad=false</code>,
+    <li><code>arrowScale=1.25</code>,
+    <li><code>showComplexName=true</code>,
+    <li><code>dynamicLabelSize=regular</code>,
+    <li><code>fitLabelsToNodes=false</code>,
+    <li><code>fitLabelsToInfoboxes=false</code>,
+    <li><code>recalculateLayoutOnComplexityManagement=true</code>,
+    <li><code>rearrangeOnComplexityManagement=true</code>,
+    <li><code>animateOnDrawingChanges=true</code>,
+    <li><code>adjustNodeLabelFontSizeAutomatically=false</code>,
+    <li><code>enablePorts=true</code>,
+    <li><code>allowCompoundNodeResize=false</code>,
+    <li><code>mapColorScheme={black_white, black_white, greyscale, inverse_greyscale, blue_scale, inverse_blue_scale, opposed_red_blue, opposed_red_blue2, opposed_green_brown, opposed_green_brown2, opposed_purple_brown, opposed_purple_brown2, opposed_purple_green, opposed_purple_green2, opposed_grey_red, opposed_grey_red2, pure_white}</code>,
+    <li><code>mapName=""</code>,
+    <li><code>mapDescription=""</code>,
+    <li><code>enableSIFTopologyGrouping=false</code>,
+    <li><code>applyLayoutOnURL=false</code>. 
 </p>
 
         <h2 id="convenient-editing">Convenient editing
