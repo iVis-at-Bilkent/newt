@@ -370,11 +370,11 @@ module.exports = function() {
         chiseInstance.loadCellDesigner(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data,true);
+              chiseInstance.loadSBGNMLText(data, true, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data,true);
+            chiseInstance.loadSBGNMLText(data, true, file.name, cy);
           }
         },
         error = function(data){
@@ -472,11 +472,11 @@ module.exports = function() {
         chiseInstance.loadSbml(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data);
+              chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data);
+            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
           }
         },
         error = function(data){
@@ -625,6 +625,16 @@ module.exports = function() {
         appUtilities.setScratch(cy, 'urlParams', undefined);
 
         // filter map properties from the url parameters
+
+        // get applyLayout value before map properties are filtered, apply layout
+        // isn't really a map property so its not added to sbgnviz 
+        // validMapProperties
+        const applyLayout = urlParams.applyLayoutOnURL === "true";
+        const fromURL = urlParams.url !== undefined;
+        if (urlParams.compoundPadding) {
+          const compoundPadding = urlParams.compoundPadding;
+          chiseInstance.setCompoundPadding(Number(compoundPadding));
+        }
         var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
         
         if(!("inferNestingOnLoad" in mapPropsFromUrl)) {
@@ -633,7 +643,24 @@ module.exports = function() {
 
         if(!("compoundPadding" in mapPropsFromUrl)){
           mapPropsFromUrl.compoundPadding = 0;
-        }              
+        }
+
+        if (fromURL && applyLayout) {
+          let currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+          // Below is copied from sbgnviz.graphUtilities.updateGraph
+          let preferences = {};
+          if(cy.nodes().length > 3000 || cy.edges().length > 3000) {
+            preferences.quality = "draft";
+          }
+          preferences.animate = false;
+          preferences.randomize = true;
+          preferences = $.extend({}, currentLayoutProperties, preferences);
+          layoutPropertiesView.applyLayout(preferences);
+        }
+        if (urlParams.mapColorScheme) {
+          appUtilities.applyMapColorScheme(urlParams.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+        }
 
         // merge the map properties coming from url into
         // the map properties read from file
@@ -1197,6 +1224,9 @@ module.exports = function() {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
 
+      // set to false to apply incremental packing at the end of the layout
+      cy.layoutUtilities("get").setOption("randomize", false);
+
       layoutPropertiesView.applyLayout(preferences);
     });
 
@@ -1223,6 +1253,9 @@ module.exports = function() {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges,
         randomize: true
       };
+
+      // set to true to apply randomized packing at the end of the layout
+      cy.layoutUtilities("get").setOption("randomize", true);
 
       layoutPropertiesView.applyLayout(preferences);
     });

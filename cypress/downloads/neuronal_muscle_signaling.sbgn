@@ -1,0 +1,376 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="process description">
+    <glyph id="_82f19e9e-6aa2-42b3-8b5e-8cee17197085" class="compartment">
+      <label text="synaptic button"/>
+      <bbox x="48.795570941475376" y="135.11438461108204" w="316.0675734938809" h="315.9878645468844"/>
+    </glyph>
+    <glyph id="_66737d5c-5193-43a2-baa6-094aa1c21654" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="CHT1"/>
+      <bbox x="280.63084958388345" y="405.4772491579664" w="60" h="30"/>
+    </glyph>
+    <glyph id="be08c23c-dca4-43cd-b8a6-06f6ebdaf710" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="SNARE"/>
+      <bbox x="289.2381444353563" y="281.1126901621377" w="60" h="30"/>
+    </glyph>
+    <glyph id="_96b935d7-083c-468d-8607-d3b70fff10a7" class="process" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <bbox x="279.59486803157813" y="355.57123995515013" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_96b935d7-083c-468d-8607-d3b70fff10a7.1" x="296.7377251744353" y="362.7140970980073"/>
+      <port id="_96b935d7-083c-468d-8607-d3b70fff10a7.2" x="276.7377251744353" y="362.7140970980073"/>
+    </glyph>
+    <glyph id="_9007194d-c2e6-4939-a795-be71ae35a60d" class="compartment" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="synaptic vesicle"/>
+      <bbox x="282.63502448654714" y="165.07138059900043" w="61.25" h="61.25"/>
+    </glyph>
+    <glyph id="a083be43-422d-9067-c688-661cec17e472" class="simple chemical" compartmentRef="_9007194d-c2e6-4939-a795-be71ae35a60d">
+      <label text="ACh"/>
+      <bbox x="298.26002448654714" y="180.69638059900043" w="30" h="30"/>
+    </glyph>
+    <glyph id="d2531344-d005-4b92-afd2-14dcb7d40965" class="simple chemical" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="ACh"/>
+      <bbox x="187.83618423934377" y="241.26985535879567" w="30" h="30"/>
+    </glyph>
+    <glyph id="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9" class="simple chemical" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="choline"/>
+      <bbox x="210.57454073863525" y="332.51334548303436" w="30" h="30"/>
+    </glyph>
+    <glyph id="ed79ab12-7b79-4a8a-80b3-c65181c076e4" class="simple chemical" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="acetyl&#xA;CoA"/>
+      <bbox x="121.54785811409693" y="355.4961222627594" w="30" h="30"/>
+    </glyph>
+    <glyph id="_2bdf0056-96f6-4184-a214-8c7cc7da6214" class="process" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <bbox x="161.83683231668672" y="306.28716005131133" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_2bdf0056-96f6-4184-a214-8c7cc7da6214.1" x="168.97968945954386" y="323.4300171941685"/>
+      <port id="_2bdf0056-96f6-4184-a214-8c7cc7da6214.2" x="168.97968945954386" y="303.4300171941685"/>
+    </glyph>
+    <glyph id="ce103257-dbf5-430f-9e6c-1745990341de" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="ChAT"/>
+      <bbox x="64.42057094147538" y="273.97879870320736" w="60" h="30"/>
+    </glyph>
+    <glyph id="_9886817c-7043-4de9-9895-0cd247f47190" class="macromolecule" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <label text="vAChT"/>
+      <bbox x="164.38226813242966" y="150.73938461108202" w="60" h="30"/>
+    </glyph>
+    <glyph id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d" class="process" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+      <bbox x="249.325423343741" y="202.19938785158084" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.1" x="246.46828048659813" y="209.34224499443798"/>
+      <port id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.2" x="266.46828048659813" y="209.34224499443798"/>
+    </glyph>
+    <glyph id="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d" class="compartment">
+      <label text="synaptic cleft"/>
+      <bbox x="422.2398870476601" y="194.00340042086597" w="218.00901463861186" h="202.01086590823894"/>
+    </glyph>
+    <glyph id="b88b6460-4172-427f-abbe-d7c0f0a174ce" class="macromolecule" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="AChE"/>
+      <bbox x="564.623901686272" y="297.71198411602137" w="60" h="30"/>
+    </glyph>
+    <glyph id="fb8eb6bc-a39a-4361-b938-026a3b63a9b9" class="simple chemical" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="choline"/>
+      <bbox x="437.86488704766015" y="293.9838395208504" w="30" h="30"/>
+    </glyph>
+    <glyph id="_8ba53135-01b4-4a4b-b87d-a5971850cb39" class="simple chemical" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="acetate"/>
+      <bbox x="506.90303800543836" y="350.38926632910494" w="30" h="30"/>
+    </glyph>
+    <glyph id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8" class="process" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <bbox x="509.92853438690094" y="296.171671110701" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.1" x="527.0713915297581" y="303.3145282535582"/>
+      <port id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.2" x="507.0713915297581" y="303.3145282535582"/>
+    </glyph>
+    <glyph id="d9e08f4b-94b8-4285-af36-f4159b56a2fc" class="process" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <bbox x="481.8242098739445" y="212.48554327800886" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="d9e08f4b-94b8-4285-af36-f4159b56a2fc.1" x="478.96706701680165" y="219.628400420866"/>
+      <port id="d9e08f4b-94b8-4285-af36-f4159b56a2fc.2" x="498.96706701680165" y="219.628400420866"/>
+    </glyph>
+    <glyph id="_06e41c55-1352-407e-9c4b-604d3f5f616b" class="simple chemical" compartmentRef="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+      <label text="ACh"/>
+      <bbox x="533.9835079953723" y="229.6074232490132" w="30" h="30"/>
+    </glyph>
+    <glyph id="_23d436e2-6633-42f2-98d0-00dbb962ac3d" class="compartment">
+      <label text="muscle cytosol"/>
+      <bbox x="709.2729209265942" y="71.69128590015737" w="745.9020162661556" h="409.70484179076595"/>
+    </glyph>
+    <glyph id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="nAChR"/>
+      <bbox x="724.8979209265941" y="281.98298496426975" w="60" h="30"/>
+      <glyph id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8_0" class="unit of information">
+        <label text="closed"/>
+        <bbox x="740.1195636437452" y="275.98298496426975" w="28.90625" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="nAChR"/>
+      <bbox x="846.1622909231087" y="225.61325241554542" w="60" h="30"/>
+      <glyph id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0_0" class="unit of information">
+        <label text="open"/>
+        <bbox x="863.7288611623334" y="219.61325241554542" w="22.24609375" h="12"/>
+      </glyph>
+    </glyph>
+    <glyph id="ac2f1b2b-2e6e-4647-84bd-c141925f4d85" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="Ca2+"/>
+      <bbox x="1008.3489781883812" y="225.94546167266378" w="30" h="30"/>
+    </glyph>
+    <glyph id="_264a7088-e810-4679-9c92-f06886510f98" class="process" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="788.4961393257254" y="236.68876075180904" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_264a7088-e810-4679-9c92-f06886510f98.1" x="785.6389964685825" y="243.83161789466618"/>
+      <port id="_264a7088-e810-4679-9c92-f06886510f98.2" x="805.6389964685825" y="243.83161789466618"/>
+    </glyph>
+    <glyph id="d756f4ab-9813-4d55-aa86-c37dc7f3b286" class="process" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="950.6223529279371" y="215.8272575197799" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="d756f4ab-9813-4d55-aa86-c37dc7f3b286.1" x="947.7652100707942" y="222.97011466263703"/>
+      <port id="d756f4ab-9813-4d55-aa86-c37dc7f3b286.2" x="967.7652100707942" y="222.97011466263703"/>
+    </glyph>
+    <glyph id="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="myosin"/>
+      <bbox x="1089.2391734843104" y="110.32003199879449" w="83.25" h="96.5"/>
+      <glyph id="_26a815b4-64c3-4797-9bfd-7dceafb3345d" class="macromolecule">
+        <label text="myosin"/>
+        <bbox x="1100.8641734843104" y="121.94503199879449" w="60" h="30"/>
+      </glyph>
+      <glyph id="_5fcbfc9c-92a0-45b2-834b-ad8866d4008b" class="simple chemical">
+        <label text="ATP"/>
+        <bbox x="1100.8641734843104" y="165.1950319987945" w="30" h="30"/>
+      </glyph>
+    </glyph>
+    <glyph id="_9b7f467a-30eb-4b8e-a966-43692648a46e" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="actin"/>
+      <bbox x="1137.232065433169" y="239.1061773642009" w="60" h="30"/>
+    </glyph>
+    <glyph id="_3a96c155-e828-4038-8384-4c25f4f1aaf6" class="association" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1082.5455317405458" y="244.15349311786542" w="14.285714285714072" h="14.285714285714072"/>
+      <port id="_3a96c155-e828-4038-8384-4c25f4f1aaf6.1" x="1089.688388883403" y="241.29635026072245"/>
+      <port id="_3a96c155-e828-4038-8384-4c25f4f1aaf6.2" x="1089.688388883403" y="261.2963502607224"/>
+    </glyph>
+    <glyph id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08" class="dissociation" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1235.5405605132291" y="238.58542211155336" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.1" x="1242.6834176560862" y="235.7282792544105"/>
+      <port id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.2" x="1242.6834176560862" y="255.7282792544105"/>
+    </glyph>
+    <glyph id="a0a8dd07-644b-4646-a305-ef249fa67752" class="macromolecule" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="myosin"/>
+      <bbox x="1251.5646102761618" y="177.42945028801165" w="60" h="30"/>
+    </glyph>
+    <glyph id="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="ATP"/>
+      <bbox x="1254.267925372915" y="87.3162859001574" w="30" h="30"/>
+    </glyph>
+    <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="tense"/>
+      <bbox x="1273.00834110702" y="278.89209179311297" w="83.25" h="96.5"/>
+      <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12_0" class="unit of information">
+        <label text="tense"/>
+        <bbox x="1303.4113555740905" y="272.89209179311297" w="24.462890625" h="12"/>
+      </glyph>
+      <glyph id="_1ce3ffae-f9a7-09a1-c91f-bf176708c1d2" class="macromolecule">
+        <label text="myosin"/>
+        <bbox x="1284.63334110702" y="290.51709179311297" w="60" h="30"/>
+      </glyph>
+      <glyph id="_0fbd0d13-c59b-48ab-240d-c262dd1bc480" class="macromolecule">
+        <label text="actin"/>
+        <bbox x="1284.63334110702" y="333.76709179311297" w="60" h="30"/>
+      </glyph>
+    </glyph>
+    <glyph id="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb" class="phenotype" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="muscle&#xA;contraction"/>
+      <bbox x="1379.5499371927497" y="371.00938801464247" w="60" h="30"/>
+    </glyph>
+    <glyph id="_04ea25d8-dfaa-7912-303f-be00b342fc27" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="relaxed"/>
+      <bbox x="1063.8564740619977" y="297.6979552597931" w="126.5" h="96.5"/>
+      <glyph id="_04ea25d8-dfaa-7912-303f-be00b342fc27_0" class="unit of information">
+        <label text="relaxed"/>
+        <bbox x="1113.78217553811" y="291.6979552597931" w="32.7978515625" h="12"/>
+      </glyph>
+      <glyph id="_343e0d0d-eeac-5cf5-acec-bc15975650a3" class="macromolecule">
+        <label text="myosin"/>
+        <bbox x="1075.4814740619977" y="309.3229552597931" w="60" h="30"/>
+      </glyph>
+      <glyph id="_96e17352-dd50-0332-a224-954cd97fc3c2" class="macromolecule">
+        <label text="actin"/>
+        <bbox x="1075.4814740619977" y="352.5729552597931" w="60" h="30"/>
+      </glyph>
+      <glyph id="a3f830ac-34e3-466a-62ac-642bc3e51777" class="simple chemical">
+        <label text="ATP"/>
+        <bbox x="1148.7314740619977" y="309.3229552597931" w="30" h="30"/>
+      </glyph>
+    </glyph>
+    <glyph id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8" class="process" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1227.959105003771" y="383.19718455901943" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.1" x="1225.101962146628" y="390.3400417018766"/>
+      <port id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" x="1245.101962146628" y="390.3400417018766"/>
+    </glyph>
+    <glyph id="_6259ebd3-e879-4c70-b442-a602e5408989" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="Pi"/>
+      <bbox x="1203.4940777709794" y="435.7711276909233" w="30" h="30"/>
+    </glyph>
+    <glyph id="fb04887c-b0a0-4a2d-8cdd-a70826c659ee" class="simple chemical" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="ADP"/>
+      <bbox x="1275.95234244136" y="414.9017615457057" w="30" h="30"/>
+    </glyph>
+    <glyph id="nwtN_d1535aaf-5d91-4108-9331-852d6acb876e" class="compartment" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <label text="ER"/>
+      <bbox x="914.8053596831671" y="136.04800579840227" w="61.25" h="61.25"/>
+    </glyph>
+    <glyph id="_8c083cee-7025-4035-9201-1319da22340b" class="simple chemical" compartmentRef="nwtN_d1535aaf-5d91-4108-9331-852d6acb876e">
+      <label text="Ca2+"/>
+      <bbox x="930.4303596831671" y="151.67300579840227" w="30" h="30"/>
+    </glyph>
+    <glyph id="_00ac7e0a-288f-42e0-b252-9bcb59027572" class="association" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+      <bbox x="1210.6489775002344" y="143.57383272206184" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="_00ac7e0a-288f-42e0-b252-9bcb59027572.1" x="1227.7918346430915" y="150.71668986491898"/>
+      <port id="_00ac7e0a-288f-42e0-b252-9bcb59027572.2" x="1207.7918346430915" y="150.71668986491898"/>
+    </glyph>
+    <arc id="_04ea25d8-dfaa-7912-303f-be00b342fc27-1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8" class="consumption" source="_04ea25d8-dfaa-7912-303f-be00b342fc27" target="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.1">
+      <start x="1190.9814740619977" y="372.2040940279796"/>
+      <end x="1224.476962146628" y="390.3400417018766"/>
+    </arc>
+    <arc id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-fb04887c-b0a0-4a2d-8cdd-a70826c659ee" class="production" source="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" target="fb04887c-b0a0-4a2d-8cdd-a70826c659ee">
+      <start x="1245.726962146628" y="390.3400417018766"/>
+      <end x="1275.6520170062968" y="419.0637478171136"/>
+    </arc>
+    <arc id="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d-a083be43-422d-9067-c688-661cec17e472" class="production" source="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.2" target="a083be43-422d-9067-c688-661cec17e472">
+      <start x="267.09328048659813" y="209.34224499443798"/>
+      <end x="295.0289175462461" y="200.07693304490334"/>
+    </arc>
+    <arc id="d2531344-d005-4b92-afd2-14dcb7d40965-3797d8d2-4f00-4d1f-9d85-ecad1e61746d" class="consumption" source="d2531344-d005-4b92-afd2-14dcb7d40965" target="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d.1">
+      <start x="214.59524658130277" y="245.98077970362036"/>
+      <end x="245.84328048659813" y="209.34224499443798"/>
+    </arc>
+    <arc id="_9886817c-7043-4de9-9895-0cd247f47190-3797d8d2-4f00-4d1f-9d85-ecad1e61746d" class="necessary stimulation" source="_9886817c-7043-4de9-9895-0cd247f47190" target="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d">
+      <start x="216.63066960207695" y="181.36438461108202"/>
+      <end x="246.32165852710853" y="202.21629626803994"/>
+    </arc>
+    <arc id="ce103257-dbf5-430f-9e6c-1745990341de-2bdf0056-96f6-4184-a214-8c7cc7da6214" class="catalysis" source="ce103257-dbf5-430f-9e6c-1745990341de" target="_2bdf0056-96f6-4184-a214-8c7cc7da6214">
+      <start x="124.67614250027091" y="298.9009330505138"/>
+      <end x="158.42100253142704" y="309.9673587536121"/>
+    </arc>
+    <arc id="ed79ab12-7b79-4a8a-80b3-c65181c076e4-2bdf0056-96f6-4184-a214-8c7cc7da6214" class="consumption" source="ed79ab12-7b79-4a8a-80b3-c65181c076e4" target="_2bdf0056-96f6-4184-a214-8c7cc7da6214.1">
+      <start x="144.2681781376367" y="356.91167219166226"/>
+      <end x="168.97968945954386" y="324.0550171941685"/>
+    </arc>
+    <arc id="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9-2bdf0056-96f6-4184-a214-8c7cc7da6214" class="consumption" source="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9" target="_2bdf0056-96f6-4184-a214-8c7cc7da6214.1">
+      <start x="212.18942242140778" y="339.4523757750016"/>
+      <end x="168.97968945954386" y="324.0550171941685"/>
+    </arc>
+    <arc id="_2bdf0056-96f6-4184-a214-8c7cc7da6214-d2531344-d005-4b92-afd2-14dcb7d40965" class="production" source="_2bdf0056-96f6-4184-a214-8c7cc7da6214.2" target="d2531344-d005-4b92-afd2-14dcb7d40965">
+      <start x="168.97968945954386" y="302.8050171941685"/>
+      <end x="193.28077218912523" y="272.40232573845356"/>
+    </arc>
+    <arc id="_96b935d7-083c-468d-8607-d3b70fff10a7-135e2807-2b5c-4886-bbdf-d3c8bf433ab9" class="production" source="_96b935d7-083c-468d-8607-d3b70fff10a7.2" target="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9">
+      <start x="276.1127251744353" y="362.7140970980073"/>
+      <end x="243.77099839942366" y="352.0356710572423"/>
+    </arc>
+    <arc id="a083be43-422d-9067-c688-661cec17e472-d9e08f4b-94b8-4285-af36-f4159b56a2fc" class="consumption" source="a083be43-422d-9067-c688-661cec17e472" target="d9e08f4b-94b8-4285-af36-f4159b56a2fc.1">
+      <start x="328.74207633233675" y="197.80509955710815"/>
+      <end x="478.34206701680165" y="219.628400420866"/>
+    </arc>
+    <arc id="_66737d5c-5193-43a2-baa6-094aa1c21654-96b935d7-083c-468d-8607-d3b70fff10a7" class="necessary stimulation" source="_66737d5c-5193-43a2-baa6-094aa1c21654" target="_96b935d7-083c-468d-8607-d3b70fff10a7">
+      <start x="304.16773156514887" y="404.8522491579664"/>
+      <end x="291.07142468308734" y="373.1910920447816"/>
+    </arc>
+    <arc id="fb8eb6bc-a39a-4361-b938-026a3b63a9b9-96b935d7-083c-468d-8607-d3b70fff10a7" class="consumption" source="fb8eb6bc-a39a-4361-b938-026a3b63a9b9" target="_96b935d7-083c-468d-8607-d3b70fff10a7.1">
+      <start x="437.9981270973887" y="313.79217328432867"/>
+      <end x="297.3627251744353" y="362.7140970980073"/>
+    </arc>
+    <arc id="be08c23c-dca4-43cd-b8a6-06f6ebdaf710-d9e08f4b-94b8-4285-af36-f4159b56a2fc" class="necessary stimulation" source="be08c23c-dca4-43cd-b8a6-06f6ebdaf710" target="d9e08f4b-94b8-4285-af36-f4159b56a2fc">
+      <start x="347.8250033812749" y="283.23070417437344"/>
+      <end x="478.5286945700974" y="224.33220393589704"/>
+    </arc>
+    <arc id="d9e08f4b-94b8-4285-af36-f4159b56a2fc-06e41c55-1352-407e-9c4b-604d3f5f616b" class="production" source="d9e08f4b-94b8-4285-af36-f4159b56a2fc.2" target="_06e41c55-1352-407e-9c4b-604d3f5f616b">
+      <start x="499.59206701680165" y="219.628400420866"/>
+      <end x="531.6729674620337" y="237.40272433485697"/>
+    </arc>
+    <arc id="_06e41c55-1352-407e-9c4b-604d3f5f616b-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8" class="consumption" source="_06e41c55-1352-407e-9c4b-604d3f5f616b" target="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.1">
+      <start x="541.5212646331812" y="258.3353345614975"/>
+      <end x="527.6963915297581" y="303.3145282535582"/>
+    </arc>
+    <arc id="b88b6460-4172-427f-abbe-d7c0f0a174ce-6865aebe-2564-4ff6-a15a-6bd07a3a0ef8" class="catalysis" source="b88b6460-4172-427f-abbe-d7c0f0a174ce" target="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8">
+      <start x="563.998901686272" y="309.0009877187789"/>
+      <end x="527.762983922221" y="304.6100861588387"/>
+    </arc>
+    <arc id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-fb8eb6bc-a39a-4361-b938-026a3b63a9b9" class="production" source="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.2" target="fb8eb6bc-a39a-4361-b938-026a3b63a9b9">
+      <start x="506.4463915297581" y="303.3145282535582"/>
+      <end x="471.54221902256364" y="307.3346669103433"/>
+    </arc>
+    <arc id="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8-8ba53135-01b4-4a4b-b87d-a5971850cb39" class="production" source="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8.2" target="_8ba53135-01b4-4a4b-b87d-a5971850cb39">
+      <start x="506.4463915297581" y="303.3145282535582"/>
+      <end x="520.4480147891601" y="346.6958073811175"/>
+    </arc>
+    <arc id="f3ac8950-6d69-4c5b-92dd-3020906ea2c8-264a7088-e810-4679-9c92-f06886510f98" class="consumption" source="f3ac8950-6d69-4c5b-92dd-3020906ea2c8" target="_264a7088-e810-4679-9c92-f06886510f98.1">
+      <start x="769.5258136437452" y="277.8992350897044"/>
+      <end x="785.0139964685825" y="243.83161789466618"/>
+    </arc>
+    <arc id="_264a7088-e810-4679-9c92-f06886510f98-4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" class="production" source="_264a7088-e810-4679-9c92-f06886510f98.2" target="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0">
+      <start x="806.2639964685825" y="243.83161789466618"/>
+      <end x="842.4147839544371" y="241.9620771521649"/>
+    </arc>
+    <arc id="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0-d756f4ab-9813-4d55-aa86-c37dc7f3b286" class="necessary stimulation" source="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" target="d756f4ab-9813-4d55-aa86-c37dc7f3b286">
+      <start x="906.7872909231087" y="233.991907256251"/>
+      <end x="947.1214993940833" y="225.27136142724663"/>
+    </arc>
+    <arc id="d756f4ab-9813-4d55-aa86-c37dc7f3b286-ac2f1b2b-2e6e-4647-84bd-c141925f4d85" class="production" source="d756f4ab-9813-4d55-aa86-c37dc7f3b286.2" target="ac2f1b2b-2e6e-4647-84bd-c141925f4d85">
+      <start x="968.3902100707942" y="222.97011466263703"/>
+      <end x="1005.265890718286" y="235.98920829446755"/>
+    </arc>
+    <arc id="ac2f1b2b-2e6e-4647-84bd-c141925f4d85-3a96c155-e828-4038-8384-4c25f4f1aaf6" class="stimulation" source="ac2f1b2b-2e6e-4647-84bd-c141925f4d85" target="_3a96c155-e828-4038-8384-4c25f4f1aaf6">
+      <start x="1038.7871856609804" y="243.354273627338"/>
+      <end x="1079.11244620788" y="249.64619384237116"/>
+    </arc>
+    <arc id="_06e41c55-1352-407e-9c4b-604d3f5f616b-264a7088-e810-4679-9c92-f06886510f98" class="necessary stimulation" source="_06e41c55-1352-407e-9c4b-604d3f5f616b" target="_264a7088-e810-4679-9c92-f06886510f98">
+      <start x="564.6084307076006" y="244.55827818933324"/>
+      <end x="781.8890119261368" y="243.87486571248792"/>
+    </arc>
+    <arc id="_1129b8c7-71da-4a6c-8681-3082e6f04a6c-3a96c155-e828-4038-8384-4c25f4f1aaf6" class="consumption" source="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" target="_3a96c155-e828-4038-8384-4c25f4f1aaf6.1">
+      <start x="1109.1608802867454" y="207.4450319987945"/>
+      <end x="1089.688388883403" y="240.67135026072245"/>
+    </arc>
+    <arc id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-6259ebd3-e879-4c70-b442-a602e5408989" class="production" source="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" target="_6259ebd3-e879-4c70-b442-a602e5408989">
+      <start x="1245.726962146628" y="390.3400417018766"/>
+      <end x="1223.4627955614826" y="432.6914611143977"/>
+    </arc>
+    <arc id="_9b7f467a-30eb-4b8e-a966-43692648a46e-3a96c155-e828-4038-8384-4c25f4f1aaf6" class="consumption" source="_9b7f467a-30eb-4b8e-a966-43692648a46e" target="_3a96c155-e828-4038-8384-4c25f4f1aaf6.1">
+      <start x="1136.607065433169" y="252.99646785760044"/>
+      <end x="1089.688388883403" y="240.67135026072245"/>
+    </arc>
+    <arc id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08-9b7f467a-30eb-4b8e-a966-43692648a46e" class="production" source="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.1" target="_9b7f467a-30eb-4b8e-a966-43692648a46e">
+      <start x="1242.6834176560862" y="235.1032792544105"/>
+      <end x="1200.9629773311394" y="250.3607952775207"/>
+    </arc>
+    <arc id="_3a96c155-e828-4038-8384-4c25f4f1aaf6-04ea25d8-dfaa-7912-303f-be00b342fc27" class="production" source="_3a96c155-e828-4038-8384-4c25f4f1aaf6.2" target="_04ea25d8-dfaa-7912-303f-be00b342fc27">
+      <start x="1089.688388883403" y="261.9213502607224"/>
+      <end x="1106.6361234519013" y="294.166803688528"/>
+    </arc>
+    <arc id="_97c2c87b-c5d2-41fb-97f6-a1001075cf08-a0a8dd07-644b-4646-a305-ef249fa67752" class="production" source="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.1" target="a0a8dd07-644b-4646-a305-ef249fa67752">
+      <start x="1242.6834176560862" y="235.1032792544105"/>
+      <end x="1268.324558635967" y="210.57907997587978"/>
+    </arc>
+    <arc id="_85682413-94f7-8b3c-e052-59a72cd48e12-97c2c87b-c5d2-41fb-97f6-a1001075cf08" class="consumption" source="_85682413-94f7-8b3c-e052-59a72cd48e12" target="_97c2c87b-c5d2-41fb-97f6-a1001075cf08.2">
+      <start x="1277.6839566867231" y="285.33259273692653"/>
+      <end x="1242.6834176560862" y="256.3532792544105"/>
+    </arc>
+    <arc id="_8c083cee-7025-4035-9201-1319da22340b-d756f4ab-9813-4d55-aa86-c37dc7f3b286" class="consumption" source="_8c083cee-7025-4035-9201-1319da22340b" target="d756f4ab-9813-4d55-aa86-c37dc7f3b286.1">
+      <start x="948.7745111050358" y="181.9359437943326"/>
+      <end x="947.1402100707942" y="222.97011466263703"/>
+    </arc>
+    <arc id="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8-85682413-94f7-8b3c-e052-59a72cd48e12" class="production" source="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8.2" target="_85682413-94f7-8b3c-e052-59a72cd48e12">
+      <start x="1245.726962146628" y="390.3400417018766"/>
+      <end x="1269.9367292557229" y="362.65932126648215"/>
+    </arc>
+    <arc id="_85682413-94f7-8b3c-e052-59a72cd48e12-e889d01c-1eb1-4c83-8bd9-0160e9c2abcb" class="stimulation" source="_85682413-94f7-8b3c-e052-59a72cd48e12" target="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb">
+      <start x="1356.88334110702" y="353.3455521775668"/>
+      <end x="1387.8464178015295" y="372.5488599537888"/>
+    </arc>
+    <arc id="_00ac7e0a-288f-42e0-b252-9bcb59027572-1129b8c7-71da-4a6c-8681-3082e6f04a6c" class="production" source="_00ac7e0a-288f-42e0-b252-9bcb59027572.2" target="_1129b8c7-71da-4a6c-8681-3082e6f04a6c">
+      <start x="1207.1668346430915" y="150.71668986491898"/>
+      <end x="1176.2264980031425" y="154.47184449799929"/>
+    </arc>
+    <arc id="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb-00ac7e0a-288f-42e0-b252-9bcb59027572" class="consumption" source="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb" target="_00ac7e0a-288f-42e0-b252-9bcb59027572.1">
+      <start x="1257.8845394160535" y="113.01951668142743"/>
+      <end x="1228.4168346430915" y="150.71668986491898"/>
+    </arc>
+    <arc id="a0a8dd07-644b-4646-a305-ef249fa67752-00ac7e0a-288f-42e0-b252-9bcb59027572" class="consumption" source="a0a8dd07-644b-4646-a305-ef249fa67752" target="_00ac7e0a-288f-42e0-b252-9bcb59027572.1">
+      <start x="1257.822305521727" y="176.89998555509771"/>
+      <end x="1228.4168346430915" y="150.71668986491898"/>
+    </arc>
+  </map>
+</sbgn>

@@ -12,7 +12,7 @@ module.exports = function (chiseInstance) {
 
   // use chise instance associated with chise instance
   var cy = chiseInstance.getCy();
-
+  window.cy = cy;
   // register extensions and bind events when cy is ready
   cy.ready(function () {
     cytoscapeExtensionsAndContextMenu();
@@ -493,9 +493,8 @@ module.exports = function (chiseInstance) {
     });
     
     cy.layoutUtilities({
-      componentSpacing: 30,
       desiredAspectRatio: $(cy.container()).width() / $(cy.container()).height()
-    })
+    });
 
     cy.nodeEditing({
       padding: 2, // spacing between node and grapples/rectangle

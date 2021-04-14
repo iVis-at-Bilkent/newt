@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "e2e": "cypress run --headless --browser chrome > e2e-test-results.txt",
+    "cypress": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug",
     "watch-js": "nodemon -e js --watch app --ignore app/bundle.js -x \"npm run build-bundle-js\"",
@@ -54,8 +56,11 @@
     "nodemailer": "6.4.5"
   },
   "devDependencies": {
-    "express": "^4.14.0",
     "browserify": "^11.2.0",
+    "cypress": "^6.8.0",
+    "cypress-file-upload": "^5.0.3",
+    "cypress-real-events": "^1.3.0",
+    "express": "^4.14.0",
     "nodemon": "1.11.0",
     "parallelshell": "3.0.1"
   }
