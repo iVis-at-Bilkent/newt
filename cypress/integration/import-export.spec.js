@@ -27,14 +27,21 @@ context('Import / Export', () => {
     });
   }
 
-  function fileExport(btnSelector, btnTxt, waitMs = 1000) {
+  function fileExport(btnSelector, btnTxt, waitMs = 1000, isClick2Save = true, isImg = false) {
     cy.get('a.dropdown-toggle').contains('File').click();
-    cy.contains('a.dropdown-toggle', 'Export').realHover();
+    if (isImg) {
+      cy.contains('a.dropdown-toggle', 'Export as Image').realHover();
+    } else {
+      cy.contains('a.dropdown-toggle', 'Export').realHover();
+    }
+
     cy.contains(btnSelector, btnTxt).should('be.visible').click();
     cy.wait(waitMs);
 
-    cy.get('button#file-save-accept').contains('Save').click();
-    cy.wait(waitMs);
+    if (isClick2Save) {
+      cy.get('button#file-save-accept').contains('Save').click();
+      cy.wait(waitMs);
+    }
   }
 
   it('TC1: File -> Import -> Simple AF', () => {
@@ -75,14 +82,14 @@ context('Import / Export', () => {
   });
 
   it('TC3: File -> Import -> SBML', () => {
-    fileImport('a#import-SBML-file', 'SBML', 'input#sbml-file', 'activated_stat1alpha_induction_of_the_irf1_gene.sbml', 2000);
+    fileImport('a#import-SBML-file', 'SBML', 'input#sbml-file', 'activated_stat1alpha_induction_of_the_irf1_gene.sbml', 4000);
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length > 0).to.eq(true);
     });
   });
 
-  // CellDesigner import currently doesn’t work!
+  // // CellDesigner import currently doesn’t work!
   // it('TC4: File -> Import -> CellDesigner', () => {
   //   fileImport('a#import-celldesigner-file', 'CellDesigner', 'celldesigner-file-input', 'cellDesigner.xml', 2000);
 
@@ -96,5 +103,41 @@ context('Import / Export', () => {
     fileExport('a#export-as-sbgnml-plain-file', 'SBGN-ML Plain');
   });
 
+  it('TC6: File -> Export -> SBGN-ML Plain 0.3', () => {
+    loadSample('Neuronal muscle signaling');
+    fileExport('a#export-as-sbgnml3-plain-file', 'SBGN-ML Plain 0.3');
+  });
+
+  it('TC7: File -> Export -> Newt 0.3', () => {
+    loadSample('Neuronal muscle signaling');
+    fileExport('a#export-as-nwt3-file', 'NWT 0.3');
+  });
+
+  it('TC8: File -> Export -> SIF', () => {
+    loadSample('RTN4 controllers and binding proteins');
+    fileExport('a#export-to-plain-sif', 'SIF', 1000, false);
+  });
+
+  it('TC9: File -> Export -> SIF Layout', () => {
+    loadSample('RTN4 controllers and binding proteins');
+    fileExport('a#export-to-sif-layout', 'SIF Layout', 1000, false);
+  });
+
+  it('TC10: File -> Export -> SBML', () => {
+    loadSample('Neuronal muscle signaling');
+    fileExport('a#export-as-sbml', 'SBML', 1000, true);
+  });
+
+  it('TC11: File -> Export -> CellDesigner', () => {
+    loadSample('Neuronal muscle signaling');
+    fileExport('a#export-as-celldesigner-file', 'CellDesigner', 1000, true);
+  });
+
+  it('TC12: File -> Export -> Export as Image', () => {
+    loadSample('Neuronal muscle signaling');
+    fileExport('a#save-as-png', 'PNG', 1000, false, true);
+    fileExport('a#save-as-jpg', 'JPG', 1000, false, true);
+    fileExport('a#save-as-svg', 'SVG', 1000, false, true);
+  });
 
 });
