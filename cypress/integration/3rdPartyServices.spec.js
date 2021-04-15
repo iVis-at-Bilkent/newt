@@ -26,8 +26,21 @@ context('Other third party services', () => {
       win.cy.nodes("[label='ChAT']").select();
     });
 
-    cy.contains('button.btn.btn-default', 'ChAT').should('be.visible').click();
+    cy.contains('button.btn.btn-default', 'ChAT').should('be.visible').invoke('attr', 'onclick')
+      .should('eq', "window.open('https://www.genecards.org/cgi-bin/carddisp.pl?gene=ChAT', '_blank')")
 
+  });
+
+  it('TC2: Select simple chemical with label “ADP”', () => {
+    loadSample('Neuronal muscle signaling');
+
+    cy.window().then((win) => {
+      win.cy.nodes("[label='ADP']").select();
+    });
+
+    cy.get('tr.chemical-info.chebi-name').children('td').contains('ADP').should('be.visible');
+    cy.get('tr.chemical-info.chemical-description.node-details-summary').children('td').contains("A purine ribonucleoside 5'-diphosphate having adenine as the nucleobase").should('be.visible');
+    cy.get('tr.chemical-info.chebi-id').children('td').contains("16761").should('be.visible');
   });
 
 });

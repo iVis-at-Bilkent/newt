@@ -7,27 +7,56 @@
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
   │ Cypress:    6.8.0                                                                              │
   │ Browser:    Chrome 89 (headless)                                                               │
-  │ Specs:      1 found (import-export.spec.js)                                                    │
+  │ Specs:      5 found (3rdPartyServices.spec.js, import-export.spec.js, loadFromURL.spec.js, map │
+  │             CreateEdit.spec.js, query.spec.js)                                                 │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 
 ────────────────────────────────────────────────────────────────────────────────────────────────────
                                                                                                     
-  Running:  import-export.spec.js                                                           (1 of 1)
+  Running:  3rdPartyServices.spec.js                                                        (1 of 5)
+
+
+  Other third party services
+    √ TC1: Select macromolecule with label “ChAT” (8908ms)
+    √ TC2: Select simple chemical with label “ADP” (3835ms)
+
+
+  2 passing (14s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     14 seconds                                                                       │
+  │ Spec Ran:     3rdPartyServices.spec.js                                                         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  import-export.spec.js                                                           (2 of 5)
 
 
   Import / Export
-    √ TC1: File -> Import -> Simple AF (6412ms)
-    √ TC2: File -> Import -> SIF (5542ms)
-    √ TC3: File -> Import -> SBML (6913ms)
-    √ TC5: File -> Export -> SBGN-ML Plain (6205ms)
-    √ TC6: File -> Export -> SBGN-ML Plain 0.3 (6059ms)
-    √ TC7: File -> Export -> Newt 0.3 (6621ms)
-    √ TC8: File -> Export -> SIF (4558ms)
-    √ TC9: File -> Export -> SIF Layout (4242ms)
-    √ TC10: File -> Export -> SBML (6405ms)
-    √ TC11: File -> Export -> CellDesigner (5817ms)
-    √ TC12: File -> Export -> Export as Image (7614ms)
+    √ TC1: File -> Import -> Simple AF (6435ms)
+    √ TC2: File -> Import -> SIF (5540ms)
+    √ TC3: File -> Import -> SBML (6092ms)
+    √ TC5: File -> Export -> SBGN-ML Plain (6114ms)
+    √ TC6: File -> Export -> SBGN-ML Plain 0.3 (6454ms)
+    √ TC7: File -> Export -> Newt 0.3 (6238ms)
+    √ TC8: File -> Export -> SIF (4521ms)
+    √ TC9: File -> Export -> SIF Layout (5110ms)
+    √ TC10: File -> Export -> SBML (5803ms)
+    √ TC11: File -> Export -> CellDesigner (6691ms)
+    √ TC12: File -> Export -> Export as Image (8575ms)
 
 
   11 passing (1m)
@@ -43,8 +72,93 @@
   │ Skipped:      0                                                                                │
   │ Screenshots:  0                                                                                │
   │ Video:        false                                                                            │
-  │ Duration:     1 minute, 7 seconds                                                              │
+  │ Duration:     1 minute, 9 seconds                                                              │
   │ Spec Ran:     import-export.spec.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  loadFromURL.spec.js                                                             (3 of 5)
+
+
+  Load from URI/URL
+    √ TC1: URI=http://identifiers.org/reactome/R-HSA-6803211 (5192ms)
+    √ TC2: URL=https://raw.githubusercontent.com/iVis-at-Bilkent/newt/master/app/samples/polyq_proteins_interference.nwt (1617ms)
+
+
+  2 passing (8s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     8 seconds                                                                        │
+  │ Spec Ran:     loadFromURL.spec.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  mapCreateEdit.spec.js                                                           (4 of 5)
+
+
+  Map creation/editing
+    √ TC2: Expand/Collapse operations (22007ms)
+
+
+  1 passing (23s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        1                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     23 seconds                                                                       │
+  │ Spec Ran:     mapCreateEdit.spec.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  query.spec.js                                                                   (5 of 5)
+
+
+  Query
+    √ TC1: Query -> Pathway Commons -> Paths Between... (11501ms)
+    √ TC2: Query -> Pathway Commons -> Paths From To... (9028ms)
+    √ TC3: Query -> Pathway Commons -> Common Stream... (10753ms)
+    √ TC5: Query -> Pathway Commons -> By URI... (7180ms)
+
+
+  4 passing (40s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     39 seconds                                                                       │
+  │ Spec Ran:     query.spec.js                                                                    │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 
@@ -55,7 +169,15 @@
 
        Spec                                              Tests  Passing  Failing  Pending  Skipped  
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ √  import-export.spec.js                    01:07       11       11        -        -        - │
+  │ √  3rdPartyServices.spec.js                 00:14        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  import-export.spec.js                    01:09       11       11        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  loadFromURL.spec.js                      00:08        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  mapCreateEdit.spec.js                    00:23        1        1        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  query.spec.js                            00:39        4        4        -        -        - │
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
-    √  All specs passed!                        01:07       11       11        -        -        -  
+    √  All specs passed!                        02:35       20       20        -        -        -  
 
