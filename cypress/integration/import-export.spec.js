@@ -90,13 +90,13 @@ context('Import / Export', () => {
   });
 
   // // CellDesigner import currently doesn’t work!
-  // it('TC4: File -> Import -> CellDesigner', () => {
-  //   fileImport('a#import-celldesigner-file', 'CellDesigner', 'celldesigner-file-input', 'cellDesigner.xml', 2000);
+  it.skip('TC4: File -> Import -> CellDesigner', () => {
+    fileImport('a#import-celldesigner-file', 'CellDesigner', 'celldesigner-file-input', 'cellDesigner.xml', 2000);
 
-  //   cy.window().then((win) => {
-  //     expect(win.cy.nodes().length > 0).to.eq(true);
-  //   });
-  // });
+    cy.window().then((win) => {
+      expect(win.cy.nodes().length > 0).to.eq(true);
+    });
+  });
 
   it('TC5: File -> Export -> SBGN-ML Plain', () => {
     loadSample('Neuronal muscle signaling');

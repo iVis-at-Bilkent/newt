@@ -26,17 +26,17 @@ context('Map creation/editing', () => {
     });
   }
 
-  // //  drag and drop on map is problematic!
-  // it('TC1: Add process with convenient edges', () => {
+  //  drag and drop on map is problematic!
+  it.skip('TC1: Add process with convenient edges', () => {
 
-  //   cy.get('div#pd-node-palette').children().children().children('img[title="Macromolecule"]').should('be.visible').click();
-  //   cy.get('body').click(500, 500);
-  //   cy.get('div#pd-node-palette').children().children().children('img[title="Simple Chemical"]').should('be.visible').click();
-  //   cy.get('body').click(500, 600);
+    cy.get('div#pd-node-palette').children().children().children('img[title="Macromolecule"]').should('be.visible').click();
+    cy.get('body').click(500, 500);
+    cy.get('div#pd-node-palette').children().children().children('img[title="Simple Chemical"]').should('be.visible').click();
+    cy.get('body').click(500, 600);
 
-  //   cy.get('div#pd-node-palette').children().children().children('img[title="Process"]').should('be.visible').click();
+    cy.get('div#pd-node-palette').children().children().children('img[title="Process"]').should('be.visible').click();
 
-  // });
+  });
 
   it('TC2: Expand/Collapse operations', () => {
     loadSample('Neuronal muscle signaling');
