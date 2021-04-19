@@ -54,16 +54,16 @@ context('Query', () => {
   });
 
   // // this doesn't work because it takes longer than 30 seconds
-  it.skip('TC4: Query -> Pathway Commons -> Neighborhood...', () => {
+  it('TC4: Query -> Pathway Commons -> Neighborhood...', () => {
     pathwaycommons('a#query-neighborhood', 'Neighborhood...');
 
-    cy.get('textarea#query-neighborhood-gene-symbols').type('BRCA1');
+    cy.get('textarea#query-neighborhood-gene-symbols').type('BAMBI');
     cy.get('button#save-query-neighborhood').click();
-    cy.wait(6000);
+    cy.wait(25000);
 
     cy.window().then((win) => {
-      expect(win.cy.nodes().length == 683).to.eq(true);
-      expect(win.cy.edges().length == 221).to.eq(true);
+      expect(win.cy.nodes().length == 4701).to.eq(true);
+      expect(win.cy.edges().length == 8817).to.eq(true);
     });
   });
 

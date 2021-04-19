@@ -7,7 +7,7 @@ context('Other third party services', () => {
     cy.get('body').click(10, 10);
   });
 
-  function loadSample(name, waitMs = 1000) {
+  function loadSample(name, waitMs = 1500) {
     cy.get('a.dropdown-toggle').contains('File').click();
     cy.contains('a.dropdown-toggle', 'Samples').realHover();
     cy.contains('a.dropdown-toggle', 'Samples').realHover();

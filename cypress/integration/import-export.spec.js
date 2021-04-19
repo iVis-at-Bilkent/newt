@@ -90,8 +90,8 @@ context('Import / Export', () => {
   });
 
   // // CellDesigner import currently doesn’t work!
-  it.skip('TC4: File -> Import -> CellDesigner', () => {
-    fileImport('a#import-celldesigner-file', 'CellDesigner', 'celldesigner-file-input', 'cellDesigner.xml', 2000);
+  it('TC4: File -> Import -> CellDesigner', () => {
+    fileImport('a#import-celldesigner-file', 'CellDesigner', 'input#celldesigner-file-input', 'M-Phase.xml.txt', 4000);
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length > 0).to.eq(true);
