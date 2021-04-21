@@ -787,6 +787,10 @@ img#template-reaction-add-button:hover {
     cursor: pointer;
 }
 
+img#brick-metabolic-reaction-add-output:hover {
+    cursor: pointer;
+}
+
 img#template-reversible-input-add-button:hover {
     cursor: pointer;
 }
@@ -931,4 +935,23 @@ img#template-reversible-output-add-button:hover {
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #b5b5b5;
+}
+
+.icon-small {
+    width: 16px;
+    height: 16px;
+}
+
+.dropdown-sbgn-bricks-molecule-type {
+    width: 120px;
+}
+
+.image-button-disabled-appearance {
+    cursor: default;
+    opacity: 0.2;
+}
+
+.image-button-enabled-appearance {
+    cursor: pointer;
+    opacity: 1.0;
 }

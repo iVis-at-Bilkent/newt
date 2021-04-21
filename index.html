@@ -2369,11 +2369,11 @@
         </script>
 
         <script type="text/template" id="reaction-template-template">
-            <div class="modal-dialog modal-sm sbgn-modal-dialog">
-              <div class="modal-content" style="display: inline-block"  id="template-modal-content" align="center">
+          <div class="modal-dialog modal-sm sbgn-modal-dialog">
+            <div class="modal-content" style="display: inline-block"  id="template-modal-content" align="center">
             <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">SBGN Bricks</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">SBGN Bricks</h4>
             </div>
             <div class="modal-body" style="display: inline-block">
             <table class="table-condensed layout-table dialog-table">
@@ -2383,15 +2383,15 @@
             <td style="padding-bottom: 10px;" colspan=100%>
             <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b> Type:</b> </span>
             <select id="reaction-template-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: fit-content;">
-            <option id="reaction-template-type-association" value="association" selected> Association </option>
-            <option id="reaction-template-type-dissociation" value="dissociation"> Dissociation </option>
-            <option id="reaction-template-type-reversible" value="reversible"> Reversible </option>
-            <option id="reaction-template-type-irreversible" value="irreversible"> Irreversible </option>
-            <option id="reaction-template-type-activation" value="activation"> Activation </option>
-            <option id="reaction-template-type-deactivation" value="deactivation"> Deactivation </option>
-            <option id="reaction-template-type-catalytic" value="catalytic"> Metabolic Catalytic Activity </option>
-            <option id="reaction-template-type-transcription" value="transcription"> Transcription </option>
-            <option id="reaction-template-type-translation" value="translation"> Translation </option>
+            <option id="reaction-template-type-metabolic-reaction" value="metabolic-reaction" selected>Metabolic Reaction</option>
+            <option id="reaction-template-type-dissociation" value="dissociation">Dissociation</option>
+            <option id="reaction-template-type-reversible" value="reversible">Reversible</option>
+            <option id="reaction-template-type-irreversible" value="irreversible">Irreversible</option>
+            <option id="reaction-template-type-activation" value="activation">Activation</option>
+            <option id="reaction-template-type-deactivation" value="deactivation">Deactivation</option>
+            <option id="reaction-template-type-catalytic" value="catalytic">Metabolic Catalytic Activity</option>
+            <option id="reaction-template-type-transcription" value="transcription">Transcription</option>
+            <option id="reaction-template-type-translation" value="translation">Translation</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/" target="_blank">
@@ -2402,32 +2402,39 @@
             
             </tr>
 
-
-            <tr id="reaction-special-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">
-            <td colspan=100%>
-                <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b>Catalyst: </b> </span> 
-                <input type='text' class='sbgn-input-medium layout-text' id='catalytic-reaction-catalyst-name' value=''></input>
+            <tr id="reaction-special-input-row" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+                <span style="margin-right: 50px">
+                <input id="metabolic-reaction-reversible-checkbox" type='checkbox' class='layout-text' style="margin-right: 5px">Reversible</input> 
+                </span>
+                <span>
+                <input id="metabolic-reaction-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"><b>Regulator:</b></input> 
+                <input type='text' class='sbgn-input-medium layout-text' id='metabolic-reaction-regulator-name' value='' disabled></input>
                 
-                <select id="catalyst-type-select" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content'>
+                <select id="metabolic-reaction-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
                 <option value="macromolecule" selected> Macromolecule </option>
                 <option value="simple chemical"> Simple Chemical </option>
                 <option value="unspecified entity"> Unspecified Entity </option>
                 <option value="nucleic acid feature"> Nucleic Acid Feature </option>
                 <option value="perturbing agent"> Perturbing Agent </option>
-            
+                <option value="complex"> Complex </option>
+                <option value="source and sink"> Source and Sink </option>
+                </select>
+                <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-right: 5px" disabled>Multimer</input>
+                </span>
             </td>
             </tr>
 
             <tr style="height: 40px; vertical-align:middle; width: 100%;">
             <td align="center" style="margin-left: 5px; width: 16.25%;">
-            <span id="template-input-side-indicator" class="add-on layout-text"> <b> Input </b> </span>
+            <span id="template-input-side-indicator" class="add-on layout-text"> <b>Input</b> </span>
             </td>
 
             <td style="margin-left: 25%;">
             </td>
 
             <td align="center" style="margin-right: 5px; width: 16.25%;">
-            <span class="add-on layout-text"> <b> Output </b> </span>
+            <span class="add-on layout-text"> <b>Output</b> </span>
             </td>
             </tr>
 
@@ -2440,22 +2447,9 @@
             </td>
             <td>
             <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
-            <option value="Macromolecule" selected> Macromolecule </option>
-            <option value="Simple Chemical"> Simple Chemical </option>
+            <option value="Simple Chemical" selected>Simple Chemical</option>
             </td>
-            <td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
-            </td>
-            </tr>
-            <tr>
-            <td>
-            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='2' value=''></input>
-            </td>
-            <td>
-            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="2" style='width: 120px'>
-            <option value="Macromolecule" selected> Macromolecule </option>
-            <option value="Simple Chemical"> Simple Chemical </option>
-            </td>
-            <td><img style='vertical-align: text-bottom;' class='template-reaction-delete-button' width='16px' height='16px' name='2' src='app/img/toolbar/delete-simple.svg'/>
+            <td><img class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
             </td>
             </tr>
             <tr><td>
@@ -2471,11 +2465,19 @@
 
             <table id='template-reaction-associated-table'>
             <tr>
-            <td style="width: 50px; margin-left: 50%;"></td>
             <td>
-            <input type='text' class='sbgn-input-medium layout-text' id='template-reaction-complex-name' value=''></input>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Simple Chemical" selected>Simple Chemical</option>
+            </td>
+            <td><img class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
             </td>
             </tr>
+            <tr><td>
+            <img width="16px" height="16px" id='brick-metabolic-reaction-add-output' src='app/img/add.svg' style="margin-left: 100%"/>
+            </td></tr>
             </table>
             </td>
 
@@ -2703,6 +2705,7 @@
 
             </tr>
             </tbody>
+            <div id="sbgn-brick-preview-cy-div" style="height: 200px; width:500px; text-align:initial; border: 1px solid; margin-bottom: 10px;"></div>
             </table>
             </div>
             <div class="modal-footer" style="text-align: center">
