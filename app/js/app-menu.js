@@ -1587,6 +1587,10 @@ module.exports = function() {
       modeHandler.setLassoMode();
     });
 
+    $('#sbgn-bricks-icon').click(function() {
+      reactionTemplateView.render();
+    }); 
+
     $('#add-node-mode-icon').click(function (e) {
       modeHandler.setAddNodeMode();
 
