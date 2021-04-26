@@ -2372,13 +2372,15 @@
         </script>
 
         <script type="text/template" id="reaction-template-template">
-          <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content" style="display: inline-block"  id="template-modal-content" align="center">
-            <div class="modal-header">
+          <div class="modal-dialog sbgn-modal-dialog">
+            <div class="modal-content" style="display: inline-block"  id="template-modal-content">
+            <div class="modal-header" align="center">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">SBGN Bricks</h4>
             </div>
             <div class="modal-body" style="display: inline-block">
+            <div class="row"> 
+            <div class="col-md-8">
             <table class="table-condensed layout-table dialog-table">
             <tbody>
 
@@ -2695,11 +2697,22 @@
 
             </tr>
             </tbody>
-            <div id="sbgn-brick-preview-cy-div" class="thin-blue-border" style="height: 200px; width:500px; text-align:initial; margin-bottom: 10px;"></div>
             </table>
             </div>
+            <div class="col-md-4">
+            <div style="text-align:center; padding: 5px;">
+            <label for="brick-orientation-input" class="layout-text" style="font: inherit;">Preview </label>
+            <select class="sbgn-output-medium layout-text" id="brick-orientation-input">
+                <option>Left-to-right</option>
+                <option>Top-to-bottom</option>
+            </select>
+            </div>
+            <div id="sbgn-brick-preview-cy-div" class="thin-blue-border cy-preview-area"></div>
+            </div>
+            </div>
+            </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="create-template" class="btn btn-default" >Create</button>
+            <button id="create-template" class="btn btn-default">Create</button>
             <button id="cancel-template" class="btn btn-default">Cancel</button>
             </div>
             </div>

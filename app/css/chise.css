@@ -465,10 +465,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 #template-modal-content {
-  position: fixed;
-  width: 600px;
-  top: 50%;
-  left: 50%;
+  width: 850px;
   margin-left: -300px;
 }
 
@@ -982,4 +979,9 @@ img#template-reversible-output-add-button:hover {
 
 .text-input-enabled {
     color: black;
+}
+
+.cy-preview-area {
+    width: 250px;
+    height: 200px;
 }
