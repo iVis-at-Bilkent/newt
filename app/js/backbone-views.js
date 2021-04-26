@@ -3382,7 +3382,7 @@ var ReactionTemplateView = Backbone.View.extend({
     var previewTimeout = setTimeout(function() {
       self.cy.remove(self.cy.elements());
       const params = self.getMetabolicReactionParameters();
-      self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer);
+      self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
       self.cy.fit();
     },500);
   },
@@ -3636,12 +3636,15 @@ var ReactionTemplateView = Backbone.View.extend({
     const multimer = !$("#metabolic-reaction-multimer-checkbox").prop("disabled") &&
                       $("#metabolic-reaction-multimer-checkbox").prop("checked");
 
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
     return {
       inputData: inputData,
       outputData: outputData,
       reversible: reversible,
       regulator: regulator,
-      regulatorMultimer: multimer
+      regulatorMultimer: multimer,
+      orientation: orientation
     }
   },
   enableImageButtons: function(jQueryElements) {
@@ -3737,6 +3740,10 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
       
     });
+
+    $(document).on('change', "#metabolic-reaction-orientation-select", function() {
+      self.updatePreview();
+    })
 
     $(document).on('change', '#reaction-template-type-select', function (e) {
       var valueSelected = $(this).val();
@@ -3850,7 +3857,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
       if (templateType === "metabolic-reaction") {
         const params = self.getMetabolicReactionParameters();
-        chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer);
+        chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
       }
       else if (templateType === "activation") {
         const proteinName = $("#template-activation-protein-name").val();
