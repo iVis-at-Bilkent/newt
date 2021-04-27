@@ -3383,7 +3383,9 @@ var ReactionTemplateView = Backbone.View.extend({
       self.cy.remove(self.cy.elements());
       const params = self.getMetabolicReactionParameters();
       self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
-      self.cy.fit();
+      
+      const padding = 5;
+      self.cy.fit(self.cy.elements(), padding);
     },500);
   },
   createDropdownElement: function(listOfOptionNames, listOfCSSClasses) {
