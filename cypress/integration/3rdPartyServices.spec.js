@@ -26,8 +26,13 @@ context('Other third party services', () => {
       win.cy.nodes("[label='ChAT']").select();
     });
 
+    const url = 'https://www.genecards.org/cgi-bin/carddisp.pl?gene=ChAT';
     cy.contains('button.btn.btn-default', 'ChAT').should('be.visible').invoke('attr', 'onclick')
-      .should('eq', "window.open('https://www.genecards.org/cgi-bin/carddisp.pl?gene=ChAT', '_blank')")
+      .should('eq', `window.open('${url}', '_blank')`);
+
+    cy.request(url).then((response) => {
+      expect(response.status).to.eq(200);
+    });
 
   });
 
