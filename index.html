@@ -380,6 +380,9 @@
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="marquee-zoom-mode-icon" src="app/img/toolbar/marquee.svg" title="Marquee Zoom: Zoom to area specified by Shift + left click and drag" ></div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element"><img id="lasso-mode-icon" src="app/img/toolbar/lasso.svg" title="Lasso Tool: Select nodes / edges in free form" ></div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element">
+                                    <img id="sbgn-bricks-icon"  src="app/img/toolbar/sbgnbricks-logo.svg" title="SBGN Bricks: Add using SBGN bricks" >
+                                </div>
+                                <div style="padding: 1px;" class="sbgn-toolbar-element">
                                 <img id="delete-selected-simple-icon"  src="app/img/toolbar/delete-simple.svg" title="Delete Selected Simple: Delete selected nodes and edges" >
                                 </div>
                                 <div style="padding: 1px;" class="sbgn-toolbar-element">
@@ -2369,33 +2372,26 @@
         </script>
 
         <script type="text/template" id="reaction-template-template">
-          <div class="modal-dialog modal-sm sbgn-modal-dialog">
-            <div class="modal-content" style="display: inline-block"  id="template-modal-content" align="center">
-            <div class="modal-header">
+          <div class="modal-dialog sbgn-modal-dialog">
+            <div class="modal-content" style="display: inline-block"  id="template-modal-content">
+            <div class="modal-header" align="center">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">SBGN Bricks</h4>
             </div>
             <div class="modal-body" style="display: inline-block">
+            <div class="row"> 
+            <div class="col-md-8">
             <table class="table-condensed layout-table dialog-table">
             <tbody>
 
-            <tr align="center">
+            <tr align="center" style="height:40px;">
             <td style="padding-bottom: 10px;" colspan=100%>
-            <span class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"> <b> Type:</b> </span>
             <select id="reaction-template-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: fit-content;">
             <option id="reaction-template-type-metabolic-reaction" value="metabolic-reaction" selected>Metabolic Reaction</option>
-            <option id="reaction-template-type-dissociation" value="dissociation">Dissociation</option>
-            <option id="reaction-template-type-reversible" value="reversible">Reversible</option>
-            <option id="reaction-template-type-irreversible" value="irreversible">Irreversible</option>
-            <option id="reaction-template-type-activation" value="activation">Activation</option>
-            <option id="reaction-template-type-deactivation" value="deactivation">Deactivation</option>
-            <option id="reaction-template-type-catalytic" value="catalytic">Metabolic Catalytic Activity</option>
-            <option id="reaction-template-type-transcription" value="transcription">Transcription</option>
-            <option id="reaction-template-type-translation" value="translation">Translation</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
-            <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/" target="_blank">
-            <img id="reaction-template-help" src="app/img/toolbar/quick-help.svg" title="SBGN Bricks Page" style="width: 21px; margin-left: 5px; margin-bottom: 1px;"> 
+            <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
+            <img id="reaction-template-help" src="app/img/toolbar/quick-help.svg" title="Associated brick web page" style="width: 21px; margin-left: 5px; margin-bottom: 1px;"> 
             </img>
             </a>
             </td>
@@ -2404,12 +2400,12 @@
 
             <tr id="reaction-special-input-row" align="center" style="height: 40px; vertical-align: bottom;">   
             <td colspan='100%'>
-                <span style="margin-right: 50px">
+                <div style="margin-right: 40px; display: inline-block; padding: 5px;">
                 <input id="metabolic-reaction-reversible-checkbox" type='checkbox' class='layout-text' style="margin-right: 5px">Reversible</input> 
-                </span>
-                <span>
-                <input id="metabolic-reaction-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px"><b>Regulator:</b></input> 
-                <input type='text' class='sbgn-input-medium layout-text' id='metabolic-reaction-regulator-name' value='' disabled></input>
+                </div>
+                <div class="thin-blue-border" style="display: inline-block; padding: 5px;">
+                <input id="metabolic-reaction-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
+                <input type='text' class='sbgn-input-medium layout-text' id='metabolic-reaction-regulator-name' value='' class="text-input-disabled" disabled></input>
                 
                 <select id="metabolic-reaction-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
                 <option value="macromolecule" selected> Macromolecule </option>
@@ -2420,26 +2416,19 @@
                 <option value="complex"> Complex </option>
                 <option value="source and sink"> Source and Sink </option>
                 </select>
-                <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-right: 5px" disabled>Multimer</input>
-                </span>
+                <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
+                <label id="metabolic-reaction-multimer-label" for="metabolic-reaction-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+                </div>
             </td>
             </tr>
 
-            <tr style="height: 40px; vertical-align:middle; width: 100%;">
-            <td align="center" style="margin-left: 5px; width: 16.25%;">
-            <span id="template-input-side-indicator" class="add-on layout-text"> <b>Input</b> </span>
-            </td>
-
-            <td style="margin-left: 25%;">
-            </td>
-
-            <td align="center" style="margin-right: 5px; width: 16.25%;">
-            <span class="add-on layout-text"> <b>Output</b> </span>
-            </td>
+            <tr style="height: 30px; width: 100%;">
             </tr>
 
             <tr>
-            <td id ='reaction-template-left-td'>
+            <td id ='reaction-template-left-td' align="center">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Input</div>
             <table id='template-reaction-dissociated-table'>
             <tr>
             <td>
@@ -2456,13 +2445,15 @@
             <img width="16px" height="16px" id='template-reaction-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
             </td></tr>
             </table>
+            </div>
             </td>
 
             <!-- Blank space between input and output -->
             <td id='reaction-template-middle-td' style="width: 45px; vertical-align: top;" align="center"></td>
 
-            <td id ='reaction-template-right-td'>
-
+            <td id ='reaction-template-right-td' align="center">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Output</div>
             <table id='template-reaction-associated-table'>
             <tr>
             <td>
@@ -2479,6 +2470,7 @@
             <img width="16px" height="16px" id='brick-metabolic-reaction-add-output' src='app/img/add.svg' style="margin-left: 100%"/>
             </td></tr>
             </table>
+            </div>
             </td>
 
           <!--  <td style="width: 50px; margin-left: 50%;"></td> -->
@@ -2705,11 +2697,21 @@
 
             </tr>
             </tbody>
-            <div id="sbgn-brick-preview-cy-div" style="height: 200px; width:500px; text-align:initial; border: 1px solid; margin-bottom: 10px;"></div>
             </table>
             </div>
+            <div class="col-md-4">
+            <div style="text-align:center; padding: 5px;">
+            <select id="metabolic-reaction-orientation-select" class="sbgn-output-medium layout-text" id="brick-orientation-input">
+                <option value="horizontal">Left-to-right</option>
+                <option value="vertical">Top-to-bottom</option>
+            </select>
+            </div>
+            <div id="sbgn-brick-preview-cy-div" class="thin-blue-border cy-preview-area"></div>
+            </div>
+            </div>
+            </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="create-template" class="btn btn-default" >Create</button>
+            <button id="create-template" class="btn btn-default">Create</button>
             <button id="cancel-template" class="btn btn-default">Cancel</button>
             </div>
             </div>

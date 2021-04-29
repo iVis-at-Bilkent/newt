@@ -108,6 +108,7 @@ tutorial.UIGuide = function(){
                 <b>- Activate Marquee Zoom: </b>Mark the zoom area by using Shift + left click and drag.<br>\n\
                 <b>- Activate Lasso Tool: </b>Mark the area of selection in free form. Start with a left click, end with another left click.</p>\n\
                 <p style="font-size:12px; margin:0px;">Remaining edit operations:<br>\n\
+                <b>- SBGN Bricks: </b>Add using SBGN Bricks.<br>\n\
                 <b>- Delete Selected Simple</b><br>\n\
                 <b>- Delete Selected Smart: </b>Perform deletion on selected objects and associated neighbors, leaving the map intact w.r.t. the map type.<br>\n\
                 <b>- Validate Map</b><br>\n\

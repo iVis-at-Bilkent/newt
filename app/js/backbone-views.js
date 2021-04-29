@@ -3420,8 +3420,10 @@ var ReactionTemplateView = Backbone.View.extend({
     var previewTimeout = setTimeout(function() {
       self.cy.remove(self.cy.elements());
       const params = self.getMetabolicReactionParameters();
-      self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer);
-      self.cy.fit();
+      self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
+      
+      const padding = 5;
+      self.cy.fit(self.cy.elements(), padding);
     },500);
   },
   createDropdownElement: function(listOfOptionNames, listOfCSSClasses) {
@@ -3674,12 +3676,15 @@ var ReactionTemplateView = Backbone.View.extend({
     const multimer = !$("#metabolic-reaction-multimer-checkbox").prop("disabled") &&
                       $("#metabolic-reaction-multimer-checkbox").prop("checked");
 
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
     return {
       inputData: inputData,
       outputData: outputData,
       reversible: reversible,
       regulator: regulator,
-      regulatorMultimer: multimer
+      regulatorMultimer: multimer,
+      orientation: orientation
     }
   },
   enableImageButtons: function(jQueryElements) {
@@ -3689,6 +3694,20 @@ var ReactionTemplateView = Backbone.View.extend({
   disableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-enabled-appearance")
                   .addClass("image-button-disabled-appearance");
+  },
+  setMultimerCheckboxEnabled: function(enabled) {
+    if (enabled) {
+      $("#metabolic-reaction-multimer-label").removeClass("checkbox-label-disabled").addClass("checkbox-label-enabled");
+      $("#metabolic-reaction-multimer-checkbox").prop("disabled", false);
+    }
+    else {
+      $("#metabolic-reaction-multimer-label").removeClass("checkbox-label-enabled").addClass("checkbox-label-disabled");
+      $("#metabolic-reaction-multimer-checkbox").prop("disabled", true);
+    }
+  },
+  isMultimerEnabledType: function(type) {
+    const multimerEnabledTypes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature"];
+    return multimerEnabledTypes.indexOf(type) > -1;
   },
   initialize: function() {
 
@@ -3721,12 +3740,18 @@ var ReactionTemplateView = Backbone.View.extend({
       $("#metabolic-reaction-regulator-name").attr('disabled', !checked);
       $("#metabolic-reaction-regulator-type").attr('disabled', !checked);
 
+      if (checked) {
+        $("#metabolic-reaction-regulator-name").removeClass("text-input-disabled").addClass("text-input-enabled");
+      }
+      else {
+        $("#metabolic-reaction-regulator-name").removeClass("text-input-enabled").addClass("text-input-disabled");
+      }
+
       // determine if multimer should be enabled
       const selectedRegulatorType = $("#metabolic-reaction-regulator-type").val();
-      const multimerEnabledTypes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature"];
-      const multimerEnabled = checked && multimerEnabledTypes.indexOf(selectedRegulatorType) > -1; 
+      const multimerEnabled = checked && self.isMultimerEnabledType(selectedRegulatorType); 
 
-      $("#metabolic-reaction-multimer-checkbox").attr('disabled', !multimerEnabled);
+      self.setMultimerCheckboxEnabled(multimerEnabled);
       
       self.updatePreview();
     });
@@ -3747,13 +3772,18 @@ var ReactionTemplateView = Backbone.View.extend({
     $(document).on("change", "#metabolic-reaction-regulator-type", function() {
       // determine if multimer should be enabled
       const selectedRegulatorType = $("#metabolic-reaction-regulator-type").val();
-      const multimerEnabledTypes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature"];
-      const multimerEnabled = multimerEnabledTypes.indexOf(selectedRegulatorType) > -1; 
+      const multimerEnabled = self.isMultimerEnabledType(selectedRegulatorType); 
+      self.setMultimerCheckboxEnabled(multimerEnabled);
 
-      $("#metabolic-reaction-multimer-checkbox").attr('disabled', !multimerEnabled);
+      $("#metabolic-reaction-multimer-checkbox").prop('checked', false);
+      
       self.updatePreview();
       
     });
+
+    $(document).on('change', "#metabolic-reaction-orientation-select", function() {
+      self.updatePreview();
+    })
 
     $(document).on('change', '#reaction-template-type-select', function (e) {
       var valueSelected = $(this).val();
@@ -3867,7 +3897,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
       if (templateType === "metabolic-reaction") {
         const params = self.getMetabolicReactionParameters();
-        chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer);
+        chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
       }
       else if (templateType === "activation") {
         const proteinName = $("#template-activation-protein-name").val();

@@ -465,11 +465,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 #template-modal-content {
-  position: fixed;
-  width: 600px;
-  top: 50%;
-  left: 50%;
-  margin-left: -300px;
+  width: 850px;
+  margin-left: -150px;
 }
 
 .sbgn-input-small {
@@ -954,4 +951,37 @@ img#template-reversible-output-add-button:hover {
 .image-button-enabled-appearance {
     cursor: pointer;
     opacity: 1.0;
+}
+
+.thin-blue-border {
+    border: 1px solid #0B9BCD;
+    border-radius: 4px;
+}
+
+.thin-grey-border {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+.checkbox-label-disabled {
+    color: rgb(204, 204, 204); 
+    font: inherit;
+}
+
+.checkbox-label-enabled {
+    color: #000000;
+    font: inherit;
+}
+
+.text-input-disabled {
+    color: rgb(204, 204, 204);
+}
+
+.text-input-enabled {
+    color: black;
+}
+
+.cy-preview-area {
+    width: 250px;
+    height: 200px;
 }
