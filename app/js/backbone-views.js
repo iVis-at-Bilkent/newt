@@ -2587,6 +2587,21 @@ var FileSaveView = Backbone.View.extend({
       case 'sbml':
         fExt = 'sbml'
         break;
+      case 'sif':
+        fExt = 'sif'
+        break;
+      case 'sifLayout':
+        fExt = 'txt'
+        break;
+      case 'png':
+        fExt = 'png'
+        break;
+      case 'jpg':
+        fExt = 'jpg'
+        break;
+      case 'svg':
+        fExt = 'svg'
+        break;      
       case 'celldesigner':
       default:
         fExt = 'xml'
@@ -2608,7 +2623,10 @@ var FileSaveView = Backbone.View.extend({
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
       filename = $("#file-save-filename").val();
-      appUtilities.setFileContent(filename);
+      // sifLayout and image export should not change the file name in UI
+      if(fileformat != "sifLayout" && fileformat != "png" && fileformat != "jpg" && fileformat != "svg"){
+        appUtilities.setFileContent(filename);
+      }
 
       if(fileformat === "sbgn" || fileformat === "nwt") {
         var renderInfo;
@@ -2686,6 +2704,26 @@ var FileSaveView = Backbone.View.extend({
         });
      
       }
+      else if(fileformat === "sif")
+      {
+        chiseInstance.saveAsPlainSif( filename, true );     
+      }
+      else if(fileformat === "sifLayout")
+      {
+        chiseInstance.exportLayoutData( filename, true );     
+      }
+      else if(fileformat === "png")
+      {
+        chiseInstance.saveAsPng(filename);    
+      }
+      else if(fileformat === "jpg")
+      {
+        chiseInstance.saveAsJpg(filename);     
+      }
+      else if(fileformat === "svg")
+      {
+        chiseInstance.saveAsSvg(filename);     
+      }        
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);
       }

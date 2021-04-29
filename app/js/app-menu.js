@@ -1277,33 +1277,15 @@ module.exports = function() {
     });
 
     $("#save-as-png").click(function (evt) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      var filename = document.getElementById('file-name').innerHTML;
-      filename = filename.substring(0,filename.lastIndexOf('.')) + ".png";
-      chiseInstance.saveAsPng(filename); // the default filename is 'network.png'
+      fileSaveView.render("png", null, null);
     });
 
     $("#save-as-jpg").click(function (evt) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      var filename = document.getElementById('file-name').innerHTML;
-      filename = filename.substring(0,filename.lastIndexOf('.')) + ".jpg";
-      chiseInstance.saveAsJpg(filename); // the default filename is 'network.jpg'
+      fileSaveView.render("jpg", null, null);
     });
 
     $("#save-as-svg").click(function (evt) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      var filename = document.getElementById('file-name').innerHTML;
-      filename = filename.substring(0,filename.lastIndexOf('.')) + ".svg";
-      chiseInstance.saveAsSvg(filename); // the default filename is 'network.jpg'
+      fileSaveView.render("svg", null, null);
     });
 
     $("#save-as-nwt, #save-icon").click(function (evt) {
@@ -1349,17 +1331,11 @@ module.exports = function() {
     });
 
     $("#export-to-sif-layout").click(function (evt) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        var filename = document.getElementById('file-name').innerHTML;
-        filename = filename.substring(0,filename.lastIndexOf('.')) + ".txt";
-        chiseInstance.exportLayoutData( filename, true );
+      fileSaveView.render("sifLayout", null, null);
     });
 
     $("#export-to-plain-sif").click(function (evt) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        var filename = document.getElementById('file-name').innerHTML;
-        filename = filename.substring(0,filename.lastIndexOf('.')) + ".sif";
-        chiseInstance.saveAsPlainSif( filename, true );
+      fileSaveView.render("sif", null, null);
     });
 
     $("#export-as-sbgnml-plain-file").click(function (evt) {
