@@ -27,7 +27,7 @@ context('Import / Export', () => {
     });
   }
 
-  function fileExport(btnSelector, btnTxt, waitMs = 1000, isClick2Save = true, isImg = false) {
+  function fileExport(btnSelector, btnTxt, waitMs = 1000, isImg = false) {
     cy.get('a.dropdown-toggle').contains('File').click();
     if (isImg) {
       cy.contains('a.dropdown-toggle', 'Export as Image').realHover();
@@ -38,10 +38,8 @@ context('Import / Export', () => {
     cy.contains(btnSelector, btnTxt).should('be.visible').click();
     cy.wait(waitMs);
 
-    if (isClick2Save) {
-      cy.get('button#file-save-accept').contains('Save').click();
-      cy.wait(waitMs);
-    }
+    cy.get('button#file-save-accept').contains('Save').click();
+    cy.wait(waitMs);
   }
 
   it('TC1: File -> Import -> Simple AF', () => {
@@ -89,7 +87,7 @@ context('Import / Export', () => {
     });
   });
 
-  // // CellDesigner import currently doesn’t work!
+  // // CellDesigner import currently doesn’t work for some files!
   it('TC4: File -> Import -> CellDesigner', () => {
     fileImport('a#import-celldesigner-file', 'CellDesigner', 'input#celldesigner-file-input', 'M-Phase.xml.txt', 4000);
 
@@ -115,29 +113,29 @@ context('Import / Export', () => {
 
   it('TC8: File -> Export -> SIF', () => {
     loadSample('RTN4 controllers and binding proteins');
-    fileExport('a#export-to-plain-sif', 'SIF', 1000, false);
+    fileExport('a#export-to-plain-sif', 'SIF', 1000);
   });
 
   it('TC9: File -> Export -> SIF Layout', () => {
     loadSample('RTN4 controllers and binding proteins');
-    fileExport('a#export-to-sif-layout', 'SIF Layout', 1000, false);
+    fileExport('a#export-to-sif-layout', 'SIF Layout', 1000);
   });
 
   it('TC10: File -> Export -> SBML', () => {
     loadSample('Neuronal muscle signaling');
-    fileExport('a#export-as-sbml', 'SBML', 1000, true);
+    fileExport('a#export-as-sbml', 'SBML', 1000);
   });
 
   it('TC11: File -> Export -> CellDesigner', () => {
     loadSample('Neuronal muscle signaling');
-    fileExport('a#export-as-celldesigner-file', 'CellDesigner', 1000, true);
+    fileExport('a#export-as-celldesigner-file', 'CellDesigner', 1000);
   });
 
   it('TC12: File -> Export -> Export as Image', () => {
     loadSample('Neuronal muscle signaling');
-    fileExport('a#save-as-png', 'PNG', 1000, false, true);
-    fileExport('a#save-as-jpg', 'JPG', 1000, false, true);
-    fileExport('a#save-as-svg', 'SVG', 1000, false, true);
+    fileExport('a#save-as-png', 'PNG', 1000, true);
+    fileExport('a#save-as-jpg', 'JPG', 1000, true);
+    fileExport('a#save-as-svg', 'SVG', 1000, true);
   });
 
 });
