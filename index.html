@@ -2378,7 +2378,7 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">SBGN Bricks</h4>
             </div>
-            <div class="modal-body" style="display: inline-block">
+            <div class="modal-body">
             <div class="row"> 
             <div class="col-md-8">
             <table class="table-condensed layout-table dialog-table">
@@ -2386,8 +2386,9 @@
 
             <tr align="center" style="height:40px;">
             <td style="padding-bottom: 10px;" colspan=100%>
-            <select id="reaction-template-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: fit-content;">
-            <option id="reaction-template-type-metabolic-reaction" value="metabolic-reaction" selected>Metabolic Reaction</option>
+            <select id="brick-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: fit-content;">
+            <option id="brick-type-metabolic-reaction" value="metabolic-reaction" selected>Metabolic Reaction</option>
+            <option id="brick-type-conversion" value="conversion">Post-translational Modification</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
@@ -2398,7 +2399,7 @@
             
             </tr>
 
-            <tr id="reaction-special-input-row" align="center" style="height: 40px; vertical-align: bottom;">   
+            <tr id="reaction-top-input-row" align="center" style="height: 40px; vertical-align: bottom;">   
             <td colspan='100%'>
                 <div style="margin-right: 40px; display: inline-block; padding: 5px;">
                 <input id="metabolic-reaction-reversible-checkbox" type='checkbox' class='layout-text' style="margin-right: 5px">Reversible</input> 
@@ -2429,7 +2430,7 @@
             <td id ='reaction-template-left-td' align="center">
             <div class="thin-blue-border">
             <div style="margin-bottom: 5px;">Input</div>
-            <table id='template-reaction-dissociated-table'>
+            <table id='metabolic-reaction-input-table'>
             <tr>
             <td>
             <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
@@ -2454,7 +2455,7 @@
             <td id ='reaction-template-right-td' align="center">
             <div class="thin-blue-border">
             <div style="margin-bottom: 5px;">Output</div>
-            <table id='template-reaction-associated-table'>
+            <table id='metabolic-reaction-output-table'>
             <tr>
             <td>
             <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
@@ -2475,48 +2476,63 @@
 
           <!--  <td style="width: 50px; margin-left: 50%;"></td> -->
 
-            <td id ='reversible-template-left-td' class="hide">
-              <table id='template-reversible-input-table'>
-              <tr>
-              <td>
-              <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
-              </td>
-              <td>
-              <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
-              <option value="Macromolecule"> Macromolecule </option>
-              <option value="Simple Chemical" selected> Simple Chemical </option>
-              </td>
-              <td><img style='vertical-align: text-bottom;' class='template-reversible-input-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
-              </td>
-              </tr>
-              <tr><td>
-              <img width="16px" height="16px" id='template-reversible-input-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
-              </td></tr>
-              </table>
+          <tr id="conversion-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+                <div class="thin-blue-border" style="display: inline-block; padding: 5px;">
+                <input id="conversion-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
+                <input type='text' class='sbgn-input-medium layout-text' id='conversion-regulator-name' value='' class="text-input-disabled" disabled></input>
+                
+                <select id="conversion-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
+                <option value="macromolecule" selected> Macromolecule </option>
+                <option value="simple chemical"> Simple Chemical </option>
+                <option value="unspecified entity"> Unspecified Entity </option>
+                <option value="nucleic acid feature"> Nucleic Acid Feature </option>
+                <option value="perturbing agent"> Perturbing Agent </option>
+                <option value="complex"> Complex </option>
+                <option value="source and sink"> Source and Sink </option>
+                </select>
+                <input id="conversion-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
+                <label id="conversion-multimer-label" for="conversion-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+                </div>
+            </td>
+            </tr>
+
+            <td id='conversion-template-left-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Input</div>
+            <table id='conversion-input-table'>
+            <tr>
+            <td>
+            <input id='conversion-input-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule"> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </div>
             </td>
 
             <!-- Blank space between input and output
             <td style="width: 50px; margin-left: 50%;"></td> -->
 
 
-            <td id ='reversible-template-right-td' class="hide">
-              <table id='template-reversible-output-table'>
-              <tr>
-              <td>
-              <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
-              </td>
-              <td>
-              <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
-              <option value="Macromolecule"> Macromolecule </option>
-              <option value="Simple Chemical" selected> Simple Chemical </option>
-              </td>
-              <td><img style='vertical-align: text-bottom;' class='template-reversible-output-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
-              </td>
-              </tr>
-              <tr><td>
-              <img width="16px" height="16px" id='template-reversible-output-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
-              </td></tr>
-              </table>
+            <td id='conversion-template-right-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Output</div>
+            <table id='conversion-output-table'>
+            <tr>
+            <td>
+            <input id='conversion-output-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule"> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </div>
             </td>
 
             <td id ='activation-template-left-td' class="hide">

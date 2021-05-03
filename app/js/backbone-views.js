@@ -3413,14 +3413,22 @@ var PromptInvalidEdgeWarning = Backbone.View.extend({
 
 var ReactionTemplateView = Backbone.View.extend({
   updatePreview: function() {
-    var self = this;
+    let self = this;
+    const brickType = $("#brick-type-select").val();
+
     if (previewTimeout) {
       clearTimeout(previewTimeout);
     }
     var previewTimeout = setTimeout(function() {
       self.cy.remove(self.cy.elements());
-      const params = self.getMetabolicReactionParameters();
-      self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
+
+      if (brickType === "metabolic-reaction") {
+        const params = self.getMetabolicReactionParameters();
+        self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
+      }
+      else {
+        console.log(brickType + " preview");
+      }
       
       const padding = 5;
       self.cy.fit(self.cy.elements(), padding);
@@ -3456,7 +3464,7 @@ var ReactionTemplateView = Backbone.View.extend({
     
     return imgElement;
   },
-  createMetabolicReactionInputRow: function() {
+  createRowElement: function(listOfDropdownOptions) {
     var self = this;
 
     const tableRowElement = document.createElement('tr');
@@ -3464,9 +3472,8 @@ var ReactionTemplateView = Backbone.View.extend({
     const dropdownTableDataElement = document.createElement('td');
     const imgTableDataElement = document.createElement('td');
 
-    const dropdownOptions = ["Simple Chemical"]
     const dropdownCSSClasses = ['template-reaction-molecule-type', 'dropdown-sbgn-bricks-molecule-type','layout-text'];
-    const dropdownElement = self.createDropdownElement(dropdownOptions, dropdownCSSClasses);
+    const dropdownElement = self.createDropdownElement(listOfDropdownOptions, dropdownCSSClasses);
 
     const inputFieldCSSClasses = ['template-reaction-textbox', 'sbgn-input-medium', ' layout-text'];
     const inputFieldElement = self.createInputFieldElement(inputFieldCSSClasses);
@@ -3486,165 +3493,41 @@ var ReactionTemplateView = Backbone.View.extend({
     return tableRowElement;
   },
   addInputFieldForMetabolicReaction: function () {
-    const tableRowElement = this.createMetabolicReactionInputRow();
+    const inputOptions = ["Simple Chemical"];
+    const tableRowElement = this.createRowElement(inputOptions);
 
-    const lastTableRowElement = $('#template-reaction-dissociated-table tr').last();
+    const lastTableRowElement = $('#metabolic-reaction-input-table tr').last();
     $(tableRowElement).insertBefore(lastTableRowElement);
   },
   addOutputFieldForMetabolicReaction: function() {
-    const tableRowElement = this.createMetabolicReactionInputRow();
+    const outputOptions = ["Simple Chemical"]
+    const tableRowElement = this.createRowElement(outputOptions);
 
-    const lastTableRowElement = $('#template-reaction-associated-table tr').last();
+    const lastTableRowElement = $('#metabolic-reaction-output-table tr').last();
     $(tableRowElement).insertBefore(lastTableRowElement);
   },
-  changeTemplateHTMLContent: function (templateType) {
-    var self = this;
+  changeTemplateHTMLContent: function (brickType) {
 
-    $('#reaction-template-left-td').html(self.reactionTemplatesHTMLContent[templateType]["input-side"]);
-    $('#reaction-template-right-td').html(self.reactionTemplatesHTMLContent[templateType]["output-side"]);
-    $('#reaction-template-help-link').attr('href', self.reactionTemplatesHTMLContent[templateType]["help-link"]);
+    $('#reaction-template-left-td').html(this.brickMetadata[brickType]["input-side-html"]);
+    $('#reaction-template-right-td').html(this.brickMetadata[brickType]["output-side-html"]);
+    $('#reaction-template-help-link').attr('href', this.brickMetadata[brickType]["help-link"]);
+    $('#reaction-top-input-row').html(this.brickMetadata[brickType]["top-input-row"]);
 
-    if (templateType === "reversible" || templateType === "irreversible" || templateType === "catalytic") {
-      self.disableDeleteButtonStyle("left");
-      self.disableDeleteButtonStyle("right")
-    }
-    if (templateType === "catalytic" || templateType === "activation" || templateType === "deactivation") {
-      $('#reaction-special-input-row').html(self.reactionTemplatesHTMLContent[templateType]["special-input"]);
-      $('#reaction-special-input-row').removeClass("hide");
-    }
-    else {
-      $('#reaction-special-input-row').addClass("hide");
-    }
-
-    if (templateType === "transcription" || templateType === "translation") {
-      $('#template-input-side-indicator').html("<b> Necessary Stimulation </b>")
-    }
-    else {
-      $('#template-input-side-indicator').html("<b> Input </b>")
-    }
-
-  },
-  getAllParameters: function () {
-    var templateType = $('#reaction-template-type-select').val();
-    var templateReactionComplexName = $('#template-reaction-complex-name').val();
-    var nodeNames = $('#template-reaction-dissociated-table  :input.template-reaction-textbox').map(function(){
-        return {
-            name: $(this).val(),
-            id: $(this).attr('name').charAt(0)
-        };
-    }).toArray();
-    var nodeTypes = $('#template-reaction-dissociated-table  :input.template-reaction-molecule-type :selected').map(function(){
-        return $(this).val();
-    }).toArray();
-    var nodeList = [];
-    for( var i = 0; i < nodeNames.length; i++){
-      nodeList.push(
-        {
-          "name": nodeNames[i].name,
-          "type": nodeTypes[i],
-          "id": nodeNames[i].id
-        }
-      );
-    }
-    var reversibleInputNodeNames = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
-      return $(this).val();
-    }).toArray();
-    var reversibleInputNodeTypes = $('#template-reversible-input-table :input.template-reaction-molecule-type :selected').map(function(){
-      return $(this).val();
-    }).toArray();
-    var reversibleOutputNodeNames = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
-      return $(this).val();
-    }).toArray();
-    var reversibleOutputNodeTypes = $('#template-reversible-output-table :input.template-reaction-molecule-type :selected').map(function(){
-      return $(this).val();
-    }).toArray();
-    var reversibleInputNodeList = [];
-    for(var i = 0; i < reversibleInputNodeNames.length; i++){
-      reversibleInputNodeList.push(
-        {
-          name: reversibleInputNodeNames[i],
-          type: reversibleInputNodeTypes[i]
-        }
-      );
-    }
-    var reversibleOutputNodeList = [];
-    for(var i = 0; i < reversibleOutputNodeNames.length; i++){
-      reversibleOutputNodeList.push(
-        {
-          name: reversibleOutputNodeNames[i],
-          type: reversibleOutputNodeTypes[i]
-        }
-      );
-    }
-    // enable complex name only if the user provided something
-    var templateReactionEnableComplexName = $.trim(templateReactionComplexName).length != 0;
-
-    return {
-      templateType: templateType,
-      templateReactionComplexName: templateReactionComplexName,
-      nodeList: nodeList,
-      reversibleInputNodeList: reversibleInputNodeList,
-      reversibleOutputNodeList: reversibleOutputNodeList,
-      templateReactionEnableComplexName: templateReactionEnableComplexName
-    }
-  },
-  getCatalyticActivityParameters: function () {
-    var catalyticInputNodeNames = $('#template-reversible-input-table :input.template-reaction-textbox').map(function(){
-      return $(this).val();
-    }).toArray();
-    var catalyticInputNodeTypes = $('#template-reversible-input-table :input.template-reaction-molecule-type :selected').map(function(){
-      return $(this).val();
-    }).toArray();
-    var catalyticOutputNodeNames = $('#template-reversible-output-table :input.template-reaction-textbox').map(function(){
-      return $(this).val();
-    }).toArray();
-    var catalyticOutputNodeTypes = $('#template-reversible-output-table :input.template-reaction-molecule-type :selected').map(function(){
-      return $(this).val();
-    }).toArray();
-
-    var catalyticInputNodeList = [];
-    for(var i = 0; i < catalyticInputNodeNames.length; i++){
-      catalyticInputNodeList.push(
-        {
-          name: catalyticInputNodeNames[i],
-          type: catalyticInputNodeTypes[i]
-        }
-      );
-    }
-    var catalyticOutputNodeList = [];
-    for(var i = 0; i < catalyticOutputNodeNames.length; i++){
-      catalyticOutputNodeList.push(
-        {
-          name: catalyticOutputNodeNames[i],
-          type: catalyticOutputNodeTypes[i]
-        }
-      );
-    }
-
-    var catalystName = $('#catalytic-reaction-catalyst-name').val();
-    var catalystType = $('#catalyst-type-select :selected').val();
-
-    return {
-      inputNodeData: catalyticInputNodeList,
-      outputNodeData: catalyticOutputNodeList,
-      catalystName: catalystName,
-      catalystType: catalystType
-    };
   },
   getMetabolicReactionParameters: function() {
-    const inputNames = $('#template-reaction-dissociated-table  :input.template-reaction-textbox').map(function(){
+    const inputNames = $('#metabolic-reaction-input-table  :input.template-reaction-textbox').map(function(){
       return $(this).val();
     }).toArray();
 
-    const inputTypes = $('#template-reaction-dissociated-table  :input.template-reaction-molecule-type :selected').map(function(){
+    const inputTypes = $('#metabolic-reaction-input-table  :input.template-reaction-molecule-type :selected').map(function(){
       return $(this).val();
     }).toArray();
 
-    const outputNames = $('#template-reaction-associated-table  :input.template-reaction-textbox').map(function(){
+    const outputNames = $('#metabolic-reaction-output-table  :input.template-reaction-textbox').map(function(){
       return $(this).val();
     }).toArray();
 
-    const outputTypes = $('#template-reaction-associated-table  :input.template-reaction-molecule-type :selected').map(function(){
+    const outputTypes = $('#metabolic-reaction-output-table  :input.template-reaction-molecule-type :selected').map(function(){
       return $(this).val();
     }).toArray();
 
@@ -3695,14 +3578,17 @@ var ReactionTemplateView = Backbone.View.extend({
     jQueryElements.removeClass("image-button-enabled-appearance")
                   .addClass("image-button-disabled-appearance");
   },
-  setMultimerCheckboxEnabled: function(enabled) {
+  setMultimerCheckboxEnabled: function(brickType, enabled) {
+    const multimerLabelId = "#" + brickType + "-multimer-label";
+    const multimerCheckboxId = "#" + brickType + "-multimer-checkbox";
+
     if (enabled) {
-      $("#metabolic-reaction-multimer-label").removeClass("checkbox-label-disabled").addClass("checkbox-label-enabled");
-      $("#metabolic-reaction-multimer-checkbox").prop("disabled", false);
+      $(multimerLabelId).removeClass("checkbox-label-disabled").addClass("checkbox-label-enabled");
+      $(multimerCheckboxId).prop("disabled", false);
     }
     else {
-      $("#metabolic-reaction-multimer-label").removeClass("checkbox-label-enabled").addClass("checkbox-label-disabled");
-      $("#metabolic-reaction-multimer-checkbox").prop("disabled", true);
+      $(multimerLabelId).removeClass("checkbox-label-enabled").addClass("checkbox-label-disabled");
+      $(multimerCheckboxId).prop("disabled", true);
     }
   },
   isMultimerEnabledType: function(type) {
@@ -3713,82 +3599,93 @@ var ReactionTemplateView = Backbone.View.extend({
 
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
+    self.brickTypes = ["metabolic-reaction", "conversion"];
 
-    $(document).on("input", "#template-activation-protein-name", function() {
+    $(document).on("input", "#conversion-input-name", function() {
       var value = $(this).val();
-      $('#template-activation-protein-name-input').val(value);
-      $('#template-activation-protein-name-output').val(value);
+      $('#conversion-output-name').val(value);
     });
 
-    $(document).on("input", "#template-deactivation-protein-name", function() {
+    $(document).on("input", "#conversion-output-name", function() {
       var value = $(this).val();
-      $('#template-deactivation-protein-name-input').val(value);
-      $('#template-deactivation-protein-name-output').val(value);
+      $('#conversion-input-name').val(value);
     });
 
-    $(document).on("input", "#template-reaction-dissociated-table  :input.template-reaction-textbox", function() {
-      self.updatePreview();
-    });
+    self.brickTypes.forEach(type => {
+      const regulatorCheckboxId = "#" + type + "-regulator-checkbox";
+      const regulatorNameInputId = "#" + type + "-regulator-name";
+      const regulatorTypeInputId = "#" + type + "-regulator-type";
+      const multimerCheckboxId = "#" + type + "-multimer-checkbox";
+      const inputTableId = "#" + type + "-input-table";
+      const outputTableId = "#" + type + "-output-table";
 
-    $(document).on("input", "#template-reaction-associated-table  :input.template-reaction-textbox", function() {
-      self.updatePreview();
-    });
+      $(document).on("click", regulatorCheckboxId, function(event) {
+        const checked = event.target.checked;
 
-    $(document).on("click", "#metabolic-reaction-regulator-checkbox", function(event) {
-      const checked = event.target.checked;
+        $(regulatorNameInputId).attr('disabled', !checked);
+        $(regulatorTypeInputId).attr('disabled', !checked);
 
-      $("#metabolic-reaction-regulator-name").attr('disabled', !checked);
-      $("#metabolic-reaction-regulator-type").attr('disabled', !checked);
+        if (checked) {
+          $(regulatorNameInputId).removeClass("text-input-disabled").addClass("text-input-enabled");
+        }
+        else {
+          $(regulatorNameInputId).removeClass("text-input-enabled").addClass("text-input-disabled");
+        }
+  
+        // determine if multimer should be enabled
+        const selectedRegulatorType = $(regulatorTypeInputId).val();
+        const multimerEnabled = checked && self.isMultimerEnabledType(selectedRegulatorType); 
+  
+        self.setMultimerCheckboxEnabled(type, multimerEnabled);
+        
+        self.updatePreview();
+      });
 
-      if (checked) {
-        $("#metabolic-reaction-regulator-name").removeClass("text-input-disabled").addClass("text-input-enabled");
-      }
-      else {
-        $("#metabolic-reaction-regulator-name").removeClass("text-input-enabled").addClass("text-input-disabled");
-      }
+      $(document).on("click", multimerCheckboxId, function() {
+        self.updatePreview();
+      });
 
-      // determine if multimer should be enabled
-      const selectedRegulatorType = $("#metabolic-reaction-regulator-type").val();
-      const multimerEnabled = checked && self.isMultimerEnabledType(selectedRegulatorType); 
+      $(document).on("input", regulatorNameInputId, function() {
+        self.updatePreview();
+      });
 
-      self.setMultimerCheckboxEnabled(multimerEnabled);
+      $(document).on("change", regulatorTypeInputId, function() {
+        // determine if multimer should be enabled
+        const selectedRegulatorType = $(regulatorTypeInputId).val();
+        const multimerEnabled = self.isMultimerEnabledType(selectedRegulatorType); 
+        self.setMultimerCheckboxEnabled(type, multimerEnabled);
+
+        $(multimerCheckboxId).prop('checked', false);
+        
+        self.updatePreview();
+      });
+
+
+      const inputFieldSelector = ":input.template-reaction-textbox";
+      const inputSelector = inputTableId + " " + inputFieldSelector;
+      $(document).on("input", inputSelector, function() {
+        self.updatePreview();
+      });
       
-      self.updatePreview();
-    });
+      const outputSelector = outputTableId + " " + inputFieldSelector;
+      $(document).on("input", outputSelector, function() {
+        self.updatePreview();
+      });
 
-    $(document).on("click", "#metabolic-reaction-multimer-checkbox", function() {
-      self.updatePreview();
     });
 
     $(document).on("click", "#metabolic-reaction-reversible-checkbox", function() {
       self.updatePreview();
-      
-    });
-
-    $(document).on("input", "#metabolic-reaction-regulator-name", function() {
-      self.updatePreview();
-    });
-
-    $(document).on("change", "#metabolic-reaction-regulator-type", function() {
-      // determine if multimer should be enabled
-      const selectedRegulatorType = $("#metabolic-reaction-regulator-type").val();
-      const multimerEnabled = self.isMultimerEnabledType(selectedRegulatorType); 
-      self.setMultimerCheckboxEnabled(multimerEnabled);
-
-      $("#metabolic-reaction-multimer-checkbox").prop('checked', false);
-      
-      self.updatePreview();
-      
     });
 
     $(document).on('change', "#metabolic-reaction-orientation-select", function() {
       self.updatePreview();
     })
 
-    $(document).on('change', '#reaction-template-type-select', function (e) {
-      var valueSelected = $(this).val();
-      self.changeTemplateHTMLContent(valueSelected);
-      self.disableDeleteButtonStyle("reaction");
+    $(document).on('change', '#brick-type-select', function () {
+      const selectedBrick = $(this).val();
+      self.changeTemplateHTMLContent(selectedBrick);
+      self.updatePreview();
     });
 
     $(document).on("change", "#template-reaction-complex-name", function(e){
@@ -3798,7 +3695,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
     $(document).on("click", "#template-reaction-add-button", function (event) {
       self.addInputFieldForMetabolicReaction();
-      const inputDeleteButtons = $("#template-reaction-dissociated-table img.template-reaction-delete-button"); 
+      const inputDeleteButtons = $("#metabolic-reaction-input-table img.template-reaction-delete-button"); 
       self.enableImageButtons(inputDeleteButtons);
 
       self.updatePreview();
@@ -3806,7 +3703,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
     $(document).on("click", "#brick-metabolic-reaction-add-output", function(event) {
       self.addOutputFieldForMetabolicReaction();
-      const outputDeleteButtons = $("#template-reaction-associated-table img.template-reaction-delete-button");
+      const outputDeleteButtons = $("#metabolic-reaction-output-table img.template-reaction-delete-button");
       self.enableImageButtons(outputDeleteButtons);
 
       self.updatePreview();
@@ -3817,28 +3714,28 @@ var ReactionTemplateView = Backbone.View.extend({
       $(this).attr('value', value); // set the value in the html tag, so it is remembered when switched
     });
 
-    $(document).on("click", "#template-reaction-dissociated-table .template-reaction-delete-button", function (event) {
-      if($('#template-reaction-dissociated-table tr').length <= 2){
+    $(document).on("click", "#metabolic-reaction-input-table .template-reaction-delete-button", function (event) {
+      if($('#metabolic-reaction-input-table tr').length <= 2){
         return;
       }
       const target = event.target;
       $(target).closest('tr').remove();
-      if($('#template-reaction-dissociated-table tr').length <= 2){
-        const inputDeleteButtons = $("#template-reaction-dissociated-table img.template-reaction-delete-button"); 
+      if($('#metabolic-reaction-input-table tr').length <= 2){
+        const inputDeleteButtons = $("#metabolic-reaction-input-table img.template-reaction-delete-button"); 
         self.disableImageButtons(inputDeleteButtons);
       }
 
       self.updatePreview();
     });
 
-    $(document).on("click", "#template-reaction-associated-table .template-reaction-delete-button", function (event) {
-      if($('#template-reaction-associated-table tr').length <= 2){
+    $(document).on("click", "#metabolic-reaction-output-table .template-reaction-delete-button", function (event) {
+      if($('#metabolic-reaction-output-table tr').length <= 2){
         return;
       }
       const target = event.target;
       $(target).closest('tr').remove();
-      if($('#template-reaction-associated-table tr').length <= 2){
-        const outputDeleteButtons = $("#template-reaction-associated-table img.template-reaction-delete-button");
+      if($('#metabolic-reaction-output-table tr').length <= 2){
+        const outputDeleteButtons = $("#metabolic-reaction-output-table img.template-reaction-delete-button");
         self.disableImageButtons(outputDeleteButtons);
       }
 
@@ -3892,7 +3789,7 @@ var ReactionTemplateView = Backbone.View.extend({
       var tilingPaddingVertical = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingVertical);
       var tilingPaddingHorizontal = chiseInstance.calculatePaddings(currentLayoutProperties.tilingPaddingHorizontal);
 
-      var templateType = $('#reaction-template-type-select').val();
+      var templateType = $('#brick-type-select').val();
       var layoutParam = {name: "fcose"};
 
       if (templateType === "metabolic-reaction") {
@@ -3951,10 +3848,10 @@ var ReactionTemplateView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
     $(self.el).html(self.template);
-    const inputDeleteButtons = $("#template-reaction-dissociated-table img.template-reaction-delete-button"); 
+    const inputDeleteButtons = $("#metabolic-reaction-input-table img.template-reaction-delete-button"); 
     self.disableImageButtons(inputDeleteButtons);
 
-    const outputDeleteButtons = $("#template-reaction-associated-table img.template-reaction-delete-button"); 
+    const outputDeleteButtons = $("#metabolic-reaction-output-table img.template-reaction-delete-button"); 
     self.disableImageButtons(outputDeleteButtons);
 
     $(self.el).modal('show');
@@ -3974,6 +3871,25 @@ var ReactionTemplateView = Backbone.View.extend({
       self.cy.resize();
       self.updatePreview();
     }, 500);
+
+    self.brickMetadata = {
+      "metabolic-reaction": {
+        "input-side-html": $('#reaction-template-left-td').html(),
+        "output-side-html": $("#reaction-template-right-td").html(),
+        "top-input-row": $("#reaction-top-input-row").html(),
+        "input-types": ["Simple Chemical"],
+        "output-types": ["Simple Chemical"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/"],
+      },
+      "conversion": {
+        "input-side-html": $('#conversion-template-left-td').html(),
+        "output-side-html": $("#conversion-template-right-td").html(),
+        "top-input-row": $("#conversion-top-input-row").html(),
+        "input-types": ["Macromolecule"],
+        "output-types": ["Macromolecule"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"],
+      }
+    }
 
     self.reactionTemplatesHTMLContent = {
       "association": {
@@ -4011,7 +3927,7 @@ var ReactionTemplateView = Backbone.View.extend({
       "catalytic": {
         "input-side": $('#catalytic-template-left-td').html(),
         "output-side": $('#catalytic-template-right-td').html(),
-        "special-input": $('#reaction-special-input-row').html(),
+        "special-input": $('#reaction-top-input-row').html(),
         "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000196/"
       },
       "transcription": {
