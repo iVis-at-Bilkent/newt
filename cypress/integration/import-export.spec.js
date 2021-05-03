@@ -80,7 +80,7 @@ context('Import / Export', () => {
   });
 
   it('TC3: File -> Import -> SBML', () => {
-    fileImport('a#import-SBML-file', 'SBML', 'input#sbml-file', 'activated_stat1alpha_induction_of_the_irf1_gene.sbml', 4000);
+    fileImport('a#import-SBML-file', 'SBML', 'input#sbml-file', 'activated_stat1alpha_induction_of_the_irf1_gene.sbml', 5000);
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length > 0).to.eq(true);

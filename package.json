@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "e2e": "cypress run --headless --browser chrome > Newt-e2e-test-results.txt",
+    "e2e": "node e2e-test-runner.js",
     "cypress": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug",
