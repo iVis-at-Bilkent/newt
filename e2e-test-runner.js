@@ -39,6 +39,8 @@ cypress.run({ headless: true, browser: 'chrome' })
     if (result.totalFailed > 0) {
       console.log('Failure(s) in tests! Will send an e-mail')
       sendEmail(testResults);
+    } else {
+      process.exit(0);
     }
   })
   .catch(err => {
