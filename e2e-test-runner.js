@@ -34,9 +34,8 @@ function sendEmail(msg) {
 
 cypress.run({ headless: true, browser: 'chrome' })
   .then(result => {
-    const testResults = JSON.stringify(result, null, 2);
-    fs.writeFileSync('Newt-e2e-test-results.txt', testResults);
     if (result.totalFailed > 0) {
+      const testResults = JSON.stringify(result, null, 2);
       console.log('Failure(s) in tests! Will send an e-mail')
       sendEmail(testResults);
     } else {

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "e2e": "node e2e-test-runner.js",
+    "e2e": "node e2e-test-runner.js > Newt-e2e-test-results.txt",
     "cypress": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug",
