@@ -3426,8 +3426,9 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getMetabolicReactionParameters();
         self.chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
       }
-      else {
-        console.log(brickType + " preview");
+      else if (brickType === "conversion") {
+        const params = self.getConversionParameters();
+        self.chiseInstance.createConversion(params.macromoleculeName, params.regulator, params.regulatorMultimer, params.orientation, params.inputInfoboxLabel, params.outputInfoboxLabel);
       }
       
       const padding = 5;
@@ -3570,6 +3571,58 @@ var ReactionTemplateView = Backbone.View.extend({
       orientation: orientation
     }
   },
+  getConversionParameters: function() {
+    const macromoleculeName = $('#conversion-input-name').val(); // input and output have same name
+    const conversionType = $('#conversion-reaction-selector').val(); // combination of conversion symbol and in/out
+    const hasRegulator = $('#conversion-regulator-checkbox').prop('checked');
+
+    const regulator = hasRegulator ? {
+      name: $('#conversion-regulator-name').val(),
+      type: $('#conversion-regulator-type').val()
+    } : {};
+
+    const multimer = !$("#conversion-multimer-checkbox").prop("disabled") &&
+                      $("#conversion-multimer-checkbox").prop("checked");
+
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
+    let inputInfoboxLabel = ""; 
+    let outputInfoboxLabel = "";
+    const infoboxData = conversionType.split("-");
+    if (infoboxData.length < 2) {
+      if (infoboxData[0] === "activation") {
+        inputInfoboxLabel = "inactive";
+        outputInfoboxLabel = "active";
+      }
+      else {
+        inputInfoboxLabel = "active";
+        outputInfoboxLabel = "inactive";
+      }
+    }
+    else {
+      const infoboxSymbolOnInputSide = infoboxData[1] === "in";
+      const inputSymbol = infoboxSymbolOnInputSide ? infoboxData[0] : ""; 
+      const outputSymbol = infoboxSymbolOnInputSide ? "" : infoboxData[0];
+
+      const residueEnabled = !$("#conversion-residue-name").prop("disabled") && 
+                              $("#conversion-residue-checkbox").prop("checked");
+      const residue = $("#conversion-residue-name").val();
+      const residueName = residueEnabled && residue !== "" ? "[" + residue + "]" : "";
+
+      inputInfoboxLabel = inputSymbol + residueName;
+      outputInfoboxLabel = outputSymbol + residueName;
+    }
+
+    return {
+      macromoleculeName: macromoleculeName,
+      conversionType: conversionType,
+      regulator: regulator,
+      regulatorMultimer: multimer,
+      orientation: orientation,
+      inputInfoboxLabel: inputInfoboxLabel,
+      outputInfoboxLabel: outputInfoboxLabel
+    }
+  },
   enableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-disabled-appearance")
                   .addClass("image-button-enabled-appearance");
@@ -3594,6 +3647,16 @@ var ReactionTemplateView = Backbone.View.extend({
   isMultimerEnabledType: function(type) {
     const multimerEnabledTypes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature"];
     return multimerEnabledTypes.indexOf(type) > -1;
+  },
+  setResidueFieldEnabled: function(enabled) {
+    const residueCheckboxElement = $("#conversion-residue-checkbox");
+    const residueTextInputElement = $("#conversion-residue-name");
+
+    residueCheckboxElement.prop("disabled", !enabled);
+
+    if (residueCheckboxElement.prop("checked")) {
+      residueTextInputElement.prop("disabled", !enabled);
+    }
   },
   initialize: function() {
 
@@ -3673,6 +3736,39 @@ var ReactionTemplateView = Backbone.View.extend({
       });
 
     });
+
+    $(document).on("click", "#conversion-residue-checkbox", function(event) {
+      const checked = event.target.checked;
+      const residueInputElement = $("#conversion-residue-name");
+      const enabledClass = 'text-input-enabled';
+      const disabledClass = 'text-input-disabled';
+      residueInputElement.attr('disabled', !checked);
+      if (checked) {
+        residueInputElement.removeClass(disabledClass).addClass(enabledClass);
+      }
+      else {
+        residueInputElement.removeClass(enabledClass).addClass(disabledClass);
+      }
+
+      self.updatePreview();
+    });
+
+    $(document).on("change", "#conversion-reaction-selector", function() {
+      const conversionType = $(this).val();
+
+      if (conversionType === "activation" || conversionType === "deactivation") {
+        self.setResidueFieldEnabled(false);
+      }
+      else {
+        self.setResidueFieldEnabled(true);
+      }
+
+      self.updatePreview();
+    })
+
+    $(document).on("input", "#conversion-residue-name", function () {
+      self.updatePreview();
+    })
 
     $(document).on("click", "#metabolic-reaction-reversible-checkbox", function() {
       self.updatePreview();
@@ -3796,9 +3892,9 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getMetabolicReactionParameters();
         chiseInstance.createMetabolicReaction(params.inputData, params.outputData, params.reversible, params.regulator, params.regulatorMultimer, params.orientation);
       }
-      else if (templateType === "activation") {
-        const proteinName = $("#template-activation-protein-name").val();
-        chiseInstance.createActivationReaction(proteinName, undefined, undefined, false);
+      else if (templateType === "conversion") {
+        const params = self.getConversionParameters();
+        chiseInstance.createConversion(params.macromoleculeName, params.regulator, params.regulatorMultimer, params.orientation, params.inputInfoboxLabel, params.outputInfoboxLabel);
       }
       else if (templateType === "deactivation") {
         const proteinName = $('#template-deactivation-protein-name').val();
