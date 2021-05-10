@@ -3794,7 +3794,7 @@ var ReactionTemplateView = Backbone.View.extend({
     $(document).on("input", "#metabolic-reaction-multimer-cardinality", function() {
       const value = $(this).val();
 
-      if(Number(value) === 0) {
+      if(Number(value) === 0 && value !== '0') {
         // let input box be empty
       }
       else if (Number(value) === NaN || Number(value) < 2) {
