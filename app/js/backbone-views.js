@@ -3557,8 +3557,11 @@ var ReactionTemplateView = Backbone.View.extend({
       type: $("#metabolic-reaction-regulator-type").val()
     } : {};
 
-    const multimer = !$("#metabolic-reaction-multimer-checkbox").prop("disabled") &&
-                      $("#metabolic-reaction-multimer-checkbox").prop("checked");
+    const multimer = {
+      enabled: !$("#metabolic-reaction-multimer-checkbox").prop("disabled") &&
+                $("#metabolic-reaction-multimer-checkbox").prop("checked"),
+      cardinality: $("#metabolic-reaction-multimer-cardinality").val()
+    };
 
     const orientation = $("#metabolic-reaction-orientation-select").val();
 
@@ -3658,6 +3661,19 @@ var ReactionTemplateView = Backbone.View.extend({
       residueTextInputElement.prop("disabled", !enabled);
     }
   },
+  setInputElementStatus: function(elementId, status) {
+    const disabledClass = "text-input-disabled";
+    const enabledClass = "text-input-enabled";
+
+    $(elementId).attr('disabled', !status);
+
+    if (status) {
+      $(elementId).removeClass(disabledClass).addClass(enabledClass);
+    }
+    else {
+      $(elementId).removeClass(enabledClass).addClass(disabledClass);
+    }
+  },
   initialize: function() {
 
     var self = this;
@@ -3685,15 +3701,9 @@ var ReactionTemplateView = Backbone.View.extend({
       $(document).on("click", regulatorCheckboxId, function(event) {
         const checked = event.target.checked;
 
-        $(regulatorNameInputId).attr('disabled', !checked);
         $(regulatorTypeInputId).attr('disabled', !checked);
 
-        if (checked) {
-          $(regulatorNameInputId).removeClass("text-input-disabled").addClass("text-input-enabled");
-        }
-        else {
-          $(regulatorNameInputId).removeClass("text-input-enabled").addClass("text-input-disabled");
-        }
+        self.setInputElementStatus(regulatorNameInputId, checked);
   
         // determine if multimer should be enabled
         const selectedRegulatorType = $(regulatorTypeInputId).val();
@@ -3704,7 +3714,9 @@ var ReactionTemplateView = Backbone.View.extend({
         self.updatePreview();
       });
 
-      $(document).on("click", multimerCheckboxId, function() {
+      $(document).on("click", multimerCheckboxId, function(event) {
+        const checked = event.target.checked;
+        self.setInputElementStatus("#metabolic-reaction-multimer-cardinality", checked);
         self.updatePreview();
       });
 
@@ -3719,6 +3731,7 @@ var ReactionTemplateView = Backbone.View.extend({
         self.setMultimerCheckboxEnabled(type, multimerEnabled);
 
         $(multimerCheckboxId).prop('checked', false);
+        self.setInputElementStatus("#metabolic-reaction-multimer-cardinality", false)
         
         self.updatePreview();
       });
@@ -3776,7 +3789,23 @@ var ReactionTemplateView = Backbone.View.extend({
 
     $(document).on('change', "#metabolic-reaction-orientation-select", function() {
       self.updatePreview();
-    })
+    });
+
+    $(document).on("input", "#metabolic-reaction-multimer-cardinality", function() {
+      const value = $(this).val();
+
+      if(Number(value) === 0) {
+        // let input box be empty
+      }
+      else if (Number(value) === NaN || Number(value) < 2) {
+        $(this).val(2);
+      }
+      else if (!Number.isInteger(value)) {
+        $(this).val(Math.floor(value));
+      }
+
+      self.updatePreview();
+    });
 
     $(document).on('change', '#brick-type-select', function () {
       const selectedBrick = $(this).val();

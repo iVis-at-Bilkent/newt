@@ -2401,7 +2401,7 @@
 
             <tr id="reaction-top-input-row" align="center" style="height: 40px; vertical-align: bottom;">   
             <td colspan='100%'>
-                <div style="margin-right: 40px; display: inline-block; padding: 5px;">
+                <div style="display: inline-block; padding: 5px;">
                 <input id="metabolic-reaction-reversible-checkbox" type='checkbox' class='layout-text' style="margin-right: 5px">Reversible</input> 
                 </div>
                 <div class="thin-blue-border" style="display: inline-block; padding: 5px;">
@@ -2412,13 +2412,11 @@
                 <option value="macromolecule" selected> Macromolecule </option>
                 <option value="simple chemical"> Simple Chemical </option>
                 <option value="unspecified entity"> Unspecified Entity </option>
-                <option value="nucleic acid feature"> Nucleic Acid Feature </option>
-                <option value="perturbing agent"> Perturbing Agent </option>
                 <option value="complex"> Complex </option>
-                <option value="source and sink"> Source and Sink </option>
                 </select>
-                <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
+                <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 10px;" disabled></input>
                 <label id="metabolic-reaction-multimer-label" for="metabolic-reaction-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+                <input id="metabolic-reaction-multimer-cardinality" type="number" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" disabled></input>
                 </div>
             </td>
             </tr>
