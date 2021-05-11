@@ -985,3 +985,17 @@ img#template-reversible-output-add-button:hover {
     width: 250px;
     height: 200px;
 }
+
+.conversion-type-dropdown {
+    width: fit-content; 
+    margin-right: 20px;
+}
+
+.conversion-residue-input-label {
+    font: inherit;
+    margin-right: 5px;
+}
+
+.small-right-margin {
+    margin-right: 10px;
+}

@@ -2416,7 +2416,7 @@
                 </select>
                 <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 10px;" disabled></input>
                 <label id="metabolic-reaction-multimer-label" for="metabolic-reaction-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
-                <input id="metabolic-reaction-multimer-cardinality" type="number" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" disabled title="N value for multimer, integer value => 2"></input>
+                <input id="metabolic-reaction-multimer-cardinality" type="text" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" disabled title="N value for multimer, integer value => 2"></input>
                 </div>
             </td>
             </tr>
@@ -2476,52 +2476,57 @@
 
           <tr id="conversion-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
             <td colspan='100%'>
-                <div class="thin-blue-border" style="padding: 10px; margin-bottom: 20px; width: fit-content;">
-                <input id="conversion-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
-                <input type='text' class='sbgn-input-medium layout-text' id='conversion-regulator-name' value='' class="text-input-disabled" disabled></input>
-                
-                <select id="conversion-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
-                <option value="macromolecule" selected> Macromolecule </option>
-                <option value="simple chemical"> Simple Chemical </option>
-                <option value="unspecified entity"> Unspecified Entity </option>
-                <option value="nucleic acid feature"> Nucleic Acid Feature </option>
-                <option value="perturbing agent"> Perturbing Agent </option>
-                <option value="complex"> Complex </option>
-                <option value="source and sink"> Source and Sink </option>
-                </select>
-                <input id="conversion-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
-                <label id="conversion-multimer-label" for="conversion-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
-                </div>
-                <div style="display: inline-block;">
-                <select id="conversion-reaction-selector" class='sbgn-output-medium layout-text' style="width: fit-content; margin-right: 40px;">
-                <option value="P-out">Phosphorylation</option>
-                <option value="P-in">Dephosphorylation</option>
-                <option value="Ub-out">Ubiquitination</option>
-                <option value="Ub-in">Deubiquitination</option>
-                <option value="OH-out">Hydroxilation</option>
-                <option value="OH-in">Dehydraxilation</option>
-                <option value="Ac-out">Acetylation</option>
-                <option value="Ac-in">Deacetylation</option>
-                <option value="G-out">Glycosylation</option>
-                <option value="G-in">Deglycosylation</option>
-                <option value="My-out">Myristoylation</option>
-                <option value="My-in">Demyristoylation</option>
-                <option value="Pa-out">Palmitoylation</option>
-                <option value="Pa-in">Depalmitoylation</option>
-                <option value="Pr-out">Prenylation</option>
-                <option value="Pr-in">Deprenylation</option>
-                <option value="S-out">Sulfation</option>
-                <option value="S-in">Desulfation</option>
-                <option value="Me-out">Methylation</option>
-                <option value="Me-in">Demethylation</option>
-                <option value="H-out">Protonation</option>
-                <option value="H-in">Deprotonation</option>
-                <option value="activation">Activation</option>
-                <option value="deactivation">Deactivation</option>
-                </select>  
-                <input id="conversion-residue-checkbox" type='checkbox' class="add-on layout-text" style="margin-right: 5px">Residue:</input> 
-                <input id='conversion-residue-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-disabled" disabled></input>
-                </div>
+            <div class="thin-blue-border" style="padding: 10px; margin-bottom: 20px; width: fit-content;">
+            <input id="conversion-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
+            <input type='text' class='sbgn-input-medium layout-text' id='conversion-regulator-name' value='' class="text-input-disabled" disabled></input>
+            
+            <select id="conversion-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
+            <option value="macromolecule" selected> Macromolecule </option>
+            <option value="simple chemical"> Simple Chemical </option>
+            <option value="unspecified entity"> Unspecified Entity </option>
+            <option value="complex"> Complex </option>
+            </select>
+            <input id="conversion-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
+            <label id="conversion-multimer-label" for="conversion-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+            <input id="conversion-multimer-cardinality" type="text" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" disabled title="N value for multimer, integer value => 2"></input>
+            </div>
+            <div class="thin-blue-border" style="padding: 10px; width: fit-content;">
+            <table id="conversion-modification-table">
+            <tr>
+            <td>
+            <select class='sbgn-output-medium layout-text conversion-type-dropdown'>
+            <option value="P-out">Phosphorylation</option>
+            <option value="P-in">Dephosphorylation</option>
+            <option value="Ub-out">Ubiquitination</option>
+            <option value="Ub-in">Deubiquitination</option>
+            <option value="OH-out">Hydroxilation</option>
+            <option value="OH-in">Dehydraxilation</option>
+            <option value="Ac-out">Acetylation</option>
+            <option value="Ac-in">Deacetylation</option>
+            <option value="G-out">Glycosylation</option>
+            <option value="G-in">Deglycosylation</option>
+            <option value="My-out">Myristoylation</option>
+            <option value="My-in">Demyristoylation</option>
+            <option value="Pa-out">Palmitoylation</option>
+            <option value="Pa-in">Depalmitoylation</option>
+            <option value="Pr-out">Prenylation</option>
+            <option value="Pr-in">Deprenylation</option>
+            <option value="S-out">Sulfation</option>
+            <option value="S-in">Desulfation</option>
+            <option value="Me-out">Methylation</option>
+            <option value="Me-in">Demethylation</option>
+            <option value="H-out">Protonation</option>
+            <option value="H-in">Deprotonation</option>
+            <option value="activation">Activation</option>
+            <option value="deactivation">Deactivation</option>
+            </select><label class="layout-text conversion-residue-input-label">Residue:</label><input type='text' class='sbgn-input-medium layout-text conversion-modification-residue-name small-right-margin'></input><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/> 
+            </td>
+              </tr>
+              <tr align="center"><td>
+              <img id='conversion-add-modification-button' src='app/img/add.svg' class="icon-small" style="cursor: pointer;"/>
+              </td></tr>
+              </table>  
+              </div>
             </td>
             </tr>
 
@@ -2739,6 +2744,11 @@
             </table>
             </td>
 
+            </tr>
+            <tr id="conversion-bottom-row" class="hide">
+            <td colspan="100%" align="center">
+            <input id="conversion-macromolecule-multimer-checkbox" type="checkbox" style="margin-right: 5px;">Multimer</input>
+            </td>
             </tr>
             </tbody>
             </table>
