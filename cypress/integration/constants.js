@@ -1,4 +1,4 @@
-export const URL = 'http://localhost:3000/';
+export const URL = 'http://localhost/';
 
 export function loadSample(name, waitMs = 1500) {
   cy.get('a.dropdown-toggle').contains('File').click();
