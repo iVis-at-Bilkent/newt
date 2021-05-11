@@ -1,6 +1,8 @@
+import { URL } from './constants';
+
 context('Query', () => {
   beforeEach(() => {
-    cy.visit('http://ivis.cs.bilkent.edu.tr/');
+    cy.visit(URL);
     // click to dismiss button
     cy.get('a#dismissButton').click();
     // click to hide 
