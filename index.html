@@ -2416,7 +2416,7 @@
                 </select>
                 <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 10px;" disabled></input>
                 <label id="metabolic-reaction-multimer-label" for="metabolic-reaction-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
-                <input id="metabolic-reaction-multimer-cardinality" type="text" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" disabled title="N value for multimer, integer value => 2"></input>
+                <input id="metabolic-reaction-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
                 </div>
             </td>
             </tr>
@@ -2488,7 +2488,7 @@
             </select>
             <input id="conversion-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
             <label id="conversion-multimer-label" for="conversion-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
-            <input id="conversion-multimer-cardinality" type="text" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" disabled title="N value for multimer, integer value => 2"></input>
+            <input id="conversion-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
             </div>
             <div class="thin-blue-border" style="padding: 10px; width: fit-content;">
             <table id="conversion-modification-table">
@@ -2572,6 +2572,7 @@
             <tr id="conversion-bottom-row" class="hide">
             <td colspan="100%" align="center">
             <input id="conversion-macromolecule-multimer-checkbox" type="checkbox" style="margin-right: 5px;">Multimer</input>
+            <input id="conversion-macromolecule-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
             </td>
             </tr>
             </tbody>

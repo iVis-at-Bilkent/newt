@@ -3607,10 +3607,12 @@ var ReactionTemplateView = Backbone.View.extend({
       type: $("#metabolic-reaction-regulator-type").val()
     } : {};
 
+    const multimerCardinality = this.getMultimerCardinalityValue($("#metabolic-reaction-multimer-cardinality").val());
+
     const multimer = {
       enabled: !$("#metabolic-reaction-multimer-checkbox").prop("disabled") &&
                 $("#metabolic-reaction-multimer-checkbox").prop("checked"),
-      cardinality: $("#metabolic-reaction-multimer-cardinality").val()
+      cardinality: multimerCardinality
     };
 
     const orientation = $("#metabolic-reaction-orientation-select").val();
@@ -3624,13 +3626,26 @@ var ReactionTemplateView = Backbone.View.extend({
       orientation: orientation
     }
   },
+  getMultimerCardinalityValue: function(value) {
+    const numberEquivalent = Number(value);
+    if (isNaN(numberEquivalent) || Number(value) < 2 || !Number.isInteger(numberEquivalent)) {
+      return "";
+    }
+    else {
+      return numberEquivalent.toString();
+    }
+  },
   getConversionParameters: function() {
     const macromoleculeName = $('#conversion-input-name').val(); // input and output have same name
     const macromoleculeMultimer = $('#conversion-macromolecule-multimer-checkbox').prop('checked');
-    
+    const macromoleculeCardinality = this.getMultimerCardinalityValue($("#conversion-macromolecule-multimer-cardinality").val());
+
     const macromolecule = {
       name: macromoleculeName,
-      multimer: macromoleculeMultimer
+      multimer: {
+        enabled: macromoleculeMultimer,
+        cardinality: macromoleculeCardinality
+      }
     }
 
     const conversionTypes = $('#reaction-top-input-row select.conversion-type-dropdown').map(function(){
@@ -3648,10 +3663,12 @@ var ReactionTemplateView = Backbone.View.extend({
       type: $('#conversion-regulator-type').val()
     } : {};
 
+    const multimerCardinality = this.getMultimerCardinalityValue($("#conversion-multimer-cardinality").val());
+
     const multimer = {
       enabled: !$("#conversion-multimer-checkbox").prop("disabled") &&
                 $("#conversion-multimer-checkbox").prop("checked"),
-      cardinality: $("#conversion-multimer-cardinality").val()
+      cardinality: multimerCardinality
     };
 
     const orientation = $("#metabolic-reaction-orientation-select").val();
@@ -3766,18 +3783,6 @@ var ReactionTemplateView = Backbone.View.extend({
       const multimerCardinalityFieldId = "#" + type + "-multimer-cardinality";
 
       $(document).on("input", multimerCardinalityFieldId, function() {
-        const value = $(this).val();
-  
-        if(Number(value) === 0 && value !== '0') {
-          // let input box be empty
-        }
-        else if (isNaN(Number(value)) || Number(value) < 2) {
-          $(this).val(2);
-        }
-        else if (!Number.isInteger(value)) {
-          $(this).val(Math.floor(value));
-        }
-  
         self.updatePreview();
       });
 
@@ -3866,9 +3871,15 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     })
 
-    $(document).on("click", "#conversion-macromolecule-multimer-checkbox", function() {
+    $(document).on("click", "#conversion-macromolecule-multimer-checkbox", function(event) {
+      const checked = event.target.checked;
+      self.setInputElementStatus("#conversion-macromolecule-multimer-cardinality", checked);
       self.updatePreview();
     })
+
+    $(document).on("input", "#conversion-macromolecule-multimer-cardinality", function() {
+      self.updatePreview();
+    });
 
     $(document).on("click", "#metabolic-reaction-reversible-checkbox", function() {
       self.updatePreview();
