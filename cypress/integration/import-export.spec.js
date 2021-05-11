@@ -1,6 +1,8 @@
+import { URL, loadSample } from './constants';
+
 context('Import / Export', () => {
   beforeEach(() => {
-    cy.visit('http://ivis.cs.bilkent.edu.tr/');
+    cy.visit(URL);
     // click to dismiss button
     cy.get('a#dismissButton').click();
     // click to hide 
@@ -13,18 +15,6 @@ context('Import / Export', () => {
     cy.contains(btnSelector, btnTxt).should('be.visible').click();
     cy.get(inpSelector).attachFile(inpFile);
     cy.wait(waitMs);
-  }
-
-  function loadSample(name, waitMs = 1000) {
-    cy.get('a.dropdown-toggle').contains('File').click();
-    cy.contains('a.dropdown-toggle', 'Samples').realHover();
-    cy.contains('a.dropdown-toggle', 'Samples').realHover();
-    cy.contains('a', name).should('be.visible').click();
-    cy.wait(waitMs);
-
-    cy.window().then((win) => {
-      expect(win.cy.nodes().length > 0).to.eq(true);
-    });
   }
 
   function fileExport(btnSelector, btnTxt, waitMs = 1000, isImg = false) {
@@ -80,7 +70,7 @@ context('Import / Export', () => {
   });
 
   it('TC3: File -> Import -> SBML', () => {
-    fileImport('a#import-SBML-file', 'SBML', 'input#sbml-file', 'activated_stat1alpha_induction_of_the_irf1_gene.sbml', 5000);
+    fileImport('a#import-SBML-file', 'SBML', 'input#sbml-file', 'activated_stat1alpha_induction_of_the_irf1_gene.sbml', 7000);
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length > 0).to.eq(true);

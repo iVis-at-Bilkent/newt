@@ -1,3 +1,5 @@
+import { loadSample } from './constants';
+
 context('Other third party services', () => {
   beforeEach(() => {
     cy.visit('http://ivis.cs.bilkent.edu.tr/');
@@ -6,18 +8,6 @@ context('Other third party services', () => {
     // click to hide 
     cy.get('body').click(10, 10);
   });
-
-  function loadSample(name, waitMs = 1500) {
-    cy.get('a.dropdown-toggle').contains('File').click();
-    cy.contains('a.dropdown-toggle', 'Samples').realHover();
-    cy.contains('a.dropdown-toggle', 'Samples').realHover();
-    cy.contains('a', name).should('be.visible').click();
-    cy.wait(waitMs);
-
-    cy.window().then((win) => {
-      expect(win.cy.nodes().length > 0).to.eq(true);
-    });
-  }
 
   it('TC1: Select macromolecule with label “ChAT”', () => {
     loadSample('Neuronal muscle signaling');

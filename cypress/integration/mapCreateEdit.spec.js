@@ -1,3 +1,5 @@
+import { loadSample } from './constants';
+
 context('Map creation/editing', () => {
   beforeEach(() => {
     cy.visit('http://ivis.cs.bilkent.edu.tr/');
@@ -12,18 +14,6 @@ context('Map creation/editing', () => {
     cy.contains('a.dropdown-toggle', 'Collapse/Expand').realHover();
     cy.get(btnSelector).should('be.visible').click();
     cy.wait(waitMs);
-  }
-
-  function loadSample(name, waitMs = 1000) {
-    cy.get('a.dropdown-toggle').contains('File').click();
-    cy.contains('a.dropdown-toggle', 'Samples').realHover();
-    cy.contains('a.dropdown-toggle', 'Samples').realHover();
-    cy.contains('a', name).should('be.visible').click();
-    cy.wait(waitMs);
-
-    cy.window().then((win) => {
-      expect(win.cy.nodes().length > 0).to.eq(true);
-    });
   }
 
   //  drag and drop on map is problematic!
