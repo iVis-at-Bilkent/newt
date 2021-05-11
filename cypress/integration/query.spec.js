@@ -67,7 +67,6 @@ context('Query', () => {
     });
   });
 
-
   it('TC5: Query -> Pathway Commons -> By URI...', () => {
     pathwaycommons('a#query-pathsbyURI', 'By URI...');
 
