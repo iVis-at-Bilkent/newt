@@ -31,7 +31,7 @@ context('Other third party services', () => {
       .should('eq', `window.open('${url}', '_blank')`);
 
     cy.request(url).then((response) => {
-      expect(response.status).to.eq(200);
+      expect(response.status).to.eq(300);
     });
 
   });
