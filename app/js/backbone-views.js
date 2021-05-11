@@ -3884,11 +3884,6 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
-    $(document).on("change", "#template-reaction-complex-name", function(e){
-      var value = $(this).val();
-      $(this).attr('value', value); // set the value in the html tag, so it is remembered when switched
-    });
-
     $(document).on("click", "#template-reaction-add-button", function () {
       self.addInputFieldForMetabolicReaction();
       const inputDeleteButtons = $("#metabolic-reaction-input-table img.template-reaction-delete-button"); 
@@ -3924,11 +3919,6 @@ var ReactionTemplateView = Backbone.View.extend({
       self.enableImageButtons(outputDeleteButtons);
 
       self.updatePreview();
-    });
-
-    $(document).on('change', ".template-reaction-textbox", function () {
-      var value = $(this).val();
-      $(this).attr('value', value); // set the value in the html tag, so it is remembered when switched
     });
 
     $(document).on("click", "#metabolic-reaction-input-table .template-reaction-delete-button", function (event) {
@@ -3974,40 +3964,6 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
-    $(document).on("click", "#template-reversible-input-add-button", function(event){
-      var nextIndex = parseInt($('#template-reversible-input-table :input.template-reaction-textbox').last().attr('name')) + 1;
-      self.addMacromolecule( "left", nextIndex);
-      self.enableDeleteButtonStyle("left");
-    });
-
-    $(document).on("click", "#template-reversible-output-add-button", function(event){
-      var nextIndex = parseInt($('#template-reversible-output-table :input.template-reaction-textbox').last().attr('name')) + 1;
-      self.addMacromolecule( "right", nextIndex);
-      self.enableDeleteButtonStyle("right");
-    });
-
-    $(document).on("click", ".template-reversible-input-delete-button", function(event){
-      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
-        return;
-      }
-      var index = parseInt($(this).attr('name'));
-      self.removeMacromolecule("left",index);
-      if($('#template-reversible-input-table :input.template-reaction-textbox').length <= 1){
-        self.disableDeleteButtonStyle("left");
-      }
-    });
-
-    $(document).on("click", ".template-reversible-output-delete-button", function(event){
-      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
-        return;
-      }
-      var index = parseInt($(this).attr('name'));
-      self.removeMacromolecule("right",index);
-      if($('#template-reversible-output-table :input.template-reaction-textbox').length <= 1){
-        self.disableDeleteButtonStyle("right");
-      }
-    });
-
     $(document).on("click", "#create-template", function (evt) {
 
       // use active chise instance
@@ -4032,37 +3988,8 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getConversionParameters();
         chiseInstance.createConversion(params.macromolecule, params.regulator, params.regulatorMultimer, params.orientation, params.inputInfoboxLabels, params.outputInfoboxLabels);
       }
-      else if (templateType === "deactivation") {
-        const proteinName = $('#template-deactivation-protein-name').val();
-        chiseInstance.createActivationReaction(proteinName, undefined, undefined, true);
-      }
-      else if (templateType === "catalytic") {
-        var params = self.getCatalyticActivityParameters();
-        chiseInstance.createMetabolicCatalyticActivity(params.inputNodeData, params.outputNodeData, params.catalystName, params.catalystType, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined);
-      }
-      else if (templateType === "transcription") {
-        const geneName = $('#template-transcription-gene-name').val();
-        const mRnaName = $('#template-transcription-mrna-name').val();
-        chiseInstance.createTranscriptionReaction(geneName, mRnaName, undefined, undefined);
-      }
-      else if (templateType === "translation") {
-        const mRnaName = $('#template-translation-mrna-name').val();
-        const proteinName = $('#template-translation-protein-name').val();
-        chiseInstance.createTranslationReaction(mRnaName, proteinName, undefined, undefined);
-      }
-      else { // association, dissociation, reversible, irreversible handled here 
-        var params = self.getAllParameters();
-      
-        var templateType = params.templateType;
-        var nodeList = params.nodeList;
-        var complexName = params.templateReactionEnableComplexName ? params.templateReactionComplexName : undefined;
-      
-        if(templateType === "reversible" || templateType === "irreversible"){
-          nodeList = params.reversibleInputNodeList;
-          complexName = params.reversibleOutputNodeList;
-        }
-        chiseInstance.createTemplateReaction(templateType, nodeList, complexName, undefined, tilingPaddingVertical, tilingPaddingHorizontal, undefined, layoutParam);
-
+      else { 
+        console.error("SBGN Bricks - ReactionTemplateView - Create: Reaction type doesn't exist.")
       }
       
       //Update arrow-scale of newly added edges (newly added elements are selected so we just update selected edges)
@@ -4122,57 +4049,6 @@ var ReactionTemplateView = Backbone.View.extend({
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"],
       }
     }
-
-    self.reactionTemplatesHTMLContent = {
-      "association": {
-        "input-side": $('#reaction-template-left-td').html(),
-        "output-side": $("#reaction-template-right-td").html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/"
-      },
-      "dissociation": {
-        "input-side": $('#reaction-template-right-td').html(),
-        "output-side": $('#reaction-template-left-td').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000571/"
-      },
-      "reversible": {
-        "input-side": $('#reversible-template-left-td').html(),
-        "output-side": $('#reversible-template-right-td').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000514/"
-      },
-      "irreversible": {
-        "input-side": $('#reversible-template-left-td').html(),
-        "output-side": $('#reversible-template-right-td').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000511/"
-      },
-      "activation": {
-        "input-side": $('#activation-template-left-td').html(),
-        "output-side": $('#activation-template-right-td').html(),
-        "special-input": $('#activation-special-input-row').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/SBO:0000656/"
-      },
-      "deactivation": {
-        "input-side": $('#deactivation-template-left-td').html(),
-        "output-side": $('#deactivation-template-right-td').html(),
-        "special-input": $('#deactivation-special-input-row').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000208/"
-      },
-      "catalytic": {
-        "input-side": $('#catalytic-template-left-td').html(),
-        "output-side": $('#catalytic-template-right-td').html(),
-        "special-input": $('#reaction-top-input-row').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000196/"
-      },
-      "transcription": {
-        "input-side": $('#transcription-template-left-td').html(),
-        "output-side": $('#transcription-template-right-td').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000573/"
-      },
-      "translation": {
-        "input-side": $('#translation-template-left-td').html(),
-        "output-side": $('#translation-template-right-td').html(),
-        "help-link": "http://sbgnbricks.org/BKO/full/entry/all/BKO:0000589/"
-      }
-    };
     return this;
   }
 });
