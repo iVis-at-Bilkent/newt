@@ -5,6 +5,7 @@ on: push
 jobs:
   chrome-headless:
     runs-on: ubuntu-18.04
+    environment: test0
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -19,4 +20,4 @@ jobs:
           record: true
         env:
           # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: ${{ test0.dashboardRecordKey }}
+          CYPRESS_RECORD_KEY: ${{ secrets.dashboardRecordKey }}
