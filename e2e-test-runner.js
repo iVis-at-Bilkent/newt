@@ -35,9 +35,9 @@ function sendEmail(msg) {
 cypress.run({ headless: true, browser: 'chrome', record: true, key: process.env.CYPRESS_RECORD_KEY })
   .then(result => {
     if (result.totalFailed > 0) {
-      const testResults = JSON.stringify(result, null, 2);
       console.log('Failure(s) in tests! Will send an e-mail')
-      sendEmail(testResults);
+      const msg = `There is error in this test. This test should be recorded in cypress dashboard. You can check it from https://dashboard.cypress.io/projects/m5jo3x/`;
+      sendEmail(msg);
     } else {
       process.exit(0);
     }
