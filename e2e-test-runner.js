@@ -32,7 +32,7 @@ function sendEmail(msg) {
   });
 }
 
-cypress.run({ headless: true, browser: 'chrome' })
+cypress.run({ headless: true, browser: 'chrome', record: true, key: process.env.CYPRESS_RECORD_KEY })
   .then(result => {
     if (result.totalFailed > 0) {
       const testResults = JSON.stringify(result, null, 2);
