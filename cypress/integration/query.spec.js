@@ -15,7 +15,7 @@ context('Query', () => {
 
     cy.get('textarea#query-pathsbetween-gene-symbols').type('BRCA1 BRCA2');
     cy.get('button#save-query-pathsbetween').click();
-    cy.wait(5000);
+    cy.wait(6000);
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 445).to.eq(true);
       expect(win.cy.edges().length == 142).to.eq(true);
