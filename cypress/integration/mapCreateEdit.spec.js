@@ -1,13 +1,7 @@
-import { loadSample, URL } from './constants';
+import { loadSample, skipIntro } from '../constants';
 
 context('Map creation/editing', () => {
-  beforeEach(() => {
-    cy.visit(URL);
-    // click to dismiss button
-    cy.get('a#dismissButton').click();
-    // click to hide 
-    cy.get('body').click(10, 10);
-  });
+  beforeEach(skipIntro);
 
   function expandCollapse(btnSelector, waitMs = 2000) {
     cy.get('a.dropdown-toggle').contains('View').click();

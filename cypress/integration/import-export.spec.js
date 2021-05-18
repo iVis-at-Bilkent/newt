@@ -1,13 +1,7 @@
-import { URL, loadSample } from './constants';
+import { skipIntro, loadSample } from '../constants';
 
 context('Import / Export', () => {
-  beforeEach(() => {
-    cy.visit(URL);
-    // click to dismiss button
-    cy.get('a#dismissButton').click();
-    // click to hide 
-    cy.get('body').click(10, 10);
-  });
+  beforeEach(skipIntro);
 
   function fileImport(btnSelector, btnTxt, inpSelector, inpFile, waitMs = 1000) {
     cy.get('a.dropdown-toggle').contains('File').click();

@@ -1,4 +1,4 @@
-import { URL } from './constants';
+import { URL } from '../constants';
 
 context('Load from URI/URL', () => {
 

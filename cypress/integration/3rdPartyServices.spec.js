@@ -1,13 +1,7 @@
-import { loadSample, URL } from './constants';
+import { loadSample, skipIntro } from '../constants';
 
 context('Other third party services', () => {
-  beforeEach(() => {
-    cy.visit(URL);
-    // click to dismiss button
-    cy.get('a#dismissButton').click();
-    // click to hide 
-    cy.get('body').click(10, 10);
-  });
+  beforeEach(skipIntro);
 
   it('TC1: Select macromolecule with label “ChAT”', () => {
     loadSample('Neuronal muscle signaling');

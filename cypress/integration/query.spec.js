@@ -1,13 +1,7 @@
-import { URL } from './constants';
+import { skipIntro } from '../constants';
 
 context('Query', () => {
-  beforeEach(() => {
-    cy.visit(URL);
-    // click to dismiss button
-    cy.get('a#dismissButton').click();
-    // click to hide 
-    cy.get('body').click(10, 10);
-  });
+  beforeEach(skipIntro);
 
   function pathwaycommons(btnSelector, btnTxt, waitMs = 750) {
     cy.get('a.dropdown-toggle').contains('Query').click();
