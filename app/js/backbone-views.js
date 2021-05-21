@@ -3434,6 +3434,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getMultimerizationParameters();
         self.chiseInstance.createMultimerization(params.macromolecule, params.regulator, params.regulatorMultimer, params.orientation);
       }
+      else if (brickType === "association") {
+        const params = self.getAssociationParameters();
+        self.chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
+      }
       const padding = 5;
       self.cy.fit(self.cy.elements(), padding);
     },500);
@@ -3551,6 +3555,13 @@ var ReactionTemplateView = Backbone.View.extend({
     tableRowElement.appendChild(tableDataElement);
 
     const lastTableRowElement = $("#conversion-modification-table tr:last");
+    $(tableRowElement).insertBefore(lastTableRowElement);
+  },
+  addAssociationInput: function() {
+    const inputOptions = ["Macromolecule"];
+    const tableRowElement = this.createRowElement(inputOptions);
+
+    const lastTableRowElement = $('#association-input-table tr:last');
     $(tableRowElement).insertBefore(lastTableRowElement);
   },
   changeTemplateHTMLContent: function (brickType) {
@@ -3755,6 +3766,38 @@ var ReactionTemplateView = Backbone.View.extend({
       orientation: orientation
     };
   },
+  getAssociationParameters: function() {
+    const inputLabels = $('#sbgn-brick-middle-row #association-input-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+
+    const complexLabel = $("#association-complex-name").val();
+
+    const hasRegulator = $('#association-regulator-checkbox').prop('checked');
+
+    const multimerCardinality = this.getMultimerCardinalityValue($("#association-multimer-cardinality").val());
+
+    const regulator = hasRegulator ? {
+      name: $('#association-regulator-name').val(),
+      type: $('#association-regulator-type').val(),
+      edgeType: $('#association-regulator-edge-type').val(),
+      multimer: {
+        enabled: !$("#association-multimer-checkbox").prop("disabled") &&
+                $("#association-multimer-checkbox").prop("checked"),
+        cardinality: multimerCardinality
+      }
+    } : {};
+
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
+    return {
+      inputLabels: inputLabels,
+      complexLabel: complexLabel,
+      regulator: regulator,
+      orientation: orientation,
+      reverse: false
+    }
+  },
   enableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-disabled-appearance")
                   .addClass("image-button-enabled-appearance");
@@ -3800,8 +3843,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
-    self.brickTypes = ["metabolic-reaction", "conversion", "multimerization"];
-
+    self.brickTypes = ["metabolic-reaction", "conversion", "multimerization", "association"];
 
     ["conversion", "multimerization"].forEach(function (brickType) {
       const inputFieldId = "#" + brickType + "-input-name";
@@ -3836,8 +3878,10 @@ var ReactionTemplateView = Backbone.View.extend({
 
         $(regulatorTypeInputId).attr('disabled', !checked);
 
-        if (type === "multimerization") {
-          $("#multimerization-regulator-edge-type").attr('disabled', !checked);
+        hasRegulatorEdgeTypeSelector = type === "multimerization" || type === "association";
+        if (hasRegulatorEdgeTypeSelector) {
+          const regulatorEdgeTypeSelectorId = "#" + type + "-regulator-edge-type";
+          $(regulatorEdgeTypeSelectorId).attr('disabled', !checked);
         }
 
         self.setInputElementStatus(regulatorNameInputId, checked);
@@ -3960,6 +4004,14 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
+    $(document).on("click", "#association-add-input-button", function () {
+      self.addAssociationInput();
+      const inputDeleteButtons = $("#association-input-table img.template-reaction-delete-button"); 
+      self.enableImageButtons(inputDeleteButtons);
+
+      self.updatePreview();
+    });
+
     $(document).on("change", "#reaction-top-input-row select.conversion-type-dropdown", function() {
       const conversionType = $(this).val();
       const residueFieldElement = $(this).next().next();
@@ -3995,6 +4047,20 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
+    $(document).on("click", "#sbgn-brick-middle-row .template-reaction-delete-button", function (event) {
+      if($('#sbgn-brick-middle-row tr').length <= 4){
+        return;
+      }
+      const target = event.target;
+      $(target).closest('tr').remove();
+      if($('#sbgn-brick-middle-row tr').length <= 4){
+        const inputDeleteButtons = $("#sbgn-brick-middle-row img.template-reaction-delete-button"); 
+        self.disableImageButtons(inputDeleteButtons);
+      }
+
+      self.updatePreview();
+    });
+
     $(document).on("click", "#reaction-top-input-row img.template-reaction-delete-button", function(event) {
       if ($('#reaction-top-input-row tr').length <= 2) {
         return;
@@ -4024,8 +4090,11 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
-    $(document).on("change", "#multimerization-regulator-edge-type", function() {
-      self.updatePreview();
+    ["multimerization", "association"].forEach(function(brick) {
+      const id = "#" + brick + "-regulator-edge-type";
+      $(document).on("change", id, function() {
+        self.updatePreview();
+      });
     });
 
     $(document).on("input", "#multimerization-macromolecule-multimer-cardinality", function() {
@@ -4056,6 +4125,10 @@ var ReactionTemplateView = Backbone.View.extend({
       else if (templateType === "multimerization") {
         const params = self.getMultimerizationParameters();
         chiseInstance.createMultimerization(params.macromolecule, params.regulator, params.regulatorMultimer, params.orientation);
+      }
+      else if (templateType === "association") {
+        const params = self.getAssociationParameters();
+        chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
       }
       else { 
         console.error("SBGN Bricks - ReactionTemplateView - Create: Reaction type doesn't exist.")
@@ -4107,7 +4180,7 @@ var ReactionTemplateView = Backbone.View.extend({
         "top-input-row": $("#reaction-top-input-row").html(),
         "input-types": ["Simple Chemical"],
         "output-types": ["Simple Chemical"],
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/"]
       },
       "conversion": {
         "input-side-html": $('#conversion-template-left-td').html(),
@@ -4115,7 +4188,7 @@ var ReactionTemplateView = Backbone.View.extend({
         "top-input-row": $("#conversion-top-input-row").html(),
         "input-types": ["Macromolecule"],
         "output-types": ["Macromolecule"],
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"]
       },
       "multimerization": {
         "input-side-html": $('#multimerization-template-left-td').html(),
@@ -4123,7 +4196,15 @@ var ReactionTemplateView = Backbone.View.extend({
         "top-input-row": $("#multimerization-top-input-row").html(),
         "input-types": ["Macromolecule"],
         "output-types": ["Macromolecule"],
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000221/"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000221/"]
+      },
+      "association": {
+        "input-side-html": $('#association-template-left-td').html(),
+        "output-side-html": $("#association-template-right-td").html(),
+        "top-input-row": $("#association-top-input-row").html(),
+        "input-types": ["Macromolecule"],
+        "output-types": ["Macromolecule"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000526/"]
       }
     }
     return this;

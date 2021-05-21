@@ -2390,6 +2390,7 @@
             <option id="brick-type-metabolic-reaction" value="metabolic-reaction" selected>Metabolic Reaction</option>
             <option id="brick-type-conversion" value="conversion">Post-Translational Modification</option>
             <option id="brick-type-multimerization" value="multimerization">Multimerization</option>
+            <option id="brick-type-association" value="association">Association</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
@@ -2425,7 +2426,7 @@
             <tr style="height: 30px; width: 100%;">
             </tr>
 
-            <tr>
+            <tr id="sbgn-brick-middle-row">
             <td id ='reaction-template-left-td' align="center">
             <div class="thin-blue-border">
             <div style="margin-bottom: 5px;">Input</div>
@@ -2624,6 +2625,84 @@
             <td>
             <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
             <option value="Macromolecule"> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </td>
+
+            <tr id="association-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+            <div class="thin-blue-border" style="padding: 10px; margin-bottom: 20px; width: fit-content;">
+            <input id="association-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
+            <input id='association-regulator-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-disabled" disabled></input>
+            
+            <select id="association-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
+            <option value="macromolecule" selected>Macromolecule</option>
+            <option value="simple chemical">Simple Chemical</option>
+            <option value="unspecified entity">Unspecified Entity</option>
+            <option value="complex">Complex</option>
+            </select>
+            <select id="association-regulator-edge-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
+            <option value="stimulation" selected>Stimulation</option>
+            <option value="inhibition">Inhibition</option>
+            </select>
+            <input id="association-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
+            <label id="association-multimer-label" for="association-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+            <input id="association-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
+            </div>
+            </td>
+            </tr>
+
+            <td id='association-template-left-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Input</div>
+            <table id='association-input-table'>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Macromolecule">Macromolecule</option>
+            </td>
+            <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Macromolecule">Macromolecule</option>
+            </td>
+            <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
+            </td>
+            </tr>
+            <tr align="center"><td colspan="100%">
+            <img id='association-add-input-button' src='app/img/add.svg' class="icon-small" style="cursor: pointer;"/>
+            </td></tr>
+            </table>
+            
+            </div>
+            </td>
+
+            <!-- Blank space between input and output
+            <td style="width: 50px; margin-left: 50%;"></td> -->
+
+
+            <td id='association-template-right-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Output</div>
+            <table id='association-output-table'>
+            <tr>
+            <td>
+            <input id='association-complex-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Complex">Complex</option>
             </td>
             </tr>
             </table>
