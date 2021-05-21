@@ -2389,6 +2389,7 @@
             <select id="brick-type-select" class='sbgn-output-medium layout-text' name="reaction-template-type" align="center" valign="middle" style="width: fit-content;">
             <option id="brick-type-metabolic-reaction" value="metabolic-reaction" selected>Metabolic Reaction</option>
             <option id="brick-type-conversion" value="conversion">Post-Translational Modification</option>
+            <option id="brick-type-multimerization" value="multimerization">Multimerization</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
@@ -2568,11 +2569,78 @@
             </div>
             </td>
 
+            <tr id="multimerization-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+            <div class="thin-blue-border" style="padding: 10px; margin-bottom: 20px; width: fit-content;">
+            <input id="multimerization-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
+            <input id='multimerization-regulator-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-disabled" disabled></input>
+            
+            <select id="multimerization-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
+            <option value="macromolecule" selected>Macromolecule</option>
+            <option value="simple chemical">Simple Chemical</option>
+            <option value="unspecified entity">Unspecified Entity</option>
+            <option value="complex">Complex</option>
+            </select>
+            <select id="multimerization-regulator-edge-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
+            <option value="stimulation" selected>Stimulation</option>
+            <option value="inhibition">Inhibition</option>
+            </select>
+            <input id="multimerization-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
+            <label id="multimerization-multimer-label" for="multimerization-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+            <input id="multimerization-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
+            </div>
+            </td>
+            </tr>
+
+            <td id='multimerization-template-left-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Input</div>
+            <table id='multimerization-input-table'>
+            <tr>
+            <td>
+            <input id='multimerization-input-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule"> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </td>
+
+            <!-- Blank space between input and output
+            <td style="width: 50px; margin-left: 50%;"></td> -->
+
+
+            <td id='multimerization-template-right-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Output</div>
+            <table id='multimerization-output-table'>
+            <tr>
+            <td>
+            <input id='multimerization-output-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' name='1' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
+            <option value="Macromolecule"> Macromolecule </option>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </td>
+
             </tr>
             <tr id="conversion-bottom-row" class="hide">
             <td colspan="100%" align="center">
             <input id="conversion-macromolecule-multimer-checkbox" type="checkbox" style="margin-right: 5px;">Multimer</input>
             <input id="conversion-macromolecule-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
+            </td>
+            </tr>
+            <tr id="multimerization-bottom-row" class="hide">
+            <td colspan="100%" align="center">
+            <label for="multimerization-macromolecule-multimer-cardinality" class="layout-text" style="font: inherit;">Multimer cardinality:</label>
+            <input id="multimerization-macromolecule-multimer-cardinality" type="number" class="layout-text" style="margin-left: 5px; width: 30px;" value="2" title="Integer value of at least 2"></input>
             </td>
             </tr>
             </tbody>
