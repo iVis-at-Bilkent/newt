@@ -3438,6 +3438,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getAssociationParameters();
         self.chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
       }
+      else if (brickType === "dissociation") {
+        const params = self.getDissociationParameters();
+        self.chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
+      }
       const padding = 5;
       self.cy.fit(self.cy.elements(), padding);
     },500);
@@ -3562,6 +3566,13 @@ var ReactionTemplateView = Backbone.View.extend({
     const tableRowElement = this.createRowElement(inputOptions);
 
     const lastTableRowElement = $('#association-input-table tr:last');
+    $(tableRowElement).insertBefore(lastTableRowElement);
+  },
+  addDissociationOutput: function() {
+    const inputOptions = ["Macromolecule"];
+    const tableRowElement = this.createRowElement(inputOptions);
+
+    const lastTableRowElement = $('#dissociation-output-table tr:last');
     $(tableRowElement).insertBefore(lastTableRowElement);
   },
   changeTemplateHTMLContent: function (brickType) {
@@ -3798,6 +3809,38 @@ var ReactionTemplateView = Backbone.View.extend({
       reverse: false
     }
   },
+  getDissociationParameters: function() {
+    const inputLabels = $('#sbgn-brick-middle-row #dissociation-output-table :input.template-reaction-textbox').map(function(){
+      return $(this).val();
+    }).toArray();
+
+    const complexLabel = $("#dissociation-complex-name").val();
+
+    const hasRegulator = $('#dissociation-regulator-checkbox').prop('checked');
+
+    const multimerCardinality = this.getMultimerCardinalityValue($("#dissociation-multimer-cardinality").val());
+
+    const regulator = hasRegulator ? {
+      name: $('#dissociation-regulator-name').val(),
+      type: $('#dissociation-regulator-type').val(),
+      edgeType: $('#dissociation-regulator-edge-type').val(),
+      multimer: {
+        enabled: !$("#dissociation-multimer-checkbox").prop("disabled") &&
+                $("#dissociation-multimer-checkbox").prop("checked"),
+        cardinality: multimerCardinality
+      }
+    } : {};
+
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
+    return {
+      inputLabels: inputLabels,
+      complexLabel: complexLabel,
+      regulator: regulator,
+      orientation: orientation,
+      reverse: true
+    }
+  },
   enableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-disabled-appearance")
                   .addClass("image-button-enabled-appearance");
@@ -3843,7 +3886,8 @@ var ReactionTemplateView = Backbone.View.extend({
 
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
-    self.brickTypes = ["metabolic-reaction", "conversion", "multimerization", "association"];
+    self.brickTypes = ["metabolic-reaction", "conversion", "multimerization", 
+                        "association", "dissociation"];
 
     ["conversion", "multimerization"].forEach(function (brickType) {
       const inputFieldId = "#" + brickType + "-input-name";
@@ -3878,7 +3922,9 @@ var ReactionTemplateView = Backbone.View.extend({
 
         $(regulatorTypeInputId).attr('disabled', !checked);
 
-        hasRegulatorEdgeTypeSelector = type === "multimerization" || type === "association";
+        hasRegulatorEdgeTypeSelector = type === "multimerization" || 
+                                        type === "association" || 
+                                        type === "dissociation";
         if (hasRegulatorEdgeTypeSelector) {
           const regulatorEdgeTypeSelectorId = "#" + type + "-regulator-edge-type";
           $(regulatorEdgeTypeSelectorId).attr('disabled', !checked);
@@ -4012,6 +4058,14 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
+    $(document).on("click", "#dissociation-add-output-button", function () {
+      self.addDissociationOutput();
+      const inputDeleteButtons = $("#dissociation-output-table img.template-reaction-delete-button"); 
+      self.enableImageButtons(inputDeleteButtons);
+
+      self.updatePreview();
+    });
+
     $(document).on("change", "#reaction-top-input-row select.conversion-type-dropdown", function() {
       const conversionType = $(this).val();
       const residueFieldElement = $(this).next().next();
@@ -4090,7 +4144,7 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
-    ["multimerization", "association"].forEach(function(brick) {
+    ["multimerization", "association", "dissociation"].forEach(function(brick) {
       const id = "#" + brick + "-regulator-edge-type";
       $(document).on("change", id, function() {
         self.updatePreview();
@@ -4128,6 +4182,10 @@ var ReactionTemplateView = Backbone.View.extend({
       }
       else if (templateType === "association") {
         const params = self.getAssociationParameters();
+        chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
+      }
+      else if (templateType === "dissociation") {
+        const params = self.getDissociationParameters();
         chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
       }
       else { 
@@ -4205,6 +4263,14 @@ var ReactionTemplateView = Backbone.View.extend({
         "input-types": ["Macromolecule"],
         "output-types": ["Macromolecule"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000526/"]
+      },
+      "dissociation": {
+        "input-side-html": $('#dissociation-template-left-td').html(),
+        "output-side-html": $("#dissociation-template-right-td").html(),
+        "top-input-row": $("#dissociation-top-input-row").html(),
+        "input-types": ["Macromolecule"],
+        "output-types": ["Macromolecule"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000166/"]
       }
     }
     return this;

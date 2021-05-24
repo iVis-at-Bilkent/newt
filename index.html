@@ -2391,6 +2391,7 @@
             <option id="brick-type-conversion" value="conversion">Post-Translational Modification</option>
             <option id="brick-type-multimerization" value="multimerization">Multimerization</option>
             <option id="brick-type-association" value="association">Association</option>
+            <option id="brick-type-dissociation" value="dissociation">Dissociation</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
@@ -2706,6 +2707,84 @@
             </td>
             </tr>
             </table>
+            </div>
+            </td>
+
+            <tr id="dissociation-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+            <div class="thin-blue-border" style="padding: 10px; margin-bottom: 20px; width: fit-content;">
+            <input id="dissociation-regulator-checkbox" type='checkbox' class="add-on layout-text" align="center" valign="middle" style="margin-right: 5px">Regulator:</input> 
+            <input id='dissociation-regulator-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-disabled" disabled></input>
+            
+            <select id="dissociation-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
+            <option value="macromolecule" selected>Macromolecule</option>
+            <option value="simple chemical">Simple Chemical</option>
+            <option value="unspecified entity">Unspecified Entity</option>
+            <option value="complex">Complex</option>
+            </select>
+            <input id="dissociation-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 5px;" disabled></input>
+            <label id="dissociation-multimer-label" for="dissociation-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
+            <input id="dissociation-multimer-cardinality" type="number" class="layout-text text-input-disabled" style="margin-left: 5px; width: 30px;" value="2" disabled title="Integer value of at least 2"></input>
+            <select id="dissociation-regulator-edge-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;' disabled>
+            <option value="stimulation" selected>Stimulation</option>
+            <option value="inhibition">Inhibition</option>
+            </select>
+            </div>
+            </td>
+            </tr>
+
+            <td id='dissociation-template-left-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Input</div>
+            <table id='dissociation-input-table'>
+            <tr>
+            <td>
+            <input id='dissociation-complex-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Complex">Complex</option>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </td>
+
+            <!-- Blank space between input and output
+            <td style="width: 50px; margin-left: 50%;"></td> -->
+
+
+            <td id='dissociation-template-right-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Output</div>
+            <table id='dissociation-output-table'>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Macromolecule">Macromolecule</option>
+            </td>
+            <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type='text' class='template-reaction-textbox sbgn-input-medium layout-text' value=''></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Macromolecule">Macromolecule</option>
+            </td>
+            <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
+            </td>
+            </tr>
+            <tr align="center"><td colspan="100%">
+            <img id='dissociation-add-output-button' src='app/img/add.svg' class="icon-small" style="cursor: pointer;"/>
+            </td></tr>
+            </table>
+            
             </div>
             </td>
 
