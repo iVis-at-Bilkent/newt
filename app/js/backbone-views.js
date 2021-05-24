@@ -3442,6 +3442,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getDissociationParameters();
         self.chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
       }
+      else if (brickType === "degradation") {
+        const params = self.getDegradationParameters();
+        self.chiseInstance.createDegradation(params.macromolecule, params.orientation);
+      }
       const padding = 5;
       self.cy.fit(self.cy.elements(), padding);
     },500);
@@ -3841,6 +3845,18 @@ var ReactionTemplateView = Backbone.View.extend({
       reverse: true
     }
   },
+  getDegradationParameters: function() {
+    const macromolecule = {
+      name: $("#degradation-input-name").val()
+    };
+
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
+    return {
+      macromolecule: macromolecule,
+      orientation: orientation
+    }
+  },
   enableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-disabled-appearance")
                   .addClass("image-button-enabled-appearance");
@@ -3990,6 +4006,10 @@ var ReactionTemplateView = Backbone.View.extend({
         residueInputElement.removeClass(enabledClass).addClass(disabledClass);
       }
 
+      self.updatePreview();
+    });
+
+    $(document).on("input", "#degradation-input-name", function() {
       self.updatePreview();
     });
 
@@ -4188,6 +4208,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getDissociationParameters();
         chiseInstance.createComplexProteinFormation(params.inputLabels, params.complexLabel, params.regulator, params.orientation, params.reverse);
       }
+      else if (templateType === "degradation") {
+        const params = self.getDegradationParameters();
+        chiseInstance.createDegradation(params.macromolecule, params.orientation);
+      }
       else { 
         console.error("SBGN Bricks - ReactionTemplateView - Create: Reaction type doesn't exist.")
       }
@@ -4271,6 +4295,14 @@ var ReactionTemplateView = Backbone.View.extend({
         "input-types": ["Macromolecule"],
         "output-types": ["Macromolecule"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000166/"]
+      },
+      "degradation": {
+        "input-side-html": $('#degradation-template-left-td').html(),
+        "output-side-html": $("#degradation-template-right-td").html(),
+        "top-input-row": $("#degradation-top-input-row").html(),
+        "input-types": ["Macromolecule"],
+        "output-types": ["Source and Sink"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000179/"]
       }
     }
     return this;

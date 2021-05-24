@@ -2380,7 +2380,7 @@
             </div>
             <div class="modal-body">
             <div class="row"> 
-            <div class="col-md-8">
+            <div class="col-md-8" align="center">
             <table class="table-condensed layout-table dialog-table">
             <tbody>
 
@@ -2392,6 +2392,7 @@
             <option id="brick-type-multimerization" value="multimerization">Multimerization</option>
             <option id="brick-type-association" value="association">Association</option>
             <option id="brick-type-dissociation" value="dissociation">Dissociation</option>
+            <option id="brick-type-degradation" value="degradation">Degradation</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
@@ -2786,6 +2787,27 @@
             </table>
             
             </div>
+            </td>
+
+            <tr id="degradation-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+            <div class="thin-blue-border" style="padding: 10px; margin-top: 40px; width: fit-content;">
+            <label for="degradation-input-name" class="layout-text" style="font: inherit;">Input:</label>
+            <input id="degradation-input-name" type='text' class="template-reaction-textbox sbgn-input-medium layout-text"></input>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+            <option value="Macromolecule">Macromolecule</option>
+            </div>
+            </td>
+            </tr>
+
+            <td id='degradation-template-left-td' class="hide">
+            </td>
+
+            <!-- Blank space between input and output
+            <td style="width: 50px; margin-left: 50%;"></td> -->
+
+
+            <td id='degradation-template-right-td' class="hide">
             </td>
 
             </tr>
