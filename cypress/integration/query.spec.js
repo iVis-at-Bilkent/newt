@@ -15,7 +15,7 @@ context('Query', () => {
 
     cy.get('textarea#query-pathsbetween-gene-symbols').type('BRCA1 BRCA2');
     cy.get('button#save-query-pathsbetween').click();
-    cy.wait(6000);
+    cy.wait(7000);
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 445).to.eq(true);
       expect(win.cy.edges().length == 142).to.eq(true);
@@ -55,7 +55,7 @@ context('Query', () => {
 
     cy.get('textarea#query-neighborhood-gene-symbols').type('BAMBI');
     cy.get('button#save-query-neighborhood').click();
-    cy.wait(25000);
+    cy.wait(30000);
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 4701).to.eq(true);
@@ -68,7 +68,7 @@ context('Query', () => {
 
     cy.get('input#query-pathsbyURI-URI').type('http://identifiers.org/reactome/R-HSA-6803211');
     cy.get('button#save-query-pathsbyURI').click();
-    cy.wait(3000);
+    cy.wait(5000);
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 47).to.eq(true);
