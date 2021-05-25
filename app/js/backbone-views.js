@@ -3450,6 +3450,13 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getTranscriptionParameters();
         self.chiseInstance.createTranscription(params.label, params.orientation);
       }
+      else if (brickType === "translation") {
+        const params = self.getTranslationParameters();
+        self.chiseInstance.createTranslation(params.regulatorLabel, params.outputLabel, params.orientation);
+      }
+      else {
+        console.error("SBGN Bricks Modal - updatePreview() - brick type not found");
+      }
       const padding = 5;
       self.cy.fit(self.cy.elements(), padding);
     },500);
@@ -3870,6 +3877,17 @@ var ReactionTemplateView = Backbone.View.extend({
       orientation: orientation
     }
   },
+  getTranslationParameters: function() {
+    const regulatorLabel = $("#translation-regulator-name").val();
+    const outputLabel = $("#translation-output-name").val();
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
+    return {
+      regulatorLabel: regulatorLabel,
+      outputLabel: outputLabel,
+      orientation: orientation
+    }
+  },
   enableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-disabled-appearance")
                   .addClass("image-button-enabled-appearance");
@@ -4031,6 +4049,14 @@ var ReactionTemplateView = Backbone.View.extend({
     });
 
     $(document).on("input", "#transcription-output-name", function() {
+      self.updatePreview();
+    });
+
+    $(document).on("input", "#translation-regulator-name", function() {
+      self.updatePreview();
+    });
+
+    $(document).on("input", "#translation-output-name", function() {
       self.updatePreview();
     });
 
@@ -4237,6 +4263,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getTranscriptionParameters();
         chiseInstance.createTranscription(params.label, params.orientation);
       }
+      else if (templateType === "translation") {
+        const params = self.getTranslationParameters();
+        chiseInstance.createTranslation(params.regulatorLabel, params.outputLabel, params.orientation);
+      }
       else { 
         console.error("SBGN Bricks - ReactionTemplateView - Create: Reaction type doesn't exist.")
       }
@@ -4285,57 +4315,49 @@ var ReactionTemplateView = Backbone.View.extend({
         "input-side-html": $('#reaction-template-left-td').html(),
         "output-side-html": $("#reaction-template-right-td").html(),
         "top-input-row": $("#reaction-top-input-row").html(),
-        "input-types": ["Simple Chemical"],
-        "output-types": ["Simple Chemical"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/"]
       },
       "conversion": {
         "input-side-html": $('#conversion-template-left-td').html(),
         "output-side-html": $("#conversion-template-right-td").html(),
         "top-input-row": $("#conversion-top-input-row").html(),
-        "input-types": ["Macromolecule"],
-        "output-types": ["Macromolecule"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"]
       },
       "multimerization": {
         "input-side-html": $('#multimerization-template-left-td').html(),
         "output-side-html": $("#multimerization-template-right-td").html(),
         "top-input-row": $("#multimerization-top-input-row").html(),
-        "input-types": ["Macromolecule"],
-        "output-types": ["Macromolecule"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000221/"]
       },
       "association": {
         "input-side-html": $('#association-template-left-td').html(),
         "output-side-html": $("#association-template-right-td").html(),
         "top-input-row": $("#association-top-input-row").html(),
-        "input-types": ["Macromolecule"],
-        "output-types": ["Macromolecule"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000526/"]
       },
       "dissociation": {
         "input-side-html": $('#dissociation-template-left-td').html(),
         "output-side-html": $("#dissociation-template-right-td").html(),
         "top-input-row": $("#dissociation-top-input-row").html(),
-        "input-types": ["Macromolecule"],
-        "output-types": ["Macromolecule"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000166/"]
       },
       "degradation": {
         "input-side-html": $('#degradation-template-left-td').html(),
         "output-side-html": $("#degradation-template-right-td").html(),
         "top-input-row": $("#degradation-top-input-row").html(),
-        "input-types": ["Macromolecule"],
-        "output-types": ["Source and Sink"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000179/"]
       },
       "transcription": {
         "input-side-html": $('#transcription-template-left-td').html(),
         "output-side-html": $("#transcription-template-right-td").html(),
         "top-input-row": $("#transcription-top-input-row").html(),
-        "input-types": ["Source and Sink"],
-        "output-types": ["Nucleic Acid Feature"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000183/"]
+      },
+      "translation": {
+        "input-side-html": $('#translation-template-left-td').html(),
+        "output-side-html": $("#translation-template-right-td").html(),
+        "top-input-row": $("#translation-top-input-row").html(),
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000481/"]
       }
     }
     return this;

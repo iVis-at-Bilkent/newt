@@ -2394,6 +2394,7 @@
             <option id="brick-type-dissociation" value="dissociation">Dissociation</option>
             <option id="brick-type-degradation" value="degradation">Degradation</option>
             <option id="brick-type-transcription" value="transcription">Transcription</option>
+            <option id="brick-type-translation" value="translation">Translation</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
             <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
@@ -2859,6 +2860,60 @@
             <td>
             <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content;'>
             <option value="Macromolecule">Nucleic Acid Feature</option>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </td>
+
+            <tr id="translation-top-input-row" class="hide" align="center" style="height: 40px; vertical-align: bottom;">   
+            <td colspan='100%'>
+            <div class="thin-blue-border" style="padding: 10px; margin-bottom: 20px; width: fit-content;">
+            <label for='translation-regulator-name' class="layout-text" style="font: inherit;"></label>
+            <input id='translation-regulator-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-enabled"></input>
+            
+            <select id="translation-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;'>
+            <option value="macromolecule" selected>Nucleic Acid Feature</option>
+            </select>
+            <select id="translation-regulator-edge-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;'>
+            <option value="stimulation" selected>Necessary Stimulation</option>
+            </select>
+            </div>
+            </td>
+            </tr>
+
+            <td id='translation-template-left-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Input</div>
+            <table id='translation-input-table'>
+            <tr>
+            <td>
+            <input id='translation-input-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text' style="cursor: not-allowed;" disabled></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content'>
+            <option value="source and sink">Source and Sink</option>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </td>
+
+            <!-- Blank space between input and output
+            <td style="width: 50px; margin-left: 50%;"></td> -->
+
+
+            <td id='translation-template-right-td' class="hide">
+            <div class="thin-blue-border">
+            <div style="margin-bottom: 5px;">Output</div>
+            <table id='translation-output-table'>
+            <tr>
+            <td>
+            <input id='translation-output-name' type='text' class='template-reaction-textbox sbgn-input-medium layout-text'></input>
+            </td>
+            <td>
+            <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content;'>
+            <option value="Macromolecule">Macromolecule</option>
             </td>
             </tr>
             </table>
