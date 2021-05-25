@@ -3446,6 +3446,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getDegradationParameters();
         self.chiseInstance.createDegradation(params.macromolecule, params.orientation);
       }
+      else if (brickType === "transcription") {
+        const params = self.getTranscriptionParameters();
+        self.chiseInstance.createTranscription(params.label, params.orientation);
+      }
       const padding = 5;
       self.cy.fit(self.cy.elements(), padding);
     },500);
@@ -3857,6 +3861,15 @@ var ReactionTemplateView = Backbone.View.extend({
       orientation: orientation
     }
   },
+  getTranscriptionParameters: function() {
+    const label = $("#transcription-regulator-name").val();
+    const orientation = $("#metabolic-reaction-orientation-select").val();
+
+    return {
+      label: label,
+      orientation: orientation
+    }
+  },
   enableImageButtons: function(jQueryElements) {
     jQueryElements.removeClass("image-button-disabled-appearance")
                   .addClass("image-button-enabled-appearance");
@@ -3898,29 +3911,29 @@ var ReactionTemplateView = Backbone.View.extend({
       $(elementId).removeClass(enabledClass).addClass(disabledClass);
     }
   },
+  setEventsToSyncInputValues(firstFieldId, secondFieldId) {
+    $(document).on("input", firstFieldId, function() {
+      const value = $(this).val();
+      $(secondFieldId).val(value);
+    });
+
+    $(document).on("input", secondFieldId, function() {
+      const value = $(this).val();
+      $(firstFieldId).val(value);
+    });
+  },
   initialize: function() {
 
     var self = this;
     self.template = _.template($("#reaction-template-template").html());
-    self.brickTypes = ["metabolic-reaction", "conversion", "multimerization", 
+    self.bricksWithOptionalRegulator = ["metabolic-reaction", "conversion", "multimerization", 
                         "association", "dissociation"];
 
-    ["conversion", "multimerization"].forEach(function (brickType) {
-      const inputFieldId = "#" + brickType + "-input-name";
-      const outputFieldId = "#" + brickType + "-output-name";
+    self.setEventsToSyncInputValues("#conversion-input-name", "#conversion-output-name");
+    self.setEventsToSyncInputValues("#multimerization-input-name", "#multimerization-output-name");
+    self.setEventsToSyncInputValues("#transcription-regulator-name", "#transcription-output-name");
 
-      $(document).on("input", inputFieldId, function() {
-        var value = $(this).val();
-        $(outputFieldId).val(value);
-      });
-  
-      $(document).on("input", outputFieldId, function() {
-        var value = $(this).val();
-        $(inputFieldId).val(value);
-      });
-    });
-
-    self.brickTypes.forEach(type => {
+    self.bricksWithOptionalRegulator.forEach(type => {
       const regulatorCheckboxId = "#" + type + "-regulator-checkbox";
       const regulatorNameInputId = "#" + type + "-regulator-name";
       const regulatorTypeInputId = "#" + type + "-regulator-type";
@@ -4010,6 +4023,14 @@ var ReactionTemplateView = Backbone.View.extend({
     });
 
     $(document).on("input", "#degradation-input-name", function() {
+      self.updatePreview();
+    });
+
+    $(document).on("input", "#transcription-regulator-name", function() {
+      self.updatePreview();
+    });
+
+    $(document).on("input", "#transcription-output-name", function() {
       self.updatePreview();
     });
 
@@ -4212,6 +4233,10 @@ var ReactionTemplateView = Backbone.View.extend({
         const params = self.getDegradationParameters();
         chiseInstance.createDegradation(params.macromolecule, params.orientation);
       }
+      else if (templateType === "transcription") {
+        const params = self.getTranscriptionParameters();
+        chiseInstance.createTranscription(params.label, params.orientation);
+      }
       else { 
         console.error("SBGN Bricks - ReactionTemplateView - Create: Reaction type doesn't exist.")
       }
@@ -4303,6 +4328,14 @@ var ReactionTemplateView = Backbone.View.extend({
         "input-types": ["Macromolecule"],
         "output-types": ["Source and Sink"],
         "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000179/"]
+      },
+      "transcription": {
+        "input-side-html": $('#transcription-template-left-td').html(),
+        "output-side-html": $("#transcription-template-right-td").html(),
+        "top-input-row": $("#transcription-top-input-row").html(),
+        "input-types": ["Source and Sink"],
+        "output-types": ["Nucleic Acid Feature"],
+        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000183/"]
       }
     }
     return this;
