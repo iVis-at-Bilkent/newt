@@ -11,8 +11,8 @@ context('Load from URI/URL', () => {
     });
   });
 
-  it('TC2: URL=https://raw.githubusercontent.com/iVis-at-Bilkent/newt/master/app/samples/polyq_proteins_interference.nwt', () => {
-    cy.visit(URL + '?URL=https://raw.githubusercontent.com/iVis-at-Bilkent/newt/master/app/samples/polyq_proteins_interference.nwt');
+  it('TC2: URL=https://raw.githubusercontent.com/iVis-at-Bilkent/newt/unstable/app/samples/polyq_proteins_interference.nwt', () => {
+    cy.visit(URL + '?URL=https://raw.githubusercontent.com/iVis-at-Bilkent/newt/unstable/app/samples/polyq_proteins_interference.nwt');
     cy.wait(2000);
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 47).to.eq(true);
