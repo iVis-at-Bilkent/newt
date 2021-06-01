@@ -126,7 +126,7 @@
       <label text="nucleus"/>
       <bbox x="723.667961804332" y="603.4207032900716" w="506.4201953499179" h="336.32200968050824"/>
     </glyph>
-    <glyph id="glyph22" class="source and sink" compartmentRef="glyph1">
+    <glyph id="glyph22" class="empty set" compartmentRef="glyph1">
       <bbox x="1056.9163417549303" y="876.3069034826349" w="25" h="25"/>
     </glyph>
     <glyph id="glyph38" class="complex" compartmentRef="glyph1">

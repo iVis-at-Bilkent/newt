@@ -326,7 +326,7 @@
       <label text="LABEL"/>
       <bbox x="271" y="426.7067" w="80" h="40"/>
     </glyph>
-    <glyph id="n34" class="source and sink">
+    <glyph id="n34" class="empty set">
       <bbox x="46" y="498.70669999999996" w="36" h="36"/>
     </glyph>
     <glyph id="n35" class="macromolecule">
@@ -558,7 +558,7 @@
       <port id="n76.1" x="688.4152" y="516.7067"/>
       <port id="n76.2" x="724.4152" y="516.7067"/>
     </glyph>
-    <glyph id="n77" class="source and sink">
+    <glyph id="n77" class="empty set">
       <bbox x="812.4152" y="638.70667" w="36" h="36"/>
     </glyph>
     <glyph id="n78" class="macromolecule multimer">
@@ -657,7 +657,7 @@
       <label text="Dissociation"/>
       <bbox x="882.4152" y="946.70667" w="146" h="40"/>
     </glyph>
-    <glyph id="n102" class="source and sink">
+    <glyph id="n102" class="empty set">
       <bbox x="1080.4152" y="848.70667" w="36" h="36"/>
     </glyph>
     <glyph id="n103" class="nucleic acid feature">
@@ -684,7 +684,7 @@
         <bbox x="1186.4152" y="909.20667" w="45.435917" h="15"/>
       </glyph>
     </glyph>
-    <glyph id="n106" class="source and sink">
+    <glyph id="n106" class="empty set">
       <bbox x="1080.4152" y="988.70667" w="36" h="36"/>
     </glyph>
     <glyph id="n107" class="macromolecule">

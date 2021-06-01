@@ -1423,7 +1423,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                      html +="<p style=\"text-align:center\" > To fix, reverse the consumption arc:</p>";
             }  */
             else if(errors[currentPage].pattern == "pd10103") {
-                     html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each consumption arc:</p> ";       
+                     html += "<p style=\"text-align:center\" > To fix, split the <i>empty set</i> glyph for each consumption arc:</p> ";       
             }else if(radioButtonRules.includes(errors[currentPage].pattern)) {
                     var params = { handled: handled };
                     html= inspectorUtilities.handleRadioButtons(errors[currentPage].pattern,html,eles,cy,params);
@@ -1437,7 +1437,7 @@ inspectorUtilities.fixRadioButtons = function (errorCode,eles,cy) {
                     
             }
             else if(errors[currentPage].pattern == "pd10107") {
-                     html += "<p style=\"text-align:center\" > To fix, split the <i>source and sink</i> glyph for each production arc:</p>";
+                     html += "<p style=\"text-align:center\" > To fix, split the <i>empty set</i> glyph for each production arc:</p>";
                        var connectedEdges = eles.connectedEdges().filter('[class="production"]');
                        for (var i = 0; i < connectedEdges.length; i++) {
                            viewUtilitilesInstance.highlight(connectedEdges[i], 1);

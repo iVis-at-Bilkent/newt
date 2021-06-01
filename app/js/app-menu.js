@@ -908,7 +908,7 @@ module.exports = function() {
         var cy = chiseInstance.getCy();
 
         //Remove processes and other nodes which cannot be resized according to content
-        var toBeResized = cy.nodes().difference('node[class*="process"],[class*="association"],[class*="dissociation"],[class="source and sink"],[class="and"],[class="or"],[class="not"],[class="delay"],:parent');
+        var toBeResized = cy.nodes().difference('node[class*="process"],[class*="association"],[class*="dissociation"],[class="empty set"],[class="and"],[class="or"],[class="not"],[class="delay"],:parent');
         
         appUtilities.resizeNodesToContent(toBeResized);
 

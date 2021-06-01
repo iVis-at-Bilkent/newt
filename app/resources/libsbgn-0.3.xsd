@@ -663,7 +663,7 @@
                                 <xsd:enumeration value="nucleic acid feature multimer"/>
                                 <xsd:enumeration value="complex"/>
                                 <xsd:enumeration value="complex multimer"/>
-                                <xsd:enumeration value="source and sink"/>
+                                <xsd:enumeration value="empty set"/>
                                 <!-- Activities (AF) -->
                                 <!-- perturbation is deprecated in AF as Activity Node in milestone 3. -->
                                 <xsd:enumeration value="perturbation"/>
