@@ -2615,27 +2615,45 @@ appUtilities.launchWithModelFile = function() {
         // here we can get 404 as well, for example, so there are still error cases to handle
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
-          var fileToLoad = new File([data.response.body], filename, {
+          const fileContents = data.response.body;
+          const file = new File([fileContents], filename, {
             type: 'text/' + fileExtension,
             lastModified: Date.now()
           });
 
-          if (fileExtension === "xml" || fileExtension === "xml#" 
-              || fileExtension === "sbml" || fileExtension === "sbml#") {
-            chiseInstance.loadSbml(fileToLoad,  success = function(data){
-              var cy = appUtilities.getActiveCy();
-              if (cy.elements().length !== 0) {
-                promptConfirmationView.render(function () {
+          if (fileExtension === "xml" || fileExtension === "sbml") {
+            const xmlObject = chiseInstance.textToXmlObject(fileContents);
+            // CD file
+            if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
+              chiseInstance.loadCellDesigner(file, success = function (data) {
+                if (cy.elements().length !== 0) {
+                  promptConfirmationView.render(function () {
+                    chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                  });
+                }
+                else {
+                  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                }
+              });
+            }
+            else {
+              // sbml file
+              chiseInstance.loadSbml(file,  success = function (data){
+                var cy = appUtilities.getActiveCy();
+                if (cy.elements().length !== 0) {
+                  promptConfirmationView.render(function () {
+                    chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                  });
+                }
+                else {
                   chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                });
-              }
-              else {
-                chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-              }
-            });
+                }
+              });
+            }
+            
           }
           else {
-            chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
+            chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
           }
         }
         else {
