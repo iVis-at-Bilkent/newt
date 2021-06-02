@@ -130,10 +130,10 @@ doi:10.1038/nrg3885</mapDescription>
       <label text="δA"/>
       <bbox x="317.5110704974951" y="188.18918509073995" w="18" h="18"/>
     </glyph>
-    <glyph id="nwtN_e2b3efa0-7e8f-4193-b3c0-f0b9f2f2eacd" class="empty set">
+    <glyph id="nwtN_e2b3efa0-7e8f-4193-b3c0-f0b9f2f2eacd" class="source and sink">
       <bbox x="337.51107049749476" y="133.18918509074015" w="22" h="22"/>
     </glyph>
-    <glyph id="a6bc04ad-2b46-5f5c-5675-a4b0c85f6224" class="empty set">
+    <glyph id="a6bc04ad-2b46-5f5c-5675-a4b0c85f6224" class="source and sink">
       <bbox x="480.10482049749425" y="133.18918509074015" w="22" h="22"/>
     </glyph>
     <glyph id="bfedf62c-8db2-49ad-e831-724cc16f5760" class="process">
@@ -141,10 +141,10 @@ doi:10.1038/nrg3885</mapDescription>
       <port id="bfedf62c-8db2-49ad-e831-724cc16f5760.1" x="498.2476776403514" y="112"/>
       <port id="bfedf62c-8db2-49ad-e831-724cc16f5760.2" x="483.9619633546371" y="112"/>
     </glyph>
-    <glyph id="66695fa6-6eb2-f620-6c21-230be7556460" class="empty set">
+    <glyph id="66695fa6-6eb2-f620-6c21-230be7556460" class="source and sink">
       <bbox x="539.1048204974941" y="101" w="22" h="22"/>
     </glyph>
-    <glyph id="bd38443e-4bf5-6108-9efb-b31a4f1674b3" class="empty set">
+    <glyph id="bd38443e-4bf5-6108-9efb-b31a4f1674b3" class="source and sink">
       <bbox x="480.10482049749425" y="335.68918509073956" w="22" h="22"/>
     </glyph>
     <glyph id="05c406aa-93f5-6e10-d0ab-cbc23c8e263f" class="process">
@@ -164,7 +164,7 @@ doi:10.1038/nrg3885</mapDescription>
         <bbox x="620.4307085844655" y="278.6891850907398" w="48" h="12"/>
       </glyph>
     </glyph>
-    <glyph id="162c5bf0-46dc-e772-33ad-72e39cde6618" class="empty set">
+    <glyph id="162c5bf0-46dc-e772-33ad-72e39cde6618" class="source and sink">
       <bbox x="633.5110704974941" y="382.18918509073933" w="22" h="22"/>
     </glyph>
     <glyph id="0bc570c9-96c1-8c16-94f7-dec4d64da0e4" class="process">
@@ -177,7 +177,7 @@ doi:10.1038/nrg3885</mapDescription>
       <port id="d52341c5-a08f-e44d-e688-d6228f6dbeb1.1" x="644.5110704974941" y="238.0463279478826"/>
       <port id="d52341c5-a08f-e44d-e688-d6228f6dbeb1.2" x="644.5110704974941" y="252.33204223359687"/>
     </glyph>
-    <glyph id="aa836434-ceed-871c-589f-b963cc8ac423" class="empty set">
+    <glyph id="aa836434-ceed-871c-589f-b963cc8ac423" class="source and sink">
       <bbox x="633.5110704974941" y="186.18918509073995" w="22" h="22"/>
     </glyph>
     <glyph id="4323755a-c2d8-6bf3-cd46-c0db550650d2" class="tag">
@@ -250,7 +250,7 @@ doi:10.1038/nrg3885</mapDescription>
       <label text="ρf"/>
       <bbox x="529.4194695926079" y="397.69142788249405" w="18" h="18"/>
     </glyph>
-    <glyph id="d23bc1e5-32db-cd9c-cf9c-d1db8efad09f" class="empty set">
+    <glyph id="d23bc1e5-32db-cd9c-cf9c-d1db8efad09f" class="source and sink">
       <bbox x="337.51107049749476" y="474.5219490162659" w="22" h="22"/>
     </glyph>
     <glyph id="c17bb050-c3df-0538-2d62-69e641ca9fb0" class="process">

@@ -193,7 +193,7 @@
         <bbox x="642" y="257.75000000000006" w="16" h="12"/>
       </glyph>
     </glyph>
-    <glyph id="8c6d3816-85c1-358b-5893-20995009088c" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="8c6d3816-85c1-358b-5893-20995009088c" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="542" y="268.75000000000006" w="25" h="25"/>
     </glyph>
     <glyph id="f5f91ced-d47f-07e1-03f4-9307020437ef" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -222,7 +222,7 @@
         <bbox x="578.75" y="515.25" w="16" h="12"/>
       </glyph>
     </glyph>
-    <glyph id="0088e5e3-506d-b360-cc23-6ca191128211" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="0088e5e3-506d-b360-cc23-6ca191128211" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="480.25" y="526.25" w="25" h="25"/>
     </glyph>
     <glyph id="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -248,7 +248,7 @@
       <port id="nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7.1" x="789.8571428571429" y="538.75"/>
       <port id="nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7.2" x="804.1428571428571" y="538.75"/>
     </glyph>
-    <glyph id="nwtN_18ca18bf-e112-4b17-acba-35e845505d26" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="nwtN_18ca18bf-e112-4b17-acba-35e845505d26" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="830.5" y="526.25" w="25" h="25"/>
     </glyph>
     <glyph id="nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4" class="macromolecule" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -260,7 +260,7 @@
       <port id="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c.1" x="891.8571428571429" y="481.75000000000006"/>
       <port id="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c.2" x="906.1428571428571" y="481.75000000000006"/>
     </glyph>
-    <glyph id="nwtN_617312c5-bae0-423e-a711-c6adfee4193b" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="nwtN_617312c5-bae0-423e-a711-c6adfee4193b" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="839.5" y="469.25000000000006" w="25" h="25"/>
     </glyph>
     <glyph id="nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -268,7 +268,7 @@
       <port id="nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1.1" x="1030.857142857143" y="481.75000000000006"/>
       <port id="nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1.2" x="1045.142857142857" y="481.75000000000006"/>
     </glyph>
-    <glyph id="nwtN_0949a2cf-db5f-461a-b93f-51a21cdf1543" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="nwtN_0949a2cf-db5f-461a-b93f-51a21cdf1543" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="1074.5" y="469.25000000000006" w="25" h="25"/>
     </glyph>
     <glyph id="ef95a67b-f3d9-df94-1349-9b4d376fc42d" class="macromolecule" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -281,7 +281,7 @@
       <port id="46137b33-99be-2b1f-5a29-f38f55849a0b.1" x="960.8571428571429" y="547.75"/>
       <port id="46137b33-99be-2b1f-5a29-f38f55849a0b.2" x="975.1428571428571" y="547.75"/>
     </glyph>
-    <glyph id="682cd847-d9d2-5765-6915-b974cb1d689e" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="682cd847-d9d2-5765-6915-b974cb1d689e" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="908" y="535.25" w="25" h="25"/>
     </glyph>
     <glyph id="8754c6a2-755b-fb0b-5a6e-5d1edef0779a" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -289,7 +289,7 @@
       <port id="8754c6a2-755b-fb0b-5a6e-5d1edef0779a.1" x="1099.357142857143" y="547.75"/>
       <port id="8754c6a2-755b-fb0b-5a6e-5d1edef0779a.2" x="1113.642857142857" y="547.75"/>
     </glyph>
-    <glyph id="1074afdd-de13-ce0b-eeef-ae71e8825227" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="1074afdd-de13-ce0b-eeef-ae71e8825227" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="1143" y="535.25" w="25" h="25"/>
     </glyph>
     <glyph id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -297,7 +297,7 @@
       <port id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.1" x="440.18989887983844" y="387.46875000000006"/>
       <port id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.2" x="425.9041845941241" y="387.46875000000006"/>
     </glyph>
-    <glyph id="nwtN_e973c31b-714f-47be-a2c2-e8e46b4d8ebf" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="nwtN_e973c31b-714f-47be-a2c2-e8e46b4d8ebf" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="372.4704117739146" y="374.96875000000006" w="25" h="25"/>
     </glyph>
     <glyph id="191857cc-7088-9f59-19c8-ad00bcf44b5e" class="macromolecule" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -315,10 +315,10 @@
       <port id="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.1" x="986.6171112946669" y="349.4859966020795"/>
       <port id="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.2" x="1000.9028255803811" y="349.4859966020795"/>
     </glyph>
-    <glyph id="nwtN_5ca63978-630b-4d73-88af-444ec25db7ee" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="nwtN_5ca63978-630b-4d73-88af-444ec25db7ee" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="1027.5672503858173" y="403.98561555406616" w="25" h="25"/>
     </glyph>
-    <glyph id="c4d84cac-2f3e-7664-aa93-466d49c71abe" class="empty set" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+    <glyph id="c4d84cac-2f3e-7664-aa93-466d49c71abe" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="1026.7723590500218" y="336.9859966020795" w="25" h="25"/>
     </glyph>
     <glyph id="f0a6c8f2-8384-fb32-c934-e51c7aa67e25" class="macromolecule" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
@@ -400,7 +400,7 @@
       <port id="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5.1" x="693.3571428571429" y="114.75"/>
       <port id="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5.2" x="707.6428571428571" y="114.75"/>
     </glyph>
-    <glyph id="nwtN_ba8bccaa-725c-41f9-9059-9f05f4bd9116" class="empty set" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
+    <glyph id="nwtN_ba8bccaa-725c-41f9-9059-9f05f4bd9116" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="1022.5" y="65.9375" w="25" h="25"/>
     </glyph>
     <glyph id="nwtN_849e3e0b-8781-4669-96a8-afdefe522e39" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
@@ -408,7 +408,7 @@
       <port id="nwtN_849e3e0b-8781-4669-96a8-afdefe522e39.1" x="975.3571428571429" y="78.4375"/>
       <port id="nwtN_849e3e0b-8781-4669-96a8-afdefe522e39.2" x="989.6428571428571" y="78.4375"/>
     </glyph>
-    <glyph id="8aa9f4cb-fe26-03ac-1ef5-62dca5582e83" class="empty set" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
+    <glyph id="8aa9f4cb-fe26-03ac-1ef5-62dca5582e83" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="366.5" y="64.25" w="25" h="25"/>
     </glyph>
     <glyph id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
@@ -416,7 +416,7 @@
       <port id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.1" x="417.85714285714283" y="76.75"/>
       <port id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.2" x="432.14285714285717" y="76.75"/>
     </glyph>
-    <glyph id="nwtN_d1ef3518-d5d3-4d84-8712-acdbaf52d01a" class="empty set" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
+    <glyph id="nwtN_d1ef3518-d5d3-4d84-8712-acdbaf52d01a" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="543.5" y="165.25" w="25" h="25"/>
     </glyph>
     <glyph id="nwtN_d1318ca0-09f5-48ed-b69c-708c67199f22" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
@@ -461,7 +461,7 @@
         <bbox x="578.75" y="615.25" w="16" h="12"/>
       </glyph>
     </glyph>
-    <glyph id="e342a729-472c-3bbf-78da-d20caa7b1c03" class="empty set" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
+    <glyph id="e342a729-472c-3bbf-78da-d20caa7b1c03" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="482.375" y="626.25" w="25" h="25"/>
     </glyph>
     <glyph id="6507b78f-2da9-659a-4d3f-d78d84be17ed" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
@@ -479,7 +479,7 @@
       <port id="75a1827c-53c6-de67-431d-57c59d4c7d36.1" x="791.9821428571429" y="638.75"/>
       <port id="75a1827c-53c6-de67-431d-57c59d4c7d36.2" x="806.2678571428571" y="638.75"/>
     </glyph>
-    <glyph id="53844cf9-beeb-858b-2abb-0d2d0cd2fbde" class="empty set" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
+    <glyph id="53844cf9-beeb-858b-2abb-0d2d0cd2fbde" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="832.625" y="626.25" w="25" h="25"/>
     </glyph>
     <glyph id="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">

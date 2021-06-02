@@ -73,7 +73,7 @@ using logical operators</mapDescription>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
       </mapProperties>
     </extension>
-    <glyph id="glyph8" class="empty set">
+    <glyph id="glyph8" class="source and sink">
       <bbox x="219.34507961077375" y="426.0211623750535" w="22" h="22"/>
     </glyph>
     <glyph id="glyph6" class="process">
@@ -89,7 +89,7 @@ using logical operators</mapDescription>
         <bbox x="384.1620543768622" y="416.0211623750535" w="40" h="12"/>
       </glyph>
     </glyph>
-    <glyph id="glyph7" class="empty set">
+    <glyph id="glyph7" class="source and sink">
       <bbox x="322.0837185192559" y="499.0054808397" w="22" h="22"/>
     </glyph>
     <glyph id="glyph5" class="process">
