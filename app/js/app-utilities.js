@@ -2621,12 +2621,27 @@ appUtilities.launchWithModelFile = function() {
             lastModified: Date.now()
           });
 
-          if (fileExtension === "xml" || fileExtension === "sbml") {
-            const xmlObject = chiseInstance.textToXmlObject(fileContents);
+          const xmlObject = chiseInstance.textToXmlObject(fileContents);
+          
+          if (fileExtension === "sif") {
+            var loadFcn = function() {
+              var layoutBy = function() {
+                appUtilities.triggerLayout(cyInstance, true);
+              };
+              chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
+            };
+            if (cyInstance.elements().length != 0)
+              promptConfirmationView.render( loadFcn );
+            else
+              loadFcn();
+          }
+
+          else if (fileExtension === "xml" || fileExtension === "sbml") {
+            
             // CD file
             if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
               chiseInstance.loadCellDesigner(file, success = function (data) {
-                if (cy.elements().length !== 0) {
+                if (cyInstance.elements().length !== 0) {
                   promptConfirmationView.render(function () {
                     chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                   });
@@ -2639,8 +2654,7 @@ appUtilities.launchWithModelFile = function() {
             else {
               // sbml file
               chiseInstance.loadSbml(file,  success = function (data){
-                var cy = appUtilities.getActiveCy();
-                if (cy.elements().length !== 0) {
+                if (cyInstance.elements().length !== 0) {
                   promptConfirmationView.render(function () {
                     chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                   });
