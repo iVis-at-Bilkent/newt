@@ -1768,6 +1768,10 @@ var NeighborhoodQueryView = Backbone.View.extend({
               chiseInstance.endSpinner('neighborhood-spinner');
               $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
             }
+            else if (data.response.body === "") {
+              new PromptEmptyQueryResultView({el: '#prompt-emptyQueryResult-table'}).render();
+              chiseInstance.endSpinner('neighborhood-spinner');
+            }
             else {
               new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
               chiseInstance.endSpinner('neighborhood-spinner');
@@ -1804,6 +1808,10 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
                 chiseInstance.endSpinner('neighborhood-spinner');
                 $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+              }
+              else if (data.response.body === "") {
+                new PromptEmptyQueryResultView({el: '#prompt-emptyQueryResult-table'}).render();
+                chiseInstance.endSpinner('neighborhood-spinner');
               }
               else {
                 new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -3176,6 +3184,26 @@ var PromptInvalidQueryView = Backbone.View.extend({
               appUtilities.pathsFromToQueryView.render();
           else if (PCdialog == "CommonStream")
               appUtilities.commonStreamQueryView.render();
+      });
+
+      return this;
+  }
+});
+
+var PromptEmptyQueryResultView = Backbone.View.extend({
+  initialize: function () {
+      var self = this;
+      self.template = _.template($("#prompt-emptyQueryResult-template").html());
+  },
+  render: function () {
+      var self = this;
+      self.template = _.template($("#prompt-emptyQueryResult-template").html());
+
+      $(self.el).html(self.template);
+      $(self.el).modal('show');
+
+      $(document).off("click", "#prompt-emptyQueryResult-confirm").on("click", "#prompt-emptyQueryResult-confirm", function (evt) {
+        $(self.el).modal('toggle');
       });
 
       return this;
