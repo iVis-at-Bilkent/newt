@@ -19,7 +19,6 @@ function sendEmail(msg) {
     // should be replaced with real recipient's account
     //to: 'replyto.lcsb.gitlab+minerva-core-499-3hxqgkf3oh3yq2zb9veolqjo6-issue@gmail.com',
     to: "newteditor@gmail.com",
-    cc: 'newteditor@gmail.com',
     subject: "Error in end-to-end test of newt",
     text: msg,
     attachments: []
