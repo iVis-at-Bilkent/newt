@@ -241,6 +241,10 @@ module.exports = function() {
 
 			   
   function toolbarButtonsAndMenu() {
+    // hide database functions if enableDatabase = false
+    if(appUtilities.enableDatabase === false){
+      $('.database-function').hide()
+    }
     // menu behavior: on first click, triggers the other menus on hover.
     var isMenuHoverMode = false;
     $('ul.navbar-nav > li.dropdown').on('mouseenter', function(e){
