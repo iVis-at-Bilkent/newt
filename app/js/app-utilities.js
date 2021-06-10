@@ -10,6 +10,9 @@ var tutorial = require('./tutorial');
 
 var appUtilities = {};
 
+// set true to make make use of database functionalities
+appUtilities.enableDatabase = true;
+
 // Get the whole scratchpad reserved for newt (on an element or core) or get a single property of it
 appUtilities.getScratch = function (cyOrEle, name) {
   if (cyOrEle.scratch('_newt') === undefined) {
