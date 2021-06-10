@@ -238,6 +238,25 @@ module.exports = function (chiseInstance) {
         }
       },
       {
+        id: 'ctx-menu-show-processes-of-this-in-database',
+        content: 'Show Processes of This in Database',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"]',
+        show: appUtilities.enableDatabase,
+        onClickFunction: function (event) {
+          // complete this later
+        }
+      },
+      {
+        id: 'ctx-menu-show-neighbors-in-database',
+        content: 'Show Neighbors in Database',
+        selector: '[class^="BA"], [class^="phenotype"]',
+        show: appUtilities.enableDatabase,
+        onClickFunction: function (event) { 
+          // complete this later
+        }
+      },
+      {
         id: 'ctx-menu-highlight-neighbors',
         content: 'Highlight Neighbors',
         selector: 'node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]',
