@@ -154,7 +154,7 @@
                                                 <li><a href="#" id="add-complex-for-selected" >Add Complex for Selected</a></li>
                                                 <li><a href="#" id="add-compartment-for-selected" >Add Compartment for Selected</a></li>
                                                 <li><a href="#" id="add-submap-for-selected" >Add Submap for Selected</a></li>
-                                                <li><a href="#" id="create-reaction-template" >Add Using SBGN Bricks...</a></li>
+                                                <li><a href="#" id="open-sbgn-bricks-modal" >Add Using SBGN Bricks...</a></li>
                                                 <li><a href="#" id="clone-selected" >Clone Selected</a></li>
 
                                                 <li class="divider"></li>
@@ -860,7 +860,7 @@
             <!-- map type change confirmation dialog will be shown here-->
         </div>
 
-        <div id="reaction-template-table" tabindex="-1" class="modal fade" role="dialog">
+        <div id="sbgn-bricks-table" tabindex="-1" class="modal fade" role="dialog">
             <!-- reaction templatequery table will be shown here -->
         </div>
 
@@ -2431,8 +2431,8 @@
             <option id="brick-type-translation" value="translation">Translation</option>
             </select>
             <!-- Display help image, leads to SBGN Bricks page of the selected brick type -->
-            <a id="reaction-template-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
-            <img id="reaction-template-help" src="app/img/toolbar/quick-help.svg" title="Associated brick web page" style="width: 21px; margin-left: 5px; margin-bottom: 1px;"> 
+            <a id="sbgn-bricks-help-link" href="http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/" target="_blank">
+            <img id="sbgn-bricks-help" src="app/img/toolbar/quick-help.svg" title="Associated brick web page" style="width: 21px; margin-left: 5px; margin-bottom: 1px;"> 
             </img>
             </a>
             </td>
@@ -2481,7 +2481,7 @@
             </td>
             </tr>
             <tr><td>
-            <img width="16px" height="16px" id='template-reaction-add-button' src='app/img/add.svg' style="margin-left: 100%"/>
+            <img width="16px" height="16px" id='metabolic-reaction-add-input' src='app/img/add.svg' style="margin-left: 100%"/>
             </td></tr>
             </table>
             </div>
@@ -2506,7 +2506,7 @@
             </td>
             </tr>
             <tr><td>
-            <img width="16px" height="16px" id='brick-metabolic-reaction-add-output' src='app/img/add.svg' style="margin-left: 100%"/>
+            <img width="16px" height="16px" id='metabolic-reaction-add-output' src='app/img/add.svg' style="margin-left: 100%"/>
             </td></tr>
             </table>
             </div>
@@ -2982,8 +2982,8 @@
             </div>
             </div>
             <div class="modal-footer" style="text-align: center">
-            <button id="create-template" class="btn btn-default">Create</button>
-            <button id="cancel-template" class="btn btn-default">Cancel</button>
+            <button id="create-sbgn-brick" class="btn btn-default">Create</button>
+            <button id="cancel-sbgn-brick" class="btn btn-default">Cancel</button>
             </div>
             </div>
             </div>

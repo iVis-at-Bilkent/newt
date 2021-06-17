@@ -780,11 +780,11 @@ hr.inspector-divider {
     height: 26px;
 }
 
-img#template-reaction-add-button:hover {
+img#metabolic-reaction-add-input:hover {
     cursor: pointer;
 }
 
-img#brick-metabolic-reaction-add-output:hover {
+img#metabolic-reaction-add-output:hover {
     cursor: pointer;
 }
 

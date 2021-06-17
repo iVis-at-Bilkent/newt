@@ -129,7 +129,7 @@ module.exports = function() {
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
   promptFileConversionErrorView = appUtilities.promptFileConversionErrorView = new BackboneViews.PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
-  reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
+  reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#sbgn-bricks-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
   infoboxPropertiesView = appUtilities.infoboxPropertiesView = new BackboneViews.InfoboxPropertiesView({el: '#infobox-properties-table'});
@@ -1396,7 +1396,7 @@ module.exports = function() {
       inspectorUtilities.handleSBGNInspector();
     });
 
-    $("#create-reaction-template").click(function (e) {
+    $("#open-sbgn-bricks-modal").click(function (e) {
 
       var chiseInstance = appUtilities.getActiveChiseInstance();
 

@@ -3622,7 +3622,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
     $('#reaction-template-left-td').html(this.brickMetadata[brickType]["input-side-html"]);
     $('#reaction-template-right-td').html(this.brickMetadata[brickType]["output-side-html"]);
-    $('#reaction-template-help-link').attr('href', this.brickMetadata[brickType]["help-link"]);
+    $('#sbgn-bricks-help-link').attr('href', this.brickMetadata[brickType]["help-link"]);
     $('#reaction-top-input-row').html(this.brickMetadata[brickType]["top-input-row"]);
 
     ["conversion", "multimerization"].forEach(function (type) {
@@ -4129,7 +4129,7 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
-    $(document).on("click", "#template-reaction-add-button", function () {
+    $(document).on("click", "#metabolic-reaction-add-input", function () {
       self.addInputFieldForMetabolicReaction();
       const inputDeleteButtons = $("#metabolic-reaction-input-table img.template-reaction-delete-button"); 
       self.enableImageButtons(inputDeleteButtons);
@@ -4174,7 +4174,7 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     })
 
-    $(document).on("click", "#brick-metabolic-reaction-add-output", function() {
+    $(document).on("click", "#metabolic-reaction-add-output", function() {
       self.addOutputFieldForMetabolicReaction();
       const outputDeleteButtons = $("#metabolic-reaction-output-table img.template-reaction-delete-button");
       self.enableImageButtons(outputDeleteButtons);
@@ -4250,7 +4250,7 @@ var ReactionTemplateView = Backbone.View.extend({
       self.updatePreview();
     });
 
-    $(document).on("click", "#create-template", function (evt) {
+    $(document).on("click", "#create-sbgn-brick", function (evt) {
 
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -4306,7 +4306,7 @@ var ReactionTemplateView = Backbone.View.extend({
       $(self.el).modal('toggle');
     });
 
-    $(document).on("click", "#cancel-template", function (evt) {
+    $(document).on("click", "#cancel-sbgn-brick", function (evt) {
       $(self.el).modal('toggle');
     });
   },
