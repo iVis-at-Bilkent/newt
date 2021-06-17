@@ -1,6 +1,6 @@
 import { skipIntro } from '../constants';
 
-context('Query', () => {
+context('SBGN Bricks', () => {
   beforeEach(skipIntro);
 
   function openSBGNBricksModal() {
