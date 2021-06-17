@@ -3061,7 +3061,7 @@ var LoadUserPreferencesView = Backbone.View.extend({
   
             }
 
-            if(item.infoBoxStyles.length > 0){
+            if(item.infoBoxStyles && item.infoBoxStyles.length > 0){
                 //set info boxes styles 
               var infoStyles =  item.infoBoxStyles;
   
