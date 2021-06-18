@@ -2249,7 +2249,8 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
     getFcn = _getFcn || getElementData;
     var props = {};
     for(var cssProp in properties){
-      if (getFcn(member, cssProp)) {
+      if (getFcn(member, cssProp) !== undefined ||
+          getFcn(member, cssProp) !== null) {
         //if it is a color property, replace it with corresponding id
         if (cssProp == 'background-color' || cssProp == 'border-color' || cssProp == 'line-color') {
           var validColor = appUtilities.getValidColor(member, cssProp, getFcn);
