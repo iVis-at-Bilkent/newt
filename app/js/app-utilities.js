@@ -812,9 +812,6 @@ appUtilities.triggerLayout = function (_cy, randomize) {
     preferences.fit = randomize;
   }
 
-  // set this to randomize parameter to decide the type of the packing that will be applied at the end of the layout
-  cy.layoutUtilities('get').setOption('randomize', randomize); 
-
 //  if (currentLayoutProperties.animate === 'during') {
 //    delete preferences.animate;
 //  }
