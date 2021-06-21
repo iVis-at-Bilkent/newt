@@ -1,5 +1,6 @@
 var jquery = $ = require('jquery');
 var appUtilities = require('./app-utilities');
+var databaseUtilities = require('./database-utilities');
 var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
@@ -242,7 +243,7 @@ module.exports = function (chiseInstance) {
         content: 'Show Processes of This in Database',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
         '[class^="unspecified entity"], [class^="perturbing agent"]',
-        show: appUtilities.enableDatabase,
+        show: databaseUtilities.enableDatabase,
         onClickFunction: function (event) {
           // complete this later
         }
@@ -251,7 +252,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-show-neighbors-in-database',
         content: 'Show Neighbors in Database',
         selector: '[class^="BA"], [class^="phenotype"]',
-        show: appUtilities.enableDatabase,
+        show: databaseUtilities.enableDatabase,
         onClickFunction: function (event) { 
           // complete this later
         }

@@ -1,6 +1,7 @@
 var jquery = $ = require('jquery');
 var BackboneViews = require('./backbone-views');
 var appUtilities = require('./app-utilities');
+var databaseUtilities = require('./database-utilities')
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var modeHandler = require('./app-mode-handler');
 var keyboardShortcuts = require('./keyboard-shortcuts');
@@ -242,7 +243,7 @@ module.exports = function() {
 			   
   function toolbarButtonsAndMenu() {
     // hide database functions if enableDatabase = false
-    if(appUtilities.enableDatabase === false){
+    if(databaseUtilities.enableDatabase === false){
       $('.database-function').hide()
     }
     // menu behavior: on first click, triggers the other menus on hover.
@@ -1263,6 +1264,22 @@ module.exports = function() {
 
       layoutPropertiesView.applyLayout(preferences);
     });
+
+    $("#push-active-tab-contents").click(function (e) {
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      
+      var activeTabContent = chiseInstance.createJsonFromSBGN();
+
+      var nodesData = [];
+      var edgesData = [];
+
+      databaseUtilities.processNodesData(nodesData, activeTabContent)
+      databaseUtilities.processEdgesData(edgesData, activeTabContent);
+
+      databaseUtilities.pushActiveContentToDatabase(nodesData, edgesData)
+      
+    })
 
     $("#undo-last-action, #undo-icon").click(function (e) {
 
