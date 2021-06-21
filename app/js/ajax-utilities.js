@@ -3,6 +3,12 @@ var fs = require('fs');
 var request = require('request');
 var querystring = require('querystring');
 var nodeMailer = require('nodemailer');
+var neo4j = require('neo4j-driver');
+var dotenv = require('dotenv');
+dotenv.config()
+
+const driver = neo4j.driver(process.env.NEO4j_DB_URI, neo4j.auth.basic(process.env.NEO4j_DB_NAME, process.env.NEO4J_DB_PASSWORD));
+
 /*
 	functions in this file all have to take the same arguments:
 	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
@@ -185,3 +191,22 @@ exports.ServerRequest = function (req, res) {
 
 };
 
+exports.runDatabaseQuery = function (req, res) {
+	if(req.method == 'POST') {
+		var query = req.body.query;
+		var queryData = req.body.queryData;
+
+		var session = driver.session();
+
+		session.run( query, queryData)
+      .catch((err) => {
+				res.status(500);
+				res.send("Error: " + err);
+      })
+      .finally(() => {
+        session.close()
+				res.status(200);
+				res.send("Query successfully executed")
+      });
+	}
+};
