@@ -345,7 +345,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Border Width</font>" + "</td><td style='padding-left: 5px;'>"
         + "<input id='inspector-border-width' class='inspector-input-box' type='number' min='0' style='width: " + buttonwidth + "px;'";
 
-      if (borderWidth) {
+      if (borderWidth !== null && borderWidth !== undefined) {
         html += " value='" + parseFloat(borderWidth) + "'";
       }
 
