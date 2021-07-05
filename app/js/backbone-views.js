@@ -3328,22 +3328,22 @@ var PromptInvalidTypeWarning = Backbone.View.extend({
 var PromtErrorPD2AF = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.template = _.template($("#prompt-errorPD2AF-table").html());
+    self.template = _.template($("#prompt-errorPD2AF-template").html());
   },
-  render: function () {
+  render: function (message) {
     var self = this;
-    self.template = _.template($("#prompt-errorPD2AF-table").html());
-    // console.log("RENDEEER");
+    self.template = _.template($("#prompt-errorPD2AF-template").html());
+
+    var param = {};
+    param.message = message;
+    self.template = self.template(param);
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    // console.log("RENDEEER");
 
-    $(document).off("click", "#prompt-errorPD2AF-table").on("click", "#prompt-errorPD2AF-table", function (evt) {
+    $(document).off("click", "#prompt-errorPD2AF-confirm").on("click", "#prompt-errorPD2AF-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
-    // console.log("RENDEEER");
-
     return this;
   }
 });
