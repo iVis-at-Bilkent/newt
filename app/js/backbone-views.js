@@ -3306,18 +3306,18 @@ var PromptInvalidFileView = Backbone.View.extend({
 var PromptInvalidTypeWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.template = _.template($("#prompt-errorInvalidType-table").html());
+    self.template = _.template($("#prompt-errorInvalidType-template").html());
   },
   render: function () {
     var self = this;
-    self.template = _.template($("#prompt-errorInvalidType-table").html());
+    self.template = _.template($("#prompt-errorInvalidType-template").html());
     // console.log("RENDEEER");
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
     // console.log("RENDEEER");
 
-    $(document).off("click", "#prompt-errorInvalidType-table").on("click", "#prompt-errorInvalidType-table", function (evt) {
+    $(document).off("click", "#prompt-errorInvalidType-confirm").on("click", "#prompt-errorInvalidType-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
     // console.log("RENDEEER");
