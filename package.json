@@ -40,6 +40,7 @@
     "cytoscape-popper": "^1.0.2",
     "cytoscape-undo-redo": "github:iVis-at-Bilkent/cytoscape.js-undo-redo#unstable",
     "cytoscape-view-utilities": "github:iVis-at-Bilkent/cytoscape.js-view-utilities#unstable",
+    "express": "^4.17.1",
     "file-saver": "^2.0.2",
     "intro.js": "2.9.3",
     "jquery": "~3.3.1",
@@ -61,7 +62,6 @@
     "cypress": "^7.3.0",
     "cypress-file-upload": "^5.0.3",
     "cypress-real-events": "^1.3.0",
-    "express": "^4.17.1",
     "body-parser":"*",
     "nodemon": "1.11.0",
     "parallelshell": "3.0.1"
