@@ -13,7 +13,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
+        promptMapTypeView, promptInvalidTypeWarning, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -128,6 +128,7 @@ module.exports = function() {
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
+  promptInvalidTypeWarning = appUtilities.promptInvalidTypeWarning = new BackboneViews.PromptInvalidTypeWarning({el: '#prompt-errorPD2AF-table'});
   promptFileConversionErrorView = appUtilities.promptFileConversionErrorView = new BackboneViews.PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#sbgn-bricks-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
@@ -965,6 +966,105 @@ module.exports = function() {
 
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
     });
+
+  $("#highlight-errors-of-pd2af").click(function (e) {
+  
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+        
+    var filename = document.getElementById('file-name').innerHTML;
+    var fExt = 'sbgn';
+    filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
+
+    // Get the graph from the canvas
+
+    var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+    
+    // console.log(typeof file);
+//     console.log(file.length);
+//     console.log(file);
+    // If the graph type is not PD display error
+    if(chiseInstance.getMapType() != 'PD' || file.length == 146){
+      // console.log("Wrong Type");
+      promptInvalidTypeWarning.render();
+      // console.log("Returned");
+      return;
+    }
+    
+    var url = "/";
+    var retdata;
+    $.ajax({
+      // url: "https://pd2afwebservice.herokuapp.com/convert",
+      url: "http://localhost:5555/convert",
+      type: "POST",
+      
+      ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
+      data: {
+        'file': file,
+        'filename': filename
+      },
+      success: function (data) {
+        if(data.name==='Error' || data.error){
+          promtErrorPD2AF.render(data.message);
+        }else{
+          retdata=data;
+          console.log(data);
+          url = data.url;
+          filename = data.filename;
+          var newNetwork = appUtilities.createNewNetwork(filename);
+          // console.log(newNetwork);
+          chiseInstance = appUtilities.getActiveChiseInstance();
+          var cyInstance = chiseInstance.getCy();
+          var fileExtension = filename.split('.');
+
+          $.ajax({
+            type: 'get',
+            url: "/utilities/testURL",
+            data: {url: url},
+            success: function(data){
+              // here we can get 404 as well, for example, so there are still error cases to handle
+              if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
+                var fileToLoad = new File([data.response.body], filename, {
+                  type: 'text/' + fileExtension,
+                  lastModified: Date.now()
+                });
+      
+                if (fileExtension === "xml" || fileExtension === "xml#" 
+                    || fileExtension === "sbml" || fileExtension === "sbml#") {
+                  chiseInstance.loadSbml(fileToLoad,  success = function(data){
+                    var cy = appUtilities.getActiveCy();
+                    if (cy.elements().length !== 0) {
+                      promptConfirmationView.render(function () {
+                        chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                      });
+                    }
+                    else {
+                      chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                    }
+                  });
+                }
+                else {
+                  chiseInstance.loadNwtFile(fileToLoad, ()=>{}, ()=>{}, retdata);
+                }
+              }
+              else {
+                loadCallbackInvalidityWarning();
+              }
+            },
+            error: function(xhr, options, err){
+              loadCallbackInvalidityWarning();
+            }
+          });       
+        }
+      },
+      error: function (data) {
+        promtErrorPD2AF.render(data.message);
+        // console.log("ERROR");
+
+      }
+    });
+  });
+  
 
 
   $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
