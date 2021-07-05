@@ -1,4 +1,0 @@
-
-<#foo>  :p   123, 456.
-<#bar> :q    {  <#baz> :pp "foobar" }.
-

@@ -1,6 +1,0 @@
-*.log
-docs
-browser/n3*
-node_modules
-spec/*/*
-coverage

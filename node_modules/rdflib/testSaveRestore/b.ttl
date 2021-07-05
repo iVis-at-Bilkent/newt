@@ -1,8 +1,0 @@
-
-
-<#alice>  :friend <#bob>.
-
-<#bob> :says {  
-<#alice> a :Person.  <#bob> :friend <#alice> 
-}.
-
