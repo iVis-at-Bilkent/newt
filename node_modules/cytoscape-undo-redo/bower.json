@@ -1,0 +1,21 @@
+{
+  "name": "cytoscape.js-undo-redo",
+  "description": "Manages undo&#x2F;redo actions",
+  "main": "cytoscape.js-undo-redo.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iVis-at-Bilkent/cytoscape.js-undo-redo.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "cytoscape",
+    "cyext"
+  ],
+  "license": "MIT"
+}

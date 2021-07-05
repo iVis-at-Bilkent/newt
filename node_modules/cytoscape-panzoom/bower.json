@@ -1,0 +1,25 @@
+{
+  "name": "cytoscape-panzoom",
+  "description": "Panzoom extension for Cytoscape.js",
+  "main": "cytoscape-panzoom.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cytoscape/cytoscape.js-panzoom.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "cytoscape",
+    "cyext"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^1.4 || ^2.0 || ^3.0",
+    "cytoscape": "^2.0.0 || ^3.0.0"
+  }
+}

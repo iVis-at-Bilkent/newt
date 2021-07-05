@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="process description">
+	<bbox x="0" y="0" w="363" h="253"/>
+	<glyph class="simple chemical" id="glyph1">
+		<label text="A"/>
+		<bbox x="40" y="120" w="60" h="60"/>
+	</glyph>
+	<glyph class="simple chemical" id="glyph_ethanal">
+		<label text="B" />
+		<bbox x="220" y="110" w="60" h="60"/>
+	</glyph>
+	<glyph class="simple chemical" id="glyph_h">
+		<label text="C" />
+		<bbox x="220" y="190" w="60" h="60"/>
+	</glyph>
+	<glyph class="simple chemical" id="glyph_nadh">
+		<label text="E" />
+		<bbox x="300" y="150" w="60" h="60"/>
+	</glyph>
+	
+	<glyph class="dissociation" orientation="horizontal" id="pn1">
+		<bbox x="148" y="168" w="24" h="24"/>
+		<port x="136" y="180" id="pn1.1"/>
+		<port x="184" y="180" id="pn1.2"/>
+	</glyph>
+
+	<arc class="consumption" source="glyph1" target="pn1.1" id="a01">
+		<start x="98" y="160" />
+		<end x="136" y="180" />
+	</arc>
+	
+	<arc class="production" source="pn1.2" target="glyph_nadh" id="a02">
+		<start x="184" y="180" />			
+		<end x="300" y="180" />
+	</arc>
+	
+	<arc class="production" source="pn1.2" target="glyph_h" id="a04">
+		<start x="184" y="180" />			
+		<end x="224" y="202" />
+	</arc>
+	<arc class="production" source="pn1.2" target="glyph_ethanal" id="a05">
+		<start x="184" y="180" />			
+		<end x="224" y="154" />
+	</arc>
+  </map>
+</sbgn>

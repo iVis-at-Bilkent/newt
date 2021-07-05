@@ -1,0 +1,187 @@
+[34]    0.06    0.000    0.000      1     process-ns [34]
+-----------------------------------------------
+                0.000    0.000      1/2         iso:schema/iso:p [37]
+                0.000    0.000      1/2         process-title [39]
+[35]    0.06    0.000    0.000      2     process-p [35]
+                0.000    0.000      2/2         text()[text] [27]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[36]    0.00    0.000    0.000      1     iso:diagnostics [36]
+                0.000    0.000      9/9         iso:diagnostic[check-diagnostics] [30]
+-----------------------------------------------
+                0.000    0.000      1/1         process-root [17]
+[37]    0.00    0.000    0.000      1     iso:schema/iso:p [37]
+                0.000    0.000      1/1         process-p [35]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[38]    0.00    0.000    0.000      1     iso:schema/iso:title [38]
+                0.000    0.000      1/1         process-schema-title [40]
+-----------------------------------------------
+                0.000    0.000      1/1         process-schema-title [40]
+[39]    0.00    0.000    0.000      1     process-title [39]
+                0.000    0.000      1/1         process-p [35]
+-----------------------------------------------
+                0.000    0.000      1/1         iso:schema/iso:title [38]
+[40]    0.00    0.000    0.000      1     process-schema-title [40]
+                0.000    0.000      1/1         process-title [39]
+-----------------------------------------------
+
+Index by function name
+[0] diagnosticsSplit (iso_schematron_skeleton_for_saxon.xsl:1752)
+[1] iso:pattern[not(@abstract='true')] (iso_schematron_skeleton_for_saxon.xsl:1537)
+[2] iso:pattern[do-all-patterns] (iso_schematron_skeleton_for_saxon.xsl:1419)
+[3] iso:rule[not(@abstract='true')] (iso_schematron_skeleton_for_saxon.xsl:1600)
+[4] iso:active (iso_schematron_skeleton_for_saxon.xsl:975)
+[5] propertiesSplit (iso_schematron_skeleton_for_saxon.xsl:1798)
+[6] process-assert (iso_svrl_for_xslt2.xsl:251)
+[7] richParms (iso_svrl_for_xslt2.xsl:597)
+[8] iso:let (iso_schematron_skeleton_for_saxon.xsl:1315)
+[9] process-value-of (iso_schematron_skeleton_for_saxon.xsl:2133)
+[10] iso:assert (iso_schematron_skeleton_for_saxon.xsl:989)
+[11] process-diagnostic (iso_svrl_for_xslt2.xsl:403)
+[12] process-rule (iso_svrl_for_xslt2.xsl:467)
+[13] process-pattern (iso_svrl_for_xslt2.xsl:531)
+[14] generate-default-rules (iso_schematron_skeleton_for_saxon.xsl:692)
+[15] iso:diagnostic (iso_schematron_skeleton_for_saxon.xsl:1069)
+[16] handle-pattern (iso_schematron_skeleton_for_saxon.xsl:1454)
+[17] process-root (iso_svrl_for_xslt2.xsl:217)
+[18] *[stylesheetbody] (iso_schematron_skeleton_for_saxon.xsl:630)
+[19] handle-namespace (iso_schematron_skeleton_for_saxon.xsl:1845)
+[20] / (iso_schematron_skeleton_for_saxon.xsl:542)
+[21] iso:value-of[text] (iso_schematron_skeleton_for_saxon.xsl:1689)
+[22] handle-phase (iso_schematron_skeleton_for_saxon.xsl:681)
+[23] handle-root (iso_schematron_skeleton_for_saxon.xsl:944)
+[24] IamEmpty (iso_schematron_skeleton_for_saxon.xsl:1742)
+[25] linkableParms (iso_svrl_for_xslt2.xsl:635)
+[26] iso:phase (iso_schematron_skeleton_for_saxon.xsl:1562)
+[27] text()[text] (iso_schematron_skeleton_for_saxon.xsl:1731)
+[28] iso:schema[not(@queryBinding)or@queryBinding='xslt'or@queryBinding='xslt1'or@queryBinding='XSLT'or@queryBinding='XSLT1'or@queryBinding='xpath'] (iso_schematron_skeleton_for_saxon.xsl:562)
+[29] exslt.add.imports (iso_schematron_skeleton_for_saxon.xsl:666)
+[30] iso:diagnostic[check-diagnostics] (iso_schematron_skeleton_for_saxon.xsl:1063)
+[31] iso:ns (iso_schematron_skeleton_for_saxon.xsl:1377)
+[32] iso:ns[do-all-patterns] (iso_schematron_skeleton_for_saxon.xsl:1382)
+[33] process-prolog (iso_svrl_for_xslt2.xsl:206)
+[34] process-ns (iso_svrl_for_xslt2.xsl:514)
+[35] process-p (iso_svrl_for_xslt2.xsl:520)
+[36] iso:diagnostics (iso_schematron_skeleton_for_saxon.xsl:1084)
+[37] iso:schema/iso:p (iso_schematron_skeleton_for_saxon.xsl:1397)
+[38] iso:schema/iso:title (iso_schematron_skeleton_for_saxon.xsl:1678)
+[39] process-title (iso_schematron_skeleton_for_saxon.xsl:2119)
+[40] process-schema-title (iso_schematron_skeleton_for_saxon.xsl:2126)
+
+        0.000    0.001     28/150       process-rule [12]
+                0.001    0.010     29/150       process-assert [6]
+                0.000    0.001     65/150       process-diagnostic [11]
+[7]     2.49    0.000    0.000    150     richParms [7]
+-----------------------------------------------
+                0.001    0.001     75/75        iso:rule[not(@abstract='true')] [3]
+[8]     2.26    0.000    0.000     75     iso:let [8]
+-----------------------------------------------
+                0.000    0.000     65/65        iso:value-of[text] [21]
+[9]     2.03    0.000    0.000     65     process-value-of [9]
+-----------------------------------------------
+                0.001    0.001     29/29        iso:rule[not(@abstract='true')] [3]
+[10]    1.97    0.000    0.001     29     iso:assert [10]
+                0.001    0.010     29/29        process-assert [6]
+-----------------------------------------------
+                0.000    0.000     65/65        iso:diagnostic [15]
+[11]    1.85    0.000    0.001     65     process-diagnostic [11]
+                0.000    0.000     65/130       richParms [7]
+                0.000    0.000     65/130       iso:value-of[text] [21]
+-----------------------------------------------
+                0.001    0.001     28/28        iso:rule[not(@abstract='true')] [3]
+[12]    1.80    0.000    0.001     28     process-rule [12]
+                0.001    0.000     28/56        propertiesSplit [5]
+                0.000    0.000     28/56        richParms [7]
+-----------------------------------------------
+                0.000    0.000     28/28        handle-pattern [16]
+[13]    1.68    0.000    0.000     28     process-pattern [13]
+                0.000    0.000     28/28        richParms [7]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[14]    1.45    0.000    0.000      1     generate-default-rules [14]
+-----------------------------------------------
+                0.008    0.009     65/65        diagnosticsSplit [0]
+[15]    1.16    0.000    0.000     65     iso:diagnostic [15]
+                0.000    0.001     65/65        process-diagnostic [11]
+-----------------------------------------------
+                0.001    0.000     28/28        iso:pattern[do-all-patterns] [2]
+[16]    1.04    0.000    0.000     28     handle-pattern [16]
+                0.000    0.000     28/28        process-pattern [13]
+-----------------------------------------------
+                0.000    0.001      1/1         handle-root [23]
+[17]    0.81    0.000    0.000      1     process-root [17]
+                0.000    0.000      1/1         iso:schema/iso:p [37]
+-----------------------------------------------
+                0.000    0.000      1/1         iso:schema[not(@queryBinding)or@queryBinding='xslt'or@queryBinding='xslt1'or@queryBinding='XSLT'or@queryBinding='XSLT1'or@queryBinding='xpath'] [28]
+[18]    0.69    0.000    0.002      1     *[stylesheetbody] [18]
+                0.001    0.001     29/38        iso:pattern[not(@abstract='true')] [1]
+                0.000    0.000      1/38        generate-default-rules [14]
+                0.000    0.000      1/38        handle-phase [22]
+                0.000    0.001      1/38        handle-root [23]
+                0.000    0.001      2/38        iso:phase [26]
+                0.000    0.000      1/38        exslt.add.imports [29]
+                0.000    0.000      1/38        process-prolog [33]
+                0.000    0.000      1/38        iso:diagnostics [36]
+                0.000    0.000      1/38        iso:schema/iso:title [38]
+-----------------------------------------------
+                0.000    0.000      1/1         iso:ns [31]
+[19]    0.52    0.000    0.000      1     handle-namespace [19]
+-----------------------------------------------
+                0.017    0.000      1/1         - [41]
+[20]    0.46    0.000    0.000      1     / [20]
+                0.000    0.000      1/1         iso:schema[not(@queryBinding)or@queryBinding='xslt'or@queryBinding='xslt1'or@queryBinding='XSLT'or@queryBinding='XSLT1'or@queryBinding='xpath'] [28]
+-----------------------------------------------
+                0.000    0.001     65/65        process-diagnostic [11]
+[21]    0.41    0.000    0.000     65     iso:value-of[text] [21]
+                0.000    0.000     65/130       process-value-of [9]
+                0.000    0.000     65/130       IamEmpty [24]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[22]    0.35    0.000    0.000      1     handle-phase [22]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[23]    0.35    0.000    0.001      1     handle-root [23]
+                0.001    0.000     29/31        iso:pattern[do-all-patterns] [2]
+                0.000    0.000      1/31        process-root [17]
+                0.000    0.000      1/31        iso:ns[do-all-patterns] [32]
+-----------------------------------------------
+                0.000    0.000      1/66        iso:ns[do-all-patterns] [32]
+                0.000    0.000     65/66        iso:value-of[text] [21]
+[24]    0.35    0.000    0.000     66     IamEmpty [24]
+-----------------------------------------------
+                0.001    0.010     29/29        process-assert [6]
+[25]    0.35    0.000    0.000     29     linkableParms [25]
+-----------------------------------------------
+                0.000    0.002      2/2         *[stylesheetbody] [18]
+[26]    0.17    0.000    0.001      2     iso:phase [26]
+                0.001    0.000     29/29        iso:active [4]
+-----------------------------------------------
+                0.000    0.000      2/31        process-p [35]
+                0.001    0.010     29/31        process-assert [6]
+[27]    0.12    0.000    0.000     31     text()[text] [27]
+-----------------------------------------------
+                0.000    0.000      1/1         / [20]
+[28]    0.06    0.000    0.000      1     iso:schema[not(@queryBinding)or@queryBinding='xslt'or@queryBinding='xslt1'or@queryBinding='XSLT'or@queryBinding='XSLT1'or@queryBinding='xpath'] [28]
+                0.000    0.002      1/2         *[stylesheetbody] [18]
+                0.000    0.000      1/2         iso:ns [31]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[29]    0.06    0.000    0.000      1     exslt.add.imports [29]
+-----------------------------------------------
+                0.000    0.000      9/9         iso:diagnostics [36]
+[30]    0.06    0.000    0.000      9     iso:diagnostic[check-diagnostics] [30]
+-----------------------------------------------
+                0.000    0.000      1/1         iso:schema[not(@queryBinding)or@queryBinding='xslt'or@queryBinding='xslt1'or@queryBinding='XSLT'or@queryBinding='XSLT1'or@queryBinding='xpath'] [28]
+[31]    0.06    0.000    0.000      1     iso:ns [31]
+                0.000    0.000      1/1         handle-namespace [19]
+-----------------------------------------------
+                0.000    0.001      1/1         handle-root [23]
+[32]    0.06    0.000    0.000      1     iso:ns[do-all-patterns] [32]
+                0.000    0.000      1/2         IamEmpty [24]
+                0.000    0.000      1/2         process-ns [34]
+-----------------------------------------------
+                0.000    0.002      1/1         *[stylesheetbody] [18]
+[33]    0.06    0.000    0.000      1     process-prolog [33]
+-----------------------------------------------
+                0.000    0.000      1/1         iso:ns[do-all-patterns] [32]

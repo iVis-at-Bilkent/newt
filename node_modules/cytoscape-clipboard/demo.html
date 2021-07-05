@@ -1,0 +1,114 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+	<title>cytoscape-clipboard demo</title>
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
+	<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+
+	<!-- for testing with local version of cytoscape.js -->
+	<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
+
+	<script src="src/cytoscape-undo-redo.js"></script>
+	<script src="cytoscape-clipboard.js"></script>
+
+	<style>
+		body {
+			font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+			font-size: 14px;
+		}
+
+		#cy {
+			z-index: 999;
+			width: 85%;
+			height: 85%;
+			float: left;
+		}
+
+		h1 {
+			opacity: 0.5;
+			font-size: 1em;
+			font-weight: bold;
+		}
+	</style>
+
+	<script>
+
+		document.addEventListener('DOMContentLoaded', function(){
+
+			var cy = window.cy = cytoscape({
+				container: document.getElementById('cy'),
+
+				style: [
+					{
+						selector: 'node',
+						style: {
+							'content': 'data(name)'
+						}
+					},
+
+					{
+						selector: 'edge',
+						style: {
+							'target-arrow-shape': 'triangle'
+						}
+					},
+
+					{
+						selector: ':selected',
+						style: {
+
+						}
+					}
+				],
+
+				elements: {
+					nodes: [
+						{ data: { id: 'j', name: 'Jerry' } },
+						{ data: { id: 'e', name: 'Elaine' } },
+						{ data: { id: 'k', name: 'Kramer', parent: "e" } },
+						{ data: { id: 'g', name: 'George' } }
+					],
+					edges: [
+						{ data: { source: 'j', target: 'e' } },
+						{ data: { source: 'j', target: 'k' } },
+						{ data: { source: 'j', target: 'g' } },
+						{ data: { source: 'k', target: 'g' } }
+					]
+				}
+			});
+			var ur = cy.undoRedo({
+				undoableDrag: false
+			});
+			var cb = cy.clipboard();
+
+			document.addEventListener("keydown", function (e) {
+				if (e.ctrlKey && e.target.nodeName === 'BODY')
+					if (e.which == 67) // CTRL + C
+						cy.clipboard().copy(cy.$(":selected"));
+					else if (e.which == 86) // CTRL + V
+							ur.do("paste");
+					else if (e.which == 65) {
+						cy.elements().select();
+						e.preventDefault();
+					}
+			});
+		});
+	</script>
+</head>
+
+<body>
+<h1>cytoscape-clipboard demo</h1>
+
+ <b style="color: darkblue">CTRL+Z</b> to undo, <b style="color: darkblue">CTRL+Y</b> to redo <br/>
+ <b style="color: darkred">CTRL+C</b> to copy, <b style="color: darkred">CTRL+V</b> to paste
+
+<div id="cy"></div>
+
+</body>
+
+</html>

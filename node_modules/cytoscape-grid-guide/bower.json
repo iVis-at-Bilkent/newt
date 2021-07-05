@@ -1,0 +1,21 @@
+{
+  "name": "cytoscape-grid-guide",
+  "description": "Framework for grid-guide interactions.",
+  "main": "cytoscape-grid-guide.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iVis-at-Bilkent/cytoscape.js-grid-guide.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "cytoscape",
+    "cyext"
+  ],
+  "license": "MIT"
+}

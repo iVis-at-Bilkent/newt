@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph class="process" id="fc37d">
+            <label text=""/>
+            <bbox w="16.0" h="16.0" x="440.0" y="168.0"/>
+            <port id="e59db" x="408.0" y="176.0"/>
+        </glyph>
+    </map>
+</sbgn>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph class="simple chemical" id="glyph1">
+            <label text="Ethanol"/>
+            <bbox w="60.0" h="60.0" x="40.0" y="120.0"/>
+        </glyph>
+        <glyph class="simple chemical" id="glyph_ethanal">
+            <label text="Ethanal"/>
+            <bbox w="60.0" h="60.0" x="213.0" y="114.0"/>
+        </glyph>
+        <glyph class="process" id="pn1">
+            <label text=""/>
+            <bbox w="24.0" h="24.0" x="148.0" y="168.0"/>
+            <port id="pn1.1" x="136.0" y="180.0"/>
+            <port id="pn1.2" x="184.0" y="180.0"/>
+        </glyph>
+        <arc class="consumption" id="a01" source="glyph1" target="pn1.1">
+            <start x="98.0" y="160.0"/>
+            <end x="136.0" y="180.0"/>
+        </arc>
+        <arc class="production" id="a05" source="pn1.2" target="glyph_ethanal">
+            <start x="184.0" y="180.0"/>
+            <end x="213.0" y="159.0"/>
+        </arc>
+    </map>
+</sbgn>

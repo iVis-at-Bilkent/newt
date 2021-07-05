@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph class="process" id="glyph6">
+            <label text=""/>
+            <bbox w="79.0" h="35.0" x="370.0" y="107.0"/>
+            <port id="b7636" x="330.5" y="124.5"/>
+            <port id="da64b" x="488.5" y="124.5"/>
+        </glyph>
+        <glyph class="simple chemical" id="d4e67">
+            <label text="B"/>
+            <bbox w="60.0" h="60.0" x="546.0" y="364.0"/>
+        </glyph>
+        <glyph class="simple chemical" id="e8891">
+            <label text="A"/>
+            <bbox w="60.0" h="60.0" x="174.0" y="205.0"/>
+        </glyph>
+        <arc class="consumption" id="c046f" source="d4e67" target="da64b">
+            <start x="606.0" y="394.0"/>
+            <end x="488.5" y="124.5"/>
+        </arc>
+        <arc class="consumption" id="f62ff" source="e8891" target="b7636">
+            <start x="234.0" y="235.0"/>
+            <end x="330.5" y="124.5"/>
+        </arc>
+    </map>
+</sbgn>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph class="macromolecule" id="glyph2">
+            <label text="RAS"/>
+            <bbox w="100.0" h="60.0" x="300.853" y="35.4265"/>
+        </glyph>
+        <glyph class="tag" id="ffc40">
+            <label text="RAS"/>
+            <bbox w="70.0" h="58.557167" x="82.05989" y="37.63158"/>
+        </glyph>
+        <arc class="equivalence arc" id="a1" source="glyph2" target="ffc40">
+            <start x="300.853" y="65.4265"/>
+            <end x="152.05989" y="66.910164"/>
+        </arc>
+    </map>
+</sbgn>

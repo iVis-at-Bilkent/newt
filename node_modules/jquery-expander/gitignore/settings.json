@@ -1,0 +1,3 @@
+{
+  "rsync": "rsync -auz --no-t --exclude='.git*' --exclude='node_modules/' --exclude='gitignore/'  --progress ./ learningjquery@learningjquery.com:/var/www/vhosts/learningjquery.com/subdomains/plugins/httpdocs/"
+}

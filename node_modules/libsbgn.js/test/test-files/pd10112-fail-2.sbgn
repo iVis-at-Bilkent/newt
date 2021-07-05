@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="process description">
+
+    <glyph class="compartment" id="glyph1">
+		<label text="extracellular"/>
+		<bbox x="90" y="70" w="440" h="140"/>
+	</glyph>
+	
+	<glyph class="complex" id="glyph2" compartmentRef="glyph1">
+		<bbox x="360" y="150" w="140" h="160"/>
+		<glyph class="macromolecule" id="glyph3">
+			<label text="IGF"/>
+			<bbox x="380" y="171" w="100" h="60"/>
+		</glyph>
+		<glyph class="macromolecule" id="glyph6">
+			<label text="IGFR"/>
+			<bbox x="380" y="232" w="100" h="60"/>
+		</glyph>
+	</glyph>
+	
+	<glyph class="macromolecule" id="glyph5">
+		<label text="IGF"/>
+		<bbox x="170" y="130" w="100" h="60"/>
+	</glyph>
+
+  </map>
+</sbgn>

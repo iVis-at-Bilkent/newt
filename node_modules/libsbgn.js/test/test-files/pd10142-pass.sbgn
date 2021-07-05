@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph class="simple chemical" id="glyph4">
+            <label text="B"/>
+            <bbox w="60.0" h="60.0" x="63.0" y="228.0"/>
+        </glyph>
+        <glyph class="simple chemical" id="glyph0">
+            <label text="A"/>
+            <bbox w="60.0" h="60.0" x="75.0" y="92.0"/>
+        </glyph>
+        <glyph class="and" id="e1f0d">
+            <label text="AND"/>
+            <bbox w="30.0" h="30.0" x="232.0" y="212.0"/>
+            <port id="e3ede" x="207.0" y="227.0"/>
+            <port id="a725e" x="287.0" y="227.0"/>
+        </glyph>
+        <glyph class="simple chemical" id="e03ff">
+            <label text="C"/>
+            <bbox w="30.0" h="30.0" x="227.0" y="324.0"/>
+        </glyph>
+        <glyph class="simple chemical" id="ab7e3">
+            <label text="D"/>
+            <bbox w="30.0" h="30.0" x="443.0" y="317.0"/>
+        </glyph>
+        <glyph class="process" id="bda37">
+            <label text=""/>
+            <bbox w="16.0" h="16.0" x="338.0" y="325.0"/>
+            <port id="bd1ab" x="306.0" y="333.0"/>
+            <port id="e15ac" x="386.0" y="333.0"/>
+        </glyph>
+        <arc class="logic arc" id="abdd2" source="glyph0" target="e3ede">
+            <start x="105.0" y="152.0"/>
+            <end x="207.0" y="227.0"/>
+        </arc>
+        <arc class="logic arc" id="cbd55" source="glyph4" target="e3ede">
+            <start x="123.0" y="243.0"/>
+            <end x="207.0" y="227.0"/>
+        </arc>
+        <arc class="consumption" id="b8779" source="e03ff" target="bd1ab">
+            <start x="257.0" y="331.5"/>
+            <end x="306.0" y="333.0"/>
+        </arc>
+        <arc class="production" id="f27a2" source="e15ac" target="ab7e3">
+            <start x="386.0" y="333.0"/>
+            <end x="443.0" y="332.0"/>
+        </arc>
+        <arc class="necessary stimulation" id="c3671" source="a725e" target="bda37">
+            <start x="287.0" y="227.0"/>
+            <end x="346.0" y="325.0"/>
+        </arc>
+    </map>
+</sbgn>

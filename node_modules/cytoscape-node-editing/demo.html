@@ -1,0 +1,116 @@
+<!DOCTYPE>
+
+<html>
+
+	<head>
+		<title>cytoscape-node-editing.js demo</title>
+
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+
+		<script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"></script>
+		<script src="https://cdn.rawgit.com/konvajs/konva/1.6.3/konva.min.js"></script>
+		<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+
+		<!-- for testing with local version of cytoscape.js -->
+		<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
+
+		<script src="cytoscape-node-editing.js"></script>
+
+		<style>
+			body {
+				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+				font-size: 14px;
+			}
+
+			#cy {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				z-index: 999;
+			}
+
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+				font-weight: bold;
+			}
+		</style>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function(){
+
+				var cy = window.cy = cytoscape({
+					container: document.getElementById('cy'),
+
+					style: [
+						{
+							selector: 'node',
+							style: {
+								'content': 'data(name)',
+								'textValign': 'center'
+							}
+						},
+
+						{
+							selector: 'edge',
+							style: {
+								'target-arrow-shape': 'triangle'
+							}
+						},
+
+						{
+							selector: ':selected',
+							style: {
+
+							}
+						}
+					],
+
+					layout: { name: 'grid', rows: 2, cols: 2},
+					
+					wheelSensitivity: 0.1,
+
+					elements: {
+						nodes: [
+							{ data: { id: 'j', name: 'Aspected Resize' }, classes: "fixedAspectRatioResizeMode" },
+							{ data: { id: 'e', name: 'Full Resize' } },
+							{ data: { id: 'k', name: 'No Resize' }, classes: "noResizeMode" }
+						],
+						edges: [
+							{ data: { source: 'j', target: 'e' } },
+							{ data: { source: 'j', target: 'k' } },
+							{ data: { source: 'e', target: 'j' } },
+							{ data: { source: 'e', target: 'k' } },
+							{ data: { source: 'k', target: 'j' } },
+							{ data: { source: 'k', target: 'e' } }
+						]
+					}
+				});
+
+				cy.nodeEditing({
+					resizeToContentCueImage: 'resizeCue.svg',
+					autoRemoveResizeToContentCue: true,
+				});
+
+				cy.on("nodeediting.resizestart", function (e, type) {
+					console.log(type);
+				});
+
+				cy.on("nodeediting.resizeend", function (e, type) {
+					document.body.style.cursor = 'initial';
+				});
+
+			});
+		</script>
+	</head>
+
+	<body>
+		<h1>cytoscape-node-editing demo</h1>
+
+		<div id="cy"></div>
+
+	</body>
+
+</html>

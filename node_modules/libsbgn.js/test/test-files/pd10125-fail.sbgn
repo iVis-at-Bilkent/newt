@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph id="glyph4" class="simple chemical">
+            <label text="B"/>
+            <bbox y="186.0" x="52.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph3" class="simple chemical">
+            <label text="C"/>
+            <bbox y="186.0" x="222.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph0" class="simple chemical">
+            <label text="A"/>
+            <bbox y="32.0" x="135.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph6" class="process">
+            <label text=""/>
+            <bbox y="204.0" x="150.0" h="24.0" w="24.0"/>
+            <port y="216.0" x="138.0" id="glyph6.1"/>
+            <port y="216.0" x="186.0" id="glyph6.2"/>
+        </glyph>
+        <arc target="glyph6.1" source="glyph4" id="eb92c" class="consumption">
+            <start y="216.0" x="112.0"/>
+            <end y="216.0" x="138.0"/>
+        </arc>
+        <arc target="glyph3" source="glyph6.2" id="af254" class="production">
+            <start y="216.0" x="186.0"/>
+            <end y="216.0" x="222.0"/>
+        </arc>
+        <arc target="glyph3" source="glyph0" id="a1" class="logic arc">
+            <start y="92.0" x="165.0"/>
+            <end y="186.0" x="252.0"/>
+        </arc>
+    </map>
+</sbgn>

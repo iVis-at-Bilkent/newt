@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph id="glyph1" class="simple chemical">
+            <label text="C"/>
+            <bbox y="236.0" x="184.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph4" class="simple chemical">
+            <label text="D"/>
+            <bbox y="236.0" x="344.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph6" class="process">
+            <label text=""/>
+            <bbox y="58.0" x="280.0" h="24.0" w="24.0"/>
+            <port y="70.0" x="268.0" id="glyph6.1"/>
+            <port y="70.0" x="316.0" id="glyph6.2"/>
+        </glyph>
+        <glyph id="glyph3" class="simple chemical">
+            <label text="E"/>
+            <bbox y="40.0" x="359.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph0" class="simple chemical">
+            <label text="A"/>
+            <bbox y="40.0" x="190.0" h="60.0" w="60.0"/>
+        </glyph>
+        <glyph id="glyph5" class="or">
+            <label text="OR"/>
+            <bbox y="149.0" x="279.0" h="42.0" w="42.0"/>
+            <port y="128.0" x="300.0" id="glyph5.1"/>
+            <port y="212.0" x="300.0" id="glyph5.2"/>
+        </glyph>
+        <glyph id="glyph7" class="process">
+            <label text=""/>
+            <bbox y="254.0" x="282.0" h="24.0" w="24.0"/>
+            <port y="266.0" x="270.0" id="glyph7.1"/>
+            <port y="266.0" x="318.0" id="glyph7.2"/>
+        </glyph>
+        <arc target="glyph7.1" source="glyph1" id="arc000000" class="consumption">
+            <start y="266.0" x="244.0"/>
+            <end y="266.0" x="270.0"/>
+        </arc>
+        <arc target="glyph6.1" source="glyph0" id="arc000001" class="consumption">
+            <start y="70.0" x="250.0"/>
+            <end y="70.0" x="268.0"/>
+        </arc>
+        <arc target="glyph4" source="glyph7.2" id="arc000002" class="production">
+            <start y="266.0" x="318.0"/>
+            <end y="266.0" x="344.0"/>
+        </arc>
+        <arc target="glyph3" source="glyph6.2" id="arc000003" class="production">
+            <start y="70.0" x="316.0"/>
+            <end y="70.0" x="359.0"/>
+        </arc>
+        <arc target="glyph5.1" source="glyph0" id="arc000004" class="logic arc">
+            <start y="87.609024" x="244.28831"/>
+            <end y="128.0" x="300.0"/>
+        </arc>
+        <arc target="glyph5.1" source="glyph6" id="arc000005" class="logic arc">
+            <start y="82.0" x="292.0"/>
+            <end y="128.0" x="300.0"/>
+        </arc>
+        <arc target="glyph7" source="glyph5.2" id="arc000006" class="modulation">
+            <start y="212.0" x="300.0"/>
+            <end y="254.0" x="300.9474"/>
+        </arc>
+    </map>
+</sbgn>

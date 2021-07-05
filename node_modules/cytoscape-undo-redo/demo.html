@@ -1,0 +1,174 @@
+<!DOCTYPE>
+
+<html>
+
+	<head>
+		<title>cytoscape-undo-redo.js demo</title>
+
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+
+		<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+
+		<!-- for testing with local version of cytoscape.js -->
+		<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
+
+		<script src="cytoscape-undo-redo.js"></script>
+
+		<style>
+			body {
+				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+				font-size: 14px;
+			}
+
+			#cy {
+				z-index: 999;
+                width: 85%;
+                height: 85%;
+                float: left;
+			}
+
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+				font-weight: bold;
+			}
+		</style>
+
+		<script>
+
+			document.addEventListener('DOMContentLoaded', function(){
+
+                var cy = window.cy = cytoscape({
+                    container: document.getElementById('cy'),
+
+                    style: [
+                        {
+                            selector: 'node',
+                            style: {
+                                'content': 'data(name)'
+                            }
+                        },
+
+                        {
+                            selector: 'edge',
+                            style: {
+                                'target-arrow-shape': 'triangle'
+                            }
+                        },
+
+                        {
+                            selector: ':selected',
+                            style: {
+
+                            }
+                        }
+                    ],
+
+                    elements: {
+                        nodes: [
+                            { data: { id: 'j', name: 'Jerry' } },
+                            { data: { id: 'e', name: 'Elaine' } },
+                            { data: { id: 'k', name: 'Kramer' } },
+                            { data: { id: 'g', name: 'George' } }
+                        ],
+                        edges: [
+                            { data: { source: 'j', target: 'e' } },
+                            { data: { source: 'j', target: 'k' } },
+                            { data: { source: 'j', target: 'g' } },
+                            { data: { source: 'e', target: 'k' } },
+                            { data: { source: 'k', target: 'g' } }
+                        ]
+                    }
+                });
+
+                var ur = cy.undoRedo({
+                    isDebug: true
+                });
+
+                cy.on("afterUndo", function (e, name) {
+                    document.getElementById("undos").innerHTML += "<span style='color: darkred; font-weight: bold'>Undo: </span> " + name  +"</br>";
+                });
+
+                cy.on("afterRedo", function (e, name) {
+                    document.getElementById("undos").innerHTML += "<span style='color: darkblue; font-weight: bold'>Redo: </span>" + name  +"</br>";
+                });
+
+                cy.on("afterDo", function (e, name) {
+                    document.getElementById("undos").innerHTML += "<span style='color: darkmagenta; font-weight: bold'>Do: </span>" + name  +"</br>";
+                });
+
+                ur.do("add", {
+                    group: "nodes",
+                    data: { weight: 75, name: "New Node" },
+                    position: { x: 200, y: 200 },
+                    style: {
+                        "background-color": "darkred"
+                    }
+                });
+/*
+                function deleteEles(eles){
+                    return eles.remove();
+                }
+
+                function restoreEles(eles){
+                    return eles.restore();
+                }
+
+                ur.action("deleteEles", deleteEles, restoreEles);
+*/
+
+				document.addEventListener("keydown", function (e) {
+					if(e.which === 46) {
+                        var selecteds = cy.$(":selected");
+                        if (selecteds.length > 0)
+                            ur.do("remove", selecteds);
+                    }
+                    else if (e.ctrlKey && e.target.nodeName === 'BODY')
+                        if (e.which === 90)
+                            ur.undo();
+                        else if (e.which === 89)
+                            ur.redo();
+
+				});
+
+                document.getElementById('batchButton').addEventListener("click", function(e){
+                    actions = [];
+                    actions.push({
+                        name: "add",
+                        param: {
+                            group: "nodes",
+                            data: { weight: 75, name: "Bob" },
+                            position: { x: 200, y: 400 },
+                            style: {"background-color": "darkgreen"}
+                        }
+                    });
+                    actions.push({
+                        name: "remove",
+                        param: cy.$(":selected")
+                    });
+                    ur.do("batch", actions);
+                });
+            });
+		</script>
+	</head>
+
+	<body>
+		<h1>cytoscape.js-undo-redo demo</h1>
+
+            <p>
+                <b>DEL</b> to delete selected, <b>CTRL+Z</b> to undo, <b>CTRL+Y</b> to redo <br />
+                Test batch of actions: <input id="batchButton" type="button" value="Add 'Bob' and delete selected"/>
+            </p>
+
+            <div id="cy"></div>
+            <div id="undoRedoList">
+                <span style="color: darkslateblue; font-weight: bold;">Log</span>
+                <div id="undos" style="padding-bottom: 20px;">
+
+                </div>
+            </div>
+        </div>
+
+	</body>
+
+</html>

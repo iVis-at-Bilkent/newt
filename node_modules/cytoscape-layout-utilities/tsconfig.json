@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "noImplicitAny": true,
+      "module": "ES2020",
+      "target": "ES5",
+      "allowJs": false,
+      "strict": true,
+      "noEmitOnError": true,
+      "sourceMap": true,
+      "moduleResolution": "node",
+      "importHelpers": true,
+      "lib": [ 
+        "ES2020",
+        "ES2015.Collection",
+        "DOM"
+      ],
+      "downlevelIteration": true,
+      "allowSyntheticDefaultImports": true,
+      "declaration": true
+    }
+}

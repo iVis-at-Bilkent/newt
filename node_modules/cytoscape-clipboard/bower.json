@@ -1,0 +1,21 @@
+{
+  "name": "cytoscape-clipboard",
+  "description": "Adds copy-paste utilities to cytoscape.",
+  "main": "cytoscape-clipboard.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iVis-at-Bilkent/clipboard.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "cytoscape",
+    "cyext"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+    <map language="process description">
+        <glyph class="macromolecule" id="d61f1">
+            <label text="A&#xA;"/>
+            <bbox w="109.410164" h="114.33757" x="184.17242" y="116.42831"/>
+        </glyph>
+        <glyph class="process" id="be3d7">
+            <label text=""/>
+            <bbox w="16.0" h="16.0" x="426.755" y="165.41197"/>
+            <port id="a451a" x="394.755" y="173.41197"/>
+            <port id="b8853" x="474.755" y="173.41197"/>
+        </glyph>
+        <glyph class="macromolecule" id="f6b48">
+            <label text="B"/>
+            <bbox w="131.0" h="122.0" x="536.0" y="111.0"/>
+        </glyph>
+        <arc class="consumption" id="a004d" source="d61f1" target="a451a">
+            <start x="293.58258" y="173.59709"/>
+            <end x="394.755" y="173.41197"/>
+        </arc>
+        <arc class="production" id="fa4cf" source="b8853" target="f6b48">
+            <start x="474.755" y="173.41197"/>
+            <end x="536.0" y="172.0"/>
+        </arc>
+    </map>
+</sbgn>
