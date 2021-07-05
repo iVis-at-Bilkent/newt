@@ -3325,6 +3325,28 @@ var PromptInvalidTypeWarning = Backbone.View.extend({
     return this;
   }
 });
+var PromtErrorPD2AF = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-errorPD2AF-table").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-errorPD2AF-table").html());
+    // console.log("RENDEEER");
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+    // console.log("RENDEEER");
+
+    $(document).off("click", "#prompt-errorPD2AF-table").on("click", "#prompt-errorPD2AF-table", function (evt) {
+      $(self.el).modal('toggle');
+    });
+    // console.log("RENDEEER");
+
+    return this;
+  }
+});
 var PromptFileConversionErrorView = Backbone.View.extend({
    initialize: function () {
      var self = this;
@@ -5263,6 +5285,7 @@ module.exports = {
   PromptMapTypeView: PromptMapTypeView,
   PromptInvalidFileView: PromptInvalidFileView,
   PromptInvalidTypeWarning: PromptInvalidTypeWarning,
+  PromtErrorPD2AF: PromtErrorPD2AF,
   PromptFileConversionErrorView: PromptFileConversionErrorView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
