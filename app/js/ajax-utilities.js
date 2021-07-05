@@ -199,14 +199,21 @@ exports.runDatabaseQuery = function (req, res) {
 		var session = driver.session();
 
 		session.run( query, queryData)
+			.then( (result) => {
+				const singleRecord = result.records
+				console.log(singleRecord)
+  			// const node = singleRecord.get(0)
+				// console.log(singleRecord.get(1))
+				res.status(200);
+				res.send(result)
+			} )
       .catch((err) => {
 				res.status(500);
+				console.log(err);
 				res.send("Error: " + err);
       })
       .finally(() => {
         session.close()
-				res.status(200);
-				res.send("Query successfully executed")
       });
 	}
 };
