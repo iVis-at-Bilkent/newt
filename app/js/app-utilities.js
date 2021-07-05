@@ -6,7 +6,10 @@
 var jquery = $ = require('jquery');
 var chroma = require('chroma-js');
 var chise = require('chise');
+var _ = require('underscore');
 var tutorial = require('./tutorial');
+var databaseUtilities = require('./database-utilities');
+const { param } = require('jquery');
 
 var appUtilities = {};
 
@@ -1040,6 +1043,298 @@ appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
         chiseInstance.showEles(extendedList);
     }
 };
+
+appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
+  
+  // check _chiseInstance param if it is set use it else use recently active chise instance
+  var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+  // get the associated cy instance
+  var cy = chiseInstance.getCy();
+  
+  
+  var nodeData = eles._private.data
+  var x = nodeData.bbox.x;
+  var y = nodeData.bbox.y;
+  var newtId = nodeData.id
+  var idInDatabase;
+  var entityName = nodeData.label;
+  var label = databaseUtilities.calculateClass(nodeData.class);
+  var unitsOfInformation = databaseUtilities.calculateInfo(nodeData.statesandinfos);
+  var stateVariables = databaseUtilities.calculateState(nodeData.statesandinfos);
+  console.log(newtId, entityName, label, unitsOfInformation, stateVariables)
+
+  var parentData = eles._private.parent;
+
+  var query =
+  "MATCH p = (n:" + label +
+  `)-[]-(:process)-[]-(m)<-[:belongs_to_complex*0..]-()
+  WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+        AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
+        ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
+  RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+        apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+  `;
+
+
+
+  var parentLabel, parentEntityName, parentUnitsOfInformation, parentStateVariables
+  if(parentData) {
+    parentData = parentData._private.data;
+    parentEntityName = parentData.label
+    parentLabel = databaseUtilities.calculateClass(parentData.class);
+    parentUnitsOfInformation = databaseUtilities.calculateInfo(parentData.statesandinfos)
+    parentStateVariables = databaseUtilities.calculateState(parentData.statesandinfos)
+
+    var query = 
+    "CALL {MATCH (n:" + label +
+    ")-[:belongs_to_" + parentLabel + "]->(m:" + parentLabel + ")" +
+    `WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+    AND n.stateVariables = $stateVariables AND  m.entityName = $parentEntityName
+    AND m.unitsOfInformation = $parentUnitsOfInformation AND m.stateVariables = $parentStateVariables
+    RETURN n as matchedNode
+    LIMIT 1
+    }` +
+    `WITH matchedNode
+    CALL { MATCH p = (n:` +
+    label +
+    `)-[]-(:process)-[]-(m)<-[:belongs_to_complex*0..]-()
+    WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+          AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
+          ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
+    RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+          apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+    }
+    UNWIND allNodes as aN
+
+    WITH aN, allRels
+
+    CALL {
+        WITH aN
+        OPTIONAL MATCH (parentNode) where id(parentNode) = aN.parent
+          RETURN parentNode
+        }
+    RETURN aN, parentNode, allRels`;
+  }
+  console.log(nodeData)
+
+  var queryData = { entityName: entityName, unitsOfInformation: unitsOfInformation,
+                    stateVariables: stateVariables, parentEntityName:parentEntityName,
+                    parentUnitsOfInformation: parentUnitsOfInformation, parentStateVariables: parentStateVariables }
+  var data = { query: query, queryData: queryData }
+
+  // contains structured queried data
+  var queryNodes = [], queryParentNodes = [], queryEdges = [];
+  $.ajax({
+    type: 'post',
+    url: "/utilities/runDatabaseQuery",
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify(data),
+    success: function(data){
+      // console.log(JSON.stringify(data))
+      // collect the queried records
+      var nodesArr = data.records[0]._fields[0]
+      var parentNodesArr = [], nodesArr = [];
+      for(let i = 0; i < data.records.length; i++) {
+        nodesArr.push(data.records[i]._fields[0])
+        parentNodesArr.push(data.records[i]._fields[1])
+      }
+      var edgesArr = data.records[0]._fields[2]
+      console.log(nodesArr)
+      console.log(parentNodesArr)
+      console.log(edgesArr)
+
+      // if no nodes are retured there nothing to add to the map
+      if (_.isEqual(nodesArr, [])) {
+        return ;
+      }
+
+      // get useful information out of queried data for nodesArr
+      for(let i = 0; i < nodesArr.length; i++) {
+        var nodeId = nodesArr[i].identity.low;
+        var nodeClass = databaseUtilities.calculateNewtClass(nodesArr[i].labels[0]);
+        // unprocessed classes contains underscore
+        var nodeClassUnprocessed = nodesArr[i].labels[0];
+        var nodeLabel = nodesArr[i].properties.entityName;
+        var nodeUnitOfInformation = nodesArr[i].properties.unitsOfInformation;
+        var nodeStateVariables = nodesArr[i].properties.stateVariables;
+        console.log(nodeId)
+        console.log(nodeClassUnprocessed, label, nodeLabel, entityName, nodeUnitOfInformation, unitsOfInformation, stateVariables, nodeStateVariables)
+        // if (nodeClassUnprocessed == label && nodeLabel == entityName && _.isEqual(nodeUnitOfInformation, unitsOfInformation)
+        //       && _.isEqual(nodeStateVariables, stateVariables)) {
+        //   idInDatabase = nodeId;
+        //   console.log("inside")
+        //   // continue;
+        // }
+        queryNodes.push({
+          id : nodeId,
+          class: nodeClass,
+          language: nodesArr[i].properties.language,
+          label: nodeLabel,
+          unitsOfInformation: nodesArr[i].properties.unitsOfInformation,
+          stateVariables: nodesArr[i].properties.stateVariables,
+          cloneMarker: nodesArr[i].properties.cloneMarker,
+        });
+      }
+      
+
+      // get useful information out of queried data for parentNodesArr
+      for(let i = 0; i < parentNodesArr.length; i++) {
+        // if a node doesn't have a parent skip
+        if (parentNodesArr[i] === null) {
+          parentNodesArr.push(null)
+          continue;
+        }
+        var parentNodeId = parentNodesArr[i].identity.low;
+        var parentNodeClass = databaseUtilities.calculateNewtClass(parentNodesArr[i].labels[0]);
+        // unprocessed classes contains underscore
+        var parentNodeClassUnprocessed = parentNodesArr[i].labels[0];
+        var parentNodeLabel = parentNodesArr[i].properties.entityName;
+        var parentNodeUnitOfInformation = parentNodesArr[i].properties.unitsOfInformation;
+        var parentNodeStateVariables = parentNodesArr[i].properties.stateVariables;
+        // console.log(parentNodeId)
+        // console.log(parentNodeClassUnprocessed, label, parentNodeLabel, entityName, parentNodeUnitOfInformation, unitsOfInformation, stateVariables, parentNodeStateVariables)
+
+        queryParentNodes.push({
+          id : parentNodeId,
+          class: parentNodeClass,
+          language: parentNodesArr[i].properties.language,
+          // EntityName
+          label: parentNodeLabel,
+          unitsOfInformation: parentNodesArr[i].properties.unitsOfInformation,
+          stateVariables: parentNodesArr[i].properties.stateVariables,
+          cloneMarker: parentNodesArr[i].properties.cloneMarker,
+        });
+      }
+      
+      // idInDatabase = nodesArr[0].identity.low
+      // console.log(idInDatabase)
+
+      for(let i = 0; i < edgesArr.length; i++) {
+        var edgeId = edgesArr[i].identity.low;
+        var edgeSource = edgesArr[i].start.low;
+        var edgeTarget = edgesArr[i].end.low;
+        var edgeClass = edgesArr[i].type;
+        if (edgeSource == idInDatabase) {
+          edgeSource = newtId;
+        }
+        if (edgeTarget == idInDatabase) {
+          edgeTarget = newtId;
+        }
+        console.log(i)
+        queryEdges.push({
+          id: edgeId,
+          source: edgeSource,
+          target: edgeTarget,
+          class: edgeClass,
+        })
+      }
+      // console.log(queryNodes)
+      console.log("Check if node exists")
+      var queryNodesToAdd = []
+
+      for(let i = 0; i < queryNodes.length; i++) {
+        var nodeExists;
+        console.log("queryNodes[i].label", queryNodes[i].class)
+        if ( databaseUtilities.processNodeTypes.includes(queryNodes[i].class)) {
+          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy );
+        }
+        else {
+          nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy );
+        }
+        if ( nodeExists ) {
+          console.log("nodeExists", queryNodes[i])
+          continue;
+        }
+
+        queryNodesToAdd.push(queryNodes[i]);        
+          
+      }
+
+      queryNodes = queryNodesToAdd;
+      for(let i = 0; i < queryNodes.length; i++) {
+        // console.log(queryNodes[i])
+        // var nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy );
+        // if ( nodeExists ) {
+        //   continue;
+        // }
+        var newNode = chiseInstance.addNode( x, y, queryNodes[i].class, queryNodes[i].id);
+        console.log("newNode._private", newNode._private)
+        chiseInstance.changeNodeLabel(newNode, queryNodes[i].label) 
+
+        // add unitsOfInformation to the node
+        for(let j = 0; j < queryNodes[i].unitsOfInformation.length; j++) {
+          var uoi_obj = {
+            clazz: "unit of information"
+          };
+          uoi_obj.label = {
+            text: queryNodes[i].unitsOfInformation[j]
+          };
+
+          uoi_obj.bbox = {
+             w: 12,
+             h: 12
+          };
+
+          chiseInstance.addStateOrInfoBox(newNode, uoi_obj);
+        }
+
+        // add stateVariables to the node
+        for(let j = 0; j < queryNodes[i].stateVariables.length; j++) {
+          var stateVariable_obj = {
+            clazz: "state variable"
+          };
+          stateVariable_obj.state = {
+            value: queryNodes[i].stateVariables[j].split('@')[0],
+            variable: queryNodes[i].stateVariables[j].split('@')[1]
+          };
+
+          stateVariable_obj.bbox = {
+             w: 12,
+             h: 12
+          };
+
+          chiseInstance.addStateOrInfoBox(newNode, stateVariable_obj);
+        // }
+        }
+          
+      }
+
+      console.log("Check if node exists End")
+
+      for(let i = 0; i < queryEdges.length; i++) {
+        // if(i==2) continue
+        var source = queryEdges[i].source;
+        var target = queryEdges[i].target;
+        var edgeClass = databaseUtilities.calculateNewtClass(queryEdges[i].class);
+        var id = queryEdges[i].id;
+        // console.log(source)
+        // console.log(target)
+        // console.log(typeof source, typeof target)
+        // console.log(edgeClass)
+        // chiseInstance.addEdge(source, target, edgeClass, id);
+      }
+
+      // chiseInstance.addEdge("glyph3", 52, "production", 651);
+      
+      // chiseInstance.showAllAndPerformLayout(this.triggerLayout.bind(this, cy, false));
+      appUtilities.triggerLayout()
+      // queryNodes = data._fields[0];
+      // queryEdges = data._fields[1];
+      // console.log(JSON.stringify(queryNodes))
+      // console.log(queryEdges)
+    },
+    error: function(req, status, err) {
+      console.error("Error running query", status, err);
+    }
+  });
+
+}
+
+appUtilities.consoleLogInfo = function (eles, _chiseInstance) {
+  var nodeData = eles._private;
+  console.log(nodeData);
+}
 
 // Show neighbors of given eles and perform incremental layout afterward if Rearrange option is checked
 appUtilities.showAll = function (_chiseInstance) {
