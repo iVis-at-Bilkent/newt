@@ -1131,10 +1131,12 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     contentType: "application/json; charset=utf-8",
     data: JSON.stringify(data),
     success: function(data){
-      // console.log(JSON.stringify(data))
       // collect the queried records
       var nodesArr = data.records[0]._fields[0]
       var parentNodesArr = [], nodesArr = [];
+      // nodeParentId is used to add node to chiseInstance
+      // nodeIdRelation gives relation between node's id in db and newt
+      var nodeParentId = {}, nodeIdRelation = {}
       for(let i = 0; i < data.records.length; i++) {
         nodesArr.push(data.records[i]._fields[0])
         parentNodesArr.push(data.records[i]._fields[1])
@@ -1158,8 +1160,9 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         var nodeLabel = nodesArr[i].properties.entityName;
         var nodeUnitOfInformation = nodesArr[i].properties.unitsOfInformation;
         var nodeStateVariables = nodesArr[i].properties.stateVariables;
+        var nodeParent = nodesArr[i].properties.parent.low;
         console.log(nodeId)
-        console.log(nodeClassUnprocessed, label, nodeLabel, entityName, nodeUnitOfInformation, unitsOfInformation, stateVariables, nodeStateVariables)
+        console.log(nodeClassUnprocessed, label, nodeLabel, entityName, nodeUnitOfInformation, unitsOfInformation, stateVariables, nodeStateVariables, nodeParentId)
         // if (nodeClassUnprocessed == label && nodeLabel == entityName && _.isEqual(nodeUnitOfInformation, unitsOfInformation)
         //       && _.isEqual(nodeStateVariables, stateVariables)) {
         //   idInDatabase = nodeId;
@@ -1174,6 +1177,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
           unitsOfInformation: nodesArr[i].properties.unitsOfInformation,
           stateVariables: nodesArr[i].properties.stateVariables,
           cloneMarker: nodesArr[i].properties.cloneMarker,
+          parent: nodeParent,
         });
       }
       
@@ -1232,25 +1236,27 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       // console.log(queryNodes)
       console.log("Check if node exists")
       var queryNodesToAdd = []
-
+      // check if node already exists in newt
       for(let i = 0; i < queryNodes.length; i++) {
         var nodeExists;
         console.log("queryNodes[i].label", queryNodes[i].class)
         if ( databaseUtilities.processNodeTypes.includes(queryNodes[i].class)) {
-          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy );
+          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy, nodeParentId, nodeIdRelation );
         }
         else {
-          nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy );
+          nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy, nodeParentId, nodeIdRelation );
         }
         if ( nodeExists ) {
           console.log("nodeExists", queryNodes[i])
           continue;
         }
-
+        parentId = databaseUtilities.getNewtIdOfParentNode(queryNodes[i], queryParentNodes[i]);
+        nodeParentId[queryNodes[i].id] = parentId ? parentId : null;
+        console.log("parentId", parentId );
         queryNodesToAdd.push(queryNodes[i]);        
           
       }
-
+      console.log("nodeParentId", nodeParentId)
       queryNodes = queryNodesToAdd;
       for(let i = 0; i < queryNodes.length; i++) {
         // console.log(queryNodes[i])
@@ -1258,7 +1264,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         // if ( nodeExists ) {
         //   continue;
         // }
-        var newNode = chiseInstance.addNode( x, y, queryNodes[i].class, queryNodes[i].id);
+        var newNode = chiseInstance.addNode( x, y, queryNodes[i].class, queryNodes[i].id, nodeParentId[queryNodes[i].id]);
         console.log("newNode._private", newNode._private)
         chiseInstance.changeNodeLabel(newNode, queryNodes[i].label) 
 

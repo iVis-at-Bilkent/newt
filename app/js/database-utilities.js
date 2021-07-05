@@ -165,6 +165,8 @@ var databaseUtilities = {
     var queryData = { nodesData: nodesData, edgesData: edgesData }
     var data = { query: query, queryData: queryData }
 
+    console.log(JSON.stringify(data));
+
     $.ajax({
       type: 'post',
       url: "/utilities/runDatabaseQuery",
@@ -189,8 +191,39 @@ var databaseUtilities = {
     return result;
   },
 
-  compareProcessNodeLabel: function ( connectedNodeLabel, neighboringNodesTypes ) {
+  // used while add a new node to chiseInstance in newt
+  getNewtIdOfParentNode: function ( queryNode, queryParentNode ) {
+    var filterByLabel = cy.nodes().filter(function( ele ){
+      return ele.data('label') == queryParentNode.label;
+    });
+    var filterByClass = filterByLabel.filter(function(ele) {
+      return ele.data('class') == queryParentNode.class;
+    })
+    var filterByStatesAndInfo = filterByClass.filter(function(ele) {
+      var stateorinfoboxes = ele.data('statesandinfos');
+      var stateVariables = [], unitsOfInformation = [];
 
+      for(let i = 0; i < stateorinfoboxes.length; i++) {
+        var data = stateorinfoboxes[i];
+
+        if(data.clazz == "state variable") {
+          var value = data.state.value || "";
+          var variable = data.state.variable || "";
+          stateVariables.push(value + "@" + variable);
+        }
+
+        if(data.clazz == "unit of information") {
+          unitsOfInformation.push(data.label.text)
+        }
+
+      }
+      stateVariables.sort();
+      unitsOfInformation.sort();
+
+      return _.isEqual(stateVariables, queryParentNode.stateVariables) &&
+              _.isEqual(unitsOfInformation, queryParentNode.unitsOfInformation);
+    });
+    return filterByStatesAndInfo.length ? filterByStatesAndInfo[0]._private.data.id : queryNode.parent;
   },
 
   getCorrespondingProcessNodeInNewt: function ( queryNode, connectedEdgesDB, neighboringNodesDB, cy) {
@@ -243,7 +276,9 @@ var databaseUtilities = {
       connectedNodeLabels.sort();
       console.log("connectedNodeLabels", connectedNodeLabels)
       console.log("isEqual", _.isEqual(connectedNodeLabels, neighboringNodesTypes))
-      return _.isEqual(connectedNodeLabels, neighboringNodesTypes);
+      console.log(databaseUtilities.checkIfArrayIsSubarrayOfAnother(connectedNodeLabels, neighboringNodesTypes))
+      // return _.isEqual(connectedNodeLabels, neighboringNodesTypes);
+      return databaseUtilities.checkIfArrayIsSubarrayOfAnother(connectedNodeLabels, neighboringNodesTypes);
     }); 
     console.log("neighboringNodesTypes", neighboringNodesTypes);
     console.log("filteredProcessNodesWithGivenEdges", filteredProcessNodesWithGivenEdges)
@@ -253,7 +288,36 @@ var databaseUtilities = {
     return filteredProcessNodesWithGivenNeighbors.length;
   },
 
-  checkIfNodeExists: function ( queriedNode, queriedParentNode, cy ) {
+  checkIfProcessNodeExists: function( queryNode, queryNodes, queryEdges, cy, nodeParentId, nodeIdRelation ) {
+    console.log("checkIfProcessNodeExists")
+    var processNodeId = queryNode.id;
+    var connectedEdgesDB = [], neighboringNodesDB = [];
+    var connectedEdgesNewt = [], connectedEdgesNewt = [];
+    // get the connected edges in db
+    for(let i = 0; i < queryEdges.length; i++) {
+      if ( queryEdges[i].source == processNodeId || queryEdges[i].target == processNodeId ) {
+        connectedEdgesDB.push(queryEdges[i]);
+      }
+    }
+
+    // get the neighboring nodes in db
+    for(let i = 0; i < connectedEdgesDB.length; i++) {
+      for(let j = 0; j < queryNodes.length; j++) {
+        if( queryNodes[j].id == processNodeId ) {
+          continue;
+        }
+        if(connectedEdgesDB[i].source == queryNodes[j].id || connectedEdgesDB[i].target == queryNodes[j].id) {
+          neighboringNodesDB.push(queryNodes[j]);
+        }
+      }
+    }
+
+    console.log("neighboringNodesDB", neighboringNodesDB )
+
+    return databaseUtilities.getCorrespondingProcessNodeInNewt( queryNode, connectedEdgesDB, neighboringNodesDB, cy);
+  },
+
+  checkIfNodeExists: function ( queriedNode, queriedParentNode, cy, nodeParentId, nodeIdRelation ) {
     var filterByLabel = cy.nodes().filter(function( ele ){
       return ele.data('label') == queriedNode.label;
     });
@@ -289,13 +353,13 @@ var databaseUtilities = {
     for(let i = 0; i < filterByClass.length; i++) {
       var data = filterByStatesAndInfo[i]._private;
       // console.log("data", data);
-      // if there is no parent but a node exists with given props return true
+      // if there is no parent but a node exists with given props in both database and newt return true
       if (data.parent === null && queriedParentNode === null) {
         return true;
       }
       var parentData = data.parent._private.data;
       // console.log("parentdata", parentData);
-
+      parentNodeNewtId = parentData.id;
       var parentNodeClass = databaseUtilities.calculateClass(parentData.class);
       var parentNodeLabel = parentData.label;
       var parentNodeStateVariables =  databaseUtilities.calculateState(parentData.statesandinfos);
@@ -309,41 +373,16 @@ var databaseUtilities = {
           && _.isEqual(parentNodeStateVariables, queriedParentNode.stateVariables)
           && _.isEqual(parentNodeUnitOfInformation, queriedParentNode.unitsOfInformation)) {
             console.log("true")
+            // node exists in newt
             return true;
           }
     }
     console.log(false)
+    // node does not exist in newt
     return false;
   },
 
-  checkIfProcessNodeExists: function( queryNode, queryNodes, queryEdges, cy ) {
-    console.log("checkIfProcessNodeExists")
-    var processNodeId = queryNode.id;
-    var connectedEdgesDB = [], neighboringNodesDB = [];
-    var connectedEdgesNewt = [], connectedEdgesNewt = [];
-    // get the connected edges in db
-    for(let i = 0; i < queryEdges.length; i++) {
-      if ( queryEdges[i].source == processNodeId || queryEdges[i].target == processNodeId ) {
-        connectedEdgesDB.push(queryEdges[i]);
-      }
-    }
-
-    // get the neighboring nodes in db
-    for(let i = 0; i < connectedEdgesDB.length; i++) {
-      for(let j = 0; j < queryNodes.length; j++) {
-        if( queryNodes[j].id == processNodeId ) {
-          continue;
-        }
-        if(connectedEdgesDB[i].source == queryNodes[j].id || connectedEdgesDB[i].target == queryNodes[j].id) {
-          neighboringNodesDB.push(queryNodes[j]);
-        }
-      }
-    }
-
-    console.log("neighboringNodesDB", neighboringNodesDB )
-
-    return databaseUtilities.getCorrespondingProcessNodeInNewt( queryNode, connectedEdgesDB, neighboringNodesDB, cy);
-  }
+  
 }
 
 module.exports = databaseUtilities;
