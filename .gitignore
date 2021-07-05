@@ -1,4 +1,5 @@
 /nbproject/*
 
+node_modules/
 
 app/bundle.js
