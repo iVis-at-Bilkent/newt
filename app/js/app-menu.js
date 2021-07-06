@@ -606,10 +606,11 @@ module.exports = function() {
       chiseInstance.elementUtilities.unlockGraphTopology();
       // reset map name and description
       // default map name should be a string that contains the network id
-      if(!currentGeneralProperties.mapPD2AFConverted) // if the file don't have a specified map name
+      if(!currentGeneralProperties.mapPD2AFConverted) {// if the file don't have a specified map name
         currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
-      currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-      currentGeneralProperties.mapPD2AFConverted = false; // 
+        currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+      }
+      currentGeneralProperties.mapPD2AFConverted = false; 
       // appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
@@ -1015,8 +1016,12 @@ module.exports = function() {
             // Create new network 
             var current = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             var networkName = current.mapName;
+            var networkDescription = current.mapDescription;
+            if(networkDescription ){
+              networkDescription[0] = "AF graph of " + networkDescription[0].charAt(0).toLowerCase() + networkDescription[0].slice(1);
+            }
             networkName += " AF";
-            var newNetwork = appUtilities.createNewNetwork(networkName);
+            var newNetwork = appUtilities.createNewNetwork(networkName, networkDescription);
             var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             currentGeneralProperties.mapPD2AFConverted = true;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);

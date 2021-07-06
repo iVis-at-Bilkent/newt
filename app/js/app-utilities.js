@@ -339,7 +339,7 @@ appUtilities.adjustVisibilityOfNetworkTabs = function () {
 };
 
 // creates a new network and returns the new chise.js instance that is created for this network
-appUtilities.createNewNetwork = function (networkName) {
+appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
   // id of the div panel associated with the new network
   var networkPanelId = appUtilities.getNetworkPanelId(appUtilities.nextNetworkId);
@@ -367,6 +367,8 @@ appUtilities.createNewNetwork = function (networkName) {
   
   // update the map name with the default map name specific for network id
   currentGeneralProperties.mapName = mapName;
+  if(networkDescription)
+    currentGeneralProperties.mapDescription = networkDescription;
   // Create a new chise.js instance
   var newInst = chise({
     networkContainerSelector: networkPanelSelector,
