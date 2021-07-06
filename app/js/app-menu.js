@@ -1070,7 +1070,10 @@ module.exports = function() {
               error: function(xhr, options, err){
                 loadCallbackInvalidityWarning();
               }
-            });       
+            }); 
+            chiseInstance = appUtilities.getActiveChiseInstance();
+            var cy = chiseInstance.getCy();  
+            cy.fit( cy.elements(":visible"), 20 );    
           }
         },
         error: function (data) {
