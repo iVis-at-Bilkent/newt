@@ -1018,7 +1018,7 @@ module.exports = function() {
             var networkName = current.mapName;
             var networkDescription = current.mapDescription;
             if(networkDescription ){
-              networkDescription[0] = "AF graph of " + networkDescription[0].charAt(0).toLowerCase() + networkDescription[0].slice(1);
+              networkDescription[0] = "AF map of " + networkDescription[0].charAt(0).toLowerCase() + networkDescription[0].slice(1);
             }
             networkName += " AF";
             var newNetwork = appUtilities.createNewNetwork(networkName, networkDescription);
