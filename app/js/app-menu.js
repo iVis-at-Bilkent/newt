@@ -604,12 +604,13 @@ module.exports = function() {
 
       // unlock graph topolpgy in case it is locked
       chiseInstance.elementUtilities.unlockGraphTopology();
-
       // reset map name and description
       // default map name should be a string that contains the network id
-      currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
+      if(!currentGeneralProperties.mapPD2AFConverted) // if the file don't have a specified map name
+        currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
       currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-    
+      currentGeneralProperties.mapPD2AFConverted = false; // 
+      // appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
         currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
@@ -966,105 +967,113 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
-    });
+      });
+    // pf conversion 
+    $("#highlight-errors-of-pd2af").click(function (e) {
+    
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      
+      var filename = document.getElementById('file-name').innerHTML;
+      var fExt = 'sbgn';
+      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
 
-  $("#highlight-errors-of-pd2af").click(function (e) {
-  
-    var chiseInstance = appUtilities.getActiveChiseInstance();
+      // Get the graph from the canvas
+
+      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+      
+      // If the graph type is not PD or canvas is empty display error  
+      if(chiseInstance.getMapType() != 'PD' || file.length == 146){
+        // console.log("Wrong Type");
+        promptInvalidTypeWarning.render();
+        // console.log("Returned");
+        return;
+      }
+      
+      var url = "/";
+      var retdata;
+      // pd2af returns filename and file url
+      $.ajax({
+        url: "https://pd2afwebservice.herokuapp.com/convert",
+        // url: "http://localhost:5555/convert",
+        type: "POST",
         
-    var filename = document.getElementById('file-name').innerHTML;
-    var fExt = 'sbgn';
-    filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
-
-    // Get the graph from the canvas
-
-    var file = chiseInstance.getSbgnvizInstance().createSbgnml();
-    
-    // console.log(typeof file);
-//     console.log(file.length);
-//     console.log(file);
-    // If the graph type is not PD display error
-    if(chiseInstance.getMapType() != 'PD' || file.length == 146){
-      // console.log("Wrong Type");
-      promptInvalidTypeWarning.render();
-      // console.log("Returned");
-      return;
-    }
-    
-    var url = "/";
-    var retdata;
-    $.ajax({
-      url: "https://pd2afwebservice.herokuapp.com/convert",
-      // url: "http://localhost:5555/convert",
-      type: "POST",
-      
-      ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
-      data: {
-        'file': file,
-        'filename': filename
-      },
-      success: function (data) {
-        if(data.name==='Error' || data.error){
-          promtErrorPD2AF.render(data.message);
-        }else{
-          retdata=data;
-          console.log(data);
-          url = data.url;
-          filename = data.filename;
-          var newNetwork = appUtilities.createNewNetwork(filename);
-          // console.log(newNetwork);
-          chiseInstance = appUtilities.getActiveChiseInstance();
-          var cyInstance = chiseInstance.getCy();
-          var fileExtension = filename.split('.');
-
-          $.ajax({
-            type: 'get',
-            url: "/utilities/testURL",
-            data: {url: url},
-            success: function(data){
-              // here we can get 404 as well, for example, so there are still error cases to handle
-              if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
-                var fileToLoad = new File([data.response.body], filename, {
-                  type: 'text/' + fileExtension,
-                  lastModified: Date.now()
-                });
-      
-                if (fileExtension === "xml" || fileExtension === "xml#" 
-                    || fileExtension === "sbml" || fileExtension === "sbml#") {
-                  chiseInstance.loadSbml(fileToLoad,  success = function(data){
-                    var cy = appUtilities.getActiveCy();
-                    if (cy.elements().length !== 0) {
-                      promptConfirmationView.render(function () {
-                        chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                      });
-                    }
-                    else {
-                      chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                    }
+        ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
+        data: {
+          'file': file,
+          'filename': filename
+        },
+        success: function (data) {
+          // If response returns error display the message
+          if(data.name==='Error' || data.error || data.name==='error'){
+            console.log(data);
+            promtErrorPD2AF.render(data.message);
+          }else{
+            retdata=data;
+            // console.log(data);
+            url = data.url;
+            filename = data.filename;
+            // Create new network 
+            var current = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+            var networkName = current.mapName;
+            networkName += " AF";
+            var newNetwork = appUtilities.createNewNetwork(networkName);
+            var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+            currentGeneralProperties.mapPD2AFConverted = true;
+            appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
+            chiseInstance = appUtilities.getActiveChiseInstance();
+            var cyInstance = chiseInstance.getCy();
+            var fileExtension = filename.split('.');
+            
+            // Retrieve the graph from file url and display it in canvas
+            $.ajax({
+              type: 'get',
+              url: "/utilities/testURL",
+              data: {url: url},
+              success: function(data){
+                // here we can get 404 as well, for example, so there are still error cases to handle
+                if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                  $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
+                  var fileToLoad = new File([data.response.body], filename, {
+                    type: 'text/' + fileExtension,
+                    lastModified: Date.now()
                   });
+        
+                  if (fileExtension === "xml" || fileExtension === "xml#" 
+                      || fileExtension === "sbml" || fileExtension === "sbml#") {
+                    chiseInstance.loadSbml(fileToLoad,  success = function(data){
+                      var cy = appUtilities.getActiveCy();
+                      if (cy.elements().length !== 0) {
+                        promptConfirmationView.render(function () {
+                          chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                        });
+                      }
+                      else {
+                        chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                      }
+                    });
+                  }
+                  else {
+                    chiseInstance.loadNwtFile(fileToLoad, ()=>{}, ()=>{}, retdata);
+                  }
                 }
                 else {
-                  chiseInstance.loadNwtFile(fileToLoad, ()=>{}, ()=>{}, retdata);
+                  loadCallbackInvalidityWarning();
                 }
-              }
-              else {
+                
+
+              },
+              error: function(xhr, options, err){
                 loadCallbackInvalidityWarning();
               }
-            },
-            error: function(xhr, options, err){
-              loadCallbackInvalidityWarning();
-            }
-          });       
+            });       
+          }
+        },
+        error: function (data) {
+          promtErrorPD2AF.render(data.message);
+          // console.log("ERROR");
         }
-      },
-      error: function (data) {
-        promtErrorPD2AF.render(data.message);
-        // console.log("ERROR");
-
-      }
+      });
     });
-  });
   
 
 

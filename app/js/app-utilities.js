@@ -339,17 +339,17 @@ appUtilities.adjustVisibilityOfNetworkTabs = function () {
 };
 
 // creates a new network and returns the new chise.js instance that is created for this network
-appUtilities.createNewNetwork = function (name) {
+appUtilities.createNewNetwork = function (networkName) {
 
   // id of the div panel associated with the new network
   var networkPanelId = appUtilities.getNetworkPanelId(appUtilities.nextNetworkId);
 
   // id of the tab for the new network
   var networkTabId = appUtilities.getNetworkTabId(appUtilities.nextNetworkId);
+  
   var mapName;
-  // use the default map name for the given next network id
-  if(name)
-    mapName = appUtilities.getDefaultMapName(name);
+  if(networkName)
+    mapName = networkName;
   else
     mapName = appUtilities.getDefaultMapName(appUtilities.nextNetworkId);
 
@@ -367,7 +367,6 @@ appUtilities.createNewNetwork = function (name) {
   
   // update the map name with the default map name specific for network id
   currentGeneralProperties.mapName = mapName;
-
   // Create a new chise.js instance
   var newInst = chise({
     networkContainerSelector: networkPanelSelector,
@@ -430,7 +429,7 @@ appUtilities.createNewNetwork = function (name) {
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
-  
+
   // init the current file name for the map
   appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.nwt');
 
@@ -467,7 +466,6 @@ appUtilities.createNewNetwork = function (name) {
 
   // adjust the visibility of network tabs
   appUtilities.adjustVisibilityOfNetworkTabs();
-
   // return the new instance
   return newInst;
 };
