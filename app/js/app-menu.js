@@ -969,7 +969,7 @@ module.exports = function() {
 
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
       });
-    // pf conversion 
+    // PD map to AF map conversion 
     $("#highlight-errors-of-pd2af").click(function (e) {
     
       var chiseInstance = appUtilities.getActiveChiseInstance();
