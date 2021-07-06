@@ -1241,10 +1241,10 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         var nodeExists;
         console.log("queryNodes[i].label", queryNodes[i].class)
         if ( databaseUtilities.processNodeTypes.includes(queryNodes[i].class)) {
-          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy, nodeParentId, nodeIdRelation );
+          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy, nodeIdRelation );
         }
         else {
-          nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy, nodeParentId, nodeIdRelation );
+          nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy, nodeIdRelation );
         }
         if ( nodeExists ) {
           console.log("nodeExists", queryNodes[i])
@@ -1256,7 +1256,8 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         queryNodesToAdd.push(queryNodes[i]);        
           
       }
-      console.log("nodeParentId", nodeParentId)
+      console.log("nodeParentId", nodeParentId);
+      console.log("nodeIdRelation", nodeIdRelation);
       queryNodes = queryNodesToAdd;
       for(let i = 0; i < queryNodes.length; i++) {
         // console.log(queryNodes[i])
@@ -1310,15 +1311,27 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
 
       for(let i = 0; i < queryEdges.length; i++) {
         // if(i==2) continue
+        var typeOfRel = queryEdges[i].type;
+        if ( typeOfRel == "belongs_to_complex" ) {
+          continue;
+        }
         var source = queryEdges[i].source;
+        if ( nodeIdRelation.hasOwnProperty(source) ) {
+          source = nodeIdRelation[source];
+        }
         var target = queryEdges[i].target;
+        if ( nodeIdRelation.hasOwnProperty(target) ) {
+          target = nodeIdRelation[target];
+        }
         var edgeClass = databaseUtilities.calculateNewtClass(queryEdges[i].class);
         var id = queryEdges[i].id;
         // console.log(source)
         // console.log(target)
-        // console.log(typeof source, typeof target)
         // console.log(edgeClass)
-        // chiseInstance.addEdge(source, target, edgeClass, id);
+
+        if ( !nodeIdRelation.hasOwnProperty(source) || !nodeIdRelation.hasOwnProperty(target) ) {
+          chiseInstance.addEdge(source, target, edgeClass, id);
+        }
       }
 
       // chiseInstance.addEdge("glyph3", 52, "production", 651);

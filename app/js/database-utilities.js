@@ -181,11 +181,11 @@ var databaseUtilities = {
     });
   },
 
-  checkIfArrayIsSubarrayOfAnother: function ( edgeTypes, connectedEdgeTypes ) {
-    const result = edgeTypes.every(val => connectedEdgeTypes.includes(val) 
-      && edgeTypes.filter(el => el === val).length
+  checkIfArrayIsSubarrayOfAnother: function ( subarray, mainArray ) {
+    const result = subarray.every(val => mainArray.includes(val) 
+      && subarray.filter(el => el === val).length
        <=
-       connectedEdgeTypes.filter(el => el === val).length
+       mainArray.filter(el => el === val).length
     );
 
     return result;
@@ -226,7 +226,7 @@ var databaseUtilities = {
     return filterByStatesAndInfo.length ? filterByStatesAndInfo[0]._private.data.id : queryNode.parent;
   },
 
-  getCorrespondingProcessNodeInNewt: function ( queryNode, connectedEdgesDB, neighboringNodesDB, cy) {
+  getCorrespondingProcessNodeInNewt: function ( queryNode, connectedEdgesDB, neighboringNodesDB, cy, nodeIdRelation) {
     console.log("whye here")
     var connectedEdgeTypes = [], neighboringNodesTypes = [];
     for(let i = 0; i < connectedEdgesDB.length; i++) {
@@ -283,12 +283,24 @@ var databaseUtilities = {
     console.log("neighboringNodesTypes", neighboringNodesTypes);
     console.log("filteredProcessNodesWithGivenEdges", filteredProcessNodesWithGivenEdges)
     console.log("filteredProcessNodesWithGivenNeighbors", filteredProcessNodesWithGivenNeighbors);
+    
+    var exists = filteredProcessNodesWithGivenNeighbors.length;
 
+    if ( !exists ) {
+      return false;
+    }
+
+    var data = filteredProcessNodesWithGivenNeighbors[0]._private;
+
+    if (exists) {
+      nodeIdRelation[data.data.id] = queryNode.id;
+      nodeIdRelation[queryNode.id] = data.data.id;
+    }
     // if a match of process node is found return that node exits i.e. true
-    return filteredProcessNodesWithGivenNeighbors.length;
+    return exists;
   },
 
-  checkIfProcessNodeExists: function( queryNode, queryNodes, queryEdges, cy, nodeParentId, nodeIdRelation ) {
+  checkIfProcessNodeExists: function( queryNode, queryNodes, queryEdges, cy, nodeIdRelation ) {
     console.log("checkIfProcessNodeExists")
     var processNodeId = queryNode.id;
     var connectedEdgesDB = [], neighboringNodesDB = [];
@@ -314,10 +326,10 @@ var databaseUtilities = {
 
     console.log("neighboringNodesDB", neighboringNodesDB )
 
-    return databaseUtilities.getCorrespondingProcessNodeInNewt( queryNode, connectedEdgesDB, neighboringNodesDB, cy);
+    return databaseUtilities.getCorrespondingProcessNodeInNewt( queryNode, connectedEdgesDB, neighboringNodesDB, cy, nodeIdRelation);
   },
 
-  checkIfNodeExists: function ( queriedNode, queriedParentNode, cy, nodeParentId, nodeIdRelation ) {
+  checkIfNodeExists: function ( queriedNode, queriedParentNode, cy, nodeIdRelation ) {
     var filterByLabel = cy.nodes().filter(function( ele ){
       return ele.data('label') == queriedNode.label;
     });
@@ -350,11 +362,13 @@ var databaseUtilities = {
     })
     console.log("filterByStatesAndInfo", filterByStatesAndInfo)
     console.log(filterByClass.length)
-    for(let i = 0; i < filterByClass.length; i++) {
+    for(let i = 0; i < filterByStatesAndInfo.length; i++) {
       var data = filterByStatesAndInfo[i]._private;
       // console.log("data", data);
       // if there is no parent but a node exists with given props in both database and newt return true
       if (data.parent === null && queriedParentNode === null) {
+        nodeIdRelation[data.data.id] = queriedNode.id;
+        nodeIdRelation[queriedNode.id] = data.data.id;
         return true;
       }
       var parentData = data.parent._private.data;
@@ -374,6 +388,8 @@ var databaseUtilities = {
           && _.isEqual(parentNodeUnitOfInformation, queriedParentNode.unitsOfInformation)) {
             console.log("true")
             // node exists in newt
+            nodeIdRelation[data.data.id] = queriedNode.id;
+            nodeIdRelation[queriedNode.id] = data.data.id;
             return true;
           }
     }
