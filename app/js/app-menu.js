@@ -606,11 +606,11 @@ module.exports = function() {
       chiseInstance.elementUtilities.unlockGraphTopology();
       // reset map name and description
       // default map name should be a string that contains the network id
-      if(!currentGeneralProperties.mapPD2AFConverted) {// if the file don't have a specified map name
+      if(!currentGeneralProperties.mapPD2AFConverted) {// if the file don't have a specified map name from pd map to af map conversion
         currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
         currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
       }
-      currentGeneralProperties.mapPD2AFConverted = false; 
+      currentGeneralProperties.mapPD2AFConverted = false; // Map name loaded, when new map is loading to the canvas name should be change
       // appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
@@ -1013,11 +1013,15 @@ module.exports = function() {
             var current = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             var networkName = current.mapName;
             var networkDescription = current.mapDescription;
+            // If networkDescription itself is used to create the description text, original map description would also be changed
             if(networkDescription ){
-              networkDescription[0] = "AF map of " + networkDescription[0].charAt(0).toLowerCase() + networkDescription[0].slice(1);
+              var st = JSON.stringify(networkDescription[0]);
+              st = st.slice(1); // For removing " at the beginning
+              st = "AF map of " + st.charAt(0).toLowerCase() + st.slice(1);
+              st = st.slice(0,-1); // For removing " at the end
             }
             networkName += " AF";
-            var newNetwork = appUtilities.createNewNetwork(networkName, networkDescription); // Create new network (new Newt tab)
+            var newNetwork = appUtilities.createNewNetwork(networkName, st); // Create new network (new Newt tab)
             var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             currentGeneralProperties.mapPD2AFConverted = true; // Set it to true so load will not overwrite the map name and description
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
