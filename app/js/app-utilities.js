@@ -1068,11 +1068,12 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
 
   var query =
   "CALL {MATCH p = (n:" + label +
-  `)-[]-(:process)-[]-(m)<-[:belongs_to_complex*0..]-()
+  `)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
   WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
         AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
         ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
-  
+        AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
+        
         RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
         apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
   }
@@ -1110,10 +1111,11 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     `WITH matchedNode
     CALL { MATCH p = (n:` +
     label +
-    `)-[]-(:process)-[]-(m)<-[:belongs_to_complex*0..]-()
+    `)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
     WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
           AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
           ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
+          AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
     RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
           apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
     }
@@ -1144,6 +1146,10 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     data: JSON.stringify(data),
     success: function(data){
       console.log("data", data);
+      if ( _.isEqual( data, [] ) ) {
+        console.log("No records found in Database")
+        return ;
+      }
       // collect the queried records
       var nodesArr = data.records[0]._fields[0]
       var parentNodesArr = [], nodesArr = [];
@@ -1390,6 +1396,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       // chiseInstance.addEdge("http___www.reactome.org_biopax_48887Protein1269", "http___www.reactome.org_biopax_48887BiochemicalReaction2203LEFT_TO_RIGHT", "production", 651);
       
       // chiseInstance.showAllAndPerformLayout(this.triggerLayout.bind(this, cy, false));
+      console.log("trigger Layout")
       appUtilities.triggerLayout()
       // queryNodes = data._fields[0];
       // queryEdges = data._fields[1];
