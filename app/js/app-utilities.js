@@ -1067,13 +1067,25 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
   var parentData = eles._private.parent;
 
   var query =
-  "MATCH p = (n:" + label +
+  "CALL {MATCH p = (n:" + label +
   `)-[]-(:process)-[]-(m)<-[:belongs_to_complex*0..]-()
   WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
         AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
         ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
-  RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+  
+        RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
         apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+  }
+    UNWIND allNodes as aN
+
+    WITH aN, allRels
+
+    CALL {
+        WITH aN
+        OPTIONAL MATCH (parentNode) where id(parentNode) = aN.parent
+          RETURN parentNode
+        }
+    RETURN aN, parentNode, allRels
   `;
 
 
@@ -1131,6 +1143,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     contentType: "application/json; charset=utf-8",
     data: JSON.stringify(data),
     success: function(data){
+      console.log("data", data);
       // collect the queried records
       var nodesArr = data.records[0]._fields[0]
       var parentNodesArr = [], nodesArr = [];
@@ -1150,9 +1163,10 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       if (_.isEqual(nodesArr, [])) {
         return ;
       }
-
+      console.log("get useful information out of queried data for nodesArr")
       // get useful information out of queried data for nodesArr
       for(let i = 0; i < nodesArr.length; i++) {
+        console.log("nodesArr[i]", nodesArr[i]);
         var nodeId = nodesArr[i].identity.low;
         var nodeClass = databaseUtilities.calculateNewtClass(nodesArr[i].labels[0]);
         // unprocessed classes contains underscore
@@ -1160,7 +1174,18 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         var nodeLabel = nodesArr[i].properties.entityName;
         var nodeUnitOfInformation = nodesArr[i].properties.unitsOfInformation;
         var nodeStateVariables = nodesArr[i].properties.stateVariables;
-        var nodeParent = nodesArr[i].properties.parent.low;
+
+        var nodeParent = null;
+        // try {
+        //   nodeParent = nodesArr[i].properties.parent.low;
+        // }
+        // catch(err) {
+        //   nodeParent = null;
+        // }
+        if ( nodesArr[i].properties.hasOwnProperty("parent") ) {
+          console.log(true)
+          nodeParent = nodesArr[i].properties.parent.low;
+        }
         console.log(nodeId)
         console.log(nodeClassUnprocessed, label, nodeLabel, entityName, nodeUnitOfInformation, unitsOfInformation, stateVariables, nodeStateVariables, nodeParentId)
         // if (nodeClassUnprocessed == label && nodeLabel == entityName && _.isEqual(nodeUnitOfInformation, unitsOfInformation)
@@ -1180,13 +1205,14 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
           parent: nodeParent,
         });
       }
+      console.log("queryNodes", queryNodes);
       
-
       // get useful information out of queried data for parentNodesArr
       for(let i = 0; i < parentNodesArr.length; i++) {
         // if a node doesn't have a parent skip
+        console.log("parentNodesarr Loop");
         if (parentNodesArr[i] === null) {
-          parentNodesArr.push(null)
+          queryParentNodes.push(null)
           continue;
         }
         var parentNodeId = parentNodesArr[i].identity.low;
@@ -1234,7 +1260,9 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         })
       }
       // console.log(queryNodes)
-      console.log("Check if node exists")
+      console.log("Check if node exists");
+      console.log("parentNodesArr.length", queryParentNodes, queryNodes);
+
       var queryNodesToAdd = []
       // check if node already exists in newt
       for(let i = 0; i < queryNodes.length; i++) {
@@ -1265,6 +1293,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         // if ( nodeExists ) {
         //   continue;
         // }
+        console.log(queryNodes[i])
         var newNode = chiseInstance.addNode( x, y, queryNodes[i].class, queryNodes[i].id, nodeParentId[queryNodes[i].id]);
         console.log("newNode._private", newNode._private)
         chiseInstance.changeNodeLabel(newNode, queryNodes[i].label) 
@@ -1332,9 +1361,33 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         if ( !nodeIdRelation.hasOwnProperty(source) || !nodeIdRelation.hasOwnProperty(target) ) {
           chiseInstance.addEdge(source, target, edgeClass, id);
         }
+        else {
+          console.log(nodeIdRelation[source], nodeIdRelation[target]);
+          var nodeOne = cy.nodes().filter(function(ele){
+            return ele.data("id") == source;
+          })
+          var nodeTwo = cy.nodes().filter(function(ele){
+            return ele.data("id") == target;
+          })
+          var edgesBetweenThem = nodeOne.edgesWith(nodeTwo);
+          console.log("edgesBetweenThem", edgesBetweenThem);
+          var addEdge = true;
+          for( let i = 0; i < edgesBetweenThem.length; i++) {
+            var existingEdgeClass = edgesBetweenThem[i]._private.data.class;
+            if ( existingEdgeClass == edgeClass) {
+              addEdge = false;
+              break;
+            }
+          }
+          if ( addEdge ) {
+            chiseInstance.addEdge(source, target, edgeClass, id);
+          }
+        }
       }
 
-      // chiseInstance.addEdge("glyph3", 52, "production", 651);
+      
+      // RAD50 "http___www.reactome.org_biopax_48887Protein1269_http___www.reactome.org_biopax_48887Complex465"
+      // chiseInstance.addEdge("http___www.reactome.org_biopax_48887Protein1269", "http___www.reactome.org_biopax_48887BiochemicalReaction2203LEFT_TO_RIGHT", "production", 651);
       
       // chiseInstance.showAllAndPerformLayout(this.triggerLayout.bind(this, cy, false));
       appUtilities.triggerLayout()
