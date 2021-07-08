@@ -1072,7 +1072,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
   WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
         AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
         ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
-        AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
+        AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted_process"], ["uncertain_process"], ["phenotype"]]
 
         RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
         apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
@@ -1092,7 +1092,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
   var query = 
     "CALL {MATCH (n:" + label + ")" +
     `WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
-    AND n.stateVariables = $stateVariables
+    AND n.stateVariables = $stateVariables AND NOT exists(n.parent)
     RETURN n as matchedNode
     LIMIT 1
     }` +
@@ -1139,7 +1139,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     MATCH p = (matchedNode)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
     WHERE labels(m) in [["unspecified_entity"],["simple_chemical"],
           ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
-          AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
+          AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted_process"], ["uncertain_process"], ["phenotype"]]
     RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
           apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
     }
