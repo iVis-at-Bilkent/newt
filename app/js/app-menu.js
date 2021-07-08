@@ -610,6 +610,9 @@ module.exports = function() {
         currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
         currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
       }
+      // We temporarly set inferNestingOnLoad to true to preserve the nest relation in the pd2af conversion   
+      if(currentGeneralProperties.mapPD2AFConverted)
+        currentGeneralProperties.inferNestingOnLoad = false;
       currentGeneralProperties.mapPD2AFConverted = false; // Map name loaded, when new map is loading to the canvas name should be change
       // appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
       // set recalculate layout on complexity management based on map size
@@ -973,7 +976,7 @@ module.exports = function() {
     $("#highlight-errors-of-pd2af").click(function (e) {
     
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      
+      var chiseSpinner = appUtilities.getActiveChiseInstance();
       var filename = document.getElementById('file-name').innerHTML;
       var fExt = 'sbgn';
       filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
@@ -987,14 +990,17 @@ module.exports = function() {
         return;
       }
       
+      chiseSpinner.startSpinner("layout-spinner");
+
       var url = "/";
       var retdata;
       // pd2af returns filename and file url
       $.ajax({
         // After deploying Bridge Server (pd2af-webservice) write the bridge server's URL but leave the /convert
         url: "https://pd2afwebservice.herokuapp.com/convert",
+        // url: "http://localhost:5555/convert",
         type: "POST",
-        
+        timeout: 300000,
         ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
         data: {
           'file': file,
@@ -1004,8 +1010,10 @@ module.exports = function() {
           // If response returns error display the message
           if(data.name==='Error' || data.error || data.name==='error'){
             console.log(data);
+            chiseSpinner.endSpinner("layout-spinner");
             promtErrorPD2AF.render(data.message);
           }else{
+            chiseSpinner.endSpinner("layout-spinner");
             retdata = data;
             url = data.url;
             filename = data.filename;
@@ -1024,6 +1032,7 @@ module.exports = function() {
             var newNetwork = appUtilities.createNewNetwork(networkName, st); // Create new network (new Newt tab)
             var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             currentGeneralProperties.mapPD2AFConverted = true; // Set it to true so load will not overwrite the map name and description
+            currentGeneralProperties.inferNestingOnLoad = true;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
             chiseInstance = appUtilities.getActiveChiseInstance();
             var cyInstance = chiseInstance.getCy();
@@ -1056,9 +1065,13 @@ module.exports = function() {
           }
         },
         error: function (data) {
-          promtErrorPD2AF.render(data.message);
+          console.log(data);
+          chiseSpinner.endSpinner("layout-spinner");
+
+          promtErrorPD2AF.render(data);
         }
       });
+
     });
   
 
