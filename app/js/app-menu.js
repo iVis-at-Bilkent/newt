@@ -982,14 +982,38 @@ module.exports = function() {
       filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
 
       // Get the map from the canvas
-      var file = chiseInstance.getSbgnvizInstance().createSbgnml();
+      
+      var cy = chiseInstance.getCy();
+      var nodes = cy.nodes().filter( function( node ) {
+        // return !chiseInstance.elementUtilities.isSIFNode( node );
+        // console.log(node.visible());
+        return node.visible();
+      } );
+      
+      var edges = cy.edges().filter( function( edge ) {
+        return edge.visible();
+      } );
+      
+      // console.log(nodes);
+      // console.log(edges);
+      var renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
+
+      var properties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+
+      // var dene = file.createSbgnml(filename, "plain", renderInfo, properties, nodes, edges);
+      var file = chiseInstance.getSbgnvizInstance().convertSbgn(filename, "plain", renderInfo, properties, nodes, edges);
       
       // If the map type is not PD or canvas is empty display error  
-      if(chiseInstance.getMapType() != 'PD' || file.length == 146){
+      if(chiseInstance.getMapType() != 'PD'){
         promptInvalidTypeWarning.render();
         return;
       }
-      
+
+      if(nodes.length == 0 || edges.length == 0){
+        promtErrorPD2AF.render("No visible map found!");
+        return;
+      }
+
       chiseSpinner.startSpinner("layout-spinner");
 
       var url = "/";
