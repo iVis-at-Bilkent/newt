@@ -245,7 +245,8 @@ module.exports = function (chiseInstance) {
         '[class^="unspecified entity"], [class^="perturbing agent"]',
         show: databaseUtilities.enableDatabase,
         onClickFunction: function (event) {
-          // complete this later
+          var cyTarget = event.target || event.cyTarget;
+          appUtilities.showProcessesOfThisInDatabase(cyTarget, appUtilities.getChiseInstance(cy));
         }
       },
       {
@@ -255,6 +256,17 @@ module.exports = function (chiseInstance) {
         show: databaseUtilities.enableDatabase,
         onClickFunction: function (event) { 
           // complete this later
+        }
+      },
+      {
+        id: 'ctx-menu-console-log-element-info',
+        content: 'Console Log Info',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"]',
+        show: databaseUtilities.enableDatabase,
+        onClickFunction: function (event) {
+          var cyTarget = event.target || event.cyTarget;
+          appUtilities.consoleLogInfo(cyTarget, appUtilities.getChiseInstance(cy));
         }
       },
       {
