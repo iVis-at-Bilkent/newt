@@ -1299,7 +1299,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         var nodeExists;
         console.log("queryNodes[i].label", queryNodes[i].class)
         if ( databaseUtilities.processNodeTypes.includes(queryNodes[i].class)) {
-          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy, nodeIdRelation );
+          nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy, nodeIdRelation, queryParentNodes[i] );
         }
         else {
           nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy, nodeIdRelation );
@@ -1435,8 +1435,8 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         utilityFunction: 1,  // maximize adjusted Fullness   2: maximizes weighted function of fullness and aspect ratio
         componentSpacing: 80 // use to increase spacing between components in pixels. If passed undefined when randomized is false, then it is calculated automatically.
       }
-      var instance = cy.layoutUtilities(options)
-      // instance.placeNewNodes(newNodes)
+      // var instance = cy.layoutUtilities(options)
+      // cy.placeNewNodes(newNodes)
       // queryNodes = data._fields[0];
       // queryEdges = data._fields[1];
       // console.log(JSON.stringify(queryNodes))
