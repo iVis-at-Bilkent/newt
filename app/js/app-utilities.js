@@ -1066,14 +1066,14 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
 
   var parentData = eles._private.parent;
 
-  var query =
+  var query_old =
   "CALL {MATCH p = (n:" + label +
   `)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
   WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
         AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
         ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
         AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
-        
+
         RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
         apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
   }
@@ -1089,6 +1089,32 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     RETURN aN, parentNode, allRels
   `;
 
+  var query = 
+    "CALL {MATCH (n:" + label + ")" +
+    `WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+    AND n.stateVariables = $stateVariables
+    RETURN n as matchedNode
+    LIMIT 1
+    }` +
+    `WITH matchedNode
+    CALL { WITH matchedNode
+    MATCH p = (matchedNode)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
+    WHERE labels(m) in [["unspecified_entity"],["simple_chemical"],
+          ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
+          AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
+    RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+          apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+    }
+    UNWIND allNodes as aN
+
+    WITH aN, allRels
+
+    CALL {
+        WITH aN
+        OPTIONAL MATCH (parentNode) where id(parentNode) = aN.parent
+          RETURN parentNode
+        }
+    RETURN aN, parentNode, allRels`;
 
 
   var parentLabel, parentEntityName, parentUnitsOfInformation, parentStateVariables
@@ -1109,11 +1135,9 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     LIMIT 1
     }` +
     `WITH matchedNode
-    CALL { MATCH p = (n:` +
-    label +
-    `)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
-    WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
-          AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
+    CALL { WITH matchedNode
+    MATCH p = (matchedNode)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
+    WHERE labels(m) in [["unspecified_entity"],["simple_chemical"],
           ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
           AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted process"], ["uncertain process"], ["phenotype"]]
     RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
@@ -1146,7 +1170,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     data: JSON.stringify(data),
     success: function(data){
       console.log("data", data);
-      if ( _.isEqual( data, [] ) ) {
+      if ( _.isEqual( data, undefined ) ) {
         console.log("No records found in Database")
         return ;
       }
@@ -1293,6 +1317,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       console.log("nodeParentId", nodeParentId);
       console.log("nodeIdRelation", nodeIdRelation);
       queryNodes = queryNodesToAdd;
+      var newNodes= cy.collection();
       for(let i = 0; i < queryNodes.length; i++) {
         // console.log(queryNodes[i])
         // var nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy );
@@ -1301,6 +1326,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         // }
         console.log(queryNodes[i])
         var newNode = chiseInstance.addNode( x, y, queryNodes[i].class, queryNodes[i].id, nodeParentId[queryNodes[i].id]);
+        newNodes = newNodes.union(newNode);
         console.log("newNode._private", newNode._private)
         chiseInstance.changeNodeLabel(newNode, queryNodes[i].label) 
 
@@ -1398,6 +1424,19 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       // chiseInstance.showAllAndPerformLayout(this.triggerLayout.bind(this, cy, false));
       console.log("trigger Layout")
       appUtilities.triggerLayout()
+      var options = {
+              // Placing new / hidden nodes
+        idealEdgeLength: 50,
+        offset: 20,
+        
+        // Packing options - options other than componentSpacing are only for randomized packing
+        desiredAspectRatio: 1,
+        polyominoGridSizeFactor: 1,
+        utilityFunction: 1,  // maximize adjusted Fullness   2: maximizes weighted function of fullness and aspect ratio
+        componentSpacing: 80 // use to increase spacing between components in pixels. If passed undefined when randomized is false, then it is calculated automatically.
+      }
+      var instance = cy.layoutUtilities(options)
+      // instance.placeNewNodes(newNodes)
       // queryNodes = data._fields[0];
       // queryEdges = data._fields[1];
       // console.log(JSON.stringify(queryNodes))
