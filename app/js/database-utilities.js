@@ -307,6 +307,9 @@ var databaseUtilities = {
         nodeIdRelation[queryNode.id] = data.data.id;
         return true;
       }
+      if ( queryParentNode == null || processNodeParent == null ) {
+        continue;
+      }
       var parentData = processNodeParent._private.data;
       var parentLabel = parentData.label;
       var parentClass = parentData.class;
