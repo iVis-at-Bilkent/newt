@@ -1094,7 +1094,6 @@ module.exports = function() {
             promtErrorPD2AF.render(data.message);
         }
       });
-
     });
   
   $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
