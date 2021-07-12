@@ -1010,13 +1010,12 @@ module.exports = function() {
 
       chiseSpinnerInstance.startSpinner("layout-spinner");
 
-      var url = "/";
-      var retdata;
       // pd2af returns filename and file url
       $.ajax({
         // After deploying Bridge Server (pd2af-webservice) write the bridge server's URL but leave the /convert
-        // url: "https://pd2afwebservice.herokuapp.com/convert",
-        url: "http://localhost:4000/convert",
+        url: "https://pd2afwebservice.herokuapp.com/convert",
+        // url: "http://139.179.21.94:4000/convert",
+
         type: "POST",
         ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
         data: {
@@ -1031,9 +1030,8 @@ module.exports = function() {
             promtErrorPD2AF.render(data.message);
           }else{
             chiseSpinnerInstance.endSpinner("layout-spinner");
-            retdata = data;
-            url = data.url;
             filename = data.filename;
+
             // Create new network 
             var current = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             var networkName = current.mapName;
@@ -1051,34 +1049,15 @@ module.exports = function() {
             currentGeneralProperties.mapPD2AFConverted = true; // Set it to true so load will not overwrite the map name and description
             currentGeneralProperties.inferNestingOnLoad = true;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
+
             chiseInstance = appUtilities.getActiveChiseInstance();
-            var cyInstance = chiseInstance.getCy();
             var fileExtension = filename.split('.');
-            
-            // Retrieve the graph from file url and display it in the new canvas
-            // Below code is from app-utilities.js -> loadFromURL function (line 2611)
-            $.ajax({
-              type: 'get',
-              url: "/utilities/testURL",
-              data: {url: url},
-              success: function(data){
-                // here we can get 404 as well, for example, so there are still error cases to handle
-                if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                  $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
-                  var fileToLoad = new File([data.response.body], filename, {
-                    type: 'text/' + fileExtension,
-                    lastModified: Date.now()
-                  });
-                  chiseInstance.loadNwtFile(fileToLoad, ()=>{}, ()=>{}, retdata);
-                }
-                else {
-                  loadCallbackInvalidityWarning();
-                }
-              },
-              error: function(xhr, options, err){
-                loadCallbackInvalidityWarning();
-              }
-            });     
+            var fileToLoad = new File([data.body], filename, {
+                      type: 'text/' + fileExtension,
+                      lastModified: Date.now()
+                    });
+            chiseInstance.loadNwtFile(fileToLoad, ()=>{}, ()=>{}, data);
+            // cyInstance.fit( cyInstance.elements(":visible"), 20 );
           }
         },
         error: function (data) {
