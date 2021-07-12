@@ -1013,9 +1013,8 @@ module.exports = function() {
       // pd2af returns filename and file url
       $.ajax({
         // After deploying Bridge Server (pd2af-webservice) write the bridge server's URL but leave the /convert
-        url: "https://pd2afwebservice.herokuapp.com/convert",
-        // url: "http://localhost:4000/convert",
-        // url: "http://139.179.21.94:4000/convert", 
+        // url: "https://pd2afwebservice.herokuapp.com/convert",
+        url: "http://139.179.21.94:4000/convert", //public server url
         type: "POST",
         ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
         data: {
