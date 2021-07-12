@@ -610,11 +610,8 @@ module.exports = function() {
         currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
         currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
       }
-      // We temporarly set inferNestingOnLoad to true to preserve the nest relation in the pd2af conversion   
-      if(currentGeneralProperties.mapPD2AFConverted)
-        currentGeneralProperties.inferNestingOnLoad = false;
       currentGeneralProperties.mapPD2AFConverted = false; // Map name loaded, when new map is loading to the canvas name should be change
-      // appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
+
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
         currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
@@ -998,8 +995,8 @@ module.exports = function() {
       var properties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
 
       // var dene = file.createSbgnml(filename, "plain", renderInfo, properties, nodes, edges);
-      var file = chiseInstance.convertSbgn(filename, "plain", renderInfo, properties, nodes, edges);
-      
+      var file = chiseInstance.getSbgnvizInstance().convertSbgn(filename, "plain", renderInfo, properties, nodes, edges);
+
       // If the map type is not PD or canvas is empty display error  
       if(chiseInstance.getMapType() != 'PD'){
         promptInvalidTypeWarning.render();
