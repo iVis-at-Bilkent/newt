@@ -3311,16 +3311,13 @@ var PromptInvalidTypeWarning = Backbone.View.extend({
   render: function () {
     var self = this;
     self.template = _.template($("#prompt-errorInvalidType-template").html());
-    // console.log("RENDEEER");
 
     $(self.el).html(self.template);
     $(self.el).modal('show');
-    // console.log("RENDEEER");
 
     $(document).off("click", "#prompt-errorInvalidType-confirm").on("click", "#prompt-errorInvalidType-confirm", function (evt) {
       $(self.el).modal('toggle');
     });
-    // console.log("RENDEEER");
 
     return this;
   }

@@ -65,8 +65,5 @@
     "body-parser": "*",
     "nodemon": "1.11.0",
     "parallelshell": "3.0.1"
-  },
-  "engines": {
-    "node": "12.18.3"
   }
 }

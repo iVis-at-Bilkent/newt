@@ -971,12 +971,13 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
 
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
-      });
+    });
+
     // PD map to AF map conversion 
     $("#highlight-errors-of-pd2af").click(function (e) {
     
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      var chiseSpinner = appUtilities.getActiveChiseInstance();
+      var chiseSpinnerInstance = appUtilities.getActiveChiseInstance();
       var filename = document.getElementById('file-name').innerHTML;
       var fExt = 'sbgn';
       filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
@@ -985,8 +986,6 @@ module.exports = function() {
       
       var cy = chiseInstance.getCy();
       var nodes = cy.nodes().filter( function( node ) {
-        // return !chiseInstance.elementUtilities.isSIFNode( node );
-        // console.log(node.visible());
         return node.visible();
       } );
       
@@ -994,14 +993,12 @@ module.exports = function() {
         return edge.visible();
       } );
       
-      // console.log(nodes);
-      // console.log(edges);
       var renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
 
       var properties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
 
       // var dene = file.createSbgnml(filename, "plain", renderInfo, properties, nodes, edges);
-      var file = chiseInstance.getSbgnvizInstance().convertSbgn(filename, "plain", renderInfo, properties, nodes, edges);
+      var file = chiseInstance.convertSbgn(filename, "plain", renderInfo, properties, nodes, edges);
       
       // If the map type is not PD or canvas is empty display error  
       if(chiseInstance.getMapType() != 'PD'){
@@ -1014,7 +1011,7 @@ module.exports = function() {
         return;
       }
 
-      chiseSpinner.startSpinner("layout-spinner");
+      chiseSpinnerInstance.startSpinner("layout-spinner");
 
       var url = "/";
       var retdata;
@@ -1024,7 +1021,6 @@ module.exports = function() {
         url: "https://pd2afwebservice.herokuapp.com/convert",
         // url: "http://localhost:5555/convert",
         type: "POST",
-        timeout: 300000,
         ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
         data: {
           'file': file,
@@ -1034,10 +1030,10 @@ module.exports = function() {
           // If response returns error display the message
           if(data.name==='Error' || data.error || data.name==='error'){
             console.log(data);
-            chiseSpinner.endSpinner("layout-spinner");
+            chiseSpinnerInstance.endSpinner("layout-spinner");
             promtErrorPD2AF.render(data.message);
           }else{
-            chiseSpinner.endSpinner("layout-spinner");
+            chiseSpinnerInstance.endSpinner("layout-spinner");
             retdata = data;
             url = data.url;
             filename = data.filename;
@@ -1090,16 +1086,17 @@ module.exports = function() {
         },
         error: function (data) {
           console.log(data);
-          chiseSpinner.endSpinner("layout-spinner");
-
-          promtErrorPD2AF.render(data);
+          chiseSpinnerInstance.endSpinner("layout-spinner");
+          if(data.status == 0)
+            promtErrorPD2AF.render("Server might be offline!");
+          
+          else
+            promtErrorPD2AF.render(data.message);
         }
       });
 
     });
   
-
-
   $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
    modeHandler.enableReadMode();
     // use active chise instance
