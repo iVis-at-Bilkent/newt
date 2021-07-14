@@ -236,9 +236,7 @@ module.exports = function() {
       updatePalette(chiseInstance.elementUtilities.mapType)
 
     }
-
     cy.fit( cy.elements(":visible"), 20 );
-
   });
 
 			   
@@ -732,6 +730,7 @@ module.exports = function() {
 
       // reset current general properties at the scratch pad of cy
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+      cy.fit( cy.elements(":visible"), 20 );
     });
 
     $("#PD-legend").click(function (e) {
@@ -989,15 +988,11 @@ module.exports = function() {
       var edges = cy.edges().filter( function( edge ) {
         return edge.visible();
       } );
-      
-      var renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
 
+      var renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
       var properties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
 
-      // var dene = file.createSbgnml(filename, "plain", renderInfo, properties, nodes, edges);
-      var file = chiseInstance.getSbgnvizInstance().convertSbgn(filename, "plain", renderInfo, properties, nodes, edges);
-
-      // If the map type is not PD or canvas is empty display error  
+      var file = chiseInstance.getSbgnvizInstance().convertSbgn(filename, "plain", renderInfo, properties, nodes, edges, true);
       if(chiseInstance.getMapType() != 'PD'){
         promptInvalidTypeWarning.render();
         return;
@@ -1054,9 +1049,14 @@ module.exports = function() {
             var fileToLoad = new File([data.body], filename, {
                       type: 'text/sbgn',
                       lastModified: Date.now()
-                    });
-            chiseInstance.loadNwtFile(fileToLoad, ()=>{}, ()=>{}, data);
-            // cyInstance.fit( cyInstance.elements(":visible"), 20 );
+            });
+
+            chiseInstance.loadSBGNMLFile(fileToLoad, ()=>{}, ()=>{}, data);
+            var cyInstance = chiseInstance.getCy();
+
+            setTimeout(function(){
+              cyInstance.fit( cyInstance.elements(":visible"), 20 );
+            }, 2000);
           }
         },
         error: function (data) {
@@ -1306,7 +1306,6 @@ module.exports = function() {
     });
 
     $("#perform-layout, #perform-layout-icon").click(function (e) {
-
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -1327,7 +1326,6 @@ module.exports = function() {
       var preferences = {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
-
       layoutPropertiesView.applyLayout(preferences);
     });
 
