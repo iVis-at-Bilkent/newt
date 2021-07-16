@@ -1058,11 +1058,9 @@ module.exports = function() {
                       type: 'text/sbgn',
                       lastModified: Date.now()
             });
-            chiseInstance.startSpinner("layout-spinner");
 
             setTimeout(function(){
               chiseInstance.loadSBGNMLFile(fileToLoad, ()=>{}, ()=>{}, data);
-              chiseInstance.endSpinner("layout-spinner");
             }, 1000);
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
             appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
