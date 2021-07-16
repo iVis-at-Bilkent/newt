@@ -1055,13 +1055,12 @@ module.exports = function() {
                       type: 'text/sbgn',
                       lastModified: Date.now()
             });
-
-            chiseInstance.loadSBGNMLFile(fileToLoad, ()=>{}, ()=>{}, data);
-            var cyInstance = chiseInstance.getCy();
+            chiseInstance.startSpinner("layout-spinner");
 
             setTimeout(function(){
-              cyInstance.fit( cyInstance.elements(":visible"), 20 );
-            }, 2000);
+              chiseInstance.loadSBGNMLFile(fileToLoad, ()=>{}, ()=>{}, data);
+              chiseInstance.endSpinner("layout-spinner");
+            }, 1000);
 
             currentGeneralProperties.inferNestingOnLoad = inferNestingOrigin;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
