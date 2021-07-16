@@ -614,6 +614,7 @@ module.exports = function() {
       if (cy.nodes().length > 1250){
         currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
       }
+      currentGeneralProperties.inferNestingOnLoad = currentGeneralProperties.inferNestingOrigin;
 
       // get and set properties from file
       var properties = chiseInstance.getMapProperties();
@@ -1044,7 +1045,9 @@ module.exports = function() {
             var newNetwork = appUtilities.createNewNetwork(networkName, st); // Create new network (new Newt tab)
             var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             currentGeneralProperties.mapPD2AFConverted = true; // Set it to true so load will not overwrite the map name and description
+            currentGeneralProperties.inferNestingOrigin = currentGeneralProperties.inferNestingOnLoad;
             currentGeneralProperties.inferNestingOnLoad = true;
+            
             currentGeneralProperties.mapColorSchemeStyle = mapColorSchemeStyle;
             currentGeneralProperties.mapColorScheme = mapColorScheme;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
@@ -1061,8 +1064,6 @@ module.exports = function() {
               chiseInstance.loadSBGNMLFile(fileToLoad, ()=>{}, ()=>{}, data);
               chiseInstance.endSpinner("layout-spinner");
             }, 1000);
-
-            currentGeneralProperties.inferNestingOnLoad = inferNestingOrigin;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
             appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
           }
