@@ -1002,7 +1002,10 @@ module.exports = function() {
         promtErrorPD2AF.render("No visible map found!");
         return;
       }
-
+      var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+      var inferNestingOrigin = currentGeneralProperties.inferNestingOnLoad;
+      var mapColorScheme = currentGeneralProperties.mapColorScheme;
+      var mapColorSchemeStyle = currentGeneralProperties.mapColorSchemeStyle;
       chiseSpinnerInstance.startSpinner("layout-spinner");
 
       // pd2af returns filename and file url
@@ -1042,6 +1045,8 @@ module.exports = function() {
             var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
             currentGeneralProperties.mapPD2AFConverted = true; // Set it to true so load will not overwrite the map name and description
             currentGeneralProperties.inferNestingOnLoad = true;
+            currentGeneralProperties.mapColorSchemeStyle = mapColorSchemeStyle;
+            currentGeneralProperties.mapColorScheme = mapColorScheme;
             appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
 
             chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1057,6 +1062,10 @@ module.exports = function() {
             setTimeout(function(){
               cyInstance.fit( cyInstance.elements(":visible"), 20 );
             }, 2000);
+
+            currentGeneralProperties.inferNestingOnLoad = inferNestingOrigin;
+            appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
+            appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
           }
         },
         error: function (data) {
