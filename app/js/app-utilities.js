@@ -1448,27 +1448,6 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       console.log("self", self)
       console.log("cy", cy)
       chiseInstance.showAndPerformLayout(newNodes, extendedList, appUtilities.triggerLayout(cy, false));
-      // chiseInstance.hideAndPerformLayout(newNodes, self.triggerLayout.bind(self, cy, false));
-      // appUtilities.triggerLayout()
-      var options = {
-              // Placing new / hidden nodes
-        idealEdgeLength: 50,
-        offset: 20,
-        
-        // Packing options - options other than componentSpacing are only for randomized packing
-        desiredAspectRatio: 1,
-        polyominoGridSizeFactor: 1,
-        utilityFunction: 1,  // maximize adjusted Fullness   2: maximizes weighted function of fullness and aspect ratio
-        componentSpacing: 80 // use to increase spacing between components in pixels. If passed undefined when randomized is false, then it is calculated automatically.
-      }
-      console.log("newNodes", newNodes);
-
-      // var instance = cy.layoutUtilities(options)
-      // cy.placeNewNodes(newNodes)
-      // queryNodes = data._fields[0];
-      // queryEdges = data._fields[1];
-      // console.log(JSON.stringify(queryNodes))
-      // console.log(queryEdges)
     },
     error: function(req, status, err) {
       console.error("Error running query", status, err);
