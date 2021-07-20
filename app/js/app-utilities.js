@@ -798,7 +798,6 @@ appUtilities.triggerLayout = function (_cy, randomize) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
   var cy = _cy || this.getActiveCy();
-
   // access the current general properties of cy
   var currentGeneralProperties = this.getScratch(cy, 'currentGeneralProperties');
 
@@ -1161,6 +1160,10 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
                     parentUnitsOfInformation: parentUnitsOfInformation, parentStateVariables: parentStateVariables }
   var data = { query: query, queryData: queryData }
 
+  // nodesToLayout
+  var newNodes= cy.collection();
+
+  var self = this;
   // contains structured queried data
   var queryNodes = [], queryParentNodes = [], queryEdges = [];
   $.ajax({
@@ -1317,7 +1320,6 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       console.log("nodeParentId", nodeParentId);
       console.log("nodeIdRelation", nodeIdRelation);
       queryNodes = queryNodesToAdd;
-      var newNodes= cy.collection();
       for(let i = 0; i < queryNodes.length; i++) {
         // console.log(queryNodes[i])
         // var nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy );
@@ -1325,7 +1327,23 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         //   continue;
         // }
         console.log(queryNodes[i])
-        var newNode = chiseInstance.addNode( x, y, queryNodes[i].class, queryNodes[i].id, nodeParentId[queryNodes[i].id]);
+        var nodeX = x + 100 + Math.random()*100 - 50;
+        var nodeY = y + 100 + Math.random()*100 - 50;
+        var childrenExists = appUtilities.checkForChildren(queryNodes[i].id, nodeParentId);
+        var isCompound = appUtilities.checkIfCompound(queryNodes[i], queryNodes, cy, nodeParentId);
+        
+        if ( isCompound || childrenExists ) {
+          nodeX = null;
+          nodeY = null;
+        }
+
+        console.log("Node Position")
+        console.log(x,y);
+        console.log(nodeX, nodeY)
+
+        console.log("nodeInfo", queryNodes[i]);
+        console.log("childrenExists", childrenExists, "isCompound", isCompound);
+        var newNode = chiseInstance.addNode( nodeX, nodeY, queryNodes[i].class, queryNodes[i].id, nodeParentId[queryNodes[i].id]);
         newNodes = newNodes.union(newNode);
         console.log("newNode._private", newNode._private)
         chiseInstance.changeNodeLabel(newNode, queryNodes[i].label) 
@@ -1372,7 +1390,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
 
       for(let i = 0; i < queryEdges.length; i++) {
         // if(i==2) continue
-        var typeOfRel = queryEdges[i].type;
+        var typeOfRel = queryEdges[i].class;
         if ( typeOfRel == "belongs_to_complex" ) {
           continue;
         }
@@ -1422,8 +1440,16 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       // chiseInstance.addEdge("http___www.reactome.org_biopax_48887Protein1269", "http___www.reactome.org_biopax_48887BiochemicalReaction2203LEFT_TO_RIGHT", "production", 651);
       
       // chiseInstance.showAllAndPerformLayout(this.triggerLayout.bind(this, cy, false));
+      
+
       console.log("trigger Layout")
-      appUtilities.triggerLayout()
+      var extendedList = chiseInstance.elementUtilities.extendNodeList(newNodes);
+      console.log("newNodes", newNodes);
+      console.log("self", self)
+      console.log("cy", cy)
+      chiseInstance.showAndPerformLayout(newNodes, extendedList, appUtilities.triggerLayout(cy, false));
+      // chiseInstance.hideAndPerformLayout(newNodes, self.triggerLayout.bind(self, cy, false));
+      // appUtilities.triggerLayout()
       var options = {
               // Placing new / hidden nodes
         idealEdgeLength: 50,
@@ -1435,6 +1461,8 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
         utilityFunction: 1,  // maximize adjusted Fullness   2: maximizes weighted function of fullness and aspect ratio
         componentSpacing: 80 // use to increase spacing between components in pixels. If passed undefined when randomized is false, then it is calculated automatically.
       }
+      console.log("newNodes", newNodes);
+
       // var instance = cy.layoutUtilities(options)
       // cy.placeNewNodes(newNodes)
       // queryNodes = data._fields[0];
@@ -1447,6 +1475,72 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
     }
   });
 
+  
+}
+
+appUtilities.checkForChildren = function(queryNodeId, nodeParentId) {
+  for (var key of Object.keys(nodeParentId)) {
+    if ( nodeParentId[key] === queryNodeId ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+appUtilities.checkIfCompound = function(queryNode, queryNodes, _cy, nodeParentId) {
+  var id = queryNode.id;
+  var nodeClass = queryNode.class;
+
+  if ( nodeClass === "complex") {
+    for (var key of Object.keys(nodeParentId)) {
+      if ( nodeParentId[key] === id ) {
+        console.log("found a nodee")
+        for (let i = 0; i < queryNodes.length; i++) {
+          console.log(queryNodes[i], key);
+          // check if the complex contains a complex
+          if ( queryNodes[i].id == key && queryNodes[i].class == "complex") {
+            console.log("reuturn true in complex found")
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  if ( nodeClass === "compartment") {
+    for (var key of Object.keys(nodeParentId)) {
+      if ( nodeParentId[key] == id ) {
+        for (let i = 0; i < queryNodes.length; i++) {
+          // check if the complex contains a complex
+          if ( queryNodes[i].id == key && queryNodes[i].class == "compartment") {
+            return true;
+          }
+          if ( queryNodes[i].id == key && queryNodes[i].class == "complex") {
+            return appUtilities.checkIfCompound(queryNodes[i], queryNodes, _cy, nodeParentId)
+          }
+        }
+      }
+    }
+  }
+
+  if ( nodeClass === "submap") {
+    for (var key of Object.keys(nodeParentId)) {
+      if ( nodeParentId[key] == id ) {
+        for (let i = 0; i < queryNodes.length; i++) {
+          // check if the complex contains a complex
+          if ( queryNodes[i].id == key && queryNodes[i].class == "compartment") {
+            return true;
+          }
+          if ( queryNodes[i].id == key && queryNodes[i].class == "complex") {
+            return appUtilities.checkIfCompound(queryNodes[i], queryNodes, _cy, nodeParentId)
+          }
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 appUtilities.consoleLogInfo = function (eles, _chiseInstance) {
