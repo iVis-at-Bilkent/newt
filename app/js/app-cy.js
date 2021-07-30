@@ -255,14 +255,15 @@ module.exports = function (chiseInstance) {
         selector: '[class^="BA"], [class^="phenotype"]',
         show: databaseUtilities.enableDatabase,
         onClickFunction: function (event) { 
-          // complete this later
+          var cyTarget = event.target || event.cyTarget;
+          appUtilities.showNeighborsInDatabase(cyTarget, appUtilities.getChiseInstance(cy));
         }
       },
       {
         id: 'ctx-menu-console-log-element-info',
         content: 'Console Log Info',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"], [class^="BA"], [class^="phenotype"]',
         show: databaseUtilities.enableDatabase,
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;

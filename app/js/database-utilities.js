@@ -40,7 +40,9 @@ var databaseUtilities = {
     var infos = statesAndInfos.filter((item) => item.clazz == "unit of information");
     var refinedInfos = [];
     for(let i = 0; i < infos.length; i++) {
-      refinedInfos.push(infos[i].label.text);
+      var text = infos[i].label.text || "";
+      refinedInfos.push(text);
+
     }
     return refinedInfos.sort();
   },
@@ -192,7 +194,7 @@ var databaseUtilities = {
   },
 
   // used while add a new node to chiseInstance in newt
-  getNewtIdOfParentNode: function ( queryNode, queryParentNode ) {
+  getNewtIdOfParentNodePD: function ( queryNode, queryParentNode ) {
     if ( !queryParentNode ) {
       return null;
     }
@@ -355,7 +357,7 @@ var databaseUtilities = {
     return databaseUtilities.getCorrespondingProcessNodeInNewt( queryNode, connectedEdgesDB, neighboringNodesDB, cy, nodeIdRelation, queryParentNode );
   },
 
-  checkIfNodeExists: function ( queriedNode, queriedParentNode, cy, nodeIdRelation ) {
+  checkIfPDNodeExists: function ( queriedNode, queriedParentNode, cy, nodeIdRelation ) {
     var filterByLabel = cy.nodes().filter(function( ele ){
       return ele.data('label') == queriedNode.label;
     });
@@ -376,7 +378,8 @@ var databaseUtilities = {
         }
 
         if(data.clazz == "unit of information") {
-          unitsOfInformation.push(data.label.text)
+          var text = data.label.text || "";
+          unitsOfInformation.push(text)
         }
 
       }
@@ -431,6 +434,101 @@ var databaseUtilities = {
     return false;
   },
 
+  checkIfAFNodeExists: function ( queriedNode, queriedParentNode, cy, nodeIdRelation ) {
+    var filterByLabel = cy.nodes().filter(function( ele ){
+      return ele.data('label') == queriedNode.label;
+    });
+    var filterByClass = filterByLabel.filter(function(ele) {
+      return ele.data('class') == queriedNode.class;
+    })
+    var filterByStatesAndInfo = filterByClass.filter(function(ele) {
+      var stateorinfoboxes = ele.data('statesandinfos');
+      var unitsOfInformation = [];
+
+      for(let i = 0; i < stateorinfoboxes.length; i++) {
+        var data = stateorinfoboxes[i];
+
+        if(data.clazz == "unit of information") {
+          var text = data.label.text || "";
+          unitsOfInformation.push(text);
+        }
+
+      }
+      unitsOfInformation.sort();
+
+      return _.isEqual(unitsOfInformation, queriedNode.unitsOfInformation);
+    })
+    console.log("filterByStatesAndInfo", filterByStatesAndInfo)
+    console.log(filterByClass.length)
+    for(let i = 0; i < filterByStatesAndInfo.length; i++) {
+      var data = filterByStatesAndInfo[i]._private;
+      // console.log("data", data);
+      // if there is no parent but a node exists with given props in both database and newt return true
+      if (data.parent === null && queriedParentNode === null) {
+        nodeIdRelation[data.data.id] = queriedNode.id;
+        nodeIdRelation[queriedNode.id] = data.data.id;
+        return true;
+      }
+
+      // if node's parent in newt is null but not null in DB continue
+      if ( data.parent === null || queriedParentNode === null) {
+        continue;
+      }
+      console.log("data.parent", data.parent);
+      console.log("queriedParentNode", queriedParentNode);
+      var parentData = data.parent._private.data;
+      // console.log("parentdata", parentData);
+      parentNodeNewtId = parentData.id;
+      var parentNodeClass = databaseUtilities.calculateClass(parentData.class);
+      var parentNodeLabel = parentData.label;
+      var parentNodeUnitOfInformation = databaseUtilities.calculateInfo(parentData.statesandinfos);
+
+      console.log(parentNodeClass, queriedParentNode.class)
+      console.log(parentNodeLabel, queriedParentNode)
+      console.log(parentNodeUnitOfInformation, queriedParentNode.unitsOfInformation)
+      if (_.isEqual(parentNodeClass, queriedParentNode.class) && _.isEqual(parentNodeLabel, queriedParentNode.label)
+          && _.isEqual(parentNodeUnitOfInformation, queriedParentNode.unitsOfInformation)) {
+            console.log("true")
+            // node exists in newt
+            nodeIdRelation[data.data.id] = queriedNode.id;
+            nodeIdRelation[queriedNode.id] = data.data.id;
+            return true;
+          }
+    }
+    console.log(false)
+    // node does not exist in newt
+    return false;
+  },
+
+  // used while add a new node to chiseInstance in newt
+  getNewtIdOfParentNodeAF: function ( queryNode, queryParentNode ) {
+    if ( !queryParentNode ) {
+      return null;
+    }
+    var filterByLabel = cy.nodes().filter(function( ele ){
+      return ele.data('label') == queryParentNode.label;
+    });
+    var filterByClass = filterByLabel.filter(function(ele) {
+      return ele.data('class') == queryParentNode.class;
+    })
+    var filterByStatesAndInfo = filterByClass.filter(function(ele) {
+      var stateorinfoboxes = ele.data('statesandinfos');
+      var unitsOfInformation = [];
+
+      for(let i = 0; i < stateorinfoboxes.length; i++) {
+        var data = stateorinfoboxes[i];
+
+        if(data.clazz == "unit of information") {
+          unitsOfInformation.push(data.label.text)
+        }
+
+      }
+      unitsOfInformation.sort();
+
+      return _.isEqual(unitsOfInformation, queryParentNode.unitsOfInformation);
+    });
+    return filterByStatesAndInfo.length ? filterByStatesAndInfo[0]._private.data.id : queryNode.parent;
+  },
   
 }
 

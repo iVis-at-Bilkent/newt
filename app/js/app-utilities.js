@@ -1043,6 +1043,374 @@ appUtilities.showHiddenNeighbors = function (eles, _chiseInstance) {
     }
 };
 
+appUtilities.showNeighborsInDatabase = function (eles, _chiseInstance) {
+  var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+  // get the associated cy instance
+  var cy = chiseInstance.getCy();
+  
+  
+  var nodeData = eles._private.data
+  var x = nodeData.bbox.x;
+  var y = nodeData.bbox.y;
+  var newtId = nodeData.id
+  var idInDatabase;
+  var entityName = nodeData.label;
+  var label = databaseUtilities.calculateClass(nodeData.class);
+  var unitsOfInformation = databaseUtilities.calculateInfo(nodeData.statesandinfos);
+  console.log(newtId, entityName, label, unitsOfInformation)
+
+  var parentData = eles._private.parent;
+
+  var query_old =
+  "CALL {MATCH p = (n:" + label +
+  `)-[]-(processNode)-[]-(m)<-[:belongs_to_complex*0..]-()
+  WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+        AND n.stateVariables = $stateVariables AND labels(m) in [["unspecified_entity"],["simple_chemical"],
+        ["macromolecule"],["perturbing_agent"],["nucleic_acid_feature"], ["empty_set"],["complex"]]
+        AND labels(processNode) in [["process"], ["association"], ["dissociation"], ["omitted_process"], ["uncertain_process"], ["phenotype"]]
+
+        RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+        apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+  }
+    UNWIND allNodes as aN
+
+    WITH aN, allRels
+
+    CALL {
+        WITH aN
+        OPTIONAL MATCH (parentNode) where id(parentNode) = aN.parent
+          RETURN parentNode
+        }
+    RETURN aN, parentNode, allRels
+  `;
+
+  var query = 
+    "CALL {MATCH (n:" + label + ")" +
+    `WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+     AND NOT exists(n.parent)
+    RETURN n as matchedNode
+    LIMIT 1
+    }` +
+    `WITH matchedNode
+    CALL { WITH matchedNode
+    MATCH p = (matchedNode)-[]-()
+    RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+          apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+    }
+    UNWIND allNodes as aN
+
+    WITH aN, allRels
+
+    CALL {
+        WITH aN
+        OPTIONAL MATCH (parentNode) where id(parentNode) = aN.parent
+          RETURN parentNode
+        }
+    RETURN aN, parentNode, allRels`;
+
+
+  var parentLabel, parentEntityName, parentUnitsOfInformation, parentStateVariables
+  if(parentData) {
+    parentData = parentData._private.data;
+    parentEntityName = parentData.label
+    parentLabel = databaseUtilities.calculateClass(parentData.class);
+    parentUnitsOfInformation = databaseUtilities.calculateInfo(parentData.statesandinfos)
+
+    var query = 
+    "CALL {MATCH (n:" + label +
+    ")-[:belongs_to_" + parentLabel + "]->(m:" + parentLabel + ")" +
+    `WHERE n.entityName = $entityName AND n.unitsOfInformation = $unitsOfInformation
+     AND  m.entityName = $parentEntityName  AND m.unitsOfInformation = $parentUnitsOfInformation
+    RETURN n as matchedNode
+    LIMIT 1
+    }` +
+    `WITH matchedNode
+    CALL { WITH matchedNode
+    MATCH p = (matchedNode)-[]-()
+    RETURN apoc.coll.toSet(apoc.coll.flatten(collect(nodes(p)))) AS allNodes,
+          apoc.coll.toSet(apoc.coll.flatten(collect(relationships(p)))) AS allRels
+    }
+    UNWIND allNodes as aN
+
+    WITH aN, allRels
+
+    CALL {
+        WITH aN
+        OPTIONAL MATCH (parentNode) where id(parentNode) = aN.parent
+          RETURN parentNode
+        }
+    RETURN aN, parentNode, allRels`;
+  }
+  console.log("nodeData", nodeData)
+
+  var queryData = { entityName: entityName, unitsOfInformation: unitsOfInformation,
+                    parentEntityName:parentEntityName, parentUnitsOfInformation: parentUnitsOfInformation }
+  var data = { query: query, queryData: queryData }
+
+  console.log("queryData", queryData)
+  // nodesToLayout
+  var newNodes= cy.collection();
+
+  var self = this;
+  // contains structured queried data
+  var queryNodes = [], queryParentNodes = [], queryEdges = [];
+  $.ajax({
+    type: 'post',
+    url: "/utilities/runDatabaseQuery",
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify(data),
+    success: function(data){
+      console.log("data", data);
+      if ( _.isEqual( data, undefined ) ) {
+        console.log("No records found in Database")
+        return ;
+      }
+      // collect the queried records
+      var nodesArr = data.records[0]._fields[0]
+      var parentNodesArr = [], nodesArr = [];
+      // nodeParentId is used to add node to chiseInstance
+      // nodeIdRelation gives relation between node's id in db and newt
+      var nodeParentId = {}, nodeIdRelation = {}
+      for(let i = 0; i < data.records.length; i++) {
+        nodesArr.push(data.records[i]._fields[0])
+        parentNodesArr.push(data.records[i]._fields[1])
+      }
+      var edgesArr = data.records[0]._fields[2]
+      console.log("nodesArr", nodesArr)
+      console.log("parentNodesArr", parentNodesArr)
+      console.log("edgesArr", edgesArr)
+
+      // if no nodes are retured there nothing to add to the map
+      if (_.isEqual(nodesArr, [])) {
+        return ;
+      }
+
+      console.log("get useful information out of queried data for nodesArr")
+      // get useful information out of queried data for nodesArr
+      for(let i = 0; i < nodesArr.length; i++) {
+        console.log("nodesArr[i]", nodesArr[i]);
+        var nodeId = nodesArr[i].identity.low;
+        var nodeClass = databaseUtilities.calculateNewtClass(nodesArr[i].labels[0]);
+        // unprocessed classes contains underscore
+        var nodeClassUnprocessed = nodesArr[i].labels[0];
+        var nodeLabel = nodesArr[i].properties.entityName;
+        var nodeUnitOfInformation = nodesArr[i].properties.unitsOfInformation;
+
+        var nodeParent = null;
+        // try {
+        //   nodeParent = nodesArr[i].properties.parent.low;
+        // }
+        // catch(err) {
+        //   nodeParent = null;
+        // }
+        if ( nodesArr[i].properties.hasOwnProperty("parent") ) {
+          console.log(true)
+          nodeParent = nodesArr[i].properties.parent.low;
+        }
+        console.log(nodeId)
+        console.log(nodeClassUnprocessed, label, nodeLabel, entityName, nodeUnitOfInformation, unitsOfInformation, nodeParentId)
+        // if (nodeClassUnprocessed == label && nodeLabel == entityName && _.isEqual(nodeUnitOfInformation, unitsOfInformation)
+        //       && _.isEqual(nodeStateVariables, stateVariables)) {
+        //   idInDatabase = nodeId;
+        //   console.log("inside")
+        //   // continue;
+        // }
+        queryNodes.push({
+          id : nodeId,
+          class: nodeClass,
+          language: nodesArr[i].properties.language,
+          label: nodeLabel,
+          unitsOfInformation: nodesArr[i].properties.unitsOfInformation,
+          parent: nodeParent,
+        });
+      }
+      console.log("queryNodes", queryNodes);
+
+      // get useful information out of queried data for parentNodesArr
+      for(let i = 0; i < parentNodesArr.length; i++) {
+        // if a node doesn't have a parent skip
+        if (parentNodesArr[i] === null) {
+          queryParentNodes.push(null)
+          continue;
+        }
+        var parentNodeId = parentNodesArr[i].identity.low;
+        var parentNodeClass = databaseUtilities.calculateNewtClass(parentNodesArr[i].labels[0]);
+        // unprocessed classes contains underscore
+        var parentNodeClassUnprocessed = parentNodesArr[i].labels[0];
+        var parentNodeLabel = parentNodesArr[i].properties.entityName;
+        var parentNodeUnitOfInformation = parentNodesArr[i].properties.unitsOfInformation;
+        var parentNodeStateVariables = parentNodesArr[i].properties.stateVariables;
+        // console.log(parentNodeId)
+        // console.log(parentNodeClassUnprocessed, label, parentNodeLabel, entityName, parentNodeUnitOfInformation, unitsOfInformation, stateVariables, parentNodeStateVariables)
+
+        queryParentNodes.push({
+          id : parentNodeId,
+          class: parentNodeClass,
+          language: parentNodesArr[i].properties.language,
+          // EntityName
+          label: parentNodeLabel,
+          unitsOfInformation: parentNodesArr[i].properties.unitsOfInformation,
+          stateVariables: parentNodesArr[i].properties.stateVariables,
+          cloneMarker: parentNodesArr[i].properties.cloneMarker,
+        });
+      }
+      
+      // idInDatabase = nodesArr[0].identity.low
+      // console.log(idInDatabase)
+
+      for(let i = 0; i < edgesArr.length; i++) {
+        var edgeId = edgesArr[i].identity.low;
+        var edgeSource = edgesArr[i].start.low;
+        var edgeTarget = edgesArr[i].end.low;
+        var edgeClass = edgesArr[i].type;
+        if (edgeSource == idInDatabase) {
+          edgeSource = newtId;
+        }
+        if (edgeTarget == idInDatabase) {
+          edgeTarget = newtId;
+        }
+        console.log(i)
+        queryEdges.push({
+          id: edgeId,
+          source: edgeSource,
+          target: edgeTarget,
+          class: edgeClass,
+        })
+      }
+      // console.log(queryNodes)
+      console.log("Check if node exists");
+      console.log("parentNodesArr.length", queryParentNodes, queryNodes, queryEdges);
+
+      var queryNodesToAdd = []
+      // check if node already exists in newt
+      for(let i = 0; i < queryNodes.length; i++) {
+        var nodeExists = databaseUtilities.checkIfAFNodeExists(queryNodes[i], queryParentNodes[i], cy, nodeIdRelation);
+        console.log("queryNodes[i].label", queryNodes[i].class)
+
+        console.log("nodeExists", nodeExists, queryNodes[i])
+
+        if ( nodeExists ) {
+          continue;
+        }
+        parentId = databaseUtilities.getNewtIdOfParentNodeAF(queryNodes[i], queryParentNodes[i]);
+        nodeParentId[queryNodes[i].id] = parentId ? parentId : null;
+        console.log("parentId", parentId );
+        queryNodesToAdd.push(queryNodes[i]);        
+          
+      }
+      console.log("nodeParentId", nodeParentId);
+      console.log("nodeIdRelation", nodeIdRelation);
+      queryNodes = queryNodesToAdd;
+      console.log("queryNodes", queryNodes)
+      for(let i = 0; i < queryNodes.length; i++) {
+        // console.log(queryNodes[i])
+        // var nodeExists = databaseUtilities.checkIfPDNodeExists( queryNodes[i], queryParentNodes[i], cy );
+        // if ( nodeExists ) {
+        //   continue;
+        // }
+        console.log(queryNodes[i])
+        var nodeX = x + 100 + Math.random()*100 - 50;
+        var nodeY = y + 100 + Math.random()*100 - 50;
+        var childrenExists = appUtilities.checkForChildren(queryNodes[i].id, nodeParentId);
+        var isCompound = appUtilities.checkIfCompound(queryNodes[i], queryNodes, cy, nodeParentId);
+        
+        if ( isCompound || childrenExists ) {
+          nodeX = null;
+          nodeY = null;
+        }
+
+        console.log("Node Position")
+        console.log(x,y);
+        console.log(nodeX, nodeY)
+
+        console.log("nodeInfo", queryNodes[i]);
+        console.log("childrenExists", childrenExists, "isCompound", isCompound);
+        var newNode = chiseInstance.addNode( nodeX, nodeY, queryNodes[i].class, queryNodes[i].id, nodeParentId[queryNodes[i].id]);
+        newNodes = newNodes.union(newNode);
+        console.log("newNode._private", newNode._private)
+        chiseInstance.changeNodeLabel(newNode, queryNodes[i].label) 
+
+        // add unitsOfInformation to the node
+        for(let j = 0; j < queryNodes[i].unitsOfInformation.length; j++) {
+          var uoi_obj = {
+            clazz: "unit of information"
+          };
+          uoi_obj.label = {
+            text: queryNodes[i].unitsOfInformation[j]
+          };
+
+          uoi_obj.bbox = {
+             w: 12,
+             h: 12
+          };
+
+          chiseInstance.addStateOrInfoBox(newNode, uoi_obj);
+        }
+
+      }
+      var tmp = "AF"
+
+      for(let i = 0; i < queryEdges.length; i++) {
+        // if(i==2) continue
+        var typeOfRel = queryEdges[i].class;
+        if ( typeOfRel == "belongs_to_complex" || typeOfRel == "belongs_to_compartment" || typeOfRel == "belongs_to_submap" ) {
+          continue;
+        }
+        var source = queryEdges[i].source;
+        if ( nodeIdRelation.hasOwnProperty(source) ) {
+          source = nodeIdRelation[source];
+        }
+        var target = queryEdges[i].target;
+        if ( nodeIdRelation.hasOwnProperty(target) ) {
+          target = nodeIdRelation[target];
+        }
+        var edgeClass = databaseUtilities.calculateNewtClass(queryEdges[i].class);
+        var id = queryEdges[i].id;
+        // console.log(source)
+        // console.log(target)
+        // console.log(edgeClass)
+        console.log(queryEdges[i]);
+        if ( !nodeIdRelation.hasOwnProperty(source) || !nodeIdRelation.hasOwnProperty(target) ) {
+          chiseInstance.addEdge(source, target, edgeClass, id);
+        }
+        else {
+          console.log(nodeIdRelation[source], nodeIdRelation[target]);
+          var nodeOne = cy.nodes().filter(function(ele){
+            return ele.data("id") == source;
+          })
+          var nodeTwo = cy.nodes().filter(function(ele){
+            return ele.data("id") == target;
+          })
+          var edgesBetweenThem = nodeOne.edgesWith(nodeTwo);
+          console.log("edgesBetweenThem", edgesBetweenThem);
+          var addEdge = true;
+          for( let i = 0; i < edgesBetweenThem.length; i++) {
+            var existingEdgeClass = edgesBetweenThem[i]._private.data.class;
+            if ( existingEdgeClass == edgeClass) {
+              addEdge = false;
+              break;
+            }
+          }
+          if ( addEdge ) {
+            chiseInstance.addEdge(source, target, edgeClass, id);
+          }
+        }
+      }
+
+      console.log("trigger Layout")
+      var extendedList = chiseInstance.elementUtilities.extendNodeList(newNodes);
+      console.log("newNodes", newNodes);
+      console.log("self", self)
+      console.log("cy", cy)
+      chiseInstance.showAndPerformLayout(newNodes, extendedList, appUtilities.triggerLayout(cy, false));
+    },
+    error: function(req, status, err) {
+      console.error("Error running query", status, err);
+    }
+  });
+}
+
 appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
   
   // check _chiseInstance param if it is set use it else use recently active chise instance
@@ -1243,7 +1611,6 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       // get useful information out of queried data for parentNodesArr
       for(let i = 0; i < parentNodesArr.length; i++) {
         // if a node doesn't have a parent skip
-        console.log("parentNodesarr Loop");
         if (parentNodesArr[i] === null) {
           queryParentNodes.push(null)
           continue;
@@ -1305,13 +1672,13 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
           nodeExists = databaseUtilities.checkIfProcessNodeExists( queryNodes[i], queryNodes, queryEdges, cy, nodeIdRelation, queryParentNodes[i] );
         }
         else {
-          nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy, nodeIdRelation );
+          nodeExists = databaseUtilities.checkIfPDNodeExists( queryNodes[i], queryParentNodes[i], cy, nodeIdRelation );
         }
         if ( nodeExists ) {
           console.log("nodeExists", queryNodes[i])
           continue;
         }
-        parentId = databaseUtilities.getNewtIdOfParentNode(queryNodes[i], queryParentNodes[i]);
+        parentId = databaseUtilities.getNewtIdOfParentNodePD(queryNodes[i], queryParentNodes[i]);
         nodeParentId[queryNodes[i].id] = parentId ? parentId : null;
         console.log("parentId", parentId );
         queryNodesToAdd.push(queryNodes[i]);        
@@ -1322,7 +1689,7 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
       queryNodes = queryNodesToAdd;
       for(let i = 0; i < queryNodes.length; i++) {
         // console.log(queryNodes[i])
-        // var nodeExists = databaseUtilities.checkIfNodeExists( queryNodes[i], queryParentNodes[i], cy );
+        // var nodeExists = databaseUtilities.checkIfPDNodeExists( queryNodes[i], queryParentNodes[i], cy );
         // if ( nodeExists ) {
         //   continue;
         // }
@@ -1386,12 +1753,15 @@ appUtilities.showProcessesOfThisInDatabase = function (eles, _chiseInstance) {
           
       }
 
+      var tmp = "AF"
+
+
       console.log("Check if node exists End")
 
       for(let i = 0; i < queryEdges.length; i++) {
         // if(i==2) continue
         var typeOfRel = queryEdges[i].class;
-        if ( typeOfRel == "belongs_to_complex" ) {
+        if ( typeOfRel == "belongs_to_complex" || typeOfRel == "belongs_to_compartment" || typeOfRel == "belongs_to_submap" ) {
           continue;
         }
         var source = queryEdges[i].source;
