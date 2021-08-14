@@ -1,1 +1,0 @@
-The rebuild script is used to build Newt at unstable.
