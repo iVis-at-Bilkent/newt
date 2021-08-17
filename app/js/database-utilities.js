@@ -164,8 +164,144 @@ var databaseUtilities = {
       }
       RETURN processedRels
         `
+
+    var integrationQuery = ` CALL {
+      UNWIND $nodesData as data
+      CALL apoc.create.node([data.class], data) YIELD node
+      SET node.processed = 0
+      WITH count(node) as nodeCount // needed to protect against empty parameter list
+      RETURN nodeCount // subqueries must return something
+    }
+    WITH nodeCount // only a single row at this point from the earlier aggregation
+    CALL {
+      UNWIND $edgesData AS data  
+      // you should be using labels or this will be really really slow!
+      MATCH (n {newtId: data.source}), (m { newtId: data.target})  
+      WITH n, m, data
+      CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
+      WITH rel
+      SET rel.processed = 0
+      // REMOVE rel.source, rel.target
+      WITH count(rel) as relCount
+      RETURN relCount
+    }
+    WITH relCount
+    CALL {
+      MATCH (n) WHERE EXISTS (n.parent) AND n.processed = 0
+      WITH n as childNode
+      MATCH (parentNode)
+      // get the parent node of a particular node
+      WHERE parentNode.newtId = childNode.parent
+      // create relationship of type PARENT_OF with weight 0
+      CALL apoc.create.relationship(childNode, "belongs_to_" + parentNode.class, {language:"PD"}, parentNode) 
+      YIELD rel
+      WITH rel, parentNode, childNode
+      SET rel.processed = 0, rel.source = childNode.newtId, rel.target = parentNode.newtId
+      WITH rel, parentNode, childNode
+      SET childNode.parent = id(parentNode)
+      WITH count(rel) as parentRel
+      RETURN parentRel
+    }
+    // RETURN parentRel
+    WITH parentRel
+    CALL {
+      // get all the relationships, r for G1
+      MATCH ()-[r]->()
+      WHERE r.processed = 0
+      WITH r
+      // RETURN count(r) as rcnt
+      // RETURN r.source as rsource, r.target as rtarget
+      MATCH (sourceNodeG1 {newtId:r.source, processed:0}),
+          (targetNodeG1 {newtId:r.target, processed:0})
+      WITH sourceNodeG1, targetNodeG1, r
+      // get the identical nodes from G2 which correspond to sourceNodeG1 and targetNodeG1 respectively
+      // sourceNodeG2 and targetNodeG2 can be null as nodes present in G1 might not always be present in G2
+      OPTIONAL MATCH (sourceNodeG2 {entityName:sourceNodeG1.entityName, processed:1}) WHERE labels(sourceNodeG2) = labels(sourceNodeG1)
+      OPTIONAL MATCH (targetNodeG2 {entityName:targetNodeG1.entityName, processed:1}) WHERE labels(targetNodeG2) = labels(targetNodeG1)
+      WITH sourceNodeG2, targetNodeG2, sourceNodeG1, targetNodeG1,
+        r, type(r) as relType
+      // RETURN count(sourceNodeG2) as sg2, count(targetNodeG2) as tg2, count(sourceNodeG1) as sg1 , count(targetNodeG1) as tg1, count(r) as cr
+      // Depending of the case relationships need to be generated, total of six cases
+      CALL apoc.do.case([
+      // case (i) and (ii) and (iii)
+      sourceNodeG2 is not null and targetNodeG2 is not null,
+      'CALL apoc.cypher.run("MATCH (sourceNodeG2)-[rels:" + $relType + "]->(targetNodeG2)
+        RETURN count(rels) as cnt",
+        {sourceNodeG2:sourceNodeG2, targetNodeG2:targetNodeG2, relType:relType})
+        YIELD value
+        WITH value.cnt as relCount, sourceNodeG2 as sourceNodeG2,
+            targetNodeG2 as targetNodeG2, r as r, relType as relType
+        CALL apoc.do.case([
+            relCount = 0,
+            "CALL apoc.create.relationship(sourceNodeG2, relType, r, targetNodeG2)
+            YIELD rel
+            //SET rel.source = sourceNodeG2.newtId, rel.target = targetNodeG2.newtId
+            RETURN rel"],
+        "", {relCount:relCount, sourceNodeG2:sourceNodeG2,
+            targetNodeG2:targetNodeG2, r:r, relType:relType})
+        YIELD value RETURN value',
+      // case (v)
+      sourceNodeG2 is not null and targetNodeG2 is null,
+      'CALL apoc.create.relationship(sourceNodeG2, relType, r, targetNodeG1)
+        YIELD rel
+        //SET rel.source = sourceNodeG2.newtId, rel.target = targetNodeG1.newtId
+        RETURN rel',
+      // case (vi)
+      sourceNodeG2 is null and targetNodeG2 is not null,
+      'CALL apoc.create.relationship(sourceNodeG1, relType, r, targetNodeG2)
+        YIELD rel
+        //SET rel.source = sourceNodeG1.newtId, rel.target = targetNodeG2.newtId
+        RETURN rel',
+      // case (iv)
+      sourceNodeG2 is null and targetNodeG2 is null,
+      'RETURN r'
+      ], '', {sourceNodeG2:sourceNodeG2, targetNodeG2:targetNodeG2, sourceNodeG1:sourceNodeG1, targetNodeG1:targetNodeG1, r:r, relType:relType}
+      ) yield value
+      WITH count(value) as valCnt
+      // RETURN valCnt
+
+      // delete nodes from G1 which are common with G2
+      // also deletes the relationship coming to or directed away from the node
+      MATCH (n { processed:1}), (m { processed:0})
+      WHERE n.entityName = m.entityName AND labels(n) = labels(m)
+      DETACH DELETE (m)
+      WITH valCnt
+      // set processed property to 0
+      MATCH (nn { processed: 0})
+      SET nn.processed = 1
+      // WITH count(value) as valueCount
+      RETURN count(nn) as ncnt
+    }
+    // RETURN rsource, rtarget
+    WITH ncnt
+    CALL {
+      MATCH (n) WHERE EXISTS (n.newtId)
+      REMOVE n.newtId, n.class
+      SET n.processed = 1
+      RETURN count(n) as processedNodes
+    }
+    WITH processedNodes
+    CALL {
+      MATCH ()-[r]->()
+      // MATCH ()-[r]->() WHERE EXISTS (r.source)
+      REMOVE r.source, r.target
+      SET r.processed = 1
+      RETURN count(r) as processedRels
+    }
+    WITH processedRels
+    CALL {
+      MATCH (n)-[:belongs_to_complex|:belongs_to_compartment|:belongs_to_submap]->(m)
+      SET n.parent = id(m)
+      RETURN ["1"] as rndVal
+    }
+    // RETURN processedRels
+      // RETURN sg2, tg2, sg1, tg1, cr
+    // }
+      RETURN rndVal
+      `
+
     var queryData = { nodesData: nodesData, edgesData: edgesData }
-    var data = { query: query, queryData: queryData }
+    var data = { query: integrationQuery, queryData: queryData }
 
     console.log(JSON.stringify(data));
 
