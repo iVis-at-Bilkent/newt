@@ -4383,49 +4383,49 @@ var ReactionTemplateView = Backbone.View.extend({
         "input-side-html": $('#reaction-template-left-td').html(),
         "output-side-html": $("#reaction-template-right-td").html(),
         "top-input-row": $("#reaction-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000585/"]
       },
       "conversion": {
         "input-side-html": $('#conversion-template-left-td').html(),
         "output-side-html": $("#conversion-template-right-td").html(),
         "top-input-row": $("#conversion-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000570/"]
       },
       "multimerization": {
         "input-side-html": $('#multimerization-template-left-td').html(),
         "output-side-html": $("#multimerization-template-right-td").html(),
         "top-input-row": $("#multimerization-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000221/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000221/"]
       },
       "association": {
         "input-side-html": $('#association-template-left-td').html(),
         "output-side-html": $("#association-template-right-td").html(),
         "top-input-row": $("#association-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000526/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/SBO:0000526/"]
       },
       "dissociation": {
         "input-side-html": $('#dissociation-template-left-td').html(),
         "output-side-html": $("#dissociation-template-right-td").html(),
         "top-input-row": $("#dissociation-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000166/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000166/"]
       },
       "degradation": {
         "input-side-html": $('#degradation-template-left-td').html(),
         "output-side-html": $("#degradation-template-right-td").html(),
         "top-input-row": $("#degradation-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000179/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/SBO:0000179/"]
       },
       "transcription": {
         "input-side-html": $('#transcription-template-left-td').html(),
         "output-side-html": $("#transcription-template-right-td").html(),
         "top-input-row": $("#transcription-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/SBO:0000183/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/SBO:0000183/"]
       },
       "translation": {
         "input-side-html": $('#translation-template-left-td').html(),
         "output-side-html": $("#translation-template-right-td").html(),
         "top-input-row": $("#translation-top-input-row").html(),
-        "help-link": ["http://sbgnbricks.org/BKO/full/entry/all/BKO:0000481/"]
+        "help-link": ["http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000481/"]
       }
     }
     return this;
