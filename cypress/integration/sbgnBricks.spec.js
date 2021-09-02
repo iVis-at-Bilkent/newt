@@ -56,7 +56,7 @@ context('SBGN Bricks', () => {
     
     openSBGNBricksModal();
 
-    const url = 'http://sbgnbricks.org/BKO/full/entry/all/BKO:0000585/';
+    const url = 'http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000585/';
 
     cy.get('img#sbgn-bricks-help').should('be.visible');
 
