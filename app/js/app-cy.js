@@ -12,6 +12,7 @@ module.exports = function (chiseInstance) {
 
   // use chise instance associated with chise instance
   var cy = chiseInstance.getCy();
+  //("here");
   window.cy = cy;
   // register extensions and bind events when cy is ready
   cy.ready(function () {
