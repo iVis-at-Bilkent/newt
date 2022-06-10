@@ -604,7 +604,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $('#map-description').blur();
     });
 
-    $(document).on("change", "#map-type", function (evt) {
+    $(document).on("change", "#map-type", function (evt) { //Added SBML map type here
 
       var callback = function(){
         $('#map-type').val(chiseInstance.getMapType());
@@ -623,7 +623,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       }
       var currentMapType = chiseInstance.getMapType();
       var validChange = false;
-      if((currentMapType == 'PD' || currentMapType == 'AF' || currentMapType =='SIF') && newMapType == 'HybridAny' && !validChange){
+      if((currentMapType == 'PD' || currentMapType == 'AF' || currentMapType =='SIF' || currentMapType =='SBML' ) && newMapType == 'HybridAny' && !validChange){
         validChange = true;
 
         //ok
@@ -660,7 +660,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
            //check no SIF elements in netwrok
            var checkType = true;     
            for(var i = 0 ; i < elements.length && checkType ;i++){
-             if(elements[i].data("language") == "SIF"){
+             if(elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML"){
                checkType = false;             
              }
            }
@@ -669,7 +669,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
            //check no AF  OR SIF elements in netwrok
            var checkType = true;  
           for(var i = 0 ; i < elements.length &&  checkType;i++){
-            if(elements[i].data("language") == "AF" || elements[i].data("language") == "SIF"){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML" ){
               checkType = false;            
             }
           }
@@ -679,18 +679,28 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           //check no PD  OR SIF elements in netwrok
           var checkType = true;   
           for(var i = 0 ; i < elements.length && checkType ;i++){
-            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF"){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML"){
               checkType = false;            
             }
           }
 
           validChange = checkType;  
 
-        }else{
+        }else if(newMapType == 'SBML')
+        {
+          //check no PD  AF or SIF elements in netwrok
+          var checkType = true;   
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "AF"){
+              checkType = false;            
+            }
+          }
+        }
+        else{
           //check no PD  OR AF elements in netwrok
           var checkType = true;  
           for(var i = 0 ; i < elements.length && checkType ;i++){
-            if(elements[i].data("language") == "AF" || elements[i].data("language") == "PD"){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "PD" || elements[i].data("language") == "SBML"){
               checkType = false;           
             }
           }
@@ -1804,7 +1814,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 var xml = $.parseXML(data.response.body);
                 $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
                 currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+                chiseInstance.updateGraph(chiseInstance.Json(xml), undefined, currentLayoutProperties);
                 currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
                 chiseInstance.endSpinner('neighborhood-spinner');
                 $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
