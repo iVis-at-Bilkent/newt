@@ -4,7 +4,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="60" height="48" viewBox="-0.5 -0.5 176 87" content="&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2022-06-21T13:39:47.252Z&quot; agent=&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36&quot; etag=&quot;lbcvejhqGXq_bJAPyAhS&quot; version=&quot;20.0.1&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;4-gncY-9P9hbASM8RehL&quot; name=&quot;Page-1&quot;&gt;5ZXNboMwEISfhmMkfgJJj02atpcqlVKpUm8W3mCrBiOzBJKnryk2hCCUpodeekHez/asmbHACdZp/aRIzl4kBeH4Lq2d4MHx/bt5pJ8NOLYgDA1IFKct8nqw4ycw0DW05BSKwUKUUiDPhzCWWQYxDhhRSlbDZXsphl1zksAI7GIixvSdU2QtXYZuz5+BJ8x29lwzkxK72ICCESqrMxRsnGCtpMR2lNZrEI131pd23+PEbHcwBRn+ZMMM34qcVXKxhVOV7sXWO33MjMqBiNK8sDksHq0DkNH7xkhdZTLTcMUwFbry9FDJMqPQdHB1VaCSn51PkSatGtCRyf2pvc4LfYdApoDqqJdUvdvWbHZmtGUKBEF+GMoTE3rSyXUdXiXXjX3X3E8vMjrmevo2PitRyFLFYHadu3sh5C+vCCFRCeBISA/OXrtH3+HdEKT/z4P0L4Oc/zbIC6HuhvxRkMH1IFFxkiVNtaoYR9jlJG6mKv0FHqY6leMBFEJ9a5ITV92Lwra+kvTCnQ514GJvmS77D2TrcP+XCTZf&lt;/diagram&gt;&lt;/mxfile&gt;"><defs/>
     <g>
         <path d="M 3 43 L 123 43" fill="none" stroke="rgb(0, 0, 0)" stroke-width="12" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 98 86 L 98 0" fill="none" stroke="rgb(0, 0, 0)" stroke-width="15" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 120 8 L 169 43 L 120 78 Z" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-width="15" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 90 80 L 90 6" fill="none" stroke="rgb(0, 0, 0)" stroke-width="15" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 117 14 L 165 43 L 117 72 Z" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-width="15" stroke-miterlimit="10" pointer-events="all"/>
     </g>
 </svg>
