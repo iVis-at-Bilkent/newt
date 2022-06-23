@@ -665,6 +665,7 @@ module.exports = function (chiseInstance) {
             }); */
           }
           else{
+              console.log("source in newt", source)
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
@@ -910,7 +911,6 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on("mouseup", function (event) {
-
       var self = event.target || event.cyTarget;
 
       // get chise instance for cy
@@ -1025,6 +1025,7 @@ module.exports = function (chiseInstance) {
       // This is a bit of a patch
       // Without this the alt + taphold shortcut for selection of objects of same type doesn't work
       // as all the elements except the original event target will be unselected without this
+  
       if (altTapholdSelection) {
         setTimeout(function() {
           cy.autounselectify(false);
@@ -1136,7 +1137,7 @@ module.exports = function (chiseInstance) {
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
                 {
                     var newEle = cy.nodes()[cy.nodes().length - 1];
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
