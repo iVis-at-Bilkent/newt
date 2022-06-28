@@ -255,6 +255,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     var clonedCheck;
     var commonIsMultimer;
     var commonIsCloned;
+    var commonIsActive;
     var commonStateAndInfos;
     var commonSBGNCardinality;
     var imageFromURL;
@@ -424,9 +425,13 @@ inspectorUtilities.handleSBGNInspector = function () {
       commonIsCloned = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
         return ele.data('clonemarker') === true;
       });
+      commonIsActive = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
+        return ele.data('class').startsWith('active ');
+      });
 
       multimerCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeMultimer);
       clonedCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeCloned);
+      activeCheck  = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeActive);
 
       multimerCheck = multimerCheck?multimerCheck:false;
       clonedCheck = clonedCheck?clonedCheck:false;
@@ -438,6 +443,11 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (multimerCheck) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Multimer</font>" + "</td>"
                 + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-multimer'></td></tr>";
+      }
+
+      if (activeCheck) {
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Active</font>" + "</td>"
+                + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-active'></td></tr>";
       }
 
       if (clonedCheck) {
@@ -635,6 +645,10 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       if (clonedCheck && commonIsCloned) {
         $('#inspector-is-clone-marker').attr('checked', true);
+      }
+
+      if (activeCheck && commonIsActive) {
+        $('#inspector-is-active').attr('checked', true);
       }
 
       if(imageFromURL){
@@ -1000,6 +1014,10 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-is-clone-marker').on('click', function () {
         chiseInstance.setCloneMarkerStatus(selectedEles, $('#inspector-is-clone-marker').prop('checked'));
+      });
+
+      $('#inspector-is-active').on('click', function () {
+        chiseInstance.setActiveStatus(selectedEles, $('#inspector-is-active').prop('checked'));
       });
 
       $("#inspector-label").on('change', function () {
