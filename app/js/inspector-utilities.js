@@ -228,7 +228,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
 
     var classInfo = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
-      return ele.data('class').replace(' multimer', '');
+      return ele.data('class').replace(' multimer', '').replace('active ', '');
     }) || "";
 
     classInfo = appUtilities.transformClassInfo( classInfo );
@@ -253,6 +253,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     var fillSiteLocations;
     var multimerCheck;
     var clonedCheck;
+    var activeCheck;
     var commonIsMultimer;
     var commonIsCloned;
     var commonIsActive;
@@ -435,6 +436,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       multimerCheck = multimerCheck?multimerCheck:false;
       clonedCheck = clonedCheck?clonedCheck:false;
+      activeCheck = activeCheck?activeCheck:false;
 
       if (multimerCheck || clonedCheck) {
         html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
@@ -868,6 +870,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-set-as-default-button').on('click', function () {
         var multimer;
+        var active;
         var selected = selectedEles[0];
         var sbgnclass = selected.data('class');
         if (sbgnclass.endsWith(' multimer')) {
@@ -876,6 +879,14 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
         else {
           multimer = false;        
+        }
+
+        if (sbgnclass.startsWith('active ')) {
+          sbgnclass = sbgnclass.replace('active ', '');
+          active = true;
+        }
+        else {
+          active = false;        
         }
 
         var nameToVal = {
@@ -897,6 +908,11 @@ inspectorUtilities.handleSBGNInspector = function () {
         // Push this action if the node can be multimer
         if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
           nameToVal['multimer'] = multimer;
+        }
+
+        // Push this action if the node can be multimer
+        if (chiseInstance.elementUtilities.canBeActive(sbgnclass)) {
+          nameToVal['active'] = active;
         }
 
         // Push this action if the node can be cloned
@@ -1018,6 +1034,8 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-is-active').on('click', function () {
         chiseInstance.setActiveStatus(selectedEles, $('#inspector-is-active').prop('checked'));
+        console.log("inspector-is-active clicked")
+        //chiseInstance.setMultimerStatus(selectedEles, $('#inspector-is-active').prop('checked'));
       });
 
       $("#inspector-label").on('change', function () {

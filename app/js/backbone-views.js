@@ -3055,6 +3055,7 @@ var LoadUserPreferencesView = Backbone.View.extend({
   
                   chiseInstance.setMultimerStatus(targetNodes,nameToValue['multimer'] );
                   chiseInstance.setCloneMarkerStatus(targetNodes,nameToValue['clonemarker'] ); 
+                  chiseInstance.setActiveStatus(targetNodes,nameToValue['active'] ); 
                 }
                 else
                 {

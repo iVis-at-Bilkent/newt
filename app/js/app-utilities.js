@@ -1962,6 +1962,7 @@ for(var scheme in mapColorSchemes){
   mapColorSchemes[scheme]['values']['macromolecule multimer'] = mapColorSchemes[scheme]['values']['macromolecule'];
   mapColorSchemes[scheme]['values']['simple chemical multimer'] = mapColorSchemes[scheme]['values']['simple chemical'];
   mapColorSchemes[scheme]['values']['complex multimer'] = mapColorSchemes[scheme]['values']['complex'];
+  mapColorSchemes[scheme]['values']['protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
 }
 
 // go through eles, mapping the id of these elements to values that were mapped to their data().class
@@ -3149,6 +3150,7 @@ appUtilities.disableInfoBoxRelocationDrag = function(){
 };
 
 appUtilities.modifyUnits = function (node, ele, anchorSide) {
+  console.log("appUtilities.modifyUnits in newt")
     var cy = this.getActiveCy();
     var instance = appUtilities.getActiveSbgnvizInstance();
     instance.classes.AuxUnitLayout.modifyUnits(node, ele, anchorSide, cy); //Modify aux unit layouts
@@ -3180,7 +3182,7 @@ appUtilities.resizeNodesToContent = function(nodes){
 };
 
 appUtilities.transformClassInfo = function( classInfo ) {
-  var res = classInfo.replace(' multimer', '');
+  var res = classInfo.replace(' multimer', '').replace('active ', '');
   if (res == 'and' || res == 'or' || res == 'not') {
     res = res.toUpperCase();
   }
