@@ -2568,6 +2568,8 @@ appUtilities.launchWithModelFile = function() {
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
+    chiseInstance.startSpinner('paths-byURL-spinner')
+
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -2612,7 +2614,7 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
-      success: function(data){
+      success: async function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
@@ -2641,27 +2643,31 @@ appUtilities.launchWithModelFile = function() {
             
             // CD file
             if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
-              chiseInstance.loadCellDesigner(file, success = function (data) {
+               chiseInstance.loadCellDesigner(file, success =  function (data) {
                 if (cyInstance.elements().length !== 0) {
-                  promptConfirmationView.render(function () {
-                    chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                   promptConfirmationView.render( function () {
+                     chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                    chiseInstance.endSpinner('paths-byURL-spinner')
                   });
                 }
                 else {
                   chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                 chiseInstance.endSpinner('paths-byURL-spinner')
                 }
               });
             }
             else {
               // sbml file
-              chiseInstance.loadSbml(file,  success = function (data){
+              await chiseInstance.loadSbml(file,  success = async function (data){
                 if (cyInstance.elements().length !== 0) {
-                  promptConfirmationView.render(function () {
-                    chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                  await promptConfirmationView.render(async function () {
+                    await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                   });
+                  chiseInstance.endSpinner('paths-byURL-spinner')
                 }
                 else {
-                  chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                 await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                 chiseInstance.endSpinner('paths-byURL-spinner')
                 }
               });
             }
@@ -2677,6 +2683,7 @@ appUtilities.launchWithModelFile = function() {
       },
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
+        chiseInstance.endSpinner('paths-byURL-spinner')
       }
     });
 
