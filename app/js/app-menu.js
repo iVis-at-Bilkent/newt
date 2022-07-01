@@ -1317,6 +1317,10 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
+      // TODO think whether here is the right place to start the spinner
+      chiseInstance.startSpinner("layout-spinner");
+
+      setTimeout(() => {
       // use the associated cy instance
       var cy = chiseInstance.getCy();
 
@@ -1328,13 +1332,13 @@ module.exports = function() {
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
-      // TODO think whether here is the right place to start the spinner
-      chiseInstance.startSpinner("layout-spinner");
+      
 
       var preferences = {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
       layoutPropertiesView.applyLayout(preferences);
+    }, 1000);
     });
 
     $("#perform-static-layout, #perform-static-layout-icon").click(function (e) {
@@ -1342,7 +1346,12 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
+       // TODO think whether here is the right place to start the spinner
+       chiseInstance.startSpinner("layout-spinner");
+
       // use the associated cy instance
+      setTimeout(() => {
+
       var cy = chiseInstance.getCy();
 
       // if there is no element in the cy instance, then return directly
@@ -1352,8 +1361,7 @@ module.exports = function() {
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');      
 
-      // TODO think whether here is the right place to start the spinner
-      chiseInstance.startSpinner("layout-spinner");
+     
 
       var preferences = {
         quality: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? "draft" : "default",
@@ -1362,6 +1370,7 @@ module.exports = function() {
       };
 
       layoutPropertiesView.applyLayout(preferences);
+    }, 1000);
     });
 
     $("#undo-last-action, #undo-icon").click(function (e) {
