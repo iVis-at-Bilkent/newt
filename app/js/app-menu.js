@@ -1338,7 +1338,7 @@ module.exports = function() {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
       layoutPropertiesView.applyLayout(preferences);
-    }, 1000);
+    }, 0);
     });
 
     $("#perform-static-layout, #perform-static-layout-icon").click(function (e) {
@@ -1370,7 +1370,7 @@ module.exports = function() {
       };
 
       layoutPropertiesView.applyLayout(preferences);
-    }, 1000);
+    }, 0);
     });
 
     $("#undo-last-action, #undo-icon").click(function (e) {
