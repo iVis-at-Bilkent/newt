@@ -228,7 +228,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
 
     var classInfo = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
-      return ele.data('class').replace(' multimer', '').replace('active ', '');
+      return ele.data('class').replace(' multimer', '').replace('active ', '').replace('hypothetical ', '');
     }) || "";
 
     classInfo = appUtilities.transformClassInfo( classInfo );
@@ -904,7 +904,7 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
 
         if (sbgnclass.includes('hypthetical')) {
-          sbgnclass = sbgnclass.replace('hypthetical', '');
+          sbgnclass = sbgnclass.replace('hypthetical ', '');
           hypothetical = true;
         }
         else {
