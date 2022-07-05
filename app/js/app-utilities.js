@@ -2518,6 +2518,8 @@ appUtilities.launchWithModelFile = function() {
 
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
+    chiseInstance.startSpinner('paths-byURL-spinner')
+
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -2562,7 +2564,7 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
-      success: function(data){
+      success: async function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
@@ -2573,28 +2575,37 @@ appUtilities.launchWithModelFile = function() {
 
           if (fileExtension === "xml" || fileExtension === "xml#" 
               || fileExtension === "sbml" || fileExtension === "sbml#") {
-            chiseInstance.loadSbml(fileToLoad,  success = function(data){
+
+            await chiseInstance.loadSbml(fileToLoad,  success = async function(data){
               var cy = appUtilities.getActiveCy();
               if (cy.elements().length !== 0) {
-                promptConfirmationView.render(function () {
-                  chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                await promptConfirmationView.render(async function () {
+                 await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                  chiseInstance.endSpinner('paths-byURL-spinner')
                 });
               }
               else {
-                chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                chiseInstance.endSpinner('paths-byURL-spinner')
+
               }
             });
           }
           else {
             chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
+            chiseInstance.endSpinner('paths-byURL-spinner')
           }
         }
         else {
           loadCallbackInvalidityWarning();
+          chiseInstance.endSpinner('paths-byURL-spinner')
+
         }
       },
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
+        chiseInstance.endSpinner('paths-byURL-spinner')
+
       }
     });
 
