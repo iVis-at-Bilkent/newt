@@ -663,7 +663,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (activeCheck && commonIsActive) {
         $('#inspector-is-active').attr('checked', true);
       }
-      if (activeCheck && commonIsHypothetical) {
+      if (hypotheticalCheck && commonIsHypothetical) {
         $('#inspector-is-hypothetical').attr('checked', true);
       }
 
