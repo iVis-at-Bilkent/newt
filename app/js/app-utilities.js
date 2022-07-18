@@ -1459,8 +1459,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#c6dbef',
       'SIF simple chemical': '#eff3ff',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'inverse_blue_scale': {
@@ -1534,8 +1532,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#eff3ff',
       'SIF simple chemical': '#c6dbef',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_red_blue': {
@@ -1608,8 +1604,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#92c5de',
       'SIF simple chemical': '#f4a582',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_red_blue2': {
@@ -1682,8 +1676,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#f4a582',
       'SIF simple chemical': '#92c5de',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_green_brown': {
@@ -1756,8 +1748,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#80cdc1',
       'SIF simple chemical': '#dfc27d',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_green_brown2': {
@@ -1830,8 +1820,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#dfc27d',
       'SIF simple chemical': '#80cdc1',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_purple_brown': {
@@ -1904,8 +1892,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#b2abd2',
       'SIF simple chemical': '#fdb863',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_purple_brown2': {
@@ -1978,8 +1964,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#fdb863',
       'SIF simple chemical': '#b2abd2',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_purple_green': {
@@ -2052,8 +2036,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#c2a5cf',
       'SIF simple chemical': '#a6dba0',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_purple_green2': {
@@ -2126,8 +2108,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#a6dba0',
       'SIF simple chemical': '#c2a5cf',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_grey_red': {
@@ -2200,8 +2180,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#f4a582',
       'SIF simple chemical': '#bababa',
-      //SBML
-      'gene' : '#ffffff'
     }
   },
   'opposed_grey_red2': {
@@ -2347,8 +2325,6 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       // SIF
       'SIF macromolecule': '#ffffff',
       'SIF simple chemical': '#ffffff',
-      //SBML
-      'gene' : '#ffffff'
     }
   }
 };
