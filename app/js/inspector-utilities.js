@@ -432,7 +432,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       commonIsHypothetical = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
-        return ele.data('class').includes('hypothetical ');
+        return ele.data('class').includes('hypothetical');
       });
 
       multimerCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeMultimer);
@@ -589,6 +589,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     $("#sbgn-inspector-style-properties-panel").html(html);
 
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
+      console.log("channging background")
       chiseInstance.changeData(selectedEles, 'background-color', $('#inspector-fill-color').val());
     });
     colorPickerUtils.bindPicker2Input('#inspector-border-color', function() {
