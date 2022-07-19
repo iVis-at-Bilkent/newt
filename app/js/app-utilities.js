@@ -2335,7 +2335,81 @@ for(var scheme in mapColorSchemes){
   mapColorSchemes[scheme]['values']['macromolecule multimer'] = mapColorSchemes[scheme]['values']['macromolecule'];
   mapColorSchemes[scheme]['values']['simple chemical multimer'] = mapColorSchemes[scheme]['values']['simple chemical'];
   mapColorSchemes[scheme]['values']['complex multimer'] = mapColorSchemes[scheme]['values']['complex'];
+
+  //For SBML
+  //Multimer
+  mapColorSchemes[scheme]['values']['gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['drug multimer'] = mapColorSchemes[scheme]['values']['drug'];
   mapColorSchemes[scheme]['values']['protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['ion multimer'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
+  //Active
+  mapColorSchemes[scheme]['values']['active protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active ion channel'] = mapColorSchemes[scheme]['values']['active ion channel'];
+  mapColorSchemes[scheme]['values']['active receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
+  //Active and mutimer
+  mapColorSchemes[scheme]['values']['active protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active ion channel multimer'] = mapColorSchemes[scheme]['values']['active ion channel'];
+  mapColorSchemes[scheme]['values']['active receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Hypothetical
+  mapColorSchemes[scheme]['values']['hypothetical gene'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['hypothetical rna'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical simple molecule'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical unkown molecule'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical phenotype sbml'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['hypothetical drug'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['hypothetical protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['hypothetical truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['hypothetical ion channel'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['hypothetical receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['hypothetical ion'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['hypothetical complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Hypothetical and Multimer 
+  mapColorSchemes[scheme]['values']['hypothetical gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['hypothetical rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['hypothetical drug multimer'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['hypothetical protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['hypothetical truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['hypothetical ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['hypothetical receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['hypothetical ion multimer'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['hypothetical complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Active and Hypothetical
+  mapColorSchemes[scheme]['values']['active hypothetical protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical ion channel'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['active hypothetical receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active hypothetical complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Active, Hypothetical, and Multimer 
+  mapColorSchemes[scheme]['values']['active hypothetical protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['active hypothetical receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active hypothetical complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
 }
 
 // go through eles, mapping the id of these elements to values that were mapped to their data().class
