@@ -153,6 +153,18 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
         }
 
+        if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes)) {
+          uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
+                + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
+        }
+
+        /*
+        if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes)) {
+          uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
+                + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
+        }
+        */
+
         uioHtml += "</div>";
 
         $('#inspector-unit-of-informations').append( uioHtml );
@@ -177,6 +189,12 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
     $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
   };
+
+  console.log("out of forr loop adding", stateAndInfos.length)
+  if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes) && stateAndInfos.length == 0){
+    $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
+  };
+
   $("#inspector-add-state-variable").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
@@ -415,6 +433,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           fillStateAndInfos = true;
 
           var unit = chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(selectedEles) ? "Units" : "Unit";
+          var unit = chiseInstance.elementUtilities.canHaveOneUnitOfInformation(selectedEles) ? "Unit" : unit;
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
           html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>" + unit + " of Information</font>" + "</td>"
                   + "<td id='inspector-unit-of-informations' style='padding-left: 5px; width: '" + width + "'></td></tr>";
