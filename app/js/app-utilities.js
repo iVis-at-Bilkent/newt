@@ -3585,6 +3585,12 @@ appUtilities.getDefaultEmptyInfoboxObj = function( type ) {
         variable: ""
       };
       break;
+    case 'residue variable':
+      obj.residue = {
+        value: "",
+        variable: ""
+      };
+      break;
   }
 
   return obj;

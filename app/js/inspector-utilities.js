@@ -91,6 +91,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   //first empty the state variables and infos data in inspector
   $("#inspector-state-variables").html("");
   $("#inspector-unit-of-informations").html("");
+  $("#inspector-residue-variable").html("");
 
   function get_text_width(txt, font) {
     this.element = document.createElement('canvas');
@@ -108,10 +109,12 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
     return html;
   }
+  console.log("stateAndInfos",stateAndInfos)
 
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
       var state = stateAndInfos[i];
+      console.log("clazz", state.clazz)
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append(
             "<div>"
@@ -173,6 +176,34 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
           chiseInstance.changeStateOrInfoBox(nodes[0], i, $(this).val());
         });
       }
+      else if (state.clazz == "residue variable")
+      {
+        $("#inspector-residue-variable").append(
+          "<div>"
+          // state variable - value
+          + "<input type='text' id='inspector-residue-variable-value" + i + "' class='inspector-input-box' style='width: "
+          + width / 5 + "px;' value='" + sanitizeInfoboxVal(state.residue.value) + "'/>"
+
+          + "<span style='font: 10pt Helvetica;'>@</span>"
+
+          // state variable - variable
+          + "<input type='text' id='inspector-residue-variable-variable" + i + "' class='inspector-input-box' style='width: "
+          + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.residue.variable) + "'/>"
+
+          + getInfoboxDetailsBtnHtml( i )
+
+          + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
+          + "</div>"
+      );
+
+      $("#inspector-residue-variable-value" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
+      });
+
+      $("#inspector-residue-variable-variable" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
+      });
+      }
 
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
@@ -185,6 +216,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     })(i);
   }
   $("#inspector-state-variables").append("<img width='16px' height='16px' id='inspector-add-state-variable' src='app/img/add.svg' class='pointer-button'/>");
+  $("#inspector-residue-variable").append("<img width='16px' height='16px' id='inspector-add-residue-variable-variable' src='app/img/add.svg' class='pointer-button'/>");
 
   if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
     $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
@@ -198,6 +230,17 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-add-state-variable").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
+    console.log('obj on click', obj)
+
+
+    chiseInstance.addStateOrInfoBox(nodes, obj);
+    inspectorUtilities.handleSBGNInspector();
+  });
+
+  $("#inspector-add-residue-variable-variable").click(function () {
+
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'residue variable' );
+    console.log('obj on click', obj)
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -206,6 +249,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-add-unit-of-information").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
+    console.log('obj on click', obj)
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -419,6 +463,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       commonStateAndInfos = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
+      console.log("commonStateAndInfos", commonStateAndInfos)
 
       if(commonStateAndInfos){
         if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveStateVariable)) {
@@ -427,6 +472,14 @@ inspectorUtilities.handleSBGNInspector = function () {
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
           html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>State Variables</font>" + "</td>"
                   + "<td id='inspector-state-variables' style='padding-left: 5px; width: '" + width + "'></td></tr>";
+        }
+
+        if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveResidueVariable)) {
+          fillStateAndInfos = true;
+          console.log("adding residue")
+          html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+          html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Residue Variables</font>" + "</td>"
+                  + "<td id='inspector-residue-variable' style='padding-left: 5px; width: '" + width + "'></td></tr>";
         }
 
         if (chiseInstance.elementUtilities.canHaveUnitOfInformation(selectedEles)) {
@@ -669,6 +722,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     if (type == "node") {
       if (fillStateAndInfos) {
+        console.log("fillStateAndInfos with commonStateAndInfos",commonStateAndInfos )
         inspectorUtilities.fillInspectorStateAndInfos(selectedEles, commonStateAndInfos, width);
       }
 
