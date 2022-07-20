@@ -180,11 +180,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       {
         $("#inspector-residue-variable").append(
           "<div>"
-          // state variable - value
-          + "<input type='text' id='inspector-residue-variable-value" + i + "' class='inspector-input-box' style='width: "
-          + width / 5 + "px;' value='" + sanitizeInfoboxVal(state.residue.value) + "'/>"
-
-          + "<span style='font: 10pt Helvetica;'>@</span>"
 
           // state variable - variable
           + "<input type='text' id='inspector-residue-variable-variable" + i + "' class='inspector-input-box' style='width: "
