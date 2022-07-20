@@ -2569,6 +2569,7 @@ appUtilities.launchWithModelFile = function() {
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
     chiseInstance.startSpinner('paths-byURL-spinner')
+    chiseInstance.showSpinnerText('paths-byURL-spinner')
 
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -2648,11 +2649,14 @@ appUtilities.launchWithModelFile = function() {
                    promptConfirmationView.render( function () {
                      chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                     chiseInstance.endSpinner('paths-byURL-spinner')
+                    chiseInstance.removeSpinnerText('paths-byURL-spinner')
                   });
                 }
                 else {
                   chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                  chiseInstance.endSpinner('paths-byURL-spinner')
+                 chiseInstance.removeSpinnerText('paths-byURL-spinner')
+
                 }
               });
             }
@@ -2664,10 +2668,14 @@ appUtilities.launchWithModelFile = function() {
                     await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                   });
                   chiseInstance.endSpinner('paths-byURL-spinner')
+                  chiseInstance.removeSpinnerText('paths-byURL-spinner')
+
                 }
                 else {
                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                  chiseInstance.endSpinner('paths-byURL-spinner')
+                 chiseInstance.removeSpinnerText('paths-byURL-spinner')
+
                 }
               });
             }
@@ -2684,6 +2692,8 @@ appUtilities.launchWithModelFile = function() {
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
         chiseInstance.endSpinner('paths-byURL-spinner')
+        chiseInstance.removeSpinnerText('paths-byURL-spinner')
+
       }
     });
 
