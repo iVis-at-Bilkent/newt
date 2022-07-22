@@ -2569,7 +2569,7 @@ appUtilities.launchWithModelFile = function() {
   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
     chiseInstance.startSpinner('paths-byURL-spinner')
-    chiseInstance.showSpinnerText('paths-byURL-spinner')
+    chiseInstance.showSpinnerText('paths-byURL-spinner-text')
 
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -2649,13 +2649,13 @@ appUtilities.launchWithModelFile = function() {
                    promptConfirmationView.render( function () {
                      chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                     chiseInstance.endSpinner('paths-byURL-spinner')
-                    chiseInstance.removeSpinnerText('paths-byURL-spinner')
+                    chiseInstance.removeSpinnerText('paths-byURL-spinner-text')
                   });
                 }
                 else {
                   chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                  chiseInstance.endSpinner('paths-byURL-spinner')
-                 chiseInstance.removeSpinnerText('paths-byURL-spinner')
+                 chiseInstance.removeSpinnerText('paths-byURL-spinner-text')
 
                 }
               });
@@ -2668,13 +2668,13 @@ appUtilities.launchWithModelFile = function() {
                     await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                   });
                   chiseInstance.endSpinner('paths-byURL-spinner')
-                  chiseInstance.removeSpinnerText('paths-byURL-spinner')
+                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text')
 
                 }
                 else {
                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                  chiseInstance.endSpinner('paths-byURL-spinner')
-                 chiseInstance.removeSpinnerText('paths-byURL-spinner')
+                 chiseInstance.removeSpinnerText('paths-byURL-spinner-text')
 
                 }
               });
@@ -2692,7 +2692,7 @@ appUtilities.launchWithModelFile = function() {
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
         chiseInstance.endSpinner('paths-byURL-spinner')
-        chiseInstance.removeSpinnerText('paths-byURL-spinner')
+        chiseInstance.removeSpinnerText('paths-byURL-spinner-text')
 
       }
     });
