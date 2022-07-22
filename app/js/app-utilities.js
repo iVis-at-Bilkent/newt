@@ -3050,9 +3050,10 @@ appUtilities.launchWithModelFile = function() {
    function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
     chiseInstance.startSpinner('paths-byURL-spinner');
+    chiseInstance.showSpinnerText('paths-byURL-spinner-text');
 
     console.log("loading form url")
-
+  
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -3116,16 +3117,19 @@ appUtilities.launchWithModelFile = function() {
               };
                chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
              chiseInstance.endSpinner("paths-byURL-spinner");
+             chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
 
             };
             if (cyInstance.elements().length != 0)
             {
                promptConfirmationView.render( loadFcn );
               chiseInstance.endSpinner("paths-byURL-spinner");
+              chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
             }
             else
                loadFcn();
               chiseInstance.endSpinner("paths-byURL-spinner");
+              chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
               
           }
 
@@ -3139,10 +3143,12 @@ appUtilities.launchWithModelFile = function() {
                    await  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                   });
                   chiseInstance.endSpinner("paths-byURL-spinner");
+                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
                 else {
                  await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                  chiseInstance.endSpinner("paths-byURL-spinner");
+                 chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
               });
               
@@ -3156,10 +3162,12 @@ appUtilities.launchWithModelFile = function() {
                     await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                   });
                   chiseInstance.endSpinner("paths-byURL-spinner");
+                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
                 else {
                   await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                   chiseInstance.endSpinner("paths-byURL-spinner");
+                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
               });
             }
@@ -3168,16 +3176,19 @@ appUtilities.launchWithModelFile = function() {
           else {
            await  chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
            chiseInstance.endSpinner("paths-byURL-spinner");
+           chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
           }
         }
         else {
           await loadCallbackInvalidityWarning();
           chiseInstance.endSpinner("paths-byURL-spinner");
+          chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
         } 
       },
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
         chiseInstance.endSpinner("paths-byURL-spinner");
+        chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
 
       }
     });
