@@ -2566,10 +2566,11 @@ appUtilities.launchWithModelFile = function() {
   else
     tutorial.introduction(true);
 
-  function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
-    chiseInstance.startSpinner('paths-byURL-spinner')
+   async function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
+    chiseInstance.startSpinner('paths-byURL-spinner');
+  
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -2614,8 +2615,17 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
-      success: async function(data){
+      success: async function(data, textStatus, xhr){
         // here we can get 404 as well, for example, so there are still error cases to handle
+        var fileSize = xhr.getResponseHeader('Content-Length');
+        console.log(fileSize);
+
+        if(fileSize>1040000 && (fileExtension === "sbml" || fileExtension === "xml")  )
+        {
+          chiseInstance.showSpinnerText('paths-byURL-spinner')
+        }
+
+        console.log(data.response);
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           const fileContents = data.response.body;
@@ -2637,6 +2647,7 @@ appUtilities.launchWithModelFile = function() {
               promptConfirmationView.render( loadFcn );
             else
               loadFcn();
+
           }
 
           else if (fileExtension === "xml" || fileExtension === "sbml") {
@@ -2649,11 +2660,12 @@ appUtilities.launchWithModelFile = function() {
                      chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                     chiseInstance.endSpinner('paths-byURL-spinner')
                   });
+
+                  chiseInstance.endSpinner("paths-byURL-spinner");
                 }
                 else {
-                  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
-                 chiseInstance.endSpinner('paths-byURL-spinner')
-
+                 await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                 chiseInstance.endSpinner("paths-byURL-spinner");
                 }
               });
             }
@@ -2671,22 +2683,26 @@ appUtilities.launchWithModelFile = function() {
                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                  chiseInstance.endSpinner('paths-byURL-spinner')
 
+
                 }
               });
             }
             
           }
           else {
-            chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
+           await  chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
+           chiseInstance.endSpinner("paths-byURL-spinner");
           }
         }
         else {
-          loadCallbackInvalidityWarning();
-        }
+          await loadCallbackInvalidityWarning();
+          chiseInstance.endSpinner("paths-byURL-spinner");
+        } 
       },
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
-        chiseInstance.endSpinner('paths-byURL-spinner')
+        chiseInstance.endSpinner("paths-byURL-spinner");
+
 
       }
     });
