@@ -2621,7 +2621,7 @@ appUtilities.launchWithModelFile = function() {
         var fileSize = xhr.getResponseHeader('Content-Length');
         console.log(fileSize);
 
-        if(fileSize>1040000 && (fileExtension === "sbml" || fileExtension === "xml")  )
+        if(fileSize>250000 && (fileExtension === "sbml" || fileExtension === "xml")  )
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
