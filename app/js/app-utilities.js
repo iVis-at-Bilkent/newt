@@ -2567,7 +2567,7 @@ appUtilities.launchWithModelFile = function() {
     tutorial.introduction(true);
 
 
-   async function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
+  function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
     chiseInstance.startSpinner('paths-byURL-spinner');
   
