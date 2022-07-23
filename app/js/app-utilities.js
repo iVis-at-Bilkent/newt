@@ -2615,8 +2615,9 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
-      success: async function(data, textStatus, xhr){
+      success: async function(data, text, xhr){
         // here we can get 404 as well, for example, so there are still error cases to handle
+
         var fileSize = xhr.getResponseHeader('Content-Length');
         console.log(fileSize);
 
@@ -2624,8 +2625,8 @@ appUtilities.launchWithModelFile = function() {
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
+        
 
-        console.log(data.response);
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           const fileContents = data.response.body;
@@ -2654,7 +2655,7 @@ appUtilities.launchWithModelFile = function() {
             
             // CD file
             if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
-               chiseInstance.loadCellDesigner(file, success =  function (data) {
+               chiseInstance.loadCellDesigner(file, success =  async function (data) {
                 if (cyInstance.elements().length !== 0) {
                    promptConfirmationView.render( function () {
                      chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
@@ -2664,7 +2665,7 @@ appUtilities.launchWithModelFile = function() {
                   chiseInstance.endSpinner("paths-byURL-spinner");
                 }
                 else {
-                 await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                  chiseInstance.endSpinner("paths-byURL-spinner");
                 }
               });
