@@ -92,6 +92,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-state-variables").html("");
   $("#inspector-unit-of-informations").html("");
   $("#inspector-residue-variable").html("");
+  $("#inspector-binding-region").html("");
 
   function get_text_width(txt, font) {
     this.element = document.createElement('canvas');
@@ -109,12 +110,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
     return html;
   }
-  console.log("stateAndInfos",stateAndInfos)
 
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
       var state = stateAndInfos[i];
-      console.log("clazz", state.clazz)
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append(
             "<div>"
@@ -200,6 +199,32 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       });
       }
 
+      else if (state.clazz == "binding region")
+      {
+        $("#inspector-binding-region").append(
+          "<div>"
+
+          // state variable - variable
+          + "<input type='text' id='inspector-binding-region-variable" + i + "' class='inspector-input-box' style='width: "
+          + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.region.variable) + "'/>"
+
+          + getInfoboxDetailsBtnHtml( i )
+
+          + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
+          + "</div>"
+      );
+
+      $("#inspector-binding-region-value" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
+      });
+
+      $("#inspector-binding-region-variable" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
+      });
+      }
+
+      
+
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
         inspectorUtilities.handleSBGNInspector();
@@ -212,12 +237,13 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   }
   $("#inspector-state-variables").append("<img width='16px' height='16px' id='inspector-add-state-variable' src='app/img/add.svg' class='pointer-button'/>");
   $("#inspector-residue-variable").append("<img width='16px' height='16px' id='inspector-add-residue-variable-variable' src='app/img/add.svg' class='pointer-button'/>");
+  $("#inspector-binding-region").append("<img width='16px' height='16px' id='inspector-add-binding-region-variable' src='app/img/add.svg' class='pointer-button'/>");
+
 
   if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
     $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
   };
 
-  console.log("out of forr loop adding", stateAndInfos.length)
   //Get number of unit information already added:
   var unitOfInfoCount = 0
   for ( var i = 0; i < stateAndInfos.length; i++)
@@ -234,7 +260,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-add-state-variable").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
-    console.log('obj on click', obj)
 
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
@@ -244,8 +269,14 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-add-residue-variable-variable").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'residue variable' );
-    console.log('obj on click', obj)
+    chiseInstance.addStateOrInfoBox(nodes, obj);
+    inspectorUtilities.handleSBGNInspector();
+  });
 
+  $("#inspector-add-binding-region-variable").click(function () {
+
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'binding region' );
+console.log("obj clikded",obj)
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
   });
@@ -253,7 +284,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-add-unit-of-information").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
-    console.log('obj on click', obj)
 
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
@@ -480,10 +510,16 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveResidueVariable)) {
           fillStateAndInfos = true;
-          console.log("adding residue")
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
           html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Residue Variables</font>" + "</td>"
                   + "<td id='inspector-residue-variable' style='padding-left: 5px; width: '" + width + "'></td></tr>";
+        }
+
+        if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveBindingRegion)) {
+          fillStateAndInfos = true;
+          html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+          html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Binding Region</font>" + "</td>"
+                  + "<td id='inspector-binding-region' style='padding-left: 5px; width: '" + width + "'></td></tr>";
         }
 
         if (chiseInstance.elementUtilities.canHaveUnitOfInformation(selectedEles)) {

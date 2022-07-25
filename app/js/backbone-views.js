@@ -4955,9 +4955,12 @@ var InfoboxPropertiesView = Backbone.View.extend({
         case 'unit of information':
           shapeListFcn = elementUtilities.getUnitOfInfoShapeOptions;
           break;
-        case 'residue variabl':
+        case 'residue variable':
             shapeListFcn = elementUtilities.getResidueShapeOptions;
             break;
+        case 'binding region':
+          shapeListFcn = elementUtilities.getBindingRegionShapeOptions;
+          break;
       }
 
       shapeList = shapeListFcn( parent.data( 'class' ) );
@@ -4991,7 +4994,8 @@ var InfoboxPropertiesView = Backbone.View.extend({
       var infoboxInfoMap = {
         'state variable': 'State Variable',
         'unit of information': 'Unit of Information',
-        'residue variable': "Residue Variable"
+        'residue variable': "Residue Variable",
+        'binding region': "Binding Region"
       };
       var infoboxInfo = infoboxInfoMap[ infobox.clazz ];
 
