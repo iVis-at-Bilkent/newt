@@ -218,7 +218,16 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   };
 
   console.log("out of forr loop adding", stateAndInfos.length)
-  if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes) && stateAndInfos.length == 0){
+  //Get number of unit information already added:
+  var unitOfInfoCount = 0
+  for ( var i = 0; i < stateAndInfos.length; i++)
+  {
+     if( stateAndInfos[i].clazz === 'unit of information')
+     {
+      unitOfInfoCount++;
+     }
+  }
+  if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes) && unitOfInfoCount == 0){
     $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
   };
 
