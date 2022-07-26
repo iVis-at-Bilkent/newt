@@ -2563,6 +2563,9 @@ appUtilities.launchWithModelFile = function() {
     $.ajax({
       type: 'get',
       url: "/utilities/testURL",
+      headers: {
+        'Cache-Control': 'public, no-transform' 
+      },
       data: {url: filepath},
       success: async function(data, text, xhr){
         // here we can get 404 as well, for example, so there are still error cases to handle
