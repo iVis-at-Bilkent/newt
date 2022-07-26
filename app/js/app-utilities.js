@@ -2563,18 +2563,11 @@ appUtilities.launchWithModelFile = function() {
     $.ajax({
       type: 'get',
       url: "/utilities/testURL",
-      headers: {
-        'Cache-Control': 'no-transform' 
-      },
       data: {url: filepath},
-      success: async function(data, text, xhr){
+      success: async function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
 
-        console.log("data.response.body",data.response.body.length)
         var dataSize = data.response.body.length
-        var fileSize = xhr.getResponseHeader('Content-Length');
-        console.log("filesize from content-length",fileSize);
-
         if(dataSize>250000 && (fileExtension === "sbml" || fileExtension === "xml")  )
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
