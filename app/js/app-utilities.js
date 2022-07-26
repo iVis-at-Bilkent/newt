@@ -2615,20 +2615,15 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
-      success: async function(data, text, xhr){
+      success: async function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
 
-        console.log("data.response.body",data.response.body.length)
-        dataSize = data.response.body.length
-        var fileSize = xhr.getResponseHeader('Content-Length');
-        console.log("filesize from content-length",fileSize);
-
+        var dataSize = data.response.body.length
         if(dataSize>250000 && (fileExtension === "sbml" || fileExtension === "xml")  )
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
-        
-
+      
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           const fileContents = data.response.body;
