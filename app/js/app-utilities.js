@@ -2564,7 +2564,7 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       headers: {
-        'Cache-Control': 'public, no-transform' 
+        'Cache-Control': 'no-transform' 
       },
       data: {url: filepath},
       success: async function(data, text, xhr){
