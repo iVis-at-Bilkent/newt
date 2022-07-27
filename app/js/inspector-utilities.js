@@ -190,10 +190,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
           + "</div>"
       );
 
-      $("#inspector-residue-variable-value" + i).unbind('change').on('change', function () {
-        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
-      });
-
       $("#inspector-residue-variable-variable" + i).unbind('change').on('change', function () {
         chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
       });
