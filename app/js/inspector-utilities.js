@@ -261,7 +261,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
 
-
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
   });
@@ -276,7 +275,6 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   $("#inspector-add-binding-region-variable").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'binding region' );
-console.log("obj clikded",obj)
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
   });
@@ -497,7 +495,6 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       commonStateAndInfos = chiseInstance.elementUtilities.getCommonProperty(selectedEles, "statesandinfos", "data");
-      console.log("commonStateAndInfos", commonStateAndInfos)
 
       if(commonStateAndInfos){
         if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveStateVariable)) {
@@ -762,7 +759,6 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     if (type == "node") {
       if (fillStateAndInfos) {
-        console.log("fillStateAndInfos with commonStateAndInfos",commonStateAndInfos )
         inspectorUtilities.fillInspectorStateAndInfos(selectedEles, commonStateAndInfos, width);
       }
 
