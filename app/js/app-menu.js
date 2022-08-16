@@ -502,11 +502,11 @@ module.exports = function() {
         chiseInstance.loadSbml(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+            chiseInstance.loadSBMLText(data.message, false, file.name, cy);
           }
         },
         error = function(data){
