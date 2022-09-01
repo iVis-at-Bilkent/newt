@@ -3050,7 +3050,6 @@ appUtilities.launchWithModelFile = function() {
    function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
     chiseInstance.startSpinner('paths-byURL-spinner');
-    chiseInstance.showSpinnerText('paths-byURL-spinner-text');
 
     console.log("loading form url")
   
@@ -3108,6 +3107,7 @@ appUtilities.launchWithModelFile = function() {
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
+
         
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
@@ -3126,25 +3126,30 @@ appUtilities.launchWithModelFile = function() {
               };
                chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
              chiseInstance.endSpinner("paths-byURL-spinner");
-             chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
 
             };
             if (cyInstance.elements().length != 0)
             {
                promptConfirmationView.render( loadFcn );
               chiseInstance.endSpinner("paths-byURL-spinner");
-              chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
             }
             else
                loadFcn();
               chiseInstance.endSpinner("paths-byURL-spinner");
-              chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
               
           }
 
           else if (fileExtension === "xml" || fileExtension === "sbml") {
             
             // CD file
+            var loadFcn =  function() {
+              var layoutBy =  function() {
+                appUtilities.triggerLayout(cyInstance, true);
+            }; };
+            var layoutBy =  function() {
+              appUtilities.triggerLayout(cyInstance, true);
+              console.log("in layoutBy")
+          };
             if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
               await chiseInstance.loadCellDesigner(file, success = async function (data) {
                 if (cyInstance.elements().length !== 0) {
@@ -3152,12 +3157,11 @@ appUtilities.launchWithModelFile = function() {
                    await  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                   });
                   chiseInstance.endSpinner("paths-byURL-spinner");
-                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
                 else {
                  await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                 loadFcn();
                  chiseInstance.endSpinner("paths-byURL-spinner");
-                 chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
               });
               
@@ -3168,15 +3172,13 @@ appUtilities.launchWithModelFile = function() {
               await chiseInstance.loadSbml(file,  success =  async function (data){
                 if (cyInstance.elements().length !== 0) {
                    awaitpromptConfirmationView.render(async function () {
-                    await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                    await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj, layoutBy);
                   });
                   chiseInstance.endSpinner("paths-byURL-spinner");
-                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
                 else {
-                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                  await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj);
                   chiseInstance.endSpinner("paths-byURL-spinner");
-                  chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
                 }
               });
             }
@@ -3185,19 +3187,16 @@ appUtilities.launchWithModelFile = function() {
           else {
            await  chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
            chiseInstance.endSpinner("paths-byURL-spinner");
-           chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
           }
         }
         else {
           await loadCallbackInvalidityWarning();
           chiseInstance.endSpinner("paths-byURL-spinner");
-          chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
         } 
       },
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
         chiseInstance.endSpinner("paths-byURL-spinner");
-        chiseInstance.removeSpinnerText('paths-byURL-spinner-text');
 
       }
     });
