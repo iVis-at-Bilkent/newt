@@ -372,7 +372,7 @@ module.exports = function() {
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
         var loadCallbackSBGNMLValidity = function (text) {
-          validateSBGNML(text);
+          //validateSBGNML(text);
         }
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
@@ -421,6 +421,7 @@ module.exports = function() {
       $("#overlay-data").trigger('click');
     });
     $("#import-SBML-file").click(function () {
+      console.log("importing sbml file")
       $("#sbml-file").trigger('click');
     });
     $("#import-simple-af-file").click(function () {
@@ -493,11 +494,53 @@ module.exports = function() {
     });
     
     $("#sbml-file").change(function () {
-     
       var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
       var cy = appUtilities.getActiveCy();
+
+      var loadCallbackInvalidityWarning  = function () {
+        promptInvalidFileView.render();
+      }
+
       if ($(this).val() != "") {
         var file = this.files[0];
+
+        var loadFcn = function() {
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          chiseInstance.loadSbml(file,  success = function(data){
+              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
+          },  error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            
+          }, layoutBy)
+        };
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( loadFcn );
+        else
+          loadFcn();
+
+        $(this).val("");
+      }
+      /*
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      console.log("in imprt sbml file")
+      var cy = appUtilities.getActiveCy();
+
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var loadFcn = function() {
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+        }
+        var layoutBy = function() {
+          appUtilities.triggerLayout( cy, true );
+          console.log("in layoutBy")
+        };
         appUtilities.setFileContent(file.name);
         chiseInstance.loadSbml(file,  success = function(data){
           if (cy.elements().length !== 0) {
@@ -513,10 +556,12 @@ module.exports = function() {
           promptFileConversionErrorView.render();          
           document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
           
-        });
+        }, layoutBy);
        
         $(this).val("");
       }
+      */
+
     });
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1349,6 +1394,7 @@ module.exports = function() {
 
 
       // TODO think whether here is the right place to start the spinner
+      console.log("layout-spinner")
       chiseInstance.startSpinner("layout-spinner")
 
       // use the associated cy instance
