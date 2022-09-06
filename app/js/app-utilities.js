@@ -3097,13 +3097,11 @@ appUtilities.launchWithModelFile = function() {
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
-      success: async function(data, text, xhr){
+      success: async function(data){
         // here we can get 404 as well, for example, so there are still error cases to handle
 
-        var fileSize = xhr.getResponseHeader('Content-Length');
-        console.log(fileSize);
-
-        if(fileSize>250000 && (fileExtension === "sbml" || fileExtension === "xml")  )
+        var dataSize = data.response.body.length
+        if(dataSize>250000 && (fileExtension === "sbml" || fileExtension === "xml")  )
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
@@ -3171,7 +3169,7 @@ appUtilities.launchWithModelFile = function() {
               console.log("loding sbml")
               await chiseInstance.loadSbml(file,  success =  async function (data){
                 if (cyInstance.elements().length !== 0) {
-                   awaitpromptConfirmationView.render(async function () {
+                   await promptConfirmationView.render(async function () {
                     await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj, layoutBy);
                   });
                   chiseInstance.endSpinner("paths-byURL-spinner");
