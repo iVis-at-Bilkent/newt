@@ -218,11 +218,25 @@ module.exports = function() {
     
     // get current general properties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');    
+    var sbmlProperty  = {}
 
     // inferNestingOnLoad and compoundPadding must be set before file loaded
     if (urlParams) {
       // filter map properties from the url parameters
       var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+
+      var sbgnORsbml = appUtilities.filterMapTypeProperty(urlParams);
+      if(sbgnORsbml == "true")
+      {
+        console.log("sbml")
+        sbmlProperty.sbmlMap = true
+      }
+      else
+      {
+        console.log("sbgn")
+        sbmlProperty.sbmlMap = false
+      }
+      
       
       if("inferNestingOnLoad" in mapPropsFromUrl) {
         currentGeneralProperties.inferNestingOnLoad = (mapPropsFromUrl.inferNestingOnLoad == 'true');
@@ -243,6 +257,7 @@ module.exports = function() {
 
     // set 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);    
+    appUtilities.setScratch(cy, 'sbmlProperty', sbmlProperty); 
     
   });
 
@@ -510,7 +525,7 @@ module.exports = function() {
           var layoutBy = function() {
             appUtilities.triggerLayout( cy, true );
           };
-          chiseInstance.loadSbml(file,  success = function(data){
+          chiseInstance.loadSbmlForSBML(file,  success = function(data){
               chiseInstance.loadSBMLText(data.message, false, file.name, cy);
           },  error = function(data){
             promptFileConversionErrorView.render();          
