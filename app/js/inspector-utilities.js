@@ -991,6 +991,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       $('#inspector-set-as-default-button').on('click', function () {
         var multimer;
         var active;
+        var hypothetical;
         var selected = selectedEles[0];
         var sbgnclass = selected.data('class');
         if (sbgnclass.endsWith(' multimer')) {
@@ -1009,13 +1010,14 @@ inspectorUtilities.handleSBGNInspector = function () {
           active = false;        
         }
 
-        if (sbgnclass.includes('hypthetical')) {
-          sbgnclass = sbgnclass.replace('hypthetical ', '');
+        if (sbgnclass.includes('hypothetical')) {
+          sbgnclass = sbgnclass.replace('hypothetical ', '');
           hypothetical = true;
         }
         else {
           hypothetical = false;        
         }
+        console.log("sbgnclass", sbgnclass)
 
         var nameToVal = {
           'width': selected.width(),
