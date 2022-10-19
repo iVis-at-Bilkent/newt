@@ -8,6 +8,8 @@ var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
 var sifStyleFactory = require('./sif-style-factory');
 var _ = require('underscore');
+var databaseUtilities = require('./database-utilities')
+
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
@@ -1787,5 +1789,24 @@ module.exports = function() {
     $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
       updatePalette(newMapType);
     }); 
+
+
+
+    //////////////////////////////////////////////////////////////////////////
+    $("#push-active-tab-contents").click(function (e) {
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      
+      var activeTabContent = chiseInstance.createJsonFromSBGN();
+
+      var nodesData = [];
+      var edgesData = [];
+
+      databaseUtilities.processNodesData(nodesData, activeTabContent)
+      databaseUtilities.processEdgesData(edgesData, activeTabContent);
+
+      databaseUtilities.pushActiveContentToDatabase(nodesData, edgesData)
+      
+    })
   }
 };
