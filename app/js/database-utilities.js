@@ -98,7 +98,7 @@ var databaseUtilities = {
     for (let i = 0; i < nodesData.length; i++) {
       integrationQueryPD =
         integrationQueryPD +
-        `MERGE (n${i}:Node {id: '${nodesData[i].newtId}', class: '${nodesData[i].class}'}) `;
+        `MERGE (n${i}:${nodesData[i].class} {id: '${nodesData[i].newtId}', class: '${nodesData[i].class}'}) `;
       if (nodesData[i].parent) {
         parentChildRelationship[nodesData[i].newtId] = nodesData[i].parent;
       }
@@ -131,8 +131,8 @@ var databaseUtilities = {
       integrationQueryPD =
         integrationQueryPD +
         ` MATCH
-                                                    (a${i}:Node),
-                                                    (b${i}:Node)
+                                                    (a${i}),
+                                                    (b${i})
                                                     WHERE a${i}.id = '${edgesData[i].source}' AND b${i}.id = '${edgesData[i].target}'
                                                     MERGE (a${i})-[r${i}:${edgesData[i].class}]->(b${i})`;
       if (i != edgesData.length - 1) {
