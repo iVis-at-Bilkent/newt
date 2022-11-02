@@ -197,6 +197,7 @@ exports.runDatabaseQuery = function (req, res) {
 
 		var session = driver.session();
 
+		console.log("query", query)
 		session.run( query, queryData)
 			.then( (result) => {
 				const singleRecord = result.records
