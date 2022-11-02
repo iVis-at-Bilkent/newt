@@ -134,7 +134,7 @@ var databaseUtilities = {
                                                     (a${i}:Node),
                                                     (b${i}:Node)
                                                     WHERE a${i}.id = '${edgesData[i].source}' AND b${i}.id = '${edgesData[i].target}'
-                                                    CREATE (a${i})-[r${i}:${edgesData[i].class}]->(b${i})`;
+                                                    MERGE (a${i})-[r${i}:${edgesData[i].class}]->(b${i})`;
       if (i != edgesData.length - 1) {
         integrationQueryPD = integrationQueryPD + " WITH true as pass ";
       }
@@ -156,7 +156,7 @@ var databaseUtilities = {
         (a${i}:Node),
         (b${i}:Node)
         WHERE a${i}.id = '${key}' AND b${i}.id = '${parentChildRelationship[key]}'
-        CREATE (a${i})-[r${i}:${parentNodes[parentChildRelationship[key]]}]->(b${i})`;
+        MERGE (a${i})-[r${i}:${parentNodes[parentChildRelationship[key]]}]->(b${i})`;
         if (i != Object.keys(parentChildRelationship).length -1 )
         {
           integrationQueryPD = integrationQueryPD + " WITH true as pass ";
