@@ -1,6 +1,7 @@
 var jquery = ($ = require("jquery"));
 var neo4j = require("neo4j-driver");
 var _ = require("underscore");
+var nodeMatchUtilities = require("./node-match-utilities");
 
 var databaseUtilities = {
   enableDatabase: true,
@@ -72,8 +73,6 @@ var databaseUtilities = {
       var data = activeTabContent.nodes[i].data;
       if (data.language == "PD") {
         databaseUtilities.processPdNode(currentNode, data);
-      } else if (data.language == "AF") {
-        databaseUtilities.processAfNode(currentNode, data);
       }
       nodesData.push(currentNode);
     }
@@ -91,43 +90,104 @@ var databaseUtilities = {
   },
 
   pushActiveContentToDatabase: function (nodesData, edgesData) {
-    console.log("about to push", nodesData);
     var parentChildRelationship = {};
-    var parentNodes = {}
+    var parentNodes = {};
+    databaseUtilities.pushActiveNodesToDatabase(
+      nodesData,
+      edgesData,
+      parentChildRelationship,
+      parentNodes
+    );
+    setTimeout(() => {
+      databaseUtilities.pushActiveEdgesToDatabase(
+        nodesData,
+        edgesData,
+        parentChildRelationship,
+        parentNodes
+      );
+    }, 5000);
+  },
+
+  pushActiveNodesToDatabase: function (
+    nodesData,
+    edgesData,
+    parentChildRelationship,
+    parentNodes
+  ) {
+    console.log("about to push", nodesData);
+
     var integrationQueryPD = ``;
+
+    //Add nodes
     for (let i = 0; i < nodesData.length; i++) {
+      var baseCaseMatch = `u.id = '${nodesData[i].newtId}' and u.label = '${nodesData[i].entityName}'`;
       integrationQueryPD =
         integrationQueryPD +
-        `MERGE (n${i}:${nodesData[i].class} {id: '${nodesData[i].newtId}', class: '${nodesData[i].class}'}) `;
+        `MATCH (u) 
+        WHERE ${baseCaseMatch} 
+        WITH COUNT(u) as count
+       WITH count
+        CALL apoc.do.when(count > 0,
+          "", "CREATE (n${i}:${nodesData[i].class} {id: '${nodesData[i].newtId}', label: '${nodesData[i].entityName}'}) ", {}) 
+          YIELD value
+          WITH value AS ignored  
+        `;
+
+      console.log("integrationQueryPD", integrationQueryPD);
       if (nodesData[i].parent) {
         parentChildRelationship[nodesData[i].newtId] = nodesData[i].parent;
       }
 
       //Check if its a parent
-      if (nodesData[i].class == "compartment" || nodesData[i].class == "complex" || nodesData[i].class == "submap")
-      {
-        if(nodesData[i].class == "compartment")
-        {
-          parentNodes[nodesData[i].newtId] = "belongs_to_compartment"
-        }
-        else if (nodesData[i].class == "complex")
-        {
-          parentNodes[nodesData[i].newtId] = "belongs_to_complex"
-        }
-        else if (nodesData[i].class == "submap")
-        {
-          parentNodes[nodesData[i].newtId] = "belongs_to_submap"
+      if (
+        nodesData[i].class == "compartment" ||
+        nodesData[i].class == "complex" ||
+        nodesData[i].class == "submap"
+      ) {
+        if (nodesData[i].class == "compartment") {
+          parentNodes[nodesData[i].newtId] = "belongs_to_compartment";
+        } else if (nodesData[i].class == "complex") {
+          parentNodes[nodesData[i].newtId] = "belongs_to_complex";
+        } else if (nodesData[i].class == "submap") {
+          parentNodes[nodesData[i].newtId] = "belongs_to_submap";
         }
       }
     }
-    console.log("parentChildRelationship", parentChildRelationship);
+    integrationQueryPD = integrationQueryPD + " RETURN  true";
 
-    
+    var integrationQuery = integrationQueryPD;
+
+    var queryData = { nodesData: nodesData, edgesData: edgesData };
+    var data = { query: integrationQuery, queryData: queryData };
+
+    $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function (data) {
+        console.log(data);
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+  },
+
+  pushActiveEdgesToDatabase: function (
+    nodesData,
+    edgesData,
+    parentChildRelationship,
+    parentNodes
+  ) {
+    //Add edges
+
+    var integrationQueryPD = ``;
+    if (edgesData.length > 0) {
+      integrationQueryPD = integrationQueryPD + " WITH true as pass ";
+    }
 
     for (let i = 0; i < edgesData.length; i++) {
-      if (i == 0) {
-        integrationQueryPD = integrationQueryPD + "WITH true as pass ";
-      }
       integrationQueryPD =
         integrationQueryPD +
         ` MATCH
@@ -140,38 +200,35 @@ var databaseUtilities = {
       }
     }
 
-    var i = 0
-    if ( Object.keys(parentChildRelationship).length > 0)
-    {
+    var i = 0;
+    if (Object.keys(parentChildRelationship).length > 0) {
       integrationQueryPD = integrationQueryPD + " WITH true as pass ";
-
     }
 
     //Add the children and parents relationship
-    for (var key in parentChildRelationship)
-    {
-        integrationQueryPD =
+    for (var key in parentChildRelationship) {
+      integrationQueryPD =
         integrationQueryPD +
         ` MATCH
-        (a${i}:Node),
-        (b${i}:Node)
-        WHERE a${i}.id = '${key}' AND b${i}.id = '${parentChildRelationship[key]}'
-        MERGE (a${i})-[r${i}:${parentNodes[parentChildRelationship[key]]}]->(b${i})`;
-        if (i != Object.keys(parentChildRelationship).length -1 )
-        {
-          integrationQueryPD = integrationQueryPD + " WITH true as pass ";
-
-        }
-        i++;
-
+        (a${i}),
+        (b${i})
+        WHERE a${i}.id = '${key}' AND b${i}.id = '${
+          parentChildRelationship[key]
+        }'
+        MERGE (a${i})-[r${i}:${
+          parentNodes[parentChildRelationship[key]]
+        }]->(b${i})`;
+      if (i != Object.keys(parentChildRelationship).length - 1) {
+        integrationQueryPD = integrationQueryPD + " WITH true as pass ";
+      }
+      i++;
     }
+    integrationQueryPD = integrationQueryPD + " RETURN  true";
 
     var integrationQuery = integrationQueryPD;
 
     var queryData = { nodesData: nodesData, edgesData: edgesData };
     var data = { query: integrationQuery, queryData: queryData };
-
-    console.log(JSON.stringify(data));
 
     $.ajax({
       type: "post",
