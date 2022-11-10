@@ -121,14 +121,42 @@ var databaseUtilities = {
     //Add nodes
     for (let i = 0; i < nodesData.length; i++) {
       var baseCaseMatch = `u.id = '${nodesData[i].newtId}' and u.label = '${nodesData[i].entityName}'`;
+
+      //If statevaribale is undefined then make it empty array
+      var stateVariable = nodesData[i].stateVariable;
+      if (!stateVariable) {
+        stateVariable = [];
+      }
+
+      //If unitInformation is undefined then make it empty array
+      var unitsOfInformation = nodesData[i].unitsOfInformation;
+      if (!unitsOfInformation) {
+        unitsOfInformation = [];
+      }
+
       integrationQueryPD =
         integrationQueryPD +
         `MATCH (u) 
-        WHERE ${baseCaseMatch} 
+        WHERE ${baseCaseMatch} ${nodeMatchUtilities.match(
+          nodesData[i],
+          "u",
+          true,
+          true,
+          true,
+          true,
+          true
+        )}
         WITH COUNT(u) as count
        WITH count
         CALL apoc.do.when(count > 0,
-          "", "CREATE (n${i}:${nodesData[i].class} {id: '${nodesData[i].newtId}', label: '${nodesData[i].entityName}'}) ", {}) 
+          "", "CREATE (n${i}:${nodesData[i].class} 
+            {id: '${nodesData[i].newtId}', 
+            label: '${nodesData[i].entityName}',
+            multimer: '${nodesData[i].multimer}', 
+            cloneMarker: '${nodesData[i].cloneMarker}',
+            cloneLabel: '${nodesData[i].cloneLabel}',
+            stateVariables: '${stateVariable}',
+            unitsOfInformation:'${unitsOfInformation}' })", {}) 
           YIELD value
           WITH value AS ignored  
         `;

@@ -3,28 +3,60 @@ var neo4j = require("neo4j-driver");
 var _ = require("underscore");
 
 var nodeMatchUtilities = {
-  match: function (nodeData, i, matchNodeType, matchID, matchLabel) {
+  match: function (
+    nodeData,
+    name,
+    matchMultimer,
+    matchCloneMarker,
+    matchCloneLabel,
+    matchStateVariable,
+    matchUnitInformation
+  ) {
     //Here we will call all the match conditions
-    query = ``;
-    if (matchNodeType) {
-      query = query + `n${i}:${nodeData.class} {`;
-    } else {
-      query = query + `n${i} {`;
+    query = `and `;
+    and_or = ` and `;
+    if (matchMultimer) {
+      query = query + nodeMatchUtilities.matchWithMultimer(name, nodeData);
     }
-    if (matchID) {
-      query = query + nodeMatchUtilities.matchWithID(nodeData);
+    if (matchCloneMarker) {
+      query =
+        query +
+        and_or +
+        nodeMatchUtilities.matchWithCloneMarker(name, nodeData);
     }
-    if (matchLabel) {
-      query = query + ", " + nodeMatchUtilities.matchWithLabel(nodeData);
+    if (matchCloneLabel) {
+      query =
+        query + and_or + nodeMatchUtilities.matchWithCloneLabel(name, nodeData);
     }
-    query = query + `}`;
+    if (matchStateVariable) {
+      query =
+        query +
+        and_or +
+        nodeMatchUtilities.matchWithStateVariables(name, nodeData);
+    }
+    if (matchUnitInformation) {
+      query =
+        query +
+        and_or +
+        nodeMatchUtilities.matchWithUnitInformation(name, nodeData);
+    }
+
     return query;
   },
-  matchWithID: function (nodeData) {
-    return `id= '${nodeData.newtId}'`;
+  matchWithMultimer: function (name, nodeData) {
+    return `${name}.multimer = '${nodeData.multimer}'`;
   },
-  matchWithLabel: function (nodeData) {
-    return `label= '${nodeData.entityName}'`;
+  matchWithCloneMarker: function (name, nodeData) {
+    return `${name}.cloneMarker = '${nodeData.cloneMarker}'`;
+  },
+  matchWithCloneLabel: function (name, nodeData) {
+    return `${name}.cloneLabel = '${nodeData.cloneLabel}'`;
+  },
+  matchWithStateVariables: function (name, nodeData) {
+    return `size(${name}.stateVariables) = ${nodeData.stateVariables.length}`;
+  },
+  matchWithUnitInformation: function (name, nodeData) {
+    return `size(${name}.unitsOfInformation) = ${nodeData.unitsOfInformation.length}`;
   },
 };
 
