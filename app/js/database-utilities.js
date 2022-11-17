@@ -5,6 +5,7 @@ var nodeMatchUtilities = require("./node-match-utilities");
 
 var databaseUtilities = {
   enableDatabase: true,
+  nodesInDB: {},
 
   calculateClass: function (entitysClass) {
     var classArray = entitysClass.split(" ");
@@ -12,7 +13,9 @@ var databaseUtilities = {
     var finalClass = classArray.join("_");
     return finalClass;
   },
-
+  getMapValue: function (val) {
+    return databaseUtilities.nodesInDB[val] || null;
+  },
   checkIfMultimer: function (entitysClass) {
     return entitysClass.includes("multimer");
   },
@@ -120,8 +123,6 @@ var databaseUtilities = {
 
     //Add nodes
     for (let i = 0; i < nodesData.length; i++) {
-      var baseCaseMatch = `u.id = '${nodesData[i].newtId}' and u.label = '${nodesData[i].entityName}'`;
-
       //If statevaribale is undefined then make it empty array
       var stateVariable = nodesData[i].stateVariable;
       if (!stateVariable) {
@@ -134,6 +135,7 @@ var databaseUtilities = {
         unitsOfInformation = [];
       }
 
+      /*
       integrationQueryPD =
         integrationQueryPD +
         `MATCH (u) 
@@ -157,8 +159,8 @@ var databaseUtilities = {
             cloneLabel: '${nodesData[i].cloneLabel}',
             stateVariables: '${stateVariable}',
             unitsOfInformation:'${unitsOfInformation}' })", {}) 
-          YIELD value
-          WITH value AS ignored  
+          YIELD n${i}
+          WITH n${i} AS node1x  
         `;
 
       console.log("integrationQueryPD", integrationQueryPD);
@@ -180,8 +182,57 @@ var databaseUtilities = {
           parentNodes[nodesData[i].newtId] = "belongs_to_submap";
         }
       }
+      */
     }
-    integrationQueryPD = integrationQueryPD + " RETURN  true";
+    //integrationQueryPD = integrationQueryPD + " RETURN  true";
+    var baseCaseMatch = `u.newtId = data.newtId and u.entityName = data.entityName`;
+
+    var integrationQueryPD = `
+ CALL {
+      UNWIND $nodesData as data
+        CALL
+        {
+          WITH data
+          MATCH (u)
+          WHERE ${baseCaseMatch}
+          RETURN COUNT(u) as cnt
+        }
+        WITH cnt, data
+        CALL
+        {
+          WITH cnt, data
+          CALL apoc.do.when( cnt > 0, "MATCH (u) WHERE ${baseCaseMatch} RETURN u.newtId as id", "RETURN null as id", {data:data} )
+          YIELD value
+          RETURN value.id as id
+        }
+        WITH id, data
+        CALL
+        {
+          WITH id, data
+          CALL apoc.do.when(id is not null and ${databaseUtilities.getMapValue(
+            `id`
+          )} is null, "RETURN 1 as node",
+          "CALL apoc.create.node([data.class], data)
+          YIELD node
+          SET node.processed = 0
+          RETURN node as node", {data: data})
+          YIELD value
+          RETURN value.node as node
+        }
+        RETURN node
+      }
+      RETURN node
+
+
+`;
+    /*
+    `
+      apoc.create.node([data.class], data) YIELD node
+      SET node.processed = 0
+      WITH node as nodeCount // needed to protect against empty parameter list
+      RETURN nodeCount // subqueries must return something
+    } RETURN nodeCount.newtId, id(nodeCount)`;
+    */
 
     var integrationQuery = integrationQueryPD;
 
@@ -195,6 +246,41 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (data) {
         console.log(data);
+        var nodes = {};
+        var links = {};
+        /*
+        // parsing the output of neo4j rest api
+        data.results[0].data.forEach(function (row) {
+          row.graph.nodes.forEach(function (n) {
+            if (idIndex(nodes, n.id) == null) {
+              nodes.push({
+                id: n.id,
+                label: n.labels[0],
+                title: n.properties.name,
+              });
+            }
+          });
+          links = links.concat(
+            row.graph.relationships.map(function (r) {
+              // the neo4j documents has an error : replace start with source and end with target
+              return {
+                source: idIndex(nodes, r.startNode),
+                target: idIndex(nodes, r.endNode),
+                type: r.type,
+              };
+            })
+          );
+        });
+        */
+        data.records.forEach(function (field) {
+          field._fields.forEach(function (data) {
+            if (data.properties) {
+              databaseUtilities.nodesInDB[data.properties.newtId] =
+                data.identity.low;
+            }
+          });
+        });
+        console.log(databaseUtilities.nodesInDB);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -263,9 +349,7 @@ var databaseUtilities = {
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
-      success: function (data) {
-        console.log(data);
-      },
+      success: function (data) {},
       error: function (req, status, err) {
         console.error("Error running query", status, err);
       },
