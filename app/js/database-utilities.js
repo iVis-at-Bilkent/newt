@@ -135,6 +135,12 @@ var databaseUtilities = {
         unitsOfInformation = [];
       }
 
+      nodesData[i].inDb = false;
+      if (databaseUtilities.nodesInDB[nodesData[i].newtId]) {
+        nodesData[i].inDb = true;
+        nodesData[i].idInDb = databaseUtilities.nodesInDB[nodesData[i].newtId];
+      }
+
       /*
       integrationQueryPD =
         integrationQueryPD +
@@ -186,40 +192,71 @@ var databaseUtilities = {
     }
     //integrationQueryPD = integrationQueryPD + " RETURN  true";
     var baseCaseMatch = `u.newtId = data.newtId and u.entityName = data.entityName`;
-
     var integrationQueryPD = `
- CALL {
+    CALL {
       UNWIND $nodesData as data
-        CALL
-        {
-          WITH data
-          MATCH (u)
-          WHERE ${baseCaseMatch}
-          RETURN COUNT(u) as cnt
-        }
-        WITH cnt, data
-        CALL
-        {
-          WITH cnt, data
-          CALL apoc.do.when( cnt > 0, "MATCH (u) WHERE ${baseCaseMatch} RETURN u.newtId as id", "RETURN null as id", {data:data} )
-          YIELD value
-          RETURN value.id as id
-        }
-        WITH id, data
-        CALL
-        {
-          WITH id, data
-          CALL apoc.do.when(id is not null and ${databaseUtilities.getMapValue(
-            `id`
-          )} is null, "RETURN 1 as node",
-          "CALL apoc.create.node([data.class], data)
-          YIELD node
-          SET node.processed = 0
-          RETURN node as node", {data: data})
+        CALL  apoc.do.when( data.inDb
+          , 'CALL
+            {
+              WITH data
+              MATCH (u)
+              WHERE  u.newtId = data.newtId and id(u) = data.idInDb
+              SET u = data
+              RETURN u as node
+            }
+            RETURN node as node
+            ',  
+            'CALL
+            {
+              WITH data
+              MATCH (u)
+              WHERE  ${nodeMatchUtilities.match(
+                "data",
+                "u",
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+              )}
+              RETURN COUNT(u) as cnt
+            }
+            WITH cnt, data
+            CALL
+            {
+              WITH cnt, data
+              CALL apoc.do.when( cnt > 0, "MATCH (u) WHERE ${nodeMatchUtilities.match(
+                "data",
+                "u",
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+              )} RETURN u.newtId as id", "RETURN null as id", {data:data} )
+              YIELD value
+              RETURN value.id as id
+            }
+            WITH id, data
+            CALL
+            {
+              WITH id, data
+              CALL apoc.do.when(id is not null, "RETURN 1 as node",
+              "CALL apoc.create.node([data.class], data)
+              YIELD node
+              SET node.processed = 0
+              RETURN node as node", {data: data})
+              YIELD value
+              RETURN value.node as node
+            }
+            RETURN node as node
+            ', {data:data} )
           YIELD value
           RETURN value.node as node
-        }
-        RETURN node
       }
       RETURN node
 

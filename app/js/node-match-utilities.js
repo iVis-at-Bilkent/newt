@@ -6,6 +6,8 @@ var nodeMatchUtilities = {
   match: function (
     nodeData,
     name,
+    matchID,
+    matchLabel,
     matchMultimer,
     matchCloneMarker,
     matchCloneLabel,
@@ -13,8 +15,15 @@ var nodeMatchUtilities = {
     matchUnitInformation
   ) {
     //Here we will call all the match conditions
-    query = `and `;
+    console.log("nodeData", nodeData);
+    query = ``;
     and_or = ` and `;
+    if (matchID) {
+      query = query + nodeMatchUtilities.matchWithID(name, nodeData);
+    }
+    if (matchLabel) {
+      query = query + nodeMatchUtilities.matchWithLabel(name, nodeData);
+    }
     if (matchMultimer) {
       query = query + nodeMatchUtilities.matchWithMultimer(name, nodeData);
     }
@@ -43,14 +52,20 @@ var nodeMatchUtilities = {
 
     return query;
   },
+  matchWithID: function (name, nodeData) {
+    return `${name}.newtId = ${nodeData}.newtID`;
+  },
+  matchWithLabel: function (name, nodeData) {
+    return `${name}.entityName = ${nodeData}.entityName`;
+  },
   matchWithMultimer: function (name, nodeData) {
-    return `${name}.multimer = '${nodeData.multimer}'`;
+    return `${name}.multimer = ${nodeData}.multimer`;
   },
   matchWithCloneMarker: function (name, nodeData) {
-    return `${name}.cloneMarker = '${nodeData.cloneMarker}'`;
+    return `${name}.cloneMarker = ${nodeData}.cloneMarker`;
   },
   matchWithCloneLabel: function (name, nodeData) {
-    return `${name}.cloneLabel = '${nodeData.cloneLabel}'`;
+    return `${name}.cloneLabel = ${nodeData}.cloneLabel`;
   },
   matchWithStateVariables: function (name, nodeData) {
     return `size(${name}.stateVariables) = ${nodeData.stateVariables.length}`;
