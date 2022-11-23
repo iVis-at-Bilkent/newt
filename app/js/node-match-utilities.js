@@ -56,6 +56,9 @@ var nodeMatchUtilities = {
     return `${name}.newtId = ${nodeData}.newtID`;
   },
   matchWithLabel: function (name, nodeData) {
+    if (nodeData.class == "process") {
+      return false;
+    }
     return `${name}.entityName = ${nodeData}.entityName`;
   },
   matchWithMultimer: function (name, nodeData) {

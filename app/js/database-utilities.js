@@ -101,6 +101,7 @@ var databaseUtilities = {
       parentChildRelationship,
       parentNodes
     );
+    /*
     setTimeout(() => {
       databaseUtilities.pushActiveEdgesToDatabase(
         nodesData,
@@ -108,7 +109,8 @@ var databaseUtilities = {
         parentChildRelationship,
         parentNodes
       );
-    }, 5000);
+    }, 7000);
+    */
   },
 
   pushActiveNodesToDatabase: function (
@@ -140,58 +142,8 @@ var databaseUtilities = {
         nodesData[i].inDb = true;
         nodesData[i].idInDb = databaseUtilities.nodesInDB[nodesData[i].newtId];
       }
-
-      /*
-      integrationQueryPD =
-        integrationQueryPD +
-        `MATCH (u) 
-        WHERE ${baseCaseMatch} ${nodeMatchUtilities.match(
-          nodesData[i],
-          "u",
-          true,
-          true,
-          true,
-          true,
-          true
-        )}
-        WITH COUNT(u) as count
-       WITH count
-        CALL apoc.do.when(count > 0,
-          "", "CREATE (n${i}:${nodesData[i].class} 
-            {id: '${nodesData[i].newtId}', 
-            label: '${nodesData[i].entityName}',
-            multimer: '${nodesData[i].multimer}', 
-            cloneMarker: '${nodesData[i].cloneMarker}',
-            cloneLabel: '${nodesData[i].cloneLabel}',
-            stateVariables: '${stateVariable}',
-            unitsOfInformation:'${unitsOfInformation}' })", {}) 
-          YIELD n${i}
-          WITH n${i} AS node1x  
-        `;
-
-      console.log("integrationQueryPD", integrationQueryPD);
-      if (nodesData[i].parent) {
-        parentChildRelationship[nodesData[i].newtId] = nodesData[i].parent;
-      }
-
-      //Check if its a parent
-      if (
-        nodesData[i].class == "compartment" ||
-        nodesData[i].class == "complex" ||
-        nodesData[i].class == "submap"
-      ) {
-        if (nodesData[i].class == "compartment") {
-          parentNodes[nodesData[i].newtId] = "belongs_to_compartment";
-        } else if (nodesData[i].class == "complex") {
-          parentNodes[nodesData[i].newtId] = "belongs_to_complex";
-        } else if (nodesData[i].class == "submap") {
-          parentNodes[nodesData[i].newtId] = "belongs_to_submap";
-        }
-      }
-      */
     }
-    //integrationQueryPD = integrationQueryPD + " RETURN  true";
-    var baseCaseMatch = `u.newtId = data.newtId and u.entityName = data.entityName`;
+    console.log("edges", edgesData);
     var integrationQueryPD = `
     CALL {
       UNWIND $nodesData as data
@@ -258,18 +210,14 @@ var databaseUtilities = {
           YIELD value
           RETURN value.node as node
       }
-      RETURN node
-
+      WITH node
+      CALL {
+        UNWIND $edgesData AS data  
+        RETURN data
+    }
+    RETURN data
 
 `;
-    /*
-    `
-      apoc.create.node([data.class], data) YIELD node
-      SET node.processed = 0
-      WITH node as nodeCount // needed to protect against empty parameter list
-      RETURN nodeCount // subqueries must return something
-    } RETURN nodeCount.newtId, id(nodeCount)`;
-    */
 
     var integrationQuery = integrationQueryPD;
 
@@ -283,32 +231,6 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (data) {
         console.log(data);
-        var nodes = {};
-        var links = {};
-        /*
-        // parsing the output of neo4j rest api
-        data.results[0].data.forEach(function (row) {
-          row.graph.nodes.forEach(function (n) {
-            if (idIndex(nodes, n.id) == null) {
-              nodes.push({
-                id: n.id,
-                label: n.labels[0],
-                title: n.properties.name,
-              });
-            }
-          });
-          links = links.concat(
-            row.graph.relationships.map(function (r) {
-              // the neo4j documents has an error : replace start with source and end with target
-              return {
-                source: idIndex(nodes, r.startNode),
-                target: idIndex(nodes, r.endNode),
-                type: r.type,
-              };
-            })
-          );
-        });
-        */
         data.records.forEach(function (field) {
           field._fields.forEach(function (data) {
             if (data.properties) {
@@ -333,24 +255,21 @@ var databaseUtilities = {
   ) {
     //Add edges
 
-    var integrationQueryPD = ``;
-    if (edgesData.length > 0) {
-      integrationQueryPD = integrationQueryPD + " WITH true as pass ";
+    var integrationQueryPD = `CALL {
+        UNWIND $edgesData AS data  
+        // you should be using labels or this will be really really slow!
+        MATCH (n {newtId: data.source}), (m { newtId: data.target})  
+        WITH n, m, data
+        CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
+        WITH rel
+        SET rel.processed = 0
+        // REMOVE rel.source, rel.target
+        WITH count(rel) as relCount
+        RETURN relCount
     }
+    RETURN relCount`;
 
-    for (let i = 0; i < edgesData.length; i++) {
-      integrationQueryPD =
-        integrationQueryPD +
-        ` MATCH
-                                                    (a${i}),
-                                                    (b${i})
-                                                    WHERE a${i}.id = '${edgesData[i].source}' AND b${i}.id = '${edgesData[i].target}'
-                                                    MERGE (a${i})-[r${i}:${edgesData[i].class}]->(b${i})`;
-      if (i != edgesData.length - 1) {
-        integrationQueryPD = integrationQueryPD + " WITH true as pass ";
-      }
-    }
-
+    /*
     var i = 0;
     if (Object.keys(parentChildRelationship).length > 0) {
       integrationQueryPD = integrationQueryPD + " WITH true as pass ";
@@ -375,7 +294,9 @@ var databaseUtilities = {
       i++;
     }
     integrationQueryPD = integrationQueryPD + " RETURN  true";
+    */
 
+    console.log("adding edges", integrationQueryPD);
     var integrationQuery = integrationQueryPD;
 
     var queryData = { nodesData: nodesData, edgesData: edgesData };
