@@ -6,6 +6,7 @@ var nodeMatchUtilities = require("./node-match-utilities");
 var databaseUtilities = {
   enableDatabase: true,
   nodesInDB: {},
+  edgesInDB: {},
 
   calculateClass: function (entitysClass) {
     var classArray = entitysClass.split(" ");
@@ -125,29 +126,34 @@ var databaseUtilities = {
 
     //Add nodes
     for (let i = 0; i < nodesData.length; i++) {
-      //If statevaribale is undefined then make it empty array
-      var stateVariable = nodesData[i].stateVariable;
-      if (!stateVariable) {
-        stateVariable = [];
-      }
-
-      //If unitInformation is undefined then make it empty array
-      var unitsOfInformation = nodesData[i].unitsOfInformation;
-      if (!unitsOfInformation) {
-        unitsOfInformation = [];
-      }
-
       nodesData[i].inDb = false;
       if (databaseUtilities.nodesInDB[nodesData[i].newtId]) {
         nodesData[i].inDb = true;
         nodesData[i].idInDb = databaseUtilities.nodesInDB[nodesData[i].newtId];
       }
     }
+
+    for (let i = 0; i < edgesData.length; i++) {
+      edgesData[i].inDb = false;
+      if (
+        databaseUtilities.edgesInDB[
+          [edgesData[i].source, edgesData[i].target, edgesData[i].class]
+        ]
+      ) {
+        console.log("edge in db");
+        edgesData[i].inDb = true;
+        edgesData[i].idInDb =
+          databaseUtilities.edgesInDB[
+            databaseUtilities.edgesInDB[
+              (edgesData[i].source, edgesData[i].target, edgesData[i].class)
+            ]
+          ];
+      }
+    }
     console.log("edges", edgesData);
     var integrationQueryPD = `
-    CALL {
       UNWIND $nodesData as data
-        CALL  apoc.do.when( data.inDb
+        CALL apoc.do.when( data.inDb
           , 'CALL
             {
               WITH data
@@ -208,15 +214,23 @@ var databaseUtilities = {
             RETURN node as node
             ', {data:data} )
           YIELD value
-          RETURN value.node as node
+          WITH collect(value.node) as node
+          CALL {
+            UNWIND $edgesData AS data 
+            CALL apoc.do.when(data.inDb,
+              'RETURN null as rel',
+              'MATCH (n {newtId: data.source}), (m { newtId: data.target})  
+                WITH DISTINCT n, m, data
+                CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
+                WITH rel
+                SET rel.processed = 0
+                RETURN rel as rel',
+              {data: data}
+            )
+            YIELD value
+            RETURN collect(value.rel) as rel
       }
-      WITH node
-      CALL {
-        UNWIND $edgesData AS data  
-        RETURN data
-    }
-    RETURN data
-
+      RETURN node as nodes, rel as edges
 `;
 
     var integrationQuery = integrationQueryPD;
@@ -231,15 +245,27 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (data) {
         console.log(data);
-        data.records.forEach(function (field) {
-          field._fields.forEach(function (data) {
-            if (data.properties) {
-              databaseUtilities.nodesInDB[data.properties.newtId] =
-                data.identity.low;
-            }
-          });
-        });
+        let nodes = data.records[0]._fields[0];
+        let edges = data.records[0]._fields[1];
+        console.log(nodes);
+        console.log(edges);
+
+        for (let i = 0; i < nodes.length; i++) {
+          databaseUtilities.nodesInDB[nodes[i].properties.newtId] =
+            nodes[i].identity.low;
+        }
+
+        for (let i = 0; i < edges.length; i++) {
+          databaseUtilities.edgesInDB[
+            [
+              edges[i].properties.source,
+              edges[i].properties.target,
+              edges[i].properties.class,
+            ]
+          ] = edges[i].identity.low;
+        }
         console.log(databaseUtilities.nodesInDB);
+        console.log(databaseUtilities.edgesInDB);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -255,19 +281,23 @@ var databaseUtilities = {
   ) {
     //Add edges
 
-    var integrationQueryPD = `CALL {
-        UNWIND $edgesData AS data  
-        // you should be using labels or this will be really really slow!
-        MATCH (n {newtId: data.source}), (m { newtId: data.target})  
-        WITH n, m, data
-        CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
-        WITH rel
-        SET rel.processed = 0
-        // REMOVE rel.source, rel.target
-        WITH count(rel) as relCount
-        RETURN relCount
-    }
-    RETURN relCount`;
+    var integrationQueryPD = `CALL 
+                              {
+                                UNWIND $edgesData AS data 
+                                CALL apoc.do.when(data.inDb,
+                                  'RETURN null as rel',
+                                  'MATCH (n {newtId: data.source}), (m { newtId: data.target})  
+                                    WITH DISTINCT n, m, data
+                                    CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
+                                    WITH rel
+                                    SET rel.processed = 0
+                                    RETURN rel as rel',
+                                  {data: data}
+                                )
+                                YIELD value
+                                RETURN value.rel as rel
+                              }
+                              RETURN  rel as edges`;
 
     /*
     var i = 0;
