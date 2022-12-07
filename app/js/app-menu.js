@@ -14,7 +14,7 @@ var databaseUtilities = require('./database-utilities')
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
+  var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, PathsFromToQueryViewLocalDB, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
 
   function validateSBGNML(xml) {
@@ -121,6 +121,7 @@ module.exports = function() {
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
+  PathsFromToQueryViewLocalDB = appUtilities.PathsFromToQueryViewLocalDB = new BackboneViews.PathsFromToQueryViewLocalDB({el: '#query-pathsfromto-table'});
   commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
@@ -1153,6 +1154,10 @@ module.exports = function() {
     $("#query-pathsfromto").click(function (e) {
         pathsFromToQueryView.render();
     });
+    
+    $("#query-pathsfromto-localdatabase").click(function (e) {
+      PathsFromToQueryViewLocalDB.render();
+  });
 
     $("#query-commonstream").click(function (e) {
         commonStreamQueryView.render();

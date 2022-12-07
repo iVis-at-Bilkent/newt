@@ -7,12 +7,13 @@ var nodeMatchUtilities = {
     nodeData,
     name,
     matchID,
-    matchLabel,
+    matchLabelForCnt,
     matchMultimer,
     matchCloneMarker,
     matchCloneLabel,
     matchStateVariable,
-    matchUnitInformation
+    matchUnitInformation,
+    matchLabel
   ) {
     //Here we will call all the match conditions
     console.log("nodeData", nodeData);
@@ -21,8 +22,13 @@ var nodeMatchUtilities = {
     if (matchID) {
       query = query + nodeMatchUtilities.matchWithID(name, nodeData);
     }
-    if (matchLabel) {
+    if (matchLabelForCnt) {
+      query = query + nodeMatchUtilities.matchWithLabelForCounting(name, nodeData);
+    }
+    if (matchLabel)
+    {
       query = query + nodeMatchUtilities.matchWithLabel(name, nodeData);
+
     }
     if (matchMultimer) {
       query = query + nodeMatchUtilities.matchWithMultimer(name, nodeData);
@@ -55,8 +61,11 @@ var nodeMatchUtilities = {
   matchWithID: function (name, nodeData) {
     return `${name}.newtId = ${nodeData}.newtID`;
   },
+  matchWithLabelForCounting: function (name, nodeData) {
+    return `${name}.entityName = ${nodeData}.entityName and not (${nodeData}.class = \\"process\\")`;
+  },
   matchWithLabel: function (name, nodeData) {
-    return `${name}.entityName = ${nodeData}.entityName and not (${nodeData}.class = \\'process\\')`;
+    return `${name}.entityName = ${nodeData}.entityName and not (${nodeData}.class = \\\\'process\\\\')`;
   },
   matchWithMultimer: function (name, nodeData) {
     return `${name}.multimer = ${nodeData}.multimer`;

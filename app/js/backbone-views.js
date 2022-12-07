@@ -5,6 +5,8 @@ var chroma = require('chroma-js');
 var FileSaver = require('file-saver');
 var cytoscape = require('cytoscape');
 var chise = require('chise');
+var databaseUtilities = require('./database-utilities')
+
 
 var appUtilities = require('./app-utilities');
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -2034,7 +2036,7 @@ var PathsFromToQueryView = Backbone.View.extend({
 
         $(self.el).modal('show');
         PCdialog = "PathsFromTo";
-
+        
         $(document).off("click", "#save-query-pathsfromto").on("click", "#save-query-pathsfromto", function (evt) {
 
             // use active chise instance
@@ -2203,6 +2205,89 @@ var PathsFromToQueryView = Backbone.View.extend({
         return this;
     }
 });
+
+var PathsFromToQueryViewLocalDB = Backbone.View.extend({
+  defaultQueryParameters: {
+      sourceSymbols: "",
+      targetSymbols: "",
+      lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+      var self = this;
+      self.copyProperties();
+      self.template = _.template($("#query-pathsfromto-template-localdatabase").html());
+      self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+      this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+      var self = this;
+      self.template = _.template($("#query-pathsfromto-template-localdatabase").html());
+      self.template = self.template(self.currentQueryParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+      PCdialog = "PathsFromTo";
+      $(document).off("click", "#save-query-pathsfromto-localdatabase").on("click", "#save-query-pathsfromto-localdatabase", function (evt) {
+        console.log("here")
+        self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols-localdatabase").value;
+          self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols-localdatabase").value;
+          self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit-localdatabase").value);
+
+          var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+          if (sourceSymbols.length === 0) {
+              document.getElementById("query-pathsfromto-source-symbols-localdatabase").focus();
+              return;
+          }
+          // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+          sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+          if (sourceSymbols.length === 0) {
+              $(self.el).modal('toggle');
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              return;
+          }
+
+          var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+          if (targetSymbols.length === 0) {
+              document.getElementById("query-pathsfromto-target-symbols-localdatabase").focus();
+              return;
+          }
+          // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+          targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+          if (targetSymbols.length === 0) {
+              $(self.el).modal('toggle');
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              return;
+          }
+
+          if (self.currentQueryParameters.lengthLimit > 3) {
+              $(self.el).modal('toggle');
+              new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+              document.getElementById("query-pathsfromto-length-limit").focus();
+              return;
+          }
+
+          var sourceSymbolsArray = sourceSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+          var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+          console.log("sourceSymbolsArray", sourceSymbolsArray)
+          console.log("targetSymbolsArray", targetSymbolsArray)
+          databaseUtilities.runPathsFromTo(sourceSymbolsArray, targetSymbols, 2)
+      });
+
+      $(document).off("click", "#cancel-query-pathsfromto-localdatabase").on("click", "#cancel-query-pathsfromto-localdatabase", function (evt) {
+        $(self.el).modal('toggle');
+    });
+
+      return this;
+  }
+});
+
+
+
+
 
 /**
  * Common Stream Query view for the Sample Application.
@@ -3184,6 +3269,10 @@ var PromptInvalidQueryView = Backbone.View.extend({
               appUtilities.pathsFromToQueryView.render();
           else if (PCdialog == "CommonStream")
               appUtilities.commonStreamQueryView.render();
+        else if (PCdialog == "PathsBetween in localDB")
+        {
+          appUtilities.PathsFromToQueryViewLocalDb.render();
+        }
       });
 
       return this;
@@ -3236,8 +3325,9 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
                 appUtilities.pathsFromToQueryView.render();
             else if (PCdialog == "CommonStream")
                 appUtilities.commonStreamQueryView.render();
-			     				  
-        });
+            else if (PCdialog == "PathsFromTo in Local DB")
+              appUtilities.pathsBetweenQueryViewLocalDB.render();
+    });
 
         return this;
     }
@@ -5272,6 +5362,7 @@ module.exports = {
   NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PathsFromToQueryView: PathsFromToQueryView,
+  PathsFromToQueryViewLocalDB: PathsFromToQueryViewLocalDB,
   CommonStreamQueryView: CommonStreamQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
