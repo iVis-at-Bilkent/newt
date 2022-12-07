@@ -107,16 +107,6 @@ var databaseUtilities = {
       parentChildRelationship,
       parentNodes
     );
-    /*
-    setTimeout(() => {
-      databaseUtilities.pushActiveEdgesToDatabase(
-        nodesData,
-        edgesData,
-        parentChildRelationship,
-        parentNodes
-      );
-    }, 7000);
-    */
   },
 
   pushActiveNodesToDatabase: function (
@@ -252,92 +242,7 @@ var databaseUtilities = {
       ',{edgesData: $edgesData})
     YIELD value
     RETURN node as nodes, value.rel as edges`
-    /*
- 
-          
-    var integrationQueryPD = `
-      UNWIND $nodesData as data
-        CALL apoc.do.when( data.inDb
-          , 'CALL
-            {
-              WITH data
-              MATCH (u)
-              WHERE  u.newtId = data.newtId and id(u) = data.idInDb
-              SET u = data
-              RETURN u as node
-            }
-            RETURN node as node
-            ',  
-            'CALL
-            {
-              WITH data
-              MATCH (u)
-              WHERE  ${nodeMatchUtilities.match(
-                "data",
-                "u",
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
-              )}
-              RETURN COUNT(u) as cnt
-            }
-            WITH cnt, data
-            CALL
-            {
-              WITH cnt, data
-              CALL apoc.do.when( cnt > 0, "MATCH (u) WHERE ${nodeMatchUtilities.match(
-                "data",
-                "u",
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false
-              )} RETURN u.newtId as id", "RETURN null as id", {data:data} )
-              YIELD value
-              RETURN value.id as id
-            }
-            WITH id, data
-            CALL
-            {
-              WITH id, data
-              CALL apoc.do.when(id is not null, "RETURN 1 as node",
-              "CALL apoc.create.node([data.class], data)
-              YIELD node
-              SET node.processed = 0
-              RETURN node as node", {data: data})
-              YIELD value
-              RETURN value.node as node
-            }
-            RETURN node as node
-            ', {data:data} )
-          YIELD value
-          WITH collect(value.node) as node
-          CALL {
-            UNWIND $edgesData AS data 
-            CALL apoc.do.when(data.inDb,
-              'RETURN null as rel',
-              'MATCH (n {newtId: data.source}), (m { newtId: data.target})  
-                WITH DISTINCT n, m, data
-                CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
-                WITH rel
-                SET rel.processed = 0
-                RETURN rel as rel',
-              {data: data}
-            )
-            YIELD value
-            RETURN collect(value.rel) as rel
-      }
-      RETURN node as nodes, rel as edges
-`;
-*/
-
+   
     var integrationQuery = integrationQueryPD;
 
     var queryData = { nodesData: nodesData, edgesData: edgesData };
