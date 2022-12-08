@@ -16,19 +16,17 @@ var nodeMatchUtilities = {
     matchLabel
   ) {
     //Here we will call all the match conditions
-    console.log("nodeData", nodeData);
     query = ``;
     and_or = ` and `;
     if (matchID) {
       query = query + nodeMatchUtilities.matchWithID(name, nodeData);
     }
     if (matchLabelForCnt) {
-      query = query + nodeMatchUtilities.matchWithLabelForCounting(name, nodeData);
+      query =
+        query + nodeMatchUtilities.matchWithLabelForCounting(name, nodeData);
     }
-    if (matchLabel)
-    {
+    if (matchLabel) {
       query = query + nodeMatchUtilities.matchWithLabel(name, nodeData);
-
     }
     if (matchMultimer) {
       query = query + nodeMatchUtilities.matchWithMultimer(name, nodeData);
