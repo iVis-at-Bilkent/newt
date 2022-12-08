@@ -2009,6 +2009,85 @@ var PathsBetweenQueryView = Backbone.View.extend({
 });
 
 /**
+ * Paths Between Query view for the Sample Application with local db.
+ */
+ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
+  defaultQueryParameters: {
+      geneSymbols: "",
+      lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+      var self = this;
+      self.copyProperties();
+      self.template = _.template($("#query-pathsbetween-localdatabase-template").html());
+      self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+      this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+      var self = this;
+      self.template = _.template($("#query-pathsbetween-localdatabase-template").html());
+      self.template = self.template(self.currentQueryParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+      PCdialog = "PathsBetween";
+
+      $(document).off("click", "#save-query-pathsbetween-localdatabase").on("click", "#save-query-pathsbetween-localdatabase", async function (evt) {
+
+          // use active chise instance
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+
+          // use the associated cy instance
+          var cy = chiseInstance.getCy();
+
+          self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-localdatabase-gene-symbols").value;
+          self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-localdatabase-length-limit").value);
+          console.log(self.currentQueryParameters.lengthLimit)
+          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+          if (geneSymbols.length === 0) {
+              document.getElementById("query-pathsbetween-localdatabase-gene-symbols").focus();
+              return;
+          }
+          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+          if (geneSymbols.length === 0) {
+              $(self.el).modal('toggle');
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              return;
+          }
+          if (self.currentQueryParameters.lengthLimit > 5) {
+              $(self.el).modal('toggle');
+              new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+              document.getElementById("query-pathsbetween-localdatabase-length-limit").focus();
+              return;
+          }
+          
+          var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+          var lengthLimit =  self.currentQueryParameters.lengthLimit
+          console.log("geneSymbolsArray", geneSymbolsArray)
+          console.log("lengthLimit", lengthLimit)
+          var resultFromDb = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
+          console.log("resultFromDb",resultFromDb)
+          
+      
+
+      });
+
+      $(document).off("click", "#cancel-query-pathsbetween-localdatabase").on("click", "#cancel-query-pathsbetween-localdatabase", function (evt) {
+          $(self.el).modal('toggle');
+      });
+
+      return this;
+  }
+});
+
+
+
+/**
  * Paths From To Query view for the Sample Application.
  */
 var PathsFromToQueryView = Backbone.View.extend({
@@ -3265,6 +3344,8 @@ var PromptInvalidQueryView = Backbone.View.extend({
             appUtilities.neighborhoodQueryView.render();
           else if (PCdialog == "PathsBetween")
               appUtilities.pathsBetweenQueryView.render();
+          else if (PCdialog == "PathsBetween in localDB")
+              appUtilities.pathsBetweenQueryViewLocalDB.render();
           else if (PCdialog == "PathsFromTo")
               appUtilities.pathsFromToQueryView.render();
           else if (PCdialog == "CommonStream")
@@ -3326,7 +3407,7 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
             else if (PCdialog == "CommonStream")
                 appUtilities.commonStreamQueryView.render();
             else if (PCdialog == "PathsFromTo in Local DB")
-              appUtilities.pathsBetweenQueryViewLocalDB.render();
+              appUtilities.PathsFromToQueryViewLocalDB.render();
     });
 
         return this;
@@ -5361,6 +5442,7 @@ module.exports = {
   //GeneralPropertiesView: GeneralPropertiesView,
   NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,
+  PathsBetweenQueryViewLocalDB: PathsBetweenQueryViewLocalDB,
   PathsFromToQueryView: PathsFromToQueryView,
   PathsFromToQueryViewLocalDB: PathsFromToQueryViewLocalDB,
   CommonStreamQueryView: CommonStreamQueryView,
