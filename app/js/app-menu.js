@@ -124,6 +124,7 @@ module.exports = function() {
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
   PathsFromToQueryViewLocalDB = appUtilities.PathsFromToQueryViewLocalDB = new BackboneViews.PathsFromToQueryViewLocalDB({el: '#query-pathsfromto-table'});
   commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
+  commonStreamQueryViewLocalDB = appUtilities.commonStreamQueryViewLocalDB = new BackboneViews.CommonStreamQueryViewLocalDB({el: '#query-commonstream-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
@@ -1168,6 +1169,10 @@ module.exports = function() {
     $("#query-commonstream").click(function (e) {
         commonStreamQueryView.render();
     });
+    $("#query-commonstream-localdatabase").click(function (e) {
+      console.log("query-commonstream-localdatabase clickde")
+      commonStreamQueryViewLocalDB.render();
+  });
 
     $("#query-pathsbyURI").click(function (e) {
         pathsByURIQueryView.render();
