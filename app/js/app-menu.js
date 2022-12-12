@@ -119,6 +119,7 @@ module.exports = function() {
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
   experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
+  neighborhoodQueryViewLocalDB = appUtilities.neighborhoodQueryViewLocalDB = new BackboneViews.NeighborhoodQueryViewLocalDB({el: '#query-neighborhood-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
   pathsBetweenQueryViewLocalDB = appUtilities.pathsBetweenQueryViewLocalDB = new BackboneViews.PathsBetweenQueryViewLocalDB({el: '#query-pathsbetween-localdatabase-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
@@ -1148,6 +1149,9 @@ module.exports = function() {
     $("#query-neighborhood").click(function (e) {
         neighborhoodQueryView.render();
     });
+    $("#query-neighborhood-localdatabase").click(function (e) {
+      neighborhoodQueryViewLocalDB.render();
+  });
 
     $("#query-pathsbetween, #query-pathsbetween-icon").click(function (e) {
         pathsBetweenQueryView.render();

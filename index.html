@@ -1647,6 +1647,61 @@
             </div>
         </script>
 
+
+        <!--Neighborhood query template for localDB-->
+        <script type="text/template" id="query-neighborhood-localdatabase-template">
+            <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Neighborhood Query</h4>
+                     </div>
+                    <div class="modal-body">
+                <table class="table-condensed layout-table">
+                    <tbody>
+                        <tr>
+                            <th colspan=2 style="padding-left: 0px;" align="left">
+                                <!--&emsp; are added to fill the row so that the distance between the -->
+                                <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</span>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td style="padding-left: 40px;">
+                                <span class="add-on layout-text"> Gene Symbols: </span><br>
+                                <textarea id="query-neighborhood-localdatabase-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                            </td>
+
+                            <td style="padding-right: 5px;">
+                                 <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                    <tbody>
+                                        <caption style="text-align: left;">Stop Distance</caption>
+                                        <tr>
+                                            <td colspan=2>Length limit</td>
+                                            <td style="padding: 10px;"><input id="query-neighborhood-localdatabase-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                        </tr>
+                                                </tbody>
+                                            </table>
+                                         </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                        <button id="save-query-neighborhood-localdatabase" class="btn btn-default" >OK</button>
+                        <button id="cancel-query-neighborhood-localdatabase" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <!--Neighborhood query template for localDB ends-->
+
+
+
+
+
+
         <script type="text/template" id="query-pathsbetween-template">
             <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
                 <div class="modal-content">

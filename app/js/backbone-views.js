@@ -1842,6 +1842,190 @@ var NeighborhoodQueryView = Backbone.View.extend({
   }
 });
 
+
+
+
+
+
+/**
+ * Neighborhood Query view for querying local database.
+ */
+ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-neighborhood-localdatabase-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+    var self = this;
+    self.template = _.template($("#query-neighborhood-localdatabase-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal('show');
+    PCdialog = "Neighborhood";
+
+    $(document).off("click", "#save-query-neighborhood-localdatabase").on("click", "#save-query-neighborhood-localdatabase", function (evt) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use the associated cy instance
+      var cy = chiseInstance.getCy();
+
+      self.currentQueryParameters.geneSymbols = document.getElementById("query-neighborhood-localdatabase-gene-symbols").value;
+      self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-neighborhood-localdatabase-length-limit").value);
+
+      var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+      if (geneSymbols.length === 0) {
+          document.getElementById("query-neighborhood-localdatabase-gene-symbols").focus();
+          return;
+      }
+      // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+      geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+      if (geneSymbols.length === 0) {
+        $(self.el).modal('toggle');
+        new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        return;
+      }
+      if (self.currentQueryParameters.lengthLimit > 2) {
+        $(self.el).modal('toggle');
+        new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+        document.getElementById("query-neighborhood-localdatabase-length-limit").focus();
+        return;
+      }
+
+      var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit="
+          + self.currentQueryParameters.lengthLimit;
+      var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+      var filename = "";
+      var sources = "";
+      for (var i = 0; i < geneSymbolsArray.length; i++) {
+        var currentGeneSymbol = geneSymbolsArray[i];
+        if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+            || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+            continue;
+        }
+        sources = sources + "&source=" + currentGeneSymbol;
+
+        if (filename == '') {
+            filename = currentGeneSymbol;
+        } else {
+            filename = filename + '_' + currentGeneSymbol;
+        }
+      }
+      filename = filename + '_NEIGHBORHOOD.nwt';
+      queryURL = queryURL + sources;
+
+      if(cy.nodes().length == 0){
+
+        chiseInstance.startSpinner('neighborhood-spinner');
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+        var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+        
+        $.ajax({
+          type: 'get',
+          url: "/utilities/testURL",
+          data: {url: queryURL},
+          success: function(data){
+            if (!data.error && data.response.statusCode == 200 && data.response.body) {
+              var xml = $.parseXML(data.response.body);
+              $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+              currentGeneralProperties.inferNestingOnLoad = false;
+              chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+              currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+              chiseInstance.endSpinner('neighborhood-spinner');
+              $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+            }
+            else if (data.response.body === "") {
+              new PromptEmptyQueryResultView({el: '#prompt-emptyQueryResult-table'}).render();
+              chiseInstance.endSpinner('neighborhood-spinner');
+            }
+            else {
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              chiseInstance.endSpinner('neighborhood-spinner');
+            }
+          },
+          error: function(xhr, options, err){
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            chiseInstance.endSpinner('neighborhood-spinner');
+          }
+        });
+
+        $(self.el).modal('toggle');
+
+      }
+      else{
+
+        new PromptConfirmationView({el: '#prompt-confirmation-table'}).render(function(){
+
+          chiseInstance.startSpinner('neighborhood-spinner');
+          var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+          var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');        
+
+          $.ajax({
+            type: 'get',
+            url: "/utilities/testURL",
+            data: {url: queryURL},
+            success: function(data){
+              if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                var xml = $.parseXML(data.response.body);
+                $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                currentGeneralProperties.inferNestingOnLoad = false;
+                chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+                currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                chiseInstance.endSpinner('neighborhood-spinner');
+                $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+              }
+              else if (data.response.body === "") {
+                new PromptEmptyQueryResultView({el: '#prompt-emptyQueryResult-table'}).render();
+                chiseInstance.endSpinner('neighborhood-spinner');
+              }
+              else {
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                chiseInstance.endSpinner('neighborhood-spinner');
+              }
+            },
+            error: function(xhr, options, err){
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              chiseInstance.endSpinner('neighborhood-spinner');
+            }
+          });
+
+          $(self.el).modal('toggle');
+
+        });
+
+      }
+
+    });
+
+    $(document).off("click", "#cancel-query-neighborhood-localdatabase").on("click", "#cancel-query-neighborhood-localdatabase", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  }
+});
+
+
+
+
+
+
 /**
  * Paths Between Query view for the Sample Application.
  */
@@ -5616,6 +5800,7 @@ module.exports = {
   experimentTabPanel: experimentTabPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
   NeighborhoodQueryView: NeighborhoodQueryView,
+  NeighborhoodQueryViewLocalDB: NeighborhoodQueryViewLocalDB,
   PathsBetweenQueryView: PathsBetweenQueryView,
   PathsBetweenQueryViewLocalDB: PathsBetweenQueryViewLocalDB,
   PathsFromToQueryView: PathsFromToQueryView,
