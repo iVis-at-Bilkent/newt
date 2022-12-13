@@ -3060,6 +3060,175 @@ var CommonStreamQueryView = Backbone.View.extend({
 
 
 
+/**
+ * Down Stream Query view for the querying local database.
+ */
+ var DownStreamQueryViewLocalDB = Backbone.View.extend({
+  defaultQueryParameters: {
+      geneSymbols: "",
+      lengthLimit: 1
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+      var self = this;
+      self.copyProperties();
+      self.template = _.template($("#query-downstream-localdatabase-template").html());
+      self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+      this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+
+      var self = this;
+      self.template = _.template($("#query-downstream-localdatabase-template").html());
+      self.template = self.template(self.currentQueryParameters);
+      $(self.el).html(self.template);
+
+      $(self.el).modal('show');
+      PCdialog = "CommonStream";
+
+      $(document).off("click", "#save-query-downstream-localdatabase").on("click", "#save-query-downstream-localdatabase", function (evt) {
+
+
+
+          // use active chise instance
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+
+          // use the associated cy instance
+          var cy = chiseInstance.getCy();
+
+          self.currentQueryParameters.geneSymbols = document.getElementById("query-downstream-localdatabase-gene-symbols").value;
+          self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-downstream-localdatabase-length-limit").value);
+
+          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+          if (geneSymbols.length === 0) {
+              document.getElementById("query-downstream-localdatabase-gene-symbols").focus();
+              return;
+          }
+          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+          if (geneSymbols.length === 0) {
+              $(self.el).modal('toggle');
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+              return;
+          }
+          if (self.currentQueryParameters.lengthLimit > 3) {
+              $(self.el).modal('toggle');
+              new PromptInvalidLengthLimitView({el: '#prompt-invalidLengthLimit-table'}).render();
+              document.getElementById("query-downstream-localdatabase-length-limit").focus();
+              return;
+          }
+
+          var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
+              + self.currentQueryParameters.lengthLimit;
+          var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+
+          var filename = "";
+          var sources = "";
+          for (var i = 0; i < geneSymbolsArray.length; i++) {
+              var currentGeneSymbol = geneSymbolsArray[i];
+              if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
+                  || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
+                  continue;
+              }
+              sources = sources + "&source=" + currentGeneSymbol;
+
+              if (filename == '') {
+                  filename = currentGeneSymbol;
+              } else {
+                  filename = filename + '_' + currentGeneSymbol;
+              }
+          }
+          filename = filename + '_COMMONSTREAM.nwt';
+          queryURL = queryURL + sources;
+
+          if(cy.nodes().length == 0){
+
+            chiseInstance.startSpinner('common-stream-spinner');
+            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+            var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');             
+
+            $.ajax({
+              type: 'get',
+              url: "/utilities/testURL",
+              data: {url: queryURL},
+              success: function(data){
+                if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                  chiseInstance.endSpinner('common-stream-spinner');
+                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                }
+                else {
+                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                  chiseInstance.endSpinner('common-stream-spinner');
+                }
+              },
+              error: function(xhr, options, err){
+                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                chiseInstance.endSpinner('common-stream-spinner');
+              }
+            });
+
+            $(self.el).modal('toggle');
+
+          }
+          else{
+
+            new PromptConfirmationView({el: '#prompt-confirmation-table'}).render(function(){
+
+              chiseInstance.startSpinner('common-stream-spinner');
+              var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+              var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+              var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');                
+
+              $.ajax({
+                type: 'get',
+                url: "/utilities/testURL",
+                data: {url: queryURL},
+                success: function(data){
+                  if (!data.error && data.response.statusCode == 200 && data.response.body) {
+                    var xml = $.parseXML(data.response.body);
+                    $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
+                    currentGeneralProperties.inferNestingOnLoad = false;
+                    chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
+                    currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                    chiseInstance.endSpinner('common-stream-spinner');
+                    $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
+                  }
+                  else {
+                    new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                    chiseInstance.endSpinner('common-stream-spinner');
+                  }
+                },
+                error: function(xhr, options, err){
+                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+                  chiseInstance.endSpinner('common-stream-spinner');
+                }
+              });
+
+              $(self.el).modal('toggle');
+
+            });
+
+          }
+      });
+
+      $(document).off("click", "#cancel-query-downstream-localdatabase").on("click", "#cancel-query-downstream-localdatabase", function (evt) {
+          $(self.el).modal('toggle');
+      });
+
+      return this;
+  }
+});
+
+
+
 
 
 /**
@@ -5981,6 +6150,7 @@ module.exports = {
   CommonStreamQueryView: CommonStreamQueryView,
   CommonStreamQueryViewLocalDB: CommonStreamQueryViewLocalDB,
   UpStreamQueryViewLocalDB: UpStreamQueryViewLocalDB,
+  DownStreamQueryViewLocalDB: DownStreamQueryViewLocalDB,
   PathsByURIQueryView: PathsByURIQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
