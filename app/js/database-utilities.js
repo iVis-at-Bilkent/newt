@@ -485,6 +485,50 @@ var databaseUtilities = {
     });
     return result
 
+  },
+
+  runCommonStream: async function(labelOfNodes,lengthLimit,direction)
+  {
+    var idOfNodes = [];
+    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes)
+    var query = ""
+    if (direction == -1)
+    {
+      query = graphALgos.commonStream(idOfNodes,lengthLimit)
+
+    }
+    else if (direction == 1)
+    {
+      query = graphALgos.upstream(idOfNodes,lengthLimit)
+
+    }
+    else
+    {
+      query = graphALgos.downstream(idOfNodes,lengthLimit)
+
+    }
+
+    console.log('idOfNodes in runpaths',idOfNodes)
+
+    var data = { query: query, queryData: null };
+    var result = {}
+    result.highlight = {}
+    result.add = {}
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: async function (data) {
+        console.log(data);
+        await databaseUtilities.addNodesEdgesToCy(data)
+         },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+    return result
+
   }
 };
 module.exports = databaseUtilities;

@@ -2163,8 +2163,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           console.log("lengthLimit", lengthLimit)
           var resultFromDb = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
           console.log("resultFromDb",resultFromDb)
-          
-      
+          $(self.el).modal('toggle');
 
       });
 
@@ -2401,7 +2400,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
 
       $(self.el).modal('show');
       PCdialog = "PathsFromTo";
-      $(document).off("click", "#save-query-pathsfromto-localdatabase").on("click", "#save-query-pathsfromto-localdatabase", function (evt) {
+      $(document).off("click", "#save-query-pathsfromto-localdatabase").on("click", "#save-query-pathsfromto-localdatabase", async function (evt) {
         console.log("here")
         self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols-localdatabase").value;
           self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols-localdatabase").value;
@@ -2444,7 +2443,9 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
           var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
           console.log("sourceSymbolsArray", sourceSymbolsArray)
           console.log("targetSymbolsArray", targetSymbolsArray)
-          databaseUtilities.runPathsFromTo(sourceSymbolsArray, targetSymbols, 2)
+         await  databaseUtilities.runPathsFromTo(sourceSymbolsArray, targetSymbols, 2)
+          $(self.el).modal('toggle');
+
       });
 
       $(document).off("click", "#cancel-query-pathsfromto-localdatabase").on("click", "#cancel-query-pathsfromto-localdatabase", function (evt) {
@@ -2656,7 +2657,7 @@ var CommonStreamQueryView = Backbone.View.extend({
       $(self.el).modal('show');
       PCdialog = "CommonStream";
 
-      $(document).off("click", "#save-query-commonstream-localdatabase").on("click", "#save-query-commonstream-localdatabase", function (evt) {
+      $(document).off("click", "#save-query-commonstream-localdatabase").on("click", "#save-query-commonstream-localdatabase", async function (evt) {
 
 
 
@@ -2687,104 +2688,16 @@ var CommonStreamQueryView = Backbone.View.extend({
               document.getElementById("query-commonstream-localdatabase-length-limit").focus();
               return;
           }
-
-          var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
-              + self.currentQueryParameters.lengthLimit;
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+          $(self.el).modal('toggle');
 
-          var filename = "";
-          var sources = "";
-          for (var i = 0; i < geneSymbolsArray.length; i++) {
-              var currentGeneSymbol = geneSymbolsArray[i];
-              if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                  || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                  continue;
-              }
-              sources = sources + "&source=" + currentGeneSymbol;
+          var lengthLimit =  self.currentQueryParameters.lengthLimit
+          console.log("geneSymbolsArray", geneSymbolsArray)
+          console.log("lengthLimit", lengthLimit)
+          var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,-1)
+          console.log("resultFromDb",resultFromDb)
+          $(self.el).modal('toggle');
 
-              if (filename == '') {
-                  filename = currentGeneSymbol;
-              } else {
-                  filename = filename + '_' + currentGeneSymbol;
-              }
-          }
-          filename = filename + '_COMMONSTREAM.nwt';
-          queryURL = queryURL + sources;
-
-          if(cy.nodes().length == 0){
-
-            chiseInstance.startSpinner('common-stream-spinner');
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');             
-
-            $.ajax({
-              type: 'get',
-              url: "/utilities/testURL",
-              data: {url: queryURL},
-              success: function(data){
-                if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                  chiseInstance.endSpinner('common-stream-spinner');
-                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                }
-                else {
-                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                  chiseInstance.endSpinner('common-stream-spinner');
-                }
-              },
-              error: function(xhr, options, err){
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('common-stream-spinner');
-              }
-            });
-
-            $(self.el).modal('toggle');
-
-          }
-          else{
-
-            new PromptConfirmationView({el: '#prompt-confirmation-table'}).render(function(){
-
-              chiseInstance.startSpinner('common-stream-spinner');
-              var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-              var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-              var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');                
-
-              $.ajax({
-                type: 'get',
-                url: "/utilities/testURL",
-                data: {url: queryURL},
-                success: function(data){
-                  if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-                    currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                    chiseInstance.endSpinner('common-stream-spinner');
-                    $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                  }
-                  else {
-                    new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                    chiseInstance.endSpinner('common-stream-spinner');
-                  }
-                },
-                error: function(xhr, options, err){
-                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                  chiseInstance.endSpinner('common-stream-spinner');
-                }
-              });
-
-              $(self.el).modal('toggle');
-
-            });
-
-          }
       });
 
       $(document).off("click", "#cancel-query-commonstream-localdatabase").on("click", "#cancel-query-commonstream-localdatabase", function (evt) {
@@ -2825,7 +2738,7 @@ var CommonStreamQueryView = Backbone.View.extend({
       $(self.el).modal('show');
       PCdialog = "CommonStream";
 
-      $(document).off("click", "#save-query-upstream-localdatabase").on("click", "#save-query-upstream-localdatabase", function (evt) {
+      $(document).off("click", "#save-query-upstream-localdatabase").on("click", "#save-query-upstream-localdatabase", async  function (evt) {
 
 
 
@@ -2857,103 +2770,15 @@ var CommonStreamQueryView = Backbone.View.extend({
               return;
           }
 
-          var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
-              + self.currentQueryParameters.lengthLimit;
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+          var lengthLimit =  self.currentQueryParameters.lengthLimit
+          console.log("geneSymbolsArray", geneSymbolsArray)
+          console.log("lengthLimit", lengthLimit)
+          var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
+          console.log("resultFromDb",resultFromDb)
+          $(self.el).modal('toggle');
 
-          var filename = "";
-          var sources = "";
-          for (var i = 0; i < geneSymbolsArray.length; i++) {
-              var currentGeneSymbol = geneSymbolsArray[i];
-              if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                  || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                  continue;
-              }
-              sources = sources + "&source=" + currentGeneSymbol;
-
-              if (filename == '') {
-                  filename = currentGeneSymbol;
-              } else {
-                  filename = filename + '_' + currentGeneSymbol;
-              }
-          }
-          filename = filename + '_COMMONSTREAM.nwt';
-          queryURL = queryURL + sources;
-
-          if(cy.nodes().length == 0){
-
-            chiseInstance.startSpinner('common-stream-spinner');
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');             
-
-            $.ajax({
-              type: 'get',
-              url: "/utilities/testURL",
-              data: {url: queryURL},
-              success: function(data){
-                if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                  chiseInstance.endSpinner('common-stream-spinner');
-                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                }
-                else {
-                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                  chiseInstance.endSpinner('common-stream-spinner');
-                }
-              },
-              error: function(xhr, options, err){
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('common-stream-spinner');
-              }
-            });
-
-            $(self.el).modal('toggle');
-
-          }
-          else{
-
-            new PromptConfirmationView({el: '#prompt-confirmation-table'}).render(function(){
-
-              chiseInstance.startSpinner('common-stream-spinner');
-              var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-              var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-              var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');                
-
-              $.ajax({
-                type: 'get',
-                url: "/utilities/testURL",
-                data: {url: queryURL},
-                success: function(data){
-                  if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-                    currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                    chiseInstance.endSpinner('common-stream-spinner');
-                    $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                  }
-                  else {
-                    new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                    chiseInstance.endSpinner('common-stream-spinner');
-                  }
-                },
-                error: function(xhr, options, err){
-                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                  chiseInstance.endSpinner('common-stream-spinner');
-                }
-              });
-
-              $(self.el).modal('toggle');
-
-            });
-
-          }
+        
       });
 
       $(document).off("click", "#cancel-query-upstream-localdatabase").on("click", "#cancel-query-upstream-localdatabase", function (evt) {
@@ -2995,7 +2820,7 @@ var CommonStreamQueryView = Backbone.View.extend({
       $(self.el).modal('show');
       PCdialog = "CommonStream";
 
-      $(document).off("click", "#save-query-downstream-localdatabase").on("click", "#save-query-downstream-localdatabase", function (evt) {
+      $(document).off("click", "#save-query-downstream-localdatabase").on("click", "#save-query-downstream-localdatabase", async function (evt) {
 
 
 
@@ -3027,103 +2852,15 @@ var CommonStreamQueryView = Backbone.View.extend({
               return;
           }
 
-          var queryURL = "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit="
-              + self.currentQueryParameters.lengthLimit;
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+          var lengthLimit =  self.currentQueryParameters.lengthLimit
+          console.log("geneSymbolsArray", geneSymbolsArray)
+          console.log("lengthLimit", lengthLimit)
+          var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
+          console.log("resultFromDb",resultFromDb)
+          $(self.el).modal('toggle');
 
-          var filename = "";
-          var sources = "";
-          for (var i = 0; i < geneSymbolsArray.length; i++) {
-              var currentGeneSymbol = geneSymbolsArray[i];
-              if (currentGeneSymbol.length == 0 || currentGeneSymbol == ' '
-                  || currentGeneSymbol == '\n' || currentGeneSymbol == '\t') {
-                  continue;
-              }
-              sources = sources + "&source=" + currentGeneSymbol;
-
-              if (filename == '') {
-                  filename = currentGeneSymbol;
-              } else {
-                  filename = filename + '_' + currentGeneSymbol;
-              }
-          }
-          filename = filename + '_COMMONSTREAM.nwt';
-          queryURL = queryURL + sources;
-
-          if(cy.nodes().length == 0){
-
-            chiseInstance.startSpinner('common-stream-spinner');
-            var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-            var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');             
-
-            $.ajax({
-              type: 'get',
-              url: "/utilities/testURL",
-              data: {url: queryURL},
-              success: function(data){
-                if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                  chiseInstance.endSpinner('common-stream-spinner');
-                  $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                }
-                else {
-                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                  chiseInstance.endSpinner('common-stream-spinner');
-                }
-              },
-              error: function(xhr, options, err){
-                new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                chiseInstance.endSpinner('common-stream-spinner');
-              }
-            });
-
-            $(self.el).modal('toggle');
-
-          }
-          else{
-
-            new PromptConfirmationView({el: '#prompt-confirmation-table'}).render(function(){
-
-              chiseInstance.startSpinner('common-stream-spinner');
-              var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-              var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
-              var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');                
-
-              $.ajax({
-                type: 'get',
-                url: "/utilities/testURL",
-                data: {url: queryURL},
-                success: function(data){
-                  if (!data.error && data.response.statusCode == 200 && data.response.body) {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger('sbgnvizLoadFile', [ filename, cy ]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, currentLayoutProperties);
-                    currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
-                    chiseInstance.endSpinner('common-stream-spinner');
-                    $(document).trigger('sbgnvizLoadFileEnd', [ filename, cy ]);
-                  }
-                  else {
-                    new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                    chiseInstance.endSpinner('common-stream-spinner');
-                  }
-                },
-                error: function(xhr, options, err){
-                  new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-                  chiseInstance.endSpinner('common-stream-spinner');
-                }
-              });
-
-              $(self.el).modal('toggle');
-
-            });
-
-          }
+          
       });
 
       $(document).off("click", "#cancel-query-downstream-localdatabase").on("click", "#cancel-query-downstream-localdatabase", function (evt) {
