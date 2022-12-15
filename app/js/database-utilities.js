@@ -288,85 +288,7 @@ var databaseUtilities = {
     });
   },
 
-  runPathsFromTo: function (sourceArray, targetArray, limit) {
-    query = graphALgos.pathsFromTo(sourceArray, targetArray, limit);
-    var queryData = { sourceArray: sourceArray, targetArray: targetArray };
-    var data = { query: query, queryData: queryData };
-
-    $.ajax({
-      type: "post",
-      url: "/utilities/runDatabaseQuery",
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(data),
-      success: function (data) {
-        console.log(data);
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        let nodes = [];
-        let edges = [];
-        for (let i = 0; i < data.records.length; i++) {
-          nodes.push(data.records[i]._fields[0]);
-          nodes.push(data.records[i]._fields[1]);
-
-          databaseUtilities.nodesInDB[
-            data.records[i]._fields[0].properties.newtId
-          ] = data.records[i]._fields[0].identity.low;
-          databaseUtilities.nodesInDB[
-            data.records[i]._fields[1].properties.newtId
-          ] = data.records[i]._fields[1].identity.low;
-
-          for (let j = 0; j < data.records[i]._fields[2].segments.length; j++) {
-            if (
-              !databaseUtilities.nodesInDB[
-                data.records[i]._fields[2].segments[j].end.properties.newtId
-              ]
-            ) {
-              nodes.push(data.records[i]._fields[2].segments[j].end);
-              databaseUtilities.nodesInDB[
-                data.records[i]._fields[2].segments[j].end.properties.newtId
-              ] = data.records[i]._fields[2].segments[j].end.identity.low;
-            }
-            if (
-              !databaseUtilities.nodesInDB[
-                data.records[i]._fields[2].segments[j].start.properties.newtId
-              ]
-            ) {
-              nodes.push(data.records[i]._fields[2].segments[j].start);
-              databaseUtilities.nodesInDB[
-                data.records[i]._fields[2].segments[j].start.properties.newtId
-              ] = data.records[i]._fields[2].segments[j].start.identity.low;
-            }
-            edges.push(data.records[i]._fields[2].segments[j].relationship);
-          }
-        }
-        console.log("nodes got", nodes);
-        console.log("edges got", edges);
-        for (let i = 0; i < nodes.length; i++) {
-          chiseInstance.addNode(
-            0,
-            0,
-            nodes[i].properties.class,
-            nodes[i].properties.newtId,
-            undefined,
-            undefined
-          );
-          //chiseInstance.changeNodeLabel(nodes[i].properties.newtId, nodes[i].properties.entityName);
-        }
-        for (let i = 0; i < edges.length; i++) {
-          chiseInstance.addEdge(
-            edges[i].properties.source,
-            edges[i].properties.target,
-            edges[i].properties.class,
-            undefined,
-            undefined
-          );
-        }
-        // chiseInstance.performLayout(options, notUndoable);
-      },
-      error: function (req, status, err) {
-        console.error("Error running query", status, err);
-      },
-    });
-  },
+  //Queries
   getIdOfLabeledNodes: async function (labelOfNodes, idOfNodes) {
     var query = `UNWIND $labelOfNodes as label
                    MATCH (u)
@@ -396,6 +318,118 @@ var databaseUtilities = {
       },
     });
   },
+
+  addNodesEdgesToCy: function(data)
+  {
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    let nodesToHighlight = [];
+    let edgesToHighlight = [];
+    let edgesToAdd = [];
+    let nodesToAdd = []
+
+    console.log("here§2", data.records[0]._fields )
+    for (let i = 0; i < data.records.length; i++) {
+
+      var nodes = data.records[i]._fields[0];
+      console.log("nodess", nodes)
+      for ( let j = 0; j < nodes.length; j++)
+      {
+        console.log("in iff hjh")
+        if(!databaseUtilities.nodesInDB[ nodes[j].properties.newtId ])
+        {
+          console.log("in iff")
+          databaseUtilities.nodesInDB[
+            nodes[j].properties.newtId
+          ] = nodes[j].identity.low;
+          nodesToAdd.push(nodes[j])
+        }
+        nodesToHighlight.push(nodes[j])
+      }
+     
+      var edges = data.records[i]._fields[4];
+      for (let j = 0; j < edges.length; j++) {
+        //Check if edge already exists in map
+        if(!databaseUtilities.edgesInDB[[
+          edges[j].properties.source,
+          edges[j].properties.target,
+          edges[j].properties.class,
+        ]]) 
+        {
+          edgesToAdd.push(edges[j])
+          databaseUtilities.edgesInDB[[
+            edges[j].properties.source,
+            edges[j].properties.target,
+            edges[j].properties.class,
+          ]]  = edges[j].identity.low
+        }
+        edgesToHighlight.push(edges[j])
+      }
+    }
+
+
+    console.log("nodes to add", nodesToAdd);
+    console.log("edges to add", edgesToAdd);
+    console.log("nodes to high", nodesToHighlight);
+    console.log("edges to high", edgesToHighlight);
+
+    //Add nodes without any parents first
+    for (let i = 0; i < nodesToAdd.length; i++) {
+      if(!nodesToAdd[i].properties.parent)
+      {
+        var nodeParams = {class: nodesToAdd[i].properties.class, language: "PD"}
+        chiseInstance.addNode(0, 0, nodeParams, nodesToAdd[i].properties.newtId, undefined);
+      }
+      //chiseInstance.changeNodeLabel(nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.entityName);
+    }
+
+    //Then add children
+    for (let i = 0; i < nodesToAdd.length; i++) {
+      console.log("parent", nodesToAdd[i].properties.parent)
+
+      if(nodesToAdd[i].properties.parent)
+      {
+        var nodeParams = {class: nodesToAdd[i].properties.class, language: "PD"}
+        chiseInstance.addNode(0, 0, nodeParams, nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.parent);
+      }
+      //chiseInstance.changeNodeLabel(nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.entityName);
+    }
+
+    
+    for (let i = 0; i < edges.length; i++) {
+      if (edgesToAdd[i].properties.class != "belongs_to_submap" && edgesToAdd[i].properties.class != "belongs_to_compartment" && 
+      edgesToAdd[i].properties.class != "belongs_to_complex"  )
+      chiseInstance.addEdge(
+        edgesToAdd[i].properties.source,
+        edgesToAdd[i].properties.target,
+        edgesToAdd[i].properties.class,
+        undefined,
+        undefined
+      );
+      }
+    // chiseInstance.performLayout(options, notUndoable);
+  },
+
+
+  runPathsFromTo: async function (sourceArray, targetArray, limit) {
+    query = graphALgos.pathsFromTo(sourceArray, targetArray, limit);
+    var queryData = { sourceArray: sourceArray, targetArray: targetArray };
+    var data = { query: query, queryData: queryData };
+
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: async function (data) {
+        console.log(data);
+        await databaseUtilities.addNodesEdgesToCy(data)
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+  },
+  
   runPathBetween: async function (labelOfNodes, lengthLimit) {
     console.log("labelOfNodes",labelOfNodes)
     console.log("lengthLimit",lengthLimit)
@@ -413,73 +447,9 @@ var databaseUtilities = {
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
-      success: function (data) {
+      success: async function (data) {
         console.log(data);
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-
-        //Get the nodes
-        result.highlight.nodes = []
-        result.add.nodes = {}
-        for (var i = 0; i < data.records[0]._fields[0].length; i++)
-        {
-          result.highlight.nodes.push(data.records[0]._fields[0][i].properties)
-
-          //Check if node already exists in map
-          if(!databaseUtilities.nodesInDB[data.records[0]._fields[0][i].properties.newtId]) 
-          {
-            result.add.nodes[data.records[0]._fields[0][i].identity.low] =  data.records[0]._fields[0][i].properties
-            databaseUtilities.nodesInDB[data.records[0]._fields[0][i].properties.newtId] = data.records[0]._fields[0][i].identity.low
-          }
-        }
-
-        //Get the edges
-        result.highlight.edges = []
-        result.add.edges = []
-        for (var i = 0; i < data.records[0]._fields[4].length; i++)
-        {
-          result.highlight.edges.push(data.records[0]._fields[0][i].properties)
-
-
-          //Check if edge already exists in map
-          if(!databaseUtilities.edgesInDB[[
-            data.records[0]._fields[0][i].properties.source,
-            data.records[0]._fields[0][i].properties.target,
-            data.records[0]._fields[0][i].properties.class,
-          ]]) 
-          {
-            result.add.edges[data.records[0]._fields[4][i].identity.low] =  data.records[0]._fields[0][i].properties
-            databaseUtilities.edgesInDB[[
-              data.records[0]._fields[0][i].properties.source,
-              data.records[0]._fields[0][i].properties.target,
-              data.records[0]._fields[0][i].properties.class,
-            ]]  = data.records[0]._fields[4][i].identity.low
-          }
-        }
-
-
-        console.log("result.add.nodes.length",result.add.nodes)
-        for (let i = 0; i <  result.highlight.nodes.length; i++) {
-          chiseInstance.addNode(
-            0,
-            0,
-            result.highlight.nodes[i].class,
-            result.highlight.nodes[i].newtId,
-            undefined,
-            undefined
-          );
-          //chiseInstance.changeNodeLabel(nodes[i].properties.newtId, nodes[i].properties.entityName);
-        }
-        console.log("result.add.edges",result.add.edges)
-        for (let i = 0; i <  result.highlight.edges.length; i++) {
-          chiseInstance.addEdge(
-            result.highlight.edges[i].source,
-            result.highlight.edges[i].target,
-            result.highlight.edges[i].class,
-            undefined,
-            undefined
-          );
-        }
-
+        await databaseUtilities.addNodesEdgesToCy(data)
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -489,5 +459,32 @@ var databaseUtilities = {
 
 
   },
+  runNeighborhood: async function(labelOfNodes,lengthLimit)
+  {
+    var idOfNodes = [];
+    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes)
+    var query = graphALgos.neighborhood(idOfNodes,lengthLimit)
+    console.log('idOfNodes in runpaths',idOfNodes)
+
+    var data = { query: query, queryData: null };
+    var result = {}
+    result.highlight = {}
+    result.add = {}
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: async function (data) {
+        console.log(data);
+        await databaseUtilities.addNodesEdgesToCy(data)
+         },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+    return result
+
+  }
 };
 module.exports = databaseUtilities;
