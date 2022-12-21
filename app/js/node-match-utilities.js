@@ -7,13 +7,15 @@ var nodeMatchUtilities = {
     nodeData,
     name,
     matchID,
+    macthClass,
     matchLabelForCnt,
     matchMultimer,
     matchCloneMarker,
     matchCloneLabel,
     matchStateVariable,
     matchUnitInformation,
-    matchLabel
+    matchLabel,
+    matchParent
   ) {
     //Here we will call all the match conditions
     query = ``;
@@ -29,7 +31,8 @@ var nodeMatchUtilities = {
       query = query + nodeMatchUtilities.matchWithLabel(name, nodeData);
     }
     if (matchMultimer) {
-      query = query + nodeMatchUtilities.matchWithMultimer(name, nodeData);
+      query =
+        query + and_or + nodeMatchUtilities.matchWithMultimer(name, nodeData);
     }
     if (matchCloneMarker) {
       query =
@@ -53,14 +56,58 @@ var nodeMatchUtilities = {
         and_or +
         nodeMatchUtilities.matchWithUnitInformation(name, nodeData);
     }
+    if (matchParent) {
+      query =
+        query + and_or + nodeMatchUtilities.matchWithParent(name, nodeData);
+    }
+    if (macthClass) {
+      query =
+        query + and_or + nodeMatchUtilities.matchWithClass(name, nodeData);
+    }
 
+    return query;
+  },
+  matchProcessNodes: function (
+    name,
+    nodeData,
+    matchSource,
+    matchTarget,
+    matchModifier,
+    matchParent
+  ) {
+    query = ``;
+    and_or = ` or `;
+    if (matchParent) {
+      query = nodeMatchUtilities.matchWithParent(name, nodeData);
+    }
+    if (matchParent && (matchSource || matchTarget || matchModifier)) {
+      query = query + " and (";
+    }
+    if (matchParent && matchSource) {
+      query =
+        query + nodeMatchUtilities.matchProcessNodesSource(name, nodeData);
+    }
+    if (matchTarget) {
+      query =
+        query +
+        and_or +
+        nodeMatchUtilities.matchProcessNodesTarget(name, nodeData);
+    }
+    if (matchModifier) {
+      query =
+        query +
+        and_or +
+        nodeMatchUtilities.matchProcessNodesModifier(name, nodeData);
+    }
+    query = query + ")";
+    console.log("query", query);
     return query;
   },
   matchWithID: function (name, nodeData) {
     return `${name}.newtId = ${nodeData}.newtID`;
   },
   matchWithLabelForCounting: function (name, nodeData) {
-    return `${name}.entityName = ${nodeData}.entityName and not (${nodeData}.class = \\"process\\")`;
+    return `${name}.entityName = ${nodeData}.entityName and not (${nodeData}.class = \\"process\\" or ${nodeData}.class = \\"association\\"  or ${nodeData}.class = \\"dissociation\\")`;
   },
   matchWithLabel: function (name, nodeData) {
     return `${name}.entityName = ${nodeData}.entityName and not (${nodeData}.class = \\\\'process\\\\')`;
@@ -75,10 +122,28 @@ var nodeMatchUtilities = {
     return `${name}.cloneLabel = ${nodeData}.cloneLabel`;
   },
   matchWithStateVariables: function (name, nodeData) {
-    return `size(${name}.stateVariables) = ${nodeData.stateVariables.length}`;
+    return `${name}.stateVariables = ${nodeData}.stateVariables`;
   },
   matchWithUnitInformation: function (name, nodeData) {
-    return `size(${name}.unitsOfInformation) = ${nodeData.unitsOfInformation.length}`;
+    return `${name}.unitsOfInformation = ${nodeData}.unitsOfInformation`;
+  },
+  matchWithParent: function (name, nodeData) {
+    return `${name}.parent = ${nodeData}.parent`;
+  },
+  matchWithClass: function (name, nodeData) {
+    return `${name}.class = ${nodeData}.class`;
+  },
+  matchProcessNodesSource: function (name, nodeData) {
+    return `( ${name}.source_0 = ${nodeData}.source_0) and (NOT EXISTS(${name}.source_1 ) or ${name}.source_1 = ${nodeData}.source_1)`;
+  },
+  matchProcessNodesTarget: function (name, nodeData) {
+    return `( ${name}.target_0 = ${nodeData}.target_0) and (NOT EXISTS(${name}.target_1 ) or ${name}.target_1 = ${nodeData}.target_1)`;
+  },
+  matchProcessNodesModifier: function (name, nodeData) {
+    return `( ${name}.modifier_0 = ${nodeData}.modifier_0) and (NOT EXISTS(${name}.modifier_1 ) or ${name}.modifier_1 = ${nodeData}.modifier_1)`;
+  },
+  matchEdgesSource: function (name, nodeData) {
+    return `${name}.source = ${nodeData}.source`;
   },
 };
 
