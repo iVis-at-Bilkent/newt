@@ -178,6 +178,8 @@ var databaseUtilities = {
             ]
           ];
       }
+      edgesData[i].sourceClass = nodesMap[edgesData[i].source].class;
+      edgesData[i].targetClass = nodesMap[edgesData[i].target].class;
 
       //Process process nodes
       if (
@@ -373,22 +375,30 @@ var databaseUtilities = {
     YIELD value
     WITH collect(value.node) as nodes
     CALL 
-    apoc.cypher.doIt('
+    apoc.cypher.doIt("
       UNWIND $edgesData AS data 
       CALL apoc.do.when(data.inDb,
-        \\"RETURN null as rel\\",
-        \\"
-        MATCH (n {newtId: data.source}), (m { newtId: data.target})  
-          WITH DISTINCT n, m, data
-          CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
-          WITH rel
+        'RETURN null as rel',
+        'CALL  apoc.cypher.doIt(\\"MATCH (a)-[r]->(b)
+          WHERE ${nodeMatchUtilities.matchEdges("r", "data", true, true)}
+          RETURN COUNT(r) as cnt \\", {data:data})
+          YIELD value
+        WITH value.cnt as cnt, data
+        CALL apoc.do.when(cnt>0 , \\" RETURN 1 as rel\\",
+              \\"MATCH (n {newtId: data.source}), (m { newtId: data.target})  
+               WITH DISTINCT n, m, data
+              CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
+               WITH rel
           SET rel.processed = 0
-          RETURN rel as rel\\",
+          RETURN rel as rel \\", {data:data})
+         YIELD value
+         RETURN value.rel as rel',
         {data: data}
       )
       YIELD value
       RETURN collect(value.rel) as rel
-      ',{edgesData: $edgesData})
+      ",
+      {edgesData: $edgesData})
     YIELD value
     RETURN nodes as nodes, value.rel as edges`;
 

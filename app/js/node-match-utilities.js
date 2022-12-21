@@ -103,6 +103,18 @@ var nodeMatchUtilities = {
     console.log("query", query);
     return query;
   },
+  matchEdges: function (name, nodeData, matchSource, matchTarget) {
+    query = ``;
+    and_or = ` and `;
+    if (matchSource) {
+      query = query + nodeMatchUtilities.matchEdgesSource(name, nodeData);
+    }
+    if (matchTarget) {
+      query =
+        query + and_or + nodeMatchUtilities.matchEdgesTarget(name, nodeData);
+    }
+    return query;
+  },
   matchWithID: function (name, nodeData) {
     return `${name}.newtId = ${nodeData}.newtID`;
   },
@@ -144,6 +156,9 @@ var nodeMatchUtilities = {
   },
   matchEdgesSource: function (name, nodeData) {
     return `${name}.source = ${nodeData}.source`;
+  },
+  matchEdgesTarget: function (name, nodeData) {
+    return `${name}.target = ${nodeData}.target`;
   },
 };
 

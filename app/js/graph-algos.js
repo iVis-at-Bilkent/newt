@@ -21,7 +21,7 @@ var graphAlgos = {
     neighborhood: function(idList, lengthLimit)
     {
         var pageSize = 100000;
-        var query = `CALL neighborhood([${idList}], [], ${lengthLimit}, false,
+        var query = `CALL neighborhood([${idList}], ['belongs-to-compartment'], ${lengthLimit}, false,
             ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
             return query
     },
@@ -32,7 +32,7 @@ var graphAlgos = {
             ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
             return query
     },
-    upstream: function(idList, lenghtLimit)
+    upstream: function(idList, lengthLimit)
     {
         var pageSize = 100000;
         var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
