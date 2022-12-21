@@ -361,11 +361,14 @@ var databaseUtilities = {
         WITH value.id as id, data
         CALL
         apoc.cypher.doIt('
-              CALL apoc.do.when(id is not null , \\"RETURN 1 as node\\",
+              CALL apoc.do.when(id is not null , \\"
+              MATCH (n)
+              WHERE n.newtId = id
+              SET n.newtId = data.newtId\\",
               \\"CALL apoc.create.node([data.class], data)
               YIELD node
               SET node.processed = 0
-              RETURN node as node\\", {data: data})
+              RETURN node as node\\", {data: data, id:id})
               YIELD value
               RETURN value.node as node
             ', {data:data, id: id})
@@ -668,12 +671,13 @@ var databaseUtilities = {
     return result;
   },
   runNeighborhood: async function (labelOfNodes, lengthLimit) {
-    var idOfNodes = [];
-    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
-    var query = graphALgos.neighborhood(idOfNodes, lengthLimit);
-    console.log("idOfNodes in runpaths", idOfNodes);
+    var idList = [];
+    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idList);
+    var query = graphALgos.neighborhood(idList, lengthLimit);
+    console.log("idOfNodes in runpaths", idList);
+    var queryData = { idList: idList };
 
-    var data = { query: query, queryData: null };
+    var data = { query: query, queryData: queryData };
     var result = {};
     result.highlight = {};
     result.add = {};
