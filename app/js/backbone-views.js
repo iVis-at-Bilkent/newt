@@ -1909,7 +1909,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
        console.log("geneSymbolsArray", geneSymbolsArray)
       console.log("lengthLimit", lengthLimit)
       var resultFromDb = await databaseUtilities.runNeighborhood(geneSymbolsArray,lengthLimit)
-      console.log("resultFromDb",resultFromDb)
+      //console.log("resultFromDb",resultFromDb)
       $(self.el).modal('toggle');
 
       /*

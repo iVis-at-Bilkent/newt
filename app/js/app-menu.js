@@ -1829,13 +1829,9 @@ module.exports = function() {
       
       var activeTabContent = chiseInstance.createJsonFromSBGN();
 
-      var nodesData = [];
-      var edgesData = [];
+ 
 
-      databaseUtilities.processNodesData(nodesData, activeTabContent)
-      databaseUtilities.processEdgesData(edgesData, activeTabContent);
-
-      databaseUtilities.pushActiveContentToDatabase(nodesData, edgesData)
+      databaseUtilities.pushActiveContentToDatabase(activeTabContent)
       
     })
   }
