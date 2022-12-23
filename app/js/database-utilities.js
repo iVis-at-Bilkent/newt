@@ -96,9 +96,13 @@ var databaseUtilities = {
     }
   },
 
-  pushActiveContentToDatabase: async function (nodesData, edgesData) {
+  pushActiveContentToDatabase: async function (activeTabContent) {
+    var nodesData = [];
+    var edgesData = [];
+    await databaseUtilities.processNodesData(nodesData, activeTabContent)
+    await databaseUtilities.processEdgesData(edgesData, activeTabContent);
     await databaseUtilities.processData(nodesData, edgesData);
-    databaseUtilities.pushActiveNodesToDatabase(nodesData, edgesData);
+    databaseUtilities.pushActiveNodesEdgesToDatabase(nodesData, edgesData);
   },
 
   processData: async function (nodesData, edgesData) {
@@ -280,7 +284,7 @@ var databaseUtilities = {
     }
   },
 
-  pushActiveNodesToDatabase: function (nodesData, edgesData) {
+  pushActiveNodesEdgesToDatabase: function (nodesData, edgesData) {
     console.log("about to push nodes", nodesData);
     console.log("about to push edges", edgesData);
     var matchClass = true;
@@ -452,8 +456,14 @@ var databaseUtilities = {
       },
     });
   },
+  convertLabelToClass: function(label)
+  {
+    var repl =label.replace("_"," ")
+    console.log("class name", repl)
+    return repl
+  },
 
-  //Queries
+   //Queries
   getIdOfLabeledNodes: async function (labelOfNodes, idOfNodes) {
     var query = `UNWIND $labelOfNodes as label
                    MATCH (u)
@@ -493,37 +503,35 @@ var databaseUtilities = {
     console.log("nodes about to add", nodes);
     console.log("edges about to add", edges);
     for (let i = 0; i < nodes.length; i++) {
-      for (let j = 0; j < nodes.length; j++) {
-        if (!databaseUtilities.nodesInDB[nodes[j].properties.newtId]) {
-          databaseUtilities.nodesInDB[nodes[j].properties.newtId] =
-            nodes[j].identity.low;
-          nodesToAdd.push(nodes[j]);
-        }
-        nodesToHighlight.push(nodes[j]);
+      if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
+        databaseUtilities.nodesInDB[nodes[i].properties.newtId] =
+          nodes[i].identity.low;
+        nodesToAdd.push(nodes[i]);
       }
+      nodesToHighlight.push(nodes[i]);
+    }
 
-      for (let j = 0; j < edges.length; j++) {
-        //Check if edge already exists in map
-        if (
-          !databaseUtilities.edgesInDB[
-            [
-              edges[j].properties.source,
-              edges[j].properties.target,
-              edges[j].properties.class,
-            ]
+    for (let j = 0; j < edges.length; j++) {
+      //Check if edge already exists in map
+      if (
+        !databaseUtilities.edgesInDB[
+          [
+            edges[j].properties.source,
+            edges[j].properties.target,
+            edges[j].properties.class,
           ]
-        ) {
-          edgesToAdd.push(edges[j]);
-          databaseUtilities.edgesInDB[
-            [
-              edges[j].properties.source,
-              edges[j].properties.target,
-              edges[j].properties.class,
-            ]
-          ] = edges[j].identity.low;
-        }
-        edgesToHighlight.push(edges[j]);
+        ]
+      ) {
+        edgesToAdd.push(edges[j]);
+        databaseUtilities.edgesInDB[
+          [
+            edges[j].properties.source,
+            edges[j].properties.target,
+            edges[j].properties.class,
+          ]
+        ] = edges[j].identity.low;
       }
+      edgesToHighlight.push(edges[j]);
     }
 
     console.log("nodes to add", nodesToAdd);
@@ -535,18 +543,21 @@ var databaseUtilities = {
     for (let i = 0; i < nodesToAdd.length; i++) {
       if (!nodesToAdd[i].properties.parent) {
         var nodeParams = {
-          class: nodesToAdd[i].properties.class,
+          class: databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class),
           language: "PD",
+          label: "ass"
         };
-        chiseInstance.addNode(
+        var new_node = chiseInstance.addNode(
           0,
           0,
           nodeParams,
           nodesToAdd[i].properties.newtId,
           undefined
         );
+        console.log("new_node",new_node)
+        chiseInstance.changeNodeLabel(new_node, nodesToAdd[i].properties.entityName);
+
       }
-      //chiseInstance.changeNodeLabel(nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.entityName);
     }
 
     //Then add children
@@ -555,17 +566,21 @@ var databaseUtilities = {
 
       if (nodesToAdd[i].properties.parent) {
         var nodeParams = {
-          class: nodesToAdd[i].properties.class,
+          class: databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class),
           language: "PD",
         };
-        chiseInstance.addNode(
+        var new_node = chiseInstance.addNode(
           0,
           0,
           nodeParams,
           nodesToAdd[i].properties.newtId,
           nodesToAdd[i].properties.parent
         );
+        console.log("new_node",new_node)
+        chiseInstance.changeNodeLabel(new_node, nodesToAdd[i].properties.entityName);
+        chiseInstance.highlightSelected(new_node)
       }
+     //chiseInstance.changeNodeLabel(selectedEles, lines);
       //chiseInstance.changeNodeLabel(nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.entityName);
     }
 
@@ -575,15 +590,22 @@ var databaseUtilities = {
         edgesToAdd[i].properties.class != "belongs_to_compartment" &&
         edgesToAdd[i].properties.class != "belongs_to_complex"
       )
-        chiseInstance.addEdge(
+        var new_edge = chiseInstance.addEdge(
           edgesToAdd[i].properties.source,
           edgesToAdd[i].properties.target,
-          edgesToAdd[i].properties.class,
+          databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class),
           undefined,
           undefined
         );
+        chiseInstance.highlightSelected(new_edge)
+
     }
-    // chiseInstance.performLayout(options, notUndoable);
+     databaseUtilities.performLayout();
+  },
+
+  performLayout: function()
+  {
+    $("#perform-static-layout, #perform-static-layout-icon").click()
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit) {
@@ -690,21 +712,43 @@ var databaseUtilities = {
         console.log("data", data);
         var nodes = [];
         var edges = [];
+        var nodesSet = new Set();
+        var edgesMap = new Map();
         var records = data.records;
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
-            nodes.push(fields[0][j]);
+            console.log("nodesSet", nodesSet);
+            console.log("fields[0][j].newtId", fields[0][j].properties.newtId);
+            if (!nodesSet.has(fields[0][j].properties.newtId)) {
+              nodes.push(fields[0][j]);
+              nodesSet.add(fields[0][j].properties.newtId);
+            }
           }
-          for (let j = 0; j < fields[4].length; j++) {
-            var edge = {};
-            edge.properties = {};
-            edge.identity = {};
-            edge.properties.source = fields[4][j].properties.source;
-            edge.properties.target = fields[4][j].properties.target;
-            edge.properties.class = fields[4][j].properties.class;
-            edge.identity.low = fields[4][j].identity.low;
-            edges.push(edge);
+
+          for (let j = 0; j < fields[1].length; j++) {
+            if (
+              !edgesMap.get(fields[1][j].properties.source) ||
+              !edgesMap
+                .get(fields[1][j].properties.source)
+                .has(fields[1][j].properties.target)
+            ) {
+              var edge = {};
+              edge.properties = {};
+              edge.identity = {};
+              edge.properties.source = fields[1][j].properties.source;
+              edge.properties.target = fields[1][j].properties.target;
+              edge.properties.class = fields[1][j].properties.class;
+              edge.identity.low = fields[1][j].identity.low;
+              edges.push(edge);
+              if (!edgesMap.get(fields[1][j].properties.source)) {
+                var newSet = new Set();
+                edgesMap.set(fields[1][j].properties.source, newSet);
+              }
+              edgesMap
+                .get(fields[1][j].properties.source)
+                .add(fields[1][j].properties.target);
+            }
           }
         }
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);
