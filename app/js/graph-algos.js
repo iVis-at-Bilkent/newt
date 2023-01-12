@@ -1,19 +1,24 @@
-var jquery = ($ = require("jquery"));
-
 var graphAlgos = {
   pathsFromTo: function (sourceArray, targetArray, limit) {
     return `UNWIND $sourceArray as source WITH source 
-        UNWIND $targetArray as target 
-        WITH source, target 
-        match p=(a {entityName: source})-[*..${limit}]-(b {entityName: target}) 
-        return a, b, p`;
+              UNWIND $targetArray as target 
+              WITH source, target 
+              match p=(a)-[rels*..${limit}]-(b) 
+              WHERE id(a) = source and id(b) = target and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
+              and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
+              and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
+              return nodes(p), relationships(p)`;
   },
 
   pathsBetween: function (idList, lengthLimit) {
-    console.log("idList", idList);
-    var pageSize = 100000;
-    var query = `CALL graphOfInterest([${idList}], [], ${lengthLimit}, false,
-        ${pageSize}, 1, '', true, '', 0, {}, 0, 1000, 0, 1000000, [])`;
+    var query = `UNWIND $idList as a 
+    UNWIND $idList as b 
+    WITH   a, b 
+    MATCH p=(n )-[rels*..${lengthLimit}]-(m)
+    WHERE id(n) = a and id(m) = b and a <>b and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
+            and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
+            and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
+            return nodes(p), relationships(p)`;
     return query;
   },
   neighborhood: function (idList, lengthLimit) {
