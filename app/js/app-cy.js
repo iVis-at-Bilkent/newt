@@ -472,6 +472,10 @@ module.exports = function (chiseInstance) {
         },
         { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
         { node: { 'border-color': '#d67614',  'border-width': 3 }, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
+        { node: { 'border-color': '#7bc4e3', 'border-width': 3}, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
+        { node: { 'border-color': '#f7f48d', 'border-width': 3}, edge: {'line-color': '#f7f48d', 'source-arrow-color': '#f7f48d', 'target-arrow-color': '#f7f48d', 'width' : 2} },
+        { node: { 'border-color': '#7CFC00', 'border-width': 3}, edge: {'line-color': '#f7f48d', 'source-arrow-color': '#f7f48d', 'target-arrow-color': '#f7f48d', 'width' : 2} },
+
       ],
       selectStyles: {
         node: {
