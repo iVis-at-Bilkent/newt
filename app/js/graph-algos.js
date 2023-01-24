@@ -1,5 +1,5 @@
 var graphAlgos = {
-  pathsFromTo: function (sourceArray, targetArray, limit) {
+  pathsFromTo: function (limit) {
     return `UNWIND $sourceArray as source WITH source 
               UNWIND $targetArray as target 
               WITH source, target 
@@ -10,7 +10,7 @@ var graphAlgos = {
               return nodes(p), relationships(p)`;
   },
 
-  pathsBetween: function (idList, lengthLimit) {
+  pathsBetween: function ( lengthLimit) {
     var query = `UNWIND $idList as a 
     UNWIND $idList as b 
     WITH   a, b 
@@ -21,7 +21,7 @@ var graphAlgos = {
             return nodes(p), relationships(p)`;
     return query;
   },
-  neighborhood: function (idList, lengthLimit) {
+  neighborhood: function ( lengthLimit) {
     var query = `UNWIND $idList as ids
         MATCH p=(a)-[rels*..${lengthLimit}]-(b)
         WHERE id(a) = ids and  NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
@@ -30,6 +30,10 @@ var graphAlgos = {
         RETURN nodes(p), relationships(p)`;
     return query;
   },
+
+  //Doesn't work for now
+  //Uses user defined function written in : https://github.com/iVis-at-Bilkent/visuall-advanced-query/
+  //Contact Yusuf Canbaz for more info
   commonStream: function (idList, lengthLimit) {
     var pageSize = 100000;
     var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
