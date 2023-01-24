@@ -1909,6 +1909,12 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
        console.log("geneSymbolsArray", geneSymbolsArray)
       console.log("lengthLimit", lengthLimit)
       var resultFromDb = await databaseUtilities.runNeighborhood(geneSymbolsArray,lengthLimit)
+      if (resultFromDb.err)
+      {
+            $(self.el).modal('toggle');
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            return;
+      }
       //console.log("resultFromDb",resultFromDb)
       $(self.el).modal('toggle');
 
@@ -2163,6 +2169,12 @@ var PathsBetweenQueryView = Backbone.View.extend({
           console.log("lengthLimit", lengthLimit)
           var resultFromDb = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
           console.log("resultFromDb",resultFromDb)
+          if (resultFromDb.err)
+          {
+            $(self.el).modal('toggle');
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            return;
+          }
           $(self.el).modal('toggle');
 
       });
@@ -2443,7 +2455,13 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
           var targetSymbolsArray = targetSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
           console.log("sourceSymbolsArray", sourceSymbolsArray)
           console.log("targetSymbolsArray", targetSymbolsArray)
-         await  databaseUtilities.runPathsFromTo(sourceSymbolsArray, targetSymbols, 2)
+          var result = await  databaseUtilities.runPathsFromTo(sourceSymbolsArray, targetSymbols, 2)
+          if (result.err)
+          {
+            $(self.el).modal('toggle');
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            return;
+          }
           $(self.el).modal('toggle');
 
       });
@@ -2689,12 +2707,18 @@ var CommonStreamQueryView = Backbone.View.extend({
               return;
           }
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
-          $(self.el).modal('toggle');
+          //$(self.el).modal('toggle');
 
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
           var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,-1)
+          if (resultFromDb.err)
+          {
+            $(self.el).modal('toggle');
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            return;
+          }
           console.log("resultFromDb",resultFromDb)
           $(self.el).modal('toggle');
 
@@ -2775,6 +2799,12 @@ var CommonStreamQueryView = Backbone.View.extend({
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
           var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
+          if (resultFromDb.err)
+          {
+            $(self.el).modal('toggle');
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            return;
+          }
           console.log("resultFromDb",resultFromDb)
           $(self.el).modal('toggle');
 
@@ -2857,6 +2887,12 @@ var CommonStreamQueryView = Backbone.View.extend({
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
           var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
+          if (resultFromDb.err)
+          {
+            $(self.el).modal('toggle');
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            return;
+          }
           console.log("resultFromDb",resultFromDb)
           $(self.el).modal('toggle');
 
@@ -3693,11 +3729,15 @@ var PromptInvalidQueryView = Backbone.View.extend({
               appUtilities.commonStreamQueryView.render();
         else if (PCdialog == "PathsBetween in localDB")
         {
-          appUtilities.PathsFromToQueryViewLocalDb.render();
+          appUtilities.pathsFromToQueryViewLocalDb.render();
         }
         else if (PCdialog == "CommonStream in localDB")
         {
-          appUtilities.CommonStreamQueryViewLocalDB.render();
+          appUtilities.commonStreamQueryViewLocalDB.render();
+        }
+        else if (PCdialog == "Neighborhood in localDB")
+        {
+          appUtilities.NeighborhoodQueryViewLocalDB.render();
         }
       });
 

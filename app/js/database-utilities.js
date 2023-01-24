@@ -768,7 +768,23 @@ var databaseUtilities = {
     var targetNewt = []
     await databaseUtilities.getIdOfLabeledNodes(targetArray, targetId, targetNewt);
 
-    query = graphALgos.pathsFromTo(sourceArray, targetArray, limit);
+    //Check if any nodes with such labels
+    if (sourceId.length == 0 && targetId > 0)
+    {
+      var errMessage = {err: "Invalid input", message: "No such source nodes"}
+      return errMessage;
+    }
+    if (sourceId.length > 0 && targetId == 0)
+    {
+      var errMessage = {err: "Invalid input", message: "No such target nodes"}
+      return errMessage;
+    }
+    if (sourceId.length == 0 && targetId == 0)
+    {
+      var errMessage = {err: "Invalid input", message: "No such source and target nodes"}
+      return errMessage;
+    }
+    query = graphALgos.pathsFromTo(limit);
     var queryData = { sourceArray: sourceId, targetArray: targetId };
     var data = { query: query, queryData: queryData };
 
@@ -849,7 +865,15 @@ var databaseUtilities = {
     var idOfNodes = [];
     var newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes, newtIdOfNodes);
-    var query = graphALgos.pathsBetween(idOfNodes, lengthLimit);
+
+    //Check if label of nodes are valid
+    if (idOfNodes.length == 0)
+    {
+      var errMessage = {err: "Invalid input", message: "No such nodes with given labels"}
+      return errMessage
+    } 
+
+    var query = graphALgos.pathsBetween( lengthLimit);
    // console.log("idOfNodes in runpaths", idOfNodes);
     var queryData = { idList: idOfNodes };
 
@@ -926,7 +950,14 @@ var databaseUtilities = {
     var idList = [];
     var newtIdList = []
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idList, newtIdList);
-    var query = graphALgos.neighborhood(idList, lengthLimit);
+
+    if (idList.length == 0)
+    {
+      var errMessage = {err: "Invalid input", message: "No such nodes with given labels"}
+      return errMessage
+    } 
+
+    var query = graphALgos.neighborhood(lengthLimit);
     console.log("idOfNodes in runpaths", idList);
     var queryData = { idList: idList };
 
@@ -1004,6 +1035,13 @@ var databaseUtilities = {
   runCommonStream: async function (labelOfNodes, lengthLimit, direction) {
     var idOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
+
+    if (idOfNodes.length == 0)
+    {
+      var errMessage = {err: "Invalid input", message: "No such nodes with given labels"}
+      return errMessage
+    } 
+
     var query = "";
     if (direction == -1) {
       query = graphALgos.commonStream(idOfNodes, lengthLimit);

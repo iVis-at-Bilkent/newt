@@ -119,15 +119,15 @@ module.exports = function() {
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
   experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
-  neighborhoodQueryViewLocalDB = appUtilities.neighborhoodQueryViewLocalDB = new BackboneViews.NeighborhoodQueryViewLocalDB({el: '#query-neighborhood-table'});
+  neighborhoodQueryViewLocalDB = appUtilities.neighborhoodQueryViewLocalDB = new BackboneViews.NeighborhoodQueryViewLocalDB({el: '#query-neighborhood-localdatabase-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
   pathsBetweenQueryViewLocalDB = appUtilities.pathsBetweenQueryViewLocalDB = new BackboneViews.PathsBetweenQueryViewLocalDB({el: '#query-pathsbetween-localdatabase-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
-  PathsFromToQueryViewLocalDB = appUtilities.PathsFromToQueryViewLocalDB = new BackboneViews.PathsFromToQueryViewLocalDB({el: '#query-pathsfromto-table'});
+  PathsFromToQueryViewLocalDB = appUtilities.PathsFromToQueryViewLocalDB = new BackboneViews.PathsFromToQueryViewLocalDB({el: '#query-pathsfromto-localdatabase-table'});
   commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
-  commonStreamQueryViewLocalDB = appUtilities.commonStreamQueryViewLocalDB = new BackboneViews.CommonStreamQueryViewLocalDB({el: '#query-commonstream-table'});
-  upStreamQueryViewLocalDB = appUtilities.upStreamQueryViewLocalDB = new BackboneViews.UpStreamQueryViewLocalDB({el: '#query-upstream-localdatabe-table'});
-  downStreamQueryViewLocalDB = appUtilities.downStreamQueryViewLocalDB = new BackboneViews.DownStreamQueryViewLocalDB({el: '#query-downstream-localdatabe-table'});
+  commonStreamQueryViewLocalDB = appUtilities.commonStreamQueryViewLocalDB = new BackboneViews.CommonStreamQueryViewLocalDB({el: '#query-commonstream-localdatabase-table'});
+  upStreamQueryViewLocalDB = appUtilities.upStreamQueryViewLocalDB = new BackboneViews.UpStreamQueryViewLocalDB({el: '#query-upstream-localdatabase-table'});
+  downStreamQueryViewLocalDB = appUtilities.downStreamQueryViewLocalDB = new BackboneViews.DownStreamQueryViewLocalDB({el: '#query-downstream-localdatabase-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
