@@ -1316,7 +1316,7 @@ module.exports = function() {
     $("#perform-layout, #perform-layout-icon").click(function (e) {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
-
+      console.log("Layout is running");
       // TODO think whether here is the right place to start the spinner
       chiseInstance.startSpinner("layout-spinner");
 
