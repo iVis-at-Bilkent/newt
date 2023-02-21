@@ -744,11 +744,11 @@ var databaseUtilities = {
         //chiseInstance.highlightSelected(new_edge)
 
     }
-    /*
+  
     $("#map-color-scheme_greyscale").click()
      $("#color-scheme-inspector-style-select").val('3D')
      $("#color-scheme-inspector-style-select").change()
-    */
+  
      
      databaseUtilities.performLayout();
      return {nodesToHighlight: nodesToHighlight, edgesToHighlight: edgesToHighlight}
