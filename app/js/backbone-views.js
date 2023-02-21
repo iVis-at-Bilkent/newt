@@ -1908,8 +1908,8 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
       var lengthLimit =  self.currentQueryParameters.lengthLimit
        console.log("geneSymbolsArray", geneSymbolsArray)
       console.log("lengthLimit", lengthLimit)
-      var resultFromDb = await databaseUtilities.runNeighborhood(geneSymbolsArray,lengthLimit)
-      if (resultFromDb.err)
+      var result = await databaseUtilities.runNeighborhood(geneSymbolsArray,lengthLimit)
+      if (result && result.err)
       {
             $(self.el).modal('toggle');
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -2160,9 +2160,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
-          var resultFromDb = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
-          console.log("resultFromDb",resultFromDb)
-          if (resultFromDb.err)
+          var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
+          console.log("resultFromDb",result)
+          if (result && result.err)
           {
             $(self.el).modal('toggle');
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -2449,7 +2449,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
           console.log("sourceSymbolsArray", sourceSymbolsArray)
           console.log("targetSymbolsArray", targetSymbolsArray)
           var result = await  databaseUtilities.runPathsFromTo(sourceSymbolsArray, targetSymbols, 2)
-          if (result.err)
+          if (result && result.err)
           {
             $(self.el).modal('toggle');
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -2705,8 +2705,8 @@ var CommonStreamQueryView = Backbone.View.extend({
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
-          var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,-1)
-          if (resultFromDb.err)
+          var result = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,-1)
+          if (result && result.err)
           {
             $(self.el).modal('toggle');
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -2791,8 +2791,8 @@ var CommonStreamQueryView = Backbone.View.extend({
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
-          var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
-          if (resultFromDb.err)
+          var result = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
+          if (result && result.err)
           {
             $(self.el).modal('toggle');
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
@@ -2879,8 +2879,8 @@ var CommonStreamQueryView = Backbone.View.extend({
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
           console.log("lengthLimit", lengthLimit)
-          var resultFromDb = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
-          if (resultFromDb.err)
+          var result = await databaseUtilities.runCommonStream(geneSymbolsArray,lengthLimit,1)
+          if (result && result.err)
           {
             $(self.el).modal('toggle');
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
