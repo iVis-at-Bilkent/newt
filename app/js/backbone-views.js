@@ -1915,15 +1915,8 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
             new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
             return;
       }
-      //console.log("resultFromDb",resultFromDb)
       $(self.el).modal('toggle');
 
-      /*
-      let preferences = {};
-      preferences.animate = false;
-      preferences.randomize = true;
-      //appUtilities.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
-      */
     });
 
     $(document).off("click", "#cancel-query-neighborhood-localdatabase").on("click", "#cancel-query-neighborhood-localdatabase", function (evt) {
@@ -2413,7 +2406,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
       $(self.el).modal('show');
       PCdialog = "PathsFromTo";
       $(document).off("click", "#save-query-pathsfromto-localdatabase").on("click", "#save-query-pathsfromto-localdatabase", async function (evt) {
-        console.log("here")
+
         self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols-localdatabase").value;
           self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols-localdatabase").value;
           self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit-localdatabase").value);
