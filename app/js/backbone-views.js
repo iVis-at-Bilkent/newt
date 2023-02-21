@@ -2132,7 +2132,11 @@ var PathsBetweenQueryView = Backbone.View.extend({
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
           // use the associated cy instance
+
+          //Clean the canvas 
           var cy = chiseInstance.getCy();
+          cy.elements().remove();
+          databaseUtilities.cleanNodesAndEdgesInDB();
 
           self.currentQueryParameters.geneSymbols = document.getElementById("query-pathsbetween-localdatabase-gene-symbols").value;
           self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsbetween-localdatabase-length-limit").value);
@@ -2407,6 +2411,13 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
       PCdialog = "PathsFromTo";
       $(document).off("click", "#save-query-pathsfromto-localdatabase").on("click", "#save-query-pathsfromto-localdatabase", async function (evt) {
 
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+         //Clean the canvas 
+         var cy = chiseInstance.getCy();
+         cy.elements().remove();
+         databaseUtilities.cleanNodesAndEdgesInDB();
+
         self.currentQueryParameters.sourceSymbols = document.getElementById("query-pathsfromto-source-symbols-localdatabase").value;
           self.currentQueryParameters.targetSymbols = document.getElementById("query-pathsfromto-target-symbols-localdatabase").value;
           self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-pathsfromto-length-limit-localdatabase").value);
@@ -2675,8 +2686,10 @@ var CommonStreamQueryView = Backbone.View.extend({
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          // use the associated cy instance
+          //Clean the canvas 
           var cy = chiseInstance.getCy();
+          cy.elements().remove();
+          databaseUtilities.cleanNodesAndEdgesInDB();
 
           self.currentQueryParameters.geneSymbols = document.getElementById("query-commonstream-localdatabase-gene-symbols").value;
           self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-commonstream-localdatabase-length-limit").value);
@@ -2762,8 +2775,10 @@ var CommonStreamQueryView = Backbone.View.extend({
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          // use the associated cy instance
-          var cy = chiseInstance.getCy();
+           //Clean the canvas 
+           var cy = chiseInstance.getCy();
+           cy.elements().remove();
+           databaseUtilities.cleanNodesAndEdgesInDB();
 
           self.currentQueryParameters.geneSymbols = document.getElementById("query-upstream-localdatabase-gene-symbols").value;
           self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-upstream-localdatabase-length-limit").value);
@@ -2850,8 +2865,10 @@ var CommonStreamQueryView = Backbone.View.extend({
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          // use the associated cy instance
-          var cy = chiseInstance.getCy();
+           //Clean the canvas 
+           var cy = chiseInstance.getCy();
+           cy.elements().remove();
+           databaseUtilities.cleanNodesAndEdgesInDB();
 
           self.currentQueryParameters.geneSymbols = document.getElementById("query-downstream-localdatabase-gene-symbols").value;
           self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-downstream-localdatabase-length-limit").value);

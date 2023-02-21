@@ -11,6 +11,12 @@ var databaseUtilities = {
   nodesInDB: {},
   edgesInDB: {},
 
+  cleanNodesAndEdgesInDB: function()
+  {
+    databaseUtilities.nodesInDB = {};
+    databaseUtilities.edgesInDB= {};
+    },
+
   calculateClass: function (entitysClass) {
     var classArray = entitysClass.split(" ");
     var classArray = classArray.filter((string) => string !== "multimer");
