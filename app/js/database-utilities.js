@@ -801,6 +801,11 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: async function (data) {
         //console.log("data", data);
+        if (data.records.length == 0)
+       {
+         result.err = {err: "Invalid input", message: "No data returned"}
+         return;
+       } 
         var nodes = [];
         var edges = [];
         var nodesSet = new Set();
@@ -893,7 +898,14 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-       // console.log("data", data);
+       console.log("data", data);
+       //Check if any data returned
+       if (data.records.length == 0)
+       {
+         result.err = {err: "Invalid input", message: "No data returned"}
+         return;
+       } 
+
         var nodes = [];
         var edges = [];
         var nodesSet = new Set();
@@ -903,7 +915,7 @@ var databaseUtilities = {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
             //console.log("nodesSet", nodesSet);
-           // console.log("fields[0][j].newtId", fields[0][j].properties.newtId);
+           console.log("fields[0][j].newtId", fields[0][j].properties.newtId);
             if (!nodesSet.has(fields[0][j].properties.newtId)) {
               nodes.push(fields[0][j]);
               nodesSet.add(fields[0][j].properties.newtId);
@@ -978,6 +990,11 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: async function (data) {
         console.log("data", data);
+        if (data.records.length == 0)
+       {
+         result.err = {err: "Invalid input", message: "No such nodes with given labels"}
+         return;
+       } 
         var nodes = [];
         var edges = [];
         var nodesSet = new Set();
@@ -1070,6 +1087,11 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: async function (data) {
         console.log("data", data);
+        if (data.records.length == 0)
+       {
+         result.err = {err: "Invalid input", message: "No data returned"}
+         return;
+       } 
         var nodes = [];
         var edges = [];
         var records = data.records;

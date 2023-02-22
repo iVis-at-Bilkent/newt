@@ -1880,8 +1880,10 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-      // use the associated cy instance
-      var cy = chiseInstance.getCy();
+     //Clean the canvas 
+     var cy = chiseInstance.getCy();
+     cy.elements().remove();
+     databaseUtilities.cleanNodesAndEdgesInDB();
 
       self.currentQueryParameters.geneSymbols = document.getElementById("query-neighborhood-localdatabase-gene-symbols").value;
       self.currentQueryParameters.lengthLimit = Number(document.getElementById("query-neighborhood-localdatabase-length-limit").value);
