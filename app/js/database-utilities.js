@@ -469,17 +469,27 @@ var databaseUtilities = {
     return repl
   },
 
-  getParentsRecursively: async function(nodesToAdd, parents, created)
+  getNodesRecursively:  function(nodesToAdd)
   {
+    return new Promise(async function(resolve, reject) {
+    
     var parentsToGet = new Set()
+    var children = [];
+    console.log("Level 2 getNodesRecursively", nodesToAdd)
     for (let i = 0; i < nodesToAdd.length; i++)
     {
       console.log("nodesToAdd[i]",nodesToAdd[i])
-      if (nodesToAdd[i].properties.parent)
+      if (nodesToAdd[i].properties.parent && nodesToAdd[i].properties.parent != 'none' )
       {
         parentsToGet.add(nodesToAdd[i].properties.parent)
+        children.push(nodesToAdd[i])
+      }
+      else
+      {
+        await databaseUtilities.pushNode(nodesToAdd[i])
       }
     }
+
     console.log("parentsToGet", parentsToGet)
     parentsToGet = [...parentsToGet]
     
@@ -491,48 +501,92 @@ var databaseUtilities = {
                   RETURN u`
     var data = { query: query, queryData: queryData };
 
-    await $.ajax({
+     $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
         console.log("parent data",data);
-        var found = false
-        var new_ones  = []
+        if (data.records.length == 0)
+        {
+          resolve();
+        }
+        let counter = 0;
         for(let i = 0; i < data.records.length; i++)
         {
           var fields = data.records[i]._fields
-          if(!parents.has(fields[0]))
-          {
-            new_ones.push(fields[0])
-          }
-          parents.add(fields[0])
-          if (fields[0].properties.parent != "none")
-          {
-            found = true
-          }
+          console.log("fileds", fields)
+          var parents = []
+          parents.push(fields[0])
+          console.log("Level 3 getNodesRecursively in data", parents)
+          databaseUtilities.getNodesRecursively(parents).then(() => {
+            console.log("Level 3 here", counter)
+            counter ++;
+            if (counter == data.records.length)
+            {
+              for(let i = 0; i < children.length; i++)
+              {
+                console.log("Level 3 pushNode in data", children[i])
+                databaseUtilities.pushNode(children[i])
+              }
+              resolve();
+            }
+           
+          })
         }
-        console.log("data.records.length ",data.records.length )
-        if(found)
-        {
-          var nodes = [...parents]
-          console.log("nodess", nodes)
-          await databaseUtilities.getParentsRecursively(nodes,parents, created)
-        }
-
-        console.log("heree in parent", new_ones)
-        await databaseUtilities.pushParents(new_ones, created)
-
+       
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
       },
-    });
-
+      
+    })
+    console.log("Level 4 after data")
+    
+  });
 
   },
-  pushParents: async function(new_ones, created)
+  
+  pushNode:  function(new_node)
+  {
+    return new Promise(resolve => {
+
+    console.log("aboit to PUSHH Level", new_node)
+    if (!databaseUtilities.nodesInDB[new_node.properties.newtId])
+    {
+    console.log("PUSHING Level", new_node)
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      var nodeParams = {
+        class: databaseUtilities.convertLabelToClass(new_node.properties.class),
+        language: "PD",
+        label: "smth"
+      };
+
+
+      var node =   chiseInstance.addNode(
+        0,
+        0,
+        nodeParams,
+        new_node.properties.newtId,
+        new_node.properties.parent
+      );
+
+      if(new_node.properties.entityName)
+      {
+        chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
+      }
+
+      databaseUtilities.nodesInDB[new_node.properties.newtId] =
+      new_node.identity.low;
+      console.log("added to canvas", databaseUtilities.nodesInDB[new_node.properties.newtId])
+    }
+    resolve();
+  });
+  },
+
+  pushNodes: async function(new_ones, created)
   {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     for (let i = 0; i < new_ones.length; i++) {
@@ -540,18 +594,19 @@ var databaseUtilities = {
       {
 
       
-          console.log("hereee in oare")
         var nodeParams = {
           class: databaseUtilities.convertLabelToClass(new_ones[i].properties.class),
           language: "PD",
           label: "smth"
         };
+
+        console.log("adding in push parent", new_ones[i].properties.class )
         var new_node =  await chiseInstance.addNode(
           0,
           0,
           nodeParams,
           new_ones[i].properties.newtId,
-          undefined
+          new_ones[i].properties.parent
         );
        // console.log("new_node",new_node)
         
@@ -568,16 +623,22 @@ var databaseUtilities = {
 
   pushChildren: async function (nodesToAdd)
   {
+    await databaseUtilities.pushNode(nodesToAdd);
+    /*
     var chiseInstance = appUtilities.getActiveChiseInstance();
 
     for (let i = 0; i < nodesToAdd.length; i++) {
-      // console.log("parent", nodesToAdd[i].properties.parent);
+      console.log("parent", nodesToAdd[i].properties.parent);
+      console.log("child", databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class));
+
  
        if (nodesToAdd[i].properties.parent) {
          var nodeParams = {
            class: databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class),
            language: "PD",
          };
+
+         console.log("adding in push children", nodesToAdd[i].properties.class)
          var new_node = chiseInstance.addNode(
            0,
            0,
@@ -608,7 +669,7 @@ var databaseUtilities = {
        //chiseInstance.changeNodeLabel(nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.entityName);
      }
  
- 
+ */
   },
 
 
@@ -631,11 +692,11 @@ var databaseUtilities = {
         console.log(data);
 
         for (var i = 0; i < data.records.length; i++) {
-          console.log("hree");
+          console.log("hree",data.records[i]._fields[0].low);
           idOfNodes.push(data.records[i]._fields[0].low);
           newtIdOfNodes.push(data.records[i]._fields[1])
         }
-        console.log("idNodes", idNodes);
+        console.log("idNodes", idOfNodes);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -650,12 +711,10 @@ var databaseUtilities = {
     let edgesToAdd = [];
     let nodesToAdd = [];
 
-    //console.log("nodes about to add", nodes);
-    //console.log("edges about to add", edges);
+    console.log("nodes about to add", nodes);
+    console.log("edges about to add", edges);
     for (let i = 0; i < nodes.length; i++) {
       if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
-        databaseUtilities.nodesInDB[nodes[i].properties.newtId] =
-          nodes[i].identity.low;
         nodesToAdd.push(nodes[i]);
       }
       nodesToHighlight.push(nodes[i]);
@@ -684,53 +743,35 @@ var databaseUtilities = {
       edgesToHighlight.push(edges[j]);
     }
 
-   // console.log("nodes to add", nodesToAdd);
-    //console.log("edges to add", edgesToAdd);
-    //console.log("nodes to high", nodesToHighlight);
-    //console.log("edges to high", edgesToHighlight);
+    console.log("nodes to add", nodesToAdd);
+    console.log("edges to add", edgesToAdd);
+    console.log("nodes to high", nodesToHighlight);
+    console.log("edges to high", edgesToHighlight);
 
-    ///
-   // nodesToAdd = nodesToHighlight
-    //edgesToAdd = edgesToHighlight
+    console.log("Level 1")
+    databaseUtilities.getNodesRecursively(nodesToAdd).then(async function() {
+      console.log('Level 5');
+      return databaseUtilities.pushEdges(edgesToAdd);
+    }).then(function() {
+      console.log('Level 8');
+    });
 
-    //Add parents first
-    var parents_set = new Set()
-    var created = new Set()
-    //await databaseUtilities.getParentsRecursively(nodesToAdd,parents_set, created)
-    parents = [...parents_set]
-    //nodesToAdd.push(...parents)
-    console.log("nodesToAdd sd", nodesToAdd)
-
-    //Add nodes without any parents first
-    var createdParents = []
-    for (let i = 0; i < nodesToAdd.length; i++) {
-      if (!nodesToAdd[i].properties.parent && !parents.has(nodesToAdd[i])) {
-        var nodeParams = {
-          class: databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class),
-          language: "PD",
-          label: "smth"
-        };
-        var new_node =  chiseInstance.addNode(
-          0,
-          0,
-          nodeParams,
-          nodesToAdd[i].properties.newtId,
-          undefined
-        );
-        createdParents.push(nodesToAdd[i].properties.newtId)
-       // console.log("new_node",new_node)
-        
-        if(nodesToAdd[i].properties.entityName)
-        {
-          chiseInstance.changeNodeLabel(new_node, nodesToAdd[i].properties.entityName);
-        }
-
-      }
-    }
-   
-    //Then add children
-    await databaseUtilities.pushChildren(nodesToAdd)
-   
+  
+    $("#map-color-scheme_greyscale").click()
+     $("#color-scheme-inspector-style-select").val('3D')
+     $("#color-scheme-inspector-style-select").change()
+  
+     
+     databaseUtilities.performLayout();
+     return {nodesToHighlight: nodesToHighlight, edgesToHighlight: edgesToHighlight}
+  },
+  pushEdges: async function(edgesToAdd)
+  {
+    return new Promise(resolve => {
+      console.log("Level 6")
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      console.log("Cy in add edge",chiseInstance.getCy() )
+      console.log("edgesToAdd in add",edgesToAdd )
     for (let i = 0; i < edgesToAdd.length; i++) {
       if (
         edgesToAdd[i].properties.class != "belongs_to_submap" &&
@@ -750,14 +791,11 @@ var databaseUtilities = {
         //chiseInstance.highlightSelected(new_edge)
 
     }
-  
-    $("#map-color-scheme_greyscale").click()
-     $("#color-scheme-inspector-style-select").val('3D')
-     $("#color-scheme-inspector-style-select").change()
-  
-     
-     databaseUtilities.performLayout();
-     return {nodesToHighlight: nodesToHighlight, edgesToHighlight: edgesToHighlight}
+    console.log("Level 7",chiseInstance.getCy() )
+
+      resolve();
+    });
+    
   },
 
   performLayout: function()
