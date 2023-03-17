@@ -871,6 +871,7 @@ var databaseUtilities = {
     var idList = [];
     var newtIdList = []
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idList, newtIdList);
+    var setOfSources = new Set(newtIdList);
 
     if (idList.length == 0)
     {
@@ -898,6 +899,7 @@ var databaseUtilities = {
        } 
         var nodes = [];
         var edges = [];
+        var targetNodes = [];
         var nodesSet = new Set();
         var edgesMap = new Map();
         var records = data.records;
@@ -908,6 +910,10 @@ var databaseUtilities = {
             if (!nodesSet.has(fields[0][j].properties.newtId)) {
               nodes.push(fields[0][j]);
               nodesSet.add(fields[0][j].properties.newtId);
+              if (!setOfSources.has(fields[0][j].properties.newtId) && !fields[0][j].properties.class.startsWith("process"))
+              {
+                targetNodes.push(fields[0][j].properties.newtId);
+              }
             }
           }
 
@@ -936,7 +942,7 @@ var databaseUtilities = {
             }
           }
         }
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdList);
+        await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdList, targetNodes);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
