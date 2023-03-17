@@ -1,9 +1,5 @@
-var jquery = ($ = require("jquery"));
-var neo4j = require("neo4j-driver");
-var _ = require("underscore");
 var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
-var chise = require("chise");
 var appUtilities = require("./app-utilities");
 
 var databaseUtilities = {
@@ -15,7 +11,7 @@ var databaseUtilities = {
   {
     databaseUtilities.nodesInDB = {};
     databaseUtilities.edgesInDB= {};
-    },
+  },
 
   calculateClass: function (entitysClass) {
     var classArray = entitysClass.split(" ");
@@ -80,6 +76,7 @@ var databaseUtilities = {
     currentEdge.source = data.source;
     currentEdge.target = data.target;
   },
+
   processNodesData: function (nodesData, activeTabContent) {
     for (let i = 0; i < activeTabContent.nodes.length; i++) {
       var currentNode = {};
@@ -116,8 +113,6 @@ var databaseUtilities = {
     var parentNodes = {};
     var nodesMap = {};
     var specialNodes = {};
-    console.log("nodesData", nodesData);
-    console.log("edgesData", edgesData);
 
     // specialNodes map with be in this format (newtId or process Node): [[sourceClass, sourceCloneLab, sourceCloneMarker, sourceEntityName,
     //sourceMultimer, sourceParent, sourceStateVariable1,.., sourceStateVariableN, sourceUnitInformation1,..sourceUnitInformationN],
@@ -152,7 +147,6 @@ var databaseUtilities = {
       nodesMap[nodesData[i].newtId] = nodesData[i];
     }
 
-    console.log("specialNodes before", specialNodes);
 
     //Add child parent relationships if any
     for (let i = 0; i < nodesData.length; i++) {
@@ -169,17 +163,12 @@ var databaseUtilities = {
 
     for (let i = 0; i < edgesData.length; i++) {
       edgesData[i].inDb = false;
-      console.log([
-        edgesData[i].source,
-        edgesData[i].target,
-        edgesData[i].class,
-      ]);
+
       if (
         databaseUtilities.edgesInDB[
           [edgesData[i].source, edgesData[i].target, edgesData[i].class]
         ]
       ) {
-        console.log("edge in db");
         edgesData[i].inDb = true;
         edgesData[i].idInDb =
           databaseUtilities.edgesInDB[
@@ -200,7 +189,6 @@ var databaseUtilities = {
       ) {
         var targetId = edgesData[i].target;
         var target = nodesMap[targetId];
-        console.log("seen as source", specialNodes[edgesData[i].source][1]);
         var len = specialNodes[edgesData[i].source][1].length;
         specialNodes[edgesData[i].source][1].push([
           target.class,
@@ -219,7 +207,6 @@ var databaseUtilities = {
       } else if (specialNodes[edgesData[i].target]) {
         var sourceId = edgesData[i].source;
         var source = nodesMap[sourceId];
-        console.log("seen as target", source);
         var len_0 = specialNodes[edgesData[i].target][0].length;
         var len_2 = specialNodes[edgesData[i].target][2].length;
         //Not a modifier
@@ -264,7 +251,6 @@ var databaseUtilities = {
     }
 
     //Update specialNodes
-    console.log("specialNodes", specialNodes);
     for (let i = 0; i < nodesData.length; i++) {
       if (
         nodesData[i].class.endsWith("process") ||
@@ -291,8 +277,6 @@ var databaseUtilities = {
   },
 
   pushActiveNodesEdgesToDatabase: function (nodesData, edgesData) {
-    console.log("about to push nodes", nodesData);
-    console.log("about to push edges", edgesData);
     var matchClass = true;
     var matchLabel = true;
     var matchId = false;
@@ -424,11 +408,8 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (data) {
-        console.log(data);
         let nodes = data.records[0]._fields[0];
         let edges = data.records[0]._fields[1];
-        console.log("After pushing nodes", nodes);
-        console.log("After pushing edges", edges);
 
         if (nodes) {
           for (let i = 0; i < nodes.length; i++) {
@@ -454,8 +435,6 @@ var databaseUtilities = {
           }
         }
 
-        console.log(databaseUtilities.nodesInDB);
-        console.log(databaseUtilities.edgesInDB);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -465,7 +444,6 @@ var databaseUtilities = {
   convertLabelToClass: function(label)
   {
     var repl =label.replace("_"," ")
-    console.log("class name", repl)
     return repl
   },
 
@@ -475,10 +453,8 @@ var databaseUtilities = {
     
     var parentsToGet = new Set()
     var children = [];
-    console.log("Level 2 getNodesRecursively", nodesToAdd)
     for (let i = 0; i < nodesToAdd.length; i++)
     {
-      console.log("nodesToAdd[i]",nodesToAdd[i])
       if (nodesToAdd[i].properties.parent && nodesToAdd[i].properties.parent != 'none' )
       {
         parentsToGet.add(nodesToAdd[i].properties.parent)
@@ -490,7 +466,6 @@ var databaseUtilities = {
       }
     }
 
-    console.log("parentsToGet", parentsToGet)
     parentsToGet = [...parentsToGet]
     
     var queryData = { parentsToGet: parentsToGet };
@@ -507,7 +482,6 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        console.log("parent data",data);
         if (data.records.length == 0)
         {
           resolve();
@@ -516,18 +490,14 @@ var databaseUtilities = {
         for(let i = 0; i < data.records.length; i++)
         {
           var fields = data.records[i]._fields
-          console.log("fileds", fields)
           var parents = []
           parents.push(fields[0])
-          console.log("Level 3 getNodesRecursively in data", parents)
           databaseUtilities.getNodesRecursively(parents).then(() => {
-            console.log("Level 3 here", counter)
             counter ++;
             if (counter == data.records.length)
             {
               for(let i = 0; i < children.length; i++)
               {
-                console.log("Level 3 pushNode in data", children[i])
                 databaseUtilities.pushNode(children[i])
               }
               resolve();
@@ -542,7 +512,6 @@ var databaseUtilities = {
       },
       
     })
-    console.log("Level 4 after data")
     
   });
 
@@ -552,10 +521,8 @@ var databaseUtilities = {
   {
     return new Promise(resolve => {
 
-    console.log("aboit to PUSHH Level", new_node)
     if (!databaseUtilities.nodesInDB[new_node.properties.newtId])
     {
-    console.log("PUSHING Level", new_node)
     var chiseInstance = appUtilities.getActiveChiseInstance();
 
       var nodeParams = {
@@ -580,98 +547,13 @@ var databaseUtilities = {
 
       databaseUtilities.nodesInDB[new_node.properties.newtId] =
       new_node.identity.low;
-      console.log("added to canvas", databaseUtilities.nodesInDB[new_node.properties.newtId])
+      var el = cy.getElementById(new_node.properties.newtId)
+      var vu = cy.viewUtilities('get');
+     // vu.highlight(el, 3);
     }
     resolve();
   });
   },
-
-  pushNodes: async function(new_ones, created)
-  {
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    for (let i = 0; i < new_ones.length; i++) {
-      if(!created.has(new_ones[i].properties.newtId))
-      {
-
-      
-        var nodeParams = {
-          class: databaseUtilities.convertLabelToClass(new_ones[i].properties.class),
-          language: "PD",
-          label: "smth"
-        };
-
-        console.log("adding in push parent", new_ones[i].properties.class )
-        var new_node =  await chiseInstance.addNode(
-          0,
-          0,
-          nodeParams,
-          new_ones[i].properties.newtId,
-          new_ones[i].properties.parent
-        );
-       // console.log("new_node",new_node)
-        
-        if(new_ones[i].properties.entityName)
-        {
-          chiseInstance.changeNodeLabel(new_node, new_ones[i].properties.entityName);
-        }
-        created.add(new_ones[i].properties.newtId)
-
-      }
-     
-    }
-  },
-
-  pushChildren: async function (nodesToAdd)
-  {
-    await databaseUtilities.pushNode(nodesToAdd);
-    /*
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-
-    for (let i = 0; i < nodesToAdd.length; i++) {
-      console.log("parent", nodesToAdd[i].properties.parent);
-      console.log("child", databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class));
-
- 
-       if (nodesToAdd[i].properties.parent) {
-         var nodeParams = {
-           class: databaseUtilities.convertLabelToClass(nodesToAdd[i].properties.class),
-           language: "PD",
-         };
-
-         console.log("adding in push children", nodesToAdd[i].properties.class)
-         var new_node = chiseInstance.addNode(
-           0,
-           0,
-           nodeParams,
-           nodesToAdd[i].properties.newtId,
-           nodesToAdd[i].properties.parent
-         );
-         //new_node.data("parent", nodesToAdd[i].properties.parent)
-       //  console.log("new_node",new_node)
-         if(nodesToAdd[i].properties.entityName)
-         {
-           chiseInstance.changeNodeLabel(new_node, nodesToAdd[i].properties.entityName);
-         }
-         var cy = appUtilities.getActiveCy();
-         var vu = cy.viewUtilities('get');
-         vu.highlight(new_node, 4);
-         var el = cy.getElementById(nodesToAdd[i].properties.parent)
-       
-         if(el.length  > 0)
-         {
-           console.log("nodesToAdd[i].properties.parent",el)
-           chiseInstance.changeParent(new_node, nodesToAdd[i].properties.parent)
-         }
-         
-         
-       }
-      //chiseInstance.changeNodeLabel(selectedEles, lines);
-       //chiseInstance.changeNodeLabel(nodesToAdd[i].properties.newtId, nodesToAdd[i].properties.entityName);
-     }
- 
- */
-  },
-
 
    //Queries
   getIdOfLabeledNodes: async function (labelOfNodes, idOfNodes, newtIdOfNodes) {
@@ -689,14 +571,11 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (data) {
-        console.log(data);
 
         for (var i = 0; i < data.records.length; i++) {
-          console.log("hree",data.records[i]._fields[0].low);
           idOfNodes.push(data.records[i]._fields[0].low);
           newtIdOfNodes.push(data.records[i]._fields[1])
         }
-        console.log("idNodes", idOfNodes);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -704,15 +583,14 @@ var databaseUtilities = {
     });
   },
 
-  addNodesEdgesToCy: async function (nodes, edges) {
+  addNodesEdgesToCy: async function (nodes, edges,source, target) {
+    return new Promise(resolve => {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     let nodesToHighlight = [];
     let edgesToHighlight = [];
     let edgesToAdd = [];
     let nodesToAdd = [];
 
-    console.log("nodes about to add", nodes);
-    console.log("edges about to add", edges);
     for (let i = 0; i < nodes.length; i++) {
       if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
         nodesToAdd.push(nodes[i]);
@@ -743,35 +621,53 @@ var databaseUtilities = {
       edgesToHighlight.push(edges[j]);
     }
 
-    console.log("nodes to add", nodesToAdd);
-    console.log("edges to add", edgesToAdd);
-    console.log("nodes to high", nodesToHighlight);
-    console.log("edges to high", edgesToHighlight);
-
-    console.log("Level 1")
     databaseUtilities.getNodesRecursively(nodesToAdd).then(async function() {
-      console.log('Level 5');
       return databaseUtilities.pushEdges(edgesToAdd);
     }).then(function() {
-      console.log('Level 8');
+
+      //Add color scheme for map
+      $("#map-color-scheme_greyscale").click()
+      $("#color-scheme-inspector-style-select").val('3D')
+      $("#color-scheme-inspector-style-select").change()
+
+
+      //Add highlights
+      if (source != null)
+      {
+        for (let i = 0; i < source.length; i++)
+        {
+          var cy = appUtilities.getActiveCy();
+          var el = cy.getElementById(source[i])
+          var vu = cy.viewUtilities('get');
+          vu.highlight(el, 3);
+        }
+      }
+
+      if ( target != null)
+      {
+        for (let i = 0; i < target.length; i++)
+        {
+          var cy = appUtilities.getActiveCy();
+          var el = cy.getElementById(target[i])
+          var vu = cy.viewUtilities('get');
+          vu.highlight(el, 5);
+        }
+      }
+       
+      //Run layout
+      databaseUtilities.performLayout();
     });
 
   
-    $("#map-color-scheme_greyscale").click()
-     $("#color-scheme-inspector-style-select").val('3D')
-     $("#color-scheme-inspector-style-select").change()
-  
-     
-     databaseUtilities.performLayout();
+ 
      return {nodesToHighlight: nodesToHighlight, edgesToHighlight: edgesToHighlight}
+  });
   },
   pushEdges: async function(edgesToAdd)
   {
     return new Promise(resolve => {
-      console.log("Level 6")
+ 
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      console.log("Cy in add edge",chiseInstance.getCy() )
-      console.log("edgesToAdd in add",edgesToAdd )
     for (let i = 0; i < edgesToAdd.length; i++) {
       if (
         edgesToAdd[i].properties.class != "belongs_to_submap" &&
@@ -788,11 +684,8 @@ var databaseUtilities = {
         var cy = appUtilities.getActiveCy();
         var vu = cy.viewUtilities('get');
         vu.highlight(new_edge, 4);
-        //chiseInstance.highlightSelected(new_edge)
 
     }
-    console.log("Level 7",chiseInstance.getCy() )
-
       resolve();
     });
     
@@ -838,7 +731,6 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        //console.log("data", data);
         if (data.records.length == 0)
        {
          result.err = {err: "Invalid input", message: "No data returned"}
@@ -852,8 +744,6 @@ var databaseUtilities = {
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
-           // console.log("nodesSet", nodesSet);
-          //  console.log("fields[0][j].newtId", fields[0][j].properties.newtId);
             if (!nodesSet.has(fields[0][j].properties.newtId)) {
               nodes.push(fields[0][j]);
               nodesSet.add(fields[0][j].properties.newtId);
@@ -885,22 +775,9 @@ var databaseUtilities = {
             }
           }
         }
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges);
-        for (let i = 0; i < sourceNewt.length; i++)
-        {
-          var cy = appUtilities.getActiveCy();
-          var el = cy.getElementById(sourceNewt[i])
-          var vu = cy.viewUtilities('get');
-          vu.highlight(el, 3);
-        }
-
-        for (let i = 0; i < targetNewt.length; i++)
-        {
-          var cy = appUtilities.getActiveCy();
-          var el = cy.getElementById(targetNewt[i])
-          var vu = cy.viewUtilities('get');
-          vu.highlight(el, 5);
-        }
+       databaseUtilities.addNodesEdgesToCy(nodes, edges, sourceNewt, targetNewt)
+      
+        
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -909,8 +786,7 @@ var databaseUtilities = {
   },
 
   runPathBetween: async function (labelOfNodes, lengthLimit) {
-    //console.log("labelOfNodes", labelOfNodes);
-    //console.log("lengthLimit", lengthLimit);
+
     var idOfNodes = [];
     var newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes, newtIdOfNodes);
@@ -923,7 +799,6 @@ var databaseUtilities = {
     } 
 
     var query = graphALgos.pathsBetween( lengthLimit);
-   // console.log("idOfNodes in runpaths", idOfNodes);
     var queryData = { idList: idOfNodes };
 
     var data = { query: query, queryData: queryData };
@@ -936,7 +811,8 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-       console.log("data", data);
+   
+
        //Check if any data returned
        if (data.records.length == 0)
        {
@@ -952,8 +828,6 @@ var databaseUtilities = {
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
-            //console.log("nodesSet", nodesSet);
-           console.log("fields[0][j].newtId", fields[0][j].properties.newtId);
             if (!nodesSet.has(fields[0][j].properties.newtId)) {
               nodes.push(fields[0][j]);
               nodesSet.add(fields[0][j].properties.newtId);
@@ -985,16 +859,7 @@ var databaseUtilities = {
             }
           }
         }
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges);
-        for (let i = 0; i < newtIdOfNodes.length; i++)
-        {
-          var cy = appUtilities.getActiveCy();
-          var el = cy.getElementById(newtIdOfNodes[i])
-         // console.log("here",el)
-          var vu = cy.viewUtilities('get');
-          vu.highlight(el, 3);
-
-        }
+        await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -1014,7 +879,6 @@ var databaseUtilities = {
     } 
 
     var query = graphALgos.neighborhood(lengthLimit);
-    console.log("idOfNodes in runpaths", idList);
     var queryData = { idList: idList };
 
     var data = { query: query, queryData: queryData };
@@ -1027,7 +891,6 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        console.log("data", data);
         if (data.records.length == 0)
        {
          result.err = {err: "Invalid input", message: "No such nodes with given labels"}
@@ -1041,8 +904,7 @@ var databaseUtilities = {
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
-            console.log("nodesSet", nodesSet);
-            console.log("fields[0][j].newtId", fields[0][j].properties.newtId);
+    
             if (!nodesSet.has(fields[0][j].properties.newtId)) {
               nodes.push(fields[0][j]);
               nodesSet.add(fields[0][j].properties.newtId);
@@ -1074,17 +936,7 @@ var databaseUtilities = {
             }
           }
         }
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges);
-        for (let i = 0; i < newtIdList.length; i++)
-        {
-          console.log("here", newtIdList[i])
-          var cy = appUtilities.getActiveCy();
-          var el = cy.getElementById(newtIdList[i])
-          console.log("here",el)
-          var vu = cy.viewUtilities('get');
-          vu.highlight(el, 3);
-
-        }
+        await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdList);
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -1112,7 +964,6 @@ var databaseUtilities = {
       query = graphALgos.downstream(idOfNodes, lengthLimit);
     }
 
-    console.log("idOfNodes in runpaths", idOfNodes);
 
     var data = { query: query, queryData: null };
     var result = {};
@@ -1124,7 +975,6 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        console.log("data", data);
         if (data.records.length == 0)
        {
          result.err = {err: "Invalid input", message: "No data returned"}
