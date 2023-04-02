@@ -1,0 +1,840 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="sbml">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#eff3ff7f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#9ecae1ff"/>
+          <colorDefinition id="color_4" value="#ffffffff"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/blue2_gradient.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/blue4_gradient.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
+        </listOfBackgroundImages>
+        <listOfStyles>
+          <style id="nodeeff3ff5555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="Insulin_signaling">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="node9ecae15555551.2511normalnormalHelvetica000image_2none505010010011" idList="proIR_complex IR_complex p2IR_complex p1p2IR_complex p1IR_complex pAKT AKT pGSK3b GSK3b pmTOR mTOR pS6K S6K pX X pFOX01 FOX01 G6Pase phi_2 phi_3 insulin phi_1 phi_4">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff5555551.25image_3none505010010011" idList="insulin_IR_complex p1IR_complex_degradation p1IR_complex_phosphorylation p1p2IR_complex_dephosphorylation p1p2IR_complex_degradation p2IR_complex_dephosphorylation IR_complex_phosphorylation p2IR_complex_degradation insulin_p2IR_complex AKT_phosphorylation pAKT_dephosphorylation mTOR_phosphorylation pmTOR_dephosphorylation X_phosphorylation S6K_phosphorylation pS6K_dephosphorylation pX_dephosphorylation GSK3b_phosphorylation pGSK3b_dephosphorylation FOX01_phosphorylation pFOX01_dephosphorylation G6Pase_degradation G6Pase_synthesis IR_complex_synthesis">
+            <g stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge5555551.25" idList="G6Pase_degradation_phi_4 FOX01_G6Pase_synthesis G6Pase_synthesis_FOX01 G6Pase_synthesis_G6Pase IR_complex_insulin_IR_complex insulin_insulin_IR_complex insulin_IR_complex_p1IR_complex p1IR_complex_insulin_IR_complex p1IR_complex_p1IR_complex_degradation p1IR_complex_degradation_phi_1 p1IR_complex_p1IR_complex_phosphorylation pmTOR_p1IR_complex_phosphorylation p1IR_complex_phosphorylation_p1p2IR_complex p1IR_complex_phosphorylation_pmTOR p1p2IR_complex_p1p2IR_complex_dephosphorylation p1p2IR_complex_dephosphorylation_p1IR_complex p1p2IR_complex_p1p2IR_complex_degradation p1p2IR_complex_degradation_phi_3 p2IR_complex_p2IR_complex_dephosphorylation p2IR_complex_dephosphorylation_IR_complex IR_complex_IR_complex_phosphorylation pmTOR_IR_complex_phosphorylation IR_complex_phosphorylation_p2IR_complex IR_complex_phosphorylation_pmTOR p2IR_complex_p2IR_complex_degradation p2IR_complex_degradation_phi_2 insulin_insulin_p2IR_complex p2IR_complex_insulin_p2IR_complex insulin_p2IR_complex_p1p2IR_complex p1p2IR_complex_insulin_p2IR_complex p1IR_complex_AKT_phosphorylation AKT_AKT_phosphorylation AKT_phosphorylation_p1IR_complex AKT_phosphorylation_pAKT pAKT_pAKT_dephosphorylation pAKT_dephosphorylation_AKT mTOR_mTOR_phosphorylation pAKT_mTOR_phosphorylation mTOR_phosphorylation_pmTOR mTOR_phosphorylation_pAKT pmTOR_pmTOR_dephosphorylation pmTOR_dephosphorylation_mTOR pmTOR_X_phosphorylation X_X_phosphorylation X_phosphorylation_pmTOR X_phosphorylation_pX pmTOR_S6K_phosphorylation S6K_S6K_phosphorylation S6K_phosphorylation_pmTOR S6K_phosphorylation_pS6K pX_pS6K_dephosphorylation pS6K_pS6K_dephosphorylation pS6K_dephosphorylation_pX pS6K_dephosphorylation_S6K pX_pX_dephosphorylation pX_dephosphorylation_X pAKT_GSK3b_phosphorylation GSK3b_GSK3b_phosphorylation GSK3b_phosphorylation_pAKT GSK3b_phosphorylation_pGSK3b pGSK3b_pGSK3b_dephosphorylation pGSK3b_dephosphorylation_GSK3b pAKT_FOX01_phosphorylation FOX01_FOX01_phosphorylation FOX01_phosphorylation_pAKT FOX01_phosphorylation_pFOX01 pFOX01_pFOX01_dephosphorylation pFOX01_dephosphorylation_FOX01 G6Pase_G6Pase_degradation proIR_complex_IR_complex_synthesis IR_complex_synthesis_IR_complex IR_complex_IR_complex_synthesis">
+            <g stroke="color_2" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>blue_scale</mapColorScheme>
+        <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
+        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapDescription/>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+        <mapPD2AFConverted>false</mapPD2AFConverted>
+      </mapProperties>
+    </extension>
+    <glyph id="Insulin_signaling" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>574.1738672665772</w>
+          <h>509.73980115702</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="Insulin_signaling"/>
+      <bbox x="-268.9719229858166" y="-268.86990057851" w="602.1738672665772" h="537.73980115702"/>
+      <port id="Insulin_signaling.1" x="-254.97192298581658" y="1.4210854715202004e-14"/>
+      <port id="Insulin_signaling.2" x="319.2019442807606" y="1.4210854715202004e-14"/>
+    </glyph>
+    <glyph id="proIR_complex" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="proIR_complex"/>
+      <bbox x="-144.06345719660388" y="-181.55491867600992" w="50" h="30"/>
+      <port id="proIR_complex.1" x="-144.06345719660388" y="-166.55491867600992"/>
+      <port id="proIR_complex.2" x="-94.06345719660388" y="-166.55491867600992"/>
+    </glyph>
+    <glyph id="IR_complex" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="IR_complex"/>
+      <bbox x="-129.8032741586766" y="-53.785235248671185" w="50" h="30"/>
+      <port id="IR_complex.1" x="-129.8032741586766" y="-38.785235248671185"/>
+      <port id="IR_complex.2" x="-79.8032741586766" y="-38.785235248671185"/>
+    </glyph>
+    <glyph id="p2IR_complex" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="p2IR_complex"/>
+      <bbox x="-175.60343120137605" y="34.32569974319038" w="50" h="30"/>
+      <port id="p2IR_complex.1" x="-175.60343120137605" y="49.32569974319038"/>
+      <port id="p2IR_complex.2" x="-125.60343120137605" y="49.32569974319038"/>
+    </glyph>
+    <glyph id="p1p2IR_complex" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="p1p2IR_complex"/>
+      <bbox x="-68.9746003594268" y="-4.567511247028733" w="50" h="30"/>
+      <port id="p1p2IR_complex.1" x="-68.9746003594268" y="10.432488752971267"/>
+      <port id="p1p2IR_complex.2" x="-18.974600359426802" y="10.432488752971267"/>
+    </glyph>
+    <glyph id="p1IR_complex" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="p1IR_complex"/>
+      <bbox x="17.264167665893055" y="-40.2030077934872" w="50" h="30"/>
+      <port id="p1IR_complex.1" x="17.264167665893055" y="-25.203007793487203"/>
+      <port id="p1IR_complex.2" x="67.26416766589305" y="-25.203007793487203"/>
+    </glyph>
+    <glyph id="pAKT" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="pAKT"/>
+      <bbox x="122.08880326395513" y="22.142061507601973" w="50" h="30"/>
+      <port id="pAKT.1" x="122.08880326395513" y="37.14206150760197"/>
+      <port id="pAKT.2" x="172.08880326395513" y="37.14206150760197"/>
+    </glyph>
+    <glyph id="AKT" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="AKT"/>
+      <bbox x="144.03965680000215" y="-81.30357829030304" w="50" h="30"/>
+      <port id="AKT.1" x="144.03965680000215" y="-66.30357829030304"/>
+      <port id="AKT.2" x="194.03965680000215" y="-66.30357829030304"/>
+    </glyph>
+    <glyph id="pGSK3b" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="pGSK3b"/>
+      <bbox x="170.22209317628364" y="125.6931807050957" w="50" h="30"/>
+      <port id="pGSK3b.1" x="170.22209317628364" y="140.6931807050957"/>
+      <port id="pGSK3b.2" x="220.22209317628364" y="140.6931807050957"/>
+    </glyph>
+    <glyph id="GSK3b" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="GSK3b"/>
+      <bbox x="246.62108765439905" y="110.54140782478328" w="50" h="30"/>
+      <port id="GSK3b.1" x="246.62108765439905" y="125.54140782478328"/>
+      <port id="GSK3b.2" x="296.62108765439905" y="125.54140782478328"/>
+    </glyph>
+    <glyph id="pmTOR" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="pmTOR"/>
+      <bbox x="-25.523296245657832" y="79.70860620100164" w="50" h="30"/>
+      <port id="pmTOR.1" x="-25.523296245657832" y="94.70860620100164"/>
+      <port id="pmTOR.2" x="24.476703754342168" y="94.70860620100164"/>
+    </glyph>
+    <glyph id="mTOR" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="mTOR"/>
+      <bbox x="86.4415262399789" y="103.29244664202528" w="50" h="30"/>
+      <port id="mTOR.1" x="86.4415262399789" y="118.29244664202528"/>
+      <port id="mTOR.2" x="136.44152623997888" y="118.29244664202528"/>
+    </glyph>
+    <glyph id="pS6K" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="pS6K"/>
+      <bbox x="-6.381398267313628" y="223.24490057851003" w="50" h="30"/>
+      <port id="pS6K.1" x="-6.381398267313628" y="238.24490057851003"/>
+      <port id="pS6K.2" x="43.61860173268637" y="238.24490057851003"/>
+    </glyph>
+    <glyph id="S6K" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="S6K"/>
+      <bbox x="-117.07389383847817" y="140.50566718602616" w="50" h="30"/>
+      <port id="S6K.1" x="-117.07389383847817" y="155.50566718602616"/>
+      <port id="S6K.2" x="-67.07389383847817" y="155.50566718602616"/>
+    </glyph>
+    <glyph id="pX" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="pX"/>
+      <bbox x="2.488791281723884" y="178.2220989369653" w="50" h="30"/>
+      <port id="pX.1" x="2.488791281723884" y="193.2220989369653"/>
+      <port id="pX.2" x="52.488791281723884" y="193.2220989369653"/>
+    </glyph>
+    <glyph id="X" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="X"/>
+      <bbox x="-122.5395761359876" y="192.57989468806147" w="50" h="30"/>
+      <port id="X.1" x="-122.5395761359876" y="207.57989468806147"/>
+      <port id="X.2" x="-72.5395761359876" y="207.57989468806147"/>
+    </glyph>
+    <glyph id="pFOX01" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="pFOX01"/>
+      <bbox x="263.53090075758666" y="36.304114705152855" w="50" h="30"/>
+      <port id="pFOX01.1" x="263.53090075758666" y="51.304114705152855"/>
+      <port id="pFOX01.2" x="313.53090075758666" y="51.304114705152855"/>
+    </glyph>
+    <glyph id="FOX01" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="FOX01"/>
+      <bbox x="229.36286019671925" y="-53.10544404915579" w="50" h="30"/>
+      <port id="FOX01.1" x="229.36286019671925" y="-38.10544404915579"/>
+      <port id="FOX01.2" x="279.3628601967192" y="-38.10544404915579"/>
+    </glyph>
+    <glyph id="G6Pase" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="G6Pase"/>
+      <bbox x="245.04958939011073" y="-147.82333245096854" w="50" h="30"/>
+      <port id="G6Pase.1" x="245.04958939011073" y="-132.82333245096854"/>
+      <port id="G6Pase.2" x="295.0495893901107" y="-132.82333245096854"/>
+    </glyph>
+    <glyph id="phi_2" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="phi_2"/>
+      <bbox x="-253.3469229858166" y="5.207212201567412" w="50" h="30"/>
+      <port id="phi_2.1" x="-253.3469229858166" y="20.207212201567412"/>
+      <port id="phi_2.2" x="-203.3469229858166" y="20.207212201567412"/>
+    </glyph>
+    <glyph id="phi_3" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="phi_3"/>
+      <bbox x="-122.48670739038508" y="80.01130796189132" w="50" h="30"/>
+      <port id="phi_3.1" x="-122.48670739038508" y="95.01130796189132"/>
+      <port id="phi_3.2" x="-72.48670739038508" y="95.01130796189132"/>
+    </glyph>
+    <glyph id="insulin" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="insulin"/>
+      <bbox x="-143.71373339383553" y="-96.76848548490953" w="50" h="30"/>
+      <port id="insulin.1" x="-143.71373339383553" y="-81.76848548490953"/>
+      <port id="insulin.2" x="-93.71373339383553" y="-81.76848548490953"/>
+    </glyph>
+    <glyph id="phi_1" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="phi_1"/>
+      <bbox x="68.88035526046362" y="-131.458565021797" w="50" h="30"/>
+      <port id="phi_1.1" x="68.88035526046362" y="-116.458565021797"/>
+      <port id="phi_1.2" x="118.88035526046362" y="-116.458565021797"/>
+    </glyph>
+    <glyph id="phi_4" class="simple molecule" compartmentRef="Insulin_signaling">
+      <label text="phi_4"/>
+      <bbox x="245.06039080228174" y="-253.24490057851" w="50" h="30"/>
+      <port id="phi_4.1" x="245.06039080228174" y="-238.24490057851"/>
+      <port id="phi_4.2" x="295.06039080228174" y="-238.24490057851"/>
+    </glyph>
+    <glyph id="insulin_IR_complex" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-43.436681651102475" y="-74.99999203429242" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="insulin_IR_complex.1" x="-30.579538793959614" y="-69.64284917714956"/>
+      <port id="insulin_IR_complex.2" x="-45.579538793959614" y="-69.64284917714956"/>
+    </glyph>
+    <glyph id="p1IR_complex_degradation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="27.493448924824815" y="-86.23115126950631" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="p1IR_complex_degradation.1" x="32.85059178196767" y="-88.37400841236345"/>
+      <port id="p1IR_complex_degradation.2" x="32.85059178196767" y="-73.37400841236345"/>
+    </glyph>
+    <glyph id="p1IR_complex_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="16.723884405415692" y="30.061526744876335" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="p1IR_complex_phosphorylation.1" x="14.58102726255855" y="35.41866960201919"/>
+      <port id="p1IR_complex_phosphorylation.2" x="29.58102726255855" y="35.41866960201919"/>
+    </glyph>
+    <glyph id="p1p2IR_complex_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-21.909653693440045" y="-39.233930760749146" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="p1p2IR_complex_dephosphorylation.1" x="-9.052510836297188" y="-33.876787903606285"/>
+      <port id="p1p2IR_complex_dephosphorylation.2" x="-24.052510836297188" y="-33.876787903606285"/>
+    </glyph>
+    <glyph id="p1p2IR_complex_degradation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-107.56174454499074" y="27.281941268330602" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="p1p2IR_complex_degradation.1" x="-102.20460168784788" y="40.13908412547346"/>
+      <port id="p1p2IR_complex_degradation.2" x="-102.20460168784788" y="25.13908412547346"/>
+    </glyph>
+    <glyph id="p2IR_complex_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-174.14416850256183" y="-16.077281596474098" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="p2IR_complex_dephosphorylation.1" x="-168.78702564541896" y="-18.22013873933124"/>
+      <port id="p2IR_complex_dephosphorylation.2" x="-168.78702564541896" y="-3.2201387393312393"/>
+    </glyph>
+    <glyph id="IR_complex_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-77.34818539073457" y="41.58956213776871" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="IR_complex_phosphorylation.1" x="-71.99104253359171" y="54.44670499491156"/>
+      <port id="IR_complex_phosphorylation.2" x="-71.99104253359171" y="39.44670499491156"/>
+    </glyph>
+    <glyph id="p2IR_complex_degradation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-216.01556733537726" y="71.84908113842741" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="p2IR_complex_degradation.1" x="-218.1584244782344" y="77.20622399557027"/>
+      <port id="p2IR_complex_degradation.2" x="-203.1584244782344" y="77.20622399557027"/>
+    </glyph>
+    <glyph id="insulin_p2IR_complex" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-132.90023853480963" y="-10.589057753810348" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="insulin_p2IR_complex.1" x="-120.04309567766677" y="-5.23191489666749"/>
+      <port id="insulin_p2IR_complex.2" x="-135.04309567766677" y="-5.23191489666749"/>
+    </glyph>
+    <glyph id="AKT_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="108.78929990088042" y="-24.547187883636948" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="AKT_phosphorylation.1" x="114.14644275802328" y="-11.69004502649409"/>
+      <port id="AKT_phosphorylation.2" x="114.14644275802328" y="-26.69004502649409"/>
+    </glyph>
+    <glyph id="pAKT_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="174.0361468564885" y="-18.286518567210795" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="pAKT_dephosphorylation.1" x="179.39328971363136" y="-20.429375710067937"/>
+      <port id="pAKT_dephosphorylation.2" x="179.39328971363136" y="-5.429375710067936"/>
+    </glyph>
+    <glyph id="mTOR_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="69.8227134041197" y="62.072799343666446" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="mTOR_phosphorylation.1" x="67.67985626126256" y="67.42994220080931"/>
+      <port id="mTOR_phosphorylation.2" x="82.67985626126256" y="67.42994220080931"/>
+    </glyph>
+    <glyph id="pmTOR_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="43.607911794428475" y="134.75187276973153" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="pmTOR_dephosphorylation.1" x="56.46505465157133" y="140.1090156268744"/>
+      <port id="pmTOR_dephosphorylation.2" x="41.46505465157133" y="140.1090156268744"/>
+    </glyph>
+    <glyph id="X_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-47.0019890290165" y="144.16453640254795" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="X_phosphorylation.1" x="-34.14484617187364" y="149.5216792596908"/>
+      <port id="X_phosphorylation.2" x="-49.14484617187364" y="149.5216792596908"/>
+    </glyph>
+    <glyph id="S6K_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-16.862056158704274" y="156.99657987298784" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="S6K_phosphorylation.1" x="-4.004913301561415" y="162.3537227301307"/>
+      <port id="S6K_phosphorylation.2" x="-19.004913301561416" y="162.3537227301307"/>
+    </glyph>
+    <glyph id="pS6K_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-45.26266724613575" y="195.1130270335642" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="pS6K_dephosphorylation.1" x="-47.40552438899289" y="200.47016989070707"/>
+      <port id="pS6K_dephosphorylation.2" x="-32.40552438899289" y="200.47016989070707"/>
+    </glyph>
+    <glyph id="pX_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-40.26327121389397" y="238.85678782311209" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="pX_dephosphorylation.1" x="-42.40612835675111" y="244.21393068025495"/>
+      <port id="pX_dephosphorylation.2" x="-27.40612835675111" y="244.21393068025495"/>
+    </glyph>
+    <glyph id="GSK3b_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="190.1549560485019" y="82.03285949045866" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="GSK3b_phosphorylation.1" x="188.01209890564476" y="87.39000234760152"/>
+      <port id="GSK3b_phosphorylation.2" x="203.01209890564476" y="87.39000234760152"/>
+    </glyph>
+    <glyph id="pGSK3b_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="224.5348733606514" y="77.61882872671116" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="pGSK3b_dephosphorylation.1" x="237.39201621779426" y="82.97597158385402"/>
+      <port id="pGSK3b_dephosphorylation.2" x="222.39201621779426" y="82.97597158385402"/>
+    </glyph>
+    <glyph id="FOX01_phosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="216.1758311190632" y="11.732042856216072" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="FOX01_phosphorylation.1" x="221.53297397620605" y="24.58918571335893"/>
+      <port id="FOX01_phosphorylation.2" x="221.53297397620605" y="9.58918571335893"/>
+    </glyph>
+    <glyph id="pFOX01_dephosphorylation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="304.7198014236178" y="-5.087291720503618" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="pFOX01_dephosphorylation.1" x="310.07694428076064" y="-7.230148863360761"/>
+      <port id="pFOX01_dephosphorylation.2" x="310.07694428076064" y="7.76985113663924"/>
+    </glyph>
+    <glyph id="G6Pase_degradation" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="293.514478580838" y="-190.58501877921407" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="G6Pase_degradation.1" x="298.8716214379808" y="-192.7278759220712"/>
+      <port id="G6Pase_degradation.2" x="298.8716214379808" y="-177.7278759220712"/>
+    </glyph>
+    <glyph id="G6Pase_synthesis" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="299.69463885977507" y="-87.46874928022083" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="G6Pase_synthesis.1" x="297.5517817169179" y="-82.11160642307797"/>
+      <port id="G6Pase_synthesis.2" x="312.5517817169179" y="-82.11160642307797"/>
+    </glyph>
+    <glyph id="IR_complex_synthesis" class="process" compartmentRef="Insulin_signaling">
+      <bbox x="-217.03437182990544" y="-138.11658619004044" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="IR_complex_synthesis.1" x="-204.17722897276258" y="-132.75944333289758"/>
+      <port id="IR_complex_synthesis.2" x="-219.17722897276258" y="-132.75944333289758"/>
+    </glyph>
+    <arc id="G6Pase_degradation_phi_4" class="production" source="G6Pase_degradation.1" target="phi_4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="298.8716214379808" y="-193.3528759220712"/>
+      <end x="279.61269108903764" y="-220.66722240737573"/>
+    </arc>
+    <arc id="FOX01_G6Pase_synthesis" class="consumption" source="FOX01" target="G6Pase_synthesis.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="260.5407596835852" y="-53.26955452353239"/>
+      <end x="313.1767817169179" y="-82.11160642307797"/>
+    </arc>
+    <arc id="G6Pase_synthesis_FOX01" class="production" source="G6Pase_synthesis.1" target="FOX01">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="296.9267817169179" y="-82.11160642307797"/>
+      <end x="282.60357819206746" y="-34.70017459438689"/>
+    </arc>
+    <arc id="G6Pase_synthesis_G6Pase" class="production" source="G6Pase_synthesis.1" target="G6Pase">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="296.9267817169179" y="-82.11160642307797"/>
+      <end x="281.76493736319094" y="-115.84995229279943"/>
+    </arc>
+    <arc id="IR_complex_insulin_IR_complex" class="consumption" source="IR_complex" target="insulin_IR_complex.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-84.38636323547176" y="-48.22740978276563"/>
+      <end x="-46.204538793959614" y="-69.64284917714956"/>
+    </arc>
+    <arc id="insulin_insulin_IR_complex" class="consumption" source="insulin" target="insulin_IR_complex.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-93.83417400689407" y="-78.02713865159184"/>
+      <end x="-46.204538793959614" y="-69.64284917714956"/>
+    </arc>
+    <arc id="insulin_IR_complex_p1IR_complex" class="production" source="insulin_IR_complex.1" target="p1IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-29.954538793959614" y="-69.64284917714956"/>
+      <end x="28.386546112069375" y="-41.43308658313895"/>
+    </arc>
+    <arc id="p1IR_complex_insulin_IR_complex" class="catalysis" source="p1IR_complex" target="insulin_IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="17.2732675312357" y="-28.65745424335132"/>
+      <end x="-32.50824065218658" y="-61.234202821612996"/>
+    </arc>
+    <arc id="p1IR_complex_p1IR_complex_degradation" class="consumption" source="p1IR_complex" target="p1IR_complex_degradation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="39.63602235032535" y="-40.74561150684422"/>
+      <end x="32.85059178196767" y="-72.74900841236345"/>
+    </arc>
+    <arc id="p1IR_complex_degradation_phi_1" class="production" source="p1IR_complex_degradation.1" target="phi_1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="32.85059178196767" y="-88.99900841236345"/>
+      <end x="72.6603668737957" y="-104.08584989136772"/>
+    </arc>
+    <arc id="p1IR_complex_p1IR_complex_phosphorylation" class="consumption" source="p1IR_complex" target="p1IR_complex_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="37.166036156889014" y="-9.890361818550168"/>
+      <end x="30.20602726255855" y="35.41866960201919"/>
+    </arc>
+    <arc id="pmTOR_p1IR_complex_phosphorylation" class="consumption" source="pmTOR" target="p1IR_complex_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="19.30418972160438" y="84.81041412958143"/>
+      <end x="30.20602726255855" y="35.41866960201919"/>
+    </arc>
+    <arc id="p1IR_complex_phosphorylation_p1p2IR_complex" class="production" source="p1IR_complex_phosphorylation.1" target="p1p2IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="13.95602726255855" y="35.41866960201919"/>
+      <end x="-19.276333255279333" y="19.774847469988813"/>
+    </arc>
+    <arc id="p1IR_complex_phosphorylation_pmTOR" class="production" source="p1IR_complex_phosphorylation.1" target="pmTOR">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="13.95602726255855" y="35.41866960201919"/>
+      <end x="-5.557350388804921" y="76.28144239292466"/>
+    </arc>
+    <arc id="p1p2IR_complex_p1p2IR_complex_dephosphorylation" class="consumption" source="p1p2IR_complex" target="p1p2IR_complex_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-34.92736402723455" y="-4.186254916522643"/>
+      <end x="-24.677510836297188" y="-33.876787903606285"/>
+    </arc>
+    <arc id="p1p2IR_complex_dephosphorylation_p1IR_complex" class="production" source="p1p2IR_complex_dephosphorylation.1" target="p1IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-8.427510836297188" y="-33.876787903606285"/>
+      <end x="14.265692072073655" y="-29.33198322875055"/>
+    </arc>
+    <arc id="p1p2IR_complex_p1p2IR_complex_degradation" class="consumption" source="p1p2IR_complex" target="p1p2IR_complex_degradation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-65.70035270030345" y="18.717822436478535"/>
+      <end x="-102.20460168784788" y="24.51408412547346"/>
+    </arc>
+    <arc id="p1p2IR_complex_degradation_phi_3" class="production" source="p1p2IR_complex_degradation.1" target="phi_3">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-102.20460168784788" y="40.76408412547346"/>
+      <end x="-98.90304676836632" y="76.28680267586014"/>
+    </arc>
+    <arc id="p2IR_complex_p2IR_complex_dephosphorylation" class="consumption" source="p2IR_complex" target="p2IR_complex_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-155.25646683326104" y="33.96045241184572"/>
+      <end x="-168.78702564541896" y="-2.59513873933124"/>
+    </arc>
+    <arc id="p2IR_complex_dephosphorylation_IR_complex" class="production" source="p2IR_complex_dephosphorylation.1" target="IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-168.78702564541896" y="-18.84513873933124"/>
+      <end x="-128.46704859504516" y="-28.40562952221509"/>
+    </arc>
+    <arc id="IR_complex_IR_complex_phosphorylation" class="consumption" source="IR_complex" target="IR_complex_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-98.97959356684039" y="-23.569097492429115"/>
+      <end x="-71.99104253359171" y="38.82170499491157"/>
+    </arc>
+    <arc id="pmTOR_IR_complex_phosphorylation" class="consumption" source="pmTOR" target="IR_complex_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-10.394321088782025" y="80.2894087171733"/>
+      <end x="-71.99104253359171" y="38.82170499491156"/>
+    </arc>
+    <arc id="IR_complex_phosphorylation_p2IR_complex" class="production" source="IR_complex_phosphorylation.1" target="p2IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-71.99104253359171" y="55.07170499491156"/>
+      <end x="-121.88636223031233" y="48.4566540695265"/>
+    </arc>
+    <arc id="IR_complex_phosphorylation_pmTOR" class="production" source="IR_complex_phosphorylation.1" target="pmTOR">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-71.99104253359171" y="55.07170499491156"/>
+      <end x="-27.79954697222579" y="88.95851298954354"/>
+    </arc>
+    <arc id="p2IR_complex_p2IR_complex_degradation" class="consumption" source="p2IR_complex" target="p2IR_complex_degradation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-170.991625453955" y="58.790916760212355"/>
+      <end x="-202.5334244782344" y="77.20622399557027"/>
+    </arc>
+    <arc id="p2IR_complex_degradation_phi_2" class="production" source="p2IR_complex_degradation.1" target="phi_2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-218.7834244782344" y="77.20622399557027"/>
+      <end x="-222.65635798151354" y="38.544358322577914"/>
+    </arc>
+    <arc id="insulin_insulin_p2IR_complex" class="consumption" source="insulin" target="insulin_p2IR_complex.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-120.51181153382201" y="-66.181999161173"/>
+      <end x="-135.66809567766677" y="-5.23191489666749"/>
+    </arc>
+    <arc id="p2IR_complex_insulin_p2IR_complex" class="consumption" source="p2IR_complex" target="insulin_p2IR_complex.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-144.20807001729233" y="34.19514578376464"/>
+      <end x="-135.66809567766677" y="-5.23191489666749"/>
+    </arc>
+    <arc id="insulin_p2IR_complex_p1p2IR_complex" class="production" source="insulin_p2IR_complex.1" target="p1p2IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-119.41809567766677" y="-5.23191489666749"/>
+      <end x="-64.17711101855232" y="-2.6335295625258546"/>
+    </arc>
+    <arc id="p1p2IR_complex_insulin_p2IR_complex" class="catalysis" source="p1p2IR_complex" target="insulin_p2IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-68.18535509387786" y="15.551534829060586"/>
+      <end x="-120.20547095712331" y="2.890557097947415"/>
+    </arc>
+    <arc id="p1IR_complex_AKT_phosphorylation" class="consumption" source="p1IR_complex" target="AKT_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="59.84520071804505" y="-13.83554641245609"/>
+      <end x="114.14644275802328" y="-27.31504502649409"/>
+    </arc>
+    <arc id="AKT_AKT_phosphorylation" class="consumption" source="AKT" target="AKT_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="154.19863296226885" y="-53.565882339154754"/>
+      <end x="114.14644275802328" y="-27.31504502649409"/>
+    </arc>
+    <arc id="AKT_phosphorylation_p1IR_complex" class="production" source="AKT_phosphorylation.1" target="p1IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="114.14644275802328" y="-11.06504502649409"/>
+      <end x="67.60757098107123" y="-33.813763069819565"/>
+    </arc>
+    <arc id="AKT_phosphorylation_pAKT" class="production" source="AKT_phosphorylation.1" target="pAKT">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="114.14644275802328" y="-11.06504502649409"/>
+      <end x="136.90474513976037" y="19.727114964889488"/>
+    </arc>
+    <arc id="pAKT_pAKT_dephosphorylation" class="consumption" source="pAKT" target="pAKT_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="156.4697571493124" y="22.601733053712216"/>
+      <end x="179.39328971363136" y="-4.804375710067937"/>
+    </arc>
+    <arc id="pAKT_dephosphorylation_AKT" class="production" source="pAKT_dephosphorylation.1" target="AKT">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="179.39328971363136" y="-21.054375710067937"/>
+      <end x="172.64474303691046" y="-47.71893223097953"/>
+    </arc>
+    <arc id="mTOR_mTOR_phosphorylation" class="consumption" source="mTOR" target="mTOR_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="101.22547450905401" y="103.96288110241156"/>
+      <end x="83.30485626126256" y="67.42994220080931"/>
+    </arc>
+    <arc id="pAKT_mTOR_phosphorylation" class="consumption" source="pAKT" target="mTOR_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="121.9589066967192" y="34.085429938426266"/>
+      <end x="83.30485626126256" y="67.42994220080931"/>
+    </arc>
+    <arc id="mTOR_phosphorylation_pmTOR" class="production" source="mTOR_phosphorylation.1" target="pmTOR">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="67.05485626126256" y="67.42994220080931"/>
+      <end x="24.4774783415491" y="85.69989642967974"/>
+    </arc>
+    <arc id="mTOR_phosphorylation_pAKT" class="production" source="mTOR_phosphorylation.1" target="pAKT">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="67.05485626126256" y="67.42994220080931"/>
+      <end x="131.8251111720839" y="52.81576149512338"/>
+    </arc>
+    <arc id="pmTOR_pmTOR_dephosphorylation" class="consumption" source="pmTOR" target="pmTOR_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="13.661230874284335" y="107.72143299927401"/>
+      <end x="40.84005465157133" y="140.1090156268744"/>
+    </arc>
+    <arc id="pmTOR_dephosphorylation_mTOR" class="production" source="pmTOR_dephosphorylation.1" target="mTOR">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="57.09005465157133" y="140.1090156268744"/>
+      <end x="86.25451984177889" y="127.08766264314984"/>
+    </arc>
+    <arc id="pmTOR_X_phosphorylation" class="consumption" source="pmTOR" target="X_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-24.488687901469028" y="100.24029482556325"/>
+      <end x="-49.76984617187364" y="149.5216792596908"/>
+    </arc>
+    <arc id="X_X_phosphorylation" class="consumption" source="X" target="X_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-84.56691144784244" y="194.1051044595747"/>
+      <end x="-49.76984617187364" y="149.5216792596908"/>
+    </arc>
+    <arc id="X_phosphorylation_pmTOR" class="production" source="X_phosphorylation.1" target="pmTOR">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-33.51984617187364" y="149.5216792596908"/>
+      <end x="-1.8600294332749603" y="113.43589730921627"/>
+    </arc>
+    <arc id="X_phosphorylation_pX" class="production" source="X_phosphorylation.1" target="pX">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-33.51984617187364" y="149.5216792596908"/>
+      <end x="7.056781444444077" y="180.30671595370143"/>
+    </arc>
+    <arc id="pmTOR_S6K_phosphorylation" class="consumption" source="pmTOR" target="S6K_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-13.504033347836641" y="108.18050571898314"/>
+      <end x="-19.629913301561416" y="162.3537227301307"/>
+    </arc>
+    <arc id="S6K_S6K_phosphorylation" class="consumption" source="S6K" target="S6K_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-66.69427832717788" y="157.66283754552657"/>
+      <end x="-19.629913301561416" y="162.3537227301307"/>
+    </arc>
+    <arc id="S6K_phosphorylation_pmTOR" class="production" source="S6K_phosphorylation.1" target="pmTOR">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-3.379913301561416" y="162.3537227301307"/>
+      <end x="6.204484724795931" y="112.88066535197122"/>
+    </arc>
+    <arc id="S6K_phosphorylation_pS6K" class="production" source="S6K_phosphorylation.1" target="pS6K">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-3.379913301561416" y="162.3537227301307"/>
+      <end x="11.437702599202048" y="220.15382147864563"/>
+    </arc>
+    <arc id="pX_pS6K_dephosphorylation" class="consumption" source="pX" target="pS6K_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="8.181679747180436" y="182.94854883031593"/>
+      <end x="-31.780524388992887" y="200.47016989070707"/>
+    </arc>
+    <arc id="pS6K_pS6K_dephosphorylation" class="consumption" source="pS6K" target="pS6K_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1.0214477845541694" y="226.8867172904683"/>
+      <end x="-31.780524388992887" y="200.47016989070707"/>
+    </arc>
+    <arc id="pS6K_dephosphorylation_pX" class="production" source="pS6K_dephosphorylation.1" target="pX">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-48.03052438899289" y="200.47016989070707"/>
+      <end x="6.461465006800278" y="205.73130048075902"/>
+    </arc>
+    <arc id="pS6K_dephosphorylation_S6K" class="production" source="pS6K_dephosphorylation.1" target="S6K">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-48.03052438899289" y="200.47016989070707"/>
+      <end x="-74.90746457329234" y="170.30160509379562"/>
+    </arc>
+    <arc id="pX_pX_dephosphorylation" class="consumption" source="pX" target="pX_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="12.164927981294554" y="205.7454239704802"/>
+      <end x="-26.78112835675111" y="244.21393068025495"/>
+    </arc>
+    <arc id="pX_dephosphorylation_X" class="production" source="pX_dephosphorylation.1" target="X">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-43.03112835675111" y="244.21393068025495"/>
+      <end x="-76.34943153095296" y="219.97391972843243"/>
+    </arc>
+    <arc id="pAKT_GSK3b_phosphorylation" class="consumption" source="pAKT" target="GSK3b_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="150.69032993406702" y="52.611967030597896"/>
+      <end x="203.63709890564476" y="87.39000234760152"/>
+    </arc>
+    <arc id="GSK3b_GSK3b_phosphorylation" class="consumption" source="GSK3b" target="GSK3b_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="251.82638362305042" y="115.61885081520606"/>
+      <end x="203.63709890564476" y="87.39000234760152"/>
+    </arc>
+    <arc id="GSK3b_phosphorylation_pAKT" class="production" source="GSK3b_phosphorylation.1" target="pAKT">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="187.38709890564476" y="87.39000234760152"/>
+      <end x="172.1550838997141" y="46.07641152517573"/>
+    </arc>
+    <arc id="GSK3b_phosphorylation_pGSK3b" class="production" source="GSK3b_phosphorylation.1" target="pGSK3b">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="187.38709890564476" y="87.39000234760152"/>
+      <end x="195.324105274717" y="121.94331293732503"/>
+    </arc>
+    <arc id="pGSK3b_pGSK3b_dephosphorylation" class="consumption" source="pGSK3b" target="pGSK3b_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="204.03524683879243" y="126.02136755028654"/>
+      <end x="221.76701621779426" y="82.97597158385402"/>
+    </arc>
+    <arc id="pGSK3b_dephosphorylation_GSK3b" class="production" source="pGSK3b_dephosphorylation.1" target="GSK3b">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="238.01701621779426" y="82.97597158385402"/>
+      <end x="256.2854585463383" y="109.89841073568218"/>
+    </arc>
+    <arc id="pAKT_FOX01_phosphorylation" class="consumption" source="pAKT" target="FOX01_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="170.86201382549444" y="42.97392784735354"/>
+      <end x="221.53297397620605" y="8.96418571335893"/>
+    </arc>
+    <arc id="FOX01_FOX01_phosphorylation" class="consumption" source="FOX01" target="FOX01_phosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="245.6259544921871" y="-23.41668538600998"/>
+      <end x="221.53297397620605" y="8.96418571335893"/>
+    </arc>
+    <arc id="FOX01_phosphorylation_pAKT" class="production" source="FOX01_phosphorylation.1" target="pAKT">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="221.53297397620605" y="25.21418571335893"/>
+      <end x="165.38224599213135" y="22.93607166852983"/>
+    </arc>
+    <arc id="FOX01_phosphorylation_pFOX01" class="production" source="FOX01_phosphorylation.1" target="pFOX01">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="221.53297397620605" y="25.21418571335893"/>
+      <end x="266.1027076067434" y="39.85034183581679"/>
+    </arc>
+    <arc id="pFOX01_pFOX01_dephosphorylation" class="consumption" source="pFOX01" target="pFOX01_dephosphorylation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="294.9192978507121" y="36.17246695366528"/>
+      <end x="310.07694428076064" y="8.39485113663924"/>
+    </arc>
+    <arc id="pFOX01_dephosphorylation_FOX01" class="production" source="pFOX01_dephosphorylation.1" target="FOX01">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="310.07694428076064" y="-7.8551488633607605"/>
+      <end x="273.92180243861645" y="-24.633443308328474"/>
+    </arc>
+    <arc id="G6Pase_G6Pase_degradation" class="consumption" source="G6Pase" target="G6Pase_degradation.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="278.1972360758452" y="-147.63747547255016"/>
+      <end x="298.8716214379808" y="-177.1028759220712"/>
+    </arc>
+    <arc id="proIR_complex_IR_complex_synthesis" class="consumption" source="proIR_complex" target="IR_complex_synthesis.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-141.05174905520806" y="-158.5312224039193"/>
+      <end x="-219.80222897276258" y="-132.75944333289758"/>
+    </arc>
+    <arc id="IR_complex_synthesis_IR_complex" class="production" source="IR_complex_synthesis.1" target="IR_complex">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-203.55222897276258" y="-132.75944333289758"/>
+      <end x="-127.33791725478369" y="-50.15231584483877"/>
+    </arc>
+    <arc id="IR_complex_IR_complex_synthesis" class="catalysis" source="IR_complex" target="IR_complex_synthesis">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-114.58711560321534" y="-53.2265083461146"/>
+      <end x="-203.02543467631946" y="-128.85371818320579"/>
+    </arc>
+  </map>
+</sbgn>

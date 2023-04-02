@@ -885,10 +885,10 @@ module.exports = function() {
       "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt',
       "#load-sample19" : 'pd_learners_card.nwt',
       "#load-sample20" : 'af_learners_card.nwt',
-      "#load-sample21" : 'MODEL1204280021.nwt',
-      "#load-sample22" : 'MODEL2003190002.nwt',
-      "#load-sample23" : 'MODEL2105210001.nwt',
-      "#load-sample24" : 'MODEL1912090002.nwt',
+      "#load-sample21" : 'interaction_topologies_of_MAPK_cascade.nwt',
+      "#load-sample22" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
+      "#load-sample23" : 'apoptotic_reaction_model.nwt',
+      "#load-sample24" : 'insulin_induced_signalling.nwt',
 
     };
 
