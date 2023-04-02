@@ -1,0 +1,917 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="sbml">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#eff3ff7f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#9ecae1ff"/>
+          <colorDefinition id="color_4" value="#ffffffff"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/blue2_gradient.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/blue4_gradient.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
+        </listOfBackgroundImages>
+        <listOfStyles>
+          <style id="nodeeff3ff5555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="compartment_1">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="node9ecae15555551.2511normalnormalHelvetica000image_2none505010010011" idList="species_1 species_2 species_3 species_4 species_5 species_6 species_7 species_8 species_9 species_10 species_11 species_12 species_13 species_14 species_15 species_16 species_17 species_18 species_19 species_20 species_21 species_22 species_23 species_24 species_25">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff5555551.25image_3none505010010011" idList="reaction_2 reaction_3 reaction_4 reaction_5 reaction_6 reaction_7 reaction_8 reaction_9 reaction_10 reaction_11 reaction_12 reaction_13 reaction_14 reaction_15 reaction_16 reaction_17 reaction_18 reaction_19 reaction_20 reaction_21 reaction_22 reaction_23 reaction_1">
+            <g stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge5555551.25" idList="species_25_reaction_23 reaction_23_species_20 reaction_23_species_24 species_20_reaction_23 species_24_reaction_23 species_3_reaction_2 reaction_2_species_4 reaction_2_species_2 species_4_reaction_3 species_2_reaction_3 reaction_3_species_5 species_5_reaction_3 species_5_reaction_4 reaction_4_species_6 reaction_4_species_2 species_6_reaction_5 species_15_reaction_5 reaction_5_species_14 species_14_reaction_5 species_14_reaction_6 reaction_6_species_4 reaction_6_species_15 species_4_reaction_7 species_15_reaction_7 reaction_7_species_16 species_16_reaction_7 species_16_reaction_8 reaction_8_species_17 species_17_reaction_9 reaction_9_species_1 reaction_9_species_15 species_1_reaction_9 species_15_reaction_9 species_7_reaction_10 species_8_reaction_10 reaction_10_species_9 species_9_reaction_10 species_9_reaction_11 reaction_11_species_10 reaction_11_species_8 species_10_reaction_12 species_8_reaction_12 reaction_12_species_11 species_11_reaction_12 species_11_reaction_13 reaction_13_species_2 reaction_13_species_8 species_2_reaction_14 species_13_reaction_14 reaction_14_species_12 species_12_reaction_14 species_12_reaction_15 reaction_15_species_10 reaction_15_species_13 species_10_reaction_16 species_13_reaction_16 reaction_16_species_18 species_18_reaction_16 species_18_reaction_17 reaction_17_species_19 species_19_reaction_18 reaction_18_species_7 reaction_18_species_13 species_7_reaction_18 species_13_reaction_18 species_20_reaction_19 species_22_reaction_19 reaction_19_species_21 species_21_reaction_19 species_21_reaction_20 reaction_20_species_8 reaction_20_species_22 species_8_reaction_21 species_24_reaction_21 reaction_21_species_23 species_23_reaction_21 species_23_reaction_22 reaction_22_species_25 species_1_reaction_1 species_2_reaction_1 reaction_1_species_3 species_3_reaction_1">
+            <g stroke="color_2" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <mapProperties>
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>blue_scale</mapColorScheme>
+        <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
+        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapDescription/>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+        <mapPD2AFConverted>false</mapPD2AFConverted>
+      </mapProperties>
+    </extension>
+    <glyph id="compartment_1" class="compartment">
+      <extension>
+        <extraInfo>
+          <w>669.9100206799933</w>
+          <h>452.06861982914836</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </extraInfo>
+      </extension>
+      <label text="compartment"/>
+      <bbox x="-348.95501033999665" y="-230.50999861081254" w="697.9100206799933" h="480.06861982914836"/>
+      <port id="compartment_1.1" x="-334.95501033999665" y="9.52431130376165"/>
+      <port id="compartment_1.2" x="334.95501033999665" y="9.52431130376165"/>
+    </glyph>
+    <glyph id="species_1" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK"/>
+      <bbox x="-185.7463283678505" y="-39.147673623270904" w="50" h="30"/>
+      <port id="species_1.1" x="-185.7463283678505" y="-24.147673623270904"/>
+      <port id="species_1.2" x="-135.7463283678505" y="-24.147673623270904"/>
+    </glyph>
+    <glyph id="species_2" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK-PP"/>
+      <bbox x="-50.87195597886943" y="-33.779538623293675" w="50" h="30"/>
+      <port id="species_2.1" x="-50.87195597886943" y="-18.779538623293675"/>
+      <port id="species_2.2" x="-0.8719559788694298" y="-18.779538623293675"/>
+    </glyph>
+    <glyph id="species_3" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK_MKK-PP"/>
+      <bbox x="-87.58683604802258" y="6.187991971662214" w="50" h="30"/>
+      <port id="species_3.1" x="-87.58683604802258" y="21.187991971662214"/>
+      <port id="species_3.2" x="-37.586836048022576" y="21.187991971662214"/>
+    </glyph>
+    <glyph id="species_4" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK-P"/>
+      <bbox x="-178.41776333293743" y="-103.06923740165657" w="50" h="30"/>
+      <port id="species_4.1" x="-178.41776333293743" y="-88.06923740165657"/>
+      <port id="species_4.2" x="-128.41776333293743" y="-88.06923740165657"/>
+    </glyph>
+    <glyph id="species_5" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK-P_MKK-PP"/>
+      <bbox x="-148.05653430465375" y="53.44762641838284" w="50" h="30"/>
+      <port id="species_5.1" x="-148.05653430465375" y="68.44762641838284"/>
+      <port id="species_5.2" x="-98.05653430465375" y="68.44762641838284"/>
+    </glyph>
+    <glyph id="species_6" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK-PP"/>
+      <bbox x="-217.39452485174772" y="13.184287828509127" w="50" h="30"/>
+      <port id="species_6.1" x="-217.39452485174772" y="28.184287828509127"/>
+      <port id="species_6.2" x="-167.39452485174772" y="28.184287828509127"/>
+    </glyph>
+    <glyph id="species_7" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK"/>
+      <bbox x="56.1879458624999" y="28.71327436055254" w="50" h="30"/>
+      <port id="species_7.1" x="56.1879458624999" y="43.71327436055254"/>
+      <port id="species_7.2" x="106.1879458624999" y="43.71327436055254"/>
+    </glyph>
+    <glyph id="species_8" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKKK-P"/>
+      <bbox x="104.05970459171792" y="-57.33257327240444" w="50" h="30"/>
+      <port id="species_8.1" x="104.05970459171792" y="-42.33257327240444"/>
+      <port id="species_8.2" x="154.05970459171792" y="-42.33257327240444"/>
+    </glyph>
+    <glyph id="species_9" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK_MKKK-P"/>
+      <bbox x="205.95447817550118" y="7.7688958559893315" w="50" h="30"/>
+      <port id="species_9.1" x="205.95447817550118" y="22.76889585598933"/>
+      <port id="species_9.2" x="255.95447817550118" y="22.76889585598933"/>
+    </glyph>
+    <glyph id="species_10" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK-P"/>
+      <bbox x="109.3669056781178" y="68.56516892616254" w="50" h="30"/>
+      <port id="species_10.1" x="109.3669056781178" y="83.56516892616254"/>
+      <port id="species_10.2" x="159.3669056781178" y="83.56516892616254"/>
+    </glyph>
+    <glyph id="species_11" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK-P_MKKK-P"/>
+      <bbox x="30.46685902535205" y="-18.6061412322004" w="50" h="30"/>
+      <port id="species_11.1" x="30.46685902535205" y="-3.6061412322004003"/>
+      <port id="species_11.2" x="80.46685902535205" y="-3.6061412322004003"/>
+    </glyph>
+    <glyph id="species_12" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK-PP_P2"/>
+      <bbox x="-63.33785430052276" y="75.35720058758126" w="50" h="30"/>
+      <port id="species_12.1" x="-63.33785430052276" y="90.35720058758126"/>
+      <port id="species_12.2" x="-13.337854300522757" y="90.35720058758126"/>
+    </glyph>
+    <glyph id="species_13" class="simple molecule" compartmentRef="compartment_1">
+      <label text="P2"/>
+      <bbox x="1.8835061804987632" y="111.71088189349123" w="50" h="30"/>
+      <port id="species_13.1" x="1.8835061804987632" y="126.71088189349123"/>
+      <port id="species_13.2" x="51.88350618049876" y="126.71088189349123"/>
+    </glyph>
+    <glyph id="species_14" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK-PP_P3"/>
+      <bbox x="-314.1009174147438" y="-14.156414266451396" w="50" h="30"/>
+      <port id="species_14.1" x="-314.1009174147438" y="0.8435857335486041"/>
+      <port id="species_14.2" x="-264.1009174147438" y="0.8435857335486041"/>
+    </glyph>
+    <glyph id="species_15" class="simple molecule" compartmentRef="compartment_1">
+      <label text="P3"/>
+      <bbox x="-264.52927525222026" y="-124.5758240805107" w="50" h="30"/>
+      <port id="species_15.1" x="-264.52927525222026" y="-109.5758240805107"/>
+      <port id="species_15.2" x="-214.52927525222026" y="-109.5758240805107"/>
+    </glyph>
+    <glyph id="species_16" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK-P_P3"/>
+      <bbox x="-275.332667358343" y="-180.4613002619134" w="50" h="30"/>
+      <port id="species_16.1" x="-275.332667358343" y="-165.4613002619134"/>
+      <port id="species_16.2" x="-225.33266735834297" y="-165.4613002619134"/>
+    </glyph>
+    <glyph id="species_17" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MK_P3"/>
+      <bbox x="-333.33001033999665" y="-82.9453678719714" w="50" h="30"/>
+      <port id="species_17.1" x="-333.33001033999665" y="-67.9453678719714"/>
+      <port id="species_17.2" x="-283.33001033999665" y="-67.9453678719714"/>
+    </glyph>
+    <glyph id="species_18" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK-P_P2"/>
+      <bbox x="138.33464464572407" y="170.73103170438102" w="50" h="30"/>
+      <port id="species_18.1" x="138.33464464572407" y="185.73103170438102"/>
+      <port id="species_18.2" x="188.33464464572407" y="185.73103170438102"/>
+    </glyph>
+    <glyph id="species_19" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKK_P2"/>
+      <bbox x="39.58826758885709" y="161.0711904124197" w="50" h="30"/>
+      <port id="species_19.1" x="39.58826758885709" y="176.0711904124197"/>
+      <port id="species_19.2" x="89.5882675888571" y="176.0711904124197"/>
+    </glyph>
+    <glyph id="species_20" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKKK"/>
+      <bbox x="258.06096150384445" y="-214.88499861081252" w="50" h="30"/>
+      <port id="species_20.1" x="258.06096150384445" y="-199.88499861081252"/>
+      <port id="species_20.2" x="308.06096150384445" y="-199.88499861081252"/>
+    </glyph>
+    <glyph id="species_21" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKKK_Sig"/>
+      <bbox x="266.297999410093" y="-83.10080260303016" w="50" h="30"/>
+      <port id="species_21.1" x="266.297999410093" y="-68.10080260303016"/>
+      <port id="species_21.2" x="316.297999410093" y="-68.10080260303016"/>
+    </glyph>
+    <glyph id="species_22" class="simple molecule" compartmentRef="compartment_1">
+      <label text="Sig"/>
+      <bbox x="175.3280114856243" y="-142.8730980129367" w="50" h="30"/>
+      <port id="species_22.1" x="175.3280114856243" y="-127.87309801293671"/>
+      <port id="species_22.2" x="225.3280114856243" y="-127.87309801293671"/>
+    </glyph>
+    <glyph id="species_23" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKKK-P_P1"/>
+      <bbox x="143.6936737615076" y="-100.5990498908239" w="50" h="30"/>
+      <port id="species_23.1" x="143.6936737615076" y="-85.5990498908239"/>
+      <port id="species_23.2" x="193.6936737615076" y="-85.5990498908239"/>
+    </glyph>
+    <glyph id="species_24" class="simple molecule" compartmentRef="compartment_1">
+      <label text="P1"/>
+      <bbox x="118.42563037900896" y="-185.80793864453085" w="50" h="30"/>
+      <port id="species_24.1" x="118.42563037900896" y="-170.80793864453085"/>
+      <port id="species_24.2" x="168.42563037900896" y="-170.80793864453085"/>
+    </glyph>
+    <glyph id="species_25" class="simple molecule" compartmentRef="compartment_1">
+      <label text="MKKK_P1"/>
+      <bbox x="283.33001033999665" y="-164.09930863700507" w="50" h="30"/>
+      <port id="species_25.1" x="283.33001033999665" y="-149.09930863700507"/>
+      <port id="species_25.2" x="333.33001033999665" y="-149.09930863700507"/>
+    </glyph>
+    <glyph id="reaction_2" class="process" compartmentRef="compartment_1">
+      <bbox x="-92.78153459089663" y="-64.2622923708697" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_2.1" x="-94.92439173375377" y="-58.90514951372684"/>
+      <port id="reaction_2.2" x="-79.92439173375377" y="-58.90514951372684"/>
+    </glyph>
+    <glyph id="reaction_3" class="process" compartmentRef="compartment_1">
+      <bbox x="-117.5748855852857" y="-14.800679647779184" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_3.1" x="-112.21774272814284" y="-1.9435367906363252"/>
+      <port id="reaction_3.2" x="-112.21774272814284" y="-16.943536790636326"/>
+    </glyph>
+    <glyph id="reaction_4" class="process" compartmentRef="compartment_1">
+      <bbox x="-119.37343868702501" y="16.435455352098998" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_4.1" x="-114.01629582988215" y="14.292598209241856"/>
+      <port id="reaction_4.2" x="-114.01629582988215" y="29.292598209241856"/>
+    </glyph>
+    <glyph id="reaction_5" class="process" compartmentRef="compartment_1">
+      <bbox x="-229.59539258784676" y="-31.45573507595942" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_5.1" x="-231.7382497307039" y="-26.098592218816563"/>
+      <port id="reaction_5.2" x="-216.7382497307039" y="-26.098592218816563"/>
+    </glyph>
+    <glyph id="reaction_6" class="process" compartmentRef="compartment_1">
+      <bbox x="-258.0329485528138" y="-59.11989142819087" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_6.1" x="-245.175805695671" y="-53.762748571048014"/>
+      <port id="reaction_6.2" x="-260.175805695671" y="-53.762748571048014"/>
+    </glyph>
+    <glyph id="reaction_7" class="process" compartmentRef="compartment_1">
+      <bbox x="-185.15137902825802" y="-140.88794035870325" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_7.1" x="-179.79423617111516" y="-143.0307975015604"/>
+      <port id="reaction_7.2" x="-179.79423617111516" y="-128.0307975015604"/>
+    </glyph>
+    <glyph id="reaction_8" class="process" compartmentRef="compartment_1">
+      <bbox x="-322.04104652511" y="-132.5011893466793" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_8.1" x="-316.6839036679672" y="-119.64404648953644"/>
+      <port id="reaction_8.2" x="-316.6839036679672" y="-134.64404648953644"/>
+    </glyph>
+    <glyph id="reaction_9" class="process" compartmentRef="compartment_1">
+      <bbox x="-227.2878415863571" y="-67.36719419609456" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_9.1" x="-214.43069872921424" y="-62.0100513389517"/>
+      <port id="reaction_9.2" x="-229.43069872921424" y="-62.0100513389517"/>
+    </glyph>
+    <glyph id="reaction_10" class="process" compartmentRef="compartment_1">
+      <bbox x="155.87109047890303" y="-5.249559770771587" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_10.1" x="168.7282333360459" y="0.10758308637127101"/>
+      <port id="reaction_10.2" x="153.7282333360459" y="0.10758308637127101"/>
+    </glyph>
+    <glyph id="reaction_11" class="process" compartmentRef="compartment_1">
+      <bbox x="160.06822331661786" y="25.76885197936809" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_11.1" x="157.92536617376072" y="31.125994836510948"/>
+      <port id="reaction_11.2" x="172.92536617376072" y="31.125994836510948"/>
+    </glyph>
+    <glyph id="reaction_12" class="process" compartmentRef="compartment_1">
+      <bbox x="120.70333252616231" y="10.256634944457126" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_12.1" x="118.56047538330517" y="15.613777801599984"/>
+      <port id="reaction_12.2" x="133.56047538330517" y="15.613777801599984"/>
+    </glyph>
+    <glyph id="reaction_13" class="process" compartmentRef="compartment_1">
+      <bbox x="44.06713232001495" y="-59.65453558209062" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_13.1" x="49.42427517715781" y="-46.79739272494776"/>
+      <port id="reaction_13.2" x="49.42427517715781" y="-61.79739272494776"/>
+    </glyph>
+    <glyph id="reaction_14" class="process" compartmentRef="compartment_1">
+      <bbox x="0.7801671265187453" y="44.168108814789676" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_14.1" x="-1.362690016338398" y="49.52525167193254"/>
+      <port id="reaction_14.2" x="13.637309983661604" y="49.52525167193254"/>
+    </glyph>
+    <glyph id="reaction_15" class="process" compartmentRef="compartment_1">
+      <bbox x="39.45289764835991" y="74.73867974502168" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_15.1" x="52.31004050550277" y="80.09582260216455"/>
+      <port id="reaction_15.2" x="37.31004050550277" y="80.09582260216455"/>
+    </glyph>
+    <glyph id="reaction_16" class="process" compartmentRef="compartment_1">
+      <bbox x="104.20130296982175" y="134.69125610772667" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_16.1" x="109.55844582696461" y="147.54839896486953"/>
+      <port id="reaction_16.2" x="109.55844582696461" y="132.54839896486953"/>
+    </glyph>
+    <glyph id="reaction_17" class="process" compartmentRef="compartment_1">
+      <bbox x="98.87172729640513" y="221.07647836119295" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_17.1" x="96.72887015354799" y="226.43362121833582"/>
+      <port id="reaction_17.2" x="111.72887015354799" y="226.43362121833582"/>
+    </glyph>
+    <glyph id="reaction_18" class="process" compartmentRef="compartment_1">
+      <bbox x="76.91362115631236" y="103.04173044267466" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_18.1" x="82.27076401345522" y="100.89887329981752"/>
+      <port id="reaction_18.2" x="82.27076401345522" y="115.89887329981752"/>
+    </glyph>
+    <glyph id="reaction_19" class="process" compartmentRef="compartment_1">
+      <bbox x="256.9892848521277" y="-138.51985100231803" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_19.1" x="262.34642770927053" y="-125.66270814517517"/>
+      <port id="reaction_19.2" x="262.34642770927053" y="-140.66270814517517"/>
+    </glyph>
+    <glyph id="reaction_20" class="process" compartmentRef="compartment_1">
+      <bbox x="210.0079144707995" y="-63.15426917801226" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_20.1" x="207.86505732794237" y="-57.797126320869395"/>
+      <port id="reaction_20.2" x="222.86505732794237" y="-57.797126320869395"/>
+    </glyph>
+    <glyph id="reaction_21" class="process" compartmentRef="compartment_1">
+      <bbox x="104.68631863847473" y="-115.11062077957916" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_21.1" x="102.54346149561759" y="-109.7534779224363"/>
+      <port id="reaction_21.2" x="117.54346149561759" y="-109.7534779224363"/>
+    </glyph>
+    <glyph id="reaction_22" class="process" compartmentRef="compartment_1">
+      <bbox x="240.05931958481798" y="-103.63363572841665" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_22.1" x="252.91646244196085" y="-98.27649287127379"/>
+      <port id="reaction_22.2" x="237.91646244196085" y="-98.27649287127379"/>
+    </glyph>
+    <glyph id="reaction_23" class="process" compartmentRef="compartment_1">
+      <bbox x="218.26627537688825" y="-179.062079141632" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_23.1" x="223.6234182340311" y="-181.20493628448915"/>
+      <port id="reaction_23.2" x="223.6234182340311" y="-166.20493628448915"/>
+    </glyph>
+    <glyph id="reaction_1" class="process" compartmentRef="compartment_1">
+      <bbox x="-89.47657291319338" y="-34.171835994786164" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="reaction_1.1" x="-76.61943005605052" y="-28.814693137643303"/>
+      <port id="reaction_1.2" x="-91.61943005605052" y="-28.814693137643303"/>
+    </glyph>
+    <arc id="species_25_reaction_23" class="consumption" source="species_25" target="reaction_23.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.1959862834758" y="-155.81929544996296"/>
+      <end x="223.6234182340311" y="-165.57993628448915"/>
+    </arc>
+    <arc id="reaction_23_species_20" class="production" source="reaction_23.1" target="species_20">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="223.6234182340311" y="-181.82993628448915"/>
+      <end x="255.91386975678435" y="-205.87578678033077"/>
+    </arc>
+    <arc id="reaction_23_species_24" class="production" source="reaction_23.1" target="species_24">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="223.6234182340311" y="-181.82993628448915"/>
+      <end x="168.45655082228393" y="-161.83335202267324"/>
+    </arc>
+    <arc id="species_20_reaction_23" class="catalysis" source="species_20" target="reaction_23">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="273.4975898342678" y="-185.3889204099504"/>
+      <end x="232.08048372776003" y="-168.44412781328467"/>
+    </arc>
+    <arc id="species_24_reaction_23" class="catalysis" source="species_24" target="reaction_23">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="163.7339353990522" y="-180.3367970210094"/>
+      <end x="215.4315835221385" y="-180.6178239928974"/>
+    </arc>
+    <arc id="species_3_reaction_2" class="consumption" source="species_3" target="reaction_2.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-67.34791066465095" y="5.835055164310475"/>
+      <end x="-79.29939173375377" y="-58.90514951372684"/>
+    </arc>
+    <arc id="reaction_2_species_4" class="production" source="reaction_2.1" target="species_4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-95.54939173375377" y="-58.90514951372684"/>
+      <end x="-129.81076396803962" y="-77.63672596051211"/>
+    </arc>
+    <arc id="reaction_2_species_2" class="production" source="reaction_2.1" target="species_2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-95.54939173375377" y="-58.90514951372684"/>
+      <end x="-45.99451077713563" y="-31.89729414432644"/>
+    </arc>
+    <arc id="species_4_reaction_3" class="consumption" source="species_4" target="reaction_3.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-145.61866069525263" y="-73.1855091893007"/>
+      <end x="-112.21774272814284" y="-17.56853679063633"/>
+    </arc>
+    <arc id="species_2_reaction_3" class="consumption" source="species_2" target="reaction_3.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-51.10334779307018" y="-16.051434229481362"/>
+      <end x="-112.21774272814284" y="-17.568536790636326"/>
+    </arc>
+    <arc id="reaction_3_species_5" class="production" source="reaction_3.1" target="species_5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-112.21774272814284" y="-1.3185367906363261"/>
+      <end x="-112.11652758306512" y="51.24220625995987"/>
+    </arc>
+    <arc id="species_5_reaction_3" class="catalysis" source="species_5" target="reaction_3">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-127.60890903256656" y="53.071172112630094"/>
+      <end x="-119.58089769632542" y="-1.32522309546113"/>
+    </arc>
+    <arc id="species_5_reaction_4" class="consumption" source="species_5" target="reaction_4.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-120.04982725489226" y="52.93055763588156"/>
+      <end x="-114.01629582988215" y="29.91759820924186"/>
+    </arc>
+    <arc id="reaction_4_species_6" class="production" source="reaction_4.1" target="species_6">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-114.01629582988215" y="13.667598209241856"/>
+      <end x="-163.8810074209856" y="25.85903047521839"/>
+    </arc>
+    <arc id="reaction_4_species_2" class="production" source="reaction_4.1" target="species_2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-114.01629582988215" y="13.66759820924186"/>
+      <end x="-49.162678146296" y="-8.059004913442056"/>
+    </arc>
+    <arc id="species_6_reaction_5" class="consumption" source="species_6" target="reaction_5.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-201.0250341501469" y="13.472161568998231"/>
+      <end x="-216.1132497307039" y="-26.098592218816563"/>
+    </arc>
+    <arc id="species_15_reaction_5" class="consumption" source="species_15" target="reaction_5.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-236.6848377828864" y="-94.0473844863477"/>
+      <end x="-216.1132497307039" y="-26.098592218816563"/>
+    </arc>
+    <arc id="reaction_5_species_14" class="production" source="reaction_5.1" target="species_14">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-232.3632497307039" y="-26.098592218816563"/>
+      <end x="-260.6097224152301" y="3.2757021304412275"/>
+    </arc>
+    <arc id="species_14_reaction_5" class="catalysis" source="species_14" target="reaction_5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-277.7234626501606" y="-13.156846454688136"/>
+      <end x="-232.82789137824594" y="-30.462453257004597"/>
+    </arc>
+    <arc id="species_14_reaction_6" class="consumption" source="species_14" target="reaction_6.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-279.44632773887565" y="-13.629993798071865"/>
+      <end x="-260.800805695671" y="-53.76274857104801"/>
+    </arc>
+    <arc id="reaction_6_species_4" class="production" source="reaction_6.1" target="species_4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-244.550805695671" y="-53.762748571048014"/>
+      <end x="-178.66406011696898" y="-79.34337722933476"/>
+    </arc>
+    <arc id="reaction_6_species_15" class="production" source="reaction_6.1" target="species_15">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-244.550805695671" y="-53.762748571048014"/>
+      <end x="-243.88876720925458" y="-91.06777324325992"/>
+    </arc>
+    <arc id="species_4_reaction_7" class="consumption" source="species_4" target="reaction_7.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-161.64189557153236" y="-102.86765828629657"/>
+      <end x="-179.79423617111516" y="-127.40579750156039"/>
+    </arc>
+    <arc id="species_15_reaction_7" class="consumption" source="species_15" target="reaction_7.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-218.66055916549038" y="-118.64331578545604"/>
+      <end x="-179.79423617111516" y="-127.40579750156039"/>
+    </arc>
+    <arc id="reaction_7_species_16" class="production" source="reaction_7.1" target="species_16">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-179.79423617111516" y="-143.6557975015604"/>
+      <end x="-235.24512197945415" y="-149.71320197326347"/>
+    </arc>
+    <arc id="species_16_reaction_7" class="catalysis" source="species_16" target="reaction_7">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-225.35895025188202" y="-168.9616443687368"/>
+      <end x="-183.82630502781808" y="-144.1658950352277"/>
+    </arc>
+    <arc id="species_16_reaction_8" class="consumption" source="species_16" target="reaction_8.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-268.937832398996" y="-154.71698154247073"/>
+      <end x="-316.6839036679672" y="-135.26904648953644"/>
+    </arc>
+    <arc id="reaction_8_species_17" class="production" source="reaction_8.1" target="species_17">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-316.6839036679672" y="-119.01904648953644"/>
+      <end x="-310.9634953310796" y="-86.60718524391726"/>
+    </arc>
+    <arc id="species_17_reaction_9" class="consumption" source="species_17" target="reaction_9.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-282.86610396457127" y="-66.19609068807232"/>
+      <end x="-230.05569872921424" y="-62.0100513389517"/>
+    </arc>
+    <arc id="reaction_9_species_1" class="production" source="reaction_9.1" target="species_1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-213.80569872921424" y="-62.0100513389517"/>
+      <end x="-169.81599310628204" y="-41.84220935952035"/>
+    </arc>
+    <arc id="reaction_9_species_15" class="production" source="reaction_9.1" target="species_15">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-213.80569872921424" y="-62.0100513389517"/>
+      <end x="-243.81942329801484" y="-91.06012264562379"/>
+    </arc>
+    <arc id="species_1_reaction_9" class="catalysis" source="species_1" target="reaction_9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-186.10148874467586" y="-21.886105826363302"/>
+      <end x="-219.60705317171292" y="-53.184466664738686"/>
+    </arc>
+    <arc id="species_15_reaction_9" class="catalysis" source="species_15" target="reaction_9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-214.94652055320716" y="-105.16493105882935"/>
+      <end x="-215.16136551629282" y="-70.22535933333245"/>
+    </arc>
+    <arc id="species_7_reaction_10" class="consumption" source="species_7" target="reaction_10.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="100.29681031324057" y="33.30282644562504"/>
+      <end x="153.1032333360459" y="0.10758308637127101"/>
+    </arc>
+    <arc id="species_8_reaction_10" class="consumption" source="species_8" target="reaction_10.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="139.81035523510897" y="-28.149167562731193"/>
+      <end x="153.1032333360459" y="0.10758308637127101"/>
+    </arc>
+    <arc id="reaction_10_species_9" class="production" source="reaction_10.1" target="species_9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="169.3532333360459" y="0.10758308637127101"/>
+      <end x="216.54611285408987" y="6.744111099389276"/>
+    </arc>
+    <arc id="species_9_reaction_10" class="catalysis" source="species_9" target="reaction_10">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="207.41648664599333" y="28.94532421791022"/>
+      <end x="165.203456715739" y="8.750236727413832"/>
+    </arc>
+    <arc id="species_9_reaction_11" class="consumption" source="species_9" target="reaction_11.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="205.87222008660495" y="25.96770180804202"/>
+      <end x="173.55036617376072" y="31.125994836510948"/>
+    </arc>
+    <arc id="reaction_11_species_10" class="production" source="reaction_11.1" target="species_10">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="157.30036617376072" y="31.125994836510948"/>
+      <end x="144.66349554244016" y="66.18038359526408"/>
+    </arc>
+    <arc id="reaction_11_species_8" class="production" source="reaction_11.1" target="species_8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="157.30036617376072" y="31.125994836510948"/>
+      <end x="137.85127992688183" y="-24.573607604041598"/>
+    </arc>
+    <arc id="species_10_reaction_12" class="consumption" source="species_10" target="reaction_12.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="132.46217745456437" y="67.98339337264942"/>
+      <end x="134.18547538330517" y="15.61377780159998"/>
+    </arc>
+    <arc id="species_8_reaction_12" class="consumption" source="species_8" target="reaction_12.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="128.25137699038092" y="-26.715349074101237"/>
+      <end x="134.18547538330517" y="15.613777801599987"/>
+    </arc>
+    <arc id="reaction_12_species_11" class="production" source="reaction_12.1" target="species_11">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="117.93547538330517" y="15.613777801599984"/>
+      <end x="70.91457317053047" y="11.988645661805013"/>
+    </arc>
+    <arc id="species_11_reaction_12" class="catalysis" source="species_11" target="reaction_12">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="78.40918262249991" y="-10.566191596399372"/>
+      <end x="121.83000343359355" y="7.00559281186808"/>
+    </arc>
+    <arc id="species_11_reaction_13" class="consumption" source="species_11" target="reaction_13.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="53.609202147540366" y="-19.19002957303406"/>
+      <end x="49.42427517715781" y="-62.42239272494776"/>
+    </arc>
+    <arc id="reaction_13_species_2" class="production" source="reaction_13.1" target="species_2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="49.4242751771578" y="-46.17239272494776"/>
+      <end x="-2.777516564086291" y="-29.673376430315137"/>
+    </arc>
+    <arc id="reaction_13_species_8" class="production" source="reaction_13.1" target="species_8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="49.42427517715781" y="-46.17239272494776"/>
+      <end x="101.08856518985017" y="-46.53509513089873"/>
+    </arc>
+    <arc id="species_2_reaction_14" class="consumption" source="species_2" target="reaction_14.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-18.831496482377887" y="-3.755854229755542"/>
+      <end x="14.262309983661602" y="49.52525167193254"/>
+    </arc>
+    <arc id="species_13_reaction_14" class="consumption" source="species_13" target="reaction_14.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="22.739061964333228" y="111.29159559600603"/>
+      <end x="14.262309983661602" y="49.52525167193254"/>
+    </arc>
+    <arc id="reaction_14_species_12" class="production" source="reaction_14.1" target="species_12">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-1.987690016338398" y="49.52525167193254"/>
+      <end x="-11.073417594820764" y="84.5846326567786"/>
+    </arc>
+    <arc id="species_12_reaction_14" class="catalysis" source="species_12" target="reaction_14">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-36.22731937912724" y="74.78528729168812"/>
+      <end x="-2.7309896112664944" y="47.75782507170903"/>
+    </arc>
+    <arc id="species_12_reaction_15" class="consumption" source="species_12" target="reaction_15.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-13.222105363499217" y="87.25763692657863"/>
+      <end x="36.685040505502776" y="80.09582260216455"/>
+    </arc>
+    <arc id="reaction_15_species_10" class="production" source="reaction_15.1" target="species_10">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="52.93504050550277" y="80.09582260216455"/>
+      <end x="105.670807184215" y="82.45350982966539"/>
+    </arc>
+    <arc id="reaction_15_species_13" class="production" source="reaction_15.1" target="species_13">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="52.93504050550277" y="80.09582260216455"/>
+      <end x="33.855335348322924" y="108.58176534842522"/>
+    </arc>
+    <arc id="species_10_reaction_16" class="consumption" source="species_10" target="reaction_16.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="127.73774497460683" y="98.6582626218827"/>
+      <end x="109.55844582696461" y="131.92339896486953"/>
+    </arc>
+    <arc id="species_13_reaction_16" class="consumption" source="species_13" target="reaction_16.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="51.656143900752646" y="130.70732240992626"/>
+      <end x="109.5584458269646" y="131.92339896486953"/>
+    </arc>
+    <arc id="reaction_16_species_18" class="production" source="reaction_16.1" target="species_18">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="109.55844582696461" y="148.17339896486953"/>
+      <end x="155.4185850351133" y="167.78291416720043"/>
+    </arc>
+    <arc id="species_18_reaction_16" class="catalysis" source="species_18" target="reaction_16">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="137.72088863845846" y="185.26820786713597"/>
+      <end x="110.75124701787122" y="148.94928261867034"/>
+    </arc>
+    <arc id="species_18_reaction_17" class="consumption" source="species_18" target="reaction_17.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="146.3472084058356" y="197.42925662584256"/>
+      <end x="112.35387015354799" y="226.43362121833582"/>
+    </arc>
+    <arc id="reaction_17_species_19" class="production" source="reaction_17.1" target="species_19">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="96.10387015354799" y="226.43362121833582"/>
+      <end x="77.60873764937956" y="192.61338402346374"/>
+    </arc>
+    <arc id="species_19_reaction_18" class="consumption" source="species_19" target="reaction_18.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="68.62016130656556" y="160.64081318075696"/>
+      <end x="82.27076401345522" y="116.52387329981752"/>
+    </arc>
+    <arc id="reaction_18_species_7" class="production" source="reaction_18.1" target="species_7">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="82.27076401345522" y="100.27387329981752"/>
+      <end x="69.94161204982136" y="60.82911753247423"/>
+    </arc>
+    <arc id="reaction_18_species_13" class="production" source="reaction_18.1" target="species_13">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="82.27076401345522" y="100.27387329981752"/>
+      <end x="54.68092096759432" y="131.35234720128645"/>
+    </arc>
+    <arc id="species_7_reaction_18" class="catalysis" source="species_7" target="reaction_18">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="92.43647314432602" y="57.75238724499961"/>
+      <end x="90.38060176398263" y="100.98364399427565"/>
+    </arc>
+    <arc id="species_13_reaction_18" class="catalysis" source="species_13" target="reaction_18">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="36.22458724604914" y="112.16101240152157"/>
+      <end x="74.77114845828558" y="100.30275260409523"/>
+    </arc>
+    <arc id="species_20_reaction_19" class="consumption" source="species_20" target="reaction_19.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="278.29469061441534" y="-184.53266126756506"/>
+      <end x="262.34642770927053" y="-141.28770814517517"/>
+    </arc>
+    <arc id="species_22_reaction_19" class="consumption" source="species_22" target="reaction_19.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="225.70594657115714" y="-130.0376064079857"/>
+      <end x="262.34642770927053" y="-141.28770814517517"/>
+    </arc>
+    <arc id="reaction_19_species_21" class="production" source="reaction_19.1" target="species_21">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="262.34642770927053" y="-125.03770814517517"/>
+      <end x="292.01500623161485" y="-86.84426977823418"/>
+    </arc>
+    <arc id="species_21_reaction_19" class="catalysis" source="species_21" target="reaction_19">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="273.27462593662835" y="-79.2077176107629"/>
+      <end x="259.8599258404029" y="-124.35159897796477"/>
+    </arc>
+    <arc id="species_21_reaction_20" class="consumption" source="species_21" target="reaction_20.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="266.28488424018144" y="-64.70666253085513"/>
+      <end x="223.49005732794237" y="-57.797126320869395"/>
+    </arc>
+    <arc id="reaction_20_species_8" class="production" source="reaction_20.1" target="species_8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="207.24005732794237" y="-57.797126320869395"/>
+      <end x="156.72115549138852" y="-47.289067409481504"/>
+    </arc>
+    <arc id="reaction_20_species_22" class="production" source="reaction_20.1" target="species_22">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="207.24005732794237" y="-57.797126320869395"/>
+      <end x="204.30816341153252" y="-109.32470648611572"/>
+    </arc>
+    <arc id="species_8_reaction_21" class="consumption" source="species_8" target="reaction_21.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="124.7163979743768" y="-57.73149617393478"/>
+      <end x="118.16846149561759" y="-109.7534779224363"/>
+    </arc>
+    <arc id="species_24_reaction_21" class="consumption" source="species_24" target="reaction_21.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="135.32104178133898" y="-155.9850166248844"/>
+      <end x="118.16846149561759" y="-109.7534779224363"/>
+    </arc>
+    <arc id="reaction_21_species_23" class="production" source="reaction_21.1" target="species_23">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="101.91846149561759" y="-109.7534779224363"/>
+      <end x="154.61092947565044" y="-101.75089926247045"/>
+    </arc>
+    <arc id="species_23_reaction_21" class="catalysis" source="species_23" target="reaction_21">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="147.1453856431682" y="-77.1431616191047"/>
+      <end x="111.94982132866912" y="-100.89484612402498"/>
+    </arc>
+    <arc id="species_23_reaction_22" class="consumption" source="species_23" target="reaction_22.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="193.4266298642816" y="-89.68584921242848"/>
+      <end x="237.29146244196085" y="-98.27649287127379"/>
+    </arc>
+    <arc id="reaction_22_species_25" class="production" source="reaction_22.1" target="species_25">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="253.54146244196085" y="-98.27649287127379"/>
+      <end x="290.46111704750416" y="-134.6644611028349"/>
+    </arc>
+    <arc id="species_1_reaction_1" class="consumption" source="species_1" target="reaction_1.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-135.24821133655257" y="-25.700655831693314"/>
+      <end x="-92.24443005605052" y="-28.814693137643303"/>
+    </arc>
+    <arc id="species_2_reaction_1" class="consumption" source="species_2" target="reaction_1.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-50.53153206960876" y="-23.028008797314087"/>
+      <end x="-92.24443005605053" y="-28.814693137643303"/>
+    </arc>
+    <arc id="reaction_1_species_3" class="production" source="reaction_1.1" target="species_3">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-75.99443005605052" y="-28.814693137643303"/>
+      <end x="-54.73902615310825" y="3.2259957970443445"/>
+    </arc>
+    <arc id="species_3_reaction_1" class="catalysis" source="species_3" target="reaction_1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="-86.88687237091001" y="16.22872677280528"/>
+      <end x="-89.62027396296084" y="-20.394971517179254"/>
+    </arc>
+  </map>
+</sbgn>
