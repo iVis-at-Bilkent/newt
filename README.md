@@ -10,8 +10,6 @@ Please cite the following when you use Newt:
 
 H. Balci, M.C. Siper, N. Saleh, I. Safarli, L. Roy, M. Kilicarslan, R. Ozaydin, A. Mazein, C. Auffray, O. Babur, E. Demir and U. Dogrusoz, [Newt: a comprehensive web-based tool for viewing,constructing, and analyzing biological maps](https://doi.org/10.1093/bioinformatics/btaa850), **Bioinformatics**, 37(10), pp.1475-1477, 2021.
 
-M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, "[SBGNViz: a tool for visualization and complexity management of SBGN process description maps](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0128985)", **PLoS ONE**, 10(6), e0128985, 2015.
-
 ## Software
 
 **A deployment of this sample application along with detailed documentation on its usage** can be found [here](http://newteditor.org/). ChiSE and Newt work on every platform that have JavaScript support including mobile devices.
