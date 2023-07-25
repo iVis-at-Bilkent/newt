@@ -1,0 +1,131 @@
+FCER1G	phosphorylates	CBL	http://pathwaycommons.org/pc2/BiochemicalReaction_ddb821906a0b14d07626ea607ab0ff57;http://pathwaycommons.org/pc2/Catalysis_04860960484021880e8cf58f2a195070	S669;Y774;Y674;Y700;Y294;Y371
+TEC	phosphorylates	PTPN18	http://pathwaycommons.org/pc2/BiochemicalReaction_1f9804e8f1a752d23d9dda590f6c5f6c;;http://pathwaycommons.org/pc2/Catalysis_d9dd006e65525075a8f95e9de7053ddc;http://pathwaycommons.org/pc2/Catalysis_7626133157fcc426ccc2e53594eb8490;http://pathwaycommons.org/pc2/BiochemicalReaction_e7e50cf8684a9c6a35bf2efecbcde6ba;http://pathwaycommons.org/pc2/BiochemicalReaction_b18bd13d7728012584587d46ce5a8cf9;http://pathwaycommons.org/pc2/Catalysis_9a15fb8ba6b37ee007a05b301dbf9d19;http://pathwaycommons.org/pc2/BiochemicalReaction_4af9ce0c603e659f66188d4a1dfe95fe;http://pathwaycommons.org/pc2/Catalysis_1e7a9731d01280bc29a2dbfd2368f19f;http://pathwaycommons.org/pc2/Catalysis_3968716db12a677e715a40fa068e7359;http://pathwaycommons.org/pc2/BiochemicalReaction_46a960562b5ccb7e6a4cb28584cc6e10	Y354;Y389;Y303;Y281
+MTOR	phosphorylates	RPTOR	http://pathwaycommons.org/pc2/BiochemicalReaction_99112ec2217b4d38be789c35e81d1d18;;http://pathwaycommons.org/pc2/Catalysis_2fcafe79e555d98e34a6cf37f6e46641;http://pathwaycommons.org/pc2/BiochemicalReaction_4cdbfe4bf8f48fcd7cf3dba145ef66d0;http://pathwaycommons.org/pc2/Catalysis_fcba414381476d73d20f13dc3244b305	S877;S855;S863;S696;T706;S859
+MAPK1	phosphorylates	CTTN	http://pathwaycommons.org/pc2/Catalysis_f79809da49d4dedd2ca47e619adfbfee;http://pathwaycommons.org/pc2/BiochemicalReaction_06bec2cde6b6dcd61dd0f5663c50cb27;http://pathwaycommons.org/pc2/BiochemicalReaction_b8bff3409ba5bf2284872e210fc66e64;http://pathwaycommons.org/pc2/Catalysis_29430f7d61f1b63e9b97a7e20a83af48	S405;S368;T364;S418;S381
+MAPK3	phosphorylates	CTTN	http://pathwaycommons.org/pc2/BiochemicalReaction_06bec2cde6b6dcd61dd0f5663c50cb27;http://pathwaycommons.org/pc2/Catalysis_9015aedaf19ff7ca591eb5ddcc15a7b9;http://pathwaycommons.org/pc2/Catalysis_57703ef756c37f715d769749bad0b6b2;http://pathwaycommons.org/pc2/BiochemicalReaction_b8bff3409ba5bf2284872e210fc66e64	S405;S368;T364;S418;S381
+ITGB3	phosphorylates	MAPK1	http://pathwaycommons.org/pc2/Catalysis_fef329a30113f77104d9aba28fef8522;http://pathwaycommons.org/pc2/Catalysis_1440dd087e6c47ec28db19f0963d67c5;http://pathwaycommons.org/pc2/Catalysis_72b657e043f2eeb8101e6bfeabadb31b;http://pathwaycommons.org/pc2/Catalysis_95bb4c637e9ae0ff2276087ec555920e;http://pathwaycommons.org/pc2/Catalysis_826f81fb1bedf9ec146719e54a42f677;http://pathwaycommons.org/pc2/Catalysis_92eefb1e896c90f07700c3eb2161d883;http://identifiers.org/reactome/R-HSA-5672973;http://pathwaycommons.org/pc2/BiochemicalReaction_5c736702ad08f7f0c99371d1f859c8ca;http://identifiers.org/reactome/R-HSA-6802935;http://identifiers.org/reactome/R-HSA-6802910;http://identifiers.org/reactome/R-HSA-6802922;http://pathwaycommons.org/pc2/Catalysis_d92a27da6a12be9a9695a657f5bc6816;http://identifiers.org/reactome/R-HSA-6802918	T182;T185;Y184;Y187
+PLCG2	phosphorylates	PRKCD	http://pathwaycommons.org/pc2/Catalysis_26038de038a02b36cc6960de249b3f19;http://pathwaycommons.org/pc2/BiochemicalReaction_2d62137ed93eba71da0b95d352fbf907;http://identifiers.org/reactome/R-HSA-198314;http://identifiers.org/reactome/R-HSA-1489502;http://pathwaycommons.org/pc2/Catalysis_235e537301ae0e71f5655941aff06130;http://pathwaycommons.org/pc2/SmallMolecule_afc86c4e882d40e7fc7a9f18488c0cb6;http://identifiers.org/reactome/R-HSA-202407;http://pathwaycommons.org/pc2/Catalysis_9fe4a46d2370854be278e34a904cc552;http://pathwaycommons.org/pc2/Catalysis_a5a14a070bf0ebb40969b778e91013af;http://pathwaycommons.org/pc2/TransportWithBiochemicalReaction_4b9d01e4b4352434cd29a78c77ab75d4;http://pathwaycommons.org/pc2/Catalysis_0a18c8a617a085afc152dd2962038188;http://pathwaycommons.org/pc2/BiochemicalReaction_676186d2fe2fd7f6ec2a55b7f4650954;http://pathwaycommons.org/pc2/Catalysis_7949760a5d6a8f8d3ff80b33c5eb5dd8;http://pathwaycommons.org/pc2/SmallMolecule_a3087e38e35fbbe125bb3e3280014b3c	S645;S302;Y313;S664;T507
+GP6	phosphorylates	FCER1G	http://identifiers.org/reactome/R-HSA-114600;http://pathwaycommons.org/pc2/Catalysis_5b9709a641b3c761ecaa8142a1725209	Y76;Y65
+FCER1G	phosphorylates	PLCG2	http://identifiers.org/reactome/R-HSA-5621363;http://pathwaycommons.org/pc2/Catalysis_10732b3d2627e42168aa6c0a32db2b29	Y753;Y759
+PRKCD	phosphorylates	GSK3A	http://pathwaycommons.org/pc2/BiochemicalReaction_8d6260b00a7ac83ec5597599f5945e2f;http://pathwaycommons.org/pc2/Catalysis_23b8bfab3f2067fc79828da43d78ce3a	S21
+MAPK3	phosphorylates	DNM1L	http://pathwaycommons.org/pc2/BiochemicalReaction_3920438e4b01aed0ba520da93e7491ae;http://pathwaycommons.org/pc2/Catalysis_19a8f0833c0fcafe7834db8aa0eecb8c	S616
+GP6	phosphorylates	SYK	http://pathwaycommons.org/pc2/Catalysis_ed65d89d251a2e7d5c840c12aae37698;http://identifiers.org/reactome/R-HSA-453200	Y348
+SHC1	phosphorylates	MAPK3	http://pathwaycommons.org/pc2/Catalysis_1f9754e426349154008fa6560e60c894;http://pathwaycommons.org/pc2/Catalysis_5ff3c8ea12eb225ea0ca15cc0808da0f;http://pathwaycommons.org/pc2/BiochemicalReaction_5c736702ad08f7f0c99371d1f859c8ca	Y203;T201
+FCER1G	phosphorylates	BTK	http://pathwaycommons.org/pc2/BiochemicalReaction_a625a914bec3f3872b0fcb2ecb42e485;http://pathwaycommons.org/pc2/Catalysis_4dbf23395aa93f3e1f6b29cac1887cd9	Y222;Y550
+GSK3A	phosphorylates	DPYSL2	http://pathwaycommons.org/pc2/Catalysis_352c6c7d59dea130ba86aa251f54db44;http://pathwaycommons.org/pc2/BiochemicalReaction_482d9a4d8208242a2ddbc28b382249fd	S518
+SHC1	phosphorylates	MAPK1	http://pathwaycommons.org/pc2/Catalysis_1f9754e426349154008fa6560e60c894;http://pathwaycommons.org/pc2/Catalysis_5ff3c8ea12eb225ea0ca15cc0808da0f;http://pathwaycommons.org/pc2/BiochemicalReaction_5c736702ad08f7f0c99371d1f859c8ca	T182;Y184
+PRKCD	phosphorylates	DNM1L	http://pathwaycommons.org/pc2/Catalysis_21badd523a2420c022b61ea9d9efa171;http://pathwaycommons.org/pc2/BiochemicalReaction_3920438e4b01aed0ba520da93e7491ae	S579;S616
+SYK	phosphorylates	PLCG2	http://identifiers.org/reactome/R-HSA-2029268;http://pathwaycommons.org/pc2/BiochemicalReaction_52048c8ce280cdc8020967abea430e12;http://pathwaycommons.org/pc2/BiochemicalReaction_2e4e8181973fc5c2bc38e0acbf5acd27;http://pathwaycommons.org/pc2/BiochemicalReaction_0d80863c6e08f8e3d66077064fc16657;http://pathwaycommons.org/pc2/Catalysis_1c9fada5d4b4a8aa3aefe47a51f652cd;http://identifiers.org/reactome/R-HSA-2730888;http://identifiers.org/reactome/R-HSA-983704;http://pathwaycommons.org/pc2/Catalysis_da11649c978b537a4118a5f2cb6e57e8;http://pathwaycommons.org/pc2/Catalysis_9091239f1b4ed903c3c2717fe3302637;http://pathwaycommons.org/pc2/Catalysis_fd2b0ee55c57c2f2c226753daaf250e7;http://identifiers.org/reactome/R-HSA-2424487;http://identifiers.org/reactome/R-HSA-5607745;http://pathwaycommons.org/pc2/Catalysis_e9c442030bda5cc295e679aa76276200;http://pathwaycommons.org/pc2/Catalysis_998ff10caa298a038a5d09af98211b2c;http://pathwaycommons.org/pc2/Catalysis_60742eef9ea82116e90683de724a5815;http://pathwaycommons.org/pc2/Catalysis_0dc116ba7b11044b5f42d5a528bbca77;http://identifiers.org/reactome/R-HSA-5621363;http://pathwaycommons.org/pc2/Catalysis_10732b3d2627e42168aa6c0a32db2b29;http://pathwaycommons.org/pc2/Catalysis_5facd6f9cee9a10cc51d6f68d6834fd0;http://pathwaycommons.org/pc2/BiochemicalReaction_2e7029b7970f22d5f5caeb23371bcdab	Y753;Y1197;Y759;Y1217
+MAPK1	phosphorylates	RPTOR	http://pathwaycommons.org/pc2/BiochemicalReaction_6c964a1beec2cd81339d8632fc80efcf;http://pathwaycommons.org/pc2/Catalysis_4f4ff3513af08b26a8aef160fa829b4e;http://pathwaycommons.org/pc2/Catalysis_55badbb7891c54dc77672f69e26f1d5e;http://pathwaycommons.org/pc2/BiochemicalReaction_7a1f8fff98fa2a6adb6d6aed5b9590c0;http://pathwaycommons.org/pc2/Catalysis_580791f2692587eb9011b35a06c4b7db;http://pathwaycommons.org/pc2/BiochemicalReaction_4cdbfe4bf8f48fcd7cf3dba145ef66d0	S863;S8;S696
+SYK	phosphorylates	CBL	http://pathwaycommons.org/pc2/Catalysis_07d19bc47368bbe6c6e875471aee8010;;http://pathwaycommons.org/pc2/Catalysis_40f8a6cfae66b017ab10fb47b1a8c562;http://pathwaycommons.org/pc2/BiochemicalReaction_c640644de308c31b8f823556a8c0da41;http://pathwaycommons.org/pc2/BiochemicalReaction_fecc2525ae51f4c244c436f58b427854;http://pathwaycommons.org/pc2/Catalysis_1b1638edc76e381a93cd2a43e6f5e803;http://pathwaycommons.org/pc2/BiochemicalReaction_ddb821906a0b14d07626ea607ab0ff57;http://pathwaycommons.org/pc2/Catalysis_d32166b7cd5a5ca7f2567b4c0dd2fb11;http://pathwaycommons.org/pc2/BiochemicalReaction_3b84a02ca427f6d293828dd9fef5a9ce;http://pathwaycommons.org/pc2/Catalysis_cf71f8b43512b6ede84e6cca2cdc7c57;http://identifiers.org/reactome/R-HSA-912629;http://pathwaycommons.org/pc2/Catalysis_04860960484021880e8cf58f2a195070;http://pathwaycommons.org/pc2/BiochemicalReaction_ec3cb534c1b20f291450be83e5ea14c2	S669;Y774;Y455;Y674;Y731;Y368;Y700;Y141;Y294;Y371
+FCER1G	phosphorylates	PTK2	http://pathwaycommons.org/pc2/Catalysis_ecfb6e9b6dde6dd5f21f2636d2b4c491;http://pathwaycommons.org/pc2/BiochemicalReaction_668bf91905a842567b9429dd2d1a19f9	Y397;Y576;Y861;Y577;Y925;Y407
+MTOR	phosphorylates	AKT1S1	http://identifiers.org/reactome/R-HSA-5672828;http://pathwaycommons.org/pc2/BiochemicalReaction_d0df23bfae10ac00f3424bfc8d0a2ce9;http://pathwaycommons.org/pc2/Catalysis_cac09c3f784ff671b9c2c973268ce97c;http://pathwaycommons.org/pc2/Catalysis_b871920905ce8bb340a06656700d3780;http://pathwaycommons.org/pc2/Catalysis_8d22e91d555bbfca35d1ba588c4f11a7;http://pathwaycommons.org/pc2/BiochemicalReaction_61e6fc8253fee7695dcae94f7ec3b970	S221;S183
+SYK	phosphorylates	LAT	http://pathwaycommons.org/pc2/Catalysis_1ebdf21c4a403ed4e0d628ee3a150e24;http://identifiers.org/reactome/R-HSA-434836;http://pathwaycommons.org/pc2/Catalysis_202d6dff7169a8ede654998bdc55f0ea;http://pathwaycommons.org/pc2/Catalysis_57875c5f2b182a1cfd4cdbea297342aa;http://identifiers.org/reactome/R-HSA-2730843	Y200;Y226;Y127;Y191;Y171;Y220;Y132
+SHC1	phosphorylates	DOK1	http://pathwaycommons.org/pc2/Catalysis_c7149f08d80c11789fbe4aeda2820fa7;http://pathwaycommons.org/pc2/SmallMolecule_1f888055e41e6b810830ede2f1109209;http://pathwaycommons.org/pc2/Catalysis_e7209c25acba429585dac367fc3eab56;http://pathwaycommons.org/pc2/Catalysis_d3d81520fc102e001fc724c3fa1fe244;http://pathwaycommons.org/pc2/BiochemicalReaction_5ab0c4ce1c4e84a2a4facefadb3a6046;http://pathwaycommons.org/pc2/Catalysis_b63c378891777b4326128fea77161307;http://pathwaycommons.org/pc2/BiochemicalReaction_af198c9a2c7449bd9a56ee166bd7e00d;http://pathwaycommons.org/pc2/TransportWithBiochemicalReaction_53244e68d343cc0f2d3af718257dfb9a	Y398;Y362
+SYK	phosphorylates	PTK2	http://pathwaycommons.org/pc2/Catalysis_ecfb6e9b6dde6dd5f21f2636d2b4c491;http://pathwaycommons.org/pc2/BiochemicalReaction_668bf91905a842567b9429dd2d1a19f9	Y397;Y576;Y861;Y577;Y925;Y407
+SYK	phosphorylates	ITGB3		Y785
+FYN	phosphorylates	ABL1	http://pathwaycommons.org/pc2/Catalysis_0db4b4493006ab8d87076ddf8ef7cf64;;http://pathwaycommons.org/pc2/Catalysis_44bf8eb9b52c73eeb9ecd8591b32ec6b;http://pathwaycommons.org/pc2/Catalysis_13dc4f2d7a60686d2341c5377cb65ae8;http://pathwaycommons.org/pc2/BiochemicalReaction_91105339cb9e5ec40958486b9a5f8946;http://pathwaycommons.org/pc2/BiochemicalReaction_3f1e2eca098380e0335b233996610ba7;http://pathwaycommons.org/pc2/BiochemicalReaction_49d339362ae8aa7cf178eb3aedc51886;http://pathwaycommons.org/pc2/BiochemicalReaction_29a0946daae319764d7ad0ca738a30bf;http://pathwaycommons.org/pc2/Catalysis_40cea34fd08cb15b97b8d6254896b634;http://pathwaycommons.org/pc2/BiochemicalReaction_7aac8f77edb6e772a9d8af08a0330855;http://pathwaycommons.org/pc2/Catalysis_8fc4fa15e195cf334dda25537deff5ad;http://pathwaycommons.org/pc2/Catalysis_48338d36782b043a1aa841fa8e535472;http://pathwaycommons.org/pc2/Catalysis_dc200eb09282cf1274814f63529d5c4b;http://pathwaycommons.org/pc2/Catalysis_3d786d1e0179f9feac2f226cab241565;http://pathwaycommons.org/pc2/BiochemicalReaction_759fd1a3ad8f5126be626188fa29422a;http://pathwaycommons.org/pc2/BiochemicalReaction_6ecd459efffe98a6d156ec20509715d0;http://pathwaycommons.org/pc2/BiochemicalReaction_fc6ce15c8f8a3be156df2d8f20ed0934;http://pathwaycommons.org/pc2/Catalysis_1a03a1722b594953d6954daa55b0fcb3;http://pathwaycommons.org/pc2/Catalysis_98c065387b520691a5eecc82710f0ff7;http://pathwaycommons.org/pc2/BiochemicalReaction_a7bcff8f78d9a789af373967fd42b43a;http://pathwaycommons.org/pc2/Catalysis_9cb0e8f94a8080c641f4aa8180d4ea70;http://pathwaycommons.org/pc2/BiochemicalReaction_e56905aa4de49e4eb0d458a7fee7cfb9	Y70;Y245;Y226;Y215;Y115;Y412;Y128;Y139;Y172;Y185;Y393
+PTK2	phosphorylates	SIRPA	http://identifiers.org/reactome/R-HSA-391156;http://pathwaycommons.org/pc2/Catalysis_921c393bae7f76a1df2c40bf5c80ef91	Y452;Y469;Y428;Y495
+CBL	dephosphorylates	PRKCB	http://pathwaycommons.org/pc2/Control_8c7f7055a410467a1642578bbd0d9a15;http://pathwaycommons.org/pc2/BiochemicalReaction_2d62137ed93eba71da0b95d352fbf907;http://pathwaycommons.org/pc2/BiochemicalReaction_e69d0b8c1237680e809754c99eb69411;http://pathwaycommons.org/pc2/Catalysis_f49fd6e1817d002e0910a169672a7cfd;http://pathwaycommons.org/pc2/SmallMolecule_afc86c4e882d40e7fc7a9f18488c0cb6	T634;T323;S15;T499;T313;T641;T16;S660
+PRKCD	phosphorylates	PRKD1	http://pathwaycommons.org/pc2/Catalysis_9c4b2e25e6a43ffecb4a2211bfd95f2d;http://pathwaycommons.org/pc2/BiochemicalReaction_9c324262d7f6b458761bfa1d12528db6;http://pathwaycommons.org/pc2/BiochemicalReaction_b5d951bbdb21e4e653f864e10550946a;http://pathwaycommons.org/pc2/BiochemicalReaction_49d5f5b4bb28879064daaa1d9606a2d9;http://pathwaycommons.org/pc2/BiochemicalReaction_1d860f43a0f941fd2cfb103e9247a2fd;http://pathwaycommons.org/pc2/Catalysis_9bb03321a13384f33d14d56dd6f9de68;http://pathwaycommons.org/pc2/Catalysis_2bb864ee20be5201f53fb31bf4737417;http://pathwaycommons.org/pc2/Catalysis_cfdf1ada5b62b049efba925cf3d657e3	S205;S910;S412;S742;S420;S738
+MAPK1	phosphorylates	DNM1L	http://pathwaycommons.org/pc2/Catalysis_1ddc113abc66219af7276fffeeac0959;http://pathwaycommons.org/pc2/BiochemicalReaction_3920438e4b01aed0ba520da93e7491ae	S616
+SHC1	phosphorylates	MTOR	http://pathwaycommons.org/pc2/BiochemicalReaction_00c0bf5d57307e0d2e958dcd021af4e6;http://pathwaycommons.org/pc2/Catalysis_97078fac1af7ead41bd0321eb16e3009	S2448
+BTK	phosphorylates	WAS	http://pathwaycommons.org/pc2/Catalysis_32f73f0c9d20987bb182dd72fd50b8b9;http://identifiers.org/reactome/R-HSA-2197698	Y291
+EPS15	phosphorylates	AP2M1	http://pathwaycommons.org/pc2/Catalysis_b589dc4bfa001a061c8547df1ce72415;http://identifiers.org/reactome/R-HSA-8856813	T156
+PRKCD	phosphorylates	CTTN	http://pathwaycommons.org/pc2/BiochemicalReaction_b8bff3409ba5bf2284872e210fc66e64;http://pathwaycommons.org/pc2/Catalysis_42a876451a01266b4c8ce99231ad4ed9	S405
+SYK	phosphorylates	BTK	http://pathwaycommons.org/pc2/BiochemicalReaction_a625a914bec3f3872b0fcb2ecb42e485;;http://identifiers.org/reactome/R-HSA-2424484;http://pathwaycommons.org/pc2/BiochemicalReaction_13fd574c15121488a2cb114912617d96;http://pathwaycommons.org/pc2/Catalysis_4dbf23395aa93f3e1f6b29cac1887cd9;http://pathwaycommons.org/pc2/Catalysis_0b810acbc0df56304d2b43cb3bbef96c;http://pathwaycommons.org/pc2/Catalysis_837731970b677fbb3f487d67079fe7c2;http://identifiers.org/reactome/R-HSA-2730833;http://identifiers.org/reactome/R-HSA-983704;http://pathwaycommons.org/pc2/Catalysis_9091239f1b4ed903c3c2717fe3302637;http://pathwaycommons.org/pc2/Catalysis_34291465b07571f581c25c76739dba77	Y222;Y551;Y223;Y550
+SYK	phosphorylates	MAPK14	http://pathwaycommons.org/pc2/Catalysis_ddb56e97f48a4cf86384f62ace6200b0;http://pathwaycommons.org/pc2/BiochemicalReaction_60b9fd2c8a43a4b575d8abcc48872eb2	T180;Y182
+PTK2	phosphorylates	FYN	http://pathwaycommons.org/pc2/Catalysis_8259b39fab539b3bb310db0a288dae3a;http://pathwaycommons.org/pc2/BiochemicalReaction_0baf00ef6e8cef4ce1a08adb845d8f79	Y420
+LAT	phosphorylates	DOK1	http://pathwaycommons.org/pc2/Catalysis_52a016eb026a7fdda7cd127d5bd93f08;http://pathwaycommons.org/pc2/SmallMolecule_1f888055e41e6b810830ede2f1109209;http://pathwaycommons.org/pc2/Catalysis_d3d81520fc102e001fc724c3fa1fe244;http://pathwaycommons.org/pc2/Catalysis_678f237e7014537d0a13b0edc860de5f;http://pathwaycommons.org/pc2/BiochemicalReaction_af198c9a2c7449bd9a56ee166bd7e00d;http://pathwaycommons.org/pc2/TransportWithBiochemicalReaction_53244e68d343cc0f2d3af718257dfb9a	Y398;Y362
+FYN	phosphorylates	CTTN		Y433;Y384
+SYK	phosphorylates	TEC	http://identifiers.org/reactome/R-HSA-2730833;http://pathwaycommons.org/pc2/Catalysis_34291465b07571f581c25c76739dba77	Y519
+SYK	phosphorylates	SHC1	http://pathwaycommons.org/pc2/Catalysis_a4e6f2b6c61dbdb12baac44b7b173f41;http://pathwaycommons.org/pc2/BiochemicalReaction_7ae44def29e30ba8751ab19f118bb2a3;http://pathwaycommons.org/pc2/BiochemicalReaction_81a43c43848134b3e01d760652b747fc;http://pathwaycommons.org/pc2/Catalysis_3b96f33c072cb34c966037fcde47cf89;http://identifiers.org/reactome/R-HSA-983704;http://pathwaycommons.org/pc2/BiochemicalReaction_14a871179f87e465101d3a1d68f1ec94;http://pathwaycommons.org/pc2/Catalysis_9091239f1b4ed903c3c2717fe3302637;http://identifiers.org/reactome/R-HSA-2730886;http://pathwaycommons.org/pc2/BiochemicalReaction_473e58145ef578c4b9bcf7ab4f10d3dd;http://pathwaycommons.org/pc2/Catalysis_6f3e6892dda1fce10b163c641efbb31d;http://pathwaycommons.org/pc2/Catalysis_031ae9ebe65ffc132c640a1dc3957c5d;http://pathwaycommons.org/pc2/Catalysis_72e0626f6277873ad1d23dc0adb9b254	Y349;Y239;Y427;Y317;Y194;Y240;Y350;Y195;Y272
+MAPK14	phosphorylates	EPS15	http://pathwaycommons.org/pc2/BiochemicalReaction_2eba1aeeab5d0a16dc5c34950671dd1f;http://pathwaycommons.org/pc2/Catalysis_82c86f62f1bb6efcd5bfa6c6802e63df	S796
+MAPK1	phosphorylates	ABI1		
+MAPK1	phosphorylates	PTPN12		
+MAPK1	phosphorylates	MYLK		
+MAPK1	phosphorylates	SOS1		
+MAPK1	phosphorylates	BAD		
+MAPK1	phosphorylates	RPS6KA1		
+MAPK1	phosphorylates	ARHGEF2		
+MAPK1	phosphorylates	IRS1		
+MAPK3	phosphorylates	ABI1		
+MAPK3	phosphorylates	PTPN12		
+MAPK3	phosphorylates	MYLK		
+MAPK3	phosphorylates	SOS1		
+MAPK3	phosphorylates	BAD		
+MAPK3	phosphorylates	RPS6KA1		
+MAPK3	phosphorylates	ARHGEF2		
+MAPK3	phosphorylates	IRS1		
+FYN	phosphorylates	PECAM1		
+FYN	phosphorylates	CD226		
+FYN	phosphorylates	ARHGAP35		
+FYN	phosphorylates	PTPRJ		
+FYN	phosphorylates	MYL12A		
+FYN	phosphorylates	PTPN11		
+FYN	phosphorylates	CD244		
+FYN	phosphorylates	PAG1		
+FYN	phosphorylates	TNK2		
+FYN	phosphorylates	FYB		
+MAPK1	phosphorylates	HNRNPH1		
+MAPK1	phosphorylates	RAD23B		
+MAPK1	phosphorylates	PRKAR1A		
+MAPK1	phosphorylates	TGFB1I1		
+MAPK1	phosphorylates	STIM1		
+MAPK1	phosphorylates	CALD1		
+MAPK1	phosphorylates	EIF4G1		
+MAPK1	phosphorylates	DYNC1LI1		
+MAPK1	phosphorylates	GIGYF2		
+MAPK1	phosphorylates	LMNA		
+MAPK1	phosphorylates	STK10		
+ABL1	phosphorylates	PDK1		
+ABL1	phosphorylates	NCK1		
+MAPK14	phosphorylates	HSPB1		
+MAPK14	phosphorylates	STMN1		
+MAPK14	phosphorylates	STAT1		
+MAPK14	phosphorylates	MAP4K2		
+MAPK14	phosphorylates	SLC9A1		
+MAPK14	phosphorylates	EIF4EBP1		
+SYK	phosphorylates	STAT5A		
+SYK	phosphorylates	FCGR2A		
+SYK	phosphorylates	DAPP1		
+STAT5A
+FCGR2A
+DAPP1
+ABI1
+PTPN12
+MYLK
+SOS1
+BAD
+RPS6KA1
+ARHGEF2
+IRS1
+PECAM1
+CD226
+ARHGAP35
+PTPRJ
+MYL12A
+PTPN11
+CD244
+PAG1
+TNK2
+FYB
+HNRNPH1
+RAD23B
+PRKAR1A
+TGFB1I1
+STIM1
+CALD1
+EIF4G1
+DYNC1LI1
+GIGYF2
+LMNA
+STK10
+PDK1
+NCK1
+HSPB1
+STMN1
+STAT1
+MAP4K2
+SLC9A1
+EIF4EBP1
