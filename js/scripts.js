@@ -39,7 +39,7 @@ document.write("</gcse:search>");
 document.write("<h3>Latest News</h3>");
 document.write("<h4>Reactome and BioModels integration</h4>");
 document.write("<h5>2022, 2023</h5>");
-document.write("<p>Reactome and BioModels pathways now connect to our Newt editor for viewing and editing in SBGN (<a href=\"https://web.newteditor.org/?URL=https://reactome.org/ContentService/exporter/event/R-HSA-450531.sbgn&inferNestingOnLoad=true&mapColorScheme=opposed_red_blue&fitLabelsToNodes=true\">Reactome example</a> and <a href=\"https://www.ebi.ac.uk/biomodels/BIOMD0000000125\">BioModels example</a>)<br /></p>");
+document.write("<p>Reactome and BioModels pathways now connect to our Newt editor for viewing and editing in SBGN (<a href=\"https://web.newteditor.org/\">Reactome example</a> and <a href=\"https://www.ebi.ac.uk/biomodels/BIOMD0000000125\">BioModels example</a>)<br /></p>");
 document.write("<h4>Newt release</h4>");
 document.write("<h5>April 1, 2020</h5>");
 document.write("<p>Newt 3.0 was released to include some <a href=\"https://github.com/iVis-at-Bilkent/newt/releases/tag/v3.0.0\">new features</a> such as experiment data overlay, bug fixes, and more.<br /></p>");
