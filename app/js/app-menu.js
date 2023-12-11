@@ -390,9 +390,11 @@ module.exports = function() {
     $("#import-experimental-data").click(function () {
       $("#overlay-data").trigger('click');
     });
+
     $("#import-SBML-file").click(function () {
       $("#sbml-file").trigger('click');
     });
+
     $("#import-simple-af-file").click(function () {
       $("#simple-af-file-input").trigger('click');
     });
@@ -407,6 +409,10 @@ module.exports = function() {
 
     $("#import-sif-layout").click(function () {
       $("#sif-layout-input").trigger('click');
+    });
+
+    $("#import-GPML-file").click(function () {
+      $("#gpml-file-input").trigger('click');
     });
 
     $("#overlay-data").change(function () {
@@ -488,6 +494,34 @@ module.exports = function() {
         $(this).val("");
       }
     });
+
+    $("#gpml-file-input").change(function () {
+     
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        appUtilities.setFileContent(file.name);
+        chiseInstance.loadGpml(file,  success = function(data){
+          if (cy.elements().length !== 0) {
+            promptConfirmationView.render(function () {
+              chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+            });
+          }
+          else {
+            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+          }
+        },
+        error = function(data){
+          promptFileConversionErrorView.render();          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          
+        });
+       
+        $(this).val("");
+      }
+    });
+
     $("#simple-af-file-input").change(function () {
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -1454,14 +1488,19 @@ module.exports = function() {
     $("#export-as-sbgnml-plain-file").click(function (evt) {
       fileSaveView.render("sbgn", "plain");
     });
+
     $("#export-as-sbgnml3-plain-file").click(function (evt) {
       fileSaveView.render("sbgn", "plain3");
     });
 
-   $("#export-as-sbml").click(function (evt) {
-    fileSaveView.render("sbml", null, null);
-   
+    $("#export-as-sbml").click(function (evt) {
+      fileSaveView.render("sbml", null, null);
     });
+
+    $("#export-as-gpml").click(function (evt) {
+      fileSaveView.render("gpml", null, null);
+    });    
+
     $("#add-complex-for-selected").click(function (e) {
 
       // use active chise instance
