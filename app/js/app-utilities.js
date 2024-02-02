@@ -2580,27 +2580,43 @@ appUtilities.launchWithModelFile = function() {
             lastModified: Date.now()
           });
 
-          if (fileExtension === "xml" || fileExtension === "xml#" 
+          if (fileExtension === "gpml") {
+            chiseInstance.loadGpml(file, success =  async function (data) {
+              if (cyInstance.elements().length !== 0) {
+                promptConfirmationView.render( function () {
+                  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                  chiseInstance.endSpinner('paths-byURL-spinner');
+                });
+
+                chiseInstance.endSpinner("paths-byURL-spinner");
+              }
+              else {
+              await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                chiseInstance.endSpinner("paths-byURL-spinner");
+              }
+            });
+          } 
+          else if (fileExtension === "xml" || fileExtension === "xml#" 
               || fileExtension === "sbml" || fileExtension === "sbml#") {
 
             await chiseInstance.loadSbml(fileToLoad,  success = async function(data){
               var cy = appUtilities.getActiveCy();
               if (cy.elements().length !== 0) {
                 await promptConfirmationView.render(async function () {
-                 await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                  chiseInstance.endSpinner('paths-byURL-spinner')
+                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                  chiseInstance.endSpinner('paths-byURL-spinner');
                 });
               }
               else {
                 await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                chiseInstance.endSpinner('paths-byURL-spinner')
+                chiseInstance.endSpinner('paths-byURL-spinner');
 
               }
             });
           }
           else {
             chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
-            chiseInstance.endSpinner('paths-byURL-spinner')
+            chiseInstance.endSpinner('paths-byURL-spinner');
           }
         }
         else {

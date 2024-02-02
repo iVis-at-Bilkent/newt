@@ -2549,6 +2549,9 @@ var FileSaveView = Backbone.View.extend({
       case 'sbml':
         fExt = 'sbml'
         break;
+      case 'gpml':
+        fExt = 'gpml'
+        break;   
       case 'celldesigner':
       default:
         fExt = 'xml'
@@ -2641,6 +2644,16 @@ var FileSaveView = Backbone.View.extend({
           //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
         });
      
+      }
+      else if(fileformat === "gpml")
+      {
+        chiseInstance.saveAsGpml(filename, function(data,errorMessage){
+
+          var promptSbmlConversionErrorView  = new PromptSbmlConversionErrorView({el: '#prompt-sbmlConversionError-table'});
+          promptSbmlConversionErrorView.render(data,errorMessage);             
+          //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";              
+        });
+
       }
       else { // invalid file format provided
         console.error("FileSaveView received unsupported file format: "+fileformat);
