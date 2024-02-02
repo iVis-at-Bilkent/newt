@@ -39,7 +39,7 @@ document.write("</gcse:search>");
 document.write("<h3>Latest News</h3>");
 document.write("<h4>GPML support</h4>");
 document.write("<h5>February 2, 2024</h5>");
-document.write("<p>Newt 3.1 was released to include support for GPML import/export.<br> /></p>");
+document.write("<p>Newt 3.1 was released to include support for GPML import/export.<br> </p>");
 document.write("<h4>Reactome and BioModels integration</h4>");
 document.write("<h5>2022, 2023</h5>");
 document.write("<p>Reactome and BioModels pathways now connect to our Newt editor for viewing and editing in SBGN (<a href=\"https://web.newteditor.org/\?URL=https://reactome.org/ContentService/exporter/event/R-HSA-450531.sbgn\&inferNestingOnLoad=true\&mapColorScheme=opposed_red_blue\&fitLabelsToNodes=true\">Reactome example</a> and <a href=\"https://www.ebi.ac.uk/biomodels/BIOMD0000000125\">BioModels example</a>)<br /></p>");
