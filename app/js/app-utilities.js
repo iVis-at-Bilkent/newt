@@ -2582,7 +2582,8 @@ appUtilities.launchWithModelFile = function() {
 
           if (fileExtension === "gpml") {
             chiseInstance.loadGpml(fileToLoad, success =  async function (data) {
-              if (cyInstance.elements().length !== 0) {
+              var cy = appUtilities.getActiveCy();
+              if (cy.elements().length !== 0) {
                 promptConfirmationView.render( function () {
                   chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                   chiseInstance.endSpinner('paths-byURL-spinner');
