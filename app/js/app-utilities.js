@@ -2581,7 +2581,7 @@ appUtilities.launchWithModelFile = function() {
           });
 
           if (fileExtension === "gpml") {
-            chiseInstance.loadGpml(file, success =  async function (data) {
+            chiseInstance.loadGpml(fileToLoad, success =  async function (data) {
               if (cyInstance.elements().length !== 0) {
                 promptConfirmationView.render( function () {
                   chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
