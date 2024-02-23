@@ -85,6 +85,13 @@
                                                         <li class="divider" style="margin-top: 0"></li>
                                                         <li><a href="#" id="load-sample17">RTN4 controllers and binding proteins</a></li>
                                                         <li><a href="#" id="load-sample18">Signaling downstream of AKT2/3</a></li>
+                                                        <li class="divider" style="margin-bottom: 0"></li>
+                                                        <li><a class="title"><i>SBML</i></a></li>
+                                                        <li class="divider" style="margin-top: 0"></li>
+                                                        <li><a href="#" id="load-sample21">Interaction topologies of MAPK cascade (M1_K2_PSEQ)</a></li>
+                                                        <li><a href="#" id="load-sample22">Pharmacokinetics of PFOA and PFOS in the monkey </a></li>
+                                                        <li><a href="#" id="load-sample23">Apoptotic Reaction Model </a></li>
+                                                        <li><a href="#" id="load-sample24"> Insulin induced signalling (PFKL phosphorylation)</a></li>
                                                     </ul>
                                                 </li>
                                                 <li><a href="#" id="save-as-nwt">Save...</a></li>
@@ -743,6 +750,88 @@
                             </div>
                             <!-- SIF End -->
 
+                            <!-- SBML Starts -->
+                            <div class="panel">
+                                <div id="SBML-palette-heading" class="panel-heading collapsed" data-toggle="collapse" data-target="#expand-collapse-sbml-nodes-palette">
+                                    <p class="panel-title accordion-toggle">
+                                        SBML
+                                    </p>
+                                </div>
+                                <div id="expand-collapse-sbml-nodes-palette" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                      <div id="sbml-node-palette" class="element-palette node-palette">
+                                        <div class="paletteWrapper">
+                                            <div class="paletteCol"><img src="app/img/nodes/gene.svg" language="SBML" value="gene" title="Gene"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/RNA.svg" language="SBML" value="rna" title="RNA"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/simple-molecule.svg" language="SBML" value="simple-molecule" title="Simple Molecule"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/unknown-molecule.svg" language="SBML" value="unknown-molecule" title="Unknown Molecule"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/phenotype-sbml.svg" language="SBML" value="phenotype-sbml" title="Phenotype"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/drug.svg" language="SBML" value="drug" title="Drug"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/protein.svg" language="SBML" value="protein" title="Protein"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/truncated-protein.svg" language="SBML" value="truncated-protein" title="Truncated Protein"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/ion-channel.svg" language="SBML" value="ion-channel" title="Ion Channel"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/receptor.svg" language="SBML" value="receptor" title="Receptor"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/ion.svg" language="SBML" value="ion" title="Ion"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/process.svg" language="SBML" value="process" title="Process"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/omitted-process.svg" language="SBML" value="omitted-process" title="Omitted Process"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/uncertain-process.svg" language="SBML" value="uncertain-process" title="Uncertain Process"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/truncated-process.svg" language="SBML" value="truncated-process" title="Truncated Process"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/dissociation.svg" language="SBML" value="dissociation" title="Dissociation"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/degradation.svg" language="SBML" value="degradation" title="Degradation"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/and.svg" language="SBML" value="and" title="AND"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/or.svg" language="SBML" value="or" title="OR"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/not.svg" language="SBML" value="not" title="NOT"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/association.svg" language="SBML" value="association" title="Association"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/unknown-logical-operator.svg" language="SBML" value="unknown-logical-operator" title="Unknown Logical Operator"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/complex-sbml.svg" language="SBML" value="complex-sbml" title="Complex"/></div>
+                                            <div class="paletteCol"><img src="app/img/nodes/compartment.svg" language="SBML" value="compartment" title="Compartment"/></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="panel-body" style="padding-bottom: 0px;">
+                                      <div id="sbml-edge-palette" class="element-palette edge-palette">
+                                        <div class="paletteWrapper">
+                                            <div class="paletteCol"><img src="app/img/edges/consumption.svg" language="SBML" value="consumption" title="Consumption"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/inhibition.svg" language="SBML" value="inhibition" title="Inhibition"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/production.svg" language="SBML" value="production" title="Production"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/modulation.svg" language="SBML" value="modulation" title="Modulation"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/stimulation.svg" language="SBML" value="stimulation" title="Stimulation"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/catalysis.svg" language="SBML" value="catalysis" title="Catalysis"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/trigger.svg" language="SBML" value="trigger" title="Trigger"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/transport.svg" language="SBML" value="transport" title="Transport"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/unknown-inhibition.svg" language="SBML" value="unknown inhibition" title="Unknown inhibition"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/unknown-catalysis.svg" language="SBML" value="unknown catalysis" title="Unknown catalysis"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/transcription_consumption.svg" language="SBML" value="transcription-consumption" title="Transcription Consumption"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/transcription_production.svg" language="SBML" value="transcription-production" title="Transcription Production"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/translation-consumption.svg" language="SBML" value="translation-consumption" title="Translation Consumption"/></div>
+                                            <div class="paletteCol"><img src="app/img/edges/translation-production.svg" language="SBML" value="translation-production" title="Translation Production"/></div>
+
+                                            
+
+
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="panel-body" style="padding-bottom: 0px;">
+                                        <div id="sbml-edge-palette" class="element-palette edge-palette">
+                                          <div class="paletteWrapper">
+                                              <div class="paletteCol"><img src="app/img/edges/positive-influence-sbml.svg" language="SBML" value="positive-influence-sbml" title="Positive Influence"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/negative-influence.svg" language="SBML" value="negative-influence" title="Negative Influence"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/reduced-modulation.svg" language="SBML" value="reduced-modulation" title="Reduced Modulation"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/reduced-stimulation.svg" language="SBML" value="reduced-stimulation" title="Reduced Stimulation"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/reduced-trigger.svg" language="SBML" value="reduced-trigger" title="Reduced Trigger"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/unknown-negative-influence.svg" language="SBML" value="unknown-negative-influence" title="Unknown Negative Influence"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/unknown-positive-influence.svg" language="SBML" value="unknown-positive-influence" title="Unknown Positive Influence"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/unknown-reduced-stimulation.svg" language="SBML" value="unknown-reduced-stimulation" title="Unknown Reduced Stimulation"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/unknown-reduced-modulation.svg" language="SBML" value="unknown-reduced-modulation" title="Unknown Reduced Modulation"/></div>
+                                              <div class="paletteCol"><img src="app/img/edges/unknown-reduced-trigger.svg" language="SBML" value="unknown-reduced-trigger" title="Unknown Reduced Trigger"/></div>
+
+                                            </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                             <!-- SBML End -->
                           </div>
                         </div>
 						   <div id="sbgn-inspector-console" class="tab-pane fade">
@@ -948,7 +1037,7 @@
                             <table width="100%" height="100%" align="center" valign="center">
                             <tbody>
                                 <tr><td>
-                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 3.1.0</p>
+                                        <p id="about-newt-version" class="sbgn-text">Newt Editor version 4.0.0 beta</p>
                                     </td></tr>
 
                                 <tr><td>
@@ -1000,6 +1089,10 @@
                                   <tr>
                                     <td><b>SIF notation</b>:
                                         <a href="http://www.pathwaycommons.org/pc2/formats#sif_relations" target="_blank" rel="nofollow">SIF Relations</a> </td>
+                                  </tr>
+                                  <tr>
+                                    <td><b>SBML notation</b>:
+                                        <a href="https://minerva.pages.uni.lu/doc/user_manual/v16.0/SBML-SBOTerms/" target="_blank" rel="nofollow">SBO terms mapping to CellDesigner notation</a> </td>
                                   </tr>
                                     <tr>
                                         <td><b>File > Samples</b>:
@@ -1311,8 +1404,8 @@
                         <option value="AF">AF</option>
                         <option value="HybridSbgn">PD+AF</option>
                         <option value="SIF">SIF</option>
-                        <option value="HybridAny">PD+AF+SIF</option>
-
+                        <option value="SBML">SBML</option>
+                        <option value="HybridAny">PD+AF+SIF+SBML</option>
                     </select>
                 </td>
             </tr>

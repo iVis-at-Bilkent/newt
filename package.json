@@ -22,7 +22,7 @@
     "backbone": "1.3.3",
     "body-parser": "^1.19.0",
     "bootstrap": "3.3.7",
-    "chise": "github:iVis-at-Bilkent/chise.js#unstable",
+    "chise": "github:iVis-at-Bilkent/chise.js#SBML",
     "chroma-js": "^1.3.4",
     "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#unstable",
     "cytoscape-autopan-on-drag": "github:iVis-at-Bilkent/cytoscape.js-autopan-on-drag#unstable",
@@ -51,7 +51,7 @@
     "multer": "^1.4.2",
     "natives": "^1.1.6",
     "request": "^2.81.0",
-    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
+    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#SBML",
     "tippy.js": "^3.4.0",
     "nodemailer": "6.4.5"
   },

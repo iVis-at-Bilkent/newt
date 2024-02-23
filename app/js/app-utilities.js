@@ -25,8 +25,9 @@ appUtilities.mapTypesToViewableText = {
   'PD': 'PD',
   'AF': 'AF',
   'SIF': 'SIF',
+  'SBML': 'SBML',
   'HybridSbgn' : 'Hybrid (PD,AF)' ,
-  'HybridAny' : 'Hybrid (PD,AF,SIF)'   
+  'HybridAny' : 'Hybrid (PD,AF,SIF, SBML)'   
 };
 // Set a single property on scratchpad of an element or the core
 appUtilities.setScratch = function (cyOrEle, name, val) {
@@ -1203,6 +1204,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#ffffff',
+      'rna': '#ffffff',
+      'simple molecule': '#ffffff',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#ffffff',
+      'protein': '#ffffff',
+      'truncated protein': '#ffffff',
+      'ion channel': '#ffffff',
+      'receptor': '#ffffff',
+      'ion': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#ffffff',
+      'compartment': '#ffffff', 
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1214,8 +1240,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#ffffff',
-      'SIF simple chemical': '#ffffff'
-    }
+      'SIF simple chemical': '#ffffff',
+      }
   },
   'greyscale': {
     'name': 'Greyscale',
@@ -1250,6 +1276,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f0f0f0',
       'submap': '#f0f0f0',
+      //SBML
+      'gene' : '#bdbdbd',
+      'rna': '#bdbdbd',
+      'simple molecule': '#bdbdbd',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#bdbdbd',
+      'protein': '#bdbdbd',
+      'truncated protein': '#bdbdbd',
+      'ion channel': '#bdbdbd',
+      'receptor': '#bdbdbd',
+      'ion': '#bdbdbd',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d9d9d9',
+      'compartment': '#f0f0f0',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1261,7 +1312,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#d9d9d9',
-      'SIF simple chemical': '#f0f0f0'
+      'SIF simple chemical': '#f0f0f0',
+      
     }
   },
   'inverse_greyscale': {
@@ -1297,6 +1349,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#bdbdbd',
       'submap': '#bdbdbd',
+      //SBML
+      'gene' : '#f0f0f0',
+      'rna': '#f0f0f0',
+      'simple molecule': '#f0f0f0',
+      'unknown molecule': '#f0f0f0',
+      'phenotype sbml': '#f0f0f0',
+      'drug': '#f0f0f0',
+      'protein': '#f0f0f0',
+      'truncated protein': '#f0f0f0',
+      'ion channel': '#f0f0f0',
+      'receptor': '#f0f0f0',
+      'ion': '#f0f0f0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f0f0f0',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d9d9d9',
+      'compartment': '#bdbdbd',
       // AF
       'BA plain': '#f0f0f0',
       'BA unspecified entity': '#f0f0f0',
@@ -1308,7 +1385,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#f0f0f0',
-      'SIF simple chemical': '#d9d9d9'
+      'SIF simple chemical': '#d9d9d9',
+      
     }
   },
   'blue_scale': {
@@ -1344,6 +1422,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#eff3ff',
       'submap': '#eff3ff',
+      //SBML
+      'gene' : '#9ecae1',
+      'rna': '#9ecae1',
+      'simple molecule': '#9ecae1',
+      'unknown molecule': '#9ecae1',
+      'phenotype sbml': '#9ecae1',
+      'drug': '#9ecae1',
+      'protein': '#9ecae1',
+      'truncated protein': '#9ecae1',
+      'ion channel': '#9ecae1',
+      'receptor': '#9ecae1',
+      'ion': '#9ecae1',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#9ecae1',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#c6dbef',
+      'compartment': '#eff3ff',
       // AF
       'BA plain': '#9ecae1',
       'BA unspecified entity': '#9ecae1',
@@ -1355,7 +1458,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#c6dbef',
-      'SIF simple chemical': '#eff3ff'
+      'SIF simple chemical': '#eff3ff',
     }
   },
   'inverse_blue_scale': {
@@ -1391,6 +1494,32 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#9ecae1',
       'submap': '#9ecae1',
+      //SBML
+      'gene' : '#eff3ff',
+      'rna': '#eff3ff',
+      'simple molecule': '#eff3ff',
+      'unknown molecule': '#eff3ff',
+      'phenotype sbml': '#eff3ff',
+      'drug': '#eff3ff',
+      'protein': '#eff3ff',
+      'truncated protein': '#eff3ff',
+      'ion channel': '#eff3ff',
+      'receptor': '#eff3ff',
+      'ion': '#eff3ff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#eff3ff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#c6dbef',
+      'compartment': '#9ecae1',
+      
       // AF
       'BA plain': '#eff3ff',
       'BA unspecified entity': '#eff3ff',
@@ -1402,7 +1531,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#eff3ff',
-      'SIF simple chemical': '#c6dbef'
+      'SIF simple chemical': '#c6dbef',
     }
   },
   'opposed_red_blue': {
@@ -1438,6 +1567,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#f4a582',
+      'rna': '#f4a582',
+      'simple molecule': '#fddbc7',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#f4a582',
+      'protein': '#92c5de',
+      'truncated protein': '#92c5de',
+      'ion channel': '#92c5de',
+      'receptor': '#92c5de',
+      'ion': '#fddbc7',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d1e5f0',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1449,7 +1603,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#92c5de',
-      'SIF simple chemical': '#f4a582'
+      'SIF simple chemical': '#f4a582',
     }
   },
   'opposed_red_blue2': {
@@ -1485,6 +1639,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#92c5de',
+      'rna': '#92c5de',
+      'simple molecule': '#d1e5f0',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#92c5de',
+      'protein': '#f4a582',
+      'truncated protein': '#f4a582',
+      'ion channel': '#f4a582',
+      'receptor': '#f4a582',
+      'ion': '#d1e5f0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#fddbc7',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1496,7 +1675,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#f4a582',
-      'SIF simple chemical': '#92c5de'
+      'SIF simple chemical': '#92c5de',
     }
   },
   'opposed_green_brown': {
@@ -1532,6 +1711,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f5f5f5',
       'submap': '#f5f5f5',
+      //SBML
+      'gene' : '#dfc27d',
+      'rna': '#dfc27d',
+      'simple molecule': '#f6e8c3',
+      'unknown molecule': '#f5f5f5',
+      'phenotype sbml': '#f5f5f5',
+      'drug': '#dfc27d',
+      'protein': '#80cdc1',
+      'truncated protein': '#80cdc1',
+      'ion channel': '#80cdc1',
+      'receptor': '#80cdc1',
+      'ion': '#f6e8c3',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f5f5f5',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#c7eae5',
+      'compartment': '#f5f5f5',
       // AF
       'BA plain': '#f5f5f5',
       'BA unspecified entity': '#f5f5f5',
@@ -1543,7 +1747,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#80cdc1',
-      'SIF simple chemical': '#dfc27d'
+      'SIF simple chemical': '#dfc27d',
     }
   },
   'opposed_green_brown2': {
@@ -1579,6 +1783,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f5f5f5',
       'submap': '#f5f5f5',
+      //SBML
+      'gene' : '#80cdc1',
+      'rna': '#80cdc1',
+      'simple molecule': '#c7eae5',
+      'unknown molecule': '#f5f5f5',
+      'phenotype sbml': '#f5f5f5',
+      'drug': '#80cdc1',
+      'protein': '#dfc27d',
+      'truncated protein': '#dfc27d',
+      'ion channel': '#dfc27d',
+      'receptor': '#dfc27d',
+      'ion': '#c7eae5',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f5f5f5',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#f6e8c3',
+      'compartment': '#f5f5f5',
       // AF
       'BA plain': '#f5f5f5',
       'BA unspecified entity': '#f5f5f5',
@@ -1590,7 +1819,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#dfc27d',
-      'SIF simple chemical': '#80cdc1'
+      'SIF simple chemical': '#80cdc1',
     }
   },
   'opposed_purple_brown': {
@@ -1626,6 +1855,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#fdb863',
+      'rna': '#fdb863',
+      'simple molecule': '#fee0b6',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#fdb863',
+      'protein': '#b2abd2',
+      'truncated protein': '#b2abd2',
+      'ion channel': '#b2abd2',
+      'receptor': '#b2abd2',
+      'ion': '#fee0b6',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d8daeb',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1637,7 +1891,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#b2abd2',
-      'SIF simple chemical': '#fdb863'
+      'SIF simple chemical': '#fdb863',
     }
   },
   'opposed_purple_brown2': {
@@ -1673,6 +1927,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#b2abd2',
+      'rna': '#b2abd2',
+      'simple molecule': '#d8daeb',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#b2abd2',
+      'protein': '#fdb863',
+      'truncated protein': '#fdb863',
+      'ion channel': '#fdb863',
+      'receptor': '#fdb863',
+      'ion': '#d8daeb',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#fee0b6',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1684,7 +1963,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#fdb863',
-      'SIF simple chemical': '#b2abd2'
+      'SIF simple chemical': '#b2abd2',
     }
   },
   'opposed_purple_green': {
@@ -1720,6 +1999,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#a6dba0',
+      'rna': '#a6dba0',
+      'simple molecule': '#d9f0d3',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#a6dba0',
+      'protein': '#c2a5cf',
+      'truncated protein': '#c2a5cf',
+      'ion channel': '#c2a5cf',
+      'receptor': '#c2a5cf',
+      'ion': '#d9f0d3',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#e7d4e8',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1731,7 +2035,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#c2a5cf',
-      'SIF simple chemical': '#a6dba0'
+      'SIF simple chemical': '#a6dba0',
     }
   },
   'opposed_purple_green2': {
@@ -1767,6 +2071,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#c2a5cf',
+      'rna': '#c2a5cf',
+      'simple molecule': '#e7d4e8',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#c2a5cf',
+      'protein': '#a6dba0',
+      'truncated protein': '#a6dba0',
+      'ion channel': '#a6dba0',
+      'receptor': '#a6dba0',
+      'ion': '#e7d4e8',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d9f0d3',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1778,7 +2107,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#a6dba0',
-      'SIF simple chemical': '#c2a5cf'
+      'SIF simple chemical': '#c2a5cf',
     }
   },
   'opposed_grey_red': {
@@ -1814,6 +2143,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#bababa',
+      'rna': '#bababa',
+      'simple molecule': '#e0e0e0',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#bababa',
+      'protein': '#f4a582',
+      'truncated protein': '#f4a582',
+      'ion channel': '#f4a582',
+      'receptor': '#f4a582',
+      'ion': '#e0e0e0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#fddbc7',
+      'compartment': '#ffffff',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1825,7 +2179,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#f4a582',
-      'SIF simple chemical': '#bababa'
+      'SIF simple chemical': '#bababa',
     }
   },
   'opposed_grey_red2': {
@@ -1861,6 +2215,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#f4a582',
+      'rna': '#f4a582',
+      'simple molecule': '#fddbc7',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#f4a582',
+      'protein': '#bababa',
+      'truncated protein': '#bababa',
+      'ion channel': '#bababa',
+      'receptor': '#bababa',
+      'ion': '#fddbc7',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#e0e0e0',
+      'compartment': '#ffffff',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1872,7 +2251,9 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#bababa',
-      'SIF simple chemical': '#f4a582'
+      'SIF simple chemical': '#f4a582',
+      //SBML
+      'unknown molecule' : '#ffffff'
     }
   },
   'pure_white': {
@@ -1907,6 +2288,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#ffffff',
+      'rna': '#ffffff',
+      'simple molecule': '#ffffff',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#ffffff',
+      'protein': '#ffffff',
+      'truncated protein': '#ffffff',
+      'ion channel': '#ffffff',
+      'receptor': '#ffffff',
+      'ion': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#ffffff',
+      'compartment': '#ffffff',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1918,7 +2324,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#ffffff',
-      'SIF simple chemical': '#ffffff'
+      'SIF simple chemical': '#ffffff',
     }
   }
 };
@@ -1929,6 +2335,81 @@ for(var scheme in mapColorSchemes){
   mapColorSchemes[scheme]['values']['macromolecule multimer'] = mapColorSchemes[scheme]['values']['macromolecule'];
   mapColorSchemes[scheme]['values']['simple chemical multimer'] = mapColorSchemes[scheme]['values']['simple chemical'];
   mapColorSchemes[scheme]['values']['complex multimer'] = mapColorSchemes[scheme]['values']['complex'];
+
+  //For SBML
+  //Multimer
+  mapColorSchemes[scheme]['values']['gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['drug multimer'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['ion multimer'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
+  //Active
+  mapColorSchemes[scheme]['values']['active protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active ion channel'] = mapColorSchemes[scheme]['values']['active ion channel'];
+  mapColorSchemes[scheme]['values']['active receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
+  //Active and mutimer
+  mapColorSchemes[scheme]['values']['active protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active ion channel multimer'] = mapColorSchemes[scheme]['values']['active ion channel'];
+  mapColorSchemes[scheme]['values']['active receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Hypothetical
+  mapColorSchemes[scheme]['values']['hypothetical gene'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['hypothetical rna'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical simple molecule'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical unkown molecule'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical phenotype sbml'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['hypothetical drug'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['hypothetical protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['hypothetical truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['hypothetical ion channel'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['hypothetical receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['hypothetical ion'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['hypothetical complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Hypothetical and Multimer 
+  mapColorSchemes[scheme]['values']['hypothetical gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['hypothetical rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['hypothetical drug multimer'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['hypothetical protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['hypothetical truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['hypothetical ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['hypothetical receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['hypothetical ion multimer'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['hypothetical complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Active and Hypothetical
+  mapColorSchemes[scheme]['values']['active hypothetical protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical ion channel'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['active hypothetical receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active hypothetical complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Active, Hypothetical, and Multimer 
+  mapColorSchemes[scheme]['values']['active hypothetical protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['active hypothetical receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active hypothetical complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
 }
 
 // go through eles, mapping the id of these elements to values that were mapped to their data().class
@@ -2537,6 +3018,10 @@ appUtilities.filterMapProperties = function(obj) {
 
   return mapProps;
 };
+appUtilities.filterMapTypeProperty = function(obj)
+{
+    return obj.sbmlMap;
+}
 
 appUtilities.launchWithModelFile = function() {
 
@@ -2566,10 +3051,11 @@ appUtilities.launchWithModelFile = function() {
   else
     tutorial.introduction(true);
 
+   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
-  function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
+   chiseInstance.startSpinner('paths-byURL-spinner');
 
-    chiseInstance.startSpinner('paths-byURL-spinner');
+    console.log("loading form url")
   
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -2611,7 +3097,7 @@ appUtilities.launchWithModelFile = function() {
     else
       fileExtension = 'txt';
 
-    $.ajax({
+     $.ajax({
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
@@ -2623,7 +3109,8 @@ appUtilities.launchWithModelFile = function() {
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
-      
+
+        
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           const fileContents = data.response.body;
@@ -2635,17 +3122,23 @@ appUtilities.launchWithModelFile = function() {
           const xmlObject = chiseInstance.textToXmlObject(fileContents);
           
           if (fileExtension === "sif") {
-            var loadFcn = function() {
-              var layoutBy = function() {
+            var loadFcn =  function() {
+              var layoutBy =  function() {
                 appUtilities.triggerLayout(cyInstance, true);
               };
-              chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
+               chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
+             chiseInstance.endSpinner("paths-byURL-spinner");
+
             };
             if (cyInstance.elements().length != 0)
-              promptConfirmationView.render( loadFcn );
+            {
+               promptConfirmationView.render( loadFcn );
+              chiseInstance.endSpinner("paths-byURL-spinner");
+            }
             else
-              loadFcn();
-
+               loadFcn();
+              chiseInstance.endSpinner("paths-byURL-spinner");
+              
           }
           if (fileExtension === "gpml") {
             chiseInstance.loadGpml(file, success =  async function (data) {
@@ -2665,36 +3158,71 @@ appUtilities.launchWithModelFile = function() {
           }          
           else if (fileExtension === "xml" || fileExtension === "sbml") {
             // CD file
+            var loadFcn =  function() {
+              var layoutBy =  function() {
+                appUtilities.triggerLayout(cyInstance, true);
+            }; };
+            var layoutBy =  function() {
+              appUtilities.triggerLayout(cyInstance, true);
+              console.log("in layoutBy")
+          };
             if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
-               chiseInstance.loadCellDesigner(file, success =  async function (data) {
+              await chiseInstance.loadCellDesigner(file, success = async function (data) {
                 if (cyInstance.elements().length !== 0) {
-                  promptConfirmationView.render( function () {
-                    chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
-                    chiseInstance.endSpinner('paths-byURL-spinner');
+                 await  promptConfirmationView.render(async function () {
+                   await  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                   });
-
                   chiseInstance.endSpinner("paths-byURL-spinner");
                 }
                 else {
-                await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                 await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                 loadFcn();
                  chiseInstance.endSpinner("paths-byURL-spinner");
                 }
               });
+              
             }
             else {
+              var sbmlProperty= appUtilities.getScratch(appUtilities.getActiveCy(), "sbmlProperty")
+              var sbgnOrSbml = sbmlProperty.sbmlMap; //True for sbml, false or undefined for sbgn
+
               // sbml file
-              await chiseInstance.loadSbml(file,  success = async function (data){
-                if (cyInstance.elements().length !== 0) {
-                  await promptConfirmationView.render(async function () {
-                    await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                  });
-                  chiseInstance.endSpinner('paths-byURL-spinner');
-                }
-                else {
-                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                  chiseInstance.endSpinner('paths-byURL-spinner');
-                }
-              });
+              console.log("loding sbml", typeof(sbgnOrSbml), sbgnOrSbml)
+              if(sbgnOrSbml)
+              {
+                await chiseInstance.loadSbmlForSBML(file,  success =  async function (data){
+                  if (cyInstance.elements().length !== 0) {
+                     await promptConfirmationView.render(async function () {
+                        await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj, layoutBy);
+              
+                    });
+                    chiseInstance.endSpinner("paths-byURL-spinner");
+                  }
+                  else {
+                    await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj, layoutBy);
+                    chiseInstance.endSpinner("paths-byURL-spinner");
+                  }
+                });
+              }
+              else
+              {
+                await chiseInstance.loadSbml(file,  success = async function (data){
+                  if (cyInstance.elements().length !== 0) {
+                    await promptConfirmationView.render(async function () {
+                      await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                    });
+                    chiseInstance.endSpinner('paths-byURL-spinner')
+  
+                  }
+                  else {
+                   await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                   chiseInstance.endSpinner('paths-byURL-spinner')
+  
+  
+                  }
+                });
+              }
+              
             }
           }
           else {
@@ -2711,13 +3239,12 @@ appUtilities.launchWithModelFile = function() {
         loadCallbackInvalidityWarning();
         chiseInstance.endSpinner("paths-byURL-spinner");
 
-
       }
     });
-
   }
 
   function loadFromURI(uri, chiseInstance, promptInvalidURIWarning){
+    console.log("loading form uri")
 
     var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
           + uri + "&format=SBGN";
@@ -2740,15 +3267,18 @@ appUtilities.launchWithModelFile = function() {
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
           $(document).trigger('sbgnvizLoadFromURI', [filename, cyInstance]);          
           chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml, paramObj), undefined, currentLayoutProperties);
+          console.log("spinner ending")
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
         else {
+          console.log("spinner ending else")
           chiseInstance.endSpinner('paths-byURI-spinner');
           promptInvalidURIWarning.render();
         }
       },
       error: function(xhr, options, err){
+        console.log("spinner ending error")
         chiseInstance.endSpinner('paths-byURI-spinner');
         promptInvalidURIWarning.render();      }
     });
@@ -3115,6 +3645,16 @@ appUtilities.getDefaultEmptyInfoboxObj = function( type ) {
         variable: ""
       };
       break;
+    case 'residue variable':
+      obj.residue = {
+        variable: ""
+      };
+      break;
+    case 'binding region':
+      obj.region = {
+        variable: ""
+      };
+      break;
   }
 
   return obj;
@@ -3181,7 +3721,7 @@ appUtilities.resizeNodesToContent = function(nodes){
 };
 
 appUtilities.transformClassInfo = function( classInfo ) {
-  var res = classInfo.replace(' multimer', '');
+  var res = classInfo.replace(' multimer', '').replace('active ', '').replace('hypthetical ', '');
   if (res == 'and' || res == 'or' || res == 'not') {
     res = res.toUpperCase();
   }

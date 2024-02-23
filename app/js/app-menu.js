@@ -52,7 +52,10 @@ module.exports = function() {
       }
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
-      }        
+      }  
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      }      
     }
     else if(mapType === "PD"){
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
@@ -63,6 +66,9 @@ module.exports = function() {
       }
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
+      } 
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
       }        
     }
     else if(mapType === "SIF"){
@@ -75,6 +81,9 @@ module.exports = function() {
       if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
         $("#AF-palette-heading").click();
       }
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      } 
     }
     else if (mapType === "HybridSbgn") {
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
@@ -86,6 +95,23 @@ module.exports = function() {
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
       }
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      } 
+    }
+    else if (mapType === "SBML"){
+      if(!$("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if(!$("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }
+      if( $("#SBML-palette-heading").hasClass("collapsed")) { // expand SBML
+        $("#SBML-palette-heading").click();
+      } 
     }
     else if (mapType === "HybridAny") {
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
@@ -97,6 +123,9 @@ module.exports = function() {
       if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
         $("#SIF-palette-heading").click();
       }
+      if($("#SBML-palette-heading").hasClass("collapsed")) { // expand SBML
+        $("#SBML-palette-heading").click();
+      } 
     }
     else {
       console.warn('invalid map type!');
@@ -181,6 +210,7 @@ module.exports = function() {
   
   // Event triggered before file loaded by URL/URI
   $(document).on('sbgnvizLoadFromURL sbgnvizLoadFromURI', function(event, filename, cy) {
+    //alert("getting the file")
 
     var chiseInstance = appUtilities.getChiseInstance(cy);    
   
@@ -188,11 +218,25 @@ module.exports = function() {
     
     // get current general properties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');    
+    var sbmlProperty  = {}
 
     // inferNestingOnLoad and compoundPadding must be set before file loaded
     if (urlParams) {
       // filter map properties from the url parameters
       var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+
+      var sbgnORsbml = appUtilities.filterMapTypeProperty(urlParams);
+      if(sbgnORsbml == "true")
+      {
+        console.log("sbml")
+        sbmlProperty.sbmlMap = true
+      }
+      else
+      {
+        console.log("sbgn")
+        sbmlProperty.sbmlMap = false
+      }
+      
       
       if("inferNestingOnLoad" in mapPropsFromUrl) {
         currentGeneralProperties.inferNestingOnLoad = (mapPropsFromUrl.inferNestingOnLoad == 'true');
@@ -213,6 +257,7 @@ module.exports = function() {
 
     // set 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);    
+    appUtilities.setScratch(cy, 'sbmlProperty', sbmlProperty); 
     
   });
 
@@ -342,7 +387,7 @@ module.exports = function() {
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
         var loadCallbackSBGNMLValidity = function (text) {
-          validateSBGNML(text);
+          //validateSBGNML(text);
         }
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
@@ -392,6 +437,7 @@ module.exports = function() {
     });
 
     $("#import-SBML-file").click(function () {
+      console.log("importing sbml file")
       $("#sbml-file").trigger('click');
     });
 
@@ -469,30 +515,74 @@ module.exports = function() {
     });
     
     $("#sbml-file").change(function () {
-     
       var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
       var cy = appUtilities.getActiveCy();
+
+      var loadCallbackInvalidityWarning  = function () {
+        promptInvalidFileView.render();
+      }
+
       if ($(this).val() != "") {
         var file = this.files[0];
+
+        var loadFcn = function() {
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          chiseInstance.loadSbmlForSBML(file,  success = function(data){
+              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
+          },  error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            
+          }, layoutBy)
+        };
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( loadFcn );
+        else
+          loadFcn();
+
+        $(this).val("");
+      }
+      /*
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      console.log("in imprt sbml file")
+      var cy = appUtilities.getActiveCy();
+
+      if ($(this).val() != "") {
+        var file = this.files[0];
+        var loadFcn = function() {
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+        }
+        var layoutBy = function() {
+          appUtilities.triggerLayout( cy, true );
+          console.log("in layoutBy")
+        };
         appUtilities.setFileContent(file.name);
         chiseInstance.loadSbml(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+            chiseInstance.loadSBMLText(data.message, false, file.name, cy);
           }
         },
         error = function(data){
           promptFileConversionErrorView.render();          
           document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
           
-        });
+        }, layoutBy);
        
         $(this).val("");
       }
+      */
+
     });
 
     $("#gpml-file-input").change(function () {
@@ -828,7 +918,12 @@ module.exports = function() {
       "#load-sample17" : 'RTN4-controllers-and-binding-proteins.nwt',
       "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt',
       "#load-sample19" : 'pd_learners_card.nwt',
-      "#load-sample20" : 'af_learners_card.nwt'
+      "#load-sample20" : 'af_learners_card.nwt',
+      "#load-sample21" : 'interaction_topologies_of_MAPK_cascade.nwt',
+      "#load-sample22" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
+      "#load-sample23" : 'apoptotic_reaction_model.nwt',
+      "#load-sample24" : 'insulin_induced_signalling.nwt',
+
     };
 
     for ( var selector in selectorToSampleFileName ) {
@@ -1347,16 +1442,19 @@ module.exports = function() {
       viewUtilities.zoomToSelected(cy.$(':selected'));
     });
 
-    $("#perform-layout, #perform-layout-icon").click(function (e) {
+    $("#perform-layout, #perform-layout-icon").click( function (e) {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-      // TODO think whether here is the right place to start the spinner
-      chiseInstance.startSpinner("layout-spinner");
 
-      setTimeout(() => {
+      // TODO think whether here is the right place to start the spinner
+      console.log("layout-spinner")
+      chiseInstance.startSpinner("layout-spinner")
+
       // use the associated cy instance
+      setTimeout(() => {
       var cy = chiseInstance.getCy();
+      
 
       // if there is no element in the cy instance, then return directly
       if(cy.elements().length == 0) {
@@ -1380,12 +1478,11 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-       // TODO think whether here is the right place to start the spinner
-       chiseInstance.startSpinner("layout-spinner");
+      // TODO think whether here is the right place to start the spinner
+      chiseInstance.startSpinner("layout-spinner");
 
       // use the associated cy instance
       setTimeout(() => {
-
       var cy = chiseInstance.getCy();
 
       // if there is no element in the cy instance, then return directly
@@ -1395,7 +1492,7 @@ module.exports = function() {
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');      
 
-     
+      
 
       var preferences = {
         quality: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? "draft" : "default",
