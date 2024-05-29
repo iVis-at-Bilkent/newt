@@ -55,7 +55,10 @@ module.exports = function() {
       }  
       if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
         $("#SBML-palette-heading").click();
-      }      
+      }     
+      if(! $("#GPML-palette-heading").hasClass("collapsed")) { // collapse GPML
+        $("#GPML-palette-heading").click();
+      }  
     }
     else if(mapType === "PD"){
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
@@ -69,6 +72,9 @@ module.exports = function() {
       } 
       if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
         $("#SBML-palette-heading").click();
+      }  
+      if(! $("#GPML-palette-heading").hasClass("collapsed")) { // collapse GPML
+        $("#GPML-palette-heading").click();
       }        
     }
     else if(mapType === "SIF"){
@@ -84,6 +90,9 @@ module.exports = function() {
       if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
         $("#SBML-palette-heading").click();
       } 
+      if(! $("#GPML-palette-heading").hasClass("collapsed")) { // collapse GPML
+        $("#GPML-palette-heading").click();
+      }
     }
     else if (mapType === "HybridSbgn") {
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
@@ -98,6 +107,9 @@ module.exports = function() {
       if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
         $("#SBML-palette-heading").click();
       } 
+      if(! $("#GPML-palette-heading").hasClass("collapsed")) { // collapse GPML
+        $("#GPML-palette-heading").click();
+      }
     }
     else if (mapType === "SBML"){
       if(!$("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
@@ -113,6 +125,23 @@ module.exports = function() {
         $("#SBML-palette-heading").click();
       } 
     }
+    else if (mapType === "GPML"){
+      if(!$("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if(!$("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      }
+      if( $("#GPML-palette-heading").hasClass("collapsed")) { // expand GPML
+        $("#GPML-palette-heading").click();
+      }
+    }
     else if (mapType === "HybridAny") {
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
         $("#PD-palette-heading").click();
@@ -126,6 +155,9 @@ module.exports = function() {
       if($("#SBML-palette-heading").hasClass("collapsed")) { // expand SBML
         $("#SBML-palette-heading").click();
       } 
+      if($("#GPML-palette-heading").hasClass("collapsed")) { // expand GPML
+        $("#GPML-palette-heading").click();
+      }
     }
     else {
       console.warn('invalid map type!');
