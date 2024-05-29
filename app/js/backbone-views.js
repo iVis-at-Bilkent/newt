@@ -623,7 +623,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       }
       var currentMapType = chiseInstance.getMapType();
       var validChange = false;
-      if((currentMapType == 'PD' || currentMapType == 'AF' || currentMapType =='SIF' || currentMapType =='SBML' ) && newMapType == 'HybridAny' && !validChange){
+      if((currentMapType == 'PD' || currentMapType == 'AF' || currentMapType =='SIF' || currentMapType =='SBML' || currentMapType =='GPML' ) && newMapType == 'HybridAny' && !validChange){
         validChange = true;
 
         //ok
@@ -660,7 +660,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
            //check no SIF elements in netwrok
            var checkType = true;     
            for(var i = 0 ; i < elements.length && checkType ;i++){
-             if(elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML"){
+             if(elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML" || elements[i].data("language") == "GPML"){
                checkType = false;             
              }
            }
@@ -669,7 +669,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
            //check no AF  OR SIF elements in netwrok
            var checkType = true;  
           for(var i = 0 ; i < elements.length &&  checkType;i++){
-            if(elements[i].data("language") == "AF" || elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML" ){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML" || elements[i].data("language") == "GPML"){
               checkType = false;            
             }
           }
@@ -679,7 +679,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           //check no PD  OR SIF elements in netwrok
           var checkType = true;   
           for(var i = 0 ; i < elements.length && checkType ;i++){
-            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML"){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "SBML" || elements[i].data("language") == "GPML"){
               checkType = false;            
             }
           }
@@ -691,7 +691,17 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           //check no PD  AF or SIF elements in netwrok
           var checkType = true;   
           for(var i = 0 ; i < elements.length && checkType ;i++){
-            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "AF"){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "AF" || elements[i].data("language") == "GPML"){
+              checkType = false;            
+            }
+          }
+        }
+        else if(newMapType == 'GPML')
+        {
+          //check no PD  AF or SIF elements in netwrok
+          var checkType = true;   
+          for(var i = 0 ; i < elements.length && checkType ;i++){
+            if(elements[i].data("language") == "PD" || elements[i].data("language") == "SIF" || elements[i].data("language") == "AF" || elements[i].data("language") == "SBML"){
               checkType = false;            
             }
           }
@@ -700,7 +710,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           //check no PD  OR AF elements in netwrok
           var checkType = true;  
           for(var i = 0 ; i < elements.length && checkType ;i++){
-            if(elements[i].data("language") == "AF" || elements[i].data("language") == "PD" || elements[i].data("language") == "SBML"){
+            if(elements[i].data("language") == "AF" || elements[i].data("language") == "PD" || elements[i].data("language") == "SBML" || elements[i].data("language") == "GPML"){
               checkType = false;           
             }
           }

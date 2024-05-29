@@ -27,7 +27,7 @@ appUtilities.mapTypesToViewableText = {
   'SIF': 'SIF',
   'SBML': 'SBML',
   'HybridSbgn' : 'Hybrid (PD,AF)' ,
-  'HybridAny' : 'Hybrid (PD,AF,SIF, SBML)'   
+  'HybridAny' : 'Hybrid (PD,AF,SIF, SBML, GPML)'   
 };
 // Set a single property on scratchpad of an element or the core
 appUtilities.setScratch = function (cyOrEle, name, val) {
