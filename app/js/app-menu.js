@@ -874,6 +874,11 @@ module.exports = function() {
       $("#SIF_legend_modal").modal('show');
     });
 
+    $("#SBML-legend").click(function (e) {
+      e.preventDefault();
+      $("#SBML_legend_modal").modal('show');
+    });
+
     $("#quick-help, #quick-help-icon").click(function (e) {
       e.preventDefault();
       $("#quick_help_modal").modal('show');
