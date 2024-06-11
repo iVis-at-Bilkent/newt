@@ -2350,7 +2350,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           .replaceAll("\n", " ")
           .replaceAll("\t", " ")
           .split(" ");
-
+        console.log("gene symbols array:", geneSymbolsArray);
         var filename = "";
         var sources = "";
         for (var i = 0; i < geneSymbolsArray.length; i++) {
@@ -2386,7 +2386,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -2399,6 +2398,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad = false;
                   chiseInstance.updateGraph(
                     chiseInstance.convertSbgnmlToJson(xml),
+                    undefined,
                     currentLayoutProperties
                   );
                   currentGeneralProperties.inferNestingOnLoad =
@@ -2451,23 +2451,29 @@ var PathsBetweenQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: { url: queryURL },
               success: function (data) {
-                if (
-                  !data.error &&
-                  data.response.statusCode == 200 &&
-                  data.response.body
-                ) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    currentLayoutProperties
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
-                  chiseInstance.endSpinner("paths-between-spinner");
-                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                if (!data.error && data.response.statusCode == 200) {
+                  if (data.response.body !== "") {
+                    var xml = $.parseXML(data.response.body);
+                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                    currentGeneralProperties.inferNestingOnLoad = false;
+                    chiseInstance.updateGraph(
+                      chiseInstance.convertSbgnmlToJson(xml),
+                      undefined,
+                      currentLayoutProperties
+                    );
+                    currentGeneralProperties.inferNestingOnLoad =
+                      currentInferNestingOnLoad;
+                    chiseInstance.endSpinner("paths-between-spinner");
+                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                  } else {
+                    new PromptEmptyQueryResultView({
+                      el: "#prompt-emptyQueryResult-table",
+                    }).render();
+                    chiseInstance.endSpinner("paths-between-spinner");
+                    document.getElementById(
+                      "query-pathsbetween-gene-symbols"
+                    ).val = "";
+                  }
                 } else {
                   new PromptInvalidQueryView({
                     el: "#prompt-invalidQuery-table",
