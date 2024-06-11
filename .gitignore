@@ -2,4 +2,6 @@
 
 node_modules/
 
+package-lock.js
+
 app/bundle.js
