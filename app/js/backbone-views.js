@@ -2350,7 +2350,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
           .replaceAll("\n", " ")
           .replaceAll("\t", " ")
           .split(" ");
-        console.log("gene symbols array:", geneSymbolsArray);
         var filename = "";
         var sources = "";
         for (var i = 0; i < geneSymbolsArray.length; i++) {
