@@ -2790,9 +2790,9 @@ var PathsFromToQueryView = Backbone.View.extend({
                       return false;
                     }))
                   })
-                  var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, 1, 'UNDIRECTED');
+                  var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
                   cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
-                  cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
+                  // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
                   cy.viewUtilities('get').highlight(source_eles, 0);
                   cy.viewUtilities('get').highlight(target_eles, 1);
                   // Highlighting feature end
@@ -3062,6 +3062,24 @@ var CommonStreamQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("common-stream-spinner");
+
+                  // Highlight feature
+                  eles = cy.collection();
+                  geneSymbolsArray.forEach(function (gene) {
+                    eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                  cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
+                  cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
+                  cy.viewUtilities('get').highlight(x.commonNodes, 1);
+                  cy.viewUtilities('get').highlight(eles, 0);
+                  // Highlight feature end
+
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -3127,6 +3145,24 @@ var CommonStreamQueryView = Backbone.View.extend({
                     currentGeneralProperties.inferNestingOnLoad =
                       currentInferNestingOnLoad;
                     chiseInstance.endSpinner("common-stream-spinner");
+                    
+                    // Highlight feature
+                    eles = cy.collection();
+                    geneSymbolsArray.forEach(function (gene) {
+                      eles.merge(cy.nodes().filter(function (ele) {
+                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                          return true;
+                        }
+                        return false;
+                      }))
+                    })
+                    var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                    cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
+                    cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
+                    cy.viewUtilities('get').highlight(x.commonNodes, 1);
+                    cy.viewUtilities('get').highlight(eles, 0);
+                    // Highlight feature end
+
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   } else {
                     new PromptEmptyQueryResultView({
