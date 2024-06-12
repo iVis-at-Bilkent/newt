@@ -2514,6 +2514,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                         return false;
                       }))
                     })
+                    console.log(eles);
                     cy.viewUtilities('get').highlight(eles, 0);
                     // Hightlighting feature end
 
