@@ -2466,7 +2466,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
                       return false;
                     }))
                   })
-                  console.log(eles);
+                  var x = cy.elements().pathsBetween(eles, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
+                  cy.viewUtilities('get').highlight(x.resultEdges, 2);
+                  cy.viewUtilities('get').highlight(x.resultNodes, 2);
                   cy.viewUtilities('get').highlight(eles, 0);
                   // Hightlighting feature end
 
@@ -2546,7 +2548,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
                         return false;
                       }))
                     })
-                    console.log(eles);
+                    var x = cy.elements().pathsBetween(eles, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
+                    cy.viewUtilities('get').highlight(x.resultEdges, 2);
+                    cy.viewUtilities('get').highlight(x.resultNodes, 2);
                     cy.viewUtilities('get').highlight(eles, 0);
                     // Hightlighting feature end
 
