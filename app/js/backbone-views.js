@@ -2171,23 +2171,33 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 data.response.statusCode == 200 &&
                 data.response.body
               ) {
-                var xml = $.parseXML(data.response.body);
-                $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(
-                  chiseInstance.convertSbgnmlToJson(xml),
-                  undefined,
-                  currentLayoutProperties
-                );
-                currentGeneralProperties.inferNestingOnLoad =
-                  currentInferNestingOnLoad;
-                chiseInstance.endSpinner("neighborhood-spinner");
-                $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-              } else if (data.response.body === "") {
-                new PromptEmptyQueryResultView({
-                  el: "#prompt-emptyQueryResult-table",
-                }).render();
-                chiseInstance.endSpinner("neighborhood-spinner");
+                if (data.response.body !== "") {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.updateGraph(
+                    chiseInstance.convertSbgnmlToJson(xml),
+                    undefined,
+                    currentLayoutProperties
+                  );
+                  currentGeneralProperties.inferNestingOnLoad =
+                    currentInferNestingOnLoad;
+                  chiseInstance.endSpinner("neighborhood-spinner");
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                } else {
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-emptyQueryResult-table",
+                  }).render();
+                  chiseInstance.endSpinner("neighborhood-spinner");
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                  chiseInstance.endSpinner("neighborhood-spinner");
+                }
               } else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
@@ -2242,6 +2252,14 @@ var NeighborhoodQueryView = Backbone.View.extend({
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("neighborhood-spinner");
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                } else if (data.error) {
+                  let { code } = data.error;
+                  if (code === "ESOCKETTIMEDOUT") {
+                    new PromptRequestTimedOutView({
+                      el: "#prompt-requestTimedOut-table",
+                    }).render();
+                    chiseInstance.endSpinner("neighborhood-spinner");
+                  }
                 } else if (data.response.body === "") {
                   new PromptEmptyQueryResultView({
                     el: "#prompt-emptyQueryResult-table",
@@ -2406,12 +2424,17 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
-                    el: "#prompt-emptyQueryResult-table",
+                    el: "#prompt-requestTimedOut-table",
                   }).render();
                   chiseInstance.endSpinner("paths-between-spinner");
-                  document.getElementById(
-                    "query-pathsbetween-gene-symbols"
-                  ).val = "";
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                  chiseInstance.endSpinner("paths-between-spinner");
                 }
               } else {
                 new PromptInvalidQueryView({
@@ -2469,9 +2492,14 @@ var PathsBetweenQueryView = Backbone.View.extend({
                       el: "#prompt-emptyQueryResult-table",
                     }).render();
                     chiseInstance.endSpinner("paths-between-spinner");
-                    document.getElementById(
-                      "query-pathsbetween-gene-symbols"
-                    ).val = "";
+                  }
+                } else if (data.error) {
+                  let { code } = data.error;
+                  if (code === "ESOCKETTIMEDOUT") {
+                    new PromptRequestTimedOutView({
+                      el: "#prompt-requestTimedOut-table",
+                    }).render();
+                    chiseInstance.endSpinner("paths-between-spinner");
                   }
                 } else {
                   new PromptInvalidQueryView({
@@ -2661,23 +2689,34 @@ var PathsFromToQueryView = Backbone.View.extend({
             url: "/utilities/testURL",
             data: { url: queryURL },
             success: function (data) {
-              if (
-                !data.error &&
-                data.response.statusCode == 200 &&
-                data.response.body
-              ) {
-                var xml = $.parseXML(data.response.body);
-                $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(
-                  chiseInstance.convertSbgnmlToJson(xml),
-                  undefined,
-                  currentLayoutProperties
-                );
-                currentGeneralProperties.inferNestingOnLoad =
-                  currentInferNestingOnLoad;
-                chiseInstance.endSpinner("paths-fromto-spinner");
-                $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+              if (!data.error && data.response.statusCode == 200) {
+                if (data.response.body !== "") {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.updateGraph(
+                    chiseInstance.convertSbgnmlToJson(xml),
+                    undefined,
+                    currentLayoutProperties
+                  );
+                  currentGeneralProperties.inferNestingOnLoad =
+                    currentInferNestingOnLoad;
+                  chiseInstance.endSpinner("paths-fromto-spinner");
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                } else {
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-emptyQueryResult-table",
+                  }).render();
+                  chiseInstance.endSpinner("paths-fromto-spinner");
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                  chiseInstance.endSpinner("paths-fromto-spinner");
+                }
               } else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
@@ -2715,23 +2754,34 @@ var PathsFromToQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: { url: queryURL },
               success: function (data) {
-                if (
-                  !data.error &&
-                  data.response.statusCode == 200 &&
-                  data.response.body
-                ) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    currentLayoutProperties
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
-                  chiseInstance.endSpinner("paths-fromto-spinner");
-                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                if (!data.error && data.response.statusCode == 200) {
+                  if (data.response.body !== "") {
+                    var xml = $.parseXML(data.response.body);
+                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                    currentGeneralProperties.inferNestingOnLoad = false;
+                    chiseInstance.updateGraph(
+                      chiseInstance.convertSbgnmlToJson(xml),
+                      undefined,
+                      currentLayoutProperties
+                    );
+                    currentGeneralProperties.inferNestingOnLoad =
+                      currentInferNestingOnLoad;
+                    chiseInstance.endSpinner("paths-fromto-spinner");
+                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                  } else {
+                    new PromptEmptyQueryResultView({
+                      el: "#prompt-emptyQueryResult-table",
+                    }).render();
+                    chiseInstance.endSpinner("paths-fromto-spinner");
+                  }
+                } else if (data.error) {
+                  let { code } = data.error;
+                  if (code === "ESOCKETTIMEDOUT") {
+                    new PromptRequestTimedOutView({
+                      el: "#prompt-requestTimedOut-table",
+                    }).render();
+                    chiseInstance.endSpinner("paths-fromto-spinner");
+                  }
                 } else {
                   new PromptInvalidQueryView({
                     el: "#prompt-invalidQuery-table",
@@ -2877,23 +2927,34 @@ var CommonStreamQueryView = Backbone.View.extend({
             url: "/utilities/testURL",
             data: { url: queryURL },
             success: function (data) {
-              if (
-                !data.error &&
-                data.response.statusCode == 200 &&
-                data.response.body
-              ) {
-                var xml = $.parseXML(data.response.body);
-                $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(
-                  chiseInstance.convertSbgnmlToJson(xml),
-                  undefined,
-                  currentLayoutProperties
-                );
-                currentGeneralProperties.inferNestingOnLoad =
-                  currentInferNestingOnLoad;
-                chiseInstance.endSpinner("common-stream-spinner");
-                $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+              if (!data.error && data.response.statusCode == 200) {
+                if (data.response.body !== "") {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.updateGraph(
+                    chiseInstance.convertSbgnmlToJson(xml),
+                    undefined,
+                    currentLayoutProperties
+                  );
+                  currentGeneralProperties.inferNestingOnLoad =
+                    currentInferNestingOnLoad;
+                  chiseInstance.endSpinner("common-stream-spinner");
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                } else {
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-emptyQueryResult-table",
+                  }).render();
+                  chiseInstance.endSpinner("common-stream-spinner");
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                  chiseInstance.endSpinner("common-stream-spinner");
+                }
               } else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
@@ -2931,23 +2992,34 @@ var CommonStreamQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: { url: queryURL },
               success: function (data) {
-                if (
-                  !data.error &&
-                  data.response.statusCode == 200 &&
-                  data.response.body
-                ) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    currentLayoutProperties
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
-                  chiseInstance.endSpinner("common-stream-spinner");
-                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                if (!data.error && data.response.statusCode == 200) {
+                  if (data.response.body !== "") {
+                    var xml = $.parseXML(data.response.body);
+                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                    currentGeneralProperties.inferNestingOnLoad = false;
+                    chiseInstance.updateGraph(
+                      chiseInstance.convertSbgnmlToJson(xml),
+                      undefined,
+                      currentLayoutProperties
+                    );
+                    currentGeneralProperties.inferNestingOnLoad =
+                      currentInferNestingOnLoad;
+                    chiseInstance.endSpinner("common-stream-spinner");
+                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                  } else {
+                    new PromptEmptyQueryResultView({
+                      el: "#prompt-emptyQueryResult-table",
+                    }).render();
+                    chiseInstance.endSpinner("common-stream-spinner");
+                  }
+                } else if (data.error) {
+                  let { code } = data.error;
+                  if (code === "ESOCKETTIMEDOUT") {
+                    new PromptRequestTimedOutView({
+                      el: "#prompt-requestTimedOut-table",
+                    }).render();
+                    chiseInstance.endSpinner("common-stream-spinner");
+                  }
                 } else {
                   new PromptInvalidQueryView({
                     el: "#prompt-invalidQuery-table",
@@ -3059,23 +3131,34 @@ var PathsByURIQueryView = Backbone.View.extend({
             url: "/utilities/testURL",
             data: { url: queryURL },
             success: function (data) {
-              if (
-                !data.error &&
-                data.response.statusCode == 200 &&
-                data.response.body
-              ) {
-                var xml = $.parseXML(data.response.body);
-                $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                currentGeneralProperties.inferNestingOnLoad = false;
-                chiseInstance.updateGraph(
-                  chiseInstance.convertSbgnmlToJson(xml),
-                  undefined,
-                  currentLayoutProperties
-                );
-                currentGeneralProperties.inferNestingOnLoad =
-                  currentInferNestingOnLoad;
-                chiseInstance.endSpinner("paths-byURI-spinner");
-                $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+              if (!data.error && data.response.statusCode == 200) {
+                if (data.response.body !== "") {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.updateGraph(
+                    chiseInstance.convertSbgnmlToJson(xml),
+                    undefined,
+                    currentLayoutProperties
+                  );
+                  currentGeneralProperties.inferNestingOnLoad =
+                    currentInferNestingOnLoad;
+                  chiseInstance.endSpinner("paths-byURI-spinner");
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                } else {
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-emptyQueryResult-table",
+                  }).render();
+                  chiseInstance.endSpinner("paths-byURI-spinner");
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                  chiseInstance.endSpinner("paths-byURI-spinner");
+                }
               } else {
                 new PromptInvalidURIView({
                   el: "#prompt-invalidURI-table",
@@ -3113,23 +3196,34 @@ var PathsByURIQueryView = Backbone.View.extend({
               url: "/utilities/testURL",
               data: { url: queryURL },
               success: function (data) {
-                if (
-                  !data.error &&
-                  data.response.statusCode == 200 &&
-                  data.response.body
-                ) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    currentLayoutProperties
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
-                  chiseInstance.endSpinner("paths-byURI-spinner");
-                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                if (!data.error && data.response.statusCode == 200) {
+                  if (data.response.body !== "") {
+                    var xml = $.parseXML(data.response.body);
+                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                    currentGeneralProperties.inferNestingOnLoad = false;
+                    chiseInstance.updateGraph(
+                      chiseInstance.convertSbgnmlToJson(xml),
+                      undefined,
+                      currentLayoutProperties
+                    );
+                    currentGeneralProperties.inferNestingOnLoad =
+                      currentInferNestingOnLoad;
+                    chiseInstance.endSpinner("paths-byURI-spinner");
+                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                  } else {
+                    new PromptEmptyQueryResultView({
+                      el: "#prompt-emptyQueryResult-table",
+                    }).render();
+                    chiseInstance.endSpinner("paths-byURI-spinner");
+                  }
+                } else if (data.error) {
+                  let { code } = data.error;
+                  if (code === "ESOCKETTIMEDOUT") {
+                    new PromptRequestTimedOutView({
+                      el: "#prompt-requestTimedOut-table",
+                    }).render();
+                    chiseInstance.endSpinner("paths-byURI-spinner");
+                  }
                 } else {
                   new PromptInvalidURIView({
                     el: "#prompt-invalidURI-table",
@@ -4076,6 +4170,56 @@ var PromptInvalidQueryView = Backbone.View.extend({
     return this;
   },
 });
+// var PromptRequestTimedOutView = Backbone.View.extend({
+//   initialize: function () {
+//     var self = this;
+//     self.template = _.template($("#prompt-requestTimedOut-template").html());
+//   },
+//   render: function () {
+//     var self = this;
+//     self.template = _.template($("#prompt-requestTimedOut-template").html());
+
+//     $(self.el).html(self.template);
+//     $(self.el).modal("show");
+
+//     $(document)
+//       .off("click", "#prompt-requestTimedOut-confirm")
+//       .on("click", "#prompt-requestTimedOut-confirm", function (evt) {
+//         $(self.el).modal("toggle");
+//         if (PCdialog == "Neighborhood")
+//           appUtilities.neighborhoodQueryView.render();
+//         else if (PCdialog == "PathsBetween")
+//           appUtilities.pathsBetweenQueryView.render();
+//         else if (PCdialog == "PathsFromTo")
+//           appUtilities.pathsFromToQueryView.render();
+//         else if (PCdialog == "CommonStream")
+//           appUtilities.commonStreamQueryView.render();
+//       });
+
+//     return this;
+//   },
+// });
+
+var PromptRequestTimedOutView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-requestTimedOut-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-requestTimedOut-template").html());
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-requestTimedOut-confirm")
+      .on("click", "#prompt-requestTimedOut-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
 
 var PromptEmptyQueryResultView = Backbone.View.extend({
   initialize: function () {
@@ -4088,7 +4232,6 @@ var PromptEmptyQueryResultView = Backbone.View.extend({
 
     $(self.el).html(self.template);
     $(self.el).modal("show");
-
     $(document)
       .off("click", "#prompt-emptyQueryResult-confirm")
       .on("click", "#prompt-emptyQueryResult-confirm", function (evt) {
