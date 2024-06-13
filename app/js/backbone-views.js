@@ -2183,6 +2183,23 @@ var NeighborhoodQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("neighborhood-spinner");
+
+                  // Highlighting feature
+                  eles = cy.collection();
+                  geneSymbolsArray.forEach(function (gene) {
+                    eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                  cy.viewUtilities('get').highlight(x.neighborNodes, 2);
+                  cy.viewUtilities('get').highlight(x.neighborEdges, 2);
+                  cy.viewUtilities('get').highlight(eles, 0);
+                  // Highlighting feature end
+
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -2251,6 +2268,23 @@ var NeighborhoodQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("neighborhood-spinner");
+
+                  // Highlighting feature
+                  eles = cy.collection();
+                  geneSymbolsArray.forEach(function (gene) {
+                    eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                  cy.viewUtilities('get').highlight(x.neighborNodes, 2);
+                  cy.viewUtilities('get').highlight(x.neighborEdges, 2);
+                  cy.viewUtilities('get').highlight(eles, 0);
+                  // Highlighting feature end
+
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else if (data.error) {
                   let { code } = data.error;
@@ -2421,6 +2455,23 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("paths-between-spinner");
+
+                  // Highlighting feature
+                  eles = cy.collection();
+                  geneSymbolsArray.forEach(function (gene) {
+                    eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  var x = cy.elements().pathsBetween(eles, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
+                  cy.viewUtilities('get').highlight(x.resultEdges, 2);
+                  cy.viewUtilities('get').highlight(x.resultNodes, 2);
+                  cy.viewUtilities('get').highlight(eles, 0);
+                  // Highlighting feature end
+
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -2486,6 +2537,23 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     currentGeneralProperties.inferNestingOnLoad =
                       currentInferNestingOnLoad;
                     chiseInstance.endSpinner("paths-between-spinner");
+
+                    // Highlighting feature
+                    eles = cy.collection();
+                    geneSymbolsArray.forEach(function (gene) {
+                      eles.merge(cy.nodes().filter(function (ele) {
+                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                          return true;
+                        }
+                        return false;
+                      }))
+                    })
+                    var x = cy.elements().pathsBetween(eles, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
+                    cy.viewUtilities('get').highlight(x.resultEdges, 2);
+                    cy.viewUtilities('get').highlight(x.resultNodes, 2);
+                    cy.viewUtilities('get').highlight(eles, 0);
+                    // Highlighting feature end
+
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   } else {
                     new PromptEmptyQueryResultView({
@@ -2702,6 +2770,33 @@ var PathsFromToQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("paths-fromto-spinner");
+
+                  // Highlighting feature
+                  source_eles = cy.collection();
+                  sourceSymbolsArray.forEach(function (gene) {
+                    source_eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  target_eles = cy.collection();
+                  targetSymbolsArray.forEach(function (gene) {
+                    target_eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
+                  cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
+                  // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
+                  cy.viewUtilities('get').highlight(source_eles, 0);
+                  cy.viewUtilities('get').highlight(target_eles, 1);
+                  // Highlighting feature end
+
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -2767,6 +2862,32 @@ var PathsFromToQueryView = Backbone.View.extend({
                     currentGeneralProperties.inferNestingOnLoad =
                       currentInferNestingOnLoad;
                     chiseInstance.endSpinner("paths-fromto-spinner");
+                    
+                    // Highlighting feature
+                    source_eles = cy.collection();
+                    sourceSymbolsArray.forEach(function (gene) {
+                      source_eles.merge(cy.nodes().filter(function (ele) {
+                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                          return true;
+                        }
+                        return false;
+                      }))
+                    })
+                    target_eles = cy.collection();
+                    targetSymbolsArray.forEach(function (gene) {
+                      target_eles.merge(cy.nodes().filter(function (ele) {
+                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                          return true;
+                        }
+                        return false;
+                      }))
+                    })
+                    cy.viewUtilities('get').highlight(source_eles, 0);
+                    cy.viewUtilities('get').highlight(target_eles, 1);
+                    var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, 1, 'UNDIRECTED');
+                    cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
+                    // Highlighting feature end
+
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   } else {
                     new PromptEmptyQueryResultView({
@@ -2940,6 +3061,24 @@ var CommonStreamQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("common-stream-spinner");
+
+                  // Highlighting feature
+                  eles = cy.collection();
+                  geneSymbolsArray.forEach(function (gene) {
+                    eles.merge(cy.nodes().filter(function (ele) {
+                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                        return true;
+                      }
+                      return false;
+                    }))
+                  })
+                  var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                  cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
+                  cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
+                  cy.viewUtilities('get').highlight(x.commonNodes, 1);
+                  cy.viewUtilities('get').highlight(eles, 0);
+                  // Highlighting feature end
+
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -3005,6 +3144,24 @@ var CommonStreamQueryView = Backbone.View.extend({
                     currentGeneralProperties.inferNestingOnLoad =
                       currentInferNestingOnLoad;
                     chiseInstance.endSpinner("common-stream-spinner");
+                    
+                    // Highlighting feature
+                    eles = cy.collection();
+                    geneSymbolsArray.forEach(function (gene) {
+                      eles.merge(cy.nodes().filter(function (ele) {
+                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                          return true;
+                        }
+                        return false;
+                      }))
+                    })
+                    var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                    cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
+                    cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
+                    cy.viewUtilities('get').highlight(x.commonNodes, 1);
+                    cy.viewUtilities('get').highlight(eles, 0);
+                    // Highlighting feature end
+
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   } else {
                     new PromptEmptyQueryResultView({
