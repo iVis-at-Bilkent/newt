@@ -2194,9 +2194,9 @@ var NeighborhoodQueryView = Backbone.View.extend({
                       return false;
                     }))
                   })
-                  var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, 1, 'UNDIRECTED');
-                  cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
-                  cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
+                  var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                  cy.viewUtilities('get').highlight(x.neighborNodes, 2);
+                  cy.viewUtilities('get').highlight(x.neighborEdges, 2);
                   cy.viewUtilities('get').highlight(eles, 0);
                   // Highlighting feature end
 
@@ -2279,9 +2279,9 @@ var NeighborhoodQueryView = Backbone.View.extend({
                       return false;
                     }))
                   })
-                  var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, 1, 'UNDIRECTED');
-                  cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
-                  cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
+                  var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+                  cy.viewUtilities('get').highlight(x.neighborNodes, 2);
+                  cy.viewUtilities('get').highlight(x.neighborEdges, 2);
                   cy.viewUtilities('get').highlight(eles, 0);
                   // Highlighting feature end
 
@@ -2470,7 +2470,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   cy.viewUtilities('get').highlight(x.resultEdges, 2);
                   cy.viewUtilities('get').highlight(x.resultNodes, 2);
                   cy.viewUtilities('get').highlight(eles, 0);
-                  // Hightlighting feature end
+                  // Highlighting feature end
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
@@ -2552,7 +2552,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     cy.viewUtilities('get').highlight(x.resultEdges, 2);
                     cy.viewUtilities('get').highlight(x.resultNodes, 2);
                     cy.viewUtilities('get').highlight(eles, 0);
-                    // Hightlighting feature end
+                    // Highlighting feature end
 
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   } else {
@@ -2885,7 +2885,6 @@ var PathsFromToQueryView = Backbone.View.extend({
                     cy.viewUtilities('get').highlight(source_eles, 0);
                     cy.viewUtilities('get').highlight(target_eles, 1);
                     var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, 1, 'UNDIRECTED');
-                    console.log(x);
                     cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
                     // Highlighting feature end
 
@@ -3063,7 +3062,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                     currentInferNestingOnLoad;
                   chiseInstance.endSpinner("common-stream-spinner");
 
-                  // Highlight feature
+                  // Highlighting feature
                   eles = cy.collection();
                   geneSymbolsArray.forEach(function (gene) {
                     eles.merge(cy.nodes().filter(function (ele) {
@@ -3078,7 +3077,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                   cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
                   cy.viewUtilities('get').highlight(x.commonNodes, 1);
                   cy.viewUtilities('get').highlight(eles, 0);
-                  // Highlight feature end
+                  // Highlighting feature end
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
@@ -3146,7 +3145,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                       currentInferNestingOnLoad;
                     chiseInstance.endSpinner("common-stream-spinner");
                     
-                    // Highlight feature
+                    // Highlighting feature
                     eles = cy.collection();
                     geneSymbolsArray.forEach(function (gene) {
                       eles.merge(cy.nodes().filter(function (ele) {
@@ -3161,7 +3160,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                     cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
                     cy.viewUtilities('get').highlight(x.commonNodes, 1);
                     cy.viewUtilities('get').highlight(eles, 0);
-                    // Highlight feature end
+                    // Highlighting feature end
 
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   } else {
