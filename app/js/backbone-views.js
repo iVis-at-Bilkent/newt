@@ -2115,6 +2115,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
           }).render();
           document.getElementById("query-neighborhood-length-limit").focus();
           return;
+          
         }
         
         var geneSymbolsArray = geneSymbols
