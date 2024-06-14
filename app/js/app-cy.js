@@ -1391,8 +1391,13 @@ module.exports = function (chiseInstance) {
 
       var opt = {};
       keys.forEach(function(key) {
-        if (!isNaN(node.data(key)) || key === 'background-image' || (node.data('class') === 'unspecified entity' || node.data('class') === 'perturbing agent')) {
-          opt[key] = node.data(key);
+        var value = node.data(key);
+        var isSpecialClass = node.data('class') === 'unspecified entity' || node.data('class') === 'perturbing agent';
+        
+        if (isNaN(value) && key !== 'background-image' && !isSpecialClass) {
+          opt[key] = undefined;
+        } else {
+          opt[key] = value;
         }
       });
 
