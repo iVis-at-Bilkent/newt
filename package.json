@@ -32,6 +32,7 @@
     "cytoscape-edgehandles": "~2.13.1",
     "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#unstable",
     "cytoscape-fcose": "github:iVis-at-Bilkent/cytoscape.js-fcose#unstable",
+    "cytoscape-graph-algos": "github:iVis-at-Bilkent/cytoscape.js-graph-algos#master",
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-layout-utilities": "github:iVis-at-Bilkent/cytoscape.js-layout-utilities#unstable",
     "cytoscape-node-editing": "github:iVis-at-Bilkent/cytoscape.js-node-editing#unstable",
