@@ -1390,8 +1390,10 @@ module.exports = function (chiseInstance) {
         'background-position-x', 'background-position-y', 'background-height', 'background-width'];
 
       var opt = {};
-      keys.forEach(function(key){
-        opt[key] = node.data(key);
+      keys.forEach(function(key) {
+        if (!isNaN(node.data(key)) || key === 'background-image' || (node.data('class') === 'unspecified entity' || node.data('class') === 'perturbing agent')) {
+          opt[key] = node.data(key);
+        }
       });
 
       node.style(opt);
