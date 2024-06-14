@@ -2080,7 +2080,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
 
     $(document)
       .off("click", "#save-query-neighborhood")
-      .on("click", "#save-query-neighborhood", function (evt) {
+      .on("click", "#save-query-neighborhood", async function (evt) {
         // use active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -2115,7 +2115,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
           }).render();
           document.getElementById("query-neighborhood-length-limit").focus();
           return;
-          
+
         }
         
         var geneSymbolsArray = geneSymbols
@@ -2126,7 +2126,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
         if(handleDuplicateGenes(geneSymbolsArray,chiseInstance))return;
 
         // Check if the gene symbols that are added even exist in the database or not
-        if(handleGeneDoesNotExist(geneSymbolsArray,chiseInstance))return;
+        if(await handleGeneDoesNotExist(geneSymbolsArray,chiseInstance))return;
 
         var queryURL =
           "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
@@ -2412,7 +2412,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
         if(handleDuplicateGenes(geneSymbolsArray,chiseInstance))return;
 
         // Check if the gene symbols that are added even exist in the database or not
-        if(handleGeneDoesNotExist(geneSymbolsArray,chiseInstance))return;
+        if(await handleGeneDoesNotExist(geneSymbolsArray,chiseInstance)){
+          return;
+        }
 
 
 
@@ -2445,7 +2447,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
         }
         filename = filename + "_PATHSBETWEEN.nwt";
         queryURL = queryURL + sources;
-
         if (cy.nodes().length == 0) {
           chiseInstance.startSpinner("paths-between-spinner");
           var currentGeneralProperties = appUtilities.getScratch(
@@ -2650,7 +2651,7 @@ var PathsFromToQueryView = Backbone.View.extend({
 
     $(document)
       .off("click", "#save-query-pathsfromto")
-      .on("click", "#save-query-pathsfromto", function (evt) {
+      .on("click", "#save-query-pathsfromto", async function (evt) {
         // use active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -2717,6 +2718,21 @@ var PathsFromToQueryView = Backbone.View.extend({
           .replaceAll("\n", " ")
           .replaceAll("\t", " ")
           .split(" ");
+
+
+        // Check if duplicate symbols are given or not
+        if(handleDuplicateGenes(sourceSymbolsArray,chiseInstance))return;
+        // Check if the gene symbols that are added even exist in the database or not
+        if(await handleGeneDoesNotExist(sourceSymbolsArray,chiseInstance)){
+          return;
+        }
+        
+        // Check if duplicate symbols are given or not
+        if(handleDuplicateGenes(targetSymbolsArray,chiseInstance))return;
+        // Check if the gene symbols that are added even exist in the database or not
+        if(await handleGeneDoesNotExist(targetSymbolsArray,chiseInstance)){
+          return;
+        }
 
         var filename = "";
         var sources = "";
@@ -2983,7 +2999,7 @@ var CommonStreamQueryView = Backbone.View.extend({
 
     $(document)
       .off("click", "#save-query-commonstream")
-      .on("click", "#save-query-commonstream", function (evt) {
+      .on("click", "#save-query-commonstream",async function (evt) {
         // use active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -3028,6 +3044,13 @@ var CommonStreamQueryView = Backbone.View.extend({
           .replaceAll("\t", " ")
           .split(" ");
 
+        // Check if duplicate symbols are given or not
+        if(handleDuplicateGenes(geneSymbolsArray,chiseInstance))return;
+        // Check if the gene symbols that are added even exist in the database or not
+        if(await handleGeneDoesNotExist(geneSymbolsArray,chiseInstance)){
+          return;
+        }
+        
         var filename = "";
         var sources = "";
         for (var i = 0; i < geneSymbolsArray.length; i++) {
@@ -3254,7 +3277,7 @@ var PathsByURIQueryView = Backbone.View.extend({
 
     $(document)
       .off("click", "#save-query-pathsbyURI")
-      .on("click", "#save-query-pathsbyURI", function (evt) {
+      .on("click", "#save-query-pathsbyURI",function (evt) {
         // use the active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
 
