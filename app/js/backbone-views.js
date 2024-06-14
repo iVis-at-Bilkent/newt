@@ -2116,14 +2116,20 @@ var NeighborhoodQueryView = Backbone.View.extend({
           document.getElementById("query-neighborhood-length-limit").focus();
           return;
         }
-
-        var queryURL =
-          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
-          self.currentQueryParameters.lengthLimit;
+        
         var geneSymbolsArray = geneSymbols
           .replaceAll("\n", " ")
           .replaceAll("\t", " ")
           .split(" ");
+        // Check if duplicate symbols are given or not
+        if(handleDuplicateGenes(geneSymbolsArray,chiseInstance))return;
+
+        // Check if the gene symbols that are added even exist in the database or not
+        if(handleGeneDoesNotExist(geneSymbolsArray,chiseInstance))return;
+
+        var queryURL =
+          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
+          self.currentQueryParameters.lengthLimit;
 
         var filename = "";
         var sources = "";
@@ -2160,7 +2166,6 @@ var NeighborhoodQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -2295,6 +2300,8 @@ var NeighborhoodQueryView = Backbone.View.extend({
   },
 });
 
+
+
 /**
  * Paths Between Query view for the Sample Application.
  */
@@ -2324,7 +2331,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
 
     $(document)
       .off("click", "#save-query-pathsbetween")
-      .on("click", "#save-query-pathsbetween", function (evt) {
+      .on("click", "#save-query-pathsbetween",async function (evt) {
         // use active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -2360,6 +2367,19 @@ var PathsBetweenQueryView = Backbone.View.extend({
           document.getElementById("query-pathsbetween-length-limit").focus();
           return;
         }
+
+        var geneSymbolsArray = geneSymbols
+          .replaceAll("\n", " ")
+          .replaceAll("\t", " ")
+          .split(" ");
+
+        // Check if duplicate symbols are given or not
+        if(handleDuplicateGenes(geneSymbolsArray,chiseInstance))return;
+
+        // Check if the gene symbols that are added even exist in the database or not
+        if(handleGeneDoesNotExist(geneSymbolsArray,chiseInstance))return;
+
+
 
         var queryURL =
           "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit=" +
@@ -4235,6 +4255,50 @@ var PromptEmptyQueryResultView = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-emptyQueryResult-confirm")
       .on("click", "#prompt-emptyQueryResult-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+
+var DuplicateGeneGiven = Backbone.View.extend({
+  initialize: function (options) {
+    var self = this;
+    self.template = _.template($("#prompt-duplicateGeneGiven-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-duplicateGeneGiven-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+    $(document)
+      .off("click", "#prompt-duplicateGeneGiven-confirm")
+      .on("click", "#prompt-duplicateGeneGiven-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+var GeneNotExist = Backbone.View.extend({
+  initialize: function (options) {
+    var self = this;
+    self.template = _.template($("#prompt-geneNotExist-template").html());
+    this.gene = options.gene;
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-geneNotExist-template").html());
+
+    $(self.el).html(self.template({gene:this.gene}));
+    $(self.el).modal("show");
+    $(document)
+      .off("click", "#prompt-geneNotExist-confirm")
+      .on("click", "#prompt-geneNotExist-confirm", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -6882,6 +6946,44 @@ function bindColorPicker2GridColorInputs() {
   for (let i = 0; i < ids.length; i++) {
     colorPickerUtils.bindPicker2Input(ids[i], null);
   }
+}
+
+function handleDuplicateGenes(geneSymbolsArray,chiseInstance){
+  const hasDuplicate=(array)=>new Set(array).size!==array.length;
+  if(hasDuplicate(geneSymbolsArray)){
+    new DuplicateGeneGiven({
+      el: "#prompt-duplicateGeneGiven-table",
+      gene:"",
+    }).render();
+    chiseInstance.endSpinner("paths-between-spinner");
+    document.getElementById("query-pathsbetween-gene-symbols").focus();
+    return true;
+  }
+  return false
+}
+
+async function handleGeneDoesNotExist (geneSymbolsArray,chiseInstance){
+  chiseInstance.startSpinner("paths-between-spinner");
+  for(gene of geneSymbolsArray){
+    let q = `https://www.pathwaycommons.org/pc2/search?q=${gene}`;
+
+    const data = await $.ajax({
+      type:'get',
+      url:'/utilities/testURL',
+      data:{url:q}
+    });
+    let {numHits} = JSON.parse(data.response.body);
+    if(numHits===0){
+      new GeneNotExist({
+        el: "#prompt-geneNotExist-table",
+        gene,
+      }).render();
+      chiseInstance.endSpinner("paths-between-spinner");
+      document.getElementById("query-pathsbetween-gene-symbols").focus();
+      return true;
+    }
+  }
+  return false;
 }
 
 module.exports = {
