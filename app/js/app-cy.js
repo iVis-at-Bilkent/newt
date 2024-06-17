@@ -461,30 +461,25 @@ module.exports = function (chiseInstance) {
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'border-width': function (ele) { return Math.max(parseFloat(ele.data('border-width')) + 2, 3); }, 'border-color': '#0B9BCD' },
-          edge: {
-            'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + 2, 3); },
-            'line-color': '#0B9BCD',
-            'color': '#0B9BCD',
-            'text-border-color': '#0B9BCD',
-            'source-arrow-color': '#0B9BCD',
-            'target-arrow-color': '#0B9BCD'
-          }
+          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
         },
-        { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
-        { node: { 'border-color': '#d67614',  'border-width': 3 }, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
+        {
+          node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
+        {
+          node: { 'overlay-color': '#d67614', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#d67614', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
+        {
+          node: { 'overlay-color': '#04F06A', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#04F06A', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
       ],
       selectStyles: {
-        node: {
-          'border-color': '#d67614', 'background-color': function (ele) { return ele.data('background-color'); }
-        },
-        edge: {
-          'line-color': '#d67614',
-          'color': '#d67614',
-          'text-border-color': '#d67614',
-          'source-arrow-color': '#d67614',
-          'target-arrow-color': '#d67614',
-        }
+        node: { 'overlay-color': '#89898a', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        edge: { 'overlay-color': '#89898a', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
       },
       neighbor: function(ele){ //select and return process-based neighbors
         if (ele.isNode()) {

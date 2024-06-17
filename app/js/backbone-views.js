@@ -1004,28 +1004,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       viewUtilities.changeHighlightStyle(
         0,
-        {
-          "border-width": function (ele) {
-            return Math.max(
-              parseFloat(ele.data("border-width")) + extraHighlightThickness,
-              3
-            );
-          },
-          "border-color": highlightColor,
-        },
-        {
-          width: function (ele) {
-            return Math.max(
-              parseFloat(ele.data("width")) + extraHighlightThickness,
-              3
-            );
-          },
-          "line-color": highlightColor,
-          color: highlightColor,
-          "text-border-color": highlightColor,
-          "source-arrow-color": highlightColor,
-          "target-arrow-color": highlightColor,
-        }
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
       );
 
       cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
@@ -1044,28 +1024,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       viewUtilities.changeHighlightStyle(
         0,
-        {
-          "border-width": function (ele) {
-            return Math.max(
-              parseFloat(ele.data("border-width")) + extraHighlightThickness,
-              3
-            );
-          },
-          "border-color": highlightColor,
-        },
-        {
-          width: function (ele) {
-            return Math.max(
-              parseFloat(ele.data("width")) + extraHighlightThickness,
-              3
-            );
-          },
-          "line-color": highlightColor,
-          color: highlightColor,
-          "text-border-color": highlightColor,
-          "source-arrow-color": highlightColor,
-          "target-arrow-color": highlightColor,
-        }
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
       );
 
       cy.undoRedo().do("changeMenu", self.params.highlightColor);
@@ -2203,7 +2163,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
                   var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
                   cy.viewUtilities('get').highlight(x.neighborNodes, 2);
                   cy.viewUtilities('get').highlight(x.neighborEdges, 2);
-                  cy.viewUtilities('get').highlight(eles, 0);
+                  cy.viewUtilities('get').highlight(eles, 3);
                   // Highlighting feature end
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -2288,7 +2248,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
                   var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
                   cy.viewUtilities('get').highlight(x.neighborNodes, 2);
                   cy.viewUtilities('get').highlight(x.neighborEdges, 2);
-                  cy.viewUtilities('get').highlight(eles, 0);
+                  cy.viewUtilities('get').highlight(eles, 3);
                   // Highlighting feature end
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -2491,7 +2451,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   var x = cy.elements().pathsBetween(eles, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
                   cy.viewUtilities('get').highlight(x.resultEdges, 2);
                   cy.viewUtilities('get').highlight(x.resultNodes, 2);
-                  cy.viewUtilities('get').highlight(eles, 0);
+                  cy.viewUtilities('get').highlight(eles, 3);
                   // Highlighting feature end
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -2573,7 +2533,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     var x = cy.elements().pathsBetween(eles, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
                     cy.viewUtilities('get').highlight(x.resultEdges, 2);
                     cy.viewUtilities('get').highlight(x.resultNodes, 2);
-                    cy.viewUtilities('get').highlight(eles, 0);
+                    cy.viewUtilities('get').highlight(eles, 3);
                     // Highlighting feature end
 
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -2830,7 +2790,7 @@ var PathsFromToQueryView = Backbone.View.extend({
                   var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
                   cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
                   // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
-                  cy.viewUtilities('get').highlight(source_eles, 0);
+                  cy.viewUtilities('get').highlight(source_eles, 3);
                   cy.viewUtilities('get').highlight(target_eles, 1);
                   // Highlighting feature end
 
@@ -2919,10 +2879,11 @@ var PathsFromToQueryView = Backbone.View.extend({
                         return false;
                       }))
                     })
-                    cy.viewUtilities('get').highlight(source_eles, 0);
-                    cy.viewUtilities('get').highlight(target_eles, 1);
-                    var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, 1, 'UNDIRECTED');
+                    var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
                     cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
+                    // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
+                    cy.viewUtilities('get').highlight(source_eles, 3);
+                    cy.viewUtilities('get').highlight(target_eles, 1);
                     // Highlighting feature end
 
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -3120,7 +3081,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                   cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
                   cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
                   cy.viewUtilities('get').highlight(x.commonNodes, 1);
-                  cy.viewUtilities('get').highlight(eles, 0);
+                  cy.viewUtilities('get').highlight(eles, 3);
                   // Highlighting feature end
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -3203,7 +3164,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                     cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
                     cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
                     cy.viewUtilities('get').highlight(x.commonNodes, 1);
-                    cy.viewUtilities('get').highlight(eles, 0);
+                    cy.viewUtilities('get').highlight(eles, 3);
                     // Highlighting feature end
 
                     $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
