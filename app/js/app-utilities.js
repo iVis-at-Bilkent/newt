@@ -2489,20 +2489,24 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
 
     // first clear the background images of already present elements
     actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-fit', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-x', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-y', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-width', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-height', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image-opacity', valueMap: mapIdToValue(eles, '')}});
 
     // edit style of the current map elements, in solid scheme just change background-color
     actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
 
     // first clear the background images of already present collapsed elements
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: mapIdToValue(collapsedChildren, '')}});
-   
-    // collapsed nodes' style should also be changed, special edge case
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
-
-    // if background-image isn't deleted from css, it is shown as soon as the node is expanded until the end of animation
-    actions.push({name: "changeCss", param: {eles: collapsedChildren, name: 'background-image', valueMap: ""}});     
-
-    actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image-opacity', valueMap: mapIdToValue(collapsedChildren, '')}});
 
     // set to be the default as well
     for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
@@ -2947,18 +2951,11 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
       var highlightColor = currentGeneralProperties.highlightColor[0];
       var extraHighlightThickness = currentGeneralProperties.extraHighlightThickness;
 
-      viewUtilities.changeHighlightStyle(0, {
-        'border-width': function (ele) {
-          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3);
-        }, 'border-color': highlightColor
-      }, {
-        'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
-        'line-color': highlightColor,
-        'color': highlightColor,
-        'text-border-color': highlightColor,
-        'source-arrow-color': highlightColor,
-        'target-arrow-color': highlightColor
-    });
+      viewUtilities.changeHighlightStyle(
+        0,
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
+      );
     }
     
 
