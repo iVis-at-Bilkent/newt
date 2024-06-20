@@ -2479,7 +2479,6 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
   };
 
   if(scheme_type == 'solid'){
-
     var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
     var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
     var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
@@ -2498,6 +2497,14 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
 
     // edit style of the current map elements, in solid scheme just change background-color
     actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
+    
+    // collapsed nodes' style should also be changed, special edge case
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+
+    // if background-image isn't deleted from css, it is shown as soon as the node is expanded until the end of animation
+    actions.push({name: "changeCss", param: {eles: collapsedChildren, name: 'background-image', valueMap: ""}});     
+
+    actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
 
     // first clear the background images of already present collapsed elements
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: mapIdToValue(collapsedChildren, '')}});
