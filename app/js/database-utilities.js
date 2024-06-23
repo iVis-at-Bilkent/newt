@@ -1,6 +1,7 @@
 var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
+const { ActiveTabPushSuccessView } = require("./backbone-views");
 
 var databaseUtilities = {
   enableDatabase: true,
@@ -422,7 +423,7 @@ var databaseUtilities = {
             }
           }
         }
-
+        console.log('data',data);
         if (edges) {
           for (let i = 0; i < edges.length; i++) {
             databaseUtilities.edgesInDB[
@@ -434,7 +435,11 @@ var databaseUtilities = {
             ] = edges[i].identity.low;
           }
         }
-
+        console.log("hiii");
+        new ActiveTabPushSuccessView({
+          el:'#prompt-confirmation-table',
+          }).render();
+        console.log("hiii2");
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);

@@ -3300,6 +3300,31 @@ var FileSaveView = Backbone.View.extend({
   }
 });
 
+
+/*
+Active Tab elements push success
+*/
+var ActiveTabPushSuccessView=Backbone.View.extend({
+  initialize: function () {
+    var self= this;
+    self.template = _.template($('#active-tab-push-success-template').html());
+  },
+  render:function(){
+    var self= this;
+    self.template = _.template($('#active-tab-push-success-template').html());
+
+
+    $(self.el).html(self.template);
+    $(self.el).modal('show');
+
+    $(document).off("click", "#active-tab-push-success-confirm").on("click", "#active-tab-push-success-confirm", function (evt) {
+      $(self.el).modal('toggle');
+    });
+
+    return this;
+  },
+});
+
 /*
   User Preferences View (Style, Map Properties, Layout etc)
 */
@@ -5837,6 +5862,7 @@ module.exports = {
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   experimentTabPanel: experimentTabPanel,
   //GeneralPropertiesView: GeneralPropertiesView,
+  ActiveTabPushSuccessView: ActiveTabPushSuccessView,
   NeighborhoodQueryView: NeighborhoodQueryView,
   NeighborhoodQueryViewLocalDB: NeighborhoodQueryViewLocalDB,
   PathsBetweenQueryView: PathsBetweenQueryView,

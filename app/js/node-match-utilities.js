@@ -146,13 +146,13 @@ var nodeMatchUtilities = {
     return `${name}.class = ${nodeData}.class`;
   },
   matchProcessNodesSource: function (name, nodeData) {
-    return `( ${name}.source_0 = ${nodeData}.source_0) and (NOT EXISTS(${name}.source_1 ) or ${name}.source_1 = ${nodeData}.source_1)`;
+    return `( ${name}.source_0 = ${nodeData}.source_0) and ((${name}.source_1 ) IS NULL or ${name}.source_1 = ${nodeData}.source_1)`;
   },
   matchProcessNodesTarget: function (name, nodeData) {
-    return `( ${name}.target_0 = ${nodeData}.target_0) and (NOT EXISTS(${name}.target_1 ) or ${name}.target_1 = ${nodeData}.target_1)`;
+    return `( ${name}.target_0 = ${nodeData}.target_0) and ((${name}.target_1 ) IS NULL or ${name}.target_1 = ${nodeData}.target_1)`;
   },
   matchProcessNodesModifier: function (name, nodeData) {
-    return `( ${name}.modifier_0 = ${nodeData}.modifier_0) and (NOT EXISTS(${name}.modifier_1 ) or ${name}.modifier_1 = ${nodeData}.modifier_1)`;
+    return `( ${name}.modifier_0 = ${nodeData}.modifier_0) and ((${name}.modifier_1 ) IS NULL or ${name}.modifier_1 = ${nodeData}.modifier_1)`;
   },
   matchEdgesSource: function (name, nodeData) {
     return `${name}.source = ${nodeData}.source`;
