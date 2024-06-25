@@ -613,8 +613,8 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
 
   var newTabStr = '<li id="' + tabId + '" class="chise-network-tab">\n\
                   <a data-toggle="tab" href="#' + panelId + '">\n\
-                  <div id="map-type-tab-' + tabId.substring(17) + '" class="map-tab-type"></div>\n\
-                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '</a></li>';
+                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '\n\
+                  <div id="map-type-tab-' + tabId.substring(17) + '" class="map-tab-type"></div></a></li>';
 
   $('ul').on('click', 'button.' + tabId +'closeTab', function() {
     var networkId = tabId.substring(17);

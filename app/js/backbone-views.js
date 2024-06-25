@@ -726,6 +726,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       var callback = function () {
         $("#map-type").val(chiseInstance.getMapType());
+        var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
+        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
       };
       // use active cy instance
       var cy = appUtilities.getActiveCy();
@@ -740,8 +742,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           callback: callback,
         });
         $(document).trigger("changeMapTypeFromMenu", [newMapType]);
-        var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
-        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
         return;
       }
       var currentMapType = chiseInstance.getMapType();
@@ -867,8 +867,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           callback: callback,
         });
         $(document).trigger("changeMapTypeFromMenu", [newMapType]);
-        var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
-        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
       } else {
         $("#map-type").val(currentMapType);
         appUtilities.promptMapTypeView.render(
