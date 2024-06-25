@@ -856,6 +856,11 @@ module.exports = function() {
 
       // reset current general properties at the scratch pad of cy
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+
+      var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
+      $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
+      console.log("Finished loading " + appUtilities.getDisplayMapName(chiseInstance.getMapType()));
+
       cy.fit( cy.elements(":visible"), 20 );
     });
 
@@ -937,7 +942,7 @@ module.exports = function() {
 
           // use active cy instance
           var cy = appUtilities.getActiveCy();
-
+          
           if(cy.elements().length != 0) {
             promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
           }

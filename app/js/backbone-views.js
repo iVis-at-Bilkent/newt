@@ -726,6 +726,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       var callback = function () {
         $("#map-type").val(chiseInstance.getMapType());
+        var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
+        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
       };
       // use active cy instance
       var cy = appUtilities.getActiveCy();

@@ -202,6 +202,10 @@ appUtilities.getNetworkTabId = function (networkId) {
   return 'sbgn-network-tab-' + networkId;
 };
 
+appUtilities.getMapTypeDivId = function(networkId) {
+  return 'map-type-tab-' + networkId;
+}
+
 // get network id by given network key (would be tab or panel id or selector or even the network id itself)
 // that is basically the remaining part of the string after the last occurance of '-'
 appUtilities.getNetworkId = function (networkKey) {
@@ -339,6 +343,16 @@ appUtilities.adjustVisibilityOfNetworkTabs = function () {
 
 };
 
+// returns the display name of map types to align with issue #715.
+// see https://github.com/iVis-at-Bilkent/newt/issues/715
+appUtilities.getDisplayMapName = function(mapName) {
+  if(mapName == "HybridSbgn")
+    return "PD+AF";
+  else if(mapName == "HybridAny")
+    return "ALL";
+  return mapName;
+}
+
 // creates a new network and returns the new chise.js instance that is created for this network
 appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
@@ -347,6 +361,9 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
   // id of the tab for the new network
   var networkTabId = appUtilities.getNetworkTabId(appUtilities.nextNetworkId);
+
+  // id of the div of the map type discriptor
+  var mapTypeDivId = appUtilities.getMapTypeDivId(appUtilities.nextNetworkId);
   
   var mapName;
   if(networkName)
@@ -469,6 +486,11 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
   // adjust the visibility of network tabs
   appUtilities.adjustVisibilityOfNetworkTabs();
+
+  // update the map type descriptor
+  var mapType = appUtilities.getActiveChiseInstance().getMapType();
+  $('#' + mapTypeDivId).text(appUtilities.getDisplayMapName(mapType));
+
   // return the new instance
   return newInst;
 };
@@ -589,9 +611,10 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
-  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab">\n\
+  var newTabStr = '<li id="' + tabId + '" class="chise-network-tab">\n\
                   <a data-toggle="tab" href="#' + panelId + '">\n\
-                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '</a></li>';
+                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '\n\
+                  <div id="map-type-tab-' + tabId.substring(17) + '" class="map-tab-type"></div></a></li>';
 
   $('ul').on('click', 'button.' + tabId +'closeTab', function() {
     var networkId = tabId.substring(17);
