@@ -2049,6 +2049,8 @@ var NeighborhoodQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
+        $(self.el).modal("toggle");
+
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-neighborhood-gene-symbols"
         ).value;
@@ -2084,10 +2086,14 @@ var NeighborhoodQueryView = Backbone.View.extend({
           .replaceAll("\t", " ")
           .split(" ");
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(geneSymbolsArray)) return;
+        if (handleDuplicateGenes(geneSymbolsArray)) {
+          return;
+        }
 
         // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(geneSymbolsArray)) return;
+        if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+          return;
+        }
 
         var queryURL =
           "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
@@ -2339,6 +2345,8 @@ var PathsBetweenQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
+        $(self.el).modal("toggle");
+
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-pathsbetween-gene-symbols"
         ).value;
@@ -2375,7 +2383,10 @@ var PathsBetweenQueryView = Backbone.View.extend({
           .split(" ");
 
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(geneSymbolsArray)) return;
+        if (handleDuplicateGenes(geneSymbolsArray)) {
+          
+          return;
+        }
 
         // Check if the gene symbols that are added even exist in the database or not
         if (await handleGeneDoesNotExist(geneSymbolsArray)) {
@@ -2411,6 +2422,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
         }
         filename = filename + "_PATHSBETWEEN.nwt";
         queryURL = queryURL + sources;
+        
         if (cy.nodes().length == 0) {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
@@ -2600,7 +2612,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
 
             });
             }
-          $(self.el).modal("toggle");
+  
       });
 
     $(document)
@@ -2649,6 +2661,8 @@ var PathsFromToQueryView = Backbone.View.extend({
 
         // use the associated cy instance
         var cy = chiseInstance.getCy();
+
+        $(self.el).modal("toggle");
 
         self.currentQueryParameters.sourceSymbols = document.getElementById(
           "query-pathsfromto-source-symbols"
@@ -3031,6 +3045,8 @@ var CommonStreamQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
+        $(self.el).modal("toggle");
+
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-commonstream-gene-symbols"
         ).value;
@@ -3070,7 +3086,10 @@ var CommonStreamQueryView = Backbone.View.extend({
           .split(" ");
 
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(geneSymbolsArray)) return;
+        if (handleDuplicateGenes(geneSymbolsArray)) {
+          return;
+        }
+
         // Check if the gene symbols that are added even exist in the database or not
         if (await handleGeneDoesNotExist(geneSymbolsArray)) {
           return;
@@ -3302,6 +3321,8 @@ var PathsByURIQueryView = Backbone.View.extend({
 
         // use the associated cy instance
         var cy = chiseInstance.getCy();
+
+        $(self.el).modal("toggle");
 
         self.currentQueryParameters.URI = document.getElementById(
           "query-pathsbyURI-URI"
@@ -4434,7 +4455,6 @@ var PromptRequestTimedOutView = Backbone.View.extend({
       .on("click", "#prompt-requestTimedOut-confirm", function (evt) {
         $(self.el).modal("toggle");
       });
-
     return this;
   },
 });
@@ -4480,6 +4500,7 @@ var DuplicateGeneGiven = Backbone.View.extend({
     return this;
   },
 });
+
 
 var GeneNotExist = Backbone.View.extend({
   initialize: function (options) {
@@ -7158,19 +7179,29 @@ function handleDuplicateGenes(geneSymbolsArray) {
 }
 
 async function handleGeneDoesNotExist(geneSymbolsArray) {
+  const chiseInstance = appUtilities.getActiveChiseInstance();
+  chiseInstance.startSpinner('check-gene-exist-spinner');
   for (gene of geneSymbolsArray) {
-    let q = `https://www.pathwaycommons.org/pc2/search?q=${gene}`;
-
-    const data = await $.ajax({
-      type: "get",
-      url: "/utilities/testURL",
-      data: { url: q },
-    });
-    let { numHits } = JSON.parse(data.response.body);
-    if (numHits === 0) {
-      new GeneNotExist({
-        el: "#prompt-geneNotExist-table",
-        gene,
+    try {
+      let q = `https://www.pathwaycommons.org/pc2/search?q=${gene}`;
+  
+      const data = await $.ajax({
+        type: "get",
+        url: "/utilities/testURL",
+        data: { url: q },
+      });
+      chiseInstance.endSpinner('check-gene-exist-spinner');
+      let { numHits } = JSON.parse(data.response.body);
+      if (numHits === 0) {
+        new GeneNotExist({
+          el: "#prompt-geneNotExist-table",
+          gene,
+        }).render();
+        return true;
+      }
+    } catch (error) {
+      new PromptRequestTimedOutView({
+        el:'#prompt-requestTimedOut-table',
       }).render();
       return true;
     }
