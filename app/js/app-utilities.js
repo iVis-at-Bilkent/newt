@@ -26,8 +26,8 @@ appUtilities.mapTypesToViewableText = {
   'AF': 'AF',
   'SIF': 'SIF',
   'SBML': 'SBML',
-  'HybridSbgn' : 'Hybrid (PD,AF)' ,
-  'HybridAny' : 'Hybrid (PD,AF,SIF, SBML)'   
+  'HybridSbgn' : 'PD+AF' ,
+  'HybridAny' : 'PD+AF+SIF+SBML'   
 };
 // Set a single property on scratchpad of an element or the core
 appUtilities.setScratch = function (cyOrEle, name, val) {
@@ -345,12 +345,10 @@ appUtilities.adjustVisibilityOfNetworkTabs = function () {
 
 // returns the display name of map types to align with issue #715.
 // see https://github.com/iVis-at-Bilkent/newt/issues/715
-appUtilities.getDisplayMapName = function(mapName) {
-  if(mapName == "HybridSbgn")
-    return "PD+AF";
-  else if(mapName == "HybridAny")
+appUtilities.getTabLabelName = function(mapName) {
+  if(mapName == "HybridAny")
     return "ALL";
-  return mapName;
+  return appUtilities.mapTypesToViewableText[mapName];
 }
 
 // creates a new network and returns the new chise.js instance that is created for this network
@@ -489,7 +487,7 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
   // update the map type descriptor
   var mapType = appUtilities.getActiveChiseInstance().getMapType();
-  $('#' + mapTypeDivId).text(appUtilities.getDisplayMapName(mapType));
+  $('#' + mapTypeDivId).text(appUtilities.getTabLabelName(mapType));
 
   // return the new instance
   return newInst;

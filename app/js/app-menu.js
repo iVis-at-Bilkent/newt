@@ -858,8 +858,7 @@ module.exports = function() {
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
 
       var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
-      $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
-      console.log("Finished loading " + appUtilities.getDisplayMapName(chiseInstance.getMapType()));
+      $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getTabLabelName(chiseInstance.getMapType()));
 
       cy.fit( cy.elements(":visible"), 20 );
     });
