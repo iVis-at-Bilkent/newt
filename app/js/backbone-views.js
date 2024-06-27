@@ -727,7 +727,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var callback = function () {
         $("#map-type").val(chiseInstance.getMapType());
         var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
-        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getTabLabelName(chiseInstance.getMapType()));
+        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getDisplayMapName(chiseInstance.getMapType()));
       };
       // use active cy instance
       var cy = appUtilities.getActiveCy();
@@ -2090,8 +2090,10 @@ var NeighborhoodQueryView = Backbone.View.extend({
           return;
         }
 
+        chiseInstance.startSpinner("neighborhood-spinner");
         // Check if the gene symbols that are added even exist in the database or not
         if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+          chiseInstance.endSpinner("neighborhood-spinner");
           return;
         }
 
@@ -2133,7 +2135,6 @@ var NeighborhoodQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-          chiseInstance.startSpinner("neighborhood-spinner");
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -2216,7 +2217,6 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 "currentLayoutProperties"
                 );
                 
-            chiseInstance.startSpinner("neighborhood-spinner");
             $.ajax({
               type: "get",
               url: "/utilities/testURL",
@@ -2296,7 +2296,6 @@ var NeighborhoodQueryView = Backbone.View.extend({
             });
           });
         }
-        $(self.el).modal("toggle");
     });
 
     $(document)
@@ -2388,8 +2387,11 @@ var PathsBetweenQueryView = Backbone.View.extend({
           return;
         }
 
+
+        chiseInstance.startSpinner("paths-between-spinner");
         // Check if the gene symbols that are added even exist in the database or not
         if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+          chiseInstance.endSpinner("paths-between-spinner");
           return;
         }
 
@@ -2434,7 +2436,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
             );
-            chiseInstance.startSpinner("paths-between-spinner");
+            
             $.ajax({
               type: "get",
               url: "/utilities/testURL",
@@ -2530,7 +2532,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 "currentLayoutProperties"
                 );
                 
-            chiseInstance.startSpinner("paths-between-spinner");
             $.ajax({
               type: "get",
               url: "/utilities/testURL",
@@ -2725,21 +2726,27 @@ var PathsFromToQueryView = Backbone.View.extend({
           .replaceAll("\t", " ")
           .split(" ");
 
+
+        chiseInstance.startSpinner("paths-fromto-spinner");
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(sourceSymbolsArray, chiseInstance)) {
+        if (handleDuplicateGenes(sourceSymbolsArray)) {
+          chiseInstance.endSpinner("paths-fromto-spinner");
           return;
         }
         // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(sourceSymbolsArray, chiseInstance)) {
+        if (await handleGeneDoesNotExist(sourceSymbolsArray)) {
+          chiseInstance.endSpinner("paths-fromto-spinner");
           return;
         }
 
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(targetSymbolsArray, chiseInstance)) {
+        if (handleDuplicateGenes(targetSymbolsArray)) {
+          chiseInstance.endSpinner("paths-fromto-spinner");
           return;
         }
         // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(targetSymbolsArray, chiseInstance)) {
+        if (await handleGeneDoesNotExist(targetSymbolsArray)) {
+          chiseInstance.endSpinner("paths-fromto-spinner");
           return;
         }
 
@@ -2798,7 +2805,7 @@ var PathsFromToQueryView = Backbone.View.extend({
             "currentLayoutProperties"
           );
 
-          chiseInstance.startSpinner("paths-fromto-spinner");
+          
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -2913,7 +2920,6 @@ var PathsFromToQueryView = Backbone.View.extend({
               cy,
               "currentLayoutProperties"
             );
-            chiseInstance.startSpinner("paths-fromto-spinner");
             $.ajax({
               type: "get",
               url: "/utilities/testURL",
@@ -2996,7 +3002,6 @@ var PathsFromToQueryView = Backbone.View.extend({
 
           });
         }
-        $(self.el).modal("toggle");
       });
 
     $(document)
@@ -3089,9 +3094,11 @@ var CommonStreamQueryView = Backbone.View.extend({
         if (handleDuplicateGenes(geneSymbolsArray)) {
           return;
         }
-
+            
+        chiseInstance.startSpinner("common-stream-spinner");
         // Check if the gene symbols that are added even exist in the database or not
         if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+          chiseInstance.endSpinner("common-stream-spinner");
           return;
         }
 
@@ -3130,7 +3137,7 @@ var CommonStreamQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-          chiseInstance.startSpinner("common-stream-spinner");
+          
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -3209,7 +3216,6 @@ var CommonStreamQueryView = Backbone.View.extend({
               cy,
               "currentLayoutProperties"
             );
-            chiseInstance.startSpinner("common-stream-spinner");
             $.ajax({
               type: "get",
               url: "/utilities/testURL",
@@ -3276,7 +3282,6 @@ var CommonStreamQueryView = Backbone.View.extend({
            
           });
         }
-        $(self.el).modal("toggle");
       });
 
     $(document)
@@ -3414,7 +3419,6 @@ var PathsByURIQueryView = Backbone.View.extend({
             },
           });
 
-          $(self.el).modal("toggle");
         } else {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
@@ -3480,7 +3484,6 @@ var PathsByURIQueryView = Backbone.View.extend({
             
           });
         }
-        $(self.el).modal("toggle");
       });
 
     $(document)
@@ -7180,7 +7183,6 @@ function handleDuplicateGenes(geneSymbolsArray) {
 
 async function handleGeneDoesNotExist(geneSymbolsArray) {
   const chiseInstance = appUtilities.getActiveChiseInstance();
-  chiseInstance.startSpinner('check-gene-exist-spinner');
   for (gene of geneSymbolsArray) {
     try {
       let q = `https://www.pathwaycommons.org/pc2/search?q=${gene}`;
@@ -7190,7 +7192,6 @@ async function handleGeneDoesNotExist(geneSymbolsArray) {
         url: "/utilities/testURL",
         data: { url: q },
       });
-      chiseInstance.endSpinner('check-gene-exist-spinner');
       let { numHits } = JSON.parse(data.response.body);
       if (numHits === 0) {
         new GeneNotExist({
