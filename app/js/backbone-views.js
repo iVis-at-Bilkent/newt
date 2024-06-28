@@ -3483,6 +3483,7 @@ var PathsByURIQueryView = Backbone.View.extend({
             
           },()=>chiseInstance.endSpinner("paths-byURI-spinner"));
         }
+        
       });
 
     $(document)
