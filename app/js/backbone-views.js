@@ -2294,7 +2294,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
                   chiseInstance.endSpinner("neighborhood-spinner");
                 },
             });
-          });
+          },()=>chiseInstance.endSpinner("neighborhood-spinner"));
         }
     });
 
@@ -2609,10 +2609,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
                 }).render();
                 chiseInstance.endSpinner("paths-between-spinner");
               },
-            });
-
-            });
-            }
+            })
+          },()=>chiseInstance.endSpinner("paths-between-spinner"));
+        }
   
       });
 
@@ -3000,7 +2999,7 @@ var PathsFromToQueryView = Backbone.View.extend({
               },
             });
 
-          });
+          },()=>chiseInstance.endSpinner("paths-fromto-spinner"));
         }
       });
 
@@ -3280,7 +3279,7 @@ var CommonStreamQueryView = Backbone.View.extend({
             });
 
            
-          });
+          },()=>chiseInstance.endSpinner("common-stream-spinner"));
         }
       });
 
@@ -3482,7 +3481,7 @@ var PathsByURIQueryView = Backbone.View.extend({
             });
 
             
-          });
+          },()=>chiseInstance.endSpinner("paths-byURI-spinner"));
         }
       });
 
@@ -4325,7 +4324,7 @@ var PromptConfirmationView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
   },
-  render: function (afterFunction) {
+  render: function (afterFunction,cancelFunction) {
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
 
@@ -4342,6 +4341,7 @@ var PromptConfirmationView = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-confirmation-cancel")
       .on("click", "#prompt-confirmation-cancel", function (evt) {
+        cancelFunction();
         $(self.el).modal("toggle");
       });
 
