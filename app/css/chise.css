@@ -716,10 +716,14 @@ hr.inspector-divider {
     padding-left: 5px !important;
     padding-right: 5px !important;
     border-radius: 8px 8px 0 0 !important;
+    border: 1px solid #aaaaaa;
+    box-shadow: 1px -1px 2px #999999;
 }
 
 .chise-tab.active a {
     background: #eaeaea !important;
+    border: 1px solid #434343;
+    box-shadow: 1px -1px 2px 0 #303030 !important;
 }
 
 .chise-tab:hover a {
@@ -734,24 +738,6 @@ hr.inspector-divider {
     border: 1px solid #b9b9b9;
     border-left-width: 0px !important;
     box-shadow: 1px 1px 1px #b9b9b9;
-}
-
-.chise-network-tab.active {
-    border: 1px solid #434343;
-    box-shadow: 1px 1px 2px #434343;
-}
-
-.map-tab-type {
-    position: absolute;
-    background-color: #555;
-    margin-top: -2px;
-    padding-left: 4px;
-    padding-right: 4px;
-    border: 0px solid #555;
-    border-radius: 5px;
-    right: 3px;
-    font-size: 9px;
-    color: white;
 }
 
 .chise-network-tab a {
@@ -771,8 +757,26 @@ hr.inspector-divider {
     border: 0px !important;
 }
 
+.chise-network-tab.active {
+    border: 1px solid #434343;
+    box-shadow: 1px 1px 2px #434343;
+}
+
 .chise-network-tab.active, .chise-network-tab.active a {
     background: white !important;
+
+}
+.map-tab-type {
+    position: absolute;
+    background-color: #555;
+    margin-top: -2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 0px solid #555;
+    border-radius: 5px;
+    right: 3px;
+    font-size: 9px;
+    color: white;
 }
 
 .close:hover,
