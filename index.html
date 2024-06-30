@@ -846,9 +846,9 @@
                                                                     <div id="gpml-node-palette" class="element-palette node-palette">
                                                                         <div class="paletteWrapper">
                                                                             <div class="paletteCol"><img src="app/img/nodes/gene-product.svg" language="GPML"
-                                                                                    value="Gene" title="Gene" /></div>
+                                                                                    value="GeneProduct" title="GeneProduct" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/metabolite.svg" language="GPML"
-                                                                                    value="Meta" title="Meta" /></div>
+                                                                                    value="Metabolite" title="Metabolite" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/protein-gpml.svg" language="GPML" 
                                                                                     value="Protein" title="Protein" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/DNA.svg" language="GPML" 
@@ -857,19 +857,21 @@
                                                                                     value="RNA" title="RNA" /></div>
 
                                                                             <div class="paletteCol"><img src="app/img/nodes/pathway.svg" language="GPML" 
-                                                                                    value="Path" title="Path" /></div>
+                                                                                    value="Pathway" title="Pathway" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/disease.svg" language="GPML" 
-                                                                                    value="Dise" title="Dise" /></div>
+                                                                                    value="Disease" title="Disease" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/phenotype-gpml.svg" language="GPML" 
-                                                                                    value="Phen" title="Phen" /></div>
+                                                                                    value="Phenotype" title="Phenotype" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/alias.svg" language="GPML" 
                                                                                     value="Alias" title="Alias" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/event.svg" language="GPML" 
                                                                                     value="Event" title="Event" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/cellnode.svg" language="GPML" 
-                                                                                    value="Cell" title="Cell" /></div>
+                                                                                    value="CellNode" title="CellNode" /></div>
                                                                             <div class="paletteCol"><img src="app/img/nodes/organ.svg" language="GPML" 
                                                                                     value="Organ" title="Organ" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/nodes/undefined.svg" language="GPML" 
+                                                                                    value="Undefined" title="Undefined" /></div>
 
                                                     
                                                                         </div>
@@ -878,24 +880,24 @@
                                                                 <div class="panel-body" style="padding-bottom: 0px;">
                                                                     <div id="gpml-edge-palette" class="element-palette edge-palette">
                                                                         <div class="paletteWrapper">
-                                                                            <div class="paletteCol"><img src="app/img/edges/directed.svg" language="GPML" value="directed"
-                                                                                    title="directed" /></div>
-                                                                            <div class="paletteCol"><img src="app/img/edges/undirected.svg" language="GPML" value="undirected"
-                                                                                    title="undirected" /></div>
-                                                                            <div class="paletteCol"><img src="app/img/edges/conversion.svg" language="GPML" value="conversion" 
-                                                                                    title="conversion" /></div>
-                                                                            <div class="paletteCol"><img src="app/img/edges/inhibition-gpml.svg" language="GPML" value="inhibition"
-                                                                                    title="inhibition" /></div>
-                                                                            <div class="paletteCol"><img src="app/img/edges/catalysis-gpml.svg" language="GPML" value="catalysis"
-                                                                                    title="catalysis" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/directed.svg" language="GPML" value="Directed"
+                                                                                    title="Directed" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/undirected.svg" language="GPML" value="Undirected"
+                                                                                    title="Undirected" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/conversion.svg" language="GPML" value="Conversion" 
+                                                                                    title="Conversion" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/inhibition-gpml.svg" language="GPML" value="Inhibition"
+                                                                                    title="Inhibition" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/catalysis-gpml.svg" language="GPML" value="Catalysis"
+                                                                                    title="Catalysis" /></div>
                                                                             <div class="paletteCol"><img src="app/img/edges/stimulation-gpml.svg" language="GPML" value="stimulation"
-                                                                                    title="stimulation" /></div>
-                                                                            <div class="paletteCol"><img src="app/img/edges/binding.svg" language="GPML" value="binding"
-                                                                                    title="binding" /></div>
+                                                                                    title="Stimulation" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/binding.svg" language="GPML" value="Binding"
+                                                                                    title="Binding" /></div>
                                                                             <div class="paletteCol"><img src="app/img/edges/translocation.svg" language="GPML"
-                                                                                    value="translocation" title="translocation" /></div>
-                                                                            <div class="paletteCol"><img src="app/img/edges/transcription-translation.svg" language="GPML" value="transcription-translation"
-                                                                                    title="transcription-translation" /></div>
+                                                                                    value="Translocation" title="Translocation" /></div>
+                                                                            <div class="paletteCol"><img src="app/img/edges/transcription-translation.svg" language="GPML" value="Transcription-translation"
+                                                                                    title="Transcription-translation" /></div>
                                                                             
                                                                         </div>
                                                                     </div>
@@ -906,33 +908,39 @@
                                                                 <div id="gpml-edge-palette" class="element-palette edge-palette">
                                                                     <div class="paletteWrapper">
                                                                         <div class="paletteCol"><img src="app/img/nodes/circle.svg" language="GPML"
-                                                                                value="circle" title="circle" /></div>
+                                                                                value="Circle" title="Circle" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/roundedrectangle.svg" language="GPML"
                                                                                 value="RoundedRectangle" title="RoundedRectangle" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/triangle.svg" language="GPML"
-                                                                                value="triangle" title="Triangle" /></div>
+                                                                                value="Triangle" title="Triangle" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/rectangle.svg" language="GPML"
-                                                                                value="rectangle" title="Rectangle" /></div>
+                                                                                value="Rectangle" title="Rectangle" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/pentagon.svg" language="GPML" 
-                                                                                value="pentagon"  title="Pentagon" /></div>       
+                                                                                value="Pentagon"  title="Pentagon" /></div>       
                                                                         <div class="paletteCol"><img src="app/img/nodes/hexagon.svg" language="GPML"
-                                                                                value="hexagon" title="Hexagon" /></div>
+                                                                                value="Hexagon" title="Hexagon" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/octagon.svg" language="GPML"
-                                                                                value="octagon" title="Octagon" /></div>
+                                                                                value="Octagon" title="Octagon" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/cell.svg" language="GPML"
-                                                                                value="cell" title="Cell" /></div>
+                                                                                value="Cell" title="Cell" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/nucleus.svg" language="GPML"
-                                                                                value="nucleus" title="Nucleus" /></div>
+                                                                                value="Nucleus" title="Nucleus" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/golgiapparatus.svg" language="GPML"
-                                                                                value="golgiapparatus" title="GolgiApparatus" /></div>
+                                                                                value="GolgiApparatus" title="GolgiApparatus" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/mitochondria.svg" language="GPML" 
-                                                                            value="mitochondria"  title="Mitochondria" /></div>
+                                                                            value="Mitochondria"  title="Mitochondria" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/organelle.svg" language="GPML" 
                                                                             value="organelle" title="Organelle" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/vesicle.svg" language="GPML" 
-                                                                            value="vesicle" title="Vesicle" /></div>
+                                                                            value="Vesicle" title="Vesicle" /></div>
                                                                         <div class="paletteCol"><img src="app/img/nodes/extracellularregion.svg" language="GPML" 
-                                                                            value="extracellularregion" title="ExtracellularRegion" /></div>
+                                                                            value="ExtracellularRegion" title="ExtracellularRegion" /></div>
+                                                                        <div class="paletteCol"><img src="app/img/nodes/endoplasmic-reticulum.svg" language="GPML" 
+                                                                            value="EndoplasmicReticulum" title="EndoplasmicReticulum" /></div>
+                                                                        <div class="paletteCol"><img src="app/img/nodes/sarcoplasmic-reticulum.svg" language="GPML" 
+                                                                            value="SarcoplasmicReticulum" title="SarcoplasmicReticulum" /></div>
+                                                                               
+                                                                                
                                                                         
                                                                                 
                                                             
