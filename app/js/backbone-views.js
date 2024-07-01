@@ -3195,6 +3195,24 @@ var FileSaveView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#file-save-template").html());
 
+    // Check for unsupported conversions
+    map_type = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
+    var unsupportedConversions = {
+      "PD": ["sif", "sifLayout"],
+      "AF": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      "PD+AF": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      "SIF": ["sbgn", "sbml", "celldesigner", "gpml"],
+      "SBML": ["sif", "sifLayout", "gpml"],
+      "All": ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"]
+    };
+
+    if (unsupportedConversions[map_type] && unsupportedConversions[map_type].includes(fileformat)) {
+        var exportErrorView = new ExportErrorView({el: "#exportError-table",});
+        exportErrorView.render();          
+        document.getElementById("export-error-message").innerText = "Not applicable for the current map type!";
+        return;
+    }
+
     $(self.el).html(self.template);
     $(self.el).modal("show");
 
@@ -4332,6 +4350,28 @@ var PromptFileConversionErrorView = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-fileConversionError-confirm")
       .on("click", "#prompt-fileConversionError-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+var ExportErrorView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template(
+      $("#export-Error-template").html()
+    );
+  },
+  render: function () {
+    var self = this;
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#export-Error-confirm")
+      .on("click", "#export-Error-confirm", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -6874,6 +6914,7 @@ module.exports = {
   PromptInvalidTypeWarning: PromptInvalidTypeWarning,
   PromtErrorPD2AF: PromtErrorPD2AF,
   PromptFileConversionErrorView: PromptFileConversionErrorView,
+  ExportErrorView: ExportErrorView,
   ReactionTemplateView: ReactionTemplateView,
   GridPropertiesView: GridPropertiesView,
   FontPropertiesView: FontPropertiesView,
