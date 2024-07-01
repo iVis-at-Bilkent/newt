@@ -3532,44 +3532,55 @@
       <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
       <div class="modal-content">
       <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title">Neighborhood Query</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Neighborhood Query</h4>
       </div>
       <div class="modal-body">
-      <table class="table-condensed layout-table">
-      <tbody>
-      <tr>
-      <th colspan=2 style="padding-left: 0px;" align="left">
-          <!--&emsp; are added to fill the row so that the distance between the -->
-      <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</span>
-      </th>
-      </tr>
+        <table class="table-condensed layout-table">
+        <tbody>
+        <tr>
+        <th colspan=2 style="padding-left: 0px;" align="left">
+            <!--&emsp; are added to fill the row so that the distance between the -->
+        <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</span>
+        </th>
+        </tr>
 
-      <tr>
-      <td style="padding-left: 40px;">
-      <span class="add-on layout-text"> Gene Symbols: </span><br>
-      <textarea id="query-neighborhood-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
-      </td>
+        <td style="padding-left: 40px;">
+          <table>
+            <tbody>
+            <caption style="text-align: left;"> Gene Symbols </caption>
+            <tr>
+            <td style="padding-left: 0px; padding-top: 0px">
+            <textarea id="query-neighborhood-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+            <td>
+            </tr>
+            <tbody>
+          </table>
+        </td>
 
-      <td style="padding-right: 5px;">
-      <table frame="box" style="border-color: rgb(204, 204, 204)">
-      <tbody>
-      <caption style="text-align: left;">Stop Distance</caption>
-      <tr>
-      <td colspan=2>Length limit</td>
-      <td style="padding: 10px;"><input id="query-neighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-      </tr>
-      </tbody>
-      </table>
-      </td>
+        <td style="padding-right: 5px;">
+          <table frame="box" style="border-color: rgb(204, 204, 204)">
+          <tbody>
+          <caption style="text-align: left;">Stop Distance</caption>
+          <tr>
+          <td colspan=2>Length limit</td>
+          <td style="padding: 10px;"><input id="query-neighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+          </tr>
+          </tbody>
+          </table>
+          <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
+          <div class="caption-style-text">Remove Disconnected Nodes:</div>
+          <input id="query-neighborhood-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
+          </div>
+        </td>
 
-      </tr>
-      </tbody>
-      </table>
+        </tr>
+        </tbody>
+        </table>
       </div>
       <div class="modal-footer" style="text-align: center">
-      <button id="save-query-neighborhood" class="btn btn-default" >OK</button>
-      <button id="cancel-query-neighborhood" class="btn btn-default">Cancel</button>
+        <button id="save-query-neighborhood" class="btn btn-default" >OK</button>
+        <button id="cancel-query-neighborhood" class="btn btn-default">Cancel</button>
       </div>
       </div>
       </div>
@@ -3592,22 +3603,34 @@
                       </tr>
 
                       <tr>
-                          <td style="padding-left: 40px;">
-                              <span class="add-on layout-text"> Gene Symbols: </span><br>
-                              <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
-                          </td>
+                        <td style="padding-left: 40px;">
+                          <table>
+                            <tbody>
+                            <caption style="text-align: left;"> Gene Symbols </caption>
+                            <tr>
+                            <td style="padding-left: 0px; padding-top: 0px">
+                            <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                            <td>
+                            </tr>
+                            <tbody>
+                          </table>
+                        </td>
 
-                          <td style="padding-right: 5px;">
-                              <table frame="box" style="border-color: rgb(204, 204, 204)">
-                                  <tbody>
-                                  <caption style="text-align: left;">Stop Distance</caption>
-                                  <tr>
-                                      <td colspan=2>Length limit</td>
-                                      <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-                                  </tr>
-                                  </tbody>
-                              </table>
-                          </td>
+                        <td style="padding-right: 5px;">
+                            <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                <tbody>
+                                <caption style="text-align: left;">Stop Distance</caption>
+                                <tr>
+                                    <td colspan=2>Length limit</td>
+                                    <td style="padding: 10px;"><input id="query-pathsbetween-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
+                              <div class="caption-style-text">Remove Disconnected Nodes:</div>
+                              <input id="query-pathsbetween-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
+                            </div>
+                        </td>
 
                       </tr>
                       </tbody>
@@ -3622,7 +3645,7 @@
     </script>
 
     <script type="text/template" id="query-pathsfromto-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 575px;">
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -3639,13 +3662,29 @@
 
                       <tr>
                           <td style="padding-left: 5px;">
-                              <span class="add-on layout-text"> Source Symbols: </span><br>
+                            <table>
+                              <tbody>
+                              <caption style="text-align: left;"> Source Symbols </caption>
+                              <tr>
+                              <td style="padding-left: 0px; padding-top: 0px">
                               <textarea id="query-pathsfromto-source-symbols" rows="4" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
+                              <td>
+                              </tr>
+                              <tbody>
+                            </table>
                           </td>
 
                           <td style="padding-left: 5px;">
-                              <span class="add-on layout-text"> Target Symbols: </span><br>
+                            <table>
+                              <tbody>
+                              <caption style="text-align: left;"> Target Symbols </caption>
+                              <tr>
+                              <td style="padding-left: 0px; padding-top: 0px">
                               <textarea id="query-pathsfromto-target-symbols" rows="4" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
+                              <td>
+                              </tr>
+                              <tbody>
+                            </table>
                           </td>
 
                           <td style="padding-right: 5px;">
@@ -3658,6 +3697,11 @@
                                   </tr>
                                   </tbody>
                               </table>
+
+                              <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
+                                <div class="caption-style-text">Remove Disconnected Nodes:</div>
+                                <input id="query-pathsfromto-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
+                              </div>
                           </td>
 
                       </tr>
@@ -3673,7 +3717,7 @@
     </script>
 
     <script type="text/template" id="query-commonstream-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 540px;">
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -3690,8 +3734,16 @@
 
                       <tr>
                           <td style="padding-left: 40px;">
-                              <span class="add-on layout-text"> Gene Symbols: </span><br>
+                            <table>
+                              <tbody>
+                              <caption style="text-align: left;"> Gene Symbols </caption>
+                              <tr>
+                              <td style="padding-left: 0px; padding-top: 0px">
                               <textarea id="query-commonstream-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                              <td>
+                              </tr>
+                              <tbody>
+                            </table>
                           </td>
 
                           <td style="padding-right: 5px;">
@@ -3704,6 +3756,10 @@
                                   </tr>
                                   </tbody>
                               </table>
+                              <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
+                                <div class="caption-style-text">Remove Disconnected Nodes:</div>
+                                <input id="query-commonstream-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
+                              </div>
                           </td>
 
                       </tr>

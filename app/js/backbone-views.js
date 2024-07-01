@@ -2048,16 +2048,17 @@ var NeighborhoodQueryView = Backbone.View.extend({
 
         // use the associated cy instance
         var cy = chiseInstance.getCy();
-
-        $(self.el).modal("toggle");
-
+        
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-neighborhood-gene-symbols"
         ).value;
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-neighborhood-length-limit").value
         );
-
+        var removeDisconnected =  document.getElementById(
+          "query-neighborhood-checkbox"
+        ).checked;
+        
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
         if (geneSymbols.length === 0) {
           document.getElementById("query-neighborhood-gene-symbols").focus();
@@ -2080,27 +2081,20 @@ var NeighborhoodQueryView = Backbone.View.extend({
           document.getElementById("query-neighborhood-length-limit").focus();
           return;
         }
-
+        
         var geneSymbolsArray = geneSymbols
-          .replaceAll("\n", " ")
-          .replaceAll("\t", " ")
-          .split(" ");
+        .replaceAll("\n", " ")
+        .replaceAll("\t", " ")
+        .split(" ");
         // Check if duplicate symbols are given or not
         if (handleDuplicateGenes(geneSymbolsArray)) {
           return;
         }
-
-        chiseInstance.startSpinner("neighborhood-spinner");
-        // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(geneSymbolsArray)) {
-          chiseInstance.endSpinner("neighborhood-spinner");
-          return;
-        }
-
+        
         var queryURL =
-          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
-          self.currentQueryParameters.lengthLimit;
-
+        "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
+        self.currentQueryParameters.lengthLimit;
+        
         var filename = "";
         var sources = "";
         for (var i = 0; i < geneSymbolsArray.length; i++) {
@@ -2114,7 +2108,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
             continue;
           }
           sources = sources + "&source=" + currentGeneSymbol;
-
+          
           if (filename == "") {
             filename = currentGeneSymbol;
           } else {
@@ -2123,18 +2117,51 @@ var NeighborhoodQueryView = Backbone.View.extend({
         }
         filename = filename + "_NEIGHBORHOOD.nwt";
         queryURL = queryURL + sources;
+        
+        
+        var neighborhoodQueryHighlighting = function () {
+          eles = cy.collection();
+          geneSymbolsArray.forEach(function (gene) {
+            eles.merge(
+              cy.nodes().filter(function (ele) {
+                if (
+                  ele.data("label") &&
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
+                ) {
+                  return true;
+                }
+                return false;
+              })
+            );
+          });
+          var x = cy
+            .elements()
+            .kNeighborhood(
+              eles,
+              self.currentQueryParameters.lengthLimit,
+              "BOTHSTREAM"
+            );
+          cy.viewUtilities("get").highlight(x.neighborNodes, 2);
+          cy.viewUtilities("get").highlight(x.neighborEdges, 2);
+          cy.viewUtilities("get").highlight(eles, 3);
+        }
 
-        if (cy.nodes().length == 0) {
+        // Define this after the queryURL to make sure.
+        var sendNeighborhoodQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
-          );
+            );
           var currentInferNestingOnLoad =
-            currentGeneralProperties.inferNestingOnLoad;
+          currentGeneralProperties.inferNestingOnLoad;
           var currentLayoutProperties = appUtilities.getScratch(
             cy,
             "currentLayoutProperties"
           );
+              
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -2145,40 +2172,22 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 data.response.statusCode == 200 &&
                 data.response.body
               ) {
-                if (data.response.body !== "") {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    currentLayoutProperties
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
+                var xml = $.parseXML(data.response.body);
+                $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                currentGeneralProperties.inferNestingOnLoad = false;
+                chiseInstance.updateGraph(
+                  chiseInstance.convertSbgnmlToJson(xml),
+                  undefined,
+                  currentLayoutProperties
+                );
+                currentGeneralProperties.inferNestingOnLoad =
+                  currentInferNestingOnLoad;
 
-                  // Highlighting feature
-                  eles = cy.collection();
-                  geneSymbolsArray.forEach(function (gene) {
-                    eles.merge(cy.nodes().filter(function (ele) {
-                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
-                        return true;
-                      }
-                      return false;
-                    }))
-                  })
-                  var x = cy.elements().kNeighborhood(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
-                  cy.viewUtilities('get').highlight(x.neighborNodes, 2);
-                  cy.viewUtilities('get').highlight(x.neighborEdges, 2);
-                  cy.viewUtilities('get').highlight(eles, 3);
-                  // Highlighting feature end
+                if(removeDisconnected) 
+                  appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
+                neighborhoodQueryHighlighting();
 
-                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                } else {
-                  new PromptEmptyQueryResultView({
-                    el: "#prompt-emptyQueryResult-table",
-                  }).render();
-                }
+                $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
               } else if (data.error) {
                 let { code } = data.error;
                 if (code === "ESOCKETTIMEDOUT") {
@@ -2186,11 +2195,15 @@ var NeighborhoodQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
+              } else if (data.response.body === "") {
+                new PromptEmptyQueryResultView({
+                  el: "#prompt-emptyQueryResult-table",
+                }).render();
               } else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
-                }
+              }
               chiseInstance.endSpinner("neighborhood-spinner");
             },
             error: function (xhr, options, err) {
@@ -2200,101 +2213,27 @@ var NeighborhoodQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("neighborhood-spinner");
             },
           });
+        }
 
-        } 
-        else {
+        var sendQueries = async function () {
+          $(self.el).modal("toggle");
+          chiseInstance.startSpinner("neighborhood-spinner");
+          // Check if the gene symbols that are added even exist in the database or not
+          if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+            chiseInstance.endSpinner("neighborhood-spinner");
+            return;
+          }
+          sendNeighborhoodQuery();
+        }
+
+        // Ask for permission
+        if(cy.nodes().length != 0){
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(function () {
-            var currentGeneralProperties = appUtilities.getScratch(
-              cy,
-              "currentGeneralProperties"
-              );
-              var currentInferNestingOnLoad =
-              currentGeneralProperties.inferNestingOnLoad;
-              var currentLayoutProperties = appUtilities.getScratch(
-                cy,
-                "currentLayoutProperties"
-                );
-                
-            $.ajax({
-              type: "get",
-              url: "/utilities/testURL",
-              data: { url: queryURL },
-              success: function (data) {
-                if (
-                  !data.error &&
-                  data.response.statusCode == 200 &&
-                  data.response.body
-                ) {
-                  var xml = $.parseXML(data.response.body);
-                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                  currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    currentLayoutProperties
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
-
-                  // Highlighting feature
-                  eles = cy.collection();
-                  geneSymbolsArray.forEach(function (gene) {
-                    eles.merge(
-                      cy.nodes().filter(function (ele) {
-                        if (
-                          ele.data("label") &&
-                          ele
-                            .data("label")
-                            .toLowerCase()
-                            .indexOf(gene.toLowerCase()) >= 0
-                        ) {
-                          return true;
-                        }
-                        return false;
-                      })
-                    );
-                  });
-                  var x = cy
-                    .elements()
-                    .kNeighborhood(
-                      eles,
-                      self.currentQueryParameters.lengthLimit,
-                      "BOTHSTREAM"
-                    );
-                  cy.viewUtilities("get").highlight(x.neighborNodes, 2);
-                  cy.viewUtilities("get").highlight(x.neighborEdges, 2);
-                  cy.viewUtilities("get").highlight(eles, 3);
-                  // Highlighting feature end
-
-                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                } else if (data.error) {
-                  let { code } = data.error;
-                  if (code === "ESOCKETTIMEDOUT") {
-                    new PromptRequestTimedOutView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                  }
-                } else if (data.response.body === "") {
-                  new PromptEmptyQueryResultView({
-                    el: "#prompt-emptyQueryResult-table",
-                  }).render();
-                } else {
-                  new PromptInvalidQueryView({
-                    el: "#prompt-invalidQuery-table",
-                  }).render();
-                }
-                chiseInstance.endSpinner("neighborhood-spinner");
-                },
-                error: function (xhr, options, err) {
-                  new PromptInvalidQueryView({
-                    el: "#prompt-invalidQuery-table",
-                  }).render();
-                  chiseInstance.endSpinner("neighborhood-spinner");
-                },
-            });
-          },()=>chiseInstance.endSpinner("neighborhood-spinner"));
+          }).render(sendQueries, ()=>{return;});
+        }
+        else{
+          sendQueries();
         }
     });
 
@@ -2344,14 +2283,15 @@ var PathsBetweenQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
-        $(self.el).modal("toggle");
-
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-pathsbetween-gene-symbols"
         ).value;
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-pathsbetween-length-limit").value
         );
+        var removeDisconnected =  document.getElementById(
+          "query-pathsbetween-checkbox"
+        ).checked;
 
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
         if (geneSymbols.length === 0) {
@@ -2382,16 +2322,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           .split(" ");
 
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(geneSymbolsArray)) {
-          
-          return;
-        }
-
-
-        chiseInstance.startSpinner("paths-between-spinner");
-        // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(geneSymbolsArray)) {
-          chiseInstance.endSpinner("paths-between-spinner");
+        if (handleDuplicateGenes(geneSymbolsArray)) {     
           return;
         }
 
@@ -2424,88 +2355,89 @@ var PathsBetweenQueryView = Backbone.View.extend({
         }
         filename = filename + "_PATHSBETWEEN.nwt";
         queryURL = queryURL + sources;
-        
-        if (cy.nodes().length == 0) {
+
+        var pathsBetweenQueryHighlighting = function () {
+          eles = cy.collection();
+          geneSymbolsArray.forEach(function (gene) {
+            eles.merge(
+              cy.nodes().filter(function (ele) {
+                if (
+                  ele.data("label") &&
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
+                ) {
+                  return true;
+                }
+                return false;
+              })
+            );
+          });
+          var x = cy
+            .elements()
+            .pathsBetween(
+              eles,
+              self.currentQueryParameters.lengthLimit,
+              "UNDIRECTED"
+            );
+          cy.viewUtilities("get").highlight(x.resultEdges, 2);
+          cy.viewUtilities("get").highlight(x.resultNodes, 2);
+          cy.viewUtilities("get").highlight(eles, 3);
+        }
+
+        var sendPathsBetweenQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
             );
-            var currentInferNestingOnLoad =
+          var currentInferNestingOnLoad =
             currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(
+          var currentLayoutProperties = appUtilities.getScratch(
             cy,
             "currentLayoutProperties"
             );
             
-            $.ajax({
-              type: "get",
-              url: "/utilities/testURL",
-              data: { url: queryURL },
-              success: function (data) {
-                if (!data.error && data.response.statusCode == 200) {
-                  if (data.response.body !== "") {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(
-                      chiseInstance.convertSbgnmlToJson(xml),
-                      undefined,
-                      currentLayoutProperties
-                    );
-                    currentGeneralProperties.inferNestingOnLoad =
-                      currentInferNestingOnLoad;
-                    // chiseInstance.endSpinner("paths-between-spinner");
+          $.ajax({
+            type: "get",
+            url: "/utilities/testURL",
+            data: { url: queryURL },
+            success: function (data) {
+              if (!data.error && data.response.statusCode == 200) {
+                if (data.response.body !== "") {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.updateGraph(
+                    chiseInstance.convertSbgnmlToJson(xml),
+                    undefined,
+                    currentLayoutProperties
+                  );
+                  currentGeneralProperties.inferNestingOnLoad =
+                    currentInferNestingOnLoad;
+                  
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
+                  pathsBetweenQueryHighlighting();
 
-                    // Highlighting feature
-                    eles = cy.collection();
-                    geneSymbolsArray.forEach(function (gene) {
-                      eles.merge(
-                        cy.nodes().filter(function (ele) {
-                          if (
-                            ele.data("label") &&
-                            ele
-                              .data("label")
-                              .toLowerCase()
-                              .indexOf(gene.toLowerCase()) >= 0
-                          ) {
-                            return true;
-                          }
-                          return false;
-                        })
-                      );
-                    });
-                    var x = cy
-                      .elements()
-                      .pathsBetween(
-                        eles,
-                        self.currentQueryParameters.lengthLimit,
-                        "UNDIRECTED"
-                      );
-                    cy.viewUtilities("get").highlight(x.resultEdges, 2);
-                    cy.viewUtilities("get").highlight(x.resultNodes, 2);
-                    cy.viewUtilities("get").highlight(eles, 3);
-                    // Highlighting feature end
-
-                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                  } else {
-                    new PromptEmptyQueryResultView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                    // chiseInstance.endSpinner("paths-between-spinner");
-                  }
-                } else if (data.error) {
-                  let { code } = data.error;
-                  if (code === "ESOCKETTIMEDOUT") {
-                    new PromptRequestTimedOutView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                    // chiseInstance.endSpinner("paths-between-spinner");
-                  }
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
-                  new PromptInvalidQueryView({
-                    el: "#prompt-invalidQuery-table",
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-requestTimedOut-table",
                   }).render();
-                  }
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                }
+              } else {
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render();
+                }
               chiseInstance.endSpinner("paths-between-spinner");
             },
             error: function (xhr, options, err) {
@@ -2515,104 +2447,27 @@ var PathsBetweenQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("paths-between-spinner");
             },
           });
-          // $(self.el).modal("toggle");
-        } else {
-          // console.log("Came here where there are nodes in cy");
+        }
+
+        var sendQueries = async function() {
+          $(self.el).modal("toggle");
+          chiseInstance.startSpinner("paths-between-spinner");
+          // Check if the gene symbols that are added even exist in the database or not
+          if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+            chiseInstance.endSpinner("paths-between-spinner");
+            return;
+          }
+
+          sendPathsBetweenQuery();
+        }
+
+        if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(function () {
-            var currentGeneralProperties = appUtilities.getScratch(
-              cy,
-              "currentGeneralProperties"
-              );
-              var currentInferNestingOnLoad =
-              currentGeneralProperties.inferNestingOnLoad;
-              var currentLayoutProperties = appUtilities.getScratch(
-                cy,
-                "currentLayoutProperties"
-                );
-                
-            $.ajax({
-              type: "get",
-              url: "/utilities/testURL",
-              data: { url: queryURL },
-              success: function (data) {
-                if (!data.error && data.response.statusCode == 200) {
-                  if (data.response.body !== "") {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(
-                      chiseInstance.convertSbgnmlToJson(xml),
-                      undefined,
-                      currentLayoutProperties
-                    );
-                    currentGeneralProperties.inferNestingOnLoad =
-                      currentInferNestingOnLoad;
-                    // chiseInstance.endSpinner("paths-between-spinner");
-
-                    // Highlighting feature
-                    eles = cy.collection();
-                    geneSymbolsArray.forEach(function (gene) {
-                      eles.merge(
-                        cy.nodes().filter(function (ele) {
-                          if (
-                            ele.data("label") &&
-                            ele
-                              .data("label")
-                              .toLowerCase()
-                              .indexOf(gene.toLowerCase()) >= 0
-                          ) {
-                            return true;
-                          }
-                          return false;
-                        })
-                      );
-                    });
-                    var x = cy
-                      .elements()
-                      .pathsBetween(
-                        eles,
-                        self.currentQueryParameters.lengthLimit,
-                        "UNDIRECTED"
-                      );
-                    cy.viewUtilities("get").highlight(x.resultEdges, 2);
-                    cy.viewUtilities("get").highlight(x.resultNodes, 2);
-                    cy.viewUtilities("get").highlight(eles, 3);
-                    // Highlighting feature end
-
-                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                  } else {
-                    new PromptEmptyQueryResultView({
-                      el: "#prompt-emptyQueryResult-table",
-                    }).render();
-                    // chiseInstance.endSpinner("paths-between-spinner");
-                  }
-                } else if (data.error) {
-                  let { code } = data.error;
-                  if (code === "ESOCKETTIMEDOUT") {
-                    new PromptRequestTimedOutView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                    // chiseInstance.endSpinner("paths-between-spinner");
-                  }
-                } else {
-                  new PromptInvalidQueryView({
-                    el: "#prompt-invalidQuery-table",
-                  }).render();
-                  }
-                chiseInstance.endSpinner("paths-between-spinner");
-              },
-              error: function (xhr, options, err) {
-                new PromptInvalidQueryView({
-                  el: "#prompt-invalidQuery-table",
-                }).render();
-                chiseInstance.endSpinner("paths-between-spinner");
-              },
-            })
-          },()=>chiseInstance.endSpinner("paths-between-spinner"));
+          }).render(sendQueries, ()=>{return;});
+        } else {
+          sendQueries();
         }
-  
       });
 
     $(document)
@@ -2662,8 +2517,6 @@ var PathsFromToQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
-        $(self.el).modal("toggle");
-
         self.currentQueryParameters.sourceSymbols = document.getElementById(
           "query-pathsfromto-source-symbols"
         ).value;
@@ -2673,6 +2526,9 @@ var PathsFromToQueryView = Backbone.View.extend({
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-pathsfromto-length-limit").value
         );
+        var removeDisconnected =  document.getElementById(
+          "query-pathsfromto-checkbox"
+        ).checked;
 
         var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
         if (sourceSymbols.length === 0) {
@@ -2703,7 +2559,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           }).render();
           return;
         }
-
+        
         if (self.currentQueryParameters.lengthLimit > 3) {
           $(self.el).modal("toggle");
           new PromptInvalidLengthLimitView({
@@ -2712,10 +2568,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           document.getElementById("query-pathsfromto-length-limit").focus();
           return;
         }
-
-        var queryURL =
-          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit=" +
-          self.currentQueryParameters.lengthLimit;
+        
         var sourceSymbolsArray = sourceSymbols
           .replaceAll("\n", " ")
           .replaceAll("\t", " ")
@@ -2725,29 +2578,15 @@ var PathsFromToQueryView = Backbone.View.extend({
           .replaceAll("\t", " ")
           .split(" ");
 
-
-        chiseInstance.startSpinner("paths-fromto-spinner");
         // Check if duplicate symbols are given or not
         if (handleDuplicateGenes(sourceSymbolsArray)) {
           chiseInstance.endSpinner("paths-fromto-spinner");
           return;
         }
-        // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(sourceSymbolsArray)) {
-          chiseInstance.endSpinner("paths-fromto-spinner");
-          return;
-        }
 
-        // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(targetSymbolsArray)) {
-          chiseInstance.endSpinner("paths-fromto-spinner");
-          return;
-        }
-        // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(targetSymbolsArray)) {
-          chiseInstance.endSpinner("paths-fromto-spinner");
-          return;
-        }
+        var queryURL =
+          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSFROMTO&limit=" +
+          self.currentQueryParameters.lengthLimit;
 
         var filename = "";
         var sources = "";
@@ -2762,8 +2601,8 @@ var PathsFromToQueryView = Backbone.View.extend({
           ) {
             continue;
           }
-          sources = sources + "&source=" + currentGeneSymbol;
-
+          sources = sources + "&source=" + currentGeneSymbol;           
+          
           if (filename == "") {
             filename = currentGeneSymbol;
           } else {
@@ -2781,7 +2620,6 @@ var PathsFromToQueryView = Backbone.View.extend({
             continue;
           }
           targets = targets + "&target=" + currentGeneSymbol;
-
           if (filename == "") {
             filename = currentGeneSymbol;
           } else {
@@ -2791,8 +2629,57 @@ var PathsFromToQueryView = Backbone.View.extend({
         filename = filename + "_PATHSFROMTO.nwt";
         queryURL = queryURL + sources + targets;
 
-        if (cy.nodes().length == 0) {
-          
+        var pathsFromToQueryHighlighting = function () {
+          source_eles = cy.collection();
+          sourceSymbolsArray.forEach(function (gene) {
+            source_eles.merge(
+              cy.nodes().filter(function (ele) {
+                if (
+                  ele.data("label") &&
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
+                ) {
+                  return true;
+                }
+                return false;
+              })
+            );
+          });
+          target_eles = cy.collection();
+          targetSymbolsArray.forEach(function (gene) {
+            target_eles.merge(
+              cy.nodes().filter(function (ele) {
+                if (
+                  ele.data("label") &&
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
+                ) {
+                  return true;
+                }
+                return false;
+              })
+            );
+          });
+          var x = cy
+            .elements()
+            .pathsFromTo(
+              source_eles,
+              target_eles,
+              self.currentQueryParameters.lengthLimit,
+              self.currentQueryParameters.lengthLimit,
+              "UNDIRECTED"
+            );
+          cy.viewUtilities("get").highlight(x.edgesOnThePaths, 2);
+          // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
+          cy.viewUtilities('get').highlight(source_eles, 3);
+          cy.viewUtilities('get').highlight(target_eles, 1);
+        }
+
+        var sendPathsFromToQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
@@ -2803,8 +2690,7 @@ var PathsFromToQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-
-          
+    
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -2822,63 +2708,16 @@ var PathsFromToQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-
-                  // Highlighting feature
-                  source_eles = cy.collection();
-                  sourceSymbolsArray.forEach(function (gene) {
-                    source_eles.merge(
-                      cy.nodes().filter(function (ele) {
-                        if (
-                          ele.data("label") &&
-                          ele
-                            .data("label")
-                            .toLowerCase()
-                            .indexOf(gene.toLowerCase()) >= 0
-                        ) {
-                          return true;
-                        }
-                        return false;
-                      })
-                    );
-                  });
-                  target_eles = cy.collection();
-                  targetSymbolsArray.forEach(function (gene) {
-                    target_eles.merge(
-                      cy.nodes().filter(function (ele) {
-                        if (
-                          ele.data("label") &&
-                          ele
-                            .data("label")
-                            .toLowerCase()
-                            .indexOf(gene.toLowerCase()) >= 0
-                        ) {
-                          return true;
-                        }
-                        return false;
-                      })
-                    );
-                  });
-                  var x = cy
-                    .elements()
-                    .pathsFromTo(
-                      source_eles,
-                      target_eles,
-                      self.currentQueryParameters.lengthLimit,
-                      self.currentQueryParameters.lengthLimit,
-                      "UNDIRECTED"
-                    );
-                  cy.viewUtilities("get").highlight(x.edgesOnThePaths, 2);
-                  // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
-                  cy.viewUtilities('get').highlight(source_eles, 3);
-                  cy.viewUtilities('get').highlight(target_eles, 1);
-                  // Highlighting feature end
+                  
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery(sourceSymbolsArray.concat(targetSymbolsArray));
+                  pathsFromToQueryHighlighting();
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
                     el: "#prompt-emptyQueryResult-table",
                   }).render();
-                  // chiseInstance.endSpinner("paths-fromto-spinner");
                 }
               } else if (data.error) {
                 let { code } = data.error;
@@ -2886,7 +2725,6 @@ var PathsFromToQueryView = Backbone.View.extend({
                   new PromptRequestTimedOutView({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
-                  // chiseInstance.endSpinner("paths-fromto-spinner");
                 }
               } 
               else {
@@ -2903,103 +2741,25 @@ var PathsFromToQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("paths-fromto-spinner");
             },
           });
+        }
 
-          // $(self.el).modal("toggle");
-        } else {
+        var sendQueries = async function () {
+          $(self.el).modal("toggle");
+          // Check if the gene symbols that are added even exist in the database or not
+          chiseInstance.startSpinner("paths-fromto-spinner");
+          if (await handleGeneDoesNotExist(sourceSymbolsArray)) {
+            chiseInstance.endSpinner("paths-fromto-spinner");
+            return;
+          }
+          sendPathsFromToQuery();
+        }
+
+        if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(function () {
-            var currentGeneralProperties = appUtilities.getScratch(
-              cy,
-              "currentGeneralProperties"
-            );
-            var currentInferNestingOnLoad =
-              currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(
-              cy,
-              "currentLayoutProperties"
-            );
-            $.ajax({
-              type: "get",
-              url: "/utilities/testURL",
-              data: { url: queryURL },
-              success: function (data) {
-                if (!data.error && data.response.statusCode == 200) {
-    
-                  if (data.response.body !== "") {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(
-                      chiseInstance.convertSbgnmlToJson(xml),
-                      undefined,
-                      currentLayoutProperties
-                    );
-                    currentGeneralProperties.inferNestingOnLoad =
-                      currentInferNestingOnLoad;
-
-                    // Highlighting feature
-                    source_eles = cy.collection();
-                    sourceSymbolsArray.forEach(function (gene) {
-                      source_eles.merge(
-                        cy.nodes().filter(function (ele) {
-                          if (
-                            ele.data("label") &&
-                            ele
-                              .data("label")
-                              .toLowerCase()
-                              .indexOf(gene.toLowerCase()) >= 0
-                          ) {
-                            return true;
-                          }
-                          return false;
-                        })
-                      );
-                    });
-                    target_eles = cy.collection();
-                    targetSymbolsArray.forEach(function (gene) {
-                      target_eles.merge(cy.nodes().filter(function (ele) {
-                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
-                          return true;
-                        }
-                        return false;
-                      }))
-                    })
-                    var x = cy.elements().pathsFromTo(source_eles, target_eles, self.currentQueryParameters.lengthLimit, self.currentQueryParameters.lengthLimit, 'UNDIRECTED');
-                    cy.viewUtilities('get').highlight(x.edgesOnThePaths, 2);
-                    // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
-                    cy.viewUtilities('get').highlight(source_eles, 3);
-                    cy.viewUtilities('get').highlight(target_eles, 1);
-                    // Highlighting feature end
-                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                  } else {
-                    new PromptEmptyQueryResultView({
-                      el: "#prompt-emptyQueryResult-table",
-                    }).render();
-                  }
-                } else if (data.error) {
-                  let { code } = data.error;
-                  if (code === "ESOCKETTIMEDOUT") {
-                    new PromptRequestTimedOutView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                  }
-                } else {
-                  new PromptInvalidQueryView({
-                    el: "#prompt-invalidQuery-table",
-                  }).render();
-                }
-                chiseInstance.endSpinner("paths-fromto-spinner");
-              },
-              error: function (xhr, options, err) {
-                new PromptInvalidQueryView({
-                  el: "#prompt-invalidQuery-table",
-                }).render();
-                chiseInstance.endSpinner("paths-fromto-spinner");
-              },
-            });
-
-          },()=>chiseInstance.endSpinner("paths-fromto-spinner"));
+          }).render(sendQueries, ()=>{return;});
+        } else {
+          sendQueries();
         }
       });
 
@@ -3049,14 +2809,15 @@ var CommonStreamQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
-        $(self.el).modal("toggle");
-
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-commonstream-gene-symbols"
         ).value;
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-commonstream-length-limit").value
         );
+        var removeDisconnected =  document.getElementById(
+          "query-commonstream-checkbox"
+        ).checked;
 
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
         if (geneSymbols.length === 0) {
@@ -3081,26 +2842,19 @@ var CommonStreamQueryView = Backbone.View.extend({
           return;
         }
 
-        var queryURL =
-          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit=" +
-          self.currentQueryParameters.lengthLimit;
         var geneSymbolsArray = geneSymbols
-          .replaceAll("\n", " ")
-          .replaceAll("\t", " ")
-          .split(" ");
-
+        .replaceAll("\n", " ")
+        .replaceAll("\t", " ")
+        .split(" ");
+        
         // Check if duplicate symbols are given or not
         if (handleDuplicateGenes(geneSymbolsArray)) {
           return;
         }
-            
-        chiseInstance.startSpinner("common-stream-spinner");
-        // Check if the gene symbols that are added even exist in the database or not
-        if (await handleGeneDoesNotExist(geneSymbolsArray)) {
-          chiseInstance.endSpinner("common-stream-spinner");
-          return;
-        }
-
+        
+        var queryURL =
+          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit=" +
+          self.currentQueryParameters.lengthLimit;
         var filename = "";
         var sources = "";
         for (var i = 0; i < geneSymbolsArray.length; i++) {
@@ -3124,8 +2878,24 @@ var CommonStreamQueryView = Backbone.View.extend({
         filename = filename + "_COMMONSTREAM.nwt";
         queryURL = queryURL + sources;
 
-        if (cy.nodes().length == 0) {
-         
+        var commonStreamHighlighting = function () {
+          eles = cy.collection();
+          geneSymbolsArray.forEach(function (gene) {
+            eles.merge(cy.nodes().filter(function (ele) {
+              if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                return true;
+              }
+              return false;
+            }))
+          })
+          var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+          cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
+          cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
+          cy.viewUtilities('get').highlight(x.commonNodes, 1);
+          cy.viewUtilities('get').highlight(eles, 3);
+        }
+
+        var sendCommonStreamQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
@@ -3154,23 +2924,10 @@ var CommonStreamQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-
-                  // Highlighting feature
-                  eles = cy.collection();
-                  geneSymbolsArray.forEach(function (gene) {
-                    eles.merge(cy.nodes().filter(function (ele) {
-                      if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
-                        return true;
-                      }
-                      return false;
-                    }))
-                  })
-                  var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
-                  cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
-                  cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
-                  cy.viewUtilities('get').highlight(x.commonNodes, 1);
-                  cy.viewUtilities('get').highlight(eles, 3);
-                  // Highlighting feature end
+                  
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
+                  commonStreamHighlighting();
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
@@ -3199,87 +2956,25 @@ var CommonStreamQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("common-stream-spinner");
             },
           });
+        }
 
-        } else {
+        var sendQueries = async function () {
+          $(self.el).modal("toggle");
+          chiseInstance.startSpinner("common-stream-spinner");
+          // Check if the gene symbols that are added even exist in the database or not
+          if (await handleGeneDoesNotExist(geneSymbolsArray)) {
+            chiseInstance.endSpinner("common-stream-spinner");
+            return;
+          }
+          sendCommonStreamQuery();
+        }
+
+        if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(function () {
-            
-            var currentGeneralProperties = appUtilities.getScratch(
-              cy,
-              "currentGeneralProperties"
-            );
-            var currentInferNestingOnLoad =
-              currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(
-              cy,
-              "currentLayoutProperties"
-            );
-            $.ajax({
-              type: "get",
-              url: "/utilities/testURL",
-              data: { url: queryURL },
-              success: function (data) {
-                if (!data.error && data.response.statusCode == 200) {
-                  if (data.response.body !== "") {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(
-                      chiseInstance.convertSbgnmlToJson(xml),
-                      undefined,
-                      currentLayoutProperties
-                    );
-                    currentGeneralProperties.inferNestingOnLoad =
-                      currentInferNestingOnLoad;
-
-                    // Highlighting feature
-                    eles = cy.collection();
-                    geneSymbolsArray.forEach(function (gene) {
-                      eles.merge(cy.nodes().filter(function (ele) {
-                        if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
-                          return true;
-                        }
-                        return false;
-                      }))
-                    })
-                    var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
-                    cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
-                    cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
-                    cy.viewUtilities('get').highlight(x.commonNodes, 1);
-                    cy.viewUtilities('get').highlight(eles, 3);
-                    // Highlighting feature end
-
-                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                  } else {
-                    new PromptEmptyQueryResultView({
-                      el: "#prompt-emptyQueryResult-table",
-                    }).render();
-                  }
-                } else if (data.error) {
-                  let { code } = data.error;
-                  if (code === "ESOCKETTIMEDOUT") {
-                    new PromptRequestTimedOutView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                  }
-                } else {
-                  new PromptInvalidQueryView({
-                    el: "#prompt-invalidQuery-table",
-                  }).render();
-                }
-                chiseInstance.endSpinner("common-stream-spinner");
-              },
-              error: function (xhr, options, err) {
-                new PromptInvalidQueryView({
-                  el: "#prompt-invalidQuery-table",
-                }).render();
-                chiseInstance.endSpinner("common-stream-spinner");
-              },
-            });
-
-           
-          },()=>chiseInstance.endSpinner("common-stream-spinner"));
+          }).render(sendQueries, ()=>{return;});
+        } else {
+          sendQueries();
         }
       });
 
@@ -3292,6 +2987,7 @@ var CommonStreamQueryView = Backbone.View.extend({
     return this;
   },
 });
+
 /**
  * Paths By URI Query view for the Sample Application.
  */
@@ -3326,8 +3022,6 @@ var PathsByURIQueryView = Backbone.View.extend({
         // use the associated cy instance
         var cy = chiseInstance.getCy();
 
-        $(self.el).modal("toggle");
-
         self.currentQueryParameters.URI = document.getElementById(
           "query-pathsbyURI-URI"
         ).value;
@@ -3355,11 +3049,9 @@ var PathsByURIQueryView = Backbone.View.extend({
         } else {
           filename = filename + "_" + uri;
         }
-
         filename = filename + "_URI.nwt";
 
-        if (cy.nodes().length == 0) {
-          
+        var sendPathsByURIQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
@@ -3389,6 +3081,7 @@ var PathsByURIQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
+                  appUtilities.removeDisconnectedNodesAfterQuery([]);
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -3418,70 +3111,15 @@ var PathsByURIQueryView = Backbone.View.extend({
             },
           });
 
-        } else {
+          $(self.el).modal("toggle");          
+        }
+
+        if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(function () {
-            
-            var currentGeneralProperties = appUtilities.getScratch(
-              cy,
-              "currentGeneralProperties"
-            );
-            var currentInferNestingOnLoad =
-              currentGeneralProperties.inferNestingOnLoad;
-            var currentLayoutProperties = appUtilities.getScratch(
-              cy,
-              "currentLayoutProperties"
-            );
-            chiseInstance.startSpinner("paths-byURI-spinner");
-            $.ajax({
-              type: "get",
-              url: "/utilities/testURL",
-              data: { url: queryURL },
-              success: function (data) {
-                if (!data.error && data.response.statusCode == 200) {
-                  if (data.response.body !== "") {
-                    var xml = $.parseXML(data.response.body);
-                    $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-                    currentGeneralProperties.inferNestingOnLoad = false;
-                    chiseInstance.updateGraph(
-                      chiseInstance.convertSbgnmlToJson(xml),
-                      undefined,
-                      currentLayoutProperties
-                    );
-                    currentGeneralProperties.inferNestingOnLoad =
-                      currentInferNestingOnLoad;
-                    $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-                  } else {
-                    new PromptEmptyQueryResultView({
-                      el: "#prompt-emptyQueryResult-table",
-                    }).render();
-                  }
-                } else if (data.error) {
-                  let { code } = data.error;
-                  if (code === "ESOCKETTIMEDOUT") {
-                    new PromptRequestTimedOutView({
-                      el: "#prompt-requestTimedOut-table",
-                    }).render();
-                  }
-                } else {
-                  new PromptInvalidURIView({
-                    el: "#prompt-invalidURI-table",
-                  }).render();
-                  
-                }
-                chiseInstance.endSpinner("paths-byURI-spinner");
-              },
-              error: function (xhr, options, err) {
-                new PromptInvalidURIView({
-                  el: "#prompt-invalidURI-table",
-                }).render();            
-                chiseInstance.endSpinner("paths-byURI-spinner");
-              },
-            });
-
-            
-          },()=>chiseInstance.endSpinner("paths-byURI-spinner"));
+          }).render(sendPathsByURIQuery ,()=>{return;});
+        } else {
+          sendPathsByURIQuery();
         }
         
       });

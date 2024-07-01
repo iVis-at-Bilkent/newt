@@ -3791,4 +3791,39 @@ appUtilities.selectAllElementsOfSameType = function(ele) {
   cy.elements('[class="' + sbgnclass + '"]').select();
 };
 
+appUtilities.removeDisconnectedNodesAfterQuery = function( querySeedGenes ){
+  var isAggregateNode = function (node) {
+    return node.data("class") == "compartment" || node.data("class") == "submap" 
+    || node.data("class") == "complex";
+  }
+
+  var lowerCaseQuerySeedGenes = querySeedGenes.map( (gene) => {
+    return gene.toLowerCase();
+  });
+
+  var cy = appUtilities.getActiveCy();
+  var nodesToDelete = cy.collection();
+  cy.nodes().forEach( (node, idx) => {
+    if(isAggregateNode(node) && node.children().connectedEdges().length != 0){
+      node.children().forEach( (node, idx) => {
+        if(node.connectedEdges().length == 0 && !isAggregateNode(node)){
+          var querySeedNode = false;
+          if(node.data("label")){
+            var lowerCaseNodeLabel = node.data("label").toLowerCase();
+            lowerCaseQuerySeedGenes.forEach( (gene) => {
+              if(lowerCaseNodeLabel.indexOf(gene) >= 0){
+                querySeedNode = true;
+              }
+            });
+          }
+          if(!querySeedNode)
+            nodesToDelete.merge(node);
+        }
+      })
+    }
+  });
+  cy.remove(nodesToDelete);
+  // cy.viewUtilities("get").highlight(nodesToDelete);
+}
+
 module.exports = appUtilities;
