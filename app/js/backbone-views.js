@@ -3204,10 +3204,10 @@ var FileSaveView = Backbone.View.extend({
     var unsupportedConversions = {
       "PD": ["sif", "sifLayout"],
       "AF": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
-      "PD+AF": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      "HybridSbgn": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
       "SIF": ["sbgn", "sbml", "celldesigner", "gpml"],
       "SBML": ["sif", "sifLayout", "gpml"],
-      "All": ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"]
+      "HybridAny": ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"]
     };
 
     if (unsupportedConversions[map_type] && unsupportedConversions[map_type].includes(fileformat)) {
