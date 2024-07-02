@@ -3831,34 +3831,37 @@ appUtilities.removeDisconnectedNodesAfterQuery = function( querySeedGenes ){
 }
 
 appUtilities.removeDuplicateProcessesAfterQuery = function() {
-  var arrayEquality = function (arr1, arr2) {
-    if(arr1.length != arr2.length)
-      return false;
-
-    return arr1.every( (item, idx) => item == arr2[idx]);
-  }
-
   var cy = appUtilities.getActiveCy();
   var chiseInstance = appUtilities.getActiveChiseInstance();
 
   var processes = cy.filter('node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]');
-  var nhoods = [];
+  let processMap = new Map();
   var deletion = cy.collection();
   processes.forEach( (process) => {
-    var curNHood = process.neighborhood().union(process);
-    var labelStrings = [];
-    curNHood.forEach( (item) => {
-      labelStrings.push(item.data("label") || item.data("class"));
+    let collectionArray = [];
+    let neighborhoodDescriptorString = "";
+    var edges = process.connectedEdges();
+    edges.forEach( (edge) => {
+      var node = edge.connectedNodes().difference(process);
+      collectionArray.push(node.union(edge));
+    })
+    collectionArray.sort( (first, second) => {
+      var firstLabel = first.filter("node").data("label") || first.filter("node").data("class");
+      var secondLabel = second.filter("node").data("label") || second.filter("node").data("class");
+      return firstLabel.localeCompare(secondLabel);
     });
-    labelStrings.sort();
 
-    for(let i = 0; i < nhoods.length; i++) {
-      if(arrayEquality(nhoods[i], labelStrings)){
-        deletion.merge(process);
-        break;
-      }
+    collectionArray.forEach( (item) => {
+      neighborhoodDescriptorString += (item.filter("node").data("label") || item.filter("node").data("class"));
+      neighborhoodDescriptorString += (item.filter("edge").data("label") || item.filter("edge").data("class"));
+    })
+    neighborhoodDescriptorString += process.data("class");
+    if(processMap.has(neighborhoodDescriptorString)){
+      deletion.merge(process);
     }
-    nhoods.push(labelStrings);
+    else{
+      processMap.set(neighborhoodDescriptorString, true);
+    }
   });
 
   chiseInstance.deleteElesSimple(deletion);
