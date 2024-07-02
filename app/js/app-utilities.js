@@ -3802,8 +3802,13 @@ appUtilities.removeDisconnectedNodesAfterQuery = function( querySeedGenes ){
   });
 
   var cy = appUtilities.getActiveCy();
+  var chiseInstance = appUtilities.getActiveChiseInstance();
   var nodesToDelete = cy.collection();
   cy.nodes().forEach( (node, idx) => {
+    if(!isAggregateNode(node) && node.parent().length == 0 && node.connectedEdges().length == 0){
+      nodesToDelete.merge(node);
+    }
+
     if(isAggregateNode(node) && node.children().connectedEdges().length != 0){
       node.children().forEach( (node, idx) => {
         if(node.connectedEdges().length == 0 && !isAggregateNode(node)){
@@ -3822,8 +3827,41 @@ appUtilities.removeDisconnectedNodesAfterQuery = function( querySeedGenes ){
       })
     }
   });
-  cy.remove(nodesToDelete);
-  // cy.viewUtilities("get").highlight(nodesToDelete);
+  chiseInstance.deleteElesSimple(nodesToDelete);
+}
+
+appUtilities.removeDuplicateProcessesAfterQuery = function() {
+  var arrayEquality = function (arr1, arr2) {
+    if(arr1.length != arr2.length)
+      return false;
+
+    return arr1.every( (item, idx) => item == arr2[idx]);
+  }
+
+  var cy = appUtilities.getActiveCy();
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+
+  var processes = cy.filter('node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]');
+  var nhoods = [];
+  var deletion = cy.collection();
+  processes.forEach( (process) => {
+    var curNHood = process.neighborhood().union(process);
+    var labelStrings = [];
+    curNHood.forEach( (item) => {
+      labelStrings.push(item.data("label") || item.data("class"));
+    });
+    labelStrings.sort();
+
+    for(let i = 0; i < nhoods.length; i++) {
+      if(arrayEquality(nhoods[i], labelStrings)){
+        deletion.merge(process);
+        break;
+      }
+    }
+    nhoods.push(labelStrings);
+  });
+
+  chiseInstance.deleteElesSimple(deletion);
 }
 
 module.exports = appUtilities;

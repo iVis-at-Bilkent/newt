@@ -3557,30 +3557,39 @@
         <td style="padding-left: 40px;">
           <table>
             <tbody>
-            <caption style="text-align: left;"> Gene Symbols </caption>
-            <tr>
-            <td style="padding-left: 0px; padding-top: 0px">
-            <textarea id="query-neighborhood-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
-            <td>
-            </tr>
+              <caption style="text-align: left;"> Gene Symbols </caption>
+              <tr>
+                <td style="padding-left: 0px; padding-top: 0px">
+                  <textarea id="query-neighborhood-gene-symbols" rows="5" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                <td>
+              </tr>
             <tbody>
           </table>
         </td>
 
         <td style="padding-right: 5px;">
           <table frame="box" style="border-color: rgb(204, 204, 204)">
-          <tbody>
-          <caption style="text-align: left;">Stop Distance</caption>
-          <tr>
-          <td colspan=2>Length limit</td>
-          <td style="padding: 10px;"><input id="query-neighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
-          </tr>
-          </tbody>
+            <tbody>
+              <caption style="text-align: left;">Stop Distance</caption>
+              <tr>
+                <td colspan=2>Length limit</td>
+                <td style="padding: 10px;"><input id="query-neighborhood-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+              </tr>
+            </tbody>
           </table>
-          <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
-          <div class="caption-style-text">Remove Disconnected Nodes:</div>
-          <input id="query-neighborhood-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
-          </div>
+
+          <table style="margin-top: 7px">
+            <tbody>
+              <tr>
+                <td class="caption-style-text" style="padding-left: 0;">Remove Disconnected Nodes:</td>
+                <td><input id="query-neighborhood-checkbox" type="checkbox" class="layout-text" checked></td>
+              </tr>
+              <tr>
+                <td class="caption-style-text" style="padding-left: 0;">Remove Redundant Nodes:</td>
+                <td><input id="query-neighborhood-redundant-checkbox" type="checkbox" class="layout-text" checked></td>
+              </tr>
+            </tbody>
+          </table>
         </td>
 
         </tr>
@@ -3618,7 +3627,7 @@
                             <caption style="text-align: left;"> Gene Symbols </caption>
                             <tr>
                             <td style="padding-left: 0px; padding-top: 0px">
-                            <textarea id="query-pathsbetween-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                            <textarea id="query-pathsbetween-gene-symbols" rows="5" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
                             <td>
                             </tr>
                             <tbody>
@@ -3635,10 +3644,18 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
-                              <div class="caption-style-text">Remove Disconnected Nodes:</div>
-                              <input id="query-pathsbetween-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
-                            </div>
+                            <table style="margin-top: 7px">
+                              <tbody>
+                                <tr>
+                                  <td class="caption-style-text" style="padding-left: 0;">Remove Disconnected Nodes:</td>
+                                  <td><input id="query-pathsbetween-checkbox" type="checkbox" class="layout-text" checked></td>
+                                </tr>
+                                <tr>
+                                  <td class="caption-style-text" style="padding-left: 0;">Remove Redundant Nodes:</td>
+                                  <td><input id="query-pathsbetween-redundant-checkbox" type="checkbox" class="layout-text" checked></td>
+                                </tr>
+                              </tbody>
+                            </table>
                         </td>
 
                       </tr>
@@ -3654,7 +3671,7 @@
     </script>
 
     <script type="text/template" id="query-pathsfromto-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 575px;">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 587px;">
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -3676,7 +3693,7 @@
                               <caption style="text-align: left;"> Source Symbols </caption>
                               <tr>
                               <td style="padding-left: 0px; padding-top: 0px">
-                              <textarea id="query-pathsfromto-source-symbols" rows="4" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
+                              <textarea id="query-pathsfromto-source-symbols" rows="5" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
                               <td>
                               </tr>
                               <tbody>
@@ -3689,7 +3706,7 @@
                               <caption style="text-align: left;"> Target Symbols </caption>
                               <tr>
                               <td style="padding-left: 0px; padding-top: 0px">
-                              <textarea id="query-pathsfromto-target-symbols" rows="4" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
+                              <textarea id="query-pathsfromto-target-symbols" rows="5" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
                               <td>
                               </tr>
                               <tbody>
@@ -3707,10 +3724,18 @@
                                   </tbody>
                               </table>
 
-                              <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
-                                <div class="caption-style-text">Remove Disconnected Nodes:</div>
-                                <input id="query-pathsfromto-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
-                              </div>
+                              <table style="margin-top: 7px">
+                                <tbody>
+                                  <tr>
+                                    <td class="caption-style-text" style="padding-left: 0;">Remove Disconnected Nodes:</td>
+                                    <td><input id="query-pathsfromto-checkbox" type="checkbox" class="layout-text" checked></td>
+                                  </tr>
+                                  <tr>
+                                    <td class="caption-style-text" style="padding-left: 0;">Remove Redundant Nodes:</td>
+                                    <td><input id="query-pathsfromto-redundant-checkbox" type="checkbox" class="layout-text" checked></td>
+                                  </tr>
+                                </tbody>
+                              </table>
                           </td>
 
                       </tr>
@@ -3726,7 +3751,7 @@
     </script>
 
     <script type="text/template" id="query-commonstream-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 540px;">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 560px;">
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -3748,7 +3773,7 @@
                               <caption style="text-align: left;"> Gene Symbols </caption>
                               <tr>
                               <td style="padding-left: 0px; padding-top: 0px">
-                              <textarea id="query-commonstream-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                              <textarea id="query-commonstream-gene-symbols" rows="5" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
                               <td>
                               </tr>
                               <tbody>
@@ -3765,10 +3790,19 @@
                                   </tr>
                                   </tbody>
                               </table>
-                              <div style="padding-top: 17px; display: flex; flex-direction: row; column-gap: 5px;">
-                                <div class="caption-style-text">Remove Disconnected Nodes:</div>
-                                <input id="query-commonstream-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
-                              </div>
+
+                              <table style="margin-top: 7px">
+                                <tbody>
+                                  <tr>
+                                    <td class="caption-style-text" style="padding-left: 0;">Remove Disconnected Nodes:</td>
+                                    <td><input id="query-commonstream-checkbox" type="checkbox" class="layout-text" checked></td>
+                                  </tr>
+                                  <tr>
+                                    <td class="caption-style-text" style="padding-left: 0;">Remove Redundant Nodes:</td>
+                                    <td><input id="query-commonstream-redundant-checkbox" type="checkbox" class="layout-text" checked></td>
+                                  </tr>
+                                </tbody>
+                              </table>
                           </td>
 
                       </tr>

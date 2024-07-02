@@ -2058,6 +2058,9 @@ var NeighborhoodQueryView = Backbone.View.extend({
         var removeDisconnected =  document.getElementById(
           "query-neighborhood-checkbox"
         ).checked;
+        var removeRedundant =  document.getElementById(
+          "query-neighborhood-redundant-checkbox"
+        ).checked;
         
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
         if (geneSymbols.length === 0) {
@@ -2183,6 +2186,8 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 currentGeneralProperties.inferNestingOnLoad =
                   currentInferNestingOnLoad;
 
+                if(removeRedundant)
+                  appUtilities.removeDuplicateProcessesAfterQuery();
                 if(removeDisconnected) 
                   appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
                 neighborhoodQueryHighlighting();
@@ -2291,6 +2296,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
         );
         var removeDisconnected =  document.getElementById(
           "query-pathsbetween-checkbox"
+        ).checked;
+        var removeRedundant =  document.getElementById(
+          "query-pathsbetween-redundant-checkbox"
         ).checked;
 
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
@@ -2416,6 +2424,8 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   
+                  if(removeRedundant)
+                    appUtilities.removeDuplicateProcessesAfterQuery();
                   if(removeDisconnected)
                     appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
                   pathsBetweenQueryHighlighting();
@@ -2528,6 +2538,9 @@ var PathsFromToQueryView = Backbone.View.extend({
         );
         var removeDisconnected =  document.getElementById(
           "query-pathsfromto-checkbox"
+        ).checked;
+        var removeRedundant =  document.getElementById(
+          "query-pathsfromto-redundant-checkbox"
         ).checked;
 
         var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
@@ -2709,6 +2722,8 @@ var PathsFromToQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   
+                  if(removeRedundant)
+                    appUtilities.removeDuplicateProcessesAfterQuery();
                   if(removeDisconnected)
                     appUtilities.removeDisconnectedNodesAfterQuery(sourceSymbolsArray.concat(targetSymbolsArray));
                   pathsFromToQueryHighlighting();
@@ -2818,6 +2833,9 @@ var CommonStreamQueryView = Backbone.View.extend({
         var removeDisconnected =  document.getElementById(
           "query-commonstream-checkbox"
         ).checked;
+        var removeRedundant =  document.getElementById(
+          "query-commonstream-redundant-checkbox"
+        ).checked;
 
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
         if (geneSymbols.length === 0) {
@@ -2925,6 +2943,8 @@ var CommonStreamQueryView = Backbone.View.extend({
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
                   
+                  if(removeRedundant)
+                    appUtilities.removeDuplicateProcessesAfterQuery();
                   if(removeDisconnected)
                     appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
                   commonStreamHighlighting();
