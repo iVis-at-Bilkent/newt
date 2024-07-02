@@ -3800,8 +3800,16 @@
                       </tr>
 
                       <tr>
-                          <td>Enter URI of a pathway</td>
+                          <td class="caption-style-text">Enter URI of a pathway</td>
                           <td style="padding: 10px;"><input id="query-pathsbyURI-URI" type="text"  style="width: 300px;" value= <%= URI %> > </td>
+                      </tr>
+                      <tr>
+                        <td colspan=2>
+                          <div style="display: flex; flex-direction: row; column-gap: 5px;">
+                            <div class="caption-style-text">Remove Disconnected Nodes:</div>
+                            <input id="query-pathsbyURI-checkbox" type="checkbox" class="layout-text" style="margin: 0 0;" checked>
+                          </div>
+                        </td>
                       </tr>
                       </tbody>
                   </table>

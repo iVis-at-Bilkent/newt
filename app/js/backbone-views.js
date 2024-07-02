@@ -3026,6 +3026,9 @@ var PathsByURIQueryView = Backbone.View.extend({
           "query-pathsbyURI-URI"
         ).value;
         var uri = self.currentQueryParameters.URI.trim();
+        var removeDisconnected =  document.getElementById(
+          "query-pathsbyURI-checkbox"
+        ).checked;
 
         if (uri.length === 0) {
           document.getElementById("query-pathsbyURI-URI").focus();
@@ -3081,7 +3084,8 @@ var PathsByURIQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-                  appUtilities.removeDisconnectedNodesAfterQuery([]);
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery([]);
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
