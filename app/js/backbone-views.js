@@ -2235,7 +2235,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
         if(cy.nodes().length != 0){
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(sendQueries, ()=>{return;});
+          }).render(sendQueries);
         }
         else{
           sendQueries();
@@ -2474,7 +2474,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(sendQueries, ()=>{return;});
+          }).render(sendQueries);
         } else {
           sendQueries();
         }
@@ -2772,7 +2772,7 @@ var PathsFromToQueryView = Backbone.View.extend({
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(sendQueries, ()=>{return;});
+          }).render(sendQueries);
         } else {
           sendQueries();
         }
@@ -2992,7 +2992,7 @@ var CommonStreamQueryView = Backbone.View.extend({
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(sendQueries, ()=>{return;});
+          }).render(sendQueries);
         } else {
           sendQueries();
         }
@@ -3146,7 +3146,7 @@ var PathsByURIQueryView = Backbone.View.extend({
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
-          }).render(sendPathsByURIQuery ,()=>{return;});
+          }).render(sendPathsByURIQuery);
         } else {
           sendPathsByURIQuery();
         }
@@ -4010,7 +4010,7 @@ var PromptConfirmationView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
   },
-  render: function (afterFunction,cancelFunction) {
+  render: function (afterFunction) {
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
 
@@ -4027,8 +4027,6 @@ var PromptConfirmationView = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-confirmation-cancel")
       .on("click", "#prompt-confirmation-cancel", function (evt) {
-        if(cancelFunction)
-          cancelFunction();
         $(self.el).modal("toggle");
       });
 
