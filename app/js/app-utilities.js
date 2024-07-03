@@ -3856,9 +3856,14 @@ appUtilities.removeDuplicateProcessesAfterQuery = function() {
       collectionArray.push(node.union(edge));
     })
     collectionArray.sort( (first, second) => {
-      var firstLabel = first.filter("node").data("label") || first.filter("node").data("class");
-      var secondLabel = second.filter("node").data("label") || second.filter("node").data("class");
-      return firstLabel.localeCompare(secondLabel);
+      var firstNodeLabel = first.filter("node").data("label") || first.filter("node").data("class");
+      var secondNodeLabel = second.filter("node").data("label") || second.filter("node").data("class");
+      var compare = firstNodeLabel.localeCompare(secondNodeLabel);
+      if(compare != 0)
+        return compare;
+      var firstEdgeClass = first.filter("edge").data("label") || first.filter("edge").data("class");
+      var secondEdgeClass = second.filter("edge").data("label") || second.filter("edge").data("class");
+      return firstEdgeClass.localeCompare(secondEdgeClass);
     });
 
     collectionArray.forEach( (item) => {
