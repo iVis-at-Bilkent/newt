@@ -4027,7 +4027,8 @@ var PromptConfirmationView = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-confirmation-cancel")
       .on("click", "#prompt-confirmation-cancel", function (evt) {
-        cancelFunction();
+        if(cancelFunction)
+          cancelFunction();
         $(self.el).modal("toggle");
       });
 
