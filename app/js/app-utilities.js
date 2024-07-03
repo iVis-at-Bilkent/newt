@@ -3834,6 +3834,16 @@ appUtilities.removeDuplicateProcessesAfterQuery = function() {
   var cy = appUtilities.getActiveCy();
   var chiseInstance = appUtilities.getActiveChiseInstance();
 
+  var appendFullNodeInformation = function (node, neighborhoodDescriptorString) {
+    while(node.length != 0){
+      node.forEach( (node_) => {
+        neighborhoodDescriptorString += (node_.data("label") || node_.data("class"));
+      });
+      node = node.parent();
+    }
+    return neighborhoodDescriptorString;
+  }
+
   var processes = cy.filter('node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]');
   let processMap = new Map();
   var deletion = cy.collection();
@@ -3852,10 +3862,10 @@ appUtilities.removeDuplicateProcessesAfterQuery = function() {
     });
 
     collectionArray.forEach( (item) => {
-      neighborhoodDescriptorString += (item.filter("node").data("label") || item.filter("node").data("class"));
+      neighborhoodDescriptorString = appendFullNodeInformation(item.filter("node"), neighborhoodDescriptorString);
       neighborhoodDescriptorString += (item.filter("edge").data("label") || item.filter("edge").data("class"));
     })
-    neighborhoodDescriptorString += process.data("class");
+    neighborhoodDescriptorString = appendFullNodeInformation(process, neighborhoodDescriptorString);
     if(processMap.has(neighborhoodDescriptorString)){
       deletion.merge(process);
     }
@@ -3863,7 +3873,6 @@ appUtilities.removeDuplicateProcessesAfterQuery = function() {
       processMap.set(neighborhoodDescriptorString, true);
     }
   });
-
   chiseInstance.deleteElesSimple(deletion);
 }
 

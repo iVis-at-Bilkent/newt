@@ -3049,6 +3049,9 @@ var PathsByURIQueryView = Backbone.View.extend({
         var removeDisconnected =  document.getElementById(
           "query-pathsbyURI-checkbox"
         ).checked;
+        var removeRedundant =  document.getElementById(
+          "query-pathsbyURI-redundant-checkbox"
+        ).checked;
 
         if (uri.length === 0) {
           document.getElementById("query-pathsbyURI-URI").focus();
@@ -3104,6 +3107,8 @@ var PathsByURIQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
+                  if(removeRedundant)
+                    appUtilities.removeDuplicateProcessesAfterQuery();
                   if(removeDisconnected)
                     appUtilities.removeDisconnectedNodesAfterQuery([]);
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
