@@ -13,7 +13,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
+        promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -158,6 +158,7 @@ module.exports = function() {
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
   promptInvalidTypeWarning = appUtilities.promptInvalidTypeWarning = new BackboneViews.PromptInvalidTypeWarning({el: '#prompt-errorInvalidType-table'});
+  sifMapWarning = appUtilities.sifMapWarning = new BackboneViews.SifMapWarning({el: '#errorSifMap-table'});
   promtErrorPD2AF = appUtilities.promtErrorPD2AF = new BackboneViews.PromtErrorPD2AF({el: '#prompt-errorPD2AF-table'});
   promptFileConversionErrorView = appUtilities.promptFileConversionErrorView = new BackboneViews.PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
   reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#sbgn-bricks-table'});
@@ -450,10 +451,22 @@ module.exports = function() {
     });
 
     $("#import-sif-style").click(function () {
+      //Check if current map type is SIF
+      var mapType = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
+      if (mapType != "SIF") {
+        sifMapWarning.render();
+        return;
+      }
       $("#sif-style-input").trigger('click');
     });
 
     $("#import-sif-layout").click(function () {
+      //Check if current map type is SIF
+      var mapType = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
+      if (mapType != "SIF") {
+        sifMapWarning.render();
+        return;
+      }
       $("#sif-layout-input").trigger('click');
     });
 

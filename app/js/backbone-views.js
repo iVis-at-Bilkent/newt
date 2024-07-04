@@ -3225,7 +3225,7 @@ var FileSaveView = Backbone.View.extend({
     self.template = _.template($("#file-save-template").html());
 
     // Check for unsupported conversions
-    map_type = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
+    mapType = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
     var unsupportedConversions = {
       "PD": ["sif", "sifLayout"],
       "AF": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
@@ -3235,7 +3235,7 @@ var FileSaveView = Backbone.View.extend({
       "HybridAny": ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"]
     };
 
-    if (unsupportedConversions[map_type] && unsupportedConversions[map_type].includes(fileformat)) {
+    if (unsupportedConversions[mapType] && unsupportedConversions[mapType].includes(fileformat)) {
         var exportErrorView = new ExportErrorView({el: "#exportError-table",});
         exportErrorView.render();          
         document.getElementById("export-error-message").innerText = "Not applicable for the current map type!";
@@ -3331,6 +3331,20 @@ var FileSaveView = Backbone.View.extend({
 
           var saveAsFcn = chiseInstance.saveAsNwt;
           if (fileformat === "sbgn") {
+            if (chiseInstance.elementUtilities.mapType === "SBML") {
+            console.log("fileformat is sbgn and maptype is SBML");
+              chiseInstance.saveAsSbgnmlForSBML(filename, function () {
+                var promptSbmlConversionErrorView =
+                  new PromptSbmlConversionErrorView({
+                    el: "#prompt-sbmlConversionError-table",
+                  });
+                promptSbmlConversionErrorView.render();
+                document.getElementById("file-conversion-error-message").innerText =
+                  "Conversion service is not available!";
+              }
+              );
+              return;
+            }
             saveAsFcn = chiseInstance.saveAsSbgnml;
           }
 
@@ -3394,14 +3408,27 @@ var FileSaveView = Backbone.View.extend({
               "Conversion service is not available!";
           });
         } else if (fileformat === "sbml") {
-          chiseInstance.saveAsSbml(filename, function (data, errorMessage) {
-            var promptSbmlConversionErrorView =
-              new PromptSbmlConversionErrorView({
-                el: "#prompt-sbmlConversionError-table",
-              });
-            promptSbmlConversionErrorView.render(data, errorMessage);
-            //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-          });
+
+          if (mapType === "PD") {
+            chiseInstance.saveAsSbml(filename, function (data, errorMessage) {
+              var promptSbmlConversionErrorView =
+                new PromptSbmlConversionErrorView({
+                  el: "#prompt-sbmlConversionError-table",
+                });
+              promptSbmlConversionErrorView.render(data, errorMessage);
+              //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            });
+          } else if (mapType === "SBML") {
+            chiseInstance.saveSbmlForSBML(filename, function (data, errorMessage) {
+              var promptSbmlConversionErrorView =
+                new PromptSbmlConversionErrorView({
+                  el: "#prompt-sbmlConversionError-table",
+                });
+              promptSbmlConversionErrorView.render(data, errorMessage);
+              //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            });
+          }
+
         } else if (fileformat === "gpml") {
           chiseInstance.saveAsGpml(filename, function (data, errorMessage) {
             var promptSbmlConversionErrorView =
@@ -4335,6 +4362,30 @@ var PromptInvalidTypeWarning = Backbone.View.extend({
     return this;
   },
 });
+
+var SifMapWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#sifMapWarning-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#sifMapWarning-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#sifMapWarning-confirm")
+      .on("click", "#sifMapWarning-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+
 var PromtErrorPD2AF = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -6940,6 +6991,7 @@ module.exports = {
   PromptMapTypeView: PromptMapTypeView,
   PromptInvalidFileView: PromptInvalidFileView,
   PromptInvalidTypeWarning: PromptInvalidTypeWarning,
+  SifMapWarning: SifMapWarning,
   PromtErrorPD2AF: PromtErrorPD2AF,
   PromptFileConversionErrorView: PromptFileConversionErrorView,
   ExportErrorView: ExportErrorView,
