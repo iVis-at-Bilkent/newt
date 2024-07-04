@@ -2204,7 +2204,13 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 new PromptEmptyQueryResultView({
                   el: "#prompt-emptyQueryResult-table",
                 }).render();
-              } else {
+              }
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
+              }
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
@@ -2443,7 +2449,13 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else {
+              } 
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
+              }
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
@@ -2741,6 +2753,11 @@ var PathsFromToQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
+              }
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
               } 
               else {
                 new PromptInvalidQueryView({
@@ -2930,6 +2947,7 @@ var CommonStreamQueryView = Backbone.View.extend({
             url: "/utilities/testURL",
             data: { url: queryURL },
             success: function (data) {
+              console.log('recieved data:',data);
               if (!data.error && data.response.statusCode == 200) {
                 if (data.response.body !== "") {
                   var xml = $.parseXML(data.response.body);
@@ -2962,7 +2980,13 @@ var CommonStreamQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else {
+              }
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
+              }
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
@@ -2970,6 +2994,7 @@ var CommonStreamQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("common-stream-spinner");
             },
             error: function (xhr, options, err) {
+              console.log(xhr,options,err);
               new PromptInvalidQueryView({
                 el: "#prompt-invalidQuery-table",
               }).render();
@@ -3124,7 +3149,13 @@ var PathsByURIQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else {
+              } 
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
+              }
+              else {
                 new PromptInvalidURIView({
                   el: "#prompt-invalidURI-table",
                 }).render();
@@ -4095,6 +4126,35 @@ var PromptMapTypeView = Backbone.View.extend({
   },
 });
 
+var InternalServerError = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-internal-server-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-internal-server-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-internal-server-confirm")
+      .on("click", "#prompt-internal-server-confirm", function (evt) {
+        $(self.el).modal("toggle");
+        if (PCdialog == "Neighborhood")
+          appUtilities.neighborhoodQueryView.render();
+        else if (PCdialog == "PathsBetween")
+          appUtilities.pathsBetweenQueryView.render();
+        else if (PCdialog == "PathsFromTo")
+          appUtilities.pathsFromToQueryView.render();
+        else if (PCdialog == "CommonStream")
+          appUtilities.commonStreamQueryView.render();
+      });
+
+    return this;
+  },
+});
 var PromptInvalidQueryView = Backbone.View.extend({
   initialize: function () {
     var self = this;
