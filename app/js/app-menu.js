@@ -838,10 +838,13 @@ module.exports = function() {
           for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
             classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
             // nodeClass may not be defined in the defaultProperties (for edges, for example)
-            if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
-              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
-            }
+            
+            var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(cy.nodes());
+            chiseInstance.removeBackgroundImage(cy.nodes(), bgObj);
+            // if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
+            //   chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
+            //   chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
+            // }
           }
         }
 
