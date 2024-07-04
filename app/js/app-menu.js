@@ -841,10 +841,10 @@ module.exports = function() {
             
             var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(cy.nodes());
             chiseInstance.removeBackgroundImage(cy.nodes(), bgObj);
-            // if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
-            //   chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
-            //   chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
-            // }
+            if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
+            }
           }
         }
 
