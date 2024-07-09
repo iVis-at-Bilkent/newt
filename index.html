@@ -602,15 +602,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li class="dropdown-submenu">
-                    <a
-                      href="#"
-                      id="query-pathwaycommons"
-                      class="dropdown-toggle"
-                      data-toggle="dropdown"
-                    >
-                      Pathway Commons
-                      <!--<b class="right-caret"></b>-->
-                    </a>
+                    <a href="#" id="query-pathwaycommons" class="dropdown-toggle" data-toggle="dropdown">Pathway Commons</a>
                     <ul class="dropdown-menu">
                       <li>
                         <a href="#" id="query-pathsbetween">Paths Between...</a>
@@ -625,6 +617,14 @@
                         <a href="#" id="query-neighborhood">Neighborhood...</a>
                       </li>
                       <li><a href="#" id="query-pathsbyURI">By URI...</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown-submenu">
+                    <a href="#" id="query-wikipathways" class="dropdown-toggle" data-toggle="dropdown">WikiPathways</a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="#" id="query-mapbyWPID">By WPID...</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -2355,12 +2355,7 @@
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
     </div>
 
-    <div
-      id="layout-properties-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    <div id="layout-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn layout table will be shown here -->
     </div>
 
@@ -2368,49 +2363,28 @@
 
     <div id="chemical-container" style="display: none"></div>
 
-    <div
-      id="query-neighborhood-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    <div id="query-neighborhood-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- neighborhood query table will be shown here-->
     </div>
-
-    <div
-      id="query-pathsbetween-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="query-pathsbetween-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- paths between query table will be shown here-->
     </div>
-
-    <div
-      id="query-pathsfromto-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="query-pathsfromto-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- paths from to query table will be shown here-->
     </div>
-
-    <div
-      id="query-commonstream-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="query-commonstream-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- common stream query table will be shown here-->
     </div>
-
-    <div
-      id="query-pathsbyURI-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="query-pathsbyURI-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- paths by URI query table will be shown here-->
+    </div>
+
+    <div id="query-mapbyWPID-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map by WPID query table will be shown here-->
     </div>
 
     <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
@@ -2421,235 +2395,109 @@
       <!-- save dialog will be shown here-->
     </div>
 
-    <div
-      id="user-preferences-save-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    <div id="user-preferences-save-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- save dialog will be shown here-->
     </div>
-    <div
-      id="user-preferences-load-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    <div id="user-preferences-load-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- load dialog will be shown here-->
     </div>
-
-    <div
-      id="prompt-confirmation-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-confirmation-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- confirmation dialog will be shown here-->
     </div>
-
-    <div
-      id="prompt-mapType-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-internal-server-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-invalidQuery-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-requestTimedOut-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-duplicateGeneGiven-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-geneNotExist-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-emptyQueryResult-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-invalidLengthLimit-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-invalidURI-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-invalidFile-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
-      <!-- map type change confirmation dialog will be shown here-->
-    </div>
-
-    <div
-      id="prompt-fileConversionError-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-mapType-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
     
-    <div
-    id="exportError-table"
-    tabindex="-1"
-    class="modal fade"
-    role="dialog"
-    >
+    <div id="prompt-internal-server-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
     </div>
-
-    <div
-      id="prompt-sbmlConversionError-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-invalidQuery-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-requestTimedOut-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-duplicateGeneGiven-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-geneNotExist-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-emptyQueryResult-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-invalidLengthLimit-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-invalidURI-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
 
-    <div
-      id="prompt-invalidURL-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    <div id="prompt-invalidWPID-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-
-    <div
-      id="prompt-invalidImage-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-invalidFile-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-
-    <div
-      id="prompt-invalidEdge-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-fileConversionError-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    <div
-      id="prompt-errorInvalidType-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="exportError-table" tabindex="-1" class="modal fade" role="dialog">
+    </div>
+    
+    <div id="prompt-sbmlConversionError-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    <div
-    id="errorSifMap-table"
-    tabindex="-1"
-    class="modal fade"
-    role="dialog"
-  >
-  </div>
-    <div
-      id="prompt-errorPD2AF-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-invalidURL-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-
+    
+    <div id="prompt-invalidImage-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
+    <div id="prompt-invalidEdge-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    <div id="prompt-errorInvalidType-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    <div id="errorSifMap-table" tabindex="-1" class="modal fade" role="dialog">
+    </div>
+    <div id="prompt-errorPD2AF-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- map type change confirmation dialog will be shown here-->
+    </div>
+    
     <div id="sbgn-bricks-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- reaction templatequery table will be shown here -->
     </div>
-
-    <div
-      id="grid-properties-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="grid-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- grid properties table will be shown here -->
     </div>
-
-    <div
-      id="font-properties-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="font-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn properties table will be shown here -->
     </div>
-
-    <div
-      id="prompt-invalidSchematronFile-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="prompt-invalidSchematronFile-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn schematron validation message dialog will be shown here -->
     </div>
-
-    <div
-      id="infobox-properties-table"
-      tabindex="-1"
-      class="modal fade"
-      role="dialog"
-    >
+    
+    <div id="infobox-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- infobox properties table will be shown here -->
     </div>
 
@@ -3874,6 +3722,36 @@
       </div>
     </script>
 
+    <script type="text/template" id="query-mapbyWPID-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Map By WPID</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=3 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Display map with the specified WPID </span>
+                          </th>
+                      </tr>
+                      <tr>
+                          <td class="caption-style-text">Enter WPID of a map</td>
+                          <td style="padding: 10px;"><input id="query-mapbyWPID-WPID" type="text"  style="width: 300px;" placeholder="e.g. WP554" value= <%= WPID %> > </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-mapbyWPID" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-mapbyWPID" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+
     <script type="text/template" id="prompt-save-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 350px;">
       <div class="modal-content">
@@ -4399,7 +4277,7 @@
       </div>
     </script>
 
-    <!-- Invalid  URI error -->
+    <!-- Invalid URI error -->
     <script type="text/template" id="prompt-invalidURI-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
       <div class="modal-content">
@@ -4425,6 +4303,37 @@
       </div>
       <div class="modal-footer" style="text-align: center">
       <button id="prompt-invalidURI-confirm" class="btn btn-default">OK</button>
+      </div>
+      </div>
+      </div>
+    </script>
+
+    <!-- Invalid WPID error -->
+    <script type="text/template" id="prompt-invalidWPID-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+      <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Error</h4>
+      </div>
+      <div class="modal-body">
+      <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+      <tbody>
+      <tr>
+      <th style="padding-left: 0px;" align="left">
+      <span class="add-on layout-text">Invalid WPID!</span>
+      </th>
+      </tr>
+
+      <tr id="prompt-invalidWPID-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+      <td>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+      <button id="prompt-invalidWPID-confirm" class="btn btn-default">OK</button>
       </div>
       </div>
       </div>

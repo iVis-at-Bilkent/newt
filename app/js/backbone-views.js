@@ -3107,12 +3107,8 @@ var PathsByURIQueryView = Backbone.View.extend({
             cy,
             "currentGeneralProperties"
           );
-          var currentInferNestingOnLoad =
-            currentGeneralProperties.inferNestingOnLoad;
-          var currentLayoutProperties = appUtilities.getScratch(
-            cy,
-            "currentLayoutProperties"
-          );
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+          var currentLayoutProperties = appUtilities.getScratch(cy, "currentLayoutProperties");
 
           chiseInstance.startSpinner("paths-byURI-spinner");
           $.ajax({
@@ -3187,6 +3183,146 @@ var PathsByURIQueryView = Backbone.View.extend({
     $(document)
       .off("click", "#cancel-query-pathsbyURI")
       .on("click", "#cancel-query-pathsbyURI", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+/**
+ * Map By WPID Query view for the Sample Application.
+ */
+var MapByWPIDQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    WPID: "",
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-mapbyWPID-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#query-mapbyWPID-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#save-query-mapbyWPID")
+      .on("click", "#save-query-mapbyWPID", function (evt) {
+        // use the active chise instance
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+        // use the associated cy instance
+        var cy = chiseInstance.getCy();
+
+        self.currentQueryParameters.WPID = document.getElementById(
+          "query-mapbyWPID-WPID"
+        ).value;
+        var wpid = self.currentQueryParameters.WPID.trim();
+
+        if (wpid.length === 0) {
+          document.getElementById("query-mapbyWPID-WPID").focus();
+          return;
+        }
+        // wpid is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+        wpid = wpid.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
+        if (wpid.length === 0) {
+          $(self.el).modal("toggle");
+          new PromptInvalidWPIDView({ el: "#prompt-invalidWPID-table" }).render();
+          return;
+        }
+
+        var queryURL = "https://www.wikipathways.org/wikipathways-assets/pathways/" + wpid + "/" + wpid + ".gpml";
+
+        var filename = "";
+
+        if (filename == "") {
+          filename = wpid;
+        } else {
+          filename = filename + "_" + wpid;
+        }
+        filename = filename + ".nwt";
+
+        var sendMapByWPIDQuery = function () {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+
+          chiseInstance.startSpinner("map-byWPID-spinner");
+          $.ajax({
+            type: "get",
+            url: "/utilities/testURL",
+            data: { url: queryURL },
+            success: function (data) {
+              if (!data.error && data.response.statusCode == 200) {
+                if (data.response.body !== "") {
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = false;
+                  chiseInstance.convertGpmlToSbgnml(data.response.body, async function (data) {
+                    chiseInstance.loadSBGNMLText(data.message, false, filename, cy);
+                    chiseInstance.endSpinner("map-byWPID-spinner");
+                  });
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                } else {
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-emptyQueryResult-table",
+                  }).render();
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                }
+                chiseInstance.endSpinner("map-byWPID-spinner");
+              } 
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
+                chiseInstance.endSpinner("map-byWPID-spinner");
+              }
+              else {
+                new PromptInvalidWPIDView({
+                  el: "#prompt-invalidWPID-table",
+                }).render(); 
+                chiseInstance.endSpinner("map-byWPID-spinner");
+              }
+            },
+            error: function (xhr, options, err) {
+              new PromptInvalidWPIDView({
+                el: "#prompt-invalidWPID-table",
+              }).render();
+              chiseInstance.endSpinner("map-byWPID-spinner");
+            },
+          });
+
+          $(self.el).modal("toggle");          
+        }
+
+        if (cy.nodes().length != 0) {
+          new PromptConfirmationView({
+            el: "#prompt-confirmation-table",
+          }).render(sendMapByWPIDQuery);
+        } else {
+          sendMapByWPIDQuery();
+        }
+        
+      });
+
+    $(document)
+      .off("click", "#cancel-query-mapbyWPID")
+      .on("click", "#cancel-query-mapbyWPID", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -4358,6 +4494,29 @@ var PromptInvalidURIView = Backbone.View.extend({
   },
 });
 
+var PromptInvalidWPIDView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidWPID-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidWPID-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-invalidWPID-confirm")
+      .on("click", "#prompt-invalidWPID-confirm", function (evt) {
+        $(self.el).modal("toggle");
+        appUtilities.mapByWPIDQueryView.render();
+      });
+
+    return this;
+  },
+});
+
 var PromptInvalidURIWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -4373,6 +4532,28 @@ var PromptInvalidURIWarning = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-invalidURI-confirm")
       .on("click", "#prompt-invalidURI-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+var PromptInvalidWPIDWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidWPID-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidWPID-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-invalidWPID-confirm")
+      .on("click", "#prompt-invalidWPID-confirm", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -7043,6 +7224,7 @@ module.exports = {
   PathsFromToQueryView: PathsFromToQueryView,
   CommonStreamQueryView: CommonStreamQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
+  MapByWPIDQueryView: MapByWPIDQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   SaveUserPreferencesView: SaveUserPreferencesView,
@@ -7062,7 +7244,9 @@ module.exports = {
   AnnotationListView: AnnotationListView,
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,
+  PromptInvalidWPIDView: PromptInvalidWPIDView,
   PromptInvalidURIWarning: PromptInvalidURIWarning,
+  PromptInvalidWPIDWarning: PromptInvalidWPIDWarning,
   PromptInvalidURLWarning: PromptInvalidURLWarning,
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,

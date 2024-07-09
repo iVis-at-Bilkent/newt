@@ -3224,14 +3224,11 @@ appUtilities.launchWithModelFile = function() {
                     await promptConfirmationView.render(async function () {
                       await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
                     });
-                    chiseInstance.endSpinner('paths-byURL-spinner')
-  
+                    chiseInstance.endSpinner('paths-byURL-spinner');
                   }
                   else {
                    await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                   chiseInstance.endSpinner('paths-byURL-spinner')
-  
-  
+                   chiseInstance.endSpinner('paths-byURL-spinner');
                   }
                 });
               }
