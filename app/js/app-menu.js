@@ -1485,26 +1485,19 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-
-      // TODO think whether here is the right place to start the spinner
+      // if there is no element in the cy instance, then return directly
+      if(cy.elements().length == 0) {
+        return;
+      }
       console.log("layout-spinner")
       chiseInstance.startSpinner("layout-spinner")
 
       // use the associated cy instance
       setTimeout(() => {
       var cy = chiseInstance.getCy();
-      
-
-      // if there is no element in the cy instance, then return directly
-      if(cy.elements().length == 0) {
-        return;
-      }
 
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
-      
-
       var preferences = {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
