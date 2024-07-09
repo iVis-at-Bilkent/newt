@@ -12,7 +12,7 @@ var _ = require('underscore');
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, promptSaveView, promptConfirmationView,
+  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
 
   function validateSBGNML(xml) {
@@ -151,6 +151,7 @@ module.exports = function() {
   commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   mapByWPIDQueryView = appUtilities.mapByWPIDQueryView = new BackboneViews.MapByWPIDQueryView({el: '#query-mapbyWPID-table'});
+  mapByReactomeIDQueryView = appUtilities.mapByReactomeIDQueryView = new BackboneViews.MapByReactomeIDQueryView({el: '#query-mapbyReactomeID-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
   saveUserPreferencesView =  appUtilities.saveUserPreferencesView = new BackboneViews.SaveUserPreferencesView({el: '#user-preferences-save-table'});
@@ -168,7 +169,9 @@ module.exports = function() {
   infoboxPropertiesView = appUtilities.infoboxPropertiesView = new BackboneViews.InfoboxPropertiesView({el: '#infobox-properties-table'});
   promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
   promptInvalidWPIDView = appUtilities.promptInvalidWPIDView = new BackboneViews.PromptInvalidWPIDView({el: '#prompt-invalidWPID-table'});
+  promptInvalidReactomeIDView = appUtilities.promptInvalidReactomeIDView = new BackboneViews.PromptInvalidReactomeIDView({el: '#prompt-invalidReactomeID-table'});
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
+  promptInvalidReactomeIDWarning = appUtilities.promptInvalidReactomeIDWarning = new BackboneViews.PromptInvalidReactomeIDWarning({el: '#prompt-invalidReactomeID-table'});
   promptInvalidWPIDWarning = appUtilities.promptInvalidWPIDWarning = new BackboneViews.PromptInvalidWPIDWarning({el: '#prompt-invalidWPID-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
@@ -1319,6 +1322,10 @@ module.exports = function() {
 
     $("#query-mapbyWPID").click(function (e) {
         mapByWPIDQueryView.render();
+    });
+
+    $("#query-mapbyReactomeID").click(function (e) {
+      mapByReactomeIDQueryView.render();
     });
 
     $("#grid-properties").click(function (e) {

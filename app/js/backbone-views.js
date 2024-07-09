@@ -3330,6 +3330,146 @@ var MapByWPIDQueryView = Backbone.View.extend({
   },
 });
 
+/**
+ * Map By Reactome ID Query view for the Sample Application.
+ */
+var MapByReactomeIDQueryView = Backbone.View.extend({
+  defaultQueryParameters: {
+    ReactomeID: "",
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#query-mapbyReactomeID-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#query-mapbyReactomeID-template").html());
+    self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#save-query-mapbyReactomeID")
+      .on("click", "#save-query-mapbyReactomeID", function (evt) {
+        // use the active chise instance
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+        // use the associated cy instance
+        var cy = chiseInstance.getCy();
+
+        self.currentQueryParameters.ReactomeID = document.getElementById(
+          "query-mapbyReactomeID-ReactomeID"
+        ).value;
+        var reactomeid = self.currentQueryParameters.ReactomeID.trim();
+
+        if (reactomeid.length === 0) {
+          document.getElementById("query-mapbyReactomeID-ReactomeID").focus();
+          return;
+        }
+        // reactomeid is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+        reactomeid = reactomeid.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
+        if (reactomeid.length === 0) {
+          $(self.el).modal("toggle");
+          new PromptInvalidReactomeIDView({ el: "#prompt-invalidReactomeID-table" }).render();
+          return;
+        }
+
+        var queryURL = "https://reactome.org/ContentService/exporter/event/" + reactomeid + ".sbgn";
+
+        var filename = "";
+
+        if (filename == "") {
+          filename = reactomeid;
+        } else {
+          filename = filename + "_" + reactomeid;
+        }
+        filename = filename + ".nwt";
+
+        var sendMapByReactomeIDQuery = function () {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+          var currentLayoutProperties = appUtilities.getScratch(cy, "currentLayoutProperties");
+
+          chiseInstance.startSpinner("map-byReactomeID-spinner");
+          $.ajax({
+            type: "get",
+            url: "/utilities/testURL",
+            data: { url: queryURL },
+            success: function (data) {
+              if (!data.error && data.response.statusCode == 200) {
+                if (data.response.body !== "") {
+                  var xml = $.parseXML(data.response.body);
+                  $(document).trigger("sbgnvizLoadFile", [filename, cy]);
+                  currentGeneralProperties.inferNestingOnLoad = true;
+                  chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, undefined);
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
+                  $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
+                  chiseInstance.endSpinner("map-byReactomeID-spinner");
+                } else {
+                  new PromptEmptyQueryResultView({
+                    el: "#prompt-emptyQueryResult-table",
+                  }).render();
+                }
+              } else if (data.error) {
+                let { code } = data.error;
+                if (code === "ESOCKETTIMEDOUT") {
+                  new PromptRequestTimedOutView({
+                    el: "#prompt-requestTimedOut-table",
+                  }).render();
+                }
+                chiseInstance.endSpinner("map-byReactomeID-spinner");
+              } 
+              else if (!data.error && data.response.statusCode == 500){
+                new InternalServerError({
+                  el: "#prompt-internal-server-table",
+                }).render();
+                chiseInstance.endSpinner("map-byReactomeID-spinner");
+              }
+              else {
+                new PromptInvalidReactomeIDView({
+                  el: "#prompt-invalidReactomeID-table",
+                }).render(); 
+                chiseInstance.endSpinner("map-byReactomeID-spinner");
+              }
+            },
+            error: function (xhr, options, err) {
+              new PromptInvalidReactomeIDView({
+                el: "#prompt-invalidReactomeID-table",
+              }).render();
+              chiseInstance.endSpinner("map-byReactomeID-spinner");
+            },
+          });
+
+          $(self.el).modal("toggle");          
+        }
+
+        if (cy.nodes().length != 0) {
+          new PromptConfirmationView({
+            el: "#prompt-confirmation-table",
+          }).render(sendMapByReactomeIDQuery);
+        } else {
+          sendMapByReactomeIDQuery();
+        }
+        
+      });
+
+    $(document)
+      .off("click", "#cancel-query-mapbyReactomeID")
+      .on("click", "#cancel-query-mapbyReactomeID", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
 /*
   There was a side effect of using this modal prompt when clicking on New.
   If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
@@ -4517,6 +4657,29 @@ var PromptInvalidWPIDView = Backbone.View.extend({
   },
 });
 
+var PromptInvalidReactomeIDView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidReactomeID-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidReactomeID-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-invalidReactomeID-confirm")
+      .on("click", "#prompt-invalidReactomeID-confirm", function (evt) {
+        $(self.el).modal("toggle");
+        appUtilities.mapByReactomeIDQueryView.render();
+      });
+
+    return this;
+  },
+});
+
 var PromptInvalidURIWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -4554,6 +4717,28 @@ var PromptInvalidWPIDWarning = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-invalidWPID-confirm")
       .on("click", "#prompt-invalidWPID-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+var PromptInvalidReactomeIDWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidReactomeID-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-invalidReactomeID-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-invalidReactomeID-confirm")
+      .on("click", "#prompt-invalidReactomeID-confirm", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -7225,6 +7410,7 @@ module.exports = {
   CommonStreamQueryView: CommonStreamQueryView,
   PathsByURIQueryView: PathsByURIQueryView,
   MapByWPIDQueryView: MapByWPIDQueryView,
+  MapByReactomeIDQueryView: MapByReactomeIDQueryView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   SaveUserPreferencesView: SaveUserPreferencesView,
@@ -7245,8 +7431,10 @@ module.exports = {
   AnnotationElementView: AnnotationElementView,
   PromptInvalidURIView: PromptInvalidURIView,
   PromptInvalidWPIDView: PromptInvalidWPIDView,
+  PromptInvalidReactomeIDView: PromptInvalidReactomeIDView,
   PromptInvalidURIWarning: PromptInvalidURIWarning,
   PromptInvalidWPIDWarning: PromptInvalidWPIDWarning,
+  PromptInvalidReactomeIDWarning: PromptInvalidReactomeIDWarning,
   PromptInvalidURLWarning: PromptInvalidURLWarning,
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
