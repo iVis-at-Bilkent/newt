@@ -1,29 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="800px" height="800px" viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve">
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100">
   <defs>
-    <filter id="sharpen" x="0" y="0">
-      <feConvolveMatrix in="SourceGraphic"
-                        order="3"
-                        kernelMatrix="0 -1 0 -1 5 -1 0 -1 0"
-                        edgeMode="duplicate"
-                        preserveAlpha="true"/>
-    </filter>
-    <filter id="enhance" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%">
-      <feComponentTransfer>
-        <feFuncR type="linear" slope="1.0" intercept="0"/>
-        <feFuncG type="linear" slope="1.0" intercept="0"/>
-        <feFuncB type="linear" slope="1.0" intercept="0"/>
-      </feComponentTransfer>
-    </filter>
+    <!-- TODO viewBox probably wrong -->
+    <symbol id="EndoplasmicReticulum" overflow="visible" preserveAspectRatio="none" viewBox="0 0 100 100">
+      <desc>EndoplasmicReticulum</desc>
+      <path fill="white" stroke="black" vector-effect="non-scaling-stroke" d="m73.52756,56.60967c-5.62457,-18.60675 23.51463,-32.43358 23.40173,-45.06604c-0.34426,-4.86102 -10.48934,-8.89743 -18.28974,-5.33395c-17.04119,7.87556 -15.64949,29.30503 -21.20533,42.23387c-0.35661,3.60951 -7.36274,2.46926 -7.74964,-0.48694c-5.8512,-11.38871 17.13534,-24.48692 5.96075,-29.42586c-19.63467,-8.16979 -28.75184,21.15346 -22.0682,28.81784c7.4956,14.17602 -2.17949,24.40679 -6.74689,15.49637c-2.44209,-5.30613 6.06605,-11.08445 -0.80351,-16.17689c-4.31991,-2.79993 -11.75555,-0.64618 -16.15468,3.0943c-12.89117,10.73799 4.72957,40.98145 20.96467,36.14635c4.69833,-1.95989 -3.23603,-8.70151 3.90717,-9.59951c7.29767,-0.81255 5.17628,6.18889 7.68745,9.22691c2.3071,4.0509 4.83232,8.35538 10.7626,11.6237c4.78642,2.53724 15.29437,2.11225 16.77148,-1.95795c2.0318,-9.26291 -26.11129,-28.35848 -10.68903,-31.2815c18.55524,-2.71473 4.74866,23.84573 24.31006,29.69419c9.50188,2.02824 15.63902,-0.62194 14.81255,-4.03272c-2.74586,-11.26327 -25.13557,-22.6802 -24.96441,-33.14968"/>
+    </symbol>
   </defs>
-  <image id="image0" width="200" height="200" x="0" y="0"
-         href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAQAAABHeoekAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElN
-RQfoBh4MFA1QQLTPAAAAbElEQVQY031QSRLAMAgSJ///Mj0oRtNMPLWRRQDtMoQ+bM0NGM+BAc38
-XBc5pwNqjeJ3QFJBdkbcAG7fY+By3ruJWlInMsHjyMoCXgGZgKM6emf+tO4WU9F1nvgEjPUHKUQT
-p8nus4pDNai0H4rDLx5KG+4kAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDI0LTA2LTMwVDEyOjIwOjEz
-KzAwOjAwxgZSmgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyNC0wNi0zMFQxMjoyMDoxMyswMDowMLdb
-6iYAAAAASUVORK5CYII=" filter="url(#sharpen) url(#enhance)"/>
+  <use href="#EndoplasmicReticulum" x="0" y="0" width="100" height="100" />
 </svg>

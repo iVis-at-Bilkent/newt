@@ -1,20 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve">
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100">
   <defs>
-    <filter id="darken">
-      <feComponentTransfer>
-        <feFuncR type="linear" slope="0.5"/>
-        <feFuncG type="linear" slope="0.5"/>
-        <feFuncB type="linear" slope="0.5"/>
-      </feComponentTransfer>
-    </filter>
+    <!-- TODO viewBox probably wrong -->
+    <symbol id="SarcoplasmicReticulum" overflow="visible" preserveAspectRatio="none" viewBox="0 0 100 100">
+      <desc>SarcoplasmicReticulum</desc>
+      <path vector-effect="non-scaling-stroke" fill="white" stroke="black" d="m46.60182,1.40724c-32.37224,1.34138 -36.32004,22.77011 -26.50318,38.12777c9.31826,18.3425 -18.7656,30.15016 2.56955,49.37807c16.82126,13.11594 46.33175,6.10508 52.12638,-8.56826c5.89916,-15.24847 -10.95099,-26.0272 -3.29316,-40.96135c10.85342,-19.88432 -0.77615,-38.13043 -24.89959,-37.97624z"/>
+    </symbol>
   </defs>
-  <image id="image0" width="200" height="187.5" x="0" y="6.25"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAQAAABHeoekAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElN
-RQfoBh4MGBJx/fY2AAAASUlEQVQY061QQQoAMAjS6P9fbocRGQu2wzxpZIYMbDAJACCYzKehLtvk
-V22nv3PDBa8LQf2CUSHfIvRoD/wW0bscqtYPuvbZV1jdOhYhbBDI2gAAACV0RVh0ZGF0ZTpjcmVh
-dGUAMjAyNC0wNi0zMFQxMjoyNDoxOCswMDowMM3qphoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjQt
-MDYtMzBUMTI6MjQ6MTgrMDA6MDC8tx6mAAAAAElFTkSuQmCC" filter="url(#darken)" />
+  <use href="#SarcoplasmicReticulum" x="0" y="0" width="100" height="100" />
 </svg>
