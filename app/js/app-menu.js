@@ -384,6 +384,7 @@ module.exports = function() {
     });
 
     $("#file-input").change(function (e, fileObject) {
+      
 
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -392,18 +393,67 @@ module.exports = function() {
       var cy = appUtilities.getActiveCy();
 
       if ($(this).val() != "" || fileObject) {
-        var file = this.files[0] || fileObject;
-        var loadCallbackSBGNMLValidity = function (text) {
-          //validateSBGNML(text);
-        }
+        // var file = this.files[0] || fileObject;
+        var file = fileObject;
+
+        var params, caller;
+        var fileExtension = file.name.split('.').pop();
+
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
+
+        if(fileExtension == 'sif'){
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          params = [layoutBy, loadCallbackInvalidityWarning];
+          caller = chiseInstance.loadSIFFile;
+        }
+        else if(fileExtension == 'sbml'){
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          var success = function(data){
+            chiseInstance.loadSBMLText(data.message, false, file.name, cy);
+          }; 
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";         
+          },
+          caller = chiseInstance.loadSbmlForSBML; 
+          params = [success, error, layoutBy];
+        }
+        else if(fileExtension == 'xml'){
+          appUtilities.setFileContent(file.name);
+          caller = chiseInstance.loadCellDesigner;
+          var success = function(data){
+            chiseInstance.loadSBGNMLText(data, true, file.name, cy);
+          }
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!"; 
+          };
+          params = [success, error];
+        }
+        else if(fileExtension == 'gpml'){
+          // TODO
+        }
+        else{
+          var loadCallbackSBGNMLValidity = function (text) {
+            //validateSBGNML(text);
+          }
+          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning];
+          caller = chiseInstance.loadNwtFile;
+        }
+
         if(cy.elements().length != 0) {
-          promptConfirmationView.render(function(){chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+          promptConfirmationView.render(() => {
+            setTimeout(() => caller(file, ...params), 150);
+          });
         }
         else {
-          chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          caller(file, ...params);
         }
         $(this).val("");
       }
@@ -539,9 +589,6 @@ module.exports = function() {
       // use cy instance assocated with chise instance
       var cy = appUtilities.getActiveCy();
 
-      var loadCallbackInvalidityWarning  = function () {
-        promptInvalidFileView.render();
-      }
 
       if ($(this).val() != "") {
         var file = this.files[0];

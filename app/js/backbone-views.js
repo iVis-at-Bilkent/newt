@@ -4355,12 +4355,7 @@ var PromptConfirmationView = Backbone.View.extend({
       .off("click", "#prompt-confirmation-accept")
       .on("click", "#prompt-confirmation-accept", function (evt) {
         $(self.el).modal("toggle");
-        
-        // This timeout is to insure that the modal disappers properly. 
-        // Without this sometimes there would be weird behavior on file loading.
-        setTimeout(() => {
-          afterFunction();
-        }, 500);
+        afterFunction();
       });
 
     $(document)
