@@ -393,8 +393,7 @@ module.exports = function() {
       var cy = appUtilities.getActiveCy();
 
       if ($(this).val() != "" || fileObject) {
-        // var file = this.files[0] || fileObject;
-        var file = fileObject;
+        var file = this.files[0] || fileObject;
 
         var params, caller;
         var fileExtension = file.name.split('.').pop();
@@ -425,19 +424,29 @@ module.exports = function() {
           params = [success, error, layoutBy];
         }
         else if(fileExtension == 'xml'){
-          appUtilities.setFileContent(file.name);
-          caller = chiseInstance.loadCellDesigner;
+          appUtilities.setFileContent(file.name); 
           var success = function(data){
             chiseInstance.loadSBGNMLText(data, true, file.name, cy);
-          }
+          };
           var error = function(data){
             promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!"; 
+            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";  
           };
+          caller = chiseInstance.loadCellDesigner;
           params = [success, error];
         }
         else if(fileExtension == 'gpml'){
-          // TODO
+          appUtilities.setFileContent(file.name);
+          var success = function(data){
+            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+          };
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            
+          };
+          caller = chiseInstance.loadGpml;
+          params = [success, error];
         }
         else{
           var loadCallbackSBGNMLValidity = function (text) {
@@ -469,7 +478,8 @@ module.exports = function() {
       if ($(this).val() != "") {
         var file = this.files[0];
         appUtilities.setFileContent(file.name);
-        chiseInstance.loadCellDesigner(file,  success = function(data){
+        chiseInstance.loadCellDesigner(file, 
+        success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
               chiseInstance.loadSBGNMLText(data, true, file.name, cy);
@@ -481,8 +491,7 @@ module.exports = function() {
         },
         error = function(data){
           promptFileConversionErrorView.render();          
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";  
         });
        
         $(this).val("");
