@@ -3,10 +3,10 @@
     "e2e": "node e2e-test-runner.js",
     "cypress": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug",
+    "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug && node time-stamper.js",
     "watch-js": "nodemon -e js --watch app --ignore app/bundle.js -x \"npm run build-bundle-js\"",
     "watch-server": "nodemon server.js",
-    "release-build": "npm run build-bundle-js",
+    "release-build": "npm run build-bundle-js && node time-stamper.js",
     "debug-build": "parallelshell \"npm run watch-js\" \"npm run watch-server\""
   },
   "repository": {
@@ -44,6 +44,7 @@
     "intro.js": "2.9.3",
     "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",
+    "jsdom": "^24.1.0",
     "konva": "^7.0.3",
     "libxmljs": "^1.0.11",
     "lodash.get": "^4.4.2",
