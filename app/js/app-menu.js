@@ -819,7 +819,7 @@ module.exports = function() {
       // get and set properties from file
       var properties = chiseInstance.getMapProperties();
       // init map properties
-      var mapProperties = ( properties && properties.mapProperties ) ? properties.mapProperties : {};
+      var mapProperties = ( properties && properties['nwt:mapProperties'] ) ? properties['nwt:mapProperties'] : {};
 
       var urlParams = appUtilities.getScratch(cy, 'urlParams');
 

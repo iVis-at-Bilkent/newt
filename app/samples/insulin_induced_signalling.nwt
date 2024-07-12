@@ -30,7 +30,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -54,11 +55,11 @@
         <highlightColor>#0B9BCD</highlightColor>
         <extraHighlightThickness>2</extraHighlightThickness>
         <mapPD2AFConverted>false</mapPD2AFConverted>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="Insulin_signaling" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>574.1738672665772</w>
           <h>509.73980115702</h>
           <minW>0</minW>
@@ -67,7 +68,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Insulin_signaling"/>
       <bbox x="-268.9719229858166" y="-268.86990057851" w="602.1738672665772" h="537.73980115702"/>

@@ -42,7 +42,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -68,11 +69,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="cytosol" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>649.8796627465442</w>
           <h>498.4864950051295</h>
           <minW>0</minW>
@@ -81,7 +82,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="cytosol"/>
       <bbox x="78.06039920578644" y="69.80137208480892" w="677.8796627465442" h="526.4864950051294"/>
@@ -112,7 +113,7 @@
     </glyph>
     <glyph id="http___purl.org_pc2_4_Complex_30d74cbefecaa3b05b9cdfacad488329" class="complex" compartmentRef="cytosol">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>63.25</w>
           <h>91.5</h>
           <minW>0</minW>
@@ -121,7 +122,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="2xPNPO:2xFMN"/>
       <bbox x="160.03317052683667" y="272.06126801336694" w="83.25" h="111.5"/>
@@ -140,7 +141,7 @@
     </glyph>
     <glyph id="http___purl.org_pc2_4_Complex_bb744f8a7e7637ffafa1c8061c4977a0" class="complex" compartmentRef="cytosol">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>63.25</w>
           <h>91.49999999999994</h>
           <minW>0</minW>
@@ -149,7 +150,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="2xPDXK:2xZn2+"/>
       <bbox x="353.36870235714605" y="469.16286708993835" w="83.25" h="111.49999999999994"/>
@@ -172,7 +173,7 @@
     </glyph>
     <glyph id="http___purl.org_pc2_4_Complex_1727e90f52ed647723f8fec499a6df32" class="complex" compartmentRef="cytosol">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>112.5</w>
           <h>96.5</h>
           <minW>0</minW>
@@ -181,7 +182,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="2xAOX1:cofactors"/>
       <clone/>

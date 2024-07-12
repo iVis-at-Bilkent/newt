@@ -35,7 +35,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -59,11 +60,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="glyph0" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>1177.25</w>
           <h>945.7500000000002</h>
           <minW>0</minW>
@@ -72,7 +73,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="cytosol"/>
       <bbox x="373.875" y="219.375" w="1205.25" h="973.7500000000002"/>
@@ -227,7 +228,7 @@
     </glyph>
     <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>1142.25</w>
           <h>33.25</h>
           <minW>0</minW>
@@ -236,7 +237,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nucleus"/>
       <bbox x="391.375" y="1114.3750000000002" w="1170.25" h="61.25"/>

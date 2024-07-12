@@ -30,7 +30,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -54,11 +55,11 @@
         <highlightColor>#0B9BCD</highlightColor>
         <extraHighlightThickness>2</extraHighlightThickness>
         <mapPD2AFConverted>false</mapPD2AFConverted>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="compartment_1" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>783.7629090663393</w>
           <h>418.714438433392</h>
           <minW>0</minW>
@@ -67,7 +68,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="compartment"/>
       <bbox x="-405.88145453316963" y="-254.54164147490607" w="811.7629090663393" h="446.714438433392"/>

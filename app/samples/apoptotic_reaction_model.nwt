@@ -25,7 +25,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -49,7 +50,7 @@
         <highlightColor>#0B9BCD</highlightColor>
         <extraHighlightThickness>2</extraHighlightThickness>
         <mapPD2AFConverted>false</mapPD2AFConverted>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="__s0" class="simple molecule">
       <label text="L(bf=None)"/>

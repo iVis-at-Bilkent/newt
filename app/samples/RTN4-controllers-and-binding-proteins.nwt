@@ -27,7 +27,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -48,7 +49,7 @@
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
         <mapName>RTN4 controllers and binding proteins</mapName>
         <mapDescription/>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_a02f454b-ac83-4785-bc95-41f7fcc3b317" class="SIF macromolecule">
       <label text="RTN4"/>

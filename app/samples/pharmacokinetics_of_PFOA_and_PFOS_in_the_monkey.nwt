@@ -30,7 +30,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -54,11 +55,11 @@
         <highlightColor>#0B9BCD</highlightColor>
         <extraHighlightThickness>2</extraHighlightThickness>
         <mapPD2AFConverted>false</mapPD2AFConverted>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="Plasma" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>208.5566328113686</w>
           <h>209.72752781896463</h>
           <minW>0</minW>
@@ -67,7 +68,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Plasma"/>
       <bbox x="-122.27895031599289" y="-254.44068583001317" w="236.5566328113686" h="237.72752781896463"/>
@@ -133,7 +134,7 @@
     </glyph>
     <glyph id="Gut" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>183.83820536007585</w>
           <h>142.87779370681346</h>
           <minW>0</minW>
@@ -142,7 +143,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Gut"/>
       <bbox x="-46.76757916472019" y="75.9042319456386" w="211.83820536007585" h="170.87779370681346"/>
@@ -172,7 +173,7 @@
     </glyph>
     <glyph id="Liver" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>155.0629319278874</w>
           <h>77.55535716139892</h>
           <minW>0</minW>
@@ -181,7 +182,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Liver"/>
       <bbox x="-256.9352197673408" y="113.85770581940794" w="183.0629319278874" h="105.55535716139892"/>
@@ -201,7 +202,7 @@
     </glyph>
     <glyph id="Fat" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>64.62351280123875</w>
           <h>81.21218927601043</h>
           <minW>0</minW>
@@ -210,7 +211,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Fat"/>
       <bbox x="-411.21229250605927" y="33.37165416832451" w="92.62351280123875" h="109.21218927601043"/>
@@ -230,7 +231,7 @@
     </glyph>
     <glyph id="Skin" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>72.95319030108405</w>
           <h>101.94295184594326</h>
           <minW>0</minW>
@@ -239,7 +240,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Skin"/>
       <bbox x="-271.85518697458406" y="-86.10552615061289" w="100.95319030108405" h="129.94295184594324"/>
@@ -259,7 +260,7 @@
     </glyph>
     <glyph id="Rest_of_body" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>81.02048748829759</w>
           <h>82.87454157811527</h>
           <minW>0</minW>
@@ -268,7 +269,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Rest of body"/>
       <bbox x="-410.37701844475185" y="-159.38159558471557" w="109.02048748829759" h="110.87454157811527"/>
@@ -288,7 +289,7 @@
     </glyph>
     <glyph id="Kidney" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>83.77063901082221</w>
           <h>70.4696022407131</h>
           <minW>0</minW>
@@ -297,7 +298,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Kidney"/>
       <bbox x="-372.11775658543934" y="-280.38847633666035" w="111.77063901082221" h="98.4696022407131"/>
@@ -315,7 +316,7 @@
     </glyph>
     <glyph id="Filtrate" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>104.87909226713666</w>
           <h>174.01024783623757</h>
           <minW>0</minW>
@@ -324,7 +325,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Filtrate"/>
       <bbox x="166.6800904307902" y="-211.42992134220214" w="132.87909226713666" h="202.01024783623757"/>

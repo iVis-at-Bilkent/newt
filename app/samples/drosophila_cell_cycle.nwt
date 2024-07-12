@@ -51,7 +51,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>8</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -77,11 +78,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>8</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>848.0295882260855</w>
           <h>645.125</h>
           <minW>0</minW>
@@ -90,14 +91,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Cytoplasm"/>
       <bbox x="324.2204117739145" y="-9.25" w="892.0295882260855" h="689.125"/>
     </glyph>
     <glyph id="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815" class="compartment" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>798.7795882260855</w>
           <h>311.37499999999994</h>
           <minW>0</minW>
@@ -106,7 +107,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Nucleus"/>
       <bbox x="348.8454117739145" y="233.50000000000003" w="842.7795882260855" h="355.37499999999994"/>
@@ -118,7 +119,7 @@
     </glyph>
     <glyph id="275a0119-f0d3-237f-170f-c94f9eca909c" class="complex" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -127,7 +128,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="preMPF"/>
       <bbox x="465.375" y="331.03125000000006" w="100.25" h="112.875"/>
@@ -150,7 +151,7 @@
     </glyph>
     <glyph id="c3a94e68-cca7-3c6a-f546-33c23dc59923" class="complex" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -159,7 +160,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MPF"/>
       <bbox x="847.375" y="332.03125000000006" w="100.25" h="112.875"/>
@@ -328,7 +329,7 @@
     </glyph>
     <glyph id="nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b" class="complex" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -337,7 +338,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="preMPF"/>
       <bbox x="465.375" y="21" w="100.25" h="112.875"/>
@@ -360,7 +361,7 @@
     </glyph>
     <glyph id="89360553-bab4-532a-c6c7-624272c4e43b" class="complex" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -369,7 +370,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MPF"/>
       <bbox x="845.875" y="22" w="100.25" h="112.875"/>

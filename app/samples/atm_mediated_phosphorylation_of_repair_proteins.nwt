@@ -42,7 +42,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -66,11 +67,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nucleoplasm" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>945.9813811844967</w>
           <h>691.7670512250039</h>
           <minW>0</minW>
@@ -79,14 +80,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nucleoplasm"/>
       <bbox x="60.21141431603337" y="44.41926938166296" w="973.9813811844967" h="719.7670512250039"/>
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2697" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>124.5</w>
           <h>139.75</h>
           <minW>0</minW>
@@ -95,7 +96,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="53BP1:H2AX complex&#xA;at site of double-strand break"/>
       <bbox x="725.05372614112" y="472.4750746025246" w="144.5" h="159.75"/>
@@ -122,7 +123,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2701" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>124.5</w>
           <h>139.75</h>
           <minW>0</minW>
@@ -131,7 +132,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="BRCA1:53BP1 complex&#xA;at site of DNA double-strand break"/>
       <bbox x="874.0677955005301" y="305.4589063319209" w="144.5" h="159.75"/>
@@ -162,7 +163,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2695" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>63.25</w>
           <h>86.5</h>
           <minW>0</minW>
@@ -171,7 +172,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MDC1/NFBD1:gamma&#xA;H2AX complex"/>
       <bbox x="591.0707011075036" y="60.044269381662986" w="83.25" h="106.5"/>
@@ -190,7 +191,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2694" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>124.5</w>
           <h>99.625</h>
           <minW>0</minW>
@@ -199,7 +200,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="gamma H2AX:MDC1/NFBD1 complex&#xA;at site of DNA double-strand break"/>
       <bbox x="568.3077857135538" y="535.7596450387515" w="144.5" h="119.625"/>
@@ -222,7 +223,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2698" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>124.5</w>
           <h>99.625</h>
           <minW>0</minW>
@@ -231,7 +232,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="gamma-H2AX:NBS1 complex&#xA;at the site of double-strand break"/>
       <bbox x="297.5287109506822" y="388.92193702165366" w="144.5" h="119.625"/>
@@ -274,7 +275,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex465" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>112.5</w>
           <h>86.5</h>
           <minW>0</minW>
@@ -283,7 +284,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MRN"/>
       <bbox x="274.23006591273156" y="248.4785957006104" w="132.5" h="106.5"/>
@@ -302,7 +303,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2700" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>124.5</w>
           <h>139.75</h>
           <minW>0</minW>
@@ -311,7 +312,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="DNA double-strand break&#xA;ends: MRN complex"/>
       <bbox x="75.83641431603334" y="356.89462451538236" w="144.5" h="159.75"/>
@@ -382,7 +383,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2696" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>124.5</w>
           <h>94.62499999999999</h>
           <minW>0</minW>
@@ -391,7 +392,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="ATM associated with DNA&#xA;double-strand break ends"/>
       <bbox x="703.045283111857" y="65.49784613827416" w="144.5" h="114.62499999999999"/>
@@ -426,7 +427,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2693" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>83.25</w>
           <h>99.62499999999994</h>
           <minW>0</minW>
@@ -435,7 +436,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="gamma H2AX-coated DNA&#xA;double-strand break ends"/>
       <bbox x="482.4269164951279" y="415.9274321040441" w="103.25" h="119.62499999999994"/>
@@ -454,7 +455,7 @@
     </glyph>
     <glyph id="http___www.reactome.org_biopax_48887Complex2699" class="complex" compartmentRef="nucleoplasm">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>112.5</w>
           <h>38.25</h>
           <minW>0</minW>
@@ -463,7 +464,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="RAD50:MRE11 complex"/>
       <bbox x="354.17466305127505" y="168.8256888954739" w="132.5" h="58.25"/>

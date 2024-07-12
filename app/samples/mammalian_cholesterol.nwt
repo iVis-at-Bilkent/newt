@@ -55,7 +55,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -79,11 +80,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_d80975d5-33e6-4030-ae3e-081c9946af8c" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>402.9657795601911</w>
           <h>809.3296691717843</h>
           <minW>0</minW>
@@ -92,7 +93,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="ENDOPLASMIC RETICULUM"/>
       <bbox x="1204.2635795788588" y="512.7510416579494" w="430.9657795601911" h="837.3296691717843"/>
@@ -173,7 +174,7 @@
     </glyph>
     <glyph id="nwtN_d919a217-c1db-4156-9d7c-271a53e28478" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>666.436039113803</w>
           <h>281.0304480645914</h>
           <minW>0</minW>
@@ -182,7 +183,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MITOCHONDRIA"/>
       <bbox x="476.51908545112155" y="-106.24061871524418" w="694.436039113803" h="309.0304480645914"/>
@@ -233,7 +234,7 @@
     </glyph>
     <glyph id="nwtN_b379edf2-38a1-40e9-b1a5-f3399eb505ea" class="submap" compartmentRef="nwtN_d919a217-c1db-4156-9d7c-271a53e28478">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>163.26265520147876</w>
           <h>80</h>
           <minW>0</minW>
@@ -242,7 +243,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Mitochondiral β Oxidation&#xA;of Fatty Acids"/>
       <bbox x="492.64408545112155" y="-90.11561871524418" w="163.26265520147876" h="80"/>
@@ -253,7 +254,7 @@
     </glyph>
     <glyph id="nwtN_b8ea3b14-b286-4491-9fba-d7f439bca487" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>666.436039113803</w>
           <h>1058.6762484812816</h>
           <minW>0</minW>
@@ -262,7 +263,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="PEROXISOME"/>
       <bbox x="476.51908545112155" y="260.1919969829262" w="694.436039113803" h="1086.6762484812816"/>
@@ -303,7 +304,7 @@
     </glyph>
     <glyph id="7b5ce96a-9a3f-bc1c-479f-68ce42854243" class="submap" compartmentRef="nwtN_b8ea3b14-b286-4491-9fba-d7f439bca487">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>169.607015710973</w>
           <h>80</h>
           <minW>0</minW>
@@ -312,7 +313,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Peroxiomal β Oxidation&#xA;of Long Chain Fatty Acids"/>
       <bbox x="492.64408545112155" y="276.31699698292624" w="169.607015710973" h="80"/>
@@ -447,7 +448,7 @@
     </glyph>
     <glyph id="9311cd6f-197e-8525-1c74-87b0fa878599" class="submap" compartmentRef="nwtN_b8ea3b14-b286-4491-9fba-d7f439bca487">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>154.97369458295108</w>
           <h>107.56385830255554</h>
           <minW>0</minW>
@@ -456,7 +457,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Protein Prenylation"/>
       <bbox x="712.6837478478565" y="1223.1793871616521" w="154.97369458295108" h="107.56385830255554"/>

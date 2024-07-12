@@ -23,7 +23,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -46,7 +47,7 @@
         <mapDescription/>
         <highlightColor>#0B9BCD</highlightColor>
         <extraHighlightThickness>2</extraHighlightThickness>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" class="SIF macromolecule">
       <label text="AKT2"/>
@@ -54,7 +55,7 @@
     </glyph>
     <glyph id="nwtN_a42552e1-2e91-4e3b-ba3d-38a2c66db7e7" class="topology group">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>54.93212890625</w>
           <h>73.3</h>
           <minW>0</minW>
@@ -63,7 +64,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <bbox x="227.41775026970197" y="-35.40266630103105" w="82.93212890625" h="101.3"/>
       <glyph id="nwtN_0b329cff-4297-48af-b42a-13a387a590b6" class="SIF macromolecule">
@@ -77,7 +78,7 @@
     </glyph>
     <glyph id="nwtN_ab3c6a09-0cf8-4aa4-a7f8-87b06202c08f" class="topology group">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>359.38505859375</w>
           <h>393.7</h>
           <minW>0</minW>
@@ -86,7 +87,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <bbox x="-276.3468361316604" y="-112.31946189997166" w="387.38505859375" h="421.7"/>
       <glyph id="nwtN_44dde6a7-4db1-41d5-a20d-877943d5ba57" class="SIF macromolecule">
@@ -280,7 +281,7 @@
     </glyph>
     <glyph id="nwtN_90e02f75-5f7e-401b-af8c-783b8cac432f" class="topology group">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>370.73388671875006</w>
           <h>393.70000000000005</h>
           <minW>0</minW>
@@ -289,7 +290,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <bbox x="207.3889434860507" y="173.37191833399436" w="398.73388671875006" h="421.70000000000005"/>
       <glyph id="nwtN_efe40d94-dc2c-49d4-88f1-b01d5a0b6b6e" class="SIF macromolecule">
