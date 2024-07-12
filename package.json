@@ -3,10 +3,10 @@
     "e2e": "node e2e-test-runner.js",
     "cypress": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug && node time-stamper.js",
+    "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug",
     "watch-js": "nodemon -e js --watch app --ignore app/bundle.js -x \"npm run build-bundle-js\"",
     "watch-server": "nodemon server.js",
-    "release-build": "npm run build-bundle-js && node time-stamper.js",
+    "release-build": "npm run build-bundle-js",
     "debug-build": "parallelshell \"npm run watch-js\" \"npm run watch-server\""
   },
   "repository": {
