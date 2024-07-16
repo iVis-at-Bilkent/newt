@@ -23,24 +23,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="9.6377362"
-     inkscape:cx="29.726898"
-     inkscape:cy="24.487078"
+     inkscape:zoom="10.884788"
+     inkscape:cx="24.391839"
+     inkscape:cy="28.526049"
      inkscape:window-width="1440"
-     inkscape:window-height="847"
+     inkscape:window-height="900"
      inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="g3" />
   <defs
-     id="defs1">
-    <rect
-       x="22.204385"
-       y="14.629992"
-       width="16.912685"
-       height="18.987862"
-       id="rect3" />
-  </defs>
+     id="defs1" />
   <g
      id="g3"
      transform="translate(12.5,2.5)">
@@ -54,22 +47,38 @@
        stroke-width="8"
        pointer-events="all"
        id="rect1" />
-    <text
-       xml:space="preserve"
-       transform="matrix(1.7708333,0,0,1.7708333,-23.625,-3)"
-       id="text3"
-       style="stroke-width:1.51181102;fill:none;stroke-linejoin:bevel;-inkscape-font-specification:'Arial, Bold';font-family:Arial;font-size:12px;stroke:#b3b3b3;font-weight:bold;white-space:pre;shape-inside:url(#rect3)" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:38.8829px;font-family:'.Al Bayan PUA';-inkscape-font-specification:'.Al Bayan PUA, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;stroke:#000000;stroke-width:4.89862;stroke-linejoin:bevel"
-       x="13.854631"
-       y="52.572594"
-       id="text4"
-       transform="scale(0.9731056,1.0276377)"><tspan
-         sodipodi:role="line"
-         id="tspan4"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:38.8829px;font-family:'.Al Bayan PUA';-inkscape-font-specification:'.Al Bayan PUA, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;stroke:#000000;stroke-width:4.89863"
-         x="13.854631"
-         y="52.572594">N</tspan></text>
+    <g
+       id="g4"
+       transform="matrix(0.96923283,0,0,1,1.4725039,-0.25421142)">
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:bevel;stroke-dasharray:none"
+         id="rect4-3"
+         width="1.2999662"
+         height="33.773804"
+         x="44.161995"
+         y="22.664404"
+         transform="matrix(1.0317438,0,0,1,-3.3166519,0.2029047)" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:bevel;stroke-dasharray:none"
+         id="rect4"
+         width="1.2999662"
+         height="33.773804"
+         x="17.022249"
+         y="22.664406"
+         transform="matrix(1.0317438,0,0,1,-3.3166519,0.2029047)" />
+      <path
+         d="M 15.492432,26.997725 37.71428,56.641113 42.341965,53.099446 20.120117,22.86731 Z"
+         style="stroke:#000000;stroke-width:0;stroke-linejoin:bevel;stroke-dasharray:none"
+         id="path3-3"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         d="m 15.492432,22.86731 v 33.773803 h 4.627685 V 22.86731 Z"
+         style="stroke:#000000;stroke-width:0;stroke-linejoin:bevel;stroke-dasharray:none"
+         id="path3" />
+      <path
+         d="m 37.71428,22.86731 v 33.773803 h 4.627685 V 22.86731 Z"
+         style="stroke:#000000;stroke-width:0;stroke-linejoin:bevel;stroke-dasharray:none"
+         id="path3-0" />
+    </g>
   </g>
 </svg>
