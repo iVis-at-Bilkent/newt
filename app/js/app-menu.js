@@ -1831,7 +1831,8 @@ module.exports = function() {
     $(document).on('mousedown', '.node-palette img', function (e) {
       e.preventDefault(); // needed for dragging, otherwise the mouse release event cannot be fired on another element
       dragAndDropPlacement = true;
-      var imgPath = appUtilities.getDragImagePath( $(this).attr('value') );
+      // var imgPath = appUtilities.getDragImagePath( $(this).attr('value') );
+      var imgPath = $(this).attr('src');
       appUtilities.addDragImage(imgPath, $(this).css('width'), $(this).css('height'));
 
       $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
