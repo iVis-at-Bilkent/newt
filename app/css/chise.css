@@ -637,6 +637,24 @@ menu:not([title]):before{
     padding-right: 0px !important;
 }
 
+.palette-panel-body {
+    border: 3px solid #ddd !important;
+    margin-top: 10px;
+    margin-left: 1px;
+}
+
+.palette-label {
+    background:white; 
+    margin-bottom:0px; 
+    /* width:30%;  */
+    width: 120px;
+    text-align:center; 
+    border: 3px solid #ddd; 
+    color: #555;
+    margin-top: -18px;
+    margin-left: 9px;
+}
+
 .panel {
     border: 1px solid transparent;
 }

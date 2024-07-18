@@ -762,7 +762,8 @@
                         </p>
                       </div>
                       <div id="expand-collapse-pd-nodes-palette" class="panel-collapse collapse in">
-                        <div class="panel-body">
+                        <div class="panel-body palette-panel-body">
+                          <h6 class="palette-label">Entity Pool Nodes</h6>
                           <div id="pd-node-palette" class="element-palette node-palette">
                             <div class="paletteWrapper">
                               <div class="paletteCol">
@@ -786,9 +787,14 @@
                               <div class="paletteCol">
                                 <img src="app/img/nodes/empty-set.svg" language="PD" value="empty-set" title="Empty Set">
                               </div>
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/phenotype.svg" language="PD" value="phenotype" title="Phenotype">
-                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body">
+                          <h6 class="palette-label">Process Nodes</h6>
+                          <div id="pd-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/process.svg" language="PD" value="process" title="Process">
                               </div>
@@ -805,14 +811,27 @@
                                 <img src="app/img/nodes/dissociation.svg" language="PD" value="dissociation" title="Dissociation">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/nodes/tag.svg" language="PD" value="tag" title="Tag">
+                                <img src="app/img/nodes/phenotype.svg" language="PD" value="phenotype" title="Phenotype">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="panel-body palette-panel-body">
+                          <h6 class="palette-label">Container Nodes</h6>
+                          <div id="pd-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper"> 
                               <div class="paletteCol">
                                 <img src="app/img/nodes/compartment.svg" language="PD" value="compartment" title="Compartment">
                               </div>
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/submap.svg" language="PD" value="submap" title="Submap">
-                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body">
+                          <h6 class="palette-label">Logical Operators</h6>
+                          <div id="pd-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper"> 
                               <div class="paletteCol">
                                 <img src="app/img/nodes/and.svg" language="PD" value="and" title="AND">
                               </div>
@@ -825,7 +844,23 @@
                             </div>
                           </div>
                         </div>
-                        <div class="panel-body" style="padding-bottom: 0px">
+
+                        <div class="panel-body palette-panel-body">
+                          <h6 class="palette-label">Other Nodes</h6>
+                          <div id="pd-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper"> 
+                              <div class="paletteCol">
+                                <img src="app/img/nodes/tag.svg" language="PD" value="tag" title="Tag">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/nodes/submap.svg" language="PD" value="submap" title="Submap">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Connecting Arcs</h6>
                           <div id="pd-edge-palette" class="element-palette edge-palette">
                             <div class="paletteWrapper">
                               <div class="paletteCol">
@@ -849,6 +884,14 @@
                               <div class="paletteCol">
                                 <img src="app/img/edges/necessary-stimulation.svg" language="PD" value="necessary stimulation" title="Necessary Stimulation">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Logic Arcs</h6>
+                          <div id="pd-edge-palette" class="element-palette edge-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/edges/consumption.svg" language="PD" value="logic arc" title="Logic Arc">
                               </div>
@@ -860,6 +903,7 @@
                         </div>
                       </div>
                     </div>
+
                     <!-- AF Nodes Panel -->
                     <div class="panel">
                       <div id="AF-palette-heading" class="panel-heading collapsed" data-toggle="collapse" data-target="#expand-collapse-af-nodes-palette">
@@ -867,43 +911,52 @@
                           Activity Flow
                         </p>
                       </div>
+
                       <div id="expand-collapse-af-nodes-palette" class="panel-collapse collapse">
-                        <div class="panel-body">
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Activity Nodes</h6>
                           <div id="af-node-palette" class="element-palette node-palette">
                             <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/BA-plain.svg" language="AF" value="BA-plain" title="Biological Activity">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/nodes/BA-macromolecule.svg" language="AF" value="BA-macromolecule" title="Macromolecule">
+                                <img src="app/img/nodes/phenotype.svg" language="AF" value="phenotype" title="Phenotype">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Auxiliary Units</h6>
+                          <div id="af-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
-                                <img src="app/img/nodes/BA-complex.svg" language="AF" value="BA-complex" title="Complex">
+                                <img src="app/img/nodes/BA-macromolecule.svg" language="AF" value="BA-macromolecule" title="Macromolecule">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/nodes/BA-simple-chemical.svg" language="AF" value="BA-simple-chemical" title="Simple Chemical">
                               </div>
                               <div class="paletteCol">
+                                <img src="app/img/nodes/BA-nucleic-acid-feature.svg" language="AF" value="BA-nucleic-acid-feature" title="Nucleic Acid Feature">
+                              </div>
+                              <div class="paletteCol">
                                 <img src="app/img/nodes/BA-unspecified-entity.svg" language="AF" value="BA-unspecified-entity" title="Unspecified Entity">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/nodes/BA-nucleic-acid-feature.svg" language="AF" value="BA-nucleic-acid-feature" title="Nucleic Acid Feature">
+                                <img src="app/img/nodes/BA-complex.svg" language="AF" value="BA-complex" title="Complex">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/nodes/BA-perturbing-agent.svg" language="AF" value="BA-perturbing-agent" title="Perturbing Agent">
                               </div>
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/phenotype.svg" language="AF" value="phenotype" title="Phenotype">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/compartment.svg" language="AF" value="compartment" title="Compartment">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/submap.svg" language="AF" value="submap" title="Submap">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/tag.svg" language="AF" value="tag" title="Tag">
-                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Logical Operations</h6>
+                          <div id="af-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/and.svg" language="AF" value="and" title="AND">
                               </div>
@@ -919,8 +972,27 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Other Nodes</h6>
+                          <div id="af-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
+                              <div class="paletteCol">
+                                <img src="app/img/nodes/compartment.svg" language="AF" value="compartment" title="Compartment">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/nodes/submap.svg" language="AF" value="submap" title="Submap">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/nodes/tag.svg" language="AF" value="tag" title="Tag">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <!-- AF Edges Panel -->
-                        <div class="panel-body" style="padding-bottom: 0px">
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Modulating Arcs</h6>
                           <div id="af-edge-palette" class="element-palette edge-palette">
                             <div class="paletteWrapper">
                               <div class="paletteCol">
@@ -935,6 +1007,14 @@
                               <div class="paletteCol">
                                 <img src="app/img/edges/necessary-stimulation.svg" language="AF" value="necessary stimulation" title="Necessary Stimulation">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Logic Arcs</h6>
+                          <div id="af-edge-palette" class="element-palette edge-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/edges/consumption.svg" language="AF" value="logic arc" title="Logic Arc">
                               </div>
@@ -953,9 +1033,11 @@
                       <div id="SIF-palette-heading" class="panel-heading collapsed" data-toggle="collapse" data-target="#expand-collapse-sif-nodes-palette">
                         <p class="panel-title accordion-toggle">SIF</p>
                       </div>
+
                       <div id="expand-collapse-sif-nodes-palette" class="panel-collapse collapse">
-                        <div class="panel-body">
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
                           <div id="sif-node-palette" class="element-palette node-palette">
+                            <h6 class="palette-label">SIF Nodes</h6>
                             <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/macromolecule.svg" language="SIF" value="SIF-macromolecule" title="Macromolecule">
@@ -966,8 +1048,10 @@
                             </div>
                           </div>
                         </div>
-                        <div class="panel-body" style="padding-bottom: 0px">
+                              
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
                           <div id="sif-edge-palette" class="element-palette edge-palette">
+                            <h6 class="palette-label">SIF Edges</h6>
                             <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/edges/controls-state-change-of.svg" language="SIF" value="controls-state-change-of" title="Controls State Change of">
@@ -1060,7 +1144,9 @@
                         <p class="panel-title accordion-toggle">SBML</p>
                       </div>
                       <div id="expand-collapse-sbml-nodes-palette" class="panel-collapse collapse">
-                        <div class="panel-body">
+                            
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Label 1</h6>
                           <div id="sbml-node-palette" class="element-palette node-palette">
                             <div class="paletteWrapper">
                               <div class="paletteCol">
@@ -1102,6 +1188,14 @@
                               <div class="paletteCol">
                                 <img src="app/img/nodes/phenotype-sbml.svg" language="SBML" value="phenotype-sbml" title="Phenotype">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Process Nodes</h6>
+                          <div id="sbml-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/process.svg" language="SBML" value="process" title="Process">
                               </div>
@@ -1120,9 +1214,23 @@
                               <div class="paletteCol">
                                 <img src="app/img/nodes/dissociation.svg" language="SBML" value="dissociation" title="Dissociation">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Compartment</h6>
+                          <div id="sbml-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/compartment.svg" language="SBML" value="compartment" title="Compartment">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Logical Operators</h6>
+                          <div id="sbml-node-palette" class="element-palette node-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/and.svg" language="SBML" value="and" title="AND">
                               </div>
@@ -1138,7 +1246,9 @@
                             </div>
                           </div>
                         </div>
-                        <div class="panel-body" style="padding-bottom: 0px">
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Label 2</h6>
                           <div id="sbml-edge-palette" class="element-palette edge-palette">
                             <div class="paletteWrapper">
                               <div class="paletteCol">
@@ -1146,30 +1256,6 @@
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/edges/production.svg" language="SBML" value="production" title="Production">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/modulation.svg" language="SBML" value="modulation" title="Modulation">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/stimulation.svg" language="SBML" value="stimulation" title="Stimulation">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/catalysis.svg" language="SBML" value="catalysis" title="Catalysis">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/inhibition.svg" language="SBML" value="inhibition" title="Inhibition">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/trigger.svg" language="SBML" value="trigger" title="Trigger">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/positive-influence-sbml.svg" language="SBML" value="positive-influence-sbml" title="Positive Influence">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/negative-influence.svg" language="SBML" value="negative-influence" title="Negative Influence">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/transport.svg" language="SBML" value="transport" title="Transport">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/edges/transcription_consumption.svg" language="SBML" value="transcription-consumption" title="Transcription Consumption">
@@ -1184,28 +1270,67 @@
                                 <img src="app/img/edges/translation-production.svg" language="SBML" value="translation-production" title="Translation Production">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/edges/reduced-modulation.svg" language="SBML" value="reduced-modulation" title="Reduced Modulation">
+                                <img src="app/img/edges/transport.svg" language="SBML" value="transport" title="Transport">
                               </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Label 3</h6>
+                          <div id="sbml-edge-palette" class="element-palette edge-palette">
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
-                                <img src="app/img/edges/reduced-stimulation.svg" language="SBML" value="reduced-stimulation" title="Reduced Stimulation">
-                              </div>
-                              <div class="paletteCol">
-                                <img src="app/img/edges/reduced-trigger.svg" language="SBML" value="reduced-trigger" title="Reduced Trigger">
+                                <img src="app/img/edges/catalysis.svg" language="SBML" value="catalysis" title="Catalysis">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/edges/unknown-catalysis.svg" language="SBML" value="unknown catalysis" title="Unknown catalysis">
                               </div>
                               <div class="paletteCol">
+                                <img src="app/img/edges/inhibition.svg" language="SBML" value="inhibition" title="Inhibition">
+                              </div>
+                              <div class="paletteCol">
                                 <img src="app/img/edges/unknown-inhibition.svg" language="SBML" value="unknown inhibition" title="Unknown inhibition">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/stimulation.svg" language="SBML" value="stimulation" title="Stimulation">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/modulation.svg" language="SBML" value="modulation" title="Modulation">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/trigger.svg" language="SBML" value="trigger" title="Trigger">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <h6 class="palette-label">Label 4</h6>
+                          <div id="sbml-edge-palette" class="element-palette edge-palette">
+                            <div class="paletteWrapper">
+                              <div class="paletteCol">
+                                <img src="app/img/edges/positive-influence-sbml.svg" language="SBML" value="positive-influence-sbml" title="Positive Influence">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/edges/unknown-positive-influence.svg" language="SBML" value="unknown-positive-influence" title="Unknown Positive Influence">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/edges/unknown-reduced-modulation.svg" language="SBML" value="unknown-reduced-modulation" title="Unknown Reduced Modulation">
+                                <img src="app/img/edges/negative-influence.svg" language="SBML" value="negative-influence" title="Negative Influence">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/reduced-stimulation.svg" language="SBML" value="reduced-stimulation" title="Reduced Stimulation">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/edges/unknown-reduced-stimulation.svg" language="SBML" value="unknown-reduced-stimulation" title="Unknown Reduced Stimulation">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/reduced-modulation.svg" language="SBML" value="reduced-modulation" title="Reduced Modulation">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/unknown-reduced-modulation.svg" language="SBML" value="unknown-reduced-modulation" title="Unknown Reduced Modulation">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/edges/reduced-trigger.svg" language="SBML" value="reduced-trigger" title="Reduced Trigger">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/edges/unknown-reduced-trigger.svg" language="SBML" value="unknown-reduced-trigger" title="Unknown Reduced Trigger">
