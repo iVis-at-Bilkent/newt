@@ -54,7 +54,7 @@
     "natives": "^1.1.6",
     "nodemailer": "6.4.5",
     "request": "^2.81.0",
-    "sbgnviz": "github:umut-er/sbgnviz.js#unstable",
+    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
     "tippy.js": "^3.4.0"
   },
   "devDependencies": {
