@@ -874,6 +874,7 @@ img#template-reversible-output-add-button:hover {
 .paletteWrapper
 {
     display: table;
+    margin: auto;
     width: 300px;
 }
 
