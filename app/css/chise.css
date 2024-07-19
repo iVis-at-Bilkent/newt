@@ -638,21 +638,19 @@ menu:not([title]):before{
 }
 
 .palette-panel-body {
-    border: 3px solid #ddd !important;
     margin-top: 10px;
-    margin-left: 1px;
+    margin-left: 6px;
 }
 
 .palette-label {
+    font-size: 12px;
     background:white; 
     margin-bottom:0px; 
-    /* width:30%;  */
-    width: 120px;
-    text-align:center; 
-    border: 3px solid #ddd; 
+    width: fit-content;
+    text-align:left; 
     color: #555;
-    margin-top: -18px;
-    margin-left: 9px;
+    margin-top: -17px;
+    padding-right: 6px;
 }
 
 .panel {
@@ -876,7 +874,6 @@ img#template-reversible-output-add-button:hover {
 .paletteWrapper
 {
     display: table;
-    margin: auto;
     width: 300px;
 }
 
