@@ -3,9 +3,9 @@
 
 <svg
    version="1.1"
-   width="60"
-   height="45"
-   viewBox="-0.5 -0.5 121 61"
+   width="69.787407"
+   height="45.067928"
+   viewBox="-0.5 -0.5 140.73793 61.092081"
    content="&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2022-06-14T08:58:01.556Z&quot; agent=&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36&quot; etag=&quot;-LLqca0ju1goBEKIm6oO&quot; version=&quot;20.0.1&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;ktGLz1LiJDLA7Z_J5n2I&quot; name=&quot;Page-1&quot;&gt;1ZRNb4MwDEB/DcdJhDRtd23XtZdpmpBWabeIeCRaICgNg/LrF4b5WldpPe6CwrPjhGeLgG6zem95IZ+MAB1EoagD+hBE0f1i6Z8tOHeAMQSpVaJDZASxagBhiLRUAk6zRGeMdqqYw8TkOSRuxri1ppqnvRs9P7XgKVyAOOH6kh6VcLKjaxaO/AAqlf3JJMRIxvtkBCfJhakmiO4CurXGuG6V1VvQrbveS7fv8Up0uJiF3P1lQ2ne9k28OjRcfTTPx9flS57cLboqn1yX+MF4WXfuDVhT5gLaIiSgm0oqB3HBkzZa+ZZ7Jl2mMcxtgj30hugGq4N1UF+9Nhlk+CECk4GzZ5+CG6I1+sMBIit8r8Z2kN6xnLRiiYzjBKRD6VGSX6CnG5yxf+CM/XDGLp2RX5yx253513GGv2OTHwHdfQE=&lt;/diagram&gt;&lt;/mxfile&gt;"
    id="svg2"
    sodipodi:docname="drug.svg"
@@ -24,8 +24,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="6.9874446"
-     inkscape:cx="26.404503"
-     inkscape:cy="25.331149"
+     inkscape:cx="31.270373"
+     inkscape:cy="25.474263"
      inkscape:window-width="1440"
      inkscape:window-height="847"
      inkscape:window-x="0"
@@ -36,7 +36,7 @@
      id="defs1" />
   <g
      id="g2"
-     transform="matrix(1.1189253,0,0,1.0345941,-0.3439324,-2.9598708)">
+     transform="matrix(1.303129,0,0,1.0328067,-0.5,-3.0325492)">
     <rect
        x="4"
        y="-8"
@@ -61,6 +61,6 @@
        stroke-width="6.28473"
        pointer-events="all"
        id="rect1-0"
-       style="stroke-width:8.0034355;stroke-dasharray:none" />
+       style="stroke-width:8.00344;stroke-dasharray:none" />
   </g>
 </svg>
