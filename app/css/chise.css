@@ -880,10 +880,12 @@ img#template-reversible-output-add-button:hover {
 .paletteCol {
   position: relative;
   display: inline-block;
-  width: 40px;
+  width: 35px;
   height: 26px;
   text-align: center;
   margin: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 .custom-menu-item {
