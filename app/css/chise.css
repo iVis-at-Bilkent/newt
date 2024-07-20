@@ -639,7 +639,6 @@ menu:not([title]):before{
 
 .palette-panel-body {
     margin-top: 10px;
-    margin-left: 6px;
 }
 
 .palette-label {
@@ -651,6 +650,7 @@ menu:not([title]):before{
     color: #555;
     margin-top: -17px;
     padding-right: 6px;
+    padding-left: 6px;
 }
 
 .panel {
@@ -881,12 +881,10 @@ img#template-reversible-output-add-button:hover {
 .paletteCol {
   position: relative;
   display: inline-block;
-  width: 35px;
+  width: 40px;
   height: 26px;
   text-align: center;
   margin: 5px;
-  margin-left: 3px;
-  margin-right: 3px;
 }
 
 .custom-menu-item {
