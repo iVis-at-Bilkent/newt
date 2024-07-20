@@ -3,9 +3,9 @@
 
 <svg
    version="1.1"
-   width="60"
-   height="48"
-   viewBox="-0.5 -0.5 85 85"
+   width="40.030529"
+   height="40.183441"
+   viewBox="-0.5 -0.5 56.709916 71.158177"
    content="&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2022-06-21T08:07:22.560Z&quot; agent=&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36&quot; etag=&quot;sOWxXKIZalY8skfU4Tq_&quot; version=&quot;20.0.1&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;eRNscnKntNPNC2yeSunr&quot; name=&quot;Page-1&quot;&gt;7ZZdT4MwFIZ/DZcmQGG6S/flskRjRqLXDT2DukJJKYPt11ukfI3NqdELozek5+H0nPZ9TwIGmkbFncBJeM8JMMM2SWGgmWHb16alniXYV8BxnQoEgpIKWS3w6AE0NDXNKIG0lyg5Z5ImfejzOAZf9hgWguf9tA1n/a4JDmAAPB+zIX2mRIYVvXHNli+BBmHd2TL1mwjXyRqkISY87yA0N9BUcC6rVVRMgZXa1bpU+xZn3jYHExDLj2xYvhxSbzcebRerFT2YD+vV+ulKV9lhlukL68PKfa1AHlIJXoL9Ms6VyQaahDJiKrLUEqdJpfuGFqBaTVIp+LYRy1VE9wAhoTh7eKuRRI0S8Aik2KsUvQHVsuoxssY6zjumaBR2/KgZ1mMQNJVbpdRCi/UJ4ezLwkFMbssJVFHMY+jLJngWk1KvmfmOZkAG03lRsY4i7glFaiaAYUl3/fKnZNIdHjlVjVtD7L4hTd26RMoz4YPe1R3L40LOUSHrqJDEIgA5KPTmWnPtrxuJ/rqRx/r/ViOdfyO/ycjRTxmpwvZ7V6W3Pw1o/go=&lt;/diagram&gt;&lt;/mxfile&gt;"
    id="svg3"
    sodipodi:docname="truncated-process.svg"
@@ -24,19 +24,20 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="10.884788"
-     inkscape:cx="34.084265"
+     inkscape:cx="29.904119"
      inkscape:cy="20.579179"
      inkscape:window-width="1440"
      inkscape:window-height="847"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg3" />
+     inkscape:current-layer="svg3"
+     showgrid="false" />
   <defs
      id="defs1" />
   <g
      id="g3"
-     transform="matrix(1.3421152,0,0,1.3472419,2.407602,-11.216057)">
+     transform="matrix(0.98627988,0,0,0.99004734,-1.2402985,-4.0277814)">
     <rect
        x="2"
        y="12"

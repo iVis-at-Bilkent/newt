@@ -2,8 +2,8 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="60"
-   height="48"
+   width="40.316235"
+   height="39.449352"
    id="svg2"
    version="1.1"
    inkscape:version="1.3.2 (091e20e, 2023-11-25)"
@@ -44,7 +44,7 @@
        style="overflow:visible">
       <path
          id="path3985"
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
          transform="matrix(0.2,0,0,0.2,1.2,0)"
          inkscape:connector-curvature="0" />
@@ -58,7 +58,7 @@
        style="overflow:visible">
       <path
          id="path4133"
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         d="M 5.77,0 -2.88,5 V -5 Z"
          style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
          transform="matrix(0.8,0,0,0.8,-4.8,0)"
          inkscape:connector-curvature="0" />
@@ -72,9 +72,9 @@
        style="overflow:visible">
       <path
          id="path4115"
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         d="M 5.77,0 -2.88,5 V -5 Z"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
-         transform="scale(0.8,0.8)"
+         transform="scale(0.8)"
          inkscape:connector-curvature="0" />
     </marker>
     <marker
@@ -86,9 +86,9 @@
        style="overflow:visible">
       <path
          id="path4079"
-         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 Z"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
          style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
-         transform="scale(0.8,0.8)"
+         transform="scale(0.8)"
          inkscape:connector-curvature="0" />
     </marker>
     <marker
@@ -101,9 +101,9 @@
       <path
          inkscape:connector-curvature="0"
          id="path4079-7"
-         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 Z"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
          style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
-         transform="scale(0.8,0.8)" />
+         transform="scale(0.8)" />
     </marker>
     <marker
        inkscape:stockid="EmptyDiamondL"
@@ -115,9 +115,9 @@
       <path
          inkscape:connector-curvature="0"
          id="path4079-6"
-         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 Z"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
          style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
-         transform="scale(0.8,0.8)" />
+         transform="scale(0.8)" />
     </marker>
     <marker
        inkscape:stockid="TriangleOutL"
@@ -129,9 +129,9 @@
       <path
          inkscape:connector-curvature="0"
          id="path4115-9"
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         d="M 5.77,0 -2.88,5 V -5 Z"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
-         transform="scale(0.8,0.8)" />
+         transform="scale(0.8)" />
     </marker>
     <marker
        inkscape:stockid="EmptyTriangleOutL"
@@ -143,7 +143,7 @@
       <path
          inkscape:connector-curvature="0"
          id="path4133-1"
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         d="M 5.77,0 -2.88,5 V -5 Z"
          style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
          transform="matrix(0.8,0,0,0.8,-4.8,0)" />
     </marker>
@@ -157,7 +157,7 @@
       <path
          inkscape:connector-curvature="0"
          id="path4133-7"
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         d="M 5.77,0 -2.88,5 V -5 Z"
          style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
          transform="matrix(0.8,0,0,0.8,-4.8,0)" />
     </marker>
@@ -170,7 +170,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8.3732406"
-     inkscape:cx="23.885615"
+     inkscape:cx="17.854497"
      inkscape:cy="21.258197"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -179,7 +179,7 @@
      inkscape:window-height="847"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      fit-margin-top="7"
      fit-margin-left="7"
      fit-margin-right="7"
@@ -203,29 +203,29 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="matrix(1.3566794,0,0,1.327508,-667.39872,-292.29564)">
+     transform="matrix(1.3566794,0,0,1.327508,-673.33436,-292.29565)">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:2.95084;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2985-08-1"
-       width="32.014332"
-       height="32.014332"
-       x="498.31061"
-       y="222.18372"
+       width="23.617264"
+       height="23.617264"
+       x="499.36035"
+       y="222.73286"
        ry="0"
        inkscape:export-xdpi="53.959999"
        inkscape:export-ydpi="53.959999"
        inkscape:export-filename="C:\Users\ugur\Google Drive\toolbar\process.png" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25.1584px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.09653px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="512.09106"
-       y="245.68491"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.5596px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.54663px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="510.7449"
+       y="239.53084"
        id="text4278"
        transform="scale(0.99083577,1.009249)"><tspan
          sodipodi:role="line"
          id="tspan1"
-         x="512.09106"
-         y="245.68491"
-         style="stroke-width:2.09653px">//</tspan></text>
+         x="510.7449"
+         y="239.53084"
+         style="stroke-width:1.54663px">//</tspan></text>
   </g>
 </svg>
