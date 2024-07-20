@@ -3732,7 +3732,7 @@ appUtilities.resizeNodesToContent = function(nodes){
 
 appUtilities.transformClassInfo = function( classInfo ) {
   var res = classInfo.replace(' multimer', '').replace('active ', '').replace('hypthetical ', '');
-  if (res == 'and' || res == 'or' || res == 'not') {
+  if (res == 'and' || res == 'or' || res == 'not' || res == 'rna') {
     res = res.toUpperCase();
   }
   else {
