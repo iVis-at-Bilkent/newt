@@ -875,7 +875,7 @@ img#template-reversible-output-add-button:hover {
 {
     display: table;
     margin: auto;
-    width: 300px;
+    width: 350px;
 }
 
 .paletteCol {
@@ -933,6 +933,13 @@ img#template-reversible-output-add-button:hover {
 /*
   Palettes on right pane
 */
+
+@media (max-width: 1780px) {
+    .paletteWrapper
+    {
+        width: 300px;
+    }
+}
 
 @media (max-width: 1530px) {
     .paletteWrapper
