@@ -314,7 +314,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
@@ -596,12 +596,12 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 
         enabled_classes.forEach(function(enabled_class){
-          if(node_class.indexOf(enabled_class) > -1)
+          if(node_class.indexOf(enabled_class) > -1 || node_class == "ion")
             result = true;
         });
 
