@@ -875,7 +875,7 @@ img#template-reversible-output-add-button:hover {
 {
     display: table;
     margin: auto;
-    width: 300px;
+    width: 322px;
 }
 
 .paletteCol {
@@ -885,6 +885,8 @@ img#template-reversible-output-add-button:hover {
   height: 26px;
   text-align: center;
   margin: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 .custom-menu-item {
@@ -934,10 +936,10 @@ img#template-reversible-output-add-button:hover {
   Palettes on right pane
 */
 
-@media (max-width: 1530px) {
+@media (max-width: 1660px) {
     .paletteWrapper
     {
-        width: 250px;
+        width: 276px;
     }
 }
 
@@ -945,10 +947,21 @@ img#template-reversible-output-add-button:hover {
   Palettes on right pane
 */
 
-@media (max-width: 1290px) {
+@media (max-width: 1450px) {
     .paletteWrapper
     {
-        width: 200px;
+        width: 230px;
+    }
+}
+
+/*
+  Palettes on right pane
+*/
+
+@media (max-width: 1200px) {
+    .paletteWrapper
+    {
+        width: 184px;
     }
 }
 
