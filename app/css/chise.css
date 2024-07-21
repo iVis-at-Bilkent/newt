@@ -934,7 +934,7 @@ img#template-reversible-output-add-button:hover {
   Palettes on right pane
 */
 
-@media (max-width: 1780px) {
+@media (max-width: 1770px) {
     .paletteWrapper
     {
         width: 300px;
