@@ -3727,12 +3727,10 @@ var FileSaveView = Backbone.View.extend({
             });
           } else if (mapType === "SBML") {
             chiseInstance.saveSbmlForSBML(filename, function (data, errorMessage) {
-              var promptSbmlConversionErrorView =
-                new PromptSbmlConversionErrorView({
-                  el: "#prompt-sbmlConversionError-table",
-                });
-              promptSbmlConversionErrorView.render(data, errorMessage);
-              //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+              var exportError = new ExportErrorView({el: "#exportError-table"});
+              exportError.render();
+              document.getElementById("export-error-message").innerText 
+                = "SBML export failed. Please check if the map is valid!";
             });
           }
 

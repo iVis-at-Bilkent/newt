@@ -3727,7 +3727,6 @@ appUtilities.resizeNodesToContent = function(nodes){
   if(collection.length == 1 && (collection[0].isParent() || collection[0].data('collapsedChildren')) && collection[0].selected()) { 
     cy.$(':selected').trigger('select'); 
   };
-
 };
 
 appUtilities.transformClassInfo = function( classInfo ) {
