@@ -3639,7 +3639,6 @@ var FileSaveView = Backbone.View.extend({
           var saveAsFcn = chiseInstance.saveAsNwt;
           if (fileformat === "sbgn") {
             if (chiseInstance.elementUtilities.mapType === "SBML") {
-            console.log("fileformat is sbgn and maptype is SBML");
               chiseInstance.saveAsSbgnmlForSBML(filename, function () {
                 var promptSbmlConversionErrorView =
                   new PromptSbmlConversionErrorView({
@@ -3648,8 +3647,8 @@ var FileSaveView = Backbone.View.extend({
                 promptSbmlConversionErrorView.render();
                 document.getElementById("file-conversion-error-message").innerText =
                   "Conversion service is not available!";
-              }
-              );
+              });
+              $(self.el).modal("toggle");
               return;
             }
             saveAsFcn = chiseInstance.saveAsSbgnml;
@@ -3723,7 +3722,6 @@ var FileSaveView = Backbone.View.extend({
                   el: "#prompt-sbmlConversionError-table",
                 });
               promptSbmlConversionErrorView.render(data, errorMessage);
-              //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
             });
           } else if (mapType === "SBML") {
             chiseInstance.saveSbmlForSBML(filename, function (data, errorMessage) {
