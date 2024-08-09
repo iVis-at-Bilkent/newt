@@ -176,6 +176,7 @@ module.exports = function() {
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
+  exportErrorView = appUtilities.promptInvalidEdgeWarning = new BackboneViews.ExportErrorView({el: "#exportError-table",});
   toolbarButtonsAndMenu();
   keyboardShortcuts();
   // Events triggered by sbgnviz module
@@ -1734,11 +1735,12 @@ module.exports = function() {
 
       var mapType = chiseInstance.getMapType();
 
-      if(mapType == 'SIF' || mapType == 'AF'){
-        return;
+      if(mapType != 'PD' && mapType != 'HybridSbgn' && mapType != 'HybridAny' ){
+        exportErrorView.render();          
+        document.getElementById("export-error-message").innerText = "SBGN Bricks can only be used with PD maps!";
       }
-
-      reactionTemplateView.render();
+      else
+        reactionTemplateView.render();
     });
 
     $("#clone-selected").click(function (e) {
