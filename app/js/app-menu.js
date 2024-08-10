@@ -176,7 +176,7 @@ module.exports = function() {
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
-  exportErrorView = appUtilities.promptInvalidEdgeWarning = new BackboneViews.ExportErrorView({el: "#exportError-table",});
+  exportErrorView = appUtilities.ExportErrorView = new BackboneViews.ExportErrorView({el: "#exportError-table",});
   toolbarButtonsAndMenu();
   keyboardShortcuts();
   // Events triggered by sbgnviz module
