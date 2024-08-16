@@ -3646,7 +3646,7 @@ var FileSaveView = Backbone.View.extend({
                   });
                 promptSbmlConversionErrorView.render();
                 document.getElementById("file-conversion-error-message").innerText =
-                  "Conversion service is not available!";
+                  "Conversion failed!";
               });
               $(self.el).modal("toggle");
               return;
@@ -3704,15 +3704,24 @@ var FileSaveView = Backbone.View.extend({
             saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
           }
         } else if (fileformat === "celldesigner") {
+          if(mapType == "SBML"){
+            chiseInstance.saveSbmlForSBML(filename, function (data, errorMessage) {
+              var exportError = new ExportErrorView({el: "#exportError-table"});
+              exportError.render();
+              document.getElementById("export-error-message").innerText 
+                = "SBML export failed. Please check if the map is valid!";
+            });
+          } else if(mapType == "PD"){
           chiseInstance.saveAsCellDesigner(filename, function () {
-            var promptFileConversionErrorView =
-              new PromptFileConversionErrorView({
-                el: "#prompt-fileConversionError-table",
-              });
-            promptFileConversionErrorView.render();
-            document.getElementById("file-conversion-error-message").innerText =
-              "Conversion service is not available!";
-          });
+              var promptFileConversionErrorView =
+                new PromptFileConversionErrorView({
+                  el: "#prompt-fileConversionError-table",
+                });
+              promptFileConversionErrorView.render();
+              document.getElementById("file-conversion-error-message").innerText =
+                "Conversion failed.";
+            });
+          }
         } else if (fileformat === "sbml") {
 
           if (mapType === "PD") {
@@ -3739,7 +3748,6 @@ var FileSaveView = Backbone.View.extend({
                 el: "#prompt-sbmlConversionError-table",
               });
             promptSbmlConversionErrorView.render(data, errorMessage);
-            //document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
           });
         } else if (fileformat === "sif") {
           chiseInstance.saveAsPlainSif(filename, true);

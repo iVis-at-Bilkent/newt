@@ -419,7 +419,7 @@ module.exports = function() {
           }; 
           var error = function(data){
             promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";         
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";         
           },
           caller = chiseInstance.loadSbmlForSBML; 
           params = [success, error, layoutBy];
@@ -431,7 +431,7 @@ module.exports = function() {
           };
           var error = function(data){
             promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";  
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";  
           };
           caller = chiseInstance.loadCellDesigner;
           params = [success, error];
@@ -443,7 +443,7 @@ module.exports = function() {
           };
           var error = function(data){
             promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
             
           };
           caller = chiseInstance.loadGpml;
@@ -492,7 +492,7 @@ module.exports = function() {
         },
         error = function(data){
           promptFileConversionErrorView.render();          
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";  
+          document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";  
         });
        
         $(this).val("");
@@ -611,7 +611,7 @@ module.exports = function() {
               chiseInstance.loadSBMLText(data.message, false, file.name, cy);
           },  error = function(data){
             promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
             
           }, layoutBy)
         };
@@ -622,43 +622,6 @@ module.exports = function() {
 
         $(this).val("");
       }
-      /*
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      console.log("in imprt sbml file")
-      var cy = appUtilities.getActiveCy();
-
-      if ($(this).val() != "") {
-        var file = this.files[0];
-        var loadFcn = function() {
-          var layoutBy = function() {
-            appUtilities.triggerLayout( cy, true );
-          };
-        }
-        var layoutBy = function() {
-          appUtilities.triggerLayout( cy, true );
-          console.log("in layoutBy")
-        };
-        appUtilities.setFileContent(file.name);
-        chiseInstance.loadSbml(file,  success = function(data){
-          if (cy.elements().length !== 0) {
-            promptConfirmationView.render(function () {
-              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
-            });
-          }
-          else {
-            chiseInstance.loadSBMLText(data.message, false, file.name, cy);
-          }
-        },
-        error = function(data){
-          promptFileConversionErrorView.render();          
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-          
-        }, layoutBy);
-       
-        $(this).val("");
-      }
-      */
-
     });
 
     $("#gpml-file-input").change(function () {
@@ -680,7 +643,7 @@ module.exports = function() {
         },
         error = function(data){
           promptFileConversionErrorView.render();          
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
           
         });
        
