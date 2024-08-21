@@ -973,11 +973,10 @@ module.exports = function() {
       "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt',
       "#load-sample19" : 'pd_learners_card.nwt',
       "#load-sample20" : 'af_learners_card.nwt',
-      "#load-sample21" : 'interaction_topologies_of_MAPK_cascade.nwt',
-      "#load-sample22" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
-      "#load-sample23" : 'apoptotic_reaction_model.nwt',
-      "#load-sample24" : 'insulin_induced_signalling.nwt',
-
+      "#load-sample21" : 'RUNX1_regulates_transcription_of_genes_involved_in_WNT_signaling.nwt',
+      "#load-sample22" : 'PTK6_Activates_STAT3.nwt',
+      "#load-sample23" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
+      "#load-sample24" : 'interaction_topologies_of_MAPK_cascade.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {

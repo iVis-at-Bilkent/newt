@@ -5,33 +5,33 @@
       <renderInformation 
         xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#eff3ff7f"/>
+          <colorDefinition id="color_1" value="#f7f7f77f"/>
           <colorDefinition id="color_2" value="#555555"/>
-          <colorDefinition id="color_3" value="#9ecae1ff"/>
+          <colorDefinition id="color_3" value="#fee0b6ff"/>
           <colorDefinition id="color_4" value="#ffffffff"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
-          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/blue2_gradient.png"/>
-          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/blue4_gradient.png"/>
-          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb3_3d.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/pb2_3d.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeeff3ff5555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="Plasma Gut Liver Fat Skin Rest_of_body Kidney Filtrate">
+          <style id="nodef7f7f75555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="Plasma Gut Liver Fat Skin Rest_of_body Kidney Filtrate">
             <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="node9ecae15555551.2511normalnormalHelvetica000image_2none505010010011" idList="Plasma_0 Filtrate_0 Gut_0 Liver_0 Fat_0 Skin_0 Restofbody Kidney_0 FIltrate Storage Urine">
+          <style id="nodefee0b65555551.2511normalnormalHelvetica000image_2none505010010011" idList="Plasma_0 Filtrate_0 Gut_0 Liver_0 Fat_0 Skin_0 Restofbody Kidney_0 FIltrate Storage Urine">
             <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff5555551.25image_3none505010010011" idList="reaction_2 reaction_5 reaction_7 reaction reaction_10 reaction_12 reaction_14 reaction_15 reaction_3 reaction_4 reaction_6 reaction_8 reaction_9 reaction_11 reaction_13 reaction_16 reaction_1">
+          <style id="nodeffffff5555551.25image_3none505010010011" idList="reaction_2 reaction_5 reaction_7 reaction reaction_10 reaction_12 reaction_14 reaction_15 reaction_1 reaction_3 reaction_4 reaction_6 reaction_8 reaction_9 reaction_11 reaction_13 reaction_16">
             <g stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="edge5555551.25" idList="reaction_17_Gut_0 Storage_reaction_16 reaction_16_Urine Gut_0_reaction_2 reaction_2_Plasma_0 Gut_0_reaction_3 reaction_3_Liver_0 Plasma_0_reaction_4 reaction_4_Liver_0 Liver_0_reaction_5 reaction_5_Plasma_0 Plasma_0_reaction_6 reaction_6_Fat_0 Fat_0_reaction_7 reaction_7_Plasma_0 Plasma_0_reaction_8 reaction_8_Skin_0 Skin_0_reaction reaction_Plasma_0 Plasma_0_reaction_9 reaction_9_Restofbody Restofbody_reaction_10 reaction_10_Plasma_0 Plasma_0_reaction_11 reaction_11_Kidney_0 Kidney_0_reaction_12 reaction_12_Plasma_0 Plasma_0_reaction_13 reaction_13_Filtrate_0 Filtrate_0_reaction_14 reaction_14_Kidney_0 Filtrate_0_reaction_15 reaction_15_Storage Plasma_0_reaction_1 reaction_1_Gut_0">
+          <style id="edge5555551.25" idList="Storage_reaction_16 reaction_16_Urine Gut_0_reaction_2 reaction_2_Plasma_0 Gut_0_reaction_3 reaction_3_Liver_0 Plasma_0_reaction_4 reaction_4_Liver_0 Liver_0_reaction_5 reaction_5_Plasma_0 Plasma_0_reaction_6 reaction_6_Fat_0 Fat_0_reaction_7 reaction_7_Plasma_0 Plasma_0_reaction_8 reaction_8_Skin_0 Skin_0_reaction reaction_Plasma_0 Plasma_0_reaction_9 reaction_9_Restofbody Restofbody_reaction_10 reaction_10_Plasma_0 Plasma_0_reaction_11 reaction_11_Kidney_0 Kidney_0_reaction_12 reaction_12_Plasma_0 Plasma_0_reaction_13 reaction_13_Filtrate_0 Filtrate_0_reaction_14 reaction_14_Kidney_0 Filtrate_0_reaction_15 reaction_15_Storage Plasma_0_reaction_1 reaction_1_Gut_0">
             <g stroke="color_2" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
-      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
-
+      <nwt:mapProperties 
+        xmlns:nwt="https://newteditor.org/">
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -48,9 +48,9 @@
         <enablePorts>true</enablePorts>
         <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
-        <mapColorScheme>blue_scale</mapColorScheme>
-        <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
-        <mapName>Pathway #sbgn-network-container-0</mapName>
+        <mapColorScheme>opposed_purple_brown</mapColorScheme>
+        <mapColorSchemeStyle>3D</mapColorSchemeStyle>
+        <mapName>Pharmacokinetics of PFOA and PFOS in the monkey</mapName>
         <mapDescription/>
         <highlightColor>#0B9BCD</highlightColor>
         <extraHighlightThickness>2</extraHighlightThickness>
@@ -59,9 +59,10 @@
     </extension>
     <glyph id="Plasma" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>208.5566328113686</w>
-          <h>209.72752781896463</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>213.5566328113686</w>
+          <h>214.72752781896463</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -71,15 +72,15 @@
         </nwt:extraInfo>
       </extension>
       <label text="Plasma"/>
-      <bbox x="-122.27895031599289" y="-254.44068583001317" w="236.5566328113686" h="237.72752781896463"/>
-      <port id="Plasma.1" x="-108.27895031599289" y="-135.57692192053085"/>
-      <port id="Plasma.2" x="100.2776824953757" y="-135.57692192053085"/>
+      <bbox x="-124.77895031599289" y="-256.9406858300132" w="241.5566328113686" h="242.72752781896463"/>
+      <port id="Plasma.1" x="-110.77895031599289" y="-135.57692192053085"/>
+      <port id="Plasma.2" x="102.7776824953757" y="-135.57692192053085"/>
     </glyph>
     <glyph id="Plasma_0" class="simple molecule" compartmentRef="Plasma">
       <label text="Plasma"/>
       <bbox x="-57.837438344834254" y="-130.5151887789296" w="50" h="30"/>
-      <port id="Plasma_0.1" x="-57.837438344834254" y="-115.51518877892958"/>
-      <port id="Plasma_0.2" x="-7.837438344834254" y="-115.51518877892958"/>
+      <port id="Plasma_0.1" x="-57.837438344834254" y="-115.5151887789296"/>
+      <port id="Plasma_0.2" x="-7.837438344834254" y="-115.5151887789296"/>
     </glyph>
     <glyph id="Filtrate_0" class="simple molecule" compartmentRef="Plasma">
       <label text="Filtrate"/>
@@ -88,55 +89,56 @@
       <port id="Filtrate_0.2" x="30.302605446225236" y="-223.5382164497897"/>
     </glyph>
     <glyph id="reaction_2" class="process" compartmentRef="Plasma">
-      <bbox x="30.0683485500572" y="-45.91408034271001" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_2.1" x="27.925491407200056" y="-40.55693748556715"/>
-      <port id="reaction_2.2" x="42.925491407200056" y="-40.55693748556715"/>
+      <bbox x="28.282634264342914" y="-47.69979462842429" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_2.1" x="25.425491407200056" y="-40.55693748556715"/>
+      <port id="reaction_2.2" x="45.425491407200056" y="-40.55693748556715"/>
     </glyph>
     <glyph id="reaction_5" class="process" compartmentRef="Plasma">
-      <bbox x="-12.715081484156176" y="-45.19530086819141" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_5.1" x="-7.3579386270133185" y="-47.33815801104855"/>
-      <port id="reaction_5.2" x="-7.3579386270133185" y="-32.33815801104855"/>
+      <bbox x="-14.50079576987046" y="-46.981015153905695" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_5.1" x="-7.3579386270133185" y="-49.83815801104855"/>
+      <port id="reaction_5.2" x="-7.3579386270133185" y="-29.83815801104855"/>
     </glyph>
     <glyph id="reaction_7" class="process" compartmentRef="Plasma">
-      <bbox x="-75.68675094411114" y="-47.80123944736924" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_7.1" x="-70.32960808696828" y="-49.94409659022638"/>
-      <port id="reaction_7.2" x="-70.32960808696828" y="-34.94409659022638"/>
+      <bbox x="-77.47246522982542" y="-49.586953733083526" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_7.1" x="-70.32960808696828" y="-52.44409659022638"/>
+      <port id="reaction_7.2" x="-70.32960808696828" y="-32.44409659022638"/>
     </glyph>
     <glyph id="reaction" class="process" compartmentRef="Plasma">
-      <bbox x="-54.52224117007013" y="-50.751247537184824" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction.1" x="-49.16509831292727" y="-52.89410468004196"/>
-      <port id="reaction.2" x="-49.16509831292727" y="-37.89410468004196"/>
+      <bbox x="-56.307955455784416" y="-52.53696182289911" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction.1" x="-49.16509831292727" y="-55.39410468004196"/>
+      <port id="reaction.2" x="-49.16509831292727" y="-35.39410468004196"/>
     </glyph>
     <glyph id="reaction_10" class="process" compartmentRef="Plasma">
-      <bbox x="-103.39425999189143" y="-160.46978384994605" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_10.1" x="-90.53711713474857" y="-155.1126409928032"/>
-      <port id="reaction_10.2" x="-105.53711713474857" y="-155.1126409928032"/>
+      <bbox x="-105.17997427760571" y="-162.25549813566033" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_10.1" x="-88.03711713474857" y="-155.1126409928032"/>
+      <port id="reaction_10.2" x="-108.03711713474857" y="-155.1126409928032"/>
     </glyph>
     <glyph id="reaction_12" class="process" compartmentRef="Plasma">
-      <bbox x="-104.51109317313575" y="-210.34922153997218" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_12.1" x="-91.65395031599289" y="-204.99207868282932"/>
-      <port id="reaction_12.2" x="-106.65395031599289" y="-204.99207868282932"/>
+      <bbox x="-106.29680745885003" y="-212.13493582568645" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_12.1" x="-89.15395031599289" y="-204.99207868282932"/>
+      <port id="reaction_12.2" x="-109.15395031599289" y="-204.99207868282932"/>
     </glyph>
     <glyph id="reaction_14" class="process" compartmentRef="Plasma">
-      <bbox x="-61.50208380771433" y="-236.67282868715603" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_14.1" x="-63.64494095057147" y="-231.31568583001317"/>
-      <port id="reaction_14.2" x="-48.64494095057147" y="-231.31568583001317"/>
+      <bbox x="-63.28779809342861" y="-238.4585429728703" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_14.1" x="-66.14494095057147" y="-231.31568583001317"/>
+      <port id="reaction_14.2" x="-46.14494095057147" y="-231.31568583001317"/>
     </glyph>
     <glyph id="reaction_15" class="process" compartmentRef="Plasma">
-      <bbox x="85.79553963823284" y="-204.11207188682476" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_15.1" x="98.6526824953757" y="-198.7549290296819"/>
-      <port id="reaction_15.2" x="83.6526824953757" y="-198.7549290296819"/>
+      <bbox x="84.00982535251856" y="-205.89778617253904" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_15.1" x="101.1526824953757" y="-198.7549290296819"/>
+      <port id="reaction_15.2" x="81.1526824953757" y="-198.7549290296819"/>
     </glyph>
     <glyph id="reaction_1" class="process" compartmentRef="Plasma">
-      <bbox x="75.50174880253847" y="-48.8094786356324" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_1.1" x="88.35889165968133" y="-43.45233577848955"/>
-      <port id="reaction_1.2" x="73.35889165968133" y="-43.45233577848955"/>
+      <bbox x="73.7160345168242" y="-50.59519292134669" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_1.1" x="90.85889165968133" y="-43.45233577848954"/>
+      <port id="reaction_1.2" x="70.85889165968133" y="-43.45233577848954"/>
     </glyph>
     <glyph id="Gut" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>183.83820536007585</w>
-          <h>142.87779370681346</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>127.13713615179412</w>
+          <h>133.65407705708245</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -146,9 +148,9 @@
         </nwt:extraInfo>
       </extension>
       <label text="Gut"/>
-      <bbox x="-46.76757916472019" y="75.9042319456386" w="211.83820536007585" h="170.87779370681346"/>
-      <port id="Gut.1" x="-32.7675791647202" y="161.34312879904533"/>
-      <port id="Gut.2" x="151.07062619535566" y="161.34312879904533"/>
+      <bbox x="-49.26757916472019" y="87.6279485953696" w="155.13713615179412" h="161.65407705708245"/>
+      <port id="Gut.1" x="-35.26757916472019" y="168.45498712391083"/>
+      <port id="Gut.2" x="91.86955698707393" y="168.45498712391083"/>
     </glyph>
     <glyph id="Gut_0" class="simple molecule" compartmentRef="Gut">
       <label text="Gut"/>
@@ -157,20 +159,21 @@
       <port id="Gut_0.2" x="90.24455698707393" y="141.773939986996"/>
     </glyph>
     <glyph id="reaction_3" class="process" compartmentRef="Gut">
-      <bbox x="50.61509279740541" y="218.2998827953092" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_3.1" x="48.472235654548264" y="223.65702565245206"/>
-      <port id="reaction_3.2" x="63.47223565454828" y="223.65702565245206"/>
+      <bbox x="48.82937851169113" y="216.51416850959492" w="14.285714285714272" h="14.285714285714272"/>
+      <port id="reaction_3.1" x="45.97223565454827" y="223.65702565245206"/>
+      <port id="reaction_3.2" x="65.97223565454827" y="223.65702565245206"/>
     </glyph>
     <glyph id="reaction_4" class="process" compartmentRef="Gut">
-      <bbox x="-28.99972202186305" y="107.89580573822676" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_4.1" x="-23.642579164720193" y="120.75294859536962"/>
-      <port id="reaction_4.2" x="-23.642579164720193" y="105.75294859536962"/>
+      <bbox x="-30.785436307577335" y="106.11009145251248" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_4.1" x="-23.642579164720193" y="123.25294859536962"/>
+      <port id="reaction_4.2" x="-23.642579164720193" y="103.25294859536962"/>
     </glyph>
     <glyph id="Liver" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>155.0629319278874</w>
-          <h>77.55535716139892</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>157.5629319278874</w>
+          <h>80.05535716139892</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -180,9 +183,9 @@
         </nwt:extraInfo>
       </extension>
       <label text="Liver"/>
-      <bbox x="-256.9352197673408" y="113.85770581940794" w="183.0629319278874" h="105.55535716139892"/>
-      <port id="Liver.1" x="-242.9352197673408" y="166.6353844001074"/>
-      <port id="Liver.2" x="-87.87228783945339" y="166.6353844001074"/>
+      <bbox x="-259.4352197673408" y="111.35770581940794" w="185.5629319278874" h="108.05535716139892"/>
+      <port id="Liver.1" x="-245.4352197673408" y="165.3853844001074"/>
+      <port id="Liver.2" x="-87.87228783945339" y="165.3853844001074"/>
     </glyph>
     <glyph id="Liver_0" class="simple molecule" compartmentRef="Liver">
       <label text="Liver"/>
@@ -191,15 +194,16 @@
       <port id="Liver_0.2" x="-89.4972878394534" y="188.78806298080687"/>
     </glyph>
     <glyph id="reaction_6" class="process" compartmentRef="Liver">
-      <bbox x="-239.16736262448367" y="131.6255629622651" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_6.1" x="-241.3102197673408" y="136.98270581940795"/>
-      <port id="reaction_6.2" x="-226.3102197673408" y="136.98270581940795"/>
+      <bbox x="-240.95307691019795" y="129.83984867655082" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_6.1" x="-243.8102197673408" y="136.98270581940795"/>
+      <port id="reaction_6.2" x="-223.8102197673408" y="136.98270581940795"/>
     </glyph>
     <glyph id="Fat" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>64.62351280123875</w>
-          <h>81.21218927601043</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>67.12351280123875</w>
+          <h>83.71218927601043</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -209,9 +213,9 @@
         </nwt:extraInfo>
       </extension>
       <label text="Fat"/>
-      <bbox x="-411.21229250605927" y="33.37165416832451" w="92.62351280123875" h="109.21218927601043"/>
-      <port id="Fat.1" x="-397.21229250605927" y="87.97774880632973"/>
-      <port id="Fat.2" x="-332.58877970482047" y="87.97774880632973"/>
+      <bbox x="-413.71229250605927" y="30.87165416832451" w="95.12351280123875" h="111.71218927601043"/>
+      <port id="Fat.1" x="-399.71229250605927" y="86.72774880632973"/>
+      <port id="Fat.2" x="-332.58877970482047" y="86.72774880632973"/>
     </glyph>
     <glyph id="Fat_0" class="simple molecule" compartmentRef="Fat">
       <label text="Fat"/>
@@ -220,15 +224,16 @@
       <port id="Fat_0.2" x="-334.21377970482047" y="111.95884344433496"/>
     </glyph>
     <glyph id="reaction_8" class="process" compartmentRef="Fat">
-      <bbox x="-393.44443536320205" y="51.13951131118165" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_8.1" x="-380.5872925060592" y="56.49665416832451"/>
-      <port id="reaction_8.2" x="-395.5872925060592" y="56.49665416832451"/>
+      <bbox x="-395.2301496489164" y="49.353797025467365" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_8.1" x="-378.0872925060592" y="56.49665416832451"/>
+      <port id="reaction_8.2" x="-398.0872925060592" y="56.49665416832451"/>
     </glyph>
     <glyph id="Skin" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>72.95319030108405</w>
-          <h>101.94295184594326</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>75.45319030108405</w>
+          <h>104.44295184594326</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -238,9 +243,9 @@
         </nwt:extraInfo>
       </extension>
       <label text="Skin"/>
-      <bbox x="-271.85518697458406" y="-86.10552615061289" w="100.95319030108405" h="129.94295184594324"/>
-      <port id="Skin.1" x="-257.85518697458406" y="-21.13405022764126"/>
-      <port id="Skin.2" x="-184.90199667349998" y="-21.13405022764126"/>
+      <bbox x="-274.35518697458406" y="-88.60552615061289" w="103.45319030108405" h="132.44295184594324"/>
+      <port id="Skin.1" x="-260.35518697458406" y="-22.38405022764126"/>
+      <port id="Skin.2" x="-184.90199667349998" y="-22.38405022764126"/>
     </glyph>
     <glyph id="Skin_0" class="simple molecule" compartmentRef="Skin">
       <label text="Skin"/>
@@ -249,15 +254,16 @@
       <port id="Skin_0.2" x="-186.5269966735" y="13.21242569533037"/>
     </glyph>
     <glyph id="reaction_9" class="process" compartmentRef="Skin">
-      <bbox x="-254.08732983172692" y="-68.33766900775575" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_9.1" x="-256.23018697458406" y="-62.98052615061289"/>
-      <port id="reaction_9.2" x="-241.23018697458406" y="-62.98052615061289"/>
+      <bbox x="-255.8730441174412" y="-70.12338329347003" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_9.1" x="-258.73018697458406" y="-62.98052615061289"/>
+      <port id="reaction_9.2" x="-238.73018697458406" y="-62.98052615061289"/>
     </glyph>
     <glyph id="Rest_of_body" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>81.02048748829759</w>
-          <h>82.87454157811527</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>83.52048748829759</w>
+          <h>85.37454157811527</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -267,9 +273,9 @@
         </nwt:extraInfo>
       </extension>
       <label text="Rest of body"/>
-      <bbox x="-410.37701844475185" y="-159.38159558471557" w="109.02048748829759" h="110.87454157811527"/>
-      <port id="Rest_of_body.1" x="-396.37701844475185" y="-103.94432479565793"/>
-      <port id="Rest_of_body.2" x="-315.35653095645426" y="-103.94432479565793"/>
+      <bbox x="-410.37701844475185" y="-161.88159558471557" w="111.52048748829759" h="113.37454157811527"/>
+      <port id="Rest_of_body.1" x="-396.37701844475185" y="-105.19432479565793"/>
+      <port id="Rest_of_body.2" x="-312.85653095645426" y="-105.19432479565793"/>
     </glyph>
     <glyph id="Restofbody" class="simple molecule" compartmentRef="Rest_of_body">
       <label text="Restofbody"/>
@@ -278,15 +284,16 @@
       <port id="Restofbody.2" x="-344.75201844475185" y="-79.1320540066003"/>
     </glyph>
     <glyph id="reaction_11" class="process" compartmentRef="Rest_of_body">
-      <bbox x="-329.8386738135971" y="-141.61373844185843" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_11.1" x="-331.98153095645426" y="-136.25659558471557"/>
-      <port id="reaction_11.2" x="-316.98153095645426" y="-136.25659558471557"/>
+      <bbox x="-331.62438809931143" y="-143.3994527275727" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_11.1" x="-334.48153095645426" y="-136.25659558471557"/>
+      <port id="reaction_11.2" x="-314.48153095645426" y="-136.25659558471557"/>
     </glyph>
     <glyph id="Kidney" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>83.77063901082221</w>
-          <h>70.4696022407131</h>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>86.27063901082221</w>
+          <h>72.9696022407131</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -296,23 +303,24 @@
         </nwt:extraInfo>
       </extension>
       <label text="Kidney"/>
-      <bbox x="-372.11775658543934" y="-280.38847633666035" w="111.77063901082221" h="98.4696022407131"/>
+      <bbox x="-372.11775658543934" y="-280.38847633666035" w="114.27063901082221" h="100.9696022407131"/>
     </glyph>
     <glyph id="Kidney_0" class="simple molecule" compartmentRef="Kidney">
       <label text="Kidney"/>
       <bbox x="-356.4927565854394" y="-264.76347633666035" w="50" h="30"/>
-      <port id="Kidney_0.1" x="-356.4927565854394" y="-249.76347633666032"/>
-      <port id="Kidney_0.2" x="-306.4927565854394" y="-249.76347633666032"/>
+      <port id="Kidney_0.1" x="-356.4927565854394" y="-249.76347633666035"/>
+      <port id="Kidney_0.2" x="-306.4927565854394" y="-249.76347633666035"/>
     </glyph>
     <glyph id="reaction_13" class="process" compartmentRef="Kidney">
-      <bbox x="-288.82926043176" y="-210.4010169530901" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_13.1" x="-275.9721175746172" y="-205.04387409594725"/>
-      <port id="reaction_13.2" x="-290.9721175746172" y="-205.04387409594725"/>
+      <bbox x="-290.61497471747435" y="-212.18673123880438" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_13.1" x="-273.4721175746172" y="-205.04387409594725"/>
+      <port id="reaction_13.2" x="-293.4721175746172" y="-205.04387409594725"/>
     </glyph>
     <glyph id="Filtrate" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
-          <w>104.87909226713666</w>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>98.62743588044694</w>
           <h>174.01024783623757</h>
           <minW>0</minW>
           <minH>0</minH>
@@ -323,8 +331,8 @@
         </nwt:extraInfo>
       </extension>
       <label text="Filtrate"/>
-      <bbox x="166.6800904307902" y="-211.42992134220214" w="132.87909226713666" h="202.01024783623757"/>
-      <port id="Filtrate.1" x="180.6800904307902" y="-110.42479742408335"/>
+      <bbox x="172.93174681747996" y="-211.42992134220214" w="126.62743588044694" h="202.01024783623757"/>
+      <port id="Filtrate.1" x="186.93174681747996" y="-110.42479742408335"/>
       <port id="Filtrate.2" x="285.5591826979269" y="-110.42479742408335"/>
     </glyph>
     <glyph id="FIltrate" class="simple molecule" compartmentRef="Filtrate">
@@ -335,61 +343,61 @@
     </glyph>
     <glyph id="Storage" class="simple molecule" compartmentRef="Filtrate">
       <label text="Storage"/>
-      <bbox x="182.4649074925062" y="-195.80492134220214" w="50" h="30"/>
-      <port id="Storage.1" x="182.4649074925062" y="-180.80492134220214"/>
-      <port id="Storage.2" x="232.4649074925062" y="-180.80492134220214"/>
+      <bbox x="188.55674681747993" y="-195.80492134220214" w="50" h="30"/>
+      <port id="Storage.1" x="188.55674681747993" y="-180.80492134220214"/>
+      <port id="Storage.2" x="238.55674681747993" y="-180.80492134220214"/>
     </glyph>
     <glyph id="Urine" class="simple molecule" compartmentRef="Filtrate">
       <label text="Urine"/>
-      <bbox x="215.65397227548982" y="-115.11267345824173" w="50" h="30"/>
-      <port id="Urine.1" x="215.65397227548982" y="-100.11267345824173"/>
-      <port id="Urine.2" x="265.6539722754898" y="-100.11267345824173"/>
+      <bbox x="190.41635221488437" y="-106.41004585113637" w="50" h="30"/>
+      <port id="Urine.1" x="190.41635221488437" y="-91.41004585113637"/>
+      <port id="Urine.2" x="240.41635221488437" y="-91.41004585113637"/>
     </glyph>
     <glyph id="reaction_16" class="process" compartmentRef="Filtrate">
-      <bbox x="184.44794757364735" y="-150.02450524993066" w="10.714285714285715" h="10.714285714285715"/>
-      <port id="reaction_16.1" x="189.80509043079022" y="-137.1673623927878"/>
-      <port id="reaction_16.2" x="189.80509043079022" y="-152.1673623927878"/>
+      <bbox x="207.02959058782804" y="-150.0696940142239" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="reaction_16.1" x="214.17244773068518" y="-132.92683687136676"/>
+      <port id="reaction_16.2" x="214.17244773068518" y="-152.92683687136676"/>
     </glyph>
     <arc id="Storage_reaction_16" class="consumption" source="Storage" target="reaction_16.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="200.1471969215136" y="-165.83057612617634"/>
-      <end x="189.80509043079022" y="-152.7923623927878"/>
+      <start x="213.81071568631674" y="-165.180688763622"/>
+      <end x="214.17244773068518" y="-153.55183687136676"/>
     </arc>
     <arc id="reaction_16_Urine" class="production" source="reaction_16.1" target="Urine">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="189.80509043079022" y="-136.5423623927878"/>
-      <end x="223.66661015791726" y="-114.99730036662734"/>
+      <start x="214.17244773068518" y="-132.30183687136676"/>
+      <end x="214.96368484578966" y="-110.15744209542525"/>
     </arc>
     <arc id="Gut_0_reaction_2" class="consumption" source="Gut_0" target="reaction_2.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="62.70179860373847" y="126.22605616775283"/>
-      <end x="43.550491407200056" y="-40.55693748556715"/>
+      <end x="46.050491407200056" y="-40.55693748556715"/>
     </arc>
     <arc id="reaction_2_Plasma_0" class="production" source="reaction_2.1" target="Plasma_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="27.300491407200056" y="-40.55693748556715"/>
-      <end x="-18.293234606463088" y="-99.54446963981736"/>
+      <start x="24.800491407200056" y="-40.55693748556715"/>
+      <end x="-18.293234606463088" y="-99.54446963981738"/>
     </arc>
     <arc id="Gut_0_reaction_3" class="consumption" source="Gut_0" target="reaction_3.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="63.47940751979351" y="157.3618256801558"/>
-      <end x="64.09723565454829" y="223.65702565245206"/>
+      <end x="66.59723565454827" y="223.65702565245206"/>
     </arc>
     <arc id="reaction_3_Liver_0" class="production" source="reaction_3.1" target="Liver_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="47.84723565454826" y="223.65702565245206"/>
+      <start x="45.347235654548285" y="223.65702565245206"/>
       <end x="-87.14118808834489" y="194.38366037271706"/>
     </arc>
     <arc id="Plasma_0_reaction_4" class="consumption" source="Plasma_0" target="reaction_4.2">
@@ -397,13 +405,13 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-32.20961250697285" y="-99.89487913529351"/>
-      <end x="-23.642579164720193" y="105.12794859536963"/>
+      <end x="-23.642579164720193" y="102.62794859536962"/>
     </arc>
     <arc id="reaction_4_Liver_0" class="production" source="reaction_4.1" target="Liver_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-23.64257916472019" y="121.37794859536962"/>
+      <start x="-23.64257916472019" y="123.87794859536962"/>
       <end x="-96.93939103347094" y="174.19071560109512"/>
     </arc>
     <arc id="Liver_0_reaction_5" class="consumption" source="Liver_0" target="reaction_5.2">
@@ -411,13 +419,13 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-107.45685212049011" y="173.76437444438477"/>
-      <end x="-7.357938627013311" y="-31.713158011048534"/>
+      <end x="-7.357938627013311" y="-29.213158011048534"/>
     </arc>
     <arc id="reaction_5_Plasma_0" class="production" source="reaction_5.1" target="Plasma_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-7.3579386270133185" y="-47.96315801104855"/>
+      <start x="-7.3579386270133185" y="-50.46315801104855"/>
       <end x="-26.68702733708488" y="-97.24776405618195"/>
     </arc>
     <arc id="Plasma_0_reaction_6" class="consumption" source="Plasma_0" target="reaction_6.2">
@@ -425,13 +433,13 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-44.025902480307224" y="-101.45824227105012"/>
-      <end x="-225.6852197673408" y="136.98270581940795"/>
+      <end x="-223.1852197673408" y="136.98270581940795"/>
     </arc>
     <arc id="reaction_6_Fat_0" class="production" source="reaction_6.1" target="Fat_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-241.9352197673408" y="136.98270581940795"/>
+      <start x="-244.4352197673408" y="136.98270581940795"/>
       <end x="-331.79515520153495" y="117.43013856886004"/>
     </arc>
     <arc id="Fat_0_reaction_7" class="consumption" source="Fat_0" target="reaction_7.2">
@@ -439,27 +447,27 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-339.94379158167555" y="101.65941165483365"/>
-      <end x="-70.32960808696828" y="-34.31909659022638"/>
+      <end x="-70.32960808696828" y="-31.81909659022638"/>
     </arc>
     <arc id="reaction_7_Plasma_0" class="production" source="reaction_7.1" target="Plasma_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-70.32960808696828" y="-50.56909659022638"/>
+      <start x="-70.32960808696828" y="-53.06909659022638"/>
       <end x="-41.91535941376993" y="-97.8225982494327"/>
     </arc>
     <arc id="Plasma_0_reaction_8" class="consumption" source="Plasma_0" target="reaction_8.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-52.904949702765464" y="-105.79850748656759"/>
-      <end x="-396.2122925060592" y="56.4966541683245"/>
+      <start x="-52.90494970276541" y="-105.79850748656762"/>
+      <end x="-398.7122925060592" y="56.49665416832451"/>
     </arc>
     <arc id="reaction_8_Skin_0" class="production" source="reaction_8.1" target="Skin_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-379.9622925060592" y="56.49665416832451"/>
+      <start x="-377.4622925060592" y="56.49665416832451"/>
       <end x="-238.33749028677235" y="19.785089869676575"/>
     </arc>
     <arc id="Skin_0_reaction" class="consumption" source="Skin_0" target="reaction.2">
@@ -467,27 +475,27 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-189.47608690334943" y="5.252877757679819"/>
-      <end x="-49.165098312927256" y="-37.26910468004196"/>
+      <end x="-49.165098312927256" y="-34.76910468004196"/>
     </arc>
     <arc id="reaction_Plasma_0" class="production" source="reaction.1" target="Plasma_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-49.16509831292727" y="-53.51910468004196"/>
+      <start x="-49.16509831292727" y="-56.01910468004196"/>
       <end x="-37.14828167855626" y="-97.00175767295616"/>
     </arc>
     <arc id="Plasma_0_reaction_9" class="consumption" source="Plasma_0" target="reaction_9.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-56.63725824103403" y="-109.72381543824451"/>
-      <end x="-240.60518697458406" y="-62.98052615061289"/>
+      <start x="-56.63725824103403" y="-109.72381543824454"/>
+      <end x="-238.10518697458406" y="-62.98052615061289"/>
     </arc>
     <arc id="reaction_9_Restofbody" class="production" source="reaction_9.1" target="Restofbody">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-256.85518697458406" y="-62.98052615061289"/>
+      <start x="-259.35518697458406" y="-62.98052615061289"/>
       <end x="-341.6220666000681" y="-75.37784127252024"/>
     </arc>
     <arc id="Restofbody_reaction_10" class="consumption" source="Restofbody" target="reaction_10.2">
@@ -495,55 +503,55 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-346.45957610474557" y="-85.64540102144363"/>
-      <end x="-106.1621171347486" y="-155.1126409928032"/>
+      <end x="-108.6621171347486" y="-155.1126409928032"/>
     </arc>
     <arc id="reaction_10_Plasma_0" class="production" source="reaction_10.1" target="Plasma_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-89.91211713474857" y="-155.1126409928032"/>
-      <end x="-53.664188007134506" y="-128.16381281863593"/>
+      <start x="-87.41211713474857" y="-155.1126409928032"/>
+      <end x="-53.664188007134506" y="-128.16381281863596"/>
     </arc>
     <arc id="Plasma_0_reaction_11" class="consumption" source="Plasma_0" target="reaction_11.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-58.289899057392574" y="-117.32533976508546"/>
-      <end x="-316.35653095645426" y="-136.25659558471557"/>
+      <end x="-313.85653095645426" y="-136.25659558471557"/>
     </arc>
     <arc id="reaction_11_Kidney_0" class="production" source="reaction_11.1" target="Kidney_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-332.60653095645426" y="-136.25659558471557"/>
-      <end x="-330.3356357137441" y="-231.03049187013275"/>
+      <start x="-335.10653095645426" y="-136.25659558471557"/>
+      <end x="-330.3356357137441" y="-231.03049187013278"/>
     </arc>
     <arc id="Kidney_0_reaction_12" class="consumption" source="Kidney_0" target="reaction_12.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-307.0588605462849" y="-245.05509510079955"/>
-      <end x="-107.27895031599289" y="-204.99207868282932"/>
+      <start x="-307.0588605462849" y="-245.05509510079958"/>
+      <end x="-109.77895031599289" y="-204.99207868282932"/>
     </arc>
     <arc id="reaction_12_Plasma_0" class="production" source="reaction_12.1" target="Plasma_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-91.02895031599289" y="-204.99207868282932"/>
+      <start x="-88.52895031599289" y="-204.99207868282932"/>
       <end x="-45.25117514238953" y="-132.26429888312066"/>
     </arc>
     <arc id="Plasma_0_reaction_13" class="consumption" source="Plasma_0" target="reaction_13.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-54.947795978111486" y="-123.4131830105322"/>
-      <end x="-291.5971175746172" y="-205.04387409594725"/>
+      <start x="-54.947795978111486" y="-123.41318301053221"/>
+      <end x="-294.0971175746172" y="-205.04387409594725"/>
     </arc>
     <arc id="reaction_13_Filtrate_0" class="production" source="reaction_13.1" target="Filtrate_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-275.3471175746172" y="-205.04387409594725"/>
+      <start x="-272.8471175746172" y="-205.04387409594725"/>
       <end x="-23.300819002244737" y="-221.70633338638152"/>
     </arc>
     <arc id="Filtrate_0_reaction_14" class="consumption" source="Filtrate_0" target="reaction_14.2">
@@ -551,42 +559,42 @@
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="-19.787554070233398" y="-226.71389975737173"/>
-      <end x="-48.01994095057147" y="-231.31568583001317"/>
+      <end x="-45.51994095057147" y="-231.31568583001317"/>
     </arc>
     <arc id="reaction_14_Kidney_0" class="production" source="reaction_14.1" target="Kidney_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-64.26994095057148" y="-231.31568583001317"/>
-      <end x="-302.9030446333414" y="-247.84801891593727"/>
+      <start x="-66.76994095057148" y="-231.31568583001317"/>
+      <end x="-302.9030446333414" y="-247.8480189159373"/>
     </arc>
     <arc id="Filtrate_0_reaction_15" class="consumption" source="Filtrate_0" target="reaction_15.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
       <start x="28.46310337795773" y="-216.85222038823323"/>
-      <end x="83.0276824953757" y="-198.7549290296819"/>
+      <end x="80.5276824953757" y="-198.7549290296819"/>
     </arc>
     <arc id="reaction_15_Storage" class="production" source="reaction_15.1" target="Storage">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="99.2776824953757" y="-198.7549290296819"/>
-      <end x="179.53476186476598" y="-185.11527073791473"/>
+      <start x="101.7776824953757" y="-198.7549290296819"/>
+      <end x="185.55021328581" y="-184.9119540210374"/>
     </arc>
     <arc id="Plasma_0_reaction_1" class="consumption" source="Plasma_0" target="reaction_1.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-15.071757811397845" y="-104.25496934455593"/>
-      <end x="72.73389165968133" y="-43.45233577848954"/>
+      <start x="-15.071757811397845" y="-104.25496934455595"/>
+      <end x="70.23389165968133" y="-43.45233577848954"/>
     </arc>
     <arc id="reaction_1_Gut_0" class="production" source="reaction_1.1" target="Gut_0">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="88.98389165968133" y="-43.452335778489555"/>
-      <end x="66.82248997654791" y="123.05558552771123"/>
+      <start x="91.48389165968133" y="-43.45233577848953"/>
+      <end x="66.82248997654791" y="123.05558552771122"/>
     </arc>
   </map>
 </sbgn>
