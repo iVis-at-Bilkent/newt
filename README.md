@@ -76,7 +76,7 @@ We refer the user to [GeneCards](https://www.genecards.org/) for detailed proper
 
 ## Team
 
-  * [Hasan Balci](https://github.com/hasanbalci), [Noor Muhammad](https://github.com/NoorMuhammad1), [Omer Kaan Gurbuz](https://github.com/okg21), [Umut Utku Ersahince](https://github.com/umut-er) and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Ozgun Babur](https://github.com/ozgunbabur) of University of Massachusetts at Boston, and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/)
+  * [Hasan Balci](https://github.com/hasanbalci), [Umut Utku Ersahince](https://github.com/umut-er), [Noor Muhammad](https://github.com/NoorMuhammad1) and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Ozgun Babur](https://github.com/ozgunbabur) of University of Massachusetts at Boston, and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/)
 
 #### Alumni
 
