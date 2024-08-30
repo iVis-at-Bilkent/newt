@@ -693,6 +693,176 @@ inspectorUtilities.handleSBGNInspector = function () {
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
     $("#sbgn-inspector-style-properties-panel").html(html);
 
+    // Some SBML Helper Methods for Simulation Tab
+
+    /**
+     * @param {cytoscape.NodeSingular} node the input node 
+     * @returns whether this node is an SBML process node
+     */
+    var isSBMLProcess = function( node ) {
+      return node.data('class').endsWith('process') 
+        || node.data('class') == 'association' 
+        || node.data('class') == 'dissociation';
+    }
+
+    /**
+     * @param {cytoscape.NodeSingular} node the input node 
+     * @returns whether this node is a logical operator
+     */
+    var isSBMLLogicalOperator = function( node ) {
+      return node.data('class') == "and" || node.data('class') == "not" 
+        || node.data('class') == "or" 
+        || node.data('class') == "unknown logical operator";
+    } 
+
+    /**
+     * @param {cytoscape.NodeSingular} node the input node
+     * @returns whether the input node is an SBML species
+     */
+    var isSBMLSpecies = function( node ) {
+      return node.isNode() && !isSBMLProcess(node) 
+        && !isSBMLLogicalOperator(node) 
+        && node.data('class') !== 'compartment';
+    }
+
+    /**
+     * @param {cytoscape.EdgeSingular} edge the input edge
+     * @returns whether the input edge is a reduced arc
+     */
+    var isSBMLReducedArc = function( edge ) {
+      var reducedNotationEdge = [
+        "positive influence sbml", "negative influence",
+        "reduced modulation", "reduced stimulation",
+        "reduced trigger", "unknown negative influence",
+        "unknown positive influence", "unknown reduced stimulation",
+        "unknown reduced modulation", "unknown reduced trigger"
+      ];
+      return edge.data('class') in reducedNotationEdge;
+    }
+
+    /**
+     * @param {cytoscape.EdgeSingular} edge the input edge
+     * @returns whether the input edge is a non-modifier arc
+     */
+    var isSBMLSimulationArc = function( edge ) {
+      return edge.data('class').includes('production') || edge.data('class').includes('consumption')
+        || edge.data('class') == 'transport';
+    }
+
+    // Add SBML specific simulation tab.
+    var mapType = appUtilities.getActiveChiseInstance().getMapType();
+    var showSBMLSimulationPanel = true;
+    if(selectedEles.length != 1 || mapType != 'SBML')
+      showSBMLSimulationPanel = false;
+    if(isSBMLReducedArc(selectedEles[0]) || isSBMLLogicalOperator(selectedEles[0]) 
+        || selectedEles[0].data('class') == 'logic arc')
+      showSBMLSimulationPanel = false;
+    if(selectedEles[0].isEdge() && !isSBMLSimulationArc(selectedEles[0]))
+      showSBMLSimulationPanel = false;
+    if( isSBMLSpecies(selectedEles[0]) && selectedEles.parent().length != 0 
+          && selectedEles.parent()[0].data('class') == 'complex sbml')
+      showSBMLSimulationPanel = false;
+
+    if(showSBMLSimulationPanel){
+      var SBMLHtml = "";
+      
+      // Add expand collapse tab title
+      var SBMLClassInfo  = selectedEles[0].data('class')
+        .replace(' multimer', '')
+        .replace('active ', '')
+        .replace('hypothetical ', '') || "";
+      var SBMLClassInfo = appUtilities.transformClassInfo(SBMLClassInfo);
+      var SBMLTitle = SBMLClassInfo == "" ? "Simulation Properties" : SBMLClassInfo + " Simulation Properties";
+      SBMLHtml += `<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#inspector-simulation-properties-toggle'>
+            <p class='panel-title accordion-toggle'>` + SBMLTitle + `</p></div>`
+
+      // Add body
+      SBMLHtml += "<div id='inspector-simulation-properties-toggle' class='panel-collapse collapse'>";
+      SBMLHtml += "<div class='panel-body'>";
+      SBMLHtml += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
+
+      if( isSBMLSpecies(selectedEles[0]) && selectedEles.parent().length != 0 
+          && selectedEles.parent()[0].data('class') != 'complex sbml') { // Add html body for an SBML Species
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                    + "<font class='sbgn-label-font' style='margin-right: 3px;'>Initial </font>"
+                    + "<select style='width: " + width / 1.7 + "px; font-size: 11px !important;'>"
+                      + "<option value='amount' selected>Amount</option>"
+                      + "<option value='concentration'>Concentration</option>"
+                    + "</select>" 
+                  + "</td><td style='padding-left: 5px;'>"
+                    + "<input id='inspector-initial-value' class='inspector-input-box' type='number' style='width: " + width / 2.5 + "px;'></input>"
+                    + "<select id=inspector-initial-unit class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
+                      + "<option value='mole' selected>mole</option>"
+                    + "</select>"
+                  + "</td></tr>";
+        SBMLHtml += '<tr><td colspan="2"><hr class="inspector-divider"></td></tr>';
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                + "<font class='sbgn-label-font'>Boundary Condition</font>" 
+              + "</td><td style='padding-left: 5px;'>"
+                + "<input type='checkbox' id='inspector-boundary-condition-species'></input>"
+              + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Constant</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input type='checkbox' id='inspector-constant-species'></input>"
+                + "</td></tr></table></div>";
+      } else if( isSBMLProcess(selectedEles[0]) ) { // Add html body for an SBML Process
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Local Parameters</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                + '<div style="display: flex; flex-direction: row; align-items: center;">'
+                  + '<table><tbody><tr><td>'
+                    + '<textarea id="inspector-localparam-name" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name..."></textarea></td>'
+                  + '</tr><tr><td>'
+                      + '<input id="inspector-localparam-value" class="inspector-input-box" type="number" style="width: ' + width / 2.5 + 'px;">'
+                      + '<select id="inspector-localparam-unit" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + width / 2.5 + 'px !important; margin-left: 1px;">'
+                        + '<option value="litre" selected>litre</option>'
+                        + '<option value="m3">m³</option>'
+                  + '</select></td></tr></tbody></table>'
+                  + '<img id="inspector-localparam-delete" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
+                + '</div>'
+                  + '<img width="16px" height="16px" id="inspector-add-localparam" src="app/img/add.svg" class="pointer-button">'
+                + "</td></tr>";
+        SBMLHtml += '</table></div><div style="text-align: center; margin-top: 5px;">'
+                    + '<button class="btn btn-default" style="align: center;" id="inspector-kinetic-law-button">Set Kinetic Law</button>'
+                  + '</div>'
+      } else if( selectedEles[0].data('class') == "compartment" ){ // Add html body for an SBML Compartment
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                    + "<font class='sbgn-label-font'>Dimensions</font>" 
+                  + "</td><td style='padding-left: 5px;'>"
+                    + "<input id='inspector-compartment-dimensions' class='inspector-input-box' type='number' value='3' min='1' max='3' style='width: " + buttonwidth + "px;'></input>"
+                  + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Size</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input id='inspector-compartment-size' class='inspector-input-box' type='number' min='0' style='width: " + width / 2.5 + "px;'></input>"
+                  + "<select id=inspector-compartment-size-units class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
+                    + "<option value='litre' selected>litre</option>"
+                    + "<option value='m3'>m&sup3</option>"
+                  +"</select>"
+                + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Constant</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input type='checkbox' id='inspector-compartment-constant' checked></input>"
+                + "</td></tr></table></div>";
+      } else if( isSBMLSimulationArc(selectedEles[0]) ){ // Add html body for an SBML Arc
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                    + "<font class='sbgn-label-font'>Stoichiometry</font>" 
+                  + "</td><td style='padding-left: 5px;'>"
+                    + "<input id='inspector-node-stoichiometry' class='inspector-input-box' type='number' min='1' value='1' style='width: " + buttonwidth + "px;'"
+                  + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Constant</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input type='checkbox' id='inspector-constant-stoichiometry' checked></input>"
+                + "</td></tr></table></div>";
+      }
+      $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-simulation-panel" class="panel" ></div>');
+      $("#sbgn-inspector-style-simulation-panel").html(SBMLHtml);
+    }
+
+
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
       console.log("channging background")
       chiseInstance.changeData(selectedEles, 'background-color', $('#inspector-fill-color').val());
