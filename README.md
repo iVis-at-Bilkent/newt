@@ -15,7 +15,7 @@ H. Balci, M.C. Siper, N. Saleh, I. Safarli, L. Roy, M. Kilicarslan, R. Ozaydin, 
 **A deployment of this sample application along with detailed documentation on its usage** can be found [here](http://newteditor.org/). ChiSE and Newt work on every platform that have JavaScript support including mobile devices.
 
 #### Running a Local Instance
-In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of LTS version 12.16.1 of node.js):
+In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of version 14.19.3 of node.js):
 
 - Installation
 ```
