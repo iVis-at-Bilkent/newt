@@ -56,7 +56,7 @@ Third-party libraries:
 [jQuery](https://github.com/jquery/jquery),
 [jquery-expander](https://github.com/kswedberg/jquery-expander),
 [Konva](https://github.com/konvajs/konva),
-[Libxmljs](https://github.com/libxmljs/libxmljs),
+[libxmljs](https://github.com/libxmljs/libxmljs),
 [lodash](https://github.com/lodash/lodash),
 [underscore](https://github.com/jashkenas/underscore),
 [express](https://github.com/expressjs/express),
@@ -66,13 +66,15 @@ Third-party libraries:
 [Tippyjs](https://github.com/atomiks/tippyjs),
 [nodemailer](https://nodemailer.com/about/),
 [body-parser](https://github.com/expressjs/body-parser),
+[jsdom](https://github.com/jsdom/jsdom),
+[cypress](https://github.com/cypress-io/cypress),
 [multer](https://github.com/expressjs/multer) licensed with [MIT](https://opensource.org/licenses/MIT);
 [Mousetrap](https://github.com/ccampbell/mousetrap),
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0),
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), and
 [chroma-js](https://github.com/gka/chroma.js) licensed with [this](https://github.com/gka/chroma.js/blob/master/LICENSE).
 
-We refer the user to [GeneCards](https://www.genecards.org/) for detailed properties of genes. Similarly, we pull properties of simple chemicals from [ChEBI](https://www.ebi.ac.uk/chebi/). CellDesigner conversion is performed through [this library](https://github.com/royludo/cd2sbgnml ) and [its associated service](https://github.com/iVis-at-Bilkent/cd2sbgnml-webservice). Finally, SBML conversion is due to [this Minerva service](https://minerva-dev.lcsb.uni.lu/minerva/api/convert/).
+We refer the user to [GeneCards](https://www.genecards.org/) for detailed properties of genes. Similarly, we pull properties of simple chemicals from [ChEBI](https://www.ebi.ac.uk/chebi/). CellDesigner conversion is performed through [this library](https://github.com/royludo/cd2sbgnml ) and [its associated service](https://github.com/iVis-at-Bilkent/cd2sbgnml-webservice). Finally, SBML and GPML conversions are due to [this Minerva service](https://minerva-dev.lcsb.uni.lu/minerva/api/convert/).
 
 ## Team
 
