@@ -3067,7 +3067,7 @@ appUtilities.launchWithModelFile = function() {
    function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
    chiseInstance.startSpinner('paths-byURL-spinner');
-  
+
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
         type: 'post',
@@ -3121,7 +3121,6 @@ appUtilities.launchWithModelFile = function() {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
 
-        
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
           const fileContents = data.response.body;
@@ -3244,7 +3243,6 @@ appUtilities.launchWithModelFile = function() {
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
         chiseInstance.endSpinner("paths-byURL-spinner");
-
       }
     });
   }
