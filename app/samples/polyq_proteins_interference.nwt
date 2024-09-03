@@ -1,9 +1,9 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
     <extension>
       <renderInformation 
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#9ecae17f"/>
           <colorDefinition id="color_2" value="#555555"/>
@@ -19,30 +19,31 @@
           <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="node9ecae10.55555553.2514normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="node9ecae15555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="glyph0 glyph1">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="nodec6dbef0.55555551.2511normalnormalHelvetica000image_2none5050100100" id-list="glyph35 glyph38 glyph6 glyph2 glyph5 glyph3 glyph7 glyph4">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodec6dbef5555551.2511normalnormalHelvetica000image_2none505010010010.5" idList="glyph35 glyph38 glyph6 glyph2 glyph5 glyph3 glyph7 glyph4">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="nodeeff3ff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="glyph37 glyph36 glyph22 glyph45 glyph43 glyph41 glyph42 glyph46 glyph40 glyph15 glyph18 glyph16 glyph9 glyph14 glyph44 glyph39 glyph17 glyph10 glyph24 glyph13 glyph19 glyph21 glyph12 glyph8 glyph11 glyph20">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeeff3ff5555551.2511normalnormalHelvetica000image_3none505010010011" idList="glyph37 glyph36 glyph22 glyph45 glyph43 glyph41 glyph42 glyph46 glyph40 glyph15 glyph18 glyph16 glyph9 glyph14 glyph44 glyph39 glyph17 glyph10 glyph24 glyph13 glyph19 glyph21 glyph12 glyph8 glyph11 glyph20">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0frectangle" id-list="glyph41_0 glyph40_0 glyph9_0 glyph39_0 glyph10_0 glyph8_0">
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0frectangle" idList="glyph41_0 glyph40_0 glyph9_0 glyph39_0 glyph10_0 glyph8_0">
             <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_5"/>
           </style>
-          <style id="nodeffffff15555551.25image_4none5050100100" id-list="glyph32 glyph25 glyph27 glyph28 glyph23 glyph33 glyph34 glyph29 glyph26 glyph30 glyph31">
-            <g stroke="color_2" stroke-width="1.25" fill="color_6" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.25image_4none505010010011" idList="glyph32 glyph25 glyph27 glyph28 glyph23 glyph33 glyph34 glyph26 glyph30 glyph31 glyph29">
+            <g stroke="color_2" stroke-width="1.25" fill="color_6" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" id-list="glyph13_0">
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" idList="glyph13_0">
             <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_2" stroke-width="2.25" fill="color_5"/>
           </style>
-          <style id="edge5555551.25" id-list="_959a4490-8a15-4636-a040-ffe80459fa22 _60cdb53c-e509-49d2-b8ff-1d566638eb3e _6f3ba8ff-3c99-43fb-b148-105a92f9c60f _518bcc1a-8395-4fa9-866e-2bb689c00e60 _4894832d-e735-469b-98ca-c43fa3c867de _2ff281e3-14c1-46c0-80b8-b7482d49ab4a c2ba1356-5adc-4ad3-bdd4-19f31fae6ee3 ae59c150-ca22-44f2-8f81-eae3cda3db82 _0bdf1a29-50f5-4c52-88d2-ffdbc465b31f _1245f7b2-dea5-4766-83ba-864f29ccb8c4 _95ca1f25-381a-49cc-9a60-cdcae14dd33c _7cf17394-4166-4140-80cd-c063e06c6794 f801d788-89e8-4082-ab55-e6e6807b6e8b cc43e987-4c20-40b4-8df9-c4b572f4c6a2 _3a28aad6-504c-4a48-8fd1-3ae6d6537134 _8b9eefc9-c293-4eb6-8e84-dd61b6fb35f3 _1e4fba68-cab9-432c-a3b7-0ba3805418f5 _09f5ca15-a2a0-412b-be1b-8391e5a142de c8173e7b-7d13-4a3c-b504-28b47e7b71b6 b66594e0-a268-4b1a-860d-90977210b817 be0ba93b-f57b-4876-a357-b07f882b254f _5bca6e61-2ae7-4796-b03d-3221d67fa455 _9af24d05-9d35-4194-8247-c66c4d4b6cca _8d624d9e-bc9c-4f3b-b842-02e0e2f44904 _2c99a565-b610-40a9-a9e6-8555b36e14e0 f52bf077-f247-45ac-b2fc-da59fbbb3538 _97bb18b9-55dc-4bc4-80d4-de0b5cb01b32 _7ce1b829-ab12-4e34-ae64-ccb21fcae1be _06123149-ebf1-4df4-90b5-70243c6158be _0810ebd9-b3e3-4535-8e17-60c0ca789496">
+          <style id="edge5555551.25" idList="_60cdb53c-e509-49d2-b8ff-1d566638eb3e c8173e7b-7d13-4a3c-b504-28b47e7b71b6 _6f3ba8ff-3c99-43fb-b148-105a92f9c60f _518bcc1a-8395-4fa9-866e-2bb689c00e60 _4894832d-e735-469b-98ca-c43fa3c867de _2ff281e3-14c1-46c0-80b8-b7482d49ab4a c2ba1356-5adc-4ad3-bdd4-19f31fae6ee3 ae59c150-ca22-44f2-8f81-eae3cda3db82 _0bdf1a29-50f5-4c52-88d2-ffdbc465b31f _1245f7b2-dea5-4766-83ba-864f29ccb8c4 _95ca1f25-381a-49cc-9a60-cdcae14dd33c _7cf17394-4166-4140-80cd-c063e06c6794 f801d788-89e8-4082-ab55-e6e6807b6e8b cc43e987-4c20-40b4-8df9-c4b572f4c6a2 _3a28aad6-504c-4a48-8fd1-3ae6d6537134 _8b9eefc9-c293-4eb6-8e84-dd61b6fb35f3 _1e4fba68-cab9-432c-a3b7-0ba3805418f5 _09f5ca15-a2a0-412b-be1b-8391e5a142de b66594e0-a268-4b1a-860d-90977210b817 _959a4490-8a15-4636-a040-ffe80459fa22 be0ba93b-f57b-4876-a357-b07f882b254f _5bca6e61-2ae7-4796-b03d-3221d67fa455 _9af24d05-9d35-4194-8247-c66c4d4b6cca _8d624d9e-bc9c-4f3b-b842-02e0e2f44904 _2c99a565-b610-40a9-a9e6-8555b36e14e0 f52bf077-f247-45ac-b2fc-da59fbbb3538 _97bb18b9-55dc-4bc4-80d4-de0b5cb01b32 _7ce1b829-ab12-4e34-ae64-ccb21fcae1be _06123149-ebf1-4df4-90b5-70243c6158be _0810ebd9-b3e3-4535-8e17-60c0ca789496">
             <g stroke="color_2" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -63,14 +64,16 @@
         <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
         <mapName>PolyQ proteins interference</mapName>
         <mapDescription>PolyQ proteins interfere with nuclear degradation of cytosolic proteins by sequestering the Sis1p chaperone</mapDescription>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="glyph0" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>96.5</w>
           <h>109.75</h>
           <minW>0</minW>
@@ -79,14 +82,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="juxtanuclear inclusion"/>
-      <bbox x="239.85393415523612" y="51.81617863416977" w="124.5" h="137.75"/>
+      <bbox x="242.39782054282813" y="68.98900404169493" w="124.5" h="137.75"/>
     </glyph>
     <glyph id="glyph35" class="complex" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
           <h>86.5</h>
           <minW>0</minW>
@@ -95,41 +98,41 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Hsp70"/>
-      <bbox x="255.47893415523612" y="67.44117863416977" w="93.25" h="106.5"/>
+      <bbox x="258.02282054282813" y="84.61400404169493" w="93.25" h="106.5"/>
       <glyph id="glyph37" class="macromolecule">
         <label text="Hsp70"/>
-        <bbox x="267.1039341552361" y="79.06617863416977" w="70" h="35"/>
+        <bbox x="269.64782054282813" y="96.23900404169493" w="70" h="35"/>
       </glyph>
       <glyph id="glyph36" class="macromolecule">
         <label text="misfolded&#xA;protein"/>
-        <bbox x="267.1039341552361" y="127.31617863416977" w="70" h="35"/>
+        <bbox x="269.64782054282813" y="144.48900404169493" w="70" h="35"/>
       </glyph>
     </glyph>
     <glyph id="glyph1" class="compartment">
       <extension>
-        <extraInfo>
-          <w>509.097438493073</w>
-          <h>318.3407251796108</h>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
+          <w>478.4201953499179</w>
+          <h>308.32200968050824</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nucleus"/>
-      <bbox x="735.2189558270779" y="615.5851791801547" w="537.097438493073" h="346.3407251796108"/>
+      <bbox x="723.667961804332" y="603.4207032900716" w="506.4201953499179" h="336.32200968050824"/>
     </glyph>
     <glyph id="glyph22" class="source and sink" compartmentRef="glyph1">
-      <bbox x="1095.995374660935" y="898.5595242767525" w="25" h="25"/>
+      <bbox x="1056.9163417549303" y="876.3069034826349" w="25" h="25"/>
     </glyph>
     <glyph id="glyph38" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>156.5</w>
           <h>96.125</h>
           <minW>0</minW>
@@ -138,62 +141,70 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Hsp70"/>
-      <bbox x="750.8439558270779" y="651.0189108387198" w="176.5" h="116.125"/>
+      <bbox x="739.2929618043319" y="654.607936647751" w="176.5" h="116.125"/>
       <glyph id="glyph45" class="macromolecule">
         <label text="Hsp70"/>
-        <bbox x="762.4689558270779" y="720.5189108387198" w="70" h="35"/>
+        <bbox x="750.9179618043319" y="724.107936647751" w="70" h="35"/>
       </glyph>
       <glyph id="glyph43" class="macromolecule">
         <label text="misfolded&#xA;protein"/>
-        <bbox x="845.7189558270779" y="720.5189108387198" w="70" h="35"/>
+        <bbox x="834.1679618043319" y="724.107936647751" w="70" h="35"/>
       </glyph>
       <glyph id="glyph41" class="macromolecule multimer">
         <label text="Sis1"/>
-        <bbox x="762.4689558270779" y="671.2689108387198" w="74" h="36"/>
+        <bbox x="750.9179618043319" y="674.857936647751" w="74" h="36"/>
         <glyph id="glyph41_0" class="unit of information">
           <label text="N:2"/>
-          <bbox x="799.1389558270779" y="663.2689108387198" w="31" h="16"/>
+          <bbox x="787.5879618043318" y="666.857936647751" w="31" h="16"/>
         </glyph>
       </glyph>
     </glyph>
     <glyph id="glyph32" class="dissociation" compartmentRef="glyph1">
-      <bbox x="975.1124083630218" y="746.873799490584" w="15" h="15"/>
+      <bbox x="957.2736106661647" y="730.4776187029585" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph32.1" x="955.1307535233076" y="735.8347615601014"/>
+      <port id="glyph32.2" x="970.1307535233076" y="735.8347615601014"/>
     </glyph>
     <glyph id="glyph42" class="macromolecule" compartmentRef="glyph1">
       <label text="misfolded&#xA;protein"/>
-      <bbox x="1001.1902441029056" y="795.0676188475474" w="70" h="35"/>
+      <bbox x="963.0203592378725" y="778.8860488498126" w="70" h="35"/>
     </glyph>
     <glyph id="glyph25" class="process" compartmentRef="glyph1">
-      <bbox x="1107.4117197968822" y="847.1413621355413" w="15" h="15"/>
+      <bbox x="1070.8103562383692" y="827.4094718658681" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph25.1" x="1076.167499095512" y="825.266614723011"/>
+      <port id="glyph25.2" x="1076.167499095512" y="840.266614723011"/>
     </glyph>
     <glyph id="glyph46" class="macromolecule" compartmentRef="glyph1">
       <label text="Hsp70"/>
-      <bbox x="955.3322418622686" y="674.7528417688189" w="70" h="35"/>
+      <bbox x="949.364189360105" y="656.5195962733725" w="70" h="35"/>
     </glyph>
     <glyph id="glyph27" class="process" compartmentRef="glyph1">
-      <bbox x="1020.2200072177939" y="631.2101791801547" w="15" h="15"/>
+      <bbox x="1034.2451543841678" y="621.1885604329287" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph27.1" x="1039.6022972413107" y="619.0457032900716"/>
+      <port id="glyph27.2" x="1039.6022972413107" y="634.0457032900716"/>
     </glyph>
     <glyph id="glyph40" class="macromolecule multimer" compartmentRef="glyph1">
       <label text="Sis1"/>
-      <bbox x="1033.2012715844796" y="726.022080843797" w="74" h="36"/>
+      <bbox x="1008.1868915515513" y="717.6819707828051" w="74" h="36"/>
       <glyph id="glyph40_0" class="unit of information">
         <label text="N:2"/>
-        <bbox x="1069.8712715844797" y="718.022080843797" w="31" h="16"/>
+        <bbox x="1044.8568915515514" y="709.6819707828051" w="31" h="16"/>
       </glyph>
     </glyph>
     <glyph id="glyph28" class="process" compartmentRef="glyph1">
-      <bbox x="1127.9410528179221" y="690.9196451223002" w="15" h="15"/>
+      <bbox x="1116.2461348490551" y="691.8582294646014" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph28.1" x="1129.103277706198" y="697.2153723217443"/>
+      <port id="glyph28.2" x="1114.103277706198" y="697.2153723217443"/>
     </glyph>
     <glyph id="glyph15" class="macromolecule" compartmentRef="glyph1">
       <label text="E3(San1)"/>
-      <bbox x="1186.691394320151" y="911.3009043597655" w="70" h="35"/>
+      <bbox x="1144.4631571542498" y="889.1177129705799" w="70" h="35"/>
     </glyph>
     <glyph id="glyph6" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>30</w>
           <h>30</h>
           <minW>0</minW>
@@ -202,21 +213,21 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nuclear&#xA;proteasome"/>
-      <bbox x="1221.6483448475494" y="829.935712752346" w="30" h="30"/>
+      <bbox x="1179.9150092625237" y="807.0709790162017" w="30" h="30"/>
     </glyph>
     <glyph id="glyph23" class="and" compartmentRef="glyph1">
-      <bbox x="1162.347384453921" y="856.3378042804791" w="25" h="25"/>
+      <bbox x="1121.5885895173253" y="834.0646119564072" w="25" h="25"/>
     </glyph>
     <glyph id="glyph18" class="macromolecule">
       <label text="E3"/>
-      <bbox x="377.4108753518624" y="210.8639144005021" w="70" h="35"/>
+      <bbox x="386.3641919958123" y="221.99935014985581" w="70" h="35"/>
     </glyph>
     <glyph id="glyph2" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>82.25</w>
           <h>96.12500000000006</h>
           <minW>0</minW>
@@ -225,66 +236,70 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="PolyQ aggregates"/>
-      <bbox x="61.60795498106131" y="409.08827556739925" w="102.25" h="116.12500000000006"/>
+      <bbox x="103.24818928611256" y="415.605374441516" w="102.25" h="116.12500000000006"/>
       <glyph id="glyph16" class="macromolecule">
         <label text="PolyQ&#xA;aggregates"/>
-        <bbox x="73.23295498106131" y="478.5882755673992" w="70" h="35"/>
+        <bbox x="114.87318928611256" y="485.10537444151595" w="70" h="35"/>
       </glyph>
       <glyph id="glyph9" class="macromolecule multimer">
         <label text="Sis1"/>
-        <bbox x="73.23295498106131" y="429.3382755673992" w="74" h="36"/>
+        <bbox x="114.87318928611256" y="435.85537444151595" w="74" h="36"/>
         <glyph id="glyph9_0" class="unit of information">
           <label text="N:2"/>
-          <bbox x="109.90295498106131" y="421.3382755673992" w="31" h="16"/>
+          <bbox x="151.54318928611258" y="427.85537444151595" w="31" h="16"/>
         </glyph>
       </glyph>
     </glyph>
     <glyph id="glyph14" class="macromolecule">
       <label text="importin"/>
-      <bbox x="569.2952175406231" y="651.9248038848439" w="70" h="35"/>
+      <bbox x="570.8153616177069" y="650.9894693080497" w="70" h="35"/>
     </glyph>
     <glyph id="glyph44" class="macromolecule">
       <label text="Hsp70"/>
-      <bbox x="876.740344665679" y="475.3365204436903" w="70" h="35"/>
+      <bbox x="873.9224976631683" y="472.21740697892386" w="70" h="35"/>
     </glyph>
     <glyph id="glyph39" class="macromolecule multimer">
       <label text="Sis1"/>
       <clone/>
-      <bbox x="1203.2716273852377" y="518.8102352976707" w="74" h="36"/>
+      <bbox x="1212.6039819272858" y="528.622915542494" w="74" h="36"/>
       <glyph id="glyph39_0" class="unit of information">
         <label text="N:2"/>
-        <bbox x="1239.9416273852378" y="510.8102352976707" w="31" h="16"/>
+        <bbox x="1249.2739819272858" y="520.622915542494" w="31" h="16"/>
       </glyph>
     </glyph>
     <glyph id="glyph17" class="macromolecule">
       <label text="PolyQ&#xA;aggregates"/>
-      <bbox x="160.26701231313" y="358.043524619538" w="70" h="35"/>
+      <bbox x="201.08828493831618" y="364.07005421915164" w="70" h="35"/>
     </glyph>
     <glyph id="glyph33" class="association">
-      <bbox x="194.23907213366445" y="430.5128731659586" w="15" h="15"/>
+      <bbox x="236.50542575541112" y="437.8401961369092" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph33.1" x="234.36256861255399" y="443.197338994052"/>
+      <port id="glyph33.2" x="249.36256861255399" y="443.197338994052"/>
     </glyph>
     <glyph id="glyph10" class="macromolecule multimer">
       <label text="Sis1"/>
       <clone/>
-      <bbox x="249.16930608852118" y="438.55882896219583" w="74" h="36"/>
+      <bbox x="285.53308088949177" y="446.04901483552896" w="74" h="36"/>
       <glyph id="glyph10_0" class="unit of information">
         <label text="N:2"/>
-        <bbox x="285.8393060885212" y="430.55882896219583" w="31" h="16"/>
+        <bbox x="322.2030808894918" y="438.04901483552896" w="31" h="16"/>
       </glyph>
     </glyph>
     <glyph id="glyph34" class="association">
-      <bbox x="365.4058776037422" y="441.58950025083806" w="15" h="15"/>
+      <bbox x="398.6634100090847" y="446.62128156722446" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph34.1" x="396.52055286622755" y="451.9784244243673"/>
+      <port id="glyph34.2" x="411.52055286622755" y="451.9784244243673"/>
     </glyph>
     <glyph id="glyph24" class="simple chemical">
       <label text="Ub"/>
-      <bbox x="478.63020013296597" y="240.77180361526354" w="40" h="40"/>
+      <bbox x="488.11465903778645" y="252.24877252430213" w="40" h="40"/>
     </glyph>
     <glyph id="glyph5" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
           <h>97.125</h>
           <minW>0</minW>
@@ -293,67 +308,68 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="misfolded protein"/>
-      <bbox x="462.67659383981345" y="310.6585360301326" w="93.25" h="117.125"/>
+      <bbox x="471.5642832933702" y="321.5344129262429" w="93.25" h="117.125"/>
       <glyph id="glyph13" class="macromolecule">
         <label text="misfolded&#xA;protein"/>
-        <bbox x="474.30159383981345" y="332.9085360301326" w="70" h="35"/>
+        <bbox x="483.1892832933702" y="343.7844129262429" w="70" h="35"/>
         <glyph id="glyph13_0" class="state variable">
           <state/>
-          <bbox x="509.80159383981345" y="322.9085360301326" w="20" h="20"/>
+          <bbox x="518.6892832933702" y="333.7844129262429" w="20" h="20"/>
         </glyph>
       </glyph>
       <glyph id="glyph19" class="macromolecule">
         <label text="Hsp70"/>
-        <bbox x="474.30159383981345" y="381.1585360301326" w="70" h="35"/>
+        <bbox x="483.1892832933702" y="392.0344129262429" w="70" h="35"/>
       </glyph>
-    </glyph>
-    <glyph id="glyph29" class="process">
-      <bbox x="428.75726052938984" y="279.8526553280018" w="15" h="15"/>
     </glyph>
     <glyph id="glyph3" class="complex">
       <extension>
-        <extraInfo>
-          <w>156.5</w>
-          <h>96.12500000000006</h>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
+          <w>156.50000000000006</w>
+          <h>96.12499999999994</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Hsp70"/>
-      <bbox x="403.81462037323547" y="472.1127419487427" w="176.5" h="116.12500000000006"/>
+      <bbox x="414.7785668122808" y="473.33425203218394" w="176.50000000000006" h="116.12499999999994"/>
       <glyph id="glyph21" class="macromolecule">
         <label text="Hsp70"/>
-        <bbox x="415.43962037323547" y="541.6127419487427" w="70" h="35"/>
+        <bbox x="426.40356681228076" y="542.8342520321839" w="70" h="35"/>
       </glyph>
       <glyph id="glyph12" class="macromolecule">
         <label text="misfolded&#xA;protein"/>
-        <bbox x="498.68962037323547" y="541.6127419487427" w="70" h="35"/>
+        <bbox x="509.6535668122808" y="542.8342520321839" w="70" h="35"/>
       </glyph>
       <glyph id="glyph8" class="macromolecule multimer">
         <label text="Sis1"/>
-        <bbox x="415.43962037323547" y="492.36274194874267" w="74" h="36"/>
+        <bbox x="426.40356681228076" y="493.584252032184" w="74" h="36"/>
         <glyph id="glyph8_0" class="unit of information">
           <label text="N:2"/>
-          <bbox x="452.1096203732355" y="484.36274194874267" w="31" h="16"/>
+          <bbox x="463.0735668122808" y="485.584252032184" w="31" h="16"/>
         </glyph>
       </glyph>
     </glyph>
     <glyph id="glyph26" class="process">
-      <bbox x="619.8892286930246" y="603.826120122442" w="15" h="15"/>
+      <bbox x="623.4856111714724" y="605.3277931671727" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph26.1" x="621.3427540286153" y="610.6849360243156"/>
+      <port id="glyph26.2" x="636.3427540286153" y="610.6849360243156"/>
     </glyph>
     <glyph id="glyph30" class="process">
-      <bbox x="313.6627399524455" y="244.46696145671376" w="15" h="15"/>
+      <bbox x="324.2136949226627" y="260.51105064265823" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph30.1" x="322.0708377798055" y="265.86819349980107"/>
+      <port id="glyph30.2" x="337.0708377798055" y="265.86819349980107"/>
     </glyph>
     <glyph id="glyph7" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>68.08837890625</w>
           <h>36</h>
           <minW>0</minW>
@@ -362,14 +378,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="cytosolic&#xA;proteasome"/>
-      <bbox x="167.25866365906614" y="243.29948102275478" w="68.08837890625" h="36"/>
+      <bbox x="177.1841333020095" y="256.87267866973554" w="68.08837890625" h="36"/>
     </glyph>
     <glyph id="glyph4" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
           <h>86.5</h>
           <minW>0</minW>
@@ -378,141 +394,238 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="misfolded protein"/>
-      <bbox x="306.5811337626553" y="294.9818025212618" w="93.25" h="106.5"/>
+      <bbox x="318.2436668979196" y="304.6322669899152" w="93.25" h="106.5"/>
       <glyph id="glyph11" class="macromolecule">
         <label text="misfolded&#xA;protein"/>
-        <bbox x="318.2061337626553" y="306.6068025212618" w="70" h="35"/>
+        <bbox x="329.8686668979196" y="316.2572669899152" w="70" h="35"/>
       </glyph>
       <glyph id="glyph20" class="macromolecule">
         <label text="Hsp70"/>
-        <bbox x="318.2061337626553" y="354.8568025212618" w="70" h="35"/>
+        <bbox x="329.8686668979196" y="364.5072669899152" w="70" h="35"/>
       </glyph>
     </glyph>
     <glyph id="glyph31" class="uncertain process">
-      <bbox x="260.08484359997107" y="296.4002562863775" w="15" h="15"/>
+      <bbox x="273.2187634422346" y="311.32174721282655" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph31.1" x="271.07590629937744" y="316.6788900699694"/>
+      <port id="glyph31.2" x="286.07590629937744" y="316.6788900699694"/>
     </glyph>
-    <arc id="_959a4490-8a15-4636-a040-ffe80459fa22" class="production" source="glyph29" target="glyph4">
-      <start x="428.13226052938984" y="293.30854166214556"/>
-      <end x="402.9765113058006" y="311.7485149576438"/>
-    </arc>
+    <glyph id="glyph29" class="process">
+      <bbox x="441.01791090495345" y="292.7295846535714" w="10.714285714285715" h="10.714285714285715"/>
+      <port id="glyph29.1" x="438.8750537620963" y="298.08672751071424"/>
+      <port id="glyph29.2" x="453.8750537620963" y="298.08672751071424"/>
+    </glyph>
     <arc id="_60cdb53c-e509-49d2-b8ff-1d566638eb3e" class="catalysis" source="glyph18" target="glyph29">
-      <start x="419.7379639546502" y="246.4889144005021"/>
-      <end x="431.8014927622411" y="276.330434203387"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="429.10172676753865" y="257.6243501498558"/>
+      <end x="442.670583515022" y="289.4090898381095"/>
     </arc>
-    <arc id="_6f3ba8ff-3c99-43fb-b148-105a92f9c60f" class="production" source="glyph34" target="glyph3">
-      <start x="379.6231400674768" y="453.6604968591613"/>
-      <end x="409.0302473448195" y="473.6715933960379"/>
+    <arc id="c8173e7b-7d13-4a3c-b504-28b47e7b71b6" class="consumption" source="glyph24" target="glyph29.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="489.08859685820676" y="280.211158029838"/>
+      <end x="454.5000537620963" y="298.08672751071424"/>
     </arc>
-    <arc id="_518bcc1a-8395-4fa9-866e-2bb689c00e60" class="production" source="glyph33" target="glyph2">
-      <start x="194.01731675395328" y="440.54074160713617"/>
-      <end x="167.45286089633484" y="449.2371385165707"/>
+    <arc id="_6f3ba8ff-3c99-43fb-b148-105a92f9c60f" class="production" source="glyph34.2" target="glyph3">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="412.14555286622755" y="451.9784244243673"/>
+      <end x="427.4272730183908" y="470.75390021849705"/>
     </arc>
-    <arc id="_4894832d-e735-469b-98ca-c43fa3c867de" class="production" source="glyph30" target="glyph35">
-      <start x="319.9831408384821" y="243.84196145671376"/>
-      <end x="310.37456853356707" y="177.65875645656502"/>
+    <arc id="_518bcc1a-8395-4fa9-866e-2bb689c00e60" class="production" source="glyph33.1" target="glyph2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="233.73756861255399" y="443.197338994052"/>
+      <end x="209.07432866902477" y="454.6167276690077"/>
     </arc>
-    <arc id="_2ff281e3-14c1-46c0-80b8-b7482d49ab4a" class="production" source="glyph26" target="glyph38">
-      <start x="635.5142286930246" y="615.0778631648486"/>
-      <end x="747.3818143776871" y="666.7330553203253"/>
+    <arc id="_4894832d-e735-469b-98ca-c43fa3c867de" class="production" source="glyph30.1" target="glyph35">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="321.4458377798055" y="265.86819349980107"/>
+      <end x="315.7347731142598" y="194.80640246691428"/>
+    </arc>
+    <arc id="_2ff281e3-14c1-46c0-80b8-b7482d49ab4a" class="production" source="glyph26.2" target="glyph38">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="636.9677540286153" y="610.6849360243156"/>
+      <end x="735.8877821137193" y="665.627207603778"/>
     </arc>
     <arc id="c2ba1356-5adc-4ad3-bdd4-19f31fae6ee3" class="stimulation" source="glyph14" target="glyph26">
-      <start x="611.4998377666006" y="651.2998038848439"/>
-      <end x="623.0052460859399" y="622.355110167872"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="613.0357553089602" y="650.3644693080497"/>
+      <end x="625.3742986231065" y="619.3916294420169"/>
     </arc>
-    <arc id="ae59c150-ca22-44f2-8f81-eae3cda3db82" class="production" source="glyph32" target="glyph42">
-      <start x="988.1156909181956" y="760.3512158319409"/>
-      <end x="1017.3862874974262" y="792.1436125624101"/>
+    <arc id="ae59c150-ca22-44f2-8f81-eae3cda3db82" class="production" source="glyph32.2" target="glyph42">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="970.7557535233076" y="735.8347615601014"/>
+      <end x="985.8502237481202" y="775.5630598530345"/>
     </arc>
-    <arc id="_0bdf1a29-50f5-4c52-88d2-ffdbc465b31f" class="production" source="glyph32" target="glyph46">
-      <start x="983.6144028347129" y="746.3108203836596"/>
-      <end x="987.694447509184" y="713.4789875791745"/>
+    <arc id="_0bdf1a29-50f5-4c52-88d2-ffdbc465b31f" class="production" source="glyph32.2" target="glyph46">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="970.7557535233076" y="735.8347615601014"/>
+      <end x="976.9551537261575" y="695.0926914694984"/>
     </arc>
-    <arc id="_1245f7b2-dea5-4766-83ba-864f29ccb8c4" class="production" source="glyph32" target="glyph40">
-      <start x="990.6812518945296" y="753.4201805603791"/>
-      <end x="1029.4728702262073" y="748.835580372022"/>
+    <arc id="_1245f7b2-dea5-4766-83ba-864f29ccb8c4" class="production" source="glyph32.2" target="glyph40">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="970.7557535233076" y="735.8347615601014"/>
+      <end x="1004.436896903531" y="735.7573888377892"/>
     </arc>
-    <arc id="_95ca1f25-381a-49cc-9a60-cdcae14dd33c" class="production" source="glyph27" target="glyph44">
-      <start x="1021.2600694442555" y="630.5851791801547"/>
-      <end x="928.0957839671157" y="513.4076078105868"/>
+    <arc id="_95ca1f25-381a-49cc-9a60-cdcae14dd33c" class="production" source="glyph27.1" target="glyph44">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1039.6022972413107" y="618.4207032900716"/>
+      <end x="928.3913852248508" y="510.10230751242506"/>
     </arc>
-    <arc id="_7cf17394-4166-4140-80cd-c063e06c6794" class="production" source="glyph28" target="glyph39">
-      <start x="1140.711466337059" y="690.2946451223002"/>
-      <end x="1230.415562099459" y="562.9937684430423"/>
+    <arc id="_7cf17394-4166-4140-80cd-c063e06c6794" class="production" source="glyph28.1" target="glyph39">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1129.728277706198" y="697.2153723217443"/>
+      <end x="1235.4821058590553" y="572.5551424153247"/>
     </arc>
-    <arc id="f801d788-89e8-4082-ab55-e6e6807b6e8b" class="production" source="glyph25" target="glyph22">
-      <start x="1113.9876768601575" y="862.7663621355413"/>
-      <end x="1110.3316235365644" y="894.9136055953411"/>
+    <arc id="f801d788-89e8-4082-ab55-e6e6807b6e8b" class="production" source="glyph25.2" target="glyph22">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1076.167499095512" y="840.891614723011"/>
+      <end x="1071.3599218059362" y="872.6735530375063"/>
     </arc>
     <arc id="cc43e987-4c20-40b4-8df9-c4b572f4c6a2" class="stimulation" source="glyph23" target="glyph25">
-      <start x="1162.0757607891042" y="865.8127003212257"/>
-      <end x="1126.0775825742196" y="857.2861234112164"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1121.3208687023675" y="843.523077772596"/>
+      <end x="1085.0110040514544" y="834.8733198286467"/>
     </arc>
-    <arc id="_3a28aad6-504c-4a48-8fd1-3ae6d6537134" class="consumption" source="glyph17" target="glyph33">
-      <start x="197.14483058683936" y="393.668524619538"/>
-      <end x="200.90177320870035" y="429.93113105733784"/>
+    <arc id="_3a28aad6-504c-4a48-8fd1-3ae6d6537134" class="consumption" source="glyph17" target="glyph33.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="237.7865407024284" y="399.69505421915164"/>
+      <end x="249.98756861255399" y="443.197338994052"/>
     </arc>
-    <arc id="_8b9eefc9-c293-4eb6-8e84-dd61b6fb35f3" class="consumption" source="glyph10" target="glyph33">
-      <start x="248.54430608852118" y="448.29411673592716"/>
-      <end x="209.6748739936031" y="439.75605239936937"/>
+    <arc id="_8b9eefc9-c293-4eb6-8e84-dd61b6fb35f3" class="consumption" source="glyph10" target="glyph33.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="284.90808088949177" y="454.32372263901647"/>
+      <end x="249.98756861255399" y="443.197338994052"/>
     </arc>
-    <arc id="_1e4fba68-cab9-432c-a3b7-0ba3805418f5" class="consumption" source="glyph10" target="glyph34">
-      <start x="328.7943060885212" y="455.8189443050877"/>
-      <end x="364.81083780337093" y="449.78660542970584"/>
+    <arc id="_1e4fba68-cab9-432c-a3b7-0ba3805418f5" class="consumption" source="glyph10" target="glyph34.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="365.15808088949177" y="460.65181006956004"/>
+      <end x="395.89555286622755" y="451.9784244243673"/>
     </arc>
-    <arc id="_09f5ca15-a2a0-412b-be1b-8391e5a142de" class="consumption" source="glyph4" target="glyph34">
-      <start x="363.72911538260286" y="402.1068025212618"/>
-      <end x="371.34831795428795" y="441.11518943808494"/>
+    <arc id="_09f5ca15-a2a0-412b-be1b-8391e5a142de" class="consumption" source="glyph4" target="glyph34.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="387.2851811749446" y="411.7572669899152"/>
+      <end x="395.89555286622755" y="451.9784244243673"/>
     </arc>
-    <arc id="c8173e7b-7d13-4a3c-b504-28b47e7b71b6" class="consumption" source="glyph24" target="glyph29">
-      <start x="479.6563071008765" y="268.85771780024146"/>
-      <end x="444.38226052938984" y="283.8901053577962"/>
+    <arc id="b66594e0-a268-4b1a-860d-90977210b817" class="consumption" source="glyph5" target="glyph29.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="474.2712620375053" y="329.94355070562455"/>
+      <end x="454.5000537620963" y="298.08672751071424"/>
     </arc>
-    <arc id="b66594e0-a268-4b1a-860d-90977210b817" class="consumption" source="glyph5" target="glyph29">
-      <start x="464.94512165850466" y="319.5061247349582"/>
-      <end x="443.5065209038746" y="295.4776553280018"/>
+    <arc id="_959a4490-8a15-4636-a040-ffe80459fa22" class="production" source="glyph29.1" target="glyph4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="438.2500537620963" y="298.08672751071424"/>
+      <end x="414.6383258658802" y="321.36974665645585"/>
     </arc>
-    <arc id="be0ba93b-f57b-4876-a357-b07f882b254f" class="consumption" source="glyph38" target="glyph32">
-      <start x="927.9689558270779" y="737.1291006674984"/>
-      <end x="974.8640962230702" y="751.9285420436313"/>
+    <arc id="be0ba93b-f57b-4876-a357-b07f882b254f" class="consumption" source="glyph38" target="glyph32.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="916.4179618043319" y="727.9103732133581"/>
+      <end x="954.5057535233076" y="735.8347615601014"/>
     </arc>
-    <arc id="_5bca6e61-2ae7-4796-b03d-3221d67fa455" class="consumption" source="glyph42" target="glyph25">
-      <start x="1067.709789847152" y="829.4136607250255"/>
-      <end x="1106.7867197968822" y="850.2988474506811"/>
+    <arc id="_5bca6e61-2ae7-4796-b03d-3221d67fa455" class="consumption" source="glyph42" target="glyph25.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1031.246937528694" y="811.8543273108322"/>
+      <end x="1076.167499095512" y="824.641614723011"/>
     </arc>
-    <arc id="_9af24d05-9d35-4194-8247-c66c4d4b6cca" class="consumption" source="glyph46" target="glyph27">
-      <start x="1002.9885651436656" y="674.1278417688189"/>
-      <end x="1022.0464829882021" y="646.8351791801547"/>
+    <arc id="_9af24d05-9d35-4194-8247-c66c4d4b6cca" class="consumption" source="glyph46" target="glyph27.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1005.4534795453237" y="655.8945962733725"/>
+      <end x="1039.6022972413107" y="634.6707032900716"/>
     </arc>
-    <arc id="_8d624d9e-bc9c-4f3b-b842-02e0e2f44904" class="consumption" source="glyph40" target="glyph28">
-      <start x="1101.3712715844797" y="722.2343327158125"/>
-      <end x="1127.3160528179221" y="704.0989987809422"/>
+    <arc id="_8d624d9e-bc9c-4f3b-b842-02e0e2f44904" class="consumption" source="glyph40" target="glyph28.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1079.1147170365912" y="718.6033296004176"/>
+      <end x="1113.478277706198" y="697.2153723217443"/>
     </arc>
     <arc id="_2c99a565-b610-40a9-a9e6-8555b36e14e0" class="logic arc" source="glyph15" target="glyph23">
-      <start x="1207.5318915975972" y="910.6759043597655"/>
-      <end x="1182.9274809171154" y="879.1808051093234"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1165.7683766261773" y="888.4927129705799"/>
+      <end x="1142.0008974232503" y="857.0365271872442"/>
     </arc>
     <arc id="f52bf077-f247-45ac-b2fc-da59fbbb3538" class="logic arc" source="glyph6" target="glyph23">
-      <start x="1221.0233448475494" y="850.9788256384296"/>
-      <end x="1187.0887312808866" y="864.1033504722835"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1179.2900092625237" y="828.362866921061"/>
+      <end x="1146.2635587838083" y="841.6619852767388"/>
     </arc>
-    <arc id="_97bb18b9-55dc-4bc4-80d4-de0b5cb01b32" class="consumption" source="glyph3" target="glyph26">
-      <start x="576.5794905627404" y="580.8567552357209"/>
-      <end x="619.2642286930246" y="606.4537551228466"/>
+    <arc id="_97bb18b9-55dc-4bc4-80d4-de0b5cb01b32" class="consumption" source="glyph3" target="glyph26.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="585.9609239637884" y="583.6607783571594"/>
+      <end x="620.7177540286153" y="610.6849360243156"/>
     </arc>
-    <arc id="_7ce1b829-ab12-4e34-ae64-ccb21fcae1be" class="consumption" source="glyph4" target="glyph30">
-      <start x="335.27292136200845" y="294.3568025212618"/>
-      <end x="323.86728474604655" y="260.09196145671376"/>
+    <arc id="_7ce1b829-ab12-4e34-ae64-ccb21fcae1be" class="consumption" source="glyph4" target="glyph30.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="344.20149641401844" y="304.0072669899152"/>
+      <end x="337.6958377798055" y="265.86819349980107"/>
     </arc>
-    <arc id="_06123149-ebf1-4df4-90b5-70243c6158be" class="production" source="glyph31" target="glyph7">
-      <start x="259.45984359997107" y="298.67815452887595"/>
-      <end x="229.28811479110357" y="279.286174462458"/>
+    <arc id="_06123149-ebf1-4df4-90b5-70243c6158be" class="production" source="glyph31.1" target="glyph7">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="270.45090629937744" y="316.6788900699694"/>
+      <end x="239.64614225452607" y="292.51312405772467"/>
     </arc>
-    <arc id="_0810ebd9-b3e3-4535-8e17-60c0ca789496" class="consumption" source="glyph4" target="glyph31">
-      <start x="305.9561337626553" y="323.7674951554381"/>
-      <end x="275.70984359997107" y="308.10708162706146"/>
+    <arc id="_0810ebd9-b3e3-4535-8e17-60c0ca789496" class="consumption" source="glyph4" target="glyph31.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="317.6186668979196" y="335.3211674728332"/>
+      <end x="286.70090629937744" y="316.6788900699694"/>
     </arc>
   </map>
 </sbgn>

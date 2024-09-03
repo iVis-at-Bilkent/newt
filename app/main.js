@@ -25,9 +25,10 @@ var cyViewUtilities = require('cytoscape-view-utilities');
 var cyEdgehandles = require('cytoscape-edgehandles');
 var cyGridGuide = require('cytoscape-grid-guide');
 var cyAutopanOnDrag = require('cytoscape-autopan-on-drag');
-var cyNodeResize = require('cytoscape-node-resize');
+var cyNodeEditing = require('cytoscape-node-editing');
 var cyPopper = require('cytoscape-popper');
 var cyLayoutUtilities = require('cytoscape-layout-utilities');
+var cyGraphAlgos = require('cytoscape-graph-algos');
 
 // Register cy extensions
 cyPanzoom( cytoscape, $ );
@@ -35,16 +36,17 @@ cyPanzoom( cytoscape, $ );
 cyFcose( cytoscape );
 cyUndoRedo( cytoscape );
 cyClipboard( cytoscape, $ );
-cyContextMenus( cytoscape, $ );
-cyExpandCollapse( cytoscape, $ );
-cyEdgeEditing( cytoscape, $ );
-cyViewUtilities( cytoscape, $ );
+cyContextMenus( cytoscape );
+cyExpandCollapse( cytoscape );
+cyEdgeEditing( cytoscape, $, konva );
+cyViewUtilities( cytoscape );
 cyEdgehandles( cytoscape );
-cyGridGuide( cytoscape, $ );
+cyGridGuide( cytoscape );
 cyAutopanOnDrag( cytoscape );
-cyNodeResize( cytoscape, $, konva );
+cyNodeEditing( cytoscape, $, konva );
 cyPopper( cytoscape );
 cyLayoutUtilities( cytoscape );
+cyGraphAlgos( cytoscape );
 
 // Libraries to pass sbgnviz
 var libs = {};

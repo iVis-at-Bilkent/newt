@@ -269,7 +269,7 @@ module.exports = function (cy) {
   appUndoActions.loadExperimentData = function (param){
     var cy = appUtilities.getActiveCy();
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback);
+    var result = chiseInstance.parseData(param.data, param.fileName, param.errorCallback, param.sampleExperiment);
     if(result != "Error"){
       appUndoActions.changeMenu(param.self.params.experimentDescription);
     }
@@ -361,16 +361,11 @@ module.exports = function (cy) {
     var highlightColor = $('#highlight-color').val();
     var extraHighlightThickness = Number($('#highlight-thickness').val());
 
-    viewUtilities.changeHighlightStyle(0, {
-      'border-width' : function (ele) { 
-        return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3); 
-      }, 'border-color': highlightColor
-    }, {
-      'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
-      'line-color': highlightColor,
-      'source-arrow-color': highlightColor,
-      'target-arrow-color': highlightColor
-    });
+    viewUtilities.changeHighlightStyle(
+      0,
+      { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+      { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
+    );
    }
 
     return result;

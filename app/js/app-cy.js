@@ -12,7 +12,8 @@ module.exports = function (chiseInstance) {
 
   // use chise instance associated with chise instance
   var cy = chiseInstance.getCy();
-
+  //("here");
+  window.cy = cy;
   // register extensions and bind events when cy is ready
   cy.ready(function () {
     cytoscapeExtensionsAndContextMenu();
@@ -69,12 +70,12 @@ module.exports = function (chiseInstance) {
       },
       // whether the bend editing operations are undoable (requires cytoscape-undo-redo.js)
       undoable: appUtilities.undoable,
-      // title of remove bend point menu item
-      removeBendMenuItemTitle: "Delete Bend Point",
       // whether to initilize bend points on creation of this extension automatically
-      initBendPointsAutomatically: false,
+      initAnchorsAutomatically: false,
       // function to validate edge source and target on reconnection
-      validateEdge: chiseInstance.elementUtilities.validateArrowEnds,
+      validateEdge: function (edge, newSource, newTarget) {
+        return chiseInstance.elementUtilities.validateArrowEnds(edge, newSource, newTarget, true);
+      },
       // function to be called on invalid edge reconnection
       actOnUnsuccessfulReconnection: function () {
         if(appUtilities.promptInvalidEdgeWarning){
@@ -83,8 +84,8 @@ module.exports = function (chiseInstance) {
       },
       // function that handles edge reconnection
       handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
-      zIndex: 900
-      // whether to start the plugin in the enabled state
+      zIndex: 999,
+      enableMultipleAnchorRemovalOption: true,
     });
 
     contextMenus.appendMenuItems([
@@ -94,6 +95,10 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/settings.svg", width : 16, height : 16, x : 2, y : 3},
         coreAsWell: true,
         onClickFunction: function (event) {
+          // take focus away from other tabs before showing properties tab
+          $('a[data-toggle="tab"]').one('show.bs.tab', function (e) {
+            e.relatedTarget.blur();
+          });
           $("#general-properties").trigger("click");
         }
       },
@@ -123,9 +128,9 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-hide-selected',
         content: 'Hide Selected',
-        image: {src : "app/img/toolbar/hide-selected.svg", width : 16, height : 16, x : 2, y : 3},
+        image: {src : "app/img/toolbar/hide-selected-smart.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
-          $("#hide-selected").trigger('click');
+          $("#hide-selected-smart").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
@@ -135,6 +140,14 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/show-all.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
           $("#show-all").trigger('click');
+        },
+        coreAsWell: true // Whether core instance have this item on cxttap
+      },
+      {
+        id: 'ctx-menu-pd2af',
+        content: 'Convert PD map to AF map',
+        onClickFunction: function () {
+          $('#highlight-errors-of-pd2af').trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
@@ -221,10 +234,7 @@ module.exports = function (chiseInstance) {
         selector: 'node, edge',
         onClickFunction: function (event) {
           var cyTarget = event.target || event.cyTarget;
-          var sbgnclass = cyTarget.data('class');
-
-          cy.elements().unselect();
-          cy.elements('[class="' + sbgnclass + '"]').select();
+          appUtilities.selectAllElementsOfSameType(cyTarget);
         }
       },
       {
@@ -304,7 +314,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
@@ -430,56 +440,67 @@ module.exports = function (chiseInstance) {
       }
     });
 
+    function getProcessBasedNeighbors(node) {
+      var nodesToSelect = node;
+      if(chiseInstance.elementUtilities.isPNClass(node) || chiseInstance.elementUtilities.isLogicalOperator(node)){
+          nodesToSelect = nodesToSelect.union(node.openNeighborhood());
+      }
+      node.openNeighborhood().forEach(function(ele){
+          if(chiseInstance.elementUtilities.isPNClass(ele) || chiseInstance.elementUtilities.isLogicalOperator(ele)){
+              nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
+              ele.openNeighborhood().forEach(function(ele2){
+                  if(chiseInstance.elementUtilities.isPNClass(ele2) || chiseInstance.elementUtilities.isLogicalOperator(ele2)){
+                      nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
+                  }
+              });
+          }
+      });
+      return nodesToSelect;
+    }
+
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'border-width': function (ele) { return Math.max(parseFloat(ele.data('border-width')) + 2, 3); }, 'border-color': '#0B9BCD' },
-          edge: {
-            'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + 2, 3); },
-            'line-color': '#0B9BCD',
-            'source-arrow-color': '#0B9BCD',
-            'target-arrow-color': '#0B9BCD'
-          }
+          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
         },
-        { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
-        { node: { 'border-color': '#d67614',  'border-width': 3 }, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
+        {
+          node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
+        {
+          node: { 'overlay-color': '#d67614', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#d67614', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
+        {
+          node: { 'overlay-color': '#04F06A', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#04F06A', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
       ],
       selectStyles: {
-        node: {
-          'border-color': '#d67614', 'background-color': function (ele) { return ele.data('background-color'); }
-        },
-        edge: {
-          'line-color': '#d67614',
-          'source-arrow-color': '#d67614',
-          'target-arrow-color': '#d67614',
-        }
+        node: { 'overlay-color': '#89898a', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        edge: { 'overlay-color': '#89898a', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
       },
-      neighbor: function(node){ //select and return process-based neighbors
-        var nodesToSelect = node;
-        if(chiseInstance.elementUtilities.isPNClass(node) || chiseInstance.elementUtilities.isLogicalOperator(node)){
-            nodesToSelect = nodesToSelect.union(node.openNeighborhood());
+      neighbor: function(ele){ //select and return process-based neighbors
+        if (ele.isNode()) {
+          return getProcessBasedNeighbors(ele);
         }
-        node.openNeighborhood().forEach(function(ele){
-            if(chiseInstance.elementUtilities.isPNClass(ele) || chiseInstance.elementUtilities.isLogicalOperator(ele)){
-                nodesToSelect = nodesToSelect.union(ele.closedNeighborhood());
-                ele.openNeighborhood().forEach(function(ele2){
-                    if(chiseInstance.elementUtilities.isPNClass(ele2) || chiseInstance.elementUtilities.isLogicalOperator(ele2)){
-                        nodesToSelect = nodesToSelect.union(ele2.closedNeighborhood());
-                    }
-                });
-            }
-        });
-        return nodesToSelect;
+        else if (ele.isEdge()) {
+          var sourceNode = ele.source();
+          var targetNode = ele.target();
+          var elementsToSelect = getProcessBasedNeighbors(sourceNode)
+                                .union(getProcessBasedNeighbors(targetNode));
+          return elementsToSelect;
+        }
       },
       neighborSelectTime: 500 //ms
     });
     
     cy.layoutUtilities({
-      componentSpacing: 30,
       desiredAspectRatio: $(cy.container()).width() / $(cy.container()).height()
-    })
+    });
 
-    cy.nodeResize({
+    cy.nodeEditing({
       padding: 2, // spacing between node and grapples/rectangle
       undoable: appUtilities.undoable, // and if cy.undoRedo exists
 
@@ -575,12 +596,12 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 
         enabled_classes.forEach(function(enabled_class){
-          if(node_class.indexOf(enabled_class) > -1)
+          if(node_class.indexOf(enabled_class) > -1 || node_class == "ion")
             result = true;
         });
 
@@ -714,9 +735,9 @@ module.exports = function (chiseInstance) {
 
     // Expand collapse extension is supposed to clear expand collapse cue on node position event.
     // If compounds are resized position event is not triggered though the position of the node is changed.
-    // Therefore, we listen to noderesize.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
+    // Therefore, we listen to nodeediting.resizedrag event here and if the node is a compound we need to call clearVisualCue() method of
     // expand collapse extension.
-    cy.on("noderesize.resizedrag", function(e, type, node){
+    cy.on("nodeediting.resizedrag", function(e, type, node){
         if (node.isParent()) {
             cy.expandCollapse('get').clearVisualCue();
         }
@@ -746,7 +767,7 @@ module.exports = function (chiseInstance) {
 
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
-      cy.nodeResize('get').refreshGrapples();
+      cy.nodeEditing('get').refreshGrapples();
     });
 
     cy.on("expandcollapse.beforeexpand",function(event){
@@ -759,7 +780,7 @@ module.exports = function (chiseInstance) {
     });
     
     // To redraw expand/collapse cue after resize
-    cy.on("noderesize.resizeend", function (e, type, node) {
+    cy.on("nodeediting.resizeend", function (e, type, node) {
       if(node.isParent() && node.selected())
         node.trigger("select");
     });
@@ -799,6 +820,11 @@ module.exports = function (chiseInstance) {
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
 
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      if (chiseInstance.getMapType()) {
+        document.getElementById('map-type').value = chiseInstance.getMapType();
+      }
+
       if(actionName == "resize") {
         var node = res.node;
         // ensure consistency of infoboxes through resizing
@@ -826,6 +852,11 @@ module.exports = function (chiseInstance) {
       refreshUndoRedoButtonsStatus(cy);
       cy.style().update();
       inspectorUtilities.handleSBGNInspector();
+
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      if (chiseInstance.getMapType()) {
+        document.getElementById('map-type').value = chiseInstance.getMapType();
+      }
 
       if(actionName == "resize") {
         var node = res.node;
@@ -874,7 +905,6 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on("mouseup", function (event) {
-
       var self = event.target || event.cyTarget;
 
       // get chise instance for cy
@@ -986,6 +1016,17 @@ module.exports = function (chiseInstance) {
 
     cy.on('tapend', function (event, relPos) {
 
+      // This is a bit of a patch
+      // Without this the alt + taphold shortcut for selection of objects of same type doesn't work
+      // as all the elements except the original event target will be unselected without this
+  
+      if (altTapholdSelection) {
+        setTimeout(function() {
+          cy.autounselectify(false);
+        }, 100);
+        altTapholdSelection = null;
+      }
+
       relPos = relPos || false;
       $('input').blur();
 
@@ -1087,23 +1128,21 @@ module.exports = function (chiseInstance) {
             if (chiseInstance.getMapType() && !isMapTypeValid){
 
               appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
-             /*  appUtilities.promptMapTypeView.render(function(){
-                  chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);}); */
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-            }
-            if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
-            {
-                var newEle = cy.nodes()[cy.nodes().length - 1];
-                var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
-                chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
-            }
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+                {
+                    var newEle = cy.nodes()[cy.nodes().length - 1];
+                    var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
+                    chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
+                }
 
-            // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
-            // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
-            if (parent) {
-              cy.expandCollapse('get').clearVisualCue();
+                // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
+                // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
+                if (parent) {
+                  cy.expandCollapse('get').clearVisualCue();
+                }
             }
           }
         }
@@ -1241,7 +1280,7 @@ module.exports = function (chiseInstance) {
      // }
       //Remove grapples while node-label-textbox is visible
       if($("#node-label-textbox").is(":visible")){
-        cy.nodeResize('get').removeGrapples();
+        cy.nodeEditing('get').removeGrapples();
       }
     });
 
@@ -1275,7 +1314,7 @@ module.exports = function (chiseInstance) {
     });
 
     // infobox refresh when resize happen, for simple nodes
-    /* cy.on('noderesize.resizedrag', function(e, type, node) {
+    /* cy.on('nodeediting.resizedrag', function(e, type, node) {
       if(node.data('statesandinfos').length > 0) {
         updateInfoBox(node);
       }
@@ -1330,7 +1369,7 @@ module.exports = function (chiseInstance) {
       currentPos = parent.position();
       if (currentPos.x != oldPos.x || currentPos.y != oldPos.y){
           oldPos = {x : currentPos.x, y : currentPos.y};
-          cy.trigger('noderesize.resizedrag', ['unknown', parent]);
+          cy.trigger('nodeediting.resizedrag', ['unknown', parent]);
       }
     });
 
@@ -1345,11 +1384,22 @@ module.exports = function (chiseInstance) {
         'background-position-x', 'background-position-y', 'background-height', 'background-width'];
 
       var opt = {};
-      keys.forEach(function(key){
-        opt[key] = node.data(key);
+      keys.forEach(function(key) {
+        opt[key] =  node.data(key);
       });
 
       node.style(opt);
+    });
+
+    // Select elements of same type (sbgn class) on taphold + alt key down
+    var altTapholdSelection;
+    cy.on('taphold', 'node, edge', function (event) {
+      if (appUtilities.altKeyDown) {
+        var cyTarget = event.target || event.cyTarget;
+        appUtilities.selectAllElementsOfSameType(cyTarget);
+        cy.autounselectify(true);
+        altTapholdSelection = true;
+      }
     });
 
     /* removed coz of  complications 

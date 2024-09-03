@@ -12,8 +12,8 @@ var _ = require('underscore');
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView,neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView,  promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView;
+  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,
+        promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -40,6 +40,97 @@ module.exports = function() {
     validateSBGNML(textXml);
     return chiseInstance.loadSample(filename, 'app/samples/', callback);
   }
+
+  function updatePalette(mapType) {
+
+    if(mapType === "AF") {
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }        
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }  
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      }      
+    }
+    else if(mapType === "PD"){
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      } 
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      }        
+    }
+    else if(mapType === "SIF"){
+      if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
+        $("#SIF-palette-heading").click();
+      }
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }        
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      } 
+    }
+    else if (mapType === "HybridSbgn") {
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }
+      if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
+        $("#SBML-palette-heading").click();
+      } 
+    }
+    else if (mapType === "SBML"){
+      if(!$("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+        $("#PD-palette-heading").click();
+      }
+      if(!$("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+        $("#AF-palette-heading").click();
+      }
+      if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
+        $("#SIF-palette-heading").click();
+      }
+      if( $("#SBML-palette-heading").hasClass("collapsed")) { // expand SBML
+        $("#SBML-palette-heading").click();
+      } 
+    }
+    else if (mapType === "HybridAny") {
+      if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
+        $("#PD-palette-heading").click();
+      }
+      if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
+        $("#AF-palette-heading").click();
+      }
+      if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
+        $("#SIF-palette-heading").click();
+      }
+      if($("#SBML-palette-heading").hasClass("collapsed")) { // expand SBML
+        $("#SBML-palette-heading").click();
+      } 
+    }
+    else {
+      console.warn('invalid map type!');
+    }
+  }
   
   console.log('init the sbgnviz template/page');
 
@@ -59,6 +150,8 @@ module.exports = function() {
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
   commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
+  mapByWPIDQueryView = appUtilities.mapByWPIDQueryView = new BackboneViews.MapByWPIDQueryView({el: '#query-mapbyWPID-table'});
+  mapByReactomeIDQueryView = appUtilities.mapByReactomeIDQueryView = new BackboneViews.MapByReactomeIDQueryView({el: '#query-mapbyReactomeID-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
   saveUserPreferencesView =  appUtilities.saveUserPreferencesView = new BackboneViews.SaveUserPreferencesView({el: '#user-preferences-save-table'});
@@ -66,16 +159,24 @@ module.exports = function() {
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
+  promptInvalidTypeWarning = appUtilities.promptInvalidTypeWarning = new BackboneViews.PromptInvalidTypeWarning({el: '#prompt-errorInvalidType-table'});
+  sifMapWarning = appUtilities.sifMapWarning = new BackboneViews.SifMapWarning({el: '#errorSifMap-table'});
+  promtErrorPD2AF = appUtilities.promtErrorPD2AF = new BackboneViews.PromtErrorPD2AF({el: '#prompt-errorPD2AF-table'});
   promptFileConversionErrorView = appUtilities.promptFileConversionErrorView = new BackboneViews.PromptFileConversionErrorView({el: '#prompt-fileConversionError-table'});
-  reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#reaction-template-table'});
+  reactionTemplateView = appUtilities.reactionTemplateView = new BackboneViews.ReactionTemplateView({el: '#sbgn-bricks-table'});
   gridPropertiesView = appUtilities.gridPropertiesView = new BackboneViews.GridPropertiesView({el: '#grid-properties-table'});
   fontPropertiesView = appUtilities.fontPropertiesView = new BackboneViews.FontPropertiesView({el: '#font-properties-table'});
   infoboxPropertiesView = appUtilities.infoboxPropertiesView = new BackboneViews.InfoboxPropertiesView({el: '#infobox-properties-table'});
   promptInvalidURIView = appUtilities.promptInvalidURIView = new BackboneViews.PromptInvalidURIView({el: '#prompt-invalidURI-table'});
+  promptInvalidWPIDView = appUtilities.promptInvalidWPIDView = new BackboneViews.PromptInvalidWPIDView({el: '#prompt-invalidWPID-table'});
+  promptInvalidReactomeIDView = appUtilities.promptInvalidReactomeIDView = new BackboneViews.PromptInvalidReactomeIDView({el: '#prompt-invalidReactomeID-table'});
   promptInvalidURIWarning = appUtilities.promptInvalidURIWarning = new BackboneViews.PromptInvalidURIWarning({el: '#prompt-invalidURI-table'});
+  promptInvalidReactomeIDWarning = appUtilities.promptInvalidReactomeIDWarning = new BackboneViews.PromptInvalidReactomeIDWarning({el: '#prompt-invalidReactomeID-table'});
+  promptInvalidWPIDWarning = appUtilities.promptInvalidWPIDWarning = new BackboneViews.PromptInvalidWPIDWarning({el: '#prompt-invalidWPID-table'});
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
+  exportErrorView = appUtilities.ExportErrorView = new BackboneViews.ExportErrorView({el: "#exportError-table",});
   toolbarButtonsAndMenu();
   keyboardShortcuts();
   // Events triggered by sbgnviz module
@@ -117,6 +218,7 @@ module.exports = function() {
   
   // Event triggered before file loaded by URL/URI
   $(document).on('sbgnvizLoadFromURL sbgnvizLoadFromURI', function(event, filename, cy) {
+    //alert("getting the file")
 
     var chiseInstance = appUtilities.getChiseInstance(cy);    
   
@@ -124,11 +226,23 @@ module.exports = function() {
     
     // get current general properties for cy
     var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');    
+    var sbmlProperty  = {}
 
     // inferNestingOnLoad and compoundPadding must be set before file loaded
     if (urlParams) {
       // filter map properties from the url parameters
       var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
+
+      var sbgnORsbml = appUtilities.filterMapTypeProperty(urlParams);
+      if(sbgnORsbml == "true")
+      {
+        sbmlProperty.sbmlMap = true
+      }
+      else
+      {
+        sbmlProperty.sbmlMap = false
+      }
+      
       
       if("inferNestingOnLoad" in mapPropsFromUrl) {
         currentGeneralProperties.inferNestingOnLoad = (mapPropsFromUrl.inferNestingOnLoad == 'true');
@@ -149,6 +263,7 @@ module.exports = function() {
 
     // set 'currentGeneralProperties' on scratchpad of cy
     appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);    
+    appUtilities.setScratch(cy, 'sbmlProperty', sbmlProperty); 
     
   });
 
@@ -169,47 +284,10 @@ module.exports = function() {
     if ( isActiveInstance ) {
 
       // select appropriate palette depending on the map
-      if(chiseInstance.elementUtilities.mapType == "AF") {
-        if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
-          $("#AF-palette-heading").click();
-        }        
-        if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
-          $("#PD-palette-heading").click();
-        }
-        if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
-          $("#SIF-palette-heading").click();
-        }        
-      }
-      else if(chiseInstance.elementUtilities.mapType == "PD"){
-        if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
-          $("#PD-palette-heading").click();
-        }
-        if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
-          $("#AF-palette-heading").click();
-        }
-        if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
-          $("#SIF-palette-heading").click();
-        }        
-      }
-      else if(chiseInstance.elementUtilities.mapType == "SIF"){
-        if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
-          $("#SIF-palette-heading").click();
-        }
-        if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
-          $("#PD-palette-heading").click();
-        }        
-        if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
-          $("#AF-palette-heading").click();
-        }
-      }
-      else {
-        console.warn('invalid map type!');
-      }
+      updatePalette(chiseInstance.elementUtilities.mapType)
 
     }
-
     cy.fit( cy.elements(":visible"), 20 );
-
   });
 
 			   
@@ -305,6 +383,7 @@ module.exports = function() {
     });
 
     $("#file-input").change(function (e, fileObject) {
+      
 
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -314,17 +393,75 @@ module.exports = function() {
 
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
-        var loadCallbackSBGNMLValidity = function (text) {
-          validateSBGNML(text);
-        }
+
+        var params, caller;
+        var fileExtension = file.name.split('.').pop();
+
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
+
+        if(fileExtension == 'sif'){
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          params = [layoutBy, loadCallbackInvalidityWarning];
+          caller = chiseInstance.loadSIFFile;
+        }
+        else if(fileExtension == 'sbml'){
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          var success = function(data){
+            chiseInstance.loadSBMLText(data.message, false, file.name, cy);
+          }; 
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";         
+          },
+          caller = chiseInstance.loadSbmlForSBML; 
+          params = [success, error, layoutBy];
+        }
+        else if(fileExtension == 'xml'){
+          appUtilities.setFileContent(file.name); 
+          var success = function(data){
+            chiseInstance.loadSBGNMLText(data, true, file.name, cy);
+          };
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";  
+          };
+          caller = chiseInstance.loadCellDesigner;
+          params = [success, error];
+        }
+        else if(fileExtension == 'gpml'){
+          appUtilities.setFileContent(file.name);
+          var success = function(data){
+            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+          };
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
+            
+          };
+          caller = chiseInstance.loadGpml;
+          params = [success, error];
+        }
+        else{
+          var loadCallbackSBGNMLValidity = function (text) {
+            //validateSBGNML(text);
+          }
+          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning];
+          caller = chiseInstance.loadNwtFile;
+        }
+
         if(cy.elements().length != 0) {
-          promptConfirmationView.render(function(){chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning)});
+          promptConfirmationView.render(() => {
+            setTimeout(() => caller(file, ...params), 150);
+          });
         }
         else {
-          chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning);
+          caller(file, ...params);
         }
         $(this).val("");
       }
@@ -340,7 +477,8 @@ module.exports = function() {
       if ($(this).val() != "") {
         var file = this.files[0];
         appUtilities.setFileContent(file.name);
-        chiseInstance.loadCellDesigner(file,  success = function(data){
+        chiseInstance.loadCellDesigner(file, 
+        success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
               chiseInstance.loadSBGNMLText(data, true, file.name, cy);
@@ -352,8 +490,7 @@ module.exports = function() {
         },
         error = function(data){
           promptFileConversionErrorView.render();          
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
-          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";  
         });
        
         $(this).val("");
@@ -377,10 +514,22 @@ module.exports = function() {
     });
 
     $("#import-sif-style").click(function () {
+      //Check if current map type is SIF
+      var mapType = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
+      if (mapType != "SIF") {
+        sifMapWarning.render();
+        return;
+      }
       $("#sif-style-input").trigger('click');
     });
 
     $("#import-sif-layout").click(function () {
+      //Check if current map type is SIF
+      var mapType = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
+      if (mapType != "SIF") {
+        sifMapWarning.render();
+        return;
+      }
       $("#sif-layout-input").trigger('click');
     });
 
@@ -423,7 +572,7 @@ module.exports = function() {
         var errorCallback = function(){
           promptInvalidFileView.render();
         };       
-        params ={data: data, fileName: "acc_2014vs2019.txt", errorCallback: errorCallback};
+        params ={data: data, fileName: "acc_2014vs2019.txt", errorCallback: errorCallback, sampleExperiment: true};
         experimentTabPanel.loadExperiment(params);
         experimentTabPanel.render();
       };
@@ -442,13 +591,44 @@ module.exports = function() {
     });
     
     $("#sbml-file").change(function () {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+
+
+      if ($(this).val() != "") {
+        var file = this.files[0];
+
+        var loadFcn = function() {
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          chiseInstance.loadSbmlForSBML(file,  success = function(data){
+              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
+          },  error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
+            
+          }, layoutBy)
+        };
+        if( cy.elements().length != 0)
+          promptConfirmationView.render( loadFcn );
+        else
+          loadFcn();
+
+        $(this).val("");
+      }
+    });
+
+    $("#gpml-file-input").change(function () {
      
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var cy = appUtilities.getActiveCy();
       if ($(this).val() != "") {
         var file = this.files[0];
         appUtilities.setFileContent(file.name);
-        chiseInstance.loadSbml(file,  success = function(data){
+        chiseInstance.loadGpml(file,  success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
               chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
@@ -460,7 +640,7 @@ module.exports = function() {
         },
         error = function(data){
           promptFileConversionErrorView.render();          
-          document.getElementById("file-conversion-error-message").innerText = "Conversion service is not available!";
+          document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
           
         });
        
@@ -609,22 +789,29 @@ module.exports = function() {
 
       // unlock graph topolpgy in case it is locked
       chiseInstance.elementUtilities.unlockGraphTopology();
-
       // reset map name and description
       // default map name should be a string that contains the network id
-      currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
-      currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
-    
+      if(!currentGeneralProperties.mapPD2AFConverted) {// if the file don't have a specified map name from pd map to af map conversion
+        currentGeneralProperties.mapName = appUtilities.getDefaultMapName(networkId);
+        currentGeneralProperties.mapDescription = appUtilities.defaultGeneralProperties.mapDescription;
+      }
+      currentGeneralProperties.mapPD2AFConverted = false; // Map name loaded, when new map is loading to the canvas name should be change
+
       // set recalculate layout on complexity management based on map size
       if (cy.nodes().length > 1250){
         currentGeneralProperties.recalculateLayoutOnComplexityManagement = false;
       }
+      if(currentGeneralProperties.inferNestingOrigin)
+        currentGeneralProperties.inferNestingOnLoad = currentGeneralProperties.inferNestingOrigin;
 
       // get and set properties from file
       var properties = chiseInstance.getMapProperties();
       // init map properties
-      var mapProperties = ( properties && properties.mapProperties ) ? properties.mapProperties : {};
-
+      var mapProperties = (properties && properties['nwt:mapProperties']) 
+      ? properties['nwt:mapProperties'] 
+      : (properties && properties.mapProperties) 
+          ? properties.mapProperties 
+          : {};
       var urlParams = appUtilities.getScratch(cy, 'urlParams');
 
       if (urlParams) {
@@ -644,6 +831,16 @@ module.exports = function() {
         }
 
         // filter map properties from the url parameters
+
+        // get applyLayout value before map properties are filtered, apply layout
+        // isn't really a map property so its not added to sbgnviz 
+        // validMapProperties
+        const applyLayout = urlParams.applyLayoutOnURL === "true";
+        const fromURL = urlParams.url !== undefined;
+        if (urlParams.compoundPadding) {
+          const compoundPadding = urlParams.compoundPadding;
+          chiseInstance.setCompoundPadding(Number(compoundPadding));
+        }
         var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
         
         if(!("inferNestingOnLoad" in mapPropsFromUrl)) {
@@ -652,7 +849,24 @@ module.exports = function() {
 
         if(!("compoundPadding" in mapPropsFromUrl)){
           mapPropsFromUrl.compoundPadding = 0;
-        }              
+        }
+
+        if (fromURL && applyLayout) {
+          let currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+
+          // Below is copied from sbgnviz.graphUtilities.updateGraph
+          let preferences = {};
+          if(cy.nodes().length > 3000 || cy.edges().length > 3000) {
+            preferences.quality = "draft";
+          }
+          preferences.animate = false;
+          preferences.randomize = true;
+          preferences = $.extend({}, currentLayoutProperties, preferences);
+          layoutPropertiesView.applyLayout(preferences);
+        }
+        if (urlParams.mapColorScheme) {
+          appUtilities.applyMapColorScheme(urlParams.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+        }
 
         if (fromURL && applyLayout) {
           let currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
@@ -707,6 +921,9 @@ module.exports = function() {
           for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
             classBgColor = appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values'][nodeClass];
             // nodeClass may not be defined in the defaultProperties (for edges, for example)
+            
+            var bgObj = chiseInstance.elementUtilities.getBackgroundImageObjs(cy.nodes());
+            chiseInstance.removeBackgroundImage(cy.nodes(), bgObj);
             if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
@@ -728,6 +945,8 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-x', value: '50%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-position-y', value: '50%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: classBgImg});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-width', value: '100%'});
+              chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-height', value: '100%'});
             }
           }
         }
@@ -736,6 +955,11 @@ module.exports = function() {
 
       // reset current general properties at the scratch pad of cy
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+
+      var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
+      $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getTabLabelName(chiseInstance.getMapType()));
+
+      cy.fit( cy.elements(":visible"), 20 );
     });
 
     $("#PD-legend").click(function (e) {
@@ -751,6 +975,11 @@ module.exports = function() {
     $("#SIF-legend").click(function (e) {
       e.preventDefault();
       $("#SIF_legend_modal").modal('show');
+    });
+
+    $("#SBML-legend").click(function (e) {
+      e.preventDefault();
+      $("#SBML_legend_modal").modal('show');
     });
 
     $("#quick-help, #quick-help-icon").click(function (e) {
@@ -797,7 +1026,11 @@ module.exports = function() {
       "#load-sample17" : 'RTN4-controllers-and-binding-proteins.nwt',
       "#load-sample18" : 'signaling-downstream-of-AKT2-3.nwt',
       "#load-sample19" : 'pd_learners_card.nwt',
-      "#load-sample20" : 'af_learners_card.nwt'
+      "#load-sample20" : 'af_learners_card.nwt',
+      "#load-sample21" : 'RUNX1_regulates_transcription_of_genes_involved_in_WNT_signaling.nwt',
+      "#load-sample22" : 'PTK6_Activates_STAT3.nwt',
+      "#load-sample23" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
+      "#load-sample24" : 'interaction_topologies_of_MAPK_cascade.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {
@@ -806,7 +1039,7 @@ module.exports = function() {
 
           // use active cy instance
           var cy = appUtilities.getActiveCy();
-
+          
           if(cy.elements().length != 0) {
             promptConfirmationView.render(function(){loadSample(selectorToSampleFileName[selector])});
           }
@@ -844,12 +1077,19 @@ module.exports = function() {
       cy.edges().select();
     });
 
-    $("#hide-selected, #hide-selected-icon").click(function(e) {
+    $("#hide-selected-smart, #hide-selected-smart-icon").click(function(e) {
 
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
       appUtilities.hideNodesSmart(cy.nodes(":selected"));
+      $('#inspector-palette-tab a').tab('show');
+    });
+
+    $("#hide-selected-simple, #hide-selected-simple-icon").click(function(e) {
+      var cy = appUtilities.getActiveCy();
+      
+      appUtilities.hideElesSimple(cy.elements(":selected"));
       $('#inspector-palette-tab a').tab('show');
     });
 
@@ -895,7 +1135,7 @@ module.exports = function() {
       
       var selectedNodeSize = cy.nodes(':selected').length;
 
-      chiseInstance.deleteNodesSmart(cy.nodes(':selected'));
+      appUtilities.deleteNodesSmart(cy.nodes(':selected'));
       if(!chiseInstance.elementUtilities.isGraphTopologyLocked() && selectedNodeSize > 0)
         $('#inspector-palette-tab a').tab('show');
     });
@@ -909,7 +1149,7 @@ module.exports = function() {
         var cy = chiseInstance.getCy();
 
         //Remove processes and other nodes which cannot be resized according to content
-        var toBeResized = cy.nodes().difference('node[class*="process"],[class*="association"],[class*="dissociation"],[class="source and sink"],[class="and"],[class="or"],[class="not"],[class="delay"],:parent');
+        var toBeResized = cy.nodes().difference('node[class*="process"],[class*="association"],[class*="dissociation"],[class="empty set"],[class="and"],[class="or"],[class="not"],[class="delay"],[class="degradation"],[class="unknown logical operator"],:parent');
         
         appUtilities.resizeNodesToContent(toBeResized);
 
@@ -967,7 +1207,112 @@ module.exports = function() {
       chiseInstance.highlightProcesses(cy.nodes(':selected'));
     });
 
+    // PD map to AF map conversion 
+    $("#highlight-errors-of-pd2af").click(function (e) {
+    
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var chiseSpinnerInstance = appUtilities.getActiveChiseInstance();
+      var filename = document.getElementById('file-name').innerHTML;
+      var fExt = 'sbgn';
+      filename = filename.substring(0, filename.lastIndexOf('.')).concat(".").concat(fExt);
 
+      // Get the map from the canvas
+      
+      var cy = chiseInstance.getCy();
+      var nodes = cy.nodes().filter( function( node ) {
+        return node.visible();
+      } );
+      
+      var edges = cy.edges().filter( function( edge ) {
+        return edge.visible();
+      } );
+
+      var renderInfo = appUtilities.getAllStyles(cy, nodes, edges);
+      var properties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+
+      var file = chiseInstance.getSbgnvizInstance().convertSbgn(filename, "plain", renderInfo, properties, nodes, edges, true);
+      if(chiseInstance.getMapType() != 'PD'){
+        promptInvalidTypeWarning.render();
+        return;
+      }
+
+      if(nodes.length == 0 || edges.length == 0){
+        promtErrorPD2AF.render("No visible map found!");
+        return;
+      }
+      var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+      var inferNestingOrigin = currentGeneralProperties.inferNestingOnLoad;
+      var mapColorScheme = currentGeneralProperties.mapColorScheme;
+      var mapColorSchemeStyle = currentGeneralProperties.mapColorSchemeStyle;
+      chiseSpinnerInstance.startSpinner("layout-spinner");
+
+      // pd2af returns filename and file url
+      $.ajax({
+        // After deploying Bridge Server (pd2af-webservice) write the bridge server's URL but leave the /convert
+        // url: "https://pd2afwebservice.herokuapp.com/convert",
+        url: "http://139.179.21.94:4000/convert", //public server url
+        type: "POST",
+        ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
+        data: {
+          'file': file,
+          'filename': filename
+        },
+        success: function (data) {
+          // If response returns error display the message
+          if(data.name==='Error' || data.error || data.name==='error'){
+            chiseSpinnerInstance.endSpinner("layout-spinner");
+            promtErrorPD2AF.render(data.message);
+          }else{
+            chiseSpinnerInstance.endSpinner("layout-spinner");
+            filename = data.filename;
+
+            // Create new network 
+            var current = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+            var networkName = current.mapName;
+            var networkDescription = current.mapDescription;
+            // If networkDescription itself is used to create the description text, original map description would also be changed
+            if(networkDescription ){
+              var st = JSON.stringify(networkDescription[0]);
+              st = st.slice(1); // For removing " at the beginning
+              st = "AF map of " + st.charAt(0).toLowerCase() + st.slice(1);
+              st = st.slice(0,-1); // For removing " at the end
+            }
+            networkName += " AF";
+            var newNetwork = appUtilities.createNewNetwork(networkName, st); // Create new network (new Newt tab)
+            var currentGeneralProperties = appUtilities.getScratch(appUtilities.getActiveCy(), 'currentGeneralProperties');
+            currentGeneralProperties.mapPD2AFConverted = true; // Set it to true so load will not overwrite the map name and description
+            currentGeneralProperties.inferNestingOrigin = inferNestingOrigin;
+            currentGeneralProperties.inferNestingOnLoad = true;
+            
+            currentGeneralProperties.mapColorSchemeStyle = mapColorSchemeStyle;
+            currentGeneralProperties.mapColorScheme = mapColorScheme;
+            appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
+
+            chiseInstance = appUtilities.getActiveChiseInstance();
+            var fileExtension = filename.split('.');
+            var fileToLoad = new File([data.body], filename, {
+                      type: 'text/sbgn',
+                      lastModified: Date.now()
+            });
+
+            setTimeout(function(){
+              chiseInstance.loadSBGNMLFile(fileToLoad, ()=>{}, ()=>{}, data);
+            }, 1000);
+            appUtilities.setScratch(appUtilities.getActiveCy(), 'currentGeneralProperties', currentGeneralProperties);
+            appUtilities.applyMapColorScheme(currentGeneralProperties.mapColorScheme, currentGeneralProperties.mapColorSchemeStyle, appUtilities.colorSchemeInspectorView);
+          }
+        },
+        error: function (data) {
+          chiseSpinnerInstance.endSpinner("layout-spinner");
+          if(data.status == 0)
+            promtErrorPD2AF.render("Server might be offline!");
+          
+          else
+            promtErrorPD2AF.render(data.message);
+        }
+      });
+    });
+  
   $("#highlight-errors-of-validation, #highlight-errors-of-validation-icon").click(function (e) {
    modeHandler.enableReadMode();
     // use active chise instance
@@ -1047,6 +1392,14 @@ module.exports = function() {
 
     $("#query-pathsbyURI").click(function (e) {
         pathsByURIQueryView.render();
+    });
+
+    $("#query-mapbyWPID").click(function (e) {
+        mapByWPIDQueryView.render();
+    });
+
+    $("#query-mapbyReactomeID").click(function (e) {
+      mapByReactomeIDQueryView.render();
     });
 
     $("#grid-properties").click(function (e) {
@@ -1202,31 +1555,23 @@ module.exports = function() {
       viewUtilities.zoomToSelected(cy.$(':selected'));
     });
 
-    $("#perform-layout, #perform-layout-icon").click(function (e) {
-
+    $("#perform-layout, #perform-layout-icon").click( function (e) {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-      // TODO think whether here is the right place to start the spinner
-      chiseInstance.startSpinner("layout-spinner");
-
-      setTimeout(() => {
-
-      // use the associated cy instance
-      var cy = chiseInstance.getCy();
-
       // if there is no element in the cy instance, then return directly
+      var cy = chiseInstance.getCy();
       if(cy.elements().length == 0) {
         return;
       }
+      chiseInstance.startSpinner("layout-spinner")
 
+      setTimeout(() => {
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
-
       var preferences = {
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
       };
-
       layoutPropertiesView.applyLayout(preferences);
     }, 0);
     });
@@ -1236,22 +1581,16 @@ module.exports = function() {
       // use active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
-      // TODO think whether here is the right place to start the spinner
-      chiseInstance.startSpinner("layout-spinner");
-
-      setTimeout(() => {
-
-      // use the associated cy instance
-      var cy = chiseInstance.getCy();
-
       // if there is no element in the cy instance, then return directly
+      var cy = chiseInstance.getCy();
       if(cy.elements().length == 0) {
         return;
       }
+      chiseInstance.startSpinner("layout-spinner");
+
+      setTimeout(() => {
       // get current general properties for cy
       var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');      
-
-
       var preferences = {
         quality: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? "draft" : "default",
         animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges,
@@ -1279,33 +1618,15 @@ module.exports = function() {
     });
 
     $("#save-as-png").click(function (evt) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      var filename = document.getElementById('file-name').innerHTML;
-      filename = filename.substring(0,filename.lastIndexOf('.')) + ".png";
-      chiseInstance.saveAsPng(filename); // the default filename is 'network.png'
+      fileSaveView.render("png", null, null);
     });
 
     $("#save-as-jpg").click(function (evt) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      var filename = document.getElementById('file-name').innerHTML;
-      filename = filename.substring(0,filename.lastIndexOf('.')) + ".jpg";
-      chiseInstance.saveAsJpg(filename); // the default filename is 'network.jpg'
+      fileSaveView.render("jpg", null, null);
     });
 
     $("#save-as-svg").click(function (evt) {
-
-      // use active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-
-      var filename = document.getElementById('file-name').innerHTML;
-      filename = filename.substring(0,filename.lastIndexOf('.')) + ".svg";
-      chiseInstance.saveAsSvg(filename); // the default filename is 'network.jpg'
+      fileSaveView.render("svg", null, null);
     });
 
     $("#save-as-nwt, #save-icon").click(function (evt) {
@@ -1351,17 +1672,11 @@ module.exports = function() {
     });
 
     $("#export-to-sif-layout").click(function (evt) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        var filename = document.getElementById('file-name').innerHTML;
-        filename = filename.substring(0,filename.lastIndexOf('.')) + ".txt";
-        chiseInstance.exportLayoutData( filename, true );
+      fileSaveView.render("sifLayout", null, null);
     });
 
     $("#export-to-plain-sif").click(function (evt) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        var filename = document.getElementById('file-name').innerHTML;
-        filename = filename.substring(0,filename.lastIndexOf('.')) + ".sif";
-        chiseInstance.saveAsPlainSif( filename, true );
+      fileSaveView.render("sif", null, null);
     });
 
     $("#export-as-sbgnml-plain-file").click(function (evt) {
@@ -1378,7 +1693,7 @@ module.exports = function() {
 
     $("#export-as-gpml").click(function (evt) {
       fileSaveView.render("gpml", null, null);
-    }); 
+    });    
 
     $("#add-complex-for-selected").click(function (e) {
 
@@ -1427,17 +1742,18 @@ module.exports = function() {
       inspectorUtilities.handleSBGNInspector();
     });
 
-    $("#create-reaction-template").click(function (e) {
+    $("#open-sbgn-bricks-modal").click(function (e) {
 
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
       var mapType = chiseInstance.getMapType();
 
-      if(mapType == 'SIF' || mapType == 'AF'){
-        return;
+      if(mapType != 'PD' && mapType != 'HybridSbgn' && mapType != 'HybridAny' ){
+        exportErrorView.render();          
+        document.getElementById("export-error-message").innerText = "SBGN Bricks can only be used with PD maps!";
       }
-
-      reactionTemplateView.render();
+      else
+        reactionTemplateView.render();
     });
 
     $("#clone-selected").click(function (e) {
@@ -1533,7 +1849,8 @@ module.exports = function() {
     $(document).on('mousedown', '.node-palette img', function (e) {
       e.preventDefault(); // needed for dragging, otherwise the mouse release event cannot be fired on another element
       dragAndDropPlacement = true;
-      var imgPath = appUtilities.getDragImagePath( $(this).attr('value') );
+      // var imgPath = appUtilities.getDragImagePath( $(this).attr('value') );
+      var imgPath = $(this).attr('src');
       appUtilities.addDragImage(imgPath, $(this).css('width'), $(this).css('height'));
 
       $('.node-palette img').removeClass('selected-mode'); // Make any image inside node palettes non selected
@@ -1589,6 +1906,14 @@ module.exports = function() {
     $('#marquee-zoom-mode-icon').click(function(e){
       modeHandler.setMarqueeZoomMode();
     });
+	
+	$('#lasso-mode-icon').click(function(e){
+      modeHandler.setLassoMode();
+    });
+
+    $('#sbgn-bricks-icon').click(function() {
+      reactionTemplateView.render();
+    }); 
 
     $('#add-node-mode-icon').click(function (e) {
       modeHandler.setAddNodeMode();
@@ -1669,10 +1994,8 @@ module.exports = function() {
       $(document).on("keydown", function (event){
       if(!appUtilities.zoomShortcut){
         if(event.shiftKey){
-          //left command key code in webkit browsers (chrome, safari, opera) = 91
-          //right command key code in webkit browsers = 93
-          //command key code in firefox = 224
-          if(event.ctrlKey || event.keyCode == "91" || event.keyCode == "93" || event.keyCode == "224"){
+          // meta key for command key
+          if(event.ctrlKey || event.metaKey){
               //variable toggle to prevent multiple calls at the same time
               appUtilities.zoomShortcut = true; 
               //enable zoom shortcut mode      
@@ -1683,12 +2006,20 @@ module.exports = function() {
 
     });
 
+    // Update inspector on tab change
+    $('#sbgn-inspector a[data-toggle="tab"]').on('shown.bs.tab', function () {
+      inspectorUtilities.handleSBGNInspector();
+    });
+
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
       var target = $(e.target).attr("href"); // activated tab
-      console.log(target);
       appUtilities.setActiveNetwork(target);
       inspectorUtilities.handleSBGNInspector();
     });
+
+    $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
+      updatePalette(newMapType);
+    }); 
   }
 };

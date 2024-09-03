@@ -25,8 +25,9 @@ appUtilities.mapTypesToViewableText = {
   'PD': 'PD',
   'AF': 'AF',
   'SIF': 'SIF',
-  'HybridSbgn' : 'Hybrid (PD,AF)' ,
-  'HybridAny' : 'Hybrid (PD,AF,SIF)'   
+  'SBML': 'SBML',
+  'HybridSbgn' : 'PD+AF' ,
+  'HybridAny' : 'PD+AF+SIF+SBML'   
 };
 // Set a single property on scratchpad of an element or the core
 appUtilities.setScratch = function (cyOrEle, name, val) {
@@ -113,6 +114,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   $('#add-edge-mode-icon').parent().removeClass('selected-mode-sustainable');
   $('#add-node-mode-icon').parent().removeClass('selected-mode-sustainable');
   $('#marquee-zoom-mode-icon').parent().removeClass('selected-mode');
+  $('#lasso-mode-icon').parent().removeClass('selected-mode');
   $('.node-palette img').addClass('inactive-palette-element');
   $('.edge-palette img').addClass('inactive-palette-element');
   $('.selected-mode-sustainable').removeClass('selected-mode-sustainable');
@@ -161,6 +163,11 @@ appUtilities.adjustUIComponents = function (_cy) {
     $('#marquee-zoom-mode-icon').parent().addClass('selected-mode');
 
   }
+  else if( mode === 'lasso-mode'){
+
+    $('#lasso-mode-icon').parent().addClass('selected-mode');
+
+  }
 
   // adjust status of grid guide related icons in toolbar
 
@@ -194,6 +201,10 @@ appUtilities.getNetworkPanelId = function (networkId) {
 appUtilities.getNetworkTabId = function (networkId) {
   return 'sbgn-network-tab-' + networkId;
 };
+
+appUtilities.getMapTypeDivId = function(networkId) {
+  return 'map-type-tab-' + networkId;
+}
 
 // get network id by given network key (would be tab or panel id or selector or even the network id itself)
 // that is basically the remaining part of the string after the last occurance of '-'
@@ -332,8 +343,16 @@ appUtilities.adjustVisibilityOfNetworkTabs = function () {
 
 };
 
+// returns the display name of map types to align with issue #715.
+// see https://github.com/iVis-at-Bilkent/newt/issues/715
+appUtilities.getTabLabelName = function(mapName) {
+  if(mapName == "HybridAny")
+    return "ALL";
+  return appUtilities.mapTypesToViewableText[mapName];
+}
+
 // creates a new network and returns the new chise.js instance that is created for this network
-appUtilities.createNewNetwork = function () {
+appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
   // id of the div panel associated with the new network
   var networkPanelId = appUtilities.getNetworkPanelId(appUtilities.nextNetworkId);
@@ -341,8 +360,14 @@ appUtilities.createNewNetwork = function () {
   // id of the tab for the new network
   var networkTabId = appUtilities.getNetworkTabId(appUtilities.nextNetworkId);
 
-  // use the default map name for the given next network id
-  var mapName = appUtilities.getDefaultMapName(appUtilities.nextNetworkId);
+  // id of the div of the map type discriptor
+  var mapTypeDivId = appUtilities.getMapTypeDivId(appUtilities.nextNetworkId);
+  
+  var mapName;
+  if(networkName)
+    mapName = networkName;
+  else
+    mapName = appUtilities.getDefaultMapName(appUtilities.nextNetworkId);
 
   // create physical html components for the new network
   // use map name as the tab description
@@ -358,7 +383,8 @@ appUtilities.createNewNetwork = function () {
   
   // update the map name with the default map name specific for network id
   currentGeneralProperties.mapName = mapName;
-
+  if(networkDescription)
+    currentGeneralProperties.mapDescription = networkDescription;
   // Create a new chise.js instance
   var newInst = chise({
     networkContainerSelector: networkPanelSelector,
@@ -421,7 +447,7 @@ appUtilities.createNewNetwork = function () {
   appUtilities.setScratch(newInst.getCy(), 'currentLayoutProperties', currentLayoutProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGridProperties', currentGridProperties);
   appUtilities.setScratch(newInst.getCy(), 'currentGeneralProperties', currentGeneralProperties);
-  
+
   // init the current file name for the map
   appUtilities.setScratch(newInst.getCy(), 'currentFileName', 'new_file.nwt');
 
@@ -458,6 +484,10 @@ appUtilities.createNewNetwork = function () {
 
   // adjust the visibility of network tabs
   appUtilities.adjustVisibilityOfNetworkTabs();
+
+  // update the map type descriptor
+  var mapType = appUtilities.getActiveChiseInstance().getMapType();
+  $('#' + mapTypeDivId).text(appUtilities.getTabLabelName(mapType));
 
   // return the new instance
   return newInst;
@@ -579,9 +609,10 @@ appUtilities.createPhysicalNetworkComponents = function (panelId, tabId, tabDesc
   // the container that lists the network tabs
   var tabsList = $('#network-tabs-list');
 
-  var newTabStr = '<li id="' + tabId + '" class="chise-tab chise-network-tab">\n\
+  var newTabStr = '<li id="' + tabId + '" class="chise-network-tab">\n\
                   <a data-toggle="tab" href="#' + panelId + '">\n\
-                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '</a></li>';
+                  <button class="close closeTab '+tabId+'closeTab" type="button" >&times</button>' + tabDesc + '\n\
+                  <div id="map-type-tab-' + tabId.substring(17) + '" class="map-tab-type"></div></a></li>';
 
   $('ul').on('click', 'button.' + tabId +'closeTab', function() {
     var networkId = tabId.substring(17);
@@ -1053,28 +1084,49 @@ appUtilities.showAll = function (_chiseInstance) {
     }
 };
 
-// Hides nodes and perform incremental layout afterward if Rearrange option is checked
-appUtilities.hideNodesSmart = function(eles, _chiseInstance) {
-
-    // check _chiseInstance param if it is set use it else use recently active chise instance
-    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
-
-    // get the associated cy instance
-    var cy = chiseInstance.getCy();
-
-    // get current general properties for cy instance
-    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+appUtilities.deleteNodesSmart = function(nodes) {
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  var cy = chiseInstance.getCy();
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
     if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
     {
         //Put them near node and perform incremental layout
-        chiseInstance.hideAndPerformLayout(eles, this.triggerLayout.bind(this, cy, false));
+        chiseInstance.deleteAndPerformLayout(nodes, this.triggerLayout.bind(this, cy, false));
     }
     else
     {
         //Just show them
-        chiseInstance.hideNodesSmart(eles);
+        chiseInstance.deleteNodesSmart(nodes);
     }
+};
+
+// Hides nodes and perform incremental layout afterward if Rearrange option is checked
+appUtilities.hideNodesSmart = function(nodes, _chiseInstance) {
+
+    // check _chiseInstance param if it is set use it else use recently active chise instance
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+    var cy = chiseInstance.getCy();
+
+    var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+
+    if (currentGeneralProperties.recalculateLayoutOnComplexityManagement )
+    {
+        chiseInstance.hideAndPerformLayout(nodes, this.triggerLayout.bind(this, cy, false));
+    }
+    else
+    {
+        chiseInstance.hideNodesSmart(nodes);
+    }
+};
+
+// Hides nodes and perform incremental layout afterward if Rearrange option is checked
+appUtilities.hideElesSimple = function(eles, _chiseInstance) {
+  // check _chiseInstance param if it is set use it else use recently active chise instance
+  var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+
+  chiseInstance.hideElesSimple(eles);
 };
 
 appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
@@ -1150,7 +1202,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#ffffff',
       'nucleic acid feature': '#ffffff',
       'perturbing agent': '#ffffff',
-      'source and sink': '#ffffff',
+      'empty set': '#ffffff',
       'complex': '#ffffff',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1173,6 +1225,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#ffffff',
+      'rna': '#ffffff',
+      'simple molecule': '#ffffff',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#ffffff',
+      'protein': '#ffffff',
+      'truncated protein': '#ffffff',
+      'ion channel': '#ffffff',
+      'receptor': '#ffffff',
+      'ion': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#ffffff',
+      'compartment': '#ffffff', 
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1184,8 +1261,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#ffffff',
-      'SIF simple chemical': '#ffffff'
-    }
+      'SIF simple chemical': '#ffffff',
+      }
   },
   'greyscale': {
     'name': 'Greyscale',
@@ -1197,7 +1274,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#bdbdbd',
       'nucleic acid feature': '#bdbdbd',
       'perturbing agent': '#bdbdbd',
-      'source and sink': '#ffffff',
+      'empty set': '#ffffff',
       'complex': '#d9d9d9',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1220,6 +1297,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f0f0f0',
       'submap': '#f0f0f0',
+      //SBML
+      'gene' : '#bdbdbd',
+      'rna': '#bdbdbd',
+      'simple molecule': '#bdbdbd',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#bdbdbd',
+      'protein': '#bdbdbd',
+      'truncated protein': '#bdbdbd',
+      'ion channel': '#bdbdbd',
+      'receptor': '#bdbdbd',
+      'ion': '#bdbdbd',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d9d9d9',
+      'compartment': '#f0f0f0',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1231,7 +1333,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#d9d9d9',
-      'SIF simple chemical': '#f0f0f0'
+      'SIF simple chemical': '#f0f0f0',
+      
     }
   },
   'inverse_greyscale': {
@@ -1244,7 +1347,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#f0f0f0',
       'nucleic acid feature': '#f0f0f0',
       'perturbing agent': '#f0f0f0',
-      'source and sink': '#f0f0f0',
+      'empty set': '#f0f0f0',
       'complex': '#d9d9d9',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1267,6 +1370,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#bdbdbd',
       'submap': '#bdbdbd',
+      //SBML
+      'gene' : '#f0f0f0',
+      'rna': '#f0f0f0',
+      'simple molecule': '#f0f0f0',
+      'unknown molecule': '#f0f0f0',
+      'phenotype sbml': '#f0f0f0',
+      'drug': '#f0f0f0',
+      'protein': '#f0f0f0',
+      'truncated protein': '#f0f0f0',
+      'ion channel': '#f0f0f0',
+      'receptor': '#f0f0f0',
+      'ion': '#f0f0f0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f0f0f0',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d9d9d9',
+      'compartment': '#bdbdbd',
       // AF
       'BA plain': '#f0f0f0',
       'BA unspecified entity': '#f0f0f0',
@@ -1278,7 +1406,8 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#f0f0f0',
-      'SIF simple chemical': '#d9d9d9'
+      'SIF simple chemical': '#d9d9d9',
+      
     }
   },
   'blue_scale': {
@@ -1291,7 +1420,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#9ecae1',
       'nucleic acid feature': '#9ecae1',
       'perturbing agent': '#9ecae1',
-      'source and sink': '#9ecae1',
+      'empty set': '#9ecae1',
       'complex': '#c6dbef',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1314,6 +1443,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#eff3ff',
       'submap': '#eff3ff',
+      //SBML
+      'gene' : '#9ecae1',
+      'rna': '#9ecae1',
+      'simple molecule': '#9ecae1',
+      'unknown molecule': '#9ecae1',
+      'phenotype sbml': '#9ecae1',
+      'drug': '#9ecae1',
+      'protein': '#9ecae1',
+      'truncated protein': '#9ecae1',
+      'ion channel': '#9ecae1',
+      'receptor': '#9ecae1',
+      'ion': '#9ecae1',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#9ecae1',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#c6dbef',
+      'compartment': '#eff3ff',
       // AF
       'BA plain': '#9ecae1',
       'BA unspecified entity': '#9ecae1',
@@ -1325,7 +1479,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#c6dbef',
-      'SIF simple chemical': '#eff3ff'
+      'SIF simple chemical': '#eff3ff',
     }
   },
   'inverse_blue_scale': {
@@ -1338,7 +1492,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#eff3ff',
       'nucleic acid feature': '#eff3ff',
       'perturbing agent': '#eff3ff',
-      'source and sink': '#eff3ff',
+      'empty set': '#eff3ff',
       'complex': '#c6dbef',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1361,6 +1515,32 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#9ecae1',
       'submap': '#9ecae1',
+      //SBML
+      'gene' : '#eff3ff',
+      'rna': '#eff3ff',
+      'simple molecule': '#eff3ff',
+      'unknown molecule': '#eff3ff',
+      'phenotype sbml': '#eff3ff',
+      'drug': '#eff3ff',
+      'protein': '#eff3ff',
+      'truncated protein': '#eff3ff',
+      'ion channel': '#eff3ff',
+      'receptor': '#eff3ff',
+      'ion': '#eff3ff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#eff3ff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#c6dbef',
+      'compartment': '#9ecae1',
+      
       // AF
       'BA plain': '#eff3ff',
       'BA unspecified entity': '#eff3ff',
@@ -1372,7 +1552,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#eff3ff',
-      'SIF simple chemical': '#c6dbef'
+      'SIF simple chemical': '#c6dbef',
     }
   },
   'opposed_red_blue': {
@@ -1385,7 +1565,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#92c5de',
       'nucleic acid feature': '#f4a582',
       'perturbing agent': '#f7f7f7',
-      'source and sink': '#f7f7f7',
+      'empty set': '#f7f7f7',
       'complex': '#d1e5f0',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1408,6 +1588,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#f4a582',
+      'rna': '#f4a582',
+      'simple molecule': '#fddbc7',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#f4a582',
+      'protein': '#92c5de',
+      'truncated protein': '#92c5de',
+      'ion channel': '#92c5de',
+      'receptor': '#92c5de',
+      'ion': '#fddbc7',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d1e5f0',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1419,7 +1624,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#92c5de',
-      'SIF simple chemical': '#f4a582'
+      'SIF simple chemical': '#f4a582',
     }
   },
   'opposed_red_blue2': {
@@ -1432,7 +1637,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#f4a582',
       'nucleic acid feature': '#92c5de',
       'perturbing agent': '#f7f7f7',
-      'source and sink': '#f7f7f7',
+      'empty set': '#f7f7f7',
       'complex': '#fddbc7',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1455,6 +1660,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#92c5de',
+      'rna': '#92c5de',
+      'simple molecule': '#d1e5f0',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#92c5de',
+      'protein': '#f4a582',
+      'truncated protein': '#f4a582',
+      'ion channel': '#f4a582',
+      'receptor': '#f4a582',
+      'ion': '#d1e5f0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#fddbc7',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1466,7 +1696,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#f4a582',
-      'SIF simple chemical': '#92c5de'
+      'SIF simple chemical': '#92c5de',
     }
   },
   'opposed_green_brown': {
@@ -1479,7 +1709,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#80cdc1',
       'nucleic acid feature': '#dfc27d',
       'perturbing agent': '#f5f5f5',
-      'source and sink': '#f5f5f5',
+      'empty set': '#f5f5f5',
       'complex': '#c7eae5',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1502,6 +1732,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f5f5f5',
       'submap': '#f5f5f5',
+      //SBML
+      'gene' : '#dfc27d',
+      'rna': '#dfc27d',
+      'simple molecule': '#f6e8c3',
+      'unknown molecule': '#f5f5f5',
+      'phenotype sbml': '#f5f5f5',
+      'drug': '#dfc27d',
+      'protein': '#80cdc1',
+      'truncated protein': '#80cdc1',
+      'ion channel': '#80cdc1',
+      'receptor': '#80cdc1',
+      'ion': '#f6e8c3',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f5f5f5',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#c7eae5',
+      'compartment': '#f5f5f5',
       // AF
       'BA plain': '#f5f5f5',
       'BA unspecified entity': '#f5f5f5',
@@ -1513,7 +1768,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#80cdc1',
-      'SIF simple chemical': '#dfc27d'
+      'SIF simple chemical': '#dfc27d',
     }
   },
   'opposed_green_brown2': {
@@ -1526,7 +1781,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#dfc27d',
       'nucleic acid feature': '#80cdc1',
       'perturbing agent': '#f5f5f5',
-      'source and sink': '#f5f5f5',
+      'empty set': '#f5f5f5',
       'complex': '#f6e8c3',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1549,6 +1804,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f5f5f5',
       'submap': '#f5f5f5',
+      //SBML
+      'gene' : '#80cdc1',
+      'rna': '#80cdc1',
+      'simple molecule': '#c7eae5',
+      'unknown molecule': '#f5f5f5',
+      'phenotype sbml': '#f5f5f5',
+      'drug': '#80cdc1',
+      'protein': '#dfc27d',
+      'truncated protein': '#dfc27d',
+      'ion channel': '#dfc27d',
+      'receptor': '#dfc27d',
+      'ion': '#c7eae5',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f5f5f5',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#f6e8c3',
+      'compartment': '#f5f5f5',
       // AF
       'BA plain': '#f5f5f5',
       'BA unspecified entity': '#f5f5f5',
@@ -1560,7 +1840,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#dfc27d',
-      'SIF simple chemical': '#80cdc1'
+      'SIF simple chemical': '#80cdc1',
     }
   },
   'opposed_purple_brown': {
@@ -1573,7 +1853,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#b2abd2',
       'nucleic acid feature': '#fdb863',
       'perturbing agent': '#f7f7f7',
-      'source and sink': '#f7f7f7',
+      'empty set': '#f7f7f7',
       'complex': '#d8daeb',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1596,6 +1876,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#fdb863',
+      'rna': '#fdb863',
+      'simple molecule': '#fee0b6',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#fdb863',
+      'protein': '#b2abd2',
+      'truncated protein': '#b2abd2',
+      'ion channel': '#b2abd2',
+      'receptor': '#b2abd2',
+      'ion': '#fee0b6',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d8daeb',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1607,7 +1912,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#b2abd2',
-      'SIF simple chemical': '#fdb863'
+      'SIF simple chemical': '#fdb863',
     }
   },
   'opposed_purple_brown2': {
@@ -1620,7 +1925,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#fdb863',
       'nucleic acid feature': '#b2abd2',
       'perturbing agent': '#f7f7f7',
-      'source and sink': '#f7f7f7',
+      'empty set': '#f7f7f7',
       'complex': '#fee0b6',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1643,6 +1948,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#b2abd2',
+      'rna': '#b2abd2',
+      'simple molecule': '#d8daeb',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#b2abd2',
+      'protein': '#fdb863',
+      'truncated protein': '#fdb863',
+      'ion channel': '#fdb863',
+      'receptor': '#fdb863',
+      'ion': '#d8daeb',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#fee0b6',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1654,7 +1984,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#fdb863',
-      'SIF simple chemical': '#b2abd2'
+      'SIF simple chemical': '#b2abd2',
     }
   },
   'opposed_purple_green': {
@@ -1667,7 +1997,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#c2a5cf',
       'nucleic acid feature': '#a6dba0',
       'perturbing agent': '#f7f7f7',
-      'source and sink': '#f7f7f7',
+      'empty set': '#f7f7f7',
       'complex': '#e7d4e8',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1690,6 +2020,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#a6dba0',
+      'rna': '#a6dba0',
+      'simple molecule': '#d9f0d3',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#a6dba0',
+      'protein': '#c2a5cf',
+      'truncated protein': '#c2a5cf',
+      'ion channel': '#c2a5cf',
+      'receptor': '#c2a5cf',
+      'ion': '#d9f0d3',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#e7d4e8',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1701,7 +2056,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#c2a5cf',
-      'SIF simple chemical': '#a6dba0'
+      'SIF simple chemical': '#a6dba0',
     }
   },
   'opposed_purple_green2': {
@@ -1714,7 +2069,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#a6dba0',
       'nucleic acid feature': '#c2a5cf',
       'perturbing agent': '#f7f7f7',
-      'source and sink': '#f7f7f7',
+      'empty set': '#f7f7f7',
       'complex': '#d9f0d3',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1737,6 +2092,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#f7f7f7',
       'submap': '#f7f7f7',
+      //SBML
+      'gene' : '#c2a5cf',
+      'rna': '#c2a5cf',
+      'simple molecule': '#e7d4e8',
+      'unknown molecule': '#f7f7f7',
+      'phenotype sbml': '#f7f7f7',
+      'drug': '#c2a5cf',
+      'protein': '#a6dba0',
+      'truncated protein': '#a6dba0',
+      'ion channel': '#a6dba0',
+      'receptor': '#a6dba0',
+      'ion': '#e7d4e8',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#f7f7f7',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#d9f0d3',
+      'compartment': '#f7f7f7',
       // AF
       'BA plain': '#f7f7f7',
       'BA unspecified entity': '#f7f7f7',
@@ -1748,7 +2128,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#a6dba0',
-      'SIF simple chemical': '#c2a5cf'
+      'SIF simple chemical': '#c2a5cf',
     }
   },
   'opposed_grey_red': {
@@ -1761,7 +2141,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#f4a582',
       'nucleic acid feature': '#bababa',
       'perturbing agent': '#ffffff',
-      'source and sink': '#ffffff',
+      'empty set': '#ffffff',
       'complex': '#fddbc7',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1784,6 +2164,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#bababa',
+      'rna': '#bababa',
+      'simple molecule': '#e0e0e0',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#bababa',
+      'protein': '#f4a582',
+      'truncated protein': '#f4a582',
+      'ion channel': '#f4a582',
+      'receptor': '#f4a582',
+      'ion': '#e0e0e0',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#fddbc7',
+      'compartment': '#ffffff',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1795,7 +2200,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#f4a582',
-      'SIF simple chemical': '#bababa'
+      'SIF simple chemical': '#bababa',
     }
   },
   'opposed_grey_red2': {
@@ -1808,7 +2213,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#bababa',
       'nucleic acid feature': '#f4a582',
       'perturbing agent': '#ffffff',
-      'source and sink': '#ffffff',
+      'empty set': '#ffffff',
       'complex': '#e0e0e0',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1831,6 +2236,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#f4a582',
+      'rna': '#f4a582',
+      'simple molecule': '#fddbc7',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#f4a582',
+      'protein': '#bababa',
+      'truncated protein': '#bababa',
+      'ion channel': '#bababa',
+      'receptor': '#bababa',
+      'ion': '#fddbc7',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#e0e0e0',
+      'compartment': '#ffffff',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1842,7 +2272,9 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#bababa',
-      'SIF simple chemical': '#f4a582'
+      'SIF simple chemical': '#f4a582',
+      //SBML
+      'unknown molecule' : '#ffffff'
     }
   },
   'pure_white': {
@@ -1854,7 +2286,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'macromolecule': '#ffffff',
       'nucleic acid feature': '#ffffff',
       'perturbing agent': '#ffffff',
-      'source and sink': '#ffffff',
+      'empty set': '#ffffff',
       'complex': '#ffffff',
       'process': '#ffffff',
       'omitted process': '#ffffff',
@@ -1877,6 +2309,31 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'not': '#ffffff',
       'compartment': '#ffffff',
       'submap': '#ffffff',
+      //SBML
+      'gene' : '#ffffff',
+      'rna': '#ffffff',
+      'simple molecule': '#ffffff',
+      'unknown molecule': '#ffffff',
+      'phenotype sbml': '#ffffff',
+      'drug': '#ffffff',
+      'protein': '#ffffff',
+      'truncated protein': '#ffffff',
+      'ion channel': '#ffffff',
+      'receptor': '#ffffff',
+      'ion': '#ffffff',
+      'process': '#ffffff',
+      'omitted process': '#ffffff',
+      'uncertain process': '#ffffff',
+      'truncated process': '#ffffff',
+      'dissociation': '#ffffff',
+      'degradation': '#ffffff',
+      'and': '#ffffff',
+      'or': '#ffffff',
+      'not': '#ffffff',
+      'association': '#ffffff',
+      'unknown logical operator': '#ffffff',
+      'complex sbml': '#ffffff',
+      'compartment': '#ffffff',
       // AF
       'BA plain': '#ffffff',
       'BA unspecified entity': '#ffffff',
@@ -1888,7 +2345,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       'delay': '#ffffff',
       // SIF
       'SIF macromolecule': '#ffffff',
-      'SIF simple chemical': '#ffffff'
+      'SIF simple chemical': '#ffffff',
     }
   }
 };
@@ -1899,6 +2356,81 @@ for(var scheme in mapColorSchemes){
   mapColorSchemes[scheme]['values']['macromolecule multimer'] = mapColorSchemes[scheme]['values']['macromolecule'];
   mapColorSchemes[scheme]['values']['simple chemical multimer'] = mapColorSchemes[scheme]['values']['simple chemical'];
   mapColorSchemes[scheme]['values']['complex multimer'] = mapColorSchemes[scheme]['values']['complex'];
+
+  //For SBML
+  //Multimer
+  mapColorSchemes[scheme]['values']['gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['drug multimer'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['ion multimer'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
+  //Active
+  mapColorSchemes[scheme]['values']['active protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active ion channel'] = mapColorSchemes[scheme]['values']['active ion channel'];
+  mapColorSchemes[scheme]['values']['active receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
+  //Active and mutimer
+  mapColorSchemes[scheme]['values']['active protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active ion channel multimer'] = mapColorSchemes[scheme]['values']['active ion channel'];
+  mapColorSchemes[scheme]['values']['active receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Hypothetical
+  mapColorSchemes[scheme]['values']['hypothetical gene'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['hypothetical rna'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical simple molecule'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical unkown molecule'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical phenotype sbml'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['hypothetical drug'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['hypothetical protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['hypothetical truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['hypothetical ion channel'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['hypothetical receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['hypothetical ion'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['hypothetical complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Hypothetical and Multimer 
+  mapColorSchemes[scheme]['values']['hypothetical gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
+  mapColorSchemes[scheme]['values']['hypothetical rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
+  mapColorSchemes[scheme]['values']['hypothetical phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
+  mapColorSchemes[scheme]['values']['hypothetical drug multimer'] = mapColorSchemes[scheme]['values']['drug'];
+  mapColorSchemes[scheme]['values']['hypothetical protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['hypothetical truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['hypothetical ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['hypothetical receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['hypothetical ion multimer'] = mapColorSchemes[scheme]['values']['ion'];
+  mapColorSchemes[scheme]['values']['hypothetical complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Active and Hypothetical
+  mapColorSchemes[scheme]['values']['active hypothetical protein'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical truncated protein'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical ion channel'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['active hypothetical receptor'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active hypothetical complex sbml'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+  //Active, Hypothetical, and Multimer 
+  mapColorSchemes[scheme]['values']['active hypothetical protein multimer'] = mapColorSchemes[scheme]['values']['protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical truncated protein multimer'] = mapColorSchemes[scheme]['values']['truncated protein'];
+  mapColorSchemes[scheme]['values']['active hypothetical ion channel multimer'] = mapColorSchemes[scheme]['values']['ion channel'];
+  mapColorSchemes[scheme]['values']['active hypothetical receptor multimer'] = mapColorSchemes[scheme]['values']['receptor'];
+  mapColorSchemes[scheme]['values']['active hypothetical complex sbml multimer'] = mapColorSchemes[scheme]['values']['complex sbml'];
+
+
 }
 
 // go through eles, mapping the id of these elements to values that were mapped to their data().class
@@ -1958,36 +2490,51 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
   var cy = _cy || appUtilities.getActiveCy();
   var eles = cy.nodes();
 
-  if(scheme_type == 'solid'){
+  var mapIdToValue = function(eles, value){
+    result = {};
+    for( var i = 0; i < eles.length; i++ ){
+      ele = eles[i];
+      result[ele.id()] = value;
+    }
+    return result;
+  };
 
+  if(scheme_type == 'solid'){
     var idMap = appUtilities.mapEleClassToId(eles, mapColorSchemes[newColorScheme]['values']);
     var collapsedChildren = cy.expandCollapse('get').getAllCollapsedChildrenRecursively().filter("node");
     var collapsedIdMap = appUtilities.mapEleClassToId(collapsedChildren, mapColorSchemes[newColorScheme]['values']);
     var chiseInstance = appUtilities.getActiveChiseInstance();
 
-    var clearBgImg = function(eles){
-      result = {};
-      for( var i = 0; i < eles.length; i++ ){
-        ele = eles[i];
-        result[ele.id()] = '';
-      }
-      return result;
-    };
-
     var actions = [];
 
     // first clear the background images of already present elements
-    actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: clearBgImg(eles)}});
-    // edit style of the current map elements
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-fit', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-x', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-position-y', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-width', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-height', valueMap: mapIdToValue(eles, '')}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image-opacity', valueMap: mapIdToValue(eles, '')}});
+
+    // edit style of the current map elements, in solid scheme just change background-color
     actions.push({name: "changeData", param: {eles: eles, name: 'background-color', valueMap: idMap}});
-    // first clear the background images of already present collapsed elements
-    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: clearBgImg(collapsedChildren)}});   
+    
     // collapsed nodes' style should also be changed, special edge case
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedIdMap}});
+
     // if background-image isn't deleted from css, it is shown as soon as the node is expanded until the end of animation
     actions.push({name: "changeCss", param: {eles: collapsedChildren, name: 'background-image', valueMap: ""}});     
 
     actions.push({name: "refreshColorSchemeMenu", param: {value: newColorScheme, self: self, scheme_type: scheme_type}});
+
+    // first clear the background images of already present collapsed elements
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-fit', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-x', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapIdToValue(collapsedChildren, '')}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image-opacity', valueMap: mapIdToValue(collapsedChildren, '')}});
 
     // set to be the default as well
     for(var nodeClass in mapColorSchemes[newColorScheme]['values']){
@@ -2000,7 +2547,8 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-position-y', value: ''}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: ''}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-width', value: ''}});
-        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-height', value:''}});         
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-height', value:''}});
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image-opacity', value:''}});         
       }
     }
 
@@ -2046,6 +2594,7 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
     actions.push({name: "changeData", param: {eles: eles, name: 'background-position-y', valueMap: mapPercentToPosition(eles, 50)}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-width', valueMap: mapPercentToPosition(eles, 100)}});
     actions.push({name: "changeData", param: {eles: eles, name: 'background-height', valueMap: mapPercentToPosition(eles, 100)}});
+    actions.push({name: "changeData", param: {eles: eles, name: 'background-image-opacity', valueMap: mapIdToValue(eles, '1')}});
 
     // collapsed nodes' style should also be changed, special edge case
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-color', valueMap: collapsedColorIDMap}});
@@ -2055,6 +2604,7 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-position-y', valueMap: mapPercentToPosition(collapsedChildren, 50)}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-width', valueMap: mapPercentToPosition(collapsedChildren, 100)}});
     actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-height', valueMap: mapPercentToPosition(collapsedChildren, 100)}});
+    actions.push({name: "changeDataDirty", param: {eles: collapsedChildren, name: 'background-image-opacity', valueMap: mapIdToValue(eles, '1')}});
     // if background-image isn't brought back into css, it isn't shown as soon as the node is expanded until the end of animation
     // the reason of for loop is that changeCss function cannot find collapsed nodes if valueMap is an object, but it works if it is a string   
     for(var i = 0; i < collapsedChildren.length; i++){
@@ -2076,8 +2626,7 @@ appUtilities.getActionsToApplyMapColorScheme = function(newColorScheme, scheme_t
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image', value: classBgImg}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-width', value: '100%'}});
         actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-height', value:'100%'}});
-
-
+        actions.push({name: "setDefaultProperty", param: {class: nodeClass, name: 'background-image-opacity', value: '1'}});
       }
     }
   }
@@ -2138,7 +2687,6 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
 
   var nodePropertiesToXml = {
     'background-color': 'fill',
-    'background-opacity': 'background-opacity', // not an sbgnml XML attribute, but used with fill
     'border-color': 'stroke',
     'border-width': 'strokeWidth',
     'font-size': 'fontSize',
@@ -2202,7 +2750,8 @@ appUtilities.getAllStyles = function (_cy, _nodes, _edges) {
     getFcn = _getFcn || getElementData;
     var props = {};
     for(var cssProp in properties){
-      if (getFcn(member, cssProp)) {
+      if (getFcn(member, cssProp) !== undefined ||
+          getFcn(member, cssProp) !== null) {
         //if it is a color property, replace it with corresponding id
         if (cssProp == 'background-color' || cssProp == 'border-color' || cssProp == 'line-color') {
           var validColor = appUtilities.getValidColor(member, cssProp, getFcn);
@@ -2430,16 +2979,11 @@ appUtilities.setMapProperties = function(mapProperties, _chiseInstance) {
       var highlightColor = currentGeneralProperties.highlightColor[0];
       var extraHighlightThickness = currentGeneralProperties.extraHighlightThickness;
 
-      viewUtilities.changeHighlightStyle(0, {
-        'border-width': function (ele) {
-          return Math.max(parseFloat(ele.data('border-width')) + extraHighlightThickness, 3);
-        }, 'border-color': highlightColor
-      }, {
-        'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + extraHighlightThickness, 3); },
-        'line-color': highlightColor,
-        'source-arrow-color': highlightColor,
-        'target-arrow-color': highlightColor
-    });
+      viewUtilities.changeHighlightStyle(
+        0,
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
+      );
     }
     
 
@@ -2487,6 +3031,10 @@ appUtilities.filterMapProperties = function(obj) {
 
   return mapProps;
 };
+appUtilities.filterMapTypeProperty = function(obj)
+{
+    return obj.sbmlMap;
+}
 
 appUtilities.launchWithModelFile = function() {
 
@@ -2516,9 +3064,9 @@ appUtilities.launchWithModelFile = function() {
   else
     tutorial.introduction(true);
 
-  function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
+   function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
-    chiseInstance.startSpinner('paths-byURL-spinner')
+   chiseInstance.startSpinner('paths-byURL-spinner');
 
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -2560,7 +3108,7 @@ appUtilities.launchWithModelFile = function() {
     else
       fileExtension = 'txt';
 
-    $.ajax({
+     $.ajax({
       type: 'get',
       url: "/utilities/testURL",
       data: {url: filepath},
@@ -2572,18 +3120,39 @@ appUtilities.launchWithModelFile = function() {
         {
           chiseInstance.showSpinnerText('paths-byURL-spinner')
         }
-        
+
         if (!data.error && data.response.statusCode == 200 && data.response.body) {
           $(document).trigger('sbgnvizLoadFromURL', [filename, cyInstance]);
-          var fileToLoad = new File([data.response.body], filename, {
+          const fileContents = data.response.body;
+          const file = new File([fileContents], filename, {
             type: 'text/' + fileExtension,
             lastModified: Date.now()
           });
 
+          const xmlObject = chiseInstance.textToXmlObject(fileContents);
+          
+          if (fileExtension === "sif") {
+            var loadFcn =  function() {
+              var layoutBy =  function() {
+                appUtilities.triggerLayout(cyInstance, true);
+              };
+               chiseInstance.loadSIFFile(file, layoutBy, loadCallbackInvalidityWarning);
+             chiseInstance.endSpinner("paths-byURL-spinner");
+
+            };
+            if (cyInstance.elements().length != 0)
+            {
+               promptConfirmationView.render( loadFcn );
+              chiseInstance.endSpinner("paths-byURL-spinner");
+            }
+            else
+               loadFcn();
+              chiseInstance.endSpinner("paths-byURL-spinner");
+              
+          }
           if (fileExtension === "gpml") {
-            chiseInstance.loadGpml(fileToLoad, success =  async function (data) {
-              var cy = appUtilities.getActiveCy();
-              if (cy.elements().length !== 0) {
+            chiseInstance.loadGpml(file, success =  async function (data) {
+              if (cyInstance.elements().length !== 0) {
                 promptConfirmationView.render( function () {
                   chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
                   chiseInstance.endSpinner('paths-byURL-spinner');
@@ -2596,43 +3165,86 @@ appUtilities.launchWithModelFile = function() {
                 chiseInstance.endSpinner("paths-byURL-spinner");
               }
             });
-          } 
-          else if (fileExtension === "xml" || fileExtension === "xml#" 
-              || fileExtension === "sbml" || fileExtension === "sbml#") {
+          }          
+          else if (fileExtension === "xml" || fileExtension === "sbml") {
+            // CD file
+            var loadFcn =  function() {
+              var layoutBy =  function() {
+                appUtilities.triggerLayout(cyInstance, true);
+            }; };
+            var layoutBy =  function() {
+              appUtilities.triggerLayout(cyInstance, true);
+          };
+            if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
+              await chiseInstance.loadCellDesigner(file, success = async function (data) {
+                if (cyInstance.elements().length !== 0) {
+                 await  promptConfirmationView.render(async function () {
+                   await  chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                  });
+                  chiseInstance.endSpinner("paths-byURL-spinner");
+                }
+                else {
+                 await chiseInstance.loadSBGNMLText(data, false, filename, cy, paramObj);
+                 loadFcn();
+                 chiseInstance.endSpinner("paths-byURL-spinner");
+                }
+              });
+              
+            }
+            else {
+              var sbmlProperty= appUtilities.getScratch(appUtilities.getActiveCy(), "sbmlProperty")
+              var sbgnOrSbml = sbmlProperty.sbmlMap; //True for sbml, false or undefined for sbgn
 
-            await chiseInstance.loadSbml(fileToLoad,  success = async function(data){
-              var cy = appUtilities.getActiveCy();
-              if (cy.elements().length !== 0) {
-                await promptConfirmationView.render(async function () {
-                  await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                  chiseInstance.endSpinner('paths-byURL-spinner');
+              // sbml file
+              if(sbgnOrSbml)
+              {
+                await chiseInstance.loadSbmlForSBML(file,  success =  async function (data){
+                  if (cyInstance.elements().length !== 0) {
+                     await promptConfirmationView.render(async function () {
+                        await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj, layoutBy);
+              
+                    });
+                    chiseInstance.endSpinner("paths-byURL-spinner");
+                  }
+                  else {
+                    await chiseInstance.loadSBMLText(data.message, false, filename, cy, paramObj, layoutBy);
+                    chiseInstance.endSpinner("paths-byURL-spinner");
+                  }
                 });
               }
-              else {
-                await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
-                chiseInstance.endSpinner('paths-byURL-spinner');
-
+              else
+              {
+                await chiseInstance.loadSbml(file,  success = async function (data){
+                  if (cyInstance.elements().length !== 0) {
+                    await promptConfirmationView.render(async function () {
+                      await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                    });
+                    chiseInstance.endSpinner('paths-byURL-spinner');
+                  }
+                  else {
+                   await chiseInstance.loadSBGNMLText(data.message, false, filename, cy, paramObj);
+                   chiseInstance.endSpinner('paths-byURL-spinner');
+                  }
+                });
               }
-            });
+              
+            }
           }
           else {
-            chiseInstance.loadNwtFile(fileToLoad, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
-            chiseInstance.endSpinner('paths-byURL-spinner');
+           await  chiseInstance.loadNwtFile(file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj);
+           chiseInstance.endSpinner("paths-byURL-spinner");
           }
         }
         else {
-          loadCallbackInvalidityWarning();
-          chiseInstance.endSpinner('paths-byURL-spinner')
-
-        }
+          await loadCallbackInvalidityWarning();
+          chiseInstance.endSpinner("paths-byURL-spinner");
+        } 
       },
       error: function(xhr, options, err){
         loadCallbackInvalidityWarning();
-        chiseInstance.endSpinner('paths-byURL-spinner')
-
+        chiseInstance.endSpinner("paths-byURL-spinner");
       }
     });
-
   }
 
   function loadFromURI(uri, chiseInstance, promptInvalidURIWarning){
@@ -3033,6 +3645,16 @@ appUtilities.getDefaultEmptyInfoboxObj = function( type ) {
         variable: ""
       };
       break;
+    case 'residue variable':
+      obj.residue = {
+        variable: ""
+      };
+      break;
+    case 'binding region':
+      obj.region = {
+        variable: ""
+      };
+      break;
   }
 
   return obj;
@@ -3089,18 +3711,17 @@ appUtilities.resizeNodesToContent = function(nodes){
     collection = collection.difference(":parent,[class*='compartment'],[class*='submap']");
   }
   chiseInstance.resizeNodesToContent(collection, false);
-  cy.nodeResize('get').refreshGrapples();
+  cy.nodeEditing('get').refreshGrapples();
   cy.expandCollapse('get').clearVisualCue();
   // To redraw expand/collapse cue after resize to content
   if(collection.length == 1 && (collection[0].isParent() || collection[0].data('collapsedChildren')) && collection[0].selected()) { 
     cy.$(':selected').trigger('select'); 
   };
-
 };
 
 appUtilities.transformClassInfo = function( classInfo ) {
-  var res = classInfo.replace(' multimer', '');
-  if (res == 'and' || res == 'or' || res == 'not') {
+  var res = classInfo.replace(' multimer', '').replace('active ', '').replace('hypthetical ', '');
+  if (res == 'and' || res == 'or' || res == 'not' || res == 'rna') {
     res = res.toUpperCase();
   }
   else {
@@ -3146,5 +3767,104 @@ appUtilities.transformClassInfo = function( classInfo ) {
 // appUtilities.hideExperiments = function(){
 //   console.log("inapputil");
 // }
+
+// unselect all elements and then select all elements with
+// sbgn class matching the given element
+appUtilities.selectAllElementsOfSameType = function(ele) {
+  var cy = appUtilities.getActiveCy();
+  var sbgnclass = ele.data('class');
+  cy.elements().unselect();
+  cy.elements('[class="' + sbgnclass + '"]').select();
+};
+
+appUtilities.removeDisconnectedNodesAfterQuery = function( querySeedGenes ){
+  var isAggregateNode = function (node) {
+    return node.data("class") == "compartment" || node.data("class") == "submap" 
+    || node.data("class") == "complex";
+  }
+
+  var lowerCaseQuerySeedGenes = querySeedGenes.map( (gene) => {
+    return gene.toLowerCase();
+  });
+
+  var cy = appUtilities.getActiveCy();
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+  var nodesToDelete = cy.collection();
+  cy.nodes().forEach( (node, idx) => {
+    if(!isAggregateNode(node) && node.parent().length == 0 && node.connectedEdges().length == 0){
+      nodesToDelete.merge(node);
+    }
+
+    if(isAggregateNode(node) && node.children().connectedEdges().length != 0){
+      node.children().forEach( (node, idx) => {
+        if(node.connectedEdges().length == 0 && !isAggregateNode(node)){
+          var querySeedNode = false;
+          if(node.data("label")){
+            var lowerCaseNodeLabel = node.data("label").toLowerCase();
+            lowerCaseQuerySeedGenes.forEach( (gene) => {
+              if(lowerCaseNodeLabel.indexOf(gene) >= 0){
+                querySeedNode = true;
+              }
+            });
+          }
+          if(!querySeedNode)
+            nodesToDelete.merge(node);
+        }
+      })
+    }
+  });
+  chiseInstance.deleteElesSimple(nodesToDelete);
+}
+
+appUtilities.removeDuplicateProcessesAfterQuery = function() {
+  var cy = appUtilities.getActiveCy();
+  var chiseInstance = appUtilities.getActiveChiseInstance();
+
+  var appendFullNodeInformation = function (node, neighborhoodDescriptorString) {
+    while(node.length != 0){
+      node.forEach( (node_) => {
+        neighborhoodDescriptorString += (node_.data("label") || node_.data("class"));
+      });
+      node = node.parent();
+    }
+    return neighborhoodDescriptorString;
+  }
+
+  var processes = cy.filter('node[class="process"],[class="omitted process"],[class="uncertain process"],[class="association"],[class="dissociation"]');
+  let processMap = new Map();
+  var deletion = cy.collection();
+  processes.forEach( (process) => {
+    let collectionArray = [];
+    let neighborhoodDescriptorString = "";
+    var edges = process.connectedEdges();
+    edges.forEach( (edge) => {
+      var node = edge.connectedNodes().difference(process);
+      collectionArray.push(node.union(edge));
+    })
+    collectionArray.sort( (first, second) => {
+      var firstNodeLabel = first.filter("node").data("label") || first.filter("node").data("class");
+      var secondNodeLabel = second.filter("node").data("label") || second.filter("node").data("class");
+      var compare = firstNodeLabel.localeCompare(secondNodeLabel);
+      if(compare != 0)
+        return compare;
+      var firstEdgeClass = first.filter("edge").data("label") || first.filter("edge").data("class");
+      var secondEdgeClass = second.filter("edge").data("label") || second.filter("edge").data("class");
+      return firstEdgeClass.localeCompare(secondEdgeClass);
+    });
+
+    collectionArray.forEach( (item) => {
+      neighborhoodDescriptorString = appendFullNodeInformation(item.filter("node"), neighborhoodDescriptorString);
+      neighborhoodDescriptorString += (item.filter("edge").data("label") || item.filter("edge").data("class"));
+    })
+    neighborhoodDescriptorString = appendFullNodeInformation(process, neighborhoodDescriptorString);
+    if(processMap.has(neighborhoodDescriptorString)){
+      deletion.merge(process);
+    }
+    else{
+      processMap.set(neighborhoodDescriptorString, true);
+    }
+  });
+  chiseInstance.deleteElesSimple(deletion);
+}
 
 module.exports = appUtilities;

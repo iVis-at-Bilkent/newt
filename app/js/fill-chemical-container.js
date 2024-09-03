@@ -3,7 +3,7 @@ var _ = require('underscore');
 var ChemicalView = require('./backbone-views').ChemicalView;
 
 
-var fillChemicalContainer = function (node) {
+var fillChemicalContainer = function (node, dataFetchSuccessCallback) {
   var geneClass = node.data('class');
   if (geneClass != 'simple chemical' && geneClass != 'BA simple chemical' && geneClass != 'SIF simple chemical') {
     $("#chemical-container").html("");
@@ -40,7 +40,11 @@ var fillChemicalContainer = function (node) {
             el: '#chemical-container',
             model: json.response.docs[0]
           }).render();
-        }  
+        }
+        else {
+          $('#chemical-container').html("<span style='padding-left: 3px;'>No information found!</span>");
+        }
+        dataFetchSuccessCallback();
       }
       else {
         $('#chemical-container').html("<span style='padding-left: 3px;'>No additional information available for the selected node!</span>");

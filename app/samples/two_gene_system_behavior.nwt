@@ -44,7 +44,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -70,7 +71,7 @@ doi:10.1038/nrg3885</mapDescription>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>8</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_246183a2-3d61-4bf1-9aea-a2ab19237362" class="macromolecule">
       <label text="A"/>
@@ -78,7 +79,7 @@ doi:10.1038/nrg3885</mapDescription>
     </glyph>
     <glyph id="nwtN_8c3bec67-a333-4934-9f45-175c1e650840" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>38.25</w>
           <h>77.25</h>
           <minW>0</minW>
@@ -87,7 +88,7 @@ doi:10.1038/nrg3885</mapDescription>
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <bbox x="394.78125" y="68.375" w="48.25" h="87.25"/>
       <glyph id="1ce37109-f4a2-0b67-da7a-cf53bb22059b" class="macromolecule">
@@ -190,7 +191,7 @@ doi:10.1038/nrg3885</mapDescription>
     </glyph>
     <glyph id="nwtN_d95d79cb-8926-44a3-b13e-70b43b32194b" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>53.25</w>
           <h>77.17887875145925</h>
           <minW>0</minW>
@@ -199,7 +200,7 @@ doi:10.1038/nrg3885</mapDescription>
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <bbox x="612.8860704974941" y="419.7826009141587" w="63.25" h="87.17887875145925"/>
       <glyph id="2f458c4e-8d74-6a06-98b5-9ecc9aea20dd" class="macromolecule">

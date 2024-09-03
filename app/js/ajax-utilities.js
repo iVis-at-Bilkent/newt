@@ -121,8 +121,8 @@ exports.sendEmail = function(req, res){
 		secure: true,
 		auth: {
 			// should be replaced with real sender's account
-			user: ' newtforminerva@gmail.com',
-			pass: 'reportbug'
+			user: 'newtforminerva@gmail.com',
+			pass: process.env.newtforminerva_pwd
 		}
 	});
 	var attachment = fileContent == "no-data" ? false : true;

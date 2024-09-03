@@ -1,9 +1,9 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="process description">
     <extension>
       <renderInformation 
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
         <listOfColorDefinitions>
           <colorDefinition id="color_1" value="#ffffff7f"/>
           <colorDefinition id="color_2" value="#838383"/>
@@ -19,39 +19,40 @@
           <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/pg5_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff0.58383833.2514normalnormalHelvetica000image_1none5050100100" id-list="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061 nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff8383833.2514normalnormalHelvetica000image_1none505010010010.5" idList="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061 nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="nodeffffff15555551.25image_2none5050100100" id-list="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d 93e171d7-e846-2f4e-b4af-cafdabb596dd f5f91ced-d47f-07e1-03f4-9307020437ef d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7 nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1 46137b33-99be-2b1f-5a29-f38f55849a0b 8754c6a2-755b-fb0b-5a6e-5d1edef0779a nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853 nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd nwtN_11b88917-a429-4c8c-9ada-61c11265afb5 nwtN_713def92-298d-4eb9-bf64-35bfc38a4646 nwtN_e742f544-55df-4fda-a7ee-65473425b2b5 nwtN_849e3e0b-8781-4669-96a8-afdefe522e39 a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6 nwtN_d1318ca0-09f5-48ed-b69c-708c67199f22 6507b78f-2da9-659a-4d3f-d78d84be17ed 75a1827c-53c6-de67-431d-57c59d4c7d36">
-            <g stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.25image_2none505010010011" idList="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d 93e171d7-e846-2f4e-b4af-cafdabb596dd f5f91ced-d47f-07e1-03f4-9307020437ef d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7 nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1 46137b33-99be-2b1f-5a29-f38f55849a0b 8754c6a2-755b-fb0b-5a6e-5d1edef0779a nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853 nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd nwtN_11b88917-a429-4c8c-9ada-61c11265afb5 nwtN_713def92-298d-4eb9-bf64-35bfc38a4646 nwtN_e742f544-55df-4fda-a7ee-65473425b2b5 nwtN_849e3e0b-8781-4669-96a8-afdefe522e39 a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6 nwtN_d1318ca0-09f5-48ed-b69c-708c67199f22 6507b78f-2da9-659a-4d3f-d78d84be17ed 75a1827c-53c6-de67-431d-57c59d4c7d36">
+            <g stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff0.55555551.2511normalnormalHelvetica000image_3none5050100100" id-list="275a0119-f0d3-237f-170f-c94f9eca909c c3a94e68-cca7-3c6a-f546-33c23dc59923 nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b 89360553-bab4-532a-c6c7-624272c4e43b">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_3none505010010010.5" idList="275a0119-f0d3-237f-170f-c94f9eca909c c3a94e68-cca7-3c6a-f546-33c23dc59923 nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b 89360553-bab4-532a-c6c7-624272c4e43b">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="infobox0000000000002.259normalnormalArialffffffstadium" id-list="275a0119-f0d3-237f-170f-c94f9eca909c_0 3c0facc5-d4bd-978e-8979-1acd172d2df7_0 c3a94e68-cca7-3c6a-f546-33c23dc59923_0 7813a623-ae26-a5e1-d4e2-e2eb1d2c14d7_0 6f6a1c77-176d-7188-cdd5-048d3908a8b1_0 7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8_0 35a3e0be-6e00-7a99-fca5-18ed65c2fac1_0 bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34_0 nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b_0 nwtN_b3291b0d-d11b-4033-a450-829f9b8938df_0 89360553-bab4-532a-c6c7-624272c4e43b_0 0c291302-4021-844a-0dd2-97d76ee79ad1_0 nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427_0 a2ee1683-eb5f-030d-3bbe-46c0a02cb659_0 6cde7a25-b41a-b8cb-d3d3-188533472dae_0 2f567801-fc2c-e128-f352-1dfab2f0dbce_0">
+          <style id="infobox0000000000002.259normalnormalArialffffffstadium" idList="275a0119-f0d3-237f-170f-c94f9eca909c_0 3c0facc5-d4bd-978e-8979-1acd172d2df7_0 c3a94e68-cca7-3c6a-f546-33c23dc59923_0 7813a623-ae26-a5e1-d4e2-e2eb1d2c14d7_0 6f6a1c77-176d-7188-cdd5-048d3908a8b1_0 7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8_0 35a3e0be-6e00-7a99-fca5-18ed65c2fac1_0 bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34_0 nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b_0 nwtN_b3291b0d-d11b-4033-a450-829f9b8938df_0 89360553-bab4-532a-c6c7-624272c4e43b_0 0c291302-4021-844a-0dd2-97d76ee79ad1_0 nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427_0 a2ee1683-eb5f-030d-3bbe-46c0a02cb659_0 6cde7a25-b41a-b8cb-d3d3-188533472dae_0 2f567801-fc2c-e128-f352-1dfab2f0dbce_0">
             <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#ffffff" stroke="color_5" stroke-width="2.25" fill="color_5"/>
           </style>
-          <style id="nodeffffff15555551.2518normalnormalHelvetica000image_4none5050100100" id-list="3c0facc5-d4bd-978e-8979-1acd172d2df7 e14c954e-35bf-aac6-f491-0d6ff80daf50 7813a623-ae26-a5e1-d4e2-e2eb1d2c14d7 1e1a9dc6-32ae-464a-9912-68fc274f8fb4 6f6a1c77-176d-7188-cdd5-048d3908a8b1 7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8 35a3e0be-6e00-7a99-fca5-18ed65c2fac1 bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34 nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4 ef95a67b-f3d9-df94-1349-9b4d376fc42d 191857cc-7088-9f59-19c8-ad00bcf44b5e f0a6c8f2-8384-fb32-c934-e51c7aa67e25 nwtN_b3291b0d-d11b-4033-a450-829f9b8938df nwtN_18804d22-aef8-454f-9fc6-a10bdf708c5e 0c291302-4021-844a-0dd2-97d76ee79ad1 7c5c9a6d-976b-72b0-0c28-422b3279aeba nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427 a2ee1683-eb5f-030d-3bbe-46c0a02cb659 6cde7a25-b41a-b8cb-d3d3-188533472dae 2f567801-fc2c-e128-f352-1dfab2f0dbce">
-            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2518normalnormalHelvetica000image_4none505010010011" idList="3c0facc5-d4bd-978e-8979-1acd172d2df7 e14c954e-35bf-aac6-f491-0d6ff80daf50 7813a623-ae26-a5e1-d4e2-e2eb1d2c14d7 1e1a9dc6-32ae-464a-9912-68fc274f8fb4 6f6a1c77-176d-7188-cdd5-048d3908a8b1 7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8 35a3e0be-6e00-7a99-fca5-18ed65c2fac1 bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34 nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4 ef95a67b-f3d9-df94-1349-9b4d376fc42d 191857cc-7088-9f59-19c8-ad00bcf44b5e f0a6c8f2-8384-fb32-c934-e51c7aa67e25 nwtN_b3291b0d-d11b-4033-a450-829f9b8938df nwtN_18804d22-aef8-454f-9fc6-a10bdf708c5e 0c291302-4021-844a-0dd2-97d76ee79ad1 7c5c9a6d-976b-72b0-0c28-422b3279aeba nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427 a2ee1683-eb5f-030d-3bbe-46c0a02cb659 6cde7a25-b41a-b8cb-d3d3-188533472dae 2f567801-fc2c-e128-f352-1dfab2f0dbce">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="8c6d3816-85c1-358b-5893-20995009088c 0088e5e3-506d-b360-cc23-6ca191128211 nwtN_18ca18bf-e112-4b17-acba-35e845505d26 nwtN_617312c5-bae0-423e-a711-c6adfee4193b nwtN_0949a2cf-db5f-461a-b93f-51a21cdf1543 682cd847-d9d2-5765-6915-b974cb1d689e 1074afdd-de13-ce0b-eeef-ae71e8825227 nwtN_e973c31b-714f-47be-a2c2-e8e46b4d8ebf nwtN_5ca63978-630b-4d73-88af-444ec25db7ee c4d84cac-2f3e-7664-aa93-466d49c71abe nwtN_ba8bccaa-725c-41f9-9059-9f05f4bd9116 8aa9f4cb-fe26-03ac-1ef5-62dca5582e83 nwtN_d1ef3518-d5d3-4d84-8712-acdbaf52d01a e342a729-472c-3bbf-78da-d20caa7b1c03 53844cf9-beeb-858b-2abb-0d2d0cd2fbde">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_1none505010010011" idList="8c6d3816-85c1-358b-5893-20995009088c 0088e5e3-506d-b360-cc23-6ca191128211 nwtN_18ca18bf-e112-4b17-acba-35e845505d26 nwtN_617312c5-bae0-423e-a711-c6adfee4193b nwtN_0949a2cf-db5f-461a-b93f-51a21cdf1543 682cd847-d9d2-5765-6915-b974cb1d689e 1074afdd-de13-ce0b-eeef-ae71e8825227 nwtN_e973c31b-714f-47be-a2c2-e8e46b4d8ebf nwtN_5ca63978-630b-4d73-88af-444ec25db7ee c4d84cac-2f3e-7664-aa93-466d49c71abe nwtN_ba8bccaa-725c-41f9-9059-9f05f4bd9116 8aa9f4cb-fe26-03ac-1ef5-62dca5582e83 nwtN_d1ef3518-d5d3-4d84-8712-acdbaf52d01a e342a729-472c-3bbf-78da-d20caa7b1c03 53844cf9-beeb-858b-2abb-0d2d0cd2fbde">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff10000001.25image_2none5050100100" id-list="9615ba87-e042-ef50-d78e-1ef00df34a6e 2785fbb1-18d0-0b2f-dcf2-968acc6869c0 nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9 a8404458-8ee5-6465-5d2e-4be53abad9f9 nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8 473098ac-d338-8883-260a-cde1a50bf3fd nwtN_de28e025-a62b-4338-bd24-bff2474e60e7 d5e9e70d-041e-e472-0470-6f7bf4af14a8 nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14 4f47fd0c-d946-52ae-8192-41a7580a3bee">
-            <g stroke="color_5" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff0000001.25image_2none505010010011" idList="9615ba87-e042-ef50-d78e-1ef00df34a6e 2785fbb1-18d0-0b2f-dcf2-968acc6869c0 nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9 a8404458-8ee5-6465-5d2e-4be53abad9f9 nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8 473098ac-d338-8883-260a-cde1a50bf3fd nwtN_de28e025-a62b-4338-bd24-bff2474e60e7 d5e9e70d-041e-e472-0470-6f7bf4af14a8 nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14 4f47fd0c-d946-52ae-8192-41a7580a3bee">
+            <g stroke="color_5" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="edge5555551.25" id-list="nwtE_a53e31a0-4482-4560-9c3c-1405b6991d53 nwtE_e34cd886-a09e-4030-a0af-3408071358ab nwtE_e74a9d83-ccc4-4374-aa33-e8b756168ec7 nwtE_e4759cc0-9ef5-496b-8d33-2e467e75ac37 nwtE_a6c7482b-cdfa-4a63-9188-04c99ce24814 nwtE_2f4ddf7d-a1f0-47ad-8459-e5fa07578349 nwtE_0bd4e7b7-8935-4d7d-a7d9-a692cd661309 nwtE_2ed03d75-60e5-426d-8b51-58a9b654d6b5 nwtE_9a58509d-82ab-4ba0-9299-e0e6f5c66d1c nwtE_b4fce6cd-64b3-4702-9985-a27a9e8ac6cf nwtE_be32a14b-e623-465a-8dc2-92f9241f32dd nwtE_bcf805de-7c8e-443d-8982-977ec5a34365 nwtE_98183863-8822-4e5b-b625-59eaac7ba2f6 78bc762a-ed52-ebd9-0d69-aae9fdb4dbe1 a53b322d-169a-060f-b99e-1307e250bba0 01f749e5-e086-f4ff-f940-104f44f2090f 1b112018-c21f-382b-a5ef-a9ab0248f977 1a297287-9016-c06f-06b0-4bef3e2a4504 8efed2fc-1ba9-c12e-7f12-37512a4aa7ce f1a8ab16-35b1-2c1a-f127-1c3977948ff1 2c9b0dc2-d5bd-f6aa-22e6-f93fde1a35ff nwtE_a0841956-cd32-4e49-b271-a728422d10c7 nwtE_c876aef9-1cf7-461f-9757-cc3be3b5be68 nwtE_0db10ab4-c4d4-4e8d-9f07-6a0e95933885 nwtE_a567dc9c-c17b-4e41-89ad-947bed2f4fd3 01a1302c-8279-8a9d-3025-b640251301f6 35db2b35-7414-81f4-77de-567e66e3e58c cc9b0b19-5606-60a6-4325-45883e217e2f 9711fea3-2f48-6cbb-b419-9d7f84a6affd nwtE_179d0539-ee15-4061-912e-f422f2c2f8c0 nwtE_2847db85-2620-43ed-bc12-7eee07fb773d nwtE_bd3e280f-efff-4d5b-868c-d834b3d6cad4 nwtE_a8832f81-1169-4768-87f4-390a771f7fff nwtE_4b37b92d-3b8f-4aa1-9e1b-ea807137d5c9 nwtE_34b23376-b68c-4b93-9c19-53c7db6d0a10 nwtE_ce773c31-e4bd-49f6-9a72-767325f352e5 nwtE_b94511dd-6491-420a-bb8d-00fd51581709 01d0ef5c-f125-fc76-0c19-4a9c3da54af7 cdfcf100-e9a4-79a0-37f2-69dda6605894 1246a081-6945-6222-7e90-838cb9ee950f 3df58c72-357d-e788-fc7a-8e68731deb13 7e62d9bc-21f2-bd26-2540-40093f96f9cd 9b10afab-1b07-6bbf-3fa9-b757ad011ca6 f5c88b0d-d0f6-110a-6964-35337c5b66a9 0017dd1d-a2d2-0bd9-83f5-ab16e0091265 b88e5a04-bd6f-2617-8c80-8bb7aeaf724b 6fef712d-7dea-cee6-b4ce-9562a1c12f23 nwtE_6b731a56-0e87-49ea-8425-136bf3b6b18f nwtE_00484b84-815f-4ecb-b309-b3fe9c02b2b1 nwtE_7efe9b39-029e-4835-9053-e6649d204c4e nwtE_fa8ae924-5864-4e7a-95f1-12d34731b3c5 nwtE_6ae825c1-a694-4326-9f5e-36e516db36f0 nwtE_504460b2-e330-418b-9670-88ae673001fb nwtE_582a7ed6-d04d-4ceb-8c43-2f104ae5a388 nwtE_85d06a5e-fd70-4ff6-99d8-ae053b4d75ea nwtE_e4dd077c-7119-43bc-b30e-cba7cfff5650 nwtE_39d53707-9184-4fd3-9fad-d34825233ce3 nwtE_237d36ef-b0b6-4936-8d5f-ac504d11377b nwtE_3da29b88-54fb-4189-aa75-4e08fadda679 nwtE_a4ec4de6-fc5e-40a6-ba15-4a0a7de659ed nwtE_c4bcae59-b5b2-4a06-b460-58f246ea7d04 nwtE_12d04c16-582c-4af8-b041-9d3e4b4e7f13 nwtE_1d403db9-df50-4772-8bcd-fb82848a7a22 nwtE_5bf9acd1-d78e-4377-8d03-009ca62d709b">
+          <style id="edge5555551.25" idList="nwtE_a53e31a0-4482-4560-9c3c-1405b6991d53 nwtE_e34cd886-a09e-4030-a0af-3408071358ab nwtE_e74a9d83-ccc4-4374-aa33-e8b756168ec7 nwtE_e4759cc0-9ef5-496b-8d33-2e467e75ac37 nwtE_a6c7482b-cdfa-4a63-9188-04c99ce24814 nwtE_2f4ddf7d-a1f0-47ad-8459-e5fa07578349 nwtE_0bd4e7b7-8935-4d7d-a7d9-a692cd661309 nwtE_2ed03d75-60e5-426d-8b51-58a9b654d6b5 nwtE_9a58509d-82ab-4ba0-9299-e0e6f5c66d1c nwtE_b4fce6cd-64b3-4702-9985-a27a9e8ac6cf nwtE_be32a14b-e623-465a-8dc2-92f9241f32dd nwtE_bcf805de-7c8e-443d-8982-977ec5a34365 nwtE_98183863-8822-4e5b-b625-59eaac7ba2f6 78bc762a-ed52-ebd9-0d69-aae9fdb4dbe1 a53b322d-169a-060f-b99e-1307e250bba0 01f749e5-e086-f4ff-f940-104f44f2090f 1b112018-c21f-382b-a5ef-a9ab0248f977 1a297287-9016-c06f-06b0-4bef3e2a4504 8efed2fc-1ba9-c12e-7f12-37512a4aa7ce f1a8ab16-35b1-2c1a-f127-1c3977948ff1 2c9b0dc2-d5bd-f6aa-22e6-f93fde1a35ff nwtE_a0841956-cd32-4e49-b271-a728422d10c7 nwtE_c876aef9-1cf7-461f-9757-cc3be3b5be68 nwtE_0db10ab4-c4d4-4e8d-9f07-6a0e95933885 nwtE_a567dc9c-c17b-4e41-89ad-947bed2f4fd3 01a1302c-8279-8a9d-3025-b640251301f6 35db2b35-7414-81f4-77de-567e66e3e58c cc9b0b19-5606-60a6-4325-45883e217e2f 9711fea3-2f48-6cbb-b419-9d7f84a6affd nwtE_7f6ccc96-12da-4c70-929e-02a3d6ebe0f1 nwtE_2847db85-2620-43ed-bc12-7eee07fb773d nwtE_bd3e280f-efff-4d5b-868c-d834b3d6cad4 nwtE_a8832f81-1169-4768-87f4-390a771f7fff nwtE_4b37b92d-3b8f-4aa1-9e1b-ea807137d5c9 nwtE_34b23376-b68c-4b93-9c19-53c7db6d0a10 nwtE_ce773c31-e4bd-49f6-9a72-767325f352e5 nwtE_b94511dd-6491-420a-bb8d-00fd51581709 01d0ef5c-f125-fc76-0c19-4a9c3da54af7 cdfcf100-e9a4-79a0-37f2-69dda6605894 1246a081-6945-6222-7e90-838cb9ee950f 3df58c72-357d-e788-fc7a-8e68731deb13 7e62d9bc-21f2-bd26-2540-40093f96f9cd nwtE_bd17860b-450a-443f-8ca6-498eb5e336e6 f5c88b0d-d0f6-110a-6964-35337c5b66a9 0017dd1d-a2d2-0bd9-83f5-ab16e0091265 b88e5a04-bd6f-2617-8c80-8bb7aeaf724b 6fef712d-7dea-cee6-b4ce-9562a1c12f23 nwtE_6b731a56-0e87-49ea-8425-136bf3b6b18f nwtE_00484b84-815f-4ecb-b309-b3fe9c02b2b1 nwtE_7efe9b39-029e-4835-9053-e6649d204c4e nwtE_fa8ae924-5864-4e7a-95f1-12d34731b3c5 nwtE_6ae825c1-a694-4326-9f5e-36e516db36f0 nwtE_504460b2-e330-418b-9670-88ae673001fb nwtE_582a7ed6-d04d-4ceb-8c43-2f104ae5a388 nwtE_85d06a5e-fd70-4ff6-99d8-ae053b4d75ea nwtE_e4dd077c-7119-43bc-b30e-cba7cfff5650 nwtE_e8fdd618-2199-451b-8a4e-2ab0adb3a130 nwtE_237d36ef-b0b6-4936-8d5f-ac504d11377b nwtE_5bf9acd1-d78e-4377-8d03-009ca62d709b nwtE_a4ec4de6-fc5e-40a6-ba15-4a0a7de659ed nwtE_c4bcae59-b5b2-4a06-b460-58f246ea7d04 nwtE_12d04c16-582c-4af8-b041-9d3e4b4e7f13 nwtE_1d403db9-df50-4772-8bcd-fb82848a7a22 nwtE_c57ba64b-43d1-4035-82ea-2bfcf7ec474a">
             <g stroke="color_4" stroke-width="1.25"/>
           </style>
-          <style id="edgeff00001.25" id-list="nwtE_1fcb9fb6-ba5a-4ccf-bd50-155ce657fedb nwtE_8a9898a8-7aec-4d2a-be12-2050f58ccc80 nwtE_b9e23793-a56e-4277-b278-6724f6a4d68a nwtE_9f593961-7d71-49ac-8c9b-eb8e899665e4">
+          <style id="edgeff00001.25" idList="nwtE_1fcb9fb6-ba5a-4ccf-bd50-155ce657fedb nwtE_8a9898a8-7aec-4d2a-be12-2050f58ccc80 nwtE_b9e23793-a56e-4277-b278-6724f6a4d68a nwtE_9f593961-7d71-49ac-8c9b-eb8e899665e4">
             <g stroke="color_6" stroke-width="1.25"/>
           </style>
-          <style id="edge0000001.25" id-list="nwtE_68ee44c6-86ba-499b-a798-db1c00254138 nwtE_80c9d1c6-bab7-478d-b509-e6fe7b24b152">
+          <style id="edge0000001.25" idList="nwtE_68ee44c6-86ba-499b-a798-db1c00254138 nwtE_80c9d1c6-bab7-478d-b509-e6fe7b24b152">
             <g stroke="color_5" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>8</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -65,21 +66,23 @@
         <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
-        <enablePorts>false</enablePorts>
+        <enablePorts>true</enablePorts>
         <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>false</allowCompoundNodeResize>
         <mapColorScheme>opposed_purple_green</mapColorScheme>
         <mapColorSchemeStyle>3D</mapColorSchemeStyle>
         <mapName>The Drosophila cell cycle</mapName>
         <mapDescription>doi:10.1371/journal.pcbi.1005740</mapDescription>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>8</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>848.0295882260855</w>
           <h>645.125</h>
           <minW>0</minW>
@@ -88,14 +91,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Cytoplasm"/>
       <bbox x="324.2204117739145" y="-9.25" w="892.0295882260855" h="689.125"/>
     </glyph>
     <glyph id="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815" class="compartment" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>798.7795882260855</w>
           <h>311.37499999999994</h>
           <minW>0</minW>
@@ -104,7 +107,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Nucleus"/>
       <bbox x="348.8454117739145" y="233.50000000000003" w="842.7795882260855" h="355.37499999999994"/>
@@ -116,7 +119,7 @@
     </glyph>
     <glyph id="275a0119-f0d3-237f-170f-c94f9eca909c" class="complex" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -125,7 +128,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="preMPF"/>
       <bbox x="465.375" y="331.03125000000006" w="100.25" h="112.875"/>
@@ -148,7 +151,7 @@
     </glyph>
     <glyph id="c3a94e68-cca7-3c6a-f546-33c23dc59923" class="complex" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -157,7 +160,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MPF"/>
       <bbox x="847.375" y="332.03125000000006" w="100.25" h="112.875"/>
@@ -196,8 +199,8 @@
     </glyph>
     <glyph id="f5f91ced-d47f-07e1-03f4-9307020437ef" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="595.8979591836735" y="276.14795918367355" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="f5f91ced-d47f-07e1-03f4-9307020437ef.1" x="593.8571428571429" y="281.25000000000006"/>
-      <port id="f5f91ced-d47f-07e1-03f4-9307020437ef.2" x="608.1428571428571" y="281.25000000000006"/>
+      <port id="f5f91ced-d47f-07e1-03f4-9307020437ef.1" x="608.1428571428571" y="281.25000000000006"/>
+      <port id="f5f91ced-d47f-07e1-03f4-9307020437ef.2" x="593.8571428571429" y="281.25000000000006"/>
     </glyph>
     <glyph id="7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8" class="macromolecule" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <label text="Wee1"/>
@@ -225,8 +228,8 @@
     </glyph>
     <glyph id="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="534.1479591836735" y="533.6479591836735" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e.1" x="532.1071428571429" y="538.75"/>
-      <port id="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e.2" x="546.3928571428571" y="538.75"/>
+      <port id="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e.1" x="546.3928571428571" y="538.75"/>
+      <port id="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e.2" x="532.1071428571429" y="538.75"/>
     </glyph>
     <glyph id="bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34" class="macromolecule" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <label text="String"/>
@@ -292,8 +295,8 @@
     </glyph>
     <glyph id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="427.94500092065476" y="382.36670918367355" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.1" x="425.9041845941241" y="387.46875000000006"/>
-      <port id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.2" x="440.18989887983844" y="387.46875000000006"/>
+      <port id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.1" x="440.18989887983844" y="387.46875000000006"/>
+      <port id="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.2" x="425.9041845941241" y="387.46875000000006"/>
     </glyph>
     <glyph id="nwtN_e973c31b-714f-47be-a2c2-e8e46b4d8ebf" class="source and sink" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="372.4704117739146" y="374.96875000000006" w="25" h="25"/>
@@ -305,11 +308,11 @@
     </glyph>
     <glyph id="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
       <bbox x="988.6579276211975" y="411.38357473773965" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.1" x="986.6171112946669" y="416.48561555406616"/>
-      <port id="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.2" x="1000.9028255803811" y="416.48561555406616"/>
+      <port id="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.1" x="1000.9028255803811" y="416.48561555406616"/>
+      <port id="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.2" x="986.6171112946669" y="416.48561555406616"/>
     </glyph>
     <glyph id="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5" class="process" compartmentRef="nwtN_31dec67c-8c37-40ec-bfad-d038cf1dc815">
-      <bbox x="988.6579276211975" y="344.383955785753" w="10.204081632653063" h="10.204081632653063"/>
+      <bbox x="988.6579276211975" y="344.383955785753" w="10.204081632653015" h="10.204081632653015"/>
       <port id="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.1" x="986.6171112946669" y="349.4859966020795"/>
       <port id="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.2" x="1000.9028255803811" y="349.4859966020795"/>
     </glyph>
@@ -326,7 +329,7 @@
     </glyph>
     <glyph id="nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b" class="complex" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -335,7 +338,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="preMPF"/>
       <bbox x="465.375" y="21" w="100.25" h="112.875"/>
@@ -358,7 +361,7 @@
     </glyph>
     <glyph id="89360553-bab4-532a-c6c7-624272c4e43b" class="complex" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>74.25</w>
           <h>86.875</h>
           <minW>0</minW>
@@ -367,7 +370,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="MPF"/>
       <bbox x="845.875" y="22" w="100.25" h="112.875"/>
@@ -407,12 +410,12 @@
       <port id="nwtN_849e3e0b-8781-4669-96a8-afdefe522e39.2" x="989.6428571428571" y="78.4375"/>
     </glyph>
     <glyph id="8aa9f4cb-fe26-03ac-1ef5-62dca5582e83" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
-      <bbox x="366.5" y="67.25" w="25" h="25"/>
+      <bbox x="366.5" y="64.25" w="25" h="25"/>
     </glyph>
     <glyph id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
-      <bbox x="419.8979591836735" y="74.64795918367346" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.1" x="417.85714285714283" y="79.75"/>
-      <port id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.2" x="432.14285714285717" y="79.75"/>
+      <bbox x="419.8979591836735" y="71.64795918367346" w="10.204081632653063" h="10.204081632653063"/>
+      <port id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.1" x="417.85714285714283" y="76.75"/>
+      <port id="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.2" x="432.14285714285717" y="76.75"/>
     </glyph>
     <glyph id="nwtN_d1ef3518-d5d3-4d84-8712-acdbaf52d01a" class="source and sink" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="543.5" y="165.25" w="25" h="25"/>
@@ -464,8 +467,8 @@
     </glyph>
     <glyph id="6507b78f-2da9-659a-4d3f-d78d84be17ed" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="536.2729591836735" y="633.6479591836735" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="6507b78f-2da9-659a-4d3f-d78d84be17ed.1" x="534.2321428571429" y="638.75"/>
-      <port id="6507b78f-2da9-659a-4d3f-d78d84be17ed.2" x="548.5178571428571" y="638.75"/>
+      <port id="6507b78f-2da9-659a-4d3f-d78d84be17ed.1" x="548.5178571428571" y="638.75"/>
+      <port id="6507b78f-2da9-659a-4d3f-d78d84be17ed.2" x="534.2321428571429" y="638.75"/>
     </glyph>
     <glyph id="a8404458-8ee5-6465-5d2e-4be53abad9f9" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="671.2729591836735" y="633.6479591836735" w="10.204081632653063" h="10.204081632653063"/>
@@ -482,331 +485,540 @@
     </glyph>
     <glyph id="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="603.6479591836735" y="583.6479591836735" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8.1" x="601.6071428571429" y="588.75"/>
-      <port id="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8.2" x="615.8928571428571" y="588.75"/>
+      <port id="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8.1" x="608.75" y="581.6071428571429"/>
+      <port id="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8.2" x="608.75" y="595.8928571428571"/>
     </glyph>
     <glyph id="473098ac-d338-8883-260a-cde1a50bf3fd" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="728.1479591836735" y="583.6479591836735" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="473098ac-d338-8883-260a-cde1a50bf3fd.1" x="726.1071428571429" y="588.75"/>
-      <port id="473098ac-d338-8883-260a-cde1a50bf3fd.2" x="740.3928571428571" y="588.75"/>
+      <port id="473098ac-d338-8883-260a-cde1a50bf3fd.1" x="733.25" y="581.6071428571429"/>
+      <port id="473098ac-d338-8883-260a-cde1a50bf3fd.2" x="733.25" y="595.8928571428571"/>
     </glyph>
     <glyph id="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="510.3979591836735" y="227.5646642729748" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7.1" x="508.35714285714283" y="232.66670508930133"/>
-      <port id="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7.2" x="522.6428571428571" y="232.66670508930133"/>
+      <port id="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7.1" x="515.5" y="239.8095622321585"/>
+      <port id="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7.2" x="515.5" y="225.52384794644416"/>
     </glyph>
     <glyph id="d5e9e70d-041e-e472-0470-6f7bf4af14a8" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="892.0020361350192" y="227.5646642729748" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="d5e9e70d-041e-e472-0470-6f7bf4af14a8.1" x="889.9612198084886" y="232.66670508930133"/>
-      <port id="d5e9e70d-041e-e472-0470-6f7bf4af14a8.2" x="904.2469340942029" y="232.66670508930133"/>
+      <port id="d5e9e70d-041e-e472-0470-6f7bf4af14a8.1" x="897.1040769513457" y="239.80956223215844"/>
+      <port id="d5e9e70d-041e-e472-0470-6f7bf4af14a8.2" x="897.1040769513457" y="225.52384794644422"/>
     </glyph>
     <glyph id="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
       <bbox x="793.8979591836735" y="227.5646642729748" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14.1" x="791.8571428571429" y="232.66670508930133"/>
-      <port id="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14.2" x="806.1428571428571" y="232.66670508930133"/>
+      <port id="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14.1" x="799" y="225.52384794644422"/>
+      <port id="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14.2" x="799" y="239.80956223215844"/>
     </glyph>
     <glyph id="4f47fd0c-d946-52ae-8192-41a7580a3bee" class="process" compartmentRef="nwtN_3ab42db3-7946-4642-a215-98b2f74f5061">
-      <bbox x="666.8979591836735" y="227.5646642729748" w="10.204081632653063" h="10.204081632653063"/>
-      <port id="4f47fd0c-d946-52ae-8192-41a7580a3bee.1" x="664.8571428571429" y="232.66670508930133"/>
-      <port id="4f47fd0c-d946-52ae-8192-41a7580a3bee.2" x="679.1428571428571" y="232.66670508930133"/>
+      <bbox x="665.8979591836735" y="227.5646642729748" w="10.204081632653063" h="10.204081632653063"/>
+      <port id="4f47fd0c-d946-52ae-8192-41a7580a3bee.1" x="671" y="225.52384794644422"/>
+      <port id="4f47fd0c-d946-52ae-8192-41a7580a3bee.2" x="671" y="239.80956223215844"/>
     </glyph>
     <arc id="nwtE_a53e31a0-4482-4560-9c3c-1405b6991d53" class="production" source="d5e9e70d-041e-e472-0470-6f7bf4af14a8.1" target="89360553-bab4-532a-c6c7-624272c4e43b">
-      <start x="897.0484693767115" y="224.89884794644422"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="897.1040769513457" y="240.43456223215844"/>
       <end x="896.4308622550925" y="138.62491993019307"/>
     </arc>
     <arc id="nwtE_e34cd886-a09e-4030-a0af-3408071358ab" class="consumption" source="nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b" target="nwtN_713def92-298d-4eb9-bf64-35bfc38a4646.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="566.25" y="70.93944256756757"/>
-      <end x="692.7321428571429" y="54.74460062741312"/>
+      <end x="692.7321428571429" y="53.75"/>
     </arc>
     <arc id="nwtE_e74a9d83-ccc4-4374-aa33-e8b756168ec7" class="production" source="nwtN_713def92-298d-4eb9-bf64-35bfc38a4646.2" target="89360553-bab4-532a-c6c7-624272c4e43b">
-      <start x="708.2678571428571" y="54.73091546401169"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="708.2678571428571" y="53.75"/>
       <end x="842.1496220527736" y="71.6373403807051"/>
     </arc>
     <arc id="nwtE_e4759cc0-9ef5-496b-8d33-2e467e75ac37" class="consumption" source="89360553-bab4-532a-c6c7-624272c4e43b" target="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="845.25" y="87.86389066496164"/>
-      <end x="708.2678571428571" y="113.30718510230179"/>
+      <end x="708.2678571428571" y="114.75"/>
     </arc>
     <arc id="nwtE_a6c7482b-cdfa-4a63-9188-04c99ce24814" class="production" source="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5.1" target="nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b">
-      <start x="692.7321428571429" y="113.1833071911197"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="692.7321428571429" y="114.75"/>
       <end x="569.3133154723146" y="88.29106396519319"/>
     </arc>
     <arc id="nwtE_2f4ddf7d-a1f0-47ad-8459-e5fa07578349" class="production" source="nwtN_849e3e0b-8781-4669-96a8-afdefe522e39.2" target="nwtN_ba8bccaa-725c-41f9-9059-9f05f4bd9116">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="990.2678571428571" y="78.4375"/>
       <end x="1018.75" y="78.4375"/>
     </arc>
     <arc id="nwtE_0bd4e7b7-8935-4d7d-a7d9-a692cd661309" class="production" source="nwtN_849e3e0b-8781-4669-96a8-afdefe522e39.1" target="89360553-bab4-532a-c6c7-624272c4e43b">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="974.7321428571429" y="78.4375"/>
       <end x="949.875" y="78.4375"/>
     </arc>
     <arc id="nwtE_2ed03d75-60e5-426d-8b51-58a9b654d6b5" class="production" source="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.2" target="nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b">
-      <start x="432.76785714285717" y="79.55151193764799"/>
-      <end x="461.6260197031039" y="78.81411413742069"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="432.76785714285717" y="76.75"/>
+      <end x="461.6250901673853" y="77.02822927613346"/>
     </arc>
     <arc id="nwtE_9a58509d-82ab-4ba0-9299-e0e6f5c66d1c" class="production" source="a6478aa6-4c6e-15e2-60dc-1b6d2acaf9a6.2" target="8aa9f4cb-fe26-03ac-1ef5-62dca5582e83">
-      <start x="417.23214285714283" y="79.75"/>
-      <end x="395.25" y="79.75"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="432.76785714285717" y="76.75"/>
+      <end x="395.25" y="76.75"/>
     </arc>
     <arc id="nwtE_b4fce6cd-64b3-4702-9985-a27a9e8ac6cf" class="production" source="nwtN_d1318ca0-09f5-48ed-b69c-708c67199f22.2" target="nwtN_d1ef3518-d5d3-4d84-8712-acdbaf52d01a">
-      <start x="594.7321428571429" y="177.75"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="610.2678571428571" y="177.75"/>
       <end x="572.25" y="177.75"/>
     </arc>
     <arc id="nwtE_be32a14b-e623-465a-8dc2-92f9241f32dd" class="consumption" source="nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427" target="nwtN_d1318ca0-09f5-48ed-b69c-708c67199f22.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="636.375" y="177.75"/>
-      <end x="610.2678571428571" y="177.75"/>
+      <end x="594.7321428571429" y="177.75"/>
     </arc>
     <arc id="nwtE_bcf805de-7c8e-443d-8982-977ec5a34365" class="production" source="nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9.1" target="nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="729.7321428571429" y="177.75"/>
       <end x="710.75" y="177.75"/>
     </arc>
     <arc id="nwtE_98183863-8822-4e5b-b625-59eaac7ba2f6" class="consumption" source="a2ee1683-eb5f-030d-3bbe-46c0a02cb659" target="nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="763.375" y="177.75"/>
       <end x="745.2678571428571" y="177.75"/>
     </arc>
     <arc id="nwtE_1fcb9fb6-ba5a-4ccf-bd50-155ce657fedb" class="stimulation" source="89360553-bab4-532a-c6c7-624272c4e43b" target="nwtN_78d6cd14-2e5f-463f-9a30-27ce3baea7d9">
-      <start x="875.5645730534169" y="135.5"/>
-      <next x="847.542424765152" y="213.7471460409822"/>
-      <next x="738.497886764629" y="214.7270119241452"/>
-      <end x="737.7939313506429" y="188.64171982518587"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="875.735573488395" y="135.5"/>
+      <next x="848.6747868139303" y="211.70033750904958"/>
+      <next x="738.9124685561455" y="214.79877619005464"/>
+      <end x="737.9151989745747" y="188.6405885489833"/>
     </arc>
     <arc id="78bc762a-ed52-ebd9-0d69-aae9fdb4dbe1" class="production" source="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d.1" target="275a0119-f0d3-237f-170f-c94f9eca909c">
-      <start x="694.2321428571429" y="429.93560297778635"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="694.2321428571429" y="431.78125000000006"/>
       <end x="569.2903579877593" y="400.24936789990664"/>
     </arc>
     <arc id="a53b322d-169a-060f-b99e-1307e250bba0" class="consumption" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="846.75" y="399.7122762148338"/>
-      <end x="709.7678571428571" y="430.0603021099745"/>
+      <end x="709.7678571428571" y="431.78125000000006"/>
     </arc>
     <arc id="01f749e5-e086-f4ff-f940-104f44f2090f" class="consumption" source="275a0119-f0d3-237f-170f-c94f9eca909c" target="93e171d7-e846-2f4e-b4af-cafdabb596dd.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="566.25" y="381.0229557640751"/>
-      <end x="694.2321428571429" y="364.76785115856"/>
+      <end x="694.2321428571429" y="363.78125000000006"/>
     </arc>
     <arc id="1b112018-c21f-382b-a5ef-a9ab0248f977" class="production" source="93e171d7-e846-2f4e-b4af-cafdabb596dd.2" target="c3a94e68-cca7-3c6a-f546-33c23dc59923">
-      <start x="709.7678571428571" y="364.76216546401173"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="709.7678571428571" y="363.78125000000006"/>
       <end x="843.6496220527736" y="381.66859038070515"/>
     </arc>
     <arc id="1a297287-9016-c06f-06b0-4bef3e2a4504" class="consumption" source="6f6a1c77-176d-7188-cdd5-048d3908a8b1" target="f5f91ced-d47f-07e1-03f4-9307020437ef.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="636.375" y="281.25000000000006"/>
       <end x="608.7678571428571" y="281.25000000000006"/>
     </arc>
     <arc id="8efed2fc-1ba9-c12e-7f12-37512a4aa7ce" class="production" source="9615ba87-e042-ef50-d78e-1ef00df34a6e.1" target="6f6a1c77-176d-7188-cdd5-048d3908a8b1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="730.2321428571429" y="281.25000000000006"/>
       <end x="710.75" y="281.25000000000006"/>
     </arc>
     <arc id="f1a8ab16-35b1-2c1a-f127-1c3977948ff1" class="production" source="f5f91ced-d47f-07e1-03f4-9307020437ef.2" target="8c6d3816-85c1-358b-5893-20995009088c">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="593.2321428571429" y="281.25000000000006"/>
       <end x="570.75" y="281.25000000000006"/>
     </arc>
     <arc id="2c9b0dc2-d5bd-f6aa-22e6-f93fde1a35ff" class="consumption" source="7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8" target="9615ba87-e042-ef50-d78e-1ef00df34a6e.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="763.375" y="281.25000000000006"/>
       <end x="745.7678571428571" y="281.25000000000006"/>
     </arc>
     <arc id="nwtE_a0841956-cd32-4e49-b271-a728422d10c7" class="production" source="d5e9e70d-041e-e472-0470-6f7bf4af14a8.1" target="c3a94e68-cca7-3c6a-f546-33c23dc59923">
-      <start x="897.1238165746818" y="240.43456223215844"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="897.1040769513457" y="240.43456223215844"/>
       <end x="897.3470519786204" y="328.281260090047"/>
     </arc>
     <arc id="nwtE_8a9898a8-7aec-4d2a-be12-2050f58ccc80" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="2785fbb1-18d0-0b2f-dcf2-968acc6869c0">
-      <start x="846.75" y="413.9798005568982"/>
-      <next x="673.2366829917306" y="501.20161341390434"/>
-      <end x="673.9560655349745" y="527.8582801989073"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="846.75" y="413.93440389572265"/>
+      <next x="672.9635102415469" y="501.13808074185687"/>
+      <end x="673.9533924328764" y="530.0783570330018"/>
     </arc>
     <arc id="nwtE_c876aef9-1cf7-461f-9757-cc3be3b5be68" class="production" source="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14.2" target="a2ee1683-eb5f-030d-3bbe-46c0a02cb659">
-      <start x="799" y="224.89884794644422"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="799" y="240.43456223215844"/>
       <end x="799" y="199"/>
     </arc>
     <arc id="nwtE_0db10ab4-c4d4-4e8d-9f07-6a0e95933885" class="production" source="nwtN_5010c400-6162-4548-b8d4-8c75ae15eb14.2" target="7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="799" y="240.43456223215844"/>
       <end x="799" y="260.00000000000006"/>
     </arc>
     <arc id="nwtE_b9e23793-a56e-4277-b278-6724f6a4d68a" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="9615ba87-e042-ef50-d78e-1ef00df34a6e">
-      <start x="875.7289709255696" y="326.21254896064926"/>
-      <next x="847.8464449746845" y="246.47997705747048"/>
-      <next x="737.9834983175773" y="247.1334840883929"/>
-      <end x="737.9947312772593" y="270.3571432226932"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="875.5473816365594" y="326.1774783951087"/>
+      <next x="846.7799375592526" y="244.54891624680704"/>
+      <next x="737.6554917739569" y="247.2415416467691"/>
+      <end x="737.9121387307022" y="272.5766909411788"/>
     </arc>
     <arc id="nwtE_a567dc9c-c17b-4e41-89ad-947bed2f4fd3" class="catalysis" source="7626c6b6-b0e0-b4b7-e5f3-f803fe319ef8" target="93e171d7-e846-2f4e-b4af-cafdabb596dd">
-      <start x="767.8264939279273" y="298.2980111331645"/>
-      <next x="702.9999999999995" y="333.74999999999943"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="767.8264939279275" y="298.29801113316444"/>
+      <next x="702.9999999999994" y="333.7499999999994"/>
       <next x="702.5266691532668" y="347.96471699095457"/>
-      <end x="702.3626597654915" y="352.8901239175827"/>
+      <end x="702.2887571555401" y="355.1095116726847"/>
     </arc>
     <arc id="01a1302c-8279-8a9d-3025-b640251301f6" class="consumption" source="35a3e0be-6e00-7a99-fca5-18ed65c2fac1" target="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="573.125" y="538.75"/>
       <end x="547.0178571428571" y="538.75"/>
     </arc>
     <arc id="35db2b35-7414-81f4-77de-567e66e3e58c" class="production" source="2785fbb1-18d0-0b2f-dcf2-968acc6869c0.1" target="35a3e0be-6e00-7a99-fca5-18ed65c2fac1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="666.4821428571429" y="538.75"/>
       <end x="647.5" y="538.75"/>
     </arc>
     <arc id="cc9b0b19-5606-60a6-4325-45883e217e2f" class="production" source="d6a6f52d-8036-ba76-8a3e-dfa5dcd6d57e.2" target="0088e5e3-506d-b360-cc23-6ca191128211">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="531.4821428571429" y="538.75"/>
       <end x="509" y="538.75"/>
     </arc>
     <arc id="9711fea3-2f48-6cbb-b419-9d7f84a6affd" class="consumption" source="bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34" target="2785fbb1-18d0-0b2f-dcf2-968acc6869c0.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="697.625" y="538.75"/>
       <end x="682.0178571428571" y="538.75"/>
     </arc>
-    <arc id="nwtE_179d0539-ee15-4061-912e-f422f2c2f8c0" class="consumption" source="nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7.2" target="bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34">
-      <start x="789.2321428571429" y="538.75"/>
-      <end x="768.875" y="538.75"/>
+    <arc id="nwtE_7f6ccc96-12da-4c70-929e-02a3d6ebe0f1" class="consumption" source="6cde7a25-b41a-b8cb-d3d3-188533472dae" target="75a1827c-53c6-de67-431d-57c59d4c7d36.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="768.875" y="638.75"/>
+      <end x="791.3571428571429" y="638.75"/>
     </arc>
     <arc id="nwtE_2847db85-2620-43ed-bc12-7eee07fb773d" class="production" source="nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7.2" target="nwtN_18ca18bf-e112-4b17-acba-35e845505d26">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="804.7678571428571" y="538.75"/>
       <end x="826.75" y="538.75"/>
     </arc>
     <arc id="nwtE_bd3e280f-efff-4d5b-868c-d834b3d6cad4" class="catalysis" source="a2ee1683-eb5f-030d-3bbe-46c0a02cb659" target="nwtN_e742f544-55df-4fda-a7ee-65473425b2b5">
-      <start x="763.9884892268863" y="165.05526681360047"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="763.9884892268863" y="165.05526681360044"/>
       <next x="702.4738258670972" y="142.75082404149953"/>
-      <end x="701.2673108079107" y="125.63512177066829"/>
+      <end x="701.1108623779056" y="123.4157340155663"/>
     </arc>
     <arc id="nwtE_a8832f81-1169-4768-87f4-390a771f7fff" class="catalysis" source="35a3e0be-6e00-7a99-fca5-18ed65c2fac1" target="f82eccc1-2bc9-bf87-08ab-1f26c4ad1e5d">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="631.5622781050293" y="520.625"/>
       <next x="701.7355091200076" y="464.8703837231595"/>
-      <end x="701.9129310851106" y="442.6740073154425"/>
+      <end x="701.9306712842135" y="440.4546195603406"/>
     </arc>
     <arc id="nwtE_4b37b92d-3b8f-4aa1-9e1b-ea807137d5c9" class="consumption" source="nwtN_617312c5-bae0-423e-a711-c6adfee4193b" target="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="865.125" y="481.75000000000006"/>
       <end x="891.2321428571429" y="481.75000000000006"/>
     </arc>
     <arc id="nwtE_34b23376-b68c-4b93-9c19-53c7db6d0a10" class="production" source="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c.2" target="nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="906.7678571428571" y="481.75000000000006"/>
       <end x="929.25" y="481.75000000000006"/>
     </arc>
     <arc id="nwtE_ce773c31-e4bd-49f6-9a72-767325f352e5" class="consumption" source="nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4" target="nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1003.625" y="481.75000000000006"/>
       <end x="1030.232142857143" y="481.75000000000006"/>
     </arc>
     <arc id="nwtE_b94511dd-6491-420a-bb8d-00fd51581709" class="production" source="nwtN_3fbd4aa5-0116-4e4b-9e7b-1c72a16bc6c1.2" target="nwtN_0949a2cf-db5f-461a-b93f-51a21cdf1543">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1045.767857142857" y="481.75000000000006"/>
       <end x="1070.75" y="481.75000000000006"/>
     </arc>
     <arc id="nwtE_68ee44c6-86ba-499b-a798-db1c00254138" class="stimulation" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="nwtN_7ffe3be6-9a33-4696-a593-d5c0a8a45a4c">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="898.4175879396985" y="445.53125000000006"/>
-      <end x="898.8248449738131" y="470.8575468090057"/>
+      <end x="898.8605336211314" y="473.07693456410766"/>
     </arc>
     <arc id="01d0ef5c-f125-fc76-0c19-4a9c3da54af7" class="production" source="46137b33-99be-2b1f-5a29-f38f55849a0b.2" target="ef95a67b-f3d9-df94-1349-9b4d376fc42d">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="975.7678571428571" y="547.75"/>
       <end x="997.75" y="547.75"/>
     </arc>
     <arc id="cdfcf100-e9a4-79a0-37f2-69dda6605894" class="consumption" source="ef95a67b-f3d9-df94-1349-9b4d376fc42d" target="8754c6a2-755b-fb0b-5a6e-5d1edef0779a.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1072.125" y="547.75"/>
       <end x="1098.732142857143" y="547.75"/>
     </arc>
     <arc id="1246a081-6945-6222-7e90-838cb9ee950f" class="consumption" source="682cd847-d9d2-5765-6915-b974cb1d689e" target="46137b33-99be-2b1f-5a29-f38f55849a0b.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="933.625" y="547.75"/>
       <end x="960.2321428571429" y="547.75"/>
     </arc>
     <arc id="3df58c72-357d-e788-fc7a-8e68731deb13" class="production" source="8754c6a2-755b-fb0b-5a6e-5d1edef0779a.2" target="1074afdd-de13-ce0b-eeef-ae71e8825227">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1114.267857142857" y="547.75"/>
       <end x="1139.25" y="547.75"/>
     </arc>
     <arc id="nwtE_80c9d1c6-bab7-478d-b509-e6fe7b24b152" class="stimulation" source="nwtN_5a3ef454-8d2b-46de-b3a1-f9a0c2409ee4" target="46137b33-99be-2b1f-5a29-f38f55849a0b">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="968" y="499.87500000000006"/>
-      <end x="968" y="536.8571428571429"/>
+      <end x="968" y="539.0765306122449"/>
     </arc>
     <arc id="7e62d9bc-21f2-bd26-2540-40093f96f9cd" class="consumption" source="6cde7a25-b41a-b8cb-d3d3-188533472dae" target="a8404458-8ee5-6465-5d2e-4be53abad9f9.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="697.625" y="638.75"/>
       <end x="684.1428571428571" y="638.75"/>
     </arc>
-    <arc id="9b10afab-1b07-6bbf-3fa9-b757ad011ca6" class="consumption" source="75a1827c-53c6-de67-431d-57c59d4c7d36.2" target="6cde7a25-b41a-b8cb-d3d3-188533472dae">
-      <start x="791.3571428571429" y="638.75"/>
-      <end x="768.875" y="638.75"/>
+    <arc id="nwtE_bd17860b-450a-443f-8ca6-498eb5e336e6" class="production" source="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.2" target="c3a94e68-cca7-3c6a-f546-33c23dc59923">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="985.9921112946669" y="416.48561555406616"/>
+      <end x="951.2504935176438" y="404.11305546563005"/>
     </arc>
     <arc id="f5c88b0d-d0f6-110a-6964-35337c5b66a9" class="consumption" source="2f567801-fc2c-e128-f352-1dfab2f0dbce" target="6507b78f-2da9-659a-4d3f-d78d84be17ed.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="573.125" y="638.75"/>
       <end x="549.1428571428571" y="638.75"/>
     </arc>
     <arc id="0017dd1d-a2d2-0bd9-83f5-ab16e0091265" class="production" source="a8404458-8ee5-6465-5d2e-4be53abad9f9.1" target="2f567801-fc2c-e128-f352-1dfab2f0dbce">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="668.6071428571429" y="638.75"/>
       <end x="647.5" y="638.75"/>
     </arc>
     <arc id="b88e5a04-bd6f-2617-8c80-8bb7aeaf724b" class="production" source="6507b78f-2da9-659a-4d3f-d78d84be17ed.2" target="e342a729-472c-3bbf-78da-d20caa7b1c03">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="533.6071428571429" y="638.75"/>
       <end x="511.125" y="638.75"/>
     </arc>
     <arc id="6fef712d-7dea-cee6-b4ce-9562a1c12f23" class="production" source="75a1827c-53c6-de67-431d-57c59d4c7d36.2" target="53844cf9-beeb-858b-2abb-0d2d0cd2fbde">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="806.8928571428571" y="638.75"/>
       <end x="828.875" y="638.75"/>
     </arc>
     <arc id="nwtE_6b731a56-0e87-49ea-8425-136bf3b6b18f" class="production" source="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8.2" target="35a3e0be-6e00-7a99-fca5-18ed65c2fac1">
-      <start x="608.75" y="580.9821428571429"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="608.75" y="596.5178571428571"/>
       <end x="608.75" y="560"/>
     </arc>
     <arc id="nwtE_00484b84-815f-4ecb-b309-b3fe9c02b2b1" class="production" source="nwtN_af68cdcd-f3e3-4438-9be7-e8feb28bb2e8.2" target="2f567801-fc2c-e128-f352-1dfab2f0dbce">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="608.75" y="596.5178571428571"/>
       <end x="608.75" y="617.5"/>
     </arc>
     <arc id="nwtE_7efe9b39-029e-4835-9053-e6649d204c4e" class="production" source="473098ac-d338-8883-260a-cde1a50bf3fd.2" target="bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34">
-      <start x="733.25" y="580.9821428571429"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="733.25" y="596.5178571428571"/>
       <end x="733.25" y="560"/>
     </arc>
     <arc id="nwtE_fa8ae924-5864-4e7a-95f1-12d34731b3c5" class="production" source="473098ac-d338-8883-260a-cde1a50bf3fd.2" target="6cde7a25-b41a-b8cb-d3d3-188533472dae">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="733.25" y="596.5178571428571"/>
       <end x="733.25" y="617.5"/>
     </arc>
     <arc id="nwtE_9f593961-7d71-49ac-8c9b-eb8e899665e4" class="stimulation" source="89360553-bab4-532a-c6c7-624272c4e43b" target="a8404458-8ee5-6465-5d2e-4be53abad9f9">
-      <start x="895.8985379750443" y="21.375"/>
-      <next x="895.8646325311395" y="2.306492411467092"/>
-      <next x="334.62761909656433" y="3.77560221892449"/>
-      <next x="332.9955347233823" y="668.6351180438446"/>
-      <next x="676.6188645851402" y="671.4050967869174"/>
-      <end x="676.4563459796519" y="649.642770006905"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="895.8877393402291" y="21.375000000000007"/>
+      <next x="895.8430128770972" y="-1.3596232212859487"/>
+      <next x="334.22070846666975" y="2.236072833348942"/>
+      <next x="332.76765798627014" y="670.0654281463709"/>
+      <next x="676.627880649744" y="671.5497387969122"/>
+      <end x="676.441870321804" y="647.4233765144091"/>
     </arc>
     <arc id="nwtE_6ae825c1-a694-4326-9f5e-36e516db36f0" class="catalysis" source="2f567801-fc2c-e128-f352-1dfab2f0dbce" target="nwtN_713def92-298d-4eb9-bf64-35bfc38a4646">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="609.0574244085002" y="656.875"/>
-      <next x="609.1897360308067" y="664.67577341941"/>
+      <next x="609.1897360308068" y="664.6757734194101"/>
       <next x="344.83677141584394" y="660.6017836771279"/>
-      <next x="345.63842841241984" y="10.853979636260405"/>
-      <next x="700.0305262916789" y="9.69645868465455"/>
-      <end x="700.3839179193676" y="42.85732029404083"/>
+      <next x="345.6384284124198" y="10.853979636260398"/>
+      <next x="700.0305262916789" y="9.696458684654537"/>
+      <end x="700.4075696887483" y="45.07670804914284"/>
     </arc>
     <arc id="nwtE_504460b2-e330-418b-9670-88ae673001fb" class="consumption" source="275a0119-f0d3-237f-170f-c94f9eca909c" target="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="464.75" y="387.46875000000006"/>
       <end x="440.81489887983844" y="387.46875000000006"/>
     </arc>
     <arc id="nwtE_582a7ed6-d04d-4ceb-8c43-2f104ae5a388" class="production" source="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853.2" target="nwtN_e973c31b-714f-47be-a2c2-e8e46b4d8ebf">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="425.2791845941241" y="387.46875000000006"/>
       <end x="401.2204117739146" y="387.46875000000006"/>
     </arc>
     <arc id="nwtE_85d06a5e-fd70-4ff6-99d8-ae053b4d75ea" class="catalysis" source="191857cc-7088-9f59-19c8-ad00bcf44b5e" target="nwtN_f14bd3e1-7c6d-49b6-ab82-2f69e2246853">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="433.04704173698127" y="334.58583432907056"/>
-      <end x="433.04704173698127" y="376.5758928571429"/>
+      <end x="433.04704173698127" y="378.79528061224494"/>
     </arc>
     <arc id="nwtE_e4dd077c-7119-43bc-b30e-cba7cfff5650" class="consumption" source="nwtN_5ca63978-630b-4d73-88af-444ec25db7ee" target="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1026.9422503858173" y="416.48561555406616"/>
       <end x="1001.5278255803811" y="416.48561555406616"/>
     </arc>
-    <arc id="nwtE_39d53707-9184-4fd3-9fad-d34825233ce3" class="production" source="nwtN_98f7dc46-8930-48fe-8eed-bed242ab20bd.2" target="c3a94e68-cca7-3c6a-f546-33c23dc59923">
-      <start x="985.9921112946669" y="414.2575257871948"/>
-      <next x="966.7286553268619" y="408.7321011653078"/>
-      <end x="951.2491641467504" y="404.2012264262"/>
+    <arc id="nwtE_e8fdd618-2199-451b-8a4e-2ab0adb3a130" class="consumption" source="c3a94e68-cca7-3c6a-f546-33c23dc59923" target="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="948.25" y="367.9163358754463"/>
+      <end x="985.9921112946669" y="349.4859966020795"/>
     </arc>
     <arc id="nwtE_237d36ef-b0b6-4936-8d5f-ac504d11377b" class="production" source="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.2" target="c4d84cac-2f3e-7664-aa93-466d49c71abe">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1001.5278255803811" y="349.4859966020795"/>
       <end x="1023.0223590500218" y="349.4859966020795"/>
     </arc>
-    <arc id="nwtE_3da29b88-54fb-4189-aa75-4e08fadda679" class="consumption" source="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5.2" target="c3a94e68-cca7-3c6a-f546-33c23dc59923">
-      <start x="985.9921112946669" y="352.6317742742051"/>
-      <end x="948.25" y="367.9163358754463"/>
+    <arc id="nwtE_5bf9acd1-d78e-4377-8d03-009ca62d709b" class="production" source="4f47fd0c-d946-52ae-8192-41a7580a3bee.2" target="6f6a1c77-176d-7188-cdd5-048d3908a8b1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="671" y="240.43456223215844"/>
+      <end x="671.5626204795814" y="260.0006617715989"/>
     </arc>
     <arc id="nwtE_a4ec4de6-fc5e-40a6-ba15-4a0a7de659ed" class="catalysis" source="f0a6c8f2-8384-fb32-c934-e51c7aa67e25" target="nwtN_11b88917-a429-4c8c-9ada-61c11265afb5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="993.759968437524" y="315.7909429932749"/>
-      <end x="993.759968437524" y="338.5931394592224"/>
+      <end x="993.759968437524" y="340.81252721432446"/>
     </arc>
     <arc id="nwtE_c4bcae59-b5b2-4a06-b460-58f246ea7d04" class="production" source="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7.1" target="nwtN_a2561374-b8e8-424c-b1ab-d9939f94408b">
-      <start x="515.5" y="224.89884794644416"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="515.5" y="240.4345622321585"/>
       <end x="515.5" y="137.625"/>
     </arc>
     <arc id="nwtE_12d04c16-582c-4af8-b041-9d3e4b4e7f13" class="production" source="nwtN_de28e025-a62b-4338-bd24-bff2474e60e7.1" target="275a0119-f0d3-237f-170f-c94f9eca909c">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="515.5" y="240.4345622321585"/>
       <end x="515.5" y="327.28125000000006"/>
     </arc>
     <arc id="nwtE_1d403db9-df50-4772-8bcd-fb82848a7a22" class="production" source="4f47fd0c-d946-52ae-8192-41a7580a3bee.2" target="nwtN_1eb9a857-e6fe-43e0-ae92-94ac8318e427">
-      <start x="672" y="224.89884794644422"/>
-      <end x="672" y="199"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="671" y="240.43456223215844"/>
+      <end x="671.6130597784909" y="198.99948203180378"/>
     </arc>
-    <arc id="nwtE_5bf9acd1-d78e-4377-8d03-009ca62d709b" class="production" source="4f47fd0c-d946-52ae-8192-41a7580a3bee.2" target="6f6a1c77-176d-7188-cdd5-048d3908a8b1">
-      <start x="672" y="240.43456223215844"/>
-      <end x="672" y="260.00000000000006"/>
+    <arc id="nwtE_c57ba64b-43d1-4035-82ea-2bfcf7ec474a" class="consumption" source="bf4e242a-2a4e-49c2-0bf4-9cc45e2eae34" target="nwtN_5d0ff9d3-a331-4b27-a9bf-5f3e6471f4a7.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="768.875" y="538.75"/>
+      <end x="789.2321428571429" y="538.75"/>
     </arc>
   </map>
 </sbgn>

@@ -19,7 +19,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -40,7 +41,7 @@
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
         <mapName>Signaling downstream of AKT2/3</mapName>
         <mapDescription/>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_e96cf631-6091-4320-a560-fa5114a0ad74" class="SIF macromolecule">
       <label text="AKT2"/>
