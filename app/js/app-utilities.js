@@ -3067,8 +3067,6 @@ appUtilities.launchWithModelFile = function() {
    function loadFromURL(filepath, chiseInstance, promptInvalidURLWarning){
 
    chiseInstance.startSpinner('paths-byURL-spinner');
-
-    console.log("loading form url")
   
     var loadCallbackSBGNMLValidity = function (text) {
       $.ajax({
@@ -3177,7 +3175,6 @@ appUtilities.launchWithModelFile = function() {
             }; };
             var layoutBy =  function() {
               appUtilities.triggerLayout(cyInstance, true);
-              console.log("in layoutBy")
           };
             if (xmlObject.children.item(0).getAttribute('xmlns:celldesigner')) {
               await chiseInstance.loadCellDesigner(file, success = async function (data) {
@@ -3200,7 +3197,6 @@ appUtilities.launchWithModelFile = function() {
               var sbgnOrSbml = sbmlProperty.sbmlMap; //True for sbml, false or undefined for sbgn
 
               // sbml file
-              console.log("loding sbml", typeof(sbgnOrSbml), sbgnOrSbml)
               if(sbgnOrSbml)
               {
                 await chiseInstance.loadSbmlForSBML(file,  success =  async function (data){
@@ -3254,7 +3250,6 @@ appUtilities.launchWithModelFile = function() {
   }
 
   function loadFromURI(uri, chiseInstance, promptInvalidURIWarning){
-    console.log("loading form uri")
 
     var queryURL = "http://www.pathwaycommons.org/pc2/get?uri="
           + uri + "&format=SBGN";
@@ -3277,18 +3272,15 @@ appUtilities.launchWithModelFile = function() {
           $(document).trigger('sbgnvizLoadFile', [filename, cyInstance]);
           $(document).trigger('sbgnvizLoadFromURI', [filename, cyInstance]);          
           chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml, paramObj), undefined, currentLayoutProperties);
-          console.log("spinner ending")
           chiseInstance.endSpinner('paths-byURI-spinner');
           $(document).trigger('sbgnvizLoadFileEnd', [filename,  cyInstance]);
         }
         else {
-          console.log("spinner ending else")
           chiseInstance.endSpinner('paths-byURI-spinner');
           promptInvalidURIWarning.render();
         }
       },
       error: function(xhr, options, err){
-        console.log("spinner ending error")
         chiseInstance.endSpinner('paths-byURI-spinner');
         promptInvalidURIWarning.render();      }
     });

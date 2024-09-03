@@ -660,7 +660,6 @@ module.exports = function (chiseInstance) {
             }); */
           }
           else{
-              console.log("source in newt", source)
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());

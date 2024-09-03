@@ -694,7 +694,6 @@ inspectorUtilities.handleSBGNInspector = function () {
     $("#sbgn-inspector-style-properties-panel").html(html);
 
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
-      console.log("channging background")
       chiseInstance.changeData(selectedEles, 'background-color', $('#inspector-fill-color').val());
     });
     colorPickerUtils.bindPicker2Input('#inspector-border-color', function() {
@@ -873,7 +872,6 @@ inspectorUtilities.handleSBGNInspector = function () {
           type: 'GET',
           data: {url: url},
           success: function(data){
-            console.log(data);
             // here we can get 404 as well, for example, so there are still error cases to handle
             if (!data.error && data.response.statusCode == 200 && typeof applyBackground === 'function')
               applyBackground(node, bgObj);
@@ -1017,7 +1015,6 @@ inspectorUtilities.handleSBGNInspector = function () {
         else {
           hypothetical = false;        
         }
-        console.log("sbgnclass", sbgnclass)
 
         var nameToVal = {
           'width': selected.width(),

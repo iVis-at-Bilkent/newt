@@ -2947,7 +2947,6 @@ var CommonStreamQueryView = Backbone.View.extend({
             url: "/utilities/testURL",
             data: { url: queryURL },
             success: function (data) {
-              console.log('recieved data:',data);
               if (!data.error && data.response.statusCode == 200) {
                 if (data.response.body !== "") {
                   var xml = $.parseXML(data.response.body);
@@ -2994,7 +2993,6 @@ var CommonStreamQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("common-stream-spinner");
             },
             error: function (xhr, options, err) {
-              console.log(xhr,options,err);
               new PromptInvalidQueryView({
                 el: "#prompt-invalidQuery-table",
               }).render();

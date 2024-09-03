@@ -236,12 +236,10 @@ module.exports = function() {
       var sbgnORsbml = appUtilities.filterMapTypeProperty(urlParams);
       if(sbgnORsbml == "true")
       {
-        console.log("sbml")
         sbmlProperty.sbmlMap = true
       }
       else
       {
-        console.log("sbgn")
         sbmlProperty.sbmlMap = false
       }
       
@@ -504,7 +502,6 @@ module.exports = function() {
     });
 
     $("#import-SBML-file").click(function () {
-      console.log("importing sbml file")
       $("#sbml-file").trigger('click');
     });
 
@@ -1206,7 +1203,6 @@ module.exports = function() {
         success: function (data) {
           // If response returns error display the message
           if(data.name==='Error' || data.error || data.name==='error'){
-            console.log(data);
             chiseSpinnerInstance.endSpinner("layout-spinner");
             promtErrorPD2AF.render(data.message);
           }else{
@@ -1250,7 +1246,6 @@ module.exports = function() {
           }
         },
         error: function (data) {
-          console.log(data);
           chiseSpinnerInstance.endSpinner("layout-spinner");
           if(data.status == 0)
             promtErrorPD2AF.render("Server might be offline!");
@@ -1512,7 +1507,6 @@ module.exports = function() {
       if(cy.elements().length == 0) {
         return;
       }
-      console.log("layout-spinner")
       chiseInstance.startSpinner("layout-spinner")
 
       setTimeout(() => {
@@ -1963,7 +1957,6 @@ module.exports = function() {
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
       var target = $(e.target).attr("href"); // activated tab
-      console.log(target);
       appUtilities.setActiveNetwork(target);
       inspectorUtilities.handleSBGNInspector();
     });
