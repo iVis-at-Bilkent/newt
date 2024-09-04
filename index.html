@@ -30,7 +30,7 @@
         <h1>Welcome to Newt Pathway Viewer & Editor</h1>
 
         <p>Newt is a free, web based, open source viewer and editor for pathways in <a href="http://sbgn.org/">Systems
-            Biological Graphical Notation (SBGN)</a> and <a
+            Biological Graphical Notation (SBGN)</a>, <a href="https://sbml.org/"> Systems Biology Markup Language (SBML)</a>, and <a
             href="http://www.pathwaycommons.org/pc2/formats#sif_relations">Simple Interaction Format (SIF)</a>. It
           was written with a series of libraries and extensions based on <a
             href="http://js.cytoscape.org/">Cytoscape.js</a> with utmost customization in mind.</p>
@@ -57,26 +57,35 @@
           <li> Advanced diagramming through interactive move, resize, and styling of map objects including color
             schemes, re-routing and re-connection of interactions, and grid & alignment guideline support
           <li> Support for experiment data overlay on maps</a>
-          <li> Facilities for querying, viewing, and editing pathways in <a href="http://pathwaycommons.org">Pathway
-              Commons</a>
+          <li> Facilities for querying, viewing, and editing pathways in
+            <a href="http://pathwaycommons.org">Pathway Commons</a>,
+            <a href="https://reactome.org/">Reactome</a>, and 
+            <a href="https://www.wikipathways.org/">WikiPathways</a>,
           <li> Conversion to and from <a target="_blank" href="http://www.celldesigner.org/"> CellDesigner </a>, <a
               target="_blank" href="http://sbml.org/Main_Page">SBML</a>, and <a target="_blank" href="https://pathvisio.org/documentation/GPML">GPML</a> file formats
-          <li> Launching with a remote SBGN model specified as a URL (<a
-              href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn&mapColorScheme=blue_scale"
-              target="_blank">example</a>) or as a URI (<a
-              href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211&mapColorScheme=opposed_green_brown"
+          <li> Launching with a remote model specified as a URL
+            (<a href="https://web.newteditor.org/?URL=https://reactome.org/ContentService/exporter/event/R-HSA-450531.sbgn&inferNestingOnLoad=true&mapColorScheme=opposed_red_blue&fitLabelsToNodes=true"
+              target="_blank">SBGN</a>,
+            <a href="https://web.newteditor.org/?URL=https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000125.2?filename=BIOMD0000000125_url.xml&inferNestingOnLoad=true&applyLayoutOnURL=true"
+              target="_blank">SBML</a>, or
+            <a href="https://web.newteditor.org/?URL=https://www.wikipathways.org/wikipathways-assets/pathways/WP121/WP121.gpml"
+              target="_blank">GPML</a>), or as a URI
+              (<a href="http://web.newteditor.org/?URI=http://bioregistry.io/reactome:R-HSA-70171&mapColorScheme=opposed_green_brown"
               target="_blank">example</a>)
           <li> Support for <a href="https://sbgnbricks.org/">SBGN bricks</a>
         </ul>
+        <p>Some Newt version 4 features are highlighted in <a href="tutorials-newt4.html">here</a>.</p>
         <h2>Citation</h2>
-        <p>Please cite the following when you use Newt:<br><br>
+        <p>Please cite the following when you use Newt:</p>
 
-          H. Balci, M.C. Siper, N. Saleh, I. Safarli, L. Roy, M. Kilicarslan, R. Ozaydin, A. Mazein, C. Auffray, O. Babur, E. Demir and U. Dogrusoz, <a href="https://doi.org/10.1093/bioinformatics/btaa850">Newt: a comprehensive web-based tool for viewing, constructing, and analyzing biological maps</a>, <b>Bioinformatics</b>, 37(10), pp.1475-1477, 2021.<br><br>
+        <p>H. Balci, M.C. Siper, N. Saleh, I. Safarli, L. Roy, M. Kilicarslan, R. Ozaydin, A. Mazein, C. Auffray, O. Babur, E. Demir and U. Dogrusoz,
+          <a href="https://doi.org/10.1093/bioinformatics/btaa850">Newt: a comprehensive web-based tool for viewing, constructing, and analyzing biological maps</a>,
+          <b>Bioinformatics</b>, 37(10), pp.1475-1477, 2021.</p>
 
-          M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir, <a
-            href="https://doi.org/10.1371/journal.pone.0128985">SBGNViz: a tool for visualization and complexity
-          management of SBGN process description maps</a>, <b>PLoS ONE</b>, 10(6), e0128985, 2015.
-        </p>
+        <p>M. Sari, I. Bahceci, U. Dogrusoz, S.O. Sumer, B.A. Aksoy, O. Babur, E. Demir,
+          <a href="https://doi.org/10.1371/journal.pone.0128985">SBGNViz: a tool for visualization and complexity management of SBGN process description maps</a>,
+          <b>PLoS ONE</b>, 10(6), e0128985, 2015.</p>
+        
         <h2>Source code</h2>
         <p>Newt source code can be found on <a href="https://github.com/iVis-at-Bilkent/newt">this</a> Github
           repository.</p>

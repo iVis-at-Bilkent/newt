@@ -29,6 +29,8 @@
         <h1 id="top-of-tutorials">Tutorials</h1>
 
         <ul>
+        <li> <a href="#introduction">Newt 4</a>
+          <span style="float: right;">Updates video: <a href="tutorials-newt4.html"><img src="images/play-button.svg" width=16px/></a></span>
         <li> <a href="#introduction">Introduction</a> 
              <span style="float: right;">Newt basics video: <a href="tutorials-basics.html"><img src="images/play-button.svg" width=16px/></a></span>
         <li> <a href="#menubar-and-toolbar">Menubar and toolbar</a>
@@ -48,7 +50,7 @@
           <li style="line-height: 1em;"><a href="#persisting-preferences"><i>Persisting user preferences</i></a><br>
           <li style="line-height: 1em;"><a href="#remote-launch"><i>Launch with a remote SBGN map</i></a><br>
           </ul>
-        <li> <a href="#convenient-editing">Convenient editing</a>
+        <li> <a href="#convenient-editing">Convenient editing via SBGN bricks</a>
         <li> <a href="#alignment-grid-and-guidelines">Alignment, grid, and guidelines</a>
         <li> <a href="#semantic-validation">Semantic validation</a>
         <li> <a href="#complexity-management">Complexity management</a>
@@ -60,7 +62,7 @@
         <li> <a href="#search-and-highlight">Search and highlight</a>
         <li> <a href="#automatic-layout">Automatic layout</a>
              <span style="float: right;">Automatic layout video: <a href="tutorials-layout.html"><img src="images/play-button.svg" width=16px/></a></span>
-        <li> <a href="#querying-pathway-commons">Querying Pathway Commons</a>
+        <li> <a href="#querying-pathway-databases">Querying Pathway Databases</a>
         <li> <a href="#references">References</a>
         </ul>
 
@@ -71,16 +73,35 @@
 
         <span class="center"><a href="images/newt-ss.png" data-lightbox="image-intro" data-title="Overall look and components of the Newt editor"><img src="images/newt-ss.png" style="width: 100%;" /></a></span>
 
-        <p> Newt is a viewer and editor of maps drawn in SBGN Process Description (PD) and Activity Flow (AF) languages or <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a>. A quick introduction to SBGN can be found <a target="_blank" href="https://sbgn.github.io/learning">here</a>. Please refer to <a target="_blank" href="https://sbgn.github.io/referencecards">reference cards</a>, <a target="_blank" href="https://sbgn.github.io/learnerscards">learner's cards</a> and <a target="_blank" href="http://sbgn.github.io/sbgn/specifications">specifications</a> for details of SBGN languages. </p>
+        <p> Newt is a viewer and editor of maps drawn in Systems Biology Graphical Notation (SBGN) Process Description (PD) and 
+          Activity Flow (AF) languages, <a target="_blank" href="https://sbml.org/">Systems Biology Markup Language (SBML)</a> or 
+          <a target="_blank" href="https://www.pathwaycommons.org/pc/sif_interaction_rules.do">Simple Interaction Format (SIF)</a>. 
+          A quick introduction to SBGN can be found <a target="_blank" href="https://sbgn.github.io/learning">here</a>. Please 
+          refer to <a target="_blank" href="https://sbgn.github.io/referencecards">reference cards</a>, 
+          <a target="_blank" href="https://sbgn.github.io/learnerscards">learner's cards</a> and 
+          <a target="_blank" href="http://sbgn.github.io/sbgn/specifications">specifications</a> for details of SBGN languages. 
+        </p>
 
-        <p> Newt can be launched with a blank model, where a map can be created from scratch or an existing one can be uploaded for editing. Some samples are also available under the File menu. Samples include PD and AF learner's cards as well. In addition, one can launch Newt with a remote SBGN model specified as a URL or as a <a href="http://www.pathwaycommons.org/pc2/" target="_blank">Pathway Commons URI</a>. Examples: launch with <a href="http://web.newteditor.org/?URL=https://raw.githubusercontent.com/sbgn/libsbgn/master/test-files/PD/activated_stat1alpha_induction_of_the_irf1_gene.sbgn" target="_blank">URL</a> or <a href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211" target="_blank">URI</a>.
+        <p> Newt can be launched with a blank model, where a map can be created from scratch or an existing one can be uploaded 
+          for editing. Some samples are also available under the File menu. Samples include SBGN PD and AF learner's cards as well. 
+          In addition, one can launch Newt with a remote 
+          <a href="https://web.newteditor.org/?URL=https://reactome.org/ContentService/exporter/event/R-HSA-450531.sbgn&inferNestingOnLoad=true&mapColorScheme=opposed_red_blue&fitLabelsToNodes=true" target="_blank">SBGN</a>, 
+          <a href="https://web.newteditor.org/?URL=https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000125.2?filename=BIOMD0000000125_url.xml&inferNestingOnLoad=true&applyLayoutOnURL=true" target="_blank">SBML</a>, 
+          <a href="https://web.newteditor.org/?URL=https://www.wikipathways.org/wikipathways-assets/pathways/WP121/WP121.gpml" target="_blank">GPML</a>, or
+          model specified as a URL or as a 
+          <a href="http://www.pathwaycommons.org/pc2/" target="_blank">Pathway Commons URI</a> 
+          (<a href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211" target="_blank">example</a>).
 
-        <p> <a href="tutorials-basics.html">Here</a> is a short tutorial illustrating basics of Newt. Also refer to "Help | {Quick Help,Quick Tutorial,UI Guide}" for further help.</p>
+        <p> <a href="tutorials-basics.html">Here</a> is a short tutorial illustrating basics of Newt. Also refer to "Help | 
+          {Quick Help,Quick Tutorial,UI Guide}" for further help.</p>
+
+        <p> A video illustrating version 4 features can be found <a href="tutorials-newt4.html">here<a>. </p>
 
         <h2 id="menubar-and-toolbar">Menubar and toolbar
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Menubar located at the top of the Newt editor is where all capabilities of the tool are assembled in an organized manner. Right below is a toolbar, which compiles more frequently used of all available operations for convenience. </p>
+        <p> Menubar located at the top of the Newt editor is where all capabilities of the tool are assembled in an organized 
+          manner. Right below is a toolbar, which compiles more frequently used of all available operations for convenience. </p>
 
         <h2 id="right-panel">Right panel
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a>
@@ -120,7 +141,8 @@
             <li> <b>PD+AF</b>: An <i>SBGN</i> map containing nodes/edges from PD or AF palette
             <span class="right"><a href="images/map-properties-tooltip.png" data-lightbox="image-map-properties" data-title="Quick help for settings via tooltips"><img src="images/map-properties-tooltip.png" style="width:240px"/></a></span>
             <li> <b>SIF</b>: A <i>SIF</i> map containing nodes/edges <i>only</i> from SIF palette
-            <li> <b>PD+AF+SIF</b>: A <i>hybrid</i> map containing nodes/edges from any palette
+            <li> <b>SBML</b>: An <i>SBML</i> map containing nodes/edges from SBML palette
+            <li> <b>PD+AF+SIF+SBML</b>: A <i>hybrid</i> map containing nodes/edges from any palette
           </ul>
         </p>
         <p> &#9752; When you are over a particular setting in this tab, a tooltip will show an explanation of the associated setting. </p>
@@ -180,7 +202,13 @@
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a>
         </h3>
         <span class="left"><a href="images/palette.png" data-lightbox="image-pallette" data-title="Constructing a map using the palette"><img src="images/palette.png" style="width:440px"/></a></span>
-        <p> When the Palette tab on the right panel is chosen or when the user clicks in an empty area on the drawing canvas, the palette composed of nodes and edges of available map types: PD, AF and SIF, is displayed. The type of a map (see Type under General Properties) is considered PD (AF or SIF) when the user constructs a map using only nodes and edges from the PD (AF or SIF) palette. If the user wants to mix up nodes and/or edges from multiple palettes though, they should set the map type to be a <i>hybrid</i> one (e.g. PD+AF). The notation specific checks (e.g. a modulation arc can only go from a source EPN such as macromolecule to a process node in a PD map) are no longer performed for hybrid maps though. </p>
+        <p> When the Palette tab on the right panel is chosen or when the user clicks in an empty area on the drawing canvas, 
+          the palette composed of nodes and edges of available map types is displayed. The type of a map (see Type under 
+          General Properties) is considered PD by default when the user constructs a map from scratch, using only nodes and edges from the PD palette. The user, however, may change this
+          on an empty map and use the corresponding palette. If the user wants to mix up nodes and/or edges from multiple palettes though, 
+          they should set the map type to be a <i>PD+AF</i> (any SBGN node/edge) or <i>PD+AF+SIF+SBML</i> (any node/edge). 
+          The notation specific checks (e.g. a modulation arc can only go from a source EPN such as macromolecule to a process node in 
+          a PD map) are no longer performed for hybrid maps though. </p>
 
         <p> Nodes can either be created by dragging from the palette onto the canvas or by selecting a particular node on the palette and then clicking on the canvas. Clicking on a node or an edge puts you in node/edge creation mode, and upon creation of the node/edge, Newt returns to selection mode. Clicking <i>twice</i> on a tool, on the other hand, puts you in <i>sustained mode</i> so that the user can create multiple objects of that type in a row. </p>
 
@@ -223,9 +251,13 @@
         <p><br>where <code>entity_id</code> is the label and ID of a macromolecule or a simple chemical and <code>relationship_type</code> is one of the predetermined types of relationships between these two entities.
         </p>
 
-	<p> Here is a sample SIF file along with sample style and layout files, respectively (<a href="samples/Platelet-GP6-activation.sif">SIF</a>, <a href="samples/Platelet-GP6-activation.format">style</a> and <a href="samples/Platelet-GP6-activation.layout">layout</a>).
-	</p>
+      	<p> Here is a sample SIF file along with sample style and layout files, respectively (<a href="samples/Platelet-GP6-activation.sif">SIF</a>, <a href="samples/Platelet-GP6-activation.format">style</a> and <a href="samples/Platelet-GP6-activation.layout">layout</a>).    
+	      </p>
 
+        <p> Below is a table showing how each import or export operation behaves. Note that the current map type matters in most such operations.
+        <span class="left"><a href="images/import-export-table.png" data-lightbox="image-pallette" data-title="Table showing behavior of each import/export operation"><img src="images/import-export-table.png" style="width:100%"/></a></span>
+        </p>
+        
         <h3 id="static-images">Static images
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a>
         </h3>
@@ -247,10 +279,11 @@
     target="_blank">example</a>) or by URI (<a
     href="http://web.newteditor.org/?URI=http://identifiers.org/reactome/R-HSA-6803211&mapColorScheme=opposed_green_brown"
     target="_blank">example</a>) as a query to the Pathway Commons database. In the event that the provided URL is a file containing
-    an SBML model as opposed to an SBGN map, Newt will automatically apply a conversion and display the provided SBML model as an SBGN map. The user might like to change some map 
-    properities on a remote launch. In case a map property is also specified inside the file, they will be overwritten by these parameters passed during remote launch. In the case of 
-    <code>compoundPadding</code> and <code>inferNestingOnLoad</code>, however, any values specified inside the file will be ignored. Available properties (with default values listed 
-    first) include:
+    a non-native Newt format (e.g., GPML), Newt will automatically apply a conversion and display the provided model as an SBGN map. The user 
+    might like to change some map properities on a remote launch. In case a map property is also specified 
+    inside the file, they will be overwritten by these parameters passed during remote launch. In the case of 
+    <code>compoundPadding</code> and <code>inferNestingOnLoad</code>, however, any values specified inside the file will be ignored. 
+    Available properties (with default values listed first) include:
     <ul>
     <li><code>compoundPadding=0</code>,
     <li><code>inferNestingOnLoad=false</code>,
@@ -272,19 +305,16 @@
     <li><code>applyLayoutOnURL=false</code>. 
 </p>
 
-        <h2 id="convenient-editing">Convenient editing
+        <h2 id="convenient-editing">Convenient editing via SBGN bricks
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit menu inspired by <a href="https://sbgnbricks.org/">SBGN bricks</a>. </p>
+        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit (Add Using SBGN Bricks..) menu inspired by <a href="https://sbgnbricks.org/">SBGN bricks</a>. </p>
 
         <table class="plaintable">
           <tr>
             <th class="leftcolumn">
-            <a href="images/sbgn-bricks-1.png" data-lightbox="image-templates" data-title="Convenient editing using SBGN bricks"><img class="ssthumbnail" src="images/sbgn-bricks-1.png" style="height: 260px;"></a>
+            <a href="images/sbgn-bricks.png" data-lightbox="image-templates" data-title="Convenient editing using SBGN bricks"><img class="ssthumbnail" src="images/sbgn-bricks.png" style="height: 240px;"></a>
             </th>
-            <th class="rightcolumn">
-            <a href="images/sbgn-bricks-2.png" data-lightbox="image-templates" data-title="Example creation of an association using the template dialog"><img class="ssthumbnail" src="images/sbgn-bricks-2.png" style="height: 110px;"></a>
-            </th> 
           </tr>
         </table>
 
@@ -381,9 +411,11 @@ Grid and guideline support is rather involved and can be customized using the se
 
         <p> <a href="tutorials-layout.html">Here</a> is a short tutorial illustrating automatic layout capabilities of Newt. </p>
 
-        <h2 id="querying-pathway-commons">Querying Pathway Commons <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+        <h2 id="querying-pathway-databases">Querying Pathway Databases <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Newt provides an interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">Pathway Commons</a> database, presenting results in SBGN, and enabling editing on them. Currently available type of queries include:</p>
+        <p> Newt provides an extensive interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">Pathway 
+          Commons</a> database, presenting results in SBGN, and enabling editing on them. Currently available type of queries 
+          include:</p>
 		<ul>
 		 <li> Query Paths Between (find all paths of specified length limit between any two entities of the specified set),
 		 <li> Query From To.. (find all paths of specified length limit from a set of source entities to a set of target entities),
@@ -393,10 +425,24 @@ Grid and guideline support is rather involved and can be customized using the se
 		</ul> 
 	<p>as detailed <a target="_blank" href="http://www.pathwaycommons.org/pc2/">here</a> [<a href="#references">7</a>].</p>
 
-        <span class="left"><a href="images/PC-query-dialog.png" data-lightbox="image-pc-query" data-title="Sample Paths Between query"><img src="images/PC-query-dialog.png" style="height: 170px;" /></a></span>
-        <span class="right"><a href="images/PC-query-result.png" data-lightbox="image-pc-query" data-title="Partial view of the result of sample query"><img src="images/PC-query-result.png" style="height: 290px;" /></a></span>
+  <span class="left"><a href="images/PC-query-dialog.png" data-lightbox="image-pc-query" data-title="Sample Paths Between query"><img src="images/PC-query-dialog.png" style="height: 190px;" /></a></span>
 
-	<p>For instance, Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between multiple genes, this length limit can be at most 3.</p>
+	<p>For instance, Paths Between query takes a list of gene symbols (separated by blank spaces or on separate lines) and a length 
+    limit specifying the maximum length of paths between specified genes. Since there could be exponentially many paths between 
+    multiple genes, this length limit can be at most 3.</p> 
+
+  <p>Additional options are used to enable removal of disconnected entities and
+    redundant processes as there might be duplicate instances of the same process due to Pathway Commons gathering pathways from
+    multiple different databases. </p>
+
+    <span class="right"><a href="images/PC-query-result.png" data-lightbox="image-pc-query" data-title="Partial view of the result of sample query"><img src="images/PC-query-result.png" style="height: 390px;" /></a></span>
+
+  <p>Query results are highlighted, where source and/or target genes are colored in green in this example and the connecting paths
+    are in orange.
+  </p>
+
+  <p>Newt also provides querying <a href="https://reactome.org/">Reactome</a> by Reactome ID, and 
+    querying <a href="https://www.wikipathways.org/">WikiPathways</a> by WPID.</p>
 
         <h2 id="references">References
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
