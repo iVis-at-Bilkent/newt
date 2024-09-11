@@ -1830,7 +1830,7 @@ module.exports = function() {
       var activeTabContent = chiseInstance.createJsonFromSBGN();
 
  
-
+      console.log('activeTabContent:',activeTabContent);
       databaseUtilities.pushActiveContentToDatabase(activeTabContent)
       
     })

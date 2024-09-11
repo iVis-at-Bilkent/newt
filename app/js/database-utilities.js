@@ -106,6 +106,7 @@ var databaseUtilities = {
     await databaseUtilities.processNodesData(nodesData, activeTabContent)
     await databaseUtilities.processEdgesData(edgesData, activeTabContent);
     await databaseUtilities.processData(nodesData, edgesData);
+    console.log("nodes and edge shave been processed");
     databaseUtilities.pushActiveNodesEdgesToDatabase(nodesData, edgesData);
   },
 
@@ -402,7 +403,7 @@ var databaseUtilities = {
 
     var queryData = { nodesData: nodesData, edgesData: edgesData };
     var data = { query: integrationQuery, queryData: queryData };
-
+    console.log('hiii');
     $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -423,22 +424,25 @@ var databaseUtilities = {
             }
           }
         }
-        console.log('data',data);
+        // console.log('data',data);
         if (edges) {
           for (let i = 0; i < edges.length; i++) {
-            databaseUtilities.edgesInDB[
-              [
-                edges[i].properties.source,
-                edges[i].properties.target,
-                edges[i].properties.class,
-              ]
-            ] = edges[i].identity.low;
+            if(edges[i].properties){
+              databaseUtilities.edgesInDB[
+                [
+                  edges[i].properties.source,
+                  edges[i].properties.target,
+                  edges[i].properties.class,
+                ]
+              ] = edges[i].identity.low;
+            }
           }
         }
         console.log("hiii");
-        new ActiveTabPushSuccessView({
-          el:'#prompt-confirmation-table',
-          }).render();
+        // new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+        // new ActiveTabPushSuccessView({
+        //   el:'#prompt-confirmation-table',
+        //   }).render();
         console.log("hiii2");
       },
       error: function (req, status, err) {
@@ -795,7 +799,7 @@ var databaseUtilities = {
     var idOfNodes = [];
     var newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes, newtIdOfNodes);
-
+    
     //Check if label of nodes are valid
     if (idOfNodes.length == 0)
     {
@@ -807,6 +811,8 @@ var databaseUtilities = {
     var queryData = { idList: idOfNodes };
 
     var data = { query: query, queryData: queryData };
+    console.log("data being sent:",data);
+    console.log(query);
     var result = {};
     result.highlight = {};
     result.add = {};

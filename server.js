@@ -6,9 +6,9 @@ var server = require('http').createServer(app);
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
 	limit: "100mb",
-	extended: false
+	extended: true
   }));
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({limit:'100mb'}));
 var ajaxUtilities = require('./app/js/ajax-utilities');
 
 /**
