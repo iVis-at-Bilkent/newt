@@ -2,8 +2,6 @@
 
 node_modules/
 
-app/bundle.js
-
-.env
-
 package-lock.json
+
+app/bundle.js

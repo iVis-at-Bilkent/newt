@@ -44,7 +44,7 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -68,11 +68,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="_82f19e9e-6aa2-42b3-8b5e-8cee17197085" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>288.0675734938809</w>
           <h>287.9878645468844</h>
           <minW>0</minW>
@@ -81,7 +81,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="synaptic button"/>
       <bbox x="48.795570941475376" y="135.11438461108204" w="316.0675734938809" h="315.9878645468844"/>
@@ -101,7 +101,7 @@
     </glyph>
     <glyph id="_9007194d-c2e6-4939-a795-be71ae35a60d" class="compartment" compartmentRef="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>33.25</w>
           <h>33.25</h>
           <minW>0</minW>
@@ -110,7 +110,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="synaptic vesicle"/>
       <bbox x="282.63502448654714" y="165.07138059900043" w="61.25" h="61.25"/>
@@ -151,7 +151,7 @@
     </glyph>
     <glyph id="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>190.00901463861186</w>
           <h>174.01086590823894</h>
           <minW>0</minW>
@@ -160,7 +160,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="synaptic cleft"/>
       <bbox x="422.2398870476601" y="194.00340042086597" w="218.00901463861186" h="202.01086590823894"/>
@@ -193,7 +193,7 @@
     </glyph>
     <glyph id="_23d436e2-6633-42f2-98d0-00dbb962ac3d" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>717.9020162661556</w>
           <h>381.70484179076595</h>
           <minW>0</minW>
@@ -202,7 +202,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="muscle cytosol"/>
       <bbox x="709.2729209265942" y="71.69128590015737" w="745.9020162661556" h="409.70484179076595"/>
@@ -239,7 +239,7 @@
     </glyph>
     <glyph id="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>63.25</w>
           <h>76.5</h>
           <minW>0</minW>
@@ -248,7 +248,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="myosin"/>
       <bbox x="1089.2391734843104" y="110.32003199879449" w="83.25" h="96.5"/>
@@ -285,7 +285,7 @@
     </glyph>
     <glyph id="_85682413-94f7-8b3c-e052-59a72cd48e12" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>63.25</w>
           <h>76.5</h>
           <minW>0</minW>
@@ -294,7 +294,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="tense"/>
       <bbox x="1273.00834110702" y="278.89209179311297" w="83.25" h="96.5"/>
@@ -317,7 +317,7 @@
     </glyph>
     <glyph id="_04ea25d8-dfaa-7912-303f-be00b342fc27" class="complex" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>106.5</w>
           <h>76.5</h>
           <minW>0</minW>
@@ -326,7 +326,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="relaxed"/>
       <bbox x="1063.8564740619977" y="297.6979552597931" w="126.5" h="96.5"/>
@@ -362,7 +362,7 @@
     </glyph>
     <glyph id="nwtN_d1535aaf-5d91-4108-9331-852d6acb876e" class="compartment" compartmentRef="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>33.25</w>
           <h>33.25</h>
           <minW>0</minW>
@@ -371,7 +371,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="ER"/>
       <bbox x="914.8053596831671" y="136.04800579840227" w="61.25" h="61.25"/>

@@ -22,7 +22,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -43,7 +44,7 @@
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
         <mapName>Pathway #1</mapName>
         <mapDescription/>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="nwtN_93a97f0a-32f9-47f7-aecb-c472c2e24cfd" class="SIF macromolecule">
       <label text="CDKN2A"/>

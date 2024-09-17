@@ -58,7 +58,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -79,7 +80,7 @@
         <mapColorSchemeStyle>solid</mapColorSchemeStyle>
         <mapName>Pathway #sbgn-network-container-0</mapName>
         <mapDescription/>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="60a70c60-a024-940a-7aa7-bdc502a4e11c" class="biological activity">
       <label text="LOGICAL OPERATORS"/>
@@ -287,7 +288,7 @@
     </glyph>
     <glyph id="nwtN_a84230a9-1748-472e-b10c-c9e06317036e" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>86.26289567355363</w>
           <h>48.685521632231705</h>
           <minW>0</minW>
@@ -296,14 +297,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="LABEL"/>
       <bbox x="-508.13144783677683" y="670.6572391838841" w="86.26289567355363" h="48.685521632231705"/>
     </glyph>
     <glyph id="nwtN_66245041-19e3-4975-b185-6b0cb39421f4" class="submap">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>80</w>
           <h>45.55407379545484</h>
           <minW>0</minW>
@@ -312,7 +313,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="LABEL"/>
       <bbox x="-265" y="672.2229631022726" w="80" h="45.55407379545484"/>

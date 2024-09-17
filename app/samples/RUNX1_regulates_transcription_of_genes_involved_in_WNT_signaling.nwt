@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="sbml">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#f5f5f57f"/>
+          <colorDefinition id="color_2" value="#555555"/>
+          <colorDefinition id="color_3" value="#c7eae5ff"/>
+          <colorDefinition id="color_4" value="#80cdc1ff"/>
+          <colorDefinition id="color_5" value="#f6e8c3ff"/>
+          <colorDefinition id="color_6" value="#dfc27dff"/>
+          <colorDefinition id="color_7" value="#ffffffff"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/gb3_gradient.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/gb4_gradient.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/gb5_gradient.png"/>
+          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/gb2_gradient.png"/>
+          <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/gb1_gradient.png"/>
+          <backgroundImage id="image_6" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
+        </listOfBackgroundImages>
+        <listOfStyles>
+          <style id="nodef5f5f55555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="comp_0 comp_1 comp_2">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
+          </style>
+          <style id="nodec7eae55555551.2511normalnormalHelvetica000image_2none505010010011" idList="species_5 species_6 species_9 species_17 species_22">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="node80cdc15555551.2511normalnormalHelvetica000image_3none505010010011" idList="species_0 species_4 species_19 species_13 species_23 species_26 species_2 species_8 species_10 species_1 species_20 species_27 species_11 species_7 species_14">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodef6e8c35555551.2511normalnormalHelvetica000image_4none505010010011" idList="species_18 species_24 species_12">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_5" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodedfc27d5555551.2511normalnormalHelvetica000image_5none505010010011" idList="species_25 species_15 species_16 species_21 species_3">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_6" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff5555551.25image_6none505010010011" idList="SbmlReactionExporter_0 SbmlReactionExporter_1 SbmlReactionExporter_2 SbmlReactionExporter_3">
+            <g stroke="color_2" stroke-width="1.25" fill="color_7" background-image="image_6" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge5555551.25" idList="species_15_SbmlReactionExporter_0 species_9_SbmlReactionExporter_0 SbmlReactionExporter_0_species_5 species_21_SbmlReactionExporter_1 SbmlReactionExporter_1_species_7 species_17_SbmlReactionExporter_1 species_15_SbmlReactionExporter_2 SbmlReactionExporter_2_species_14 species_22_SbmlReactionExporter_2 species_5_SbmlReactionExporter_2 species_21_SbmlReactionExporter_3 species_6_SbmlReactionExporter_3 SbmlReactionExporter_3_species_17">
+            <g stroke="color_2" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <nwt:mapProperties 
+        xmlns:nwt="https://newteditor.org/">
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <enablePorts>true</enablePorts>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>opposed_green_brown</mapColorScheme>
+        <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
+        <mapName>RUNX1 regulates transcription of genes involved in WNT signaling</mapName>
+        <mapDescription/>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+        <mapPD2AFConverted>false</mapPD2AFConverted>
+      </nwt:mapProperties>
+    </extension>
+    <glyph id="comp_0" class="compartment">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>695.70654296875</w>
+          <h>521.1416015625</h>
+          <minW>695.70654296875</minW>
+          <minH>521.1416015625</minH>
+          <WLBias>0.004160667735511473</WLBias>
+          <WRBias>0.0058393322644885275</WRBias>
+          <HTBias>0.004999994550438418</HTBias>
+          <HBBias>0.005000005449561583</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="nucleoplasm"/>
+      <bbox x="70.06303996705623" y="246.21748576599327" w="723.70654296875" h="549.1416015625"/>
+    </glyph>
+    <glyph id="species_5" class="complex sbml" compartmentRef="comp_0">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>153.25</w>
+          <h>163.63040161132812</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="RUNX1:CBFB:ESR1:estrogen:AXIN1 gene"/>
+      <bbox x="101.55254955129777" y="288.3791809082031" w="173.25" h="183.63040161132812"/>
+    </glyph>
+    <glyph id="species_0" class="protein" compartmentRef="species_5">
+      <label text="RUNX1"/>
+      <bbox x="192.04530162649309" y="361.5168151855469" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_4" class="protein" compartmentRef="species_5">
+      <label text="ESR1"/>
+      <bbox x="192.04530162649309" y="420.38458251953125" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_18" class="simple molecule" compartmentRef="species_5">
+      <label text="ESTG"/>
+      <bbox x="113.83877391653215" y="361.5168151855469" w="40" h="40"/>
+    </glyph>
+    <glyph id="species_19" class="protein" compartmentRef="species_5">
+      <label text="CBFB"/>
+      <bbox x="113.17754955129777" y="300.0041809082031" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_25" class="gene" compartmentRef="species_5">
+      <label text="AXIN1"/>
+      <bbox x="193.17754955129777" y="300.0041809082031" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_6" class="complex sbml" compartmentRef="comp_0">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>73.25</w>
+          <h>163.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="RUNX1:CBFB:FOXP3"/>
+      <bbox x="444.6855121131663" y="540.8487379057901" w="93.25" h="183.25"/>
+    </glyph>
+    <glyph id="species_13" class="protein" compartmentRef="species_6">
+      <label text="RUNX1"/>
+      <bbox x="456.3105121131663" y="612.4737379057901" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_23" class="protein" compartmentRef="species_6">
+      <label text="CBFB"/>
+      <bbox x="456.3105121131663" y="552.4737379057901" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_26" class="protein" compartmentRef="species_6">
+      <label text="FOXP3"/>
+      <bbox x="456.3105121131663" y="672.4737379057901" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_9" class="complex sbml" compartmentRef="comp_0">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>153.2500076293946</w>
+          <h>103.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="RUNX1:CBFB:ESR1:estrogen"/>
+      <bbox x="102.9191716169858" y="629.9473343408787" w="173.2500076293946" h="123.25"/>
+    </glyph>
+    <glyph id="species_2" class="protein" compartmentRef="species_9">
+      <label text="ESR1"/>
+      <bbox x="114.5441716169858" y="701.5723343408787" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_8" class="protein" compartmentRef="species_9">
+      <label text="CBFB"/>
+      <bbox x="194.54417924638037" y="641.5723343408787" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_10" class="protein" compartmentRef="species_9">
+      <label text="RUNX1"/>
+      <bbox x="114.5441716169858" y="641.5723343408787" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_24" class="simple molecule" compartmentRef="species_9">
+      <label text="ESTG"/>
+      <bbox x="194.07315568681003" y="700.8205032861912" w="40" h="40"/>
+    </glyph>
+    <glyph id="species_15" class="gene" compartmentRef="comp_0">
+      <label text="AXIN1"/>
+      <bbox x="303.1999172178299" y="537.28878440533" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_17" class="complex sbml" compartmentRef="comp_0">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>153.25</w>
+          <h>103.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="RUNX1:CBFB:FOXP3:RSPO3 gene"/>
+      <bbox x="581.0189819335938" y="410.2088317871094" w="173.25" h="123.25"/>
+    </glyph>
+    <glyph id="species_1" class="protein" compartmentRef="species_17">
+      <label text="FOXP3"/>
+      <bbox x="592.6439819335938" y="481.8338317871094" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_16" class="gene" compartmentRef="species_17">
+      <label text="RSPO3"/>
+      <bbox x="672.6439819335938" y="421.8338317871094" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_20" class="protein" compartmentRef="species_17">
+      <label text="RUNX1"/>
+      <bbox x="672.6439819335938" y="481.8338317871094" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_27" class="protein" compartmentRef="species_17">
+      <label text="CBFB"/>
+      <bbox x="592.6439819335938" y="421.8338317871094" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_21" class="gene" compartmentRef="comp_0">
+      <label text="RSPO3"/>
+      <bbox x="644.46484375" y="690.6306762695312" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_22" class="complex sbml" compartmentRef="comp_0">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>78.25</w>
+          <h>163.25</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="ESR1:estrogen:AXIN1 gene"/>
+      <bbox x="397.4638671875" y="290.9028633566169" w="98.25" h="183.25"/>
+    </glyph>
+    <glyph id="species_3" class="gene" compartmentRef="species_22">
+      <label text="AXIN1"/>
+      <bbox x="414.0888671875" y="302.5278633566169" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_11" class="protein" compartmentRef="species_22">
+      <label text="ESR1"/>
+      <bbox x="414.0888671875" y="422.5278633566169" w="70" h="40"/>
+    </glyph>
+    <glyph id="species_12" class="simple molecule" compartmentRef="species_22">
+      <label text="ESTG"/>
+      <bbox x="409.0888671875" y="362.5278633566169" w="40" h="40"/>
+    </glyph>
+    <glyph id="SbmlReactionExporter_0" class="process" compartmentRef="comp_0">
+      <bbox x="181.6360582624163" y="540.1668657575335" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_0.1" x="188.77891540527344" y="537.3097229003906"/>
+      <port id="SbmlReactionExporter_0.2" x="188.77891540527344" y="557.3097229003906"/>
+    </glyph>
+    <glyph id="SbmlReactionExporter_1" class="process" compartmentRef="comp_0">
+      <bbox x="738.736515359326" y="613.7233309577872" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_1.1" x="755.8793725021831" y="620.8661881006443"/>
+      <port id="SbmlReactionExporter_1.2" x="735.8793725021831" y="620.8661881006443"/>
+    </glyph>
+    <glyph id="SbmlReactionExporter_2" class="process" compartmentRef="comp_0">
+      <bbox x="329.6547400722732" y="376.5237179026379" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_2.1" x="336.7975972151304" y="373.66657504549505"/>
+      <port id="SbmlReactionExporter_2.2" x="336.7975972151304" y="393.66657504549505"/>
+    </glyph>
+    <glyph id="SbmlReactionExporter_3" class="process" compartmentRef="comp_0">
+      <bbox x="619.7675042416785" y="613.8161086395428" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_3.1" x="626.9103613845356" y="610.9589657823999"/>
+      <port id="SbmlReactionExporter_3.2" x="626.9103613845356" y="630.9589657823999"/>
+    </glyph>
+    <glyph id="comp_1" class="compartment">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>101.875</w>
+          <h>80.625</h>
+          <minW>101.875</minW>
+          <minH>80.625</minH>
+          <WLBias>0.005109170305676856</WLBias>
+          <WRBias>0.004890829694323144</WRBias>
+          <HTBias>0.006254180602006689</HTBias>
+          <HBBias>0.0037458193979933107</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="extracellular"/>
+      <bbox x="818.7216711989889" y="563.4389818207727" w="129.875" h="108.625"/>
+    </glyph>
+    <glyph id="species_7" class="protein" compartmentRef="comp_1">
+      <label text="RSPO3"/>
+      <bbox x="848.9716711989889" y="602.4389818207727" w="70" h="40"/>
+    </glyph>
+    <glyph id="comp_2" class="compartment">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>101.875</w>
+          <h>80.625</h>
+          <minW>101.875</minW>
+          <minH>80.625</minH>
+          <WLBias>0.005109170305676856</WLBias>
+          <WRBias>0.004890829694323144</WRBias>
+          <HTBias>0.006254180602006689</HTBias>
+          <HBBias>0.0037458193979933107</HBBias>
+        </nwt:extraInfo>
+      </extension>
+      <label text="cytosol"/>
+      <bbox x="271.5832875227476" y="111" w="129.875" h="108.625"/>
+    </glyph>
+    <glyph id="species_14" class="protein" compartmentRef="comp_2">
+      <label text="AXIN1"/>
+      <bbox x="301.8332875227476" y="150" w="70" h="40"/>
+    </glyph>
+    <arc id="species_15_SbmlReactionExporter_0" class="consumption" source="species_15" target="SbmlReactionExporter_0.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="302.5749172178299" y="554.9095735728432"/>
+      <end x="188.77891540527344" y="557.9347229003906"/>
+    </arc>
+    <arc id="species_9_SbmlReactionExporter_0" class="consumption" source="species_9" target="SbmlReactionExporter_0.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="189.21396210635692" y="629.3223343408787"/>
+      <end x="188.77891540527344" y="557.9347229003906"/>
+    </arc>
+    <arc id="SbmlReactionExporter_0_species_5" class="production" source="SbmlReactionExporter_0.1" target="species_5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="188.77891540527344" y="536.6847229003906"/>
+      <end x="188.52144159626127" y="475.7595622865118"/>
+    </arc>
+    <arc id="species_21_SbmlReactionExporter_1" class="consumption" source="species_21" target="SbmlReactionExporter_1.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="694.7247720741784" y="690.0056762695312"/>
+      <end x="735.2543725021831" y="620.8661881006443"/>
+    </arc>
+    <arc id="SbmlReactionExporter_1_species_7" class="production" source="SbmlReactionExporter_1.1" target="species_7">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="756.5043725021831" y="620.8661881006443"/>
+      <end x="845.2218738656867" y="621.9976433936683"/>
+    </arc>
+    <arc id="species_17_SbmlReactionExporter_1" class="stimulation" source="species_17" target="SbmlReactionExporter_1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="700.3224766132917" y="534.0838317871094"/>
+      <end x="740.442823494711" y="610.5099835376051"/>
+    </arc>
+    <arc id="species_15_SbmlReactionExporter_2" class="consumption" source="species_15" target="SbmlReactionExporter_2.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="338.03333225060527" y="536.66378440533"/>
+      <end x="336.7975972151304" y="394.29157504549505"/>
+    </arc>
+    <arc id="SbmlReactionExporter_2_species_14" class="production" source="SbmlReactionExporter_2.1" target="species_14">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="336.7975972151304" y="373.04157504549505"/>
+      <end x="336.82932038467663" y="193.7499999564039"/>
+    </arc>
+    <arc id="species_22_SbmlReactionExporter_2" class="inhibition" source="species_22" target="SbmlReactionExporter_2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="396.8388671875" y="383.04385070730467"/>
+      <end x="345.38682914865944" y="383.5774909242926"/>
+    </arc>
+    <arc id="species_5_SbmlReactionExporter_2" class="stimulation" source="species_5" target="SbmlReactionExporter_2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="275.4275495512978" y="382.23279357651023"/>
+      <end x="326.08416400261376" y="383.41627831942026"/>
+    </arc>
+    <arc id="species_21_SbmlReactionExporter_3" class="consumption" source="species_21" target="SbmlReactionExporter_3.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="667.377015906644" y="690.0056762695312"/>
+      <end x="626.9103613845356" y="631.5839657823999"/>
+    </arc>
+    <arc id="species_6_SbmlReactionExporter_3" class="consumption" source="species_6" target="SbmlReactionExporter_3.2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="538.5605121131663" y="628.4613958143077"/>
+      <end x="626.9103613845356" y="631.5839657823999"/>
+    </arc>
+    <arc id="SbmlReactionExporter_3_species_17" class="production" source="SbmlReactionExporter_3.1" target="species_17">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="626.9103613845356" y="610.3339657823999"/>
+      <end x="649.8169271408096" y="537.098394545864"/>
+    </arc>
+  </map>
+</sbgn>

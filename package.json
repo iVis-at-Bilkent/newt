@@ -32,7 +32,7 @@
     "cytoscape-edgehandles": "~2.13.1",
     "cytoscape-expand-collapse": "github:iVis-at-Bilkent/cytoscape.js-expand-collapse#unstable",
     "cytoscape-fcose": "github:iVis-at-Bilkent/cytoscape.js-fcose#unstable",
-    "cytoscape-graph-algos": "github:iVis-at-Bilkent/cytoscape.js-graph-algos#3b64a7f8275ca0c3b3f32c4869c63c0647c7772c",
+    "cytoscape-graph-algos": "github:iVis-at-Bilkent/cytoscape.js-graph-algos#master",
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-layout-utilities": "github:iVis-at-Bilkent/cytoscape.js-layout-utilities#unstable",
     "cytoscape-node-editing": "github:iVis-at-Bilkent/cytoscape.js-node-editing#unstable",
@@ -45,8 +45,9 @@
     "intro.js": "2.9.3",
     "jquery": "~3.3.1",
     "jquery-expander": "1.7.0",
+    "jsdom": "^20.0.1",
     "konva": "^7.0.3",
-    "libxmljs": "^0.19.10",
+    "libxmljs": "^1.0.11",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "mousetrap": "^1.6.0",
@@ -59,11 +60,11 @@
     "tippy.js": "^3.4.0"
   },
   "devDependencies": {
+    "body-parser": "^1.19.0",
     "browserify": "^11.2.0",
     "cypress": "^7.3.0",
     "cypress-file-upload": "^5.0.3",
     "cypress-real-events": "^1.3.0",
-    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "nodemon": "1.11.0",
     "parallelshell": "3.0.1"

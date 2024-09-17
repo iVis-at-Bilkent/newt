@@ -577,7 +577,7 @@ menu:not([title]):before{
 
 .selected-mode-sustainable, .toggle-mode-sustainable {
   background-color: #b9b9b9;
-  *background-color: #ffffff;
+  background-color: #ffffff;
   background-image: -moz-linear-gradient(top, #ffffff, #b9b9b9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#b9b9b9));
   background-image: -webkit-linear-gradient(top, #ffffff, #b9b9b9);
@@ -635,6 +635,22 @@ menu:not([title]):before{
     padding-bottom: 3px;
     padding-left: 0px !important;
     padding-right: 0px !important;
+}
+
+.palette-panel-body {
+    margin-top: 10px;
+}
+
+.palette-label {
+    font-size: 12px;
+    background:white; 
+    margin-bottom:0px; 
+    width: fit-content;
+    text-align:left; 
+    color: #555;
+    margin-top: -17px;
+    padding-right: 6px;
+    padding-left: 6px;
 }
 
 .panel {
@@ -702,11 +718,6 @@ hr.inspector-divider {
     padding: 3px;
 }
 
-.element-palette div {
-    /*width: 36px;*/
-    /*height: 30px;*/
-}
-
 .selected-mode.inactive-palette-element {
     border-style: dotted;
     border-width: 1px;
@@ -716,34 +727,79 @@ hr.inspector-divider {
     margin: 1px;
 }
 
+.caption-style-text {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #777;
+    text-align: left;
+}
+
 .chise-tab a {
     color: #555;
     padding-left: 5px !important;
     padding-right: 5px !important;
     border-radius: 8px 8px 0 0 !important;
+    border: 1px solid #aaaaaa;
+    box-shadow: 1px -1px 2px #999999;
+}
+
+.chise-tab.active a {
+    background: #eaeaea !important;
+    border: 1px solid #434343;
+    box-shadow: 1px -1px 2px 0 #303030 !important;
+}
+
+.chise-tab:hover a {
+    background: #eaeaea !important;
+}
+
+.chise-network-tab {
+    margin-right: 2px;
+    border-radius: 0 0 8px 2px !important;
+    background: transparent !important;
+    border-top: 0px !important;
+    border: 1px solid #b9b9b9;
+    border-left-width: 0px !important;
+    box-shadow: 1px 1px 1px #b9b9b9;
 }
 
 .chise-network-tab a {
-    border-radius: 0 0 8px 8px !important;
+    color: #555;
+    padding-top: 10px !important;
+    padding-bottom: 12px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    border-bottom-right-radius: 8px !important;
+    border-bottom-left-radius: 2px !important;
     font-size: 11px;
     width: 86px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     background: transparent !important;
-    border-top: 0px !important;
+    border: 0px !important;
 }
 
-/*.chise-tab.active {
-    font-weight: bold;
-}*/
-
-.chise-tab.active a {
-    background: #eaeaea !important;
+.chise-network-tab.active {
+    border: 1px solid #434343;
+    box-shadow: 1px 1px 2px #434343;
 }
 
-.chise-network-tab.active a {
+.chise-network-tab.active, .chise-network-tab.active a {
     background: white !important;
+
+}
+.map-tab-type {
+    position: absolute;
+    background-color: #555;
+    margin-top: -2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 0px solid #555;
+    border-radius: 5px;
+    right: 3px;
+    font-size: 9px;
+    color: white;
 }
 
 .close:hover,
@@ -752,14 +808,10 @@ hr.inspector-divider {
 }
 
 .closeTab {
-    margin-top: -10px !important;
+    margin-top: -10px;
 }
 
-.chise-tab:hover a {
-    background: #eaeaea !important;
-}
-
-.chise-network-tab:hover a {
+.chise-network-tab:hover, .chise-network-tab:hover a{
     background: white !important;
 }
 
@@ -769,7 +821,6 @@ hr.inspector-divider {
     border-width: 1px !important;
     border-radius: calc !important;
     font-size: 12px;
-    align: center;
 }
 
 #sbgn-toolbar img {
@@ -824,12 +875,7 @@ img#template-reversible-output-add-button:hover {
 {
     display: table;
     margin: auto;
-    width: 300px;
-}
-
-.paletteCont
-{
-
+    width: 350px;
 }
 
 .paletteCol {
@@ -887,6 +933,13 @@ img#template-reversible-output-add-button:hover {
 /*
   Palettes on right pane
 */
+
+@media (max-width: 1770px) {
+    .paletteWrapper
+    {
+        width: 300px;
+    }
+}
 
 @media (max-width: 1530px) {
     .paletteWrapper

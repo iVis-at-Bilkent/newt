@@ -42,7 +42,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -68,11 +69,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="glyph0" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>96.5</w>
           <h>109.75</h>
           <minW>0</minW>
@@ -81,14 +82,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="juxtanuclear inclusion"/>
       <bbox x="242.39782054282813" y="68.98900404169493" w="124.5" h="137.75"/>
     </glyph>
     <glyph id="glyph35" class="complex" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
           <h>86.5</h>
           <minW>0</minW>
@@ -97,7 +98,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Hsp70"/>
       <bbox x="258.02282054282813" y="84.61400404169493" w="93.25" h="106.5"/>
@@ -112,7 +113,7 @@
     </glyph>
     <glyph id="glyph1" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>478.4201953499179</w>
           <h>308.32200968050824</h>
           <minW>0</minW>
@@ -121,7 +122,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nucleus"/>
       <bbox x="723.667961804332" y="603.4207032900716" w="506.4201953499179" h="336.32200968050824"/>
@@ -131,7 +132,7 @@
     </glyph>
     <glyph id="glyph38" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>156.5</w>
           <h>96.125</h>
           <minW>0</minW>
@@ -140,7 +141,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Hsp70"/>
       <bbox x="739.2929618043319" y="654.607936647751" w="176.5" h="116.125"/>
@@ -203,7 +204,7 @@
     </glyph>
     <glyph id="glyph6" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>30</w>
           <h>30</h>
           <minW>0</minW>
@@ -212,7 +213,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nuclear&#xA;proteasome"/>
       <bbox x="1179.9150092625237" y="807.0709790162017" w="30" h="30"/>
@@ -226,7 +227,7 @@
     </glyph>
     <glyph id="glyph2" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>82.25</w>
           <h>96.12500000000006</h>
           <minW>0</minW>
@@ -235,7 +236,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="PolyQ aggregates"/>
       <bbox x="103.24818928611256" y="415.605374441516" w="102.25" h="116.12500000000006"/>
@@ -298,7 +299,7 @@
     </glyph>
     <glyph id="glyph5" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
           <h>97.125</h>
           <minW>0</minW>
@@ -307,7 +308,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="misfolded protein"/>
       <bbox x="471.5642832933702" y="321.5344129262429" w="93.25" h="117.125"/>
@@ -326,7 +327,7 @@
     </glyph>
     <glyph id="glyph3" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>156.50000000000006</w>
           <h>96.12499999999994</h>
           <minW>0</minW>
@@ -335,7 +336,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Hsp70"/>
       <bbox x="414.7785668122808" y="473.33425203218394" w="176.50000000000006" h="116.12499999999994"/>
@@ -368,7 +369,7 @@
     </glyph>
     <glyph id="glyph7" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>68.08837890625</w>
           <h>36</h>
           <minW>0</minW>
@@ -377,14 +378,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="cytosolic&#xA;proteasome"/>
       <bbox x="177.1841333020095" y="256.87267866973554" w="68.08837890625" h="36"/>
     </glyph>
     <glyph id="glyph4" class="complex">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
           <h>86.5</h>
           <minW>0</minW>
@@ -393,7 +394,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="misfolded protein"/>
       <bbox x="318.2436668979196" y="304.6322669899152" w="93.25" h="106.5"/>

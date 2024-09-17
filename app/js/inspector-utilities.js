@@ -91,6 +91,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   //first empty the state variables and infos data in inspector
   $("#inspector-state-variables").html("");
   $("#inspector-unit-of-informations").html("");
+  $("#inspector-residue-variable").html("");
+  $("#inspector-binding-region").html("");
 
   function get_text_width(txt, font) {
     this.element = document.createElement('canvas');
@@ -153,6 +155,18 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
                 + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
         }
 
+        if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes)) {
+          uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
+                + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
+        }
+
+        /*
+        if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes)) {
+          uioHtml += "<img width='16px' height='16px' id='inspector-delete-state-and-info"
+                + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>";
+        }
+        */
+
         uioHtml += "</div>";
 
         $('#inspector-unit-of-informations').append( uioHtml );
@@ -161,6 +175,51 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
           chiseInstance.changeStateOrInfoBox(nodes[0], i, $(this).val());
         });
       }
+      else if (state.clazz == "residue variable")
+      {
+        $("#inspector-residue-variable").append(
+          "<div>"
+
+          // state variable - variable
+          + "<input type='text' id='inspector-residue-variable-variable" + i + "' class='inspector-input-box' style='width: "
+          + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.residue.variable) + "'/>"
+
+          + getInfoboxDetailsBtnHtml( i )
+
+          + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
+          + "</div>"
+      );
+
+      $("#inspector-residue-variable-variable" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
+      });
+      }
+
+      else if (state.clazz == "binding region")
+      {
+        $("#inspector-binding-region").append(
+          "<div>"
+
+          // state variable - variable
+          + "<input type='text' id='inspector-binding-region-variable" + i + "' class='inspector-input-box' style='width: "
+          + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.region.variable) + "'/>"
+
+          + getInfoboxDetailsBtnHtml( i )
+
+          + "<img width='16px' height='16px' id='inspector-delete-state-and-info" + i + "' class='pointer-button' src='app/img/toolbar/delete-simple.svg'></img>"
+          + "</div>"
+      );
+
+      $("#inspector-binding-region-value" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'value');
+      });
+
+      $("#inspector-binding-region-variable" + i).unbind('change').on('change', function () {
+        chiseInstance.changeStateOrInfoBox(nodes, i, $(this).val(), 'variable');
+      });
+      }
+
+      
 
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
@@ -173,14 +232,45 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
     })(i);
   }
   $("#inspector-state-variables").append("<img width='16px' height='16px' id='inspector-add-state-variable' src='app/img/add.svg' class='pointer-button'/>");
+  $("#inspector-residue-variable").append("<img width='16px' height='16px' id='inspector-add-residue-variable-variable' src='app/img/add.svg' class='pointer-button'/>");
+  $("#inspector-binding-region").append("<img width='16px' height='16px' id='inspector-add-binding-region-variable' src='app/img/add.svg' class='pointer-button'/>");
+
 
   if (chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(nodes)){
     $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
   };
+
+  //Get number of unit information already added:
+  var unitOfInfoCount = 0
+  for ( var i = 0; i < stateAndInfos.length; i++)
+  {
+     if( stateAndInfos[i].clazz === 'unit of information')
+     {
+      unitOfInfoCount++;
+     }
+  }
+  if (chiseInstance.elementUtilities.canHaveOneUnitOfInformation(nodes) && unitOfInfoCount == 0){
+    $("#inspector-unit-of-informations").append("<img width='16px' height='16px' id='inspector-add-unit-of-information' src='app/img/add.svg' class='pointer-button'/>");
+  };
+
   $("#inspector-add-state-variable").click(function () {
 
     var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
 
+    chiseInstance.addStateOrInfoBox(nodes, obj);
+    inspectorUtilities.handleSBGNInspector();
+  });
+
+  $("#inspector-add-residue-variable-variable").click(function () {
+
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'residue variable' );
+    chiseInstance.addStateOrInfoBox(nodes, obj);
+    inspectorUtilities.handleSBGNInspector();
+  });
+
+  $("#inspector-add-binding-region-variable").click(function () {
+
+    var obj = appUtilities.getDefaultEmptyInfoboxObj( 'binding region' );
     chiseInstance.addStateOrInfoBox(nodes, obj);
     inspectorUtilities.handleSBGNInspector();
   });
@@ -228,7 +318,7 @@ inspectorUtilities.handleSBGNInspector = function () {
     }
 
     var classInfo = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele) {
-      return ele.data('class').replace(' multimer', '');
+      return ele.data('class').replace(' multimer', '').replace('active ', '').replace('hypothetical ', '');
     }) || "";
 
     classInfo = appUtilities.transformClassInfo( classInfo );
@@ -253,8 +343,11 @@ inspectorUtilities.handleSBGNInspector = function () {
     var fillSiteLocations;
     var multimerCheck;
     var clonedCheck;
+    var activeCheck;
     var commonIsMultimer;
     var commonIsCloned;
+    var commonIsActive;
+    var commonIsHypothetical;
     var commonStateAndInfos;
     var commonSBGNCardinality;
     var imageFromURL;
@@ -408,10 +501,25 @@ inspectorUtilities.handleSBGNInspector = function () {
                   + "<td id='inspector-state-variables' style='padding-left: 5px; width: '" + width + "'></td></tr>";
         }
 
+        if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveResidueVariable)) {
+          fillStateAndInfos = true;
+          html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+          html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Residue Variables</font>" + "</td>"
+                  + "<td id='inspector-residue-variable' style='padding-left: 5px; width: '" + width + "'></td></tr>";
+        }
+
+        if (chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canHaveBindingRegion)) {
+          fillStateAndInfos = true;
+          html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
+          html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Binding Region</font>" + "</td>"
+                  + "<td id='inspector-binding-region' style='padding-left: 5px; width: '" + width + "'></td></tr>";
+        }
+
         if (chiseInstance.elementUtilities.canHaveUnitOfInformation(selectedEles)) {
           fillStateAndInfos = true;
 
           var unit = chiseInstance.elementUtilities.canHaveMultipleUnitOfInformation(selectedEles) ? "Units" : "Unit";
+          var unit = chiseInstance.elementUtilities.canHaveOneUnitOfInformation(selectedEles) ? "Unit" : unit;
           html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
           html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>" + unit + " of Information</font>" + "</td>"
                   + "<td id='inspector-unit-of-informations' style='padding-left: 5px; width: '" + width + "'></td></tr>";
@@ -424,12 +532,22 @@ inspectorUtilities.handleSBGNInspector = function () {
       commonIsCloned = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
         return ele.data('clonemarker') === true;
       });
+      commonIsActive = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
+        return ele.data('class').startsWith('active ');
+      });
+
+      commonIsHypothetical = chiseInstance.elementUtilities.getCommonProperty(selectedEles, function(ele){
+        return ele.data('class').includes('hypothetical');
+      });
 
       multimerCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeMultimer);
       clonedCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeCloned);
+      activeCheck  = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeActive);
+      hypotheticalCheck = chiseInstance.elementUtilities.trueForAllElements(selectedEles, chiseInstance.elementUtilities.canBeHypothetical);
 
       multimerCheck = multimerCheck?multimerCheck:false;
       clonedCheck = clonedCheck?clonedCheck:false;
+      activeCheck = activeCheck?activeCheck:false;
 
       if (multimerCheck || clonedCheck) {
         html += "<tr><td colspan='2'><hr class='inspector-divider'></td></tr>";
@@ -440,9 +558,19 @@ inspectorUtilities.handleSBGNInspector = function () {
                 + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-multimer'></td></tr>";
       }
 
+      if (activeCheck) {
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Active</font>" + "</td>"
+                + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-active'></td></tr>";
+      }
+
       if (clonedCheck) {
         html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Cloned</font>" + "</td>"
                 + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-clone-marker'></td></tr>";
+      }
+
+      if (hypotheticalCheck) {
+        html += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" + "<font class='sbgn-label-font'>Hypothetical</font>" + "</td>"
+                + "<td style='padding-left: 5px; width: '" + width + "'><input type='checkbox' id='inspector-is-hypothetical'></td></tr>";
       }
 
       /*
@@ -637,6 +765,13 @@ inspectorUtilities.handleSBGNInspector = function () {
         $('#inspector-is-clone-marker').attr('checked', true);
       }
 
+      if (activeCheck && commonIsActive) {
+        $('#inspector-is-active').attr('checked', true);
+      }
+      if (hypotheticalCheck && commonIsHypothetical) {
+        $('#inspector-is-hypothetical').attr('checked', true);
+      }
+
       if(imageFromURL){
         $('#inspector-image-from-url').attr('checked', true);
       }
@@ -737,7 +872,6 @@ inspectorUtilities.handleSBGNInspector = function () {
           type: 'GET',
           data: {url: url},
           success: function(data){
-            console.log(data);
             // here we can get 404 as well, for example, so there are still error cases to handle
             if (!data.error && data.response.statusCode == 200 && typeof applyBackground === 'function')
               applyBackground(node, bgObj);
@@ -854,6 +988,8 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-set-as-default-button').on('click', function () {
         var multimer;
+        var active;
+        var hypothetical;
         var selected = selectedEles[0];
         var sbgnclass = selected.data('class');
         if (sbgnclass.endsWith(' multimer')) {
@@ -862,6 +998,22 @@ inspectorUtilities.handleSBGNInspector = function () {
         }
         else {
           multimer = false;        
+        }
+
+        if (sbgnclass.startsWith('active ')) {
+          sbgnclass = sbgnclass.replace('active ', '');
+          active = true;
+        }
+        else {
+          active = false;        
+        }
+
+        if (sbgnclass.includes('hypothetical')) {
+          sbgnclass = sbgnclass.replace('hypothetical ', '');
+          hypothetical = true;
+        }
+        else {
+          hypothetical = false;        
         }
 
         var nameToVal = {
@@ -883,6 +1035,16 @@ inspectorUtilities.handleSBGNInspector = function () {
         // Push this action if the node can be multimer
         if (chiseInstance.elementUtilities.canBeMultimer(sbgnclass)) {
           nameToVal['multimer'] = multimer;
+        }
+
+        // Push this action if the node can be active
+        if (chiseInstance.elementUtilities.canBeActive(sbgnclass)) {
+          nameToVal['active'] = active;
+        }
+
+        // Push this action if the node can be hypothetical
+        if (chiseInstance.elementUtilities.canBeHypothetical(sbgnclass)) {
+          nameToVal['hypothetical'] = hypothetical;
         }
 
         // Push this action if the node can be cloned
@@ -1000,6 +1162,17 @@ inspectorUtilities.handleSBGNInspector = function () {
 
       $('#inspector-is-clone-marker').on('click', function () {
         chiseInstance.setCloneMarkerStatus(selectedEles, $('#inspector-is-clone-marker').prop('checked'));
+      });
+
+      $('#inspector-is-active').on('click', function () {
+        chiseInstance.setActiveStatus(selectedEles, $('#inspector-is-active').prop('checked'));
+       // console.log("inspector-is-active clicked")
+        //chiseInstance.setMultimerStatus(selectedEles, $('#inspector-is-active').prop('checked'));
+      });
+
+      $('#inspector-is-hypothetical').on('click', function () {
+        chiseInstance.setHypotheticalStatus(selectedEles, $('#inspector-is-hypothetical').prop('checked'));
+        //chiseInstance.setMultimerStatus(selectedEles, $('#inspector-is-active').prop('checked'));
       });
 
       $("#inspector-label").on('change', function () {

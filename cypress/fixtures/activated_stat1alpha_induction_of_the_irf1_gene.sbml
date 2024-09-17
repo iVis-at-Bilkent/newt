@@ -6,7 +6,7 @@
       <body xmlns="http://www.w3.org/1999/xhtml">
 <p>
 [-:-]	Given input is not a valid SBGN-ML file.
-[Complex:glyph11]	Unknown extension: extraInfo</p>
+[Complex:glyph11]	Unknown extension: nwt:extraInfo</p>
 </body>
     </notes>
     <annotation>

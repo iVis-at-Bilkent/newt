@@ -12,6 +12,7 @@ module.exports = function (chiseInstance) {
 
   // use chise instance associated with chise instance
   var cy = chiseInstance.getCy();
+  //("here");
   window.cy = cy;
   // register extensions and bind events when cy is ready
   cy.ready(function () {
@@ -313,7 +314,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
@@ -460,34 +461,25 @@ module.exports = function (chiseInstance) {
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'border-width': function (ele) { return Math.max(parseFloat(ele.data('border-width')) + 2, 3); }, 'border-color': '#0B9BCD' },
-          edge: {
-            'width': function (ele) { return Math.max(parseFloat(ele.data('width')) + 2, 3); },
-            'line-color': '#0B9BCD',
-            'color': '#0B9BCD',
-            'text-border-color': '#0B9BCD',
-            'source-arrow-color': '#0B9BCD',
-            'target-arrow-color': '#0B9BCD'
-          }
+          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
         },
-        { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
-        { node: { 'border-color': '#d67614',  'border-width': 3 }, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
-        { node: { 'border-color': '#7bc4e3', 'border-width': 3}, edge: {'line-color': '#d67614', 'source-arrow-color': '#d67614', 'target-arrow-color': '#d67614', 'width' : 3} },
-        { node: { 'border-color': '#f7f48d', 'border-width': 3}, edge: {'line-color': '#f7f48d', 'source-arrow-color': '#f7f48d', 'target-arrow-color': '#f7f48d', 'width' : 2} },
-        { node: { 'border-color': '#7CFC00', 'border-width': 3}, edge: {'line-color': '#f7f48d', 'source-arrow-color': '#f7f48d', 'target-arrow-color': '#f7f48d', 'width' : 2} },
-
+        {
+          node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
+        {
+          node: { 'overlay-color': '#d67614', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#d67614', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
+        {
+          node: { 'overlay-color': '#04F06A', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#04F06A', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        },
       ],
       selectStyles: {
-        node: {
-          'border-color': '#d67614', 'background-color': function (ele) { return ele.data('background-color'); }
-        },
-        edge: {
-          'line-color': '#d67614',
-          'color': '#d67614',
-          'text-border-color': '#d67614',
-          'source-arrow-color': '#d67614',
-          'target-arrow-color': '#d67614',
-        }
+        node: { 'overlay-color': '#89898a', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+        edge: { 'overlay-color': '#89898a', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
       },
       neighbor: function(ele){ //select and return process-based neighbors
         if (ele.isNode()) {
@@ -604,12 +596,12 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 
         enabled_classes.forEach(function(enabled_class){
-          if(node_class.indexOf(enabled_class) > -1)
+          if(node_class.indexOf(enabled_class) > -1 || node_class == "ion")
             result = true;
         });
 
@@ -913,7 +905,6 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on("mouseup", function (event) {
-
       var self = event.target || event.cyTarget;
 
       // get chise instance for cy
@@ -1028,6 +1019,7 @@ module.exports = function (chiseInstance) {
       // This is a bit of a patch
       // Without this the alt + taphold shortcut for selection of objects of same type doesn't work
       // as all the elements except the original event target will be unselected without this
+  
       if (altTapholdSelection) {
         setTimeout(function() {
           cy.autounselectify(false);
@@ -1139,7 +1131,7 @@ module.exports = function (chiseInstance) {
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
                 {
                     var newEle = cy.nodes()[cy.nodes().length - 1];
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
@@ -1392,8 +1384,8 @@ module.exports = function (chiseInstance) {
         'background-position-x', 'background-position-y', 'background-height', 'background-width'];
 
       var opt = {};
-      keys.forEach(function(key){
-        opt[key] = node.data(key);
+      keys.forEach(function(key) {
+        opt[key] =  node.data(key);
       });
 
       node.style(opt);

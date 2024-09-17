@@ -48,7 +48,8 @@
           </style>
         </listOfStyles>
       </renderInformation>
-      <mapProperties>
+      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
+
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -72,11 +73,11 @@
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
-      </mapProperties>
+      </nwt:mapProperties>
     </extension>
     <glyph id="glyph0" class="compartment">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>948.2491938838532</w>
           <h>1163.9691972897863</h>
           <minW>0</minW>
@@ -85,14 +86,14 @@
           <WRBias>0.5</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="neuron"/>
       <bbox x="239.625" y="171.625" w="976.2491938838532" h="1191.9691972897863"/>
     </glyph>
     <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>900.2491938838532</w>
           <h>659.3441972897863</h>
           <minW>0</minW>
@@ -101,14 +102,14 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="nucleus"/>
       <bbox x="263.625" y="652.25" w="928.2491938838532" h="687.3441972897863"/>
     </glyph>
     <glyph id="glyph3" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>151.5</w>
           <h>116</h>
           <minW>0</minW>
@@ -117,7 +118,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
       <bbox x="279.25" y="686.25" w="171.5" h="136"/>
@@ -135,7 +136,7 @@
       </glyph>
       <glyph id="glyph15" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>128.25</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -144,7 +145,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="290.875" y="747.375" w="148.25" h="63.25"/>
@@ -186,7 +187,7 @@
     </glyph>
     <glyph id="glyph2" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>145.5</w>
           <h>112.375</h>
           <minW>0</minW>
@@ -195,13 +196,13 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKK complex"/>
       <bbox x="911.75" y="691.375" w="165.5" h="132.375"/>
       <glyph id="glyph11" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>122.25</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -210,7 +211,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="923.375" y="703" w="142.25" h="63.25"/>
@@ -230,7 +231,7 @@
     </glyph>
     <glyph id="glyph17" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>119.24999999999989</w>
           <h>43.25</h>
           <minW>0</minW>
@@ -239,7 +240,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/CaM complex"/>
       <bbox x="589.511211133063" y="786.9551787701424" w="139.2499999999999" h="63.25"/>
@@ -287,7 +288,7 @@
     </glyph>
     <glyph id="glyph4" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>142.5</w>
           <h>111.375</h>
           <minW>0</minW>
@@ -296,13 +297,13 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKIV complex"/>
       <bbox x="577.886211133063" y="993.75" w="162.5" h="131.375"/>
       <glyph id="glyph14" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>119.24999999999989</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -311,7 +312,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="589.511211133063" y="1005.375" w="139.2499999999999" h="63.25"/>
@@ -340,7 +341,7 @@
     </glyph>
     <glyph id="glyph6" class="complex" compartmentRef="glyph1">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>145.5</w>
           <h>114.375</h>
           <minW>0</minW>
@@ -349,7 +350,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKIV complex"/>
       <bbox x="911.75" y="978.3728746770742" w="165.5" h="134.375"/>
@@ -363,7 +364,7 @@
       </glyph>
       <glyph id="glyph12" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>122.25</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -372,7 +373,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="923.375" y="989.9978746770742" w="142.25" h="63.25"/>
@@ -418,7 +419,7 @@
     </glyph>
     <glyph id="glyph10" class="complex" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>128.2500000000001</w>
           <h>43.25</h>
           <minW>0</minW>
@@ -427,7 +428,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/CaM complex"/>
       <bbox x="919.6572632393872" y="351.6225809530113" w="148.2500000000001" h="63.25"/>
@@ -456,7 +457,7 @@
     </glyph>
     <glyph id="glyph8" class="complex" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>142.5</w>
           <h>116</h>
           <minW>0</minW>
@@ -465,7 +466,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
       <bbox x="283.75" y="391.25" w="162.5" h="136"/>
@@ -483,7 +484,7 @@
       </glyph>
       <glyph id="glyph13" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>119.25</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -492,7 +493,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="295.375" y="452.375" w="139.25" h="63.25"/>
@@ -513,7 +514,7 @@
     </glyph>
     <glyph id="glyph5" class="complex" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>143.5</w>
           <h>116</h>
           <minW>0</minW>
@@ -522,7 +523,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
       <bbox x="627.75" y="391.25" w="163.5" h="136"/>
@@ -540,7 +541,7 @@
       </glyph>
       <glyph id="glyph18" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>120.25</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -549,7 +550,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="639.375" y="452.375" w="140.25" h="63.25"/>
@@ -565,7 +566,7 @@
     </glyph>
     <glyph id="glyph7" class="complex" compartmentRef="glyph0">
       <extension>
-        <extraInfo>
+        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
           <w>143.5</w>
           <h>119</h>
           <minW>0</minW>
@@ -574,13 +575,13 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
-        </extraInfo>
+        </nwt:extraInfo>
       </extension>
       <label text="Ca/Cam/gCaMKII complex"/>
       <bbox x="364.75" y="187.25" w="163.5" h="139"/>
       <glyph id="glyph16" class="complex">
         <extension>
-          <extraInfo>
+          <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
             <w>120.25</w>
             <h>43.25</h>
             <minW>0</minW>
@@ -589,7 +590,7 @@
             <WRBias>0</WRBias>
             <HTBias>0</HTBias>
             <HBBias>0</HBBias>
-          </extraInfo>
+          </nwt:extraInfo>
         </extension>
         <label text="Ca/CaM complex"/>
         <bbox x="376.375" y="251.375" w="140.25" h="63.25"/>
