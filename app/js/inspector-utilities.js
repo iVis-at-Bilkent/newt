@@ -850,16 +850,24 @@ inspectorUtilities.handleSBGNInspector = function () {
                     + '<button class="btn btn-default" style="align: center;" id="inspector-kinetic-law-button">Set Kinetic Law</button>'
                   + '</div>'
       } else if( selectedEles[0].data('class') == "compartment" ){ // Add html body for an SBML Compartment
+        var spatialDimensions = selectedEles[0].data('simulation')['spatialDimensions'];
+        var size = selectedEles[0].data('simulation')['size'];
+        var units = selectedEles[0].data('simulation')['units'];
+        var constant = selectedEles[0].data('simulation')['constant'];
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                     + "<font class='sbgn-label-font'>Dimensions</font>" 
                   + "</td><td style='padding-left: 5px;'>"
-                    + "<input id='inspector-compartment-dimensions' class='inspector-input-box' type='number' value='3' min='1' max='3' style='width: " + buttonwidth + "px;'></input>"
+                    + "<input id='inspector-compartment-dimensions' class='inspector-input-box' type='number' min='1' max='3' style='width: " + buttonwidth + "px;'" 
+                    + " value=" + spatialDimensions;
+        SBMLHtml +="></input>"
                   + "</td></tr>";
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                   + "<font class='sbgn-label-font'>Size</font>" 
                 + "</td><td style='padding-left: 5px;'>"
-                  + "<input id='inspector-compartment-size' class='inspector-input-box' type='number' min='0' style='width: " + width / 2.5 + "px;'></input>"
-                  + "<select id=inspector-compartment-size-units class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
+                  + "<input id='inspector-compartment-size' class='inspector-input-box' type='number' min='0' style='width: " + width / 2.5 + "px;'"
+                  + " value=" + size;
+        SBMLHtml += "></input>"
+                  + "<select id='inspector-compartment-size-units' class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
                     + "<option value='litre' selected>litre</option>"
                     + "<option value='m3'>m&sup3</option>"
                   +"</select>"
@@ -867,18 +875,27 @@ inspectorUtilities.handleSBGNInspector = function () {
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                   + "<font class='sbgn-label-font'>Constant</font>" 
                 + "</td><td style='padding-left: 5px;'>"
-                  + "<input type='checkbox' id='inspector-compartment-constant' checked></input>"
+                  + "<input type='checkbox' id='inspector-compartment-constant'"
+        if(constant)
+          SBMLHtml += " checked";
+        SBMLHtml += "></input>"
                 + "</td></tr></table></div>";
       } else if( isSBMLSimulationArc(selectedEles[0]) ){ // Add html body for an SBML Arc
+        var stoichiometry = selectedEles[0].data('simulation')['stoichiometry'];
+        var constant = selectedEles[0].data('simulation')['constant'];
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                     + "<font class='sbgn-label-font'>Stoichiometry</font>" 
                   + "</td><td style='padding-left: 5px;'>"
-                    + "<input id='inspector-node-stoichiometry' class='inspector-input-box' type='number' min='1' value='1' style='width: " + buttonwidth + "px;'"
-                  + "</td></tr>";
+                    + "<input id='inspector-node-stoichiometry' class='inspector-input-box' type='number' min='1' style='width: " + buttonwidth + "px;'"
+                  + "value=" + stoichiometry;
+        SBMLHtml += "></td></tr>";
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                   + "<font class='sbgn-label-font'>Constant</font>" 
                 + "</td><td style='padding-left: 5px;'>"
-                  + "<input type='checkbox' id='inspector-constant-stoichiometry' checked></input>"
+                  + "<input type='checkbox' id='inspector-constant-stoichiometry'" 
+        if(constant)
+          SBMLHtml += " checked"; 
+        SBMLHtml += "></input>"
                 + "</td></tr></table></div>";
       }
       $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-simulation-panel" class="panel" ></div>');
@@ -913,7 +930,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if(element.checked)
         selectedEles[0].data('simulation')['boundaryCondition'] = true;
       else
-      selectedEles[0].data('simulation')['boundaryCondition'] = false;
+        selectedEles[0].data('simulation')['boundaryCondition'] = false;
     });
 
     $('#inspector-constant-species').on('change', function(){
@@ -921,12 +938,54 @@ inspectorUtilities.handleSBGNInspector = function () {
       if(element.checked)
         selectedEles[0].data('simulation')['constant'] = true;
       else
-      selectedEles[0].data('simulation')['constant'] = false;
+        selectedEles[0].data('simulation')['constant'] = false;
     });
 
+    // EDGE EVENTS
+    $('#inspector-node-stoichiometry').on('change', function(){
+      var element = document.getElementById('inspector-node-stoichiometry');
+      selectedEles[0].data('simulation')['stoichiometry'] = parseFloat(element.value);
+    });
+
+    $('#inspector-constant-stoichiometry').on('change', function(){
+      var element = document.getElementById('inspector-constant-stoichiometry');
+      if(element.checked)
+        selectedEles[0].data('simulation')['constant'] = true;
+      else
+        selectedEles[0].data('simulation')['constant'] = false;
+    });
+
+    // COMPARTMENT EVENTS
+    $('#inspector-compartment-dimensions').on('change', function(){
+      var element = document.getElementById('inspector-compartment-dimensions');
+      var val = parseInt(element.value);
+      if(val >= 1 && val <= 3)
+        selectedEles[0].data('simulation')['spatialDimensions'] = val;
+    });
+    
+    $('#inspector-compartment-size').on('change', function(){
+      var element = document.getElementById('inspector-compartment-size');
+      selectedEles[0].data('simulation')['size'] = parseFloat(element.value);
+    });
+
+    // TODO: Fill this after units are implemented.
+    $('#inspector-compartment-size-units').on('change', function(){
+
+    });
+
+    $('#inspector-compartment-constant').on('change', function(){
+      var element = document.getElementById('inspector-compartment-constant');
+      if(element.checked)
+        selectedEles[0].data('simulation')['constant'] = true;
+      else
+        selectedEles[0].data('simulation')['constant'] = false;
+    });
+
+    // REACTION NODE EVENTS
     $('#inspector-kinetic-law-button').on('click', function (){
       appUtilities.sbmlKineticLawView.render();
     });
+
 
 
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
