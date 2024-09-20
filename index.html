@@ -26,6 +26,8 @@
     <link href="node_modules/cytoscape-context-menus/cytoscape-context-menus.css" rel="stylesheet" type="text/css">
     <!-- app's style -->
     <link href="app/css/chise.css" rel="stylesheet">
+    <!-- mathquill for sbml simulations -->
+    <link rel="stylesheet" href="/node_modules/mathquill/mathquill.css"/>
 
     <script src="app/bundle.js"></script>
     <!-- libraries -->
@@ -1383,6 +1385,10 @@
       <!-- map by Reactome query table will be shown here-->
     </div>
 
+    <div id="sbml-kineticLaw-table" tabindex="-1" class="modal fade" role="dialog"></div>
+      <!-- sbml kinetic law will be shown here-->
+    </div>
+
     <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn properties table will be shown here-->
     </div>
@@ -2668,6 +2674,42 @@
                   <button id="cancel-query-mapbyReactomeID" class="btn btn-default">Cancel</button>
               </div>
           </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="sbml-kinetic-law-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Kinetic Law</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table-condensed layout-table">
+        <tbody>
+
+        <td style="padding-left: 40px;">
+          <table>
+            <tbody>
+              <caption style="text-align: left;"> Enter Kinetic Law </caption>
+              <tr>
+                <td style="padding-left: 0px; padding-top: 0px">
+                  <p><span id="kinetic-law-field" style="width: 400px;"></span></p>
+                <td>
+              </tr>
+            <tbody>
+          </table>
+        </td>
+
+        </tr>
+        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <button id="save-kinetic-law" class="btn btn-default" >OK</button>
+        <button id="cancel-kinetic-law" class="btn btn-default">Cancel</button>
+      </div>
+      </div>
       </div>
     </script>
 

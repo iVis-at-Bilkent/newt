@@ -781,17 +781,34 @@ inspectorUtilities.handleSBGNInspector = function () {
       SBMLHtml += "<div class='panel-body'>";
       SBMLHtml += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
 
-      if( isSBMLSpecies(selectedEles[0]) && selectedEles.parent().length != 0 
-          && selectedEles.parent()[0].data('class') != 'complex sbml') { // Add html body for an SBML Species
+      if( isSBMLSpecies(selectedEles[0]) && (selectedEles.parent().length == 0 
+          || selectedEles.parent()[0].data('class') != 'complex sbml')) { // Add html body for an SBML Species
+        var hasOnlySubstanceUnits = selectedEles[0].data('simulation')['hasOnlySubstanceUnits'];
+        var value;
+        if(hasOnlySubstanceUnits)
+          value = selectedEles[0].data('simulation')['initialAmount'];
+        else
+          value = selectedEles[0].data('simulation')['initialConcentration'];
+        var constant = selectedEles[0].data('simulation')['constant'];
+        var bc = selectedEles[0].data('simulation')['boundaryCondition'];
+        
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                     + "<font class='sbgn-label-font' style='margin-right: 3px;'>Initial </font>"
-                    + "<select style='width: " + width / 1.7 + "px; font-size: 11px !important;'>"
-                      + "<option value='amount' selected>Amount</option>"
-                      + "<option value='concentration'>Concentration</option>"
+                    + "<select id='hasOnlySubstanceUnits' style='width: " + width / 1.7 + "px; font-size: 11px !important;'>"
+                      + "<option value='amount'"; 
+        if(hasOnlySubstanceUnits) 
+          SBMLHtml += " selected";
+        SBMLHtml      += ">Amount</option>"
+                      + "<option value='concentration'" 
+        if(!hasOnlySubstanceUnits) 
+          SBMLHtml += " selected";
+        SBMLHtml += ">Concentration</option>"
                     + "</select>" 
                   + "</td><td style='padding-left: 5px;'>"
-                    + "<input id='inspector-initial-value' class='inspector-input-box' type='number' style='width: " + width / 2.5 + "px;'></input>"
-                    + "<select id=inspector-initial-unit class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
+                    + "<input id='inspector-initial-value' class='inspector-input-box' type='number' style='width: " + width / 2.5 + "px;'"
+                    + " value=" + value;
+        SBMLHtml += "></input>"
+                    + "<select id='inspector-initial-unit' class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
                       + "<option value='mole' selected>mole</option>"
                     + "</select>"
                   + "</td></tr>";
@@ -799,12 +816,18 @@ inspectorUtilities.handleSBGNInspector = function () {
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                 + "<font class='sbgn-label-font'>Boundary Condition</font>" 
               + "</td><td style='padding-left: 5px;'>"
-                + "<input type='checkbox' id='inspector-boundary-condition-species'></input>"
+                + "<input type='checkbox' id='inspector-boundary-condition-species'";
+        if(bc)
+          SBMLHtml += " checked";
+        SBMLHtml += "></input>"
               + "</td></tr>";
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                   + "<font class='sbgn-label-font'>Constant</font>" 
                 + "</td><td style='padding-left: 5px;'>"
-                  + "<input type='checkbox' id='inspector-constant-species'></input>"
+                  + "<input type='checkbox' id='inspector-constant-species'";
+        if(constant)
+          SBMLHtml += " checked";
+        SBMLHtml += "></input>"
                 + "</td></tr></table></div>";
       } else if( isSBMLProcess(selectedEles[0]) ) { // Add html body for an SBML Process
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
@@ -861,6 +884,49 @@ inspectorUtilities.handleSBGNInspector = function () {
       $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-simulation-panel" class="panel" ></div>');
       $("#sbgn-inspector-style-simulation-panel").html(SBMLHtml);
     }
+
+    // SPECIES EVENTS
+    $('#hasOnlySubstanceUnits').on('change', function(){
+      var element = document.getElementById('hasOnlySubstanceUnits');
+      if(element.options[element.selectedIndex].text == 'Amount')
+        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = true;
+      else
+        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = false;
+      $('#inspector-initial-value').trigger('change');
+    });
+
+    $('#inspector-initial-value').on('change', function(){
+      var element = document.getElementById('inspector-initial-value');
+      if(selectedEles[0].data('simulation')['hasOnlySubstanceUnits'])
+        selectedEles[0].data('simulation')['initialAmount'] = parseFloat(element.value);
+      else
+        selectedEles[0].data('simulation')['initialConcentration'] = parseFloat(element.value);
+    });
+
+    // TODO: Fill this after units are implemented.
+    $('#inspector-initial-unit').on('change', function(){
+
+    });
+
+    $('#inspector-boundary-condition-species').on('change', function(){
+      var element = document.getElementById('inspector-boundary-condition-species');
+      if(element.checked)
+        selectedEles[0].data('simulation')['boundaryCondition'] = true;
+      else
+      selectedEles[0].data('simulation')['boundaryCondition'] = false;
+    });
+
+    $('#inspector-constant-species').on('change', function(){
+      var element = document.getElementById('inspector-constant-species');
+      if(element.checked)
+        selectedEles[0].data('simulation')['constant'] = true;
+      else
+      selectedEles[0].data('simulation')['constant'] = false;
+    });
+
+    $('#inspector-kinetic-law-button').on('click', function (){
+      appUtilities.sbmlKineticLawView.render();
+    });
 
 
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {

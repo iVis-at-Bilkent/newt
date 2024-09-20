@@ -5,6 +5,8 @@ var chroma = require("chroma-js");
 var FileSaver = require("file-saver");
 var cytoscape = require("cytoscape");
 var chise = require("chise");
+var getInterface = require("mathquill").getInterface;
+const MQ = getInterface(2);
 
 var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -3468,6 +3470,37 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
 
     return this;
   },
+});
+
+var sbmlKineticLawView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.localparams = null;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    // self.template = self.template(self.currentQueryParameters);
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    // self.template = self.template(self.currentQueryParameters);
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    var kineticLaw = document.getElementById('kinetic-law-field');
+    var kineticLawField = MQ.MathField(kineticLaw);
+
+    $(document)
+      .off("click", "#save-kinetic-law")
+      .on("click", "#save-kinetic-law", function(evt) {
+        $(self.el).modal("toggle");
+      });
+
+    $(document)
+      .off("click", "#cancel-kinetic-law")
+      .on("click", "#cancel-kinetic-law", function (evt) {
+        $(self.el).modal("toggle");
+      });
+  }
 });
 
 /*
@@ -7443,4 +7476,5 @@ module.exports = {
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
+  sbmlKineticLawView: sbmlKineticLawView,
 };
