@@ -749,6 +749,58 @@ inspectorUtilities.handleSBGNInspector = function () {
         || edge.data('class') == 'transport';
     }
 
+    var addLocalParameters = function(node) {
+      var labelIdx = 0;
+      $("#localparam-field").html(""); // clear the field before populating
+      for (var localparam of node.data('simulation').localParameters) {
+          var localParam_ = '<div style="display: flex; flex-direction: row; align-items: center;">'
+          + '<table><tbody><tr><td>'
+          + '<textarea id="inspector-localparam-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + localparam.name + '</textarea></td>'
+          + '</tr><tr><td>'
+          + '<input id="inspector-localparam-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + localparam.quantity + '" style="width: ' + width / 2.5 + 'px;">'
+          + '<select id="inspector-localparam-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + width / 2.5 + 'px !important; margin-left: 1px;">'
+          + '<option value="litre" selected>litre</option>'
+          + '<option value="m3">m³</option>'
+          + '</select></td></tr></tbody></table>'
+          + '<img id="inspector-localparam-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
+          + '</div>';
+          
+          $("#localparam-field").append(localParam_);
+
+          (function (labelIdx){
+            $('#inspector-localparam-delete' + labelIdx).off('click').on('click', function() {
+              var lparams = node.data('simulation').localParameters;
+              lparams.splice(labelIdx, 1);
+              node.data('simulation').localParameters = lparams;
+              addLocalParameters(node);
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-localparam-name' + labelIdx).off('change').on('change', function() {
+              var name = document.getElementById("inspector-localparam-name" + labelIdx).value;
+              node.data('simulation').localParameters[labelIdx].name = name;
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-localparam-value' + labelIdx).off('change').on('change', function() {
+              var quantity = parseFloat(document.getElementById("inspector-localparam-value" + labelIdx).value);
+              node.data('simulation').localParameters[labelIdx].quantity = quantity;
+          })})(labelIdx);
+  
+          labelIdx += 1;
+      }
+      localParam_ = '<img width="16px" height="16px" id="inspector-add-localparam" src="app/img/add.svg" class="pointer-button">';
+      $("#localparam-field").append(localParam_);
+      $("#inspector-add-localparam").off('click').on('click', function() {
+          node.data('simulation').localParameters.push({
+              "name": "",
+              "quantity": 0,
+              "unit": ""
+          });
+          addLocalParameters(node); // Re-render after adding a new parameter
+      });
+  };
+
     // Add SBML specific simulation tab.
     var mapType = appUtilities.getActiveChiseInstance().getMapType();
     var showSBMLSimulationPanel = true;
@@ -831,24 +883,11 @@ inspectorUtilities.handleSBGNInspector = function () {
                 + "</td></tr></table></div>";
       } else if( isSBMLProcess(selectedEles[0]) ) { // Add html body for an SBML Process
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
-                  + "<font class='sbgn-label-font'>Local Parameters</font>" 
-                + "</td><td style='padding-left: 5px;'>"
-                + '<div style="display: flex; flex-direction: row; align-items: center;">'
-                  + '<table><tbody><tr><td>'
-                    + '<textarea id="inspector-localparam-name" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name..."></textarea></td>'
-                  + '</tr><tr><td>'
-                      + '<input id="inspector-localparam-value" class="inspector-input-box" type="number" style="width: ' + width / 2.5 + 'px;">'
-                      + '<select id="inspector-localparam-unit" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + width / 2.5 + 'px !important; margin-left: 1px;">'
-                        + '<option value="litre" selected>litre</option>'
-                        + '<option value="m3">m³</option>'
-                  + '</select></td></tr></tbody></table>'
-                  + '<img id="inspector-localparam-delete" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
-                + '</div>'
-                  + '<img width="16px" height="16px" id="inspector-add-localparam" src="app/img/add.svg" class="pointer-button">'
-                + "</td></tr>";
-        SBMLHtml += '</table></div><div style="text-align: center; margin-top: 5px;">'
-                    + '<button class="btn btn-default" style="align: center;" id="inspector-kinetic-law-button">Set Kinetic Law</button>'
-                  + '</div>'
+                        + "<font class='sbgn-label-font'>Local Parameters</font>" 
+                      + "</td><td id='localparam-field' style='padding-left: 5px;'></td></tr></table><div>"
+                      + '<div style="text-align: center; margin-top: 5px;">'
+                      + '<button class="btn btn-default" style="align: center;" id="inspector-kinetic-law-button">Set Kinetic Law</button></div>';
+                      
       } else if( selectedEles[0].data('class') == "compartment" ){ // Add html body for an SBML Compartment
         var spatialDimensions = selectedEles[0].data('simulation')['spatialDimensions'];
         var size = selectedEles[0].data('simulation')['size'];
@@ -900,6 +939,8 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
       $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-simulation-panel" class="panel" ></div>');
       $("#sbgn-inspector-style-simulation-panel").html(SBMLHtml);
+      if(isSBMLProcess(selectedEles[0]))
+        addLocalParameters(selectedEles[0]);
     }
 
     // SPECIES EVENTS
@@ -983,9 +1024,9 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     // REACTION NODE EVENTS
     $('#inspector-kinetic-law-button').on('click', function (){
-      appUtilities.sbmlKineticLawView.render();
+      // selectedEles.unselect();
+      appUtilities.sbmlKineticLawView.render(selectedEles[0]);
     });
-
 
 
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {

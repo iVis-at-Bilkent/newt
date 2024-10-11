@@ -7,6 +7,7 @@ var cytoscape = require("cytoscape");
 var chise = require("chise");
 var getInterface = require("mathquill").getInterface;
 const MQ = getInterface(2);
+var MathLive = require("mathlive");
 
 var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -3479,21 +3480,39 @@ var sbmlKineticLawView = Backbone.View.extend({
     self.template = _.template($("#sbml-kinetic-law-template").html());
     // self.template = self.template(self.currentQueryParameters);
   },
-  render: function () {
+  render: function (node) {
     var self = this;
     self.template = _.template($("#sbml-kinetic-law-template").html());
-    // self.template = self.template(self.currentQueryParameters);
     $(self.el).html(self.template);
+    var nodeRow = document.getElementById("kinetic-law-nodes");
+    node.connectedEdges().connectedNodes().forEach((iterNode, idx) => {
+      if(iterNode.same(node))
+        return;
+      var element = '<button id="kinetic-law-node-ele' + idx + '" class="btn btn-default" style="width:90px; margin-left:5px; margin-right:5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' 
+        + (iterNode.data('label') || iterNode.data('id')) + '</button>';
+      nodeRow.innerHTML += element;
+      $(document).off("click", "#save-kinetic-law").on("click", "#kinetic-law-node-ele" + idx, function(evt) {
+        kineticLawField.write('\\left(\\text{' + iterNode.data('label') + '}\\right)');
+      });
+    })
     $(self.el).modal("show");
 
     var kineticLaw = document.getElementById('kinetic-law-field');
     var kineticLawField = MQ.MathField(kineticLaw);
-
+    
+    // Necessary for some reason. Removing causes a bug with the visibility of parantheses.
+    setTimeout(() => {
+      kineticLawField.latex(node.data('simulation')['kineticLaw']);
+    }, 200)
+    
     $(document)
-      .off("click", "#save-kinetic-law")
-      .on("click", "#save-kinetic-law", function(evt) {
-        $(self.el).modal("toggle");
-      });
+    .off("click", "#save-kinetic-law")
+    .on("click", "#save-kinetic-law", function(evt) {
+      var x = kineticLawField.latex();
+      console.log(x);
+      node.data('simulation')['kineticLaw'] = x;
+      $(self.el).modal("toggle");
+    });
 
     $(document)
       .off("click", "#cancel-kinetic-law")
