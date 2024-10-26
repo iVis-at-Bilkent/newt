@@ -100,7 +100,6 @@ var nodeMatchUtilities = {
         nodeMatchUtilities.matchProcessNodesModifier(name, nodeData);
     }
     query = query + ")";
-    console.log("query", query);
     return query;
   },
   matchEdges: function (name, nodeData, matchSource, matchTarget) {

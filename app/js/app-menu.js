@@ -139,7 +139,7 @@ module.exports = function() {
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
   dynamicResize();
-
+  pushActiveTabsView = appUtilities.pushActiveTabsView = new BackboneViews.PushActiveTabsView({el: '#push-active-tabs-table'});
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
   //generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
@@ -358,7 +358,7 @@ module.exports = function() {
         });
         lines = lines.join("\n")
       }
-
+      console.log("changing the node label");
       chiseInstance.changeNodeLabel(node, lines);
       inspectorUtilities.handleSBGNInspector();
 
@@ -386,6 +386,47 @@ module.exports = function() {
       }
     });
 
+    $('#load-from-file').click(function(){
+      $('#input-file').trigger('click');
+    });
+
+    $('#input-file').change(function(e,fileObject){
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+      if($(this).val()===''&&!fileObject){
+        console.log("There was some problem with the file");
+        return;
+      }
+      var file = this.files[0] || fileObject;
+      var fileExtension = file.name.split('.').pop();
+      var loadCallbackInvalidityWarning=()=>{promptInvalidFileView.render()};
+      
+      if(fileExtension==='nwt'){
+        
+      }
+
+      // else{
+      //   var loadCallbackSBGNMLValidity = function (text) {
+      //     //validateSBGNML(text);
+      //   }
+      //   params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning];
+      //   caller = chiseInstance.loadNwtFile;
+      // }
+
+      // if(cy.elements().length != 0) {
+      //   promptConfirmationView.render(() => {
+      //     setTimeout(() => caller(file, ...params), 150);
+      //   });
+      // }
+      // else {
+      //   caller(file, ...params);
+      // }
+      // $(this).val("");
+    });
+
     $("#load-file, #load-file-icon").click(function () {
       $("#file-input").trigger('click');
     });
@@ -401,7 +442,7 @@ module.exports = function() {
 
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
-
+        console.log('file:',file);
         var params, caller;
         var fileExtension = file.name.split('.').pop();
 
@@ -2002,14 +2043,13 @@ module.exports = function() {
     //////////////////////////////////////////////////////////////////////////
     $("#push-active-tab-contents").click(function (e) {
       // use the active chise instance
-      var chiseInstance = appUtilities.getActiveChiseInstance();
+      // var chiseInstance = appUtilities.getActiveChiseInstance();
       
-      var activeTabContent = chiseInstance.createJsonFromSBGN();
+      // var activeTabContent = chiseInstance.createJsonFromSBGN();
 
  
-      console.log('activeTabContent:',activeTabContent);
-      databaseUtilities.pushActiveContentToDatabase(activeTabContent)
-      
+      // databaseUtilities.pushActiveContentToDatabase(activeTabContent)
+      pushActiveTabsView.render();
     })
   }
 };

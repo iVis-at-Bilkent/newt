@@ -24,26 +24,26 @@ RETURN nodes(p), relationships(p);
   },
 
   pathsBetween: function ( lengthLimit) {
-    // var query = `UNWIND $idList as a 
-    // UNWIND $idList as b 
-    // WITH   a, b 
-    // MATCH p=(n )-[rels*..${lengthLimit}]-(m)
-    // WHERE id(n) = a and id(m) = b and a <>b and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
-    //         and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
-    //         and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
-    //         return nodes(p), relationships(p)`;
-    var query=`
-    UNWIND $idList AS a
-UNWIND $idList AS b
-WITH a, b
-WHERE a <> b  // Ensure a and b are different
-MATCH p=(n)-[*]-(m)  // Match paths of any length
-WHERE id(n) = a AND id(m) = b 
-  AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
-WITH p, 
-     [x IN nodes(p) WHERE NOT x.class IN ['process', 'omitted_process','uncertain_process','association','dissociation','phenotype']] AS filteredNodes  // Filter out multiple node classes
-WHERE size(filteredNodes) - 1 <= ${lengthLimit}  // Ensure that the non-excluded nodes count is within the length limit
-RETURN nodes(p), relationships(p);`
+    var query = `UNWIND $idList as a 
+    UNWIND $idList as b 
+    WITH   a, b 
+    MATCH p=(n )-[rels*..${lengthLimit*2}]-(m)
+    WHERE id(n) = a and id(m) = b and a <>b and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
+            and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
+            and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
+            return nodes(p), relationships(p)`;
+//     var query=`
+//     UNWIND $idList AS a
+// UNWIND $idList AS b
+// WITH a, b
+// WHERE a <> b  // Ensure a and b are different
+// MATCH p=(n)-[*]-(m)  // Match paths of any length
+// WHERE id(n) = a AND id(m) = b 
+//   AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
+// WITH p, 
+//      [x IN nodes(p) WHERE NOT x.class IN ['process', 'omitted_process','uncertain_process','association','dissociation','phenotype']] AS filteredNodes  // Filter out multiple node classes
+// WHERE size(filteredNodes) - 1 <= ${lengthLimit}  // Ensure that the non-excluded nodes count is within the length limit
+// RETURN nodes(p), relationships(p);`
     return query;
   },
   neighborhood: function ( lengthLimit) {

@@ -2,16 +2,29 @@ var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
 const { ActiveTabPushSuccessView } = require("./backbone-views");
-
+const categories = {
+  macromolecule: "EPN",
+  simple_chemical: "EPN",
+  unspecified_entity: "EPN",
+  nucleic_acid_feature: "EPN",
+  perturbing_agent: "EPN",
+  empty_set: "EPN",
+  complex: "EPN",
+  process: "process",
+  omitted_process: "process",
+  uncertain_process: "process",
+  association: "process",
+  dissociation: "process",
+  phenotype: "process",
+};
 var databaseUtilities = {
   enableDatabase: true,
   nodesInDB: {},
   edgesInDB: {},
 
-  cleanNodesAndEdgesInDB: function()
-  {
+  cleanNodesAndEdgesInDB: function () {
     databaseUtilities.nodesInDB = {};
-    databaseUtilities.edgesInDB= {};
+    databaseUtilities.edgesInDB = {};
   },
 
   calculateClass: function (entitysClass) {
@@ -57,6 +70,7 @@ var databaseUtilities = {
     currentNode.entityName = data.label || "";
     currentNode.language = data.language;
     currentNode.class = databaseUtilities.calculateClass(data.class);
+    currentNode.category = categories[currentNode.class];
     currentNode.multimer = databaseUtilities.checkIfMultimer(data.class);
     currentNode.stateVariables = databaseUtilities.calculateState(
       data.statesandinfos
@@ -100,14 +114,19 @@ var databaseUtilities = {
     }
   },
 
-  pushActiveContentToDatabase: async function (activeTabContent) {
+  pushActiveContentToDatabase: async function (activeTabContent, flag) {
     var nodesData = [];
     var edgesData = [];
-    await databaseUtilities.processNodesData(nodesData, activeTabContent)
+    console.log('activeTabContent',activeTabContent);
+    await databaseUtilities.processNodesData(nodesData, activeTabContent);
     await databaseUtilities.processEdgesData(edgesData, activeTabContent);
+    console.log("nodes and edges have been processed", nodesData, edgesData);
     await databaseUtilities.processData(nodesData, edgesData);
-    console.log("nodes and edge shave been processed");
-    databaseUtilities.pushActiveNodesEdgesToDatabase(nodesData, edgesData);
+    databaseUtilities.pushActiveNodesEdgesToDatabase(
+      nodesData,
+      edgesData,
+      flag
+    );
   },
 
   processData: async function (nodesData, edgesData) {
@@ -122,6 +141,7 @@ var databaseUtilities = {
     //[modifierClass, modifierCloneLab, modifierCloneMarker, modifierEntityName, modifierMultimer, modifierParent, modifierStateVariable1,..,modifierStateVariableN, modifierUnitInformation1,...,modifierUnitInformationN],
 
     //Check if node is already pushed
+
     for (let i = 0; i < nodesData.length; i++) {
       nodesData[i].inDb = false;
       if (databaseUtilities.nodesInDB[nodesData[i].newtId]) {
@@ -149,7 +169,6 @@ var databaseUtilities = {
       nodesMap[nodesData[i].newtId] = nodesData[i];
     }
 
-
     //Add child parent relationships if any
     for (let i = 0; i < nodesData.length; i++) {
       if (nodesData[i].parent != "none") {
@@ -165,7 +184,6 @@ var databaseUtilities = {
 
     for (let i = 0; i < edgesData.length; i++) {
       edgesData[i].inDb = false;
-
       if (
         databaseUtilities.edgesInDB[
           [edgesData[i].source, edgesData[i].target, edgesData[i].class]
@@ -199,6 +217,7 @@ var databaseUtilities = {
           target.entityName,
           target.multimer.toString(),
           target.parent,
+          target.newtId,
         ]);
         specialNodes[edgesData[i].source][1][len].push(
           ...target.stateVariables
@@ -226,6 +245,7 @@ var databaseUtilities = {
             source.entityName,
             source.multimer.toString(),
             source.parent,
+            source.newtId,
           ]);
           specialNodes[edgesData[i].target][0][len_0].push(
             ...source.stateVariables
@@ -241,6 +261,7 @@ var databaseUtilities = {
             source.entityName,
             source.multimer.toString(),
             source.parent,
+            source.newtId,
           ]);
           specialNodes[edgesData[i].target][2][len_2].push(
             ...source.stateVariables
@@ -251,7 +272,7 @@ var databaseUtilities = {
         }
       }
     }
-
+    console.log("Updating the special nodes data:",nodesData);
     //Update specialNodes
     for (let i = 0; i < nodesData.length; i++) {
       if (
@@ -278,293 +299,545 @@ var databaseUtilities = {
     }
   },
 
-  pushActiveNodesEdgesToDatabase: function (nodesData, edgesData) {
-    var matchClass = true;
-    var matchLabel = true;
-    var matchId = false;
-    var matchMultimer = true;
-    var matchCloneMarker = true;
-    var matchCloneLabel = true;
-    var matchStateVariable = true;
-    var matchUnitInformation = true;
-    var matchParent = true;
-
-    var integrationQuery = `UNWIND $nodesData as data 
-    CALL apoc.do.when( data.inDb, 
-      "CALL
-        apoc.cypher.doIt('
-          MATCH (u)
-          WHERE  u.newtId = data.newtId and id(u) = data.idInDb
-          SET u = data
-          RETURN u as node', {data:data})  
-        YIELD value 
-        RETURN value.node as node", 
-      "CALL
-        apoc.cypher.doIt('
-          CALL apoc.do.when( data.isSpecial, 
-            \\"MATCH (u)
-            WHERE ${nodeMatchUtilities.matchProcessNodes(
-              "data",
-              "u",
-              true,
-              true,
-              true,
-              true
-            )}
-            RETURN COUNT(u) as cnt\\",
-            \\"MATCH (u)
-            WHERE  ${nodeMatchUtilities.match(
-              "data",
-              "u",
-              matchId,
-              matchClass,
-              false,
-              matchMultimer,
-              matchCloneMarker,
-              matchCloneLabel,
-              matchStateVariable,
-              matchUnitInformation,
-              true,
-              matchParent
-            )}
-            RETURN COUNT(u) as cnt\\", 
-          {data:data}) 
-          YIELD value
-          RETURN value.cnt as cnt', {data: data})
-          YIELD value
-        WITH value.cnt as cnt, data
-        CALL
-        apoc.cypher.doIt('
-          CALL apoc.do.when( cnt > 0, \\"MATCH (u) WHERE ${nodeMatchUtilities.match(
-            "data",
-            "u",
-            matchId,
-            matchClass,
-            false,
-            matchMultimer,
-            matchCloneMarker,
-            matchCloneLabel,
-            matchStateVariable,
-            matchUnitInformation,
-            true,
-            matchParent
-          )} RETURN u.newtId as id \\", \\"RETURN null as id\\",
-                {data:data, cnt: cnt}) 
-                YIELD value
-                RETURN value.id as id', 
-          {data:data, cnt: cnt} )
-        YIELD value
-        WITH value.id as id, data
-        CALL
-        apoc.cypher.doIt('
-              CALL apoc.do.when(id is not null , \\"
-              MATCH (n)
-              WHERE n.newtId = id
-              SET n.newtId = data.newtId\\",
-              \\"CALL apoc.create.node([data.class], data)
-              YIELD node
-              SET node.processed = 0
-              RETURN node as node\\", {data: data, id:id})
-              YIELD value
-              RETURN value.node as node
-            ', {data:data, id: id})
-            YIELD value
-            RETURN value.node as node",
-      {data:data})
-    YIELD value
-    WITH collect(value.node) as nodes
-    CALL 
-    apoc.cypher.doIt("
-      UNWIND $edgesData AS data 
-      CALL apoc.do.when(data.inDb,
-        'RETURN null as rel',
-        'CALL  apoc.cypher.doIt(\\"MATCH (a)-[r]->(b)
-          WHERE ${nodeMatchUtilities.matchEdges("r", "data", true, true)}
-          RETURN COUNT(r) as cnt \\", {data:data})
-          YIELD value
-        WITH value.cnt as cnt, data
-        CALL apoc.do.when(cnt>0 , \\" RETURN 1 as rel\\",
-              \\"MATCH (n {newtId: data.source}), (m { newtId: data.target})  
-               WITH DISTINCT n, m, data
-              CALL apoc.create.relationship(n,data.class,data,m) YIELD rel  
-               WITH rel
-          SET rel.processed = 0
-          RETURN rel as rel \\", {data:data})
-         YIELD value
-         RETURN value.rel as rel',
-        {data: data}
-      )
-      YIELD value
-      RETURN collect(value.rel) as rel
-      ",
-      {edgesData: $edgesData})
-    YIELD value
-    RETURN nodes as nodes, value.rel as edges`;
-
-    var queryData = { nodesData: nodesData, edgesData: edgesData };
-    var data = { query: integrationQuery, queryData: queryData };
-    console.log('hiii');
-    $.ajax({
+  pushEPNToLocalDatabase: async function (list) {
+    var ids={};
+    var integrationQuery=`unwind $nodesData as data
+    call apoc.do.when(
+      exists{match (n) where n.category="EPN" and n.entityName=data.entityName return n},
+      "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
+      'call apoc.cypher.doIt("CALL apoc.create.node([data.category],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
+      {data:data}
+    ) yield value return value.result as result;
+    `;
+    var data = { query: integrationQuery, queryData: {nodesData:list} };
+    await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
-      success: function (data) {
-        let nodes = data.records[0]._fields[0];
-        let edges = data.records[0]._fields[1];
-
-        if (nodes) {
-          for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i].properties) {
-              databaseUtilities.nodesInDB[nodes[i].properties.newtId] =
-                nodes[i].identity.low;
-            } else if (nodes[i].newtId) {
-              databaseUtilities.nodesInDB[nodes[i].newtId] =
-                nodes[i].identity.low;
-            }
-          }
+      success: function (response) {
+        const {records}=response;
+        for(let record of records){
+          console.log(record);
+          const map = record._fields[0];
+          ids[map.incoming]=map.existing;
         }
-        // console.log('data',data);
-        if (edges) {
-          for (let i = 0; i < edges.length; i++) {
-            if(edges[i].properties){
-              databaseUtilities.edgesInDB[
-                [
-                  edges[i].properties.source,
-                  edges[i].properties.target,
-                  edges[i].properties.class,
-                ]
-              ] = edges[i].identity.low;
-            }
-          }
-        }
-        console.log("hiii");
-        // new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-        // new ActiveTabPushSuccessView({
-        //   el:'#prompt-confirmation-table',
-        //   }).render();
-        console.log("hiii2");
+        return ids;
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
       },
     });
+
+    return ids;
   },
-  convertLabelToClass: function(label)
-  {
-    var repl =label.replace("_"," ")
-    return repl
-  },
+  pushProcessToLocalDatabase: async function (list,ids) {
 
-  getNodesRecursively:  function(nodesToAdd)
-  {
-    return new Promise(async function(resolve, reject) {
-    
-    var parentsToGet = new Set()
-    var children = [];
-    for (let i = 0; i < nodesToAdd.length; i++)
-    {
-      if (nodesToAdd[i].properties.parent && nodesToAdd[i].properties.parent != 'none' )
-      {
-        parentsToGet.add(nodesToAdd[i].properties.parent)
-        children.push(nodesToAdd[i])
-      }
-      else
-      {
-        await databaseUtilities.pushNode(nodesToAdd[i])
-      }
-    }
-
-    parentsToGet = [...parentsToGet]
-    
-    var queryData = { parentsToGet: parentsToGet };
-
-    var query = `UNWIND $parentsToGet as parent
-                  MATCH (u)
-                  WHERE u.newtId = parent
-                  RETURN u`
-    var data = { query: query, queryData: queryData };
-
-     $.ajax({
+    list = list.map(pr=>{
+      const sourceNewtIds = Object.keys(pr)
+      .filter(key => key.startsWith('source_')).map(key => ids[pr[key][6]]) // Assuming index 6 is the newtId
+      .filter(id => id !== 'none'); // Remove any 'none' values
+      
+      // Extract target newtIds
+      const targetNewtIds = Object.keys(pr)
+      .filter(key => key.startsWith('target_')).map(key => ids[pr[key][6]]) // Assuming index 6 is the newtId
+      .filter(id => id !== 'none'); // Remove any 'none' values
+      
+      var process = (Object.assign({}, pr));
+      process.sourceNewtIds=sourceNewtIds;
+      process.targetNewtIds=targetNewtIds
+      return process;
+    });
+    var integrationQuery=`
+      UNWIND $processes as process
+      CALL apoc.do.when(
+      EXISTS {
+        MATCH (p:process)
+        WHERE p.category = 'process'
+          AND p.class = process.class
+          AND size(p.sourceNewtIds) = size(process.sourceNewtIds)
+          AND all(sourceId IN process.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
+          AND size(p.targetNewtIds) = size(process.targetNewtIds)
+          AND all(targetId IN process.targetNewtIds WHERE targetId IN p.targetNewtIds)
+      },
+          "MATCH (p:process)
+      WHERE p.category = 'process'
+        AND p.class = data.class
+        AND size(p.sourceNewtIds) = size(data.sourceNewtIds)
+        AND all(sourceId IN data.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
+        AND size(p.targetNewtIds) = size(data.targetNewtIds)
+        AND all(targetId IN data.targetNewtIds WHERE targetId IN p.targetNewtIds)
+      RETURN {incoming: data.newtId, existing: p.newtId} AS result",
+      'CALL apoc.cypher.doIt(
+          "CALL apoc.create.node([data.category], data) YIELD node SET node.processed = 0 RETURN {incoming: data.newtId, existing: node.newtId} AS result",
+          {data: data}
+        ) YIELD value RETURN value.result AS result',
+      {data: process}
+    ) YIELD value
+    RETURN value.result as result;
+    `;
+    var data = { query: integrationQuery, queryData: {processes:list} };
+    await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
-      success: async function (data) {
-        if (data.records.length == 0)
-        {
-          resolve();
+      success: function (response) {
+        const {records}=response;
+        for(let record of records){
+          console.log(record);
+          const map = record._fields[0];
+          ids[map.incoming]=map.existing;
         }
-        let counter = 0;
-        for(let i = 0; i < data.records.length; i++)
-        {
-          var fields = data.records[i]._fields
-          var parents = []
-          parents.push(fields[0])
-          databaseUtilities.getNodesRecursively(parents).then(() => {
-            counter ++;
-            if (counter == data.records.length)
-            {
-              for(let i = 0; i < children.length; i++)
-              {
-                databaseUtilities.pushNode(children[i])
-              }
-              resolve();
-            }
-           
-          })
-        }
-       
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
       },
-      
-    })
-    
-  });
+    });
+
+    return ids;
+  },
+
+  pushEdgesToLocalDatabase:async function (list,ids){
+    for(let i=0;i<list.length;i++){
+      list[i].source = ids[list[i].source];
+      list[i].target = ids[list[i].target];
+    }
+
+    const query = `
+    UNWIND $edges AS edge
+    MATCH (sourceNode {newtId: edge.source}), (targetNode {newtId: edge.target})
+    CALL apoc.do.when(
+      EXISTS {
+        MATCH (sourceNode)-[r]->(targetNode)
+        WHERE type(r) = edge.class
+      },
+      'RETURN null',
+      'CALL apoc.create.relationship(sourceNode, edge.class, {}, targetNode) YIELD rel RETURN rel',
+      {sourceNode: sourceNode, targetNode: targetNode, edge: edge}
+    ) YIELD value
+    RETURN value;
+    `;
+    var data = { query, queryData: {edges:list} };
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function (response) {
+        console.log(response);
+        // const {records}=response;
+        // for(let record of records){
+        //   console.log(record);
+        //   const map = record._fields[0];
+        //   ids[map.incoming]=map.existing;
+        // }
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
 
   },
-  
-  pushNode:  function(new_node)
-  {
-    return new Promise(resolve => {
 
-    if (!databaseUtilities.nodesInDB[new_node.properties.newtId])
-    {
-    var chiseInstance = appUtilities.getActiveChiseInstance();
+  pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag) {
+    const epns = nodesData.filter((node) => node.category === "EPN");
+    var processes = nodesData.filter((node) => node.category === "process");
+    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(epns);
+    const node_ids= await(databaseUtilities.pushProcessToLocalDatabase(processes,epn_ids));
 
-      var nodeParams = {
-        class: databaseUtilities.convertLabelToClass(new_node.properties.class),
-        language: "PD",
-        label: "smth"
-      };
+    await(databaseUtilities.pushEdgesToLocalDatabase(edgesData,node_ids));
+    // processes= processes.map(process=>{return{...process}});
+    
+    
+    // await databaseUtilities.pushProcessToLocalDatabase(processes);
 
+    // var createOneNode =`call apoc.create.node([data.class],data) yield node set node.processed=0 return node as node`;
+    // var createOneEdge = `call apoc.create.relationship(n,data.class,data,m) yield rel with rel set rel.processed=0 return rel as edge`;
+    // var inDbNode = `CALL apoc.cypher.doIt('
+    // MATCH (u)
+    // WHERE  u.newtId = data.newtId and id(u) = data.idInDb
+    // SET u = data
+    // RETURN u as node', {data:data})
+    // YIELD value
+    // RETURN value.node as node`;
 
-      var node =   chiseInstance.addNode(
-        0,
-        0,
-        nodeParams,
-        new_node.properties.newtId,
-        new_node.properties.parent
-      );
+    // var inDbEdge= `MATCH (n)-[r]->(m)
+    // WHERE id(r) = data.idInDb
+    // SET r.source =  data.source, r.target = data.target
+    // RETURN r as rel`;
+    // var createNodesQuery=`
+    // call apoc.cypher.doIt(\\"${createOneNode}\\",{data:data})
+    // yield value return value.node as node`;
 
-      if(new_node.properties.entityName)
-      {
-        chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
+    // var checkNodeQuery=`
+    // call apoc.do.when(data.isSpecial,
+    // 'match (u) where ${nodeMatchUtilities.matchProcessNodes("data","u",true,true,true,true)} return count(u) as cnt set u.newtId=data.newtId',
+    // '${createNodesQuery}',
+    // {data:data}
+    // )yield value return value
+    // `;
+
+    // var pushNodesQuery=`unwind $nodesData as data
+    // call apoc.do.when(data.inDb,
+    // "${inDbNode}","${checkNodeQuery}",{data:data})
+    // yield value return value.node as node`;
+
+    // var createEdgesQuery = `match (n) where n.newtId =data.source
+    // optional match (m) where m.newtId = data.target
+    // with distinct n,m,data
+    // ${createOneEdge}
+    // `;
+
+    // var pushEdgesQuery=`unwind $edgesData as data
+    // call apoc.do.when(data.inDb,"${inDbEdge}","${createEdgesQuery}",{data:data})
+    // yield value return value as edge`;
+
+    // const runDBQuery=async (data)=>{
+    //   return $.ajax({
+    //     type: "post",
+    //     url: "/utilities/runDatabaseQuery",
+    //     contentType: "application/json; charset=utf-8",
+    //     data: JSON.stringify(data),
+    //     success: function (response) {
+    //       console.log('got response for nodes/edges:',response);
+
+    //       const {records} = response;
+    //       console.log(records,response);
+    //       for(let i=0;i<records.length;i++){
+    //         if(records[i].keys[0]=='node'){
+    //           console.log('found a node:',records[i])
+    //           var node = records[i]._fields[0];
+    //           if(node.properties){
+    //             databaseUtilities.nodesInDB[node.properties.newtId] =node.identity.low;
+    //           }
+    //           else if (node.newtId){
+    //             databaseUtilities.nodesInDB[node.newtId] =node.identity.low;
+    //           }
+    //         }
+    //         else if(records[i].keys[0]==='edge'){
+    //           var {edge} = records[i]._fields[0];
+    //           console.log('found an edge:',edge)
+    //           if(edge.properties!==null){
+    //             databaseUtilities.edgesInDB[
+    //                 [
+    //                 edge.properties.source,
+    //                 edge.properties.target,
+    //                 edge.properties.class,
+    //                 ]
+    //                 ] = edge.identity.low;
+    //           }
+    //         }
+    //       }
+    //     },
+    //     error: function (req, status, err) {
+    //       console.error("Error running query", status, err);
+    //     },
+    //   });
+    // };
+
+    // console.log('nodeData:',nodesData);
+    // const macros = nodesData.filter((node)=>!node.isSpecial);
+    // const specials = nodesData.filter((node)=>node.isSpecial);
+    // console.log('macros:',macros,'specials:',specials);
+    // console.log('edgesData:',edgesData);
+    // console.log("flag:",flag);
+    // console.log("test:",nodeMatchUtilities.matchEdges("r", "data", true, true));
+    // var matchClass = true;
+    // var matchLabel = true;
+    // var matchId = false;
+    // var matchMultimer = true;
+    // var matchCloneMarker = true;
+    // var matchCloneLabel = true;
+    // var matchStateVariable = true;
+    // var matchUnitInformation = true;
+    // var matchParent = true;
+
+    // // var integrationQuery=`${createNodesQuery}`;
+    // var data = { query: pushNodesQuery, queryData: {nodesData} };
+    // var result = await runDBQuery(data);
+    // if(result.records.length>0){
+    //   var data = { query: pushEdgesQuery, queryData: {edgesData} };
+    //   var result = await runDBQuery(data);
+    // }
+
+    // var queryData = { nodesData: nodesData, edgesData: edgesData };
+    // var data = { query: createEdgesQuery, queryData: queryData };
+    // console.log('final data:',data)
+    // await runDBQuery(data);
+
+    // var integrationQuery=`UNWIND $nodesData as data
+    // CALL apoc.cypher.doIt(
+    // 'CALL apoc.create.node([data.class], data)'
+    // ,{data:data})
+    // YIELD node
+    // SET node.processed = 0
+    // RETURN node as node)
+    // `
+
+    // var integrationQuery = `UNWIND $nodesData as data
+    // CALL apoc.do.when( data.inDb,
+    //   "CALL
+    //     apoc.cypher.doIt('
+    //       MATCH (u)
+    //       WHERE  u.newtId = data.newtId and id(u) = data.idInDb
+    //       SET u = data
+    //       RETURN u as node', {data:data})
+    //     YIELD value
+    //     RETURN value.node as node",
+    //   "CALL
+    //     apoc.cypher.doIt('
+    //       CALL apoc.do.when( data.isSpecial,
+    //         \\"MATCH (u)
+    //         WHERE ${nodeMatchUtilities.matchProcessNodes(
+    //           "data",
+    //           "u",
+    //           true,
+    //           true,
+    //           true,
+    //           true
+    //         )}
+    //         RETURN COUNT(u) as cnt\\",
+    //         \\"MATCH (u)
+    //         WHERE  ${nodeMatchUtilities.match(
+    //           "data",
+    //           "u",
+    //           matchId,
+    //           matchClass,
+    //           false,
+    //           matchMultimer,
+    //           matchCloneMarker,
+    //           matchCloneLabel,
+    //           matchStateVariable,
+    //           matchUnitInformation,
+    //           true,
+    //           matchParent
+    //         )}
+    //         RETURN COUNT(u) as cnt\\",
+    //       {data:data})
+    //       YIELD value
+    //       RETURN value.cnt as cnt', {data: data})
+    //       YIELD value
+    //     WITH value.cnt as cnt, data
+    //     CALL
+    //     apoc.cypher.doIt('
+    //       CALL apoc.do.when( cnt > 0, \\"MATCH (u) WHERE ${nodeMatchUtilities.match(
+    //         "data",
+    //         "u",
+    //         matchId,
+    //         matchClass,
+    //         false,
+    //         matchMultimer,
+    //         matchCloneMarker,
+    //         matchCloneLabel,
+    //         matchStateVariable,
+    //         matchUnitInformation,
+    //         true,
+    //         matchParent
+    //       )} RETURN u.newtId as id \\", \\"RETURN null as id\\",
+    //             {data:data, cnt: cnt})
+    //             YIELD value
+    //             RETURN value.id as id',
+    //       {data:data, cnt: cnt} )
+    //     YIELD value
+    //     WITH value.id as id, data
+    //     CALL
+    //     apoc.cypher.doIt('
+    //           CALL apoc.do.when(id is not null , \\"
+    //           MATCH (n)
+    //           WHERE n.newtId = id
+    //           SET n.newtId = data.newtId\\",
+    //           \\"CALL apoc.create.node([data.class], data)
+    //           YIELD node
+    //           SET node.processed = 0
+    //           RETURN node as node\\", {data: data, id:id})
+    //           YIELD value
+    //           RETURN value.node as node
+    //         ', {data:data, id: id})
+    //         YIELD value
+    //         RETURN value.node as node",
+    //   {data:data})
+    // YIELD value
+    // WITH collect(value.node) as nodes
+    // CALL
+    // apoc.cypher.doIt("
+    //   UNWIND $edgesData AS data
+    //   CALL apoc.do.when(data.inDb,
+    //     'MATCH (n)-[r]->(m)
+    //      WHERE id(r) = data.idInDb
+    //      SET r.source =  data.source, r.target = data.target
+    //      RETURN r as rel',
+    //     'CALL  apoc.cypher.doIt(\\"MATCH (a)-[r]->(b)
+    //       WHERE ${nodeMatchUtilities.matchEdges("r", "data", true, true)}
+    //       RETURN COUNT(r) as cnt \\", {data:data})
+    //       YIELD value
+    //     WITH value.cnt as cnt, data
+    //     CALL apoc.do.when(cnt>0 , \\" MATCH (r)
+    //      WHERE ${nodeMatchUtilities.matchEdges("r", "data", true, true)}
+    //      SET r.source = data.source, r.target = data.target
+    //      RETURN r as rel\\",
+    //           \\"MATCH (n {newtId: data.source}), (m { newtId: data.target})
+    //            WITH DISTINCT n, m, data
+    //           CALL apoc.create.relationship(n,data.class,data,m) YIELD rel
+    //            WITH rel
+    //       SET rel.processed = 0
+    //       RETURN rel as rel \\", {data:data})
+    //      YIELD value
+    //      RETURN value.rel as rel',
+    //     {data: data}
+    //   )
+    //   YIELD value
+    //   RETURN collect(value.rel) as rel
+    //   ",
+    //   {edgesData: $edgesData})
+    // YIELD value
+    // RETURN nodes as nodes, value.rel as edges`;
+
+    // $.ajax({
+    //   type: "post",
+    //   url: "/utilities/runDatabaseQuery",
+    //   contentType: "application/json; charset=utf-8",
+    //   data: JSON.stringify(data),
+    //   success: function (data) {
+    //     let nodes = data.records[0]._fields[0];
+    //     let edges = data.records[0]._fields[1];
+
+    //     if (nodes) {
+    //       for (let i = 0; i < nodes.length; i++) {
+    //         if (nodes[i].properties) {
+    //           databaseUtilities.nodesInDB[nodes[i].properties.newtId] =
+    //             nodes[i].identity.low;
+    //         } else if (nodes[i].newtId) {
+    //           databaseUtilities.nodesInDB[nodes[i].newtId] =
+    //             nodes[i].identity.low;
+    //         }
+    //       }
+    //     }
+    //     // console.log('data',data);
+    //     if (edges) {
+    //       for (let i = 0; i < edges.length; i++) {
+    //         if(edges[i].properties){
+    //           databaseUtilities.edgesInDB[
+    //             [
+    //               edges[i].properties.source,
+    //               edges[i].properties.target,
+    //               edges[i].properties.class,
+    //             ]
+    //           ] = edges[i].identity.low;
+    //         }
+    //       }
+    //     }
+    //     // console.log("hiii");
+    //     // new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+    //     // new ActiveTabPushSuccessView({
+    //     //   el:'#prompt-confirmation-table',
+    //     //   }).render();
+    //     // console.log("hiii2");
+    //   },
+    //   error: function (req, status, err) {
+    //     console.error("Error running query", status, err);
+    //   },
+    // });
+  },
+  convertLabelToClass: function (label) {
+    var repl = label.replace("_", " ");
+    return repl;
+  },
+
+  getNodesRecursively: function (nodesToAdd) {
+    return new Promise(async function (resolve, reject) {
+      var parentsToGet = new Set();
+      var children = [];
+      for (let i = 0; i < nodesToAdd.length; i++) {
+        if (
+          nodesToAdd[i].properties.parent &&
+          nodesToAdd[i].properties.parent != "none"
+        ) {
+          parentsToGet.add(nodesToAdd[i].properties.parent);
+          children.push(nodesToAdd[i]);
+        } else {
+          await databaseUtilities.pushNode(nodesToAdd[i]);
+        }
       }
 
-      databaseUtilities.nodesInDB[new_node.properties.newtId] =
-      new_node.identity.low;
-      var el = cy.getElementById(new_node.properties.newtId)
-      var vu = cy.viewUtilities('get');
-     // vu.highlight(el, 3);
-    }
-    resolve();
-  });
+      parentsToGet = [...parentsToGet];
+
+      var queryData = { parentsToGet: parentsToGet };
+
+      var query = `UNWIND $parentsToGet as parent
+                  MATCH (u)
+                  WHERE u.newtId = parent
+                  RETURN u`;
+      var data = { query: query, queryData: queryData };
+
+      $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+        success: async function (data) {
+          if (data.records.length == 0) {
+            resolve();
+          }
+          let counter = 0;
+          for (let i = 0; i < data.records.length; i++) {
+            var fields = data.records[i]._fields;
+            var parents = [];
+            parents.push(fields[0]);
+            databaseUtilities.getNodesRecursively(parents).then(() => {
+              counter++;
+              if (counter == data.records.length) {
+                for (let i = 0; i < children.length; i++) {
+                  databaseUtilities.pushNode(children[i]);
+                }
+                resolve();
+              }
+            });
+          }
+        },
+        error: function (req, status, err) {
+          console.error("Error running query", status, err);
+        },
+      });
+    });
   },
 
-   //Queries
+  pushNode: function (new_node) {
+    return new Promise((resolve) => {
+      if (!databaseUtilities.nodesInDB[new_node.properties.newtId]) {
+        var chiseInstance = appUtilities.getActiveChiseInstance();
+
+        var nodeParams = {
+          class: databaseUtilities.convertLabelToClass(
+            new_node.properties.class
+          ),
+          language: "PD",
+          label: "smth",
+        };
+
+        var node = chiseInstance.addNode(
+          0,
+          0,
+          nodeParams,
+          new_node.properties.newtId,
+          new_node.properties.parent
+        );
+
+        if (new_node.properties.entityName) {
+          chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
+        }
+
+        databaseUtilities.nodesInDB[new_node.properties.newtId] =
+          new_node.identity.low;
+        var el = cy.getElementById(new_node.properties.newtId);
+        var vu = cy.viewUtilities("get");
+        // vu.highlight(el, 3);
+      }
+      resolve();
+    });
+  },
+
+  //Queries
   getIdOfLabeledNodes: async function (labelOfNodes, idOfNodes, newtIdOfNodes) {
     var query = `UNWIND $labelOfNodes as label
                    MATCH (u)
@@ -580,10 +853,9 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (data) {
-
         for (var i = 0; i < data.records.length; i++) {
           idOfNodes.push(data.records[i]._fields[0].low);
-          newtIdOfNodes.push(data.records[i]._fields[1])
+          newtIdOfNodes.push(data.records[i]._fields[1]);
         }
       },
       error: function (req, status, err) {
@@ -592,142 +864,166 @@ var databaseUtilities = {
     });
   },
 
-  addNodesEdgesToCy: async function (nodes, edges,source, target) {
-    return new Promise(resolve => {
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    let nodesToHighlight = [];
-    let edgesToHighlight = [];
-    let edgesToAdd = [];
-    let nodesToAdd = [];
-
-    for (let i = 0; i < nodes.length; i++) {
-      if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
-        nodesToAdd.push(nodes[i]);
-      }
-      nodesToHighlight.push(nodes[i]);
-    }
-
-    for (let j = 0; j < edges.length; j++) {
-      //Check if edge already exists in map
-      if (
-        !databaseUtilities.edgesInDB[
-          [
-            edges[j].properties.source,
-            edges[j].properties.target,
-            edges[j].properties.class,
-          ]
-        ]
-      ) {
-        edgesToAdd.push(edges[j]);
-        databaseUtilities.edgesInDB[
-          [
-            edges[j].properties.source,
-            edges[j].properties.target,
-            edges[j].properties.class,
-          ]
-        ] = edges[j].identity.low;
-      }
-      edgesToHighlight.push(edges[j]);
-    }
-
-    databaseUtilities.getNodesRecursively(nodesToAdd).then(async function() {
-      return databaseUtilities.pushEdges(edgesToAdd);
-    }).then(function() {
-
-      //Add color scheme for map
-      $("#map-color-scheme_greyscale").click()
-      $("#color-scheme-inspector-style-select").val('3D')
-      $("#color-scheme-inspector-style-select").change()
-
-
-      //Add highlights
-      if (source != null)
-      {
-        for (let i = 0; i < source.length; i++)
-        {
-          var cy = appUtilities.getActiveCy();
-          var el = cy.getElementById(source[i])
-          var vu = cy.viewUtilities('get');
-          vu.highlight(el, 3);
-        }
-      }
-
-      if ( target != null)
-      {
-        for (let i = 0; i < target.length; i++)
-        {
-          var cy = appUtilities.getActiveCy();
-          var el = cy.getElementById(target[i])
-          var vu = cy.viewUtilities('get');
-          vu.highlight(el, 5);
-        }
-      }
-       
-      //Run layout
-      databaseUtilities.performLayout();
-    });
-
-  
- 
-     return {nodesToHighlight: nodesToHighlight, edgesToHighlight: edgesToHighlight}
-  });
-  },
-  pushEdges: async function(edgesToAdd)
-  {
-    return new Promise(resolve => {
- 
+  addNodesEdgesToCy: async function (nodes, edges, source, target) {
+    return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
-    for (let i = 0; i < edgesToAdd.length; i++) {
-      if (
-        edgesToAdd[i].properties.class != "belongs_to_submap" &&
-        edgesToAdd[i].properties.class != "belongs_to_compartment" &&
-        edgesToAdd[i].properties.class != "belongs_to_complex"
-      )
+      let nodesToHighlight = [];
+      let edgesToHighlight = [];
+      let edgesToAdd = [];
+      let nodesToAdd = [];
+
+      for (let i = 0; i < nodes.length; i++) {
+        if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
+          nodesToAdd.push(nodes[i]);
+        }
+        nodesToHighlight.push(nodes[i]);
+      }
+
+      for (let j = 0; j < edges.length; j++) {
+        //Check if edge already exists in map
+        if (
+          !databaseUtilities.edgesInDB[
+            [
+              edges[j].properties.source,
+              edges[j].properties.target,
+              edges[j].properties.class,
+            ]
+          ]
+        ) {
+          edgesToAdd.push(edges[j]);
+          databaseUtilities.edgesInDB[
+            [
+              edges[j].properties.source,
+              edges[j].properties.target,
+              edges[j].properties.class,
+            ]
+          ] = edges[j].identity.low;
+        }
+        edgesToHighlight.push(edges[j]);
+      }
+      console.log("edges to add:", edges);
+      databaseUtilities
+        .getNodesRecursively(nodesToAdd)
+        .then(async function () {
+          return databaseUtilities.pushEdges(edgesToAdd);
+        })
+        .then(function () {
+          //Add color scheme for map
+          $("#map-color-scheme_greyscale").click();
+          $("#color-scheme-inspector-style-select").val("3D");
+          $("#color-scheme-inspector-style-select").change();
+
+          //Add highlights
+          if (source != null) {
+            for (let i = 0; i < source.length; i++) {
+              var cy = appUtilities.getActiveCy();
+              var el = cy.getElementById(source[i]);
+              var vu = cy.viewUtilities("get");
+              vu.highlight(el, 3);
+            }
+          }
+
+          if (target != null) {
+            for (let i = 0; i < target.length; i++) {
+              var cy = appUtilities.getActiveCy();
+              var el = cy.getElementById(target[i]);
+              var vu = cy.viewUtilities("get");
+              vu.highlight(el, 5);
+            }
+          }
+
+          //Run layout
+          databaseUtilities.performLayout();
+        });
+
+      return {
+        nodesToHighlight: nodesToHighlight,
+        edgesToHighlight: edgesToHighlight,
+      };
+    });
+  },
+  pushEdges: async function (edgesToAdd) {
+    return new Promise((resolve) => {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      for (let i = 0; i < edgesToAdd.length; i++) {
+        if (
+          edgesToAdd[i].properties.class != "belongs_to_submap" &&
+          edgesToAdd[i].properties.class != "belongs_to_compartment" &&
+          edgesToAdd[i].properties.class != "belongs_to_complex"
+        )
+          console.log(
+            "sending to add Edge:",
+            edgesToAdd[i].properties.source,
+            edgesToAdd[i].properties.target,
+            databaseUtilities.convertLabelToClass(
+              edgesToAdd[i].properties.class
+            )
+          );
+        console.log(
+          "source:",
+          chiseInstance.getCy().getElementById(edgesToAdd[i].properties.source)
+        );
+        console.log(
+          "target:",
+          chiseInstance.getCy().getElementById(edgesToAdd[i].properties.target)
+        );
         var new_edge = chiseInstance.addEdge(
-          edgesToAdd[i].properties.source,
           edgesToAdd[i].properties.target,
+          edgesToAdd[i].properties.source,
           databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class),
           undefined,
           undefined
         );
         var cy = appUtilities.getActiveCy();
-        var vu = cy.viewUtilities('get');
-        vu.highlight(new_edge, 4);
-
-    }
+        var vu = cy.viewUtilities("get");
+        // console.log('new_edge:',new_edge);
+        // vu.highlight(new_edge, 4);
+      }
       resolve();
     });
-    
   },
 
-  performLayout: function()
-  {
-    $("#perform-static-layout, #perform-static-layout-icon").click()
+  performLayout: function () {
+    $("#perform-static-layout, #perform-static-layout-icon").click();
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit) {
-    var sourceId = []
-    var sourceNewt = []
-    await databaseUtilities.getIdOfLabeledNodes(sourceArray, sourceId, sourceNewt);
+    var sourceId = [];
+    var sourceNewt = [];
+    await databaseUtilities.getIdOfLabeledNodes(
+      sourceArray,
+      sourceId,
+      sourceNewt
+    );
 
-    var targetId = []
-    var targetNewt = []
-    await databaseUtilities.getIdOfLabeledNodes(targetArray, targetId, targetNewt);
+    var targetId = [];
+    var targetNewt = [];
+    await databaseUtilities.getIdOfLabeledNodes(
+      targetArray,
+      targetId,
+      targetNewt
+    );
 
     //Check if any nodes with such labels
-    if (sourceId.length == 0 && targetId > 0)
-    {
-      var errMessage = {err: "Invalid input", message: "No such source nodes"}
+    if (sourceId.length == 0 && targetId > 0) {
+      var errMessage = {
+        err: "Invalid input",
+        message: "No such source nodes",
+      };
       return errMessage;
     }
-    if (sourceId.length > 0 && targetId == 0)
-    {
-      var errMessage = {err: "Invalid input", message: "No such target nodes"}
+    if (sourceId.length > 0 && targetId == 0) {
+      var errMessage = {
+        err: "Invalid input",
+        message: "No such target nodes",
+      };
       return errMessage;
     }
-    if (sourceId.length == 0 && targetId == 0)
-    {
-      var errMessage = {err: "Invalid input", message: "No such source and target nodes"}
+    if (sourceId.length == 0 && targetId == 0) {
+      var errMessage = {
+        err: "Invalid input",
+        message: "No such source and target nodes",
+      };
       return errMessage;
     }
     query = graphALgos.pathsFromTo(limit);
@@ -740,11 +1036,10 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        if (data.records.length == 0)
-       {
-         result.err = {err: "Invalid input", message: "No data returned"}
-         return;
-       } 
+        if (data.records.length == 0) {
+          result.err = { err: "Invalid input", message: "No data returned" };
+          return;
+        }
         var nodes = [];
         var edges = [];
         var nodesSet = new Set();
@@ -784,9 +1079,12 @@ var databaseUtilities = {
             }
           }
         }
-       databaseUtilities.addNodesEdgesToCy(nodes, edges, sourceNewt, targetNewt)
-      
-        
+        databaseUtilities.addNodesEdgesToCy(
+          nodes,
+          edges,
+          sourceNewt,
+          targetNewt
+        );
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -795,23 +1093,28 @@ var databaseUtilities = {
   },
 
   runPathBetween: async function (labelOfNodes, lengthLimit) {
-
     var idOfNodes = [];
     var newtIdOfNodes = [];
-    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes, newtIdOfNodes);
-    
-    //Check if label of nodes are valid
-    if (idOfNodes.length == 0)
-    {
-      var errMessage = {err: "Invalid input", message: "No such nodes with given labels"}
-      return errMessage
-    } 
+    await databaseUtilities.getIdOfLabeledNodes(
+      labelOfNodes,
+      idOfNodes,
+      newtIdOfNodes
+    );
 
-    var query = graphALgos.pathsBetween( lengthLimit);
+    //Check if label of nodes are valid
+    if (idOfNodes.length == 0) {
+      var errMessage = {
+        err: "Invalid input",
+        message: "No such nodes with given labels",
+      };
+      return errMessage;
+    }
+
+    var query = graphALgos.pathsBetween(lengthLimit);
     var queryData = { idList: idOfNodes };
 
     var data = { query: query, queryData: queryData };
-    console.log("data being sent:",data);
+    console.log("data being sent:", data);
     console.log(query);
     var result = {};
     result.highlight = {};
@@ -822,15 +1125,12 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-   
-
-       //Check if any data returned
-       if (data.records.length == 0)
-       {
-         result.err = {err: "Invalid input", message: "No data returned"}
-         return;
-       } 
-
+        //Check if any data returned
+        if (data.records.length == 0) {
+          result.err = { err: "Invalid input", message: "No data returned" };
+          return;
+        }
+        console.log("returned data:", data);
         var nodes = [];
         var edges = [];
         var nodesSet = new Set();
@@ -870,6 +1170,7 @@ var databaseUtilities = {
             }
           }
         }
+        console.log("data:", nodes, edges, newtIdOfNodes);
         await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
       },
       error: function (req, status, err) {
@@ -880,15 +1181,21 @@ var databaseUtilities = {
   },
   runNeighborhood: async function (labelOfNodes, lengthLimit) {
     var idList = [];
-    var newtIdList = []
-    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idList, newtIdList);
+    var newtIdList = [];
+    await databaseUtilities.getIdOfLabeledNodes(
+      labelOfNodes,
+      idList,
+      newtIdList
+    );
     var setOfSources = new Set(newtIdList);
 
-    if (idList.length == 0)
-    {
-      var errMessage = {err: "Invalid input", message: "No such nodes with given labels"}
-      return errMessage
-    } 
+    if (idList.length == 0) {
+      var errMessage = {
+        err: "Invalid input",
+        message: "No such nodes with given labels",
+      };
+      return errMessage;
+    }
 
     var query = graphALgos.neighborhood(lengthLimit);
     var queryData = { idList: idList };
@@ -903,11 +1210,14 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        if (data.records.length == 0)
-       {
-         result.err = {err: "Invalid input", message: "No such nodes with given labels"}
-         return;
-       } 
+        console.log("data:", data);
+        if (data.records.length == 0) {
+          result.err = {
+            err: "Invalid input",
+            message: "No such nodes with given labels",
+          };
+          return;
+        }
         var nodes = [];
         var edges = [];
         var targetNodes = [];
@@ -917,12 +1227,13 @@ var databaseUtilities = {
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
-    
             if (!nodesSet.has(fields[0][j].properties.newtId)) {
               nodes.push(fields[0][j]);
               nodesSet.add(fields[0][j].properties.newtId);
-              if (!setOfSources.has(fields[0][j].properties.newtId) && !fields[0][j].properties.class.startsWith("process"))
-              {
+              if (
+                !setOfSources.has(fields[0][j].properties.newtId) &&
+                !fields[0][j].properties.class.startsWith("process")
+              ) {
                 targetNodes.push(fields[0][j].properties.newtId);
               }
             }
@@ -953,7 +1264,13 @@ var databaseUtilities = {
             }
           }
         }
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdList, targetNodes);
+        console.log(nodes, edges, newtIdList, targetNodes);
+        await databaseUtilities.addNodesEdgesToCy(
+          nodes,
+          edges,
+          newtIdList,
+          targetNodes
+        );
       },
       error: function (req, status, err) {
         console.error("Error running query", status, err);
@@ -966,11 +1283,13 @@ var databaseUtilities = {
     var idOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
 
-    if (idOfNodes.length == 0)
-    {
-      var errMessage = {err: "Invalid input", message: "No such nodes with given labels"}
-      return errMessage
-    } 
+    if (idOfNodes.length == 0) {
+      var errMessage = {
+        err: "Invalid input",
+        message: "No such nodes with given labels",
+      };
+      return errMessage;
+    }
 
     var query = "";
     if (direction == -1) {
@@ -980,7 +1299,6 @@ var databaseUtilities = {
     } else {
       query = graphALgos.downstream(idOfNodes, lengthLimit);
     }
-
 
     var data = { query: query, queryData: null };
     var result = {};
@@ -992,11 +1310,10 @@ var databaseUtilities = {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function (data) {
-        if (data.records.length == 0)
-       {
-         result.err = {err: "Invalid input", message: "No data returned"}
-         return;
-       } 
+        if (data.records.length == 0) {
+          result.err = { err: "Invalid input", message: "No data returned" };
+          return;
+        }
         var nodes = [];
         var edges = [];
         var records = data.records;
@@ -1026,4 +1343,3 @@ var databaseUtilities = {
   },
 };
 module.exports = databaseUtilities;
-
