@@ -358,7 +358,6 @@ module.exports = function() {
         });
         lines = lines.join("\n")
       }
-      console.log("changing the node label");
       chiseInstance.changeNodeLabel(node, lines);
       inspectorUtilities.handleSBGNInspector();
 
@@ -405,26 +404,24 @@ module.exports = function() {
       var loadCallbackInvalidityWarning=()=>{promptInvalidFileView.render()};
       
       if(fileExtension==='nwt'){
-        
+        var loadCallbackSBGNMLValidity = function (text) {
+          //validateSBGNML(text);
+        }
+        params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning,,(e)=>{
+          pushActiveTabsView.render(e);
+        }];
+        caller = chiseInstance.loadFileToLocal;
       }
 
-      // else{
-      //   var loadCallbackSBGNMLValidity = function (text) {
-      //     //validateSBGNML(text);
-      //   }
-      //   params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning];
-      //   caller = chiseInstance.loadNwtFile;
-      // }
-
-      // if(cy.elements().length != 0) {
-      //   promptConfirmationView.render(() => {
-      //     setTimeout(() => caller(file, ...params), 150);
-      //   });
-      // }
-      // else {
-      //   caller(file, ...params);
-      // }
-      // $(this).val("");
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(() => {
+          setTimeout(() => caller(file, ...params), 150);
+        });
+      }
+      else {
+        caller(file, ...params);
+      }
+      $(this).val("");
     });
 
     $("#load-file, #load-file-icon").click(function () {

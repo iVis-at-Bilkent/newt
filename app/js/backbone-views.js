@@ -3099,7 +3099,7 @@ var PushActiveTabsView = Backbone.View.extend({
   copyProperties: function () {
     this.currentQueryParameters = _.clone(this.defaultQueryParameters);
   },
-  render: function () {
+  render: function (fileContent) {
     var self = this;
     self.template = _.template($("#push-active-tabs-template").html());
     self.template = self.template(self.currentQueryParameters);
@@ -3109,16 +3109,14 @@ var PushActiveTabsView = Backbone.View.extend({
     PCdialog = "PathsBetween";
     $(document).off("click","#replace-push-active-tabs")
     .on("click","#replace-push-active-tabs",async function (evt){
-      console.log("trying to replace");
       var chiseInstance = appUtilities.getActiveChiseInstance();
+      // var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
       var activeTabContent = chiseInstance.createJsonFromSBGN();
       databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
     });
     $(document)
       .off("click", "#merge-push-active-tabs")
       .on("click", "#merge-push-active-tabs", async function (evt) {
-
-        console.log("trying to merge");
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var activeTabContent = chiseInstance.createJsonFromSBGN();
         databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");

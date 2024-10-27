@@ -117,10 +117,8 @@ var databaseUtilities = {
   pushActiveContentToDatabase: async function (activeTabContent, flag) {
     var nodesData = [];
     var edgesData = [];
-    console.log('activeTabContent',activeTabContent);
     await databaseUtilities.processNodesData(nodesData, activeTabContent);
     await databaseUtilities.processEdgesData(edgesData, activeTabContent);
-    console.log("nodes and edges have been processed", nodesData, edgesData);
     await databaseUtilities.processData(nodesData, edgesData);
     databaseUtilities.pushActiveNodesEdgesToDatabase(
       nodesData,
@@ -272,7 +270,6 @@ var databaseUtilities = {
         }
       }
     }
-    console.log("Updating the special nodes data:",nodesData);
     //Update specialNodes
     for (let i = 0; i < nodesData.length; i++) {
       if (
@@ -318,7 +315,6 @@ var databaseUtilities = {
       success: function (response) {
         const {records}=response;
         for(let record of records){
-          console.log(record);
           const map = record._fields[0];
           ids[map.incoming]=map.existing;
         }
@@ -445,7 +441,6 @@ var databaseUtilities = {
     var processes = nodesData.filter((node) => node.category === "process");
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(epns);
     const node_ids= await(databaseUtilities.pushProcessToLocalDatabase(processes,epn_ids));
-
     await(databaseUtilities.pushEdgesToLocalDatabase(edgesData,node_ids));
     // processes= processes.map(process=>{return{...process}});
     
