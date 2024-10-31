@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 const multer = require('multer');
 var server = require('http').createServer(app);
+require('dotenv').config();
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
 	limit: "100mb",
