@@ -3110,15 +3110,14 @@ var PushActiveTabsView = Backbone.View.extend({
     $(document).off("click","#replace-push-active-tabs")
     .on("click","#replace-push-active-tabs",async function (evt){
       var chiseInstance = appUtilities.getActiveChiseInstance();
-      // var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
-      var activeTabContent = chiseInstance.createJsonFromSBGN();
+      var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
       databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
     });
     $(document)
       .off("click", "#merge-push-active-tabs")
       .on("click", "#merge-push-active-tabs", async function (evt) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
-        var activeTabContent = chiseInstance.createJsonFromSBGN();
+        var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
         databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
         // // use active chise instance
         // var chiseInstance = appUtilities.getActiveChiseInstance();
