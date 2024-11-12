@@ -1189,7 +1189,6 @@ inspectorUtilities.handleSBGNInspector = function () {
             if (x) return (x);
           });
           lines = lines.join("\n");
-
           chiseInstance.changeNodeLabel(selectedEles, lines);
           inspectorUtilities.handleSBGNInspector();
         }

@@ -358,7 +358,82 @@ module.exports = function() {
         });
         lines = lines.join("\n")
       }
-      chiseInstance.changeNodeLabel(node, lines);
+
+      const connectedEdges = node.connectedEdges();
+      let oldNodeId = node.data('id');
+      let newId = elementUtilities.generateNodeId();
+      const x = node.position().x;
+      const y = node.position().y;
+      const nodeData = node.data();
+      const nodeParams = {
+        class:nodeData.class,
+        language:nodeData.language,
+      };
+      const parent = nodeData.parent;
+      const visibility = node.data('visibility');
+      const newNode = chiseInstance.addNode(x,y,nodeParams,newId,parent,visibility);
+      for (const [property, value] of Object.entries(nodeData)) {
+        newNode.data(property,value);
+      }
+      chiseInstance.changeNodeLabel(newNode, lines);
+      connectedEdges.forEach((edge)=>{
+        let source =edge.data('source'),target=edge.data('target');
+        let connectedProcess = null;
+        if(source===oldNodeId){
+          source = newId;
+          connectedProcess = cy.getElementById(target);
+        }
+        if(target===oldNodeId){
+          target = newId;
+          connectedProcess = cy.getElementById(source);
+        }
+
+        let connectedNodeX = connectedProcess.position().x;
+        let connectedNodeY = connectedProcess.position().y;
+        let connectedProcessData = connectedProcess.data();
+        const connectedProcessParams={
+          class:connectedProcessData.class,
+          language:connectedProcessData.language,
+        };
+        const connectedProcessParent = connectedProcessData.parent;
+        const connectedProcessVisibility = connectedProcess.data('visibility');
+        let newConnectedProcess = chiseInstance.addNode(connectedNodeX,connectedNodeY,connectedProcessParams,undefined,connectedProcessParent,connectedProcessVisibility); 
+        
+        for (const [property, value] of Object.entries(connectedProcessData)) {
+          newConnectedProcess.data(property,value);
+        }
+
+        const connectedProcessEdges = connectedProcess.connectedEdges();
+        connectedProcessEdges.forEach((connectedEdge)=>{
+          let connectedEdgeSource = connectedEdge.data('source');
+          let connectedEdgeTarget = connectedEdge.data('target');
+          if(connectedEdgeSource===connectedProcess.id()){
+            connectedEdgeSource=newConnectedProcess.id();
+          }
+          if(connectedEdgeTarget===connectedProcess.id()){
+            connectedEdgeTarget=newConnectedProcess.id();
+          }
+          if(connectedEdgeSource===oldNodeId){
+            connectedEdgeSource=newNode.id();
+          }
+          if(connectedEdgeTarget===oldNodeId){
+            connectedEdgeTarget=newNode.id();
+          }
+
+          const edgeData = connectedEdge.data();
+          const edgeParams = {
+            class:edgeData.class,
+            language:edgeData.language,
+          }
+          const edgeVisibility = connectedEdge.data('visibility');
+          const groupId = edgeData.groupID;
+          chiseInstance.addEdge(connectedEdgeSource,connectedEdgeTarget,edgeParams,undefined,edgeVisibility,groupId);
+          connectedEdge.remove();
+        });
+        connectedProcess.remove();
+      });
+      connectedEdges.remove();
+      node.remove();
       inspectorUtilities.handleSBGNInspector();
 
     });
