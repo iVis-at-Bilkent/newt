@@ -2,6 +2,7 @@ var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
 const { ActiveTabPushSuccessView } = require("./backbone-views");
+const { merge } = require("jquery");
 const categories = {
   macromolecule: "EPN",
   simple_chemical: "EPN",
@@ -296,27 +297,75 @@ var databaseUtilities = {
     }
   },
 
-  pushEPNToLocalDatabase: async function (list) {
-    var ids={};
-    var integrationQuery=`unwind $nodesData as data
+  pushEPNToLocalDatabase: async function (ids,list, mergeflag) {
+    const epn_matching_criteria= '';
+    integrationQuery=``;
+    if(mergeflag){
+      integrationQuery = `unwind $nodesData as data
     call apoc.do.when(
-      exists{match (n) where n.category="EPN" and n.entityName=data.entityName return n},
+      exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
       "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
       'call apoc.cypher.doIt("CALL apoc.create.node([data.category],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
       {data:data}
     ) yield value return value.result as result;
     `;
-    var data = { query: integrationQuery, queryData: {nodesData:list} };
+    }
+    else{
+      integrationQuery=`
+      unwind $nodesData as data
+      call apoc.do.when(
+
+        exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
+        'call apoc.cypher.doIt(
+          "
+            match(n) 
+            where n.category=\\\\"EPN\\\\" and n.entityName=data.entityName
+            SET n.parent = data.parent,
+                n.unitsOfInformation = data.unitsOfInformation,
+                n.language = data.language,
+                n.inDb = data.inDb,
+                n.stateVariables = data.stateVariables,
+                n.isSpecial = data.isSpecial,
+                n.entityName = data.entityName,
+                n.cloneMarker = data.cloneMarker,
+                n.multimer = data.multimer,
+                n.category = data.category,
+                n.cloneLabel = data.cloneLabel,
+                n.class = data.class
+            RETURN {incoming: data.newtId,existing:n.newtId} AS result
+          ",
+          {data:data}
+        )YIELD value RETURN value.result AS result'
+        ,
+        'call apoc.cypher.doIt(
+          "
+            CALL apoc.create.node([data.category],data)yield node set node.processed=0 
+            return {incoming:data.newtId,existing:node.newtId} as result
+          "
+          ,
+          {data:data}
+        ) 
+        yield value return value.result as result'
+      ,
+      {data:data}
+      ) yield value return value.result as result;
+      `;
+    }
+    
+    var data = {
+      query: integrationQuery,
+      queryData: { nodesData: list, flag: mergeflag },
+    };
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (response) {
-        const {records}=response;
-        for(let record of records){
+        const { records } = response;
+        for (let record of records) {
           const map = record._fields[0];
-          ids[map.incoming]=map.existing;
+          ids[map.incoming] = map.existing;
         }
         return ids;
       },
@@ -327,23 +376,26 @@ var databaseUtilities = {
 
     return ids;
   },
-  pushProcessToLocalDatabase: async function (list,ids) {
-
-    list = list.map(pr=>{
+  pushProcessToLocalDatabase: async function (list, ids, flag) {
+    console.log(list,ids);
+    list = list.map((pr) => {
       const sourceNewtIds = Object.keys(pr)
-      .filter(key => key.startsWith('source_')).map(key => ids[pr[key][6]]) // Assuming index 6 is the newtId
-      .filter(id => id !== 'none'); // Remove any 'none' values
-      
+        .filter((key) => key.startsWith("source_"))
+        .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
+        .filter((id) => id !== "none"); // Remove any 'none' values
+
       // Extract target newtIds
       const targetNewtIds = Object.keys(pr)
-      .filter(key => key.startsWith('target_')).map(key => ids[pr[key][6]]) // Assuming index 6 is the newtId
-      .filter(id => id !== 'none'); // Remove any 'none' values
-      
-      var process = (Object.assign({}, pr));
-      process.sourceNewtIds=sourceNewtIds;
-      process.targetNewtIds=targetNewtIds
+        .filter((key) => key.startsWith("target_"))
+        .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
+        .filter((id) => id !== "none"); // Remove any 'none' values
+
+      var process = Object.assign({}, pr);
+      process.sourceNewtIds = sourceNewtIds;
+      process.targetNewtIds = targetNewtIds;
       return process;
     });
+    console.log(list);
     var integrationQuery=`
       UNWIND $processes as process
       CALL apoc.do.when(
@@ -372,18 +424,18 @@ var databaseUtilities = {
     ) YIELD value
     RETURN value.result as result;
     `;
-    var data = { query: integrationQuery, queryData: {processes:list} };
+    var data = { query: integrationQuery, queryData: { processes: list } };
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (response) {
-        const {records}=response;
-        for(let record of records){
+        const { records } = response;
+        for (let record of records) {
           console.log(record);
           const map = record._fields[0];
-          ids[map.incoming]=map.existing;
+          ids[map.incoming] = map.existing;
         }
       },
       error: function (req, status, err) {
@@ -394,8 +446,8 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushEdgesToLocalDatabase:async function (list,ids){
-    for(let i=0;i<list.length;i++){
+  pushEdgesToLocalDatabase: async function (list, ids, flag) {
+    for (let i = 0; i < list.length; i++) {
       list[i].source = ids[list[i].source];
       list[i].target = ids[list[i].target];
     }
@@ -414,7 +466,8 @@ var databaseUtilities = {
     ) YIELD value
     RETURN value;
     `;
-    var data = { query, queryData: {edges:list} };
+   
+    var data = { query, queryData: { edges: list } };
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -433,18 +486,211 @@ var databaseUtilities = {
         console.error("Error running query", status, err);
       },
     });
+  },
 
+  pushCompartmentsToDatabase: async function(ids,compartments){
+    console.log('pushing compartments');
+    var integrationQuery = `
+    unwind $nodesData as data
+    call apoc.do.when(
+      exists{match (n) where n.class="compartment" and n.entityName=data.entityName return n},
+      "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
+      'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
+      {data:data}
+    ) yield value return value.result as result;
+    `;
+    var data={
+      query: integrationQuery,
+      queryData:{nodesData:compartments},
+    };
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function (response) {
+        const { records } = response;
+        for (let record of records) {
+          const map = record._fields[0];
+          ids[map.incoming] = map.existing;
+        }
+        return ids;
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+    return ids;
+  },
+
+  pushSubmapsToDatabase: async function(ids,submaps){
+    console.log('pushing submaps');
+    var integrationQuery = `
+    unwind $nodesData as data
+    call apoc.do.when(
+      exists{match (n) where n.class="submap" and n.entityName=data.entityName return n},
+      "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
+      'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
+      {data:data}
+    ) yield value return value.result as result;
+    `;
+    var data={
+      query: integrationQuery,
+      queryData:{nodesData:submaps},
+    };
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function (response) {
+        const { records } = response;
+        for (let record of records) {
+          const map = record._fields[0];
+          ids[map.incoming] = map.existing;
+        }
+        return ids;
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+    return ids;
+  },
+
+
+  pushComplexesToDatabase: async function(complexes,epns){
+    for(let node of complexes){
+      let children = [];
+      for(let i=0;i<epns.length;i++){
+        let epn = epns[i];
+        if(epn.parent===node.newtId){
+          children.push(epn);
+          epns.splice(i,1);
+          i--;
+        }
+      }
+      node.children = children;
+    }
+    var ids={};
+    var integrationQuery = `
+      UNWIND $complexes AS incomingComplex // Unwind the array of incoming complexes
+      match (c:complex {entityName:incomingComplex.entityName})<-[:belongs_to_complex]-(children:EPN)
+      with c,incomingComplex,collect(children.entityName) as existingChildren, [child IN incomingComplex.children | child.entityName] AS expectedChildren, collect(children) as dbChildren
+      where size(existingChildren) = size(expectedChildren) and 
+            all(ch in existingChildren where ch in expectedChildren) and
+            all(ch in expectedChildren where ch in existingChildren)
+      with
+          c,
+          incomingComplex,
+          [child in incomingComplex.children|
+              {
+                incoming: child.newtId,
+                existing: case when child.entityName in existingChildren then [dbChild in dbChildren where dbChild.entityName = child.entityName][0].newtId else null end
+              }
+          ] as childrenOutput
+      return {
+        incoming: incomingComplex.newtId,
+        existing: c.newtId,
+        children: childrenOutput
+      }
+    `;
+    var data={
+      query: integrationQuery,
+      queryData:{complexes:complexes},
+    };
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: async function (response) {
+        const { records } = await response;
+        if(records.length===0){
+          const createQuery=`
+            UNWIND $complexes AS incomingComplex
+            WITH apoc.map.removeKeys(incomingComplex, ['children']) AS mappedComplexData, incomingComplex
+            call apoc.create.node(["complex"],mappedComplexData) yield node as newComplex
+            with newComplex, incomingComplex
+            unwind incomingComplex.children as childData
+            call apoc.create.node(["EPN"], childData) yield node as newChild
+            call apoc.create.relationship(newChild,"belongs_to_complex",{},newComplex) yield rel
+            with incomingComplex,newComplex,collect(childData.newtId) as childrenIds
+            return {
+              incoming:incomingComplex.newtId,
+              existing:newComplex.newtId,
+              children:childrenIds
+            } as result
+          `;
+
+          var d={query:createQuery,queryData:{complexes:complexes}};
+          await $.ajax({
+            type: "post",
+            url: "/utilities/runDatabaseQuery",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(d),
+            success: function (response) {
+              const { records } = response;
+              for(let record of records){
+                const map = record._fields[0];
+                ids[map.incoming] = map.existing;
+                for(let child of map.children){
+                  ids[child]=child;
+                }
+              }
+              return ids;
+            },
+            error: function (req, status, err) {
+              console.error("Error running query", status, err);
+            },
+          });
+        }
+        
+        for (let record of records) {
+          const map = record._fields[0];
+          ids[map.incoming] = map.existing;
+          for(let child of map.children){
+            ids[child.incoming] = child.existing;
+          }
+        }
+        return ids;
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+    return ids;
   },
 
   pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag) {
-    const epns = nodesData.filter((node) => node.category === "EPN");
+    console.log(nodesData, edgesData, flag);
+    var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
+    var complexes = nodesData.filter((node)=>node.class==='complex');
+    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(complexes,epns);
+    const submaps = nodesData.filter((node)=>node.class==='submap');
+    const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
+    const compartments = nodesData.filter((node)=>node.class==='compartment');
+    const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
     var processes = nodesData.filter((node) => node.category === "process");
-    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(epns);
-    const node_ids= await(databaseUtilities.pushProcessToLocalDatabase(processes,epn_ids));
-    await(databaseUtilities.pushEdgesToLocalDatabase(edgesData,node_ids));
-    // processes= processes.map(process=>{return{...process}});
-    
-    
+    console.log(compartmentIds,epns,processes);
+    const mergeFlag = flag === "MERGE";
+    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
+      compartmentIds,
+      epns,
+      mergeFlag
+    );
+  console.log(epn_ids);
+    const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
+      processes,
+      epn_ids,
+      mergeFlag
+    );
+    await databaseUtilities.pushEdgesToLocalDatabase(
+      edgesData,
+      node_ids,
+      mergeFlag
+    );
+
     // await databaseUtilities.pushProcessToLocalDatabase(processes);
 
     // var createOneNode =`call apoc.create.node([data.class],data) yield node set node.processed=0 return node as node`;
@@ -971,8 +1217,6 @@ var databaseUtilities = {
         );
         var cy = appUtilities.getActiveCy();
         var vu = cy.viewUtilities("get");
-        // console.log('new_edge:',new_edge);
-        // vu.highlight(new_edge, 4);
       }
       resolve();
     });
