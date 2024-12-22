@@ -3111,14 +3111,28 @@ var PushActiveTabsView = Backbone.View.extend({
     .on("click","#replace-push-active-tabs",async function (evt){
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
-      databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
+      var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
+      $(self.el).modal("toggle");
+      if(result!==undefined){
+        new PromptActiveTabPushError({
+        el: "#active-tab-push-error-table",
+        }).render(JSON.stringify(result));
+      }
     });
     $(document)
       .off("click", "#merge-push-active-tabs")
       .on("click", "#merge-push-active-tabs", async function (evt) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
-        databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
+        var result = databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
+        if(result!==null){
+          new PromptActiveTabPushError({
+          el: "#active-tab-push-error-table",
+          }).render(JSON.stringify(result));
+        }
+        else{
+          $(self.el).modal("toggle");
+        }
         // // use active chise instance
         // var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -5868,6 +5882,33 @@ var PromptInvalidTypeWarning = Backbone.View.extend({
     $(document)
       .off("click", "#prompt-errorInvalidType-confirm")
       .on("click", "#prompt-errorInvalidType-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+
+var PromptActiveTabPushError = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#active-tab-push-error-template").html());
+  },
+  render: function (message) {
+    var self = this;
+    self.template = _.template($("#active-tab-push-error-template").html());
+
+    var param = {};
+    param.message = message;
+    self.template = self.template(param);
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#active-tab-push-error-confirm")
+      .on("click", "#active-tab-push-error-confirm", function (evt) {
         $(self.el).modal("toggle");
       });
 

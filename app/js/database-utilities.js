@@ -3,6 +3,9 @@ var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
 const { ActiveTabPushSuccessView } = require("./backbone-views");
 const { merge } = require("jquery");
+
+var errorCheck =null;
+
 const categories = {
   macromolecule: "EPN",
   simple_chemical: "EPN",
@@ -124,7 +127,7 @@ var databaseUtilities = {
     await databaseUtilities.processNodesData(nodesData, activeTabContent);
     await databaseUtilities.processEdgesData(edgesData, activeTabContent);
     await databaseUtilities.processData(nodesData, edgesData);
-    databaseUtilities.pushActiveNodesEdgesToDatabase(
+    return await databaseUtilities.pushActiveNodesEdgesToDatabase(
       nodesData,
       edgesData,
       flag
@@ -373,6 +376,7 @@ var databaseUtilities = {
         return ids;
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -442,6 +446,7 @@ var databaseUtilities = {
         }
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -486,6 +491,7 @@ var databaseUtilities = {
         // }
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -520,6 +526,7 @@ var databaseUtilities = {
         return ids;
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -555,6 +562,7 @@ var databaseUtilities = {
         return ids;
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -644,6 +652,7 @@ var databaseUtilities = {
               return ids;
             },
             error: function (req, status, err) {
+              errorCheck = {status,err}
               console.error("Error running query", status, err);
             },
           });
@@ -659,6 +668,7 @@ var databaseUtilities = {
         return ids;
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -725,6 +735,7 @@ var databaseUtilities = {
         }
       },
       error: function (req, status, err) {
+        errorCheck = {status,err}
         console.error("Error running query", status, err);
       },
     });
@@ -737,10 +748,13 @@ var databaseUtilities = {
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(complexes,epns);
+    if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
     const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
+    if(errorCheck!==null)return errorCheck;
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
+    if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
     console.log(compartmentIds,epns,processes);
@@ -750,24 +764,26 @@ var databaseUtilities = {
       epns,
       mergeFlag
     );
+    if(errorCheck!==null)return errorCheck;
     const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
       processes,
       epn_ids,
       mergeFlag
     );
-    
+    if(errorCheck!==null)return errorCheck;
     const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
       logicals,
       node_ids,
       edgesData,
       mergeFlag
     );
+    if(errorCheck!==null)return errorCheck;
     await databaseUtilities.pushEdgesToLocalDatabase(
       edgesData,
       logical_ids,
       mergeFlag
     );
-
+    if(errorCheck!==null)return errorCheck;
     // await databaseUtilities.pushProcessToLocalDatabase(processes);
 
     // var createOneNode =`call apoc.create.node([data.class],data) yield node set node.processed=0 return node as node`;
