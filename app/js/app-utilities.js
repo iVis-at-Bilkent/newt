@@ -61,6 +61,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
   appUtilities.experimentTabPanel.render();
+  appUtilities.simulationTabPanel.render();
   // needing an appUndoActions instance here is something unexpected
   // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
   // that uses the active cy instance
