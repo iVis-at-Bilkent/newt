@@ -1988,6 +1988,11 @@ var SimulationPanelView = Backbone.View.extend({
 var simulationTabPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
     $(document).on("click", "#map-simulate-button", function (evt) {
+      if(appUtilities.getActiveChiseInstance().elementUtilities.mapType !== "SBML"){
+        new ExportErrorView({el: "#exportError-table"}).render();
+        document.getElementById("export-error-message").innerText = "Simulation is applicable to the SBML map type!";
+        return;
+      }
       createApi().then((Module) => {
         var instance = new COPASI(Module);
         var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
@@ -1995,8 +2000,15 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
         var endTime = $("#inspector-simulation-end").val();
         var stepCount = $("#inspector-simulation-step").val();
         instance.loadModel(sbmlContent);
+        console.log(sbmlContent);
         var simulationData = instance.simulateEx(startTime, endTime, stepCount);
-        new SimulationPanelView({el: '#simulation-view'}).render(simulationData);
+        if(simulationData.status !== "success"){
+          new ExportErrorView({el: "#exportError-table"}).render();
+          document.getElementById("export-error-message").innerText = "Simulation failed!";
+        }
+        else
+          new SimulationPanelView({el: '#simulation-view'}).render(simulationData);
+          console.log(simulationData);
       });
     });
   },

@@ -507,7 +507,6 @@ module.exports = function() {
     });
 
     $("#import-SBML-file").click(function () {
-      console.log("importing sbml file")
       $("#sbml-file").trigger('click');
     });
 

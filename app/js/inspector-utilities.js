@@ -836,7 +836,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       if( isSBMLSpecies(selectedEles[0]) && (selectedEles.parent().length == 0 
           || selectedEles.parent()[0].data('class') != 'complex sbml')) { // Add html body for an SBML Species
         var hasOnlySubstanceUnits = selectedEles[0].data('simulation')['hasOnlySubstanceUnits'];
-        var value;
+        var value = 0.0;
         if(hasOnlySubstanceUnits)
           value = selectedEles[0].data('simulation')['initialAmount'];
         else
