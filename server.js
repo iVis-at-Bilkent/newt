@@ -42,4 +42,5 @@ server.listen(port, function(){
   console.log('server listening on port: %d', port);
 });
 
+app.use('/libs', express.static(__dirname + '/libs'));
 app.use(express.static(__dirname, {dotfiles: 'ignore'}));

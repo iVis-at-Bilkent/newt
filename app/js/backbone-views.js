@@ -5,6 +5,9 @@ var chroma = require("chroma-js");
 var FileSaver = require("file-saver");
 var cytoscape = require("cytoscape");
 var chise = require("chise");
+var createApi = require('../../libs/copasijs.js');
+var COPASI = require('../../libs/copasi.js');
+var Plotly = require('plotly.js-dist');
 
 var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -1955,6 +1958,78 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
   },
 });
 
+var SimulationPanelView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#simulation-view-template").html());
+  },
+  render: function (simulationData) {
+    var self = this;
+    self.template = _.template($("#simulation-view-template").html());
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    var plotElement = document.getElementById("simulation-plot");
+    let data = [];
+    for (let i = 1; i < simulationData.num_variables; i++) {
+        var trace = {
+            x: simulationData.columns[0],
+            y: simulationData.columns[i],
+            mode: "lines",
+            name: simulationData.titles[i]
+        };
+        data.push(trace);
+    }
+    Plotly.newPlot(plotElement, data, {margin: {pad: 15}});
+    return this;
+  },
+});
+
+var simulationTabPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    $(document).on("click", "#map-simulate-button", function (evt) {
+      if(appUtilities.getActiveChiseInstance().elementUtilities.mapType !== "SBML"){
+        new ExportErrorView({el: "#exportError-table"}).render();
+        document.getElementById("export-error-message").innerText = "Simulation is applicable to the SBML map type!";
+        return;
+      }
+      createApi().then((Module) => {
+        var instance = new COPASI(Module);
+        var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
+        var startTime = $("#inspector-simulation-start").val();
+        var endTime = $("#inspector-simulation-end").val();
+        var stepCount = $("#inspector-simulation-step").val();
+        instance.loadModel(sbmlContent);
+        var simulationData = instance.simulateEx(startTime, endTime, stepCount);
+        if(simulationData.status !== "success"){
+          new ExportErrorView({el: "#exportError-table"}).render();
+          document.getElementById("export-error-message").innerText = "Simulation failed!";
+          console.log(simulationData);
+        }
+        else
+          new SimulationPanelView({el: '#simulation-view'}).render(simulationData);
+      });
+    });
+  },
+
+  render: function() {
+    // use the active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current general properties of cy
+    var currentGeneralProperties = appUtilities.getScratch(
+      cy,
+      "currentGeneralProperties"
+    );
+
+    this.template = _.template($("#map-tab-simulation-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(currentGeneralProperties));
+
+    return this;
+  }
+});
+
 /**
  * SBGN Properties view for the Sample Application.
  */
@@ -3466,6 +3541,69 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
 
     return this;
   },
+});
+
+var sbmlKineticLawView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.localparams = null;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    // self.template = self.template(self.currentQueryParameters);
+  },
+  render: function (node) {
+    var self = this;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    $(self.el).html(self.template);
+    var nodeRow = document.getElementById("kinetic-law-nodes");
+    var idArray = []
+    node.connectedEdges().connectedNodes().difference(node).forEach((iterNode, idx) => {
+      if(iterNode.same(node)){
+        return;
+      }
+      var element = '<button id="kinetic-law-node-ele' + idx + '" class="btn btn-default" style="width:90px; margin-left:5px; margin-right:5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' 
+        + (iterNode.data('label') || iterNode.data('id')) + '</button>';
+      idArray.push(iterNode.data('id'));
+      nodeRow.innerHTML += element;
+      $(document).off("click", "#save-kinetic-law").on("click", "#kinetic-law-node-ele" + idx, function(evt) {
+        var cursorStart = kineticLaw.selectionStart;
+        var cursorEnd = kineticLaw.selectionEnd;
+        var currentText = kineticLaw.value;
+        var textBefore = currentText.substring(0, cursorStart);
+        var textAfter  = currentText.substring(cursorEnd, currentText.length);
+        var newText = '[' + (iterNode.data('label') || iterNode.data('id')) + '_' + idx + ']';
+        kineticLaw.value = (textBefore + newText + textAfter);
+        kineticLaw.selectionStart = kineticLaw.selectionEnd = cursorStart + newText.length;
+        kineticLaw.focus();
+      });
+    })
+    $(self.el).modal("show");
+
+    var kineticLaw = document.getElementById('kinetic-law-field');
+    
+    setTimeout(() => {
+      kineticLaw.value = node.data('simulation')['kineticLawVisible'] || "";
+    }, 200)
+    
+    $(document)
+    .off("click", "#save-kinetic-law")
+    .on("click", "#save-kinetic-law", function(evt) {
+      // Convert labels to ids
+      var kineticLawText = kineticLaw.value;
+      const result = kineticLawText.replace(/\[(.+?)_(\d+)]/g, (match, prefix, intStr) => {
+        const intValue = parseInt(intStr, 10);
+        return `(${idArray[intValue]})`;
+      });
+      node.data('simulation')['kineticLawVisible'] = kineticLawText;
+      node.data('simulation')['kineticLaw'] = result;
+      $(self.el).modal("toggle");
+    });
+
+    $(document)
+      .off("click", "#cancel-kinetic-law")
+      .on("click", "#cancel-kinetic-law", function (evt) {
+        $(self.el).modal("toggle");
+      });
+  }
 });
 
 /*
@@ -7405,6 +7543,8 @@ module.exports = {
   MapTabLabelPanel: MapTabLabelPanel,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   experimentTabPanel: experimentTabPanel,
+  simulationTabPanel: simulationTabPanel,
+  SimulationPanelView: SimulationPanelView,
   //GeneralPropertiesView: GeneralPropertiesView,
   NeighborhoodQueryView: NeighborhoodQueryView,
   PathsBetweenQueryView: PathsBetweenQueryView,
@@ -7441,4 +7581,5 @@ module.exports = {
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
+  sbmlKineticLawView: sbmlKineticLawView,
 };

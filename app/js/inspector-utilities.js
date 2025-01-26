@@ -693,6 +693,342 @@ inspectorUtilities.handleSBGNInspector = function () {
     $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-properties-panel" class="panel" ></div>');
     $("#sbgn-inspector-style-properties-panel").html(html);
 
+    // Some SBML Helper Methods for Simulation Tab
+
+    /**
+     * @param {cytoscape.NodeSingular} node the input node 
+     * @returns whether this node is an SBML process node
+     */
+    var isSBMLProcess = function( node ) {
+      return node.data('class').endsWith('process') 
+        || node.data('class') == 'association' 
+        || node.data('class') == 'dissociation';
+    }
+
+    /**
+     * @param {cytoscape.NodeSingular} node the input node 
+     * @returns whether this node is a logical operator
+     */
+    var isSBMLLogicalOperator = function( node ) {
+      return node.data('class') == "and" || node.data('class') == "not" 
+        || node.data('class') == "or" 
+        || node.data('class') == "unknown logical operator";
+    } 
+
+    /**
+     * @param {cytoscape.NodeSingular} node the input node
+     * @returns whether the input node is an SBML species
+     */
+    var isSBMLSpecies = function( node ) {
+      return node.isNode() && !isSBMLProcess(node) 
+        && !isSBMLLogicalOperator(node) 
+        && node.data('class') !== 'compartment';
+    }
+
+    /**
+     * @param {cytoscape.EdgeSingular} edge the input edge
+     * @returns whether the input edge is a reduced arc
+     */
+    var isSBMLReducedArc = function( edge ) {
+      var reducedNotationEdge = [
+        "positive influence sbml", "negative influence",
+        "reduced modulation", "reduced stimulation",
+        "reduced trigger", "unknown negative influence",
+        "unknown positive influence", "unknown reduced stimulation",
+        "unknown reduced modulation", "unknown reduced trigger"
+      ];
+      return edge.data('class') in reducedNotationEdge;
+    }
+
+    /**
+     * @param {cytoscape.EdgeSingular} edge the input edge
+     * @returns whether the input edge is a non-modifier arc
+     */
+    var isSBMLSimulationArc = function( edge ) {
+      return edge.data('class').includes('production') || edge.data('class').includes('consumption')
+        || edge.data('class') == 'transport';
+    }
+
+    var addLocalParameters = function(node) {
+      var labelIdx = 0;
+      $("#localparam-field").html(""); // clear the field before populating
+      for (var localparam of node.data('simulation').localParameters) {
+          var localParam_ = '<div style="display: flex; flex-direction: row; align-items: center;">'
+          + '<table><tbody><tr><td>'
+          + '<textarea id="inspector-localparam-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + localparam.name + '</textarea></td>'
+          + '</tr><tr><td>'
+          + '<input id="inspector-localparam-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + localparam.quantity + '" style="width: ' + width / 2.5 + 'px;">'
+          + '<select id="inspector-localparam-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + width / 2.5 + 'px !important; margin-left: 1px;">'
+          + '<option value="litre" selected>litre</option>'
+          + '<option value="m3">m³</option>'
+          + '</select></td></tr></tbody></table>'
+          + '<img id="inspector-localparam-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
+          + '</div>';
+          
+          $("#localparam-field").append(localParam_);
+
+          (function (labelIdx){
+            $('#inspector-localparam-delete' + labelIdx).off('click').on('click', function() {
+              var lparams = node.data('simulation').localParameters;
+              lparams.splice(labelIdx, 1);
+              node.data('simulation').localParameters = lparams;
+              addLocalParameters(node);
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-localparam-name' + labelIdx).off('change').on('change', function() {
+              var name = document.getElementById("inspector-localparam-name" + labelIdx).value;
+              node.data('simulation').localParameters[labelIdx].name = name;
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-localparam-value' + labelIdx).off('change').on('change', function() {
+              var quantity = parseFloat(document.getElementById("inspector-localparam-value" + labelIdx).value);
+              node.data('simulation').localParameters[labelIdx].quantity = quantity;
+          })})(labelIdx);
+  
+          labelIdx += 1;
+      }
+      localParam_ = '<img width="16px" height="16px" id="inspector-add-localparam" src="app/img/add.svg" class="pointer-button">';
+      $("#localparam-field").append(localParam_);
+      $("#inspector-add-localparam").off('click').on('click', function() {
+          node.data('simulation').localParameters.push({
+              "name": "",
+              "quantity": 0,
+              "unit": ""
+          });
+          addLocalParameters(node); // Re-render after adding a new parameter
+      });
+  };
+
+    // Add SBML specific simulation tab.
+    var mapType = appUtilities.getActiveChiseInstance().getMapType();
+    var showSBMLSimulationPanel = true;
+    if(selectedEles.length != 1 || mapType != 'SBML')
+      showSBMLSimulationPanel = false;
+    if(isSBMLReducedArc(selectedEles[0]) || isSBMLLogicalOperator(selectedEles[0]) 
+        || selectedEles[0].data('class') == 'logic arc')
+      showSBMLSimulationPanel = false;
+    if(selectedEles[0].isEdge() && !isSBMLSimulationArc(selectedEles[0]))
+      showSBMLSimulationPanel = false;
+    if( isSBMLSpecies(selectedEles[0]) && selectedEles.parent().length != 0 
+          && selectedEles.parent()[0].data('class') == 'complex sbml')
+      showSBMLSimulationPanel = false;
+
+    if(showSBMLSimulationPanel){
+      var SBMLHtml = "";
+      
+      // Add expand collapse tab title
+      var SBMLClassInfo  = selectedEles[0].data('class')
+        .replace(' multimer', '')
+        .replace('active ', '')
+        .replace('hypothetical ', '') || "";
+      var SBMLClassInfo = appUtilities.transformClassInfo(SBMLClassInfo);
+      var SBMLTitle = SBMLClassInfo == "" ? "Simulation Properties" : SBMLClassInfo + " Simulation Properties";
+      SBMLHtml += `<div  class='panel-heading collapsed' data-toggle='collapse' data-target='#inspector-simulation-properties-toggle'>
+            <p class='panel-title accordion-toggle'>` + SBMLTitle + `</p></div>`
+
+      // Add body
+      SBMLHtml += "<div id='inspector-simulation-properties-toggle' class='panel-collapse collapse'>";
+      SBMLHtml += "<div class='panel-body'>";
+      SBMLHtml += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
+
+      if( isSBMLSpecies(selectedEles[0]) && (selectedEles.parent().length == 0 
+          || selectedEles.parent()[0].data('class') != 'complex sbml')) { // Add html body for an SBML Species
+        var hasOnlySubstanceUnits = selectedEles[0].data('simulation')['hasOnlySubstanceUnits'];
+        var value = 0.0;
+        if(hasOnlySubstanceUnits)
+          value = selectedEles[0].data('simulation')['initialAmount'];
+        else
+          value = selectedEles[0].data('simulation')['initialConcentration'];
+        var constant = selectedEles[0].data('simulation')['constant'];
+        var bc = selectedEles[0].data('simulation')['boundaryCondition'];
+        
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                    + "<font class='sbgn-label-font' style='margin-right: 3px;'>Initial </font>"
+                    + "<select id='hasOnlySubstanceUnits' style='width: " + width / 1.7 + "px; font-size: 11px !important;'>"
+                      + "<option value='amount'"; 
+        if(hasOnlySubstanceUnits) 
+          SBMLHtml += " selected";
+        SBMLHtml      += ">Amount</option>"
+                      + "<option value='concentration'" 
+        if(!hasOnlySubstanceUnits) 
+          SBMLHtml += " selected";
+        SBMLHtml += ">Concentration</option>"
+                    + "</select>" 
+                  + "</td><td style='padding-left: 5px;'>"
+                    + "<input id='inspector-initial-value' class='inspector-input-box' type='number' style='width: " + width / 2.5 + "px;'"
+                    + " value=" + value;
+        SBMLHtml += "></input>"
+                    + "<select id='inspector-initial-unit' class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
+                      + "<option value='mole' selected>mole</option>"
+                    + "</select>"
+                  + "</td></tr>";
+        SBMLHtml += '<tr><td colspan="2"><hr class="inspector-divider"></td></tr>';
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                + "<font class='sbgn-label-font'>Boundary Condition</font>" 
+              + "</td><td style='padding-left: 5px;'>"
+                + "<input type='checkbox' id='inspector-boundary-condition-species'";
+        if(bc)
+          SBMLHtml += " checked";
+        SBMLHtml += "></input>"
+              + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Constant</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input type='checkbox' id='inspector-constant-species'";
+        if(constant)
+          SBMLHtml += " checked";
+        SBMLHtml += "></input>"
+                + "</td></tr></table></div>";
+      } else if( isSBMLProcess(selectedEles[0]) ) { // Add html body for an SBML Process
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                        + "<font class='sbgn-label-font'>Local Parameters</font>" 
+                      + "</td><td id='localparam-field' style='padding-left: 5px;'></td></tr></table><div>"
+                      + '<div style="text-align: center; margin-top: 5px;">'
+                      + '<button class="btn btn-default" style="align: center;" id="inspector-kinetic-law-button">Set Kinetic Law</button></div>';
+                      
+      } else if( selectedEles[0].data('class') == "compartment" ){ // Add html body for an SBML Compartment
+        var spatialDimensions = selectedEles[0].data('simulation')['spatialDimensions'];
+        var size = selectedEles[0].data('simulation')['size'];
+        var units = selectedEles[0].data('simulation')['units'];
+        var constant = selectedEles[0].data('simulation')['constant'];
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                    + "<font class='sbgn-label-font'>Dimensions</font>" 
+                  + "</td><td style='padding-left: 5px;'>"
+                    + "<input id='inspector-compartment-dimensions' class='inspector-input-box' type='number' min='1' max='3' style='width: " + buttonwidth + "px;'" 
+                    + " value=" + spatialDimensions;
+        SBMLHtml +="></input>"
+                  + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Size</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input id='inspector-compartment-size' class='inspector-input-box' type='number' min='0' style='width: " + width / 2.5 + "px;'"
+                  + " value=" + size;
+        SBMLHtml += "></input>"
+                  + "<select id='inspector-compartment-size-units' class='inspector-input-box sbgn-input-medium layout-text' style='width: " + width / 2.5 + "px !important; margin-left: 1px;'>"
+                    + "<option value='litre' selected>litre</option>"
+                    + "<option value='m3'>m&sup3</option>"
+                  +"</select>"
+                + "</td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Constant</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input type='checkbox' id='inspector-compartment-constant'"
+        if(constant)
+          SBMLHtml += " checked";
+        SBMLHtml += "></input>"
+                + "</td></tr></table></div>";
+      } else if( isSBMLSimulationArc(selectedEles[0]) ){ // Add html body for an SBML Arc
+        var stoichiometry = selectedEles[0].data('simulation')['stoichiometry'];
+        var constant = selectedEles[0].data('simulation')['constant'];
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                    + "<font class='sbgn-label-font'>Stoichiometry</font>" 
+                  + "</td><td style='padding-left: 5px;'>"
+                    + "<input id='inspector-node-stoichiometry' class='inspector-input-box' type='number' min='1' style='width: " + buttonwidth + "px;'"
+                  + "value=" + stoichiometry;
+        SBMLHtml += "></td></tr>";
+        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
+                  + "<font class='sbgn-label-font'>Constant</font>" 
+                + "</td><td style='padding-left: 5px;'>"
+                  + "<input type='checkbox' id='inspector-constant-stoichiometry'" 
+        if(constant)
+          SBMLHtml += " checked"; 
+        SBMLHtml += "></input>"
+                + "</td></tr></table></div>";
+      }
+      $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-simulation-panel" class="panel" ></div>');
+      $("#sbgn-inspector-style-simulation-panel").html(SBMLHtml);
+      if(isSBMLProcess(selectedEles[0]))
+        addLocalParameters(selectedEles[0]);
+    }
+
+    // SPECIES EVENTS
+    $('#hasOnlySubstanceUnits').on('change', function(){
+      var element = document.getElementById('hasOnlySubstanceUnits');
+      if(element.options[element.selectedIndex].text == 'Amount')
+        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = true;
+      else
+        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = false;
+      $('#inspector-initial-value').trigger('change');
+    });
+
+    $('#inspector-initial-value').on('change', function(){
+      var element = document.getElementById('inspector-initial-value');
+      if(selectedEles[0].data('simulation')['hasOnlySubstanceUnits'])
+        selectedEles[0].data('simulation')['initialAmount'] = parseFloat(element.value);
+      else
+        selectedEles[0].data('simulation')['initialConcentration'] = parseFloat(element.value);
+    });
+
+    // TODO: Fill this after units are implemented.
+    $('#inspector-initial-unit').on('change', function(){
+
+    });
+
+    $('#inspector-boundary-condition-species').on('change', function(){
+      var element = document.getElementById('inspector-boundary-condition-species');
+      if(element.checked)
+        selectedEles[0].data('simulation')['boundaryCondition'] = true;
+      else
+        selectedEles[0].data('simulation')['boundaryCondition'] = false;
+    });
+
+    $('#inspector-constant-species').on('change', function(){
+      var element = document.getElementById('inspector-constant-species');
+      if(element.checked)
+        selectedEles[0].data('simulation')['constant'] = true;
+      else
+        selectedEles[0].data('simulation')['constant'] = false;
+    });
+
+    // EDGE EVENTS
+    $('#inspector-node-stoichiometry').on('change', function(){
+      var element = document.getElementById('inspector-node-stoichiometry');
+      selectedEles[0].data('simulation')['stoichiometry'] = parseFloat(element.value);
+    });
+
+    $('#inspector-constant-stoichiometry').on('change', function(){
+      var element = document.getElementById('inspector-constant-stoichiometry');
+      if(element.checked)
+        selectedEles[0].data('simulation')['constant'] = true;
+      else
+        selectedEles[0].data('simulation')['constant'] = false;
+    });
+
+    // COMPARTMENT EVENTS
+    $('#inspector-compartment-dimensions').on('change', function(){
+      var element = document.getElementById('inspector-compartment-dimensions');
+      var val = parseInt(element.value);
+      if(val >= 1 && val <= 3)
+        selectedEles[0].data('simulation')['spatialDimensions'] = val;
+    });
+    
+    $('#inspector-compartment-size').on('change', function(){
+      var element = document.getElementById('inspector-compartment-size');
+      selectedEles[0].data('simulation')['size'] = parseFloat(element.value);
+    });
+
+    // TODO: Fill this after units are implemented.
+    $('#inspector-compartment-size-units').on('change', function(){
+
+    });
+
+    $('#inspector-compartment-constant').on('change', function(){
+      var element = document.getElementById('inspector-compartment-constant');
+      if(element.checked)
+        selectedEles[0].data('simulation')['constant'] = true;
+      else
+        selectedEles[0].data('simulation')['constant'] = false;
+    });
+
+    // REACTION NODE EVENTS
+    $('#inspector-kinetic-law-button').on('click', function (){
+      // selectedEles.unselect();
+      appUtilities.sbmlKineticLawView.render(selectedEles[0]);
+    });
+
+
     colorPickerUtils.bindPicker2Input('#inspector-fill-color', function() {
       chiseInstance.changeData(selectedEles, 'background-color', $('#inspector-fill-color').val());
     });

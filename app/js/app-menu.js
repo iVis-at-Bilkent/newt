@@ -145,6 +145,8 @@ module.exports = function() {
   mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
   experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
+  simulationTabPanel = appUtilities.simulationTabPanel = new BackboneViews.simulationTabPanel({el: '#simulation-template-container'});
+  SimulationPanelView = appUtilities.simulationPanelView = new BackboneViews.SimulationPanelView({el: '#simulation-view'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
@@ -177,6 +179,7 @@ module.exports = function() {
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
   exportErrorView = appUtilities.ExportErrorView = new BackboneViews.ExportErrorView({el: "#exportError-table",});
+  sbmlKineticLawView = appUtilities.sbmlKineticLawView = new BackboneViews.sbmlKineticLawView({el: "#sbml-kineticLaw-table"});
   toolbarButtonsAndMenu();
   keyboardShortcuts();
   // Events triggered by sbgnviz module
@@ -851,6 +854,7 @@ module.exports = function() {
         mapTabRearrangementPanel.render();
         mapTabLabelPanel.render();
         experimentTabPanel.render();
+        simulationTabPanel.render();
         if (mapPropertiesExist){
           // update map panel
           appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView, scheme_type: currentGeneralProperties.mapColorSchemeStyle});

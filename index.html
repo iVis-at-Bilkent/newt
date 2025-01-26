@@ -750,6 +750,14 @@
                         <div id="color-scheme-template-container"></div>
                       </div>
                     </div>
+                    <div class="panel">
+                      <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-simulation">
+                        <p class="panel-title accordion-toggle">Simulation</p>
+                      </div>
+                      <div id="sbgn-inspector-map-simulation" class="panel-collapse collapse">
+                        <div id="simulation-template-container"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div id="sbgn-inspector-palette" class="tab-pane fade in active">
@@ -1383,6 +1391,10 @@
       <!-- map by Reactome query table will be shown here-->
     </div>
 
+    <div id="sbml-kineticLaw-table" tabindex="-1" class="modal fade" role="dialog"></div>
+      <!-- sbml kinetic law will be shown here-->
+    </div>
+
     <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn properties table will be shown here-->
     </div>
@@ -1499,6 +1511,10 @@
     
     <div id="infobox-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- infobox properties table will be shown here -->
+    </div>
+
+    <div id="simulation-view" tabindex="-1" class="modal fade" role="dialog">
+      <!-- simulation data will be shown here-->
     </div>
 
     <div id="box"></div>
@@ -2203,6 +2219,54 @@
       <div>
     </script>
 
+    <script type="text/template" id="map-tab-simulation-template">
+      <table class="table-condensed layout-table dialog-table map-panel-table">
+        <tbody>
+          <tr>
+            <td class="header">
+              <span class="add-on layout-text" title="Starting time for the simulation"> Start Time (s) </span>
+            </td>
+            <td>
+              <input id="inspector-simulation-start" class="inspector-input-box" type="number" style="width: 50px;" value="0">
+            </td>
+          </tr>
+          <tr>
+            <td class="header">
+              <span class="add-on layout-text" title="Stopping time for the simulation"> End Time (s) </span>
+            </td>
+            <td>
+              <input id="inspector-simulation-end" class="inspector-input-box" type="number" style="width: 50px;" value="10">
+            </td>
+          </tr>
+          <tr>
+            <td class="header">
+              <span class="add-on layout-text" title="Step count for the simulation"> Step Count </span>
+            </td>
+            <td>
+              <input id="inspector-simulation-step" class="inspector-input-box integer-input" type="number" min="0" style="width: 50px;" value="10">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="text-align: center; margin-top: 5px;">
+        <button class="btn btn-default" id="map-simulate-button">Simulate</button>
+      <div>
+    </script>
+
+    <script type="text/template" id="simulation-view-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 800px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"></button>
+                  <h4 class="modal-title" style="text-align: center">Simulation</h4>
+              </div>
+              <div class="modal-body" style="display: flex; justify-content: center; align-items: center;">
+                <div id="simulation-plot"></div>
+              </div>
+          </div> 
+      </div>
+    </script>
+
     <script type="text/template" id="map-tab-experiment-template">
           <table align = "center" class="table-condensed layout-table dialog-table map-panel-table">
        <div align="center" style = 'margin-top: 10px; text-align: center'> Open... <img width='16px' height='16px' id='load-exp-data-util' title="Open experiment data from a tab-delimited file" src='app/img/add.svg' style="margin: 5px;"/> </div>
@@ -2668,6 +2732,54 @@
                   <button id="cancel-query-mapbyReactomeID" class="btn btn-default">Cancel</button>
               </div>
           </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="sbml-kinetic-law-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Kinetic Law</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table-condensed layout-table" style="width: 100%">
+        <tbody>
+
+        <td style="padding-left: 30px; padding-right: 30px;">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                <span class="caption-style-text">Species</span>
+                </td>
+              </tr>
+              <tr>
+                <td id="kinetic-law-nodes" style="padding-left: 0px; padding-top: 0px"></td>
+              </tr>
+              <tr>
+                <td>
+                <span class="caption-style-text">Enter Kinetic Law</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-left: 0px; padding-top: 0px">
+                  <textarea id="kinetic-law-field" type="text" style="width: 100%;"></textarea>
+                <td>
+              </tr>
+            <tbody>
+          </table>
+        </td>
+
+        </tr>
+        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <button id="save-kinetic-law" class="btn btn-default" >OK</button>
+        <button id="cancel-kinetic-law" class="btn btn-default">Cancel</button>
+      </div>
+      </div>
       </div>
     </script>
 
