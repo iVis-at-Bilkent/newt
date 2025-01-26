@@ -22,7 +22,7 @@
     "backbone": "1.3.3",
     "body-parser": "^1.19.0",
     "bootstrap": "3.3.7",
-    "chise": "github:umut-er/chise.js#SBML_Simulation",
+    "chise": "github:iVis-at-Bilkent/chise.js#SBML_Simulation",
     "chroma-js": "^1.3.4",
     "cytoscape": "github:iVis-at-Bilkent/cytoscape.js#unstable",
     "cytoscape-autopan-on-drag": "github:iVis-at-Bilkent/cytoscape.js-autopan-on-drag#unstable",
@@ -55,7 +55,7 @@
     "nodemailer": "6.4.5",
     "plotly.js-dist": "2.34.0",
     "request": "^2.81.0",
-    "sbgnviz": "github:umut-er/sbgnviz.js#SBML_Simulation",
+    "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#SBML_Simulation",
     "tippy.js": "^3.4.0"
   },
   "devDependencies": {

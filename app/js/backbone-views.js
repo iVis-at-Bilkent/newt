@@ -2000,15 +2000,14 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
         var endTime = $("#inspector-simulation-end").val();
         var stepCount = $("#inspector-simulation-step").val();
         instance.loadModel(sbmlContent);
-        console.log(sbmlContent);
         var simulationData = instance.simulateEx(startTime, endTime, stepCount);
         if(simulationData.status !== "success"){
           new ExportErrorView({el: "#exportError-table"}).render();
           document.getElementById("export-error-message").innerText = "Simulation failed!";
+          console.log(simulationData);
         }
         else
           new SimulationPanelView({el: '#simulation-view'}).render(simulationData);
-          console.log(simulationData);
       });
     });
   },
