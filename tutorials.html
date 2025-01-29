@@ -51,6 +51,7 @@
           <li style="line-height: 1em;"><a href="#remote-launch"><i>Launch with a remote SBGN map</i></a><br>
           </ul>
         <li> <a href="#convenient-editing">Convenient editing via SBGN bricks</a>
+        <li> <a href="#pd-af-conversion">Automatic conversion of a PD map to an AF map</a>
         <li> <a href="#alignment-grid-and-guidelines">Alignment, grid, and guidelines</a>
         <li> <a href="#semantic-validation">Semantic validation</a>
         <li> <a href="#complexity-management">Complexity management</a>
@@ -305,28 +306,35 @@
     <li><code>applyLayoutOnURL=false</code>. 
 </p>
 
-        <h2 id="convenient-editing">Convenient editing via SBGN bricks
-          <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+    <h2 id="convenient-editing">Convenient editing via SBGN bricks
+      <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit (Add Using SBGN Bricks..) menu inspired by <a href="https://sbgnbricks.org/">SBGN bricks</a>. </p>
+    <p> Map content can be expanded using the Palette as described earlier. A convenient way to populate a map is using the templates under the Edit (Add Using SBGN Bricks..) menu inspired by <a href="https://sbgnbricks.org/">SBGN bricks</a>. </p>
 
-        <table class="plaintable">
-          <tr>
-            <th class="leftcolumn">
-            <a href="images/sbgn-bricks.png" data-lightbox="image-templates" data-title="Convenient editing using SBGN bricks"><img class="ssthumbnail" src="images/sbgn-bricks.png" style="height: 240px;"></a>
-            </th>
-          </tr>
-        </table>
+    <table class="plaintable">
+      <tr>
+        <th class="leftcolumn">
+        <a href="images/sbgn-bricks.png" data-lightbox="image-templates" data-title="Convenient editing using SBGN bricks"><img class="ssthumbnail" src="images/sbgn-bricks.png" style="height: 240px;"></a>
+        </th>
+      </tr>
+    </table>
 
-        <h2 id="alignment-grid-and-guidelines">Alignment, grid and guidelines
-          <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+    <h2 id="pd-af-conversion">Automatic conversion of a PD map to an AF map
+      <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <p> Newt provides various mechanisms for alignment of map objects. One such facility is available through the View menu, where the user can select a number of objects and align their center or edge horizontally or vertically. Such alignment is performed with respect to the object selected first. </p>
+    <p> A PD map can be automatically converted to the corresponding AF map in a new tab using Edit | Convert PD Map to AF Map 
+      via a service provided by <a href="https://minerva.pages.uni.lu/doc/">Minerva</a>. However, as this conversion service is not 
+      used through secure HTTP, you need to change the site settings for newteditor.org (or your deployment site) to allow insecure content.</p>
 
-        <p> Another way to perform alignment is through the grid. When you enable the grid tool (<img src="images/enable-grid.svg" title="Tool for enabling the grid" style="height: 16px;">) on the toolbar, a grid is displayed and nodes are snapped to grid as they are dragged. </p>
+    <h2 id="alignment-grid-and-guidelines">Alignment, grid and guidelines
+      <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
 
-        <span class="right"><a href="images/guideline-example.png" data-lightbox="image-grid-guide" data-title="An example where the dragged node is snapped to an alignment position"><img src="images/guideline-example.png" style="width: 460px;"/></a></span>
-        <p> Yet another way to perform alignment is by enabling the guidelines with the associated tool on the toolbar (<img src="images/enable-guidelines.svg" title="Tool for enabling the guidelines" style="height: 16px;">). Two types of guidelines are enabled with this tool:
+    <p> Newt provides various mechanisms for alignment of map objects. One such facility is available through the View menu, where the user can select a number of objects and align their center or edge horizontally or vertically. Such alignment is performed with respect to the object selected first. </p>
+
+    <p> Another way to perform alignment is through the grid. When you enable the grid tool (<img src="images/enable-grid.svg" title="Tool for enabling the grid" style="height: 16px;">) on the toolbar, a grid is displayed and nodes are snapped to grid as they are dragged. </p>
+
+    <span class="right"><a href="images/guideline-example.png" data-lightbox="image-grid-guide" data-title="An example where the dragged node is snapped to an alignment position"><img src="images/guideline-example.png" style="width: 460px;"/></a></span>
+    <p> Yet another way to perform alignment is by enabling the guidelines with the associated tool on the toolbar (<img src="images/enable-guidelines.svg" title="Tool for enabling the guidelines" style="height: 16px;">). Two types of guidelines are enabled with this tool:
 <ul>
  <li> Geometric guidelines (e.g. center of two nodes are in alignment) and
  <li> Distance guidelines (e.g. a process node is distanced equally from its source and target).
