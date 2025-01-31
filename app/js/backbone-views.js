@@ -5,8 +5,6 @@ var chroma = require("chroma-js");
 var FileSaver = require("file-saver");
 var cytoscape = require("cytoscape");
 var chise = require("chise");
-var createApi = require('../../libs/copasijs.js');
-var COPASI = require('../../libs/copasi.js');
 var Plotly = require('plotly.js-dist');
 
 var appUtilities = require("./app-utilities");
@@ -1970,17 +1968,17 @@ var SimulationPanelView = Backbone.View.extend({
     $(self.el).modal("show");
 
     var plotElement = document.getElementById("simulation-plot");
-    let data = [];
-    for (let i = 1; i < simulationData.num_variables; i++) {
-        var trace = {
-            x: simulationData.columns[0],
-            y: simulationData.columns[i],
-            mode: "lines",
-            name: simulationData.titles[i]
-        };
-        data.push(trace);
-    }
-    Plotly.newPlot(plotElement, data, {margin: {pad: 15}});
+    // let data = [];
+    // for (let i = 1; i < simulationData.num_variables; i++) {
+    //     var trace = {
+    //         x: simulationData.columns[0],
+    //         y: simulationData.columns[i],
+    //         mode: "lines",
+    //         name: simulationData.titles[i]
+    //     };
+    //     data.push(trace);
+    // }
+    Plotly.newPlot(plotElement, simulationData, {margin: {pad: 15}});
     return this;
   },
 });
@@ -1993,21 +1991,45 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
         document.getElementById("export-error-message").innerText = "Simulation is applicable to the SBML map type!";
         return;
       }
-      createApi().then((Module) => {
-        var instance = new COPASI(Module);
-        var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
-        var startTime = $("#inspector-simulation-start").val();
-        var endTime = $("#inspector-simulation-end").val();
-        var stepCount = $("#inspector-simulation-step").val();
-        instance.loadModel(sbmlContent);
-        var simulationData = instance.simulateEx(startTime, endTime, stepCount);
-        if(simulationData.status !== "success"){
+      var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
+      var startTime = $("#inspector-simulation-start").val();
+      var endTime = $("#inspector-simulation-end").val();
+      var stepCount = $("#inspector-simulation-step").val();
+
+      var simulationDataParser = function(rawJsonData) {
+        // Process Data
+        data = []
+        for (const [key, value] of Object.entries(rawJsonData)) {
+            if(key === "time")
+              continue;
+            var trace = {
+                x: rawJsonData.time,
+                y: value,
+                mode: "lines",
+                name: key
+            };
+            data.push(trace);
+        }
+        return data;
+      }
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner("simulation-spinner");
+
+      $.ajax({
+        url: "/simulate",
+        type: "POST",
+        data: {file: sbmlContent, start: startTime, stop: endTime, step: stepCount},
+        success: function(data){
+          chiseInstance.endSpinner("simulation-spinner");
+          var parsedData = simulationDataParser(data) || "";
+          new SimulationPanelView({el: '#simulation-view'}).render(parsedData);
+        },
+        error: function(err) {
+          chiseInstance.endSpinner("simulation-spinner");
           new ExportErrorView({el: "#exportError-table"}).render();
           document.getElementById("export-error-message").innerText = "Simulation failed!";
-          console.log(simulationData);
+          console.log(err);
         }
-        else
-          new SimulationPanelView({el: '#simulation-view'}).render(simulationData);
       });
     });
   },

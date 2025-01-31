@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 const multer = require('multer');
+const { spawn } = require('child_process');
 var server = require('http').createServer(app);
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
@@ -40,6 +41,36 @@ app.post('/utilities/:fn', requestHandler);
 
 server.listen(port, function(){
   console.log('server listening on port: %d', port);
+});
+
+app.post('/simulate', function(req, res) {
+    const python = spawn('env/bin/python', ['simulator.py', req.body.file, req.body.start, req.body.stop, req.body.step]);
+    
+    new Promise((resolve, reject) => {
+      let stdoutData = '';
+      let stderrData = '';
+  
+      python.stdout.on('data', (data) => {
+        stdoutData += data.toString();
+      });
+      python.stderr.on('data', (data) => {
+        stderrData += data.toString();
+      });
+  
+      python.on('close', (code) => {
+        if (code === 0) {
+            resolve(JSON.parse(stdoutData));  // Resolve with accumulated stdout data
+        } else {
+            reject(stderrData);  // Reject with accumulated stderr data
+        }
+      });
+    })
+	.then((data) => {
+		res.status(200).send(data);
+	})
+	.catch((err) => {
+		res.status(500).send(err);
+	});
 });
 
 app.use('/libs', express.static(__dirname + '/libs'));
