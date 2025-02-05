@@ -1968,17 +1968,19 @@ var SimulationPanelView = Backbone.View.extend({
     $(self.el).modal("show");
 
     var plotElement = document.getElementById("simulation-plot");
-    // let data = [];
-    // for (let i = 1; i < simulationData.num_variables; i++) {
-    //     var trace = {
-    //         x: simulationData.columns[0],
-    //         y: simulationData.columns[i],
-    //         mode: "lines",
-    //         name: simulationData.titles[i]
-    //     };
-    //     data.push(trace);
-    // }
-    Plotly.newPlot(plotElement, simulationData, {margin: {pad: 15}});
+    var layout = {
+      margin: {
+        pad: 15
+      },
+      showlegend: true,
+      legend: {
+        x: 1,
+        xanchor: 'right',
+        y: 1,
+        bgcolor: 'rgba(255, 255, 255, 0.1)'
+      }
+    }
+    Plotly.newPlot(plotElement, simulationData, layout);
     return this;
   },
 });
@@ -2014,7 +2016,6 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
       }
       var chiseInstance = appUtilities.getActiveChiseInstance();
       chiseInstance.startSpinner("simulation-spinner");
-
       $.ajax({
         url: "/simulate",
         type: "POST",
@@ -2037,18 +2038,72 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
   render: function() {
     // use the active cy instance
     var cy = appUtilities.getActiveCy();
-
-    // get current general properties of cy
-    var currentGeneralProperties = appUtilities.getScratch(
-      cy,
-      "currentGeneralProperties"
-    );
+    var chise = appUtilities.getActiveChiseInstance();
 
     this.template = _.template($("#map-tab-simulation-template").html());
     this.$el.empty();
-    this.$el.html(this.template(currentGeneralProperties));
+    this.$el.html(this.template());
 
-    return this;
+    var width = $("#sbgn-inspector").width() * 0.45;
+    $("#sbml-param-table-row").html("");
+    var paramHTML = "<td class='header' style='padding-right:5px;'>" 
+                        + "<span style='text-align: right;' class='add-on layout-text' title='SBML global parameters'> Parameters </span>"
+                      + "</td><td id='sbml-parameters' style='padding-left: 5px;'></td>";
+    $("#sbml-param-table-row").append(paramHTML);
+
+    var addParameters = function() {
+      var parameters = chise.getParameters();
+      var labelIdx = 0;
+      $("#sbml-parameters").html(""); // clear the field before populating
+      for (var param of parameters) {
+          var param_ = '<div style="display: flex; flex-direction: row; align-items: center; margin-bottom:5px;">'
+          + '<table><tbody><tr><td>'
+          + '<textarea id="inspector-param-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + param.name + '</textarea></td>'
+          + '</tr><tr><td>'
+          + '<input id="inspector-param-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + param.value + '" style="width: ' + (width-1) / 2.51 + 'px;">'
+          + '<select id="inspector-param-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + (width-1) / 2.51 + 'px !important; margin-left: 1px;">'
+          + '<option value="litre" selected>litre</option>'
+          + '<option value="m3">m³</option>'
+          + '</select></td></tr></tbody></table>'
+          + '<img id="inspector-param-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
+          + '</div>';
+          
+          $("#sbml-parameters").append(param_);
+
+          (function (labelIdx){
+            $('#inspector-param-delete' + labelIdx).off('click').on('click', function() {
+              var deleteId = chise.getParameters()[labelIdx].id;
+              chise.removeParameter(deleteId);
+              addParameters();
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-param-name' + labelIdx).off('change').on('change', function() {
+              var name = document.getElementById("inspector-param-name" + labelIdx).value;
+              var modifyId = chise.getParameters()[labelIdx].id;
+              chise.setParameter(modifyId, "name", name);
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-param-value' + labelIdx).off('change').on('change', function() {
+              var value = parseFloat(document.getElementById("inspector-param-value" + labelIdx).value);
+              var modifyId = chise.getParameters()[labelIdx].id;
+              chise.setParameter(modifyId, "value", value);
+          })})(labelIdx);
+  
+          labelIdx += 1;
+      }
+      param_ = '<img width="16px" height="16px" id="inspector-add-param" src="app/img/add.svg" class="pointer-button">';
+      $("#sbml-parameters").append(param_);
+      $("#inspector-add-param").off('click').on('click', function() {
+          chise.addParameter("", 0, "", true);
+          addParameters(); // Re-render after adding a new parameter
+      });
+
+      return this;
+    }
+
+    addParameters();
   }
 });
 
