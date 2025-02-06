@@ -4,8 +4,8 @@ from libsbml import *
 import tellurium as te
 
 sbmlString: str = sys.argv[1]
-start: int = int(sys.argv[2])
-stop: int = int(sys.argv[3])
+start: int = float(sys.argv[2])
+stop: int = float(sys.argv[3])
 step: int = int(sys.argv[4])
 
 document: SBMLDocument = readSBMLFromString(sbmlString)

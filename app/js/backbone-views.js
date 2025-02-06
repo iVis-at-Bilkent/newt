@@ -3657,11 +3657,25 @@ var sbmlKineticLawView = Backbone.View.extend({
     })
     $(self.el).modal("show");
 
-    var kineticLaw = document.getElementById('kinetic-law-field');
-    
-    setTimeout(() => {
-      kineticLaw.value = node.data('simulation')['kineticLawVisible'] || "";
-    }, 200)
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = chiseInstance.getCy();
+
+    var kineticLaw = document.getElementById('kinetic-law-field'); 
+    var kineticLawRawText = node.data('simulation')['kineticLaw'] || "";
+    let idSorted = idArray.map((value, index) => ({ value, index }));
+    idSorted.sort((a, b) => b.value.length - a.value.length);
+    let replacementMap = new Map(
+      idSorted.map(function (id, i) { 
+        var node = cy.getElementById(id.value);
+        return [id.value, '[' + (node.data('label') || node.data('id')) + '_' + id.index + ']'];
+      }
+    ));
+    function escapeRegExp(text) {
+      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
+    let regex = new RegExp(idSorted.map((id) => (escapeRegExp(id.value))).join("|"), "g");
+    kineticLawRawText = kineticLawRawText.replace(regex, match => replacementMap.get(match));
+    kineticLaw.value = kineticLawRawText;
     
     $(document)
     .off("click", "#save-kinetic-law")
@@ -3670,9 +3684,8 @@ var sbmlKineticLawView = Backbone.View.extend({
       var kineticLawText = kineticLaw.value;
       const result = kineticLawText.replace(/\[(.+?)_(\d+)]/g, (match, prefix, intStr) => {
         const intValue = parseInt(intStr, 10);
-        return `(${idArray[intValue]})`;
+        return `${idArray[intValue]}`;
       });
-      node.data('simulation')['kineticLawVisible'] = kineticLawText;
       node.data('simulation')['kineticLaw'] = result;
       $(self.el).modal("toggle");
     });
