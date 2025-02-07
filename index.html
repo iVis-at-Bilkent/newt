@@ -2251,7 +2251,7 @@
                 <span class="add-on layout-text" title="Step count for the simulation"> Step Count </span>
               </td>
               <td>
-                <input id="inspector-simulation-step" class="inspector-input-box integer-input" type="number" min="0" style="width: 50px;" value="10">
+                <input id="inspector-simulation-step" class="inspector-input-box integer-input" type="number" min="0" style="width: 50px;" value="50">
               </td>
             </tr>
           </tbody>
@@ -2259,6 +2259,7 @@
       </div>
       <div style="text-align: center; margin-top: 5px;">
         <button class="btn btn-default" id="map-simulate-button">Simulate</button>
+        <button class="btn btn-default" id="map-simulation-default-button">Default</button>
       <div>
     </script>
 
@@ -2266,8 +2267,8 @@
       <div class="modal-dialog sbgn-modal-dialog" style="width: 800px;">
           <div class="modal-content">
               <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"></button>
-                  <h4 class="modal-title" style="text-align: center">Simulation</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Simulation Results</h4>
               </div>
               <div class="modal-body" style="display: flex; justify-content: center; align-items: center;">
                 <div id="simulation-plot"></div>

@@ -1978,6 +1978,17 @@ var SimulationPanelView = Backbone.View.extend({
         xanchor: 'right',
         y: 1,
         bgcolor: 'rgba(255, 255, 255, 0.1)'
+      },
+      xaxis: {
+        title: {
+          text: "Time (s)",
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Quantity",
+          standoff: 30
+        }
       }
     }
     Plotly.newPlot(plotElement, simulationData, layout);
@@ -1987,6 +1998,12 @@ var SimulationPanelView = Backbone.View.extend({
 
 var simulationTabPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
+    $(document).on("click", "#map-simulation-default-button", function (evt) {
+      $("#inspector-simulation-start").val(appUtilities.defaultSimulationProperties.startTime);
+      $("#inspector-simulation-end").val(appUtilities.defaultSimulationProperties.stopTime);
+      $("#inspector-simulation-step").val(appUtilities.defaultSimulationProperties.stepCount);
+    })
+
     $(document).on("click", "#map-simulate-button", function (evt) {
       if(appUtilities.getActiveChiseInstance().elementUtilities.mapType !== "SBML"){
         new ExportErrorView({el: "#exportError-table"}).render();
