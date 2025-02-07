@@ -2220,36 +2220,46 @@
     </script>
 
     <script type="text/template" id="map-tab-simulation-template">
-      <table class="table-condensed layout-table dialog-table map-panel-table">
-        <tbody>
-          <tr>
-            <td class="header">
-              <span class="add-on layout-text" title="Starting time for the simulation"> Start Time (s) </span>
-            </td>
-            <td>
-              <input id="inspector-simulation-start" class="inspector-input-box" type="number" style="width: 50px;" value="0">
-            </td>
+      <div class="panel-body">
+        <table class="layout-table map-panel-table">
+          <tr id="sbml-param-table-row">
+            <!-- this field will be filled in during run time -->
           </tr>
-          <tr>
-            <td class="header">
-              <span class="add-on layout-text" title="Stopping time for the simulation"> End Time (s) </span>
-            </td>
-            <td>
-              <input id="inspector-simulation-end" class="inspector-input-box" type="number" style="width: 50px;" value="10">
-            </td>
-          </tr>
-          <tr>
-            <td class="header">
-              <span class="add-on layout-text" title="Step count for the simulation"> Step Count </span>
-            </td>
-            <td>
-              <input id="inspector-simulation-step" class="inspector-input-box integer-input" type="number" min="0" style="width: 50px;" value="10">
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        </table>
+      </div>
+      <div class="panel-body palette-panel-body" style="border-top: 1px solid #ddd; margin-top: 4px;">
+        <table class="table-condensed layout-table dialog-table map-panel-table">
+          <tbody>
+            <tr>
+              <td class="header">
+                <span class="add-on layout-text" title="Starting time for the simulation"> Start Time (s) </span>
+              </td>
+              <td>
+                <input id="inspector-simulation-start" class="inspector-input-box" type="number" style="width: 50px;" value="0">
+              </td>
+            </tr>
+            <tr>
+              <td class="header">
+                <span class="add-on layout-text" title="Stopping time for the simulation"> End Time (s) </span>
+              </td>
+              <td>
+                <input id="inspector-simulation-end" class="inspector-input-box" type="number" style="width: 50px;" value="10">
+              </td>
+            </tr>
+            <tr>
+              <td class="header">
+                <span class="add-on layout-text" title="Step count for the simulation"> Step Count </span>
+              </td>
+              <td>
+                <input id="inspector-simulation-step" class="inspector-input-box integer-input" type="number" min="0" style="width: 50px;" value="50">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div style="text-align: center; margin-top: 5px;">
         <button class="btn btn-default" id="map-simulate-button">Simulate</button>
+        <button class="btn btn-default" id="map-simulation-default-button">Default</button>
       <div>
     </script>
 
@@ -2257,8 +2267,8 @@
       <div class="modal-dialog sbgn-modal-dialog" style="width: 800px;">
           <div class="modal-content">
               <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"></button>
-                  <h4 class="modal-title" style="text-align: center">Simulation</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Simulation Results</h4>
               </div>
               <div class="modal-body" style="display: flex; justify-content: center; align-items: center;">
                 <div id="simulation-plot"></div>

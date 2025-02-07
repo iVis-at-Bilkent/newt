@@ -793,6 +793,12 @@ appUtilities.defaultGeneralProperties = {
   extraHighlightThickness: 2
 };
 
+appUtilities.defaultSimulationProperties = {
+  startTime: 0,
+  stopTime: 10,
+  stepCount: 50
+}
+
 appUtilities.setFileContent = function (fileName) {
   var span = document.getElementById('file-name');
   var displayedSpan = document.getElementById('displayed-file-name');
