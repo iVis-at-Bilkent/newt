@@ -1199,6 +1199,7 @@
                         <div id="map-tab-general-container"></div>
                       </div>
                     </div>
+
                     <div class="panel">
                       <div
                         class="panel-heading collapsed"
@@ -1214,6 +1215,23 @@
                         <div id="map-tab-label-container"></div>
                       </div>
                     </div>
+
+                    <div class="panel">
+                      <div
+                        class="panel-heading collapsed"
+                        data-toggle="collapse"
+                        data-target="#sbgn-inspector-map-properties-local-db"
+                      >
+                        <p class="panel-title accordion-toggle">Local DB</p>
+                      </div>
+                      <div
+                        id="sbgn-inspector-map-properties-local-db"
+                        class="panel-collapse collapse"
+                      >
+                        <div id="map-tab-local-db-container"></div>
+                      </div>
+                    </div>
+
                     <div class="panel">
                       <div
                         class="panel-heading collapsed"
@@ -3743,6 +3761,75 @@
         <button class='btn btn-default' id='map-general-default-button'>Default</button>
       <div>
     </script>
+
+
+
+
+    <script type="text/template" id="map-tab-local-db-template">
+      <table class="table-condensed layout-table dialog-table map-panel-table">
+      <tbody>
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="EPN Matching Percentage"> EPN Matching Percentage </span>
+          </td>
+    
+          <td>
+              <input id="epn-match" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= epnMatchingPercentage %> >
+          </td>
+          <td>
+              <span id="epn-match-value" class="add on layout-text" title="Epn percentage">100</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process Incoming Percentage"> Process Incoming Percentage </span>
+          </td>
+    
+          <td>
+              <input id="process-incoming" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processIncomingContribution %> >
+          </td>
+          <td>
+              <span id="process-incoming-contribution" class="add on layout-text" title="Process Incoming Percentage">33</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process Outgoing Percentage"> Process Outgoing Percentage </span>
+          </td>
+    
+          <td>
+              <input id="process-outgoing" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processOutgoingContribution %> >
+          </td>
+          <td>
+              <span id="process-outgoing-contribution" class="add on layout-text" title="Process Outgoing Percentage">33</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process Agent Percentage"> Process Agent Percentage </span>
+          </td>
+    
+          <td>
+              <input id="process-agent" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processAgentContribution %> >
+          </td>
+          <td>
+              <span id="process-agent-contribution" class="add on layout-text" title="Process Agent Percentage">33</span>
+          </td>
+        </tr>
+
+        
+      </tbody>
+      </table>
+    </script>
+
+
+
+
+
+
 
     <script type="text/template" id="map-tab-label-template">
       <table class="table-condensed layout-table dialog-table map-panel-table">

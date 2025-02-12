@@ -1144,6 +1144,70 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
   },
 });
 
+
+var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
+  initialize: function(){
+    var self = this;
+    self.params = {};
+    self.params.epnMatchingPercentage = {
+      id: "epn-match",
+      type: "range",
+      property: "currentGeneralProperties.epnMatchingPercentage",
+      update: self.applyUpdate,
+    };
+    self.params.processIncomingContribution = {
+      id: "process-incoming",
+      type: "range",
+      property: "currentGeneralProperties.processIncomingContribution",
+      update: self.applyUpdate,
+    };
+    self.params.processOutgoingContribution = {
+      id: "process-outgoing",
+      type: "range",
+      property: "currentGeneralProperties.processOutgoingContribution",
+      update: self.applyUpdate,
+    };
+    self.params.processAgentContribution = {
+      id: "process-agent",
+      type: "range",
+      property: "currentGeneralProperties.processAgentContribution",
+      update: self.applyUpdate,
+    };
+    $(document).on("change", "#epn-match", function (evt) {
+      self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
+      document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
+    });
+    $(document).on("change", "#process-incoming", function (evt) {
+      self.params.processIncomingContribution.value = Number($("#process-incoming").val());
+      document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
+    });
+    $(document).on("change", "#process-outgoing", function (evt) {
+      self.params.processOutgoingContribution.value = Number($("#process-outgoing").val());
+      document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
+    });
+    $(document).on("change", "#process-agent", function (evt) {
+      self.params.processAgentContribution.value = Number($("#process-agent").val());
+      document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
+    });
+  },
+
+  render: function () {
+    // use the active cy instance
+    var cy = appUtilities.getActiveCy();
+
+    // get current general properties of cy
+    var currentGeneralProperties = appUtilities.getScratch(
+      cy,
+      "currentGeneralProperties"
+    );
+    console.log(currentGeneralProperties);
+    this.template = _.template($("#map-tab-local-db-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(currentGeneralProperties));
+    return this;
+  },
+});
+
 // inherit from GeneralPropertiesParentView
 var MapTabLabelPanel = GeneralPropertiesParentView.extend({
   initialize: function () {
@@ -5153,6 +5217,19 @@ var LoadUserPreferencesView = Backbone.View.extend({
               }
             });
 
+            Object.keys(mapTabLocalDBSettings.params).forEach(function (key, index) {
+              if (
+                typeof preferences.currentGeneralProperties[key] !== "undefined"
+              ) {
+                mapTabLocalDBSettings.params[key].value =
+                  preferences.currentGeneralProperties[key];
+                actions.push({
+                  name: "changeMenu",
+                  param: mapTabLocalDBSettings.params[key],
+                });
+              }
+            });
+
             Object.keys(mapTabRearrangementPanel.params).forEach(function (
               key,
               index
@@ -8526,6 +8603,7 @@ module.exports = {
   ColorSchemeInspectorView: ColorSchemeInspectorView,
   MapTabGeneralPanel: MapTabGeneralPanel,
   MapTabLabelPanel: MapTabLabelPanel,
+  MapTabLocalDBSettings: MapTabLocalDBSettings,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   experimentTabPanel: experimentTabPanel,
   //GeneralPropertiesView: GeneralPropertiesView,

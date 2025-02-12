@@ -55,9 +55,10 @@ appUtilities.adjustUIComponents = function (_cy) {
   var cy = _cy || appUtilities.getActiveCy();
 
   // adjust UI components in inspector map tab
-
+  console.log(appUtilities);
   appUtilities.colorSchemeInspectorView.render();
   appUtilities.mapTabGeneralPanel.render();
+  appUtilities.mapTabLocalDBSettings.render();
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
   appUtilities.experimentTabPanel.render();
@@ -779,6 +780,10 @@ appUtilities.defaultGeneralProperties = {
   rearrangeOnComplexityManagement: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
+  epnMatchingPercentage:100,
+  processIncomingContribution:33,
+  processOutgoingContribution:33,
+  processAgentContribution:33,
   enablePorts: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,

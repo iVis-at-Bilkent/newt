@@ -145,6 +145,7 @@ module.exports = function() {
   //generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
   mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
   mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
+  mapTabLocalDBSettings = appUtilities.mapTabLocalDBSettings = new BackboneViews.MapTabLocalDBSettings({el: '#map-tab-local-db-container'});
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
   experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
@@ -971,6 +972,7 @@ module.exports = function() {
         mapTabGeneralPanel.render();
         mapTabRearrangementPanel.render();
         mapTabLabelPanel.render();
+        // mapTabLocalDBSettings.render();
         experimentTabPanel.render();
         if (mapPropertiesExist){
           // update map panel
