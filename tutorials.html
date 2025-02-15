@@ -63,7 +63,7 @@
         <li> <a href="#search-and-highlight">Search and highlight</a>
         <li> <a href="#automatic-layout">Automatic layout</a>
              <span style="float: right;">Automatic layout video: <a href="tutorials-layout.html"><img src="images/play-button.svg" width=16px/></a></span>
-        <li> <a href="#querying-pathway-databases">Querying Pathway Databases</a>
+        <li> <a href="#integration-with-pathway-databases">Integration with Pathway Databases</a>
         <li> <a href="#references">References</a>
         </ul>
 
@@ -227,7 +227,8 @@
         <p> &#9752; Newt can support both milestones 0.2 and 0.3 but opts to 0.2 by default. Persistency in milestone 0.3 is available though through the "Export" menu.
         </p>
 
-        <p> Newt also supports import and export facilities from and to <a href="https://en.wikipedia.org/wiki/SBML">SBML</a>, <a href="http://www.celldesigner.org/">CellDesigner</a>, and <a href="https://pathvisio.org/documentation/GPML">GPML</a> through "{Import, Export} | {SBML, CellDesigner, GPML}".</p>
+        <p> Newt also supports import and export facilities from and to <a href="https://en.wikipedia.org/wiki/SBML">SBML</a>, <a href="http://www.celldesigner.org/">CellDesigner</a>, and <a href="https://pathvisio.org/documentation/GPML">GPML</a> through "{Import, Export} | {SBML, CellDesigner, GPML}".
+          However, conversion from PD to CellDesigner service is not used through secure HTTP, you need to change the site settings for newteditor.org (or your deployment site) to allow insecure content.</p>
 
         <p> In addition, AF models can be imported to Newt from simple tab-delimited files. An example model formatted in this manner follows:</p>
         <div style="margin-left: 20px;"><code>
@@ -419,7 +420,10 @@ Grid and guideline support is rather involved and can be customized using the se
 
         <p> <a href="tutorials-layout.html">Here</a> is a short tutorial illustrating automatic layout capabilities of Newt. </p>
 
-        <h2 id="querying-pathway-databases">Querying Pathway Databases <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+        <h2 id="integration-with-pathway-databases">Integration with Pathway Databases <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
+
+        <p>Newt is well integrated with some prominent pathway databases, not only by providing querying facilites to these databases
+          but also having links from these databases back to Newt.</p>
 
         <p> Newt provides an extensive interface to perform live queries to the <a target="_blank" href="http://pathwaycommons.org/">Pathway 
           Commons</a> database, presenting results in SBGN, and enabling editing on them. Currently available type of queries 
@@ -451,6 +455,11 @@ Grid and guideline support is rather involved and can be customized using the se
 
   <p>Newt also provides querying <a href="https://reactome.org/">Reactome</a> by Reactome ID, and 
     querying <a href="https://www.wikipathways.org/">WikiPathways</a> by WPID.</p>
+
+  <p> In addition, links are provided from prominent pathway database pages to Newt, for enabling editing of these pathways
+    <a href="https://reactome.org/PathwayBrowser/#/R-HSA-450531&DTAB=DT">Reactome</a> (Newt view link under Downloads),
+    <a href="https://www.ebi.ac.uk/biomodels/BIOMD0000000125">BioModels</a> (Newt link under Connected external resources), and
+    <a href="https://www.wikipathways.org/pathways/WP554.html">WikiPathways</a> (Newt link under the orange Open icon).</p>
 
         <h2 id="references">References
           <a href="#top-of-tutorials"><img src="images/back-to-top.svg" height=16px/></a></h2>
