@@ -24,6 +24,14 @@ const categories = {
   or:'logical',
   not:'logical'
 };
+
+var epnCriterias= {
+  macromolecule:{
+    multimer:30,
+    stateVariables:30,
+    unitsOfInformation:40
+  }
+};
 var databaseUtilities = {
   enableDatabase: true,
   nodesInDB: {},
@@ -303,18 +311,81 @@ var databaseUtilities = {
     }
   },
 
-  pushEPNToLocalDatabase: async function (ids,list, mergeflag) {
-    const epn_matching_criteria= '';
+  pushEPNToLocalDatabase: async function (ids,list, mergeflag,epnMatchingPercentage) {
+    console.log(ids,list,mergeflag,epnMatchingPercentage);
+
     integrationQuery=``;
+    var qury = ``;
     if(mergeflag){
-      integrationQuery = `unwind $nodesData as data
-    call apoc.do.when(
-      exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
-      "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
-      'call apoc.cypher.doIt("CALL apoc.create.node([data.category],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
-      {data:data}
-    ) yield value return value.result as result;
-    `;
+    //   integrationQuery = `unwind $nodesData as data
+    // call apoc.do.when(
+    //   exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
+    //   "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
+    //   'call apoc.cypher.doIt("CALL apoc.create.node([data.category],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
+    //   {data:data}
+    // ) yield value return value.result as result;
+    // `;
+
+    // WHEN apoc.coll.containsAll(n.stateVariable, data.stateVariable)
+    // AND apoc.coll.containsAll(data.stateVariable, n.stateVariable)
+    // WHEN apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
+    // AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation)
+
+      integrationQuery = `
+        UNWIND $nodesData AS data
+        CALL apoc.do.when(
+            EXISTS {
+                MATCH (n)
+                WHERE n.newtId = data.newtId
+                RETURN n
+            }
+            OR EXISTS {
+                MATCH (n)
+                WHERE n.category = "EPN"
+                WITH n, 
+                    apoc.map.get($epnCriterias, n.class) AS criteria
+                WITH n, criteria,
+                    (CASE WHEN n.multimer = data.multimer THEN criteria.multimer ELSE 0 END) +
+                    (CASE WHEN (size(n.stateVariables)=0 and size(data.stateVariables)=0) or (apoc.coll.containsAll(n.stateVariables, data.stateVariables)
+                          AND apoc.coll.containsAll(data.stateVariables, n.stateVariables))
+                        THEN apoc.map.get(criteria, "stateVariables", 0) ELSE 0 END) +
+                    (CASE WHEN (size(n.unitsOfInformation)=0 and size(data.unitsOfInformation)=0) or (apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
+                          AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation))
+                        THEN apoc.map.get(criteria, "unitsOfInformation", 0) ELSE 0 END)
+                    AS matchScore
+                WHERE matchScore >= ${epnMatchingPercentage}
+                RETURN n
+            },
+            "MATCH (n)
+            WHERE n.newtId = data.newtId OR (
+                n.category = 'EPN'
+            )
+            WITH n, apoc.map.get($epnCriterias, n.class) AS criteria, $data as data
+            WITH n, criteria,data,
+                (CASE WHEN n.multimer = data.multimer THEN apoc.map.get(criteria, 'multimer', 0) ELSE 0 END) +
+                (CASE WHEN size(n.stateVariables) = 0 THEN apoc.map.get(criteria, 'stateVariables', 0)
+                      WHEN apoc.coll.containsAll(n.stateVariables, data.stateVariables)
+                      AND apoc.coll.containsAll(data.stateVariables, n.stateVariables)
+                      THEN apoc.map.get(criteria, 'stateVariables', 0) ELSE 0 END) +
+                (CASE 
+                      WHEN size(n.unitsOfInformation) = 0 THEN apoc.map.get(criteria, 'unitsOfInformation', 0)
+                      WHEN apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
+                      AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation)
+                      THEN apoc.map.get(criteria, 'unitsOfInformation', 0) ELSE 0 END)
+                AS matchScore
+            WHERE matchScore >= ${epnMatchingPercentage}
+            RETURN matchScore, n,{incoming: data.newtId, existing: n.newtId} AS result",
+            
+            "CALL apoc.cypher.doIt(
+                'CALL apoc.create.node([data.category], data)
+                YIELD node SET node.processed = 0
+                RETURN {incoming: data.newtId, existing: node.newtId} AS result',
+                {data: data}
+            ) YIELD value RETURN value.result AS result",
+            {data: data, epnCriterias:$epnCriterias}
+        ) YIELD value RETURN value.result AS result;
+
+      `;
     }
     else{
       integrationQuery=`
@@ -360,7 +431,7 @@ var databaseUtilities = {
     
     var data = {
       query: integrationQuery,
-      queryData: { nodesData: list, flag: mergeflag },
+      queryData: { nodesData: list, flag: mergeflag, epnCriterias:epnCriterias},
     };
     await $.ajax({
       type: "post",
@@ -369,6 +440,7 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         const { records } = response;
+        console.log(records);
         for (let record of records) {
           const map = record._fields[0];
           ids[map.incoming] = map.existing;
@@ -757,33 +829,35 @@ var databaseUtilities = {
     if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
-    console.log(compartmentIds,epns,processes);
+    // console.log(compartmentIds,epns,processes);
     const mergeFlag = flag === "MERGE";
+    const {epnMatchingPercentage} = appUtilities.localDbSettings;
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       compartmentIds,
       epns,
-      mergeFlag
+      mergeFlag,
+      epnMatchingPercentage
     );
-    if(errorCheck!==null)return errorCheck;
-    const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
-      processes,
-      epn_ids,
-      mergeFlag
-    );
-    if(errorCheck!==null)return errorCheck;
-    const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
-      logicals,
-      node_ids,
-      edgesData,
-      mergeFlag
-    );
-    if(errorCheck!==null)return errorCheck;
-    await databaseUtilities.pushEdgesToLocalDatabase(
-      edgesData,
-      logical_ids,
-      mergeFlag
-    );
-    if(errorCheck!==null)return errorCheck;
+    // if(errorCheck!==null)return errorCheck;
+    // const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
+    //   processes,
+    //   epn_ids,
+    //   mergeFlag
+    // );
+    // if(errorCheck!==null)return errorCheck;
+    // const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
+    //   logicals,
+    //   node_ids,
+    //   edgesData,
+    //   mergeFlag
+    // );
+    // if(errorCheck!==null)return errorCheck;
+    // await databaseUtilities.pushEdgesToLocalDatabase(
+    //   edgesData,
+    //   logical_ids,
+    //   mergeFlag
+    // );
+    // if(errorCheck!==null)return errorCheck;
     // await databaseUtilities.pushProcessToLocalDatabase(processes);
 
     // var createOneNode =`call apoc.create.node([data.class],data) yield node set node.processed=0 return node as node`;

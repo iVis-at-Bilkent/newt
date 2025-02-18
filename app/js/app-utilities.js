@@ -21,6 +21,10 @@ appUtilities.getScratch = function (cyOrEle, name) {
   return retVal;
 }
 
+appUtilities.localDbSettings = {
+  epnMatchingPercentage:100,
+}
+
 appUtilities.mapTypesToViewableText = {
   'PD': 'PD',
   'AF': 'AF',
@@ -55,7 +59,6 @@ appUtilities.adjustUIComponents = function (_cy) {
   var cy = _cy || appUtilities.getActiveCy();
 
   // adjust UI components in inspector map tab
-  console.log(appUtilities);
   appUtilities.colorSchemeInspectorView.render();
   appUtilities.mapTabGeneralPanel.render();
   appUtilities.mapTabLocalDBSettings.render();

@@ -1176,6 +1176,7 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
     $(document).on("change", "#epn-match", function (evt) {
       self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
+      appUtilities.localDbSettings.epnMatchingPercentage = self.params.epnMatchingPercentage.value
     });
     $(document).on("change", "#process-incoming", function (evt) {
       self.params.processIncomingContribution.value = Number($("#process-incoming").val());
@@ -1200,7 +1201,6 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       cy,
       "currentGeneralProperties"
     );
-    console.log(currentGeneralProperties);
     this.template = _.template($("#map-tab-local-db-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
