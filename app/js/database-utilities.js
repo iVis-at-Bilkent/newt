@@ -330,7 +330,7 @@ var databaseUtilities = {
     // AND apoc.coll.containsAll(data.stateVariable, n.stateVariable)
     // WHEN apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
     // AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation)
-
+      console.log("Pushing the EPN Criteria");
       integrationQuery = `
         UNWIND $nodesData AS data
         CALL apoc.do.when(
@@ -341,7 +341,7 @@ var databaseUtilities = {
             }
             OR EXISTS {
                 MATCH (n)
-                WHERE n.category = "EPN"
+                WHERE n.category = "EPN" and n.class = data.class and n.entityName = data.entityName
                 WITH n, 
                     apoc.map.get($epnCriterias, n.class) AS criteria
                 WITH n, criteria,
@@ -358,7 +358,7 @@ var databaseUtilities = {
             },
             "MATCH (n)
             WHERE n.newtId = data.newtId OR (
-                n.category = 'EPN'
+                n.category = 'EPN' and n.class = data.class and n.entityName = data.entityName
             )
             WITH n, apoc.map.get($epnCriterias, n.class) AS criteria, $data as data
             WITH n, criteria,data,
