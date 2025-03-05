@@ -1173,6 +1173,12 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.processAgentContribution",
       update: self.applyUpdate,
     };
+    self.params.overallProcessPercentage = {
+      id: "process-agent",
+      type: "range",
+      property: "currentGeneralProperties.overallProcessPercentage",
+      update: self.applyUpdate,
+    };
     $(document).on("change", "#epn-match", function (evt) {
       self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
@@ -1181,14 +1187,22 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
     $(document).on("change", "#process-incoming", function (evt) {
       self.params.processIncomingContribution.value = Number($("#process-incoming").val());
       document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
+      appUtilities.localDbSettings.processIncomingContribution = self.params.processIncomingContribution.value
     });
     $(document).on("change", "#process-outgoing", function (evt) {
       self.params.processOutgoingContribution.value = Number($("#process-outgoing").val());
       document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
+      appUtilities.localDbSettings.processOutgoingContribution = self.params.processOutgoingContribution.value
     });
     $(document).on("change", "#process-agent", function (evt) {
       self.params.processAgentContribution.value = Number($("#process-agent").val());
       document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
+      appUtilities.localDbSettings.processAgentContribution = self.params.processAgentContribution.value
+    });
+    $(document).on("change", "#process-overall", function (evt) {
+      self.params.overallProcessPercentage.value = Number($("#process-overall").val());
+      document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
+      appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value
     });
   },
 
@@ -3177,7 +3191,7 @@ var PushActiveTabsView = Backbone.View.extend({
       var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
       var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
       $(self.el).modal("toggle");
-      if(result!==undefined){
+      if(result!==null && result!==undefined){
         new PromptActiveTabPushError({
         el: "#active-tab-push-error-table",
         }).render(JSON.stringify(result));
@@ -3188,8 +3202,8 @@ var PushActiveTabsView = Backbone.View.extend({
       .on("click", "#merge-push-active-tabs", async function (evt) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
-        var result = databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
-        if(result!==null){
+        var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
+        if(result!==null && result!==undefined){
           new PromptActiveTabPushError({
           el: "#active-tab-push-error-table",
           }).render(JSON.stringify(result));

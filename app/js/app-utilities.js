@@ -23,6 +23,10 @@ appUtilities.getScratch = function (cyOrEle, name) {
 
 appUtilities.localDbSettings = {
   epnMatchingPercentage:100,
+  processIncomingContribution:33,
+  processOutgoingContribution:33,
+  processAgentContribution:33,
+  overallProcessPercentage:100,
 }
 
 appUtilities.mapTypesToViewableText = {
@@ -787,6 +791,7 @@ appUtilities.defaultGeneralProperties = {
   processIncomingContribution:33,
   processOutgoingContribution:33,
   processAgentContribution:33,
+  overallProcessPercentage:100,
   enablePorts: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,

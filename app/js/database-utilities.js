@@ -27,9 +27,18 @@ const categories = {
 
 var epnCriterias= {
   macromolecule:{
-    multimer:30,
-    stateVariables:30,
-    unitsOfInformation:40
+    multimer:{
+      contribution:0.3,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0.3,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0.4,
+      type:"array"
+    },
   }
 };
 var databaseUtilities = {
@@ -312,126 +321,66 @@ var databaseUtilities = {
   },
 
   pushEPNToLocalDatabase: async function (ids,list, mergeflag,epnMatchingPercentage) {
-    console.log(ids,list,mergeflag,epnMatchingPercentage);
+    console.log(ids,list,mergeflag,epnMatchingPercentage/100);
 
     integrationQuery=``;
-    var qury = ``;
     if(mergeflag){
-    //   integrationQuery = `unwind $nodesData as data
-    // call apoc.do.when(
-    //   exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
-    //   "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
-    //   'call apoc.cypher.doIt("CALL apoc.create.node([data.category],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
-    //   {data:data}
-    // ) yield value return value.result as result;
-    // `;
-
-    // WHEN apoc.coll.containsAll(n.stateVariable, data.stateVariable)
-    // AND apoc.coll.containsAll(data.stateVariable, n.stateVariable)
-    // WHEN apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
-    // AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation)
-      console.log("Pushing the EPN Criteria");
       integrationQuery = `
-        UNWIND $nodesData AS data
-        CALL apoc.do.when(
-            EXISTS {
-                MATCH (n)
-                WHERE n.newtId = data.newtId
-                RETURN n
-            }
-            OR EXISTS {
-                MATCH (n)
-                WHERE n.category = "EPN" and n.class = data.class and n.entityName = data.entityName
-                WITH n, 
-                    apoc.map.get($epnCriterias, n.class) AS criteria
-                WITH n, criteria,
-                    (CASE WHEN n.multimer = data.multimer THEN criteria.multimer ELSE 0 END) +
-                    (CASE WHEN (size(n.stateVariables)=0 and size(data.stateVariables)=0) or (apoc.coll.containsAll(n.stateVariables, data.stateVariables)
-                          AND apoc.coll.containsAll(data.stateVariables, n.stateVariables))
-                        THEN apoc.map.get(criteria, "stateVariables", 0) ELSE 0 END) +
-                    (CASE WHEN (size(n.unitsOfInformation)=0 and size(data.unitsOfInformation)=0) or (apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
-                          AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation))
-                        THEN apoc.map.get(criteria, "unitsOfInformation", 0) ELSE 0 END)
-                    AS matchScore
-                WHERE matchScore >= ${epnMatchingPercentage}
-                RETURN n
-            },
-            "MATCH (n)
-            WHERE n.newtId = data.newtId OR (
-                n.category = 'EPN' and n.class = data.class and n.entityName = data.entityName
-            )
-            WITH n, apoc.map.get($epnCriterias, n.class) AS criteria, $data as data
-            WITH n, criteria,data,
-                (CASE WHEN n.multimer = data.multimer THEN apoc.map.get(criteria, 'multimer', 0) ELSE 0 END) +
-                (CASE WHEN size(n.stateVariables) = 0 THEN apoc.map.get(criteria, 'stateVariables', 0)
-                      WHEN apoc.coll.containsAll(n.stateVariables, data.stateVariables)
-                      AND apoc.coll.containsAll(data.stateVariables, n.stateVariables)
-                      THEN apoc.map.get(criteria, 'stateVariables', 0) ELSE 0 END) +
-                (CASE 
-                      WHEN size(n.unitsOfInformation) = 0 THEN apoc.map.get(criteria, 'unitsOfInformation', 0)
-                      WHEN apoc.coll.containsAll(n.unitsOfInformation, data.unitsOfInformation)
-                      AND apoc.coll.containsAll(data.unitsOfInformation, n.unitsOfInformation)
-                      THEN apoc.map.get(criteria, 'unitsOfInformation', 0) ELSE 0 END)
-                AS matchScore
-            WHERE matchScore >= ${epnMatchingPercentage}
-            RETURN matchScore, n,{incoming: data.newtId, existing: n.newtId} AS result",
-            
-            "CALL apoc.cypher.doIt(
-                'CALL apoc.create.node([data.category], data)
-                YIELD node SET node.processed = 0
-                RETURN {incoming: data.newtId, existing: node.newtId} AS result',
-                {data: data}
-            ) YIELD value RETURN value.result AS result",
-            {data: data, epnCriterias:$epnCriterias}
-        ) YIELD value RETURN value.result AS result;
-
-      `;
+          UNWIND $nodesData AS data
+          WITH data, apoc.map.get($epnCriterias, data.class, {}) AS criteria
+          CALL custom.matchAndPushEPN(
+              data, 
+              criteria,  // ✅ Sends only the relevant epnCriteria
+              $epnMatchingPercentage
+          ) YIELD result
+          RETURN result;
+          `;
     }
-    else{
-      integrationQuery=`
-      unwind $nodesData as data
-      call apoc.do.when(
+    // else{
+    //   integrationQuery=`
+    //   unwind $nodesData as data
+    //   call apoc.do.when(
 
-        exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
-        'call apoc.cypher.doIt(
-          "
-            match(n) 
-            where n.category=\\\\"EPN\\\\" and n.entityName=data.entityName
-            SET n.parent = data.parent,
-                n.unitsOfInformation = data.unitsOfInformation,
-                n.language = data.language,
-                n.inDb = data.inDb,
-                n.stateVariables = data.stateVariables,
-                n.isSpecial = data.isSpecial,
-                n.entityName = data.entityName,
-                n.cloneMarker = data.cloneMarker,
-                n.multimer = data.multimer,
-                n.category = data.category,
-                n.cloneLabel = data.cloneLabel,
-                n.class = data.class
-            RETURN {incoming: data.newtId,existing:n.newtId} AS result
-          ",
-          {data:data}
-        )YIELD value RETURN value.result AS result'
-        ,
-        'call apoc.cypher.doIt(
-          "
-            CALL apoc.create.node([data.category],data)yield node set node.processed=0 
-            return {incoming:data.newtId,existing:node.newtId} as result
-          "
-          ,
-          {data:data}
-        ) 
-        yield value return value.result as result'
-      ,
-      {data:data}
-      ) yield value return value.result as result;
-      `;
-    }
+    //     exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
+    //     'call apoc.cypher.doIt(
+    //       "
+    //         match(n) 
+    //         where n.category=\\\\"EPN\\\\" and n.entityName=data.entityName
+    //         SET n.parent = data.parent,
+    //             n.unitsOfInformation = data.unitsOfInformation,
+    //             n.language = data.language,
+    //             n.inDb = data.inDb,
+    //             n.stateVariables = data.stateVariables,
+    //             n.isSpecial = data.isSpecial,
+    //             n.entityName = data.entityName,
+    //             n.cloneMarker = data.cloneMarker,
+    //             n.multimer = data.multimer,
+    //             n.category = data.category,
+    //             n.cloneLabel = data.cloneLabel,
+    //             n.class = data.class
+    //         RETURN {incoming: data.newtId,existing:n.newtId} AS result
+    //       ",
+    //       {data:data}
+    //     )YIELD value RETURN value.result AS result'
+    //     ,
+    //     'call apoc.cypher.doIt(
+    //       "
+    //         CALL apoc.create.node([data.category],data)yield node set node.processed=0 
+    //         return {incoming:data.newtId,existing:node.newtId} as result
+    //       "
+    //       ,
+    //       {data:data}
+    //     ) 
+    //     yield value return value.result as result'
+    //   ,
+    //   {data:data}
+    //   ) yield value return value.result as result;
+    //   `;
+    // }
     
     var data = {
       query: integrationQuery,
-      queryData: { nodesData: list, flag: mergeflag, epnCriterias:epnCriterias},
+      queryData: { nodesData: list, flag: mergeflag, epnCriterias:epnCriterias, epnMatchingPercentage:epnMatchingPercentage/100},
     };
     await $.ajax({
       type: "post",
@@ -440,10 +389,15 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         const { records } = response;
-        console.log(records);
         for (let record of records) {
           const map = record._fields[0];
-          ids[map.incoming] = map.existing;
+          console.log(map);
+          if(map.existing==null){
+            ids[map.incoming] = map.incoming;
+          }
+          else{
+            ids[map.incoming] = map.existing;
+          }
         }
         return ids;
       },
@@ -455,7 +409,7 @@ var databaseUtilities = {
 
     return ids;
   },
-  pushProcessToLocalDatabase: async function (list, ids, flag) {
+  pushProcessToLocalDatabase: async function (list, ids, flag,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage) {
     console.log(list,ids);
     list = list.map((pr) => {
       const sourceNewtIds = Object.keys(pr)
@@ -468,42 +422,71 @@ var databaseUtilities = {
         .filter((key) => key.startsWith("target_"))
         .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
         .filter((id) => id !== "none"); // Remove any 'none' values
+      
+      // Extract modifier newtIds
+      const modifierNewtIds = Object.keys(pr)
+        .filter((key) => key.startsWith("modifier_"))
+        .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
+        .filter((id) => id !== "none"); // Remove any 'none' values
 
       var process = Object.assign({}, pr);
       process.sourceNewtIds = sourceNewtIds;
       process.targetNewtIds = targetNewtIds;
+      process.modifierNewtIds = modifierNewtIds;
       return process;
     });
     console.log(list);
-    var integrationQuery=`
-      UNWIND $processes as process
-      CALL apoc.do.when(
-      EXISTS {
-        MATCH (p:process)
-        WHERE p.category = 'process'
-          AND p.class = process.class
-          AND size(p.sourceNewtIds) = size(process.sourceNewtIds)
-          AND all(sourceId IN process.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
-          AND size(p.targetNewtIds) = size(process.targetNewtIds)
-          AND all(targetId IN process.targetNewtIds WHERE targetId IN p.targetNewtIds)
-      },
-          "MATCH (p:process)
-      WHERE p.category = 'process'
-        AND p.class = data.class
-        AND size(p.sourceNewtIds) = size(data.sourceNewtIds)
-        AND all(sourceId IN data.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
-        AND size(p.targetNewtIds) = size(data.targetNewtIds)
-        AND all(targetId IN data.targetNewtIds WHERE targetId IN p.targetNewtIds)
-      RETURN {incoming: data.newtId, existing: p.newtId} AS result",
-      'CALL apoc.cypher.doIt(
-          "CALL apoc.create.node([data.category], data) YIELD node SET node.processed = 0 RETURN {incoming: data.newtId, existing: node.newtId} AS result",
-          {data: data}
-        ) YIELD value RETURN value.result AS result',
-      {data: process}
-    ) YIELD value
-    RETURN value.result as result;
+    var integrationQuery = `
+      CALL custom.pushProcess(
+        $processes,
+        $sourceThreshold,
+        $targetThreshold,
+        $modifierThreshold,
+        $overallThreshold
+      )
+      YIELD result
+      RETURN result
     `;
-    var data = { query: integrationQuery, queryData: { processes: list } };
+
+    var data = {
+      query: integrationQuery,
+      queryData: {
+        processes: list,
+        sourceThreshold: processIncomingContribution/100,
+        targetThreshold: processOutgoingContribution/100,
+        modifierThreshold: processAgentContribution/100,
+        overallThreshold: overallProcessPercentage/100
+      }
+    };
+    // var integrationQuery=`
+    //   UNWIND $processes as process
+    //   CALL apoc.do.when(
+    //   EXISTS {
+    //     MATCH (p:process)
+    //     WHERE p.category = 'process'
+    //       AND p.class = process.class
+    //       AND size(p.sourceNewtIds) = size(process.sourceNewtIds)
+    //       AND all(sourceId IN process.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
+    //       AND size(p.targetNewtIds) = size(process.targetNewtIds)
+    //       AND all(targetId IN process.targetNewtIds WHERE targetId IN p.targetNewtIds)
+    //   },
+    //       "MATCH (p:process)
+    //   WHERE p.category = 'process'
+    //     AND p.class = data.class
+    //     AND size(p.sourceNewtIds) = size(data.sourceNewtIds)
+    //     AND all(sourceId IN data.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
+    //     AND size(p.targetNewtIds) = size(data.targetNewtIds)
+    //     AND all(targetId IN data.targetNewtIds WHERE targetId IN p.targetNewtIds)
+    //   RETURN {incoming: data.newtId, existing: p.newtId} AS result",
+    //   'CALL apoc.cypher.doIt(
+    //       "CALL apoc.create.node([data.category], data) YIELD node SET node.processed = 0 RETURN {incoming: data.newtId, existing: node.newtId} AS result",
+    //       {data: data}
+    //     ) YIELD value RETURN value.result AS result',
+    //   {data: process}
+    // ) YIELD value
+    // RETURN value.result as result;
+    // `;
+    // var data = { query: integrationQuery, queryData: { processes: list } };
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -724,6 +707,7 @@ var databaseUtilities = {
               return ids;
             },
             error: function (req, status, err) {
+              console.log("Error running query", status, err);
               errorCheck = {status,err}
               console.error("Error running query", status, err);
             },
@@ -831,32 +815,41 @@ var databaseUtilities = {
     var logicals = nodesData.filter((node)=>node.category==='logical');
     // console.log(compartmentIds,epns,processes);
     const mergeFlag = flag === "MERGE";
-    const {epnMatchingPercentage} = appUtilities.localDbSettings;
+    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
+    console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage);
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       compartmentIds,
       epns,
       mergeFlag,
       epnMatchingPercentage
     );
-    // if(errorCheck!==null)return errorCheck;
-    // const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
-    //   processes,
-    //   epn_ids,
-    //   mergeFlag
-    // );
-    // if(errorCheck!==null)return errorCheck;
-    // const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
-    //   logicals,
-    //   node_ids,
-    //   edgesData,
-    //   mergeFlag
-    // );
-    // if(errorCheck!==null)return errorCheck;
-    // await databaseUtilities.pushEdgesToLocalDatabase(
-    //   edgesData,
-    //   logical_ids,
-    //   mergeFlag
-    // );
+    if(errorCheck!==null)return errorCheck;
+    const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
+      processes,
+      epn_ids,
+      mergeFlag,
+      processIncomingContribution,
+      processOutgoingContribution,
+      processAgentContribution,
+      overallProcessPercentage
+    );
+    if(errorCheck!==null)return errorCheck;
+    const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
+      logicals,
+      node_ids,
+      edgesData,
+      mergeFlag
+    );
+    if(errorCheck!==null)return errorCheck;
+    await databaseUtilities.pushEdgesToLocalDatabase(
+      edgesData,
+      logical_ids,
+      mergeFlag
+    );
+
+
+
+
     // if(errorCheck!==null)return errorCheck;
     // await databaseUtilities.pushProcessToLocalDatabase(processes);
 
