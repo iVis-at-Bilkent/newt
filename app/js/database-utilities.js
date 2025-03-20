@@ -624,112 +624,176 @@ var databaseUtilities = {
     return ids;
   },
 
-
-  pushComplexesToDatabase: async function(complexes,epns){
-    for(let node of complexes){
+  pushComplexesToDatabase: async function(complexes, epns) {
+    // Associate each complex with its children
+    for (let complex of complexes) {
       let children = [];
-      for(let i=0;i<epns.length;i++){
+      for (let i = 0; i < epns.length; i++) {
         let epn = epns[i];
-        if(epn.parent===node.newtId){
+        if (epn.parent === complex.newtId) {
           children.push(epn);
-          epns.splice(i,1);
+          epns.splice(i, 1);
           i--;
         }
       }
-      node.children = children;
+      complex.children = children;
     }
-    var ids={};
-    var integrationQuery = `
-      UNWIND $complexes AS incomingComplex // Unwind the array of incoming complexes
-      match (c:complex {entityName:incomingComplex.entityName})<-[:belongs_to_complex]-(children:EPN)
-      with c,incomingComplex,collect(children.entityName) as existingChildren, [child IN incomingComplex.children | child.entityName] AS expectedChildren, collect(children) as dbChildren
-      where size(existingChildren) = size(expectedChildren) and 
-            all(ch in existingChildren where ch in expectedChildren) and
-            all(ch in expectedChildren where ch in existingChildren)
-      with
-          c,
-          incomingComplex,
-          [child in incomingComplex.children|
-              {
-                incoming: child.newtId,
-                existing: case when child.entityName in existingChildren then [dbChild in dbChildren where dbChild.entityName = child.entityName][0].newtId else null end
-              }
-          ] as childrenOutput
-      return {
-        incoming: incomingComplex.newtId,
-        existing: c.newtId,
-        children: childrenOutput
+  
+    // Build the query to call our stored procedure
+    const data = {
+      query: "CALL custom.pushComplexes($complexes, $epnCriteria, $threshold) YIELD result RETURN result",
+      queryData: {
+        complexes: complexes,
+        epnCriteria: epnCriterias,
+        threshold: 1
       }
-    `;
-    var data={
-      query: integrationQuery,
-      queryData:{complexes:complexes},
     };
-    await $.ajax({
-      type: "post",
-      url: "/utilities/runDatabaseQuery",
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(data),
-      success: async function (response) {
-        const { records } = await response;
-        if(records.length===0){
-          const createQuery=`
-            UNWIND $complexes AS incomingComplex
-            WITH apoc.map.removeKeys(incomingComplex, ['children']) AS mappedComplexData, incomingComplex
-            call apoc.create.node(["complex"],mappedComplexData) yield node as newComplex
-            with newComplex, incomingComplex
-            unwind incomingComplex.children as childData
-            call apoc.create.node(["EPN"], childData) yield node as newChild
-            call apoc.create.relationship(newChild,"belongs_to_complex",{},newComplex) yield rel
-            with incomingComplex,newComplex,collect(childData.newtId) as childrenIds
-            return {
-              incoming:incomingComplex.newtId,
-              existing:newComplex.newtId,
-              children:childrenIds
-            } as result
-          `;
-
-          var d={query:createQuery,queryData:{complexes:complexes}};
-          await $.ajax({
-            type: "post",
-            url: "/utilities/runDatabaseQuery",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(d),
-            success: function (response) {
-              const { records } = response;
-              for(let record of records){
-                const map = record._fields[0];
-                ids[map.incoming] = map.existing;
-                for(let child of map.children){
-                  ids[child]=child;
-                }
-              }
-              return ids;
-            },
-            error: function (req, status, err) {
-              console.log("Error running query", status, err);
-              errorCheck = {status,err}
-              console.error("Error running query", status, err);
-            },
-          });
-        }
+  
+    let ids = {};
+    try {
+      const response = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data)
+      });
+      
+      const { records } = response;
+      console.log(records);
+      for (let record of records) {
+        // Each record's first field is the result mapping from our stored procedure.
+        const map = record._fields[0];
+        // map.incoming is the incoming complex newtId
+        // map.existing is an object with keys: "complex" and "children"
+        ids[map.incoming] = map.existing.complex;
         
-        for (let record of records) {
-          const map = record._fields[0];
-          ids[map.incoming] = map.existing;
-          for(let child of map.children){
-            ids[child.incoming] = child.existing;
+        // Process the children – they might be an array of mappings or a list of newtId strings.
+        if (Array.isArray(map.existing.children)) {
+          for (let child of map.existing.children) {
+            if (typeof child === "object") {
+              // When reusing an existing complex, each child is a mapping {incoming, existing}
+              ids[child.incoming] = child.existing;
+            } else {
+              // When a new complex is created, children is simply a list of newtIds
+              ids[child] = child;
+            }
           }
         }
-        return ids;
-      },
-      error: function (req, status, err) {
-        errorCheck = {status,err}
-        console.error("Error running query", status, err);
-      },
-    });
-    return ids;
+      }
+      return ids;
+    } catch (err) {
+      console.error("Error running pushComplexes query", err);
+      return {};
+    }
   },
+  
+
+
+  // pushComplexesToDatabase: async function(complexes,epns){
+  //   for(let node of complexes){
+  //     let children = [];
+  //     for(let i=0;i<epns.length;i++){
+  //       let epn = epns[i];
+  //       if(epn.parent===node.newtId){
+  //         children.push(epn);
+  //         epns.splice(i,1);
+  //         i--;
+  //       }
+  //     }
+  //     node.children = children;
+  //   }
+  //   var ids={};
+  //   var integrationQuery = `
+  //     UNWIND $complexes AS incomingComplex // Unwind the array of incoming complexes
+  //     match (c:complex {entityName:incomingComplex.entityName})<-[:belongs_to_complex]-(children:EPN)
+  //     with c,incomingComplex,collect(children.entityName) as existingChildren, [child IN incomingComplex.children | child.entityName] AS expectedChildren, collect(children) as dbChildren
+  //     where size(existingChildren) = size(expectedChildren) and 
+  //           all(ch in existingChildren where ch in expectedChildren) and
+  //           all(ch in expectedChildren where ch in existingChildren)
+  //     with
+  //         c,
+  //         incomingComplex,
+  //         [child in incomingComplex.children|
+  //             {
+  //               incoming: child.newtId,
+  //               existing: case when child.entityName in existingChildren then [dbChild in dbChildren where dbChild.entityName = child.entityName][0].newtId else null end
+  //             }
+  //         ] as childrenOutput
+  //     return {
+  //       incoming: incomingComplex.newtId,
+  //       existing: c.newtId,
+  //       children: childrenOutput
+  //     }
+  //   `;
+  //   var data={
+  //     query: integrationQuery,
+  //     queryData:{complexes:complexes},
+  //   };
+  //   await $.ajax({
+  //     type: "post",
+  //     url: "/utilities/runDatabaseQuery",
+  //     contentType: "application/json; charset=utf-8",
+  //     data: JSON.stringify(data),
+  //     success: async function (response) {
+  //       const { records } = await response;
+  //       if(records.length===0){
+  //         const createQuery=`
+  //           UNWIND $complexes AS incomingComplex
+  //           WITH apoc.map.removeKeys(incomingComplex, ['children']) AS mappedComplexData, incomingComplex
+  //           call apoc.create.node(["complex"],mappedComplexData) yield node as newComplex
+  //           with newComplex, incomingComplex
+  //           unwind incomingComplex.children as childData
+  //           call apoc.create.node(["EPN"], childData) yield node as newChild
+  //           call apoc.create.relationship(newChild,"belongs_to_complex",{},newComplex) yield rel
+  //           with incomingComplex,newComplex,collect(childData.newtId) as childrenIds
+  //           return {
+  //             incoming:incomingComplex.newtId,
+  //             existing:newComplex.newtId,
+  //             children:childrenIds
+  //           } as result
+  //         `;
+
+  //         var d={query:createQuery,queryData:{complexes:complexes}};
+  //         await $.ajax({
+  //           type: "post",
+  //           url: "/utilities/runDatabaseQuery",
+  //           contentType: "application/json; charset=utf-8",
+  //           data: JSON.stringify(d),
+  //           success: function (response) {
+  //             const { records } = response;
+  //             for(let record of records){
+  //               const map = record._fields[0];
+  //               ids[map.incoming] = map.existing;
+  //               for(let child of map.children){
+  //                 ids[child]=child;
+  //               }
+  //             }
+  //             return ids;
+  //           },
+  //           error: function (req, status, err) {
+  //             console.log("Error running query", status, err);
+  //             errorCheck = {status,err}
+  //             console.error("Error running query", status, err);
+  //           },
+  //         });
+  //       }
+        
+  //       for (let record of records) {
+  //         const map = record._fields[0];
+  //         ids[map.incoming] = map.existing;
+  //         for(let child of map.children){
+  //           ids[child.incoming] = child.existing;
+  //         }
+  //       }
+  //       return ids;
+  //     },
+  //     error: function (req, status, err) {
+  //       errorCheck = {status,err}
+  //       console.error("Error running query", status, err);
+  //     },
+  //   });
+  //   return ids;
+  // },
 
 
 
@@ -804,48 +868,48 @@ var databaseUtilities = {
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(complexes,epns);
-    if(errorCheck!==null)return errorCheck;
-    const submaps = nodesData.filter((node)=>node.class==='submap');
-    const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
-    if(errorCheck!==null)return errorCheck;
-    const compartments = nodesData.filter((node)=>node.class==='compartment');
-    const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
-    if(errorCheck!==null)return errorCheck;
-    var processes = nodesData.filter((node) => node.category === "process");
-    var logicals = nodesData.filter((node)=>node.category==='logical');
-    // console.log(compartmentIds,epns,processes);
-    const mergeFlag = flag === "MERGE";
-    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
-    console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage);
-    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
-      compartmentIds,
-      epns,
-      mergeFlag,
-      epnMatchingPercentage
-    );
-    if(errorCheck!==null)return errorCheck;
-    const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
-      processes,
-      epn_ids,
-      mergeFlag,
-      processIncomingContribution,
-      processOutgoingContribution,
-      processAgentContribution,
-      overallProcessPercentage
-    );
-    if(errorCheck!==null)return errorCheck;
-    const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
-      logicals,
-      node_ids,
-      edgesData,
-      mergeFlag
-    );
-    if(errorCheck!==null)return errorCheck;
-    await databaseUtilities.pushEdgesToLocalDatabase(
-      edgesData,
-      logical_ids,
-      mergeFlag
-    );
+    // if(errorCheck!==null)return errorCheck;
+    // const submaps = nodesData.filter((node)=>node.class==='submap');
+    // const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
+    // if(errorCheck!==null)return errorCheck;
+    // const compartments = nodesData.filter((node)=>node.class==='compartment');
+    // const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
+    // if(errorCheck!==null)return errorCheck;
+    // var processes = nodesData.filter((node) => node.category === "process");
+    // var logicals = nodesData.filter((node)=>node.category==='logical');
+    // // console.log(compartmentIds,epns,processes);
+    // const mergeFlag = flag === "MERGE";
+    // const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
+    // console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage);
+    // const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
+    //   compartmentIds,
+    //   epns,
+    //   mergeFlag,
+    //   epnMatchingPercentage
+    // );
+    // if(errorCheck!==null)return errorCheck;
+    // const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
+    //   processes,
+    //   epn_ids,
+    //   mergeFlag,
+    //   processIncomingContribution,
+    //   processOutgoingContribution,
+    //   processAgentContribution,
+    //   overallProcessPercentage
+    // );
+    // if(errorCheck!==null)return errorCheck;
+    // const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
+    //   logicals,
+    //   node_ids,
+    //   edgesData,
+    //   mergeFlag
+    // );
+    // if(errorCheck!==null)return errorCheck;
+    // await databaseUtilities.pushEdgesToLocalDatabase(
+    //   edgesData,
+    //   logical_ids,
+    //   mergeFlag
+    // );
 
 
 
