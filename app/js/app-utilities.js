@@ -27,6 +27,7 @@ appUtilities.localDbSettings = {
   processOutgoingContribution:33,
   processAgentContribution:33,
   overallProcessPercentage:100,
+  complexMatchPercentage:100
 }
 
 appUtilities.mapTypesToViewableText = {
@@ -792,6 +793,7 @@ appUtilities.defaultGeneralProperties = {
   processOutgoingContribution:33,
   processAgentContribution:33,
   overallProcessPercentage:100,
+  complexMatchPercentage:100,
   enablePorts: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,

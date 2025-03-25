@@ -1179,6 +1179,12 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.overallProcessPercentage",
       update: self.applyUpdate,
     };
+    self.params.complexMatchPercentage = {
+      id: "complex-match",
+      type: "range",
+      property: "currentGeneralProperties.complexMatchPercentage",
+      update: self.applyUpdate,
+    };
     $(document).on("change", "#epn-match", function (evt) {
       self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
@@ -1203,6 +1209,11 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       self.params.overallProcessPercentage.value = Number($("#process-overall").val());
       document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
       appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value
+    });
+    $(document).on("change", "#complex-match", function (evt) {
+      self.params.complexMatchPercentage.value = Number($("#complex-match").val());
+      document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
+      appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value
     });
   },
 

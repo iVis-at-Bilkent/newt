@@ -868,48 +868,48 @@ var databaseUtilities = {
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(complexes,epns);
-    // if(errorCheck!==null)return errorCheck;
-    // const submaps = nodesData.filter((node)=>node.class==='submap');
-    // const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
-    // if(errorCheck!==null)return errorCheck;
-    // const compartments = nodesData.filter((node)=>node.class==='compartment');
-    // const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
-    // if(errorCheck!==null)return errorCheck;
-    // var processes = nodesData.filter((node) => node.category === "process");
-    // var logicals = nodesData.filter((node)=>node.category==='logical');
-    // // console.log(compartmentIds,epns,processes);
-    // const mergeFlag = flag === "MERGE";
-    // const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
-    // console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage);
-    // const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
-    //   compartmentIds,
-    //   epns,
-    //   mergeFlag,
-    //   epnMatchingPercentage
-    // );
-    // if(errorCheck!==null)return errorCheck;
-    // const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
-    //   processes,
-    //   epn_ids,
-    //   mergeFlag,
-    //   processIncomingContribution,
-    //   processOutgoingContribution,
-    //   processAgentContribution,
-    //   overallProcessPercentage
-    // );
-    // if(errorCheck!==null)return errorCheck;
-    // const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
-    //   logicals,
-    //   node_ids,
-    //   edgesData,
-    //   mergeFlag
-    // );
-    // if(errorCheck!==null)return errorCheck;
-    // await databaseUtilities.pushEdgesToLocalDatabase(
-    //   edgesData,
-    //   logical_ids,
-    //   mergeFlag
-    // );
+    if(errorCheck!==null)return errorCheck;
+    const submaps = nodesData.filter((node)=>node.class==='submap');
+    const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
+    if(errorCheck!==null)return errorCheck;
+    const compartments = nodesData.filter((node)=>node.class==='compartment');
+    const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
+    if(errorCheck!==null)return errorCheck;
+    var processes = nodesData.filter((node) => node.category === "process");
+    var logicals = nodesData.filter((node)=>node.category==='logical');
+    // console.log(compartmentIds,epns,processes);
+    const mergeFlag = flag === "MERGE";
+    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
+    console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage);
+    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
+      compartmentIds,
+      epns,
+      mergeFlag,
+      epnMatchingPercentage
+    );
+    if(errorCheck!==null)return errorCheck;
+    const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
+      processes,
+      epn_ids,
+      mergeFlag,
+      processIncomingContribution,
+      processOutgoingContribution,
+      processAgentContribution,
+      overallProcessPercentage
+    );
+    if(errorCheck!==null)return errorCheck;
+    const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
+      logicals,
+      node_ids,
+      edgesData,
+      mergeFlag
+    );
+    if(errorCheck!==null)return errorCheck;
+    await databaseUtilities.pushEdgesToLocalDatabase(
+      edgesData,
+      logical_ids,
+      mergeFlag
+    );
 
 
 
