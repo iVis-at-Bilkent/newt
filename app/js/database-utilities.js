@@ -39,7 +39,91 @@ var epnCriterias= {
       contribution:0.4,
       type:"array"
     },
-  }
+  },
+  simple_chemical:{
+    multimer:{
+      contribution:0.0,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0.5,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0.5,
+      type:"array"
+    },
+  },
+  unspecified_entity:{
+    multimer:{
+      contribution:0.0,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0,
+      type:"array"
+    },
+  },
+  nucleic_acid_feature:{
+    multimer:{
+      contribution:0.3,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0.3,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0.4,
+      type:"array"
+    },
+  },
+  perturbing_agent:{
+    multimer:{
+      contribution:0.0,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0,
+      type:"array"
+    },
+  },
+  empty_set:{
+    multimer:{
+      contribution:0.0,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0,
+      type:"array"
+    },
+  },
+  complex:{
+    multimer:{
+      contribution:0.3,
+      type:"boolean"
+    },
+    stateVariables:{
+      contribution:0.3,
+      type:"array"
+    },
+    unitsOfInformation:{
+      contribution:0.4,
+      type:"array"
+    },
+  },
 };
 var databaseUtilities = {
   enableDatabase: true,
@@ -510,6 +594,7 @@ var databaseUtilities = {
   },
 
   pushEdgesToLocalDatabase: async function (list, ids, flag) {
+    console.log(list);
     for (let i = 0; i < list.length; i++) {
       list[i].source = ids[list[i].source];
       list[i].target = ids[list[i].target];
@@ -524,7 +609,7 @@ var databaseUtilities = {
         WHERE type(r) = edge.class
       },
       'RETURN null',
-      'CALL apoc.create.relationship(sourceNode, edge.class, {}, targetNode) YIELD rel RETURN rel',
+      'CALL apoc.create.relationship(sourceNode, edge.class, edge, targetNode) YIELD rel RETURN rel',
       {sourceNode: sourceNode, targetNode: targetNode, edge: edge}
     ) YIELD value
     RETURN value;
@@ -887,6 +972,7 @@ var databaseUtilities = {
       mergeFlag,
       epnMatchingPercentage
     );
+    console.log(epn_ids);
     if(errorCheck!==null)return errorCheck;
     const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
       processes,
@@ -1416,22 +1502,22 @@ var databaseUtilities = {
           edgesToAdd[i].properties.class != "belongs_to_compartment" &&
           edgesToAdd[i].properties.class != "belongs_to_complex"
         )
-          console.log(
-            "sending to add Edge:",
-            edgesToAdd[i].properties.source,
-            edgesToAdd[i].properties.target,
-            databaseUtilities.convertLabelToClass(
-              edgesToAdd[i].properties.class
-            )
-          );
-        console.log(
-          "source:",
-          chiseInstance.getCy().getElementById(edgesToAdd[i].properties.source)
-        );
-        console.log(
-          "target:",
-          chiseInstance.getCy().getElementById(edgesToAdd[i].properties.target)
-        );
+        //   console.log(
+        //     "sending to add Edge:",
+        //     edgesToAdd[i].properties.source,
+        //     edgesToAdd[i].properties.target,
+        //     databaseUtilities.convertLabelToClass(
+        //       edgesToAdd[i].properties.class
+        //     )
+        //   );
+        // console.log(
+        //   "source:",
+        //   chiseInstance.getCy().getElementById(edgesToAdd[i].properties.source)
+        // );
+        // console.log(
+        //   "target:",
+        //   chiseInstance.getCy().getElementById(edgesToAdd[i].properties.target)
+        // );
         var new_edge = chiseInstance.addEdge(
           edgesToAdd[i].properties.target,
           edgesToAdd[i].properties.source,
@@ -1802,6 +1888,88 @@ var databaseUtilities = {
         console.error("Error running query", status, err);
       },
     });
+    return result;
+  },
+  
+  getAllNodesAndEdgesFromDatabase: async function () {
+    console.log("Fetching all nodes and edges from database");
+    
+    // Construct a Cypher query to retrieve all nodes and edges
+    var query = `MATCH (n) 
+                 OPTIONAL MATCH (n)-[r]->(m) 
+                 RETURN collect(distinct n) as nodes, collect(distinct r) as edges`;
+    
+    var data = { query: query, queryData: {} };
+    var result = {};
+    
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: async function (response) {
+        if (response.records.length == 0) {
+          console.log("No data returned from database");
+          return;
+        }
+        console.log(response.records)
+        
+        var nodes = [];
+        var edges = [];
+        var nodesSet = new Set();
+        var edgesMap = new Map();
+        
+        // Process the returned data
+        const record = response.records[0];
+        const nodesArray = record._fields[0];
+        const edgesArray = record._fields[1];
+        
+        // Process nodes
+        for (let i = 0; i < nodesArray.length; i++) {
+          if (!nodesSet.has(nodesArray[i].properties.newtId)) {
+            nodes.push(nodesArray[i]);
+            nodesSet.add(nodesArray[i].properties.newtId);
+          }
+        }
+        
+        // Process edges
+        for (let i = 0; i < edgesArray.length; i++) {
+          if (
+            !edgesMap.get(edgesArray[i].properties.source) ||
+            !edgesMap
+              .get(edgesArray[i].properties.source)
+              .has(edgesArray[i].properties.target)
+          ) {
+            var edge = {};
+            edge.properties = {};
+            edge.identity = {};
+            edge.properties.source = edgesArray[i].properties.source;
+            edge.properties.target = edgesArray[i].properties.target;
+            edge.properties.class = edgesArray[i].properties.class;
+            edge.identity.low = edgesArray[i].identity.low;
+            edges.push(edge);
+            
+            if (!edgesMap.get(edgesArray[i].properties.source)) {
+              var newSet = new Set();
+              edgesMap.set(edgesArray[i].properties.source, newSet);
+            }
+            edgesMap
+              .get(edgesArray[i].properties.source)
+              .add(edgesArray[i].properties.target);
+          }
+        }
+        
+        await appUtilities.createNewNetwork();
+        // Add nodes and edges to the canvas
+        await databaseUtilities.addNodesEdgesToCy(nodes, edges);
+        // Perform layout to organize the graph
+        databaseUtilities.performLayout();
+      },
+      error: function (req, status, err) {
+        console.error("Error fetching nodes and edges from database:", status, err);
+      },
+    });
+    
     return result;
   },
 };

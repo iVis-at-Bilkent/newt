@@ -2110,7 +2110,11 @@ module.exports = function() {
 
     $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
       updatePalette(newMapType);
-    }); 
+    });
+
+    $('#get-all-data').click(async function (e) {
+      console.log(await databaseUtilities.getAllNodesAndEdgesFromDatabase());
+    });
 
 
 
