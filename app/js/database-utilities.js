@@ -98,15 +98,15 @@ var epnCriterias= {
   },
   empty_set:{
     multimer:{
-      contribution:0.0,
+      contribution:0.3,
       type:"boolean"
     },
     stateVariables:{
-      contribution:0,
+      contribution:0.3,
       type:"array"
     },
     unitsOfInformation:{
-      contribution:0,
+      contribution:0.4,
       type:"array"
     },
   },
@@ -1354,6 +1354,7 @@ var databaseUtilities = {
   },
 
   pushNode: function (new_node) {
+    console.log("pushing node", new_node);
     return new Promise((resolve) => {
       if (!databaseUtilities.nodesInDB[new_node.properties.newtId]) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1365,7 +1366,9 @@ var databaseUtilities = {
           language: "PD",
           label: "smth",
         };
-
+        console.log(new_node,nodeParams,
+          new_node.properties.newtId,
+          new_node.properties.parent)
         var node = chiseInstance.addNode(
           0,
           0,
@@ -1958,7 +1961,7 @@ var databaseUtilities = {
               .add(edgesArray[i].properties.target);
           }
         }
-        
+        console.log("processed edges:", edges);
         await appUtilities.createNewNetwork();
         // Add nodes and edges to the canvas
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);
