@@ -3150,7 +3150,7 @@ appUtilities.launchWithModelFile = function() {
               chiseInstance.endSpinner("paths-byURL-spinner");
               
           }
-          if (fileExtension === "gpml") {
+          else if (fileExtension === "gpml") {
             chiseInstance.loadGpml(file, success =  async function (data) {
               if (cyInstance.elements().length !== 0) {
                 promptConfirmationView.render( function () {
