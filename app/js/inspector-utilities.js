@@ -731,7 +731,8 @@ inspectorUtilities.handleSBGNInspector = function () {
       if (geneClass === 'macromolecule' || geneClass === 'nucleic acid feature' ||
           geneClass === 'unspecified entity' || geneClass === 'BA plain' || 
           geneClass === 'BA macromolecule' || geneClass === 'BA nucleic acid feature' ||
-          geneClass === 'BA unspecified entity' || geneClass === 'SIF macromolecule') {
+          geneClass === 'BA unspecified entity' || geneClass === 'SIF macromolecule' || 
+          geneClass === 'protein'|| geneClass === 'gene') {
 
           addCollapsibleSection("biogene", "Properties from GeneCards", true, true);
           fillBioGeneContainer(selectedEles[0]);
