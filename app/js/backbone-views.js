@@ -3479,11 +3479,11 @@ var LLMBasedSBGNGenerationView = Backbone.View.extend({
       var filename = document.getElementById("file-name").innerHTML;
       chiseInstance.startSpinner("llm-spinner");
       var llm_description = document.getElementById("llm-pathway-description").value;
-      console.log(llm_description);
       $.ajax({
         url: "/text_based_generation",
         type: "POST",
-        data: {description: llm_description},
+        contentType: "application/json",
+        data: JSON.stringify({ description: llm_description }),
         success: function(data){
           chiseInstance.endSpinner("llm-spinner");
           chiseInstance.loadSBGNMLText(data, false, filename, cy);
@@ -3496,7 +3496,7 @@ var LLMBasedSBGNGenerationView = Backbone.View.extend({
           document.getElementById("export-error-message").innerText = "Text based SBGN generation failed!";
           console.log(err);
         }
-      });
+      });      
     });
   },
   render: function () {

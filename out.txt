@@ -1,52 +1,39 @@
 { 
     "map": [
-        {
-            "note": "Conversion of glucose to pyruvate via glycolysis",
-            "reaction_type": "process",
-            "substances": ["glucose"],
-            "products": ["pyruvate"],
-            "modulation": [
-                {
-                    "type": "catalysis",
-                    "source": "hexokinase"
+        { 
+            "note": "Conversion of glucose to pyruvate", 
+            "reaction_type": "process", 
+            "substances": ["glucose", "NAD+"], 
+            "products": ["pyruvate", "NADH"], 
+            "modulation": [ 
+                { 
+                    "type": "catalysis", 
+                    "source": "enzyme" 
                 }
-            ],
-            "location": "cytoplasm"
-        },
-        {
-            "note": "Interconversion of pyruvate to lactate",
-            "reaction_type": "process",
-            "substances": ["pyruvate"],
-            "products": ["lactate"],
-            "modulation": [
-                {
-                    "type": "catalysis",
-                    "source": "lactate dehydrogenase"
-                }
-            ],
-            "location": "cytoplasm"
-        }
+            ], 
+            "location": "cytoplasm" 
+        } 
     ],
-    "ontology": [
-        {
+    "ontology": [ 
+        { 
             "entity_name": "glucose", 
-            "ontology": "simple chemical"
+            "ontology": "simple chemical" 
         },
-        {
+        { 
+            "entity_name": "NAD+", 
+            "ontology": "simple chemical" 
+        },
+        { 
             "entity_name": "pyruvate", 
-            "ontology": "simple chemical"
+            "ontology": "simple chemical" 
         },
-        {
-            "entity_name": "lactate", 
-            "ontology": "simple chemical"
+        { 
+            "entity_name": "NADH", 
+            "ontology": "simple chemical" 
         },
-        {
-            "entity_name": "hexokinase", 
-            "ontology": "macromolecule"
-        },
-        {
-            "entity_name": "lactate dehydrogenase", 
-            "ontology": "macromolecule"
+        { 
+            "entity_name": "enzyme", 
+            "ontology": "macromolecule" 
         }
     ]
 }
