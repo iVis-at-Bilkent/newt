@@ -1,0 +1,52 @@
+{ 
+    "map": [
+        {
+            "note": "Conversion of glucose to pyruvate via glycolysis",
+            "reaction_type": "process",
+            "substances": ["glucose"],
+            "products": ["pyruvate"],
+            "modulation": [
+                {
+                    "type": "catalysis",
+                    "source": "hexokinase"
+                }
+            ],
+            "location": "cytoplasm"
+        },
+        {
+            "note": "Interconversion of pyruvate to lactate",
+            "reaction_type": "process",
+            "substances": ["pyruvate"],
+            "products": ["lactate"],
+            "modulation": [
+                {
+                    "type": "catalysis",
+                    "source": "lactate dehydrogenase"
+                }
+            ],
+            "location": "cytoplasm"
+        }
+    ],
+    "ontology": [
+        {
+            "entity_name": "glucose", 
+            "ontology": "simple chemical"
+        },
+        {
+            "entity_name": "pyruvate", 
+            "ontology": "simple chemical"
+        },
+        {
+            "entity_name": "lactate", 
+            "ontology": "simple chemical"
+        },
+        {
+            "entity_name": "hexokinase", 
+            "ontology": "macromolecule"
+        },
+        {
+            "entity_name": "lactate dehydrogenase", 
+            "ontology": "macromolecule"
+        }
+    ]
+}

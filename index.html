@@ -486,6 +486,9 @@
                       </li>
                     </ul>
                   </li>
+                  <li>
+                    <a href="#" id="query-llm">LLM-Based SBGN</a>
+                  </li>
                 </ul>
               </li>
 
@@ -1381,6 +1384,10 @@
 
     <div id="query-mapbyReactomeID-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map by Reactome query table will be shown here-->
+    </div>
+
+    <div id="llm-based-sbgn-generation-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- llm based sbgn generation table will be shown here-->
     </div>
 
     <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
@@ -2666,6 +2673,46 @@
               <div class="modal-footer" style="text-align: center">
                   <button id="save-query-mapbyReactomeID" class="btn btn-default" >OK</button>
                   <button id="cancel-query-mapbyReactomeID" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="llm-based-sbgn-generation">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">LLM Based SBGN Generation</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=3 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Generate a SBGN-PD map based on a textual input. </span>
+                          </th>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table>
+                            <tbody>
+                              <caption style="text-align: left;"> Pathway Description </caption>
+                              <tr>
+                                <td style="padding-left: 0px; padding-top: 0px">
+                                  <textarea id="llm-pathway-description" rows="5" cols="86" style="width: 100%;"></textarea>
+                                <td>
+                              </tr>
+                            <tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="llm-based-ok" class="btn btn-default" >OK</button>
+                  <button id="llm-based-cancel" class="btn btn-default">Cancel</button>
               </div>
           </div>
       </div>

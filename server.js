@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 const multer = require('multer');
+const { spawn } = require('child_process');
 var server = require('http').createServer(app);
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
@@ -41,5 +42,36 @@ app.post('/utilities/:fn', requestHandler);
 server.listen(port, function(){
   console.log('server listening on port: %d', port);
 });
+
+app.post('/text_based_generation', function(req, res) {
+	const python = spawn('env/bin/python', ['map_builder.py', req.body.description]);
+    
+    new Promise((resolve, reject) => {
+      let stdoutData = '';
+      let stderrData = '';
+  
+      python.stdout.on('data', (data) => {
+        stdoutData += data.toString();
+      });
+      python.stderr.on('data', (data) => {
+        stderrData += data.toString();
+      });
+  
+      python.on('close', (code) => {
+        if (code === 0) {
+            resolve(stdoutData); 
+        } else {
+            reject(stderrData); 
+        }
+      });
+    })
+	.then((data) => {
+		res.status(200).send(data);
+	})
+	.catch((err) => {
+		res.status(500).send(err);
+	});
+});
+
 
 app.use(express.static(__dirname, {dotfiles: 'ignore'}));

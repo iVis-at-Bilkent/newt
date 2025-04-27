@@ -152,6 +152,7 @@ module.exports = function() {
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   mapByWPIDQueryView = appUtilities.mapByWPIDQueryView = new BackboneViews.MapByWPIDQueryView({el: '#query-mapbyWPID-table'});
   mapByReactomeIDQueryView = appUtilities.mapByReactomeIDQueryView = new BackboneViews.MapByReactomeIDQueryView({el: '#query-mapbyReactomeID-table'});
+  LLMBasedSBGNGenerationView = appUtilities.LLMBasedSBGNGenerationView = new BackboneViews.LLMBasedSBGNGenerationView({el: '#llm-based-sbgn-generation-table'});
   //promptSaveView = appUtilities.promptSaveView = new BackboneViews.PromptSaveView({el: '#prompt-save-table'}); // see PromptSaveView in backbone-views.js
   fileSaveView = appUtilities.fileSaveView = new BackboneViews.FileSaveView({el: '#file-save-table'});
   saveUserPreferencesView =  appUtilities.saveUserPreferencesView = new BackboneViews.SaveUserPreferencesView({el: '#user-preferences-save-table'});
@@ -1344,6 +1345,11 @@ module.exports = function() {
     $("#query-mapbyReactomeID").click(function (e) {
       mapByReactomeIDQueryView.render();
     });
+
+    $("#query-llm").click(function (e) {
+      LLMBasedSBGNGenerationView.render();
+    });
+
 
     $("#grid-properties").click(function (e) {
       gridPropertiesView.render();

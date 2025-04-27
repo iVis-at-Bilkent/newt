@@ -5,3 +5,7 @@ node_modules/
 package-lock.json
 
 app/bundle.js
+
+env
+
+api_key.txt

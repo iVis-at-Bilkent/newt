@@ -3468,6 +3468,52 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
   },
 });
 
+var LLMBasedSBGNGenerationView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#llm-based-sbgn-generation").html());
+
+    $(document).on("click", "#llm-based-ok", function (evt) {
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      var cy = appUtilities.getActiveCy();
+      var filename = document.getElementById("file-name").innerHTML;
+      chiseInstance.startSpinner("llm-spinner");
+      var llm_description = document.getElementById("llm-pathway-description").value;
+      console.log(llm_description);
+      $.ajax({
+        url: "/text_based_generation",
+        type: "POST",
+        data: {description: llm_description},
+        success: function(data){
+          chiseInstance.endSpinner("llm-spinner");
+          chiseInstance.loadSBGNMLText(data, false, filename, cy);
+          $(self.el).modal("toggle");
+          $("#perform-static-layout").trigger("click");
+        },
+        error: function(err) {
+          chiseInstance.endSpinner("llm-spinner");
+          new ExportErrorView({el: "#exportError-table"}).render();
+          document.getElementById("export-error-message").innerText = "Text based SBGN generation failed!";
+          console.log(err);
+        }
+      });
+    });
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#llm-based-sbgn-generation").html());
+    $(self.el).html(self.template);
+
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#llm-based-cancel")
+      .on("click", "#llm-based-cancel", function (evt) {
+        $(self.el).modal("toggle");
+      });
+  }
+})
+
 /*
   There was a side effect of using this modal prompt when clicking on New.
   If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
@@ -7413,6 +7459,7 @@ module.exports = {
   PathsByURIQueryView: PathsByURIQueryView,
   MapByWPIDQueryView: MapByWPIDQueryView,
   MapByReactomeIDQueryView: MapByReactomeIDQueryView,
+  LLMBasedSBGNGenerationView: LLMBasedSBGNGenerationView,
   PromptSaveView: PromptSaveView,
   FileSaveView: FileSaveView,
   SaveUserPreferencesView: SaveUserPreferencesView,
