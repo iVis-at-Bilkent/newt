@@ -1,4 +1,6 @@
-from libsbgnpy import *
+import libsbgnpy.libsbgn as libsbgn
+from libsbgnpy.libsbgnTypes import *
+from libsbgnpy import utils 
 import json
 import collections
 import sys
@@ -184,8 +186,8 @@ Now convert the following pathway to structured JSON:
     return completion.choices[0].message.content
 
 def convert_to_sbgn(pathway_json: str):
-    map = Map(language=MapLanguage.PROCESS_DESCRIPTION)
-    sbgn = Sbgn(map=[map])
+    map = libsbgn.map(language=Language.PD)
+    sbgn = libsbgn.sbgn(map=map)
 
     obj = json.loads(pathway_json)
     map_obj = obj["map"]
@@ -203,28 +205,28 @@ def convert_to_sbgn(pathway_json: str):
 
     compartments = {reaction["location"] for reaction in map_obj}
     for comp in compartments:
-        g1 = Glyph(
-            class_value=GlyphClass.COMPARTMENT, 
+        g1 = libsbgn.glyph(
+            class_=GlyphClass.COMPARTMENT, 
             id="comp_"+comp,
-            label=Label(text=comp),
-            bbox=Bbox(x=0, y=0, w=60, h=30)
+            label=libsbgn.label(text=comp),
+            bbox=libsbgn.bbox(x=0, y=0, w=60, h=30)
         )
-        map.glyph.extend([g1])
+        map.add_glyph(g1)
 
     count = 0
     for reaction in map_obj:
         uniq_id = 'process' + str(count)
-        g = Glyph(
-            class_value=PD_PROCESS_STRING_INTO_TYPES[reaction["reaction_type"]], 
+        g = libsbgn.glyph(
+            class_=PD_PROCESS_STRING_INTO_TYPES[reaction["reaction_type"]], 
             id=uniq_id,
-            bbox=Bbox(x=0, y=0, w=20, h=20),
+            bbox=libsbgn.bbox(x=0, y=0, w=20, h=20),
             port=[
-                Port(x=25,y=10,id=uniq_id + ".1"),
-                Port(x=-5,y=10,id=uniq_id + ".2")
+                libsbgn.port(x=25,y=10,id=uniq_id + ".1"),
+                libsbgn.port(x=-5,y=10,id=uniq_id + ".2")
             ],
-            compartment_ref="comp_"+reaction["location"]
+            compartmentRef="comp_"+reaction["location"]
         )
-        map.glyph.extend([g])
+        map.add_glyph(g)
         count += 1
 
         for substance in reaction["substances"]:
@@ -237,36 +239,36 @@ def convert_to_sbgn(pathway_json: str):
             result = ontology_lookup.get(re.sub(r'\[.*?\]', '', substance).strip())
             if result:
                 substrate_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[result["ontology"]]
-            g1 = Glyph(
-                class_value=substrate_class, 
+            g1 = libsbgn.glyph(
+                class_=substrate_class, 
                 id=uniq_id1,
-                label=Label(text=substance),
-                bbox=Bbox(x=0, y=0, w=60, h=30),
-                compartment_ref="comp_"+reaction["location"]
+                label=libsbgn.label(text=substance),
+                bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
+                compartmentRef="comp_"+reaction["location"]
             )
             if result and result["ontology"] == "complex" and result.get("constituent"):
                 for ii, element in enumerate(result["constituent"]):
                     complex_inner_class = GlyphClass.SIMPLE_CHEMICAL
                     if element.get("ontology"):
                         complex_inner_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[element["ontology"]]
-                    g2 = Glyph(
-                        class_value=complex_inner_class,
+                    g2 = libsbgn.glyph(
+                        class_=complex_inner_class,
                         id=uniq_id1+"_complex_"+str(ii),
-                        label=Label(text=element["name"]),
-                        bbox=Bbox(x=0, y=0, w=60, h=30),
-                        compartment_ref="comp_"+reaction["location"]
+                        label=libsbgn.label(text=element["name"]),
+                        bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
+                        compartmentRef="comp_"+reaction["location"]
                     )
-                    g1.glyph.extend([g2])
-            map.glyph.extend([g1])
+                    g1.add_glyph(g2)
+            map.add_glyph(g1)
             
 
-            arc1 = Arc(
-                class_value=ArcClass.CONSUMPTION, 
+            arc1 = libsbgn.arc(
+                class_=ArcClass.CONSUMPTION, 
                 source=uniq_id1, 
                 target=uniq_id + ".1", 
                 id="arc"+str(count),
             )   
-            map.arc.extend([arc1])
+            map.add_arc(arc1)
             count += 1
 
         for product in reaction["products"]:
@@ -279,36 +281,36 @@ def convert_to_sbgn(pathway_json: str):
             result = ontology_lookup.get(re.sub(r'\[.*?\]', '', product).strip())
             if result:
                 product_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[result["ontology"]]
-            g1 = Glyph(
-                class_value=product_class, 
+            g1 = libsbgn.glyph(
+                class_=product_class, 
                 id=uniq_id1,
-                label=Label(text=product),
-                bbox=Bbox(x=0, y=0, w=60, h=30),
-                compartment_ref="comp_"+reaction["location"]
+                label=libsbgn.label(text=product),
+                bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
+                compartmentRef="comp_"+reaction["location"]
             )
             if result and result["ontology"] == "complex" and result.get("constituent"):
                 for ii, element in enumerate(result["constituent"]):
                     complex_inner_class = GlyphClass.SIMPLE_CHEMICAL
                     if element.get("ontology"):
                         complex_inner_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[element["ontology"]]
-                    g2 = Glyph(
-                        class_value=complex_inner_class,
+                    g2 = libsbgn.glyph(
+                        class_=complex_inner_class,
                         id=uniq_id1+"_complex_"+str(ii),
-                        label=Label(text=element["name"]),
-                        bbox=Bbox(x=0, y=0, w=60, h=30),
-                        compartment_ref="comp_"+reaction["location"]
+                        label=libsbgn.label(text=element["name"]),
+                        bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
+                        compartmentRef="comp_"+reaction["location"]
                     )
-                    g1.glyph.extend([g2])
+                    g1.add_glyph(g2)
 
-            map.glyph.extend([g1])
+            map.add_glyph(g1)
 
-            arc1 = Arc(
-                class_value=ArcClass.PRODUCTION, 
+            arc1 = libsbgn.arc(
+                class_=ArcClass.PRODUCTION, 
                 source=uniq_id + ".2", 
                 target=uniq_id1, 
                 id="arc"+str(count),
             )
-            map.arc.extend([arc1])
+            map.add_arc(arc1)
             count += 1
 
         if "modulation" in reaction:
@@ -323,44 +325,42 @@ def convert_to_sbgn(pathway_json: str):
                 result = ontology_lookup.get(re.sub(r'\[.*?\]', '', modulator_name).strip())
                 if result:
                     modulator_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[result["ontology"]]
-                g1 = Glyph(
-                    class_value=modulator_class, 
+                g1 = libsbgn.glyph(
+                    class_=modulator_class, 
                     id=uniq_id1,
-                    label=Label(text=modulator_name),
-                    bbox=Bbox(x=0, y=0, w=60, h=30),
-                    compartment_ref="comp_"+reaction["location"]
+                    label=libsbgn.label(text=modulator_name),
+                    bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
+                    compartmentRef="comp_"+reaction["location"]
                 )
                 if result and result["ontology"] == "complex" and result.get("constituent"):
                     for ii, element in enumerate(result["constituent"]):
                         complex_inner_class = GlyphClass.SIMPLE_CHEMICAL
                         if element.get("ontology"):
                             complex_inner_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[element["ontology"]]
-                        g2 = Glyph(
-                            class_value=complex_inner_class,
+                        g2 = libsbgn.glyph(
+                            class_=complex_inner_class,
                             id=uniq_id1+"_complex_"+str(ii),
-                            label=Label(text=element["name"]),
-                            bbox=Bbox(x=0, y=0, w=60, h=30),
-                            compartment_ref="comp_"+reaction["location"]
+                            label=libsbgn.label(text=element["name"]),
+                            bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
+                            compartmentRef="comp_"+reaction["location"]
                         )
-                        g1.glyph.extend([g2])
-                map.glyph.extend([g1])
+                        g1.add_glyph(g2)
+                map.add_glyph(g1)
 
-                arc1 = Arc(
-                    class_value=PD_MODULATION_STRING_INTO_TYPES[modulator["type"]], 
+                arc1 = libsbgn.arc(
+                    class_=PD_MODULATION_STRING_INTO_TYPES[modulator["type"]], 
                     source=uniq_id1, 
                     target=uniq_id, 
                     id="arc"+str(count),
                 )
-                map.arc.extend([arc1])
+                map.add_arc(arc1)
                 count += 1
 
-    return write_sbgn_to_string(sbgn)
+    return utils.write_to_string(sbgn)
 
 
 if __name__ == "__main__":
     pathway_description: str = sys.argv[1]
     output = get_chatgpt_output(pathway_description)
-    with open("out.txt", "w") as file:
-        file.write(output)
     sbgn_map = convert_to_sbgn(output)
     print(sbgn_map)
