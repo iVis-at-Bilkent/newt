@@ -1581,10 +1581,6 @@ var databaseUtilities = {
         // );
         // console.log("testing edge:",edgesToAdd[i].properties.source.data("class"));
         var cy = appUtilities.getActiveCy();
-        console.log(
-          "source:",edgesToAdd[i].properties.source,cy.getElementById(edgesToAdd[i].properties.source),
-          "target:",edgesToAdd[i].properties.target,cy.getElementById(edgesToAdd[i].properties.target)
-        );
         var new_edge = chiseInstance.addEdge(
           edgesToAdd[i].properties.target,
           edgesToAdd[i].properties.source,
