@@ -2,7 +2,7 @@ var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
 const { ActiveTabPushSuccessView } = require("./backbone-views");
-const { merge } = require("jquery");
+const { merge, cleanData } = require("jquery");
 
 var errorCheck =null;
 
@@ -403,9 +403,27 @@ var databaseUtilities = {
       }
     }
   },
+  cleanDatabase: async function () {
+    var integrationQuery = `call custom.clearDatabase();`;
+    var data = { query: integrationQuery, queryData: {} };
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function (response) {
+      },
+      error: function (req, status, err) {
+        errorCheck = {status,err}
+        console.error("Error running query", status, err);
+      },
+    });
+  },
+    
+
 
   pushEPNToLocalDatabase: async function (ids,list, mergeflag,epnMatchingPercentage) {
-    console.log(ids,list,mergeflag,epnMatchingPercentage/100);
+    // console.log(ids,list,mergeflag,epnMatchingPercentage/100);
 
     integrationQuery=``;
     if(mergeflag){
@@ -466,16 +484,18 @@ var databaseUtilities = {
       query: integrationQuery,
       queryData: { nodesData: list, flag: mergeflag, epnCriterias:epnCriterias, epnMatchingPercentage:epnMatchingPercentage/100},
     };
+    console.log(data);
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (response) {
+        console.log(response)
         const { records } = response;
         for (let record of records) {
           const map = record._fields[0];
-          console.log(map);
+          // console.log(map);
           if(map.existing==null){
             ids[map.incoming] = map.incoming;
           }
@@ -494,7 +514,7 @@ var databaseUtilities = {
     return ids;
   },
   pushProcessToLocalDatabase: async function (list, ids, flag,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage) {
-    console.log(list,ids);
+    // console.log(list,ids);
     list = list.map((pr) => {
       const sourceNewtIds = Object.keys(pr)
         .filter((key) => key.startsWith("source_"))
@@ -519,7 +539,7 @@ var databaseUtilities = {
       process.modifierNewtIds = modifierNewtIds;
       return process;
     });
-    console.log(list);
+    // console.log(list);
     var integrationQuery = `
       CALL custom.pushProcess(
         $processes,
@@ -949,6 +969,9 @@ var databaseUtilities = {
   },
 
   pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag) {
+    if(flag === "REPLACE"){
+      await this.cleanDatabase();
+    }
     console.log(nodesData, edgesData, flag);
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
@@ -963,9 +986,10 @@ var databaseUtilities = {
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
     // console.log(compartmentIds,epns,processes);
-    const mergeFlag = flag === "MERGE";
+    // const mergeFlag = flag === "MERGE";
+    const mergeFlag = true;
     const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
-    console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage);
+    console.log("EPN NODES:",epns);
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       compartmentIds,
       epns,
@@ -1290,12 +1314,45 @@ var databaseUtilities = {
     //   },
     // });
   },
+  getNeighboringNodes: async function(nodeId) {
+    const query = `
+      CALL custom.getNeighbors($id)
+        YIELD node, rel
+      RETURN node, rel
+    `;
+    const data = { query, queryData: { id: nodeId } };
+  
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: async function(response) {
+        
+        const recs      = response.records;
+        let nodesArr = [];
+        let edgesArr = [];
+        recs.forEach(r => {
+          const node = r._fields[0];
+          const rel  = r._fields[1];
+          nodesArr.push(node);
+          edgesArr.push(rel);
+          });
+        await databaseUtilities.addNodesEdgesToCy(nodesArr, edgesArr);
+        databaseUtilities.performLayout();
+      },
+      error: (req, status, err) =>
+        console.error("Error running getNeighbors", status, err)
+    });
+  },
+
   convertLabelToClass: function (label) {
-    var repl = label.replace("_", " ");
+    var repl = label.replaceAll("_", " ");
     return repl;
   },
 
   getNodesRecursively: function (nodesToAdd) {
+    
     return new Promise(async function (resolve, reject) {
       var parentsToGet = new Set();
       var children = [];
@@ -1425,13 +1482,14 @@ var databaseUtilities = {
       let edgesToHighlight = [];
       let edgesToAdd = [];
       let nodesToAdd = [];
-
+      
       for (let i = 0; i < nodes.length; i++) {
         if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
           nodesToAdd.push(nodes[i]);
         }
         nodesToHighlight.push(nodes[i]);
       }
+      
 
       for (let j = 0; j < edges.length; j++) {
         //Check if edge already exists in map
@@ -1455,7 +1513,6 @@ var databaseUtilities = {
         }
         edgesToHighlight.push(edges[j]);
       }
-      console.log("edges to add:", edges);
       databaseUtilities
         .getNodesRecursively(nodesToAdd)
         .then(async function () {
@@ -1497,6 +1554,7 @@ var databaseUtilities = {
     });
   },
   pushEdges: async function (edgesToAdd) {
+    console.log("pushing edges", edgesToAdd);
     return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       for (let i = 0; i < edgesToAdd.length; i++) {
@@ -1521,6 +1579,12 @@ var databaseUtilities = {
         //   "target:",
         //   chiseInstance.getCy().getElementById(edgesToAdd[i].properties.target)
         // );
+        // console.log("testing edge:",edgesToAdd[i].properties.source.data("class"));
+        var cy = appUtilities.getActiveCy();
+        console.log(
+          "source:",edgesToAdd[i].properties.source,cy.getElementById(edgesToAdd[i].properties.source),
+          "target:",edgesToAdd[i].properties.target,cy.getElementById(edgesToAdd[i].properties.target)
+        );
         var new_edge = chiseInstance.addEdge(
           edgesToAdd[i].properties.target,
           edgesToAdd[i].properties.source,
@@ -1528,7 +1592,6 @@ var databaseUtilities = {
           undefined,
           undefined
         );
-        var cy = appUtilities.getActiveCy();
         var vu = cy.viewUtilities("get");
       }
       resolve();
@@ -1926,10 +1989,29 @@ var databaseUtilities = {
         const record = response.records[0];
         const nodesArray = record._fields[0];
         const edgesArray = record._fields[1];
+        let atp = false, adp = false, h2o = false;
+        let atpNode = null, adpNode = null, h2oNode = null;
+        let done = new Map();
+
+        let map = new Map();
         
         // Process nodes
         for (let i = 0; i < nodesArray.length; i++) {
+          console.log('node:',nodesArray[i])
           if (!nodesSet.has(nodesArray[i].properties.newtId)) {
+            if(nodesArray[i].properties.entityName == "ATP" && atpNode == null){
+              atpNode = nodesArray[i];
+              atpNode.properties.cloned=true;
+            }
+            else if(nodesArray[i].properties.entityName == "ADP" && adpNode == null){
+              adpNode = nodesArray[i];
+              adpNode.properties.cloned=true;
+            }
+            else if(nodesArray[i].properties.entityName == "H2O" && h2oNode == null){
+              h2oNode = nodesArray[i];
+              h2oNode.properties.cloned=true;
+            }
+            map.set(nodesArray[i].properties.newtId, nodesArray[i].properties.entityName);
             nodes.push(nodesArray[i]);
             nodesSet.add(nodesArray[i].properties.newtId);
           }
@@ -1937,12 +2019,115 @@ var databaseUtilities = {
         
         // Process edges
         for (let i = 0; i < edgesArray.length; i++) {
+          // if(sourceClass == "ATP"){
+          //   if(!atp){
+          //     atp = true;
+          //   }
+          //   else{
+          //     atpNode.properties.newtId = atpNode.properties.newtId + randomString(1000);
+          //     nodes.push(atpNode);
+          //     nodesSet.add(atpNode.properties.newtId);
+          //   }
+          // }
+                    
           if (
             !edgesMap.get(edgesArray[i].properties.source) ||
             !edgesMap
               .get(edgesArray[i].properties.source)
               .has(edgesArray[i].properties.target)
           ) {
+            let source = edgesArray[i].properties.source;
+            let target = edgesArray[i].properties.target;
+            let sourceClass = edgesArray[i].properties.sourceClass;
+            let targetClass = edgesArray[i].properties.targetClass;
+
+            if(sourceClass !== "compartment" && targetClass !== "compartment"){              
+              if(map.get(source) == "ATP" && !atp){
+                atp = true;
+                let dummyATP = JSON.parse(JSON.stringify(atpNode));
+                dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
+                nodes.push(dummyATP);
+                nodesSet.add(dummyATP.properties.newtId);
+                edgesArray[i].properties.source = dummyATP.properties.newtId;
+              }
+              if(map.get(target) == "ATP" && !atp){
+                atp = true;
+                let dummyATP = JSON.parse(JSON.stringify(atpNode));
+                dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
+                nodes.push(dummyATP);
+                nodesSet.add(dummyATP.properties.newtId);
+                edgesArray[i].properties.target = dummyATP.properties.newtId;
+              }
+              
+              if(map.get(source) == "ADP" && !adp){
+                adp = true;
+                let dummyADP = JSON.parse(JSON.stringify(adpNode));
+                dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
+                nodes.push(dummyADP);
+                nodesSet.add(dummyADP.properties.newtId);
+                edgesArray[i].properties.source = dummyADP.properties.newtId;
+              }
+              if(map.get(target) == "ADP" && !adp){
+                adp = true;
+                let dummyADP = JSON.parse(JSON.stringify(adpNode));
+                dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
+                nodes.push(dummyADP);
+                nodesSet.add(dummyADP.properties.newtId);
+                edgesArray[i].properties.target = dummyADP.properties.newtId;
+              }
+              
+              if(map.get(source) == "H2O" && !h2o){
+                h2o = true;
+                let dummyH2O = JSON.parse(JSON.stringify(h2oNode));
+                dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
+                nodes.push(dummyH2O);
+                nodesSet.add(dummyH2O.properties.newtId);
+                edgesArray[i].properties.source = dummyH2O.properties.newtId;
+              }
+              if(map.get(target) == "H2O" && !h2o){
+                h2o = true;
+                let dummyH2O = JSON.parse(JSON.stringify(atpNode));
+                dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
+                nodes.push(dummyH2O);
+                nodesSet.add(dummyH2O.properties.newtId);
+                edgesArray[i].properties.target = dummyH2O.properties.newtId;
+              }
+            }
+            
+            // if(sourceClass == "simple_chemical"){
+              
+              // let newtId = edgesArray[i].properties.source;
+              // if(done.has(edgesArray[i].properties.source)){
+              //   let dummyATP = JSON.parse(JSON.stringify(atpNode));
+              //   dummyATP.properties.newtId = edgesArray[i].properties.source + Math.floor(Math.random() * 1000);
+              //   nodes.push(dummyATP);
+              //   nodesSet.add(dummyATP.properties.newtId);
+              //   edgesArray[i].properties.source = dummyATP.properties.newtId;
+              //   newtId = dummyATP.properties.newtId;
+              // }
+              // done.set(newtId, true);
+            // }
+            // if(targetClass == "simple_chemical"){
+              // let newtId = edgesArray[i].properties.target;
+              // if(done.has(edgesArray[i].properties.target)){
+              //   let dummyATP = JSON.parse(JSON.stringify(atpNode));
+              //   dummyATP.properties.newtId = edgesArray[i].properties.target + Math.floor(Math.random() * 1000);
+              //   nodes.push(dummyATP);
+              //   nodesSet.add(dummyATP.properties.newtId);
+              //   edgesArray[i].properties.target = dummyATP.properties.newtId;
+              //   newtId = dummyATP.properties.newtId;
+              // }
+              // done.set(newtId, true);
+            // }
+
+            // if(done.get(edgesArray[i].properties.source)){
+            //   let dummyATP = JSON.parse(JSON.stringify(atpNode));
+            //   dummyATP.properties.newtId = edgesArray[i].properties.source + Math.floor(Math.random() * 1000);
+            //   nodes.push(dummyATP);
+            //   nodesSet.add(dummyATP.properties.newtId);
+            //   edgesArray[i].properties.source = dummyATP.properties.newtId;
+            //   done.set(edgesArray[i].properties.source, dummyATP.properties.newtId);
+            // }
             var edge = {};
             edge.properties = {};
             edge.identity = {};
@@ -1961,7 +2146,6 @@ var databaseUtilities = {
               .add(edgesArray[i].properties.target);
           }
         }
-        console.log("processed edges:", edges);
         await appUtilities.createNewNetwork();
         // Add nodes and edges to the canvas
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);

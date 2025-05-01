@@ -595,7 +595,7 @@
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Query
+                  Database
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
@@ -660,10 +660,31 @@
                       class="dropdown-toggle"
                       data-toggle="dropdown"
                     >
-                      Local Database
+                      Local
                       <!--<b class="right-caret"></b>-->
                     </a>
                     <ul class="dropdown-menu">
+                      <input id="input-file" type="file" style="display: none;">
+                      <li>
+                        <a href="#" id="get-all-data"
+                          >Entire Content</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" id="push-active-tab-contents"
+                          >Push Active Tab Content</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" type="file" id="load-from-file"
+                          >Load from File...</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" id="database-properties"
+                          >Database Properties...</a
+                        >
+                      </li>
                       <li>
                         <a href="#" id="query-pathsbetween-localdatabase"
                           >Paths Between...</a
@@ -704,7 +725,7 @@
                 </ul>
               </li>
 
-              <li class="dropdown database-function">
+              <!-- <li class="dropdown database-function">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   Local Database
                   <b class="caret"></b>
@@ -732,7 +753,7 @@
                     >
                   </li>
                 </ul>
-              </li>
+              </li> -->
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -4683,7 +4704,7 @@
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Push Active Tabs</h4>
+                  <h4 class="modal-title"> <%=title %></h4>
               </div>
               <div class="modal-body">
                   <table class="table-condensed layout-table">

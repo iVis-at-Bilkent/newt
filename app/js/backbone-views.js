@@ -3177,6 +3177,7 @@ var PushActiveTabsView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
     lengthLimit: 1,
+    title: "Push Active Tabs",
   },
   currentQueryParameters: null,
   initialize: function () {
@@ -3188,10 +3189,16 @@ var PushActiveTabsView = Backbone.View.extend({
   copyProperties: function () {
     this.currentQueryParameters = _.clone(this.defaultQueryParameters);
   },
-  render: function (fileContent) {
+  render: function (fileContent,title="Push Active Tabs") {
     var self = this;
+    // self.template = template({title});
+    var params = {
+      title: title,
+      geneSymbols: self.currentQueryParameters.geneSymbols,
+      lengthLimit: self.currentQueryParameters.lengthLimit,
+    };
     self.template = _.template($("#push-active-tabs-template").html());
-    self.template = self.template(self.currentQueryParameters);
+    self.template = self.template(params);
     $(self.el).html(self.template);
 
     $(self.el).modal("show");

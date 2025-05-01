@@ -484,7 +484,7 @@ module.exports = function() {
           //validateSBGNML(text);
         }
         params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning,,(e)=>{
-          pushActiveTabsView.render(e);
+          pushActiveTabsView.render(e,"Load From File");
         }];
         caller = chiseInstance.loadFileToLocal;
       }
