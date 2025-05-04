@@ -80,33 +80,33 @@ You MUST follow the constraints and semantics defined below.
 
 JSON Format:
 
-{ 
+{
     map: [
-        { 
-            "note": "Human-readable explanation (optional)", 
+        {
+            "note": "Human-readable explanation (optional)",
             "reaction_type": "process", // One of: "process", "association", "dissociation", "omitted process", "uncertain process".
-            "substances": ["A", "B"], // Entities consumed in the reaction 
-            "products": ["C", "D"], // Entities produced by the reaction 
-            "modulation": [ // Optional array of regulation arcs 
-                { 
-                    "type": "stimulation", // One of: "modulation", "stimulation", "catalysis", "inhibition" 
-                    "source": "X" // Entity that performs the regulation. 
+            "substances": ["A", "B"], // Entities consumed in the reaction
+            "products": ["C", "D"], // Entities produced by the reaction
+            "modulation": [ // Optional array of regulation arcs
+                {
+                    "type": "stimulation", // One of: "modulation", "stimulation", "catalysis", "inhibition"
+                    "source": "X" // Entity that performs the regulation
                 }
-            ], 
-            "location": "cytoplasm", // Optional compartment 
-        } 
+            ],
+            "location": "cytoplasm" // Optional compartment
+        }
     ],
-    ontology: [ 
-        { 
-            "entity_name": "A", // For every entity used above, there must be exactly entry in this list. 
-            "ontology": "macromolecule" // One of: "unspecified entity", "simple chemical", "macromolecule", "nucleic acid feature", "perturbing agent", "source and sink", "phenotype"
-            "constituent": [ // only fill this array if ontology is complex
-                { 
-                    "name": "sub-entity 1", // Define the sub-entities for complex entities, if applicable 
-                    "ontology": "macromolecule" 
-                } 
-            ] 
-        } 
+    ontology: [
+        {
+            "entity_name": "A", // For every entity used above, there must be exactly one entry in this list
+            "ontology": "macromolecule", // One of: "unspecified entity", "simple chemical", "macromolecule", "nucleic acid feature", "perturbing agent", "source and sink", "phenotype"
+            "constituent": [ // Only fill this array if ontology is complex
+                {
+                    "name": "sub-entity 1",
+                    "ontology": "macromolecule"
+                }
+            ]
+        }
     ]
 }
 
@@ -148,18 +148,28 @@ Nucleic Acid Feature: Represents specific regions or features of nucleic acids, 
 Complex: Represents a stable association of multiple entities, such as protein complexes. The components of the complex may be detailed internally.
 Source and Sink: 'Source' represents the origin of entities entering the system; 'Sink' represents the removal or degradation of entities leaving the system.
 
-⚠️ Important Rules:
+Important Rules:
 
 Every reaction MUST have at least one substance and one product.
-Do NOT generate very high level maps unless explicitly requested. Try to include more detailed steps.
+Do NOT generate very high-level maps unless explicitly requested. Try to include more detailed steps.
 Do NOT list modifiers outside of the modulation block.
 Do NOT describe high-level steps — only break them down into elementary reactions.
 Entities MUST be clearly defined objects, and generally NOT described by adjectives.
 As much as possible, the generated map MUST be connected. Try using products from the previous reaction in the substances of the next reaction.
-A unit of information is for expressing additional information about the state of an entity. The name of the entity must be followed by square brackets, which describe its state. For example: MEK [active], MEK [P].
-Entities MUST be named using consistent, interpretable biological labels — avoid descriptive phrases like “docking sites” or “in nucleus” or "nuclear". Instead, use:
-"STAT" with unit of information: "STAT [P]"
+Reaction substances should NOT be included in the modulation section, except for very rare cases where this is what actually happens.
 Locations go in the "location" field, not the entity name.
+
+State Variables vs. Units of Information:
+
+Use square brackets [ ] to denote state variables, which describe concrete, modifiable properties of an entity (e.g., phosphorylation sites, conformational changes).
+Examples: "MEK [P]", "STAT [active]", "Receptor [open]"
+These correspond to SBGN state variable glyphs.
+
+Use curly braces { } to denote units of information, which describe abstract, structural, or contextual features of the entity (e.g., domains, roles, annotations).
+Examples: "NFkB {DNA-binding domain}", "GeneA {promoter}", "ProteinX {kinase}"
+These correspond to SBGN unit of information glyphs.
+
+Use state variables and units of information sparingly — only when biologically meaningful and necessary for understanding the mechanism. Avoid cluttering entity names with excessive or vague labels.
 
 Your output should have NOTHING but the pure json. NOT EVEN "```json" and "```".
 Now convert the following pathway to structured JSON:
@@ -235,17 +245,43 @@ def convert_to_sbgn(pathway_json: str):
             else:
                 uniq_id1 = 'glyph' + str(count)
 
+            state_match = re.search(r'\[(.*?)\]', substance)
+            unit_match = re.search(r'\{(.*?)\}', substance)
+            clean_name = re.sub(r'[\[\{].*?[\]\}]', '', substance).strip()
+
+            result = ontology_lookup.get(clean_name)
             substrate_class = GlyphClass.SIMPLE_CHEMICAL
-            result = ontology_lookup.get(re.sub(r'\[.*?\]', '', substance).strip())
             if result:
                 substrate_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[result["ontology"]]
+
             g1 = libsbgn.glyph(
-                class_=substrate_class, 
+                class_=substrate_class,
                 id=uniq_id1,
-                label=libsbgn.label(text=substance),
+                label=libsbgn.label(text=clean_name),
                 bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
-                compartmentRef="comp_"+reaction["location"]
+                compartmentRef="comp_" + reaction["location"]
             )
+
+            if state_match:
+                state_value = state_match.group(1)
+                state_glyph = libsbgn.glyph(
+                    class_=GlyphClass.STATE_VARIABLE,
+                    id=uniq_id1 + "_state",
+                    state=libsbgn.stateType(value=state_value),
+                    bbox=libsbgn.bbox(x=0, y=0, w=20, h=20)
+                )
+                g1.add_glyph(state_glyph)
+
+            if unit_match:
+                unit_value = unit_match.group(1)
+                unit_glyph = libsbgn.glyph(
+                    class_=GlyphClass.UNIT_OF_INFORMATION,
+                    id=uniq_id1 + "_unit",
+                    label=libsbgn.label(text=unit_value),
+                    bbox=libsbgn.bbox(x=0, y=0, w=20, h=20)
+                )
+                g1.add_glyph(unit_glyph)
+
             if result and result["ontology"] == "complex" and result.get("constituent"):
                 for ii, element in enumerate(result["constituent"]):
                     complex_inner_class = GlyphClass.SIMPLE_CHEMICAL
@@ -253,14 +289,14 @@ def convert_to_sbgn(pathway_json: str):
                         complex_inner_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[element["ontology"]]
                     g2 = libsbgn.glyph(
                         class_=complex_inner_class,
-                        id=uniq_id1+"_complex_"+str(ii),
+                        id=uniq_id1 + "_complex_" + str(ii),
                         label=libsbgn.label(text=element["name"]),
                         bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
-                        compartmentRef="comp_"+reaction["location"]
+                        compartmentRef="comp_" + reaction["location"]
                     )
                     g1.add_glyph(g2)
+
             map.add_glyph(g1)
-            
 
             arc1 = libsbgn.arc(
                 class_=ArcClass.CONSUMPTION, 
@@ -277,17 +313,43 @@ def convert_to_sbgn(pathway_json: str):
             else:
                 uniq_id1 = 'glyph' + str(count)
 
+            state_match = re.search(r'\[(.*?)\]', product)
+            unit_match = re.search(r'\{(.*?)\}', product)
+            clean_name = re.sub(r'[\[\{].*?[\]\}]', '', product).strip()
+
+            result = ontology_lookup.get(clean_name)
             product_class = GlyphClass.SIMPLE_CHEMICAL
-            result = ontology_lookup.get(re.sub(r'\[.*?\]', '', product).strip())
             if result:
                 product_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[result["ontology"]]
+
             g1 = libsbgn.glyph(
-                class_=product_class, 
+                class_=product_class,
                 id=uniq_id1,
-                label=libsbgn.label(text=product),
+                label=libsbgn.label(text=clean_name),
                 bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
-                compartmentRef="comp_"+reaction["location"]
+                compartmentRef="comp_" + reaction["location"]
             )
+
+            if state_match:
+                state_value = state_match.group(1)
+                state_glyph = libsbgn.glyph(
+                    class_=GlyphClass.STATE_VARIABLE,
+                    id=uniq_id1 + "_state",
+                    state=libsbgn.stateType(value=state_value),
+                    bbox=libsbgn.bbox(x=0, y=0, w=20, h=20)
+                )
+                g1.add_glyph(state_glyph)
+
+            if unit_match:
+                unit_value = unit_match.group(1)
+                unit_glyph = libsbgn.glyph(
+                    class_=GlyphClass.UNIT_OF_INFORMATION,
+                    id=uniq_id1 + "_unit",
+                    label=libsbgn.label(text=unit_value),
+                    bbox=libsbgn.bbox(x=0, y=0, w=20, h=20)
+                )
+                g1.add_glyph(unit_glyph)
+
             if result and result["ontology"] == "complex" and result.get("constituent"):
                 for ii, element in enumerate(result["constituent"]):
                     complex_inner_class = GlyphClass.SIMPLE_CHEMICAL
@@ -295,10 +357,10 @@ def convert_to_sbgn(pathway_json: str):
                         complex_inner_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[element["ontology"]]
                     g2 = libsbgn.glyph(
                         class_=complex_inner_class,
-                        id=uniq_id1+"_complex_"+str(ii),
+                        id=uniq_id1 + "_complex_" + str(ii),
                         label=libsbgn.label(text=element["name"]),
                         bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
-                        compartmentRef="comp_"+reaction["location"]
+                        compartmentRef="comp_" + reaction["location"]
                     )
                     g1.add_glyph(g2)
 
@@ -321,17 +383,43 @@ def convert_to_sbgn(pathway_json: str):
                 else:
                     uniq_id1 = 'glyph' + str(count)
 
+                state_match = re.search(r'\[(.*?)\]', modulator_name)
+                unit_match = re.search(r'\{(.*?)\}', modulator_name)
+                clean_name = re.sub(r'[\[\{].*?[\]\}]', '', modulator_name).strip()
+
                 modulator_class = GlyphClass.SIMPLE_CHEMICAL
-                result = ontology_lookup.get(re.sub(r'\[.*?\]', '', modulator_name).strip())
+                result = ontology_lookup.get(clean_name)
                 if result:
                     modulator_class = PD_ONTOLOGY_STRINGS_INTO_TYPES[result["ontology"]]
+
                 g1 = libsbgn.glyph(
                     class_=modulator_class, 
                     id=uniq_id1,
-                    label=libsbgn.label(text=modulator_name),
+                    label=libsbgn.label(text=clean_name),
                     bbox=libsbgn.bbox(x=0, y=0, w=60, h=30),
                     compartmentRef="comp_"+reaction["location"]
                 )
+
+                if state_match:
+                    state_value = state_match.group(1)
+                    state_glyph = libsbgn.glyph(
+                        class_=GlyphClass.STATE_VARIABLE,
+                        id=uniq_id1 + "_state",
+                        state=libsbgn.stateType(value=state_value),
+                        bbox=libsbgn.bbox(x=0, y=0, w=20, h=20)
+                    )
+                    g1.add_glyph(state_glyph)
+
+                if unit_match:
+                    unit_value = unit_match.group(1)
+                    unit_glyph = libsbgn.glyph(
+                        class_=GlyphClass.UNIT_OF_INFORMATION,
+                        id=uniq_id1 + "_unit",
+                        label=libsbgn.label(text=unit_value),
+                        bbox=libsbgn.bbox(x=0, y=0, w=20, h=20)
+                    )
+                    g1.add_glyph(unit_glyph)
+
                 if result and result["ontology"] == "complex" and result.get("constituent"):
                     for ii, element in enumerate(result["constituent"]):
                         complex_inner_class = GlyphClass.SIMPLE_CHEMICAL
@@ -345,6 +433,7 @@ def convert_to_sbgn(pathway_json: str):
                             compartmentRef="comp_"+reaction["location"]
                         )
                         g1.add_glyph(g2)
+
                 map.add_glyph(g1)
 
                 arc1 = libsbgn.arc(

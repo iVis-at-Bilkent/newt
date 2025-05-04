@@ -3486,6 +3486,7 @@ var LLMBasedSBGNGenerationView = Backbone.View.extend({
         data: JSON.stringify({ description: llm_description }),
         success: function(data){
           chiseInstance.endSpinner("llm-spinner");
+          appUtilities.applyMapColorScheme("opposed_grey_red", "solid", colorSchemeInspectorView);
           chiseInstance.loadSBGNMLText(data, false, filename, cy);
           $(self.el).modal("toggle");
           $("#perform-static-layout").trigger("click");
