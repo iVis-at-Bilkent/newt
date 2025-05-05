@@ -2696,6 +2696,12 @@
       <!-- push active tabs to local database table will be shown here-->
     </div>
     <div
+      id="database-properties-table"
+      tabindex="-1"
+      class="modal fade"
+      role="dialog"
+      ></div>
+    <div
       id="push-active-tabs-table"
       tabindex="-1"
       class="modal fade"
@@ -3295,6 +3301,49 @@
         </div>
       </div>
     </div>
+
+    <script type="text/template" id="database-properties-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Database Properties</h4>
+          </div>
+          <div class="modal-body">
+            <h5>Node Class Counts</h5>
+            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto;">
+              <thead>
+                <tr>
+                  <th>Node Class</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody id="database-node-count-table">
+                <!-- dynamically filled rows go here -->
+              </tbody>
+            </table>
+            <br />
+            <h5>Edge Class Counts</h5>
+            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto;">
+              <thead>
+                <tr>
+                  <th>Edge Class</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody id="database-edge-count-table">
+                <!-- dynamically filled rows go here -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center">
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </script>
+    
+    
 
     <div id="quick_help_modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 520px">

@@ -139,6 +139,7 @@ module.exports = function() {
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
   dynamicResize();
+  databasePropertiesView = appUtilities.databasePropertiesView = new BackboneViews.DatabasePropertiesView({el: '#database-properties-table'});
   pushActiveTabsView = appUtilities.pushActiveTabsView = new BackboneViews.PushActiveTabsView({el: '#push-active-tabs-table'});
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
@@ -1061,6 +1062,13 @@ module.exports = function() {
     $("#ui-guide").click(function (e) {
       e.preventDefault();
       tutorial.UIGuide();
+    });
+
+    $("#database-properties").click(async function (e) {
+      e.preventDefault();
+      const nodeCount = await databaseUtilities.getAllNodeCount();
+      console.log("nodeCount", nodeCount);
+      databasePropertiesView.render(nodeCount);
     });
 
     $("#about, #about-icon").click(function (e) {

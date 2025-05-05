@@ -3167,6 +3167,69 @@ var PathsFromToQueryView = Backbone.View.extend({
   },
 });
 
+var DatabasePropertiesView = Backbone.View.extend({
+  defaultQueryParameters: {
+    geneSymbols: "",
+    lengthLimit: 1,
+    title: "Push Active Tabs",
+  },
+  currentQueryParameters: null,
+  initialize: function () {
+    var self = this;
+    self.copyProperties();
+    self.template = _.template($("#push-active-tabs-template").html());
+    self.template = self.template(self.currentQueryParameters);
+  },
+  copyProperties: function () {
+    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
+  },
+  render: async function (data) {
+    var self = this;
+    var params = {
+      title: "",
+      geneSymbols: self.currentQueryParameters.geneSymbols,
+      lengthLimit: self.currentQueryParameters.lengthLimit,
+    };
+    self.template = _.template($("#database-properties-template").html());
+    self.template = self.template(params);
+    $(self.el).html(self.template);
+
+    function toTitleCase(str) {
+      return str
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+
+    var $nodeTableBody = this.$el.find("#database-node-count-table");
+    var $edgeTableBody = this.$el.find("#database-edge-count-table");
+    $nodeTableBody.empty();
+    $edgeTableBody.empty();
+
+    data.forEach(entry => {
+      const formattedClass = toTitleCase(entry.class);
+      const content = `<tr>
+          <td><span class="add-on layout-text">${formattedClass}</span></td>
+          <td><span class="add-on layout-text">${entry.count}</span></td>
+        </tr>`
+      if(entry.type==="node"){
+        $nodeTableBody.append(content);
+      }
+      else{
+        $edgeTableBody.append(content);
+      }
+    })
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#cancel-push-active-tabs")
+      .on("click", "#cancel-push-active-tabs", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
 
 
 // Local Databse push nodes
@@ -8627,8 +8690,12 @@ async function handleGeneDoesNotExist(geneSymbolsArray) {
   return false;
 }
 
+
+
+
 module.exports = {
   //  BioGeneView: BioGeneView,
+  DatabasePropertiesView: DatabasePropertiesView,
   PushActiveTabsView:PushActiveTabsView,
   ChemicalView: ChemicalView,
   LayoutPropertiesView: LayoutPropertiesView,

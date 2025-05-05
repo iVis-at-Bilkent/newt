@@ -1580,15 +1580,16 @@ var databaseUtilities = {
         //   chiseInstance.getCy().getElementById(edgesToAdd[i].properties.target)
         // );
         // console.log("testing edge:",edgesToAdd[i].properties.source.data("class"));
-        var cy = appUtilities.getActiveCy();
         var new_edge = chiseInstance.addEdge(
           edgesToAdd[i].properties.target,
           edgesToAdd[i].properties.source,
+          // edgesToAdd[i].properties.class,
           databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class),
           undefined,
           undefined
         );
-        var vu = cy.viewUtilities("get");
+        // var cy = appUtilities.getActiveCy();
+        // var vu = cy.viewUtilities("get");
       }
       resolve();
     });
@@ -1952,7 +1953,42 @@ var databaseUtilities = {
     });
     return result;
   },
+
+  getAllNodeCount: async function () {
+    var query = `CALL custom.countNodeAndEdgeClasses()`; // updated procedure
+    var data = { query: query, queryData: {} };
+    var result = [];
   
+    await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function (data) {
+        if (data.records.length == 0) {
+          result.err = { err: "Invalid input", message: "No data returned" };
+          return;
+        }
+  
+        const { records } = data;
+        for (let i = 0; i < records.length; i++) {
+          const fields = records[i]._fields;
+          const classType = fields[0];
+          const count = fields[1].low;
+          const entryType = fields[2]; // 'node' or 'edge'
+          if(!(classType == "belongs_to_submap" || classType == "belongs_to_compartment" || classType == "belongs_to_complex")){
+            result.push({ class: classType, count: count, type: entryType });
+          }
+        }
+      },
+      error: function (req, status, err) {
+        console.error("Error running query", status, err);
+      },
+    });
+  
+    return result;
+  },
+    
   getAllNodesAndEdgesFromDatabase: async function () {
     console.log("Fetching all nodes and edges from database");
     
