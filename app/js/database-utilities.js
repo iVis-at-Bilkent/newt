@@ -1448,6 +1448,27 @@ var databaseUtilities = {
         if (new_node.properties.entityName) {
           chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
         }
+        // ✅ Set unitsOfInformation as a Cytoscape data field
+        if (new_node.properties.unitsOfInformation.length > 0) {
+          // console.log('node properties:',new_node.properties.unitsOfInformation);
+          for(let i=0;i<new_node.properties.unitsOfInformation.length;i++){
+            var uoi_obj = {
+              clazz: "unit of information",
+            };
+            uoi_obj.label = {
+              text: "",
+            };
+  
+            uoi_obj.bbox = {
+              w: 12,
+              h: 12,
+            };
+            chiseInstance.addStateOrInfoBox(node, uoi_obj);
+            chiseInstance.changeStateOrInfoBox(node, i, new_node.properties.unitsOfInformation[i]);
+          }
+          
+          // node.data('unitsOfInformation', new_node.properties.unitsOfInformation);
+        }
 
         databaseUtilities.nodesInDB[new_node.properties.newtId] =
           new_node.identity.low;
