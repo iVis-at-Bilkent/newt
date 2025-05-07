@@ -228,6 +228,7 @@ var databaseUtilities = {
     await databaseUtilities.processNodesData(nodesData, activeTabContent);
     await databaseUtilities.processEdgesData(edgesData, activeTabContent);
     await databaseUtilities.processData(nodesData, edgesData);
+    console.log('Processed data:',nodesData,edgesData);
     return await databaseUtilities.pushActiveNodesEdgesToDatabase(
       nodesData,
       edgesData,
@@ -729,20 +730,34 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushComplexesToDatabase: async function(complexes, epns) {
-    // Associate each complex with its children
+  pushComplexesToDatabase: async function (complexes, epns) {
+    // Helper to sanitize EPNs by removing nested object properties
+    function stripComplexProps(obj) {
+      const result = {};
+      for (const key in obj) {
+        const val = obj[key];
+        if (typeof val !== "object" || val === null || Array.isArray(val)) {
+          result[key] = val;
+        }
+      }
+      return result;
+    }
+  
+    // Associate each complex with its children (stripped)
     for (let complex of complexes) {
       let children = [];
       for (let i = 0; i < epns.length; i++) {
         let epn = epns[i];
         if (epn.parent === complex.newtId) {
-          children.push(epn);
+          children.push(stripComplexProps(epn));
           epns.splice(i, 1);
           i--;
         }
       }
       complex.children = children;
     }
+  
+    console.log("The new modified complexes after sanitization", complexes);
   
     // Build the query to call our stored procedure
     const data = {
@@ -762,24 +777,18 @@ var databaseUtilities = {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data)
       });
-      
+  
       const { records } = response;
       console.log(records);
       for (let record of records) {
-        // Each record's first field is the result mapping from our stored procedure.
         const map = record._fields[0];
-        // map.incoming is the incoming complex newtId
-        // map.existing is an object with keys: "complex" and "children"
         ids[map.incoming] = map.existing.complex;
-        
-        // Process the children – they might be an array of mappings or a list of newtId strings.
+  
         if (Array.isArray(map.existing.children)) {
           for (let child of map.existing.children) {
             if (typeof child === "object") {
-              // When reusing an existing complex, each child is a mapping {incoming, existing}
               ids[child.incoming] = child.existing;
             } else {
-              // When a new complex is created, children is simply a list of newtIds
               ids[child] = child;
             }
           }
@@ -791,6 +800,7 @@ var databaseUtilities = {
       return {};
     }
   },
+  
   
 
 
@@ -975,6 +985,8 @@ var databaseUtilities = {
     console.log(nodesData, edgesData, flag);
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
+    console.log(complexes);
+    // let epns = {};
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(complexes,epns);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
@@ -1411,7 +1423,6 @@ var databaseUtilities = {
   },
 
   pushNode: function (new_node) {
-    console.log("pushing node", new_node);
     return new Promise((resolve) => {
       if (!databaseUtilities.nodesInDB[new_node.properties.newtId]) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1423,9 +1434,9 @@ var databaseUtilities = {
           language: "PD",
           label: "smth",
         };
-        console.log(new_node,nodeParams,
-          new_node.properties.newtId,
-          new_node.properties.parent)
+        // console.log(new_node,nodeParams,
+        //   new_node.properties.newtId,
+        //   new_node.properties.parent)
         var node = chiseInstance.addNode(
           0,
           0,
@@ -1476,6 +1487,7 @@ var databaseUtilities = {
   },
 
   addNodesEdgesToCy: async function (nodes, edges, source, target) {
+    console.log("Edges in here:",edges);
     return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       let nodesToHighlight = [];
@@ -2048,108 +2060,100 @@ var databaseUtilities = {
             nodesSet.add(nodesArray[i].properties.newtId);
           }
         }
-        
+        console.log("Checking the edges array:",edgesArray);
         // Process edges
         for (let i = 0; i < edgesArray.length; i++) {
-          // if(sourceClass == "ATP"){
-          //   if(!atp){
-          //     atp = true;
-          //   }
-          //   else{
-          //     atpNode.properties.newtId = atpNode.properties.newtId + randomString(1000);
-          //     nodes.push(atpNode);
-          //     nodesSet.add(atpNode.properties.newtId);
-          //   }
-          // }
-                    
           if (
+            (Object.keys(edgesArray[i].properties).length>0) &&
+            (
             !edgesMap.get(edgesArray[i].properties.source) ||
             !edgesMap
               .get(edgesArray[i].properties.source)
               .has(edgesArray[i].properties.target)
+            )
           ) {
             let source = edgesArray[i].properties.source;
             let target = edgesArray[i].properties.target;
             let sourceClass = edgesArray[i].properties.sourceClass;
             let targetClass = edgesArray[i].properties.targetClass;
 
-            if(sourceClass !== "compartment" && targetClass !== "compartment"){              
-              if(map.get(source) == "ATP" && !atp){
-                atp = true;
-                let dummyATP = JSON.parse(JSON.stringify(atpNode));
-                dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
-                nodes.push(dummyATP);
-                nodesSet.add(dummyATP.properties.newtId);
-                edgesArray[i].properties.source = dummyATP.properties.newtId;
-              }
-              if(map.get(target) == "ATP" && !atp){
-                atp = true;
-                let dummyATP = JSON.parse(JSON.stringify(atpNode));
-                dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
-                nodes.push(dummyATP);
-                nodesSet.add(dummyATP.properties.newtId);
-                edgesArray[i].properties.target = dummyATP.properties.newtId;
-              }
+            // if(sourceClass !== "compartment" && targetClass !== "compartment"){              
+            //   if(map.get(source) == "ATP" && !atp){
+            //     atp = true;
+            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
+            //     dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyATP);
+            //     nodesSet.add(dummyATP.properties.newtId);
+            //     edgesArray[i].properties.source = dummyATP.properties.newtId;
+            //   }
+            //   if(map.get(target) == "ATP" && !atp){
+            //     atp = true;
+            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
+            //     dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyATP);
+            //     nodesSet.add(dummyATP.properties.newtId);
+            //     edgesArray[i].properties.target = dummyATP.properties.newtId;
+            //   }
               
-              if(map.get(source) == "ADP" && !adp){
-                adp = true;
-                let dummyADP = JSON.parse(JSON.stringify(adpNode));
-                dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
-                nodes.push(dummyADP);
-                nodesSet.add(dummyADP.properties.newtId);
-                edgesArray[i].properties.source = dummyADP.properties.newtId;
-              }
-              if(map.get(target) == "ADP" && !adp){
-                adp = true;
-                let dummyADP = JSON.parse(JSON.stringify(adpNode));
-                dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
-                nodes.push(dummyADP);
-                nodesSet.add(dummyADP.properties.newtId);
-                edgesArray[i].properties.target = dummyADP.properties.newtId;
-              }
+            //   if(map.get(source) == "ADP" && !adp){
+            //     adp = true;
+            //     let dummyADP = JSON.parse(JSON.stringify(adpNode));
+            //     dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyADP);
+            //     nodesSet.add(dummyADP.properties.newtId);
+            //     edgesArray[i].properties.source = dummyADP.properties.newtId;
+            //   }
+            //   if(map.get(target) == "ADP" && !adp){
+            //     adp = true;
+            //     let dummyADP = JSON.parse(JSON.stringify(adpNode));
+            //     dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyADP);
+            //     nodesSet.add(dummyADP.properties.newtId);
+            //     edgesArray[i].properties.target = dummyADP.properties.newtId;
+            //   }
               
-              if(map.get(source) == "H2O" && !h2o){
-                h2o = true;
-                let dummyH2O = JSON.parse(JSON.stringify(h2oNode));
-                dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
-                nodes.push(dummyH2O);
-                nodesSet.add(dummyH2O.properties.newtId);
-                edgesArray[i].properties.source = dummyH2O.properties.newtId;
-              }
-              if(map.get(target) == "H2O" && !h2o){
-                h2o = true;
-                let dummyH2O = JSON.parse(JSON.stringify(atpNode));
-                dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
-                nodes.push(dummyH2O);
-                nodesSet.add(dummyH2O.properties.newtId);
-                edgesArray[i].properties.target = dummyH2O.properties.newtId;
-              }
-            }
+            //   if(map.get(source) == "H2O" && !h2o){
+            //     h2o = true;
+            //     let dummyH2O = JSON.parse(JSON.stringify(h2oNode));
+            //     dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyH2O);
+            //     nodesSet.add(dummyH2O.properties.newtId);
+            //     edgesArray[i].properties.source = dummyH2O.properties.newtId;
+            //   }
+            //   if(map.get(target) == "H2O" && !h2o){
+            //     h2o = true;
+            //     let dummyH2O = JSON.parse(JSON.stringify(atpNode));
+            //     dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyH2O);
+            //     nodesSet.add(dummyH2O.properties.newtId);
+            //     edgesArray[i].properties.target = dummyH2O.properties.newtId;
+            //   }
+            // }
             
             // if(sourceClass == "simple_chemical"){
               
-              // let newtId = edgesArray[i].properties.source;
-              // if(done.has(edgesArray[i].properties.source)){
-              //   let dummyATP = JSON.parse(JSON.stringify(atpNode));
-              //   dummyATP.properties.newtId = edgesArray[i].properties.source + Math.floor(Math.random() * 1000);
-              //   nodes.push(dummyATP);
-              //   nodesSet.add(dummyATP.properties.newtId);
-              //   edgesArray[i].properties.source = dummyATP.properties.newtId;
-              //   newtId = dummyATP.properties.newtId;
-              // }
-              // done.set(newtId, true);
+            //   let newtId = edgesArray[i].properties.source;
+            //   if(done.has(edgesArray[i].properties.source)){
+            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
+            //     dummyATP.properties.newtId = edgesArray[i].properties.source + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyATP);
+            //     nodesSet.add(dummyATP.properties.newtId);
+            //     edgesArray[i].properties.source = dummyATP.properties.newtId;
+            //     newtId = dummyATP.properties.newtId;
+            //   }
+            //   done.set(newtId, true);
             // }
             // if(targetClass == "simple_chemical"){
-              // let newtId = edgesArray[i].properties.target;
-              // if(done.has(edgesArray[i].properties.target)){
-              //   let dummyATP = JSON.parse(JSON.stringify(atpNode));
-              //   dummyATP.properties.newtId = edgesArray[i].properties.target + Math.floor(Math.random() * 1000);
-              //   nodes.push(dummyATP);
-              //   nodesSet.add(dummyATP.properties.newtId);
-              //   edgesArray[i].properties.target = dummyATP.properties.newtId;
-              //   newtId = dummyATP.properties.newtId;
-              // }
-              // done.set(newtId, true);
+            //   let newtId = edgesArray[i].properties.target;
+            //   if(done.has(edgesArray[i].properties.target)){
+            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
+            //     dummyATP.properties.newtId = edgesArray[i].properties.target + Math.floor(Math.random() * 1000);
+            //     nodes.push(dummyATP);
+            //     nodesSet.add(dummyATP.properties.newtId);
+            //     edgesArray[i].properties.target = dummyATP.properties.newtId;
+            //     newtId = dummyATP.properties.newtId;
+            //   }
+            //   done.set(newtId, true);
             // }
 
             // if(done.get(edgesArray[i].properties.source)){
@@ -2159,6 +2163,9 @@ var databaseUtilities = {
             //   nodesSet.add(dummyATP.properties.newtId);
             //   edgesArray[i].properties.source = dummyATP.properties.newtId;
             //   done.set(edgesArray[i].properties.source, dummyATP.properties.newtId);
+            // }
+            // if(edgesArray[i].properties.source===undefined){
+            //   console.log(i,edgesArray[i].properties);
             // }
             var edge = {};
             edge.properties = {};
@@ -2178,6 +2185,7 @@ var databaseUtilities = {
               .add(edgesArray[i].properties.target);
           }
         }
+        console.log("Sending edges to be added to the graph");
         await appUtilities.createNewNetwork();
         // Add nodes and edges to the canvas
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);

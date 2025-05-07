@@ -667,7 +667,7 @@
                       <input id="input-file" type="file" style="display: none;">
                       <li>
                         <a href="#" id="get-all-data"
-                          >Entire Content</a
+                          >Load Entire Content</a
                         >
                       </li>
                       <li>
@@ -677,7 +677,7 @@
                       </li>
                       <li>
                         <a href="#" type="file" id="load-from-file"
-                          >Load from File...</a
+                          >Push from File...</a
                         >
                       </li>
                       <li>
@@ -685,6 +685,7 @@
                           >Database Properties...</a
                         >
                       </li>
+                      <li class="divider"></li>
                       <li>
                         <a href="#" id="query-pathsbetween-localdatabase"
                           >Paths Between...</a
@@ -704,7 +705,7 @@
                         <a href="#" id="query-neighborhood-localdatabase"
                           >Neighborhood...</a
                         >
-                      </li>
+                      <!-- </li>
                       <li>
                         <a href="#" id="query-upstream-localdatabase"
                           >Upstream...</a
@@ -719,41 +720,11 @@
                         <a href="#" id="query-feedback-localdatabase"
                           >Feedback...</a
                         >
-                      </li>
+                      </li> -->
                     </ul>
                   </li>
                 </ul>
               </li>
-
-              <!-- <li class="dropdown database-function">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Local Database
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <input id="input-file" type="file" style="display: none;">
-                  <li>
-                    <a href="#" id="get-all-data"
-                      >Get All Data</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#" id="push-active-tab-contents"
-                      >Push Active Tab Contents</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#" type="file" id="load-from-file"
-                      >Load from File</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#" id="database-properties"
-                      >Database Properties...</a
-                    >
-                  </li>
-                </ul>
-              </li> -->
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -3303,19 +3274,18 @@
     </div>
 
     <script type="text/template" id="database-properties-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 250px;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Database Properties</h4>
+            <h4 class="modal-title">Local Database Properties</h4>
           </div>
           <div class="modal-body">
-            <h5>Node Class Counts</h5>
-            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto;">
+            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto; width: 100%;">
               <thead>
                 <tr>
-                  <th>Node Class</th>
-                  <th>Count</th>
+                  <th style="text-align: left; width: 70%;">Node Type</th>
+                  <th style="text-align: left; width: 30%;">Count</th>
                 </tr>
               </thead>
               <tbody id="database-node-count-table">
@@ -3323,12 +3293,11 @@
               </tbody>
             </table>
             <br />
-            <h5>Edge Class Counts</h5>
-            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto;">
+            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto; width: 100%;">
               <thead>
                 <tr>
-                  <th>Edge Class</th>
-                  <th>Count</th>
+                  <th style="text-align: left; width: 70%;">Edge Type</th>
+                  <th style="text-align: left; width: 30%;">Count</th>
                 </tr>
               </thead>
               <tbody id="database-edge-count-table">
@@ -3336,12 +3305,13 @@
               </tbody>
             </table>
           </div>
-          <div class="modal-footer" style="text-align: center">
+          <div class="modal-footer" style="text-align: center;">
             <button class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </script>
+    
     
     
 

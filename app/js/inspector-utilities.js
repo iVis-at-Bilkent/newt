@@ -754,6 +754,7 @@ inspectorUtilities.handleSBGNInspector = function () {
 
     if (type == "node") {
       if (fillStateAndInfos) {
+        console.log("Filling state and info boxes...");
         inspectorUtilities.fillInspectorStateAndInfos(selectedEles, commonStateAndInfos, width);
       }
 
