@@ -99,7 +99,7 @@ JSON Format:
     ontology: [
         {
             "entity_name": "A", // For every entity used above, there must be exactly one entry in this list
-            "ontology": "macromolecule", // One of: "unspecified entity", "simple chemical", "macromolecule", "nucleic acid feature", "perturbing agent", "source and sink", "phenotype"
+            "ontology": "macromolecule", // One of: "unspecified entity", "simple chemical", "macromolecule", "nucleic acid feature", "perturbing agent", "source and sink", "phenotype", "complex"
             "constituent": [ // Only fill this array if ontology is complex
                 {
                     "name": "sub-entity 1",
