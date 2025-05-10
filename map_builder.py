@@ -103,7 +103,7 @@ JSON Format:
             "constituent": [ // Only fill this array if ontology is complex
                 {
                     "name": "sub-entity 1",
-                    "ontology": "macromolecule"
+                    "ontology": "macromolecule" // Options are same as the above ontology field
                 }
             ]
         }
