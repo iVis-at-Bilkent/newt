@@ -3171,7 +3171,7 @@ var DatabasePropertiesView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
     lengthLimit: 1,
-    title: "Push Active Tabs",
+    title: "",
   },
   currentQueryParameters: null,
   initialize: function () {
@@ -3240,7 +3240,7 @@ var PushActiveTabsView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
     lengthLimit: 1,
-    title: "Push Active Tabs",
+    title: "Push Active Tab Content",
   },
   currentQueryParameters: null,
   initialize: function () {
@@ -3252,7 +3252,7 @@ var PushActiveTabsView = Backbone.View.extend({
   copyProperties: function () {
     this.currentQueryParameters = _.clone(this.defaultQueryParameters);
   },
-  render: function (fileContent,title="Push Active Tabs") {
+  render: function (fileContent,title="Push Active Tab Content") {
     var self = this;
     // self.template = template({title});
     var params = {
@@ -8451,6 +8451,9 @@ var InfoboxPropertiesView = Backbone.View.extend({
       });
   },
 });
+
+// var AnnotationListView = Backbone.View.extend({
+// });
 
 var AnnotationListView = Backbone.View.extend({
   elements: [],

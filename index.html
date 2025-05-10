@@ -1217,22 +1217,6 @@
                       <div
                         class="panel-heading collapsed"
                         data-toggle="collapse"
-                        data-target="#sbgn-inspector-map-properties-local-db"
-                      >
-                        <p class="panel-title accordion-toggle">Local DB</p>
-                      </div>
-                      <div
-                        id="sbgn-inspector-map-properties-local-db"
-                        class="panel-collapse collapse"
-                      >
-                        <div id="map-tab-local-db-container"></div>
-                      </div>
-                    </div>
-
-                    <div class="panel">
-                      <div
-                        class="panel-heading collapsed"
-                        data-toggle="collapse"
                         data-target="#sbgn-inspector-map-properties-rearrangement"
                       >
                         <p class="panel-title accordion-toggle">Arrangement</p>
@@ -1258,6 +1242,22 @@
                         class="panel-collapse collapse"
                       >
                         <div id="map-tab-experiment-container"></div>
+                      </div>
+                    </div>
+
+                    <div class="panel">
+                      <div
+                        class="panel-heading collapsed"
+                        data-toggle="collapse"
+                        data-target="#sbgn-inspector-map-properties-local-db"
+                      >
+                        <p class="panel-title accordion-toggle">Local Database</p>
+                      </div>
+                      <div
+                        id="sbgn-inspector-map-properties-local-db"
+                        class="panel-collapse collapse"
+                      >
+                        <div id="map-tab-local-db-container"></div>
                       </div>
                     </div>
                     <div class="panel">
@@ -3274,7 +3274,7 @@
     </div>
 
     <script type="text/template" id="database-properties-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 250px;">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -4730,7 +4730,7 @@
                       <tbody>
                       <tr>
                           <th colspan=2 style="padding-left: 0px;" align="left">
-                              <span class="add-on layout-text"> In case of overlap of this map with the existing database, do you want to replace or merge with the database?</span>
+                              <span class="add-on layout-text">Do you want to replace or merge with database contents?</span>
                           </th>
                       </tr>
                       </tbody>

@@ -3,6 +3,7 @@ var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
 const { ActiveTabPushSuccessView } = require("./backbone-views");
 const { merge, cleanData } = require("jquery");
+const { handleSBGNInspector } = require("./inspector-utilities");
 
 var errorCheck =null;
 
@@ -193,14 +194,17 @@ var databaseUtilities = {
     }
   },
 
-  processPdEdge: function (currentEdge, data) {
-    currentEdge.stoichiometry = data.cardinality || 0;
-    currentEdge.class = databaseUtilities.calculateClass(data.class);
-    currentEdge.source = data.source;
-    currentEdge.target = data.target;
+  processPdEdge: function (data) {
+    return {
+      stoichiometry: data.cardinality || 0,
+      class: databaseUtilities.calculateClass(data.class),
+      source: data.source,
+      target: data.target,
+      inDb: false,
+    };
   },
 
-  processNodesData: function (nodesData, activeTabContent) {
+  processNodesData: async function (nodesData, activeTabContent) {
     for (let i = 0; i < activeTabContent.nodes.length; i++) {
       var currentNode = {};
       var data = activeTabContent.nodes[i].data;
@@ -211,14 +215,15 @@ var databaseUtilities = {
     }
   },
 
-  processEdgesData: function (edgesData, activeTabContent) {
+  processEdgesData: async function (edgesData, activeTabContent) {
     for (let i = 0; i < activeTabContent.edges.length; i++) {
-      var currentEdge = {};
+      let processed= {};
       var data = activeTabContent.edges[i].data;
       if (data.language == "PD") {
-        databaseUtilities.processPdEdge(currentEdge, data);
+        processed = databaseUtilities.processPdEdge(data);
       }
-      edgesData.push(currentEdge);
+      console.log('current Edge:',processed);
+      edgesData.push(processed);
     }
   },
 
@@ -227,6 +232,7 @@ var databaseUtilities = {
     var edgesData = [];
     await databaseUtilities.processNodesData(nodesData, activeTabContent);
     await databaseUtilities.processEdgesData(edgesData, activeTabContent);
+    console.log('UnProcessed data:',nodesData,edgesData);
     await databaseUtilities.processData(nodesData, edgesData);
     console.log('Processed data:',nodesData,edgesData);
     return await databaseUtilities.pushActiveNodesEdgesToDatabase(
@@ -310,10 +316,11 @@ var databaseUtilities = {
       //Process process nodes
       if (
         specialNodes[edgesData[i].source] &&
-        nodesMap[edgesData[i].target].class != "compartment" &&
-        nodesMap[edgesData[i].target].class != "submap" &&
-        nodesMap[edgesData[i].target].class != "complex"
+        edgesData[i].class != "belongs_to_compartment" &&
+        edgesData[i].class != "belongs_to_submap" &&
+        edgesData[i].class != "belongs_to_complex"
       ) {
+        console.log(edgesData[i])
         var targetId = edgesData[i].target;
         var target = nodesMap[targetId];
         var len = specialNodes[edgesData[i].source][1].length;
@@ -396,7 +403,7 @@ var databaseUtilities = {
 
         for (let j = 0; j < specialNodes[nodesData[i].newtId][2].length; j++) {
           nodesData[i]["modifier_" + j] =
-            specialNodes[nodesData[i].newtId][2][j];
+          specialNodes[nodesData[i].newtId][2][j];
         }
         nodesData[i].isSpecial = true;
       } else {
@@ -515,7 +522,7 @@ var databaseUtilities = {
     return ids;
   },
   pushProcessToLocalDatabase: async function (list, ids, flag,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage) {
-    // console.log(list,ids);
+    console.log(list);
     list = list.map((pr) => {
       const sourceNewtIds = Object.keys(pr)
         .filter((key) => key.startsWith("source_"))
@@ -563,35 +570,7 @@ var databaseUtilities = {
         overallThreshold: overallProcessPercentage/100
       }
     };
-    // var integrationQuery=`
-    //   UNWIND $processes as process
-    //   CALL apoc.do.when(
-    //   EXISTS {
-    //     MATCH (p:process)
-    //     WHERE p.category = 'process'
-    //       AND p.class = process.class
-    //       AND size(p.sourceNewtIds) = size(process.sourceNewtIds)
-    //       AND all(sourceId IN process.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
-    //       AND size(p.targetNewtIds) = size(process.targetNewtIds)
-    //       AND all(targetId IN process.targetNewtIds WHERE targetId IN p.targetNewtIds)
-    //   },
-    //       "MATCH (p:process)
-    //   WHERE p.category = 'process'
-    //     AND p.class = data.class
-    //     AND size(p.sourceNewtIds) = size(data.sourceNewtIds)
-    //     AND all(sourceId IN data.sourceNewtIds WHERE sourceId IN p.sourceNewtIds)
-    //     AND size(p.targetNewtIds) = size(data.targetNewtIds)
-    //     AND all(targetId IN data.targetNewtIds WHERE targetId IN p.targetNewtIds)
-    //   RETURN {incoming: data.newtId, existing: p.newtId} AS result",
-    //   'CALL apoc.cypher.doIt(
-    //       "CALL apoc.create.node([data.category], data) YIELD node SET node.processed = 0 RETURN {incoming: data.newtId, existing: node.newtId} AS result",
-    //       {data: data}
-    //     ) YIELD value RETURN value.result AS result',
-    //   {data: process}
-    // ) YIELD value
-    // RETURN value.result as result;
-    // `;
-    // var data = { query: integrationQuery, queryData: { processes: list } };
+    console.log(data);
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -599,8 +578,8 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         const { records } = response;
+        console.log(records);
         for (let record of records) {
-          console.log(record);
           const map = record._fields[0];
           ids[map.incoming] = map.existing;
         }
@@ -615,7 +594,7 @@ var databaseUtilities = {
   },
 
   pushEdgesToLocalDatabase: async function (list, ids, flag) {
-    console.log(list);
+    console.log(list,ids);
     for (let i = 0; i < list.length; i++) {
       list[i].source = ids[list[i].source];
       list[i].target = ids[list[i].target];
@@ -997,8 +976,6 @@ var databaseUtilities = {
     if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
-    // console.log(compartmentIds,epns,processes);
-    // const mergeFlag = flag === "MERGE";
     const mergeFlag = true;
     const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
     console.log("EPN NODES:",epns);
@@ -1008,7 +985,7 @@ var databaseUtilities = {
       mergeFlag,
       epnMatchingPercentage
     );
-    console.log(epn_ids);
+    console.log("EPN IDs:",epn_ids);
     if(errorCheck!==null)return errorCheck;
     const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
       processes,
@@ -1032,299 +1009,6 @@ var databaseUtilities = {
       logical_ids,
       mergeFlag
     );
-
-
-
-
-    // if(errorCheck!==null)return errorCheck;
-    // await databaseUtilities.pushProcessToLocalDatabase(processes);
-
-    // var createOneNode =`call apoc.create.node([data.class],data) yield node set node.processed=0 return node as node`;
-    // var createOneEdge = `call apoc.create.relationship(n,data.class,data,m) yield rel with rel set rel.processed=0 return rel as edge`;
-    // var inDbNode = `CALL apoc.cypher.doIt('
-    // MATCH (u)
-    // WHERE  u.newtId = data.newtId and id(u) = data.idInDb
-    // SET u = data
-    // RETURN u as node', {data:data})
-    // YIELD value
-    // RETURN value.node as node`;
-
-    // var inDbEdge= `MATCH (n)-[r]->(m)
-    // WHERE id(r) = data.idInDb
-    // SET r.source =  data.source, r.target = data.target
-    // RETURN r as rel`;
-    // var createNodesQuery=`
-    // call apoc.cypher.doIt(\\"${createOneNode}\\",{data:data})
-    // yield value return value.node as node`;
-
-    // var checkNodeQuery=`
-    // call apoc.do.when(data.isSpecial,
-    // 'match (u) where ${nodeMatchUtilities.matchProcessNodes("data","u",true,true,true,true)} return count(u) as cnt set u.newtId=data.newtId',
-    // '${createNodesQuery}',
-    // {data:data}
-    // )yield value return value
-    // `;
-
-    // var pushNodesQuery=`unwind $nodesData as data
-    // call apoc.do.when(data.inDb,
-    // "${inDbNode}","${checkNodeQuery}",{data:data})
-    // yield value return value.node as node`;
-
-    // var createEdgesQuery = `match (n) where n.newtId =data.source
-    // optional match (m) where m.newtId = data.target
-    // with distinct n,m,data
-    // ${createOneEdge}
-    // `;
-
-    // var pushEdgesQuery=`unwind $edgesData as data
-    // call apoc.do.when(data.inDb,"${inDbEdge}","${createEdgesQuery}",{data:data})
-    // yield value return value as edge`;
-
-    // const runDBQuery=async (data)=>{
-    //   return $.ajax({
-    //     type: "post",
-    //     url: "/utilities/runDatabaseQuery",
-    //     contentType: "application/json; charset=utf-8",
-    //     data: JSON.stringify(data),
-    //     success: function (response) {
-    //       console.log('got response for nodes/edges:',response);
-
-    //       const {records} = response;
-    //       console.log(records,response);
-    //       for(let i=0;i<records.length;i++){
-    //         if(records[i].keys[0]=='node'){
-    //           console.log('found a node:',records[i])
-    //           var node = records[i]._fields[0];
-    //           if(node.properties){
-    //             databaseUtilities.nodesInDB[node.properties.newtId] =node.identity.low;
-    //           }
-    //           else if (node.newtId){
-    //             databaseUtilities.nodesInDB[node.newtId] =node.identity.low;
-    //           }
-    //         }
-    //         else if(records[i].keys[0]==='edge'){
-    //           var {edge} = records[i]._fields[0];
-    //           console.log('found an edge:',edge)
-    //           if(edge.properties!==null){
-    //             databaseUtilities.edgesInDB[
-    //                 [
-    //                 edge.properties.source,
-    //                 edge.properties.target,
-    //                 edge.properties.class,
-    //                 ]
-    //                 ] = edge.identity.low;
-    //           }
-    //         }
-    //       }
-    //     },
-    //     error: function (req, status, err) {
-    //       console.error("Error running query", status, err);
-    //     },
-    //   });
-    // };
-
-    // console.log('nodeData:',nodesData);
-    // const macros = nodesData.filter((node)=>!node.isSpecial);
-    // const specials = nodesData.filter((node)=>node.isSpecial);
-    // console.log('macros:',macros,'specials:',specials);
-    // console.log('edgesData:',edgesData);
-    // console.log("flag:",flag);
-    // console.log("test:",nodeMatchUtilities.matchEdges("r", "data", true, true));
-    // var matchClass = true;
-    // var matchLabel = true;
-    // var matchId = false;
-    // var matchMultimer = true;
-    // var matchCloneMarker = true;
-    // var matchCloneLabel = true;
-    // var matchStateVariable = true;
-    // var matchUnitInformation = true;
-    // var matchParent = true;
-
-    // // var integrationQuery=`${createNodesQuery}`;
-    // var data = { query: pushNodesQuery, queryData: {nodesData} };
-    // var result = await runDBQuery(data);
-    // if(result.records.length>0){
-    //   var data = { query: pushEdgesQuery, queryData: {edgesData} };
-    //   var result = await runDBQuery(data);
-    // }
-
-    // var queryData = { nodesData: nodesData, edgesData: edgesData };
-    // var data = { query: createEdgesQuery, queryData: queryData };
-    // console.log('final data:',data)
-    // await runDBQuery(data);
-
-    // var integrationQuery=`UNWIND $nodesData as data
-    // CALL apoc.cypher.doIt(
-    // 'CALL apoc.create.node([data.class], data)'
-    // ,{data:data})
-    // YIELD node
-    // SET node.processed = 0
-    // RETURN node as node)
-    // `
-
-    // var integrationQuery = `UNWIND $nodesData as data
-    // CALL apoc.do.when( data.inDb,
-    //   "CALL
-    //     apoc.cypher.doIt('
-    //       MATCH (u)
-    //       WHERE  u.newtId = data.newtId and id(u) = data.idInDb
-    //       SET u = data
-    //       RETURN u as node', {data:data})
-    //     YIELD value
-    //     RETURN value.node as node",
-    //   "CALL
-    //     apoc.cypher.doIt('
-    //       CALL apoc.do.when( data.isSpecial,
-    //         \\"MATCH (u)
-    //         WHERE ${nodeMatchUtilities.matchProcessNodes(
-    //           "data",
-    //           "u",
-    //           true,
-    //           true,
-    //           true,
-    //           true
-    //         )}
-    //         RETURN COUNT(u) as cnt\\",
-    //         \\"MATCH (u)
-    //         WHERE  ${nodeMatchUtilities.match(
-    //           "data",
-    //           "u",
-    //           matchId,
-    //           matchClass,
-    //           false,
-    //           matchMultimer,
-    //           matchCloneMarker,
-    //           matchCloneLabel,
-    //           matchStateVariable,
-    //           matchUnitInformation,
-    //           true,
-    //           matchParent
-    //         )}
-    //         RETURN COUNT(u) as cnt\\",
-    //       {data:data})
-    //       YIELD value
-    //       RETURN value.cnt as cnt', {data: data})
-    //       YIELD value
-    //     WITH value.cnt as cnt, data
-    //     CALL
-    //     apoc.cypher.doIt('
-    //       CALL apoc.do.when( cnt > 0, \\"MATCH (u) WHERE ${nodeMatchUtilities.match(
-    //         "data",
-    //         "u",
-    //         matchId,
-    //         matchClass,
-    //         false,
-    //         matchMultimer,
-    //         matchCloneMarker,
-    //         matchCloneLabel,
-    //         matchStateVariable,
-    //         matchUnitInformation,
-    //         true,
-    //         matchParent
-    //       )} RETURN u.newtId as id \\", \\"RETURN null as id\\",
-    //             {data:data, cnt: cnt})
-    //             YIELD value
-    //             RETURN value.id as id',
-    //       {data:data, cnt: cnt} )
-    //     YIELD value
-    //     WITH value.id as id, data
-    //     CALL
-    //     apoc.cypher.doIt('
-    //           CALL apoc.do.when(id is not null , \\"
-    //           MATCH (n)
-    //           WHERE n.newtId = id
-    //           SET n.newtId = data.newtId\\",
-    //           \\"CALL apoc.create.node([data.class], data)
-    //           YIELD node
-    //           SET node.processed = 0
-    //           RETURN node as node\\", {data: data, id:id})
-    //           YIELD value
-    //           RETURN value.node as node
-    //         ', {data:data, id: id})
-    //         YIELD value
-    //         RETURN value.node as node",
-    //   {data:data})
-    // YIELD value
-    // WITH collect(value.node) as nodes
-    // CALL
-    // apoc.cypher.doIt("
-    //   UNWIND $edgesData AS data
-    //   CALL apoc.do.when(data.inDb,
-    //     'MATCH (n)-[r]->(m)
-    //      WHERE id(r) = data.idInDb
-    //      SET r.source =  data.source, r.target = data.target
-    //      RETURN r as rel',
-    //     'CALL  apoc.cypher.doIt(\\"MATCH (a)-[r]->(b)
-    //       WHERE ${nodeMatchUtilities.matchEdges("r", "data", true, true)}
-    //       RETURN COUNT(r) as cnt \\", {data:data})
-    //       YIELD value
-    //     WITH value.cnt as cnt, data
-    //     CALL apoc.do.when(cnt>0 , \\" MATCH (r)
-    //      WHERE ${nodeMatchUtilities.matchEdges("r", "data", true, true)}
-    //      SET r.source = data.source, r.target = data.target
-    //      RETURN r as rel\\",
-    //           \\"MATCH (n {newtId: data.source}), (m { newtId: data.target})
-    //            WITH DISTINCT n, m, data
-    //           CALL apoc.create.relationship(n,data.class,data,m) YIELD rel
-    //            WITH rel
-    //       SET rel.processed = 0
-    //       RETURN rel as rel \\", {data:data})
-    //      YIELD value
-    //      RETURN value.rel as rel',
-    //     {data: data}
-    //   )
-    //   YIELD value
-    //   RETURN collect(value.rel) as rel
-    //   ",
-    //   {edgesData: $edgesData})
-    // YIELD value
-    // RETURN nodes as nodes, value.rel as edges`;
-
-    // $.ajax({
-    //   type: "post",
-    //   url: "/utilities/runDatabaseQuery",
-    //   contentType: "application/json; charset=utf-8",
-    //   data: JSON.stringify(data),
-    //   success: function (data) {
-    //     let nodes = data.records[0]._fields[0];
-    //     let edges = data.records[0]._fields[1];
-
-    //     if (nodes) {
-    //       for (let i = 0; i < nodes.length; i++) {
-    //         if (nodes[i].properties) {
-    //           databaseUtilities.nodesInDB[nodes[i].properties.newtId] =
-    //             nodes[i].identity.low;
-    //         } else if (nodes[i].newtId) {
-    //           databaseUtilities.nodesInDB[nodes[i].newtId] =
-    //             nodes[i].identity.low;
-    //         }
-    //       }
-    //     }
-    //     // console.log('data',data);
-    //     if (edges) {
-    //       for (let i = 0; i < edges.length; i++) {
-    //         if(edges[i].properties){
-    //           databaseUtilities.edgesInDB[
-    //             [
-    //               edges[i].properties.source,
-    //               edges[i].properties.target,
-    //               edges[i].properties.class,
-    //             ]
-    //           ] = edges[i].identity.low;
-    //         }
-    //       }
-    //     }
-    //     // console.log("hiii");
-    //     // new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-    //     // new ActiveTabPushSuccessView({
-    //     //   el:'#prompt-confirmation-table',
-    //     //   }).render();
-    //     // console.log("hiii2");
-    //   },
-    //   error: function (req, status, err) {
-    //     console.error("Error running query", status, err);
-    //   },
-    // });
   },
   getNeighboringNodes: async function(nodeId) {
     const query = `
@@ -1448,23 +1132,23 @@ var databaseUtilities = {
         if (new_node.properties.entityName) {
           chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
         }
+
+        if(new_node.properties.stateVariables.length>0){
+          for(let i=0;i<new_node.properties.stateVariables.length;i++){
+            var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
+            chiseInstance.addStateOrInfoBox(node, obj);
+            const [value, variable] = new_node.properties.stateVariables[i].split("@");
+            chiseInstance.changeStateOrInfoBox(node, i, value,"value");
+            chiseInstance.changeStateOrInfoBox(node, i, variable,"variable");
+          }
+        }
+
         // ✅ Set unitsOfInformation as a Cytoscape data field
         if (new_node.properties.unitsOfInformation.length > 0) {
-          // console.log('node properties:',new_node.properties.unitsOfInformation);
           for(let i=0;i<new_node.properties.unitsOfInformation.length;i++){
-            var uoi_obj = {
-              clazz: "unit of information",
-            };
-            uoi_obj.label = {
-              text: "",
-            };
-  
-            uoi_obj.bbox = {
-              w: 12,
-              h: 12,
-            };
+            var uoi_obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
             chiseInstance.addStateOrInfoBox(node, uoi_obj);
-            chiseInstance.changeStateOrInfoBox(node, i, new_node.properties.unitsOfInformation[i]);
+            chiseInstance.changeStateOrInfoBox(node, i, new_node.properties.unitsOfInformation[i],"value");
           }
           
           // node.data('unitsOfInformation', new_node.properties.unitsOfInformation);
@@ -1546,6 +1230,7 @@ var databaseUtilities = {
         }
         edgesToHighlight.push(edges[j]);
       }
+      console.log("edges to Add",edgesToAdd);
       databaseUtilities
         .getNodesRecursively(nodesToAdd)
         .then(async function () {
@@ -1587,42 +1272,23 @@ var databaseUtilities = {
     });
   },
   pushEdges: async function (edgesToAdd) {
-    console.log("pushing edges", edgesToAdd);
+    // console.log("Pushing edges to database", edgesToAdd);
     return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       for (let i = 0; i < edgesToAdd.length; i++) {
-        if (
-          edgesToAdd[i].properties.class != "belongs_to_submap" &&
-          edgesToAdd[i].properties.class != "belongs_to_compartment" &&
-          edgesToAdd[i].properties.class != "belongs_to_complex"
-        )
-        //   console.log(
-        //     "sending to add Edge:",
-        //     edgesToAdd[i].properties.source,
-        //     edgesToAdd[i].properties.target,
-        //     databaseUtilities.convertLabelToClass(
-        //       edgesToAdd[i].properties.class
-        //     )
-        //   );
-        // console.log(
-        //   "source:",
-        //   chiseInstance.getCy().getElementById(edgesToAdd[i].properties.source)
-        // );
-        // console.log(
-        //   "target:",
-        //   chiseInstance.getCy().getElementById(edgesToAdd[i].properties.target)
-        // );
-        // console.log("testing edge:",edgesToAdd[i].properties.source.data("class"));
-        var new_edge = chiseInstance.addEdge(
-          edgesToAdd[i].properties.target,
-          edgesToAdd[i].properties.source,
-          // edgesToAdd[i].properties.class,
-          databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class),
-          undefined,
-          undefined
-        );
-        // var cy = appUtilities.getActiveCy();
-        // var vu = cy.viewUtilities("get");
+        const notAllowedEdges = 
+          edgesToAdd[i].properties.class === "belongs_to_submap" || 
+          edgesToAdd[i].properties.class === "belongs_to_compartment" ||
+          edgesToAdd[i].properties.class === "belongs_to_complex";
+        if (!notAllowedEdges){
+          var new_edge = chiseInstance.addEdge(
+            edgesToAdd[i].properties.target,
+            edgesToAdd[i].properties.source,
+            databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class),
+            undefined,
+            undefined
+          );
+        }
       }
       resolve();
     });
@@ -2022,9 +1688,7 @@ var databaseUtilities = {
     return result;
   },
     
-  getAllNodesAndEdgesFromDatabase: async function () {
-    console.log("Fetching all nodes and edges from database");
-    
+  getAllNodesAndEdgesFromDatabase: async function () {    
     // Construct a Cypher query to retrieve all nodes and edges
     var query = `MATCH (n) 
                  OPTIONAL MATCH (n)-[r]->(m) 
@@ -2062,7 +1726,6 @@ var databaseUtilities = {
         
         // Process nodes
         for (let i = 0; i < nodesArray.length; i++) {
-          console.log('node:',nodesArray[i])
           if (!nodesSet.has(nodesArray[i].properties.newtId)) {
             if(nodesArray[i].properties.entityName == "ATP" && atpNode == null){
               atpNode = nodesArray[i];
@@ -2206,7 +1869,7 @@ var databaseUtilities = {
               .add(edgesArray[i].properties.target);
           }
         }
-        console.log("Sending edges to be added to the graph");
+        console.log("Sending edges to be added to the graph", edges);
         await appUtilities.createNewNetwork();
         // Add nodes and edges to the canvas
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);
