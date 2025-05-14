@@ -821,8 +821,6 @@ var databaseUtilities = {
   },
 
   pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag) {
-    console.log(this.nodesInDB,this.edgesInDB);
-    return;
     if(flag === "REPLACE"){
       await this.cleanDatabase();
     }
