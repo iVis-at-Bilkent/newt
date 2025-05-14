@@ -1,9 +1,9 @@
 var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
-const { ActiveTabPushSuccessView } = require("./backbone-views");
 const { merge, cleanData } = require("jquery");
 const { handleSBGNInspector } = require("./inspector-utilities");
+const { LayoutPropertiesView } = require("./backbone-views");
 
 var errorCheck =null;
 
@@ -430,67 +430,27 @@ var databaseUtilities = {
     
 
 
-  pushEPNToLocalDatabase: async function (ids,list, mergeflag,epnMatchingPercentage) {
+  pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage) {
     // console.log(ids,list,mergeflag,epnMatchingPercentage/100);
-
-    integrationQuery=``;
-    if(mergeflag){
-      integrationQuery = `
-          UNWIND $nodesData AS data
-          WITH data, apoc.map.get($epnCriterias, data.class, {}) AS criteria
-          CALL custom.matchAndPushEPN(
-              data, 
-              criteria,  // ✅ Sends only the relevant epnCriteria
-              $epnMatchingPercentage
-          ) YIELD result
-          RETURN result;
-          `;
-    }
-    // else{
-    //   integrationQuery=`
-    //   unwind $nodesData as data
-    //   call apoc.do.when(
-
-    //     exists{match (n) where n.category="EPN" and n.entityName=data.entityName and n.parent=data.parent return n},
-    //     'call apoc.cypher.doIt(
-    //       "
-    //         match(n) 
-    //         where n.category=\\\\"EPN\\\\" and n.entityName=data.entityName
-    //         SET n.parent = data.parent,
-    //             n.unitsOfInformation = data.unitsOfInformation,
-    //             n.language = data.language,
-    //             n.inDb = data.inDb,
-    //             n.stateVariables = data.stateVariables,
-    //             n.isSpecial = data.isSpecial,
-    //             n.entityName = data.entityName,
-    //             n.cloneMarker = data.cloneMarker,
-    //             n.multimer = data.multimer,
-    //             n.category = data.category,
-    //             n.cloneLabel = data.cloneLabel,
-    //             n.class = data.class
-    //         RETURN {incoming: data.newtId,existing:n.newtId} AS result
-    //       ",
-    //       {data:data}
-    //     )YIELD value RETURN value.result AS result'
-    //     ,
-    //     'call apoc.cypher.doIt(
-    //       "
-    //         CALL apoc.create.node([data.category],data)yield node set node.processed=0 
-    //         return {incoming:data.newtId,existing:node.newtId} as result
-    //       "
-    //       ,
-    //       {data:data}
-    //     ) 
-    //     yield value return value.result as result'
-    //   ,
-    //   {data:data}
-    //   ) yield value return value.result as result;
-    //   `;
-    // }
+    list = list.map((epn) => {
+      var newEPN = Object.assign({}, epn);
+      newEPN.parent = ids[epn.parent] || epn.parent;
+      return newEPN;
+    });
+    var integrationQuery = `
+        UNWIND $nodesData AS data
+        WITH data, apoc.map.get($epnCriterias, data.class, {}) AS criteria
+        CALL custom.matchAndPushEPN(
+            data, 
+            criteria,  // ✅ Sends only the relevant epnCriteria
+            $epnMatchingPercentage
+        ) YIELD result
+        RETURN result;
+        `;
     
     var data = {
       query: integrationQuery,
-      queryData: { nodesData: list, flag: mergeflag, epnCriterias:epnCriterias, epnMatchingPercentage:epnMatchingPercentage/100},
+      queryData: { nodesData: list, epnCriterias:epnCriterias, epnMatchingPercentage:epnMatchingPercentage/100},
     };
     console.log(data);
     await $.ajax({
@@ -521,33 +481,37 @@ var databaseUtilities = {
 
     return ids;
   },
-  pushProcessToLocalDatabase: async function (list, ids, flag,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage) {
-    console.log(list);
+  pushProcessToLocalDatabase: async function (list, ids, processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage) {
+    // console.log(list,ids);
     list = list.map((pr) => {
       const sourceNewtIds = Object.keys(pr)
         .filter((key) => key.startsWith("source_"))
-        .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
-        .filter((id) => id !== "none"); // Remove any 'none' values
+        .map((key) => {
+          // console.log(key,pr[key][6],ids[pr[key][6]]);
+          return ids[pr[key][6]]
+        }) // Assuming index 6 is the newtId
+        .filter((id) => id !== "none" && id!==undefined); // Remove any 'none' values
 
       // Extract target newtIds
       const targetNewtIds = Object.keys(pr)
         .filter((key) => key.startsWith("target_"))
         .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
-        .filter((id) => id !== "none"); // Remove any 'none' values
+        .filter((id) => id !== "none" && id!==undefined); // Remove any 'none' values
       
       // Extract modifier newtIds
       const modifierNewtIds = Object.keys(pr)
         .filter((key) => key.startsWith("modifier_"))
         .map((key) => ids[pr[key][6]]) // Assuming index 6 is the newtId
-        .filter((id) => id !== "none"); // Remove any 'none' values
+        .filter((id) => id !== "none" && id!==undefined); // Remove any 'none' values
 
       var process = Object.assign({}, pr);
       process.sourceNewtIds = sourceNewtIds;
       process.targetNewtIds = targetNewtIds;
       process.modifierNewtIds = modifierNewtIds;
+      process.parent = ids[pr.parent]||pr.parent;
       return process;
     });
-    // console.log(list);
+    console.log(list);
     var integrationQuery = `
       CALL custom.pushProcess(
         $processes,
@@ -570,7 +534,6 @@ var databaseUtilities = {
         overallThreshold: overallProcessPercentage/100
       }
     };
-    console.log(data);
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -593,13 +556,14 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushEdgesToLocalDatabase: async function (list, ids, flag) {
-    console.log(list,ids);
+  pushEdgesToLocalDatabase: async function (list, ids) {
+    console.log(ids);
     for (let i = 0; i < list.length; i++) {
+      console.log(list[i].source, ids[list[i].source]);
       list[i].source = ids[list[i].source];
       list[i].target = ids[list[i].target];
     }
-
+    console.log("list after",list);
     const query = `
     UNWIND $edges AS edge
     MATCH (sourceNode {newtId: edge.source}), (targetNode {newtId: edge.target})
@@ -623,12 +587,12 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         console.log(response);
-        // const {records}=response;
-        // for(let record of records){
-        //   console.log(record);
-        //   const map = record._fields[0];
-        //   ids[map.incoming]=map.existing;
-        // }
+        const {records}=response;
+        for(let record of records){
+          console.log(record);
+          const map = record._fields[0];
+          ids[map.incoming]=map.existing;
+        }
       },
       error: function (req, status, err) {
         errorCheck = {status,err}
@@ -637,27 +601,33 @@ var databaseUtilities = {
     });
   },
 
-  pushCompartmentsToDatabase: async function(ids,compartments){
-    console.log('pushing compartments');
-    var integrationQuery = `
-    unwind $nodesData as data
-    call apoc.do.when(
-      exists{match (n) where n.class="compartment" and n.entityName=data.entityName return n},
-      "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
-      'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
-      {data:data}
-    ) yield value return value.result as result;
+  pushCompartmentsToDatabase: async function(compartments){
+    console.log('pushing compartments',compartments);
+    var integrationQuery = `    
+        CALL custom.pushCompartments($nodesData)
+        YIELD result return result
     `;
+    // var integrationQuery = `
+    // unwind $nodesData as data
+    // call apoc.do.when(
+    //   exists{match (n) where n.class="compartment" and n.entityName=data.entityName return n},
+    //   "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
+    //   'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
+    //   {data:data}
+    // ) yield value return value.result as result;
+    // `;
     var data={
       query: integrationQuery,
       queryData:{nodesData:compartments},
     };
+    let ids = {};
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (response) {
+        console.log('compartment:',response);
         const { records } = response;
         for (let record of records) {
           const map = record._fields[0];
@@ -709,7 +679,7 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushComplexesToDatabase: async function (complexes, epns) {
+  pushComplexesToDatabase: async function (ids,complexes, epns) {
     // Helper to sanitize EPNs by removing nested object properties
     function stripComplexProps(obj) {
       const result = {};
@@ -722,9 +692,11 @@ var databaseUtilities = {
       return result;
     }
   
-    // Associate each complex with its children (stripped)
+    // Associate each complex with its children and parent (stripped)
+    let complexIds = {};
     for (let complex of complexes) {
       let children = [];
+      complex.parent = ids[complex.parent] || complexIds[complex.parent] || complex.parent;
       for (let i = 0; i < epns.length; i++) {
         let epn = epns[i];
         if (epn.parent === complex.newtId) {
@@ -748,7 +720,7 @@ var databaseUtilities = {
       }
     };
   
-    let ids = {};
+    // let ids = {};
     try {
       const response = await $.ajax({
         type: "post",
@@ -779,120 +751,11 @@ var databaseUtilities = {
       return {};
     }
   },
-  
-  
 
-
-  // pushComplexesToDatabase: async function(complexes,epns){
-  //   for(let node of complexes){
-  //     let children = [];
-  //     for(let i=0;i<epns.length;i++){
-  //       let epn = epns[i];
-  //       if(epn.parent===node.newtId){
-  //         children.push(epn);
-  //         epns.splice(i,1);
-  //         i--;
-  //       }
-  //     }
-  //     node.children = children;
-  //   }
-  //   var ids={};
-  //   var integrationQuery = `
-  //     UNWIND $complexes AS incomingComplex // Unwind the array of incoming complexes
-  //     match (c:complex {entityName:incomingComplex.entityName})<-[:belongs_to_complex]-(children:EPN)
-  //     with c,incomingComplex,collect(children.entityName) as existingChildren, [child IN incomingComplex.children | child.entityName] AS expectedChildren, collect(children) as dbChildren
-  //     where size(existingChildren) = size(expectedChildren) and 
-  //           all(ch in existingChildren where ch in expectedChildren) and
-  //           all(ch in expectedChildren where ch in existingChildren)
-  //     with
-  //         c,
-  //         incomingComplex,
-  //         [child in incomingComplex.children|
-  //             {
-  //               incoming: child.newtId,
-  //               existing: case when child.entityName in existingChildren then [dbChild in dbChildren where dbChild.entityName = child.entityName][0].newtId else null end
-  //             }
-  //         ] as childrenOutput
-  //     return {
-  //       incoming: incomingComplex.newtId,
-  //       existing: c.newtId,
-  //       children: childrenOutput
-  //     }
-  //   `;
-  //   var data={
-  //     query: integrationQuery,
-  //     queryData:{complexes:complexes},
-  //   };
-  //   await $.ajax({
-  //     type: "post",
-  //     url: "/utilities/runDatabaseQuery",
-  //     contentType: "application/json; charset=utf-8",
-  //     data: JSON.stringify(data),
-  //     success: async function (response) {
-  //       const { records } = await response;
-  //       if(records.length===0){
-  //         const createQuery=`
-  //           UNWIND $complexes AS incomingComplex
-  //           WITH apoc.map.removeKeys(incomingComplex, ['children']) AS mappedComplexData, incomingComplex
-  //           call apoc.create.node(["complex"],mappedComplexData) yield node as newComplex
-  //           with newComplex, incomingComplex
-  //           unwind incomingComplex.children as childData
-  //           call apoc.create.node(["EPN"], childData) yield node as newChild
-  //           call apoc.create.relationship(newChild,"belongs_to_complex",{},newComplex) yield rel
-  //           with incomingComplex,newComplex,collect(childData.newtId) as childrenIds
-  //           return {
-  //             incoming:incomingComplex.newtId,
-  //             existing:newComplex.newtId,
-  //             children:childrenIds
-  //           } as result
-  //         `;
-
-  //         var d={query:createQuery,queryData:{complexes:complexes}};
-  //         await $.ajax({
-  //           type: "post",
-  //           url: "/utilities/runDatabaseQuery",
-  //           contentType: "application/json; charset=utf-8",
-  //           data: JSON.stringify(d),
-  //           success: function (response) {
-  //             const { records } = response;
-  //             for(let record of records){
-  //               const map = record._fields[0];
-  //               ids[map.incoming] = map.existing;
-  //               for(let child of map.children){
-  //                 ids[child]=child;
-  //               }
-  //             }
-  //             return ids;
-  //           },
-  //           error: function (req, status, err) {
-  //             console.log("Error running query", status, err);
-  //             errorCheck = {status,err}
-  //             console.error("Error running query", status, err);
-  //           },
-  //         });
-  //       }
-        
-  //       for (let record of records) {
-  //         const map = record._fields[0];
-  //         ids[map.incoming] = map.existing;
-  //         for(let child of map.children){
-  //           ids[child.incoming] = child.existing;
-  //         }
-  //       }
-  //       return ids;
-  //     },
-  //     error: function (req, status, err) {
-  //       errorCheck = {status,err}
-  //       console.error("Error running query", status, err);
-  //     },
-  //   });
-  //   return ids;
-  // },
-
-
-
-  pushLogicalsToLocalDatabase: async function (list, ids,edges, flag) {
+  pushLogicalsToLocalDatabase: async function (list, ids,edges) {
+    let logicals = {};
     list = list.map((logical)=>{
+      logical.parent = ids[logical.parent] || logicals[logical.parent] || logical.parent;
       logical.source=[];
       logical.target=[];
       for(let edge of edges){
@@ -958,39 +821,33 @@ var databaseUtilities = {
   },
 
   pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag) {
+    console.log(this.nodesInDB,this.edgesInDB);
+    return;
     if(flag === "REPLACE"){
       await this.cleanDatabase();
     }
     console.log(nodesData, edgesData, flag);
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
-    console.log(complexes);
-    // let epns = {};
-    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(complexes,epns);
+    const compartments = nodesData.filter((node)=>node.class==='compartment');
+    var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
+    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
     const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
     if(errorCheck!==null)return errorCheck;
-    const compartments = nodesData.filter((node)=>node.class==='compartment');
-    const compartmentIds = await this.pushCompartmentsToDatabase(submapIds,compartments);
-    if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
-    const mergeFlag = true;
     const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
-    console.log("EPN NODES:",epns);
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
-      compartmentIds,
+      submapIds,
       epns,
-      mergeFlag,
       epnMatchingPercentage
     );
-    console.log("EPN IDs:",epn_ids);
     if(errorCheck!==null)return errorCheck;
     const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
       processes,
       epn_ids,
-      mergeFlag,
       processIncomingContribution,
       processOutgoingContribution,
       processAgentContribution,
@@ -1000,14 +857,13 @@ var databaseUtilities = {
     const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
       logicals,
       node_ids,
-      edgesData,
-      mergeFlag
+      edgesData
     );
     if(errorCheck!==null)return errorCheck;
     await databaseUtilities.pushEdgesToLocalDatabase(
       edgesData,
       logical_ids,
-      mergeFlag
+      false,
     );
   },
   getNeighboringNodes: async function(nodeId) {
@@ -1047,7 +903,7 @@ var databaseUtilities = {
     return repl;
   },
 
-  getNodesRecursively: function (nodesToAdd) {
+  getNodesRecursively: async function (nodesToAdd) {
     
     return new Promise(async function (resolve, reject) {
       var parentsToGet = new Set();
@@ -1088,7 +944,7 @@ var databaseUtilities = {
             var fields = data.records[i]._fields;
             var parents = [];
             parents.push(fields[0]);
-            databaseUtilities.getNodesRecursively(parents).then(() => {
+            await databaseUtilities.getNodesRecursively(parents).then(() => {
               counter++;
               if (counter == data.records.length) {
                 for (let i = 0; i < children.length; i++) {
@@ -1108,9 +964,8 @@ var databaseUtilities = {
 
   pushNode: function (new_node) {
     return new Promise((resolve) => {
-      if (!databaseUtilities.nodesInDB[new_node.properties.newtId]) {
+      if (!(new_node.properties.newtId in databaseUtilities.nodesInDB)) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
-
         var nodeParams = {
           class: databaseUtilities.convertLabelToClass(
             new_node.properties.class
@@ -1118,9 +973,6 @@ var databaseUtilities = {
           language: "PD",
           label: "smth",
         };
-        // console.log(new_node,nodeParams,
-        //   new_node.properties.newtId,
-        //   new_node.properties.parent)
         var node = chiseInstance.addNode(
           0,
           0,
@@ -1129,15 +981,19 @@ var databaseUtilities = {
           new_node.properties.parent
         );
 
+        chiseInstance.setCloneMarkerStatus(node, new_node.properties.cloneMarker);
+
         if (new_node.properties.entityName) {
           chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
         }
 
         if(new_node.properties.stateVariables.length>0){
+          console.log("State variables",new_node.properties.stateVariables);
           for(let i=0;i<new_node.properties.stateVariables.length;i++){
             var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
             chiseInstance.addStateOrInfoBox(node, obj);
             const [value, variable] = new_node.properties.stateVariables[i].split("@");
+            console.log("state variable:",new_node.properties.stateVariables[i], value, variable);
             chiseInstance.changeStateOrInfoBox(node, i, value,"value");
             chiseInstance.changeStateOrInfoBox(node, i, variable,"variable");
           }
@@ -1146,12 +1002,12 @@ var databaseUtilities = {
         // ✅ Set unitsOfInformation as a Cytoscape data field
         if (new_node.properties.unitsOfInformation.length > 0) {
           for(let i=0;i<new_node.properties.unitsOfInformation.length;i++){
+            console.log("unit of information",new_node.properties.unitsOfInformation[i]);
             var uoi_obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
             chiseInstance.addStateOrInfoBox(node, uoi_obj);
-            chiseInstance.changeStateOrInfoBox(node, i, new_node.properties.unitsOfInformation[i],"value");
+        //     console.log("unit of information:",new_node.properties.unitsOfInformation[i]);
+            chiseInstance.changeStateOrInfoBox(node, new_node.properties.stateVariables.length + i, new_node.properties.unitsOfInformation[i],"value");
           }
-          
-          // node.data('unitsOfInformation', new_node.properties.unitsOfInformation);
         }
 
         databaseUtilities.nodesInDB[new_node.properties.newtId] =
@@ -1199,7 +1055,8 @@ var databaseUtilities = {
       let edgesToHighlight = [];
       let edgesToAdd = [];
       let nodesToAdd = [];
-      
+      databaseUtilities.nodesInDB = {};
+      databaseUtilities.edgesInDB = {};
       for (let i = 0; i < nodes.length; i++) {
         if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
           nodesToAdd.push(nodes[i]);
@@ -1238,7 +1095,8 @@ var databaseUtilities = {
         })
         .then(function () {
           //Add color scheme for map
-          $("#map-color-scheme_greyscale").click();
+          // $("#map-color-scheme_greyscale").click();
+          $("#map-color-scheme_opposed_red_blue").click();
           $("#color-scheme-inspector-style-select").val("3D");
           $("#color-scheme-inspector-style-select").change();
 
@@ -1260,11 +1118,12 @@ var databaseUtilities = {
               vu.highlight(el, 5);
             }
           }
-
+          var cy = appUtilities.getActiveCy();
+          
           //Run layout
           databaseUtilities.performLayout();
         });
-
+      
       return {
         nodesToHighlight: nodesToHighlight,
         edgesToHighlight: edgesToHighlight,
@@ -1295,7 +1154,7 @@ var databaseUtilities = {
   },
 
   performLayout: function () {
-    $("#perform-static-layout, #perform-static-layout-icon").click();
+    appUtilities.triggerLayout(cy, true,true);
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit) {
@@ -1688,200 +1547,120 @@ var databaseUtilities = {
     return result;
   },
     
-  getAllNodesAndEdgesFromDatabase: async function () {    
-    // Construct a Cypher query to retrieve all nodes and edges
-    var query = `MATCH (n) 
-                 OPTIONAL MATCH (n)-[r]->(m) 
-                 RETURN collect(distinct n) as nodes, collect(distinct r) as edges`;
-    
-    var data = { query: query, queryData: {} };
-    var result = {};
-    
+
+  getAllNodesAndEdgesFromDatabase: async function(enableCloning = false, cloneThreshold = 0) {
+    console.log("Fetching all nodes and edges from the database...", enableCloning, cloneThreshold);
+  
+    // 1) Fetch everything
+    const query = `
+      MATCH (n)
+      OPTIONAL MATCH (n)-[r]->(m)
+        WHERE NOT type(r) STARTS WITH 'belongs_to_'
+      RETURN
+        collect(DISTINCT n) AS nodes,
+        collect(DISTINCT r) AS edges
+    `;
+    const data = { query, queryData: {} };
+  
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
-      success: async function (response) {
-        if (response.records.length == 0) {
-          console.log("No data returned from database");
-          return;
-        }
-        console.log(response.records)
+      success: async (response) => {
+        if (!response.records.length) return console.log("No data returned");
+        var cy = appUtilities.getActiveCy();
+        // 2) Unpack
+        const [ nodesArray, edgesArray ] = response.records[0]._fields;
+        console.log("edges:",edgesArray);
+        const nodes = [], edges = [];
+        const nodesSet = new Set();
+        const edgesMap = new Map();
         
-        var nodes = [];
-        var edges = [];
-        var nodesSet = new Set();
-        var edgesMap = new Map();
-        
-        // Process the returned data
-        const record = response.records[0];
-        const nodesArray = record._fields[0];
-        const edgesArray = record._fields[1];
-        let atp = false, adp = false, h2o = false;
-        let atpNode = null, adpNode = null, h2oNode = null;
-        let done = new Map();
-
-        let map = new Map();
-        
-        // Process nodes
-        for (let i = 0; i < nodesArray.length; i++) {
-          if (!nodesSet.has(nodesArray[i].properties.newtId)) {
-            if(nodesArray[i].properties.entityName == "ATP" && atpNode == null){
-              atpNode = nodesArray[i];
-              atpNode.properties.cloned=true;
+        // 3) Separate out all simple_chemical nodes
+        const simpleChemMap = new Map();
+        for (let n of nodesArray) {
+          if (n.properties.class === "simple_chemical") {
+            simpleChemMap.set(n.properties.newtId, n);
+            n.properties.cloned = true;              // mark it so we know it’s special
+          } else {
+            // add every non-simple_chemical once
+            if (!nodesSet.has(n.properties.newtId)) {
+              nodes.push(n);
+              nodesSet.add(n.properties.newtId);
             }
-            else if(nodesArray[i].properties.entityName == "ADP" && adpNode == null){
-              adpNode = nodesArray[i];
-              adpNode.properties.cloned=true;
-            }
-            else if(nodesArray[i].properties.entityName == "H2O" && h2oNode == null){
-              h2oNode = nodesArray[i];
-              h2oNode.properties.cloned=true;
-            }
-            map.set(nodesArray[i].properties.newtId, nodesArray[i].properties.entityName);
-            nodes.push(nodesArray[i]);
-            nodesSet.add(nodesArray[i].properties.newtId);
           }
         }
-        console.log("Checking the edges array:",edgesArray);
-        // Process edges
+  
+        // 4) Pre-count arcs touching each simple_chemical (if cloning enabled)
+        const arcCounts = {};
+        if (enableCloning) {
+          for (let e of edgesArray) {
+            for (let end of ["source", "target"]) {
+              const id = e.properties[end];
+              if (simpleChemMap.has(id)) {
+                arcCounts[id] = (arcCounts[id] || 0) + 1;
+              }
+            }
+          }
+        }
+  
+        // 5) Re-add originals for which we’re NOT cloning (or cloning is off)
+        for (let [id, orig] of simpleChemMap.entries()) {
+          if (!enableCloning || arcCounts[id] <= cloneThreshold) {
+            if (!nodesSet.has(id)) {
+              nodes.push(orig);
+              nodesSet.add(id);
+            }
+          }
+        }
+  
+        // 6) Process each edge, cloning endpoints as needed
         for (let i = 0; i < edgesArray.length; i++) {
-          if (
-            (Object.keys(edgesArray[i].properties).length>0) &&
-            (
-            !edgesMap.get(edgesArray[i].properties.source) ||
-            !edgesMap
-              .get(edgesArray[i].properties.source)
-              .has(edgesArray[i].properties.target)
-            )
-          ) {
-            let source = edgesArray[i].properties.source;
-            let target = edgesArray[i].properties.target;
-            let sourceClass = edgesArray[i].properties.sourceClass;
-            let targetClass = edgesArray[i].properties.targetClass;
-
-            // if(sourceClass !== "compartment" && targetClass !== "compartment"){              
-            //   if(map.get(source) == "ATP" && !atp){
-            //     atp = true;
-            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
-            //     dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyATP);
-            //     nodesSet.add(dummyATP.properties.newtId);
-            //     edgesArray[i].properties.source = dummyATP.properties.newtId;
-            //   }
-            //   if(map.get(target) == "ATP" && !atp){
-            //     atp = true;
-            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
-            //     dummyATP.properties.newtId = dummyATP.properties.newtId + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyATP);
-            //     nodesSet.add(dummyATP.properties.newtId);
-            //     edgesArray[i].properties.target = dummyATP.properties.newtId;
-            //   }
-              
-            //   if(map.get(source) == "ADP" && !adp){
-            //     adp = true;
-            //     let dummyADP = JSON.parse(JSON.stringify(adpNode));
-            //     dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyADP);
-            //     nodesSet.add(dummyADP.properties.newtId);
-            //     edgesArray[i].properties.source = dummyADP.properties.newtId;
-            //   }
-            //   if(map.get(target) == "ADP" && !adp){
-            //     adp = true;
-            //     let dummyADP = JSON.parse(JSON.stringify(adpNode));
-            //     dummyADP.properties.newtId = dummyADP.properties.newtId + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyADP);
-            //     nodesSet.add(dummyADP.properties.newtId);
-            //     edgesArray[i].properties.target = dummyADP.properties.newtId;
-            //   }
-              
-            //   if(map.get(source) == "H2O" && !h2o){
-            //     h2o = true;
-            //     let dummyH2O = JSON.parse(JSON.stringify(h2oNode));
-            //     dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyH2O);
-            //     nodesSet.add(dummyH2O.properties.newtId);
-            //     edgesArray[i].properties.source = dummyH2O.properties.newtId;
-            //   }
-            //   if(map.get(target) == "H2O" && !h2o){
-            //     h2o = true;
-            //     let dummyH2O = JSON.parse(JSON.stringify(atpNode));
-            //     dummyH2O.properties.newtId = dummyH2O.properties.newtId + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyH2O);
-            //     nodesSet.add(dummyH2O.properties.newtId);
-            //     edgesArray[i].properties.target = dummyH2O.properties.newtId;
-            //   }
-            // }
-            
-            // if(sourceClass == "simple_chemical"){
-              
-            //   let newtId = edgesArray[i].properties.source;
-            //   if(done.has(edgesArray[i].properties.source)){
-            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
-            //     dummyATP.properties.newtId = edgesArray[i].properties.source + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyATP);
-            //     nodesSet.add(dummyATP.properties.newtId);
-            //     edgesArray[i].properties.source = dummyATP.properties.newtId;
-            //     newtId = dummyATP.properties.newtId;
-            //   }
-            //   done.set(newtId, true);
-            // }
-            // if(targetClass == "simple_chemical"){
-            //   let newtId = edgesArray[i].properties.target;
-            //   if(done.has(edgesArray[i].properties.target)){
-            //     let dummyATP = JSON.parse(JSON.stringify(atpNode));
-            //     dummyATP.properties.newtId = edgesArray[i].properties.target + Math.floor(Math.random() * 1000);
-            //     nodes.push(dummyATP);
-            //     nodesSet.add(dummyATP.properties.newtId);
-            //     edgesArray[i].properties.target = dummyATP.properties.newtId;
-            //     newtId = dummyATP.properties.newtId;
-            //   }
-            //   done.set(newtId, true);
-            // }
-
-            // if(done.get(edgesArray[i].properties.source)){
-            //   let dummyATP = JSON.parse(JSON.stringify(atpNode));
-            //   dummyATP.properties.newtId = edgesArray[i].properties.source + Math.floor(Math.random() * 1000);
-            //   nodes.push(dummyATP);
-            //   nodesSet.add(dummyATP.properties.newtId);
-            //   edgesArray[i].properties.source = dummyATP.properties.newtId;
-            //   done.set(edgesArray[i].properties.source, dummyATP.properties.newtId);
-            // }
-            // if(edgesArray[i].properties.source===undefined){
-            //   console.log(i,edgesArray[i].properties);
-            // }
-            var edge = {};
-            edge.properties = {};
-            edge.identity = {};
-            edge.properties.source = edgesArray[i].properties.source;
-            edge.properties.target = edgesArray[i].properties.target;
-            edge.properties.class = edgesArray[i].properties.class;
-            edge.identity.low = edgesArray[i].identity.low;
-            edges.push(edge);
-            
-            if (!edgesMap.get(edgesArray[i].properties.source)) {
-              var newSet = new Set();
-              edgesMap.set(edgesArray[i].properties.source, newSet);
+          const raw = edgesArray[i].properties;
+  
+          if (enableCloning) {
+            for (let end of ["source", "target"]) {
+              const id = raw[end];
+              // only clone if it’s a simple_chemical and exceeds threshold
+              if (simpleChemMap.has(id) && arcCounts[id] > cloneThreshold) {
+                const orig = simpleChemMap.get(id);
+                const clone = JSON.parse(JSON.stringify(orig));
+                clone.properties.newtId = `${orig.properties.newtId}_${i}_${end}`;
+                clone.properties.cloneMarker = true; // mark it as cloned
+                nodes.push(clone);
+                nodesSet.add(clone.properties.newtId);
+                raw[end] = clone.properties.newtId;
+              }
             }
-            edgesMap
-              .get(edgesArray[i].properties.source)
-              .add(edgesArray[i].properties.target);
           }
+  
+          // build minimal edge object
+          edges.push({
+            properties: {
+              source: raw.source,
+              target: raw.target,
+              class:  raw.class
+            },
+            identity: { low: edgesArray[i].identity.low }
+          });
+  
+          // avoid duplicates if you need to check
+          if (!edgesMap.has(raw.source)) edgesMap.set(raw.source, new Set());
+          edgesMap.get(raw.source).add(raw.target);
+          // console.log(MapTabLabelPanel);
         }
-        console.log("Sending edges to be added to the graph", edges);
+  
+        // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
-        // Add nodes and edges to the canvas
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);
-        // Perform layout to organize the graph
-        databaseUtilities.performLayout();
+        // appUtilities.triggerLayout(cy,true);
+        // databaseUtilities.performLayout();
       },
-      error: function (req, status, err) {
-        console.error("Error fetching nodes and edges from database:", status, err);
-      },
+      error: (req, status, err) => {
+        console.error("Error fetching nodes/edges:", status, err);
+      }
     });
-    
-    return result;
-  },
+  },  
 };
 module.exports = databaseUtilities;

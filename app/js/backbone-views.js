@@ -1185,6 +1185,28 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.complexMatchPercentage",
       update: self.applyUpdate,
     };
+    self.params.simpleChemicalCloningThreshold={
+      id: "simple_chemical_cloning",
+      type: "number",
+      property: "currentGeneralProperties.simpleChemicalCloningThreshold",
+      update: self.applyUpdate,
+    }
+    self.params.allowSimpleChemicalCloning = {
+      id: "simple_chemical_allow",
+      type: "checkbox",
+      property: "currentGeneralProperties.allowSimpleChemicalCloning",
+      update: self.applyUpdate,
+    };
+
+
+
+    $(document).on("change", "#simple_chemical_allow", function (evt) {
+      const isChecked = $(this).prop("checked");
+      $("#simple-chemical-threshold-row").toggle(isChecked);
+      self.params.allowSimpleChemicalCloning.value = isChecked;
+      appUtilities.localDbSettings.allowSimpleChemicalCloning = isChecked;
+    });
+
     $(document).on("change", "#epn-match", function (evt) {
       self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
@@ -1215,6 +1237,25 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
       appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value
     });
+
+    $(document).on("click", "#decrement-btn", function (evt) {
+      let value = Number($("#simple_chemical_cloning").val());
+      if(value > 1){
+        self.params.simpleChemicalCloningThreshold.value = value - 1;
+        document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
+        appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
+      }
+    });
+
+    $(document).on("click", "#increment-btn", function (evt) {
+      let value = Number($("#simple_chemical_cloning").val());
+      if(value < 100){
+        self.params.simpleChemicalCloningThreshold.value = value + 1;
+        document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
+        appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value ;
+      }
+    });
+    
   },
 
   render: function () {

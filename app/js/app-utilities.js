@@ -27,7 +27,9 @@ appUtilities.localDbSettings = {
   processOutgoingContribution:33,
   processAgentContribution:33,
   overallProcessPercentage:100,
-  complexMatchPercentage:100
+  complexMatchPercentage:100,
+  simpleChemicalCloningThreshold: 3,
+  allowSimpleChemicalCloning: false,
 }
 
 appUtilities.mapTypesToViewableText = {
@@ -488,6 +490,7 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
     $('#inspector-style-tab a').blur();
   }
 
+
   // increment new network id
   appUtilities.nextNetworkId++;
 
@@ -497,6 +500,8 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
   // update the map type descriptor
   var mapType = appUtilities.getActiveChiseInstance().getMapType();
   $('#' + mapTypeDivId).text(appUtilities.getTabLabelName(mapType));
+
+
 
   // return the new instance
   return newInst;
@@ -652,10 +657,9 @@ appUtilities.getActiveChiseInstance = function () {
 
 // sets the active network through the network key to be activated
 appUtilities.setActiveNetwork = function (networkKey) {
-
   // get chise instance for network key
   var chiseInstance = this.getChiseInstance(networkKey);
-
+  
   // use the actual network id (network key would not be the actual network id)
   var networkId = this.getNetworkId(networkKey);
 
@@ -794,6 +798,8 @@ appUtilities.defaultGeneralProperties = {
   processAgentContribution:33,
   overallProcessPercentage:100,
   complexMatchPercentage:100,
+  allowSimpleChemicalCloning: false,
+  simpleChemicalCloningThreshold: 3,
   enablePorts: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,
@@ -828,7 +834,7 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-appUtilities.triggerLayout = function (_cy, randomize) {
+appUtilities.triggerLayout = function (_cy, randomize,fit=undefined) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
   var cy = _cy || this.getActiveCy();
@@ -841,7 +847,7 @@ appUtilities.triggerLayout = function (_cy, randomize) {
 
   // If 'animate-on-drawing-changes' is true then animate option must be true instead of false
   var preferences = {
-    animate: currentGeneralProperties.animateOnDrawingChanges ? true : false
+    animate: currentGeneralProperties.currentLayoutProperties ? true : false
   };
 
   // if randomize parameter is defined set it as a preference
@@ -849,7 +855,7 @@ appUtilities.triggerLayout = function (_cy, randomize) {
   // in that case
   if ( randomize !== undefined ) {
     preferences.randomize = randomize;
-    preferences.fit = randomize;
+    preferences.fit = fit===undefined ? randomize : fit;
   }
 
 //  if (currentLayoutProperties.animate === 'during') {

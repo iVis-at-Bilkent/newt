@@ -2121,7 +2121,15 @@ module.exports = function() {
     });
 
     $('#get-all-data').click(async function (e) {
-      console.log(await databaseUtilities.getAllNodesAndEdgesFromDatabase());
+      const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+      const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+      await databaseUtilities.getAllNodesAndEdgesFromDatabase(allowCloning, cloningThreshold);
+      cy.undoRedo().do("changeMenu", {
+        id: "fit-labels-to-nodes",
+        type: "checkbox",
+        property: "currentGeneralProperties.fitLabelsToNodes",
+        value: true
+      });
     });
 
 
