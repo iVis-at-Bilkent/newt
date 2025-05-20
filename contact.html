@@ -38,13 +38,13 @@
 	<!-- send contact form message as email by using google script -->
         <form id="gform" action="https://script.google.com/macros/s/AKfycbyqee-5VtA5jt5aj400rSpdY1Getv1rS5GsK7nchkXc9dLpH2D2/exec" method="post">
           <div class="form_settings">
-            <p><span>Name</span><input class="contact" type="text" name="your_name" value="" /></p>
+            <p><span>Name</span><input class="contact" type="text" name="your_name" value="" required/></p>
             <p><span>Email address</span><input class="contact" id="email" name="email" type="email" value=""
 	    required placeholder="your.name@email.com"/></p>
       
 	    <p id="email-invalid" style="display:none; color:red;">
               Must be a valid email address</p>
-            <p><span>Message</span><textarea class="contact textarea" rows="8" cols="50" name="your_enquiry"></textarea></p>
+            <p><span>Message</span><textarea class="contact textarea" rows="8" cols="50" name="your_enquiry" required></textarea></p>
             <div class="g-recaptcha" data-sitekey="6LcwdFsUAAAAAJ1RqCKmGLHFhCfBCWrBD-zYUYH2"></div>
             <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" onclick="checkCaptcha(event)" value="Submit" /></p>
           </div>
