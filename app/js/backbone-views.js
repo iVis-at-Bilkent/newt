@@ -1238,24 +1238,15 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value
     });
 
-    $(document).on("click", "#decrement-btn", function (evt) {
-      let value = Number($("#simple_chemical_cloning").val());
-      if(value > 1){
-        self.params.simpleChemicalCloningThreshold.value = value - 1;
-        document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
-        appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
+    $(document).on("change", "#simple_chemical_cloning", function (evt) {
+      let value = Number(evt.target.value);
+      if(value < 1){
+        value = 1;
       }
+      self.params.simpleChemicalCloningThreshold.value = value;
+      document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
+      appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
     });
-
-    $(document).on("click", "#increment-btn", function (evt) {
-      let value = Number($("#simple_chemical_cloning").val());
-      if(value < 100){
-        self.params.simpleChemicalCloningThreshold.value = value + 1;
-        document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
-        appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value ;
-      }
-    });
-    
   },
 
   render: function () {
