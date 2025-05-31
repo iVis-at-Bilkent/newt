@@ -644,15 +644,25 @@ var databaseUtilities = {
   },
 
   pushSubmapsToDatabase: async function(ids,submaps){
-    console.log('pushing submaps');
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    submaps = submaps.map((submap) => {
+      var newSubmap = Object.assign({}, submap);
+      newSubmap.parent = ids[submap.parent] || submap.parent;
+      return newSubmap;
+    });
+    // var integrationQuery = `
+    // unwind $nodesData as data
+    // call apoc.do.when(
+    //   exists{match (n) where n.class="submap" and n.entityName=data.entityName return n},
+    //   "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
+    //   'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
+    //   {data:data}
+    // ) yield value return value.result as result;
+    // `;
     var integrationQuery = `
-    unwind $nodesData as data
-    call apoc.do.when(
-      exists{match (n) where n.class="submap" and n.entityName=data.entityName return n},
-      "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
-      'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
-      {data:data}
-    ) yield value return value.result as result;
+      CALL custom.pushSubmaps($nodesData)
+      YIELD result
+      RETURN result;
     `;
     var data={
       query: integrationQuery,
@@ -1138,6 +1148,9 @@ var databaseUtilities = {
           edgesToAdd[i].properties.class === "belongs_to_compartment" ||
           edgesToAdd[i].properties.class === "belongs_to_complex";
         if (!notAllowedEdges){
+          console.log("adding edge:",edgesToAdd[i].properties.target,
+            edgesToAdd[i].properties.source,
+            databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class));
           var new_edge = chiseInstance.addEdge(
             edgesToAdd[i].properties.target,
             edgesToAdd[i].properties.source,

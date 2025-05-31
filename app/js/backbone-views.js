@@ -1202,7 +1202,8 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
 
     $(document).on("change", "#simple_chemical_allow", function (evt) {
       const isChecked = $(this).prop("checked");
-      $("#simple-chemical-threshold-row").toggle(isChecked);
+      $("#simple_chemical_cloning").prop("disabled", !isChecked);
+      // $("#simple-chemical-threshold-row").toggle(isChecked);
       self.params.allowSimpleChemicalCloning.value = isChecked;
       appUtilities.localDbSettings.allowSimpleChemicalCloning = isChecked;
     });

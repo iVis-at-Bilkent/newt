@@ -3890,29 +3890,19 @@
               <span id="complex-match-value" class="add on layout-text" title="Complex Percentage">100</span>
           </td>
         </tr>
-        
+
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="Complex Agent Percentage">Simple Chemical Cloning</span>
+            <span class="add-on layout-text" title="Simple Chemical Cloning">Simple Chemical Cloning</span>
           </td>
           <td>
-            <input id="simple_chemical_allow" type="checkbox" class="layout-text">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input id="simple_chemical_allow" type="checkbox" class="layout-text">
+              <span class="add-on layout-text" title="Simple Chemical Cloning Threshold">Threshold</span>
+              <input id="simple_chemical_cloning" type="number" class="sbgn-input-small" disabled step="1" min="1" value="3" style="width: 60px;">
+            </div>
           </td>
         </tr>
-        
-        <tr id="simple-chemical-threshold-row" style="display: none;">
-          <td class="header">
-            <span class="add-on layout-text" title="Simple Chemical Cloning Threshold">
-              Simple Chemical Cloning Threshold
-            </span>
-          </td>
-          <td style="display: flex; align-items: center; gap: 6px;">
-            <!-- <button class="btn btn-outline-secondary" id="decrement-btn">−</button> -->
-            <input id="simple_chemical_cloning" type="number" class="sbgn-input-small"
-                   step="1" min="1" value="3" style="width: 60px; text-align: center;">
-            <!-- <button class="btn btn-outline-secondary" id="increment-btn">+</button> -->
-          </td>
-        </tr>   
       </tbody>
       </table>
     </script>
