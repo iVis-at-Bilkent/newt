@@ -1198,7 +1198,41 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       update: self.applyUpdate,
     };
 
+    $(document).on("click", "#local-database-default-button", function (evt) {
+      self.params.epnMatchingPercentage.value = 100;
+      self.params.processIncomingContribution.value = 33;
+      self.params.processOutgoingContribution.value = 33;
+      self.params.processAgentContribution.value = 33;
+      self.params.overallProcessPercentage.value = 100;
+      self.params.complexMatchPercentage.value = 100;
+      self.params.simpleChemicalCloningThreshold.value = 3;
+      self.params.allowSimpleChemicalCloning.value =false;
 
+      appUtilities.localDbSettings.epnMatchingPercentage = self.params.epnMatchingPercentage.value;
+      appUtilities.localDbSettings.processIncomingContribution = self.params.processIncomingContribution.value;
+      appUtilities.localDbSettings.processOutgoingContribution = self.params.processOutgoingContribution.value;
+      appUtilities.localDbSettings.processAgentContribution = self.params.processAgentContribution.value;
+      appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value;
+      appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value;
+      appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
+      appUtilities.localDbSettings.allowSimpleChemicalCloning = self.params.allowSimpleChemicalCloning.value;
+
+      // Update the UI
+      $("#epn-match").val(self.params.epnMatchingPercentage.value);
+      document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
+      $("#process-incoming").val(self.params.processIncomingContribution.value);
+      document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
+      $("#process-outgoing").val(self.params.processOutgoingContribution.value);
+      document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
+      $("#process-agent").val(self.params.processAgentContribution.value);
+      document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
+      $("#process-overall").val(self.params.overallProcessPercentage.value);
+      document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
+      $("#complex-match").val(self.params.complexMatchPercentage.value);
+      document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
+      $("#simple_chemical_cloning").val(self.params.simpleChemicalCloningThreshold.value);
+      $("#simple_chemical_allow").prop("checked", self.params.allowSimpleChemicalCloning.value);
+    });
 
     $(document).on("change", "#simple_chemical_allow", function (evt) {
       const isChecked = $(this).prop("checked");

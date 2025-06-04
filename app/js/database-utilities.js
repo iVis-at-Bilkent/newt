@@ -222,7 +222,6 @@ var databaseUtilities = {
       if (data.language == "PD") {
         processed = databaseUtilities.processPdEdge(data);
       }
-      console.log('current Edge:',processed);
       edgesData.push(processed);
     }
   },
@@ -557,13 +556,16 @@ var databaseUtilities = {
   },
 
   pushEdgesToLocalDatabase: async function (list, ids) {
-    console.log(ids);
-    for (let i = 0; i < list.length; i++) {
-      console.log(list[i].source, ids[list[i].source]);
-      list[i].source = ids[list[i].source];
-      list[i].target = ids[list[i].target];
-    }
-    console.log("list after",list);
+    // var filtered_list = await databaseUtilities.validateEdges(list);
+    var filtered_list = list;
+    filtered_list = await Promise.all(filtered_list.map((edge) => {
+      edge.source = ids[edge.source];
+      edge.target = ids[edge.target];
+      return edge;
+    }));
+
+    
+    console.log("list after",filtered_list);
     const query = `
     UNWIND $edges AS edge
     MATCH (sourceNode {newtId: edge.source}), (targetNode {newtId: edge.target})
@@ -579,7 +581,7 @@ var databaseUtilities = {
     RETURN value;
     `;
    
-    var data = { query, queryData: { edges: list } };
+    var data = { query, queryData: { edges: filtered_list } };
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -589,7 +591,6 @@ var databaseUtilities = {
         console.log(response);
         const {records}=response;
         for(let record of records){
-          console.log(record);
           const map = record._fields[0];
           ids[map.incoming]=map.existing;
         }
@@ -689,7 +690,7 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushComplexesToDatabase: async function (ids,complexes, epns) {
+  pushComplexesToDatabase: async function (ids,complexes, epns, threshold) {
     // Helper to sanitize EPNs by removing nested object properties
     function stripComplexProps(obj) {
       const result = {};
@@ -726,7 +727,7 @@ var databaseUtilities = {
       queryData: {
         complexes: complexes,
         epnCriteria: epnCriterias,
-        threshold: 1
+        threshold: threshold,
       }
     };
   
@@ -834,19 +835,19 @@ var databaseUtilities = {
     if(flag === "REPLACE"){
       await this.cleanDatabase();
     }
+    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage} = appUtilities.localDbSettings;
     console.log(nodesData, edgesData, flag);
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
-    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns);
+    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
     const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
     if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
-    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage} = appUtilities.localDbSettings;
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       submapIds,
       epns,
@@ -989,6 +990,7 @@ var databaseUtilities = {
           new_node.properties.parent
         );
 
+        chiseInstance.setMultimerStatus(node,new_node.properties.multimer);
         chiseInstance.setCloneMarkerStatus(node, new_node.properties.cloneMarker);
 
         if (new_node.properties.entityName) {
@@ -1138,8 +1140,21 @@ var databaseUtilities = {
       };
     });
   },
+
+  validateEdges: async function (edges) {
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    const validityChecks = await Promise.all(
+    edges.map(async (edge) => {
+      return chiseInstance.validateArrowEnds(
+          databaseUtilities.convertLabelToClass(edge.class),
+          edge.source,
+          edge.target,
+      )==="valid";
+      })
+    );
+    return await Promise.all(edges.filter((_, idx) => validityChecks[idx]));
+  },
   pushEdges: async function (edgesToAdd) {
-    // console.log("Pushing edges to database", edgesToAdd);
     return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       for (let i = 0; i < edgesToAdd.length; i++) {
@@ -1151,6 +1166,7 @@ var databaseUtilities = {
           console.log("adding edge:",edgesToAdd[i].properties.target,
             edgesToAdd[i].properties.source,
             databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class));
+            
           var new_edge = chiseInstance.addEdge(
             edgesToAdd[i].properties.target,
             edgesToAdd[i].properties.source,
