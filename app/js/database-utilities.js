@@ -84,18 +84,22 @@ var epnCriterias= {
     },
   },
   perturbing_agent:{
-    multimer:{
-      contribution:0.0,
-      type:"boolean"
-    },
-    stateVariables:{
-      contribution:0,
-      type:"array"
-    },
-    unitsOfInformation:{
-      contribution:0,
-      type:"array"
-    },
+    entityName:{
+      contribution:1,
+      type:"string"
+    }
+    // multimer:{
+    //   contribution:0.0,
+    //   type:"boolean"
+    // },
+    // stateVariables:{
+    //   contribution:0,
+    //   type:"array"
+    // },
+    // unitsOfInformation:{
+    //   contribution:0,
+    //   type:"array"
+    // },
   },
   empty_set:{
     multimer:{
