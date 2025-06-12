@@ -114,10 +114,18 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
   for (var i = 0; i < stateAndInfos.length; i++) {
     (function(i){
       var state = stateAndInfos[i];
+      var visibilityCheckboxHtml = "";
+      if(chiseInstance.elementUtilities.mapType != "AF"){
+        var visibilityCheckboxHtml =
+        "<input type='checkbox' class='visibility-checkbox' id='inspector-visibility-checkbox" + i + "' "
+        + "title='Visible?' " + (state.visible ? "checked " : "")
+        + " style='margin-left: 2px; margin-bottom: 4px; vertical-align: middle; margin-right: 4px;'/>";
+      }
       if (state.clazz == "state variable") {
         $("#inspector-state-variables").append(
             "<div>"
             // state variable - value
+            + visibilityCheckboxHtml
             + "<input type='text' id='inspector-state-variable-value" + i + "' class='inspector-input-box' style='width: "
             + width / 5 + "px;' value='" + sanitizeInfoboxVal(state.state.value) + "'/>"
 
@@ -145,7 +153,8 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
 
         var total = 0.6 * width + get_text_width("@", "10pt Helvetica");
 
-        var uioHtml = "<div><input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
+        var uioHtml = "<div>" + visibilityCheckboxHtml 
+        +"<input type='text' id='inspector-unit-of-information-label" + i + "' class='inspector-input-box' style='width: "
                 + total + "px;' value='" + sanitizeInfoboxVal(state.label.text) + "'/>";
 
         uioHtml += getInfoboxDetailsBtnHtml( i );
@@ -179,7 +188,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       {
         $("#inspector-residue-variable").append(
           "<div>"
-
+          + visibilityCheckboxHtml
           // state variable - variable
           + "<input type='text' id='inspector-residue-variable-variable" + i + "' class='inspector-input-box' style='width: "
           + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.residue.variable) + "'/>"
@@ -199,7 +208,7 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       {
         $("#inspector-binding-region").append(
           "<div>"
-
+          + visibilityCheckboxHtml
           // state variable - variable
           + "<input type='text' id='inspector-binding-region-variable" + i + "' class='inspector-input-box' style='width: "
           + width / 2.5 + "px;' value='" + sanitizeInfoboxVal(state.region.variable) + "'/>"
@@ -219,7 +228,12 @@ inspectorUtilities.fillInspectorStateAndInfos = function (nodes, stateAndInfos, 
       });
       }
 
-      
+      $("#inspector-visibility-checkbox" + i).on('change', function () {
+        const isVisible = $(this).is(":checked");
+        stateAndInfos[i].visible = isVisible;
+        cy.style().update();
+      });
+
 
       $("#inspector-delete-state-and-info" + i).unbind('click').click(function (event) {
         chiseInstance.removeStateOrInfoBox(nodes, i);
