@@ -23,7 +23,10 @@ const categories = {
   phenotype: "process",
   and:'logical',
   or:'logical',
-  not:'logical'
+  not:'logical',
+  compartment: "compartment",
+  submap: "submap",
+  tag: "tag"
 };
 
 var epnCriterias= {
@@ -88,18 +91,12 @@ var epnCriterias= {
       contribution:1,
       type:"string"
     }
-    // multimer:{
-    //   contribution:0.0,
-    //   type:"boolean"
-    // },
-    // stateVariables:{
-    //   contribution:0,
-    //   type:"array"
-    // },
-    // unitsOfInformation:{
-    //   contribution:0,
-    //   type:"array"
-    // },
+  },
+  tag:{
+    entityName:{
+      contribution:1,
+      type:"string"
+    }
   },
   empty_set:{
     multimer:{
@@ -612,15 +609,6 @@ var databaseUtilities = {
         CALL custom.pushCompartments($nodesData)
         YIELD result return result
     `;
-    // var integrationQuery = `
-    // unwind $nodesData as data
-    // call apoc.do.when(
-    //   exists{match (n) where n.class="compartment" and n.entityName=data.entityName return n},
-    //   "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
-    //   'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
-    //   {data:data}
-    // ) yield value return value.result as result;
-    // `;
     var data={
       query: integrationQuery,
       queryData:{nodesData:compartments},
@@ -843,6 +831,7 @@ var databaseUtilities = {
     console.log(nodesData, edgesData, flag);
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
     var complexes = nodesData.filter((node)=>node.class==='complex');
+    var tags = nodesData.filter((node)=>node.class==='tag');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
@@ -852,11 +841,17 @@ var databaseUtilities = {
     if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
-    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
+    const tag_ids = await databaseUtilities.pushEPNToLocalDatabase(
       submapIds,
+      tags,
+      epnMatchingPercentage
+    );
+    const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
+      tag_ids,
       epns,
       epnMatchingPercentage
     );
+
     if(errorCheck!==null)return errorCheck;
     const node_ids = await databaseUtilities.pushProcessToLocalDatabase(
       processes,
