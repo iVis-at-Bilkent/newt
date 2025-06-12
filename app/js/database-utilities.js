@@ -228,12 +228,12 @@ var databaseUtilities = {
   },
 
   pushActiveContentToDatabase: async function (activeTabContent, flag) {
-    var nodesData = [];
-    var edgesData = [];
-    await databaseUtilities.processNodesData(nodesData, activeTabContent);
-    await databaseUtilities.processEdgesData(edgesData, activeTabContent);
-    console.log('UnProcessed data:',nodesData,edgesData);
-    await databaseUtilities.processData(nodesData, edgesData);
+    var nodes = [];
+    var edges = [];
+    await databaseUtilities.processNodesData(nodes, activeTabContent);
+    await databaseUtilities.processEdgesData(edges, activeTabContent);
+    console.log('UnProcessed data:',nodes,edges);
+    let {nodesData,edgesData} = await databaseUtilities.processData(nodes, edges);
     console.log('Processed data:',nodesData,edgesData);
     return await databaseUtilities.pushActiveNodesEdgesToDatabase(
       nodesData,
@@ -410,6 +410,29 @@ var databaseUtilities = {
         nodesData[i].isSpecial = false;
       }
     }
+
+    let updatedNodes = [];
+    //Remove tag nodes if they are disconnected
+    for(let i = 0; i < nodesData.length; i++) {
+      if (nodesData[i].class === "tag") {
+        // Check if the node has any edges
+        let hasEdge = false;
+        for (let j = 0; j < edgesData.length; j++) {
+          if (edgesData[j].source === nodesData[i].newtId || edgesData[j].target === nodesData[i].newtId) {
+            hasEdge = true;
+            break;
+          }
+        }
+        if (hasEdge) {
+          updatedNodes.push(nodesData[i]);
+        }
+      } else {
+        updatedNodes.push(nodesData[i]);
+      }
+    }
+    nodesData = updatedNodes;
+    return {
+      nodesData: updatedNodes,edgesData: edgesData}
   },
   cleanDatabase: async function () {
     var integrationQuery = `call custom.clearDatabase();`;
