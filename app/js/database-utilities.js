@@ -551,10 +551,10 @@ var databaseUtilities = {
       query: integrationQuery,
       queryData: {
         processes: list,
-        sourceThreshold: processIncomingContribution/100,
-        targetThreshold: processOutgoingContribution/100,
-        modifierThreshold: processAgentContribution/100,
-        overallThreshold: overallProcessPercentage/100
+        sourceThreshold: processIncomingContribution,
+        targetThreshold: processOutgoingContribution,
+        modifierThreshold: processAgentContribution,
+        overallThreshold: overallProcessPercentage
       }
     };
     await $.ajax({
@@ -1151,8 +1151,6 @@ var databaseUtilities = {
             }
           }
           var cy = appUtilities.getActiveCy();
-          
-          //Run layout
           databaseUtilities.performLayout();
         });
       
@@ -1203,6 +1201,7 @@ var databaseUtilities = {
   },
 
   performLayout: function () {
+    console.log("Performing layout");
     appUtilities.triggerLayout(cy, true,true);
   },
 
@@ -1703,8 +1702,6 @@ var databaseUtilities = {
         // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
         await databaseUtilities.addNodesEdgesToCy(nodes, edges);
-        // appUtilities.triggerLayout(cy,true);
-        // databaseUtilities.performLayout();
       },
       error: (req, status, err) => {
         console.error("Error fetching nodes/edges:", status, err);
