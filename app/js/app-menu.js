@@ -1646,7 +1646,14 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
-      chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
+      var mapType = chiseInstance.getMapType();
+
+      if(mapType == "SBML"){
+        chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex sbml');
+      }
+      else{
+        chiseInstance.createCompoundForGivenNodes(cy.nodes(':selected'), 'complex');
+      }
       inspectorUtilities.handleSBGNInspector();
     });
 
@@ -1675,7 +1682,7 @@ module.exports = function() {
 
       var mapType = chiseInstance.getMapType();
 
-      if(mapType == 'SIF'){
+      if(mapType == 'SIF' || mapType == 'SBML'){
         return;
       }
       // use cy instance associated with chise instance
