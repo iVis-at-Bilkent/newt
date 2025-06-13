@@ -6,7 +6,6 @@ const filePath = path.join(__dirname, 'index.html');
 
 const buildDate = new Date();
 const timestampString = `Last Update: ${buildDate.toLocaleString('tr-TR', { timeZone: 'Europe/Athens' })} (Türkiye)`;
-
 fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
         console.error('Error reading the HTML file:', err);
