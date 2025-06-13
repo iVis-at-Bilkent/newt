@@ -43,4 +43,11 @@ server.listen(port, function(){
   console.log('server listening on port: %d', port);
 });
 
+app.get('/env.js',(req,res)=>{
+	res.setHeader('Content-Type', 'application/javascript');
+	res.send(`window.__ENV__ = {
+		LOCAL_DATABASE: ${JSON.stringify(process.env.LOCAL_DATABASE || 'false')}
+	};`);
+});
+
 app.use(express.static(__dirname, {dotfiles: 'ignore'}));

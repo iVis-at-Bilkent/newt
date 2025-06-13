@@ -19,12 +19,12 @@ In order to deploy and run a local instance of the tool, please follow the steps
 
 - Local Neo4j Database
 If you want to use the local instance of Newt with a local Neo4j database, then follow these additional steps **before** running `npm install`:
-1. **Create a `.env` file** in the root of the project directory with the following content
+**Create a `.env` file** in the root of the project directory with the following content
 ```
 LOCAL_DATABASE=true
 NEO4J_PLUGIN_PATH=/path/to/your/neo4j/plugins
 ```
-> Replace the `NEO4J_PLUGIN_PATH` value with the absolute path of your neo4j database plugin folder.
+Replace the `NEO4J_PLUGIN_PATH` value with the absolute path of your neo4j database plugin folder.
 
 - Installation
 ```

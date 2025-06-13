@@ -8,7 +8,10 @@ var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
 var sifStyleFactory = require('./sif-style-factory');
 var _ = require('underscore');
-var databaseUtilities = require('./database-utilities')
+var databaseUtilities = require('./database-utilities');
+require('dotenv').config();
+
+var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
@@ -16,6 +19,21 @@ module.exports = function() {
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, PathsFromToQueryViewLocalDB, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
+
+  // checking if the user is using a local database
+  
+  
+  const showDatabaseMenu=()=>{  
+    console.log('IS_LOCAL_DATABASE', IS_LOCAL_DATABASE);
+    if (IS_LOCAL_DATABASE) {
+      $('#database-function').show();
+      $('#local-db-panel').show();
+    } else {
+      $('#database-function').hide();
+      $('#local-db-panel').hide();
+    }
+  };
+  showDatabaseMenu();
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -135,7 +153,7 @@ module.exports = function() {
   }
   
   console.log('init the sbgnviz template/page');
-
+  console.log('IS_LOCAL_DATABASE', process.env);
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
   dynamicResize();
