@@ -153,7 +153,7 @@ module.exports = function() {
   }
   
   console.log('init the sbgnviz template/page');
-  console.log('IS_LOCAL_DATABASE', process.env);
+
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
   dynamicResize();
