@@ -3,7 +3,8 @@ var app = express();
 var bodyParser = require('body-parser');
 const multer = require('multer');
 var server = require('http').createServer(app);
-require('./time-stamper.js');
+// calling time-stamper
+require('./time-stamper.js')
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
 	limit: "100mb",
