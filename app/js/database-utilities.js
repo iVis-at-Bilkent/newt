@@ -1201,7 +1201,6 @@ var databaseUtilities = {
   },
 
   performLayout: function () {
-    console.log("Performing layout");
     appUtilities.triggerLayout(cy, true,true);
   },
 

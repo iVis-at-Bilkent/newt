@@ -847,7 +847,6 @@ appUtilities.triggerLayout = function (_cy, randomize,fit=undefined) {
 
   // If 'animate-on-drawing-changes' is true then animate option must be true instead of false
   var preferences = {
-    // animate: currentGeneralProperties.currentLayoutProperties ? true : false
     animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
   };
 
@@ -859,17 +858,11 @@ appUtilities.triggerLayout = function (_cy, randomize,fit=undefined) {
     preferences.fit = fit===undefined ? randomize : fit;
   }
 
-//  if (currentLayoutProperties.animate === 'during') {
-//    delete preferences.animate;
-//  }
 
   // access chise instance related to cy
   var chiseInstance = appUtilities.getChiseInstance(cy);
   // layout must not be undoable
   this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
-  cy.one('layoutstop', function () {
-    cy.fit();
-  });
 };
 
 appUtilities.getExpandCollapseOptions = function (_cy) {
