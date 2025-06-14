@@ -4,6 +4,7 @@ var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
+const databaseUtilities = require('./database-utilities');
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -109,7 +110,22 @@ module.exports = function (chiseInstance) {
         selector: 'node, edge',
         onClickFunction: function (event) {
           let eles = event.target || event.cyTarget;
-          
+          let connections = eles.connectedEdges();
+          for (let i = 0; i < connections.length; i++) {
+            let className = connections[i].data('class');
+            let source = connections[i].source();
+            let target = connections[i].target();
+            delete databaseUtilities.edgesInDB[
+            [
+              source.id(),
+              target.id(),
+              className
+            ]
+            ];
+            // console.log("source:",source.id(), "target:", target.id(), "className:", className);
+          }
+          delete databaseUtilities.nodesInDB[eles.id()];
+
           chiseInstance.deleteElesSimple(eles);
           
           if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
@@ -228,6 +244,7 @@ module.exports = function (chiseInstance) {
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
+      
       {
         id: 'ctx-menu-select-all-object-of-this-type',
         content: 'Select Objects of This Type',
@@ -322,6 +339,16 @@ module.exports = function (chiseInstance) {
             var collection = cy.collection();
             collection = collection.add(cyTarget);
             appUtilities.resizeNodesToContent(collection);
+        }
+      },
+      {
+        id: 'ctx-menu-get-database-neighbors',
+        content: 'Get Neighbors from Database',
+        selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            databaseUtilities.getNeighboringNodes(cyTarget.id());
         }
       },
       {

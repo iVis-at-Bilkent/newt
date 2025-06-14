@@ -3,14 +3,13 @@ var app = express();
 var bodyParser = require('body-parser');
 const multer = require('multer');
 var server = require('http').createServer(app);
-// calling time-stamper
-require('./time-stamper.js')
+require('dotenv').config();
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
 	limit: "100mb",
-	extended: false
+	extended: true
   }));
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({limit:'100mb'}));
 var ajaxUtilities = require('./app/js/ajax-utilities');
 
 /**
@@ -42,6 +41,13 @@ app.post('/utilities/:fn', requestHandler);
 
 server.listen(port, function(){
   console.log('server listening on port: %d', port);
+});
+
+app.get('/env.js',(req,res)=>{
+	res.setHeader('Content-Type', 'application/javascript');
+	res.send(`window.__ENV__ = {
+		LOCAL_DATABASE: ${JSON.stringify(process.env.LOCAL_DATABASE || 'false')}
+	};`);
 });
 
 app.use(express.static(__dirname, {dotfiles: 'ignore'}));

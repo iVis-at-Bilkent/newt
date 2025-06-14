@@ -21,6 +21,17 @@ appUtilities.getScratch = function (cyOrEle, name) {
   return retVal;
 }
 
+appUtilities.localDbSettings = {
+  epnMatchingPercentage:100,
+  processIncomingContribution:33,
+  processOutgoingContribution:33,
+  processAgentContribution:33,
+  overallProcessPercentage:100,
+  complexMatchPercentage:100,
+  simpleChemicalCloningThreshold: 3,
+  allowSimpleChemicalCloning: false,
+}
+
 appUtilities.mapTypesToViewableText = {
   'PD': 'PD',
   'AF': 'AF',
@@ -55,9 +66,9 @@ appUtilities.adjustUIComponents = function (_cy) {
   var cy = _cy || appUtilities.getActiveCy();
 
   // adjust UI components in inspector map tab
-
   appUtilities.colorSchemeInspectorView.render();
   appUtilities.mapTabGeneralPanel.render();
+  appUtilities.mapTabLocalDBSettings.render();
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
   appUtilities.experimentTabPanel.render();
@@ -479,6 +490,7 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
     $('#inspector-style-tab a').blur();
   }
 
+
   // increment new network id
   appUtilities.nextNetworkId++;
 
@@ -488,6 +500,8 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
   // update the map type descriptor
   var mapType = appUtilities.getActiveChiseInstance().getMapType();
   $('#' + mapTypeDivId).text(appUtilities.getTabLabelName(mapType));
+
+
 
   // return the new instance
   return newInst;
@@ -643,10 +657,9 @@ appUtilities.getActiveChiseInstance = function () {
 
 // sets the active network through the network key to be activated
 appUtilities.setActiveNetwork = function (networkKey) {
-
   // get chise instance for network key
   var chiseInstance = this.getChiseInstance(networkKey);
-
+  
   // use the actual network id (network key would not be the actual network id)
   var networkId = this.getNetworkId(networkKey);
 
@@ -779,6 +792,14 @@ appUtilities.defaultGeneralProperties = {
   rearrangeOnComplexityManagement: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
+  epnMatchingPercentage:100,
+  processIncomingContribution:33,
+  processOutgoingContribution:33,
+  processAgentContribution:33,
+  overallProcessPercentage:100,
+  complexMatchPercentage:100,
+  allowSimpleChemicalCloning: false,
+  simpleChemicalCloningThreshold: 3,
   enablePorts: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,
@@ -813,7 +834,7 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-appUtilities.triggerLayout = function (_cy, randomize) {
+appUtilities.triggerLayout = function (_cy, randomize,fit=undefined) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
   var cy = _cy || this.getActiveCy();
@@ -826,7 +847,7 @@ appUtilities.triggerLayout = function (_cy, randomize) {
 
   // If 'animate-on-drawing-changes' is true then animate option must be true instead of false
   var preferences = {
-    animate: currentGeneralProperties.animateOnDrawingChanges ? true : false
+    animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
   };
 
   // if randomize parameter is defined set it as a preference
@@ -834,16 +855,12 @@ appUtilities.triggerLayout = function (_cy, randomize) {
   // in that case
   if ( randomize !== undefined ) {
     preferences.randomize = randomize;
-    preferences.fit = randomize;
+    preferences.fit = fit===undefined ? randomize : fit;
   }
 
-//  if (currentLayoutProperties.animate === 'during') {
-//    delete preferences.animate;
-//  }
 
   // access chise instance related to cy
   var chiseInstance = appUtilities.getChiseInstance(cy);
-
   // layout must not be undoable
   this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
 };
