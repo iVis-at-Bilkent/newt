@@ -22,10 +22,13 @@ try {
   process.exit(1);
 }
 
-
+if(!PLUGIN_PATH) {
+  console.error("NEO4J_PLUGIN_PATH is not set. Please set it in your .env file.");
+  process.exit(1);
+}
 const jarSource = path.join(__dirname, '../plugins/neo4j-custom-procedures-1.0.0.jar');
 const jarTarget = path.join(PLUGIN_PATH, 'neo4j-custom-procedures-1.0.0.jar');
-
+// Ensure the plugin directory exists
 if( !fs.existsSync(jarSource)) {
     console.error(`Source JAR file does not exist: ${jarSource}`);
     process.exit(1);
