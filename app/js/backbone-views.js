@@ -837,6 +837,20 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           }
 
           validChange = checkType;
+        } else if (newMapType == "SIF") {
+          //check no PD, AF or SBML elements in network
+          var checkType = true;
+          for (var i = 0; i < elements.length && checkType; i++) {
+            if (
+              elements[i].data("language") == "PD" ||
+              elements[i].data("language") == "AF" ||
+              elements[i].data("language") == "SBML" ||
+              elements[i].data("class").includes("compartment")
+            ) {
+              checkType = false;
+            }
+          }
+          validChange = checkType;
         } else if (newMapType == "SBML") {
           //check no PD  AF or SIF elements in netwrok
           var checkType = true;
