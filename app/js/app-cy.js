@@ -4,6 +4,7 @@ var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
+const databaseUtilities = require('./database-utilities');
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -109,7 +110,22 @@ module.exports = function (chiseInstance) {
         selector: 'node, edge',
         onClickFunction: function (event) {
           let eles = event.target || event.cyTarget;
-          
+          let connections = eles.connectedEdges();
+          for (let i = 0; i < connections.length; i++) {
+            let className = connections[i].data('class');
+            let source = connections[i].source();
+            let target = connections[i].target();
+            delete databaseUtilities.edgesInDB[
+            [
+              source.id(),
+              target.id(),
+              className
+            ]
+            ];
+            // console.log("source:",source.id(), "target:", target.id(), "className:", className);
+          }
+          delete databaseUtilities.nodesInDB[eles.id()];
+
           chiseInstance.deleteElesSimple(eles);
           
           if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
@@ -228,6 +244,7 @@ module.exports = function (chiseInstance) {
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
+      
       {
         id: 'ctx-menu-select-all-object-of-this-type',
         content: 'Select Objects of This Type',
@@ -295,7 +312,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"],'
-        +'[class="gene"],[class="protein"],[class="rna"],[class="truncated protein"],[class="ion channel"],[class="ion"],[class="receptor"],[class="simple molecule"],[class="unknown molecule"],[class="degradation"],[class="drug"],[class="phenotype sbml"],[class="complex sbml"]',
+        +'[class="gene"],[class="protein"],[class="rna"],[class="antisense rna"],[class="truncated protein"],[class="ion channel"],[class="ion"],[class="receptor"],[class="simple molecule"],[class="unknown molecule"],[class="degradation"],[class="drug"],[class="phenotype sbml"],[class="complex sbml"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -315,13 +332,23 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
             var collection = cy.collection();
             collection = collection.add(cyTarget);
             appUtilities.resizeNodesToContent(collection);
+        }
+      },
+      {
+        id: 'ctx-menu-get-database-neighbors',
+        content: 'Get Neighbors from Database',
+        selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            databaseUtilities.getNeighboringNodes(cyTarget.id());
         }
       },
       {
@@ -597,7 +624,7 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "antisense rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 

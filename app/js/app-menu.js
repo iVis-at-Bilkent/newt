@@ -8,12 +8,32 @@ var inspectorUtilities = require('./inspector-utilities');
 var tutorial = require('./tutorial');
 var sifStyleFactory = require('./sif-style-factory');
 var _ = require('underscore');
+var databaseUtilities = require('./database-utilities');
+require('dotenv').config();
+
+var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
+
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
-  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,
+  var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, PathsFromToQueryViewLocalDB, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,
         promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
+
+  // checking if the user is using a local database
+  
+  
+  const showDatabaseMenu=()=>{  
+    console.log('IS_LOCAL_DATABASE', IS_LOCAL_DATABASE);
+    if (IS_LOCAL_DATABASE) {
+      $('#database-function').show();
+      $('#local-db-panel').show();
+    } else {
+      $('#database-function').hide();
+      $('#local-db-panel').hide();
+    }
+  };
+  showDatabaseMenu();
 
   function validateSBGNML(xml) {
     $.ajax({
@@ -137,18 +157,26 @@ module.exports = function() {
   $(window).on('resize', _.debounce(dynamicResize, 100));
 
   dynamicResize();
-
+  databasePropertiesView = appUtilities.databasePropertiesView = new BackboneViews.DatabasePropertiesView({el: '#database-properties-table'});
+  pushActiveTabsView = appUtilities.pushActiveTabsView = new BackboneViews.PushActiveTabsView({el: '#push-active-tabs-table'});
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
   //generalPropertiesView = appUtilities.generalPropertiesView = new BackboneViews.GeneralPropertiesView({el: '#general-properties-table'});
   mapTabGeneralPanel = appUtilities.mapTabGeneralPanel = new BackboneViews.MapTabGeneralPanel({el: '#map-tab-general-container'});
   mapTabLabelPanel = appUtilities.mapTabLabelPanel = new BackboneViews.MapTabLabelPanel({el: '#map-tab-label-container'});
+  mapTabLocalDBSettings = appUtilities.mapTabLocalDBSettings = new BackboneViews.MapTabLocalDBSettings({el: '#map-tab-local-db-container'});
   mapTabRearrangementPanel = appUtilities.mapTabRearrangementPanel = new BackboneViews.MapTabRearrangementPanel({el: '#map-tab-rearrangement-container'});
   experimentTabPanel = appUtilities.experimentTabPanel = new BackboneViews.experimentTabPanel({el: '#map-tab-experiment-container'});
   neighborhoodQueryView = appUtilities.neighborhoodQueryView = new BackboneViews.NeighborhoodQueryView({el: '#query-neighborhood-table'});
+  neighborhoodQueryViewLocalDB = appUtilities.neighborhoodQueryViewLocalDB = new BackboneViews.NeighborhoodQueryViewLocalDB({el: '#query-neighborhood-localdatabase-table'});
   pathsBetweenQueryView = appUtilities.pathsBetweenQueryView = new BackboneViews.PathsBetweenQueryView({el: '#query-pathsbetween-table'});
+  pathsBetweenQueryViewLocalDB = appUtilities.pathsBetweenQueryViewLocalDB = new BackboneViews.PathsBetweenQueryViewLocalDB({el: '#query-pathsbetween-localdatabase-table'});
   pathsFromToQueryView = appUtilities.pathsFromToQueryView = new BackboneViews.PathsFromToQueryView({el: '#query-pathsfromto-table'});
+  PathsFromToQueryViewLocalDB = appUtilities.PathsFromToQueryViewLocalDB = new BackboneViews.PathsFromToQueryViewLocalDB({el: '#query-pathsfromto-localdatabase-table'});
   commonStreamQueryView = appUtilities.commonStreamQueryView = new BackboneViews.CommonStreamQueryView({el: '#query-commonstream-table'});
+  commonStreamQueryViewLocalDB = appUtilities.commonStreamQueryViewLocalDB = new BackboneViews.CommonStreamQueryViewLocalDB({el: '#query-commonstream-localdatabase-table'});
+  upStreamQueryViewLocalDB = appUtilities.upStreamQueryViewLocalDB = new BackboneViews.UpStreamQueryViewLocalDB({el: '#query-upstream-localdatabase-table'});
+  downStreamQueryViewLocalDB = appUtilities.downStreamQueryViewLocalDB = new BackboneViews.DownStreamQueryViewLocalDB({el: '#query-downstream-localdatabase-table'});
   pathsByURIQueryView = appUtilities.pathsByURIQueryView = new BackboneViews.PathsByURIQueryView({el: '#query-pathsbyURI-table'});
   mapByWPIDQueryView = appUtilities.mapByWPIDQueryView = new BackboneViews.MapByWPIDQueryView({el: '#query-mapbyWPID-table'});
   mapByReactomeIDQueryView = appUtilities.mapByReactomeIDQueryView = new BackboneViews.MapByReactomeIDQueryView({el: '#query-mapbyReactomeID-table'});
@@ -351,7 +379,81 @@ module.exports = function() {
         lines = lines.join("\n")
       }
 
-      chiseInstance.changeNodeLabel(node, lines);
+      const connectedEdges = node.connectedEdges();
+      let oldNodeId = node.data('id');
+      let newId = elementUtilities.generateNodeId();
+      const x = node.position().x;
+      const y = node.position().y;
+      const nodeData = node.data();
+      const nodeParams = {
+        class:nodeData.class,
+        language:nodeData.language,
+      };
+      const parent = nodeData.parent;
+      const visibility = node.data('visibility');
+      const newNode = chiseInstance.addNode(x,y,nodeParams,newId,parent,visibility);
+      for (const [property, value] of Object.entries(nodeData)) {
+        newNode.data(property,value);
+      }
+      chiseInstance.changeNodeLabel(newNode, lines);
+      connectedEdges.forEach((edge)=>{
+        let source =edge.data('source'),target=edge.data('target');
+        let connectedProcess = null;
+        if(source===oldNodeId){
+          source = newId;
+          connectedProcess = cy.getElementById(target);
+        }
+        if(target===oldNodeId){
+          target = newId;
+          connectedProcess = cy.getElementById(source);
+        }
+
+        let connectedNodeX = connectedProcess.position().x;
+        let connectedNodeY = connectedProcess.position().y;
+        let connectedProcessData = connectedProcess.data();
+        const connectedProcessParams={
+          class:connectedProcessData.class,
+          language:connectedProcessData.language,
+        };
+        const connectedProcessParent = connectedProcessData.parent;
+        const connectedProcessVisibility = connectedProcess.data('visibility');
+        let newConnectedProcess = chiseInstance.addNode(connectedNodeX,connectedNodeY,connectedProcessParams,undefined,connectedProcessParent,connectedProcessVisibility); 
+        
+        for (const [property, value] of Object.entries(connectedProcessData)) {
+          newConnectedProcess.data(property,value);
+        }
+
+        const connectedProcessEdges = connectedProcess.connectedEdges();
+        connectedProcessEdges.forEach((connectedEdge)=>{
+          let connectedEdgeSource = connectedEdge.data('source');
+          let connectedEdgeTarget = connectedEdge.data('target');
+          if(connectedEdgeSource===connectedProcess.id()){
+            connectedEdgeSource=newConnectedProcess.id();
+          }
+          if(connectedEdgeTarget===connectedProcess.id()){
+            connectedEdgeTarget=newConnectedProcess.id();
+          }
+          if(connectedEdgeSource===oldNodeId){
+            connectedEdgeSource=newNode.id();
+          }
+          if(connectedEdgeTarget===oldNodeId){
+            connectedEdgeTarget=newNode.id();
+          }
+
+          const edgeData = connectedEdge.data();
+          const edgeParams = {
+            class:edgeData.class,
+            language:edgeData.language,
+          }
+          const edgeVisibility = connectedEdge.data('visibility');
+          const groupId = edgeData.groupID;
+          chiseInstance.addEdge(connectedEdgeSource,connectedEdgeTarget,edgeParams,undefined,edgeVisibility,groupId);
+          connectedEdge.remove();
+        });
+        connectedProcess.remove();
+      });
+      connectedEdges.remove();
+      node.remove();
       inspectorUtilities.handleSBGNInspector();
 
     });
@@ -378,6 +480,45 @@ module.exports = function() {
       }
     });
 
+    $('#load-from-file').click(function(){
+      $('#input-file').trigger('click');
+    });
+
+    $('#input-file').change(function(e,fileObject){
+      // use the active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance assocated with chise instance
+      var cy = appUtilities.getActiveCy();
+      if($(this).val()===''&&!fileObject){
+        console.log("There was some problem with the file");
+        return;
+      }
+      var file = this.files[0] || fileObject;
+      var fileExtension = file.name.split('.').pop();
+      var loadCallbackInvalidityWarning=()=>{promptInvalidFileView.render()};
+      
+      if(fileExtension==='nwt'){
+        var loadCallbackSBGNMLValidity = function (text) {
+          //validateSBGNML(text);
+        }
+        params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning,,(e)=>{
+          pushActiveTabsView.render(e,"Push From File");
+        }];
+        caller = chiseInstance.loadFileToLocal;
+      }
+
+      if(cy.elements().length != 0) {
+        promptConfirmationView.render(() => {
+          setTimeout(() => caller(file, ...params), 150);
+        });
+      }
+      else {
+        caller(file, ...params);
+      }
+      $(this).val("");
+    });
+
     $("#load-file, #load-file-icon").click(function () {
       $("#file-input").trigger('click');
     });
@@ -393,7 +534,7 @@ module.exports = function() {
 
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
-
+        console.log('file:',file);
         var params, caller;
         var fileExtension = file.name.split('.').pop();
 
@@ -850,6 +991,7 @@ module.exports = function() {
         mapTabGeneralPanel.render();
         mapTabRearrangementPanel.render();
         mapTabLabelPanel.render();
+        // mapTabLocalDBSettings.render();
         experimentTabPanel.render();
         if (mapPropertiesExist){
           // update map panel
@@ -938,6 +1080,13 @@ module.exports = function() {
     $("#ui-guide").click(function (e) {
       e.preventDefault();
       tutorial.UIGuide();
+    });
+
+    $("#database-properties").click(async function (e) {
+      e.preventDefault();
+      const nodeCount = await databaseUtilities.getAllNodeCount();
+      console.log("nodeCount", nodeCount);
+      databasePropertiesView.render(nodeCount);
     });
 
     $("#about, #about-icon").click(function (e) {
@@ -1320,18 +1469,42 @@ module.exports = function() {
     $("#query-neighborhood").click(function (e) {
         neighborhoodQueryView.render();
     });
+    $("#query-neighborhood-localdatabase").click(function (e) {
+      neighborhoodQueryViewLocalDB.render();
+  });
 
     $("#query-pathsbetween, #query-pathsbetween-icon").click(function (e) {
         pathsBetweenQueryView.render();
     });
 
+    $("#query-pathsbetween-localdatabase, #query-pathsbetween-icon").click(function (e) {
+      console.log("clicked")
+      pathsBetweenQueryViewLocalDB.render();
+  });
+
     $("#query-pathsfromto").click(function (e) {
         pathsFromToQueryView.render();
     });
+    
+    $("#query-pathsfromto-localdatabase").click(function (e) {
+      PathsFromToQueryViewLocalDB.render();
+  });
 
     $("#query-commonstream").click(function (e) {
         commonStreamQueryView.render();
     });
+    $("#query-commonstream-localdatabase").click(function (e) {
+      commonStreamQueryViewLocalDB.render();
+  });
+
+  $("#query-upstream-localdatabase").click(function (e) {
+    upStreamQueryViewLocalDB.render();
+  });
+
+  $("#query-downstream-localdatabase").click(function (e) {
+    console.log("clocked")
+    downStreamQueryViewLocalDB.render();
+  });
 
     $("#query-pathsbyURI").click(function (e) {
         pathsByURIQueryView.render();
@@ -1970,6 +2143,32 @@ module.exports = function() {
 
     $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
       updatePalette(newMapType);
-    }); 
+    });
+
+    $('#get-all-data').click(async function (e) {
+      const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+      const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+      await databaseUtilities.getAllNodesAndEdgesFromDatabase(allowCloning, cloningThreshold);
+      cy.undoRedo().do("changeMenu", {
+        id: "fit-labels-to-nodes",
+        type: "checkbox",
+        property: "currentGeneralProperties.fitLabelsToNodes",
+        value: true
+      });
+    });
+
+
+
+    //////////////////////////////////////////////////////////////////////////
+    $("#push-active-tab-contents").click(function (e) {
+      // use the active chise instance
+      // var chiseInstance = appUtilities.getActiveChiseInstance();
+      
+      // var activeTabContent = chiseInstance.createJsonFromSBGN();
+
+ 
+      // databaseUtilities.pushActiveContentToDatabase(activeTabContent)
+      pushActiveTabsView.render();
+    })
   }
 };

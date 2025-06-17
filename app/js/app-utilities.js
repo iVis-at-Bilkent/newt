@@ -21,6 +21,17 @@ appUtilities.getScratch = function (cyOrEle, name) {
   return retVal;
 }
 
+appUtilities.localDbSettings = {
+  epnMatchingPercentage:100,
+  processIncomingContribution:33,
+  processOutgoingContribution:33,
+  processAgentContribution:33,
+  overallProcessPercentage:100,
+  complexMatchPercentage:100,
+  simpleChemicalCloningThreshold: 3,
+  allowSimpleChemicalCloning: false,
+}
+
 appUtilities.mapTypesToViewableText = {
   'PD': 'PD',
   'AF': 'AF',
@@ -55,9 +66,9 @@ appUtilities.adjustUIComponents = function (_cy) {
   var cy = _cy || appUtilities.getActiveCy();
 
   // adjust UI components in inspector map tab
-
   appUtilities.colorSchemeInspectorView.render();
   appUtilities.mapTabGeneralPanel.render();
+  appUtilities.mapTabLocalDBSettings.render();
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
   appUtilities.experimentTabPanel.render();
@@ -479,6 +490,7 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
     $('#inspector-style-tab a').blur();
   }
 
+
   // increment new network id
   appUtilities.nextNetworkId++;
 
@@ -488,6 +500,8 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
   // update the map type descriptor
   var mapType = appUtilities.getActiveChiseInstance().getMapType();
   $('#' + mapTypeDivId).text(appUtilities.getTabLabelName(mapType));
+
+
 
   // return the new instance
   return newInst;
@@ -643,10 +657,9 @@ appUtilities.getActiveChiseInstance = function () {
 
 // sets the active network through the network key to be activated
 appUtilities.setActiveNetwork = function (networkKey) {
-
   // get chise instance for network key
   var chiseInstance = this.getChiseInstance(networkKey);
-
+  
   // use the actual network id (network key would not be the actual network id)
   var networkId = this.getNetworkId(networkKey);
 
@@ -779,6 +792,14 @@ appUtilities.defaultGeneralProperties = {
   rearrangeOnComplexityManagement: true,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
+  epnMatchingPercentage:100,
+  processIncomingContribution:33,
+  processOutgoingContribution:33,
+  processAgentContribution:33,
+  overallProcessPercentage:100,
+  complexMatchPercentage:100,
+  allowSimpleChemicalCloning: false,
+  simpleChemicalCloningThreshold: 3,
   enablePorts: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,
@@ -813,7 +834,7 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = 'none';
 };
 
-appUtilities.triggerLayout = function (_cy, randomize) {
+appUtilities.triggerLayout = function (_cy, randomize,fit=undefined) {
 
   // use parametrized cy if exists. Otherwise use the recently active cy
   var cy = _cy || this.getActiveCy();
@@ -826,7 +847,7 @@ appUtilities.triggerLayout = function (_cy, randomize) {
 
   // If 'animate-on-drawing-changes' is true then animate option must be true instead of false
   var preferences = {
-    animate: currentGeneralProperties.animateOnDrawingChanges ? true : false
+    animate: (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges
   };
 
   // if randomize parameter is defined set it as a preference
@@ -834,16 +855,12 @@ appUtilities.triggerLayout = function (_cy, randomize) {
   // in that case
   if ( randomize !== undefined ) {
     preferences.randomize = randomize;
-    preferences.fit = randomize;
+    preferences.fit = fit===undefined ? randomize : fit;
   }
 
-//  if (currentLayoutProperties.animate === 'during') {
-//    delete preferences.animate;
-//  }
 
   // access chise instance related to cy
   var chiseInstance = appUtilities.getChiseInstance(cy);
-
   // layout must not be undoable
   this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
 };
@@ -1228,6 +1245,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#ffffff',
       'rna': '#ffffff',
+      'antisense rna': '#ffffff',
       'simple molecule': '#ffffff',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -1300,6 +1318,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#bdbdbd',
       'rna': '#bdbdbd',
+      'antisense rna': '#bdbdbd',
       'simple molecule': '#bdbdbd',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -1373,6 +1392,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#f0f0f0',
       'rna': '#f0f0f0',
+      'antisense rna': '#f0f0f0',
       'simple molecule': '#f0f0f0',
       'unknown molecule': '#f0f0f0',
       'phenotype sbml': '#f0f0f0',
@@ -1446,6 +1466,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#9ecae1',
       'rna': '#9ecae1',
+      'antisense rna': '#9ecae1',
       'simple molecule': '#9ecae1',
       'unknown molecule': '#9ecae1',
       'phenotype sbml': '#9ecae1',
@@ -1518,6 +1539,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#eff3ff',
       'rna': '#eff3ff',
+      'antisense rna': '#eff3ff',
       'simple molecule': '#eff3ff',
       'unknown molecule': '#eff3ff',
       'phenotype sbml': '#eff3ff',
@@ -1591,6 +1613,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#f4a582',
       'rna': '#f4a582',
+      'antisense rna': '#f4a582',
       'simple molecule': '#fddbc7',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -1663,6 +1686,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#92c5de',
       'rna': '#92c5de',
+      'antisense rna': '#92c5de',
       'simple molecule': '#d1e5f0',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -1735,6 +1759,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#dfc27d',
       'rna': '#dfc27d',
+      'antisense rna': '#dfc27d',
       'simple molecule': '#f6e8c3',
       'unknown molecule': '#f5f5f5',
       'phenotype sbml': '#f5f5f5',
@@ -1807,6 +1832,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#80cdc1',
       'rna': '#80cdc1',
+      'antisense rna': '#80cdc1',
       'simple molecule': '#c7eae5',
       'unknown molecule': '#f5f5f5',
       'phenotype sbml': '#f5f5f5',
@@ -1879,6 +1905,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#fdb863',
       'rna': '#fdb863',
+      'antisense rna': '#fdb863',
       'simple molecule': '#fee0b6',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -1951,6 +1978,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#b2abd2',
       'rna': '#b2abd2',
+      'antisense rna': '#b2abd2',
       'simple molecule': '#d8daeb',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -2023,6 +2051,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#a6dba0',
       'rna': '#a6dba0',
+      'antisense rna': '#a6dba0',
       'simple molecule': '#d9f0d3',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -2095,6 +2124,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#c2a5cf',
       'rna': '#c2a5cf',
+      'antisense rna': '#c2a5cf',
       'simple molecule': '#e7d4e8',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -2167,6 +2197,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#bababa',
       'rna': '#bababa',
+      'antisense rna': '#bababa',
       'simple molecule': '#e0e0e0',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -2239,6 +2270,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#f4a582',
       'rna': '#f4a582',
+      'antisense rna': '#f4a582',
       'simple molecule': '#fddbc7',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -2312,6 +2344,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#ffffff',
       'rna': '#ffffff',
+      'antisense rna': '#ffffff',
       'simple molecule': '#ffffff',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -2361,6 +2394,7 @@ for(var scheme in mapColorSchemes){
   //Multimer
   mapColorSchemes[scheme]['values']['gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
   mapColorSchemes[scheme]['values']['rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['antisense rna multimer'] = mapColorSchemes[scheme]['values']['antisense rna'];
   mapColorSchemes[scheme]['values']['simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
   mapColorSchemes[scheme]['values']['unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
   mapColorSchemes[scheme]['values']['phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
@@ -2391,6 +2425,7 @@ for(var scheme in mapColorSchemes){
   //Hypothetical
   mapColorSchemes[scheme]['values']['hypothetical gene'] = mapColorSchemes[scheme]['values']['gene'];
   mapColorSchemes[scheme]['values']['hypothetical rna'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical antisense rna'] = mapColorSchemes[scheme]['values']['antisense rna'];
   mapColorSchemes[scheme]['values']['hypothetical simple molecule'] = mapColorSchemes[scheme]['values']['simple molecule'];
   mapColorSchemes[scheme]['values']['hypothetical unkown molecule'] = mapColorSchemes[scheme]['values']['unkown molecule'];
   mapColorSchemes[scheme]['values']['hypothetical phenotype sbml'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
@@ -2405,6 +2440,7 @@ for(var scheme in mapColorSchemes){
   //Hypothetical and Multimer 
   mapColorSchemes[scheme]['values']['hypothetical gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
   mapColorSchemes[scheme]['values']['hypothetical rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical antisense rna multimer'] = mapColorSchemes[scheme]['values']['antisense rna'];
   mapColorSchemes[scheme]['values']['hypothetical simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
   mapColorSchemes[scheme]['values']['hypothetical unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
   mapColorSchemes[scheme]['values']['hypothetical phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
