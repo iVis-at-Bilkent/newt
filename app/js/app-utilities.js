@@ -1245,6 +1245,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#ffffff',
       'rna': '#ffffff',
+      'antisense rna': '#ffffff',
       'simple molecule': '#ffffff',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -1317,6 +1318,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#bdbdbd',
       'rna': '#bdbdbd',
+      'antisense rna': '#bdbdbd',
       'simple molecule': '#bdbdbd',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -1390,6 +1392,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#f0f0f0',
       'rna': '#f0f0f0',
+      'antisense rna': '#f0f0f0',
       'simple molecule': '#f0f0f0',
       'unknown molecule': '#f0f0f0',
       'phenotype sbml': '#f0f0f0',
@@ -1463,6 +1466,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#9ecae1',
       'rna': '#9ecae1',
+      'antisense rna': '#9ecae1',
       'simple molecule': '#9ecae1',
       'unknown molecule': '#9ecae1',
       'phenotype sbml': '#9ecae1',
@@ -1535,6 +1539,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#eff3ff',
       'rna': '#eff3ff',
+      'antisense rna': '#eff3ff',
       'simple molecule': '#eff3ff',
       'unknown molecule': '#eff3ff',
       'phenotype sbml': '#eff3ff',
@@ -1608,6 +1613,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#f4a582',
       'rna': '#f4a582',
+      'antisense rna': '#f4a582',
       'simple molecule': '#fddbc7',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -1680,6 +1686,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#92c5de',
       'rna': '#92c5de',
+      'antisense rna': '#92c5de',
       'simple molecule': '#d1e5f0',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -1752,6 +1759,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#dfc27d',
       'rna': '#dfc27d',
+      'antisense rna': '#dfc27d',
       'simple molecule': '#f6e8c3',
       'unknown molecule': '#f5f5f5',
       'phenotype sbml': '#f5f5f5',
@@ -1824,6 +1832,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#80cdc1',
       'rna': '#80cdc1',
+      'antisense rna': '#80cdc1',
       'simple molecule': '#c7eae5',
       'unknown molecule': '#f5f5f5',
       'phenotype sbml': '#f5f5f5',
@@ -1896,6 +1905,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#fdb863',
       'rna': '#fdb863',
+      'antisense rna': '#fdb863',
       'simple molecule': '#fee0b6',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -1968,6 +1978,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#b2abd2',
       'rna': '#b2abd2',
+      'antisense rna': '#b2abd2',
       'simple molecule': '#d8daeb',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -2040,6 +2051,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#a6dba0',
       'rna': '#a6dba0',
+      'antisense rna': '#a6dba0',
       'simple molecule': '#d9f0d3',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -2112,6 +2124,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#c2a5cf',
       'rna': '#c2a5cf',
+      'antisense rna': '#c2a5cf',
       'simple molecule': '#e7d4e8',
       'unknown molecule': '#f7f7f7',
       'phenotype sbml': '#f7f7f7',
@@ -2184,6 +2197,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#bababa',
       'rna': '#bababa',
+      'antisense rna': '#bababa',
       'simple molecule': '#e0e0e0',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -2256,6 +2270,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#f4a582',
       'rna': '#f4a582',
+      'antisense rna': '#f4a582',
       'simple molecule': '#fddbc7',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -2329,6 +2344,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       //SBML
       'gene' : '#ffffff',
       'rna': '#ffffff',
+      'antisense rna': '#ffffff',
       'simple molecule': '#ffffff',
       'unknown molecule': '#ffffff',
       'phenotype sbml': '#ffffff',
@@ -2378,6 +2394,7 @@ for(var scheme in mapColorSchemes){
   //Multimer
   mapColorSchemes[scheme]['values']['gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
   mapColorSchemes[scheme]['values']['rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['antisense rna multimer'] = mapColorSchemes[scheme]['values']['antisense rna'];
   mapColorSchemes[scheme]['values']['simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
   mapColorSchemes[scheme]['values']['unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
   mapColorSchemes[scheme]['values']['phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
@@ -2408,6 +2425,7 @@ for(var scheme in mapColorSchemes){
   //Hypothetical
   mapColorSchemes[scheme]['values']['hypothetical gene'] = mapColorSchemes[scheme]['values']['gene'];
   mapColorSchemes[scheme]['values']['hypothetical rna'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical antisense rna'] = mapColorSchemes[scheme]['values']['antisense rna'];
   mapColorSchemes[scheme]['values']['hypothetical simple molecule'] = mapColorSchemes[scheme]['values']['simple molecule'];
   mapColorSchemes[scheme]['values']['hypothetical unkown molecule'] = mapColorSchemes[scheme]['values']['unkown molecule'];
   mapColorSchemes[scheme]['values']['hypothetical phenotype sbml'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
@@ -2422,6 +2440,7 @@ for(var scheme in mapColorSchemes){
   //Hypothetical and Multimer 
   mapColorSchemes[scheme]['values']['hypothetical gene multimer'] = mapColorSchemes[scheme]['values']['gene'];
   mapColorSchemes[scheme]['values']['hypothetical rna multimer'] = mapColorSchemes[scheme]['values']['rna'];
+  mapColorSchemes[scheme]['values']['hypothetical antisense rna multimer'] = mapColorSchemes[scheme]['values']['antisense rna'];
   mapColorSchemes[scheme]['values']['hypothetical simple molecule multimer'] = mapColorSchemes[scheme]['values']['simple molecule'];
   mapColorSchemes[scheme]['values']['hypothetical unkown molecule multimer'] = mapColorSchemes[scheme]['values']['unkown molecule'];
   mapColorSchemes[scheme]['values']['hypothetical phenotype sbml multimer'] = mapColorSchemes[scheme]['values']['phenotype sbml'];
