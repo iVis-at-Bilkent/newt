@@ -3770,6 +3770,10 @@ appUtilities.transformClassInfo = function( classInfo ) {
     res = res.replace(' Not ', ' not ');
   }
 
+  if (res == "Antisense Rna") {
+    res = "AntiSenseRNA";
+  }
+
   if (res == "Ba Plain"){
     res = "BA";
   }
