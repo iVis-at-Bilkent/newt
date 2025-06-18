@@ -888,9 +888,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       } else {
         $("#map-type").val(currentMapType);
         appUtilities.promptMapTypeView.render(
-          "You cannot change map type " +
+          "You cannot change a map with " +
             appUtilities.mapTypesToViewableText[currentMapType] +
-            " to a map of type " +
+            " content to a map of type " +
             appUtilities.mapTypesToViewableText[newMapType] +
             "!"
         );
