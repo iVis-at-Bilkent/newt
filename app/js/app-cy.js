@@ -1145,12 +1145,16 @@ module.exports = function (chiseInstance) {
             var currentMapType = chiseInstance.getMapType();
             if(currentMapType == "HybridAny"){
               isMapTypeValid = true;
-            }else if(currentMapType == "HybridSbgn"){
-                if(nodeParams.language == "PD" || nodeParams.language =="AF"){
-                  isMapTypeValid = true;
-                }
+            }else if(currentMapType == "HybridSbgn" &&
+              (nodeParams.language == "PD" || nodeParams.language =="AF")){
+              isMapTypeValid = true;
             }else if(currentMapType == nodeParams.language){
               isMapTypeValid = true;
+            }else if(cy.elements().length == 0){ // if canvas is empty, change the map type and add node
+                chiseInstance.elementUtilities.setMapType(nodeParams.language);
+                $(document).trigger("changeMapTypeFromMenu", [nodeParams.language]);
+                currentMapType = nodeParams.language;
+                isMapTypeValid = true;
             }
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && !isMapTypeValid){
