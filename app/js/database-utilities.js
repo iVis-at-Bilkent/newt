@@ -1078,9 +1078,13 @@ var databaseUtilities = {
   },
 
   batchAddNodesEdgesToCy: async function (nodes, edges, source, target) {
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      await chiseInstance.addNodesEdges(nodes,edges);
-      databaseUtilities.performLayout();
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    await chiseInstance.addNodesEdges(nodes,edges).then(async function(){
+      $("#map-color-scheme_opposed_red_blue").click();
+      $("#color-scheme-inspector-style-select").val("3D");
+      $("#color-scheme-inspector-style-select").change();
+    });
+    databaseUtilities.performLayout();
   },
 
   addNodesEdgesToCy: async function (nodes, edges, source, target) {
