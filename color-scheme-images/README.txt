@@ -26,6 +26,18 @@ pg4	#e7d4e8
 pg5	#c2a5cf
 gr1	#bababa
 gr2	#e0e0e0
+cd1     #FFFF66
+cd2     #CCFFCC
+cd3     #66FF66
+cd4     #CC99FF
+cd5     #CCCC00
+cd6     #FF6666
+cd7     #CCFF66
+cd8     #cccccc
+cd9     #FFCCCC
+cd10        #CCFFFF
+cd11        #FFFFCC
+cd12        #9999FF
 
 bw	Black and white
 1	#ffffff
@@ -110,6 +122,12 @@ gr2	Grey red 2
 3	bw1
 4	gr2
 5	gr1
+cd CellDesigner
+1   cd1
+2   cd2
+3   cd3
+4   cd4
+5   cd5
 
 Black and white
 '#ffffff', '#000000'
@@ -141,3 +159,5 @@ Grey red
 '#bababa', '#e0e0e0', '#ffffff', '#fddbc7', '#f4a582'
 Grey red 2
 '#f4a582', '#fddbc7', '#ffffff', '#e0e0e0', '#bababa'
+CellDesigner
+'#FFFF66', '#CCFFCC', '#66FF66', '#CC99FF', '#CCCC00'
