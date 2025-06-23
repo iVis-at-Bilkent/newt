@@ -1077,6 +1077,16 @@ var databaseUtilities = {
     });
   },
 
+  batchAddNodesEdgesToCy: async function (nodes, edges, source, target) {
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    await chiseInstance.addNodesEdges(nodes,edges).then(async function(){
+      $("#map-color-scheme_opposed_red_blue").click();
+      $("#color-scheme-inspector-style-select").val("3D");
+      $("#color-scheme-inspector-style-select").change();
+    });
+    databaseUtilities.performLayout();
+  },
+
   addNodesEdgesToCy: async function (nodes, edges, source, target) {
     console.log("Edges in here:",edges);
     return new Promise((resolve) => {
@@ -1694,7 +1704,8 @@ var databaseUtilities = {
   
         // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges);
+        await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
+        // await databaseUtilities.addNodesEdgesToCy(nodes, edges);
       },
       error: (req, status, err) => {
         console.error("Error fetching nodes/edges:", status, err);
