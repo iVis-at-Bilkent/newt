@@ -1014,6 +1014,51 @@ inspectorUtilities.handleSBGNInspector = function () {
 
         html += "</td></tr>";
       }
+
+      // Orientation settings for "Tag" nodes
+      if (
+        selectedEles.length > 0 &&
+        chiseInstance.elementUtilities.trueForAllElements(
+          selectedEles,
+          function (ele) {
+            return ele.data("class") === "tag";
+          }
+        )
+      ) {
+        html +=
+          "<tr><td style='width: " +
+          width +
+          "px; text-align:right; padding-right: 5px;'><font class='sbgn-label-font'>Orientation</font></td>" +
+          "<td style='padding-left: 5px; width: '" +
+          width +
+          "'>";
+        html +=
+          "<select id='inspector-tag-orientation-select' class='input-medium layout-text' name='inspector-tag-orientation-select'>";
+        var orientations = [
+          { label: "Right", value: "right" },
+          { label: "Left", value: "left" },
+          { label: "Up", value: "up" },
+          { label: "Down", value: "down" },
+        ];
+        var commonOrientation =
+          chiseInstance.elementUtilities.getCommonProperty(
+            selectedEles,
+            function (ele) {
+              return ele.data("orientation") || "right";
+            }
+          );
+        orientations.forEach(function (opt) {
+          html +=
+            "<option value='" +
+            opt.value +
+            "'" +
+            (opt.value === commonOrientation ? " selected" : "") +
+            ">" +
+            opt.label +
+            "</option>";
+        });
+        html += "</select></td></tr>";
+      }
     } else {
       type = "edge";
 
@@ -1613,6 +1658,11 @@ inspectorUtilities.handleSBGNInspector = function () {
             chiseInstance.elementUtilities.getPortsOrdering(selected);
         }
 
+        // Push this action if the node is a tag (for orientation)
+        if (sbgnclass === "tag") {
+          nameToVal["orientation"] = selected.data("orientation") || "right";
+        }
+
         if (appUtilities.undoable) {
           var ur = cy.undoRedo();
           var actions = [];
@@ -1656,6 +1706,12 @@ inspectorUtilities.handleSBGNInspector = function () {
       $("#inspector-ports-ordering-select").on("change", function () {
         var ordering = this.value;
         chiseInstance.setPortsOrdering(selectedEles, ordering);
+      });
+
+      // Orientation selection for tag nodes
+      $("#inspector-tag-orientation-select").on("change", function () {
+        var orientation = this.value;
+        chiseInstance.changeData(selectedEles, "orientation", orientation);
       });
 
       $("#inspector-node-width, #inspector-node-height").change(function () {
