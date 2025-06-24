@@ -3604,10 +3604,6 @@ appUtilities.setMapProperties = function (mapProperties, _chiseInstance) {
     "currentGeneralProperties"
   );
 
-  currentGeneralProperties.dynamicLabelSize = "regular";
-
-  currentGeneralProperties.adjustNodeLabelFontSizeAutomatically = false;
-
   for (property in mapProperties) {
     var value = mapProperties[property];
     // convert strings to correct appropriate types
