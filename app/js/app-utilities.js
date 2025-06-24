@@ -2441,7 +2441,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       and: "#ffffff",
       or: "#ffffff",
       not: "#ffffff",
-      compartment: "#FFCDF2",
+      compartment: "#ffffff",
       submap: "#F2F2C0",
       //SBML
       gene: "#FFFF66",
@@ -2468,7 +2468,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       association: "#ffffff",
       "unknown logical operator": "#ffffff",
       "complex sbml": "#ffffff",
-      compartment: "#CCCC00",
+      compartment: "#ffffff",
       // AF
       "BA plain": "#ccffcc",
       "BA unspecified entity": "#ccffcc",
@@ -2965,6 +2965,18 @@ appUtilities.getActionsToApplyMapColorScheme = function (
             value: classBgColor,
           },
         });
+
+        // change border color for CD color scheme's compartment
+        if (newColorScheme === "cell_designer" && nodeClass === "compartment") {
+          actions.push({
+            name: "setDefaultProperty",
+            param: {
+              class: nodeClass,
+              name: "border-color",
+              value: "#CCCC00",
+            },
+          });
+        }
         actions.push({
           name: "setDefaultProperty",
           param: { class: nodeClass, name: "background-fit", value: "" },
