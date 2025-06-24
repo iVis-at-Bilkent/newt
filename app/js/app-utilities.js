@@ -2413,7 +2413,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
   },
   cell_designer: {
     name: "Cell Designer",
-    preview: ["#ccff66", "#ccffcc", "#CC99FF", "#FFCCCC", "#CCCC00"],
+    preview: ["#FFFF66", "#CCFFCC", "#66FF66", "#CC99FF", "#CCCC00"],
     values: {
       "unspecified entity": "#cccccc",
       "simple chemical": "#ccff66",
