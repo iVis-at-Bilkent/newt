@@ -1280,6 +1280,18 @@ appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
   "#fddbc7": "http://newteditor.org/color-scheme-images/rb2_gradient.png",
   "#fee0b6": "http://newteditor.org/color-scheme-images/pb2_gradient.png",
   "#ffffff": "http://newteditor.org/color-scheme-images/bw1_gradient.png",
+  "#FFFF66": "http://newteditor.org/color-scheme-images/cd1_gradient.png",
+  "#CCFFCC": "http://newteditor.org/color-scheme-images/cd2_gradient.png",
+  "#66FF66": "http://newteditor.org/color-scheme-images/cd3_gradient.png",
+  "#CC99FF": "http://newteditor.org/color-scheme-images/cd4_gradient.png",
+  "#CCCC00": "http://newteditor.org/color-scheme-images/cd5_gradient.png",
+  "#FF6666": "http://newteditor.org/color-scheme-images/cd6_gradient.png",
+  "#CCFF66": "http://newteditor.org/color-scheme-images/cd7_gradient.png",
+  "#cccccc": "http://newteditor.org/color-scheme-images/cd8_gradient.png",
+  "#FFCCCC": "http://newteditor.org/color-scheme-images/cd9_gradient.png",
+  "#CCFFFF": "http://newteditor.org/color-scheme-images/cd10_gradient.png",
+  "#FFFFCC": "http://newteditor.org/color-scheme-images/cd11_gradient.png",
+  "#9999FF": "http://newteditor.org/color-scheme-images/cd12_gradient.png",
 };
 
 appUtilities.colorCodeTo3DImage = colorCodeTo3DImage = {
@@ -1311,6 +1323,18 @@ appUtilities.colorCodeTo3DImage = colorCodeTo3DImage = {
   "#fddbc7": "http://newteditor.org/color-scheme-images/rb2_3d.png",
   "#fee0b6": "http://newteditor.org/color-scheme-images/pb2_3d.png",
   "#ffffff": "http://newteditor.org/color-scheme-images/bw1_3d.png",
+  "#FFFF66": "http://newteditor.org/color-scheme-images/cd1_3d.png",
+  "#CCFFCC": "http://newteditor.org/color-scheme-images/cd2_3d.png",
+  "#66FF66": "http://newteditor.org/color-scheme-images/cd3_3d.png",
+  "#CC99FF": "http://newteditor.org/color-scheme-images/cd4_3d.png",
+  "#CCCC00": "http://newteditor.org/color-scheme-images/cd5_3d.png",
+  "#FF6666": "http://newteditor.org/color-scheme-images/cd6_3d.png",
+  "#CCFF66": "http://newteditor.org/color-scheme-images/cd7_3d.png",
+  "#cccccc": "http://newteditor.org/color-scheme-images/cd8_3d.png",
+  "#FFCCCC": "http://newteditor.org/color-scheme-images/cd9_3d.png",
+  "#CCFFFF": "http://newteditor.org/color-scheme-images/cd10_3d.png",
+  "#FFFFCC": "http://newteditor.org/color-scheme-images/cd11_3d.png",
+  "#9999FF": "http://newteditor.org/color-scheme-images/cd12_3d.png",
 };
 
 appUtilities.mapColorSchemes = mapColorSchemes = {
@@ -2428,7 +2452,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       association: "#ffffff",
       dissociation: "#ffffff",
       phenotype: "#CC99FF",
-      tag: "#00FF96",
+      tag: "#66FF66",
       consumption: "#ffffff",
       production: "#ffffff",
       modulation: "#ffffff",
@@ -2442,7 +2466,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       or: "#ffffff",
       not: "#ffffff",
       compartment: "#ffffff",
-      submap: "#F2F2C0",
+      submap: "#FFFFCC",
       //SBML
       gene: "#FFFF66",
       rna: "#66FF66",
@@ -2450,7 +2474,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       "simple molecule": "#CCFF66",
       "unknown molecule": "#cccccc",
       "phenotype sbml": "#CC99FF",
-      drug: "#FF00FF",
+      drug: "#CC99FF",
       protein: "#CCFFCC",
       "truncated protein": "#FFCCCC",
       "ion channel": "#CCFFFF",
@@ -2966,14 +2990,19 @@ appUtilities.getActionsToApplyMapColorScheme = function (
           },
         });
 
-        // change border color for CD color scheme's compartment
-        if (newColorScheme === "cell_designer" && nodeClass === "compartment") {
+        // since we change border color of compartments in CD color scheme, 
+        // we need this to fallback to default color for other color schemes
+        if (nodeClass === "compartment") {
+          let borderColor = "#555555";
+          if (newColorScheme === "cell_designer") {
+            borderColor = "#CCCC00";
+          }
           actions.push({
             name: "setDefaultProperty",
             param: {
               class: nodeClass,
               name: "border-color",
-              value: "#CCCC00",
+              value: borderColor,
             },
           });
         }
