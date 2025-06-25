@@ -2893,6 +2893,37 @@ appUtilities.getActionsToApplyMapColorScheme = function (
       param: { eles: eles, name: "background-color", valueMap: idMap },
     });
 
+    // Render correct border colors of compartment nodes when switching to/from CD colors
+    if (newColorScheme === "cell_designer") {
+      var compartmentEles = eles.filter(function(ele) {
+        return ele.data && ele.data("class") === "compartment";
+      });
+      if (compartmentEles.length > 0) {
+        var borderColorMap = {};
+        compartmentEles.forEach(function(ele) {
+          borderColorMap[ele.id()] = "#CCCC00";
+        });
+        actions.push({
+          name: "changeData",
+          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
+        });
+      }
+    } else {
+      var compartmentEles = eles.filter(function(ele) {
+        return ele.data && ele.data("class") === "compartment";
+      });
+      if (compartmentEles.length > 0) {
+        var borderColorMap = {};
+        compartmentEles.forEach(function(ele) {
+          borderColorMap[ele.id()] = "#555555";
+        });
+        actions.push({
+          name: "changeData",
+          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
+        });
+      }
+    }
+
     // collapsed nodes' style should also be changed, special edge case
     actions.push({
       name: "changeDataDirty",
