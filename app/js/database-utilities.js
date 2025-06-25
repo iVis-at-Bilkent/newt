@@ -26,10 +26,27 @@ const categories = {
   not:'logical',
   compartment: "compartment",
   submap: "submap",
-  tag: "tag"
+  tag: "tag",
+
+  // AF nodes
+  BA_plain: "EPN",
+  BA_macromolecule: "EPN",
+  BA_simple_chemical: "EPN",
+  BA_nucleic_acid_feature: "EPN",
+  BA_unspecified_entity: "EPN",
+  BA_perturbing_agent: "EPN",
+  BA_complex: "EPN",
+  delay:"logical",
+
 };
 
 var epnCriterias= {
+  BA_plain:{
+    unitsOfInformation:{
+      contribution:1,
+      type:"array"
+    },
+  },
   macromolecule:{
     multimer:{
       contribution:0.3,
@@ -175,6 +192,20 @@ var databaseUtilities = {
     return refinedInfos.sort();
   },
 
+  processAFNode: function (currentNode, data) {
+    currentNode.newtId = data.id;
+    currentNode.entityName = data.label || "";
+    currentNode.language = data.language;
+    currentNode.class = databaseUtilities.calculateClass(data.class);
+    currentNode.category = categories[currentNode.class];
+    currentNode.unitsOfInformation = databaseUtilities.calculateInfo(
+      data.statesandinfos
+    );
+    if (data.hasOwnProperty("parent")) {
+      currentNode.parent = data.parent;
+    }
+  },
+
   processPdNode: function (currentNode, data) {
     currentNode.newtId = data.id;
     currentNode.entityName = data.label || "";
@@ -195,6 +226,16 @@ var databaseUtilities = {
     }
   },
 
+  processAfEdge: function (data) {
+    return {
+      stoichiometry: data.cardinality || 0,
+      class: databaseUtilities.calculateClass(data.class),
+      source: data.source,
+      target: data.target,
+      inDb: false,
+    }
+  },
+
   processPdEdge: function (data) {
     return {
       stoichiometry: data.cardinality || 0,
@@ -212,6 +253,9 @@ var databaseUtilities = {
       if (data.language == "PD") {
         databaseUtilities.processPdNode(currentNode, data);
       }
+      if (data.language == "AF") {
+        databaseUtilities.processAFNode(currentNode, data);
+      }
       nodesData.push(currentNode);
     }
   },
@@ -222,6 +266,9 @@ var databaseUtilities = {
       var data = activeTabContent.edges[i].data;
       if (data.language == "PD") {
         processed = databaseUtilities.processPdEdge(data);
+      }
+      else if (data.language == "AF") {
+        processed = databaseUtilities.processAfEdge(data);
       }
       edgesData.push(processed);
     }
