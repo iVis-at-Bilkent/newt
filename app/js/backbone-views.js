@@ -282,7 +282,6 @@ var LayoutPropertiesView = Backbone.View.extend({
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
     var options = this.getLayoutOptions(preferences, _chiseInstance);
-    console.log("Applying layout with options: ", options);
     chiseInstance.performLayout(options, notUndoable);
   },
   render: function () {
