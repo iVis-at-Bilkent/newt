@@ -408,6 +408,8 @@ module.exports = function() {
         newNode.data(property,value);
       }
       chiseInstance.changeNodeLabel(newNode, lines);
+      let children = node.children();
+      chiseInstance.changeParent(children, newNode, 0, 0);
       connectedEdges.forEach((edge)=>{
         let source =edge.data('source'),target=edge.data('target');
         let connectedProcess = null;
@@ -459,13 +461,23 @@ module.exports = function() {
           }
           const edgeVisibility = connectedEdge.data('visibility');
           const groupId = edgeData.groupID;
-          chiseInstance.addEdge(connectedEdgeSource,connectedEdgeTarget,edgeParams,undefined,edgeVisibility,groupId);
+          let newConnectedEdge = chiseInstance.addEdge(connectedEdgeSource,connectedEdgeTarget,edgeParams,undefined,edgeVisibility,groupId);
+          for (const [property, value] of Object.entries(edgeData)) {
+            newConnectedEdge.data(property, value);
+          } 
+
+          newConnectedEdge.data("cyedgebendeditingDistances", connectedEdge.data("cyedgebendeditingDistances"));
+          newConnectedEdge.data("cyedgebendeditingWeights", connectedEdge.data("cyedgebendeditingWeights"));
+          newConnectedEdge.data("cyedgecontroleditingDistances", connectedEdge.data("cyedgecontroleditingDistances"));
+          newConnectedEdge.data("cyedgecontroleditingWeigths", connectedEdge.data("cyedgecontroleditingWeigths"));
+          newConnectedEdge._private.classes._obj = connectedEdge._private.classes._obj;
           connectedEdge.remove();
         });
         connectedProcess.remove();
       });
       connectedEdges.remove();
       node.remove();
+      cy.style().update(); 
       inspectorUtilities.handleSBGNInspector();
 
     });
