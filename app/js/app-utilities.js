@@ -2474,7 +2474,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       "simple molecule": "#ccff66",
       "unknown molecule": "#cccccc",
       "phenotype sbml": "#cc99ff",
-      drug: "#cc99ff",
+      drug: "#ffcccc",
       protein: "#ccffcc",
       "truncated protein": "#ffcccc",
       "ion channel": "#ccffff",
