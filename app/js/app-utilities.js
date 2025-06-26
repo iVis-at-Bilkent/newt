@@ -3183,6 +3183,37 @@ appUtilities.getActionsToApplyMapColorScheme = function (
       },
     });
 
+    // Render correct border colors of compartment nodes when switching to/from CD colors for gradient and 3D schemes
+    if (newColorScheme === "cell_designer") {
+      var compartmentEles = eles.filter(function(ele) {
+        return ele.data && ele.data("class") === "compartment";
+      });
+      if (compartmentEles.length > 0) {
+        var borderColorMap = {};
+        compartmentEles.forEach(function(ele) {
+          borderColorMap[ele.id()] = "#CCCC00";
+        });
+        actions.push({
+          name: "changeData",
+          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
+        });
+      }
+    } else {
+      var compartmentEles = eles.filter(function(ele) {
+        return ele.data && ele.data("class") === "compartment";
+      });
+      if (compartmentEles.length > 0) {
+        var borderColorMap = {};
+        compartmentEles.forEach(function(ele) {
+          borderColorMap[ele.id()] = "#555555";
+        });
+        actions.push({
+          name: "changeData",
+          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
+        });
+      }
+    }
+
     // collapsed nodes' style should also be changed, special edge case
     actions.push({
       name: "changeDataDirty",
@@ -3277,6 +3308,8 @@ appUtilities.getActionsToApplyMapColorScheme = function (
           : colorCodeTo3DImage[
               mapColorSchemes[newColorScheme]["values"][nodeClass]
             ];
+
+      
       // nodeClass may not be defined in the defaultProperties (for edges, for example)
       if (nodeClass in chiseInstance.elementUtilities.getDefaultProperties()) {
         actions.push({
@@ -3331,6 +3364,23 @@ appUtilities.getActionsToApplyMapColorScheme = function (
             value: "1",
           },
         });
+
+        // since we change border color of compartments in CD color scheme, 
+        // we need this to fallback to default color for other color schemes in gradient and 3D modes too
+        if (nodeClass === "compartment") {
+          let borderColor = "#555555";
+          if (newColorScheme === "cell_designer") {
+            borderColor = "#cccc00";
+          }
+          actions.push({
+            name: "setDefaultProperty",
+            param: {
+              class: nodeClass,
+              name: "border-color",
+              value: borderColor,
+            },
+          });
+        }
       }
     }
   }
