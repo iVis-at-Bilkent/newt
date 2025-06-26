@@ -1163,7 +1163,7 @@ module.exports = function (chiseInstance) {
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not' || nodeType === 'delay')
                 {
                     var newEle = cy.nodes()[cy.nodes().length - 1];
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
