@@ -316,6 +316,13 @@ module.exports = function() {
 
     }
     cy.fit( cy.elements(":visible"), 20 );
+
+    var mapType = chiseInstance.getMapType();
+    if (mapType === "SBML") {
+      appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+    } else if (mapType !== "SBML") {
+      appUtilities.applyMapColorScheme("black_white", "solid", appUtilities.colorSchemeInspectorView);
+    }
   });
 
 			   
@@ -2143,6 +2150,11 @@ module.exports = function() {
 
     $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
       updatePalette(newMapType);
+      if (newMapType === "SBML") {
+        appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+      } else if (newMapType !== "SBML") {
+        appUtilities.applyMapColorScheme("black_white", "solid", appUtilities.colorSchemeInspectorView);
+      }
     });
 
     $('#get-all-data').click(async function (e) {
