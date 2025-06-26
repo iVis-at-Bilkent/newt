@@ -38,6 +38,7 @@ cd9     #FFCCCC
 cd10        #CCFFFF
 cd11        #FFFFCC
 cd12        #9999FF
+cd13        #ffc3fa
 
 bw	Black and white
 1	#ffffff
