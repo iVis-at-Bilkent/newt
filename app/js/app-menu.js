@@ -319,7 +319,12 @@ module.exports = function() {
 
     var mapType = chiseInstance.getMapType();
     if (mapType === "SBML") {
-      appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+      // make the first SBML sample to have 3D style
+      if (filename === 'RUNX1_regulates_transcription_of_genes_involved_in_WNT_signaling.nwt') {
+        appUtilities.applyMapColorScheme("cell_designer", "3D", appUtilities.colorSchemeInspectorView);
+      } else {
+        appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+      }
     } else if (mapType !== "SBML") {
       appUtilities.applyMapColorScheme("black_white", "solid", appUtilities.colorSchemeInspectorView);
     }
