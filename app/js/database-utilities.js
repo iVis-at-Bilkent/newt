@@ -4,6 +4,7 @@ var appUtilities = require("./app-utilities");
 const { merge, cleanData } = require("jquery");
 const { handleSBGNInspector } = require("./inspector-utilities");
 const { LayoutPropertiesView } = require("./backbone-views");
+const chise = require("chise");
 
 var errorCheck =null;
 
@@ -38,6 +39,25 @@ const categories = {
   BA_complex: "EPN",
   delay:"logical",
 
+  // SIF nodes
+  SIF_macromolecule: "EPN",
+  SIF_simple_chemical: "EPN",
+
+  // SBML nodes
+  gene : "EPN",
+  rna : "EPN",
+  antisense_rna: "EPN",
+  protein : "EPN",
+  truncated_protein: "EPN",
+  ion_channel: "EPN",
+  receptor: "EPN",
+  ion: "EPN",
+  simple_molecule: "EPN",
+  unknown_molecule: "EPN",
+  degradation: "EPN",
+  drug: "EPN",
+  phenotype_sbml: "EPN",
+  complex_sbml: "EPN",
 };
 
 var epnCriterias= {
@@ -206,6 +226,40 @@ var databaseUtilities = {
     }
   },
 
+  processSIFNode: function (currentNode, data) {
+    currentNode.newtId = data.id;
+    currentNode.entityName = data.label || "";
+    currentNode.language = data.language;
+    currentNode.class = databaseUtilities.calculateClass(data.class);
+    currentNode.category = categories[currentNode.class];
+    currentNode.unitsOfInformation = databaseUtilities.calculateInfo(
+      data.statesandinfos
+    );
+    if (data.hasOwnProperty("parent")) {
+      currentNode.parent = data.parent;
+    }
+  },
+  
+  processSBMLNode: function (currentNode, data) {
+    currentNode.newtId = data.id;
+    currentNode.entityName = data.label || "";
+    currentNode.language = data.language;
+    currentNode.class = databaseUtilities.calculateClass(data.class);
+    currentNode.category = categories[currentNode.class];
+    currentNode.multimer = databaseUtilities.checkIfMultimer(data.class);
+    currentNode.stateVariables = databaseUtilities.calculateState(
+      data.statesandinfos
+    );
+    currentNode.unitsOfInformation = databaseUtilities.calculateInfo(
+      data.statesandinfos
+    );
+    currentNode.cloneMarker = data.clonemarker || false;
+    currentNode.cloneLabel = "";
+    if (data.hasOwnProperty("parent")) {
+      currentNode.parent = data.parent;
+    }
+  },
+
   processPdNode: function (currentNode, data) {
     currentNode.newtId = data.id;
     currentNode.entityName = data.label || "";
@@ -236,7 +290,27 @@ var databaseUtilities = {
     }
   },
 
+  processSifEdge: function (data) {
+    return {
+      stoichiometry: data.cardinality || 0,
+      class: databaseUtilities.calculateClass(data.class),
+      source: data.source,
+      target: data.target,
+      inDb: false,
+    }
+  },
+
   processPdEdge: function (data) {
+    return {
+      stoichiometry: data.cardinality || 0,
+      class: databaseUtilities.calculateClass(data.class),
+      source: data.source,
+      target: data.target,
+      inDb: false,
+    };
+  },
+
+  processSBMLEdge: function (data) {
     return {
       stoichiometry: data.cardinality || 0,
       class: databaseUtilities.calculateClass(data.class),
@@ -253,8 +327,16 @@ var databaseUtilities = {
       if (data.language == "PD") {
         databaseUtilities.processPdNode(currentNode, data);
       }
-      if (data.language == "AF") {
+      else if (data.language == "AF") {
         databaseUtilities.processAFNode(currentNode, data);
+      }
+      else if (data.language == "SIF") {
+        // if its a topology group, we need to skip it
+        // if (data.class === "topology group") continue;
+        databaseUtilities.processSIFNode(currentNode, data);
+      }
+      else if (data.language == "SBML") {
+        databaseUtilities.processSBMLNode(currentNode, data);
       }
       nodesData.push(currentNode);
     }
@@ -270,6 +352,12 @@ var databaseUtilities = {
       else if (data.language == "AF") {
         processed = databaseUtilities.processAfEdge(data);
       }
+      else if (data.language == "SIF") {
+        processed = databaseUtilities.processSifEdge(data);
+      }
+      else if (data.language == "SBML") {
+        processed = databaseUtilities.processSBMLEdge(data);
+      }
       edgesData.push(processed);
     }
   },
@@ -277,9 +365,10 @@ var databaseUtilities = {
   pushActiveContentToDatabase: async function (activeTabContent, flag) {
     var nodes = [];
     var edges = [];
+    console.log('UnProcessed data:',activeTabContent);    
     await databaseUtilities.processNodesData(nodes, activeTabContent);
     await databaseUtilities.processEdgesData(edges, activeTabContent);
-    console.log('UnProcessed data:',nodes,edges);
+    console.log('UnProcessed data 2:',nodes,edges);
     let {nodesData,edgesData} = await databaseUtilities.processData(nodes, edges);
     console.log('Processed data:',nodesData,edgesData);
     return await databaseUtilities.pushActiveNodesEdgesToDatabase(
@@ -294,7 +383,7 @@ var databaseUtilities = {
     var parentNodes = {};
     var nodesMap = {};
     var specialNodes = {};
-
+    var topologyGroups = {};
     // specialNodes map with be in this format (newtId or process Node): [[sourceClass, sourceCloneLab, sourceCloneMarker, sourceEntityName,
     //sourceMultimer, sourceParent, sourceStateVariable1,.., sourceStateVariableN, sourceUnitInformation1,..sourceUnitInformationN],
     //[targetClass, targetCloneLab, targetCloneMarker, targetEntityName, targeteMultimer, targetParent, targetStateVariable1,..,targetStateVariableN, targetUnitInformation1,...targetUnitInformationN],
@@ -312,13 +401,27 @@ var databaseUtilities = {
       if (
         nodesData[i].class == "complex" ||
         nodesData[i].class == "compartment" ||
-        nodesData[i].class == "submap"
+        nodesData[i].class == "submap" ||
+        nodesData[i].class == "complex_sbml"
       ) {
         parentNodes[nodesData[i].newtId] = nodesData[i].class;
       }
+      // Check if node is a topology group
+      if(nodesData[i].class === "topology_group") {
+         topologyGroups[nodesData[i].newtId] = [];
+      }
+
+      
       if (!nodesData[i].parent) {
         nodesData[i].parent = "none";
       }
+
+      // if the nodes's parent is in the topology then add it to the array
+      if( nodesData[i].parent && topologyGroups[nodesData[i].parent]) {
+        topologyGroups[nodesData[i].parent].push(nodesData[i].newtId);  
+        nodesData[i].parent = "none"; // reset the parent to none
+      }
+
       if (
         nodesData[i].class.endsWith("process") ||
         nodesData[i].class == "association" ||
@@ -328,11 +431,10 @@ var databaseUtilities = {
       }
       nodesMap[nodesData[i].newtId] = nodesData[i];
     }
-
     //Add child parent relationships if any
     for (let i = 0; i < nodesData.length; i++) {
-      if (nodesData[i].parent != "none") {
-        //Add to edgesData
+      console.log("Node parent", nodesData[i].newtId, nodesData[i].parent);
+      if (nodesData[i].parent != "none" && parentNodes[nodesData[i].parent]!=='complex_sbml') {
         var newEdge = {
           source: nodesData[i].newtId,
           target: nodesData[i].parent,
@@ -341,6 +443,35 @@ var databaseUtilities = {
         edgesData.push(newEdge);
       }
     }
+
+    // extending relationships from topology groups node's children to other nodes that are connected to the topology group
+    for(let i=0;i<edgesData.length;i++){
+      let edge = edgesData[i];
+      let source = edge.source;
+      let target = edge.target
+      let edgeClass = edge.class;
+      if(topologyGroups[source] || topologyGroups[target]){
+        let children = topologyGroups[source]?topologyGroups[source]:topologyGroups[target];
+        for(let i=0;i<children.length;i++){
+          let child = children[i];
+          let src = topologyGroups[source]?child:source;
+          let trg = topologyGroups[target]?child:target;
+          var newEdge = {
+            source: src,
+            target: trg,
+            class: edgeClass
+          };
+          edgesData.push(newEdge);
+        }
+      }
+    }
+    edgesData = edgesData.filter((edge)=>{
+      let source = edge.source;
+      let target = edge.target
+      if(topologyGroups[source] || topologyGroups[target])return false;
+      return true;
+    });
+    nodesData = nodesData.filter((node)=>node.class!=="topology_group");
 
     for (let i = 0; i < edgesData.length; i++) {
       edgesData[i].inDb = false;
@@ -367,7 +498,6 @@ var databaseUtilities = {
         edgesData[i].class != "belongs_to_submap" &&
         edgesData[i].class != "belongs_to_complex"
       ) {
-        console.log(edgesData[i])
         var targetId = edgesData[i].target;
         var target = nodesMap[targetId];
         var len = specialNodes[edgesData[i].source][1].length;
@@ -767,11 +897,14 @@ var databaseUtilities = {
   
     // Associate each complex with its children and parent (stripped)
     let complexIds = {};
+    console.log("epns:",JSON.parse(JSON.stringify(epns)));
     for (let complex of complexes) {
       let children = [];
       complex.parent = ids[complex.parent] || complexIds[complex.parent] || complex.parent;
+      console.log("Complex parent", complex.newtId);
       for (let i = 0; i < epns.length; i++) {
         let epn = epns[i];
+        console.log("Epn", epn);
         if (epn.parent === complex.newtId) {
           children.push(stripComplexProps(epn));
           epns.splice(i, 1);
@@ -781,7 +914,7 @@ var databaseUtilities = {
       complex.children = children;
     }
   
-    console.log("The new modified complexes after sanitization", complexes);
+    console.log("The new modified complexes after sanitization", JSON.parse(JSON.stringify(complexes)));
   
     // Build the query to call our stored procedure
     const data = {
@@ -899,11 +1032,13 @@ var databaseUtilities = {
     }
     const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage} = appUtilities.localDbSettings;
     console.log(nodesData, edgesData, flag);
-    var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex');
-    var complexes = nodesData.filter((node)=>node.class==='complex');
+    var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex' && node.class!=='complex_sbml');
+    var complexes = nodesData.filter((node)=>node.class==='complex' || node.class==='complex_sbml');
+  
     var tags = nodesData.filter((node)=>node.class==='tag');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
+    console.log('epns:',epns,'complexes:',complexes,'compartmentIds:',compartmentIds);
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
@@ -1124,7 +1259,7 @@ var databaseUtilities = {
     });
   },
 
-  batchAddNodesEdgesToCy: async function (nodes, edges, source, target) {
+  batchAddNodesEdgesToCy: async function (nodes, edges) {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     await chiseInstance.addNodesEdges(nodes,edges,true).then(async function(){
       $("#map-color-scheme_opposed_red_blue").click();
@@ -1654,9 +1789,17 @@ var databaseUtilities = {
       MATCH (n)
       OPTIONAL MATCH (n)-[r]->(m)
         WHERE NOT type(r) STARTS WITH 'belongs_to_'
+      WITH
+        collect(DISTINCT n)            AS nodes,
+        collect(DISTINCT r)            AS edges,          // ← comma here
+        collect(DISTINCT n.language)   AS languages
       RETURN
-        collect(DISTINCT n) AS nodes,
-        collect(DISTINCT r) AS edges
+        nodes,                                           // ← nodes, not node
+        edges,
+        CASE
+          WHEN size(languages) > 1 THEN 'HybridAny'
+          ELSE head(languages)
+        END AS language
     `;
     const data = { query, queryData: {} };
   
@@ -1669,7 +1812,8 @@ var databaseUtilities = {
         if (!response.records.length) return console.log("No data returned");
         var cy = appUtilities.getActiveCy();
         // 2) Unpack
-        const [ nodesArray, edgesArray ] = response.records[0]._fields;
+        console.log(response.records[0]._fields);
+        const [ nodesArray, edgesArray,language ] = response.records[0]._fields;
         console.log("edges:",edgesArray);
         const nodes = [], edges = [];
         const nodesSet = new Set();
@@ -1751,6 +1895,8 @@ var databaseUtilities = {
   
         // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
+        let chiseInstance = appUtilities.getActiveChiseInstance();
+        chiseInstance.elementUtilities.setMapType(language);
         await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
         // await databaseUtilities.addNodesEdgesToCy(nodes, edges);
       },
