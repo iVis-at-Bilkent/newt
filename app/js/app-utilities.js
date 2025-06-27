@@ -921,37 +921,6 @@ appUtilities.triggerLayout = function (_cy, randomize, fit = undefined) {
   var chiseInstance = appUtilities.getChiseInstance(cy);
   // layout must not be undoable
   this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
-  // console.log('Layout triggered with preferences: ',
-  cy.one("layoutstop", function () {
-    cy.animate(
-      {
-        fit: {
-          padding: 20,
-        },
-      },
-      {
-        duration: 2000,
-        complete: function () {
-          cy.style().update();
-        },
-      }
-    );
-  });
-  // cy.one('layoutstop', function() {
-  //   cy.animate(
-  //     {
-  //     fit:{
-  //       padding:20,
-  //     }
-  //     },
-  //     {
-  //       duration: 2000,
-  //       complete: function() {
-  //         cy.style().update();
-  //       }
-  //     }
-  //   );
-  // });
 };
 
 appUtilities.getExpandCollapseOptions = function (_cy) {
