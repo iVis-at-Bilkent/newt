@@ -1201,7 +1201,7 @@ var databaseUtilities = {
           chiseInstance.changeNodeLabel(node, new_node.properties.entityName);
         }
 
-        if(new_node.properties.stateVariables.length>0){
+        if(new_node.properties.stateVariables && new_node.properties.stateVariables.length>0){
           for(let i=0;i<new_node.properties.stateVariables.length;i++){
             var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
             chiseInstance.addStateOrInfoBox(node, obj);
@@ -1212,7 +1212,7 @@ var databaseUtilities = {
         }
 
         // ✅ Set unitsOfInformation as a Cytoscape data field
-        if (new_node.properties.unitsOfInformation.length > 0) {
+        if (new_node.properties.unitsOfInformation && new_node.properties.unitsOfInformation.length > 0) {
           for(let i=0;i<new_node.properties.unitsOfInformation.length;i++){
             console.log("unit of information",new_node.properties.unitsOfInformation[i]);
             var uoi_obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
@@ -1250,7 +1250,7 @@ var databaseUtilities = {
       success: function (data) {
         for (var i = 0; i < data.records.length; i++) {
           idOfNodes.push(data.records[i]._fields[0].low);
-          newtIdOfNodes.push(data.records[i]._fields[1]);
+          if(newtIdOfNodes)newtIdOfNodes.push(data.records[i]._fields[1]);
         }
       },
       error: function (req, status, err) {
@@ -1337,7 +1337,7 @@ var databaseUtilities = {
               var cy = appUtilities.getActiveCy();
               var el = cy.getElementById(target[i]);
               var vu = cy.viewUtilities("get");
-              vu.highlight(el, 5);
+              vu.highlight(el, 3);
             }
           }
           var cy = appUtilities.getActiveCy();
@@ -1374,8 +1374,8 @@ var databaseUtilities = {
           edgesToAdd[i].properties.class === "belongs_to_complex";
         if (!notAllowedEdges){            
           var new_edge = chiseInstance.addEdge(
-            edgesToAdd[i].properties.target,
             edgesToAdd[i].properties.source,
+            edgesToAdd[i].properties.target,
             databaseUtilities.convertLabelToClass(edgesToAdd[i].properties.class),
             undefined,
             undefined
@@ -1430,7 +1430,9 @@ var databaseUtilities = {
       return errMessage;
     }
     query = graphALgos.pathsFromTo(limit);
-    var queryData = { sourceArray: sourceId, targetArray: targetId };
+    var idList =  [...new Set([...sourceId, ...targetId])];
+    var queryData = { idList: idList };
+    // var queryData = { sourceArray: sourceId, targetArray: targetId };
     var data = { query: query, queryData: queryData };
 
     await $.ajax({
@@ -1448,6 +1450,7 @@ var databaseUtilities = {
         var nodesSet = new Set();
         var edgesMap = new Map();
         var records = data.records;
+        var language = records[0]._fields[2];
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
@@ -1482,6 +1485,7 @@ var databaseUtilities = {
             }
           }
         }
+        appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
         databaseUtilities.addNodesEdgesToCy(
           nodes,
           edges,
@@ -1539,6 +1543,8 @@ var databaseUtilities = {
         var nodesSet = new Set();
         var edgesMap = new Map();
         var records = data.records;
+        var language = records[0]._fields[2];
+        appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
@@ -1573,7 +1579,7 @@ var databaseUtilities = {
             }
           }
         }
-        console.log("data:", nodes, edges, newtIdOfNodes);
+        console.log("data:", nodes, edges, newtIdOfNodes,language);
         await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
       },
       error: function (req, status, err) {
@@ -1627,6 +1633,7 @@ var databaseUtilities = {
         var nodesSet = new Set();
         var edgesMap = new Map();
         var records = data.records;
+        var language = records[0]._fields[2];
         for (let i = 0; i < records.length; i++) {
           var fields = records[i]._fields;
           for (let j = 0; j < fields[0].length; j++) {
@@ -1668,6 +1675,7 @@ var databaseUtilities = {
           }
         }
         console.log(nodes, edges, newtIdList, targetNodes);
+        appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
         await databaseUtilities.addNodesEdgesToCy(
           nodes,
           edges,
@@ -1685,7 +1693,7 @@ var databaseUtilities = {
   runCommonStream: async function (labelOfNodes, lengthLimit, direction) {
     var idOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
-
+    console.log('idOfNodes:',idOfNodes);
     if (idOfNodes.length == 0) {
       var errMessage = {
         err: "Invalid input",
@@ -1812,7 +1820,7 @@ var databaseUtilities = {
         if (!response.records.length) return console.log("No data returned");
         var cy = appUtilities.getActiveCy();
         // 2) Unpack
-        console.log(response.records[0]._fields);
+        console.log(response.records);
         const [ nodesArray, edgesArray,language ] = response.records[0]._fields;
         console.log("edges:",edgesArray);
         const nodes = [], edges = [];

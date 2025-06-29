@@ -2473,7 +2473,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "Neighborhood";
+    PCdialog = "Neighborhood in localDB";
 
     $(document)
       .off("click", "#save-query-neighborhood-localdatabase")
@@ -2834,7 +2834,7 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "PathsBetween";
+    PCdialog = "PathsBetween in localDB";
 
     $(document)
       .off("click", "#save-query-pathsbetween-localdatabase")
@@ -2892,36 +2892,6 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
             .replaceAll("\n", " ")
             .replaceAll("\t", " ")
             .split(" ");
-
-          // // Check if duplicate symbols are given or not
-          // if (handleDuplicateGenes(geneSymbolsArray)) {
-          //   return;
-          // }
-
-          // const sendPathsBetweenLocalQuery=()=>{
-
-          // };
-
-          // const sendQueries = async () => {
-          //   $(self.el).modal("toggle");
-          //   chiseInstance.startSpinner("paths-between-spinner");
-          //   // Check if the gene symbols that are added even exist in the database or not
-          //   // if (await handleGeneDoesNotExist(geneSymbolsArray)) {
-          //   //   chiseInstance.endSpinner("paths-between-spinner");
-          //   //   return;
-          //   // }
-          //   // else{
-          //     sendPathsBetweenLocalQuery();
-          //   // }
-          // };
-
-          // if (cy.nodes().length != 0) {
-          //   new PromptConfirmationView({
-          //     el: "#prompt-confirmation-table",
-          //   }).render(sendQueries);
-          // } else {
-          //   sendQueries();
-          // }
 
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
           var lengthLimit =  self.currentQueryParameters.lengthLimit
@@ -3613,7 +3583,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "PathsFromTo";
+    PCdialog = "PathsFromTo in localDB";
     $(document)
       .off("click", "#save-query-pathsfromto-localdatabase")
       .on(
@@ -3989,7 +3959,7 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "CommonStream";
+    PCdialog = "CommonStream in localDB";
 
     $(document)
       .off("click", "#save-query-commonstream-localdatabase")

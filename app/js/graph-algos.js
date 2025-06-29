@@ -2,16 +2,27 @@ var graphAlgos = {
   pathsFromTo: function (limit) {
     return `
     UNWIND $idList AS a
-UNWIND $idList AS b
-WITH a, b
-WHERE a <> b  // Ensure a and b are different
-MATCH p=(n)-[*]-(m)  // Match paths of any length
-WHERE id(n) = a AND id(m) = b 
-  AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
-WITH p, 
-     [x IN nodes(p) WHERE NOT x.class IN ['process', 'omitted_process','uncertain_process','association','dissociation','phenotype']] AS filteredNodes  // Filter out multiple node classes
-WHERE size(filteredNodes) - 1 <= ${limit}  // Ensure that the non-excluded nodes count is within the length limit
-RETURN nodes(p), relationships(p);
+    UNWIND $idList AS b
+    WITH a, b
+    WHERE a <> b  // Ensure a and b are different
+    MATCH p=(n)-[*]-(m)  // Match paths of any length
+    WHERE id(n) = a AND id(m) = b 
+      AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
+    WITH p, 
+        [x IN nodes(p) WHERE NOT x.category <> 'process' ] AS filteredNodes  // Filter out multiple node classes
+    WHERE size(filteredNodes) - 1 <= ${limit}  // Ensure that the non-excluded nodes count is within the length limit
+    unwind nodes(p) as node
+      unwind relationships(p) as rel
+      WITH collect(DISTINCT node) as nodes,
+            collect(DISTINCT rel) as relationships,
+            collect(DISTINCT node.language) as languages
+      
+      return nodes,
+            relationships,
+            CASE
+              WHEN size(languages) > 1 THEN 'HybridAny'
+              ELSE head(languages)
+            END AS language
     `;
     // return `UNWIND $sourceArray as source WITH source 
     //           UNWIND $targetArray as target 
@@ -24,35 +35,59 @@ RETURN nodes(p), relationships(p);
   },
 
   pathsBetween: function ( lengthLimit) {
-    var query = `UNWIND $idList as a 
+    var query = `
+    UNWIND $idList as a 
     UNWIND $idList as b 
     WITH   a, b 
-    MATCH p=(n )-[rels*..${lengthLimit*2}]-(m)
+    MATCH p=(n )-[rels*]-(m)
     WHERE id(n) = a and id(m) = b and a <>b and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
             and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
             and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
-            return nodes(p), relationships(p)`;
-//     var query=`
-//     UNWIND $idList AS a
-// UNWIND $idList AS b
-// WITH a, b
-// WHERE a <> b  // Ensure a and b are different
-// MATCH p=(n)-[*]-(m)  // Match paths of any length
-// WHERE id(n) = a AND id(m) = b 
-//   AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
-// WITH p, 
-//      [x IN nodes(p) WHERE NOT x.class IN ['process', 'omitted_process','uncertain_process','association','dissociation','phenotype']] AS filteredNodes  // Filter out multiple node classes
-// WHERE size(filteredNodes) - 1 <= ${lengthLimit}  // Ensure that the non-excluded nodes count is within the length limit
-// RETURN nodes(p), relationships(p);`
+    WITH p,
+          [n in nodes(p) where n.category <> 'process'] AS realNodes
+    where size(realNodes) - 1 <= ${lengthLimit}
+
+    unwind nodes(p) as node
+    unwind relationships(p) as rel
+    WITH collect(DISTINCT node) as nodes,
+         collect(DISTINCT rel) as relationships,
+         collect(DISTINCT node.language) as languages
+    return nodes,
+          relationships,
+          CASE
+            WHEN size(languages) > 1 THEN 'HybridAny'
+            ELSE head(languages)
+          END AS language
+    `;
     return query;
   },
   neighborhood: function ( lengthLimit) {
-    var query = `UNWIND $idList as ids
-        MATCH p=(a)-[rels*..${lengthLimit}]-(b)
-        WHERE id(a) = ids and  NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
-        and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
-        and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
-        RETURN nodes(p), relationships(p)`;
+    const query = `
+    UNWIND $idList AS startId
+    MATCH  p = (a)-[rels*]-(b)
+    WHERE  id(a) = startId
+      AND  NONE(r IN rels
+                WHERE type(r) IN ['belongs_to_compartment',
+                                  'belongs_to_submap',
+                                  'belongs_to_complex'])
+    WITH  p,
+          [n IN nodes(p) WHERE n.category <> 'process'] AS realNodes
+    WHERE size(realNodes) - 1 <= ${lengthLimit}
+
+    /* ───────── aggregate everything into ONE record ───────── */
+    UNWIND nodes(p)            AS n
+    UNWIND relationships(p)    AS r
+    WITH  collect(DISTINCT n)  AS nodes,
+          collect(DISTINCT r)  AS edges,
+          collect(DISTINCT n.language) AS languages
+
+    RETURN nodes,
+          edges,
+          CASE
+            WHEN size(languages) > 1 THEN 'HybridAny'
+            ELSE head(languages)
+          END AS language
+    `;
     return query;
   },
 
