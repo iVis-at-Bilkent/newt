@@ -1,47 +1,45 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="sbml">
-    <extension>
+<extension>
       <renderInformation 
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.0.1" background-color="#00000000">
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.1.0" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#f5f5f57f"/>
-          <colorDefinition id="color_2" value="#555555"/>
-          <colorDefinition id="color_3" value="#c7eae5ff"/>
-          <colorDefinition id="color_4" value="#80cdc1ff"/>
-          <colorDefinition id="color_5" value="#f6e8c3ff"/>
-          <colorDefinition id="color_6" value="#dfc27dff"/>
-          <colorDefinition id="color_7" value="#ffffffff"/>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_2" value="#cccc00"/>
+          <colorDefinition id="color_3" value="#ffffffff"/>
+          <colorDefinition id="color_4" value="#555555"/>
+          <colorDefinition id="color_5" value="#ccffccff"/>
+          <colorDefinition id="color_6" value="#ccff66ff"/>
+          <colorDefinition id="color_7" value="#ffff66ff"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
-          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/gb3_gradient.png"/>
-          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/gb4_gradient.png"/>
-          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/gb5_gradient.png"/>
-          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/gb2_gradient.png"/>
-          <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/gb1_gradient.png"/>
-          <backgroundImage id="image_6" value="http://newteditor.org/color-scheme-images/bw1_gradient.png"/>
+          <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
+          <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/cd2_3d.png"/>
+          <backgroundImage id="image_3" value="http://newteditor.org/color-scheme-images/cd7_3d.png"/>
+          <backgroundImage id="image_4" value="http://newteditor.org/color-scheme-images/cd1_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodef5f5f55555553.2514normalnormalHelvetica000image_1none505010010010.5" idList="comp_0 comp_1 comp_2">
+          <style id="nodeffffffCCCC003.2514normalnormalHelvetica000image_1none505010010010.5" idList="comp_0 comp_1 comp_2">
             <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="3.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="nodec7eae55555551.2511normalnormalHelvetica000image_2none505010010011" idList="species_5 species_6 species_9 species_17 species_22">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_1none505010010011" idList="species_5 species_6 species_9 species_17 species_22">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="node80cdc15555551.2511normalnormalHelvetica000image_3none505010010011" idList="species_0 species_4 species_19 species_13 species_23 species_26 species_2 species_8 species_10 species_1 species_20 species_27 species_11 species_7 species_14">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_4" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          <style id="nodeccffcc5555551.2511normalnormalHelvetica000image_2none505010010011" idList="species_0 species_4 species_19 species_13 species_23 species_26 species_2 species_8 species_10 species_1 species_20 species_27 species_11 species_7 species_14">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_5" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodef6e8c35555551.2511normalnormalHelvetica000image_4none505010010011" idList="species_18 species_24 species_12">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_5" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          <style id="nodeccff665555551.2511normalnormalHelvetica000image_3none505010010011" idList="species_18 species_24 species_12">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_6" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodedfc27d5555551.2511normalnormalHelvetica000image_5none505010010011" idList="species_25 species_15 species_16 species_21 species_3">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_6" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          <style id="nodeffff665555551.2511normalnormalHelvetica000image_4none505010010011" idList="species_25 species_15 species_16 species_21 species_3">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_7" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff5555551.25image_6none505010010011" idList="SbmlReactionExporter_0 SbmlReactionExporter_1 SbmlReactionExporter_2 SbmlReactionExporter_3">
-            <g stroke="color_2" stroke-width="1.25" fill="color_7" background-image="image_6" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
+          <style id="nodeffffff5555551.25image_1none505010010011" idList="SbmlReactionExporter_0 SbmlReactionExporter_1 SbmlReactionExporter_2 SbmlReactionExporter_3">
+            <g stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
           <style id="edge5555551.25" idList="species_15_SbmlReactionExporter_0 species_9_SbmlReactionExporter_0 SbmlReactionExporter_0_species_5 species_21_SbmlReactionExporter_1 SbmlReactionExporter_1_species_7 species_17_SbmlReactionExporter_1 species_15_SbmlReactionExporter_2 SbmlReactionExporter_2_species_14 species_22_SbmlReactionExporter_2 species_5_SbmlReactionExporter_2 species_21_SbmlReactionExporter_3 species_6_SbmlReactionExporter_3 SbmlReactionExporter_3_species_17">
-            <g stroke="color_2" stroke-width="1.25"/>
+            <g stroke="color_4" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
@@ -60,11 +58,19 @@
         <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <epnMatchingPercentage>100</epnMatchingPercentage>
+        <processIncomingContribution>33</processIncomingContribution>
+        <processOutgoingContribution>33</processOutgoingContribution>
+        <processAgentContribution>33</processAgentContribution>
+        <overallProcessPercentage>100</overallProcessPercentage>
+        <complexMatchPercentage>100</complexMatchPercentage>
+        <allowSimpleChemicalCloning>false</allowSimpleChemicalCloning>
+        <simpleChemicalCloningThreshold>3</simpleChemicalCloningThreshold>
         <enablePorts>true</enablePorts>
         <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
-        <mapColorScheme>opposed_green_brown</mapColorScheme>
-        <mapColorSchemeStyle>gradient</mapColorSchemeStyle>
+        <mapColorScheme>cell_designer</mapColorScheme>
+        <mapColorSchemeStyle>3D</mapColorSchemeStyle>
         <mapName>RUNX1 regulates transcription of genes involved in WNT signaling</mapName>
         <mapDescription/>
         <highlightColor>#0B9BCD</highlightColor>
