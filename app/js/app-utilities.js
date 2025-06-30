@@ -1261,6 +1261,7 @@ appUtilities.colorCodeToGradientImage = colorCodeToGradientImage = {
   "#ccffff": "http://newteditor.org/color-scheme-images/cd10_gradient.png",
   "#ffffcc": "http://newteditor.org/color-scheme-images/cd11_gradient.png",
   "#9999ff": "http://newteditor.org/color-scheme-images/cd12_gradient.png",
+  "#ffc3fa": "http://newteditor.org/color-scheme-images/cd13_gradient.png",
 };
 
 appUtilities.colorCodeTo3DImage = colorCodeTo3DImage = {
@@ -1304,6 +1305,7 @@ appUtilities.colorCodeTo3DImage = colorCodeTo3DImage = {
   "#ccffff": "http://newteditor.org/color-scheme-images/cd10_3d.png",
   "#ffffcc": "http://newteditor.org/color-scheme-images/cd11_3d.png",
   "#9999ff": "http://newteditor.org/color-scheme-images/cd12_3d.png",
+  "#ffc3fa": "http://newteditor.org/color-scheme-images/cd13_3d.png",
 };
 
 appUtilities.mapColorSchemes = mapColorSchemes = {
@@ -2443,7 +2445,7 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       "simple molecule": "#ccff66",
       "unknown molecule": "#cccccc",
       "phenotype sbml": "#cc99ff",
-      drug: "#ffcccc",
+      drug: "#ffc3fa",
       protein: "#ccffcc",
       "truncated protein": "#ffcccc",
       "ion channel": "#ccffff",
