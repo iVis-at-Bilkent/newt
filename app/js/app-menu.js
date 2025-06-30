@@ -319,15 +319,24 @@ module.exports = function() {
 
     var mapType = chiseInstance.getMapType();
     if (mapType === "SBML") {
-      // make the first SBML sample to have 3D style
-      if (filename === 'RUNX1_regulates_transcription_of_genes_involved_in_WNT_signaling.nwt') {
-        appUtilities.applyMapColorScheme("cell_designer", "3D", appUtilities.colorSchemeInspectorView);
-      } else {
-        appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+      // get current general properties to check if a color scheme was loaded from file
+      var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
+      var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      
+      // Only apply cell_designer scheme if the file (sample) doesn't have its own color scheme
+      // (i.e., if it's still using the default color scheme)
+      if (currentGeneralProperties.mapColorScheme === defaultColorScheme && 
+          currentGeneralProperties.mapColorSchemeStyle === defaultColorSchemeStyle) {
+        // make the first SBML sample (sample 21) to have 3D style
+        if (filename === 'RUNX1_regulates_transcription_of_genes_involved_in_WNT_signaling.nwt') {
+          appUtilities.applyMapColorScheme("cell_designer", "3D", appUtilities.colorSchemeInspectorView);
+        } else {
+          appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+        }
       }
-    } else if (mapType !== "SBML") {
-      appUtilities.applyMapColorScheme("black_white", "solid", appUtilities.colorSchemeInspectorView);
     }
+    
   });
 
 			   
