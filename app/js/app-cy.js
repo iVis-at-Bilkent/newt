@@ -400,6 +400,8 @@ module.exports = function (chiseInstance) {
 
     cy.clipboard({
       clipboardSize: 5, // Size of clipboard. 0 means unlimited. If size is exceeded, first added item in clipboard will be removed.
+      nodePrefix: "nwtN_", // Prefix to add to the IDs of pasted nodes 
+      edgePrefix: "nwtE_", // Prefix to add to the IDs of pasted edges 
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
         undoable: appUtilities.undoable // and if undoRedo extension exists
