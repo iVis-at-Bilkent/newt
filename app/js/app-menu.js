@@ -394,6 +394,7 @@ module.exports = function() {
         lines = lines.join("\n")
       }
       chiseInstance.changeNodeLabel(node, lines);
+      appUtilities.synchronizeStatesNewLabel(node);
       inspectorUtilities.handleSBGNInspector();
 
     });

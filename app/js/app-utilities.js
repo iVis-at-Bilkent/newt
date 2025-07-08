@@ -4837,4 +4837,151 @@ appUtilities.removeDuplicateProcessesAfterQuery = function () {
   chiseInstance.deleteElesSimple(deletion);
 };
 
+// When a new state variable is added to a node, synchronizes state variables across nodes with the same label and class
+appUtilities.synchronizeStatesAddition = function (node) {
+  if (!(node.data("language") === "PD" || node.data("language") === "SBML")) return;
+
+  const nodeLabel = node.data("label");
+  const nodeClass = node.data("class");
+
+  const otherNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`).not(node);
+  if (otherNodes.empty()) return;
+  
+  const chiseInstance = appUtilities.getActiveChiseInstance();
+  const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
+  
+  chiseInstance.addStateOrInfoBox(otherNodes, obj);
+};
+
+// When a state variable is deleted from a node, synchronizes state variables across nodes with the same label and class
+appUtilities.synchronizeStatesRemoval = function (node, i) {
+  if (!(((node.data("language") === "PD" || node.data("language") === "SBML")) && node.data("statesandinfos")[i].clazz === "state variable")) return;
+
+  const nodeLabel = node.data("label");
+  const nodeClass = node.data("class");
+
+  const otherNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`).not(node);  
+  if (otherNodes.empty()) return;
+
+  const chiseInstance = appUtilities.getActiveChiseInstance();
+
+  let stateIndex = 0;
+  for (let idx = 0; idx < i; idx++) {
+    if (node.data("statesandinfos")[idx].clazz === "state variable") {
+      stateIndex++;
+    }
+  }
+
+  otherNodes.forEach(otherNode => { 
+    let otherNodeStateIndex = -1;
+    let otherNodeRealIndex = -1;
+
+    for (let idx=0; idx < otherNode.data("statesandinfos").length; idx++) {
+      if (otherNode.data("statesandinfos")[idx].clazz === "state variable") {
+        otherNodeStateIndex++;
+      }
+      otherNodeRealIndex++;
+      if(otherNodeStateIndex === stateIndex) break;
+    }
+
+    chiseInstance.removeStateOrInfoBox(otherNode, otherNodeRealIndex);    
+  });
+};
+
+// When the label of a node is changed, synchronizes state variables across nodes with the same label and class
+appUtilities.synchronizeStatesNewLabel = function (node) {
+  if (!(node.data("language") === "PD" || node.data("language") === "SBML")) return;
+  
+  const nodeLabel = node.data("label");
+  const nodeClass = node.data("class");
+  
+  const otherNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`).not(node);
+  if (otherNodes.empty()) return;
+
+  const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
+  
+  const getStateVarCount = (n) =>
+    (n.data("statesandinfos") || []).filter(s => s.clazz === "state variable").length;
+
+  const referenceNode = otherNodes[0];
+  const refStateCount = getStateVarCount(referenceNode);
+  const currStateCount = getStateVarCount(node);
+  const diff = refStateCount - currStateCount;
+  
+  const chiseInstance = appUtilities.getActiveChiseInstance();
+
+  if (diff > 0) {
+    for (let i = 0; i < diff; i++) {
+      chiseInstance.addStateOrInfoBox(node, obj);
+    }
+  } else if (diff < 0) {
+    for (let i = 0; i < -diff; i++) {
+      chiseInstance.addStateOrInfoBox(otherNodes, obj);
+    }
+  }
+};
+
+// When the label of multiple nodes is changed at the same time, synchronizes state variables across nodes with the same label and class
+appUtilities.synchronizeStatesMultipleNewLabels = function (nodes) {
+  const chiseInstance = appUtilities.getActiveChiseInstance();
+  const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
+  
+  const getStateVarCount = (n) =>
+    (n.data("statesandinfos") || []).filter(s => s.clazz === "state variable").length;
+  
+  const groupedNodes = {};
+  
+  nodes.forEach(node => {
+    if (!(node.data("language") === "PD" || node.data("language") === "SBML")) return;
+    
+    const nodeLabel = node.data("label");
+    const nodeClass = node.data("class");
+    const groupKey = `${nodeLabel}|||${nodeClass}`;
+    
+    if (!groupedNodes[groupKey]) {
+      groupedNodes[groupKey] = [];
+    }
+    groupedNodes[groupKey].push(node);
+  });
+
+  Object.keys(groupedNodes).forEach(groupKey => {
+    const [nodeLabel, nodeClass] = groupKey.split('|||');
+    const groupNodes = groupedNodes[groupKey];
+    
+    const groupStateCounts = groupNodes.map(node => getStateVarCount(node));
+    const maxGroupStateCount = Math.max(...groupStateCounts);
+    
+    groupNodes.forEach(node => {
+      const currentStateCount = getStateVarCount(node);
+      const diff = maxGroupStateCount - currentStateCount;
+      
+      if (diff > 0) {
+        for (let i = 0; i < diff; i++) {
+          chiseInstance.addStateOrInfoBox(node, obj);
+        }
+      }
+    });
+    
+    const existingNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`)
+      .filter(node => !groupNodes.some(groupNode => groupNode.id() === node.id()));
+    
+    if (existingNodes.length === 0) {
+      return;
+    }
+
+    const existingStateCount = getStateVarCount(existingNodes[0]); 
+    if (maxGroupStateCount > existingStateCount) {
+      const diff = maxGroupStateCount - existingStateCount;
+      for (let i = 0; i < diff; i++) {
+        chiseInstance.addStateOrInfoBox(existingNodes, obj);
+      }
+    } else if (maxGroupStateCount < existingStateCount) {
+      const diff = existingStateCount - maxGroupStateCount;
+      for (let i = 0; i < diff; i++) {
+        chiseInstance.addStateOrInfoBox(cy.collection(groupNodes), obj);
+      }
+    }
+  });
+};
+
 module.exports = appUtilities;
