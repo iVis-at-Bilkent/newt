@@ -37,9 +37,8 @@ var AnnotationLayers = function() {
     layerListContainer = $('.annotation-layers-list');
     
     // Create default layer (Layer 0)
-    self.addLayer('Layer 0');
+    self.addLayer('Layer 0', true);
     
-    // Bind event handlers
     self.bindEvents();
     
     console.log('Annotation Layers System initialized');
@@ -78,7 +77,7 @@ var AnnotationLayers = function() {
       }
     });
     
-    // Annotation tool buttons (for future implementation)
+    // Annotation tool buttons
     $(document).on('click', '.annotation-layers-controls button', function(e) {
       e.preventDefault();
       var tool = $(this).attr('title');
@@ -90,10 +89,13 @@ var AnnotationLayers = function() {
   /**
    * Add a new layer
    * @param {string} name - The name of the layer
+   * @param {boolean} isDefaultLayer - Whether this is the default Layer 0
    * @returns {number} The ID of the created layer
    */
-  self.addLayer = function(name) {
+  self.addLayer = function(name, isDefaultLayer = false) {
     var layer = LayerModel(nextLayerId, name);
+    layer.isDefaultLayer = isDefaultLayer;
+    
     layers.push(layer);
     
     self.renderLayerList();
@@ -110,14 +112,19 @@ var AnnotationLayers = function() {
    * @param {number} layerId - The ID of the layer to delete
    */
   self.deleteLayer = function(layerId) {
-    // Prevent deletion of the last remaining layer
-    if (layers.length <= 1) {
-      alert('Cannot delete the last remaining layer.');
+    var layer = self.getLayer(layerId);
+    if (!layer) {
+      console.error('Layer not found:', layerId);
       return false;
     }
     
-    // Find and remove the layer
-    var layerIndex = layers.findIndex(layer => layer.id === layerId);
+    // Prevent deletion of the default Layer 0
+    if (layer.isDefaultLayer) {
+      alert('Layer 0 cannot be deleted. It is the default layer.');
+      return false;
+    }
+    
+    var layerIndex = layers.findIndex(l => l.id === layerId);
     if (layerIndex === -1) {
       console.error('Layer not found:', layerId);
       return false;
@@ -126,10 +133,12 @@ var AnnotationLayers = function() {
     var deletedLayer = layers[layerIndex];
     layers.splice(layerIndex, 1);
     
-    // If the deleted layer was selected, select another layer
+    // If the deleted layer was selected, select Layer 0
     if (currentLayerId === layerId) {
-      var newSelectedLayer = layers[0];
-      self.selectLayer(newSelectedLayer.id);
+      var defaultLayer = layers.find(l => l.isDefaultLayer);
+      if (defaultLayer) {
+        self.selectLayer(defaultLayer.id);
+      }
     }
     
     self.renderLayerList();
@@ -195,7 +204,7 @@ var AnnotationLayers = function() {
    * @returns {Array} Array of all layer objects
    */
   self.getAllLayers = function() {
-    return [...layers]; // Return a copy to prevent external modification
+    return [...layers];
   };
   
   /**
@@ -223,6 +232,7 @@ var AnnotationLayers = function() {
   self.createLayerElement = function(layer) {
     var isSelected = layer.id === currentLayerId;
     var visibilityIcon = layer.visible ? 'fa-eye' : 'fa-eye-slash';
+    var isDefaultLayer = layer.isDefaultLayer;
     
     var layerHtml = `
       <div class="layer-item ${isSelected ? 'selected' : ''}" 
@@ -234,6 +244,7 @@ var AnnotationLayers = function() {
                   cursor: pointer;">
         <div style="flex: 1;">
           <span style="font-weight: ${isSelected ? 'bold' : 'normal'};">${layer.name}</span>
+          ${isDefaultLayer ? '<small style="color: #666; margin-left: 8px;">(Default)</small>' : ''}
         </div>
         <div style="display: flex; gap: 5px;">
           <button type="button" 
@@ -242,12 +253,14 @@ var AnnotationLayers = function() {
                   title="${layer.visible ? 'Hide' : 'Show'} Layer">
             <i class="fa ${visibilityIcon}"></i>
           </button>
-          <button type="button" 
-                  class="btn btn-xs btn-danger layer-delete-btn" 
-                  data-layer-id="${layer.id}"
-                  title="Delete Layer">
-            <i class="fa fa-trash"></i>
-          </button>
+          ${!isDefaultLayer ? `
+            <button type="button" 
+                    class="btn btn-xs btn-danger layer-delete-btn" 
+                    data-layer-id="${layer.id}"
+                    title="Delete Layer">
+              <i class="fa fa-times"></i>
+            </button>
+          ` : ''}
         </div>
       </div>
     `;
