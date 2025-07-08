@@ -20,13 +20,16 @@ var AnnotationLayers = function() {
   var layerListContainer = null;
   
   var LayerModel = function(id, name, visible = true) {
+    console.log('Creating layer:', id, name, visible);
     return {
       id: id,
       name: name,
       visible: visible,
       elements: [], // Will store rectangles, arrows, text, images
       createdAt: new Date(),
-      zIndex: id
+      zIndex: id,
+      isCytoscapeLayer: id === 0,    // Layer 0 = Cytoscape canvas
+      isAnnotationLayer: id > 0       // Layers 1+ = HTML canvas
     };
   };
   
@@ -40,6 +43,7 @@ var AnnotationLayers = function() {
     self.addLayer('Layer 0', true);
     
     self.bindEvents();
+    self.updateAnnotationToolStates();
     
     console.log('Annotation Layers System initialized');
   };
@@ -93,16 +97,24 @@ var AnnotationLayers = function() {
    * @returns {number} The ID of the created layer
    */
   self.addLayer = function(name, isDefaultLayer = false) {
-    var layer = LayerModel(nextLayerId, name);
+    var layerId = isDefaultLayer ? 0 : nextLayerId;
+    var layer = LayerModel(layerId, name);
     layer.isDefaultLayer = isDefaultLayer;
     
     layers.push(layer);
     
+    // Create HTML canvas for annotation layers only
+    if (layer.isAnnotationLayer) {
+      self.createAnnotationCanvas(layer.id);
+    }
+    
     self.renderLayerList();
-    self.selectLayer(nextLayerId);
+    self.selectLayer(layerId);
     
     console.log('Layer added:', layer);
-    nextLayerId++;
+    if (!isDefaultLayer) {
+      nextLayerId++;
+    }
     
     return layer.id;
   };
@@ -148,6 +160,19 @@ var AnnotationLayers = function() {
   };
   
   /**
+   * Enable or disable annotation tool buttons based on selected layer
+   */
+  self.updateAnnotationToolStates = function() {
+    console.log('Updating annotation tool states');
+    var currentLayer = self.getCurrentLayer();
+    var disable = currentLayer && currentLayer.isCytoscapeLayer;
+    console.log('Current layer:', currentLayer);
+    console.log('Disable:', disable);
+    console.log("")
+    $('.annotation-layers-controls button').prop('disabled', disable).toggleClass('disabled', disable);
+  };
+
+  /**
    * Select a layer as the current active layer
    * @param {number} layerId - The ID of the layer to select
    */
@@ -160,6 +185,7 @@ var AnnotationLayers = function() {
     
     currentLayerId = layerId;
     self.renderLayerList();
+    self.updateAnnotationToolStates();
     
     console.log('Layer selected:', layer);
     return true;
@@ -266,6 +292,63 @@ var AnnotationLayers = function() {
     `;
     
     return $(layerHtml);
+  };
+
+  /**
+   * Create a canvas element for a specific annotation layer
+   * @param {number} layerId - The ID of the annotation layer
+   */
+  self.createAnnotationCanvas = function(layerId) {
+    var canvas = document.createElement('canvas');
+    canvas.id = 'annotation-canvas-layer-' + layerId;
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = (1000 + layerId).toString();
+    
+    var cyContainer = $('.sbgn-network-panel');
+    cyContainer.append(canvas);
+    
+    return canvas;
+  };
+
+  /**
+   * Add an annotation element to a specific layer
+   * @param {number} layerId - The ID of the annotation layer
+   * @param {string} elementType - Type of element ('rectangle', 'arrow', 'text', 'image')
+   * @param {Object} elementData - Data for the element (e.g., { x: 100, y: 100, width: 50, height: 50 })
+   */
+  self.addAnnotationElement = function(layerId, elementType, elementData) {
+    var layer = self.getLayer(layerId);
+    if (!layer || !layer.isAnnotationLayer) {
+      console.error('Invalid layer for annotations:', layerId);
+      return false;
+    }
+    
+    var canvas = self.getAnnotationCanvas(layerId);
+    if (!canvas) {
+      console.error('No canvas found for layer:', layerId);
+      return false;
+    }
+    
+    var ctx = canvas.getContext('2d');
+    switch(elementType) {
+      case 'rectangle':
+        self.drawRectangle(ctx, elementData);
+        break;
+      case 'arrow':
+        self.drawArrow(ctx, elementData);
+        break;
+      case 'text':
+        self.drawText(ctx, elementData);
+        break;
+      case 'image':
+        self.drawImage(ctx, elementData);
+        break;
+    }
   };
   
   return {
