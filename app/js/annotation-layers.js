@@ -122,21 +122,30 @@ var AnnotationLayers = function() {
 
     // Canvas mouse events for drawing
     $(document).on('mousedown', '[id^="annotation-canvas-layer-"]', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+      // Only prevent default if we're actively drawing or selecting
+      if (currentTool || selectedElement) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       self.handleCanvasMouseDown(e, this);
     });
     
     $(document).on('mousemove', '[id^="annotation-canvas-layer-"]', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+      // Only prevent default if we're actively drawing or selecting
+      if (currentTool || selectedElement) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       self.handleCanvasMouseMove(e, this);
       self.updateCursorOnMouseMove(e, this);
     });
     
     $(document).on('mouseup', '[id^="annotation-canvas-layer-"]', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+      // Only prevent default if we're actively drawing or selecting
+      if (currentTool || selectedElement) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       self.handleCanvasMouseUp(e, this);
     });
 
@@ -586,13 +595,27 @@ var AnnotationLayers = function() {
   self.setupLayerIsolation = function() {
     var currentLayer = self.getCurrentLayer();
     if (!currentLayer) return;
+    
+    // Always enable Cytoscape interactions (pan/zoom) for all layers
+    self.enableCytoscapeInteractions();
+    
+    // For annotation layers, we need to manage pointer events more intelligently
+    // to allow both Cytoscape interactions and annotation functionality
     if (currentLayer.isCytoscapeLayer) {
-      self.enableCytoscapeInteractions();
       self.disablePointerEvents();
     } else {
-      self.disableCytoscapeInteractions();
+      // For annotation layers, enable pointer events to allow selection
       self.enablePointerEvents();
     }
+  };
+
+  /**
+   * Set up smart pointer events for annotation layers
+   * This allows Cytoscape interactions when not actively drawing/selecting
+   */
+  self.setupSmartPointerEvents = function() {
+    // Initially disable pointer events to allow Cytoscape interactions
+    self.disablePointerEvents();
   };
 
   /**
@@ -704,6 +727,7 @@ var AnnotationLayers = function() {
     currentTool = toolName;
     console.log('Tool selected:', toolName);
     
+    // Enable pointer events immediately when a tool is selected
     self.enablePointerEvents();
     
     self.updateCanvasCursor();
@@ -716,16 +740,13 @@ var AnnotationLayers = function() {
    */
   self.deselectTool = function() {
     $('.annotation-layers-controls button').removeClass('active');
-    
     currentTool = null;
     console.log('Tool deselected');
-    
-    // Only disable pointer events if we're on the Cytoscape layer
+    // Only update pointer events for Cytoscape layer
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
       self.disablePointerEvents();
     }
-    
     self.updateCanvasCursor();
   };
 
@@ -748,54 +769,48 @@ var AnnotationLayers = function() {
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var cursor = 'default';
-    var shouldEnablePointerEvents = false;
     
     // Get current layer to check if we're on an annotation layer
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
     
-    if (currentTool) {
-      shouldEnablePointerEvents = true;
-    } else if (isOnAnnotationLayer) {
-      shouldEnablePointerEvents = true;
-      
-      if (selectedElement && selectedElement.type === 'rectangle') {
-        var transformedSelected = self.transformElementToCanvas(selectedElement);
-        var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
-        if (handleType) {
-          switch (handleType) {
-            case 'top-left':
-            case 'bottom-right':
-              cursor = 'nw-resize';
-        break;
-            case 'top-right':
-            case 'bottom-left':
-              cursor = 'ne-resize';
-        break;
-            case 'top':
-            case 'bottom':
-              cursor = 'ns-resize';
-        break;
-            case 'left':
-            case 'right':
-              cursor = 'ew-resize';
-        break;
-          }
-        } else if (annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement)) {
-          cursor = 'move';
-        }
-      } else {
-        var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
-        if (element) {
-          cursor = 'pointer';
-        }
-      }
+    // Only handle cursor updates on annotation layers
+    if (!isOnAnnotationLayer) {
+      return;
     }
     
-    if (shouldEnablePointerEvents) {
-      canvas.style.pointerEvents = 'auto';
-    } else {
-      canvas.style.pointerEvents = 'none';
+    // Check if we're hovering over an existing annotation
+    var hoveredElement = self.getElementAtPoint(modelCoords.x, modelCoords.y);
+    
+    if (currentTool === 'Add Rectangle') {
+      cursor = 'crosshair';
+    } else if (selectedElement && selectedElement.type === 'rectangle') {
+      var transformedSelected = self.transformElementToCanvas(selectedElement);
+      var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
+      if (handleType) {
+        switch (handleType) {
+          case 'top-left':
+          case 'bottom-right':
+            cursor = 'nw-resize';
+            break;
+          case 'top-right':
+          case 'bottom-left':
+            cursor = 'ne-resize';
+            break;
+          case 'top':
+          case 'bottom':
+            cursor = 'ns-resize';
+            break;
+          case 'left':
+          case 'right':
+            cursor = 'ew-resize';
+            break;
+        }
+      } else if (annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement)) {
+        cursor = 'move';
+      }
+    } else if (hoveredElement) {
+      cursor = 'pointer';
     }
     
     canvas.style.cursor = cursor;
@@ -805,19 +820,43 @@ var AnnotationLayers = function() {
    * Handle mouse down events on annotation canvas
    */
   self.handleCanvasMouseDown = function(event, canvas) {
-    console.log('Mouse down on canvas:', canvas.id, 'Tool:', currentTool);
-    
-    canvas.style.pointerEvents = 'auto';
+    console.log('=== MOUSE DOWN DEBUG ===');
+    console.log('Canvas ID:', canvas.id);
+    console.log('Current tool:', currentTool);
+    console.log('Selected element:', selectedElement);
     
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
     
+    console.log('Canvas coords:', canvasCoords);
+    console.log('Model coords:', modelCoords);
+    console.log('Layer ID:', layerId);
+    
+    // Check if we're on an annotation layer
+    var currentLayer = self.getCurrentLayer();
+    var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
+    
+    console.log('Current layer:', currentLayer);
+    console.log('Is on annotation layer:', isOnAnnotationLayer);
+    
+    // If not on annotation layer, don't handle the event
+    if (!isOnAnnotationLayer) {
+      console.log('Not on annotation layer, returning');
+      return;
+    }
+    
+    console.log('Layer elements:', currentLayer.elements);
+    
     if (!currentTool) {
+      console.log('No current tool, checking for element selection');
+      
       if (selectedElement && selectedElement.type === 'rectangle') {
+        console.log('Have selected element, checking for resize handles');
         var transformedSelected = self.transformElementToCanvas(selectedElement);
         var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
         if (handleType) {
+          console.log('Found resize handle:', handleType);
           isResizing = true;
           resizeHandle = handleType;
           originalElementData = Object.assign({}, selectedElement);
@@ -826,17 +865,24 @@ var AnnotationLayers = function() {
         }
       }
       
+      // Try to select an element at the point
+      console.log('Looking for element at point:', modelCoords.x, modelCoords.y);
       var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
+      console.log('Found element:', element);
+      
       if (element) {
+        console.log('Selecting element:', element);
         self.selectElement(element);
         return;
       } else {
+        console.log('No element found, deselecting');
         self.deselectElement();
         return;
       }
     }
     
     if (currentTool === 'Add Rectangle') {
+      console.log('Add Rectangle tool active, starting drawing');
       var currentLayer = self.getCurrentLayer();
       if (!currentLayer || !currentLayer.isAnnotationLayer) {
         console.log('No annotation layer selected, ignoring mouse down');
@@ -848,17 +894,26 @@ var AnnotationLayers = function() {
       
       console.log('Starting rectangle draw at (model coords):', startCoords);
     }
+    
+    console.log('=== END MOUSE DOWN DEBUG ===');
   };
 
   /**
    * Handle mouse move events on annotation canvas (for live preview)
    */
   self.handleCanvasMouseMove = function(event, canvas) {
-    canvas.style.pointerEvents = 'auto';
-    
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
+    
+    // Check if we're on an annotation layer
+    var currentLayer = self.getCurrentLayer();
+    var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
+    
+    // If not on annotation layer, don't handle the event
+    if (!isOnAnnotationLayer) {
+      return;
+    }
     
     // Handle resizing
     if (isResizing && selectedElement && resizeHandle) {
@@ -894,6 +949,18 @@ var AnnotationLayers = function() {
   self.handleCanvasMouseUp = function(event, canvas) {
     console.log('Mouse up on canvas:', canvas.id);
     
+    var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
+    var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
+    
+    // Check if we're on an annotation layer
+    var currentLayer = self.getCurrentLayer();
+    var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
+    
+    // If not on annotation layer, don't handle the event
+    if (!isOnAnnotationLayer) {
+      return;
+    }
+    
     // Handle resizing completion
     if (isResizing && selectedElement && resizeHandle) {
       isResizing = false;
@@ -905,8 +972,6 @@ var AnnotationLayers = function() {
     
     // Handle drawing completion
     if (isDrawing && startCoords && currentTool === 'Add Rectangle') {
-      var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
-      var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
       var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
       
       // Create final rectangle data (in model coordinates)
@@ -929,12 +994,6 @@ var AnnotationLayers = function() {
       previewElement = null;
       
       console.log('Rectangle drawing completed');
-    }
-    
-    // Update pointer events based on current state
-    var currentLayer = self.getCurrentLayer();
-    if (!currentTool && !selectedElement && currentLayer && currentLayer.isCytoscapeLayer) {
-      canvas.style.pointerEvents = 'none';
     }
   };
 
@@ -985,12 +1044,18 @@ var AnnotationLayers = function() {
    * @param {Object} element - The element to select
    */
   self.selectElement = function(element) {
+    console.log('=== selectElement DEBUG ===');
+    console.log('Selecting element:', element);
+    
     selectedElement = element;
-    console.log('Element selected:', element);
+    console.log('Selected element set to:', selectedElement);
     
     self.enablePointerEvents();
+    console.log('Pointer events enabled');
     
     self.redrawLayer(currentLayerId);
+    console.log('Layer redrawn');
+    console.log('=== END selectElement DEBUG ===');
   };
 
   /**
@@ -999,12 +1064,11 @@ var AnnotationLayers = function() {
   self.deselectElement = function() {
     selectedElement = null;
     console.log('Element deselected');
-    
+    // Only update pointer events for Cytoscape layer
     var currentLayer = self.getCurrentLayer();
-    if (!currentTool && currentLayer && currentLayer.isCytoscapeLayer) {
+    if (currentLayer && currentLayer.isCytoscapeLayer) {
       self.disablePointerEvents();
     }
-    
     self.redrawLayer(currentLayerId);
   };
 
@@ -1015,19 +1079,35 @@ var AnnotationLayers = function() {
    * @returns {Object|null} The element at the coordinates or null
    */
   self.getElementAtPoint = function(x, y) {
+    console.log('=== getElementAtPoint DEBUG ===');
+    console.log('Looking for element at coords:', x, y);
+    
     var currentLayer = self.getCurrentLayer();
-    if (!currentLayer || !currentLayer.isAnnotationLayer) return null;
+    if (!currentLayer || !currentLayer.isAnnotationLayer) {
+      console.log('No current layer or not annotation layer');
+      return null;
+    }
+    
+    console.log('Current layer elements:', currentLayer.elements);
     
     // Check elements in reverse order (top to bottom)
     for (var i = currentLayer.elements.length - 1; i >= 0; i--) {
       var element = currentLayer.elements[i];
+      console.log('Checking element:', element);
       if (element.type === 'rectangle') {
-        if (annotationUtil.isPointInRectangle(x, y, element)) {
+        var isInside = annotationUtil.isPointInRectangle(x, y, element);
+        console.log('Is point inside rectangle?', isInside);
+        console.log('Rectangle bounds:', element.x, element.y, element.x + element.width, element.y + element.height);
+        console.log('Point:', x, y);
+        if (isInside) {
+          console.log('Found element at point:', element);
           return element;
         }
       }
     }
     
+    console.log('No element found at point');
+    console.log('=== END getElementAtPoint DEBUG ===');
     return null;
   };
 
