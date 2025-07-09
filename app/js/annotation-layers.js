@@ -441,6 +441,7 @@ var AnnotationLayers = function() {
       activeCy.panningEnabled(true);
       activeCy.zoomingEnabled(true);
       activeCy.elements().selectable(true);
+      activeCy.boxSelectionEnabled(true);
     }
   };
 
@@ -454,6 +455,7 @@ var AnnotationLayers = function() {
       activeCy.zoomingEnabled(false);
       activeCy.elements().unselect();
       activeCy.elements().selectable(false);
+      activeCy.boxSelectionEnabled(false);
     }
   };
 
@@ -576,7 +578,15 @@ var AnnotationLayers = function() {
     var currentLayer = self.getCurrentLayer();
     if (!currentLayer) return;
     
-    // Always enable Cytoscape interactions (pan/zoom) for all layers
+    // If an annotation element is selected, disable Cytoscape interactions
+    // to prevent viewport panning when mouse is outside canvas
+    if (selectedElement) {
+      self.disableCytoscapeInteractions();
+      self.enablePointerEvents();
+      return;
+    }
+    
+    // Always enable Cytoscape interactions when no element is selected
     self.enableCytoscapeInteractions();
     
     // For annotation layers, we need to manage pointer events more intelligently
@@ -1010,6 +1020,9 @@ var AnnotationLayers = function() {
    */
   self.selectElement = function(element) {
     selectedElement = element;
+    // Disable Cytoscape interactions to prevent viewport panning
+    // when mouse moves outside the canvas
+    self.disableCytoscapeInteractions();
     self.enablePointerEvents();
     self.redrawLayer(currentLayerId);
   };
@@ -1019,10 +1032,16 @@ var AnnotationLayers = function() {
    */
   self.deselectElement = function() {
     selectedElement = null;
-    // Only update pointer events for Cytoscape layer
+    // Re-enable Cytoscape interactions when no element is selected
+    self.enableCytoscapeInteractions();
+    
+    // Update pointer events based on current layer
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
       self.disablePointerEvents();
+    } else {
+      // Keep pointer events enabled for annotation layers
+      self.enablePointerEvents();
     }
     self.redrawLayer(currentLayerId);
   };

@@ -65,7 +65,6 @@ var AnnotationUtil = function() {
       
       ctx.restore();
       
-      console.log('Rectangle drawn:', data, rectStyles);
       return true;
     } catch (error) {
       console.error('Error drawing rectangle:', error);
