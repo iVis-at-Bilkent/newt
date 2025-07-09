@@ -27,6 +27,8 @@ var AnnotationLayers = function() {
   var isResizing = false;
   var resizeHandle = null;
   var originalElementData = null;
+  var isMoving = false;
+  var moveStartCoords = null;
   
   // Viewport tracking for synchronization
   var viewportState = {
@@ -37,7 +39,6 @@ var AnnotationLayers = function() {
   };
   
   var LayerModel = function(id, name, visible = true) {
-    console.log('Creating layer:', id, name, visible);
     return {
       id: id,
       name: name,
@@ -60,7 +61,6 @@ var AnnotationLayers = function() {
     var checkCyReady = function() {
       var activeCy = appUtilities.getActiveCy();
       if (activeCy && activeCy.container()) {
-        console.log('Cytoscape is ready, initializing annotation layers');
     
     // Create default layer (Layer 0)
     self.addLayer('Layer 0', true);
@@ -70,9 +70,7 @@ var AnnotationLayers = function() {
     self.setupLayerIsolation();
     self.setupViewportSynchronization();
     
-    console.log('Annotation Layers System initialized');
       } else {
-        console.log('Waiting for cytoscape to be ready...');
         setTimeout(checkCyReady, 100);
       }
     };
@@ -122,7 +120,7 @@ var AnnotationLayers = function() {
 
     // Canvas mouse events for drawing
     $(document).on('mousedown', '[id^="annotation-canvas-layer-"]', function(e) {
-      // Only prevent default if we're actively drawing or selecting
+      // Only prevent default if we're actively drawing, selecting, or moving
       if (currentTool || selectedElement) {
         e.preventDefault();
         e.stopPropagation();
@@ -131,7 +129,7 @@ var AnnotationLayers = function() {
     });
     
     $(document).on('mousemove', '[id^="annotation-canvas-layer-"]', function(e) {
-      // Only prevent default if we're actively drawing or selecting
+      // Only prevent default if we're actively drawing, selecting, or moving
       if (currentTool || selectedElement) {
         e.preventDefault();
         e.stopPropagation();
@@ -141,7 +139,7 @@ var AnnotationLayers = function() {
     });
     
     $(document).on('mouseup', '[id^="annotation-canvas-layer-"]', function(e) {
-      // Only prevent default if we're actively drawing or selecting
+      // Only prevent default if we're actively drawing, selecting, or moving
       if (currentTool || selectedElement) {
         e.preventDefault();
         e.stopPropagation();
@@ -177,7 +175,6 @@ var AnnotationLayers = function() {
     self.renderLayerList();
     self.selectLayer(layerId);
     
-    console.log('Layer added:', layer);
     if (!isDefaultLayer) {
       nextLayerId++;
     }
@@ -228,7 +225,6 @@ var AnnotationLayers = function() {
     }
     
     self.renderLayerList();
-    console.log('Layer deleted:', deletedLayer);
     
     return true;
   };
@@ -237,12 +233,8 @@ var AnnotationLayers = function() {
    * Enable or disable annotation tool buttons based on selected layer
    */
   self.updateAnnotationToolStates = function() {
-    console.log('Updating annotation tool states');
     var currentLayer = self.getCurrentLayer();
     var disable = currentLayer && currentLayer.isCytoscapeLayer;
-    console.log('Current layer:', currentLayer);
-    console.log('Disable:', disable);
-    console.log("")
     $('.annotation-layers-controls button').prop('disabled', disable).toggleClass('disabled', disable);
     
     // Update cursor when layer changes
@@ -270,7 +262,6 @@ var AnnotationLayers = function() {
     self.updateAnnotationToolStates();
     self.setupLayerIsolation();
     
-    console.log('Layer selected:', layer);
     return true;
   };
   
@@ -292,8 +283,6 @@ var AnnotationLayers = function() {
         canvas.style.display = layer.visible ? 'block' : 'none';
       }
     }
-    
-    console.log('Layer visibility toggled:', layer);
     
     return layer.visible;
   };
@@ -363,12 +352,14 @@ var AnnotationLayers = function() {
           ${isDefaultLayer ? '<small style="color: #666; margin-left: 8px;">(Default)</small>' : ''}
         </div>
         <div style="display: flex; gap: 5px;">
-          <button type="button" 
-                  class="btn btn-xs btn-default layer-visibility-btn" 
-                  data-layer-id="${layer.id}"
-                  title="${layer.visible ? 'Hide' : 'Show'} Layer">
-            <i class="fa ${visibilityIcon}"></i>
-          </button>
+          ${!isDefaultLayer ? `
+            <button type="button" 
+                    class="btn btn-xs btn-default layer-visibility-btn" 
+                    data-layer-id="${layer.id}"
+                    title="${layer.visible ? 'Hide' : 'Show'} Layer">
+              <i class="fa ${visibilityIcon}"></i>
+            </button>
+          ` : ''}
           ${!isDefaultLayer ? `
             <button type="button" 
                     class="btn btn-xs btn-danger layer-delete-btn" 
@@ -389,7 +380,6 @@ var AnnotationLayers = function() {
    * @param {number} layerId - The ID of the annotation layer
    */
   self.createAnnotationCanvas = function(layerId) {
-    console.log('Creating canvas for layer:', layerId);
     
     var canvas = document.createElement('canvas');
     canvas.id = 'annotation-canvas-layer-' + layerId;
@@ -414,15 +404,10 @@ var AnnotationLayers = function() {
       return null;
     }
     
-    console.log('Found cytoscape container:', cyContainer);
-    console.log('Container dimensions:', cyContainer.offsetWidth, 'x', cyContainer.offsetHeight);
-    
     cyContainer.appendChild(canvas);
     
     // Resize canvas to match container
     var resizeSuccess = annotationUtil.resizeCanvas(canvas);
-    console.log('Canvas resize success:', resizeSuccess);
-    console.log('Canvas dimensions:', canvas.width, 'x', canvas.height);
     
     // Handle window resize
     $(window).on('resize', function() {
@@ -430,7 +415,6 @@ var AnnotationLayers = function() {
       self.redrawLayer(layerId);
     });
     
-    console.log('Canvas created for layer:', layerId, 'in container:', cyContainer);
     return canvas;
   };
 
@@ -438,7 +422,6 @@ var AnnotationLayers = function() {
    * Enable pointer events on all annotation canvases
    */
   self.enablePointerEvents = function() {
-    console.log('Enabling pointer events on annotation canvases');
     $('[id^="annotation-canvas-layer-"]').css('pointerEvents', 'auto');
   };
 
@@ -446,7 +429,6 @@ var AnnotationLayers = function() {
    * Disable pointer events on all annotation canvases
    */
   self.disablePointerEvents = function() {
-    console.log('Disabling pointer events on annotation canvases');
     $('[id^="annotation-canvas-layer-"]').css('pointerEvents', 'none');
   };
 
@@ -507,7 +489,6 @@ var AnnotationLayers = function() {
       self.redrawAllAnnotationLayers();
     });
 
-    console.log('Viewport synchronization set up');
   };
 
   /**
@@ -529,7 +510,6 @@ var AnnotationLayers = function() {
       height: height
     };
 
-    console.log('Viewport state updated:', viewportState);
   };
 
   /**
@@ -637,8 +617,6 @@ var AnnotationLayers = function() {
       return false;
     }
     
-    console.log('Adding annotation element:', layerId, elementType, elementData);
-    
     // Add element to layer data
     layer.elements.push(elementData);
     
@@ -700,7 +678,6 @@ var AnnotationLayers = function() {
     layer.elements.splice(elementIndex, 1);
     self.redrawLayer(layerId);
     
-    console.log('Element removed:', elementId);
     return true;
   };
   
@@ -711,7 +688,6 @@ var AnnotationLayers = function() {
   self.selectTool = function(toolName) {
     var currentLayer = self.getCurrentLayer();
     if (!currentLayer || currentLayer.isCytoscapeLayer) {
-      console.log('Cannot use annotation tools on cytoscape layer');
       return false;
     }
 
@@ -725,7 +701,6 @@ var AnnotationLayers = function() {
     $('.annotation-layers-controls button[title="' + toolName + '"]').addClass('active');
     
     currentTool = toolName;
-    console.log('Tool selected:', toolName);
     
     // Enable pointer events immediately when a tool is selected
     self.enablePointerEvents();
@@ -741,7 +716,6 @@ var AnnotationLayers = function() {
   self.deselectTool = function() {
     $('.annotation-layers-controls button').removeClass('active');
     currentTool = null;
-    console.log('Tool deselected');
     // Only update pointer events for Cytoscape layer
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
@@ -820,82 +794,59 @@ var AnnotationLayers = function() {
    * Handle mouse down events on annotation canvas
    */
   self.handleCanvasMouseDown = function(event, canvas) {
-    console.log('=== MOUSE DOWN DEBUG ===');
-    console.log('Canvas ID:', canvas.id);
-    console.log('Current tool:', currentTool);
-    console.log('Selected element:', selectedElement);
-    
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
-    
-    console.log('Canvas coords:', canvasCoords);
-    console.log('Model coords:', modelCoords);
-    console.log('Layer ID:', layerId);
     
     // Check if we're on an annotation layer
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
     
-    console.log('Current layer:', currentLayer);
-    console.log('Is on annotation layer:', isOnAnnotationLayer);
-    
     // If not on annotation layer, don't handle the event
     if (!isOnAnnotationLayer) {
-      console.log('Not on annotation layer, returning');
       return;
     }
     
-    console.log('Layer elements:', currentLayer.elements);
-    
     if (!currentTool) {
-      console.log('No current tool, checking for element selection');
-      
       if (selectedElement && selectedElement.type === 'rectangle') {
-        console.log('Have selected element, checking for resize handles');
         var transformedSelected = self.transformElementToCanvas(selectedElement);
         var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
         if (handleType) {
-          console.log('Found resize handle:', handleType);
           isResizing = true;
           resizeHandle = handleType;
           originalElementData = Object.assign({}, selectedElement);
-          console.log('Started resizing with handle:', handleType);
           return;
+        } else {
+          // Check if clicking inside the selected rectangle (for moving)
+          if (annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement)) {
+            isMoving = true;
+            moveStartCoords = modelCoords;
+            originalElementData = Object.assign({}, selectedElement);
+            return;
+          }
         }
       }
       
       // Try to select an element at the point
-      console.log('Looking for element at point:', modelCoords.x, modelCoords.y);
       var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
-      console.log('Found element:', element);
-      
       if (element) {
-        console.log('Selecting element:', element);
         self.selectElement(element);
         return;
       } else {
-        console.log('No element found, deselecting');
         self.deselectElement();
         return;
       }
     }
     
     if (currentTool === 'Add Rectangle') {
-      console.log('Add Rectangle tool active, starting drawing');
       var currentLayer = self.getCurrentLayer();
       if (!currentLayer || !currentLayer.isAnnotationLayer) {
-        console.log('No annotation layer selected, ignoring mouse down');
         return;
       }
       
       isDrawing = true;
       startCoords = modelCoords;
-      
-      console.log('Starting rectangle draw at (model coords):', startCoords);
     }
-    
-    console.log('=== END MOUSE DOWN DEBUG ===');
   };
 
   /**
@@ -930,9 +881,20 @@ var AnnotationLayers = function() {
       return;
     }
     
+    // Handle moving
+    if (isMoving && selectedElement && moveStartCoords) {
+      var deltaX = modelCoords.x - moveStartCoords.x;
+      var deltaY = modelCoords.y - moveStartCoords.y;
+      
+      selectedElement.x = originalElementData.x + deltaX;
+      selectedElement.y = originalElementData.y + deltaY;
+      
+      self.redrawLayer(layerId);
+      return;
+    }
+    
     // Handle drawing preview
     if (isDrawing && startCoords && currentTool === 'Add Rectangle') {
-      console.log('Mouse move on canvas:', canvas.id, 'Coords:', modelCoords);
       
       var rectData = annotationUtil.createRectangleData(
         startCoords.x, startCoords.y, 
@@ -947,7 +909,6 @@ var AnnotationLayers = function() {
    * Handle mouse up events on annotation canvas
    */
   self.handleCanvasMouseUp = function(event, canvas) {
-    console.log('Mouse up on canvas:', canvas.id);
     
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
@@ -966,7 +927,14 @@ var AnnotationLayers = function() {
       isResizing = false;
       resizeHandle = null;
       originalElementData = null;
-      console.log('Resizing completed');
+      return;
+    }
+    
+    // Handle moving completion
+    if (isMoving && selectedElement && moveStartCoords) {
+      isMoving = false;
+      moveStartCoords = null;
+      originalElementData = null;
       return;
     }
     
@@ -980,8 +948,6 @@ var AnnotationLayers = function() {
         modelCoords.x, modelCoords.y
       );
       
-      console.log('Final rectangle data (model coords):', rectData);
-      
       if (rectData.width > 5 && rectData.height > 5) {
         self.addAnnotationElement(layerId, 'rectangle', rectData);
         
@@ -993,7 +959,6 @@ var AnnotationLayers = function() {
       startCoords = null;
       previewElement = null;
       
-      console.log('Rectangle drawing completed');
     }
   };
 
@@ -1044,18 +1009,9 @@ var AnnotationLayers = function() {
    * @param {Object} element - The element to select
    */
   self.selectElement = function(element) {
-    console.log('=== selectElement DEBUG ===');
-    console.log('Selecting element:', element);
-    
     selectedElement = element;
-    console.log('Selected element set to:', selectedElement);
-    
     self.enablePointerEvents();
-    console.log('Pointer events enabled');
-    
     self.redrawLayer(currentLayerId);
-    console.log('Layer redrawn');
-    console.log('=== END selectElement DEBUG ===');
   };
 
   /**
@@ -1063,7 +1019,6 @@ var AnnotationLayers = function() {
    */
   self.deselectElement = function() {
     selectedElement = null;
-    console.log('Element deselected');
     // Only update pointer events for Cytoscape layer
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
@@ -1079,35 +1034,21 @@ var AnnotationLayers = function() {
    * @returns {Object|null} The element at the coordinates or null
    */
   self.getElementAtPoint = function(x, y) {
-    console.log('=== getElementAtPoint DEBUG ===');
-    console.log('Looking for element at coords:', x, y);
-    
     var currentLayer = self.getCurrentLayer();
     if (!currentLayer || !currentLayer.isAnnotationLayer) {
-      console.log('No current layer or not annotation layer');
       return null;
     }
-    
-    console.log('Current layer elements:', currentLayer.elements);
     
     // Check elements in reverse order (top to bottom)
     for (var i = currentLayer.elements.length - 1; i >= 0; i--) {
       var element = currentLayer.elements[i];
-      console.log('Checking element:', element);
       if (element.type === 'rectangle') {
-        var isInside = annotationUtil.isPointInRectangle(x, y, element);
-        console.log('Is point inside rectangle?', isInside);
-        console.log('Rectangle bounds:', element.x, element.y, element.x + element.width, element.y + element.height);
-        console.log('Point:', x, y);
-        if (isInside) {
-          console.log('Found element at point:', element);
+        if (annotationUtil.isPointInRectangle(x, y, element)) {
           return element;
         }
       }
     }
     
-    console.log('No element found at point');
-    console.log('=== END getElementAtPoint DEBUG ===');
     return null;
   };
 
@@ -1129,7 +1070,6 @@ var AnnotationLayers = function() {
     currentLayer.elements[elementIndex] = newData;
     self.redrawLayer(currentLayer.id);
     
-    console.log('Element updated:', newData);
     return true;
   };
   
