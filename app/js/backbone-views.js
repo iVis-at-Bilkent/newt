@@ -4979,7 +4979,7 @@ var FileSaveView = Backbone.View.extend({
           }
         } else if (fileformat === "celldesigner") {
           if (mapType == "SBML") {
-            chiseInstance.saveSbmlForSBML(
+            chiseInstance.saveAsCellDesignerFromSbml(
               filename,
               function (data, errorMessage) {
                 var exportError = new ExportErrorView({
