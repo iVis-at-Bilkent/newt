@@ -314,8 +314,8 @@ module.exports = function() {
       // select appropriate palette depending on the map
       updatePalette(chiseInstance.elementUtilities.mapType)
 
-      // Reset annotation layers when a file is loaded
-      if (window.annotationLayers && !filename.endsWith('.nwt')) {
+      // Reset annotation layers when a file is loaded or when a sample is loaded
+      if (window.annotationLayers && (!filename.endsWith('.nwt') || event.type === 'sbgnvizLoadSampleEnd')) {
         window.annotationLayers.resetAnnotationLayers();
       }
 
