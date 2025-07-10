@@ -250,6 +250,169 @@ var AnnotationUtil = function() {
   };
 
   /**
+   * Draw a text box on the canvas
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   * @param {Object} data - Text box data
+   * @param {number} data.x - X coordinate of top-left corner
+   * @param {number} data.y - Y coordinate of top-left corner
+   * @param {number} data.width - Width of the text box
+   * @param {number} data.height - Height of the text box
+   * @param {string} data.text - Text content
+   * @param {Object} [styles] - Custom styles for the text box
+   */
+  self.drawTextBox = function(ctx, data, styles) {
+    if (!ctx || !data) {
+      console.error('Invalid canvas context or data for text box drawing');
+      return false;
+    }
+
+    var textStyles = Object.assign({}, defaultStyles.text, styles || {});
+    
+    var { x, y, width, height, text } = data;
+    if (x === undefined || y === undefined || width === undefined || height === undefined) {
+      console.error('Missing required text box properties:', data);
+      return false;
+    }
+
+    try {
+      ctx.save();
+      
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1;
+      ctx.fillRect(x, y, width, height);
+      ctx.strokeRect(x, y, width, height);
+      
+      if (text && text.trim()) {
+        ctx.fillStyle = textStyles.color;
+        ctx.font = textStyles.fontSize + 'px ' + textStyles.fontFamily;
+        ctx.textBaseline = 'top';
+        
+        var textX = x + 5;
+        var textY = y + 5;
+        
+        var maxWidth = width - 10;
+        var words = text.split(' ');
+        var lines = [];
+        var currentLine = '';
+        
+        for (var i = 0; i < words.length; i++) {
+          var testLine = currentLine + (currentLine ? ' ' : '') + words[i];
+          var testWidth = ctx.measureText(testLine).width;
+          
+          if (testWidth > maxWidth && currentLine) {
+            lines.push(currentLine);
+            currentLine = words[i];
+          } else {
+            currentLine = testLine;
+          }
+        }
+        if (currentLine) {
+          lines.push(currentLine);
+        }
+        
+        var lineHeight = textStyles.fontSize + 2;
+        for (var j = 0; j < lines.length; j++) {
+          if (textY + j * lineHeight + lineHeight <= y + height) {
+            ctx.fillText(lines[j], textX, textY + j * lineHeight);
+          } else {
+            break;
+          }
+        }
+      }
+      
+      ctx.restore();
+      
+      return true;
+    } catch (error) {
+      console.error('Error drawing text box:', error);
+      return false;
+    }
+  };
+
+  /**
+   * Draw selection handles around a text box
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   * @param {Object} textBoxData - Text box data
+   * @param {number} handleSize - Size of the selection handles
+   */
+  self.drawTextBoxSelectionHandles = function(ctx, textBoxData, handleSize = 8) {
+    if (!ctx || !textBoxData) return false;
+    
+    var { x, y, width, height } = textBoxData;
+    var halfHandle = handleSize / 2;
+    
+    ctx.save();
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#0066cc';
+    ctx.lineWidth = 2;
+    
+    var corners = [
+      { x: x, y: y },
+      { x: x + width, y: y },
+      { x: x + width, y: y + height },
+      { x: x, y: y + height }
+    ];
+    
+    var edges = [
+      { x: x + width/2, y: y },
+      { x: x + width, y: y + height/2 },
+      { x: x + width/2, y: y + height },
+      { x: x, y: y + height/2 }
+    ];
+    
+    var allHandles = corners.concat(edges);
+    allHandles.forEach(function(handle) {
+      ctx.fillRect(handle.x - halfHandle, handle.y - halfHandle, handleSize, handleSize);
+      ctx.strokeRect(handle.x - halfHandle, handle.y - halfHandle, handleSize, handleSize);
+    });
+    
+    ctx.restore();
+    return true;
+  };
+
+  /**
+   * Check if a point is inside a text box
+   * @param {number} pointX - X coordinate of the point
+   * @param {number} pointY - Y coordinate of the point
+   * @param {Object} textBoxData - Text box data
+   * @returns {boolean} True if point is inside text box
+   */
+  self.isPointInTextBox = function(pointX, pointY, textBoxData) {
+    if (!textBoxData) return false;
+    
+    var { x, y, width, height } = textBoxData;
+    return pointX >= x && pointX <= x + width && 
+           pointY >= y && pointY <= y + height;
+  };
+
+  /**
+   * Create text box data from mouse coordinates
+   * @param {number} startX - Starting X coordinate
+   * @param {number} startY - Starting Y coordinate
+   * @param {number} endX - Ending X coordinate
+   * @param {number} endY - Ending Y coordinate
+   * @returns {Object} Text box data object
+   */
+  self.createTextBoxData = function(startX, startY, endX, endY) {
+    var x = Math.min(startX, endX);
+    var y = Math.min(startY, endY);
+    var width = Math.abs(endX - startX);
+    var height = Math.abs(endY - startY);
+    
+    return {
+      type: 'textbox',
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      text: 'Double-click to edit',
+      id: 'textbox_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+      createdAt: new Date()
+    };
+  };
+
+  /**
    * Get canvas coordinates from mouse event
    * @param {HTMLCanvasElement} canvas - The canvas element
    * @param {MouseEvent} event - The mouse event
@@ -323,13 +486,17 @@ var AnnotationUtil = function() {
 
   return {
     drawRectangle: self.drawRectangle,
+    drawTextBox: self.drawTextBox,
     createRectangleData: self.createRectangleData,
+    createTextBoxData: self.createTextBoxData,
     getCanvasCoordinates: self.getCanvasCoordinates,
     resizeCanvas: self.resizeCanvas,
     clearCanvas: self.clearCanvas,
     redrawLayer: self.redrawLayer,
     drawSelectionHandles: self.drawSelectionHandles,
+    drawTextBoxSelectionHandles: self.drawTextBoxSelectionHandles,
     isPointInRectangle: self.isPointInRectangle,
+    isPointInTextBox: self.isPointInTextBox,
     getHandleAtPoint: self.getHandleAtPoint,
     calculateResizedRectangle: self.calculateResizedRectangle,
     defaultStyles: defaultStyles

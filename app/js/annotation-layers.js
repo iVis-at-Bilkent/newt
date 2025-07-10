@@ -152,6 +152,12 @@ var AnnotationLayers = function() {
       e.preventDefault();
       e.stopPropagation();
     });
+    
+    $(document).on('dblclick', '[id^="annotation-canvas-layer-"]', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      self.handleCanvasDoubleClick(e, this);
+    });
   };
   
   /**
@@ -546,7 +552,7 @@ var AnnotationLayers = function() {
    * @returns {Object} Element with x, y, width, height in canvas coordinates
    */
   self.transformElementToCanvas = function(element) {
-    if (!element || element.type !== 'rectangle') return element;
+    if (!element || (element.type !== 'rectangle' && element.type !== 'textbox')) return element;
 
     var topLeft = self.modelToCanvas(element.x, element.y);
     var bottomRight = self.modelToCanvas(element.x + element.width, element.y + element.height);
@@ -656,8 +662,11 @@ var AnnotationLayers = function() {
       var transformedElement = self.transformElementToCanvas(element);
       
       switch (element.type) {
-      case 'rectangle':
+        case 'rectangle':
           annotationUtil.drawRectangle(ctx, transformedElement, element.styles);
+          break;
+        case 'textbox':
+          annotationUtil.drawTextBox(ctx, transformedElement, element.styles);
           break;
         default:
           console.warn('Unknown element type:', element.type);
@@ -665,9 +674,13 @@ var AnnotationLayers = function() {
     });
     
     // Draw selection handles for selected element (also transformed)
-    if (selectedElement && selectedElement.type === 'rectangle') {
+    if (selectedElement) {
       var transformedSelected = self.transformElementToCanvas(selectedElement);
-      annotationUtil.drawSelectionHandles(ctx, transformedSelected);
+      if (selectedElement.type === 'rectangle') {
+        annotationUtil.drawSelectionHandles(ctx, transformedSelected);
+      } else if (selectedElement.type === 'textbox') {
+        annotationUtil.drawTextBoxSelectionHandles(ctx, transformedSelected);
+      }
     }
     
     return true;
@@ -746,6 +759,8 @@ var AnnotationLayers = function() {
     var cursor = 'default';
     if (currentTool === 'Add Rectangle') {
       cursor = 'crosshair';
+    } else if (currentTool === 'Add Text') {
+      cursor = 'crosshair';
     }
     
     $('[id^="annotation-canvas-layer-"]').css('cursor', cursor);
@@ -770,7 +785,9 @@ var AnnotationLayers = function() {
     
     if (currentTool === 'Add Rectangle') {
       cursor = 'crosshair';
-    } else if (selectedElement && selectedElement.type === 'rectangle') {
+    } else if (currentTool === 'Add Text') {
+      cursor = 'crosshair';
+    } else if (selectedElement && (selectedElement.type === 'rectangle' || selectedElement.type === 'textbox')) {
       var transformedSelected = self.transformElementToCanvas(selectedElement);
       var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
       if (handleType) {
@@ -792,8 +809,17 @@ var AnnotationLayers = function() {
             cursor = 'ew-resize';
             break;
         }
-      } else if (annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement)) {
-        cursor = 'move';
+      } else {
+        var isInside = false;
+        if (selectedElement.type === 'rectangle') {
+          isInside = annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement);
+        } else if (selectedElement.type === 'textbox') {
+          isInside = annotationUtil.isPointInTextBox(modelCoords.x, modelCoords.y, selectedElement);
+        }
+        
+        if (isInside) {
+          cursor = 'move';
+        }
       }
     } else if (hoveredElement) {
       cursor = 'move';
@@ -818,7 +844,7 @@ var AnnotationLayers = function() {
     }
     
     if (!currentTool) {
-      if (selectedElement && selectedElement.type === 'rectangle') {
+      if (selectedElement && (selectedElement.type === 'rectangle' || selectedElement.type === 'textbox')) {
         var transformedSelected = self.transformElementToCanvas(selectedElement);
         var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
         if (handleType) {
@@ -827,8 +853,14 @@ var AnnotationLayers = function() {
           originalElementData = Object.assign({}, selectedElement);
           return;
         } else {
-          // Check if clicking inside the selected rectangle (for moving)
-          if (annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement)) {
+          var isInside = false;
+          if (selectedElement.type === 'rectangle') {
+            isInside = annotationUtil.isPointInRectangle(modelCoords.x, modelCoords.y, selectedElement);
+          } else if (selectedElement.type === 'textbox') {
+            isInside = annotationUtil.isPointInTextBox(modelCoords.x, modelCoords.y, selectedElement);
+          }
+          
+          if (isInside) {
             isMoving = true;
             moveStartCoords = modelCoords;
             originalElementData = Object.assign({}, selectedElement);
@@ -853,6 +885,16 @@ var AnnotationLayers = function() {
     }
     
     if (currentTool === 'Add Rectangle') {
+      var currentLayer = self.getCurrentLayer();
+      if (!currentLayer || !currentLayer.isAnnotationLayer) {
+        return;
+      }
+      
+      isDrawing = true;
+      startCoords = modelCoords;
+    }
+    
+    if (currentTool === 'Add Text') {
       var currentLayer = self.getCurrentLayer();
       if (!currentLayer || !currentLayer.isAnnotationLayer) {
         return;
@@ -924,6 +966,16 @@ var AnnotationLayers = function() {
       
       self.redrawLayerWithPreview(currentLayerId, rectData);
     }
+
+    if (isDrawing && startCoords && currentTool === 'Add Text') {
+      
+      var textBoxData = annotationUtil.createTextBoxData(
+        startCoords.x, startCoords.y, 
+        modelCoords.x, modelCoords.y
+      );
+      
+      self.redrawLayerWithPreview(currentLayerId, textBoxData);
+    }
   };
 
   /**
@@ -986,7 +1038,35 @@ var AnnotationLayers = function() {
         cyContainer.dispatchEvent(mouseUpEvent);
       }
       
-      // Then deselect the tool (this will re-enable Cytoscape interactions)
+      self.deselectTool();
+    }
+    
+    if (isDrawing && startCoords && currentTool === 'Add Text') {
+      
+      var textBoxData = annotationUtil.createTextBoxData(
+        startCoords.x, startCoords.y, 
+        modelCoords.x, modelCoords.y
+      );
+      
+      if (textBoxData.width > 5 && textBoxData.height > 5) {
+        self.addAnnotationElement(currentLayerId, 'textbox', textBoxData);
+      }
+      
+      startCoords = null;
+      previewElement = null;
+      
+      var activeCy = appUtilities.getActiveCy();
+      if (activeCy && activeCy.container()) {
+        var cyContainer = activeCy.container();
+        var mouseUpEvent = new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 0,
+          clientY: 0
+        });
+        cyContainer.dispatchEvent(mouseUpEvent);
+      }
+      
       self.deselectTool();
     }
   };
@@ -1011,6 +1091,9 @@ var AnnotationLayers = function() {
         case 'rectangle':
           annotationUtil.drawRectangle(ctx, transformedElement, element.styles);
           break;
+        case 'textbox':
+          annotationUtil.drawTextBox(ctx, transformedElement, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -1023,7 +1106,11 @@ var AnnotationLayers = function() {
       lineDash: [5, 5]
     };
     
-    annotationUtil.drawRectangle(ctx, transformedPreview, previewStyles);
+    if (previewData.type === 'rectangle') {
+      annotationUtil.drawRectangle(ctx, transformedPreview, previewStyles);
+    } else if (previewData.type === 'textbox') {
+      annotationUtil.drawTextBox(ctx, transformedPreview, previewStyles);
+    }
   };
 
   /**
@@ -1083,6 +1170,10 @@ var AnnotationLayers = function() {
         if (annotationUtil.isPointInRectangle(x, y, element)) {
           return element;
         }
+      } else if (element.type === 'textbox') {
+        if (annotationUtil.isPointInTextBox(x, y, element)) {
+          return element;
+        }
       }
     }
     
@@ -1110,6 +1201,79 @@ var AnnotationLayers = function() {
     return true;
   };
   
+  /**
+   * Handle double-click events on annotation canvas for text editing
+   */
+  self.handleCanvasDoubleClick = function(event, canvas) {
+    var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
+    var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
+    
+    var currentLayer = self.getCurrentLayer();
+    var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
+    
+    if (!isOnAnnotationLayer) {
+      return;
+    }
+    
+    var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
+    if (element && element.type === 'textbox') {
+      self.startTextEditing(element, canvas);
+    }
+  };
+
+  /**
+   * Start text editing for a text box
+   * @param {Object} textBoxElement - The text box element to edit
+   * @param {HTMLCanvasElement} canvas - The canvas element
+   */
+  self.startTextEditing = function(textBoxElement, canvas) {
+    var transformedElement = self.transformElementToCanvas(textBoxElement);
+
+    var input = document.createElement('textarea');
+    input.className = 'textbox-edit-input';
+    input.style.position = 'absolute';
+    input.style.left = transformedElement.x + 'px';
+    input.style.top = transformedElement.y + 'px';
+    input.style.width = transformedElement.width + 'px';
+    input.style.height = transformedElement.height + 'px';
+    input.style.border = '2px solid #0066cc';
+    input.style.padding = '5px';
+    input.style.fontSize = '14px';
+    input.style.fontFamily = 'Arial, sans-serif';
+    input.style.resize = 'none';
+    input.style.zIndex = '9999';
+    input.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+    input.value = textBoxElement.text || '';
+
+    var cyContainer = canvas.parentElement;
+    cyContainer.appendChild(input);
+
+    input.focus();
+    input.select();
+
+    var handleInputComplete = function() {
+      textBoxElement.text = input.value;
+      input.remove();
+      self.redrawLayer(currentLayerId);
+      input.removeEventListener('blur', handleInputComplete);
+      input.removeEventListener('keydown', handleKeyDown);
+    };
+
+    var handleKeyDown = function(e) {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        handleInputComplete();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        input.remove();
+        input.removeEventListener('blur', handleInputComplete);
+        input.removeEventListener('keydown', handleKeyDown);
+      }
+    };
+    input.addEventListener('blur', handleInputComplete);
+    input.addEventListener('keydown', handleKeyDown);
+  };
+  
   return {
     init: self.init,
     addLayer: self.addLayer,
@@ -1134,7 +1298,8 @@ var AnnotationLayers = function() {
     modelToCanvas: self.modelToCanvas,
     canvasToModel: self.canvasToModel,
     transformElementToCanvas: self.transformElementToCanvas,
-    redrawAllAnnotationLayers: self.redrawAllAnnotationLayers
+    redrawAllAnnotationLayers: self.redrawAllAnnotationLayers,
+    startTextEditing: self.startTextEditing
   };
 };
 
