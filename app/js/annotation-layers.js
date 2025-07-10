@@ -759,16 +759,13 @@ var AnnotationLayers = function() {
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var cursor = 'default';
     
-    // Get current layer to check if we're on an annotation layer
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
     
-    // Only handle cursor updates on annotation layers
     if (!isOnAnnotationLayer) {
       return;
     }
     
-    // Check if we're hovering over an existing annotation
     var hoveredElement = self.getElementAtPoint(modelCoords.x, modelCoords.y);
     
     if (currentTool === 'Add Rectangle') {
@@ -799,7 +796,7 @@ var AnnotationLayers = function() {
         cursor = 'move';
       }
     } else if (hoveredElement) {
-      cursor = 'pointer';
+      cursor = 'move';
     }
     
     canvas.style.cursor = cursor;
@@ -813,11 +810,9 @@ var AnnotationLayers = function() {
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
     
-    // Check if we're on an annotation layer
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
     
-    // If not on annotation layer, don't handle the event
     if (!isOnAnnotationLayer) {
       return;
     }
@@ -842,10 +837,14 @@ var AnnotationLayers = function() {
         }
       }
       
-      // Try to select an element at the point
       var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
       if (element) {
-        self.selectElement(element);
+        if (!selectedElement || selectedElement.id !== element.id) {
+          self.selectElement(element);
+        }
+        isMoving = true;
+        moveStartCoords = modelCoords;
+        originalElementData = Object.assign({}, element);
         return;
       } else {
         self.deselectElement();
@@ -872,11 +871,9 @@ var AnnotationLayers = function() {
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
     
-    // Check if we're on an annotation layer
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
     
-    // If not on annotation layer, don't handle the event
     if (!isOnAnnotationLayer) {
       return;
     }
@@ -901,10 +898,19 @@ var AnnotationLayers = function() {
       var deltaX = modelCoords.x - moveStartCoords.x;
       var deltaY = modelCoords.y - moveStartCoords.y;
       
-      selectedElement.x = originalElementData.x + deltaX;
-      selectedElement.y = originalElementData.y + deltaY;
+      var canvasStartCoords = self.modelToCanvas(moveStartCoords.x, moveStartCoords.y);
+      var canvasDistance = Math.sqrt(
+        Math.pow(canvasCoords.x - canvasStartCoords.x, 2) + 
+        Math.pow(canvasCoords.y - canvasStartCoords.y, 2)
+      );
       
-      self.redrawLayer(currentLayerId);
+      // Only start moving if the mouse has moved a minimum distance (5 pixels in canvas space)
+      if (canvasDistance > 5) {
+        selectedElement.x = originalElementData.x + deltaX;
+        selectedElement.y = originalElementData.y + deltaY;
+        
+        self.redrawLayer(currentLayerId);
+      }
       return;
     }
     
@@ -928,11 +934,9 @@ var AnnotationLayers = function() {
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
     
-    // Check if we're on an annotation layer
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
     
-    // If not on annotation layer, don't handle the event
     if (!isOnAnnotationLayer) {
       return;
     }
@@ -1047,7 +1051,6 @@ var AnnotationLayers = function() {
    */
   self.deselectElement = function() {
     selectedElement = null;
-    // Re-enable Cytoscape interactions when no element is selected
     self.enableCytoscapeInteractions();
     
     // Update pointer events based on current layer
