@@ -726,6 +726,11 @@ var AnnotationLayers = function() {
   self.deselectTool = function() {
     $('.annotation-layers-controls button').removeClass('active');
     currentTool = null;
+    
+    isDrawing = false;
+    startCoords = null;
+    previewElement = null;
+    
     // Only update pointer events for Cytoscape layer
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
@@ -887,7 +892,7 @@ var AnnotationLayers = function() {
       selectedElement.width = newRectData.width;
       selectedElement.height = newRectData.height;
       
-      self.redrawLayer(layerId);
+      self.redrawLayer(currentLayerId);
       return;
     }
     
@@ -899,7 +904,7 @@ var AnnotationLayers = function() {
       selectedElement.x = originalElementData.x + deltaX;
       selectedElement.y = originalElementData.y + deltaY;
       
-      self.redrawLayer(layerId);
+      self.redrawLayer(currentLayerId);
       return;
     }
     
@@ -911,7 +916,7 @@ var AnnotationLayers = function() {
         modelCoords.x, modelCoords.y
       );
       
-      self.redrawLayerWithPreview(layerId, rectData);
+      self.redrawLayerWithPreview(currentLayerId, rectData);
     }
   };
 
@@ -950,7 +955,6 @@ var AnnotationLayers = function() {
     
     // Handle drawing completion
     if (isDrawing && startCoords && currentTool === 'Add Rectangle') {
-      var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
       
       // Create final rectangle data (in model coordinates)
       var rectData = annotationUtil.createRectangleData(
@@ -959,16 +963,27 @@ var AnnotationLayers = function() {
       );
       
       if (rectData.width > 5 && rectData.height > 5) {
-        self.addAnnotationElement(layerId, 'rectangle', rectData);
-        
-        self.deselectTool();
+        self.addAnnotationElement(currentLayerId, 'rectangle', rectData);
       }
       
-      // Reset drawing state
-      isDrawing = false;
       startCoords = null;
       previewElement = null;
       
+      // Dispatch a synthetic mouseup event to Cytoscape container to end any drag state
+      var activeCy = appUtilities.getActiveCy();
+      if (activeCy && activeCy.container()) {
+        var cyContainer = activeCy.container();
+        var mouseUpEvent = new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 0,
+          clientY: 0
+        });
+        cyContainer.dispatchEvent(mouseUpEvent);
+      }
+      
+      // Then deselect the tool (this will re-enable Cytoscape interactions)
+      self.deselectTool();
     }
   };
 
