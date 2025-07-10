@@ -10,8 +10,8 @@ var AnnotationUtil = function() {
    */
   var defaultStyles = {
     rectangle: {
-      strokeColor: '#000000',
-      fillColor: 'rgba(255, 255, 0, 0.3)',
+      strokeColor: '#800080',
+      fillColor: 'transparent',
       lineWidth: 2,
       lineDash: []
     },
@@ -280,6 +280,7 @@ var AnnotationUtil = function() {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
       ctx.strokeStyle = '#000000';
       ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
       ctx.fillRect(x, y, width, height);
       ctx.strokeRect(x, y, width, height);
       
