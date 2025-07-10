@@ -552,18 +552,33 @@ var AnnotationLayers = function() {
    * @returns {Object} Element with x, y, width, height in canvas coordinates
    */
   self.transformElementToCanvas = function(element) {
-    if (!element || (element.type !== 'rectangle' && element.type !== 'textbox')) return element;
+    if (!element) return element;
 
-    var topLeft = self.modelToCanvas(element.x, element.y);
-    var bottomRight = self.modelToCanvas(element.x + element.width, element.y + element.height);
+    if (element.type === 'rectangle' || element.type === 'textbox') {
+      var topLeft = self.modelToCanvas(element.x, element.y);
+      var bottomRight = self.modelToCanvas(element.x + element.width, element.y + element.height);
 
-    return {
-      ...element,
-      x: topLeft.x,
-      y: topLeft.y,
-      width: bottomRight.x - topLeft.x,
-      height: bottomRight.y - topLeft.y
-    };
+      return {
+        ...element,
+        x: topLeft.x,
+        y: topLeft.y,
+        width: bottomRight.x - topLeft.x,
+        height: bottomRight.y - topLeft.y
+      };
+    } else if (element.type === 'arrow') {
+      var startPoint = self.modelToCanvas(element.startX, element.startY);
+      var endPoint = self.modelToCanvas(element.endX, element.endY);
+
+      return {
+        ...element,
+        startX: startPoint.x,
+        startY: startPoint.y,
+        endX: endPoint.x,
+        endY: endPoint.y
+      };
+    }
+
+    return element;
   };
 
   /**
@@ -668,6 +683,9 @@ var AnnotationLayers = function() {
         case 'textbox':
           annotationUtil.drawTextBox(ctx, transformedElement, element.styles);
           break;
+        case 'arrow':
+          annotationUtil.drawArrow(ctx, transformedElement, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -680,6 +698,8 @@ var AnnotationLayers = function() {
         annotationUtil.drawSelectionHandles(ctx, transformedSelected);
       } else if (selectedElement.type === 'textbox') {
         annotationUtil.drawTextBoxSelectionHandles(ctx, transformedSelected);
+      } else if (selectedElement.type === 'arrow') {
+        annotationUtil.drawArrowSelectionHandles(ctx, transformedSelected);
       }
     }
     
@@ -761,6 +781,8 @@ var AnnotationLayers = function() {
       cursor = 'crosshair';
     } else if (currentTool === 'Add Text') {
       cursor = 'crosshair';
+    } else if (currentTool === 'Add Arrow') {
+      cursor = 'crosshair';
     }
     
     $('[id^="annotation-canvas-layer-"]').css('cursor', cursor);
@@ -786,6 +808,8 @@ var AnnotationLayers = function() {
     if (currentTool === 'Add Rectangle') {
       cursor = 'crosshair';
     } else if (currentTool === 'Add Text') {
+      cursor = 'crosshair';
+    } else if (currentTool === 'Add Arrow') {
       cursor = 'crosshair';
     } else if (selectedElement && (selectedElement.type === 'rectangle' || selectedElement.type === 'textbox')) {
       var transformedSelected = self.transformElementToCanvas(selectedElement);
@@ -818,6 +842,17 @@ var AnnotationLayers = function() {
         }
         
         if (isInside) {
+          cursor = 'move';
+        }
+      }
+    } else if (selectedElement && selectedElement.type === 'arrow') {
+      var transformedSelected = self.transformElementToCanvas(selectedElement);
+      var handleType = annotationUtil.getArrowHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
+      if (handleType) {
+        cursor = handleType === 'tail' ? 'nw-resize' : 'ne-resize';
+      } else {
+        var isOnArrow = annotationUtil.isPointOnArrow(modelCoords.x, modelCoords.y, selectedElement);
+        if (isOnArrow) {
           cursor = 'move';
         }
       }
@@ -867,6 +902,23 @@ var AnnotationLayers = function() {
             return;
           }
         }
+      } else if (selectedElement && selectedElement.type === 'arrow') {
+        var transformedSelected = self.transformElementToCanvas(selectedElement);
+        var handleType = annotationUtil.getArrowHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
+        if (handleType) {
+          isResizing = true;
+          resizeHandle = handleType;
+          originalElementData = Object.assign({}, selectedElement);
+          return;
+        } else {
+          var isOnArrow = annotationUtil.isPointOnArrow(modelCoords.x, modelCoords.y, selectedElement);
+          if (isOnArrow) {
+            isMoving = true;
+            moveStartCoords = modelCoords;
+            originalElementData = Object.assign({}, selectedElement);
+            return;
+          }
+        }
       }
       
       var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
@@ -903,6 +955,16 @@ var AnnotationLayers = function() {
       isDrawing = true;
       startCoords = modelCoords;
     }
+    
+    if (currentTool === 'Add Arrow') {
+      var currentLayer = self.getCurrentLayer();
+      if (!currentLayer || !currentLayer.isAnnotationLayer) {
+        return;
+      }
+      
+      isDrawing = true;
+      startCoords = modelCoords;
+    }
   };
 
   /**
@@ -922,14 +984,25 @@ var AnnotationLayers = function() {
     
     // Handle resizing
     if (isResizing && selectedElement && resizeHandle) {
-      var newRectData = annotationUtil.calculateResizedRectangle(
-        resizeHandle, originalElementData, modelCoords.x, modelCoords.y
-      );
-      
-      selectedElement.x = newRectData.x;
-      selectedElement.y = newRectData.y;
-      selectedElement.width = newRectData.width;
-      selectedElement.height = newRectData.height;
+      if (selectedElement.type === 'rectangle' || selectedElement.type === 'textbox') {
+        var newRectData = annotationUtil.calculateResizedRectangle(
+          resizeHandle, originalElementData, modelCoords.x, modelCoords.y
+        );
+        
+        selectedElement.x = newRectData.x;
+        selectedElement.y = newRectData.y;
+        selectedElement.width = newRectData.width;
+        selectedElement.height = newRectData.height;
+      } else if (selectedElement.type === 'arrow') {
+        var updatedArrow = annotationUtil.updateArrowPosition(
+          originalElementData, resizeHandle, modelCoords.x, modelCoords.y
+        );
+        
+        selectedElement.startX = updatedArrow.startX;
+        selectedElement.startY = updatedArrow.startY;
+        selectedElement.endX = updatedArrow.endX;
+        selectedElement.endY = updatedArrow.endY;
+      }
       
       self.redrawLayer(currentLayerId);
       return;
@@ -948,8 +1021,15 @@ var AnnotationLayers = function() {
       
       // Only start moving if the mouse has moved a minimum distance (5 pixels in canvas space)
       if (canvasDistance > 5) {
-        selectedElement.x = originalElementData.x + deltaX;
-        selectedElement.y = originalElementData.y + deltaY;
+        if (selectedElement.type === 'rectangle' || selectedElement.type === 'textbox') {
+          selectedElement.x = originalElementData.x + deltaX;
+          selectedElement.y = originalElementData.y + deltaY;
+        } else if (selectedElement.type === 'arrow') {
+          selectedElement.startX = originalElementData.startX + deltaX;
+          selectedElement.startY = originalElementData.startY + deltaY;
+          selectedElement.endX = originalElementData.endX + deltaX;
+          selectedElement.endY = originalElementData.endY + deltaY;
+        }
         
         self.redrawLayer(currentLayerId);
       }
@@ -975,6 +1055,16 @@ var AnnotationLayers = function() {
       );
       
       self.redrawLayerWithPreview(currentLayerId, textBoxData);
+    }
+    
+    if (isDrawing && startCoords && currentTool === 'Add Arrow') {
+      
+      var arrowData = annotationUtil.createArrowData(
+        startCoords.x, startCoords.y, 
+        modelCoords.x, modelCoords.y
+      );
+      
+      self.redrawLayerWithPreview(currentLayerId, arrowData);
     }
   };
 
@@ -1069,6 +1159,40 @@ var AnnotationLayers = function() {
       
       self.deselectTool();
     }
+    
+    if (isDrawing && startCoords && currentTool === 'Add Arrow') {
+      
+      var arrowData = annotationUtil.createArrowData(
+        startCoords.x, startCoords.y, 
+        modelCoords.x, modelCoords.y
+      );
+      
+      var distance = Math.sqrt(
+        Math.pow(modelCoords.x - startCoords.x, 2) + 
+        Math.pow(modelCoords.y - startCoords.y, 2)
+      );
+      
+      if (distance > 10) {
+        self.addAnnotationElement(currentLayerId, 'arrow', arrowData);
+      }
+      
+      startCoords = null;
+      previewElement = null;
+      
+      var activeCy = appUtilities.getActiveCy();
+      if (activeCy && activeCy.container()) {
+        var cyContainer = activeCy.container();
+        var mouseUpEvent = new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 0,
+          clientY: 0
+        });
+        cyContainer.dispatchEvent(mouseUpEvent);
+      }
+      
+      self.deselectTool();
+    }
   };
 
   /**
@@ -1094,6 +1218,9 @@ var AnnotationLayers = function() {
         case 'textbox':
           annotationUtil.drawTextBox(ctx, transformedElement, element.styles);
           break;
+        case 'arrow':
+          annotationUtil.drawArrow(ctx, transformedElement, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -1110,6 +1237,8 @@ var AnnotationLayers = function() {
       annotationUtil.drawRectangle(ctx, transformedPreview, previewStyles);
     } else if (previewData.type === 'textbox') {
       annotationUtil.drawTextBox(ctx, transformedPreview, previewStyles);
+    } else if (previewData.type === 'arrow') {
+      annotationUtil.drawArrow(ctx, transformedPreview, previewStyles);
     }
   };
 
@@ -1172,6 +1301,10 @@ var AnnotationLayers = function() {
         }
       } else if (element.type === 'textbox') {
         if (annotationUtil.isPointInTextBox(x, y, element)) {
+          return element;
+        }
+      } else if (element.type === 'arrow') {
+        if (annotationUtil.isPointOnArrow(x, y, element)) {
           return element;
         }
       }

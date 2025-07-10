@@ -21,9 +21,9 @@ var AnnotationUtil = function() {
       color: '#000000'
     },
     arrow: {
-      strokeColor: '#000000',
-      lineWidth: 2,
-      headSize: 10
+      strokeColor: '#ff0000',
+      lineWidth: 4,
+      headSize: 12
     }
   };
 
@@ -414,6 +414,218 @@ var AnnotationUtil = function() {
   };
 
   /**
+   * Draw an arrow on the canvas
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   * @param {Object} data - Arrow data
+   * @param {number} data.startX - X coordinate of arrow start
+   * @param {number} data.startY - Y coordinate of arrow start
+   * @param {number} data.endX - X coordinate of arrow end
+   * @param {number} data.endY - Y coordinate of arrow end
+   * @param {Object} [styles] - Custom styles for the arrow
+   */
+  self.drawArrow = function(ctx, data, styles) {
+    if (!ctx || !data) {
+      console.error('Invalid canvas context or data for arrow drawing');
+      return false;
+    }
+
+    var arrowStyles = Object.assign({}, defaultStyles.arrow, styles || {});
+    
+    var { startX, startY, endX, endY } = data;
+    if (startX === undefined || startY === undefined || endX === undefined || endY === undefined) {
+      console.error('Missing required arrow properties:', data);
+      return false;
+    }
+
+    try {
+      ctx.save();
+      
+      ctx.strokeStyle = arrowStyles.strokeColor;
+      ctx.lineWidth = arrowStyles.lineWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+      
+      var angle = Math.atan2(endY - startY, endX - startX);
+      var headLength = arrowStyles.headSize;
+      
+      var headAngle1 = angle - Math.PI / 6;
+      var headAngle2 = angle + Math.PI / 6;
+      
+      var head1X = endX - headLength * Math.cos(headAngle1);
+      var head1Y = endY - headLength * Math.sin(headAngle1);
+      var head2X = endX - headLength * Math.cos(headAngle2);
+      var head2Y = endY - headLength * Math.sin(headAngle2);
+      
+      ctx.beginPath();
+      ctx.moveTo(endX, endY);
+      ctx.lineTo(head1X, head1Y);
+      ctx.moveTo(endX, endY);
+      ctx.lineTo(head2X, head2Y);
+      ctx.stroke();
+      
+      ctx.restore();
+      
+      return true;
+    } catch (error) {
+      console.error('Error drawing arrow:', error);
+      return false;
+    }
+  };
+
+  /**
+   * Draw selection handles for an arrow (head and tail)
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   * @param {Object} arrowData - Arrow data
+   * @param {number} handleSize - Size of the selection handles
+   */
+  self.drawArrowSelectionHandles = function(ctx, arrowData, handleSize = 8) {
+    if (!ctx || !arrowData) return false;
+    
+    var { startX, startY, endX, endY } = arrowData;
+    var halfHandle = handleSize / 2;
+    
+    ctx.save();
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#0066cc';
+    ctx.lineWidth = 2;
+    
+    // Draw handles at start and end points
+    var handles = [
+      { x: startX, y: startY, type: 'tail' },
+      { x: endX, y: endY, type: 'head' }
+    ];
+    
+    handles.forEach(function(handle) {
+      ctx.fillRect(handle.x - halfHandle, handle.y - halfHandle, handleSize, handleSize);
+      ctx.strokeRect(handle.x - halfHandle, handle.y - halfHandle, handleSize, handleSize);
+    });
+    
+    ctx.restore();
+    return true;
+  };
+
+  /**
+   * Check if a point is on an arrow (within a certain tolerance)
+   * @param {number} pointX - X coordinate of the point
+   * @param {number} pointY - Y coordinate of the point
+   * @param {Object} arrowData - Arrow data
+   * @param {number} tolerance - Distance tolerance for hit detection
+   * @returns {boolean} True if point is on arrow
+   */
+  self.isPointOnArrow = function(pointX, pointY, arrowData, tolerance = 5) {
+    if (!arrowData) return false;
+    
+    var { startX, startY, endX, endY } = arrowData;
+    
+    var A = pointX - startX;
+    var B = pointY - startY;
+    var C = endX - startX;
+    var D = endY - startY;
+    
+    var dot = A * C + B * D;
+    var lenSq = C * C + D * D;
+    
+    if (lenSq === 0) return false;
+    
+    var param = dot / lenSq;
+    
+    var xx, yy;
+    if (param < 0) {
+      xx = startX;
+      yy = startY;
+    } else if (param > 1) {
+      xx = endX;
+      yy = endY;
+    } else {
+      xx = startX + param * C;
+      yy = startY + param * D;
+    }
+    
+    var dx = pointX - xx;
+    var dy = pointY - yy;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    
+    return distance <= tolerance;
+  };
+
+  /**
+   * Get the handle type at a given point for an arrow
+   * @param {number} pointX - X coordinate of the point
+   * @param {number} pointY - Y coordinate of the point
+   * @param {Object} arrowData - Arrow data
+   * @param {number} handleSize - Size of the selection handles
+   * @returns {string|null} Handle type ('head', 'tail') or null if not on a handle
+   */
+  self.getArrowHandleAtPoint = function(pointX, pointY, arrowData, handleSize = 8) {
+    if (!arrowData) return null;
+    
+    var { startX, startY, endX, endY } = arrowData;
+    var halfHandle = handleSize / 2;
+    
+    var handles = [
+      { type: 'tail', x: startX, y: startY },
+      { type: 'head', x: endX, y: endY }
+    ];
+    
+    for (var i = 0; i < handles.length; i++) {
+      var handle = handles[i];
+      if (pointX >= handle.x - halfHandle && pointX <= handle.x + halfHandle &&
+          pointY >= handle.y - halfHandle && pointY <= handle.y + halfHandle) {
+        return handle.type;
+      }
+    }
+    
+    return null;
+  };
+
+  /**
+   * Create arrow data from mouse coordinates
+   * @param {number} startX - Starting X coordinate
+   * @param {number} startY - Starting Y coordinate
+   * @param {number} endX - Ending X coordinate
+   * @param {number} endY - Ending Y coordinate
+   * @returns {Object} Arrow data object
+   */
+  self.createArrowData = function(startX, startY, endX, endY) {
+    return {
+      type: 'arrow',
+      startX: startX,
+      startY: startY,
+      endX: endX,
+      endY: endY,
+      id: 'arrow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+      createdAt: new Date()
+    };
+  };
+
+  /**
+   * Update arrow position when dragging a handle
+   * @param {Object} arrowData - Original arrow data
+   * @param {string} handleType - Type of handle being dragged ('head' or 'tail')
+   * @param {number} newX - New X coordinate
+   * @param {number} newY - New Y coordinate
+   * @returns {Object} Updated arrow data
+   */
+  self.updateArrowPosition = function(arrowData, handleType, newX, newY) {
+    var updatedArrow = Object.assign({}, arrowData);
+    
+    if (handleType === 'head') {
+      updatedArrow.endX = newX;
+      updatedArrow.endY = newY;
+    } else if (handleType === 'tail') {
+      updatedArrow.startX = newX;
+      updatedArrow.startY = newY;
+    }
+    
+    return updatedArrow;
+  };
+
+  /**
    * Get canvas coordinates from mouse event
    * @param {HTMLCanvasElement} canvas - The canvas element
    * @param {MouseEvent} event - The mouse event
@@ -477,6 +689,12 @@ var AnnotationUtil = function() {
         case 'rectangle':
           self.drawRectangle(ctx, element, element.styles);
           break;
+        case 'textbox':
+          self.drawTextBox(ctx, element, element.styles);
+          break;
+        case 'arrow':
+          self.drawArrow(ctx, element, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -488,18 +706,24 @@ var AnnotationUtil = function() {
   return {
     drawRectangle: self.drawRectangle,
     drawTextBox: self.drawTextBox,
+    drawArrow: self.drawArrow,
     createRectangleData: self.createRectangleData,
     createTextBoxData: self.createTextBoxData,
+    createArrowData: self.createArrowData,
     getCanvasCoordinates: self.getCanvasCoordinates,
     resizeCanvas: self.resizeCanvas,
     clearCanvas: self.clearCanvas,
     redrawLayer: self.redrawLayer,
     drawSelectionHandles: self.drawSelectionHandles,
     drawTextBoxSelectionHandles: self.drawTextBoxSelectionHandles,
+    drawArrowSelectionHandles: self.drawArrowSelectionHandles,
     isPointInRectangle: self.isPointInRectangle,
     isPointInTextBox: self.isPointInTextBox,
+    isPointOnArrow: self.isPointOnArrow,
     getHandleAtPoint: self.getHandleAtPoint,
+    getArrowHandleAtPoint: self.getArrowHandleAtPoint,
     calculateResizedRectangle: self.calculateResizedRectangle,
+    updateArrowPosition: self.updateArrowPosition,
     defaultStyles: defaultStyles
   };
 };
