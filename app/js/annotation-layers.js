@@ -1437,15 +1437,9 @@ var AnnotationLayers = function() {
   };
 
   /**
-   * Load annotation layers data from loaded file
-   * @param {Object} annotationLayersData - The annotation layers data from file
+   * Reset annotation layers to initial state (only default cytoscape layer)
    */
-  self.loadAnnotationLayersData = function(annotationLayersData) {
-    if (!annotationLayersData) {
-      return;
-    }
-    
-    
+  self.resetAnnotationLayers = function() {
     // Clear existing layers except the default layer
     layers = layers.filter(function(layer) {
       return layer.isDefaultLayer;
@@ -1454,7 +1448,32 @@ var AnnotationLayers = function() {
     // Reset next layer ID
     nextLayerId = 1;
     
-    // Load layers from data
+    $('[id^="annotation-canvas-layer-"]').remove();
+    
+    if (selectedElement) {
+      self.deselectElement();
+    }
+    
+    self.deselectTool();
+    
+    self.selectLayer(0);
+    
+    self.renderLayerList();
+    self.updateAnnotationToolStates();
+  };
+
+  /**
+   * Load annotation layers data from loaded file
+   * @param {Object} annotationLayersData - The annotation layers data from file
+   */
+  self.loadAnnotationLayersData = function(annotationLayersData) {
+    self.resetAnnotationLayers();
+    
+    // If no annotation data, we're done (layers are already reset)
+    if (!annotationLayersData) {
+      return;
+    }
+    
     if (annotationLayersData.layers && Array.isArray(annotationLayersData.layers)) {
       
       annotationLayersData.layers.forEach(function(layerData) {
@@ -1511,7 +1530,8 @@ var AnnotationLayers = function() {
     redrawAllAnnotationLayers: self.redrawAllAnnotationLayers,
     startTextEditing: self.startTextEditing,
     getAnnotationLayersData: self.getAnnotationLayersData,
-    loadAnnotationLayersData: self.loadAnnotationLayersData
+    loadAnnotationLayersData: self.loadAnnotationLayersData,
+    resetAnnotationLayers: self.resetAnnotationLayers
   };
 };
 

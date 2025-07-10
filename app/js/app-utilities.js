@@ -4035,11 +4035,20 @@ appUtilities.launchWithModelFile = function () {
               }
             }
           } else {
+            var loadCallbackAnnotationLayers = function(annotationLayersData) {
+              if (annotationLayersData && window.annotationLayers) {
+                window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+              } else if (window.annotationLayers) {
+                window.annotationLayers.resetAnnotationLayers();
+              }
+            };
+            
             await chiseInstance.loadNwtFile(
               file,
               loadCallbackSBGNMLValidity,
               loadCallbackInvalidityWarning,
-              paramObj
+              paramObj,
+              loadCallbackAnnotationLayers
             );
             chiseInstance.endSpinner("paths-byURL-spinner");
           }

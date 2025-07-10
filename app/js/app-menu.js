@@ -314,6 +314,11 @@ module.exports = function() {
       // select appropriate palette depending on the map
       updatePalette(chiseInstance.elementUtilities.mapType)
 
+      // Reset annotation layers when a file is loaded
+      if (window.annotationLayers && !filename.endsWith('.nwt')) {
+        window.annotationLayers.resetAnnotationLayers();
+      }
+
     }
     cy.fit( cy.elements(":visible"), 20 );
 
@@ -539,10 +544,11 @@ module.exports = function() {
             // The annotation layers data will be available in the graph data
             if (annotationLayersData && window.annotationLayers) {
               window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+            } else if (window.annotationLayers) {
+              window.annotationLayers.resetAnnotationLayers();
             } else {
-              console.log('DEBUG: No annotation layers data found or annotation layers system not available');
-              console.log('DEBUG: annotationLayersData:', annotationLayersData);
-              console.log('DEBUG: window.annotationLayers:', window.annotationLayers);
+              console.log('Annotation layers system not available');
+              console.log('window.annotationLayers:', window.annotationLayers);
             }
           };
           
