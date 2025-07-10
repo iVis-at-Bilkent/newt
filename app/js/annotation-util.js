@@ -22,8 +22,8 @@ var AnnotationUtil = function() {
     },
     arrow: {
       strokeColor: '#ff0000',
-      lineWidth: 4,
-      headSize: 12
+      lineWidth: 7,
+      headSize: 20,
     }
   };
 
