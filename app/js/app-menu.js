@@ -442,10 +442,10 @@ module.exports = function() {
         var loadCallbackSBGNMLValidity = function (text) {
           //validateSBGNML(text);
         }
-        params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning,,(e)=>{
+        params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, (e)=>{
           pushActiveTabsView.render(e,"Push From File");
-        }];
-        caller = chiseInstance.loadFileToLocal;
+        }, loadCallbackAnnotationLayers];
+        caller = chiseInstance.loadNwtFile;
       }
 
       if(cy.elements().length != 0) {
@@ -532,7 +532,21 @@ module.exports = function() {
           var loadCallbackSBGNMLValidity = function (text) {
             //validateSBGNML(text);
           }
-          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning];
+          
+          // Add callback to handle annotation layers data after file is loaded
+          var loadCallbackAnnotationLayers = function(annotationLayersData) {
+            // This callback will be called after the file is loaded
+            // The annotation layers data will be available in the graph data
+            if (annotationLayersData && window.annotationLayers) {
+              window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+            } else {
+              console.log('DEBUG: No annotation layers data found or annotation layers system not available');
+              console.log('DEBUG: annotationLayersData:', annotationLayersData);
+              console.log('DEBUG: window.annotationLayers:', window.annotationLayers);
+            }
+          };
+          
+          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, undefined, loadCallbackAnnotationLayers];
           caller = chiseInstance.loadNwtFile;
         }
 

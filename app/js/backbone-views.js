@@ -2889,10 +2889,10 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
           }
 
           var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-
+          .replaceAll("\n", " ")
+          .replaceAll("\t", " ")
+          .split(" ");
+          
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
@@ -3343,207 +3343,6 @@ var PushActiveTabsView = Backbone.View.extend({
         else{
           $(self.el).modal("toggle");
         }
-        // // use active chise instance
-        // var chiseInstance = appUtilities.getActiveChiseInstance();
-
-        // // use the associated cy instance
-        // var cy = chiseInstance.getCy();
-
-        // self.currentQueryParameters.geneSymbols = document.getElementById(
-        //   "query-pathsbetween-gene-symbols"
-        // ).value;
-        // self.currentQueryParameters.lengthLimit = Number(
-        //   document.getElementById("query-pathsbetween-length-limit").value
-        // );
-        // var removeDisconnected = document.getElementById(
-        //   "query-pathsbetween-checkbox"
-        // ).checked;
-        // var removeRedundant = document.getElementById(
-        //   "query-pathsbetween-redundant-checkbox"
-        // ).checked;
-
-        // var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-        // if (geneSymbols.length === 0) {
-        //   document.getElementById("query-pathsbetween-gene-symbols").focus();
-        //   return;
-        // }
-        // // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        // geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-        // if (geneSymbols.length === 0) {
-        //   $(self.el).modal("toggle");
-        //   new PromptInvalidQueryView({
-        //     el: "#prompt-invalidQuery-table",
-        //   }).render();
-        //   return;
-        // }
-        // if (self.currentQueryParameters.lengthLimit > 3) {
-        //   $(self.el).modal("toggle");
-        //   new PromptInvalidLengthLimitView({
-        //     el: "#prompt-invalidLengthLimit-table",
-        //   }).render();
-        //   document.getElementById("query-pathsbetween-length-limit").focus();
-        //   return;
-        // }
-
-        // var geneSymbolsArray = geneSymbols
-        //   .replaceAll("\n", " ")
-        //   .replaceAll("\t", " ")
-        //   .split(" ");
-
-        // // Check if duplicate symbols are given or not
-        // if (handleDuplicateGenes(geneSymbolsArray)) {
-        //   return;
-        // }
-
-        // var queryURL =
-        //   "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=PATHSBETWEEN&limit=" +
-        //   self.currentQueryParameters.lengthLimit;
-        // var geneSymbolsArray = geneSymbols
-        //   .replaceAll("\n", " ")
-        //   .replaceAll("\t", " ")
-        //   .split(" ");
-        // var filename = "";
-        // var sources = "";
-        // for (var i = 0; i < geneSymbolsArray.length; i++) {
-        //   var currentGeneSymbol = geneSymbolsArray[i];
-        //   if (
-        //     currentGeneSymbol.length == 0 ||
-        //     currentGeneSymbol == " " ||
-        //     currentGeneSymbol == "\n" ||
-        //     currentGeneSymbol == "\t"
-        //   ) {
-        //     continue;
-        //   }
-        //   sources = sources + "&source=" + currentGeneSymbol;
-
-        //   if (filename == "") {
-        //     filename = currentGeneSymbol;
-        //   } else {
-        //     filename = filename + "_" + currentGeneSymbol;
-        //   }
-        // }
-        // filename = filename + "_PATHSBETWEEN.nwt";
-        // queryURL = queryURL + sources;
-
-        // var pathsBetweenQueryHighlighting = function () {
-        //   eles = cy.collection();
-        //   geneSymbolsArray.forEach(function (gene) {
-        //     eles.merge(
-        //       cy.nodes().filter(function (ele) {
-        //         if (
-        //           ele.data("label") &&
-        //           ele.data("label").toLowerCase().indexOf(gene.toLowerCase()) >=
-        //             0
-        //         ) {
-        //           return true;
-        //         }
-        //         return false;
-        //       })
-        //     );
-        //   });
-        //   var x = cy
-        //     .elements()
-        //     .pathsBetween(
-        //       eles,
-        //       self.currentQueryParameters.lengthLimit,
-        //       "UNDIRECTED"
-        //     );
-        //   cy.viewUtilities("get").highlight(x.resultEdges, 2);
-        //   cy.viewUtilities("get").highlight(x.resultNodes, 2);
-        //   cy.viewUtilities("get").highlight(eles, 3);
-        // };
-
-        // var sendPathsBetweenQuery = function () {
-        //   var currentGeneralProperties = appUtilities.getScratch(
-        //     cy,
-        //     "currentGeneralProperties"
-        //   );
-        //   var currentInferNestingOnLoad =
-        //     currentGeneralProperties.inferNestingOnLoad;
-        //   var currentLayoutProperties = appUtilities.getScratch(
-        //     cy,
-        //     "currentLayoutProperties"
-        //   );
-
-        //   $.ajax({
-        //     type: "get",
-        //     url: "/utilities/testURL",
-        //     data: { url: queryURL },
-        //     success: function (data) {
-        //       if (!data.error && data.response.statusCode == 200) {
-        //         if (data.response.body !== "") {
-        //           var xml = $.parseXML(data.response.body);
-        //           console.log(chiseInstance.convertSbgnmlToJson(xml));
-        //           $(document).trigger("sbgnvizLoadFile", [filename, cy]);
-        //           currentGeneralProperties.inferNestingOnLoad = false;
-        //           chiseInstance.updateGraph(
-        //             chiseInstance.convertSbgnmlToJson(xml),
-        //             undefined,
-        //             currentLayoutProperties
-        //           );
-        //           currentGeneralProperties.inferNestingOnLoad =
-        //             currentInferNestingOnLoad;
-
-        //           if (removeRedundant)
-        //             appUtilities.removeDuplicateProcessesAfterQuery();
-        //           if (removeDisconnected)
-        //             appUtilities.removeDisconnectedNodesAfterQuery(
-        //               geneSymbolsArray
-        //             );
-        //           pathsBetweenQueryHighlighting();
-
-        //           $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
-        //         } else {
-        //           new PromptEmptyQueryResultView({
-        //             el: "#prompt-requestTimedOut-table",
-        //           }).render();
-        //         }
-        //       } else if (data.error) {
-        //         let { code } = data.error;
-        //         if (code === "ESOCKETTIMEDOUT") {
-        //           new PromptRequestTimedOutView({
-        //             el: "#prompt-requestTimedOut-table",
-        //           }).render();
-        //         }
-        //       } else if (!data.error && data.response.statusCode == 500) {
-        //         new InternalServerError({
-        //           el: "#prompt-internal-server-table",
-        //         }).render();
-        //       } else {
-        //         new PromptInvalidQueryView({
-        //           el: "#prompt-invalidQuery-table",
-        //         }).render();
-        //       }
-        //       chiseInstance.endSpinner("paths-between-spinner");
-        //     },
-        //     error: function (xhr, options, err) {
-        //       new PromptInvalidQueryView({
-        //         el: "#prompt-invalidQuery-table",
-        //       }).render();
-        //       chiseInstance.endSpinner("paths-between-spinner");
-        //     },
-        //   });
-        // };
-
-        // var sendQueries = async function () {
-        //   $(self.el).modal("toggle");
-        //   chiseInstance.startSpinner("paths-between-spinner");
-        //   // Check if the gene symbols that are added even exist in the database or not
-        //   if (await handleGeneDoesNotExist(geneSymbolsArray)) {
-        //     chiseInstance.endSpinner("paths-between-spinner");
-        //     return;
-        //   }
-
-        //   sendPathsBetweenQuery();
-        // };
-
-        // if (cy.nodes().length != 0) {
-        //   new PromptConfirmationView({
-        //     el: "#prompt-confirmation-table",
-        //   }).render(sendQueries);
-        // } else {
-        //   sendQueries();
-        // }
       });
 
     $(document)
@@ -4975,7 +4774,13 @@ var FileSaveView = Backbone.View.extend({
           else if (version === "plain3") {
             saveAsFcn(filename, version, renderInfo, undefined, nodes, edges);
           } else {
-            saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
+            // Get annotation layers data for saving
+            var annotationLayersData = null;
+            if (window.annotationLayers) {
+              annotationLayersData = window.annotationLayers.getAnnotationLayersData();
+            }
+            
+            saveAsFcn(filename, version, renderInfo, properties, nodes, edges, annotationLayersData);
           }
         } else if (fileformat === "celldesigner") {
           if (mapType == "SBML") {

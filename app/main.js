@@ -71,6 +71,8 @@ $(document).ready(function () {
 
   // Initialize annotation layers system
   annotationLayers.init();
+  
+  window.annotationLayers = annotationLayers;
 
   // launch with model file if exists
   appUtilities.launchWithModelFile();

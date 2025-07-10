@@ -1407,6 +1407,83 @@ var AnnotationLayers = function() {
     input.addEventListener('keydown', handleKeyDown);
   };
   
+  /**
+   * Get annotation layers data for saving to file
+   * @returns {Object} Annotation layers data
+   */
+  self.getAnnotationLayersData = function() {
+    var layersData = [];
+    
+    layers.forEach(function(layer) {
+      // Only save annotation layers (not the default cytoscape layer)
+      if (layer.isAnnotationLayer) {
+        layersData.push({
+          id: layer.id,
+          name: layer.name,
+          visible: layer.visible,
+          elements: layer.elements,
+          createdAt: layer.createdAt,
+          zIndex: layer.zIndex
+        });
+      }
+    });
+    
+    var data = {
+      layerCount: layersData.length,
+      layers: layersData
+    };
+    
+    return data;
+  };
+
+  /**
+   * Load annotation layers data from loaded file
+   * @param {Object} annotationLayersData - The annotation layers data from file
+   */
+  self.loadAnnotationLayersData = function(annotationLayersData) {
+    if (!annotationLayersData) {
+      return;
+    }
+    
+    
+    // Clear existing layers except the default layer
+    layers = layers.filter(function(layer) {
+      return layer.isDefaultLayer;
+    });
+    
+    // Reset next layer ID
+    nextLayerId = 1;
+    
+    // Load layers from data
+    if (annotationLayersData.layers && Array.isArray(annotationLayersData.layers)) {
+      
+      annotationLayersData.layers.forEach(function(layerData) {
+        
+        var layer = LayerModel(layerData.id, layerData.name, layerData.visible);
+        layer.elements = layerData.elements || [];
+        layer.createdAt = new Date(layerData.createdAt);
+        layer.zIndex = layerData.zIndex || layerData.id;
+        layer.isAnnotationLayer = true;
+        
+        layers.push(layer);
+        
+        
+        self.createAnnotationCanvas(layer.id);
+        
+        if (layerData.id >= nextLayerId) {
+          nextLayerId = layerData.id + 1;
+        }
+      });
+    }
+    
+    self.selectLayer(0);
+    
+    self.renderLayerList();
+    
+    self.updateViewportState();
+    self.redrawAllAnnotationLayers();
+  };
+
   return {
     init: self.init,
     addLayer: self.addLayer,
@@ -1432,7 +1509,9 @@ var AnnotationLayers = function() {
     canvasToModel: self.canvasToModel,
     transformElementToCanvas: self.transformElementToCanvas,
     redrawAllAnnotationLayers: self.redrawAllAnnotationLayers,
-    startTextEditing: self.startTextEditing
+    startTextEditing: self.startTextEditing,
+    getAnnotationLayersData: self.getAnnotationLayersData,
+    loadAnnotationLayersData: self.loadAnnotationLayersData
   };
 };
 
