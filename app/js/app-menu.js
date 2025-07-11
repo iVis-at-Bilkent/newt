@@ -542,10 +542,20 @@ module.exports = function() {
           var loadCallbackAnnotationLayers = function(annotationLayersData) {
             // This callback will be called after the file is loaded
             // The annotation layers data will be available in the graph data
+            var cy = appUtilities.getActiveCy();
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var networkId = chiseInstance && chiseInstance.getCy() && chiseInstance.getCy().container().id;
+            
             if (annotationLayersData && window.annotationLayers) {
               window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+              if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+                window.networkIdToAnnotationLayersData[networkId] = annotationLayersData;
+              }
             } else if (window.annotationLayers) {
               window.annotationLayers.resetAnnotationLayers();
+              if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+                window.networkIdToAnnotationLayersData[networkId] = undefined;
+              }
             } else {
               console.log('Annotation layers system not available');
               console.log('window.annotationLayers:', window.annotationLayers);
@@ -2096,8 +2106,30 @@ module.exports = function() {
 
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
-      var target = $(e.target).attr("href"); // activated tab
+      var currentActiveNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
+      
+      if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
+        var savedData = window.annotationLayers.getAnnotationLayersData();
+        window.networkIdToAnnotationLayersData[currentActiveNetworkId] = savedData;
+      }
+
+      var target = $(e.target).attr("href");
       appUtilities.setActiveNetwork(target);
+
+      // Load annotation layers for the new (current) network
+      var newNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
+      if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
+        var layersData = window.networkIdToAnnotationLayersData[newNetworkId];
+        if (layersData) {
+          window.annotationLayers.loadAnnotationLayersData(layersData);
+        } else {
+          window.annotationLayers.resetAnnotationLayers();
+        }
+        
+        // Re-initialize annotation layers for the new network to ensure proper viewport synchronization
+        window.annotationLayers.reinitForNewNetwork();
+      }
+
       inspectorUtilities.handleSBGNInspector();
     });
 

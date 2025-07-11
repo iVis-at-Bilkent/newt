@@ -74,6 +74,8 @@ $(document).ready(function () {
   
   window.annotationLayers = annotationLayers;
 
+  window.networkIdToAnnotationLayersData = {};
+  
   // launch with model file if exists
   appUtilities.launchWithModelFile();
 });

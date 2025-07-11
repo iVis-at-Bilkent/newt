@@ -77,6 +77,26 @@ var AnnotationLayers = function() {
     
     checkCyReady();
   };
+
+  /**
+   * Re-initialize annotation layers for a new network
+   * This ensures proper setup for new Cytoscape instances
+   */
+  self.reinitForNewNetwork = function() {
+    // Wait for the new cytoscape instance to be ready
+    var checkCyReady = function() {
+      var activeCy = appUtilities.getActiveCy();
+      if (activeCy && activeCy.container()) {
+        self.setupViewportSynchronization();
+        self.updateViewportState();
+        self.redrawAllAnnotationLayers();
+      } else {
+        setTimeout(checkCyReady, 100);
+      }
+    };
+    
+    checkCyReady();
+  };
   
   /**
    * Bind UI event handlers
@@ -476,6 +496,9 @@ var AnnotationLayers = function() {
       console.error('No active cytoscape instance found for viewport sync');
       return;
     }
+
+    activeCy.off('viewport');
+    activeCy.off('resize');
 
     self.updateViewportState();
 
@@ -1452,7 +1475,6 @@ var AnnotationLayers = function() {
    * Reset annotation layers to initial state (only default cytoscape layer)
    */
   self.resetAnnotationLayers = function() {
-    // Clear existing layers except the default layer
     layers = layers.filter(function(layer) {
       return layer.isDefaultLayer;
     });
@@ -1472,6 +1494,8 @@ var AnnotationLayers = function() {
     
     self.renderLayerList();
     self.updateAnnotationToolStates();
+    
+    self.setupViewportSynchronization();
   };
 
   /**
@@ -1497,8 +1521,7 @@ var AnnotationLayers = function() {
         layer.isAnnotationLayer = true;
         
         layers.push(layer);
-        
-        
+                
         self.createAnnotationCanvas(layer.id);
         
         if (layerData.id >= nextLayerId) {
@@ -1511,6 +1534,8 @@ var AnnotationLayers = function() {
     
     self.renderLayerList();
     
+    // Re-establish viewport synchronization for the loaded network
+    self.setupViewportSynchronization();
     self.updateViewportState();
     self.redrawAllAnnotationLayers();
   };
@@ -1543,7 +1568,8 @@ var AnnotationLayers = function() {
     startTextEditing: self.startTextEditing,
     getAnnotationLayersData: self.getAnnotationLayersData,
     loadAnnotationLayersData: self.loadAnnotationLayersData,
-    resetAnnotationLayers: self.resetAnnotationLayers
+    resetAnnotationLayers: self.resetAnnotationLayers,
+    reinitForNewNetwork: self.reinitForNewNetwork
   };
 };
 

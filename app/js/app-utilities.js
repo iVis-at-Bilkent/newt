@@ -519,6 +519,12 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
   // maintain networkIdToChiseInstance map
   appUtilities.putToChiseInstances(appUtilities.nextNetworkId, newInst);
 
+  if (window.annotationLayers && window.networkIdToAnnotationLayersData && appUtilities.networkIdsStack.length > 0) {
+    var currentActiveNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
+    var currentAnnotationData = window.annotationLayers.getAnnotationLayersData();
+    window.networkIdToAnnotationLayersData[currentActiveNetworkId] = currentAnnotationData;
+  }
+
   // push network id to the top of network ids stack
   this.networkIdsStack.push(appUtilities.nextNetworkId);
 
@@ -547,7 +553,20 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
   var mapType = appUtilities.getActiveChiseInstance().getMapType();
   $("#" + mapTypeDivId).text(appUtilities.getTabLabelName(mapType));
 
-  // return the new instance
+  // Initialize empty annotation layers state for this network
+  if (window.networkIdToAnnotationLayersData) {
+    var currentNetworkId = appUtilities.nextNetworkId - 1; // Use the actual network ID that was just created
+    window.networkIdToAnnotationLayersData[currentNetworkId] = undefined;
+  }
+
+  if (window.annotationLayers) {
+    window.annotationLayers.resetAnnotationLayers();
+    
+    window.annotationLayers.reinitForNewNetwork();
+  }
+
+  appUtilities.nextNetworkId++;
+
   return newInst;
 };
 
