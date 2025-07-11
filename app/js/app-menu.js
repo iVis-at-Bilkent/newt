@@ -2106,8 +2106,6 @@ module.exports = function() {
       if (cy.elements().length == 0) {
         if (newMapType === "SBML") {
           appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
-        } else if (newMapType !== "SBML") {
-          appUtilities.applyMapColorScheme("black_white", "solid", appUtilities.colorSchemeInspectorView);
         }
       }
     });
