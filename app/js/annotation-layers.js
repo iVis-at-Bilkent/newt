@@ -1390,6 +1390,7 @@ var AnnotationLayers = function() {
       self.redrawLayer(currentLayerId);
       input.removeEventListener('blur', handleInputComplete);
       input.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('click', handleDocumentClick);
     };
 
     var handleKeyDown = function(e) {
@@ -1401,10 +1402,21 @@ var AnnotationLayers = function() {
         input.remove();
         input.removeEventListener('blur', handleInputComplete);
         input.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener('click', handleDocumentClick);
       }
     };
+
+    var handleDocumentClick = function(e) {
+      if (!input.contains(e.target)) {
+        handleInputComplete();
+      }
+    };
+
     input.addEventListener('blur', handleInputComplete);
     input.addEventListener('keydown', handleKeyDown);
+    setTimeout(function() {
+      document.addEventListener('click', handleDocumentClick);
+    }, 100);
   };
   
   /**

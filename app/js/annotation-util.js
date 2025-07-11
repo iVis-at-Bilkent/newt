@@ -277,11 +277,9 @@ var AnnotationUtil = function() {
     try {
       ctx.save();
       
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-      ctx.strokeStyle = '#000000';
+      ctx.strokeStyle = '#0099FF';
       ctx.lineWidth = 1;
       ctx.setLineDash([5, 5]);
-      ctx.fillRect(x, y, width, height);
       ctx.strokeRect(x, y, width, height);
       
       if (text && text.trim()) {
