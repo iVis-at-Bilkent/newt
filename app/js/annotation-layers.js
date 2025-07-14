@@ -138,6 +138,14 @@ var AnnotationLayers = function() {
       self.selectTool(tool);
     });
 
+    // Delete selected element button
+    $(document).on('click', '#delete-selected-element', function(e) {
+      e.preventDefault();
+      if (selectedElement) {
+        self.deleteSelectedElement();
+      }
+    });
+
     // Canvas mouse events for drawing
     $(document).on('mousedown', '[id^="annotation-canvas-layer-"]', function(e) {
       // Only prevent default if we're actively drawing, selecting, or moving
@@ -787,6 +795,9 @@ var AnnotationLayers = function() {
     // Enable pointer events immediately when a tool is selected
     self.enablePointerEvents();
     
+    // Hide delete button when tool is selected
+    $('.annotation-element-delete').hide();
+    
     self.updateCanvasCursor();
     
     return true;
@@ -1375,6 +1386,8 @@ var AnnotationLayers = function() {
     self.disableCytoscapeInteractions();
     self.enablePointerEvents();
     self.redrawLayer(currentLayerId);
+    
+    $('.annotation-element-delete').show();
   };
 
   /**
@@ -1393,6 +1406,8 @@ var AnnotationLayers = function() {
       self.enablePointerEvents();
     }
     self.redrawLayer(currentLayerId);
+    
+    $('.annotation-element-delete').hide();
   };
 
   /**
@@ -1755,6 +1770,11 @@ var AnnotationLayers = function() {
           id: 'image_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
           createdAt: new Date()
         };
+        
+        imageData._redrawCallback = function() {
+          self.redrawLayer(currentLayer.id);
+        };
+        
         self.addAnnotationElement(currentLayer.id, 'image', imageData);
         self.deselectTool();
       };
@@ -1767,6 +1787,26 @@ var AnnotationLayers = function() {
       console.error('Error reading image file:', e);
     };
     reader.readAsDataURL(file);
+  };
+
+  /**
+   * Delete the currently selected element
+   */
+  self.deleteSelectedElement = function() {
+    var currentLayer = self.getCurrentLayer();
+    if (!currentLayer || !currentLayer.isAnnotationLayer) {
+      return;
+    }
+
+    if (!selectedElement) {
+      return;
+    }
+
+    var layerId = currentLayer.id;
+    var elementId = selectedElement.id;
+
+    self.removeAnnotationElement(layerId, elementId);
+    self.deselectElement();
   };
 
   return {
@@ -1800,7 +1840,8 @@ var AnnotationLayers = function() {
     resetAnnotationLayers: self.resetAnnotationLayers,
     reinitForNewNetwork: self.reinitForNewNetwork,
     triggerImageUpload: self.triggerImageUpload,
-    calculateSmartImageDimensions: self.calculateSmartImageDimensions
+    calculateSmartImageDimensions: self.calculateSmartImageDimensions,
+    deleteSelectedElement: self.deleteSelectedElement
   };
 };
 

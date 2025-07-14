@@ -641,6 +641,14 @@ var AnnotationUtil = function() {
           // Redraw the layer when image loads
           if (data._redrawCallback) {
             data._redrawCallback();
+          } else {
+            var canvas = ctx.canvas;
+            if (canvas) {
+              var layerId = canvas.id.match(/annotation-canvas-layer-(\d+)/);
+              if (layerId && window.annotationLayers) {
+                window.annotationLayers.redrawLayer(parseInt(layerId[1]));
+              }
+            }
           }
         };
         data._imageElement.src = imageData;
