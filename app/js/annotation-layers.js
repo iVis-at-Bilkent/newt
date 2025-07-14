@@ -599,6 +599,17 @@ var AnnotationLayers = function() {
         endX: endPoint.x,
         endY: endPoint.y
       };
+    } else if (element.type === 'image') {
+      var topLeft = self.modelToCanvas(element.x, element.y);
+      var bottomRight = self.modelToCanvas(element.x + element.width, element.y + element.height);
+
+      return {
+        ...element,
+        x: topLeft.x,
+        y: topLeft.y,
+        width: bottomRight.x - topLeft.x,
+        height: bottomRight.y - topLeft.y
+      };
     }
 
     return element;
@@ -709,6 +720,9 @@ var AnnotationLayers = function() {
         case 'arrow':
           annotationUtil.drawArrow(ctx, transformedElement, element.styles);
           break;
+        case 'image':
+          annotationUtil.drawImage(ctx, transformedElement, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -723,6 +737,8 @@ var AnnotationLayers = function() {
         annotationUtil.drawTextBoxSelectionHandles(ctx, transformedSelected);
       } else if (selectedElement.type === 'arrow') {
         annotationUtil.drawArrowSelectionHandles(ctx, transformedSelected);
+      } else if (selectedElement.type === 'image') {
+        annotationUtil.drawImageSelectionHandles(ctx, transformedSelected);
       }
     }
     
@@ -806,6 +822,8 @@ var AnnotationLayers = function() {
       cursor = 'crosshair';
     } else if (currentTool === 'Add Arrow') {
       cursor = 'crosshair';
+    } else if (currentTool === 'Add Image') {
+      cursor = 'crosshair';
     }
     
     $('[id^="annotation-canvas-layer-"]').css('cursor', cursor);
@@ -833,6 +851,8 @@ var AnnotationLayers = function() {
     } else if (currentTool === 'Add Text') {
       cursor = 'crosshair';
     } else if (currentTool === 'Add Arrow') {
+      cursor = 'crosshair';
+    } else if (currentTool === 'Add Image') {
       cursor = 'crosshair';
     } else if (selectedElement && (selectedElement.type === 'rectangle' || selectedElement.type === 'textbox')) {
       var transformedSelected = self.transformElementToCanvas(selectedElement);
@@ -876,6 +896,34 @@ var AnnotationLayers = function() {
       } else {
         var isOnArrow = annotationUtil.isPointOnArrow(modelCoords.x, modelCoords.y, selectedElement);
         if (isOnArrow) {
+          cursor = 'move';
+        }
+      }
+    } else if (selectedElement && selectedElement.type === 'image') {
+      var transformedSelected = self.transformElementToCanvas(selectedElement);
+      var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
+      if (handleType) {
+        switch (handleType) {
+          case 'top-left':
+          case 'bottom-right':
+            cursor = 'nw-resize';
+            break;
+          case 'top-right':
+          case 'bottom-left':
+            cursor = 'ne-resize';
+            break;
+          case 'top':
+          case 'bottom':
+            cursor = 'ns-resize';
+            break;
+          case 'left':
+          case 'right':
+            cursor = 'ew-resize';
+            break;
+        }
+      } else {
+        var isInside = annotationUtil.isPointInImage(modelCoords.x, modelCoords.y, selectedElement);
+        if (isInside) {
           cursor = 'move';
         }
       }
@@ -942,6 +990,23 @@ var AnnotationLayers = function() {
             return;
           }
         }
+      } else if (selectedElement && selectedElement.type === 'image') {
+        var transformedSelected = self.transformElementToCanvas(selectedElement);
+        var handleType = annotationUtil.getHandleAtPoint(canvasCoords.x, canvasCoords.y, transformedSelected);
+        if (handleType) {
+          isResizing = true;
+          resizeHandle = handleType;
+          originalElementData = Object.assign({}, selectedElement);
+          return;
+        } else {
+          var isInside = annotationUtil.isPointInImage(modelCoords.x, modelCoords.y, selectedElement);
+          if (isInside) {
+            isMoving = true;
+            moveStartCoords = modelCoords;
+            originalElementData = Object.assign({}, selectedElement);
+            return;
+          }
+        }
       }
       
       var element = self.getElementAtPoint(modelCoords.x, modelCoords.y);
@@ -988,6 +1053,16 @@ var AnnotationLayers = function() {
       isDrawing = true;
       startCoords = modelCoords;
     }
+    
+    if (currentTool === 'Add Image') {
+      var currentLayer = self.getCurrentLayer();
+      if (!currentLayer || !currentLayer.isAnnotationLayer) {
+        return;
+      }
+      
+      // Trigger file upload for image
+      self.triggerImageUpload(modelCoords);
+    }
   };
 
   /**
@@ -1025,6 +1100,15 @@ var AnnotationLayers = function() {
         selectedElement.startY = updatedArrow.startY;
         selectedElement.endX = updatedArrow.endX;
         selectedElement.endY = updatedArrow.endY;
+      } else if (selectedElement.type === 'image') {
+        var newRectData = annotationUtil.calculateResizedRectangle(
+          resizeHandle, originalElementData, modelCoords.x, modelCoords.y
+        );
+        
+        selectedElement.x = newRectData.x;
+        selectedElement.y = newRectData.y;
+        selectedElement.width = newRectData.width;
+        selectedElement.height = newRectData.height;
       }
       
       self.redrawLayer(currentLayerId);
@@ -1052,6 +1136,9 @@ var AnnotationLayers = function() {
           selectedElement.startY = originalElementData.startY + deltaY;
           selectedElement.endX = originalElementData.endX + deltaX;
           selectedElement.endY = originalElementData.endY + deltaY;
+        } else if (selectedElement.type === 'image') {
+          selectedElement.x = originalElementData.x + deltaX;
+          selectedElement.y = originalElementData.y + deltaY;
         }
         
         self.redrawLayer(currentLayerId);
@@ -1244,6 +1331,9 @@ var AnnotationLayers = function() {
         case 'arrow':
           annotationUtil.drawArrow(ctx, transformedElement, element.styles);
           break;
+        case 'image':
+          annotationUtil.drawImage(ctx, transformedElement, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -1262,6 +1352,8 @@ var AnnotationLayers = function() {
       annotationUtil.drawTextBox(ctx, transformedPreview, previewStyles);
     } else if (previewData.type === 'arrow') {
       annotationUtil.drawArrow(ctx, transformedPreview, previewStyles);
+    } else if (previewData.type === 'image') {
+      annotationUtil.drawImage(ctx, transformedPreview, previewStyles);
     }
   };
 
@@ -1328,6 +1420,10 @@ var AnnotationLayers = function() {
         }
       } else if (element.type === 'arrow') {
         if (annotationUtil.isPointOnArrow(x, y, element)) {
+          return element;
+        }
+      } else if (element.type === 'image') {
+        if (annotationUtil.isPointInImage(x, y, element)) {
           return element;
         }
       }
@@ -1540,6 +1636,139 @@ var AnnotationLayers = function() {
     self.redrawAllAnnotationLayers();
   };
 
+  /**
+   * Trigger file upload for image annotation
+   * @param {Object} clickCoords - The coordinates where the image was clicked (in model coordinates)
+   */
+  self.triggerImageUpload = function(clickCoords) {
+    var currentLayer = self.getCurrentLayer();
+    if (!currentLayer || !currentLayer.isAnnotationLayer) {
+      return;
+    }
+
+    var canvas = self.getAnnotationCanvas(currentLayer.id);
+    if (!canvas) {
+      console.error('No canvas found for image upload');
+      return;
+    }
+
+    var activeCy = appUtilities.getActiveCy();
+    if (activeCy && activeCy.container()) {
+      var cyContainer = activeCy.container();
+      var mouseUpEvent = new MouseEvent('mouseup', {
+        bubbles: true,
+        cancelable: true,
+        clientX: 0,
+        clientY: 0
+      });
+      cyContainer.dispatchEvent(mouseUpEvent);
+    }
+
+    setTimeout(function() {
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.style.display = 'none';
+      input.addEventListener('change', function(event) {
+        var file = event.target.files[0];
+        if (file) {
+          self.processImageUpload(file, clickCoords);
+        }
+        input.remove(); // Clean up the input element
+      });
+
+      document.body.appendChild(input);
+      input.click();
+    }, 10);
+  };
+
+  /**
+   * Calculate smart default dimensions for uploaded images
+   * @param {number} originalWidth - Original image width
+   * @param {number} originalHeight - Original image height
+   * @returns {Object} Smart dimensions {width, height}
+   */
+  self.calculateSmartImageDimensions = function(originalWidth, originalHeight) {
+    var activeCy = appUtilities.getActiveCy();
+    var viewportWidth = activeCy ? activeCy.width() : 800;
+    var viewportHeight = activeCy ? activeCy.height() : 600;
+    var maxWidthPercent = 0.4;
+    var maxHeightPercent = 0.4;
+    var minWidth = 50;
+    var minHeight = 50;
+    var maxWidth = Math.max(viewportWidth * maxWidthPercent, minWidth);
+    var maxHeight = Math.max(viewportHeight * maxHeightPercent, minHeight);
+    var aspectRatio = originalWidth / originalHeight;
+    var scaledWidth, scaledHeight;
+    if (aspectRatio > 1) {
+      scaledWidth = Math.min(originalWidth, maxWidth);
+      scaledHeight = scaledWidth / aspectRatio;
+      if (scaledHeight > maxHeight) {
+        scaledHeight = maxHeight;
+        scaledWidth = scaledHeight * aspectRatio;
+      }
+    } else {
+      scaledHeight = Math.min(originalHeight, maxHeight);
+      scaledWidth = scaledHeight * aspectRatio;
+      if (scaledWidth > maxWidth) {
+        scaledWidth = maxWidth;
+        scaledHeight = scaledWidth / aspectRatio;
+      }
+    }
+    scaledWidth = Math.max(scaledWidth, minWidth);
+    scaledHeight = Math.max(scaledHeight, minHeight);
+    return {
+      width: Math.round(scaledWidth),
+      height: Math.round(scaledHeight)
+    };
+  };
+
+  /**
+   * Process the uploaded image and add it as an annotation element
+   * @param {File} file - The uploaded image file
+   * @param {Object} clickCoords - The coordinates where the image was clicked (in model coordinates)
+   */
+  self.processImageUpload = function(file, clickCoords) {
+    var currentLayer = self.getCurrentLayer();
+    if (!currentLayer || !currentLayer.isAnnotationLayer) {
+      return;
+    }
+
+    var canvas = self.getAnnotationCanvas(currentLayer.id);
+    if (!canvas) {
+      console.error('No canvas found for image upload processing');
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      var img = new Image();
+      img.onload = function() {
+        var smartDimensions = self.calculateSmartImageDimensions(img.width, img.height);
+        var imageData = {
+          x: clickCoords.x,
+          y: clickCoords.y,
+          width: smartDimensions.width,
+          height: smartDimensions.height,
+          imageData: event.target.result,
+          type: 'image',
+          id: 'image_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+          createdAt: new Date()
+        };
+        self.addAnnotationElement(currentLayer.id, 'image', imageData);
+        self.deselectTool();
+      };
+      img.onerror = function(e) {
+        console.error('Error loading image:', e);
+      };
+      img.src = event.target.result;
+    };
+    reader.onerror = function(e) {
+      console.error('Error reading image file:', e);
+    };
+    reader.readAsDataURL(file);
+  };
+
   return {
     init: self.init,
     addLayer: self.addLayer,
@@ -1569,7 +1798,9 @@ var AnnotationLayers = function() {
     getAnnotationLayersData: self.getAnnotationLayersData,
     loadAnnotationLayersData: self.loadAnnotationLayersData,
     resetAnnotationLayers: self.resetAnnotationLayers,
-    reinitForNewNetwork: self.reinitForNewNetwork
+    reinitForNewNetwork: self.reinitForNewNetwork,
+    triggerImageUpload: self.triggerImageUpload,
+    calculateSmartImageDimensions: self.calculateSmartImageDimensions
   };
 };
 

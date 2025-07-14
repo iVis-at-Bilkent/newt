@@ -24,6 +24,11 @@ var AnnotationUtil = function() {
       strokeColor: '#ff0000',
       lineWidth: 7,
       headSize: 20,
+    },
+    image: {
+      strokeColor: '#0066cc',
+      lineWidth: 2,
+      lineDash: [5, 5]
     }
   };
 
@@ -602,6 +607,171 @@ var AnnotationUtil = function() {
   };
 
   /**
+   * Draw an image on the canvas
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   * @param {Object} data - Image data
+   * @param {number} data.x - X coordinate of top-left corner
+   * @param {number} data.y - Y coordinate of top-left corner
+   * @param {number} data.width - Width of the image
+   * @param {number} data.height - Height of the image
+   * @param {string} data.imageData - Base64 image data or URL
+   * @param {Object} [styles] - Custom styles for the image
+   */
+  self.drawImage = function(ctx, data, styles) {
+    if (!ctx || !data) {
+      console.error('Invalid canvas context or data for image drawing');
+      return false;
+    }
+
+    var imageStyles = Object.assign({}, defaultStyles.image, styles || {});
+    
+    var { x, y, width, height, imageData } = data;
+    if (x === undefined || y === undefined || width === undefined || height === undefined || !imageData) {
+      console.error('Missing required image properties:', data);
+      return false;
+    }
+
+    try {
+      ctx.save();
+      
+      // Create image element if not already created
+      if (!data._imageElement) {
+        data._imageElement = new Image();
+        data._imageElement.onload = function() {
+          // Redraw the layer when image loads
+          if (data._redrawCallback) {
+            data._redrawCallback();
+          }
+        };
+        data._imageElement.src = imageData;
+      }
+      
+      // Draw the image
+      if (data._imageElement.complete && data._imageElement.naturalWidth > 0) {
+        ctx.drawImage(data._imageElement, x, y, width, height);
+      } else {
+        // Draw placeholder while image is loading
+        ctx.strokeStyle = imageStyles.strokeColor;
+        ctx.lineWidth = imageStyles.lineWidth;
+        ctx.setLineDash(imageStyles.lineDash);
+        ctx.strokeRect(x, y, width, height);
+        
+        ctx.fillStyle = '#666666';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Loading...', x + width/2, y + height/2);
+      }
+      
+      ctx.restore();
+      
+      return true;
+    } catch (error) {
+      console.error('Error drawing image:', error);
+      return false;
+    }
+  };
+
+  /**
+   * Draw selection handles around an image
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   * @param {Object} imageData - Image data
+   * @param {number} handleSize - Size of the selection handles
+   */
+  self.drawImageSelectionHandles = function(ctx, imageData, handleSize = 8) {
+    if (!ctx || !imageData) return false;
+    
+    var { x, y, width, height } = imageData;
+    var halfHandle = handleSize / 2;
+    
+    ctx.save();
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#0066cc';
+    ctx.lineWidth = 2;
+    
+    var corners = [
+      { x: x, y: y },
+      { x: x + width, y: y },
+      { x: x + width, y: y + height },
+      { x: x, y: y + height }
+    ];
+    
+    var edges = [
+      { x: x + width/2, y: y },
+      { x: x + width, y: y + height/2 },
+      { x: x + width/2, y: y + height },
+      { x: x, y: y + height/2 }
+    ];
+    
+    var allHandles = corners.concat(edges);
+    allHandles.forEach(function(handle) {
+      ctx.fillRect(handle.x - halfHandle, handle.y - halfHandle, handleSize, handleSize);
+      ctx.strokeRect(handle.x - halfHandle, handle.y - halfHandle, handleSize, handleSize);
+    });
+    
+    ctx.restore();
+    return true;
+  };
+
+  /**
+   * Check if a point is inside an image
+   * @param {number} pointX - X coordinate of the point
+   * @param {number} pointY - Y coordinate of the point
+   * @param {Object} imageData - Image data
+   * @returns {boolean} True if point is inside image
+   */
+  self.isPointInImage = function(pointX, pointY, imageData) {
+    if (!imageData) return false;
+    
+    var { x, y, width, height } = imageData;
+    return pointX >= x && pointX <= x + width && 
+           pointY >= y && pointY <= y + height;
+  };
+
+  /**
+   * Create image data from mouse coordinates and file
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
+   * @param {File} file - Image file
+   * @returns {Object} Image data object
+   */
+  self.createImageData = function(x, y, file) {
+    return {
+      type: 'image',
+      x: x,
+      y: y,
+      width: 100, // Default width
+      height: 100, // Default height
+      imageData: null, // Will be set when file is processed
+      originalFile: file,
+      id: 'image_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+      createdAt: new Date()
+    };
+  };
+
+  /**
+   * Process image file and convert to data URL
+   * @param {File} file - Image file
+   * @param {Function} callback - Callback function with data URL
+   */
+  self.processImageFile = function(file, callback) {
+    if (!file || !file.type.startsWith('image/')) {
+      console.error('Invalid image file:', file);
+      callback(null);
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      callback(e.target.result);
+    };
+    reader.onerror = function() {
+      console.error('Error reading image file');
+      callback(null);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  /**
    * Update arrow position when dragging a handle
    * @param {Object} arrowData - Original arrow data
    * @param {string} handleType - Type of handle being dragged ('head' or 'tail')
@@ -693,6 +863,9 @@ var AnnotationUtil = function() {
         case 'arrow':
           self.drawArrow(ctx, element, element.styles);
           break;
+        case 'image':
+          self.drawImage(ctx, element, element.styles);
+          break;
         default:
           console.warn('Unknown element type:', element.type);
       }
@@ -705,9 +878,12 @@ var AnnotationUtil = function() {
     drawRectangle: self.drawRectangle,
     drawTextBox: self.drawTextBox,
     drawArrow: self.drawArrow,
+    drawImage: self.drawImage,
     createRectangleData: self.createRectangleData,
     createTextBoxData: self.createTextBoxData,
     createArrowData: self.createArrowData,
+    createImageData: self.createImageData,
+    processImageFile: self.processImageFile,
     getCanvasCoordinates: self.getCanvasCoordinates,
     resizeCanvas: self.resizeCanvas,
     clearCanvas: self.clearCanvas,
@@ -715,9 +891,11 @@ var AnnotationUtil = function() {
     drawSelectionHandles: self.drawSelectionHandles,
     drawTextBoxSelectionHandles: self.drawTextBoxSelectionHandles,
     drawArrowSelectionHandles: self.drawArrowSelectionHandles,
+    drawImageSelectionHandles: self.drawImageSelectionHandles,
     isPointInRectangle: self.isPointInRectangle,
     isPointInTextBox: self.isPointInTextBox,
     isPointOnArrow: self.isPointOnArrow,
+    isPointInImage: self.isPointInImage,
     getHandleAtPoint: self.getHandleAtPoint,
     getArrowHandleAtPoint: self.getArrowHandleAtPoint,
     calculateResizedRectangle: self.calculateResizedRectangle,
