@@ -1342,12 +1342,12 @@ var databaseUtilities = {
           }
           var cy = appUtilities.getActiveCy();
           databaseUtilities.performLayout();
+
+          resolve({
+            nodesToHighlight: nodesToHighlight,
+            edgesToHighlight: edgesToHighlight,
+          });
         });
-      
-      return {
-        nodesToHighlight: nodesToHighlight,
-        edgesToHighlight: edgesToHighlight,
-      };
     });
   },
 
@@ -1390,7 +1390,7 @@ var databaseUtilities = {
     appUtilities.triggerLayout(cy, true,true);
   },
 
-  runPathsFromTo: async function (sourceArray, targetArray, limit) {
+  runPathsFromTo: async function (sourceArray, targetArray, limit,allowCloning,cloningThreshold) {
     var sourceId = [];
     var sourceNewt = [];
     await databaseUtilities.getIdOfLabeledNodes(
@@ -1406,8 +1406,7 @@ var databaseUtilities = {
       targetId,
       targetNewt
     );
-
-    //Check if any nodes with such labels
+    var err=null;
     if (sourceId.length == 0 && targetId > 0) {
       var errMessage = {
         err: "Invalid input",
@@ -1429,77 +1428,78 @@ var databaseUtilities = {
       };
       return errMessage;
     }
-    query = graphALgos.pathsFromTo(limit);
+    query = graphALgos.pathsFromTo(limit,allowCloning?cloningThreshold:1000000);
     var idList =  [...new Set([...sourceId, ...targetId])];
     var queryData = { idList: idList };
-    // var queryData = { sourceArray: sourceId, targetArray: targetId };
     var data = { query: query, queryData: queryData };
+    var result = null 
+    try{
+      result = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+      });
+    }
+    catch (err) {
+      console.error("Error running query",err);
+    }
 
-    await $.ajax({
-      type: "post",
-      url: "/utilities/runDatabaseQuery",
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(data),
-      success: async function (data) {
-        if (data.records.length == 0) {
-          result.err = { err: "Invalid input", message: "No data returned" };
-          return;
+    if (!result || !result.records || result.records.length == 0 || result.records[0]._fields[0].length == 0) {
+      result.err = { err: "Invalid input", message: "No data returned" };
+      err = result.err;
+      return err;
+    }
+    var nodes = [];
+    var edges = [];
+    var nodesSet = new Set();
+    var edgesMap = new Map();
+    var records = result.records;
+    var language = records[0]._fields[2];
+    for (let i = 0; i < records.length; i++) {
+      var fields = records[i]._fields;
+      for (let j = 0; j < fields[0].length; j++) {
+        if (!nodesSet.has(fields[0][j].properties.newtId)) {
+          nodes.push(fields[0][j]);
+          nodesSet.add(fields[0][j].properties.newtId);
         }
-        var nodes = [];
-        var edges = [];
-        var nodesSet = new Set();
-        var edgesMap = new Map();
-        var records = data.records;
-        var language = records[0]._fields[2];
-        for (let i = 0; i < records.length; i++) {
-          var fields = records[i]._fields;
-          for (let j = 0; j < fields[0].length; j++) {
-            if (!nodesSet.has(fields[0][j].properties.newtId)) {
-              nodes.push(fields[0][j]);
-              nodesSet.add(fields[0][j].properties.newtId);
-            }
-          }
+      }
 
-          for (let j = 0; j < fields[1].length; j++) {
-            if (
-              !edgesMap.get(fields[1][j].properties.source) ||
-              !edgesMap
-                .get(fields[1][j].properties.source)
-                .has(fields[1][j].properties.target)
-            ) {
-              var edge = {};
-              edge.properties = {};
-              edge.identity = {};
-              edge.properties.source = fields[1][j].properties.source;
-              edge.properties.target = fields[1][j].properties.target;
-              edge.properties.class = fields[1][j].properties.class;
-              edge.identity.low = fields[1][j].identity.low;
-              edges.push(edge);
-              if (!edgesMap.get(fields[1][j].properties.source)) {
-                var newSet = new Set();
-                edgesMap.set(fields[1][j].properties.source, newSet);
-              }
-              edgesMap
-                .get(fields[1][j].properties.source)
-                .add(fields[1][j].properties.target);
-            }
+      for (let j = 0; j < fields[1].length; j++) {
+        if (
+          !edgesMap.get(fields[1][j].properties.source) ||
+          !edgesMap
+            .get(fields[1][j].properties.source)
+            .has(fields[1][j].properties.target)
+        ) {
+          var edge = {};
+          edge.properties = {};
+          edge.identity = {};
+          edge.properties.source = fields[1][j].properties.source;
+          edge.properties.target = fields[1][j].properties.target;
+          edge.properties.class = fields[1][j].properties.class;
+          edge.identity.low = fields[1][j].identity.low;
+          edges.push(edge);
+          if (!edgesMap.get(fields[1][j].properties.source)) {
+            var newSet = new Set();
+            edgesMap.set(fields[1][j].properties.source, newSet);
           }
+          edgesMap
+            .get(fields[1][j].properties.source)
+            .add(fields[1][j].properties.target);
         }
-        appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
-        databaseUtilities.addNodesEdgesToCy(
-          nodes,
-          edges,
-          sourceNewt,
-          targetNewt
-        );
-      },
-      error: function (req, status, err) {
-        console.error("Error running query", status, err);
-      },
-    });
+      }
+    }
+    appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+    databaseUtilities.addNodesEdgesToCy(
+      nodes,
+      edges,
+      sourceNewt,
+      targetNewt
+    );
   },
 
-  runPathBetween: async function (labelOfNodes, lengthLimit) {
+  runPathBetween: async function (labelOfNodes, lengthLimit,allowCloning,cloningThreshold) {
     var idOfNodes = [];
     var newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(
@@ -1517,7 +1517,7 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    var query = graphALgos.pathsBetween(lengthLimit);
+    var query = graphALgos.pathsBetween(lengthLimit,allowCloning?cloningThreshold:1000000);
     var queryData = { idList: idOfNodes };
 
     var data = { query: query, queryData: queryData };
@@ -1526,69 +1526,72 @@ var databaseUtilities = {
     var result = {};
     result.highlight = {};
     result.add = {};
-    await $.ajax({
-      type: "post",
-      url: "/utilities/runDatabaseQuery",
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(data),
-      success: async function (data) {
-        //Check if any data returned
-        if (data.records.length == 0) {
-          result.err = { err: "Invalid input", message: "No data returned" };
-          return;
-        }
-        console.log("returned data:", data);
-        var nodes = [];
-        var edges = [];
-        var nodesSet = new Set();
-        var edgesMap = new Map();
-        var records = data.records;
-        var language = records[0]._fields[2];
-        appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
-        for (let i = 0; i < records.length; i++) {
-          var fields = records[i]._fields;
-          for (let j = 0; j < fields[0].length; j++) {
-            if (!nodesSet.has(fields[0][j].properties.newtId)) {
-              nodes.push(fields[0][j]);
-              nodesSet.add(fields[0][j].properties.newtId);
-            }
-          }
+    var output = null;
+    try {
+      output = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data)
+      });
+    } catch (error) {
+      console.error("Error running query", error);
+    }
+    console.log("output:", output);
+    if (!output || !output.records || output.records[0].length == 0 || output.records[0]._fields[0].length == 0) {
+      result.err = { err: "Invalid input", message: "No data returned" };
+      err = result.err;
+      return err;
+    }
 
-          for (let j = 0; j < fields[1].length; j++) {
-            if (
-              !edgesMap.get(fields[1][j].properties.source) ||
-              !edgesMap
-                .get(fields[1][j].properties.source)
-                .has(fields[1][j].properties.target)
-            ) {
-              var edge = {};
-              edge.properties = {};
-              edge.identity = {};
-              edge.properties.source = fields[1][j].properties.source;
-              edge.properties.target = fields[1][j].properties.target;
-              edge.properties.class = fields[1][j].properties.class;
-              edge.identity.low = fields[1][j].identity.low;
-              edges.push(edge);
-              if (!edgesMap.get(fields[1][j].properties.source)) {
-                var newSet = new Set();
-                edgesMap.set(fields[1][j].properties.source, newSet);
-              }
-              edgesMap
-                .get(fields[1][j].properties.source)
-                .add(fields[1][j].properties.target);
-            }
-          }
+    console.log("returned data:", data);
+    var nodes = [];
+    var edges = [];
+    var nodesSet = new Set();
+    var edgesMap = new Map();
+    var records = output.records;
+    var language = records[0]._fields[2];
+    appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+    for (let i = 0; i < records.length; i++) {
+      var fields = records[i]._fields;
+      for (let j = 0; j < fields[0].length; j++) {
+        if (!nodesSet.has(fields[0][j].properties.newtId)) {
+          nodes.push(fields[0][j]);
+          nodesSet.add(fields[0][j].properties.newtId);
         }
-        console.log("data:", nodes, edges, newtIdOfNodes,language);
-        await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
-      },
-      error: function (req, status, err) {
-        console.error("Error running query", status, err);
-      },
-    });
-    return result;
+      }
+
+      for (let j = 0; j < fields[1].length; j++) {
+        if (
+          !edgesMap.get(fields[1][j].properties.source) ||
+          !edgesMap
+            .get(fields[1][j].properties.source)
+            .has(fields[1][j].properties.target)
+        ) {
+          var edge = {};
+          edge.properties = {};
+          edge.identity = {};
+          edge.properties.source = fields[1][j].properties.source;
+          edge.properties.target = fields[1][j].properties.target;
+          edge.properties.class = fields[1][j].properties.class;
+          edge.identity.low = fields[1][j].identity.low;
+          edges.push(edge);
+          if (!edgesMap.get(fields[1][j].properties.source)) {
+            var newSet = new Set();
+            edgesMap.set(fields[1][j].properties.source, newSet);
+          }
+          edgesMap
+            .get(fields[1][j].properties.source)
+            .add(fields[1][j].properties.target);
+        }
+      }
+    }
+    console.log("data:", nodes, edges, newtIdOfNodes,language);
+    const abc = await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
+    console.log("abc:", abc);
+    return null;
   },
-  runNeighborhood: async function (labelOfNodes, lengthLimit) {
+  runNeighborhood: async function (labelOfNodes, lengthLimit,allowCloning,cloningThreshold) {
     var idList = [];
     var newtIdList = [];
     await databaseUtilities.getIdOfLabeledNodes(
@@ -1606,7 +1609,7 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    var query = graphALgos.neighborhood(lengthLimit);
+    var query = graphALgos.neighborhood(lengthLimit,allowCloning?cloningThreshold:1000000);
     var queryData = { idList: idList };
 
     var data = { query: query, queryData: queryData };
@@ -1787,6 +1790,82 @@ var databaseUtilities = {
   
     return result;
   },
+
+
+  cloneSimpleChemicals: function(nodesArray, edgesArray, enableCloning = false, cloneThreshold = 0) {
+    const nodes = [], edges = [];
+    const nodesSet = new Set();
+    const edgesMap = new Map();
+    const simpleChemMap = new Map();
+
+    // 1. Separate out simple_chemical nodes
+    for (let n of nodesArray) {
+      if (n.properties.class === "simple_chemical") {
+        simpleChemMap.set(n.properties.newtId, n);
+        n.properties.cloned = true;
+      } else {
+        if (!nodesSet.has(n.properties.newtId)) {
+          nodes.push(n);
+          nodesSet.add(n.properties.newtId);
+        }
+      }
+    }
+
+    // 2. Pre-count arcs
+    const arcCounts = {};
+    if (enableCloning) {
+      for (let e of edgesArray) {
+        for (let end of ["source", "target"]) {
+          const id = e.properties[end];
+          if (simpleChemMap.has(id)) {
+            arcCounts[id] = (arcCounts[id] || 0) + 1;
+          }
+        }
+      }
+    }
+
+    // 3. Re-add originals for which we're NOT cloning (or cloning is off)
+    for (let [id, orig] of simpleChemMap.entries()) {
+      if (!enableCloning || arcCounts[id] <= cloneThreshold) {
+        if (!nodesSet.has(id)) {
+          nodes.push(orig);
+          nodesSet.add(id);
+        }
+      }
+    }
+
+    // 4. Clone nodes per-edge as needed
+    for (let i = 0; i < edgesArray.length; i++) {
+      const raw = edgesArray[i].properties;
+      if (enableCloning) {
+        for (let end of ["source", "target"]) {
+          const id = raw[end];
+          if (simpleChemMap.has(id) && arcCounts[id] > cloneThreshold) {
+            const orig = simpleChemMap.get(id);
+            const clone = JSON.parse(JSON.stringify(orig));
+            clone.properties.newtId = `${orig.properties.newtId}_${i}_${end}`;
+            clone.properties.cloneMarker = true;
+            nodes.push(clone);
+            nodesSet.add(clone.properties.newtId);
+            raw[end] = clone.properties.newtId;
+          }
+        }
+      }
+      edges.push({
+        properties: {
+          source: raw.source,
+          target: raw.target,
+          class:  raw.class
+        },
+        identity: { low: edgesArray[i].identity.low }
+      });
+      if (!edgesMap.has(raw.source)) edgesMap.set(raw.source, new Set());
+      edgesMap.get(raw.source).add(raw.target);
+    }
+
+    // Return
+    return { nodes, edges };
+  },
     
 
   getAllNodesAndEdgesFromDatabase: async function(enableCloning = false, cloneThreshold = 0) {
@@ -1822,91 +1901,13 @@ var databaseUtilities = {
         // 2) Unpack
         console.log(response.records);
         const [ nodesArray, edgesArray,language ] = response.records[0]._fields;
-        console.log("edges:",edgesArray);
-        const nodes = [], edges = [];
-        const nodesSet = new Set();
-        const edgesMap = new Map();
-        
-        // 3) Separate out all simple_chemical nodes
-        const simpleChemMap = new Map();
-        for (let n of nodesArray) {
-          if (n.properties.class === "simple_chemical") {
-            simpleChemMap.set(n.properties.newtId, n);
-            n.properties.cloned = true;              // mark it so we know it’s special
-          } else {
-            // add every non-simple_chemical once
-            if (!nodesSet.has(n.properties.newtId)) {
-              nodes.push(n);
-              nodesSet.add(n.properties.newtId);
-            }
-          }
-        }
-  
-        // 4) Pre-count arcs touching each simple_chemical (if cloning enabled)
-        const arcCounts = {};
-        if (enableCloning) {
-          for (let e of edgesArray) {
-            for (let end of ["source", "target"]) {
-              const id = e.properties[end];
-              if (simpleChemMap.has(id)) {
-                arcCounts[id] = (arcCounts[id] || 0) + 1;
-              }
-            }
-          }
-        }
-  
-        // 5) Re-add originals for which we’re NOT cloning (or cloning is off)
-        for (let [id, orig] of simpleChemMap.entries()) {
-          if (!enableCloning || arcCounts[id] <= cloneThreshold) {
-            if (!nodesSet.has(id)) {
-              nodes.push(orig);
-              nodesSet.add(id);
-            }
-          }
-        }
-  
-        // 6) Process each edge, cloning endpoints as needed
-        for (let i = 0; i < edgesArray.length; i++) {
-          const raw = edgesArray[i].properties;
-  
-          if (enableCloning) {
-            for (let end of ["source", "target"]) {
-              const id = raw[end];
-              // only clone if it’s a simple_chemical and exceeds threshold
-              if (simpleChemMap.has(id) && arcCounts[id] > cloneThreshold) {
-                const orig = simpleChemMap.get(id);
-                const clone = JSON.parse(JSON.stringify(orig));
-                clone.properties.newtId = `${orig.properties.newtId}_${i}_${end}`;
-                clone.properties.cloneMarker = true; // mark it as cloned
-                nodes.push(clone);
-                nodesSet.add(clone.properties.newtId);
-                raw[end] = clone.properties.newtId;
-              }
-            }
-          }
-  
-          // build minimal edge object
-          edges.push({
-            properties: {
-              source: raw.source,
-              target: raw.target,
-              class:  raw.class
-            },
-            identity: { low: edgesArray[i].identity.low }
-          });
-  
-          // avoid duplicates if you need to check
-          if (!edgesMap.has(raw.source)) edgesMap.set(raw.source, new Set());
-          edgesMap.get(raw.source).add(raw.target);
-          // console.log(MapTabLabelPanel);
-        }
+        const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
   
         // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
         let chiseInstance = appUtilities.getActiveChiseInstance();
         chiseInstance.elementUtilities.setMapType(language);
         await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
-        // await databaseUtilities.addNodesEdgesToCy(nodes, edges);
       },
       error: (req, status, err) => {
         console.error("Error fetching nodes/edges:", status, err);

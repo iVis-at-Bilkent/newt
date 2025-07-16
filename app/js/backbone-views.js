@@ -2537,9 +2537,13 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
           var lengthLimit = self.currentQueryParameters.lengthLimit;
           console.log("geneSymbolsArray", geneSymbolsArray);
           console.log("lengthLimit", lengthLimit);
+          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
           var result = await databaseUtilities.runNeighborhood(
             geneSymbolsArray,
-            lengthLimit
+            lengthLimit,
+            allowCloning,
+            cloningThreshold
           );
           if (result && result.err) {
             $(self.el).modal("toggle");
@@ -2896,9 +2900,10 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
-          console.log("lengthLimit", lengthLimit)
-          var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
-          console.log("resultFromDb",result)
+          console.log("lengthLimit", lengthLimit);
+          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+          var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowCloning,cloningThreshold);
           if (result && result.err)
           {
             $(self.el).modal('toggle');
@@ -3666,11 +3671,16 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
             .split(" ");
           console.log("sourceSymbolsArray", sourceSymbolsArray);
           console.log("targetSymbolsArray", targetSymbolsArray);
+          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
           var result = await databaseUtilities.runPathsFromTo(
             sourceSymbolsArray,
             targetSymbols,
-            2
+            2,
+            allowCloning,
+            cloningThreshold
           );
+          console.log("resultFromDb", result);
           if (result && result.err) {
             $(self.el).modal("toggle");
             new PromptInvalidQueryView({

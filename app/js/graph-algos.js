@@ -1,5 +1,5 @@
 var graphAlgos = {
-  pathsFromTo: function (limit) {
+  pathsFromTo: function (limit,simpleChemicalDegreeThreshold=1000000) {
     return `
     UNWIND $idList AS a
     UNWIND $idList AS b
@@ -8,6 +8,7 @@ var graphAlgos = {
     MATCH p=(n)-[*]-(m)  // Match paths of any length
     WHERE id(n) = a AND id(m) = b 
       AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
+      AND ALL(x IN nodes(p) WHERE x.class <> 'simple_chemical' OR apoc.node.degree(x, null) < ${simpleChemicalDegreeThreshold})
     WITH p, 
         [x IN nodes(p) WHERE NOT x.category <> 'process' ] AS filteredNodes  // Filter out multiple node classes
     WHERE size(filteredNodes) - 1 <= ${limit}  // Ensure that the non-excluded nodes count is within the length limit
@@ -24,44 +25,46 @@ var graphAlgos = {
               ELSE head(languages)
             END AS language
     `;
-    // return `UNWIND $sourceArray as source WITH source 
-    //           UNWIND $targetArray as target 
-    //           WITH source, target 
-    //           match p=(a)-[rels*..${limit}]-(b) 
-    //           WHERE id(a) = source and id(b) = target and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
-    //           and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
-    //           and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
-    //           return nodes(p), relationships(p)`;
   },
 
-  pathsBetween: function ( lengthLimit) {
+  pathsBetween: function (lengthLimit,simpleChemicalDegreeThreshold=1000000) {
     var query = `
-    UNWIND $idList as a 
-    UNWIND $idList as b 
-    WITH   a, b 
-    MATCH p=(n )-[rels*]-(m)
-    WHERE id(n) = a and id(m) = b and a <>b and NONE (r IN rels WHERE type(r)= 'belongs_to_compartment')  
-            and  NONE (r IN rels WHERE type(r)= 'belongs_to_submap')
-            and  NONE (r IN rels WHERE type(r)= 'belongs_to_complex')
-    WITH p,
+      UNWIND $idList as a 
+      UNWIND $idList as b 
+      WITH a, b 
+      MATCH p=(n)-[rels*]-(m)
+      WHERE id(n) = a 
+        AND id(m) = b 
+        AND a <> b 
+        AND NONE(r IN rels WHERE type(r) IN [
+            'belongs_to_compartment',
+            'belongs_to_submap',
+            'belongs_to_complex'
+        ])
+        AND ALL(x IN nodes(p) 
+            WHERE x.class <> 'simple_chemical' 
+            OR apoc.node.degree(x, null) <= ${simpleChemicalDegreeThreshold}
+        )
+      WITH p,
           [n in nodes(p) where n.category <> 'process'] AS realNodes
-    where size(realNodes) - 1 <= ${lengthLimit}
+      WHERE size(realNodes) - 1 <= ${lengthLimit}
 
-    unwind nodes(p) as node
-    unwind relationships(p) as rel
-    WITH collect(DISTINCT node) as nodes,
-         collect(DISTINCT rel) as relationships,
-         collect(DISTINCT node.language) as languages
-    return nodes,
-          relationships,
-          CASE
-            WHEN size(languages) > 1 THEN 'HybridAny'
-            ELSE head(languages)
-          END AS language
+      UNWIND nodes(p) as node
+      UNWIND relationships(p) as rel
+      WITH collect(DISTINCT node) as nodes,
+          collect(DISTINCT rel) as relationships,
+          collect(DISTINCT node.language) as languages
+      RETURN nodes,
+            relationships,
+            CASE
+              WHEN size(languages) > 1 THEN 'HybridAny'
+              ELSE head(languages)
+            END AS language
+
     `;
     return query;
   },
-  neighborhood: function ( lengthLimit) {
+  neighborhood: function ( lengthLimit,simpleChemicalDegreeThreshold=1000000) {
     const query = `
     UNWIND $idList AS startId
     MATCH  p = (a)-[rels*]-(b)
@@ -70,6 +73,9 @@ var graphAlgos = {
                 WHERE type(r) IN ['belongs_to_compartment',
                                   'belongs_to_submap',
                                   'belongs_to_complex'])
+      AND  ALL(n IN nodes(p)
+            WHERE n.class <> 'simple_chemical'
+                  OR apoc.node.degree(n, null) <= ${simpleChemicalDegreeThreshold})
     WITH  p,
           [n IN nodes(p) WHERE n.category <> 'process'] AS realNodes
     WHERE size(realNodes) - 1 <= ${lengthLimit}
