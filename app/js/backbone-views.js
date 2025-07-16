@@ -4041,7 +4041,6 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
             }).render();
             return;
           }
-          console.log("resultFromDb", resultFromDb);
           $(self.el).modal("toggle");
         }
       );

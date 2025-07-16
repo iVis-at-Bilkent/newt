@@ -1,7 +1,7 @@
 var nodeMatchUtilities = require("./node-match-utilities");
 var graphALgos = require("./graph-algos");
 var appUtilities = require("./app-utilities");
-const { merge, cleanData } = require("jquery");
+const { merge, cleanData, type } = require("jquery");
 const { handleSBGNInspector } = require("./inspector-utilities");
 const { LayoutPropertiesView } = require("./backbone-views");
 const chise = require("chise");
@@ -1234,14 +1234,14 @@ var databaseUtilities = {
 
   //Queries
   getIdOfLabeledNodes: async function (labelOfNodes, idOfNodes, newtIdOfNodes) {
+    console.log(labelOfNodes, idOfNodes)
     var query = `UNWIND $labelOfNodes as label
                    MATCH (u)
                    WHERE u.entityName = label
-                   RETURN id(u), u.newtId`;
+                   RETURN elementId(u), u.newtId`;
     var queryData = { labelOfNodes: labelOfNodes };
 
     var data = { query: query, queryData: queryData };
-    var idNodes = [];
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -1249,7 +1249,7 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (data) {
         for (var i = 0; i < data.records.length; i++) {
-          idOfNodes.push(data.records[i]._fields[0].low);
+          idOfNodes.push(data.records[i]._fields[0]);
           if(newtIdOfNodes)newtIdOfNodes.push(data.records[i]._fields[1]);
         }
       },
@@ -1269,7 +1269,7 @@ var databaseUtilities = {
     databaseUtilities.performLayout();
   },
 
-  addNodesEdgesToCy: async function (nodes, edges, source, target) {
+  addNodesEdgesToCy: async function (nodes, edges=[], source, target) {
     console.log("Edges in here:",edges);
     return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1501,7 +1501,6 @@ var databaseUtilities = {
 
   runPathBetween: async function (labelOfNodes, lengthLimit,allowCloning,cloningThreshold) {
     var idOfNodes = [];
-    var newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(
       labelOfNodes,
       idOfNodes,
@@ -1696,7 +1695,6 @@ var databaseUtilities = {
   runCommonStream: async function (labelOfNodes, lengthLimit, direction) {
     var idOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
-    console.log('idOfNodes:',idOfNodes);
     if (idOfNodes.length == 0) {
       var errMessage = {
         err: "Invalid input",
@@ -1704,7 +1702,6 @@ var databaseUtilities = {
       };
       return errMessage;
     }
-
     var query = "";
     if (direction == -1) {
       query = graphALgos.commonStream(idOfNodes, lengthLimit);
@@ -1718,41 +1715,42 @@ var databaseUtilities = {
     var result = {};
     result.highlight = {};
     result.add = {};
-    await $.ajax({
-      type: "post",
-      url: "/utilities/runDatabaseQuery",
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(data),
-      success: async function (data) {
-        if (data.records.length == 0) {
-          result.err = { err: "Invalid input", message: "No data returned" };
-          return;
-        }
-        var nodes = [];
-        var edges = [];
-        var records = data.records;
-        for (let i = 0; i < records.length; i++) {
-          var fields = records[i]._fields;
-          for (let j = 0; j < fields[1].length; j++) {
-            nodes.push(fields[1][j]);
-          }
-          for (let j = 0; j < fields[5].length; j++) {
-            var edge = {};
-            edge.properties = {};
-            edge.identity = {};
-            edge.properties.source = fields[5][j].properties.source;
-            edge.properties.target = fields[5][j].properties.target;
-            edge.properties.class = fields[5][j].properties.class;
-            edge.identity.low = fields[5][j].identity.low;
-            edges.push(edge);
-          }
-        }
-        await databaseUtilities.addNodesEdgesToCy(data);
-      },
-      error: function (req, status, err) {
-        console.error("Error running query", status, err);
-      },
-    });
+    var output = null;
+    try {
+      output = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+      });
+    } catch (err) {
+      console.error("Error running query",err);
+    }
+    console.log("data:", output);
+    if (output.records.length == 0) {
+      result.err = { err: "Invalid input", message: "No data returned" };
+      return;
+    }
+    var nodes = [];
+    var edges = [];
+    var records = output.records;
+    for (let i = 0; i < records.length; i++) {
+      var fields = records[i]._fields;
+      for (let j = 0; j < fields[1].length; j++) {
+        nodes.push(fields[1][j]);
+      }
+      for (let j = 0; j < fields[5].length; j++) {
+        var edge = {};
+        edge.properties = {};
+        edge.identity = {};
+        edge.properties.source = fields[5][j].properties.source;
+        edge.properties.target = fields[5][j].properties.target;
+        edge.properties.class = fields[5][j].properties.class;
+        edge.identity.low = fields[5][j].identity.low;
+        edges.push(edge);
+      }
+    }
+    await databaseUtilities.addNodesEdgesToCy(nodes);
     return result;
   },
 

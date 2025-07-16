@@ -101,6 +101,11 @@ var graphAlgos = {
   //Uses user defined function written in : https://github.com/iVis-at-Bilkent/visuall-advanced-query/
   //Contact Yusuf Canbaz for more info
   commonStream: function (idList, lengthLimit) {
+    idList = idList.map((id) => {
+      return `${id}`;
+    });
+    console.log(idList);
+    idList = idList.map(id => `'${id}'`).join(',');
     var pageSize = 100000;
     var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
             ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
