@@ -249,6 +249,7 @@ var AnnotationUtil = function() {
       y: y,
       width: width,
       height: height,
+      styles: { fillColor: 'rgba(255,255,255,0)' },
       id: 'rect_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
@@ -272,6 +273,9 @@ var AnnotationUtil = function() {
     }
 
     var textStyles = Object.assign({}, defaultStyles.text, styles || {});
+    var boxStyles = styles || {};
+    var borderColor = boxStyles.strokeColor || '#0099FF';
+    var fillColor = boxStyles.fillColor || 'rgba(255,255,255,0)';
     
     var { x, y, width, height, text } = data;
     if (x === undefined || y === undefined || width === undefined || height === undefined) {
@@ -281,29 +285,25 @@ var AnnotationUtil = function() {
 
     try {
       ctx.save();
-      
-      ctx.strokeStyle = '#0099FF';
+      ctx.fillStyle = fillColor;
+      ctx.fillRect(x, y, width, height);
+      ctx.strokeStyle = borderColor;
       ctx.lineWidth = 1;
       ctx.setLineDash([5, 5]);
       ctx.strokeRect(x, y, width, height);
-      
       if (text && text.trim()) {
         ctx.fillStyle = textStyles.color;
         ctx.font = textStyles.fontSize + 'px ' + textStyles.fontFamily;
         ctx.textBaseline = 'top';
-        
         var textX = x + 5;
         var textY = y + 5;
-        
         var maxWidth = width - 10;
         var words = text.split(' ');
         var lines = [];
         var currentLine = '';
-        
         for (var i = 0; i < words.length; i++) {
           var testLine = currentLine + (currentLine ? ' ' : '') + words[i];
           var testWidth = ctx.measureText(testLine).width;
-          
           if (testWidth > maxWidth && currentLine) {
             lines.push(currentLine);
             currentLine = words[i];
@@ -314,7 +314,6 @@ var AnnotationUtil = function() {
         if (currentLine) {
           lines.push(currentLine);
         }
-        
         var lineHeight = textStyles.fontSize + 2;
         for (var j = 0; j < lines.length; j++) {
           if (textY + j * lineHeight + lineHeight <= y + height) {
@@ -324,9 +323,7 @@ var AnnotationUtil = function() {
           }
         }
       }
-      
       ctx.restore();
-      
       return true;
     } catch (error) {
       console.error('Error drawing text box:', error);
@@ -411,6 +408,7 @@ var AnnotationUtil = function() {
       width: width,
       height: height,
       text: 'Double-click to edit',
+      styles: { fillColor: 'rgba(255,255,255,0)', strokeColor: '#0099FF' },
       id: 'textbox_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };

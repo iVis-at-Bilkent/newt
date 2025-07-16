@@ -1381,13 +1381,172 @@ var AnnotationLayers = function() {
    */
   self.selectElement = function(element) {
     selectedElement = element;
-    // Disable Cytoscape interactions to prevent viewport panning
-    // when mouse moves outside the canvas
     self.disableCytoscapeInteractions();
     self.enablePointerEvents();
     self.redrawLayer(currentLayerId);
-    
     $('.annotation-element-delete').show();
+
+    $('#annotation-font-size-container').remove();
+    $('#annotation-rect-fillcolor-container').remove();
+    $('#annotation-arrow-style-container').remove();
+    $('#annotation-rect-bordercolor-container').remove();
+    $('#annotation-textbox-bordercolor-container').remove();
+    $('#annotation-textbox-fillcolor-container').remove();
+
+    if (selectedElement && selectedElement.type === 'rectangle') {
+      // Border color UI
+      var defaultRectStyles = annotationUtil.defaultStyles.rectangle || { strokeColor: '#800080' };
+      var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : defaultRectStyles.strokeColor;
+      var borderColorInput = $(
+        '<div id="annotation-rect-bordercolor-container" style="margin-bottom:10px;">' +
+          '<label style="margin-right:5px;">Border color:</label>' +
+          '<input id="annotation-rect-bordercolor-input" type="color" value="' + rgbToHex(borderColor) + '" style="width:40px;">' +
+        '</div>'
+      );
+      $('.annotation-element-delete').after(borderColorInput);
+      $('#annotation-rect-bordercolor-input').on('input', function() {
+        var hex = $(this).val();
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.strokeColor = hex;
+        self.redrawLayer(currentLayerId);
+      });
+
+      var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
+      var match = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/);
+      var r = 255, g = 255, b = 255, a = 0;
+      if (match) {
+        r = parseInt(match[1]);
+        g = parseInt(match[2]);
+        b = parseInt(match[3]);
+        a = match[4] !== undefined ? parseFloat(match[4]) : 1;
+      }
+      var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      var fillColorInput = $(
+        '<div id="annotation-rect-fillcolor-container" style="margin-bottom:10px;">' +
+          '<label style="margin-right:5px;">Fill color:</label>' +
+          '<input id="annotation-rect-fillcolor-input" type="color" value="' + hex + '" style="width:40px;">' +
+          '<div style="margin-top:5px; display:flex; align-items:center;">' +
+            '<label style="margin-right:5px;">Transparency:</label>' +
+            '<input id="annotation-rect-fillalpha-input" type="range" min="0" max="1" step="0.01" value="' + (1-a) + '" style="width:80px; vertical-align:middle;">' +
+            '<span id="annotation-rect-fillalpha-value" style="margin-left:5px;">' + (1-a).toFixed(2) + '</span>' +
+          '</div>' +
+        '</div>'
+      );
+      $('#annotation-rect-bordercolor-container').after(fillColorInput);
+      // Color handler
+      $('#annotation-rect-fillcolor-input, #annotation-rect-fillalpha-input').on('input', function() {
+        var hex = $('#annotation-rect-fillcolor-input').val();
+        var alpha = 1 - parseFloat($('#annotation-rect-fillalpha-input').val());
+        var bigint = parseInt(hex.slice(1), 16);
+        var r = (bigint >> 16) & 255;
+        var g = (bigint >> 8) & 255;
+        var b = bigint & 255;
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+        $('#annotation-rect-fillalpha-value').text((1-alpha).toFixed(2));
+        self.redrawLayer(currentLayerId);
+      });
+    }
+
+    if (selectedElement && selectedElement.type === 'textbox') {
+      var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : '#0099FF';
+      var borderColorInput = $(
+        '<div id="annotation-textbox-bordercolor-container" style="margin-bottom:10px;">' +
+          '<label style="margin-right:5px;">Border color:</label>' +
+          '<input id="annotation-textbox-bordercolor-input" type="color" value="' + rgbToHex(borderColor) + '" style="width:40px;">' +
+        '</div>'
+      );
+      $('.annotation-element-delete').after(borderColorInput);
+      $('#annotation-textbox-bordercolor-input').on('input', function() {
+        var hex = $(this).val();
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.strokeColor = hex;
+        self.redrawLayer(currentLayerId);
+      });
+
+      var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
+      var match = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/);
+      var r = 255, g = 255, b = 255, a = 0;
+      if (match) {
+        r = parseInt(match[1]);
+        g = parseInt(match[2]);
+        b = parseInt(match[3]);
+        a = match[4] !== undefined ? parseFloat(match[4]) : 1;
+      }
+      var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      var fillColorInput = $(
+        '<div id="annotation-textbox-fillcolor-container" style="margin-bottom:10px;">' +
+          '<label style="margin-right:5px;">Fill color:</label>' +
+          '<input id="annotation-textbox-fillcolor-input" type="color" value="' + hex + '" style="width:40px;">' +
+          '<div style="margin-top:5px; display:flex; align-items:center;">' +
+            '<label style="margin-right:5px;">Transparency:</label>' +
+            '<input id="annotation-textbox-fillalpha-input" type="range" min="0" max="1" step="0.01" value="' + (1-a) + '" style="width:80px; vertical-align:middle;">' +
+            '<span id="annotation-textbox-fillalpha-value" style="margin-left:5px;">' + (1-a).toFixed(2) + '</span>' +
+          '</div>' +
+        '</div>'
+      );
+      $('#annotation-textbox-bordercolor-container').after(fillColorInput);
+      $('#annotation-textbox-fillcolor-input, #annotation-textbox-fillalpha-input').on('input', function() {
+        var hex = $('#annotation-textbox-fillcolor-input').val();
+        var alpha = 1 - parseFloat($('#annotation-textbox-fillalpha-input').val());
+        var bigint = parseInt(hex.slice(1), 16);
+        var r = (bigint >> 16) & 255;
+        var g = (bigint >> 8) & 255;
+        var b = bigint & 255;
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+        $('#annotation-textbox-fillalpha-value').text((1-alpha).toFixed(2));
+        self.redrawLayer(currentLayerId);
+      });
+
+      // Font size for textbox (existing logic)
+      var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
+      var fontSizeInput = $(
+        '<div id="annotation-font-size-container" style="margin-bottom:10px;">' +
+          '<label style="margin-right:5px;">Font size:</label>' +
+          '<input id="annotation-font-size-input" type="number" min="6" max="100" step="1" value="' + fontSize + '" style="width:60px;"> px' +
+        '</div>'
+      );
+      $('#annotation-textbox-fillcolor-container').after(fontSizeInput);
+      $('#annotation-font-size-input').on('input', function() {
+        var val = parseInt($(this).val());
+        if (!isNaN(val) && val > 0) {
+          if (!selectedElement.styles) selectedElement.styles = {};
+          selectedElement.styles.fontSize = val;
+          self.redrawLayer(currentLayerId);
+        }
+      });
+    }
+
+    if (selectedElement && selectedElement.type === 'arrow') {
+      var defaultArrowStyles = annotationUtil.defaultStyles.arrow || { strokeColor: '#ff0000', lineWidth: 7 };
+      var strokeColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : defaultArrowStyles.strokeColor;
+      var lineWidth = (selectedElement.styles && selectedElement.styles.lineWidth) ? selectedElement.styles.lineWidth : defaultArrowStyles.lineWidth;
+      var arrowStyleInput = $(
+        '<div id="annotation-arrow-style-container" style="margin-bottom:10px;">' +
+          '<label style="margin-right:5px;">Arrow color:</label>' +
+          '<input id="annotation-arrow-color-input" type="color" value="' + rgbToHex(strokeColor) + '" style="width:40px;">' +
+          '<br>' +
+          '<label style="margin-right:5px;">Arrow width:</label>' +
+          '<input id="annotation-arrow-width-input" type="number" min="1" max="30" step="1" value="' + lineWidth + '" style="width:60px;"> px' +
+        '</div>'
+      );
+      $('.annotation-element-delete').after(arrowStyleInput);
+      $('#annotation-arrow-color-input').on('input', function() {
+        var hex = $(this).val();
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.strokeColor = hex;
+        self.redrawLayer(currentLayerId);
+      });
+      $('#annotation-arrow-width-input').on('input', function() {
+        var val = parseInt($(this).val());
+        if (!isNaN(val) && val > 0) {
+          if (!selectedElement.styles) selectedElement.styles = {};
+          selectedElement.styles.lineWidth = val;
+          self.redrawLayer(currentLayerId);
+        }
+      });
+    }
   };
 
   /**
@@ -1396,18 +1555,20 @@ var AnnotationLayers = function() {
   self.deselectElement = function() {
     selectedElement = null;
     self.enableCytoscapeInteractions();
-    
-    // Update pointer events based on current layer
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
       self.disablePointerEvents();
     } else {
-      // Keep pointer events enabled for annotation layers
       self.enablePointerEvents();
     }
     self.redrawLayer(currentLayerId);
-    
     $('.annotation-element-delete').hide();
+    $('#annotation-font-size-container').remove();
+    $('#annotation-rect-fillcolor-container').remove();
+    $('#annotation-arrow-style-container').remove();
+    $('#annotation-rect-bordercolor-container').remove();
+    $('#annotation-textbox-bordercolor-container').remove();
+    $('#annotation-textbox-fillcolor-container').remove();
   };
 
   /**
@@ -1848,3 +2009,17 @@ var AnnotationLayers = function() {
 var annotationLayers = new AnnotationLayers();
 
 module.exports = annotationLayers; 
+
+// Helper function to convert color to hex
+function rgbToHex(color) {
+  // Accepts #rrggbb or rgb(r,g,b) or rgba(r,g,b,a)
+  if (color[0] === '#') return color;
+  var match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (match) {
+    var r = parseInt(match[1]).toString(16).padStart(2, '0');
+    var g = parseInt(match[2]).toString(16).padStart(2, '0');
+    var b = parseInt(match[3]).toString(16).padStart(2, '0');
+    return '#' + r + g + b;
+  }
+  return '#ff0000'; // fallback
+} 
