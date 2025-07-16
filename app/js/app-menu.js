@@ -324,9 +324,24 @@ module.exports = function() {
       var defaultColorScheme = appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle = appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
       
-      // Only apply cell_designer scheme if the file (sample) doesn't have its own color scheme
+      // Check if any nodes have custom styling (background-color or background-image)
+      var hasCustomStyling = false;
+      cy.nodes().forEach(function(node) {
+        var bgColor = node.data('background-color');
+        var bgImage = node.data('background-image');
+        
+        // If node has any custom background color or image, consider it has custom styling
+        if ((bgColor && bgColor !== '') || (bgImage && bgImage !== '')) {
+          hasCustomStyling = true;
+          return false;
+        }
+      });
+      
+      // Only apply cell_designer scheme if the file doesn't have its own color scheme 
+      // AND no nodes have custom styling
       if (currentGeneralProperties.mapColorScheme === defaultColorScheme && 
-          currentGeneralProperties.mapColorSchemeStyle === defaultColorSchemeStyle) {
+          currentGeneralProperties.mapColorSchemeStyle === defaultColorSchemeStyle &&
+          !hasCustomStyling) {
         appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
       }
     }
@@ -2084,10 +2099,14 @@ module.exports = function() {
 
     $(document).on("changeMapTypeFromMenu", function(event, newMapType) {
       updatePalette(newMapType);
-      if (newMapType === "SBML") {
-        appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
-      } else if (newMapType !== "SBML") {
-        appUtilities.applyMapColorScheme("black_white", "solid", appUtilities.colorSchemeInspectorView);
+      
+      // use active cy instance to check if canvas is empty
+      var cy = appUtilities.getActiveCy();
+      
+      if (cy.elements().length == 0) {
+        if (newMapType === "SBML") {
+          appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
+        }
       }
     });
 
