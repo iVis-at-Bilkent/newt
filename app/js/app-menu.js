@@ -563,11 +563,11 @@ module.exports = function() {
         success = function(data){
           if (cy.elements().length !== 0) {
             promptConfirmationView.render(function () {
-              chiseInstance.loadSBGNMLText(data, true, file.name, cy);
+              chiseInstance.loadSBMLText(data, true, file.name, cy);
             });
           }
           else {
-            chiseInstance.loadSBGNMLText(data, true, file.name, cy);
+            chiseInstance.loadSBMLText(data, true, file.name, cy);
           }
         },
         error = function(data){
