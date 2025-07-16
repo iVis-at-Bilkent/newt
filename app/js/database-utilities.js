@@ -1406,6 +1406,9 @@ var databaseUtilities = {
       targetId,
       targetNewt
     );
+    sourceId = sourceId.map((id) => parseInt(id.split(":")[2]));
+    targetId = targetId.map((id) => parseInt(id.split(":")[2]));
+    console.log("sourceId:", sourceId, "targetId:", targetId);
     var err=null;
     if (sourceId.length == 0 && targetId > 0) {
       var errMessage = {
@@ -1500,13 +1503,15 @@ var databaseUtilities = {
   },
 
   runPathBetween: async function (labelOfNodes, lengthLimit,allowCloning,cloningThreshold) {
-    var idOfNodes = [];
+    var idOfNodes = [],newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(
       labelOfNodes,
       idOfNodes,
       newtIdOfNodes
     );
+    idOfNodes = idOfNodes.map((id) => parseInt(id.split(":")[2]));
 
+    console.log("idOfNodes:", idOfNodes);
     //Check if label of nodes are valid
     if (idOfNodes.length == 0) {
       var errMessage = {
@@ -1598,8 +1603,9 @@ var databaseUtilities = {
       idList,
       newtIdList
     );
+    idList = idList.map((id)=>Number.parseInt(id.split(":")[2]));
     var setOfSources = new Set(newtIdList);
-
+    console.log("idList:", idList, "newtIdList:", newtIdList);
     if (idList.length == 0) {
       var errMessage = {
         err: "Invalid input",

@@ -65,6 +65,9 @@ var graphAlgos = {
     return query;
   },
   neighborhood: function ( lengthLimit,simpleChemicalDegreeThreshold=1000000) {
+    // AND  ALL(n IN nodes(p)
+    //         WHERE n.class <> 'simple_chemical'
+    //               OR apoc.node.degree(n, null) < ${simpleChemicalDegreeThreshold})
     const query = `
     UNWIND $idList AS startId
     MATCH  p = (a)-[rels*]-(b)
@@ -73,9 +76,6 @@ var graphAlgos = {
                 WHERE type(r) IN ['belongs_to_compartment',
                                   'belongs_to_submap',
                                   'belongs_to_complex'])
-      AND  ALL(n IN nodes(p)
-            WHERE n.class <> 'simple_chemical'
-                  OR apoc.node.degree(n, null) <= ${simpleChemicalDegreeThreshold})
     WITH  p,
           [n IN nodes(p) WHERE n.category <> 'process'] AS realNodes
     WHERE size(realNodes) - 1 <= ${lengthLimit}
