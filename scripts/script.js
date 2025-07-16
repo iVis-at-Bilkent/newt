@@ -28,15 +28,23 @@ if(!PLUGIN_PATH) {
 }
 const jarSource = path.join(__dirname, '../plugins/neo4j-custom-procedures-1.0.0.jar');
 const jarTarget = path.join(PLUGIN_PATH, 'neo4j-custom-procedures-1.0.0.jar');
+const jarSourceAdvancedQuery = path.join(__dirname, '../plugins/advanced-queries-0.0.1.jar');
+const jarTargetAdvancedQuery = path.join(PLUGIN_PATH, 'advanced-queries-0.0.1.jar');
 // Ensure the plugin directory exists
 if( !fs.existsSync(jarSource)) {
     console.error(`Source JAR file does not exist: ${jarSource}`);
+    process.exit(1);
+}
+if( !fs.existsSync(jarSourceAdvancedQuery)) {
+    console.error(`Source JAR file does not exist: ${jarSourceAdvancedQuery}`);
     process.exit(1);
 }
 
 try{   
     fs.copyFileSync(jarSource, jarTarget);
     console.log(`Successfully copied Neo4j plugin to ${jarTarget}`);
+    fs.copyFileSync(jarSourceAdvancedQuery, jarTargetAdvancedQuery);
+    console.log(`Successfully copied Neo4j plugin to ${jarTargetAdvancedQuery}`);
 }
 catch (e) {
     if (e.code === 'EACCES' || e.code === 'EPERM') {
