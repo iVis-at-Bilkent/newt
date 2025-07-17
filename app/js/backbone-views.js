@@ -2893,10 +2893,10 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
           }
 
           var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-
+          .replaceAll("\n", " ")
+          .replaceAll("\t", " ")
+          .split(" ");
+          
           var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
           var lengthLimit =  self.currentQueryParameters.lengthLimit
           console.log("geneSymbolsArray", geneSymbolsArray)
@@ -4984,7 +4984,13 @@ var FileSaveView = Backbone.View.extend({
           else if (version === "plain3") {
             saveAsFcn(filename, version, renderInfo, undefined, nodes, edges);
           } else {
-            saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
+            // Get annotation layers data for saving
+            var annotationLayersData = null;
+            if (window.annotationLayers) {
+              annotationLayersData = window.annotationLayers.getAnnotationLayersData();
+            }
+            
+            saveAsFcn(filename, version, renderInfo, properties, nodes, edges, annotationLayersData);
           }
         } else if (fileformat === "celldesigner") {
           if (mapType == "SBML") {

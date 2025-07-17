@@ -314,6 +314,11 @@ module.exports = function() {
       // select appropriate palette depending on the map
       updatePalette(chiseInstance.elementUtilities.mapType)
 
+      // Reset annotation layers when a file is loaded or when a sample is loaded
+      if (window.annotationLayers && (!filename.endsWith('.nwt') || event.type === 'sbgnvizLoadSampleEnd')) {
+        window.annotationLayers.resetAnnotationLayers();
+      }
+
     }
     cy.fit( cy.elements(":visible"), 20 );
 
@@ -458,10 +463,10 @@ module.exports = function() {
         var loadCallbackSBGNMLValidity = function (text) {
           //validateSBGNML(text);
         }
-        params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning,,(e)=>{
+        params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, (e)=>{
           pushActiveTabsView.render(e,"Push From File");
-        }];
-        caller = chiseInstance.loadFileToLocal;
+        }, loadCallbackAnnotationLayers];
+        caller = chiseInstance.loadNwtFile;
       }
 
       if(cy.elements().length != 0) {
@@ -548,7 +553,32 @@ module.exports = function() {
           var loadCallbackSBGNMLValidity = function (text) {
             //validateSBGNML(text);
           }
-          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning];
+          
+          // Add callback to handle annotation layers data after file is loaded
+          var loadCallbackAnnotationLayers = function(annotationLayersData) {
+            // This callback will be called after the file is loaded
+            // The annotation layers data will be available in the graph data
+            var cy = appUtilities.getActiveCy();
+            var chiseInstance = appUtilities.getActiveChiseInstance();
+            var networkId = chiseInstance && chiseInstance.getCy() && chiseInstance.getCy().container().id;
+            
+            if (annotationLayersData && window.annotationLayers) {
+              window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+              if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+                window.networkIdToAnnotationLayersData[networkId] = annotationLayersData;
+              }
+            } else if (window.annotationLayers) {
+              window.annotationLayers.resetAnnotationLayers();
+              if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+                window.networkIdToAnnotationLayersData[networkId] = undefined;
+              }
+            } else {
+              console.log('Annotation layers system not available');
+              console.log('window.annotationLayers:', window.annotationLayers);
+            }
+          };
+          
+          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, undefined, loadCallbackAnnotationLayers];
           caller = chiseInstance.loadNwtFile;
         }
 
@@ -2092,8 +2122,30 @@ module.exports = function() {
 
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
-      var target = $(e.target).attr("href"); // activated tab
+      var currentActiveNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
+      
+      if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
+        var savedData = window.annotationLayers.getAnnotationLayersData();
+        window.networkIdToAnnotationLayersData[currentActiveNetworkId] = savedData;
+      }
+
+      var target = $(e.target).attr("href");
       appUtilities.setActiveNetwork(target);
+
+      // Load annotation layers for the new (current) network
+      var newNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
+      if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
+        var layersData = window.networkIdToAnnotationLayersData[newNetworkId];
+        if (layersData) {
+          window.annotationLayers.loadAnnotationLayersData(layersData);
+        } else {
+          window.annotationLayers.resetAnnotationLayers();
+        }
+        
+        // Re-initialize annotation layers for the new network to ensure proper viewport synchronization
+        window.annotationLayers.reinitForNewNetwork();
+      }
+
       inspectorUtilities.handleSBGNInspector();
     });
 
