@@ -391,7 +391,7 @@ var AnnotationLayers = function() {
                     class="btn btn-xs btn-default layer-visibility-btn" 
                     data-layer-id="${layer.id}"
                     title="${layer.visible ? 'Hide' : 'Show'} Layer">
-              <i class="fa ${visibilityIcon}"></i>
+              <img src="app/img/toolbar/${layer.visible ? 'show-all.svg' : 'hide-selected-simple.svg'}" alt="${layer.visible ? 'Hide' : 'Show'}" style="width:16px; height:16px; vertical-align:middle;" />
             </button>
           ` : ''}
           ${!isDefaultLayer ? `
@@ -399,7 +399,7 @@ var AnnotationLayers = function() {
                     class="btn btn-xs btn-danger layer-delete-btn" 
                     data-layer-id="${layer.id}"
                     title="Delete Layer">
-              <i class="fa fa-times"></i>
+              <img src="app/img/toolbar/delete-simple.svg" alt="Delete" style="width:16px; height:16px; vertical-align:middle;" />
             </button>
           ` : ''}
         </div>
