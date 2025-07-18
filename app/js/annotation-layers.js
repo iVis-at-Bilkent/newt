@@ -1412,6 +1412,8 @@ var AnnotationLayers = function() {
     self.enablePointerEvents();
     self.redrawLayer(currentLayerId);
     $('.annotation-element-delete').show();
+    // Hide Add Item button/menu when an item is selected
+    $('.annotation-layers-controls').hide();
 
     $('#annotation-font-size-container').remove();
     $('#annotation-rect-fillcolor-container').remove();
@@ -1582,6 +1584,8 @@ var AnnotationLayers = function() {
     $('#annotation-textbox-bordercolor-container').remove();
     $('#annotation-textbox-fillcolor-container').remove();
     $("#annotation-element-properties-table").remove();
+    // Show Add Item button/menu when no item is selected
+    $('.annotation-layers-controls').show();
   };
 
   /**
