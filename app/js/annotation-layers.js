@@ -1392,161 +1392,146 @@ var AnnotationLayers = function() {
     $('#annotation-rect-bordercolor-container').remove();
     $('#annotation-textbox-bordercolor-container').remove();
     $('#annotation-textbox-fillcolor-container').remove();
-
+    $("#annotation-element-properties-table").remove();
+    
+    var table = $('<table id="annotation-element-properties-table" cellpadding="0" cellspacing="0" width="100%" class="object-panel-table" style="margin-top: 10px; margin-bottom: 10px;"></table>');
+    var width = 120;
+    var buttonwidth = 50;
+    
     if (selectedElement && selectedElement.type === 'rectangle') {
-      // Border color UI
-      var defaultRectStyles = annotationUtil.defaultStyles.rectangle || { strokeColor: '#800080' };
-      var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : defaultRectStyles.strokeColor;
-      var borderColorInput = $(
-        '<div id="annotation-rect-bordercolor-container" style="margin-bottom:10px;">' +
-          '<label style="margin-right:5px;">Border color:</label>' +
-          '<input id="annotation-rect-bordercolor-input" type="color" value="' + rgbToHex(borderColor) + '" style="width:40px;">' +
-        '</div>'
-      );
-      $('.annotation-element-delete').after(borderColorInput);
-      $('#annotation-rect-bordercolor-input').on('input', function() {
-        var hex = $(this).val();
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.strokeColor = hex;
-        self.redrawLayer(currentLayerId);
-      });
-
+      // Border color
+      var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : annotationUtil.defaultStyles.rectangle.strokeColor;
+      var borderRow = $('<tr></tr>');
+      borderRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Border Color</td>');
+      borderRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;"></td>');
+      table.append(borderRow);
+      
+      // Fill color + transparency
       var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
       var match = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/);
       var r = 255, g = 255, b = 255, a = 0;
-      if (match) {
-        r = parseInt(match[1]);
-        g = parseInt(match[2]);
-        b = parseInt(match[3]);
-        a = match[4] !== undefined ? parseFloat(match[4]) : 1;
-      }
+      if (match) { r = parseInt(match[1]); g = parseInt(match[2]); b = parseInt(match[3]); a = match[4] !== undefined ? parseFloat(match[4]) : 1; }
       var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      var fillColorInput = $(
-        '<div id="annotation-rect-fillcolor-container" style="margin-bottom:10px;">' +
-          '<label style="margin-right:5px;">Fill color:</label>' +
-          '<input id="annotation-rect-fillcolor-input" type="color" value="' + hex + '" style="width:40px;">' +
-          '<div style="margin-top:5px; display:flex; align-items:center;">' +
-            '<label style="margin-right:5px;">Transparency:</label>' +
-            '<input id="annotation-rect-fillalpha-input" type="range" min="0" max="100" step="1" value="' + ((1-a)*100) + '" style="width:80px; vertical-align:middle;">' +
-            '<span id="annotation-rect-fillalpha-value" style="margin-left:5px;">' + Math.round((1-a)*100) + '</span>' +
-          '</div>' +
-        '</div>'
-      );
-      $('#annotation-rect-bordercolor-container').after(fillColorInput);
-      // Color handler
-      $('#annotation-rect-fillcolor-input, #annotation-rect-fillalpha-input').on('input', function() {
-        var hex = $('#annotation-rect-fillcolor-input').val();
-        var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
-        var bigint = parseInt(hex.slice(1), 16);
-        var r = (bigint >> 16) & 255;
-        var g = (bigint >> 8) & 255;
-        var b = bigint & 255;
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-        $('#annotation-rect-fillalpha-value').text($('#annotation-rect-fillalpha-input').val());
-        self.redrawLayer(currentLayerId);
-      });
+      var fillRow = $('<tr></tr>');
+      fillRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
+      fillRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"> <span style="margin-left:10px;">Transparency</span> <span style="display:inline-flex;align-items:center;"><input id="annotation-rect-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-rect-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
+      table.append(fillRow);
     }
-
     if (selectedElement && selectedElement.type === 'textbox') {
+      // Border color
       var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : '#0099FF';
-      var borderColorInput = $(
-        '<div id="annotation-textbox-bordercolor-container" style="margin-bottom:10px;">' +
-          '<label style="margin-right:5px;">Border color:</label>' +
-          '<input id="annotation-textbox-bordercolor-input" type="color" value="' + rgbToHex(borderColor) + '" style="width:40px;">' +
-        '</div>'
-      );
-      $('.annotation-element-delete').after(borderColorInput);
-      $('#annotation-textbox-bordercolor-input').on('input', function() {
-        var hex = $(this).val();
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.strokeColor = hex;
-        self.redrawLayer(currentLayerId);
-      });
-
+      var borderRow = $('<tr></tr>');
+      borderRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Border Color</td>');
+      borderRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;"></td>');
+      table.append(borderRow);
+      // Fill color + transparency
       var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
       var match = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/);
       var r = 255, g = 255, b = 255, a = 0;
-      if (match) {
-        r = parseInt(match[1]);
-        g = parseInt(match[2]);
-        b = parseInt(match[3]);
-        a = match[4] !== undefined ? parseFloat(match[4]) : 1;
-      }
+      if (match) { r = parseInt(match[1]); g = parseInt(match[2]); b = parseInt(match[3]); a = match[4] !== undefined ? parseFloat(match[4]) : 1; }
       var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      var fillColorInput = $(
-        '<div id="annotation-textbox-fillcolor-container" style="margin-bottom:10px;">' +
-          '<label style="margin-right:5px;">Fill color:</label>' +
-          '<input id="annotation-textbox-fillcolor-input" type="color" value="' + hex + '" style="width:40px;">' +
-          '<div style="margin-top:5px; display:flex; align-items:center;">' +
-            '<label style="margin-right:5px;">Transparency:</label>' +
-            '<input id="annotation-textbox-fillalpha-input" type="range" min="0" max="100" step="1" value="' + ((1-a)*100) + '" style="width:80px; vertical-align:middle;">' +
-            '<span id="annotation-textbox-fillalpha-value" style="margin-left:5px;">' + Math.round((1-a)*100) + '</span>' +
-          '</div>' +
-        '</div>'
-      );
-      $('#annotation-textbox-bordercolor-container').after(fillColorInput);
-      $('#annotation-textbox-fillcolor-input, #annotation-textbox-fillalpha-input').on('input', function() {
-        var hex = $('#annotation-textbox-fillcolor-input').val();
-        var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
-        var bigint = parseInt(hex.slice(1), 16);
-        var r = (bigint >> 16) & 255;
-        var g = (bigint >> 8) & 255;
-        var b = bigint & 255;
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-        $('#annotation-textbox-fillalpha-value').text($('#annotation-textbox-fillalpha-input').val());
-        self.redrawLayer(currentLayerId);
-      });
-
-      // Font size for textbox (existing logic)
+      var fillRow = $('<tr></tr>');
+      fillRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
+      fillRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"> <span style="margin-left:10px;">Transparency</span> <span style="display:inline-flex;align-items:center;"><input id="annotation-textbox-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
+      table.append(fillRow);
+      // Font size
       var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
-      var fontSizeInput = $(
-        '<div id="annotation-font-size-container" style="margin-bottom:10px;">' +
-          '<label style="margin-right:5px;">Font size:</label>' +
-          '<input id="annotation-font-size-input" type="number" min="6" max="100" step="1" value="' + fontSize + '" style="width:60px;"> px' +
-        '</div>'
-      );
-      $('#annotation-textbox-fillcolor-container').after(fontSizeInput);
-      $('#annotation-font-size-input').on('input', function() {
-        var val = parseInt($(this).val());
-        if (!isNaN(val) && val > 0) {
-          if (!selectedElement.styles) selectedElement.styles = {};
-          selectedElement.styles.fontSize = val;
-          self.redrawLayer(currentLayerId);
-        }
-      });
+      var fontRow = $('<tr></tr>');
+      fontRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font Size</td>');
+      fontRow.append('<td style="padding-left: 5px;"><input id="annotation-font-size-input" class="inspector-input-box" type="number" min="6" max="100" step="1" value="'+fontSize+'" style="width:60px;"> px</td>');
+      table.append(fontRow);
     }
-
     if (selectedElement && selectedElement.type === 'arrow') {
       var defaultArrowStyles = annotationUtil.defaultStyles.arrow || { strokeColor: '#ff0000', lineWidth: 7 };
       var strokeColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : defaultArrowStyles.strokeColor;
       var lineWidth = (selectedElement.styles && selectedElement.styles.lineWidth) ? selectedElement.styles.lineWidth : defaultArrowStyles.lineWidth;
-      var arrowStyleInput = $(
-        '<div id="annotation-arrow-style-container" style="margin-bottom:10px;">' +
-          '<label style="margin-right:5px;">Arrow color:</label>' +
-          '<input id="annotation-arrow-color-input" type="color" value="' + rgbToHex(strokeColor) + '" style="width:40px;">' +
-          '<br>' +
-          '<label style="margin-right:5px;">Arrow width:</label>' +
-          '<input id="annotation-arrow-width-input" type="number" min="1" max="30" step="1" value="' + lineWidth + '" style="width:60px;"> px' +
-        '</div>'
-      );
-      $('.annotation-element-delete').after(arrowStyleInput);
-      $('#annotation-arrow-color-input').on('input', function() {
-        var hex = $(this).val();
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.strokeColor = hex;
-        self.redrawLayer(currentLayerId);
-      });
-      $('#annotation-arrow-width-input').on('input', function() {
-        var val = parseInt($(this).val());
-        if (!isNaN(val) && val > 0) {
-          if (!selectedElement.styles) selectedElement.styles = {};
-          selectedElement.styles.lineWidth = val;
-          self.redrawLayer(currentLayerId);
-        }
-      });
+      var colorRow = $('<tr></tr>');
+      colorRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Arrow Color</td>');
+      colorRow.append('<td style="padding-left: 5px;"><input id="annotation-arrow-color-input" class="inspector-input-box" type="color" value="'+rgbToHex(strokeColor)+'" style="width:'+buttonwidth+'px;"></td>');
+      table.append(colorRow);
+      var widthRow = $('<tr></tr>');
+      widthRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Arrow Width</td>');
+      widthRow.append('<td style="padding-left: 5px;"><input id="annotation-arrow-width-input" class="inspector-input-box" type="number" min="1" max="30" step="1" value="'+lineWidth+'" style="width:60px;"> px</td>');
+      table.append(widthRow);
     }
+    if (selectedElement && selectedElement.type === 'image') {
+      var deleteRow = $('<tr></tr>');
+      deleteRow.append('<td colspan="2" style="text-align:center; padding-top: 10px;"><button type="button" class="btn btn-danger btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
+      table.append(deleteRow);
+    } else {
+      var deleteRow = $('<tr></tr>');
+      deleteRow.append('<td></td><td style="padding-left: 5px; padding-top: 10px;"><button type="button" class="btn btn-danger btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
+      table.append(deleteRow);
+    }
+    // Insert table after annotation-layers-controls
+    $(".annotation-layers-controls").after(table);
+    // Hide old delete button
+    $(".annotation-element-delete").hide();
+    // Bind events
+    $('#annotation-rect-bordercolor-input').on('input', function() {
+      var hex = $(this).val();
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.strokeColor = hex;
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-rect-fillcolor-input, #annotation-rect-fillalpha-input').on('input', function() {
+      var hex = $('#annotation-rect-fillcolor-input').val();
+      var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
+      var bigint = parseInt(hex.slice(1), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      $('#annotation-rect-fillalpha-value').text($('#annotation-rect-fillalpha-input').val());
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-textbox-bordercolor-input').on('input', function() {
+      var hex = $(this).val();
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.strokeColor = hex;
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-textbox-fillcolor-input, #annotation-textbox-fillalpha-input').on('input', function() {
+      var hex = $('#annotation-textbox-fillcolor-input').val();
+      var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
+      var bigint = parseInt(hex.slice(1), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      $('#annotation-textbox-fillalpha-value').text($('#annotation-textbox-fillalpha-input').val());
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-font-size-input').on('input', function() {
+      var val = parseInt($(this).val());
+      if (!isNaN(val) && val > 0) {
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.fontSize = val;
+        self.redrawLayer(currentLayerId);
+      }
+    });
+    $('#annotation-arrow-color-input').on('input', function() {
+      var hex = $(this).val();
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.strokeColor = hex;
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-arrow-width-input').on('input', function() {
+      var val = parseInt($(this).val());
+      if (!isNaN(val) && val > 0) {
+        if (!selectedElement.styles) selectedElement.styles = {};
+        selectedElement.styles.lineWidth = val;
+        self.redrawLayer(currentLayerId);
+      }
+    });
+    $('#delete-selected-element').on('click', function(e) {
+      e.preventDefault();
+      if (selectedElement) {
+        self.deleteSelectedElement();
+      }
+    });
   };
 
   /**
@@ -1569,6 +1554,7 @@ var AnnotationLayers = function() {
     $('#annotation-rect-bordercolor-container').remove();
     $('#annotation-textbox-bordercolor-container').remove();
     $('#annotation-textbox-fillcolor-container').remove();
+    $("#annotation-element-properties-table").remove();
   };
 
   /**
