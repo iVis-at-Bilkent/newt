@@ -1414,6 +1414,11 @@ var AnnotationLayers = function() {
     $('.annotation-element-delete').show();
     // Hide Add Item button/menu when an item is selected
     $('.annotation-layers-controls').hide();
+    // Focus on Map tab and expand Annotation Layers section when an item is selected
+    if (window.$) {
+      $('#inspector-map-tab a').tab('show');
+      $('#sbgn-inspector-map-annotation-layers').collapse('show');
+    }
 
     $('#annotation-font-size-container').remove();
     $('#annotation-rect-fillcolor-container').remove();
