@@ -1434,17 +1434,21 @@ var AnnotationLayers = function() {
       borderRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Border Color</td>');
       borderRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;"></td>');
       table.append(borderRow);
-      
-      // Fill color + transparency
+      // Fill color row
       var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
       var match = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/);
       var r = 255, g = 255, b = 255, a = 0;
       if (match) { r = parseInt(match[1]); g = parseInt(match[2]); b = parseInt(match[3]); a = match[4] !== undefined ? parseFloat(match[4]) : 1; }
       var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      var fillRow = $('<tr></tr>');
-      fillRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
-      fillRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"> <span style="margin-left:10px;">Transparency</span> <span style="display:inline-flex;align-items:center;"><input id="annotation-rect-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-rect-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
-      table.append(fillRow);
+      var fillColorRow = $('<tr></tr>');
+      fillColorRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
+      fillColorRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"></td>');
+      table.append(fillColorRow);
+      // Transparency row
+      var transparencyRow = $('<tr></tr>');
+      transparencyRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Transparency</td>');
+      transparencyRow.append('<td style="padding-left: 5px;"><span style="display:inline-flex;align-items:center;"><input id="annotation-rect-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-rect-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
+      table.append(transparencyRow);
     }
     if (selectedElement && selectedElement.type === 'textbox') {
       // Border color
@@ -1453,16 +1457,21 @@ var AnnotationLayers = function() {
       borderRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Border Color</td>');
       borderRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;"></td>');
       table.append(borderRow);
-      // Fill color + transparency
+      // Fill color row
       var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
       var match = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d\.]+))?\)/);
       var r = 255, g = 255, b = 255, a = 0;
       if (match) { r = parseInt(match[1]); g = parseInt(match[2]); b = parseInt(match[3]); a = match[4] !== undefined ? parseFloat(match[4]) : 1; }
       var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      var fillRow = $('<tr></tr>');
-      fillRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
-      fillRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"> <span style="margin-left:10px;">Transparency</span> <span style="display:inline-flex;align-items:center;"><input id="annotation-textbox-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
-      table.append(fillRow);
+      var fillColorRow = $('<tr></tr>');
+      fillColorRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
+      fillColorRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"></td>');
+      table.append(fillColorRow);
+      // Transparency row
+      var transparencyRow = $('<tr></tr>');
+      transparencyRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Transparency</td>');
+      transparencyRow.append('<td style="padding-left: 5px;"><span style="display:inline-flex;align-items:center;"><input id="annotation-textbox-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
+      table.append(transparencyRow);
       // Font size
       var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
       var fontRow = $('<tr></tr>');
