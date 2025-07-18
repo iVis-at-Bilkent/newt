@@ -1427,8 +1427,8 @@ var AnnotationLayers = function() {
           '<input id="annotation-rect-fillcolor-input" type="color" value="' + hex + '" style="width:40px;">' +
           '<div style="margin-top:5px; display:flex; align-items:center;">' +
             '<label style="margin-right:5px;">Transparency:</label>' +
-            '<input id="annotation-rect-fillalpha-input" type="range" min="0" max="1" step="0.01" value="' + (1-a) + '" style="width:80px; vertical-align:middle;">' +
-            '<span id="annotation-rect-fillalpha-value" style="margin-left:5px;">' + (1-a).toFixed(2) + '</span>' +
+            '<input id="annotation-rect-fillalpha-input" type="range" min="0" max="100" step="1" value="' + ((1-a)*100) + '" style="width:80px; vertical-align:middle;">' +
+            '<span id="annotation-rect-fillalpha-value" style="margin-left:5px;">' + Math.round((1-a)*100) + '</span>' +
           '</div>' +
         '</div>'
       );
@@ -1436,14 +1436,14 @@ var AnnotationLayers = function() {
       // Color handler
       $('#annotation-rect-fillcolor-input, #annotation-rect-fillalpha-input').on('input', function() {
         var hex = $('#annotation-rect-fillcolor-input').val();
-        var alpha = 1 - parseFloat($('#annotation-rect-fillalpha-input').val());
+        var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
         var bigint = parseInt(hex.slice(1), 16);
         var r = (bigint >> 16) & 255;
         var g = (bigint >> 8) & 255;
         var b = bigint & 255;
         if (!selectedElement.styles) selectedElement.styles = {};
         selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-        $('#annotation-rect-fillalpha-value').text((1-alpha).toFixed(2));
+        $('#annotation-rect-fillalpha-value').text($('#annotation-rect-fillalpha-input').val());
         self.redrawLayer(currentLayerId);
       });
     }
@@ -1480,22 +1480,22 @@ var AnnotationLayers = function() {
           '<input id="annotation-textbox-fillcolor-input" type="color" value="' + hex + '" style="width:40px;">' +
           '<div style="margin-top:5px; display:flex; align-items:center;">' +
             '<label style="margin-right:5px;">Transparency:</label>' +
-            '<input id="annotation-textbox-fillalpha-input" type="range" min="0" max="1" step="0.01" value="' + (1-a) + '" style="width:80px; vertical-align:middle;">' +
-            '<span id="annotation-textbox-fillalpha-value" style="margin-left:5px;">' + (1-a).toFixed(2) + '</span>' +
+            '<input id="annotation-textbox-fillalpha-input" type="range" min="0" max="100" step="1" value="' + ((1-a)*100) + '" style="width:80px; vertical-align:middle;">' +
+            '<span id="annotation-textbox-fillalpha-value" style="margin-left:5px;">' + Math.round((1-a)*100) + '</span>' +
           '</div>' +
         '</div>'
       );
       $('#annotation-textbox-bordercolor-container').after(fillColorInput);
       $('#annotation-textbox-fillcolor-input, #annotation-textbox-fillalpha-input').on('input', function() {
         var hex = $('#annotation-textbox-fillcolor-input').val();
-        var alpha = 1 - parseFloat($('#annotation-textbox-fillalpha-input').val());
+        var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
         var bigint = parseInt(hex.slice(1), 16);
         var r = (bigint >> 16) & 255;
         var g = (bigint >> 8) & 255;
         var b = bigint & 255;
         if (!selectedElement.styles) selectedElement.styles = {};
         selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-        $('#annotation-textbox-fillalpha-value').text((1-alpha).toFixed(2));
+        $('#annotation-textbox-fillalpha-value').text($('#annotation-textbox-fillalpha-input').val());
         self.redrawLayer(currentLayerId);
       });
 
