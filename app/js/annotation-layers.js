@@ -186,6 +186,33 @@ var AnnotationLayers = function() {
       e.stopPropagation();
       self.handleCanvasDoubleClick(e, this);
     });
+
+    // Add Item button and menu logic
+    $(document).on('click', '#annotation-add-item-btn', function(e) {
+      e.preventDefault();
+      var menu = $('#annotation-add-item-menu');
+      if (menu.is(':visible')) {
+        menu.hide();
+      } else {
+        // Hide any other open menus
+        $('.annotation-add-item-menu').hide();
+        menu.show();
+      }
+      e.stopPropagation();
+    });
+    // Menu item click
+    $(document).on('click', '.annotation-add-item-menu-entry', function(e) {
+      e.preventDefault();
+      var tool = $(this).data('tool');
+      $('#annotation-add-item-menu').hide();
+      self.selectTool(tool);
+    });
+    // Hide menu on outside click
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('#annotation-add-item-btn').length && !$(e.target).closest('#annotation-add-item-menu').length) {
+        $('#annotation-add-item-menu').hide();
+      }
+    });
   };
   
   /**
