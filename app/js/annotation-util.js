@@ -11,14 +11,15 @@ var AnnotationUtil = function() {
   var defaultStyles = {
     rectangle: {
       strokeColor: '#800080',
-      fillColor: 'transparent',
+      fillColor: 'rgba(255,255,255,0.6)',
       lineWidth: 2,
       lineDash: []
     },
     text: {
       fontSize: 14,
       fontFamily: 'Arial, sans-serif',
-      color: '#000000'
+      color: '#000000',
+      fillColor: 'rgba(255,255,255,0.6)'
     },
     arrow: {
       strokeColor: '#ff0000',
@@ -249,7 +250,7 @@ var AnnotationUtil = function() {
       y: y,
       width: width,
       height: height,
-      styles: { fillColor: 'rgba(255,255,255,0)' },
+      styles: { fillColor: 'rgba(255,255,255,0.6)' },
       id: 'rect_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
@@ -408,7 +409,7 @@ var AnnotationUtil = function() {
       width: width,
       height: height,
       text: 'Double-click to edit',
-      styles: { fillColor: 'rgba(255,255,255,0)', strokeColor: '#0099FF' },
+      styles: { fillColor: 'rgba(255,255,255,0.6)', strokeColor: '#0099FF' },
       id: 'textbox_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
