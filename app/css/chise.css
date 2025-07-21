@@ -1055,7 +1055,7 @@ img#template-reversible-output-add-button:hover {
 
 /* Annotation Layers System Styles */
 .annotation-layers-controls {
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   padding-bottom: 10px;
 }
 

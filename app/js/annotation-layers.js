@@ -191,12 +191,15 @@ var AnnotationLayers = function() {
     $(document).on('click', '#annotation-add-item-btn', function(e) {
       e.preventDefault();
       var menu = $('#annotation-add-item-menu');
+      var btn = $(this);
       if (menu.is(':visible')) {
         menu.hide();
+        btn.removeClass('active');
       } else {
         // Hide any other open menus
         $('.annotation-add-item-menu').hide();
         menu.show();
+        btn.addClass('active');
       }
       e.stopPropagation();
     });
@@ -205,12 +208,15 @@ var AnnotationLayers = function() {
       e.preventDefault();
       var tool = $(this).data('tool');
       $('#annotation-add-item-menu').hide();
+      $('#annotation-add-item-btn').removeClass('active');
       self.selectTool(tool);
     });
     // Hide menu on outside click
     $(document).on('click', function(e) {
       if (!$(e.target).closest('#annotation-add-item-btn').length && !$(e.target).closest('#annotation-add-item-menu').length) {
         $('#annotation-add-item-menu').hide();
+        $('#annotation-add-item-btn').removeClass('active');
+        self.deselectTool();
       }
     });
   };
@@ -423,7 +429,7 @@ var AnnotationLayers = function() {
           ` : ''}
           ${!isDefaultLayer ? `
             <button type="button" 
-                    class="btn btn-xs btn-danger layer-delete-btn" 
+                    class="btn btn-xs btn-default layer-delete-btn" 
                     data-layer-id="${layer.id}"
                     title="Delete Layer">
               <img src="app/img/toolbar/delete-simple.svg" alt="Delete" style="width:16px; height:16px; vertical-align:middle;" />
@@ -1499,11 +1505,11 @@ var AnnotationLayers = function() {
     }
     if (selectedElement && selectedElement.type === 'image') {
       var deleteRow = $('<tr></tr>');
-      deleteRow.append('<td colspan="2" style="text-align:center; padding-top: 10px;"><button type="button" class="btn btn-danger btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
+      deleteRow.append('<td colspan="2" style="text-align:center; padding-top: 10px;"><button type="button" class="btn btn-default btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
       table.append(deleteRow);
     } else {
       var deleteRow = $('<tr></tr>');
-      deleteRow.append('<td></td><td style="padding-left: 5px; padding-top: 10px;"><button type="button" class="btn btn-danger btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
+      deleteRow.append('<td></td><td style="padding-left: 5px; padding-top: 10px;"><button type="button" class="btn btn-default btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
       table.append(deleteRow);
     }
     // Insert table after annotation-layers-controls
