@@ -45,7 +45,7 @@ var AnnotationLayers = function() {
       visible: visible,
       elements: [], // Will store rectangles, arrows, text, images
       createdAt: new Date(),
-      zIndex: id,
+      zIndex: 500 + id,
       isCytoscapeLayer: id === 0,    // Layer 0 = Cytoscape canvas
       isAnnotationLayer: id > 0       // Layers 1+ = HTML canvas
     };
@@ -231,6 +231,14 @@ var AnnotationLayers = function() {
     var layerId = isDefaultLayer ? 0 : nextLayerId;
     var layer = LayerModel(layerId, name);
     layer.isDefaultLayer = isDefaultLayer;
+    
+    // Debug print for zIndex
+    console.log('[DEBUG] Creating annotation layer:', {
+      id: layer.id,
+      name: layer.name,
+      zIndex: layer.zIndex,
+      isAnnotationLayer: layer.isAnnotationLayer
+    });
     
     layers.push(layer);
     
