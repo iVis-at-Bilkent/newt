@@ -167,7 +167,8 @@ body {
 }
 
 .cy-panzoom {
-    z-index: 1000 !important;
+    /* High z-index to ensure it's above other annotation layers */
+    z-index: 9999 !important; 
 }
 
 .qtip-bootstrap .qtip-titlebar{
