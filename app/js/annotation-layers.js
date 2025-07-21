@@ -1434,7 +1434,7 @@ var AnnotationLayers = function() {
     $('#annotation-textbox-fillcolor-container').remove();
     $("#annotation-element-properties-table").remove();
     
-    var table = $('<table id="annotation-element-properties-table" cellpadding="0" cellspacing="0" width="100%" class="object-panel-table" style="margin-top: 10px; margin-bottom: 10px;"></table>');
+    var table = $('<table id="annotation-element-properties-table" cellpadding="0" cellspacing="0" width="100%" class="table-condensed layout-table dialog-table map-panel-table object-panel-table" style="margin-top: 10px; margin-bottom: 10px;"></table>');
     var width = 120;
     var buttonwidth = 50;
     
@@ -1443,7 +1443,9 @@ var AnnotationLayers = function() {
       var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : annotationUtil.defaultStyles.rectangle.strokeColor;
       var borderRow = $('<tr></tr>');
       borderRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Border Color</td>');
-      borderRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;"></td>');
+      borderRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-rect-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;">'+
+        '</td>');
       table.append(borderRow);
       // Fill color row
       var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
@@ -1453,12 +1455,17 @@ var AnnotationLayers = function() {
       var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
       var fillColorRow = $('<tr></tr>');
       fillColorRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
-      fillColorRow.append('<td style="padding-left: 5px;"><input id="annotation-rect-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"></td>');
+      fillColorRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-rect-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;">'+
+        '</td>');
       table.append(fillColorRow);
       // Transparency row
       var transparencyRow = $('<tr></tr>');
       transparencyRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Transparency</td>');
-      transparencyRow.append('<td style="padding-left: 5px;"><span style="display:inline-flex;align-items:center;"><input id="annotation-rect-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-rect-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
+      transparencyRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<span style="display:inline-flex;align-items:center;">'+
+        '<input id="annotation-rect-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;">'+
+        '<span id="annotation-rect-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
       table.append(transparencyRow);
     }
     if (selectedElement && selectedElement.type === 'textbox') {
@@ -1466,7 +1473,9 @@ var AnnotationLayers = function() {
       var borderColor = (selectedElement.styles && selectedElement.styles.strokeColor) ? selectedElement.styles.strokeColor : '#0099FF';
       var borderRow = $('<tr></tr>');
       borderRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Border Color</td>');
-      borderRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;"></td>');
+      borderRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-textbox-bordercolor-input" class="inspector-input-box" type="color" value="'+rgbToHex(borderColor)+'" style="width:'+buttonwidth+'px;">'+
+        '</td>');
       table.append(borderRow);
       // Fill color row
       var fillColor = (selectedElement.styles && selectedElement.styles.fillColor) ? selectedElement.styles.fillColor : 'rgba(255,255,255,0)';
@@ -1476,18 +1485,24 @@ var AnnotationLayers = function() {
       var hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
       var fillColorRow = $('<tr></tr>');
       fillColorRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Fill Color</td>');
-      fillColorRow.append('<td style="padding-left: 5px;"><input id="annotation-textbox-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;"></td>');
+      fillColorRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-textbox-fillcolor-input" class="inspector-input-box" type="color" value="'+hex+'" style="width:'+buttonwidth+'px;">'+
+        '</td>');
       table.append(fillColorRow);
       // Transparency row
       var transparencyRow = $('<tr></tr>');
       transparencyRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Transparency</td>');
-      transparencyRow.append('<td style="padding-left: 5px;"><span style="display:inline-flex;align-items:center;"><input id="annotation-textbox-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;"><span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
+      transparencyRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<span style="display:inline-flex;align-items:center;">'+
+        '<input id="annotation-textbox-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;">'+
+        '<span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
       table.append(transparencyRow);
       // Font size
       var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
       var fontRow = $('<tr></tr>');
       fontRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font Size</td>');
-      fontRow.append('<td style="padding-left: 5px;"><input id="annotation-font-size-input" class="inspector-input-box" type="number" min="6" max="100" step="1" value="'+fontSize+'" style="width:60px;"> px</td>');
+      fontRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-font-size-input" class="inspector-input-box" type="number" min="6" max="100" step="1" value="'+fontSize+'" style="width:60px;"> px</td>');
       table.append(fontRow);
     }
     if (selectedElement && selectedElement.type === 'arrow') {
@@ -1496,11 +1511,14 @@ var AnnotationLayers = function() {
       var lineWidth = (selectedElement.styles && selectedElement.styles.lineWidth) ? selectedElement.styles.lineWidth : defaultArrowStyles.lineWidth;
       var colorRow = $('<tr></tr>');
       colorRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Arrow Color</td>');
-      colorRow.append('<td style="padding-left: 5px;"><input id="annotation-arrow-color-input" class="inspector-input-box" type="color" value="'+rgbToHex(strokeColor)+'" style="width:'+buttonwidth+'px;"></td>');
+      colorRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-arrow-color-input" class="inspector-input-box" type="color" value="'+rgbToHex(strokeColor)+'" style="width:'+buttonwidth+'px;">'+
+        '</td>');
       table.append(colorRow);
       var widthRow = $('<tr></tr>');
       widthRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Arrow Width</td>');
-      widthRow.append('<td style="padding-left: 5px;"><input id="annotation-arrow-width-input" class="inspector-input-box" type="number" min="1" max="30" step="1" value="'+lineWidth+'" style="width:60px;"> px</td>');
+      widthRow.append('<td style="padding-left: 5px; text-align:left;">'+
+        '<input id="annotation-arrow-width-input" class="inspector-input-box" type="number" min="1" max="30" step="1" value="'+lineWidth+'" style="width:60px;"> px</td>');
       table.append(widthRow);
     }
     if (selectedElement && selectedElement.type === 'image') {
@@ -1509,7 +1527,7 @@ var AnnotationLayers = function() {
       table.append(deleteRow);
     } else {
       var deleteRow = $('<tr></tr>');
-      deleteRow.append('<td></td><td style="padding-left: 5px; padding-top: 10px;"><button type="button" class="btn btn-default btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
+      deleteRow.append('<td colspan="2" style="text-align:center; padding-top: 10px;"><button type="button" class="btn btn-default btn-sm" id="delete-selected-element"><i class="fa fa-trash"></i> Delete Item</button></td>');
       table.append(deleteRow);
     }
     // Insert table after annotation-layers-controls
