@@ -294,7 +294,10 @@ var AnnotationUtil = function() {
       ctx.strokeRect(x, y, width, height);
       if (text && text.trim()) {
         ctx.fillStyle = textStyles.color;
-        ctx.font = textStyles.fontSize + 'px ' + textStyles.fontFamily;
+        ctx.font = (textStyles.fontStyle || 'normal') + ' ' +
+                   (textStyles.fontWeight || 'normal') + ' ' +
+                   textStyles.fontSize + 'px ' +
+                   textStyles.fontFamily;
         ctx.textBaseline = 'top';
         var textX = x + 5;
         var textY = y + 5;

@@ -1498,12 +1498,19 @@ var AnnotationLayers = function() {
         '<span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
       table.append(transparencyRow);
       // Font size
-      var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
-      var fontRow = $('<tr></tr>');
-      fontRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font Size</td>');
-      fontRow.append('<td style="padding-left: 5px; text-align:left;">'+
-        '<input id="annotation-font-size-input" class="inspector-input-box" type="number" min="6" max="100" step="1" value="'+fontSize+'" style="width:60px;"> px</td>');
-      table.append(fontRow);
+      // var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
+      // var fontRow = $('<tr></tr>');
+      // fontRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font Size</td>');
+      // fontRow.append('<td style="padding-left: 5px; text-align:left;">'+
+      //   '<input id="annotation-font-size-input" class="inspector-input-box" type="number" min="6" max="100" step="1" value="'+fontSize+'" style="width:60px;"> px</td>');
+      // table.append(fontRow);
+      // Font settings row (three-dot label, inspector style)
+      var fontSettingsRow = $('<tr></tr>');
+      fontSettingsRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font</td>');
+      fontSettingsRow.append('<td style="padding-left: 5px;">'+
+        '<label id="annotation-textbox-font" style="cursor: pointer; width: 50px;">...</label>'+
+        '</td>');
+      table.append(fontSettingsRow);
     }
     if (selectedElement && selectedElement.type === 'arrow') {
       var defaultArrowStyles = annotationUtil.defaultStyles.arrow || { strokeColor: '#ff0000', lineWidth: 7 };
@@ -1598,6 +1605,11 @@ var AnnotationLayers = function() {
       if (selectedElement) {
         self.deleteSelectedElement();
       }
+    });
+    // Font settings label logic (open font properties modal)
+    $('#annotation-textbox-font').on('click', function(e) {
+      e.preventDefault();
+      showAnnotationFontModal(selectedElement);
     });
   };
 
@@ -2077,4 +2089,102 @@ function rgbToHex(color) {
     return '#' + r + g + b;
   }
   return '#ff0000'; // fallback
+} 
+
+// Custom modal for annotation text box font settings
+function showAnnotationFontModal(element) {
+  $('#annotation-font-modal').remove();
+
+  const styles = Object.assign({
+    fontFamily: 'Arial, sans-serif',
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    color: '#000000'
+  }, element.styles || {});
+
+  // Modal HTML (copied mostly from inspectorFontView)
+  const modalHtml = `
+    <div class="modal fade" id="annotation-font-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-sm sbgn-modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Font Properties</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width:100%">
+              <tr>
+                <td style="text-align:right; padding-right: 5px; width: 80px;">Family</td>
+                <td style="padding-left: 5px;">
+                  <select id="annotation-font-family-input" class="inspector-input-box">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Helvetica, Arial, sans-serif">Helvetica</option>
+                    <option value="Times New Roman, serif">Times New Roman</option>
+                    <option value="Courier New, monospace">Courier New</option>
+                    <option value="Verdana, Geneva, sans-serif">Verdana</option>
+                    <option value="Tahoma, Geneva, sans-serif">Tahoma</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:right; padding-right: 5px;">Size</td>
+                <td style="padding-left: 5px;"><input id="annotation-font-size-input-modal" class="inspector-input-box" type="number" min="6" max="100" step="1" style="width:60px;" value="${styles.fontSize}"> px</td>
+              </tr>
+              <tr>
+                <td style="text-align:right; padding-right: 5px;">Weight</td>
+                <td style="padding-left: 5px;">
+                  <select id="annotation-font-weight-input" class="inspector-input-box">
+                    <option value="lighter">Lighter</option>
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                    <option value="bolder">Bolder</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:right; padding-right: 5px;">Style</td>
+                <td style="padding-left: 5px;">
+                  <select id="annotation-font-style-input" class="inspector-input-box">
+                    <option value="normal">Normal</option>
+                    <option value="italic">Italic</option>
+                    <option value="oblique">Oblique</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:right; padding-right: 5px;">Color</td>
+                <td style="padding-left: 5px;"><input id="annotation-font-color-input" class="inspector-input-box" type="color" value="${styles.color}"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center">
+            <button id="annotation-font-modal-set" class="btn btn-default">Set</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  $(document.body).append(modalHtml);
+
+  $('#annotation-font-family-input').val(styles.fontFamily);
+  $('#annotation-font-weight-input').val(styles.fontWeight);
+  $('#annotation-font-style-input').val(styles.fontStyle);
+
+  $('#annotation-font-modal').modal('show');
+
+  $('#annotation-font-modal-set').off('click').on('click', function() {
+    element.styles = element.styles || {};
+    element.styles.fontFamily = $('#annotation-font-family-input').val();
+    element.styles.fontSize = parseInt($('#annotation-font-size-input-modal').val());
+    element.styles.fontWeight = $('#annotation-font-weight-input').val();
+    element.styles.fontStyle = $('#annotation-font-style-input').val();
+    element.styles.color = $('#annotation-font-color-input').val();
+    $('#annotation-font-modal').modal('hide');
+    if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.redrawLayer) {
+      window.annotationLayers.redrawLayer(window.annotationLayers.getCurrentLayer().id);
+    } else if (typeof self !== 'undefined' && self.redrawLayer) {
+      self.redrawLayer(self.getCurrentLayer().id);
+    }
+  });
 } 
