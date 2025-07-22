@@ -694,6 +694,14 @@ var AnnotationLayers = function() {
   self.setupLayerIsolation = function() {
     var currentLayer = self.getCurrentLayer();
     if (!currentLayer) return;
+    // Disable Palette tab if in annotation layer, enable if in layer 0
+    if (currentLayer.isAnnotationLayer) {
+      $('#inspector-palette-tab').addClass('disabled');
+      $('#inspector-palette-tab a').on('click.annotationDisable', function(e) { e.preventDefault(); return false; });
+    } else {
+      $('#inspector-palette-tab').removeClass('disabled');
+      $('#inspector-palette-tab a').off('click.annotationDisable');
+    }
     
     // If an annotation element is selected, disable Cytoscape interactions
     // to prevent viewport panning when mouse is outside canvas
