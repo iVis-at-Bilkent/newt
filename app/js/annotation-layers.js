@@ -39,7 +39,7 @@ var AnnotationLayers = function() {
     height: 0
   };
   
-  var LayerModel = function(id, name, visible = true) {
+  var LayerModel = function(id, name, visible = true, customLayerName = '') {
     return {
       id: id,
       name: name,
@@ -48,7 +48,8 @@ var AnnotationLayers = function() {
       createdAt: new Date(),
       zIndex: 500 + id,
       isCytoscapeLayer: id === 0,    // Layer 0 = Cytoscape canvas
-      isAnnotationLayer: id > 0       // Layers 1+ = HTML canvas
+      isAnnotationLayer: id > 0,     // Layers 1+ = HTML canvas
+      customLayerName: customLayerName
     };
   };
   
@@ -64,7 +65,7 @@ var AnnotationLayers = function() {
       if (activeCy && activeCy.container()) {
     
     // Create default layer (Layer 0)
-    self.addLayer('Layer 0', true);
+    self.addLayer('Layer 0', true, 'Map');
     
     self.bindEvents();
     self.updateAnnotationToolStates();
@@ -243,9 +244,9 @@ var AnnotationLayers = function() {
    * @param {boolean} isDefaultLayer - Whether this is the default Layer 0
    * @returns {number} The ID of the created layer
    */
-  self.addLayer = function(name, isDefaultLayer = false) {
+  self.addLayer = function(name, isDefaultLayer = false, customLayerName = '') {
     var layerId = isDefaultLayer ? 0 : nextLayerId;
-    var layer = LayerModel(layerId, name);
+    var layer = LayerModel(layerId, name, true, customLayerName);
     layer.isDefaultLayer = isDefaultLayer;
     
     layers.push(layer);
@@ -422,6 +423,13 @@ var AnnotationLayers = function() {
     var visibilityIcon = layer.visible ? 'fa-eye' : 'fa-eye-slash';
     var isDefaultLayer = layer.isDefaultLayer;
     
+    // Compose display name
+    var displayName = layer.name;
+    if (layer.customLayerName && layer.customLayerName.trim() !== '') {
+      displayName += ' (' + layer.customLayerName + ')';
+    }
+    // Use the highlight-selected.svg as the pen icon
+    var penIconHtml = `<img src="app/img/toolbar/highlight-selected.svg" class="layer-edit-pen" title="Edit layer name" style="width:14px; height:14px; margin-left:6px; cursor:pointer; vertical-align:middle;" />`;
     var layerHtml = `
       <div class="layer-item ${isSelected ? 'selected' : ''}" 
            data-layer-id="${layer.id}" 
@@ -430,9 +438,9 @@ var AnnotationLayers = function() {
                   border-radius: 4px; margin-bottom: 8px; 
                   background-color: ${isSelected ? '#e7f3ff' : '#f9f9f9'}; 
                   cursor: pointer;">
-        <div style="flex: 1;">
-          <span style="font-weight: ${isSelected ? 'bold' : 'normal'};">${layer.name}</span>
-          ${isDefaultLayer ? '<small style="color: #666; margin-left: 8px;">(Default)</small>' : ''}
+        <div style="flex: 1; display: flex; align-items: center;">
+          <span class="layer-name-text" style="font-weight: ${isSelected ? 'bold' : 'normal'};">${displayName}</span>
+          ${penIconHtml}
         </div>
         <div style="display: flex; gap: 5px;">
           ${!isDefaultLayer ? `
@@ -454,8 +462,31 @@ var AnnotationLayers = function() {
         </div>
       </div>
     `;
-    
-    return $(layerHtml);
+    var $el = $(layerHtml);
+    // Pen icon click handler
+    $el.find('.layer-edit-pen').on('click', function(e) {
+      e.stopPropagation();
+      var $nameSpan = $el.find('.layer-name-text');
+      var currentName = layer.customLayerName || '';
+      var $input = $('<input type="text" class="layer-name-input" style="margin-left:4px; width: 120px; font-size: 13px;" />').val(currentName);
+      $nameSpan.replaceWith($input);
+      $input.focus();
+      $input.select();
+      var saveName = function() {
+        var newName = $input.val().trim();
+        layer.customLayerName = newName;
+        self.renderLayerList();
+      };
+      $input.on('blur', saveName);
+      $input.on('keydown', function(ev) {
+        if (ev.key === 'Enter') {
+          $input.blur();
+        } else if (ev.key === 'Escape') {
+          self.renderLayerList();
+        }
+      });
+    });
+    return $el;
   };
 
   /**
@@ -1913,7 +1944,8 @@ self.setCytoscapeActiveStyle = function(enabled) {
           visible: layer.visible,
           elements: layer.elements,
           createdAt: layer.createdAt,
-          zIndex: layer.zIndex
+          zIndex: layer.zIndex,
+          customLayerName: layer.customLayerName // Save custom layer name
         });
       }
     });
@@ -1969,7 +2001,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
       
       annotationLayersData.layers.forEach(function(layerData) {
         
-        var layer = LayerModel(layerData.id, layerData.name, layerData.visible);
+        var layer = LayerModel(layerData.id, layerData.name, layerData.visible, layerData.customLayerName || '');
         layer.elements = layerData.elements || [];
         layer.createdAt = new Date(layerData.createdAt);
         layer.zIndex = layerData.zIndex || layerData.id;
