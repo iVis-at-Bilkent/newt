@@ -114,6 +114,7 @@ var AnnotationLayers = function() {
     // Layer visibility toggle
     $(document).on('click', '.layer-visibility-btn', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       var layerId = parseInt($(this).data('layer-id'));
       self.toggleLayerVisibility(layerId);
     });
@@ -121,6 +122,7 @@ var AnnotationLayers = function() {
     // Delete layer
     $(document).on('click', '.layer-delete-btn', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       var layerId = parseInt($(this).data('layer-id'));
       self.deleteLayer(layerId);
     });
