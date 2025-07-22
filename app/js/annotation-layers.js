@@ -248,14 +248,6 @@ var AnnotationLayers = function() {
     var layer = LayerModel(layerId, name);
     layer.isDefaultLayer = isDefaultLayer;
     
-    // Debug print for zIndex
-    console.log('[DEBUG] Creating annotation layer:', {
-      id: layer.id,
-      name: layer.name,
-      zIndex: layer.zIndex,
-      isAnnotationLayer: layer.isAnnotationLayer
-    });
-    
     layers.push(layer);
     
     // Create HTML canvas for annotation layers only
@@ -924,8 +916,6 @@ self.setCytoscapeActiveStyle = function(enabled) {
   if (!cy) return;
   var style = cy.style();
 
-  console.log("setting cytoscape active style", enabled);
-  console.log("style", style);
   if (enabled) {
     // Restore the normal :active style (match your default, or reapply from sbgn-cy-instance-factory.js)
     style.selector('node:active').css({
