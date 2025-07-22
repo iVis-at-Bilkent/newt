@@ -1700,6 +1700,7 @@ var databaseUtilities = {
 
   runCommonStream: async function (labelOfNodes, lengthLimit, direction) {
     var idOfNodes = [];
+    console.log("labelOfNodes:", labelOfNodes, "lengthLimit:", lengthLimit, "direction:", direction);
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
     if (idOfNodes.length == 0) {
       var errMessage = {
@@ -1716,7 +1717,7 @@ var databaseUtilities = {
     } else {
       query = graphALgos.downstream(idOfNodes, lengthLimit);
     }
-
+    console.log("query:", query);
     var data = { query: query, queryData: null };
     var result = {};
     result.highlight = {};
