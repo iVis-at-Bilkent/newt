@@ -11,6 +11,7 @@ var jquery = $ = require('jquery');
 var _ = require('underscore');
 var annotationUtil = require('./annotation-util');
 var appUtilities = require('./app-utilities');
+var colorPickerUtils = require('./color-picker-utils');
 
 var AnnotationLayers = function() {
   var self = this;
@@ -532,7 +533,6 @@ var AnnotationLayers = function() {
       activeCy.zoomingEnabled(true);
       activeCy.elements().selectify();
       activeCy.boxSelectionEnabled(true);
-      console.log("IS IT SELECTABLE?", activeCy.elements().selectable())
     }
   };
 
@@ -540,7 +540,6 @@ var AnnotationLayers = function() {
    * Disable Cytoscape interactions (node/edge selection, pan, zoom)
    */
   self.disableCytoscapeInteractions = function() {
-    console.log("DISABLING INTERACTIONS")
     var activeCy = appUtilities.getActiveCy();
     if (activeCy) {
       activeCy.panningEnabled(false);
@@ -549,7 +548,6 @@ var AnnotationLayers = function() {
       activeCy.elements().unselectify();
       activeCy.elements().lock();
       activeCy.boxSelectionEnabled(false);
-      console.log("IS IT SELECTABLE?", activeCy.elements().selectable())
     }
   };
 
@@ -1656,13 +1654,24 @@ self.setCytoscapeActiveStyle = function(enabled) {
     // Hide old delete button
     $(".annotation-element-delete").hide();
     // Bind events
-    $('#annotation-rect-bordercolor-input').on('input', function() {
-      var hex = $(this).val();
+    colorPickerUtils.bindPicker2Input('#annotation-rect-bordercolor-input', function() {
+      var hex = $('#annotation-rect-bordercolor-input').val();
       if (!selectedElement.styles) selectedElement.styles = {};
       selectedElement.styles.strokeColor = hex;
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-rect-fillcolor-input, #annotation-rect-fillalpha-input').on('input', function() {
+    colorPickerUtils.bindPicker2Input('#annotation-rect-fillcolor-input', function() {
+      var hex = $('#annotation-rect-fillcolor-input').val();
+      var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
+      var bigint = parseInt(hex.slice(1), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-rect-fillalpha-input').on('input', function() {
       var hex = $('#annotation-rect-fillcolor-input').val();
       var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
       var bigint = parseInt(hex.slice(1), 16);
@@ -1674,13 +1683,24 @@ self.setCytoscapeActiveStyle = function(enabled) {
       $('#annotation-rect-fillalpha-value').text($('#annotation-rect-fillalpha-input').val());
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-textbox-bordercolor-input').on('input', function() {
-      var hex = $(this).val();
+    colorPickerUtils.bindPicker2Input('#annotation-textbox-bordercolor-input', function() {
+      var hex = $('#annotation-textbox-bordercolor-input').val();
       if (!selectedElement.styles) selectedElement.styles = {};
       selectedElement.styles.strokeColor = hex;
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-textbox-fillcolor-input, #annotation-textbox-fillalpha-input').on('input', function() {
+    colorPickerUtils.bindPicker2Input('#annotation-textbox-fillcolor-input', function() {
+      var hex = $('#annotation-textbox-fillcolor-input').val();
+      var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
+      var bigint = parseInt(hex.slice(1), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-textbox-fillalpha-input').on('input', function() {
       var hex = $('#annotation-textbox-fillcolor-input').val();
       var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
       var bigint = parseInt(hex.slice(1), 16);
@@ -1692,16 +1712,8 @@ self.setCytoscapeActiveStyle = function(enabled) {
       $('#annotation-textbox-fillalpha-value').text($('#annotation-textbox-fillalpha-input').val());
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-font-size-input').on('input', function() {
-      var val = parseInt($(this).val());
-      if (!isNaN(val) && val > 0) {
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.fontSize = val;
-        self.redrawLayer(currentLayerId);
-      }
-    });
-    $('#annotation-arrow-color-input').on('input', function() {
-      var hex = $(this).val();
+    colorPickerUtils.bindPicker2Input('#annotation-arrow-color-input', function() {
+      var hex = $('#annotation-arrow-color-input').val();
       if (!selectedElement.styles) selectedElement.styles = {};
       selectedElement.styles.strokeColor = hex;
       self.redrawLayer(currentLayerId);
