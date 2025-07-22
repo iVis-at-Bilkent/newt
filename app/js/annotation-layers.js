@@ -11,6 +11,7 @@ var jquery = $ = require('jquery');
 var _ = require('underscore');
 var annotationUtil = require('./annotation-util');
 var appUtilities = require('./app-utilities');
+var colorPickerUtils = require('./color-picker-utils');
 
 var AnnotationLayers = function() {
   var self = this;
@@ -38,7 +39,7 @@ var AnnotationLayers = function() {
     height: 0
   };
   
-  var LayerModel = function(id, name, visible = true) {
+  var LayerModel = function(id, name, visible = true, customLayerName = '') {
     return {
       id: id,
       name: name,
@@ -47,7 +48,8 @@ var AnnotationLayers = function() {
       createdAt: new Date(),
       zIndex: 500 + id,
       isCytoscapeLayer: id === 0,    // Layer 0 = Cytoscape canvas
-      isAnnotationLayer: id > 0       // Layers 1+ = HTML canvas
+      isAnnotationLayer: id > 0,     // Layers 1+ = HTML canvas
+      customLayerName: customLayerName
     };
   };
   
@@ -63,7 +65,7 @@ var AnnotationLayers = function() {
       if (activeCy && activeCy.container()) {
     
     // Create default layer (Layer 0)
-    self.addLayer('Layer 0', true);
+    self.addLayer('Layer 0', true, 'Map');
     
     self.bindEvents();
     self.updateAnnotationToolStates();
@@ -112,6 +114,7 @@ var AnnotationLayers = function() {
     // Layer visibility toggle
     $(document).on('click', '.layer-visibility-btn', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       var layerId = parseInt($(this).data('layer-id'));
       self.toggleLayerVisibility(layerId);
     });
@@ -119,6 +122,7 @@ var AnnotationLayers = function() {
     // Delete layer
     $(document).on('click', '.layer-delete-btn', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       var layerId = parseInt($(this).data('layer-id'));
       self.deleteLayer(layerId);
     });
@@ -143,6 +147,21 @@ var AnnotationLayers = function() {
       e.preventDefault();
       if (selectedElement) {
         self.deleteSelectedElement();
+      }
+    });
+
+    // Support Delete key for deleting selected annotation element
+    $(document).on('keydown', function(e) {
+      // Only trigger if Delete key (key code 46 or e.key === 'Delete')
+      // and not when focused on an input, textarea, or contenteditable
+      var isInput = $(e.target).is('input, textarea, [contenteditable="true"]');
+      if (!isInput && (e.key === 'Delete' || e.keyCode === 46)) {
+        if (selectedElement) {
+          self.deleteSelectedElement();
+          // Prevent default browser delete behavior (e.g., navigating back)
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
       }
     });
 
@@ -227,18 +246,10 @@ var AnnotationLayers = function() {
    * @param {boolean} isDefaultLayer - Whether this is the default Layer 0
    * @returns {number} The ID of the created layer
    */
-  self.addLayer = function(name, isDefaultLayer = false) {
+  self.addLayer = function(name, isDefaultLayer = false, customLayerName = '') {
     var layerId = isDefaultLayer ? 0 : nextLayerId;
-    var layer = LayerModel(layerId, name);
+    var layer = LayerModel(layerId, name, true, customLayerName);
     layer.isDefaultLayer = isDefaultLayer;
-    
-    // Debug print for zIndex
-    console.log('[DEBUG] Creating annotation layer:', {
-      id: layer.id,
-      name: layer.name,
-      zIndex: layer.zIndex,
-      isAnnotationLayer: layer.isAnnotationLayer
-    });
     
     layers.push(layer);
     
@@ -414,6 +425,13 @@ var AnnotationLayers = function() {
     var visibilityIcon = layer.visible ? 'fa-eye' : 'fa-eye-slash';
     var isDefaultLayer = layer.isDefaultLayer;
     
+    // Compose display name
+    var displayName = layer.name;
+    if (layer.customLayerName && layer.customLayerName.trim() !== '') {
+      displayName += ' (' + layer.customLayerName + ')';
+    }
+    // Use the highlight-selected.svg as the pen icon
+    var penIconHtml = `<img src="app/img/toolbar/highlight-selected.svg" class="layer-edit-pen" title="Edit layer name" style="width:14px; height:14px; margin-left:6px; cursor:pointer; vertical-align:middle;" />`;
     var layerHtml = `
       <div class="layer-item ${isSelected ? 'selected' : ''}" 
            data-layer-id="${layer.id}" 
@@ -422,9 +440,9 @@ var AnnotationLayers = function() {
                   border-radius: 4px; margin-bottom: 8px; 
                   background-color: ${isSelected ? '#e7f3ff' : '#f9f9f9'}; 
                   cursor: pointer;">
-        <div style="flex: 1;">
-          <span style="font-weight: ${isSelected ? 'bold' : 'normal'};">${layer.name}</span>
-          ${isDefaultLayer ? '<small style="color: #666; margin-left: 8px;">(Default)</small>' : ''}
+        <div style="flex: 1; display: flex; align-items: center;">
+          <span class="layer-name-text" style="font-weight: ${isSelected ? 'bold' : 'normal'};">${displayName}</span>
+          ${penIconHtml}
         </div>
         <div style="display: flex; gap: 5px;">
           ${!isDefaultLayer ? `
@@ -446,8 +464,31 @@ var AnnotationLayers = function() {
         </div>
       </div>
     `;
-    
-    return $(layerHtml);
+    var $el = $(layerHtml);
+    // Pen icon click handler
+    $el.find('.layer-edit-pen').on('click', function(e) {
+      e.stopPropagation();
+      var $nameSpan = $el.find('.layer-name-text');
+      var currentName = layer.customLayerName || '';
+      var $input = $('<input type="text" class="layer-name-input" style="margin-left:4px; width: 120px; font-size: 13px;" />').val(currentName);
+      $nameSpan.replaceWith($input);
+      $input.focus();
+      $input.select();
+      var saveName = function() {
+        var newName = $input.val().trim();
+        layer.customLayerName = newName;
+        self.renderLayerList();
+      };
+      $input.on('blur', saveName);
+      $input.on('keydown', function(ev) {
+        if (ev.key === 'Enter') {
+          $input.blur();
+        } else if (ev.key === 'Escape') {
+          self.renderLayerList();
+        }
+      });
+    });
+    return $el;
   };
 
   /**
@@ -517,7 +558,6 @@ var AnnotationLayers = function() {
       activeCy.zoomingEnabled(true);
       activeCy.elements().selectify();
       activeCy.boxSelectionEnabled(true);
-      console.log("IS IT SELECTABLE?", activeCy.elements().selectable())
     }
   };
 
@@ -525,7 +565,6 @@ var AnnotationLayers = function() {
    * Disable Cytoscape interactions (node/edge selection, pan, zoom)
    */
   self.disableCytoscapeInteractions = function() {
-    console.log("DISABLING INTERACTIONS")
     var activeCy = appUtilities.getActiveCy();
     if (activeCy) {
       activeCy.panningEnabled(false);
@@ -534,7 +573,6 @@ var AnnotationLayers = function() {
       activeCy.elements().unselectify();
       activeCy.elements().lock();
       activeCy.boxSelectionEnabled(false);
-      console.log("IS IT SELECTABLE?", activeCy.elements().selectable())
     }
   };
 
@@ -911,8 +949,6 @@ self.setCytoscapeActiveStyle = function(enabled) {
   if (!cy) return;
   var style = cy.style();
 
-  console.log("setting cytoscape active style", enabled);
-  console.log("style", style);
   if (enabled) {
     // Restore the normal :active style (match your default, or reapply from sbgn-cy-instance-factory.js)
     style.selector('node:active').css({
@@ -1641,13 +1677,24 @@ self.setCytoscapeActiveStyle = function(enabled) {
     // Hide old delete button
     $(".annotation-element-delete").hide();
     // Bind events
-    $('#annotation-rect-bordercolor-input').on('input', function() {
-      var hex = $(this).val();
+    colorPickerUtils.bindPicker2Input('#annotation-rect-bordercolor-input', function() {
+      var hex = $('#annotation-rect-bordercolor-input').val();
       if (!selectedElement.styles) selectedElement.styles = {};
       selectedElement.styles.strokeColor = hex;
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-rect-fillcolor-input, #annotation-rect-fillalpha-input').on('input', function() {
+    colorPickerUtils.bindPicker2Input('#annotation-rect-fillcolor-input', function() {
+      var hex = $('#annotation-rect-fillcolor-input').val();
+      var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
+      var bigint = parseInt(hex.slice(1), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-rect-fillalpha-input').on('input', function() {
       var hex = $('#annotation-rect-fillcolor-input').val();
       var alpha = 1 - (parseFloat($('#annotation-rect-fillalpha-input').val())/100);
       var bigint = parseInt(hex.slice(1), 16);
@@ -1659,13 +1706,24 @@ self.setCytoscapeActiveStyle = function(enabled) {
       $('#annotation-rect-fillalpha-value').text($('#annotation-rect-fillalpha-input').val());
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-textbox-bordercolor-input').on('input', function() {
-      var hex = $(this).val();
+    colorPickerUtils.bindPicker2Input('#annotation-textbox-bordercolor-input', function() {
+      var hex = $('#annotation-textbox-bordercolor-input').val();
       if (!selectedElement.styles) selectedElement.styles = {};
       selectedElement.styles.strokeColor = hex;
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-textbox-fillcolor-input, #annotation-textbox-fillalpha-input').on('input', function() {
+    colorPickerUtils.bindPicker2Input('#annotation-textbox-fillcolor-input', function() {
+      var hex = $('#annotation-textbox-fillcolor-input').val();
+      var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
+      var bigint = parseInt(hex.slice(1), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+      if (!selectedElement.styles) selectedElement.styles = {};
+      selectedElement.styles.fillColor = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      self.redrawLayer(currentLayerId);
+    });
+    $('#annotation-textbox-fillalpha-input').on('input', function() {
       var hex = $('#annotation-textbox-fillcolor-input').val();
       var alpha = 1 - (parseFloat($('#annotation-textbox-fillalpha-input').val())/100);
       var bigint = parseInt(hex.slice(1), 16);
@@ -1677,16 +1735,8 @@ self.setCytoscapeActiveStyle = function(enabled) {
       $('#annotation-textbox-fillalpha-value').text($('#annotation-textbox-fillalpha-input').val());
       self.redrawLayer(currentLayerId);
     });
-    $('#annotation-font-size-input').on('input', function() {
-      var val = parseInt($(this).val());
-      if (!isNaN(val) && val > 0) {
-        if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.fontSize = val;
-        self.redrawLayer(currentLayerId);
-      }
-    });
-    $('#annotation-arrow-color-input').on('input', function() {
-      var hex = $(this).val();
+    colorPickerUtils.bindPicker2Input('#annotation-arrow-color-input', function() {
+      var hex = $('#annotation-arrow-color-input').val();
       if (!selectedElement.styles) selectedElement.styles = {};
       selectedElement.styles.strokeColor = hex;
       self.redrawLayer(currentLayerId);
@@ -1896,7 +1946,8 @@ self.setCytoscapeActiveStyle = function(enabled) {
           visible: layer.visible,
           elements: layer.elements,
           createdAt: layer.createdAt,
-          zIndex: layer.zIndex
+          zIndex: layer.zIndex,
+          customLayerName: layer.customLayerName // Save custom layer name
         });
       }
     });
@@ -1952,7 +2003,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
       
       annotationLayersData.layers.forEach(function(layerData) {
         
-        var layer = LayerModel(layerData.id, layerData.name, layerData.visible);
+        var layer = LayerModel(layerData.id, layerData.name, layerData.visible, layerData.customLayerName || '');
         layer.elements = layerData.elements || [];
         layer.createdAt = new Date(layerData.createdAt);
         layer.zIndex = layerData.zIndex || layerData.id;
