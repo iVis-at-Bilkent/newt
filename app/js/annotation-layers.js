@@ -146,6 +146,21 @@ var AnnotationLayers = function() {
       }
     });
 
+    // Support Delete key for deleting selected annotation element
+    $(document).on('keydown', function(e) {
+      // Only trigger if Delete key (key code 46 or e.key === 'Delete')
+      // and not when focused on an input, textarea, or contenteditable
+      var isInput = $(e.target).is('input, textarea, [contenteditable="true"]');
+      if (!isInput && (e.key === 'Delete' || e.keyCode === 46)) {
+        if (selectedElement) {
+          self.deleteSelectedElement();
+          // Prevent default browser delete behavior (e.g., navigating back)
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      }
+    });
+
     // Canvas mouse events for drawing
     $(document).on('mousedown', '[id^="annotation-canvas-layer-"]', function(e) {
       // Only prevent default if we're actively drawing, selecting, or moving

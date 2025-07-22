@@ -57,7 +57,6 @@ module.exports = function () {
     return false;
   });
   mt.bind(["del", "backspace"], function () {
-
     // use active chise instance
     var chiseInstance = appUtilities.getActiveChiseInstance();
 
