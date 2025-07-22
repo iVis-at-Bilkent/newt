@@ -515,8 +515,9 @@ var AnnotationLayers = function() {
     if (activeCy) {
       activeCy.panningEnabled(true);
       activeCy.zoomingEnabled(true);
-      activeCy.elements().selectable(true);
+      activeCy.elements().selectify();
       activeCy.boxSelectionEnabled(true);
+      console.log("IS IT SELECTABLE?", activeCy.elements().selectable())
     }
   };
 
@@ -524,13 +525,16 @@ var AnnotationLayers = function() {
    * Disable Cytoscape interactions (node/edge selection, pan, zoom)
    */
   self.disableCytoscapeInteractions = function() {
+    console.log("DISABLING INTERACTIONS")
     var activeCy = appUtilities.getActiveCy();
     if (activeCy) {
       activeCy.panningEnabled(false);
       activeCy.zoomingEnabled(false);
-      activeCy.elements().unselect();
-      activeCy.elements().selectable(false);
+      // activeCy.elements().unselect();
+      activeCy.elements().unselectify();
+      activeCy.elements().lock();
       activeCy.boxSelectionEnabled(false);
+      console.log("IS IT SELECTABLE?", activeCy.elements().selectable())
     }
   };
 
@@ -677,6 +681,15 @@ var AnnotationLayers = function() {
 
   /**
    * Set up layer isolation based on current layer
+   * This function handles disabling/enabling interacting with
+   * cytoscape nodes and edges.
+   * selectify()/lock()/activate() are especially important 
+   * parts from cytoscape.js API
+   * 
+   * We also have a part in app-cy.js that prevents double clicking on
+   * nodes to edit labels if in annotation layer (layer 1+)
+   * It is the block that starts with (line 1236):
+   *     cy.on('doubleTap', 'node', function (event) {
    */
   self.setupLayerIsolation = function() {
     var currentLayer = self.getCurrentLayer();
@@ -689,17 +702,32 @@ var AnnotationLayers = function() {
       self.enablePointerEvents();
       return;
     }
-    
-    // Always enable Cytoscape interactions when no element is selected
-    self.enableCytoscapeInteractions();
-    
-    // For annotation layers, we need to manage pointer events more intelligently
-    // to allow both Cytoscape interactions and annotation functionality
-    if (currentLayer.isCytoscapeLayer) {
-      self.disablePointerEvents();
-    } else {
-      // For annotation layers, enable pointer events to allow selection
-      self.enablePointerEvents();
+
+    var activeCy = appUtilities.getActiveCy();
+    if (activeCy) {
+      if (currentLayer.isCytoscapeLayer) {
+        // Layer 0: unlock and selectify elements
+        self.setCytoscapeActiveStyle(true);
+        // Clear any lingering :active state on nodes/edges
+        if (activeCy.elements().unactivate) {
+          activeCy.elements().unactivate();
+        } else {
+          activeCy.elements().forEach(function(ele) {
+            if (ele.active) ele.active(false);
+          });
+        }
+        activeCy.elements().unlock();
+        activeCy.elements().selectify();
+        self.enableCytoscapeInteractions();
+        self.disablePointerEvents();
+      } else {
+        // Annotation layers: lock and unselectify elements
+        self.setCytoscapeActiveStyle(false);
+        activeCy.elements().lock();
+        activeCy.elements().unselectify();
+        self.disableCytoscapeInteractions();
+        self.enablePointerEvents();
+      }
     }
   };
 
@@ -862,6 +890,61 @@ var AnnotationLayers = function() {
     }
     self.updateCanvasCursor();
   };
+
+
+/**
+ * Enable or disable Cytoscape :active style overlay
+ * @param {boolean} enabled - true to show, false to hide
+ */
+self.setCytoscapeActiveStyle = function(enabled) {
+
+
+  var cy = appUtilities.getActiveCy();
+  if (!cy) return;
+  var style = cy.style();
+
+  console.log("setting cytoscape active style", enabled);
+  console.log("style", style);
+  if (enabled) {
+    // Restore the normal :active style (match your default, or reapply from sbgn-cy-instance-factory.js)
+    style.selector('node:active').css({
+      // "background-opacity": 0.7,
+      // "overlay-color": "#89898a", // or your selectionColor
+      // "overlay-padding": "14"
+      'overlay-color': 'black',
+      'overlay-padding': 10,
+      'overlay-opacity': 0.25
+    });
+    style.selector('edge:active').css({
+      // "background-opacity": 0.7,
+      'overlay-color': 'black',
+      'overlay-padding': 10,
+      'overlay-opacity': 0.25
+      // "overlay-color": "#89898a",
+      // "overlay-padding": "8"
+    });
+  } else {
+    // Hide the :active overlay
+    style.selector('node:active').css({
+      // "background-opacity": 1,
+      'overlay-color': 'black',
+      'overlay-padding': 0,
+      'overlay-opacity': 0.0,
+      // "overlay-color": "rgba(255, 255, 255, 0)",
+      // "overlay-padding": 0
+    });
+    style.selector('edge:active').css({
+      // "background-opacity": 1,
+      'overlay-color': 'black',
+      'overlay-padding': 0,
+      'overlay-opacity': 0.0,
+      // "overlay-color": "rgba(255, 255, 255, 0)",
+      // "overlay-padding": 0
+    });
+  }
+  style.update();
+}
+
 
   /**
    * Update cursor style for all annotation canvases
@@ -1626,7 +1709,7 @@ var AnnotationLayers = function() {
    */
   self.deselectElement = function() {
     selectedElement = null;
-    self.enableCytoscapeInteractions();
+    // self.enableCytoscapeInteractions();
     var currentLayer = self.getCurrentLayer();
     if (currentLayer && currentLayer.isCytoscapeLayer) {
       self.disablePointerEvents();

@@ -1234,7 +1234,10 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on('doubleTap', 'node', function (event) {
-
+      // Prevent double click on nodes to edit label if in annotation layer (layer 1+)
+      if (window.annotationLayers && window.annotationLayers.getCurrentLayer && window.annotationLayers.getCurrentLayer().isAnnotationLayer) {
+        return;
+      }
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
