@@ -603,6 +603,10 @@ var GeneralPropertiesParentView = Backbone.View.extend({
       chiseInstance.disablePorts();
     }
 
+    if (currentGeneralProperties.enableEntityStateSynchronization) {
+      appUtilities.synchronizeStates();
+    } 
+
     if (currentGeneralProperties.allowCompoundNodeResize) {
       chiseInstance.considerCompoundSizes();
     } else {
@@ -659,6 +663,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       id: "enable-ports",
       type: "checkbox",
       property: "currentGeneralProperties.enablePorts",
+      update: self.applyUpdate,
+    };
+
+    self.params.enableEntityStateSynchronization = {
+      id: "enable-entity-state-synchronization",
+      type: "checkbox",
+      property: "currentGeneralProperties.enableEntityStateSynchronization",
       update: self.applyUpdate,
     };
 
@@ -968,6 +979,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $("#enable-ports").blur();
     });
 
+    $(document).on("change", "#enable-entity-state-synchronization", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.enableEntityStateSynchronization.value = $("#enable-entity-state-synchronization").prop("checked");
+      cy.undoRedo().do("changeMenu", self.params.enableEntityStateSynchronization);
+      $("#enable-ports").blur();
+    });
+
     $(document).on("change", "#enable-sif-topology-grouping", function (evt) {
       // use active cy instance
       var cy = appUtilities.getActiveCy();
@@ -1093,6 +1113,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value =
         appUtilities.defaultGeneralProperties.enablePorts;
+      self.params.enableEntityStateSynchronization.value =
+        appUtilities.defaultGeneralProperties.enableEntityStateSynchronization;
       self.params.enableSIFTopologyGrouping.value =
         appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
       self.params.compoundPadding.value =
@@ -1112,6 +1134,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         param: self.params.inferNestingOnLoad,
       });
       actions.push({ name: "changeMenu", param: self.params.enablePorts });
+      actions.push({ name: "changeMenu", param: self.params.enableEntityStateSynchronization });
       actions.push({
         name: "changeMenu",
         param: self.params.enableSIFTopologyGrouping,
