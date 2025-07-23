@@ -592,8 +592,11 @@ appUtilities.closeActiveNetwork = function () {
     var newActiveNetworkId =
       this.networkIdsStack[this.networkIdsStack.length - 1];
 
-    // choose the network tab for the new active network
+    // We need this flag to prevent resetting the new active network's annotation layers
+    // We also set it to false so normal tab switching works without resetting the annotation layers
+    window.supressLoadAnnotationLayers = true;
     this.chooseNetworkTab(newActiveNetworkId);
+    window.supressLoadAnnotationLayers = false;
   }
 
   // adjust the visibility of network tabs

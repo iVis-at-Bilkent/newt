@@ -1979,7 +1979,6 @@ self.setCytoscapeActiveStyle = function(enabled) {
       return layer.isDefaultLayer;
     });
     
-    // Reset next layer ID
     nextLayerId = 1;
     
     $('[id^="annotation-canvas-layer-"]').remove();

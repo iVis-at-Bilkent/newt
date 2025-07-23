@@ -2122,11 +2122,12 @@ module.exports = function() {
 
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
-      var currentActiveNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
-      
-      if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
-        var savedData = window.annotationLayers.getAnnotationLayersData();
-        window.networkIdToAnnotationLayersData[currentActiveNetworkId] = savedData;
+      if (!window.supressLoadAnnotationLayers) {
+        var currentActiveNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
+        if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
+          var savedData = window.annotationLayers.getAnnotationLayersData();
+          window.networkIdToAnnotationLayersData[currentActiveNetworkId] = savedData;
+        }
       }
 
       var target = $(e.target).attr("href");
