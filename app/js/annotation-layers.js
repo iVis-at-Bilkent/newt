@@ -342,7 +342,18 @@ var AnnotationLayers = function() {
     if (selectedElement) {
       self.deselectElement();
     }
-    
+
+    // If switching from Cytoscape layer (layer 0) to an annotation layer,
+    //  clear Cytoscape selection
+    var wasCytoscapeLayer = currentLayerId === 0;
+    var isNowAnnotationLayer = layer.isAnnotationLayer;
+    if (wasCytoscapeLayer && isNowAnnotationLayer) {
+      var activeCy = appUtilities.getActiveCy && appUtilities.getActiveCy();
+      if (activeCy && activeCy.elements) {
+        activeCy.elements().unselect();
+      }
+    }
+
     currentLayerId = layerId;
     self.renderLayerList();
     self.updateAnnotationToolStates();
@@ -431,7 +442,7 @@ var AnnotationLayers = function() {
       displayName += ' (' + layer.customLayerName + ')';
     }
     // Use the highlight-selected.svg as the pen icon
-    var penIconHtml = `<img src="app/img/toolbar/highlight-selected.svg" class="layer-edit-pen" title="Edit layer name" style="width:14px; height:14px; margin-left:6px; cursor:pointer; vertical-align:middle;" />`;
+    var penIconHtml = `<i class="fa fa-pencil-square-o layer-edit-pen" title="Edit layer name" style="margin-left:6px; cursor:pointer; vertical-align:middle; font-size:16px;"></i>`;
     var layerHtml = `
       <div class="layer-item ${isSelected ? 'selected' : ''}" 
            data-layer-id="${layer.id}" 
@@ -1660,7 +1671,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
       var widthRow = $('<tr></tr>');
       widthRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Arrow Width</td>');
       widthRow.append('<td style="padding-left: 5px; text-align:left;">'+
-        '<input id="annotation-arrow-width-input" class="inspector-input-box" type="number" min="1" max="30" step="1" value="'+lineWidth+'" style="width:60px;"> px</td>');
+        '<input id="annotation-arrow-width-input" class="inspector-input-box" type="number" min="1" max="30" step="1" value="'+lineWidth+'" style="width:60px;"></td>');
       table.append(widthRow);
     }
     if (selectedElement && selectedElement.type === 'image') {
@@ -2279,7 +2290,7 @@ function showAnnotationFontModal(element) {
               </tr>
               <tr>
                 <td style="text-align:right; padding-right: 5px;">Size</td>
-                <td style="padding-left: 5px;"><input id="annotation-font-size-input-modal" class="inspector-input-box" type="number" min="6" max="100" step="1" style="width:60px;" value="${styles.fontSize}"> px</td>
+                <td style="padding-left: 5px;"><input id="annotation-font-size-input-modal" class="inspector-input-box" type="number" min="6" max="100" step="1" style="width:60px;" value="${styles.fontSize}"></td>
               </tr>
               <tr>
                 <td style="text-align:right; padding-right: 5px;">Weight</td>
