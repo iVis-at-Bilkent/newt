@@ -985,7 +985,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       self.params.enableEntityStateSynchronization.value = $("#enable-entity-state-synchronization").prop("checked");
       cy.undoRedo().do("changeMenu", self.params.enableEntityStateSynchronization);
-      $("#enable-ports").blur();
+      $("#enable-entity-state-synchronization").blur();
     });
 
     $(document).on("change", "#enable-sif-topology-grouping", function (evt) {
