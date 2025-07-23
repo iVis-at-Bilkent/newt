@@ -414,7 +414,10 @@ module.exports = function() {
         lines = lines.join("\n")
       }
       chiseInstance.changeNodeLabel(node, lines);
-      appUtilities.synchronizeStatesNewLabel(node);
+      var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+      if (currentGeneralProperties.enableEntityStateSynchronization) {
+        appUtilities.synchronizeStatesNewLabel(node);
+      }
       inspectorUtilities.handleSBGNInspector();
 
     });
@@ -912,6 +915,11 @@ module.exports = function() {
       : (properties && properties.mapProperties) 
           ? properties.mapProperties 
           : {};
+      
+      if (!mapProperties.hasOwnProperty('enableEntityStateSynchronization')) {
+        mapProperties.enableEntityStateSynchronization = ['false'];
+      }
+
       var urlParams = appUtilities.getScratch(cy, 'urlParams');
 
       if (urlParams) {

@@ -358,7 +358,10 @@ inspectorUtilities.fillInspectorStateAndInfos = function (
       $("#inspector-delete-state-and-info" + i)
         .unbind("click")
         .click(function (event) {
-          appUtilities.synchronizeStatesRemoval(nodes[0], i); 
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          if (currentGeneralProperties.enableEntityStateSynchronization) {
+            appUtilities.synchronizeStatesRemoval(nodes[0], i); 
+          }      
           chiseInstance.removeStateOrInfoBox(nodes, i);
           inspectorUtilities.handleSBGNInspector();
         });
@@ -404,9 +407,13 @@ inspectorUtilities.fillInspectorStateAndInfos = function (
 
   $("#inspector-add-state-variable").click(function () {
     var obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
-
+    
     chiseInstance.addStateOrInfoBox(nodes, obj);
-    appUtilities.synchronizeStatesAddition(nodes[0]); 
+
+    var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+    if (currentGeneralProperties.enableEntityStateSynchronization) {
+      appUtilities.synchronizeStatesAddition(nodes[0]);   
+    }
     inspectorUtilities.handleSBGNInspector();
   });
 
@@ -1825,10 +1832,13 @@ inspectorUtilities.handleSBGNInspector = function () {
           });
           lines = lines.join("\n");
           chiseInstance.changeNodeLabel(selectedEles, lines);
-          if (selectedEles.length === 1) {
-            appUtilities.synchronizeStatesNewLabel(selectedEles[0]);
-          } else if (selectedEles.length > 1) {
-            appUtilities.synchronizeStatesMultipleNewLabels(selectedEles);
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          if (currentGeneralProperties.enableEntityStateSynchronization) {
+            if (selectedEles.length === 1) {
+              appUtilities.synchronizeStatesNewLabel(selectedEles[0]);
+            } else if (selectedEles.length > 1) {
+              appUtilities.synchronizeStatesMultipleNewLabels(selectedEles);
+            }
           }
           inspectorUtilities.handleSBGNInspector();
         }

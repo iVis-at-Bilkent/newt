@@ -870,6 +870,7 @@ appUtilities.defaultGeneralProperties = {
   allowSimpleChemicalCloning: false,
   simpleChemicalCloningThreshold: 3,
   enablePorts: true,
+  enableEntityStateSynchronization: true,
   enableSIFTopologyGrouping: false,
   allowCompoundNodeResize: true,
   mapColorScheme: "black_white",
@@ -5012,6 +5013,51 @@ appUtilities.synchronizeStatesMultipleNewLabels = function (nodes) {
         chiseInstance.addStateOrInfoBox(cy.collection(groupNodes), obj);
       }
     }
+  });
+};
+
+// Synchronizes state variables across nodes with the same label and class
+appUtilities.synchronizeStates = function () {
+  const chiseInstance = appUtilities.getActiveChiseInstance();
+  const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
+  
+  const getStateVarCount = (n) =>
+    (n.data("statesandinfos") || []).filter(s => s.clazz === "state variable").length;
+
+  const groupedNodes = {};
+
+  cy.nodes().forEach(node => {
+    if (!(node.data("language") === "PD" || node.data("language") === "SBML")) return;
+
+    const nodeLabel = node.data("label");
+    const nodeClass = node.data("class");
+    
+    if (!nodeLabel || nodeLabel.trim() === "") return;
+
+    const groupKey = `${nodeLabel}|||${nodeClass}`;
+
+    if (!groupedNodes[groupKey]) {
+      groupedNodes[groupKey] = [];
+    }
+    groupedNodes[groupKey].push(node);
+  });
+
+  Object.keys(groupedNodes).forEach(groupKey => {
+    const groupNodes = groupedNodes[groupKey];
+
+    const groupStateCounts = groupNodes.map(node => getStateVarCount(node));
+    const maxGroupStateCount = Math.max(...groupStateCounts);
+
+    groupNodes.forEach((node, index) => {
+      const currentStateCount = groupStateCounts[index];
+      const diff = maxGroupStateCount - currentStateCount;
+
+      if (diff > 0) {
+        for (let i = 0; i < diff; i++) {
+          chiseInstance.addStateOrInfoBox(node, obj);
+        }
+      }
+    });
   });
 };
 
