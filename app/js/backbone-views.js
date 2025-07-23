@@ -2907,7 +2907,7 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
           if (result && result.err)
           {
             $(self.el).modal('toggle');
-            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
+            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render(result.err,result.message);
             return;
           }
           $(self.el).modal('toggle');
@@ -5751,9 +5751,16 @@ var PromptInvalidQueryView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-invalidQuery-template").html());
   },
-  render: function () {
+  render: function (title,message) {
     var self = this;
     self.template = _.template($("#prompt-invalidQuery-template").html());
+    console.log(title, message);
+
+    var param = {};
+    param.title = title;
+    param.message = message;
+    self.template = self.template(param);
+
 
     $(self.el).html(self.template);
     $(self.el).modal("show");
