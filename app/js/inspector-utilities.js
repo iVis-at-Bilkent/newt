@@ -359,10 +359,16 @@ inspectorUtilities.fillInspectorStateAndInfos = function (
         .unbind("click")
         .click(function (event) {
           var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
-          if (currentGeneralProperties.enableEntityStateSynchronization) {
-            appUtilities.synchronizeStatesRemoval(nodes[0], i); 
-          }      
+          
+          if ((nodes[0].data("language") === "PD" || nodes[0].data("language") === "SBML") && 
+              currentGeneralProperties.enableEntityStateSynchronization &&
+              nodes[0].data("label") !== undefined &&
+              nodes[0].data("statesandinfos")[i].clazz === "state variable") {
+                appUtilities.synchronizeStatesRemoval(nodes[0], i); 
+          } else {
           chiseInstance.removeStateOrInfoBox(nodes, i);
+          }
+
           inspectorUtilities.handleSBGNInspector();
         });
 
@@ -407,13 +413,14 @@ inspectorUtilities.fillInspectorStateAndInfos = function (
 
   $("#inspector-add-state-variable").click(function () {
     var obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
-    
-    chiseInstance.addStateOrInfoBox(nodes, obj);
-
     var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
-    if (currentGeneralProperties.enableEntityStateSynchronization) {
+    
+    if ((nodes[0].data("language") === "PD" || nodes[0].data("language") === "SBML") && currentGeneralProperties.enableEntityStateSynchronization && nodes[0].data("label") !== undefined) {
       appUtilities.synchronizeStatesAddition(nodes[0]);   
+    } else {
+      chiseInstance.addStateOrInfoBox(nodes, obj);
     }
+
     inspectorUtilities.handleSBGNInspector();
   });
 
