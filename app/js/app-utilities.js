@@ -561,11 +561,8 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
 
   if (window.annotationLayers) {
     window.annotationLayers.resetAnnotationLayers();
-    
     window.annotationLayers.reinitForNewNetwork();
   }
-
-  appUtilities.nextNetworkId++;
 
   return newInst;
 };
