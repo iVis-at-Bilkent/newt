@@ -82,6 +82,7 @@ Third-party libraries:
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0),
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), and
 [chroma-js](https://github.com/gka/chroma.js) licensed with [this](https://github.com/gka/chroma.js/blob/master/LICENSE).
+[Font Awesome](https://github.com/FortAwesome/Font-Awesome) licensed with [Font Awesome Free License](https://github.com/FortAwesome/Font-Awesome/blob/7.x/LICENSE.txt).
 
 We refer the user to [GeneCards](https://www.genecards.org/) for detailed properties of genes. Similarly, we pull properties of simple chemicals from [ChEBI](https://www.ebi.ac.uk/chebi/). CellDesigner conversion is performed through [this library](https://github.com/royludo/cd2sbgnml ) and [its associated service](https://github.com/iVis-at-Bilkent/cd2sbgnml-webservice). Finally, SBML and GPML conversions are due to [this Minerva service](https://minerva-dev.lcsb.uni.lu/minerva/api/convert/).
 

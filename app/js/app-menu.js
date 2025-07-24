@@ -320,7 +320,7 @@ module.exports = function() {
       }
 
     }
-    cy.fit( cy.elements(":visible"), 20 );
+    // cy.fit( cy.elements(":visible"), 20 );
 
     var mapType = chiseInstance.getMapType();
     if (mapType === "SBML") {
@@ -1038,7 +1038,7 @@ module.exports = function() {
       var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
       $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getTabLabelName(chiseInstance.getMapType()));
 
-      cy.fit( cy.elements(":visible"), 20 );
+      // cy.fit( cy.elements(":visible"), 20 );
     });
 
     $("#PD-legend").click(function (e) {

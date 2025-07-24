@@ -2805,7 +2805,7 @@ inspectorUtilities.handleNavigate = function (cy, eles) {
         }
         if (exceed) {
           // save the node who is currently being dragged to the scratch pad
-          cy.fit(eles);
+          // cy.fit(eles);
         }
       } else {
         var renderedPosition = eles.renderedPosition();
@@ -2834,7 +2834,7 @@ inspectorUtilities.handleNavigate = function (cy, eles) {
         }
         if (exceed) {
           // save the node who is currently being dragged to the scratch pad
-          cy.fit(eles);
+          // cy.fit(eles);
         }
       }
     },
