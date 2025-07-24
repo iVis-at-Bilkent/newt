@@ -4868,31 +4868,25 @@ appUtilities.removeDuplicateProcessesAfterQuery = function () {
 
 // When a new state variable is added to a node, synchronizes state variables across nodes with the same label and class
 appUtilities.synchronizeStatesAddition = function (node) {
-  if (!(node.data("language") === "PD" || node.data("language") === "SBML")) return;
-
   const nodeLabel = node.data("label");
   const nodeClass = node.data("class");
 
-  const otherNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`).not(node);
-  if (otherNodes.empty()) return;
+  const nodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`);
+  if (nodes.empty()) return;
   
   const chiseInstance = appUtilities.getActiveChiseInstance();
   const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
   
-  chiseInstance.addStateOrInfoBox(otherNodes, obj);
+  chiseInstance.addStateOrInfoBox(nodes, obj);
 };
 
 // When a state variable is deleted from a node, synchronizes state variables across nodes with the same label and class
 appUtilities.synchronizeStatesRemoval = function (node, i) {
-  if (!(((node.data("language") === "PD" || node.data("language") === "SBML")) && node.data("statesandinfos")[i].clazz === "state variable")) return;
-
   const nodeLabel = node.data("label");
   const nodeClass = node.data("class");
 
-  const otherNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`).not(node);  
+  const otherNodes = cy.nodes(`[label = "${nodeLabel}"][class = "${nodeClass}"]`);
   if (otherNodes.empty()) return;
-
-  const chiseInstance = appUtilities.getActiveChiseInstance();
 
   let stateIndex = 0;
   for (let idx = 0; idx < i; idx++) {
@@ -4900,6 +4894,8 @@ appUtilities.synchronizeStatesRemoval = function (node, i) {
       stateIndex++;
     }
   }
+
+  const actionList = [];
 
   otherNodes.forEach(otherNode => { 
     let otherNodeStateIndex = -1;
@@ -4913,8 +4909,18 @@ appUtilities.synchronizeStatesRemoval = function (node, i) {
       if(otherNodeStateIndex === stateIndex) break;
     }
 
-    chiseInstance.removeStateOrInfoBox(otherNode, otherNodeRealIndex);    
+    actionList.push({
+      name: "removeStateOrInfoBox",
+      param: {
+        nodes: otherNode,
+        locationObj: {index: otherNodeRealIndex}
+      }
+    });
   });
+
+  if (actionList.length > 0) {
+    cy.undoRedo().do("batch", actionList);
+  }
 };
 
 // When the label of a node is changed, synchronizes state variables across nodes with the same label and class
@@ -4937,22 +4943,37 @@ appUtilities.synchronizeStatesNewLabel = function (node) {
   const currStateCount = getStateVarCount(node);
   const diff = refStateCount - currStateCount;
   
-  const chiseInstance = appUtilities.getActiveChiseInstance();
+  const actionList = [];
 
   if (diff > 0) {
     for (let i = 0; i < diff; i++) {
-      chiseInstance.addStateOrInfoBox(node, obj);
+      actionList.push({
+        name: "addStateOrInfoBox",
+        param: {
+          nodes: cy.collection([node]),
+          obj: obj
+        }
+      });
     }
   } else if (diff < 0) {
     for (let i = 0; i < -diff; i++) {
-      chiseInstance.addStateOrInfoBox(otherNodes, obj);
+      actionList.push({
+        name: "addStateOrInfoBox",
+        param: {
+          nodes: otherNodes,
+          obj: obj
+        }
+      });
     }
+  }
+
+  if (actionList.length > 0) {
+    cy.undoRedo().do("batch", actionList);
   }
 };
 
 // When the label of multiple nodes is changed at the same time, synchronizes state variables across nodes with the same label and class
 appUtilities.synchronizeStatesMultipleNewLabels = function (nodes) {
-  const chiseInstance = appUtilities.getActiveChiseInstance();
   const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
   
   const getStateVarCount = (n) =>
@@ -4973,6 +4994,8 @@ appUtilities.synchronizeStatesMultipleNewLabels = function (nodes) {
     groupedNodes[groupKey].push(node);
   });
 
+  const actionList = [];
+
   Object.keys(groupedNodes).forEach(groupKey => {
     const [nodeLabel, nodeClass] = groupKey.split('|||');
     const groupNodes = groupedNodes[groupKey];
@@ -4986,7 +5009,13 @@ appUtilities.synchronizeStatesMultipleNewLabels = function (nodes) {
       
       if (diff > 0) {
         for (let i = 0; i < diff; i++) {
-          chiseInstance.addStateOrInfoBox(node, obj);
+          actionList.push({
+            name: "addStateOrInfoBox",
+            param: {
+              nodes: cy.collection([node]),
+              obj: obj
+            }
+          });
         }
       }
     });
@@ -5002,20 +5031,35 @@ appUtilities.synchronizeStatesMultipleNewLabels = function (nodes) {
     if (maxGroupStateCount > existingStateCount) {
       const diff = maxGroupStateCount - existingStateCount;
       for (let i = 0; i < diff; i++) {
-        chiseInstance.addStateOrInfoBox(existingNodes, obj);
+        actionList.push({
+          name: "addStateOrInfoBox",
+          param: {
+            nodes: existingNodes,
+            obj: obj
+          }
+        });
       }
     } else if (maxGroupStateCount < existingStateCount) {
       const diff = existingStateCount - maxGroupStateCount;
       for (let i = 0; i < diff; i++) {
-        chiseInstance.addStateOrInfoBox(cy.collection(groupNodes), obj);
+        actionList.push({
+          name: "addStateOrInfoBox",
+          param: {
+            nodes: cy.collection(groupNodes),
+            obj: obj
+          }
+        });
       }
     }
   });
+
+  if (actionList.length > 0) {
+    cy.undoRedo().do("batch", actionList);
+  }
 };
 
 // Synchronizes state variables across nodes with the same label and class
 appUtilities.synchronizeStates = function () {
-  const chiseInstance = appUtilities.getActiveChiseInstance();
   const obj = appUtilities.getDefaultEmptyInfoboxObj("state variable");
   
   const getStateVarCount = (n) =>
@@ -5039,6 +5083,8 @@ appUtilities.synchronizeStates = function () {
     groupedNodes[groupKey].push(node);
   });
 
+  const actionList = [];
+
   Object.keys(groupedNodes).forEach(groupKey => {
     const groupNodes = groupedNodes[groupKey];
 
@@ -5051,11 +5097,21 @@ appUtilities.synchronizeStates = function () {
 
       if (diff > 0) {
         for (let i = 0; i < diff; i++) {
-          chiseInstance.addStateOrInfoBox(node, obj);
+          actionList.push({
+            name: "addStateOrInfoBox",
+            param: {
+              nodes: cy.collection([node]),
+              obj: obj
+            }
+          });
         }
       }
     });
   });
+
+  if (actionList.length > 0) {
+    cy.undoRedo().do("batch", actionList);
+  }
 };
 
 module.exports = appUtilities;
