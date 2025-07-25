@@ -2231,7 +2231,6 @@ self.setCytoscapeActiveStyle = function(enabled) {
       }
     });
     ctx.restore();
-    console.log('[drawLayerForExport] Layer', layer.id, 'drawn for export with scaleX:', scaleX, 'scaleY:', scaleY, 'offsetX:', offsetX, 'offsetY:', offsetY);
   };
 
   /**
@@ -2274,33 +2273,32 @@ self.setCytoscapeActiveStyle = function(enabled) {
         y2: Math.max(cyBBox.y2, annBBox.y2)
       };
     }
-    console.log('[getCombinedBoundingBox] cyBBox:', cyBBox, 'annBBox:', annBBox, 'combined:', bbox);
     return bbox;
   };
 
   /**
-   * Export a composite image including Cytoscape and all visible annotation layers
-   * @param {string} filename - The filename for the exported image
+   * Export a composite image including Cytoscape and all visible annotation layers as PNG.
+   * (Might be able to refactor with exportCompositeJpg)
+   *
+   * - Computes the combined bounding box of the Cytoscape graph and all visible annotation elements.
+   * - Exports Cytoscape as a PNG at the correct scale and offset.
+   * - Draws each annotation element onto the export canvas, transforming model coordinates to export coordinates.
+   * - Combines everything into a single PNG and triggers download.
    */
-  self.exportCompositeImage = function(filename) {
-    console.log('[exportCompositeImage] Start export');
+  self.exportCompositePng = function(filename) {
     var activeCy = appUtilities.getActiveCy();
     if (!activeCy) {
-      console.error('[exportCompositeImage] No active Cytoscape instance found');
       return;
     }
-    // 1. Get graph bbox and combined bbox
     var cyBBox = activeCy.elements().boundingBox();
     var cyWidth = cyBBox.x2 - cyBBox.x1;
     var cyHeight = cyBBox.y2 - cyBBox.y1;
     var combinedBBox = self.getCombinedBoundingBox(activeCy);
     var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
     var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
-    // 2. Export Cytoscape PNG at cyBBox aspect ratio and size
-    var cyScale = 1; // 1:1 model-to-pixel for best fidelity
+    var cyScale = 1;
     var cyExportWidth = Math.round(cyWidth * cyScale);
     var cyExportHeight = Math.round(cyHeight * cyScale);
-    console.log('[exportCompositeImage] cyBBox:', cyBBox, 'cyExportWidth:', cyExportWidth, 'cyExportHeight:', cyExportHeight);
     var cyPngDataUrl = activeCy.png({
       full: true,
       scale: cyExportWidth / activeCy.width(),
@@ -2310,24 +2308,19 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var cyImg = new window.Image();
     cyImg.src = cyPngDataUrl;
     cyImg.onload = function() {
-      // 3. Create export canvas at combinedBBox size
       var exportWidth = Math.round(combinedWidth * cyScale);
       var exportHeight = Math.round(combinedHeight * cyScale);
       var exportCanvas = document.createElement('canvas');
       exportCanvas.width = exportWidth;
       exportCanvas.height = exportHeight;
       var ctx = exportCanvas.getContext('2d');
-      // Fill background with white to match Cytoscape export
       ctx.save();
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, exportWidth, exportHeight);
       ctx.restore();
-      // 4. Draw Cytoscape PNG at offset
       var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
       var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
       ctx.drawImage(cyImg, offsetX, offsetY, cyExportWidth, cyExportHeight);
-      console.log('[exportCompositeImage] Drew Cytoscape image at offset', offsetX, offsetY);
-      // 5. Draw annotation items using same offset/scale
       var scaleX = cyScale;
       var scaleY = cyScale;
       var annOffsetX = -combinedBBox.x1 * scaleX;
@@ -2355,17 +2348,12 @@ self.setCytoscapeActiveStyle = function(enabled) {
               case 'image':
                 annotationUtil.drawImage(tempCtx, element, element.styles);
                 break;
-              default:
-                console.warn('[drawLayerForExport] Unknown element type:', element.type);
             }
           });
           ctx.drawImage(tempCanvas, 0, 0, exportWidth, exportHeight);
-          console.log('[exportCompositeImage] Drew annotation layer', layer.id);
         }
       });
-      // Export as PNG
       var finalDataUrl = exportCanvas.toDataURL('image/png');
-      console.log('[exportCompositeImage] Composite image ready, triggering download');
       if (window.saveAs && typeof window.saveAs === 'function') {
         var arr = finalDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while(n--){ u8arr[n] = bstr.charCodeAt(n); }
@@ -2379,38 +2367,37 @@ self.setCytoscapeActiveStyle = function(enabled) {
         link.click();
         document.body.removeChild(link);
       }
-      console.log('[exportCompositeImage] Export complete');
     };
     cyImg.onerror = function() {
-      console.error('[exportCompositeImage] Failed to load Cytoscape image');
+      console.error('[exportCompositePNG] Failed to load Cytoscape image');
     };
   };
 
   /**
-   * Export a composite image as JPG including Cytoscape and all visible annotation layers
-   * @param {string} filename - The filename for the exported image
-   * @param {number} [quality=0.92] - JPEG quality (0-1)
+   * Export a composite image as JPG including Cytoscape and all visible annotation layers.
+   * (Might be able to refactor with exportCompositePng)
+   *
+   * - Computes the combined bounding box of the Cytoscape graph and all visible annotation elements.
+   * - Exports Cytoscape as a PNG at the correct scale and offset.
+   * - Draws each annotation element onto the export canvas, transforming model coordinates to export coordinates.
+   * - Combines everything into a single JPG and triggers download.
+   * - JPEG quality can be specified (default 0.92).
    */
   self.exportCompositeJpg = function(filename, quality) {
     quality = typeof quality === 'number' ? quality : 0.92;
-    console.log('[exportCompositeJpg] Start export');
     var activeCy = appUtilities.getActiveCy();
     if (!activeCy) {
-      console.error('[exportCompositeJpg] No active Cytoscape instance found');
       return;
     }
-    // 1. Get graph bbox and combined bbox
     var cyBBox = activeCy.elements().boundingBox();
     var cyWidth = cyBBox.x2 - cyBBox.x1;
     var cyHeight = cyBBox.y2 - cyBBox.y1;
     var combinedBBox = self.getCombinedBoundingBox(activeCy);
     var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
     var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
-    // 2. Export Cytoscape PNG at cyBBox aspect ratio and size
-    var cyScale = 1; // 1:1 model-to-pixel for best fidelity
+    var cyScale = 1;
     var cyExportWidth = Math.round(cyWidth * cyScale);
     var cyExportHeight = Math.round(cyHeight * cyScale);
-    console.log('[exportCompositeJpg] cyBBox:', cyBBox, 'cyExportWidth:', cyExportWidth, 'cyExportHeight:', cyExportHeight);
     var cyPngDataUrl = activeCy.png({
       full: true,
       scale: cyExportWidth / activeCy.width(),
@@ -2420,24 +2407,19 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var cyImg = new window.Image();
     cyImg.src = cyPngDataUrl;
     cyImg.onload = function() {
-      // 3. Create export canvas at combinedBBox size
       var exportWidth = Math.round(combinedWidth * cyScale);
       var exportHeight = Math.round(combinedHeight * cyScale);
       var exportCanvas = document.createElement('canvas');
       exportCanvas.width = exportWidth;
       exportCanvas.height = exportHeight;
       var ctx = exportCanvas.getContext('2d');
-      // Fill background with white to match Cytoscape export
       ctx.save();
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, exportWidth, exportHeight);
       ctx.restore();
-      // 4. Draw Cytoscape PNG at offset
       var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
       var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
       ctx.drawImage(cyImg, offsetX, offsetY, cyExportWidth, cyExportHeight);
-      console.log('[exportCompositeJpg] Drew Cytoscape image at offset', offsetX, offsetY);
-      // 5. Draw annotation items using same offset/scale
       var scaleX = cyScale;
       var scaleY = cyScale;
       var annOffsetX = -combinedBBox.x1 * scaleX;
@@ -2465,17 +2447,12 @@ self.setCytoscapeActiveStyle = function(enabled) {
               case 'image':
                 annotationUtil.drawImage(tempCtx, element, element.styles);
                 break;
-              default:
-                console.warn('[drawLayerForExport] Unknown element type:', element.type);
             }
           });
           ctx.drawImage(tempCanvas, 0, 0, exportWidth, exportHeight);
-          console.log('[exportCompositeJpg] Drew annotation layer', layer.id);
         }
       });
-      // Export as JPG
       var finalDataUrl = exportCanvas.toDataURL('image/jpeg', quality);
-      console.log('[exportCompositeJpg] Composite image ready, triggering download');
       if (window.saveAs && typeof window.saveAs === 'function') {
         var arr = finalDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while(n--){ u8arr[n] = bstr.charCodeAt(n); }
@@ -2489,231 +2466,116 @@ self.setCytoscapeActiveStyle = function(enabled) {
         link.click();
         document.body.removeChild(link);
       }
-      console.log('[exportCompositeJpg] Export complete');
     };
-    cyImg.onerror = function() {
-      console.error('[exportCompositeJpg] Failed to load Cytoscape image');
-    };
+    cyImg.onerror = function() {};
   };
 
   /**
-   * Export a composite SVG image including Cytoscape and all visible annotation layers
-   * @param {string} filename - The filename for the exported SVG
+   * Export a composite SVG including Cytoscape and all visible annotation layers.
+   *
+   * - Computes the combined bounding box of the Cytoscape graph and all visible annotation elements.
+   * - Exports Cytoscape as SVG and inserts it into a new SVG document at the correct offset.
+   * - Transforms all annotation elements from model coordinates to export coordinates (using export scale and offset),
+   *   so their placement matches what is seen on the canvas.
+   * - Appends all annotation elements as SVG elements to the export SVG.
+   * - Triggers download of the resulting SVG file.
    */
   self.exportCompositeSvg = function(filename) {
-    console.log('[exportCompositeSvg] Start export');
     var activeCy = appUtilities.getActiveCy();
     if (!activeCy) {
-      console.error('[exportCompositeSvg] No active Cytoscape instance found');
       return;
     }
-    // 1. Get graph bbox and combined bbox
     var cyBBox = activeCy.elements().boundingBox();
     var cyWidth = cyBBox.x2 - cyBBox.x1;
     var cyHeight = cyBBox.y2 - cyBBox.y1;
     var combinedBBox = self.getCombinedBoundingBox(activeCy);
     var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
     var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
-    var cyScale = 1;
-    var cyExportWidth = Math.round(cyWidth * cyScale);
-    var cyExportHeight = Math.round(cyHeight * cyScale);
-    var exportWidth = Math.round(combinedWidth * cyScale);
-    var exportHeight = Math.round(combinedHeight * cyScale);
-    // 2. Export Cytoscape SVG at cyBBox aspect ratio and size
-    var cySvgText = activeCy.svg({
-      full: true,
-      scale: cyExportWidth / activeCy.width(),
-      bg: 'white',
-      output: 'svg'
-    });
-    // 3. Create SVG root element at combinedBBox size
-    var svgNS = 'http://www.w3.org/2000/svg';
-    var xlinkNS = 'http://www.w3.org/1999/xlink';
-    var svgRoot = document.createElementNS(svgNS, 'svg');
-    svgRoot.setAttribute('xmlns', svgNS);
-    svgRoot.setAttribute('xmlns:xlink', xlinkNS);
-    svgRoot.setAttribute('width', exportWidth);
-    svgRoot.setAttribute('height', exportHeight);
-    svgRoot.setAttribute('viewBox', `0 0 ${exportWidth} ${exportHeight}`);
-    // 4. Insert Cytoscape SVG at correct offset
-    var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
-    var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
-    // Parse Cytoscape SVG and wrap in <g> with transform
+    var cySvgStr = activeCy.svg({ full: true, scale: 1 });
     var parser = new DOMParser();
-    var cySvgDoc = parser.parseFromString(cySvgText, 'image/svg+xml');
-    var cySvgElem = cySvgDoc.documentElement;
+    var cySvgDoc = parser.parseFromString(cySvgStr, 'image/svg+xml');
+    var cySvgRoot = cySvgDoc.documentElement;
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var exportSvg = document.createElementNS(svgNS, 'svg');
+    exportSvg.setAttribute('width', combinedWidth);
+    exportSvg.setAttribute('height', combinedHeight);
+    exportSvg.setAttribute('viewBox', `0 0 ${combinedWidth} ${combinedHeight}`);
+    var cyOffsetX = cyBBox.x1 - combinedBBox.x1;
+    var cyOffsetY = cyBBox.y1 - combinedBBox.y1;
     var cyGroup = document.createElementNS(svgNS, 'g');
-    cyGroup.setAttribute('transform', `translate(${offsetX},${offsetY})`);
-    // Move all children of cySvgElem into cyGroup
-    while (cySvgElem.childNodes.length > 0) {
-      cyGroup.appendChild(cySvgElem.childNodes[0]);
-    }
-    svgRoot.appendChild(cyGroup);
-    // 5. Render annotation items as SVG elements
-    var scaleX = cyScale;
-    var scaleY = cyScale;
-    var annOffsetX = -combinedBBox.x1 * scaleX;
-    var annOffsetY = -combinedBBox.y1 * scaleY;
-    var allLayers = self.getAllLayers();
-    allLayers.forEach(function(layer) {
+    cyGroup.setAttribute('transform', `translate(${cyOffsetX},${cyOffsetY})`);
+    var cyChildren = Array.from(cySvgRoot.childNodes);
+    cyChildren.forEach(function(child) {
+      cyGroup.appendChild(child.cloneNode(true));
+    });
+    exportSvg.appendChild(cyGroup);
+    var svgDoc = exportSvg.ownerDocument;
+    var scaleX = combinedWidth / (combinedBBox.x2 - combinedBBox.x1);
+    var scaleY = combinedHeight / (combinedBBox.y2 - combinedBBox.y1);
+    var offsetX = -combinedBBox.x1 * scaleX;
+    var offsetY = -combinedBBox.y1 * scaleY;
+    self.getAllLayers().forEach(function(layer) {
       if (layer.isAnnotationLayer && layer.visible) {
-        layer.elements.forEach(function(element) {
-          switch (element.type) {
-            case 'rectangle': {
-              var x = element.x * scaleX + annOffsetX;
-              var y = element.y * scaleY + annOffsetY;
-              var w = element.width * scaleX;
-              var h = element.height * scaleY;
-              var rect = document.createElementNS(svgNS, 'rect');
-              rect.setAttribute('x', x);
-              rect.setAttribute('y', y);
-              rect.setAttribute('width', w);
-              rect.setAttribute('height', h);
-              if (element.styles && element.styles.fillColor) rect.setAttribute('fill', element.styles.fillColor);
-              else rect.setAttribute('fill', 'rgba(255,255,255,0.6)');
-              if (element.styles && element.styles.strokeColor) rect.setAttribute('stroke', element.styles.strokeColor);
-              else rect.setAttribute('stroke', '#800080');
-              rect.setAttribute('stroke-width', (element.styles && element.styles.lineWidth) ? element.styles.lineWidth : 2);
-              svgRoot.appendChild(rect);
-              break;
-            }
-            case 'textbox': {
-              var x = element.x * scaleX + annOffsetX;
-              var y = element.y * scaleY + annOffsetY;
-              var w = element.width * scaleX;
-              var h = element.height * scaleY;
-              // Draw background rect
-              var rect = document.createElementNS(svgNS, 'rect');
-              rect.setAttribute('x', x);
-              rect.setAttribute('y', y);
-              rect.setAttribute('width', w);
-              rect.setAttribute('height', h);
-              rect.setAttribute('fill', (element.styles && element.styles.fillColor) ? element.styles.fillColor : 'rgba(255,255,255,0)');
-              rect.setAttribute('stroke', (element.styles && element.styles.strokeColor) ? element.styles.strokeColor : '#0099FF');
-              rect.setAttribute('stroke-width', 1);
-              rect.setAttribute('stroke-dasharray', '5,5');
-              svgRoot.appendChild(rect);
-              // Draw text
-              if (element.text && element.text.trim()) {
-                var text = document.createElementNS(svgNS, 'text');
-                text.setAttribute('x', x + 5);
-                text.setAttribute('y', y + 5 + ((element.styles && element.styles.fontSize) ? element.styles.fontSize : 14));
-                text.setAttribute('fill', (element.styles && element.styles.color) ? element.styles.color : '#000000');
-                text.setAttribute('font-size', (element.styles && element.styles.fontSize) ? element.styles.fontSize : 14);
-                text.setAttribute('font-family', (element.styles && element.styles.fontFamily) ? element.styles.fontFamily : 'Arial, sans-serif');
-                text.setAttribute('font-weight', (element.styles && element.styles.fontWeight) ? element.styles.fontWeight : 'normal');
-                text.setAttribute('font-style', (element.styles && element.styles.fontStyle) ? element.styles.fontStyle : 'normal');
-                text.setAttribute('dominant-baseline', 'hanging');
-                // Simple word wrap (not perfect)
-                var maxWidth = w - 10;
-                var words = element.text.split(' ');
-                var line = '';
-                var tspanY = y + 5 + ((element.styles && element.styles.fontSize) ? element.styles.fontSize : 14);
-                var tspan;
-                for (var i = 0; i < words.length; i++) {
-                  var testLine = line + (line ? ' ' : '') + words[i];
-                  // SVG does not have measureText, so just break on 10 words for now
-                  if (testLine.length > 40) {
-                    tspan = document.createElementNS(svgNS, 'tspan');
-                    tspan.setAttribute('x', x + 5);
-                    tspan.setAttribute('y', tspanY);
-                    tspan.textContent = line;
-                    text.appendChild(tspan);
-                    line = words[i];
-                    tspanY += ((element.styles && element.styles.fontSize) ? element.styles.fontSize : 14) + 2;
-                  } else {
-                    line = testLine;
-                  }
-                }
-                if (line) {
-                  tspan = document.createElementNS(svgNS, 'tspan');
-                  tspan.setAttribute('x', x + 5);
-                  tspan.setAttribute('y', tspanY);
-                  tspan.textContent = line;
-                  text.appendChild(tspan);
-                }
-                svgRoot.appendChild(text);
-              }
-              break;
-            }
-            case 'arrow': {
-              var startX = element.startX * scaleX + annOffsetX;
-              var startY = element.startY * scaleY + annOffsetY;
-              var endX = element.endX * scaleX + annOffsetX;
-              var endY = element.endY * scaleY + annOffsetY;
-              var line = document.createElementNS(svgNS, 'line');
-              line.setAttribute('x1', startX);
-              line.setAttribute('y1', startY);
-              line.setAttribute('x2', endX);
-              line.setAttribute('y2', endY);
-              line.setAttribute('stroke', (element.styles && element.styles.strokeColor) ? element.styles.strokeColor : '#ff0000');
-              line.setAttribute('stroke-width', (element.styles && element.styles.lineWidth) ? element.styles.lineWidth : 7);
-              line.setAttribute('stroke-linecap', 'round');
-              svgRoot.appendChild(line);
-              // Draw arrowhead (simple)
-              var angle = Math.atan2(endY - startY, endX - startX);
-              var headLength = (element.styles && element.styles.headSize) ? element.styles.headSize : 20;
-              var headAngle1 = angle - Math.PI / 6;
-              var headAngle2 = angle + Math.PI / 6;
-              var head1X = endX - headLength * Math.cos(headAngle1);
-              var head1Y = endY - headLength * Math.sin(headAngle1);
-              var head2X = endX - headLength * Math.cos(headAngle2);
-              var head2Y = endY - headLength * Math.sin(headAngle2);
-              var arrowHead1 = document.createElementNS(svgNS, 'line');
-              arrowHead1.setAttribute('x1', endX);
-              arrowHead1.setAttribute('y1', endY);
-              arrowHead1.setAttribute('x2', head1X);
-              arrowHead1.setAttribute('y2', head1Y);
-              arrowHead1.setAttribute('stroke', (element.styles && element.styles.strokeColor) ? element.styles.strokeColor : '#ff0000');
-              arrowHead1.setAttribute('stroke-width', (element.styles && element.styles.lineWidth) ? element.styles.lineWidth : 7);
-              svgRoot.appendChild(arrowHead1);
-              var arrowHead2 = document.createElementNS(svgNS, 'line');
-              arrowHead2.setAttribute('x1', endX);
-              arrowHead2.setAttribute('y1', endY);
-              arrowHead2.setAttribute('x2', head2X);
-              arrowHead2.setAttribute('y2', head2Y);
-              arrowHead2.setAttribute('stroke', (element.styles && element.styles.strokeColor) ? element.styles.strokeColor : '#ff0000');
-              arrowHead2.setAttribute('stroke-width', (element.styles && element.styles.lineWidth) ? element.styles.lineWidth : 7);
-              svgRoot.appendChild(arrowHead2);
-              break;
-            }
-            case 'image': {
-              var x = element.x * scaleX + annOffsetX;
-              var y = element.y * scaleY + annOffsetY;
-              var w = element.width * scaleX;
-              var h = element.height * scaleY;
-              var img = document.createElementNS(svgNS, 'image');
-              img.setAttributeNS(null, 'x', x);
-              img.setAttributeNS(null, 'y', y);
-              img.setAttributeNS(null, 'width', w);
-              img.setAttributeNS(null, 'height', h);
-              img.setAttributeNS(xlinkNS, 'xlink:href', element.imageData);
-              svgRoot.appendChild(img);
-              break;
-            }
-            default:
-              console.warn('[exportCompositeSvg] Unknown element type:', element.type);
+        layer.elements.forEach(function(el) {
+          var exportEl = self.transformElementForExport(el, scaleX, scaleY, offsetX, offsetY);
+          var svgElem = annotationUtil.elementToSvg(exportEl, svgDoc);
+          if (svgElem) {
+            exportSvg.appendChild(svgElem);
           }
         });
       }
     });
-    // 6. Serialize and trigger download
     var serializer = new XMLSerializer();
-    var svgString = serializer.serializeToString(svgRoot);
-    var blob = new Blob([svgString], {type: 'image/svg+xml'});
-    if (window.saveAs && typeof window.saveAs === 'function') {
-      window.saveAs(blob, filename || 'network.svg');
+    var svgString = serializer.serializeToString(exportSvg);
+    var blob = new Blob([svgString], { type: 'image/svg+xml' });
+    if (window.saveAs) {
+      window.saveAs(blob, filename);
+    } else if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
     } else {
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement('a');
-      link.href = url;
-      link.download = filename || 'network.svg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() { document.body.removeChild(a); }, 100);
     }
-    console.log('[exportCompositeSvg] Export complete');
+  };
+
+  /**
+   * Transform an element from model coordinates to export coordinates
+   * @param {Object} element - The annotation element
+   * @param {number} scaleX - X scale for export
+   * @param {number} scaleY - Y scale for export
+   * @param {number} offsetX - X offset for export
+   * @param {number} offsetY - Y offset for export
+   * @returns {Object} Transformed element
+   */
+  self.transformElementForExport = function(element, scaleX, scaleY, offsetX, offsetY) {
+    if (!element) return element;
+    if (element.type === 'rectangle' || element.type === 'textbox' || element.type === 'image') {
+      // Transform top-left and bottom-right
+      var x1 = element.x * scaleX + offsetX;
+      var y1 = element.y * scaleY + offsetY;
+      var x2 = (element.x + element.width) * scaleX + offsetX;
+      var y2 = (element.y + element.height) * scaleY + offsetY;
+      return {
+        ...element,
+        x: x1,
+        y: y1,
+        width: x2 - x1,
+        height: y2 - y1
+      };
+    } else if (element.type === 'arrow') {
+      return {
+        ...element,
+        startX: element.startX * scaleX + offsetX,
+        startY: element.startY * scaleY + offsetY,
+        endX: element.endX * scaleX + offsetX,
+        endY: element.endY * scaleY + offsetY
+      };
+    }
+    return element;
   };
 
   return {
@@ -2750,7 +2612,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
     calculateSmartImageDimensions: self.calculateSmartImageDimensions,
     deleteSelectedElement: self.deleteSelectedElement,
     getAnnotationCanvas: self.getAnnotationCanvas,
-    exportCompositeImage: self.exportCompositeImage,
+    exportCompositePng: self.exportCompositePng,
     drawLayerForExport: self.drawLayerForExport,
     getCombinedBoundingBox: self.getCombinedBoundingBox,
     exportCompositeJpg: self.exportCompositeJpg,

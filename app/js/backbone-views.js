@@ -5076,16 +5076,13 @@ var FileSaveView = Backbone.View.extend({
           chiseInstance.exportLayoutData(filename, true);
         } else if (fileformat === "png") {
           var annotationLayers = require('./annotation-layers');
-          console.log('[ExportMenu] Calling annotationLayers.exportCompositeImage with filename:', filename);
-          annotationLayers.exportCompositeImage(filename);
+          annotationLayers.exportCompositePng(filename);
         } else if (fileformat === "jpg") {
           var annotationLayers = require('./annotation-layers');
-          // chiseInstance.saveAsJpg(filename);
           annotationLayers.exportCompositeJpg(filename)
         } else if (fileformat === "svg") {
           var annotationLayers = require('./annotation-layers');
-          // chiseInstance.saveAsSvg(filename);
-          annotationLayers.exportCompositeSvg(filename)
+          annotationLayers.exportCompositeSvg(filename);
         } else {
           // invalid file format provided
           console.error(
