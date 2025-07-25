@@ -2235,6 +2235,50 @@ self.setCytoscapeActiveStyle = function(enabled) {
   };
 
   /**
+   * Compute the bounding box that includes all Cytoscape elements and all visible annotation items
+   * @returns {Object} {x1, y1, x2, y2}
+   */
+  self.getCombinedBoundingBox = function(activeCy) {
+    // Cytoscape bounding box
+    const cyBBox = activeCy.elements().boundingBox();
+    // Annotation bounding box
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    self.getAllLayers().forEach(layer => {
+      if (layer.isAnnotationLayer && layer.visible) {
+        layer.elements.forEach(el => {
+          if (el.type === 'arrow') {
+            minX = Math.min(minX, el.startX, el.endX);
+            minY = Math.min(minY, el.startY, el.endY);
+            maxX = Math.max(maxX, el.startX, el.endX);
+            maxY = Math.max(maxY, el.startY, el.endY);
+          } else {
+            minX = Math.min(minX, el.x);
+            minY = Math.min(minY, el.y);
+            maxX = Math.max(maxX, el.x + el.width);
+            maxY = Math.max(maxY, el.y + el.height);
+          }
+        });
+      }
+    });
+    let annBBox = null;
+    if (minX !== Infinity) {
+      annBBox = { x1: minX, y1: minY, x2: maxX, y2: maxY };
+    }
+    // Combine
+    let bbox = cyBBox;
+    if (annBBox) {
+      bbox = {
+        x1: Math.min(cyBBox.x1, annBBox.x1),
+        y1: Math.min(cyBBox.y1, annBBox.y1),
+        x2: Math.max(cyBBox.x2, annBBox.x2),
+        y2: Math.max(cyBBox.y2, annBBox.y2)
+      };
+    }
+    console.log('[getCombinedBoundingBox] cyBBox:', cyBBox, 'annBBox:', annBBox, 'combined:', bbox);
+    return bbox;
+  };
+
+  /**
    * Export a composite image including Cytoscape and all visible annotation layers
    * @param {string} filename - The filename for the exported image
    */
@@ -2245,51 +2289,79 @@ self.setCytoscapeActiveStyle = function(enabled) {
       console.error('[exportCompositeImage] No active Cytoscape instance found');
       return;
     }
-    var width = activeCy.width();
-    var height = activeCy.height();
-    // Use full graph bounding box for export
-    var bbox = activeCy.elements().boundingBox();
-    var bboxWidth = bbox.x2 - bbox.x1;
-    var bboxHeight = bbox.y2 - bbox.y1;
-    var scaleX = width / bboxWidth;
-    var scaleY = height / bboxHeight;
-    var offsetX = -bbox.x1 * scaleX;
-    var offsetY = -bbox.y1 * scaleY;
-    console.log('[exportCompositeImage] Canvas size:', width, height, 'bbox:', bbox, 'scaleX:', scaleX, 'scaleY:', scaleY, 'offsetX:', offsetX, 'offsetY:', offsetY);
-    var cyPngDataUrl = activeCy.png({ full: true, scale: 1, bg: 'white' });
+    // 1. Get graph bbox and combined bbox
+    var cyBBox = activeCy.elements().boundingBox();
+    var cyWidth = cyBBox.x2 - cyBBox.x1;
+    var cyHeight = cyBBox.y2 - cyBBox.y1;
+    var combinedBBox = self.getCombinedBoundingBox(activeCy);
+    var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
+    var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
+    // 2. Export Cytoscape PNG at cyBBox aspect ratio and size
+    var cyScale = 1; // 1:1 model-to-pixel for best fidelity
+    var cyExportWidth = Math.round(cyWidth * cyScale);
+    var cyExportHeight = Math.round(cyHeight * cyScale);
+    console.log('[exportCompositeImage] cyBBox:', cyBBox, 'cyExportWidth:', cyExportWidth, 'cyExportHeight:', cyExportHeight);
+    var cyPngDataUrl = activeCy.png({
+      full: true,
+      scale: cyExportWidth / activeCy.width(),
+      bg: 'white',
+      output: 'base64uri'
+    });
     var cyImg = new window.Image();
     cyImg.src = cyPngDataUrl;
     cyImg.onload = function() {
-      console.log('[exportCompositeImage] Cytoscape image loaded');
+      // 3. Create export canvas at combinedBBox size
+      var exportWidth = Math.round(combinedWidth * cyScale);
+      var exportHeight = Math.round(combinedHeight * cyScale);
       var exportCanvas = document.createElement('canvas');
-      exportCanvas.width = width;
-      exportCanvas.height = height;
+      exportCanvas.width = exportWidth;
+      exportCanvas.height = exportHeight;
       var ctx = exportCanvas.getContext('2d');
-
-      ctx.drawImage(cyImg, 0, 0, width, height);
-      console.log('[exportCompositeImage] Drew Cytoscape image');
-      
+      // 4. Draw Cytoscape PNG at offset
+      var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
+      var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
+      ctx.drawImage(cyImg, offsetX, offsetY, cyExportWidth, cyExportHeight);
+      console.log('[exportCompositeImage] Drew Cytoscape image at offset', offsetX, offsetY);
+      // 5. Draw annotation items using same offset/scale
+      var scaleX = cyScale;
+      var scaleY = cyScale;
+      var annOffsetX = -combinedBBox.x1 * scaleX;
+      var annOffsetY = -combinedBBox.y1 * scaleY;
       var allLayers = self.getAllLayers();
       allLayers.forEach(function(layer) {
         if (layer.isAnnotationLayer && layer.visible) {
-          
           var tempCanvas = document.createElement('canvas');
-          tempCanvas.width = width;
-          tempCanvas.height = height;
+          tempCanvas.width = exportWidth;
+          tempCanvas.height = exportHeight;
           var tempCtx = tempCanvas.getContext('2d');
-          self.drawLayerForExport(tempCtx, layer, scaleX, scaleY, offsetX, offsetY);
-          ctx.drawImage(tempCanvas, 0, 0, width, height);
+          tempCtx.setTransform(scaleX, 0, 0, scaleY, annOffsetX, annOffsetY);
+          annotationUtil.clearCanvas(tempCtx);
+          layer.elements.forEach(function(element) {
+            switch (element.type) {
+              case 'rectangle':
+                annotationUtil.drawRectangle(tempCtx, element, element.styles);
+                break;
+              case 'textbox':
+                annotationUtil.drawTextBox(tempCtx, element, element.styles);
+                break;
+              case 'arrow':
+                annotationUtil.drawArrow(tempCtx, element, element.styles);
+                break;
+              case 'image':
+                annotationUtil.drawImage(tempCtx, element, element.styles);
+                break;
+              default:
+                console.warn('[drawLayerForExport] Unknown element type:', element.type);
+            }
+          });
+          ctx.drawImage(tempCanvas, 0, 0, exportWidth, exportHeight);
           console.log('[exportCompositeImage] Drew annotation layer', layer.id);
-        } else {
-          if (layer.isAnnotationLayer) {
-            console.log('[exportCompositeImage] Skipped hidden annotation layer', layer.id);
-          }
         }
       });
+      // Export as PNG
       var finalDataUrl = exportCanvas.toDataURL('image/png');
       console.log('[exportCompositeImage] Composite image ready, triggering download');
       if (window.saveAs && typeof window.saveAs === 'function') {
-
         var arr = finalDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while(n--){ u8arr[n] = bstr.charCodeAt(n); }
         var blob = new Blob([u8arr], {type:mime});
@@ -2345,6 +2417,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
     getAnnotationCanvas: self.getAnnotationCanvas,
     exportCompositeImage: self.exportCompositeImage,
     drawLayerForExport: self.drawLayerForExport,
+    getCombinedBoundingBox: self.getCombinedBoundingBox,
   };
 };
 
@@ -2463,3 +2536,38 @@ function showAnnotationFontModal(element) {
     }
   });
 } 
+
+// ... existing code ...
+  /**
+   * Pad a bounding box to match a target aspect ratio (centered)
+   * @param {Object} bbox - {x1, y1, x2, y2}
+   * @param {number} targetAspect - width/height
+   * @returns {Object} padded bbox
+   */
+  function padBoundingBoxToAspect(bbox, targetAspect) {
+    let width = bbox.x2 - bbox.x1;
+    let height = bbox.y2 - bbox.y1;
+    let aspect = width / height;
+    if (aspect > targetAspect) {
+      // Too wide, pad top/bottom
+      let newHeight = width / targetAspect;
+      let pad = (newHeight - height) / 2;
+      return {
+        x1: bbox.x1,
+        x2: bbox.x2,
+        y1: bbox.y1 - pad,
+        y2: bbox.y2 + pad
+      };
+    } else {
+      // Too tall, pad left/right
+      let newWidth = height * targetAspect;
+      let pad = (newWidth - width) / 2;
+      return {
+        x1: bbox.x1 - pad,
+        x2: bbox.x2 + pad,
+        y1: bbox.y1,
+        y2: bbox.y2
+      };
+    }
+  }
+// ... existing code ...
