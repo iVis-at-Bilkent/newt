@@ -2197,6 +2197,118 @@ self.setCytoscapeActiveStyle = function(enabled) {
     self.deselectElement();
   };
 
+  /**
+   * Draw all elements of a layer onto a context, applying export scale and offset
+   * @param {CanvasRenderingContext2D} ctx - The canvas context to draw on
+   * @param {Object} layer - The annotation layer object
+   * @param {number} scaleX - The X scale to apply
+   * @param {number} scaleY - The Y scale to apply
+   * @param {number} offsetX - The X offset to apply
+   * @param {number} offsetY - The Y offset to apply
+   */
+  self.drawLayerForExport = function(ctx, layer, scaleX, scaleY, offsetX, offsetY) {
+    if (!layer || !layer.isAnnotationLayer) return;
+    ctx.save();
+    ctx.setTransform(scaleX, 0, 0, scaleY, offsetX, offsetY);
+    annotationUtil.clearCanvas(ctx);
+    layer.elements.forEach(function(element) {
+      // Use model coordinates directly
+      switch (element.type) {
+        case 'rectangle':
+          annotationUtil.drawRectangle(ctx, element, element.styles);
+          break;
+        case 'textbox':
+          annotationUtil.drawTextBox(ctx, element, element.styles);
+          break;
+        case 'arrow':
+          annotationUtil.drawArrow(ctx, element, element.styles);
+          break;
+        case 'image':
+          annotationUtil.drawImage(ctx, element, element.styles);
+          break;
+        default:
+          console.warn('[drawLayerForExport] Unknown element type:', element.type);
+      }
+    });
+    ctx.restore();
+    console.log('[drawLayerForExport] Layer', layer.id, 'drawn for export with scaleX:', scaleX, 'scaleY:', scaleY, 'offsetX:', offsetX, 'offsetY:', offsetY);
+  };
+
+  /**
+   * Export a composite image including Cytoscape and all visible annotation layers
+   * @param {string} filename - The filename for the exported image
+   */
+  self.exportCompositeImage = function(filename) {
+    console.log('[exportCompositeImage] Start export');
+    var activeCy = appUtilities.getActiveCy();
+    if (!activeCy) {
+      console.error('[exportCompositeImage] No active Cytoscape instance found');
+      return;
+    }
+    var width = activeCy.width();
+    var height = activeCy.height();
+    // Use full graph bounding box for export
+    var bbox = activeCy.elements().boundingBox();
+    var bboxWidth = bbox.x2 - bbox.x1;
+    var bboxHeight = bbox.y2 - bbox.y1;
+    var scaleX = width / bboxWidth;
+    var scaleY = height / bboxHeight;
+    var offsetX = -bbox.x1 * scaleX;
+    var offsetY = -bbox.y1 * scaleY;
+    console.log('[exportCompositeImage] Canvas size:', width, height, 'bbox:', bbox, 'scaleX:', scaleX, 'scaleY:', scaleY, 'offsetX:', offsetX, 'offsetY:', offsetY);
+    var cyPngDataUrl = activeCy.png({ full: true, scale: 1, bg: 'white' });
+    var cyImg = new window.Image();
+    cyImg.src = cyPngDataUrl;
+    cyImg.onload = function() {
+      console.log('[exportCompositeImage] Cytoscape image loaded');
+      var exportCanvas = document.createElement('canvas');
+      exportCanvas.width = width;
+      exportCanvas.height = height;
+      var ctx = exportCanvas.getContext('2d');
+
+      ctx.drawImage(cyImg, 0, 0, width, height);
+      console.log('[exportCompositeImage] Drew Cytoscape image');
+      
+      var allLayers = self.getAllLayers();
+      allLayers.forEach(function(layer) {
+        if (layer.isAnnotationLayer && layer.visible) {
+          
+          var tempCanvas = document.createElement('canvas');
+          tempCanvas.width = width;
+          tempCanvas.height = height;
+          var tempCtx = tempCanvas.getContext('2d');
+          self.drawLayerForExport(tempCtx, layer, scaleX, scaleY, offsetX, offsetY);
+          ctx.drawImage(tempCanvas, 0, 0, width, height);
+          console.log('[exportCompositeImage] Drew annotation layer', layer.id);
+        } else {
+          if (layer.isAnnotationLayer) {
+            console.log('[exportCompositeImage] Skipped hidden annotation layer', layer.id);
+          }
+        }
+      });
+      var finalDataUrl = exportCanvas.toDataURL('image/png');
+      console.log('[exportCompositeImage] Composite image ready, triggering download');
+      if (window.saveAs && typeof window.saveAs === 'function') {
+
+        var arr = finalDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+        var blob = new Blob([u8arr], {type:mime});
+        window.saveAs(blob, filename || 'network.png');
+      } else {
+        var link = document.createElement('a');
+        link.href = finalDataUrl;
+        link.download = filename || 'network.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      console.log('[exportCompositeImage] Export complete');
+    };
+    cyImg.onerror = function() {
+      console.error('[exportCompositeImage] Failed to load Cytoscape image');
+    };
+  };
+
   return {
     init: self.init,
     addLayer: self.addLayer,
@@ -2229,7 +2341,10 @@ self.setCytoscapeActiveStyle = function(enabled) {
     reinitForNewNetwork: self.reinitForNewNetwork,
     triggerImageUpload: self.triggerImageUpload,
     calculateSmartImageDimensions: self.calculateSmartImageDimensions,
-    deleteSelectedElement: self.deleteSelectedElement
+    deleteSelectedElement: self.deleteSelectedElement,
+    getAnnotationCanvas: self.getAnnotationCanvas,
+    exportCompositeImage: self.exportCompositeImage,
+    drawLayerForExport: self.drawLayerForExport,
   };
 };
 

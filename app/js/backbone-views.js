@@ -5075,7 +5075,9 @@ var FileSaveView = Backbone.View.extend({
         } else if (fileformat === "sifLayout") {
           chiseInstance.exportLayoutData(filename, true);
         } else if (fileformat === "png") {
-          chiseInstance.saveAsPng(filename);
+          var annotationLayers = require('./annotation-layers');
+          console.log('[ExportMenu] Calling annotationLayers.exportCompositeImage with filename:', filename);
+          annotationLayers.exportCompositeImage(filename);
         } else if (fileformat === "jpg") {
           chiseInstance.saveAsJpg(filename);
         } else if (fileformat === "svg") {
