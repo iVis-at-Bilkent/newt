@@ -1974,6 +1974,9 @@ var SimulationPanelView = Backbone.View.extend({
       },
       showlegend: true,
       legend: {
+        font: {
+          size: 10
+        },
         x: 1,
         xanchor: 'right',
         y: 1,
@@ -1991,7 +1994,16 @@ var SimulationPanelView = Backbone.View.extend({
         }
       }
     }
-    Plotly.newPlot(plotElement, simulationData, layout);
+    Plotly.newPlot(plotElement, simulationData, layout).then(() => {
+      Plotly.relayout('simulation-plot', { 'showlegend': false });
+    });
+    const plotWrapper = document.getElementById('simulation-plot');
+    plotWrapper.addEventListener('mouseenter', () => {
+      Plotly.relayout('simulation-plot', { 'showlegend': true });
+    });
+    plotWrapper.addEventListener('mouseleave', () => {
+      Plotly.relayout('simulation-plot', { 'showlegend': false });
+    });
     return this;
   },
 });
