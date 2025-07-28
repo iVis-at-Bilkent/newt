@@ -2296,13 +2296,15 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var combinedBBox = self.getCombinedBoundingBox(activeCy);
     var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
     var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
-    var cyScale = 1;
+    
+    var cyScale = 2;
     var cyExportWidth = Math.round(cyWidth * cyScale);
     var cyExportHeight = Math.round(cyHeight * cyScale);
+    
     var cyPngDataUrl = activeCy.png({
       full: true,
-      scale: cyExportWidth / activeCy.width(),
-      bg: 'white',
+      scale: cyScale,
+      bg: 'transparent',
       output: 'base64uri'
     });
     var cyImg = new window.Image();
@@ -2314,10 +2316,13 @@ self.setCytoscapeActiveStyle = function(enabled) {
       exportCanvas.width = exportWidth;
       exportCanvas.height = exportHeight;
       var ctx = exportCanvas.getContext('2d');
-      ctx.save();
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, exportWidth, exportHeight);
-      ctx.restore();
+      
+      // Commented out to maintain transparency in PNG export
+      // ctx.save();
+      // ctx.fillStyle = '#FFFFFF';
+      // ctx.fillRect(0, 0, exportWidth, exportHeight);
+      // ctx.restore();
+      
       var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
       var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
       ctx.drawImage(cyImg, offsetX, offsetY, cyExportWidth, cyExportHeight);
@@ -2395,12 +2400,14 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var combinedBBox = self.getCombinedBoundingBox(activeCy);
     var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
     var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
-    var cyScale = 1;
+    
+    var cyScale = 2;
     var cyExportWidth = Math.round(cyWidth * cyScale);
     var cyExportHeight = Math.round(cyHeight * cyScale);
+    
     var cyPngDataUrl = activeCy.png({
       full: true,
-      scale: cyExportWidth / activeCy.width(),
+      scale: cyScale,
       bg: 'white',
       output: 'base64uri'
     });
