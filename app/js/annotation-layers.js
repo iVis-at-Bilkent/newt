@@ -2585,6 +2585,36 @@ self.setCytoscapeActiveStyle = function(enabled) {
     return element;
   };
 
+  /**
+   * Get all annotation items from all visible layers
+   * @returns {Array} Array of all annotation items
+   */
+  self.getAllAnnotationItems = function() {
+    var allItems = [];
+    
+    layers.forEach(function(layer) {
+      // Only include items from visible layers
+      if (layer.visible && layer.isAnnotationLayer) {
+        allItems = allItems.concat(layer.elements || []);
+      }
+    });
+    
+    return allItems;
+  };
+
+  /**
+   * Get annotation items from a specific layer
+   * @param {number} layerId - The layer ID
+   * @returns {Array} Array of annotation items from the layer
+   */
+  self.getAnnotationItemsFromLayer = function(layerId) {
+    var layer = self.getLayer(layerId);
+    if (layer && layer.isAnnotationLayer) {
+      return layer.elements || [];
+    }
+    return [];
+  };
+
   return {
     init: self.init,
     addLayer: self.addLayer,
@@ -2624,6 +2654,8 @@ self.setCytoscapeActiveStyle = function(enabled) {
     getCombinedBoundingBox: self.getCombinedBoundingBox,
     exportCompositeJpg: self.exportCompositeJpg,
     exportCompositeSvg: self.exportCompositeSvg,
+    getAllAnnotationItems: self.getAllAnnotationItems,
+    getAnnotationItemsFromLayer: self.getAnnotationItemsFromLayer,
   };
 };
 
