@@ -4,6 +4,7 @@ var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
+const databaseUtilities = require('./database-utilities');
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -109,7 +110,22 @@ module.exports = function (chiseInstance) {
         selector: 'node, edge',
         onClickFunction: function (event) {
           let eles = event.target || event.cyTarget;
-          
+          let connections = eles.connectedEdges();
+          for (let i = 0; i < connections.length; i++) {
+            let className = connections[i].data('class');
+            let source = connections[i].source();
+            let target = connections[i].target();
+            delete databaseUtilities.edgesInDB[
+            [
+              source.id(),
+              target.id(),
+              className
+            ]
+            ];
+            // console.log("source:",source.id(), "target:", target.id(), "className:", className);
+          }
+          delete databaseUtilities.nodesInDB[eles.id()];
+
           chiseInstance.deleteElesSimple(eles);
           
           if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
@@ -228,6 +244,7 @@ module.exports = function (chiseInstance) {
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
+      
       {
         id: 'ctx-menu-select-all-object-of-this-type',
         content: 'Select Objects of This Type',
@@ -294,7 +311,8 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"],'
+        +'[class="gene"],[class="protein"],[class="rna"],[class="antisense rna"],[class="truncated protein"],[class="ion channel"],[class="ion"],[class="receptor"],[class="simple molecule"],[class="unknown molecule"],[class="degradation"],[class="drug"],[class="phenotype sbml"],[class="complex sbml"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -314,13 +332,23 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
             var collection = cy.collection();
             collection = collection.add(cyTarget);
             appUtilities.resizeNodesToContent(collection);
+        }
+      },
+      {
+        id: 'ctx-menu-get-database-neighbors',
+        content: 'Get Neighbors from Database',
+        selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            databaseUtilities.getNeighboringNodes(cyTarget.id());
         }
       },
       {
@@ -372,6 +400,8 @@ module.exports = function (chiseInstance) {
 
     cy.clipboard({
       clipboardSize: 5, // Size of clipboard. 0 means unlimited. If size is exceeded, first added item in clipboard will be removed.
+      nodePrefix: "nwtN_", // Prefix to add to the IDs of pasted nodes 
+      edgePrefix: "nwtE_", // Prefix to add to the IDs of pasted edges 
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
         undoable: appUtilities.undoable // and if undoRedo extension exists
@@ -461,8 +491,8 @@ module.exports = function (chiseInstance) {
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
-          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          node: { 'overlay-color': '#f5ff00', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#f5ff00', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
         },
         {
           node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
@@ -596,7 +626,7 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "antisense rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 
@@ -1117,12 +1147,16 @@ module.exports = function (chiseInstance) {
             var currentMapType = chiseInstance.getMapType();
             if(currentMapType == "HybridAny"){
               isMapTypeValid = true;
-            }else if(currentMapType == "HybridSbgn"){
-                if(nodeParams.language == "PD" || nodeParams.language =="AF"){
-                  isMapTypeValid = true;
-                }
+            }else if(currentMapType == "HybridSbgn" &&
+              (nodeParams.language == "PD" || nodeParams.language =="AF")){
+              isMapTypeValid = true;
             }else if(currentMapType == nodeParams.language){
               isMapTypeValid = true;
+            }else if(cy.elements().length == 0){ // if canvas is empty, change the map type and add node
+                chiseInstance.elementUtilities.setMapType(nodeParams.language);
+                $(document).trigger("changeMapTypeFromMenu", [nodeParams.language]);
+                currentMapType = nodeParams.language;
+                isMapTypeValid = true;
             }
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && !isMapTypeValid){
@@ -1131,7 +1165,7 @@ module.exports = function (chiseInstance) {
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not' || nodeType === 'delay')
                 {
                     var newEle = cy.nodes()[cy.nodes().length - 1];
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
@@ -1200,7 +1234,10 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on('doubleTap', 'node', function (event) {
-
+      // Prevent double click on nodes to edit label if in annotation layer (layer 1+)
+      if (window.annotationLayers && window.annotationLayers.getCurrentLayer && window.annotationLayers.getCurrentLayer().isAnnotationLayer) {
+        return;
+      }
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 

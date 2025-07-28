@@ -3,6 +3,9 @@ var fs = require('fs');
 var request = require('request');
 var querystring = require('querystring');
 var nodeMailer = require('nodemailer');
+var neo4j = require('neo4j-driver');
+var dotenv = require('dotenv');
+dotenv.config()
 /*
 	functions in this file all have to take the same arguments:
 	 - req: the ajax request object, contains parameters sent threw ajax call in req.query 
@@ -10,6 +13,23 @@ var nodeMailer = require('nodemailer');
 	The only cases where res.send doesn't need to be used is in case of errors.
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
+let driver = null;
+
+const {
+	NEO4J_DB_URI,
+	NEO4J_DB_NAME,
+	NEO4J_DB_PASSWORD
+} = process.env;
+
+if (NEO4J_DB_URI && NEO4J_DB_NAME && NEO4J_DB_PASSWORD) {
+	driver = neo4j.driver(
+		NEO4J_DB_URI,
+		neo4j.auth.basic(NEO4J_DB_NAME, NEO4J_DB_PASSWORD)
+	);
+} else {
+	console.warn('Neo4j environment variables are not fully set. Database features will be disabled.');
+}
+
 exports.validateSBGNML = function (req, res) {
 	var sbgnml;
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
@@ -183,5 +203,33 @@ exports.ServerRequest = function (req, res) {
 		});
 	}
 
+};
+
+exports.runDatabaseQuery = function (req, res) {
+	if(req.method == 'POST') {
+		var query = req.body.query;
+		var queryData = req.body.queryData;
+
+		var session = driver.session();
+
+		console.log("query", query)
+		session.run( query, queryData)
+			.then( (result) => {
+				const singleRecord = result.records
+				console.log(singleRecord)
+  			// const node = singleRecord.get(0)
+				// console.log(singleRecord.get(1))
+				res.status(200);
+				res.send(result)
+			} )
+      .catch((err) => {
+				res.status(500);
+				console.log(err);
+				res.send("Error: " + err);
+      })
+      .finally(() => {
+        session.close()
+      });
+	}
 };
 

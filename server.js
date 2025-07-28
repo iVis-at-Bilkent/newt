@@ -4,12 +4,13 @@ var bodyParser = require('body-parser');
 const multer = require('multer');
 const { spawn } = require('child_process');
 var server = require('http').createServer(app);
+require('dotenv').config();
 var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({
 	limit: "100mb",
-	extended: false
+	extended: true
   }));
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({limit:'100mb'}));
 var ajaxUtilities = require('./app/js/ajax-utilities');
 
 /**
@@ -74,4 +75,12 @@ app.post('/simulate', function(req, res) {
 });
 
 app.use('/libs', express.static(__dirname + '/libs'));
+
+app.get('/env.js',(req,res)=>{
+	res.setHeader('Content-Type', 'application/javascript');
+	res.send(`window.__ENV__ = {
+		LOCAL_DATABASE: ${JSON.stringify(process.env.LOCAL_DATABASE || 'false')}
+	};`);
+});
+
 app.use(express.static(__dirname, {dotfiles: 'ignore'}));

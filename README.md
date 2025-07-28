@@ -17,6 +17,15 @@ H. Balci, M.C. Siper, N. Saleh, I. Safarli, L. Roy, M. Kilicarslan, R. Ozaydin, 
 #### Running a Local Instance
 In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of version 14.19.3 of node.js):
 
+- Local Neo4j Database
+If you want to use the local instance of Newt with a local Neo4j database, then follow these additional steps **before** running `npm install`:
+**Create a `.env` file** in the root of the project directory with the following content
+```
+LOCAL_DATABASE=true
+NEO4J_PLUGIN_PATH=/path/to/your/neo4j/plugins
+```
+Replace the `NEO4J_PLUGIN_PATH` value with the absolute path of your neo4j database plugin folder.
+
 - Installation
 ```
 git clone https://github.com/iVis-at-Bilkent/newt.git
@@ -73,6 +82,7 @@ Third-party libraries:
 [Request](https://github.com/request/request) licensed with [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0),
 [Intro.js](https://github.com/usablica/intro.js) licensed with [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), and
 [chroma-js](https://github.com/gka/chroma.js) licensed with [this](https://github.com/gka/chroma.js/blob/master/LICENSE).
+[Font Awesome](https://github.com/FortAwesome/Font-Awesome) licensed with [Font Awesome Free License](https://github.com/FortAwesome/Font-Awesome/blob/7.x/LICENSE.txt).
 
 We refer the user to [GeneCards](https://www.genecards.org/) for detailed properties of genes. Similarly, we pull properties of simple chemicals from [ChEBI](https://www.ebi.ac.uk/chebi/). CellDesigner conversion is performed through [this library](https://github.com/royludo/cd2sbgnml ) and [its associated service](https://github.com/iVis-at-Bilkent/cd2sbgnml-webservice). Finally, SBML and GPML conversions are due to [this Minerva service](https://minerva-dev.lcsb.uni.lu/minerva/api/convert/).
 
