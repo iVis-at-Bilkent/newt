@@ -107,20 +107,26 @@ var graphAlgos = {
     console.log(idList);
     idList = idList.map(id => `'${id}'`).join(',');
     var pageSize = 100000;
-    var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
-            ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
+    var query = `CALL commonStream([${idList}], [], ${lengthLimit}, -1,
+            ${pageSize}, 1, '', true, '', 2,{}, 0, 0, 0, 100000, null)`;
+    // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, -1,
+    //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
     return query;
   },
   upstream: function (idList, lengthLimit) {
     var pageSize = 100000;
     var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
-            ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
+            ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, null)`;
+    // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
+    //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
     return query;
   },
   downstream: function (idList, lengthLimit) {
     var pageSize = 100000;
     var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 0,
-            ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
+            ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, null)`;
+    // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 0,
+    //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
     return query;
   },
 };

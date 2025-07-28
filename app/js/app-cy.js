@@ -491,8 +491,8 @@ module.exports = function (chiseInstance) {
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
-          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          node: { 'overlay-color': '#f5ff00', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#f5ff00', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
         },
         {
           node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },

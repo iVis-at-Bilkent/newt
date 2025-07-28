@@ -1757,7 +1757,7 @@ var databaseUtilities = {
         edges.push(edge);
       }
     }
-    await databaseUtilities.addNodesEdgesToCy(nodes);
+    await databaseUtilities.addNodesEdgesToCy(nodes,edges);
     return result;
   },
 
