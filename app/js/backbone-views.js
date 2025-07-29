@@ -6000,6 +6000,25 @@ var PromptMapTypeView = Backbone.View.extend({
   },
 });
 
+var PromptSIFTopologyGroupingWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-sifTopologyGrouping-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-sifTopologyGrouping-template").html());
+    $(self.el).html(self.template());
+    $(self.el).modal("show");
+    $(document)
+      .off("click", "#prompt-sifTopologyGrouping-confirm")
+      .on("click", "#prompt-sifTopologyGrouping-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+    return this;
+  },
+});
+
 var InternalServerError = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -9087,6 +9106,7 @@ module.exports = {
   LoadUserPreferencesView: LoadUserPreferencesView,
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
+  PromptSIFTopologyGroupingWarning: PromptSIFTopologyGroupingWarning,
   PromptInvalidFileView: PromptInvalidFileView,
   PromptInvalidTypeWarning: PromptInvalidTypeWarning,
   SifMapWarning: SifMapWarning,

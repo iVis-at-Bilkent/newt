@@ -63,7 +63,19 @@ module.exports = function () {
     // get cy associated with active chise instance
     var cy = chiseInstance.getCy();
 
+    var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+    var currentMapType = chiseInstance.getMapType();
+
+    // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+    if (
+      currentMapType === "SIF" &&
+      currentGeneralProperties.enableSIFTopologyGrouping
+    ) {
+      appUtilities.promptSIFTopologyGroupingWarning.render();
+    }
+  
     chiseInstance.deleteElesSimple(cy.elements(':selected'));
+    
     
     if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
     $('#inspector-palette-tab a').tab('show');
