@@ -5,6 +5,7 @@ var chroma = require("chroma-js");
 var FileSaver = require("file-saver");
 var cytoscape = require("cytoscape");
 var chise = require("chise");
+var Plotly = require('plotly.js-dist');
 
 var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -2166,6 +2167,186 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
     }
     return this;
   },
+});
+
+var SimulationPanelView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#simulation-view-template").html());
+  },
+  render: function (simulationData) {
+    var self = this;
+    self.template = _.template($("#simulation-view-template").html());
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    var plotElement = document.getElementById("simulation-plot");
+    var layout = {
+      margin: {
+        pad: 15
+      },
+      showlegend: true,
+      legend: {
+        font: {
+          size: 10
+        },
+        x: 1,
+        xanchor: 'right',
+        y: 1,
+        bgcolor: 'rgba(255, 255, 255, 0.1)'
+      },
+      xaxis: {
+        title: {
+          text: "Time (s)",
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Quantity",
+          standoff: 30
+        }
+      }
+    }
+    Plotly.newPlot(plotElement, simulationData, layout).then(() => {
+      Plotly.relayout('simulation-plot', { 'showlegend': false });
+    });
+    const plotWrapper = document.getElementById('simulation-plot');
+    plotWrapper.addEventListener('mouseenter', () => {
+      Plotly.relayout('simulation-plot', { 'showlegend': true });
+    });
+    plotWrapper.addEventListener('mouseleave', () => {
+      Plotly.relayout('simulation-plot', { 'showlegend': false });
+    });
+    return this;
+  },
+});
+
+var simulationTabPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    $(document).on("click", "#map-simulation-default-button", function (evt) {
+      $("#inspector-simulation-start").val(appUtilities.defaultSimulationProperties.startTime);
+      $("#inspector-simulation-end").val(appUtilities.defaultSimulationProperties.stopTime);
+      $("#inspector-simulation-step").val(appUtilities.defaultSimulationProperties.stepCount);
+    })
+
+    $(document).on("click", "#map-simulate-button", function (evt) {
+      if(appUtilities.getActiveChiseInstance().elementUtilities.mapType !== "SBML"){
+        new ExportErrorView({el: "#exportError-table"}).render();
+        document.getElementById("export-error-message").innerText = "Simulation is applicable to the SBML map type!";
+        return;
+      }
+      var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
+      var startTime = $("#inspector-simulation-start").val();
+      var endTime = $("#inspector-simulation-end").val();
+      var stepCount = $("#inspector-simulation-step").val();
+
+      var simulationDataParser = function(rawJsonData) {
+        // Process Data
+        data = []
+        for (const [key, value] of Object.entries(rawJsonData)) {
+            if(key === "time")
+              continue;
+            var trace = {
+                x: rawJsonData.time,
+                y: value,
+                mode: "lines",
+                name: key
+            };
+            data.push(trace);
+        }
+        return data;
+      }
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner("simulation-spinner");
+      $.ajax({
+        url: "/simulate",
+        type: "POST",
+        data: {file: sbmlContent, start: startTime, stop: endTime, step: stepCount},
+        success: function(data){
+          chiseInstance.endSpinner("simulation-spinner");
+          var parsedData = simulationDataParser(data) || "";
+          new SimulationPanelView({el: '#simulation-view'}).render(parsedData);
+        },
+        error: function(err) {
+          chiseInstance.endSpinner("simulation-spinner");
+          new ExportErrorView({el: "#exportError-table"}).render();
+          document.getElementById("export-error-message").innerText = "Simulation failed!";
+          console.log(err);
+        }
+      });
+    });
+  },
+
+  render: function() {
+    // use the active cy instance
+    var cy = appUtilities.getActiveCy();
+    var chise = appUtilities.getActiveChiseInstance();
+
+    this.template = _.template($("#map-tab-simulation-template").html());
+    this.$el.empty();
+    this.$el.html(this.template());
+
+    var width = $("#sbgn-inspector").width() * 0.45;
+    $("#sbml-param-table-row").html("");
+    var paramHTML = "<td class='header' style='padding-right:5px;'>" 
+                        + "<span style='text-align: right;' class='add-on layout-text' title='SBML global parameters'> Parameters </span>"
+                      + "</td><td id='sbml-parameters' style='padding-left: 5px;'></td>";
+    $("#sbml-param-table-row").append(paramHTML);
+
+    var addParameters = function() {
+      var parameters = chise.getParameters();
+      var labelIdx = 0;
+      $("#sbml-parameters").html(""); // clear the field before populating
+      for (var param of parameters) {
+          var param_ = '<div style="display: flex; flex-direction: row; align-items: center; margin-bottom:5px;">'
+          + '<table><tbody><tr><td>'
+          + '<textarea id="inspector-param-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + param.name + '</textarea></td>'
+          + '</tr><tr><td>'
+          + '<input id="inspector-param-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + param.value + '" style="width: ' + (width-1) / 2.51 + 'px;">'
+          + '<select id="inspector-param-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + (width-1) / 2.51 + 'px !important; margin-left: 1px;">'
+          + '<option value="litre" selected>litre</option>'
+          + '<option value="m3">m³</option>'
+          + '</select></td></tr></tbody></table>'
+          + '<img id="inspector-param-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
+          + '</div>';
+          
+          $("#sbml-parameters").append(param_);
+
+          (function (labelIdx){
+            $('#inspector-param-delete' + labelIdx).off('click').on('click', function() {
+              var deleteId = chise.getParameters()[labelIdx].id;
+              chise.removeParameter(deleteId);
+              addParameters();
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-param-name' + labelIdx).off('change').on('change', function() {
+              var name = document.getElementById("inspector-param-name" + labelIdx).value;
+              var modifyId = chise.getParameters()[labelIdx].id;
+              chise.setParameter(modifyId, "name", name);
+          })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-param-value' + labelIdx).off('change').on('change', function() {
+              var value = parseFloat(document.getElementById("inspector-param-value" + labelIdx).value);
+              var modifyId = chise.getParameters()[labelIdx].id;
+              chise.setParameter(modifyId, "value", value);
+          })})(labelIdx);
+  
+          labelIdx += 1;
+      }
+      param_ = '<img width="16px" height="16px" id="inspector-add-param" src="app/img/add.svg" class="pointer-button">';
+      $("#sbml-parameters").append(param_);
+      $("#inspector-add-param").off('click').on('click', function() {
+          chise.addParameter("", 0, "", true);
+          addParameters(); // Re-render after adding a new parameter
+      });
+
+      return this;
+    }
+
+    addParameters();
+  }
 });
 
 /**
@@ -4769,6 +4950,82 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
   },
 });
 
+var sbmlKineticLawView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.localparams = null;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    // self.template = self.template(self.currentQueryParameters);
+  },
+  render: function (node) {
+    var self = this;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    $(self.el).html(self.template);
+    var nodeRow = document.getElementById("kinetic-law-nodes");
+    var idArray = []
+    node.connectedEdges().connectedNodes().difference(node).forEach((iterNode, idx) => {
+      if(iterNode.same(node)){
+        return;
+      }
+      var element = '<button id="kinetic-law-node-ele' + idx + '" class="btn btn-default" style="width:90px; margin-left:5px; margin-right:5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' 
+        + (iterNode.data('label') || iterNode.data('id')) + '</button>';
+      idArray.push(iterNode.data('id'));
+      nodeRow.innerHTML += element;
+      $(document).off("click", "#save-kinetic-law").on("click", "#kinetic-law-node-ele" + idx, function(evt) {
+        var cursorStart = kineticLaw.selectionStart;
+        var cursorEnd = kineticLaw.selectionEnd;
+        var currentText = kineticLaw.value;
+        var textBefore = currentText.substring(0, cursorStart);
+        var textAfter  = currentText.substring(cursorEnd, currentText.length);
+        var newText = '[' + (iterNode.data('label') || iterNode.data('id')) + '_' + idx + ']';
+        kineticLaw.value = (textBefore + newText + textAfter);
+        kineticLaw.selectionStart = kineticLaw.selectionEnd = cursorStart + newText.length;
+        kineticLaw.focus();
+      });
+    })
+    $(self.el).modal("show");
+
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = chiseInstance.getCy();
+
+    var kineticLaw = document.getElementById('kinetic-law-field'); 
+    var kineticLawRawText = node.data('simulation')['kineticLaw'] || "";
+    let idSorted = idArray.map((value, index) => ({ value, index }));
+    idSorted.sort((a, b) => b.value.length - a.value.length);
+    let replacementMap = new Map(
+      idSorted.map(function (id, i) { 
+        var node = cy.getElementById(id.value);
+        return [id.value, '[' + (node.data('label') || node.data('id')) + '_' + id.index + ']'];
+      }
+    ));
+    function escapeRegExp(text) {
+      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
+    let regex = new RegExp(idSorted.map((id) => (escapeRegExp(id.value))).join("|"), "g");
+    kineticLawRawText = kineticLawRawText.replace(regex, match => replacementMap.get(match));
+    kineticLaw.value = kineticLawRawText;
+    
+    $(document)
+    .off("click", "#save-kinetic-law")
+    .on("click", "#save-kinetic-law", function(evt) {
+      // Convert labels to ids
+      var kineticLawText = kineticLaw.value;
+      const result = kineticLawText.replace(/\[(.+?)_(\d+)]/g, (match, prefix, intStr) => {
+        const intValue = parseInt(intStr, 10);
+        return `${idArray[intValue]}`;
+      });
+      node.data('simulation')['kineticLaw'] = result;
+      $(self.el).modal("toggle");
+    });
+
+    $(document)
+      .off("click", "#cancel-kinetic-law")
+      .on("click", "#cancel-kinetic-law", function (evt) {
+        $(self.el).modal("toggle");
+      });
+  }
+});
+
 /*
   There was a side effect of using this modal prompt when clicking on New.
   If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
@@ -5073,11 +5330,14 @@ var FileSaveView = Backbone.View.extend({
         } else if (fileformat === "sifLayout") {
           chiseInstance.exportLayoutData(filename, true);
         } else if (fileformat === "png") {
-          chiseInstance.saveAsPng(filename);
+          var annotationLayers = require('./annotation-layers');
+          annotationLayers.exportCompositePng(filename);
         } else if (fileformat === "jpg") {
-          chiseInstance.saveAsJpg(filename);
+          var annotationLayers = require('./annotation-layers');
+          annotationLayers.exportCompositeJpg(filename)
         } else if (fileformat === "svg") {
-          chiseInstance.saveAsSvg(filename);
+          var annotationLayers = require('./annotation-layers');
+          annotationLayers.exportCompositeSvg(filename);
         } else {
           // invalid file format provided
           console.error(
@@ -8802,6 +9062,8 @@ module.exports = {
   MapTabLocalDBSettings: MapTabLocalDBSettings,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   experimentTabPanel: experimentTabPanel,
+  simulationTabPanel: simulationTabPanel,
+  SimulationPanelView: SimulationPanelView,
   //GeneralPropertiesView: GeneralPropertiesView,
   // ActiveTabPushSuccessView: ActiveTabPushSuccessView,
   NeighborhoodQueryView: NeighborhoodQueryView,
@@ -8845,4 +9107,5 @@ module.exports = {
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
+  sbmlKineticLawView: sbmlKineticLawView,
 };

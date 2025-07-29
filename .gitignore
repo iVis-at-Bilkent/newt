@@ -6,6 +6,10 @@ package-lock.json
 
 app/bundle.js
 
+
+env
+
 .env
 
 .DS_Store
+

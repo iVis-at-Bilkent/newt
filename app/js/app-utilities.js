@@ -71,6 +71,7 @@ appUtilities.adjustUIComponents = function (_cy) {
   appUtilities.mapTabLabelPanel.render();
   appUtilities.mapTabRearrangementPanel.render();
   appUtilities.experimentTabPanel.render();
+  appUtilities.simulationTabPanel.render();
   // needing an appUndoActions instance here is something unexpected
   // but since appUndoActions.refreshColorSchemeMenu is used below in an unfortunate way we need an instance of it
   // that uses the active cy instance
@@ -881,6 +882,12 @@ appUtilities.defaultGeneralProperties = {
   highlightColor: "#0B9BCD", //the color code used when initializing viewUtilities in app-cy.js
   extraHighlightThickness: 2,
 };
+
+appUtilities.defaultSimulationProperties = {
+  startTime: 0,
+  stopTime: 10,
+  stepCount: 50
+}
 
 appUtilities.setFileContent = function (fileName) {
   var span = document.getElementById("file-name");

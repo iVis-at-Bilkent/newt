@@ -2197,6 +2197,424 @@ self.setCytoscapeActiveStyle = function(enabled) {
     self.deselectElement();
   };
 
+  /**
+   * Draw all elements of a layer onto a context, applying export scale and offset
+   * @param {CanvasRenderingContext2D} ctx - The canvas context to draw on
+   * @param {Object} layer - The annotation layer object
+   * @param {number} scaleX - The X scale to apply
+   * @param {number} scaleY - The Y scale to apply
+   * @param {number} offsetX - The X offset to apply
+   * @param {number} offsetY - The Y offset to apply
+   */
+  self.drawLayerForExport = function(ctx, layer, scaleX, scaleY, offsetX, offsetY) {
+    if (!layer || !layer.isAnnotationLayer) return;
+    ctx.save();
+    ctx.setTransform(scaleX, 0, 0, scaleY, offsetX, offsetY);
+    annotationUtil.clearCanvas(ctx);
+    layer.elements.forEach(function(element) {
+      // Use model coordinates directly
+      switch (element.type) {
+        case 'rectangle':
+          annotationUtil.drawRectangle(ctx, element, element.styles);
+          break;
+        case 'textbox':
+          annotationUtil.drawTextBox(ctx, element, element.styles);
+          break;
+        case 'arrow':
+          annotationUtil.drawArrow(ctx, element, element.styles);
+          break;
+        case 'image':
+          annotationUtil.drawImage(ctx, element, element.styles);
+          break;
+        default:
+          console.warn('[drawLayerForExport] Unknown element type:', element.type);
+      }
+    });
+    ctx.restore();
+  };
+
+  /**
+   * Compute the bounding box that includes all Cytoscape elements and all visible annotation items
+   * @returns {Object} {x1, y1, x2, y2}
+   */
+  self.getCombinedBoundingBox = function(activeCy) {
+    // Cytoscape bounding box
+    const cyBBox = activeCy.elements().boundingBox();
+    // Annotation bounding box
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    self.getAllLayers().forEach(layer => {
+      if (layer.isAnnotationLayer && layer.visible) {
+        layer.elements.forEach(el => {
+          if (el.type === 'arrow') {
+            minX = Math.min(minX, el.startX, el.endX);
+            minY = Math.min(minY, el.startY, el.endY);
+            maxX = Math.max(maxX, el.startX, el.endX);
+            maxY = Math.max(maxY, el.startY, el.endY);
+          } else {
+            minX = Math.min(minX, el.x);
+            minY = Math.min(minY, el.y);
+            maxX = Math.max(maxX, el.x + el.width);
+            maxY = Math.max(maxY, el.y + el.height);
+          }
+        });
+      }
+    });
+    let annBBox = null;
+    if (minX !== Infinity) {
+      annBBox = { x1: minX, y1: minY, x2: maxX, y2: maxY };
+    }
+    // Combine
+    let bbox = cyBBox;
+    if (annBBox) {
+      bbox = {
+        x1: Math.min(cyBBox.x1, annBBox.x1),
+        y1: Math.min(cyBBox.y1, annBBox.y1),
+        x2: Math.max(cyBBox.x2, annBBox.x2),
+        y2: Math.max(cyBBox.y2, annBBox.y2)
+      };
+    }
+    return bbox;
+  };
+
+  /**
+   * Export a composite image including Cytoscape and all visible annotation layers as PNG.
+   * (Might be able to refactor with exportCompositeJpg)
+   *
+   * - Computes the combined bounding box of the Cytoscape graph and all visible annotation elements.
+   * - Exports Cytoscape as a PNG at the correct scale and offset.
+   * - Draws each annotation element onto the export canvas, transforming model coordinates to export coordinates.
+   * - Combines everything into a single PNG and triggers download.
+   */
+  self.exportCompositePng = function(filename) {
+    var activeCy = appUtilities.getActiveCy();
+    if (!activeCy) {
+      return;
+    }
+    var cyBBox = activeCy.elements().boundingBox();
+    var cyWidth = cyBBox.x2 - cyBBox.x1;
+    var cyHeight = cyBBox.y2 - cyBBox.y1;
+    var combinedBBox = self.getCombinedBoundingBox(activeCy);
+    var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
+    var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
+    
+    var cyScale = 2;
+    var cyExportWidth = Math.round(cyWidth * cyScale);
+    var cyExportHeight = Math.round(cyHeight * cyScale);
+    
+    var cyPngDataUrl = activeCy.png({
+      full: true,
+      scale: cyScale,
+      bg: 'transparent',
+      output: 'base64uri'
+    });
+    var cyImg = new window.Image();
+    cyImg.src = cyPngDataUrl;
+    cyImg.onload = function() {
+      var exportWidth = Math.round(combinedWidth * cyScale);
+      var exportHeight = Math.round(combinedHeight * cyScale);
+      var exportCanvas = document.createElement('canvas');
+      exportCanvas.width = exportWidth;
+      exportCanvas.height = exportHeight;
+      var ctx = exportCanvas.getContext('2d');
+      
+      // Commented out to maintain transparency in PNG export
+      // ctx.save();
+      // ctx.fillStyle = '#FFFFFF';
+      // ctx.fillRect(0, 0, exportWidth, exportHeight);
+      // ctx.restore();
+      
+      var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
+      var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
+      ctx.drawImage(cyImg, offsetX, offsetY, cyExportWidth, cyExportHeight);
+      var scaleX = cyScale;
+      var scaleY = cyScale;
+      var annOffsetX = -combinedBBox.x1 * scaleX;
+      var annOffsetY = -combinedBBox.y1 * scaleY;
+      var allLayers = self.getAllLayers();
+      allLayers.forEach(function(layer) {
+        if (layer.isAnnotationLayer && layer.visible) {
+          var tempCanvas = document.createElement('canvas');
+          tempCanvas.width = exportWidth;
+          tempCanvas.height = exportHeight;
+          var tempCtx = tempCanvas.getContext('2d');
+          tempCtx.setTransform(scaleX, 0, 0, scaleY, annOffsetX, annOffsetY);
+          annotationUtil.clearCanvas(tempCtx);
+          layer.elements.forEach(function(element) {
+            switch (element.type) {
+              case 'rectangle':
+                annotationUtil.drawRectangle(tempCtx, element, element.styles);
+                break;
+              case 'textbox':
+                annotationUtil.drawTextBox(tempCtx, element, element.styles);
+                break;
+              case 'arrow':
+                annotationUtil.drawArrow(tempCtx, element, element.styles);
+                break;
+              case 'image':
+                annotationUtil.drawImage(tempCtx, element, element.styles);
+                break;
+            }
+          });
+          ctx.drawImage(tempCanvas, 0, 0, exportWidth, exportHeight);
+        }
+      });
+      var finalDataUrl = exportCanvas.toDataURL('image/png');
+      if (window.saveAs && typeof window.saveAs === 'function') {
+        var arr = finalDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+        var blob = new Blob([u8arr], {type:mime});
+        window.saveAs(blob, filename || 'network.png');
+      } else {
+        var link = document.createElement('a');
+        link.href = finalDataUrl;
+        link.download = filename || 'network.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
+    cyImg.onerror = function() {
+      console.error('[exportCompositePNG] Failed to load Cytoscape image');
+    };
+  };
+
+  /**
+   * Export a composite image as JPG including Cytoscape and all visible annotation layers.
+   * (Might be able to refactor with exportCompositePng)
+   *
+   * - Computes the combined bounding box of the Cytoscape graph and all visible annotation elements.
+   * - Exports Cytoscape as a PNG at the correct scale and offset.
+   * - Draws each annotation element onto the export canvas, transforming model coordinates to export coordinates.
+   * - Combines everything into a single JPG and triggers download.
+   * - JPEG quality can be specified (default 0.92).
+   */
+  self.exportCompositeJpg = function(filename, quality) {
+    quality = typeof quality === 'number' ? quality : 0.92;
+    var activeCy = appUtilities.getActiveCy();
+    if (!activeCy) {
+      return;
+    }
+    var cyBBox = activeCy.elements().boundingBox();
+    var cyWidth = cyBBox.x2 - cyBBox.x1;
+    var cyHeight = cyBBox.y2 - cyBBox.y1;
+    var combinedBBox = self.getCombinedBoundingBox(activeCy);
+    var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
+    var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
+    
+    var cyScale = 2;
+    var cyExportWidth = Math.round(cyWidth * cyScale);
+    var cyExportHeight = Math.round(cyHeight * cyScale);
+    
+    var cyPngDataUrl = activeCy.png({
+      full: true,
+      scale: cyScale,
+      bg: 'white',
+      output: 'base64uri'
+    });
+    var cyImg = new window.Image();
+    cyImg.src = cyPngDataUrl;
+    cyImg.onload = function() {
+      var exportWidth = Math.round(combinedWidth * cyScale);
+      var exportHeight = Math.round(combinedHeight * cyScale);
+      var exportCanvas = document.createElement('canvas');
+      exportCanvas.width = exportWidth;
+      exportCanvas.height = exportHeight;
+      var ctx = exportCanvas.getContext('2d');
+      ctx.save();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, exportWidth, exportHeight);
+      ctx.restore();
+      var offsetX = (cyBBox.x1 - combinedBBox.x1) * cyScale;
+      var offsetY = (cyBBox.y1 - combinedBBox.y1) * cyScale;
+      ctx.drawImage(cyImg, offsetX, offsetY, cyExportWidth, cyExportHeight);
+      var scaleX = cyScale;
+      var scaleY = cyScale;
+      var annOffsetX = -combinedBBox.x1 * scaleX;
+      var annOffsetY = -combinedBBox.y1 * scaleY;
+      var allLayers = self.getAllLayers();
+      allLayers.forEach(function(layer) {
+        if (layer.isAnnotationLayer && layer.visible) {
+          var tempCanvas = document.createElement('canvas');
+          tempCanvas.width = exportWidth;
+          tempCanvas.height = exportHeight;
+          var tempCtx = tempCanvas.getContext('2d');
+          tempCtx.setTransform(scaleX, 0, 0, scaleY, annOffsetX, annOffsetY);
+          annotationUtil.clearCanvas(tempCtx);
+          layer.elements.forEach(function(element) {
+            switch (element.type) {
+              case 'rectangle':
+                annotationUtil.drawRectangle(tempCtx, element, element.styles);
+                break;
+              case 'textbox':
+                annotationUtil.drawTextBox(tempCtx, element, element.styles);
+                break;
+              case 'arrow':
+                annotationUtil.drawArrow(tempCtx, element, element.styles);
+                break;
+              case 'image':
+                annotationUtil.drawImage(tempCtx, element, element.styles);
+                break;
+            }
+          });
+          ctx.drawImage(tempCanvas, 0, 0, exportWidth, exportHeight);
+        }
+      });
+      var finalDataUrl = exportCanvas.toDataURL('image/jpeg', quality);
+      if (window.saveAs && typeof window.saveAs === 'function') {
+        var arr = finalDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+        var blob = new Blob([u8arr], {type:mime});
+        window.saveAs(blob, filename || 'network.jpg');
+      } else {
+        var link = document.createElement('a');
+        link.href = finalDataUrl;
+        link.download = filename || 'network.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
+    cyImg.onerror = function() {};
+  };
+
+  /**
+   * Export a composite SVG including Cytoscape and all visible annotation layers.
+   *
+   * - Computes the combined bounding box of the Cytoscape graph and all visible annotation elements.
+   * - Exports Cytoscape as SVG and inserts it into a new SVG document at the correct offset.
+   * - Transforms all annotation elements from model coordinates to export coordinates (using export scale and offset),
+   *   so their placement matches what is seen on the canvas.
+   * - Appends all annotation elements as SVG elements to the export SVG.
+   * - Triggers download of the resulting SVG file.
+   */
+  self.exportCompositeSvg = function(filename) {
+    var activeCy = appUtilities.getActiveCy();
+    if (!activeCy) {
+      return;
+    }
+    var cyBBox = activeCy.elements().boundingBox();
+    var cyWidth = cyBBox.x2 - cyBBox.x1;
+    var cyHeight = cyBBox.y2 - cyBBox.y1;
+    var combinedBBox = self.getCombinedBoundingBox(activeCy);
+    var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
+    var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
+    var cySvgStr = activeCy.svg({ full: true, scale: 1 });
+    var parser = new DOMParser();
+    var cySvgDoc = parser.parseFromString(cySvgStr, 'image/svg+xml');
+    var cySvgRoot = cySvgDoc.documentElement;
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var exportSvg = document.createElementNS(svgNS, 'svg');
+    exportSvg.setAttribute('width', combinedWidth);
+    exportSvg.setAttribute('height', combinedHeight);
+    exportSvg.setAttribute('viewBox', `0 0 ${combinedWidth} ${combinedHeight}`);
+    var cyOffsetX = cyBBox.x1 - combinedBBox.x1;
+    var cyOffsetY = cyBBox.y1 - combinedBBox.y1;
+    var cyGroup = document.createElementNS(svgNS, 'g');
+    cyGroup.setAttribute('transform', `translate(${cyOffsetX},${cyOffsetY})`);
+    var cyChildren = Array.from(cySvgRoot.childNodes);
+    cyChildren.forEach(function(child) {
+      cyGroup.appendChild(child.cloneNode(true));
+    });
+    exportSvg.appendChild(cyGroup);
+    var svgDoc = exportSvg.ownerDocument;
+    var scaleX = combinedWidth / (combinedBBox.x2 - combinedBBox.x1);
+    var scaleY = combinedHeight / (combinedBBox.y2 - combinedBBox.y1);
+    var offsetX = -combinedBBox.x1 * scaleX;
+    var offsetY = -combinedBBox.y1 * scaleY;
+    self.getAllLayers().forEach(function(layer) {
+      if (layer.isAnnotationLayer && layer.visible) {
+        layer.elements.forEach(function(el) {
+          var exportEl = self.transformElementForExport(el, scaleX, scaleY, offsetX, offsetY);
+          var svgElem = annotationUtil.elementToSvg(exportEl, svgDoc);
+          if (svgElem) {
+            exportSvg.appendChild(svgElem);
+          }
+        });
+      }
+    });
+    var serializer = new XMLSerializer();
+    var svgString = serializer.serializeToString(exportSvg);
+    var blob = new Blob([svgString], { type: 'image/svg+xml' });
+    if (window.saveAs) {
+      window.saveAs(blob, filename);
+    } else if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() { document.body.removeChild(a); }, 100);
+    }
+  };
+
+  /**
+   * Transform an element from model coordinates to export coordinates
+   * @param {Object} element - The annotation element
+   * @param {number} scaleX - X scale for export
+   * @param {number} scaleY - Y scale for export
+   * @param {number} offsetX - X offset for export
+   * @param {number} offsetY - Y offset for export
+   * @returns {Object} Transformed element
+   */
+  self.transformElementForExport = function(element, scaleX, scaleY, offsetX, offsetY) {
+    if (!element) return element;
+    if (element.type === 'rectangle' || element.type === 'textbox' || element.type === 'image') {
+      // Transform top-left and bottom-right
+      var x1 = element.x * scaleX + offsetX;
+      var y1 = element.y * scaleY + offsetY;
+      var x2 = (element.x + element.width) * scaleX + offsetX;
+      var y2 = (element.y + element.height) * scaleY + offsetY;
+      return {
+        ...element,
+        x: x1,
+        y: y1,
+        width: x2 - x1,
+        height: y2 - y1
+      };
+    } else if (element.type === 'arrow') {
+      return {
+        ...element,
+        startX: element.startX * scaleX + offsetX,
+        startY: element.startY * scaleY + offsetY,
+        endX: element.endX * scaleX + offsetX,
+        endY: element.endY * scaleY + offsetY
+      };
+    }
+    return element;
+  };
+
+  /**
+   * Get all annotation items from all visible layers
+   * @returns {Array} Array of all annotation items
+   */
+  self.getAllAnnotationItems = function() {
+    var allItems = [];
+    
+    layers.forEach(function(layer) {
+      // Only include items from visible layers
+      if (layer.visible && layer.isAnnotationLayer) {
+        allItems = allItems.concat(layer.elements || []);
+      }
+    });
+    
+    return allItems;
+  };
+
+  /**
+   * Get annotation items from a specific layer
+   * @param {number} layerId - The layer ID
+   * @returns {Array} Array of annotation items from the layer
+   */
+  self.getAnnotationItemsFromLayer = function(layerId) {
+    var layer = self.getLayer(layerId);
+    if (layer && layer.isAnnotationLayer) {
+      return layer.elements || [];
+    }
+    return [];
+  };
+
   return {
     init: self.init,
     addLayer: self.addLayer,
@@ -2229,7 +2647,15 @@ self.setCytoscapeActiveStyle = function(enabled) {
     reinitForNewNetwork: self.reinitForNewNetwork,
     triggerImageUpload: self.triggerImageUpload,
     calculateSmartImageDimensions: self.calculateSmartImageDimensions,
-    deleteSelectedElement: self.deleteSelectedElement
+    deleteSelectedElement: self.deleteSelectedElement,
+    getAnnotationCanvas: self.getAnnotationCanvas,
+    exportCompositePng: self.exportCompositePng,
+    drawLayerForExport: self.drawLayerForExport,
+    getCombinedBoundingBox: self.getCombinedBoundingBox,
+    exportCompositeJpg: self.exportCompositeJpg,
+    exportCompositeSvg: self.exportCompositeSvg,
+    getAllAnnotationItems: self.getAllAnnotationItems,
+    getAnnotationItemsFromLayer: self.getAnnotationItemsFromLayer,
   };
 };
 
@@ -2348,3 +2774,38 @@ function showAnnotationFontModal(element) {
     }
   });
 } 
+
+// ... existing code ...
+  /**
+   * Pad a bounding box to match a target aspect ratio (centered)
+   * @param {Object} bbox - {x1, y1, x2, y2}
+   * @param {number} targetAspect - width/height
+   * @returns {Object} padded bbox
+   */
+  function padBoundingBoxToAspect(bbox, targetAspect) {
+    let width = bbox.x2 - bbox.x1;
+    let height = bbox.y2 - bbox.y1;
+    let aspect = width / height;
+    if (aspect > targetAspect) {
+      // Too wide, pad top/bottom
+      let newHeight = width / targetAspect;
+      let pad = (newHeight - height) / 2;
+      return {
+        x1: bbox.x1,
+        x2: bbox.x2,
+        y1: bbox.y1 - pad,
+        y2: bbox.y2 + pad
+      };
+    } else {
+      // Too tall, pad left/right
+      let newWidth = height * targetAspect;
+      let pad = (newWidth - width) / 2;
+      return {
+        x1: bbox.x1 - pad,
+        x2: bbox.x2 + pad,
+        y1: bbox.y1,
+        y2: bbox.y2
+      };
+    }
+  }
+// ... existing code ...
