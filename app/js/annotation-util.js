@@ -895,6 +895,24 @@ var AnnotationUtil = function() {
     var svgNS = 'http://www.w3.org/2000/svg';
     var xlinkNS = 'http://www.w3.org/1999/xlink';
     if (!element || !svgDoc) return null;
+    
+    // Helper function to handle RGBA colors properly for SVG
+    function setSvgColor(element, attrName, colorValue) {
+      if (colorValue && colorValue.indexOf('rgba') !== -1) {
+        // Separate alpha value, since some SVG viewers can't handle rgba
+        var regex = /rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi;
+        var matches = regex.exec(colorValue);
+        if (matches) {
+          element.setAttribute(attrName, 'rgb(' + matches[1] + ',' + matches[2] + ',' + matches[3] + ')');
+          element.setAttribute(attrName + '-opacity', matches[4]);
+        } else {
+          element.setAttribute(attrName, colorValue);
+        }
+      } else {
+        element.setAttribute(attrName, colorValue);
+      }
+    }
+    
     if (element.type === 'rectangle') {
       var rect = svgDoc.createElementNS(svgNS, 'rect');
       rect.setAttribute('x', element.x);
@@ -902,12 +920,12 @@ var AnnotationUtil = function() {
       rect.setAttribute('width', element.width);
       rect.setAttribute('height', element.height);
       var styles = Object.assign({}, defaultStyles.rectangle, element.styles || {});
-      rect.setAttribute('stroke', styles.strokeColor || '#800080');
+      setSvgColor(rect, 'stroke', styles.strokeColor || '#800080');
       rect.setAttribute('stroke-width', styles.lineWidth || 2);
       if (styles.lineDash && styles.lineDash.length > 0) {
         rect.setAttribute('stroke-dasharray', styles.lineDash.join(','));
       }
-      rect.setAttribute('fill', styles.fillColor || 'none');
+      setSvgColor(rect, 'fill', styles.fillColor || 'none');
       return rect;
     } else if (element.type === 'textbox') {
       var group = svgDoc.createElementNS(svgNS, 'g');
@@ -919,30 +937,39 @@ var AnnotationUtil = function() {
       rect.setAttribute('y', element.y);
       rect.setAttribute('width', element.width);
       rect.setAttribute('height', element.height);
-      rect.setAttribute('stroke', borderColor);
+      setSvgColor(rect, 'stroke', borderColor);
       rect.setAttribute('stroke-width', 1);
-      rect.setAttribute('fill', fillColor);
+      setSvgColor(rect, 'fill', fillColor);
       rect.setAttribute('stroke-dasharray', '5,5');
       group.appendChild(rect);
       if (element.text && element.text.trim()) {
         var textStyles = Object.assign({}, defaultStyles.text, element.styles || {});
         var textElem = svgDoc.createElementNS(svgNS, 'text');
         textElem.setAttribute('x', element.x + 5);
-        textElem.setAttribute('y', element.y + 5 + textStyles.fontSize);
+        // Match canvas textBaseline='top' positioning exactly
+        textElem.setAttribute('y', element.y + 5);
         textElem.setAttribute('font-size', textStyles.fontSize);
         textElem.setAttribute('font-family', textStyles.fontFamily);
         textElem.setAttribute('font-weight', textStyles.fontWeight || 'normal');
         textElem.setAttribute('font-style', textStyles.fontStyle || 'normal');
-        textElem.setAttribute('fill', textStyles.color || '#000000');
+        setSvgColor(textElem, 'fill', textStyles.color || '#000000');
+        // Set dominant-baseline to 'hanging' to match canvas textBaseline='top'
         textElem.setAttribute('dominant-baseline', 'hanging');
-        // Word wrap
+        
+        // Word wrap - match canvas logic exactly
         var maxWidth = element.width - 10;
         var words = element.text.split(' ');
         var lines = [];
         var currentLine = '';
+        
+        // Create a temporary SVG element for text measurement with exact same font settings
         var tempSvg = svgDoc.createElementNS(svgNS, 'text');
         tempSvg.setAttribute('font-size', textStyles.fontSize);
         tempSvg.setAttribute('font-family', textStyles.fontFamily);
+        tempSvg.setAttribute('font-weight', textStyles.fontWeight || 'normal');
+        tempSvg.setAttribute('font-style', textStyles.fontStyle || 'normal');
+        tempSvg.setAttribute('dominant-baseline', 'hanging');
+        
         for (var i = 0; i < words.length; i++) {
           var testLine = currentLine + (currentLine ? ' ' : '') + words[i];
           tempSvg.textContent = testLine;
@@ -956,14 +983,22 @@ var AnnotationUtil = function() {
             currentLine = testLine;
           }
         }
-        if (currentLine) lines.push(currentLine);
+        if (currentLine) {
+          lines.push(currentLine);
+        }
+        
         var lineHeight = textStyles.fontSize + 2;
         for (var j = 0; j < lines.length; j++) {
-          var tspan = svgDoc.createElementNS(svgNS, 'tspan');
-          tspan.setAttribute('x', element.x + 5);
-          tspan.setAttribute('y', element.y + 5 + j * lineHeight + textStyles.fontSize);
-          tspan.textContent = lines[j];
-          textElem.appendChild(tspan);
+          var lineY = element.y + 5 + j * lineHeight;
+          if (lineY + lineHeight <= element.y + element.height) {
+            var tspan = svgDoc.createElementNS(svgNS, 'tspan');
+            tspan.setAttribute('x', element.x + 5);
+            tspan.setAttribute('y', lineY);
+            tspan.textContent = lines[j];
+            textElem.appendChild(tspan);
+          } else {
+            break;
+          }
         }
         group.appendChild(textElem);
       }
@@ -976,36 +1011,32 @@ var AnnotationUtil = function() {
       line.setAttribute('y1', element.startY);
       line.setAttribute('x2', element.endX);
       line.setAttribute('y2', element.endY);
-      line.setAttribute('stroke', styles.strokeColor || '#ff0000');
+      setSvgColor(line, 'stroke', styles.strokeColor || '#ff0000');
       line.setAttribute('stroke-width', styles.lineWidth || 7);
       line.setAttribute('stroke-linecap', 'round');
       line.setAttribute('stroke-linejoin', 'round');
       group.appendChild(line);
       // Arrowhead
+      var headSize = styles.headSize || 20;
       var angle = Math.atan2(element.endY - element.startY, element.endX - element.startX);
-      var headLength = styles.headSize || 20;
-      var headAngle1 = angle - Math.PI / 6;
-      var headAngle2 = angle + Math.PI / 6;
-      var head1X = element.endX - headLength * Math.cos(headAngle1);
-      var head1Y = element.endY - headLength * Math.sin(headAngle1);
-      var head2X = element.endX - headLength * Math.cos(headAngle2);
-      var head2Y = element.endY - headLength * Math.sin(headAngle2);
-      var arrow1 = svgDoc.createElementNS(svgNS, 'line');
-      arrow1.setAttribute('x1', element.endX);
-      arrow1.setAttribute('y1', element.endY);
-      arrow1.setAttribute('x2', head1X);
-      arrow1.setAttribute('y2', head1Y);
-      arrow1.setAttribute('stroke', styles.strokeColor || '#ff0000');
-      arrow1.setAttribute('stroke-width', styles.lineWidth || 7);
-      group.appendChild(arrow1);
-      var arrow2 = svgDoc.createElementNS(svgNS, 'line');
-      arrow2.setAttribute('x1', element.endX);
-      arrow2.setAttribute('y1', element.endY);
-      arrow2.setAttribute('x2', head2X);
-      arrow2.setAttribute('y2', head2Y);
-      arrow2.setAttribute('stroke', styles.strokeColor || '#ff0000');
-      arrow2.setAttribute('stroke-width', styles.lineWidth || 7);
-      group.appendChild(arrow2);
+      var arrowhead1 = svgDoc.createElementNS(svgNS, 'line');
+      arrowhead1.setAttribute('x1', element.endX);
+      arrowhead1.setAttribute('y1', element.endY);
+      arrowhead1.setAttribute('x2', element.endX - headSize * Math.cos(angle - Math.PI / 6));
+      arrowhead1.setAttribute('y2', element.endY - headSize * Math.sin(angle - Math.PI / 6));
+      setSvgColor(arrowhead1, 'stroke', styles.strokeColor || '#ff0000');
+      arrowhead1.setAttribute('stroke-width', styles.lineWidth || 7);
+      arrowhead1.setAttribute('stroke-linecap', 'round');
+      group.appendChild(arrowhead1);
+      var arrowhead2 = svgDoc.createElementNS(svgNS, 'line');
+      arrowhead2.setAttribute('x1', element.endX);
+      arrowhead2.setAttribute('y1', element.endY);
+      arrowhead2.setAttribute('x2', element.endX - headSize * Math.cos(angle + Math.PI / 6));
+      arrowhead2.setAttribute('y2', element.endY - headSize * Math.sin(angle + Math.PI / 6));
+      setSvgColor(arrowhead2, 'stroke', styles.strokeColor || '#ff0000');
+      arrowhead2.setAttribute('stroke-width', styles.lineWidth || 7);
+      arrowhead2.setAttribute('stroke-linecap', 'round');
+      group.appendChild(arrowhead2);
       return group;
     } else if (element.type === 'image') {
       var img = svgDoc.createElementNS(svgNS, 'image');
