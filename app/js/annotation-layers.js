@@ -2273,6 +2273,14 @@ self.setCytoscapeActiveStyle = function(enabled) {
         y2: Math.max(cyBBox.y2, annBBox.y2)
       };
     }
+    
+    // Extra padding to avoid clipping the borders of annotation items
+    var padding = 10;
+    bbox.x1 -= padding;
+    bbox.y1 -= padding;
+    bbox.x2 += padding;
+    bbox.y2 += padding;
+    
     return bbox;
   };
 
