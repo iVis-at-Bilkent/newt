@@ -646,6 +646,14 @@ var AnnotationLayers = function() {
   };
 
   /**
+   * Get the current viewport state
+   * @returns {Object} The current viewport state
+   */
+  self.getViewportState = function() {
+    return viewportState;
+  };
+
+  /**
    * Transform model coordinates to canvas coordinates
    * @param {number} modelX - X coordinate in Cytoscape model space
    * @param {number} modelY - Y coordinate in Cytoscape model space
@@ -2533,7 +2541,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
       if (layer.isAnnotationLayer && layer.visible) {
         layer.elements.forEach(function(el) {
           var exportEl = self.transformElementForExport(el, scaleX, scaleY, offsetX, offsetY);
-          var svgElem = annotationUtil.elementToSvg(exportEl, svgDoc);
+          var svgElem = annotationUtil.elementToSvg(exportEl, svgDoc, scaleX);
           if (svgElem) {
             exportSvg.appendChild(svgElem);
           }
@@ -2664,6 +2672,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
     exportCompositeSvg: self.exportCompositeSvg,
     getAllAnnotationItems: self.getAllAnnotationItems,
     getAnnotationItemsFromLayer: self.getAnnotationItemsFromLayer,
+    getViewportState: self.getViewportState,
   };
 };
 

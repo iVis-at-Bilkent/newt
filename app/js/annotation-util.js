@@ -260,11 +260,6 @@ var AnnotationUtil = function() {
    * Draw a text box on the canvas
    * @param {CanvasRenderingContext2D} ctx - The canvas context
    * @param {Object} data - Text box data
-   * @param {number} data.x - X coordinate of top-left corner
-   * @param {number} data.y - Y coordinate of top-left corner
-   * @param {number} data.width - Width of the text box
-   * @param {number} data.height - Height of the text box
-   * @param {string} data.text - Text content
    * @param {Object} [styles] - Custom styles for the text box
    */
   self.drawTextBox = function(ctx, data, styles) {
@@ -273,16 +268,16 @@ var AnnotationUtil = function() {
       return false;
     }
 
-    var textStyles = Object.assign({}, defaultStyles.text, styles || {});
-    var boxStyles = styles || {};
-    var borderColor = boxStyles.strokeColor || '#0099FF';
-    var fillColor = boxStyles.fillColor || 'rgba(255,255,255,0)';
+    var textBoxStyles = Object.assign({}, defaultStyles.text, styles || {});
     
     var { x, y, width, height, text } = data;
     if (x === undefined || y === undefined || width === undefined || height === undefined) {
       console.error('Missing required text box properties:', data);
       return false;
     }
+
+    var fillColor = textBoxStyles.fillColor || 'rgba(255,255,255,0.6)';
+    var borderColor = textBoxStyles.strokeColor || '#800080';
 
     try {
       ctx.save();
@@ -293,11 +288,26 @@ var AnnotationUtil = function() {
       ctx.setLineDash([5, 5]);
       ctx.strokeRect(x, y, width, height);
       if (text && text.trim()) {
-        ctx.fillStyle = textStyles.color;
-        ctx.font = (textStyles.fontStyle || 'normal') + ' ' +
-                   (textStyles.fontWeight || 'normal') + ' ' +
-                   textStyles.fontSize + 'px ' +
-                   textStyles.fontFamily;
+        ctx.fillStyle = textBoxStyles.color;
+        
+        // Scale font size by zoom level if available
+        var fontSize = textBoxStyles.fontSize || 14;
+        var zoom = 1; // Default zoom level
+        
+        // Try to get zoom from annotation layers if available
+        if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+          var viewportState = window.annotationLayers.getViewportState();
+          if (viewportState && viewportState.zoom) {
+            zoom = viewportState.zoom;
+          }
+        }
+        
+        var scaledFontSize = fontSize * zoom;
+        
+        ctx.font = (textBoxStyles.fontStyle || 'normal') + ' ' +
+                   (textBoxStyles.fontWeight || 'normal') + ' ' +
+                   scaledFontSize + 'px ' +
+                   textBoxStyles.fontFamily;
         ctx.textBaseline = 'top';
         var textX = x + 5;
         var textY = y + 5;
@@ -318,7 +328,7 @@ var AnnotationUtil = function() {
         if (currentLine) {
           lines.push(currentLine);
         }
-        var lineHeight = textStyles.fontSize + 2;
+        var lineHeight = scaledFontSize + 2;
         for (var j = 0; j < lines.length; j++) {
           if (textY + j * lineHeight + lineHeight <= y + height) {
             ctx.fillText(lines[j], textX, textY + j * lineHeight);
@@ -885,16 +895,19 @@ var AnnotationUtil = function() {
   };
 
   /**
-   * Convert an annotation element to an SVG element
-   * Utility for exportCompositeSVG in annotation-layers.js
+   * Convert an annotation element to SVG
    * @param {Object} element - The annotation element
    * @param {Document} svgDoc - The SVG document to create elements in
+   * @param {number} [scale=1] - Scale factor for font size (used for export)
    * @returns {SVGElement|null}
    */
-  self.elementToSvg = function(element, svgDoc) {
+  self.elementToSvg = function(element, svgDoc, scale) {
     var svgNS = 'http://www.w3.org/2000/svg';
     var xlinkNS = 'http://www.w3.org/1999/xlink';
     if (!element || !svgDoc) return null;
+    
+    // Default scale to 1 if not provided
+    scale = scale || 1;
     
     // Helper function to handle RGBA colors properly for SVG
     function setSvgColor(element, attrName, colorValue) {
@@ -944,11 +957,12 @@ var AnnotationUtil = function() {
       group.appendChild(rect);
       if (element.text && element.text.trim()) {
         var textStyles = Object.assign({}, defaultStyles.text, element.styles || {});
+        var scaledFontSize = (textStyles.fontSize || 14) * scale;
         var textElem = svgDoc.createElementNS(svgNS, 'text');
         textElem.setAttribute('x', element.x + 5);
         // Match canvas textBaseline='top' positioning exactly
         textElem.setAttribute('y', element.y + 5);
-        textElem.setAttribute('font-size', textStyles.fontSize);
+        textElem.setAttribute('font-size', scaledFontSize);
         textElem.setAttribute('font-family', textStyles.fontFamily);
         textElem.setAttribute('font-weight', textStyles.fontWeight || 'normal');
         textElem.setAttribute('font-style', textStyles.fontStyle || 'normal');
@@ -964,7 +978,7 @@ var AnnotationUtil = function() {
         
         // Create a temporary SVG element for text measurement with exact same font settings
         var tempSvg = svgDoc.createElementNS(svgNS, 'text');
-        tempSvg.setAttribute('font-size', textStyles.fontSize);
+        tempSvg.setAttribute('font-size', scaledFontSize);
         tempSvg.setAttribute('font-family', textStyles.fontFamily);
         tempSvg.setAttribute('font-weight', textStyles.fontWeight || 'normal');
         tempSvg.setAttribute('font-style', textStyles.fontStyle || 'normal');
@@ -987,7 +1001,7 @@ var AnnotationUtil = function() {
           lines.push(currentLine);
         }
         
-        var lineHeight = textStyles.fontSize + 2;
+        var lineHeight = scaledFontSize + 2;
         for (var j = 0; j < lines.length; j++) {
           var lineY = element.y + 5 + j * lineHeight;
           if (lineY + lineHeight <= element.y + element.height) {
