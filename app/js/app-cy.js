@@ -1201,7 +1201,7 @@ module.exports = function (chiseInstance) {
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
-      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isSBMLNode(node)) && !convenientProcessSource) {
         convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
@@ -1254,10 +1254,9 @@ module.exports = function (chiseInstance) {
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
-                && chiseInstance.elementUtilities.isEPNClass(cyTarget)
-                && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)
-                && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) ||
-                  convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
+                && ((chiseInstance.elementUtilities.isEPNClass(cyTarget) && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)) || (chiseInstance.elementUtilities.isSBMLNode(cyTarget) && chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource)))
+                && !(cyTarget.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(cyTarget.parent()[0])) ||
+                  convenientProcessSource.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource.parent()[0]))))
         {
           chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeParams);
           //Update arrow scale of the newly added edge
