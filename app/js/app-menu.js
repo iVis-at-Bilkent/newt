@@ -18,7 +18,7 @@ module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, PathsFromToQueryViewLocalDB, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,
-        promptMapTypeView, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
+        promptMapTypeView, promptSIFTopologyGroupingWarning, promptInvalidTypeWarning, promtErrorPD2AF, promptInvalidFileView, promptFileConversionErrorView, promptInvalidURIWarning, reactionTemplateView, gridPropertiesView, fontPropertiesView, fileSaveView,saveUserPreferencesView, loadUserPreferencesView, sifMapWarning;
 
   // checking if the user is using a local database
   
@@ -186,6 +186,7 @@ module.exports = function() {
   loadUserPreferencesView =  appUtilities.loadUserPreferencesView = new BackboneViews.LoadUserPreferencesView({el: '#user-preferences-load-table'});
   promptConfirmationView = appUtilities.promptConfirmationView = new BackboneViews.PromptConfirmationView({el: '#prompt-confirmation-table'});
   promptMapTypeView = appUtilities.promptMapTypeView = new BackboneViews.PromptMapTypeView({el: '#prompt-mapType-table'});
+  promptSIFTopologyGroupingWarning = appUtilities.promptSIFTopologyGroupingWarning = new BackboneViews.PromptSIFTopologyGroupingWarning({el: '#prompt-sifTopologyGrouping-table'});
   promptInvalidFileView = appUtilities.promptInvalidFileView = new BackboneViews.PromptInvalidFileView({el: '#prompt-invalidFile-table'});
   promptInvalidTypeWarning = appUtilities.promptInvalidTypeWarning = new BackboneViews.PromptInvalidTypeWarning({el: '#prompt-errorInvalidType-table'});
   sifMapWarning = appUtilities.sifMapWarning = new BackboneViews.SifMapWarning({el: '#errorSifMap-table'});
@@ -1212,7 +1213,16 @@ module.exports = function() {
       var cy = chiseInstance.getCy();
       
       var selectedNodeSize = cy.nodes(':selected').length;
+      var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+      var currentMapType = chiseInstance.getMapType();
 
+      // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+      if (
+        currentMapType === "SIF" &&
+        currentGeneralProperties.enableSIFTopologyGrouping
+      ) {
+        appUtilities.promptSIFTopologyGroupingWarning.render();
+      }
       appUtilities.deleteNodesSmart(cy.nodes(':selected'));
       if(!chiseInstance.elementUtilities.isGraphTopologyLocked() && selectedNodeSize > 0)
         $('#inspector-palette-tab a').tab('show');
@@ -1439,6 +1449,16 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
+      var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+      var currentMapType = chiseInstance.getMapType();
+
+      // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+      if (
+        currentMapType === "SIF" &&
+        currentGeneralProperties.enableSIFTopologyGrouping
+      ) {
+        appUtilities.promptSIFTopologyGroupingWarning.render();
+      }
       chiseInstance.deleteElesSimple(cy.elements(':selected'));
       
       if(!chiseInstance.elementUtilities.isGraphTopologyLocked())

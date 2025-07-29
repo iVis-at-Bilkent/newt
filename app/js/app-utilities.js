@@ -1196,8 +1196,11 @@ appUtilities.deleteNodesSmart = function (nodes) {
     cy,
     "currentGeneralProperties"
   );
+  var currentMapType = chiseInstance.getMapType();
 
-  if (currentGeneralProperties.recalculateLayoutOnComplexityManagement) {
+  // If the map type is SIF and SIF topology grouping is enabled, skip layout and only delete nodes
+  if (currentGeneralProperties.recalculateLayoutOnComplexityManagement && !(currentMapType === "SIF" &&
+      currentGeneralProperties.enableSIFTopologyGrouping)) {
     //Put them near node and perform incremental layout
     chiseInstance.deleteAndPerformLayout(
       nodes,

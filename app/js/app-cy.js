@@ -109,6 +109,8 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentMapType = chiseInstance.getMapType();
           let eles = event.target || event.cyTarget;
           let connections = eles.connectedEdges();
           for (let i = 0; i < connections.length; i++) {
@@ -124,6 +126,14 @@ module.exports = function (chiseInstance) {
             ];
             // console.log("source:",source.id(), "target:", target.id(), "className:", className);
           }
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping
+          ) {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
+          }
+      
           delete databaseUtilities.nodesInDB[eles.id()];
 
           chiseInstance.deleteElesSimple(eles);
@@ -137,6 +147,15 @@ module.exports = function (chiseInstance) {
         content: 'Delete Selected',
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentMapType = chiseInstance.getMapType();
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping
+          ) {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
+          }
           $("#delete-selected-simple").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
@@ -650,6 +669,7 @@ module.exports = function (chiseInstance) {
         }
 
         var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
         // We need to remove interactively added entities because we should add the edge with the chise api
         addedEntities.remove();
@@ -688,6 +708,14 @@ module.exports = function (chiseInstance) {
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             }); */
+          }
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          else if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping 
+          ) 
+          {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
           }
           else{
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
@@ -1064,6 +1092,7 @@ module.exports = function (chiseInstance) {
 
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+      var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
 
       if (relPos){ // drag and drop case
         var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
@@ -1162,6 +1191,11 @@ module.exports = function (chiseInstance) {
             if (chiseInstance.getMapType() && !isMapTypeValid){
 
               appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
+            }
+            // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+            else if (currentMapType === "SIF" && 
+              currentGeneralProperties.enableSIFTopologyGrouping){
+                appUtilities.promptSIFTopologyGroupingWarning.render()
             }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
