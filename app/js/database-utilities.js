@@ -1038,7 +1038,6 @@ var databaseUtilities = {
     var tags = nodesData.filter((node)=>node.class==='tag');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
-    console.log('epns:',epns,'complexes:',complexes,'compartmentIds:',compartmentIds);
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
@@ -1051,6 +1050,7 @@ var databaseUtilities = {
       tags,
       epnMatchingPercentage
     );
+    console.log("Pushing EPNs:", epns);
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       tag_ids,
       epns,
@@ -1176,6 +1176,7 @@ var databaseUtilities = {
   },
 
   pushNode: function (new_node) {
+    console.log("new_node:",new_node);
     return new Promise((resolve) => {
       if (!(new_node.properties.newtId in databaseUtilities.nodesInDB)) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1735,7 +1736,7 @@ var databaseUtilities = {
     }
     console.log("data:", output);
     if (output.records.length == 0) {
-      result.err = { err: "Invalid input", message: "No data returned" };
+      result.err = { err: "Warning", message: "No results found!" };
       return;
     }
     var nodes = [];
@@ -1747,6 +1748,10 @@ var databaseUtilities = {
         nodes.push(fields[1][j]);
       }
       for (let j = 0; j < fields[5].length; j++) {
+        const edgeClass = fields[5][j].properties.class;
+        if(!edgeClass || edgeClass.startsWith("belongs_to_")){
+          continue; // Skip edges that are not relevant
+        }
         var edge = {};
         edge.properties = {};
         edge.identity = {};
@@ -1757,6 +1762,11 @@ var databaseUtilities = {
         edges.push(edge);
       }
     }
+    console.log("nodes:", nodes, "edges:", edges);
+    // Clean the canvas
+    var cy = appUtilities.getActiveCy();
+    cy.elements().remove();
+    databaseUtilities.cleanNodesAndEdgesInDB();
     await databaseUtilities.addNodesEdgesToCy(nodes,edges);
     return result;
   },

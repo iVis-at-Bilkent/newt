@@ -4003,10 +4003,7 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          databaseUtilities.cleanNodesAndEdgesInDB();
+
 
           self.currentQueryParameters.geneSymbols = document.getElementById(
             "query-commonstream-localdatabase-gene-symbols"
@@ -4057,11 +4054,12 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
             lengthLimit,
             -1
           );
+          console.log("resultFromDb", result);
           if (result && result.err) {
             $(self.el).modal("toggle");
             new PromptInvalidQueryView({
               el: "#prompt-invalidQuery-table",
-            }).render();
+            }).render(result.err,result.message);
             return;
           }
           $(self.el).modal("toggle");
@@ -5780,8 +5778,8 @@ var PromptInvalidQueryView = Backbone.View.extend({
     console.log(title, message);
 
     var param = {};
-    param.title = title;
-    param.message = message;
+    param.title = title || "Invalid Query";
+    param.message = message || "The query you have entered is invalid. Please check the query parameters and try again.";
     self.template = self.template(param);
 
 
