@@ -1283,6 +1283,7 @@ module.exports = function (chiseInstance) {
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
+                && nodeType !== "phenotype"
                 && ((chiseInstance.elementUtilities.isEPNClass(cyTarget) && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)) || (chiseInstance.elementUtilities.isSBMLNode(cyTarget) && chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource)))
                 && !(cyTarget.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(cyTarget.parent()[0])) ||
                   convenientProcessSource.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource.parent()[0]))))
