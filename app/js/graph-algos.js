@@ -5,12 +5,12 @@ var graphAlgos = {
     UNWIND $idList AS b
     WITH a, b
     WHERE a <> b  // Ensure a and b are different
-    MATCH p=(n)-[*]-(m)  // Match paths of any length
+    MATCH p=(n)-[*..]-(m)  // Match paths of any length
     WHERE id(n) = a AND id(m) = b 
       AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
       AND ALL(x IN nodes(p) WHERE x.class <> 'simple_chemical' OR apoc.node.degree(x, null) < ${simpleChemicalDegreeThreshold})
     WITH p, 
-        [x IN nodes(p) WHERE NOT x.category <> 'process' ] AS filteredNodes  // Filter out multiple node classes
+        [x IN nodes(p) WHERE x.category <> 'process' ] AS filteredNodes  // Filter out multiple node classes
     WHERE size(filteredNodes) - 1 <= ${limit}  // Ensure that the non-excluded nodes count is within the length limit
     unwind nodes(p) as node
       unwind relationships(p) as rel

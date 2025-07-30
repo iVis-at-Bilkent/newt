@@ -2687,76 +2687,81 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
         async function (evt) {
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
+          const sendNeighborhoodQuery = async function () {
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          //  cy.elements().remove();
-          //  databaseUtilities.cleanNodesAndEdgesInDB();
+            self.currentQueryParameters.geneSymbols = document.getElementById(
+              "query-neighborhood-localdatabase-gene-symbols"
+            ).value;
+            self.currentQueryParameters.lengthLimit = Number(
+              document.getElementById(
+                "query-neighborhood-localdatabase-length-limit"
+              ).value
+            );
 
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-neighborhood-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-neighborhood-localdatabase-length-limit"
-            ).value
-          );
+            var removeDisconnected = document.getElementById(
+              "query-neighborhood-localdatabase-checkbox"
+            ).checked;
+            var removeRedundant = document.getElementById(
+              "query-neighborhood-localdatabase-redundant-checkbox"
+            ).checked;
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+              document
+                .getElementById("query-neighborhood-localdatabase-gene-symbols")
+                .focus();
+              return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 2) {
+              $(self.el).modal("toggle");
+              new PromptInvalidLengthLimitView({
+                el: "#prompt-invalidLengthLimit-table",
+              }).render();
+              document
+                .getElementById("query-neighborhood-localdatabase-length-limit")
+                .focus();
+              return;
+            }
+            var geneSymbolsArray = geneSymbols
+              .replaceAll("\n", " ")
+              .replaceAll("\t", " ")
+              .split(" ");
+            var lengthLimit = self.currentQueryParameters.lengthLimit;
+            console.log("geneSymbolsArray", geneSymbolsArray);
+            console.log("lengthLimit", lengthLimit);
+            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            var result = await databaseUtilities.runNeighborhood(
+              geneSymbolsArray,
+              lengthLimit,
+              allowCloning,
+              cloningThreshold
+            );
+            if (result && result.err) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            $(self.el).modal("toggle");
+          }
 
-          var removeDisconnected = document.getElementById(
-            "query-neighborhood-localdatabase-checkbox"
-          ).checked;
-          var removeRedundant = document.getElementById(
-            "query-neighborhood-localdatabase-redundant-checkbox"
-          ).checked;
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-neighborhood-localdatabase-gene-symbols")
-              .focus();
-            return;
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendNeighborhoodQuery);
+          } else {
+            sendNeighborhoodQuery();
           }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 2) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-neighborhood-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-          var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          var lengthLimit = self.currentQueryParameters.lengthLimit;
-          console.log("geneSymbolsArray", geneSymbolsArray);
-          console.log("lengthLimit", lengthLimit);
-          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
-          var result = await databaseUtilities.runNeighborhood(
-            geneSymbolsArray,
-            lengthLimit,
-            allowCloning,
-            cloningThreshold
-          );
-          if (result && result.err) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          $(self.el).modal("toggle");
         }
       );
 
@@ -3054,67 +3059,72 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
           // use the associated cy instance
+          const sendPathsBetweenQuery = async function () {
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          databaseUtilities.cleanNodesAndEdgesInDB();
+            self.currentQueryParameters.geneSymbols = document.getElementById(
+              "query-pathsbetween-localdatabase-gene-symbols"
+            ).value;
+            self.currentQueryParameters.lengthLimit = Number(
+              document.getElementById(
+                "query-pathsbetween-localdatabase-length-limit"
+              ).value
+            );
+            console.log(self.currentQueryParameters.lengthLimit);
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+              document
+                .getElementById("query-pathsbetween-localdatabase-gene-symbols")
+                .focus();
+              return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 5) {
+              $(self.el).modal("toggle");
+              new PromptInvalidLengthLimitView({
+                el: "#prompt-invalidLengthLimit-table",
+              }).render();
+              document
+                .getElementById("query-pathsbetween-localdatabase-length-limit")
+                .focus();
+              return;
+            }
 
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-pathsbetween-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-pathsbetween-localdatabase-length-limit"
-            ).value
-          );
-          console.log(self.currentQueryParameters.lengthLimit);
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-pathsbetween-localdatabase-gene-symbols")
-              .focus();
-            return;
-          }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 5) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-pathsbetween-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-
-          var geneSymbolsArray = geneSymbols
-          .replaceAll("\n", " ")
-          .replaceAll("\t", " ")
-          .split(" ");
-          
-          var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
-          var lengthLimit =  self.currentQueryParameters.lengthLimit
-          console.log("geneSymbolsArray", geneSymbolsArray)
-          console.log("lengthLimit", lengthLimit);
-          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
-          var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowCloning,cloningThreshold);
-          if (result && result.err)
-          {
+            var geneSymbolsArray = geneSymbols
+            .replaceAll("\n", " ")
+            .replaceAll("\t", " ")
+            .split(" ");
+            
+            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+            var lengthLimit =  self.currentQueryParameters.lengthLimit
+            console.log("geneSymbolsArray", geneSymbolsArray)
+            console.log("lengthLimit", lengthLimit);
+            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowCloning,cloningThreshold);
+            if (result && result.err)
+            {
+              $(self.el).modal('toggle');
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render(result.err,result.message);
+              return;
+            }
             $(self.el).modal('toggle');
-            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render(result.err,result.message);
-            return;
           }
-          $(self.el).modal('toggle');
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendPathsBetweenQuery);
+          } else {
+            sendPathsBetweenQuery();
+          }
+          
         }
       );
 
@@ -3801,98 +3811,105 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
         async function (evt) {
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          //  databaseUtilities.cleanNodesAndEdgesInDB();
+          
+          const sendPathsFromToLocalDBQuery=async()=>{
 
-          self.currentQueryParameters.sourceSymbols = document.getElementById(
-            "query-pathsfromto-source-symbols-localdatabase"
-          ).value;
-          self.currentQueryParameters.targetSymbols = document.getElementById(
-            "query-pathsfromto-target-symbols-localdatabase"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-pathsfromto-length-limit-localdatabase"
-            ).value
-          );
+              self.currentQueryParameters.sourceSymbols = document.getElementById(
+                "query-pathsfromto-source-symbols-localdatabase"
+              ).value;
+              self.currentQueryParameters.targetSymbols = document.getElementById(
+                "query-pathsfromto-target-symbols-localdatabase"
+              ).value;
+              self.currentQueryParameters.lengthLimit = Number(
+                document.getElementById(
+                  "query-pathsfromto-length-limit-localdatabase"
+                ).value
+              );
 
-          var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
-          if (sourceSymbols.length === 0) {
-            document
-              .getElementById("query-pathsfromto-source-symbols-localdatabase")
-              .focus();
-            return;
-          }
-          // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          sourceSymbols = sourceSymbols
-            .replace(/[^a-zA-Z0-9\n\t ]/g, "")
-            .trim();
-          if (sourceSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
+              var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+              if (sourceSymbols.length === 0) {
+                document
+                  .getElementById("query-pathsfromto-source-symbols-localdatabase")
+                  .focus();
+                return;
+              }
+              // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+              sourceSymbols = sourceSymbols
+                .replace(/[^a-zA-Z0-9\n\t ]/g, "")
+                .trim();
+              if (sourceSymbols.length === 0) {
+                $(self.el).modal("toggle");
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render();
+                return;
+              }
+
+              var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+              if (targetSymbols.length === 0) {
+                document
+                  .getElementById("query-pathsfromto-target-symbols-localdatabase")
+                  .focus();
+                return;
+              }
+              // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+              targetSymbols = targetSymbols
+                .replace(/[^a-zA-Z0-9\n\t ]/g, "")
+                .trim();
+              if (targetSymbols.length === 0) {
+                $(self.el).modal("toggle");
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render();
+                return;
+              }
+
+              if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal("toggle");
+                new PromptInvalidLengthLimitView({
+                  el: "#prompt-invalidLengthLimit-table",
+                }).render();
+                document.getElementById("query-pathsfromto-length-limit").focus();
+                return;
+              }
+
+              var sourceSymbolsArray = sourceSymbols
+                .replaceAll("\n", " ")
+                .replaceAll("\t", " ")
+                .split(" ");
+              var targetSymbolsArray = targetSymbols
+                .replaceAll("\n", " ")
+                .replaceAll("\t", " ")
+                .split(" ");
+              console.log("sourceSymbolsArray", sourceSymbolsArray);
+              console.log("targetSymbolsArray", targetSymbolsArray);
+              const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+              const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+              var result = await databaseUtilities.runPathsFromTo(
+                sourceSymbolsArray,
+                targetSymbols,
+                2,
+                allowCloning,
+                cloningThreshold
+              );
+              console.log("resultFromDb", result);
+              if (result && result.err) {
+                $(self.el).modal("toggle");
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render();
+                return;
+              }
+              $(self.el).modal("toggle");
           }
 
-          var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
-          if (targetSymbols.length === 0) {
-            document
-              .getElementById("query-pathsfromto-target-symbols-localdatabase")
-              .focus();
-            return;
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendPathsFromToLocalDBQuery);
+          } else {
+            sendPathsFromToLocalDBQuery();
           }
-          // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          targetSymbols = targetSymbols
-            .replace(/[^a-zA-Z0-9\n\t ]/g, "")
-            .trim();
-          if (targetSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-
-          if (self.currentQueryParameters.lengthLimit > 3) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document.getElementById("query-pathsfromto-length-limit").focus();
-            return;
-          }
-
-          var sourceSymbolsArray = sourceSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          var targetSymbolsArray = targetSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          console.log("sourceSymbolsArray", sourceSymbolsArray);
-          console.log("targetSymbolsArray", targetSymbolsArray);
-          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
-          var result = await databaseUtilities.runPathsFromTo(
-            sourceSymbolsArray,
-            targetSymbols,
-            2,
-            allowCloning,
-            cloningThreshold
-          );
-          console.log("resultFromDb", result);
-          if (result && result.err) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          $(self.el).modal("toggle");
         }
       );
 
@@ -4185,65 +4202,75 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
 
+          const sendCommonStreamLocalDBQuery = async () => {
 
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-commonstream-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-commonstream-localdatabase-length-limit"
-            ).value
-          );
+            self.currentQueryParameters.geneSymbols = document.getElementById(
+              "query-commonstream-localdatabase-gene-symbols"
+            ).value;
+            self.currentQueryParameters.lengthLimit = Number(
+              document.getElementById(
+                "query-commonstream-localdatabase-length-limit"
+              ).value
+            );
 
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-commonstream-localdatabase-gene-symbols")
-              .focus();
-            return;
-          }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 3) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-commonstream-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-          var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          //$(self.el).modal('toggle');
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+              document
+                .getElementById("query-commonstream-localdatabase-gene-symbols")
+                .focus();
+              return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 3) {
+              $(self.el).modal("toggle");
+              new PromptInvalidLengthLimitView({
+                el: "#prompt-invalidLengthLimit-table",
+              }).render();
+              document
+                .getElementById("query-commonstream-localdatabase-length-limit")
+                .focus();
+              return;
+            }
+            var geneSymbolsArray = geneSymbols
+              .replaceAll("\n", " ")
+              .replaceAll("\t", " ")
+              .split(" ");
+            //$(self.el).modal('toggle');
 
-          var lengthLimit = self.currentQueryParameters.lengthLimit;
-          console.log("geneSymbolsArray", geneSymbolsArray);
-          console.log("lengthLimit", lengthLimit);
-          var result = await databaseUtilities.runCommonStream(
-            geneSymbolsArray,
-            lengthLimit,
-            -1
-          );
-          console.log("resultFromDb", result);
-          if (result && result.err) {
+            var lengthLimit = self.currentQueryParameters.lengthLimit;
+            console.log("geneSymbolsArray", geneSymbolsArray);
+            console.log("lengthLimit", lengthLimit);
+            var result = await databaseUtilities.runCommonStream(
+              geneSymbolsArray,
+              lengthLimit,
+              -1
+            );
+            console.log("resultFromDb", result);
+            if (result && result.err) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render(result.err,result.message);
+              return;
+            }
             $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render(result.err,result.message);
-            return;
           }
-          $(self.el).modal("toggle");
+
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendCommonStreamLocalDBQuery);
+          } else {
+            sendCommonStreamLocalDBQuery();
+          }
         }
       );
 
@@ -4293,11 +4320,6 @@ var UpStreamQueryViewLocalDB = Backbone.View.extend({
       .on("click", "#save-query-upstream-localdatabase", async function (evt) {
         // use active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
-
-        //Clean the canvas
-        var cy = chiseInstance.getCy();
-        cy.elements().remove();
-        databaseUtilities.cleanNodesAndEdgesInDB();
 
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-upstream-localdatabase-gene-symbols"
@@ -4406,11 +4428,6 @@ var DownStreamQueryViewLocalDB = Backbone.View.extend({
         async function (evt) {
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
-
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          databaseUtilities.cleanNodesAndEdgesInDB();
 
           self.currentQueryParameters.geneSymbols = document.getElementById(
             "query-downstream-localdatabase-gene-symbols"
