@@ -5,12 +5,12 @@ var graphAlgos = {
     UNWIND $idList AS b
     WITH a, b
     WHERE a <> b  // Ensure a and b are different
-    MATCH p=(n)-[*]-(m)  // Match paths of any length
+    MATCH p=(n)-[*..]-(m)  // Match paths of any length
     WHERE id(n) = a AND id(m) = b 
       AND NONE(r IN relationships(p) WHERE type(r) IN ['belongs_to_compartment', 'belongs_to_submap', 'belongs_to_complex'])  // Exclude specific relationships
       AND ALL(x IN nodes(p) WHERE x.class <> 'simple_chemical' OR apoc.node.degree(x, null) < ${simpleChemicalDegreeThreshold})
     WITH p, 
-        [x IN nodes(p) WHERE NOT x.category <> 'process' ] AS filteredNodes  // Filter out multiple node classes
+        [x IN nodes(p) WHERE x.category <> 'process' ] AS filteredNodes  // Filter out multiple node classes
     WHERE size(filteredNodes) - 1 <= ${limit}  // Ensure that the non-excluded nodes count is within the length limit
     unwind nodes(p) as node
       unwind relationships(p) as rel
@@ -107,7 +107,7 @@ var graphAlgos = {
     console.log(idList);
     idList = idList.map(id => `'${id}'`).join(',');
     var pageSize = 100000;
-    var query = `CALL commonStream([${idList}], [], ${lengthLimit}, -1,
+    var query = `CALL commonStream([${idList}], ['belongs_to_compartment','belongs_to_complex','belongs_to_submap'], ${lengthLimit}, -1,
             ${pageSize}, 1, '', true, '', 2,{}, 0, 0, 0, 100000, null)`;
     // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, -1,
     //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
@@ -115,7 +115,7 @@ var graphAlgos = {
   },
   upstream: function (idList, lengthLimit) {
     var pageSize = 100000;
-    var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
+    var query = `CALL commonStream([${idList}], ['belongs_to_compartment','belongs_to_complex','belongs_to_submap'], ${lengthLimit}, 1,
             ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, null)`;
     // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 1,
     //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;
@@ -123,7 +123,7 @@ var graphAlgos = {
   },
   downstream: function (idList, lengthLimit) {
     var pageSize = 100000;
-    var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 0,
+    var query = `CALL commonStream([${idList}], ['belongs_to_compartment','belongs_to_complex','belongs_to_submap'], ${lengthLimit}, 0,
             ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, null)`;
     // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, 0,
     //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;

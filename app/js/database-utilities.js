@@ -1038,7 +1038,6 @@ var databaseUtilities = {
     var tags = nodesData.filter((node)=>node.class==='tag');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
-    console.log('epns:',epns,'complexes:',complexes,'compartmentIds:',compartmentIds);
     var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
@@ -1051,6 +1050,7 @@ var databaseUtilities = {
       tags,
       epnMatchingPercentage
     );
+    console.log("Pushing EPNs:", epns);
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       tag_ids,
       epns,
@@ -1176,6 +1176,7 @@ var databaseUtilities = {
   },
 
   pushNode: function (new_node) {
+    console.log("new_node:",new_node);
     return new Promise((resolve) => {
       if (!(new_node.properties.newtId in databaseUtilities.nodesInDB)) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
@@ -1494,6 +1495,9 @@ var databaseUtilities = {
       }
     }
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+    var cy = appUtilities.getActiveCy();
+    cy.elements().remove();
+    databaseUtilities.cleanNodesAndEdgesInDB();
     databaseUtilities.addNodesEdgesToCy(
       nodes,
       edges,
@@ -1516,7 +1520,7 @@ var databaseUtilities = {
     if (idOfNodes.length == 0) {
       var errMessage = {
         err: "Invalid input",
-        message: "No such nodes with given labels",
+        message: "No such nodes with given symbol",
       };
       return errMessage;
     }
@@ -1591,6 +1595,9 @@ var databaseUtilities = {
       }
     }
     console.log("data:", nodes, edges, newtIdOfNodes,language);
+    var cy = appUtilities.getActiveCy();
+    cy.elements().remove();
+    databaseUtilities.cleanNodesAndEdgesInDB();
     const abc = await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
     console.log("abc:", abc);
     return null;
@@ -1609,7 +1616,7 @@ var databaseUtilities = {
     if (idList.length == 0) {
       var errMessage = {
         err: "Invalid input",
-        message: "No such nodes with given labels",
+        message: "No such nodes with given symbol",
       };
       return errMessage;
     }
@@ -1631,7 +1638,7 @@ var databaseUtilities = {
         if (data.records.length == 0) {
           result.err = {
             err: "Invalid input",
-            message: "No such nodes with given labels",
+            message: "No such nodes with given symbol",
           };
           return;
         }
@@ -1684,6 +1691,9 @@ var databaseUtilities = {
         }
         console.log(nodes, edges, newtIdList, targetNodes);
         appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+        var cy = appUtilities.getActiveCy();
+        cy.elements().remove();
+        databaseUtilities.cleanNodesAndEdgesInDB();
         await databaseUtilities.addNodesEdgesToCy(
           nodes,
           edges,
@@ -1705,7 +1715,7 @@ var databaseUtilities = {
     if (idOfNodes.length == 0) {
       var errMessage = {
         err: "Invalid input",
-        message: "No such nodes with given labels",
+        message: "No such nodes with given symbol",
       };
       return errMessage;
     }
@@ -1735,7 +1745,7 @@ var databaseUtilities = {
     }
     console.log("data:", output);
     if (output.records.length == 0) {
-      result.err = { err: "Invalid input", message: "No data returned" };
+      result.err = { err: "Warning", message: "No results found!" };
       return;
     }
     var nodes = [];
@@ -1747,6 +1757,10 @@ var databaseUtilities = {
         nodes.push(fields[1][j]);
       }
       for (let j = 0; j < fields[5].length; j++) {
+        const edgeClass = fields[5][j].properties.class;
+        if(!edgeClass || edgeClass.startsWith("belongs_to_")){
+          continue; // Skip edges that are not relevant
+        }
         var edge = {};
         edge.properties = {};
         edge.identity = {};
@@ -1757,8 +1771,50 @@ var databaseUtilities = {
         edges.push(edge);
       }
     }
+    appUtilities.getActiveChiseInstance().elementUtilities.setMapType(await databaseUtilities.getLanguage(output));
+    console.log("nodes:", nodes, "edges:", edges);
+    // Clean the canvas
+    var cy = appUtilities.getActiveCy();
+    cy.elements().remove();
+    databaseUtilities.cleanNodesAndEdgesInDB();
     await databaseUtilities.addNodesEdgesToCy(nodes,edges);
     return result;
+  },
+
+  getLanguage: async function (output) {
+    const nodes      = [];
+    const edges      = [];
+    const languages  = new Set();                    // <‑‑ language aggregator
+
+    output.records.forEach(rec => {
+      const nodeField = rec._fields[1];              // nodes list
+      const edgeField = rec._fields[5];              // relationships list
+
+      /* ---- nodes ---- */
+      nodeField.forEach(n => {
+        nodes.push(n);
+        if (n.properties && n.properties.language) {
+          languages.add(n.properties.language);      // collect language
+        }
+      });
+
+      /* ---- edges ---- */
+      edgeField.forEach(e => {
+        const edgeClass = e.properties.class;
+        if (!edgeClass || edgeClass.startsWith("belongs_to_")) return; // skip bookkeeping edges
+
+        edges.push({
+          identity   : { low : e.identity.low },
+          properties : {
+            source : e.properties.source,
+            target : e.properties.target,
+            class  : edgeClass
+          }
+        });
+      });
+    });
+    if(languages.size===1)return mapType = [...languages][0]; // single language
+    return "HybridAny"; // mixed languages or no languages found
   },
 
   getAllNodeCount: async function () {

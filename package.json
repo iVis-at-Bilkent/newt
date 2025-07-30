@@ -57,8 +57,8 @@
     "natives": "^1.1.6",
     "neo4j-driver": "^4.4.11",
     "nodemailer": "6.4.5",
-    "plotly.js-dist": "2.34.0",
     "request": "^2.81.0",
+    "plotly.js-dist": "2.34.0",
     "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
     "tippy.js": "^3.4.0"
   },

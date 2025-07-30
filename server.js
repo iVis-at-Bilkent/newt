@@ -44,6 +44,30 @@ server.listen(port, function(){
   console.log('server listening on port: %d', port);
 });
 
+
+// Handle graceful shutdown
+process.on('SIGINT', () => {
+  console.log('\n🛑 Received SIGINT (Ctrl+C). Closing server...');
+  server.close(() => {
+    console.log('✅ Server closed. Exiting process.');
+    process.exit(0);
+  });
+
+  // Force exit after 3 seconds if it hangs
+  setTimeout(() => {
+    console.warn('⚠️ Forcefully exiting after timeout.');
+    process.exit(1);
+  }, 3000);
+});
+
+process.on('SIGTERM', () => {
+  console.log('\n🛑 Received SIGTERM. Closing server...');
+  server.close(() => {
+    console.log('✅ Server closed. Exiting process.');
+    process.exit(0);
+  });
+});
+
 app.post('/simulate', function(req, res) {
     const python = spawn('env/bin/python', ['simulator.py', req.body.file, req.body.start, req.body.stop, req.body.step]);
     

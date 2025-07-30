@@ -1554,6 +1554,10 @@
       <!-- map type change confirmation dialog will be shown here-->
     </div>
 
+    <div id="prompt-sifTopologyGrouping-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- sif topology grouping warning dialog will be shown here-->
+    </div>
+
     <div id="prompt-internal-server-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
@@ -3725,6 +3729,37 @@
       <div class="modal-footer" style="text-align: center">
       <button id="prompt-mapType-accept" class="btn btn-default">Dismiss</button>
       <!-- <button id="prompt-mapType-cancel" class="btn btn-default">No</button> -->
+      </div>
+      </div>
+      </div>
+    </script>
+
+    <!-- SIF Topology Grouping Warning-->
+    <script type="text/template" id="prompt-sifTopologyGrouping-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 700px;">
+      <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Warning</h4>
+      </div>
+      <div class="modal-body">
+      <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+      <tbody>
+      <tr>
+      <th style="padding-left: 0px;" align="left">
+      <span class="add-on layout-text">You are not allowed to change the topology of a SIF map while Enable Topology Grouping of SIF Nodes is true!</span>
+      </th>
+      </tr>
+
+      <tr id="prompt-sifTopologyGrouping-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+      <td>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+      <button id="prompt-sifTopologyGrouping-confirm" class="btn btn-default">Dismiss</button>
       </div>
       </div>
       </div>
