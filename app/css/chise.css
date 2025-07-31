@@ -1090,7 +1090,7 @@ img#template-reversible-output-add-button:hover {
 }
 
 .add-layer-section button {
-  font-weight: 500;
+  font-weight: normal !important;
 }
 
 .add-layer-section button:hover {
