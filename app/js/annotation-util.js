@@ -61,7 +61,19 @@ var AnnotationUtil = function() {
       ctx.save();
       
       ctx.strokeStyle = rectStyles.strokeColor;
-      ctx.lineWidth = rectStyles.lineWidth;
+      
+      var lineWidth = rectStyles.lineWidth || 2;
+      var zoom = 1;
+      
+      if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+        var viewportState = window.annotationLayers.getViewportState();
+        if (viewportState && viewportState.zoom) {
+          zoom = viewportState.zoom;
+        }
+      }
+      
+      var scaledLineWidth = lineWidth * zoom;
+      ctx.lineWidth = scaledLineWidth;
       ctx.setLineDash(rectStyles.lineDash);
       
       ctx.fillStyle = rectStyles.fillColor;
@@ -93,7 +105,20 @@ var AnnotationUtil = function() {
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#0066cc';
-    ctx.lineWidth = 2;
+    
+    // Scale line width by zoom level if available
+    var lineWidth = 2;
+    var zoom = 1;
+    
+    if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+      var viewportState = window.annotationLayers.getViewportState();
+      if (viewportState && viewportState.zoom) {
+        zoom = viewportState.zoom;
+      }
+    }
+    
+    var scaledLineWidth = lineWidth * zoom;
+    ctx.lineWidth = scaledLineWidth;
     
     var corners = [
       { x: x, y: y },
@@ -284,24 +309,25 @@ var AnnotationUtil = function() {
       ctx.fillStyle = fillColor;
       ctx.fillRect(x, y, width, height);
       ctx.strokeStyle = borderColor;
-      ctx.lineWidth = 1;
+      
+      var lineWidth = 1;
+      var zoom = 1;
+      
+      if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+        var viewportState = window.annotationLayers.getViewportState();
+        if (viewportState && viewportState.zoom) {
+          zoom = viewportState.zoom;
+        }
+      }
+      
+      var scaledLineWidth = lineWidth * zoom;
+      ctx.lineWidth = scaledLineWidth;
       ctx.setLineDash([5, 5]);
       ctx.strokeRect(x, y, width, height);
       if (text && text.trim()) {
         ctx.fillStyle = textBoxStyles.color;
         
-        // Scale font size by zoom level if available
-        var fontSize = textBoxStyles.fontSize || 14;
-        var zoom = 1; // Default zoom level
-        
-        // Try to get zoom from annotation layers if available
-        if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
-          var viewportState = window.annotationLayers.getViewportState();
-          if (viewportState && viewportState.zoom) {
-            zoom = viewportState.zoom;
-          }
-        }
-        
+        var fontSize = textBoxStyles.fontSize || 12;
         var scaledFontSize = fontSize * zoom;
         
         ctx.font = (textBoxStyles.fontStyle || 'normal') + ' ' +
@@ -360,7 +386,20 @@ var AnnotationUtil = function() {
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#0066cc';
-    ctx.lineWidth = 2;
+    
+    // Scale line width by zoom level if available
+    var lineWidth = 2;
+    var zoom = 1;
+    
+    if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+      var viewportState = window.annotationLayers.getViewportState();
+      if (viewportState && viewportState.zoom) {
+        zoom = viewportState.zoom;
+      }
+    }
+    
+    var scaledLineWidth = lineWidth * zoom;
+    ctx.lineWidth = scaledLineWidth;
     
     var corners = [
       { x: x, y: y },
@@ -456,7 +495,23 @@ var AnnotationUtil = function() {
       ctx.save();
       
       ctx.strokeStyle = arrowStyles.strokeColor;
-      ctx.lineWidth = arrowStyles.lineWidth;
+      
+      // Scale line width and head size by zoom level if available
+      var lineWidth = arrowStyles.lineWidth || 7;
+      var headSize = arrowStyles.headSize || 20;
+      var zoom = 1;
+      
+      if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+        var viewportState = window.annotationLayers.getViewportState();
+        if (viewportState && viewportState.zoom) {
+          zoom = viewportState.zoom;
+        }
+      }
+      
+      var scaledLineWidth = lineWidth * zoom;
+      var scaledHeadSize = headSize * zoom;
+      
+      ctx.lineWidth = scaledLineWidth;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       
@@ -466,7 +521,7 @@ var AnnotationUtil = function() {
       ctx.stroke();
       
       var angle = Math.atan2(endY - startY, endX - startX);
-      var headLength = arrowStyles.headSize;
+      var headLength = scaledHeadSize;
       
       var headAngle1 = angle - Math.PI / 6;
       var headAngle2 = angle + Math.PI / 6;
@@ -507,7 +562,19 @@ var AnnotationUtil = function() {
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#0066cc';
-    ctx.lineWidth = 2;
+    
+    var lineWidth = 2;
+    var zoom = 1;
+    
+    if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+      var viewportState = window.annotationLayers.getViewportState();
+      if (viewportState && viewportState.zoom) {
+        zoom = viewportState.zoom;
+      }
+    }
+    
+    var scaledLineWidth = lineWidth * zoom;
+    ctx.lineWidth = scaledLineWidth;
     
     // Draw handles at start and end points
     var handles = [
@@ -626,7 +693,7 @@ var AnnotationUtil = function() {
    * @param {number} data.y - Y coordinate of top-left corner
    * @param {number} data.width - Width of the image
    * @param {number} data.height - Height of the image
-   * @param {string} data.imageData - Base64 image data or URL
+   * @param {string} data.imageData - Image data path
    * @param {Object} [styles] - Custom styles for the image
    */
   self.drawImage = function(ctx, data, styles) {
@@ -672,7 +739,20 @@ var AnnotationUtil = function() {
       } else {
         // Draw placeholder while image is loading
         ctx.strokeStyle = imageStyles.strokeColor;
-        ctx.lineWidth = imageStyles.lineWidth;
+        
+        // Scale line width by zoom level if available
+        var lineWidth = imageStyles.lineWidth || 2;
+        var zoom = 1;
+        
+        if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+          var viewportState = window.annotationLayers.getViewportState();
+          if (viewportState && viewportState.zoom) {
+            zoom = viewportState.zoom;
+          }
+        }
+        
+        var scaledLineWidth = lineWidth * zoom;
+        ctx.lineWidth = scaledLineWidth;
         ctx.setLineDash(imageStyles.lineDash);
         ctx.strokeRect(x, y, width, height);
         
@@ -706,7 +786,19 @@ var AnnotationUtil = function() {
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#0066cc';
-    ctx.lineWidth = 2;
+    
+    var lineWidth = 2;
+    var zoom = 1;
+    
+    if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+      var viewportState = window.annotationLayers.getViewportState();
+      if (viewportState && viewportState.zoom) {
+        zoom = viewportState.zoom;
+      }
+    }
+    
+    var scaledLineWidth = lineWidth * zoom;
+    ctx.lineWidth = scaledLineWidth;
     
     var corners = [
       { x: x, y: y },
