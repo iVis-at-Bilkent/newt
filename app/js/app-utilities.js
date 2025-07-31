@@ -5124,4 +5124,171 @@ appUtilities.synchronizeStates = function () {
   }
 };
 
+
+/**
+ * Calculate bounding box for annotation items
+ * @param {Array} annotationItems - Array of annotation items
+ * @param {Object} cy - Cytoscape instance
+ * @returns {Object|null} Bounding box or null if no items
+ */
+appUtilities.calculateAnnotationBoundingBox = function(annotationItems, cy) {
+  if (!annotationItems || annotationItems.length === 0) {
+    return null;
+  }
+  
+  var minX = Infinity, minY = Infinity;
+  var maxX = -Infinity, maxY = -Infinity;
+  var hasValidItems = false;
+  
+  annotationItems.forEach(function(item) {
+    if (item) {
+      var x1, y1, x2, y2;
+      
+      // Handle different annotation item types
+      if (item.type === 'rectangle' || item.type === 'textbox' || item.type === 'image') {
+        x1 = item.x || 0;
+        y1 = item.y || 0;
+        x2 = x1 + (item.width || 0);
+        y2 = y1 + (item.height || 0);
+      } else if (item.type === 'arrow') {
+        x1 = Math.min(item.startX || 0, item.endX || 0);
+        y1 = Math.min(item.startY || 0, item.endY || 0);
+        x2 = Math.max(item.startX || 0, item.endX || 0);
+        y2 = Math.max(item.startY || 0, item.endY || 0);
+      } else {
+        // Skip unknown types
+        return;
+      }
+      
+      minX = Math.min(minX, x1);
+      minY = Math.min(minY, y1);
+      maxX = Math.max(maxX, x2);
+      maxY = Math.max(maxY, y2);
+      hasValidItems = true;
+    }
+  });
+  
+  if (!hasValidItems) {
+    return null;
+  }
+  
+  return {
+    x1: minX,
+    y1: minY,
+    x2: maxX,
+    y2: maxY,
+    w: maxX - minX,
+    h: maxY - minY
+  };
+}
+
+/**
+ * Override the panzoom reset functionality to include annotation items in the view
+ * @param {Object} cy - Cytoscape instance
+ */
+appUtilities.overridePanzoomReset = function (cy) {
+  setTimeout(function() {
+    var $container = $(cy.container());
+    var $resetButton = $container.find('.cy-panzoom-reset');
+    console.log($resetButton);
+    
+    if ($resetButton.length > 0) {
+      console.log('reset button found');
+      $resetButton.off('mousedown');
+      
+      $resetButton.on('mousedown', function(e) {
+        console.log('reset button clicked');
+        
+        if (e.button != 0) {
+          return;
+        }
+
+        console.log('reset button clicked');
+        
+        // Call the actual reset function
+        appUtilities.performPanzoomReset(cy);
+        
+        return false;
+      });
+      
+      // console.log('Successfully overrode panzoom reset functionality');
+    } else {
+      // console.log('Panzoom reset button not found, retrying...');
+      // Retry after a short delay
+      setTimeout(function() {
+        appUtilities.overridePanzoomReset(cy);
+      }, 100);
+    }
+  }, 500);
+}
+
+// Add this function that contains the actual reset logic
+appUtilities.performPanzoomReset = function (cy) {
+  var visibleElements = cy.elements(':visible');
+  
+  // Get annotation items if annotation layers exist
+  var annotationItems = [];
+  if (window.annotationLayers) {
+    annotationItems = window.annotationLayers.getAllAnnotationItems();
+  }
+  
+  // If no visible elements, just reset to default view
+  if (visibleElements.length === 0) {
+    cy.reset();
+    return;
+  }
+  
+  var graphBbox = visibleElements.boundingBox();
+  
+  // Calculate bounding box for annotation items
+  var annotationBbox = null;
+  if (annotationItems.length > 0) {
+    annotationBbox = appUtilities.calculateAnnotationBoundingBox(annotationItems, cy);
+  }
+  
+  // Create combined bounding box
+  var combinedBbox = {
+    x1: graphBbox.x1,
+    y1: graphBbox.y1,
+    x2: graphBbox.x2,
+    y2: graphBbox.y2
+  };
+  
+  // Extend bounding box to include annotation items
+  if (annotationBbox) {
+    combinedBbox.x1 = Math.min(combinedBbox.x1, annotationBbox.x1);
+    combinedBbox.y1 = Math.min(combinedBbox.y1, annotationBbox.y1);
+    combinedBbox.x2 = Math.max(combinedBbox.x2, annotationBbox.x2);
+    combinedBbox.y2 = Math.max(combinedBbox.y2, annotationBbox.y2);
+  }
+  
+  // Calculate the center and dimensions of the combined bounding box
+  var centerX = (combinedBbox.x1 + combinedBbox.x2) / 2;
+  var centerY = (combinedBbox.y1 + combinedBbox.y2) / 2;
+  var width = combinedBbox.x2 - combinedBbox.x1;
+  var height = combinedBbox.y2 - combinedBbox.y1;
+  
+  var padding = 50;
+  width += padding * 2;
+  height += padding * 2;
+  
+  var cyWidth = cy.width();
+  var cyHeight = cy.height();
+  var zoomX = cyWidth / width;
+  var zoomY = cyHeight / height;
+  var zoom = Math.min(zoomX, zoomY, cy.maxZoom());
+  zoom = Math.max(zoom, cy.minZoom());
+  
+  var panX = (cyWidth / 2) - (centerX * zoom);
+  var panY = (cyHeight / 2) - (centerY * zoom);
+  
+  cy.animate({
+    zoom: zoom,
+    pan: {x: panX, y: panY}
+  }, {
+    duration: 1000,
+    easing: 'ease-in-out'
+  });
+};
+
 module.exports = appUtilities;

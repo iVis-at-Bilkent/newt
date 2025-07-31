@@ -354,7 +354,10 @@ module.exports = function() {
         appUtilities.applyMapColorScheme("cell_designer", "solid", appUtilities.colorSchemeInspectorView);
       }
     }
-    
+
+    setTimeout(() => {
+      appUtilities.performPanzoomReset(cy);
+    }, 100);
   });
 
 			   
