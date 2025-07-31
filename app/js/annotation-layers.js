@@ -2242,10 +2242,119 @@ self.setCytoscapeActiveStyle = function(enabled) {
   };
 
   /**
+   * Calculate the maximum border width from all annotation elements
+   * @param {Array} layers - Array of annotation layers
+   * @returns {number} Maximum border width
+   */
+  self.calculateMaxBorderWidth = function(layers) {
+    let maxBorderWidth = 0;
+    
+    layers.forEach(layer => {
+      if (layer.isAnnotationLayer && layer.visible) {
+        layer.elements.forEach(el => {
+          if (el.styles) {
+            // Check lineWidth for different element types
+            if (el.type === 'rectangle' || el.type === 'textbox' || el.type === 'image') {
+              const lineWidth = el.styles.lineWidth || 2; // Default from annotation-util.js
+              maxBorderWidth = Math.max(maxBorderWidth, lineWidth);
+            } else if (el.type === 'arrow') {
+              const lineWidth = el.styles.lineWidth || 7; // Default from annotation-util.js
+              const headSize = el.styles.headSize || 20; // Default from annotation-util.js
+              // For arrows, consider both line width and head size
+              maxBorderWidth = Math.max(maxBorderWidth, lineWidth, headSize);
+            }
+          }
+        });
+      }
+    });
+    
+    return maxBorderWidth;
+  };
+
+  /**
+   * Calculate individual padding for each side based on border widths
+   * @param {Array} layers - Array of annotation layers
+   * @param {Object} bbox - Current bounding box
+   * @returns {Object} Padding for each side {top, right, bottom, left}
+   */
+  self.calculateBorderPadding = function(layers, bbox) {
+    let maxTopPadding = 0, maxRightPadding = 0, maxBottomPadding = 0, maxLeftPadding = 0;
+    
+    layers.forEach(layer => {
+      if (layer.isAnnotationLayer && layer.visible) {
+        layer.elements.forEach(el => {
+          if (el.styles) {
+            let borderWidth = 0;
+            
+            if (el.type === 'rectangle' || el.type === 'textbox' || el.type === 'image') {
+              borderWidth = el.styles.lineWidth || 2;
+            } else if (el.type === 'arrow') {
+              borderWidth = Math.max(el.styles.lineWidth || 7, el.styles.headSize || 20);
+            }
+            
+            if (borderWidth > 0) {
+              // Calculate which sides of this element are at the edges of the bbox
+              if (el.type === 'rectangle' || el.type === 'textbox' || el.type === 'image') {
+                const halfBorder = borderWidth / 2;
+                
+                // top edge
+                if (Math.abs(el.y - bbox.y1) < 1) {
+                  maxTopPadding = Math.max(maxTopPadding, halfBorder);
+                }
+                // bottom edge
+                if (Math.abs((el.y + el.height) - bbox.y2) < 1) {
+                  maxBottomPadding = Math.max(maxBottomPadding, halfBorder);
+                }
+                // left edge
+                if (Math.abs(el.x - bbox.x1) < 1) {
+                  maxLeftPadding = Math.max(maxLeftPadding, halfBorder);
+                }
+                // right edge
+                if (Math.abs((el.x + el.width) - bbox.x2) < 1) {
+                  maxRightPadding = Math.max(maxRightPadding, halfBorder);
+                }
+              } else if (el.type === 'arrow') {
+                const halfBorder = borderWidth / 2;
+                const minX = Math.min(el.startX, el.endX);
+                const maxX = Math.max(el.startX, el.endX);
+                const minY = Math.min(el.startY, el.endY);
+                const maxY = Math.max(el.startY, el.endY);
+                
+                // Check if arrow is at the edges
+                if (Math.abs(minY - bbox.y1) < 1) {
+                  maxTopPadding = Math.max(maxTopPadding, halfBorder);
+                }
+                if (Math.abs(maxY - bbox.y2) < 1) {
+                  maxBottomPadding = Math.max(maxBottomPadding, halfBorder);
+                }
+                if (Math.abs(minX - bbox.x1) < 1) {
+                  maxLeftPadding = Math.max(maxLeftPadding, halfBorder);
+                }
+                if (Math.abs(maxX - bbox.x2) < 1) {
+                  maxRightPadding = Math.max(maxRightPadding, halfBorder);
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+    
+    return {
+      top: maxTopPadding,
+      right: maxRightPadding,
+      bottom: maxBottomPadding,
+      left: maxLeftPadding
+    };
+  };
+
+  /**
    * Compute the bounding box that includes all Cytoscape elements and all visible annotation items
+   * @param {Object} activeCy - Active Cytoscape instance
+   * @param {boolean} useIndividualPadding - Whether to calculate individual padding for each side
    * @returns {Object} {x1, y1, x2, y2}
    */
-  self.getCombinedBoundingBox = function(activeCy) {
+  self.getCombinedBoundingBox = function(activeCy, useIndividualPadding = false) {
     // Cytoscape bounding box
     const cyBBox = activeCy.elements().boundingBox();
     // Annotation bounding box
@@ -2282,12 +2391,24 @@ self.setCytoscapeActiveStyle = function(enabled) {
       };
     }
     
-    // Extra padding to avoid clipping the borders of annotation items
-    var padding = 10;
-    bbox.x1 -= padding;
-    bbox.y1 -= padding;
-    bbox.x2 += padding;
-    bbox.y2 += padding;
+    const allLayers = self.getAllLayers();
+    
+    if (useIndividualPadding) {
+      const padding = self.calculateBorderPadding(allLayers, bbox);
+      bbox.x1 -= padding.left;
+      bbox.y1 -= padding.top;
+      bbox.x2 += padding.right;
+      bbox.y2 += padding.bottom;
+    } else {
+      const padding = self.calculateMaxBorderWidth(allLayers);
+      // const padding = Math.max(maxBorderWidth / 2, 5);
+      // const padding = maxBorderWidth;
+      
+      bbox.x1 -= padding;
+      bbox.y1 -= padding;
+      bbox.x2 += padding;
+      bbox.y2 += padding;
+    }
     
     return bbox;
   };
@@ -2309,7 +2430,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var cyBBox = activeCy.elements().boundingBox();
     var cyWidth = cyBBox.x2 - cyBBox.x1;
     var cyHeight = cyBBox.y2 - cyBBox.y1;
-    var combinedBBox = self.getCombinedBoundingBox(activeCy);
+    var combinedBBox = self.getCombinedBoundingBox(activeCy, true); // Use individual padding
     var combinedWidth = combinedBBox.x2 - combinedBBox.x1;
     var combinedHeight = combinedBBox.y2 - combinedBBox.y1;
     
