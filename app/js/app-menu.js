@@ -1124,7 +1124,9 @@ module.exports = function() {
       "#load-sample21" : 'RUNX1_regulates_transcription_of_genes_involved_in_WNT_signaling.nwt',
       "#load-sample22" : 'PTK6_Activates_STAT3.nwt',
       "#load-sample23" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
-      "#load-sample24" : 'interaction_topologies_of_MAPK_cascade.nwt'
+      "#load-sample24" : 'interaction_topologies_of_MAPK_cascade.nwt',
+      "#load-sample25" : 'sif_learners_card.nwt',
+      "#load-sample26" : 'sbml_learners_card.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {
