@@ -1128,3 +1128,28 @@ img#template-reversible-output-add-button:hover {
     /* Bootstrap makes dropdown menu 14px, we need to override */
     font-size: 12px !important;
 }
+
+.simulation-tabs-container {
+  display: flex;
+  height: 600px;
+}
+
+.simulation-tab-list {
+  border-right: 1px solid #ccc;
+  padding-right: 0;
+}
+
+.simulation-tab-content {
+  padding-left: 20px;
+}
+
+.simulation-tab-list .nav > li > a {
+  border-radius: 0;
+  margin-bottom: 5px;
+}
+
+.simulation-tab-list .nav > li.active > a,
+.simulation-tab-list .nav > li > a:hover {
+  background-color: #0B9BCD;
+  border-color: #bbb;
+}

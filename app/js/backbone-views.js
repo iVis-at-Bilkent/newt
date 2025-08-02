@@ -2223,6 +2223,10 @@ var SimulationPanelView = Backbone.View.extend({
 
 var simulationTabPanel = GeneralPropertiesParentView.extend({
   initialize: function() {
+    $(document).on('click', "#map-simulation-properties-button", function (evt) {
+      new SimulationPropertiesView({el: "#simulation_properties_table"}).render();
+    });
+
     $(document).on("click", "#map-simulation-default-button", function (evt) {
       $("#inspector-simulation-start").val(appUtilities.defaultSimulationProperties.startTime);
       $("#inspector-simulation-end").val(appUtilities.defaultSimulationProperties.stopTime);
@@ -2348,6 +2352,22 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
     addParameters();
   }
 });
+
+var SimulationPropertiesView = GeneralPropertiesParentView.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#simulation-properties-view-template").html());
+  },
+  render: function () {
+    console.log("HERE!!");
+
+    var self = this;
+    self.template = _.template($("#simulation-properties-view-template").html());
+    $(self.el).html(self.template);
+
+    $(self.el).modal("show");
+  }
+})
 
 /**
  * SBGN Properties view for the Sample Application.
@@ -9145,4 +9165,5 @@ module.exports = {
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
   sbmlKineticLawView: sbmlKineticLawView,
+  SimulationPropertiesView: SimulationPropertiesView,
 };

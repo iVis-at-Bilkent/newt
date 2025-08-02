@@ -1462,6 +1462,10 @@
       </tbody>
     </table>
 
+    <div id="simulation_properties_table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- neighborhood query table will be shown here-->
+    </div>
+
     <div id="network-tabs-list-container" class="read-mode-off">
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
     </div>
@@ -2524,6 +2528,9 @@
     </script>
 
     <script type="text/template" id="map-tab-simulation-template">
+      <div style="text-align: center; margin-top: 5px;">
+        <button class="btn btn-default" id="map-simulation-properties-button">Simulation Properties</button>
+      <div>
       <div class="panel-body">
         <table class="layout-table map-panel-table">
           <tr id="sbml-param-table-row">
@@ -3385,6 +3392,83 @@
       </div>
     </script>
 
+    <!-- <script type="text/template" id="simulation-properties-view-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 700px;">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Simulation Properties</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      </div>
+      </div>
+    </script> -->
+
+    <script type="text/template" id="simulation-properties-view-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Simulation Properties</h4>
+          </div>
+          <div class="modal-body">
+            <div class="simulation-tabs-container row">
+              
+              <!-- Vertical Tabs -->
+              <div class="col-sm-3 simulation-tab-list">
+                <ul class="nav nav-pills nav-stacked" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#functions" role="tab" data-toggle="tab">Functions</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#custom-units" role="tab" data-toggle="tab">Custom Units</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#events" role="tab" data-toggle="tab">Events</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#parameters" role="tab" data-toggle="tab">Parameters</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#initial-assignments" role="tab" data-toggle="tab">Initial Assignments</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#rules" role="tab" data-toggle="tab">Rules</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Tab Content -->
+              <div class="col-sm-9 simulation-tab-content">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="functions">
+                    <p>Function definitions go here.</p>
+                  </div>
+                  <div class="tab-pane" id="custom-units">
+                    <p>Custom unit definitions go here.</p>
+                  </div>
+                  <div class="tab-pane" id="events">
+                    <p>Event configurations go here.</p>
+                  </div>
+                  <div class="tab-pane" id="parameters">
+                    <p>Parameter definitions go here.</p>
+                  </div>
+                  <div class="tab-pane" id="initial-assignments">
+                    <p>Initial assignment settings go here.</p>
+                  </div>
+                  <div class="tab-pane" id="rules">
+                    <p>Rule definitions go here.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+        
     <script type="text/template" id="sbml-kinetic-law-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
       <div class="modal-content">
