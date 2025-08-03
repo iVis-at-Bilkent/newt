@@ -1153,3 +1153,39 @@ img#template-reversible-output-add-button:hover {
   background-color: #0B9BCD;
   border-color: #bbb;
 }
+
+.simulation-parameters-table th,
+.simulation-parameters-table td {
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.simulation-parameters-table input,
+.simulation-parameters-table select {
+  width: 100%;
+}
+
+.simulation-table-wrapper {
+    width: 100%;
+    max-height: 550px;
+    min-height: 550px;
+    overflow-y: auto;
+}
+
+.simulation-parameters-table {
+    table-layout: fixed;
+    margin-bottom: 0px !important;
+}
+
+.parameter-buttons {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#parameters-table-body tr {
+  cursor: pointer;
+}
+
+#parameters-table-body tr.selected {
+  background-color: #e3f2fd;
+}

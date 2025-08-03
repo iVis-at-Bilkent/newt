@@ -2528,15 +2528,8 @@
     </script>
 
     <script type="text/template" id="map-tab-simulation-template">
-      <div style="text-align: center; margin-top: 5px;">
+      <div style="text-align: center; margin-top: 10px; margin-bottom: 10px;">
         <button class="btn btn-default" id="map-simulation-properties-button">Simulation Properties</button>
-      <div>
-      <div class="panel-body">
-        <table class="layout-table map-panel-table">
-          <tr id="sbml-param-table-row">
-            <!-- this field will be filled in during run time -->
-          </tr>
-        </table>
       </div>
       <div class="panel-body palette-panel-body" style="border-top: 1px solid #ddd; margin-top: 4px;">
         <table class="table-condensed layout-table dialog-table map-panel-table">
@@ -2571,7 +2564,7 @@
       <div style="text-align: center; margin-top: 5px;">
         <button class="btn btn-default" id="map-simulate-button">Simulate</button>
         <button class="btn btn-default" id="map-simulation-default-button">Default</button>
-      <div>
+      </div>
     </script>
 
     <script type="text/template" id="simulation-view-template">
@@ -3392,19 +3385,6 @@
       </div>
     </script>
 
-    <!-- <script type="text/template" id="simulation-properties-view-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 700px;">
-      <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Simulation Properties</h4>
-      </div>
-      <div class="modal-body">
-      </div>
-      </div>
-      </div>
-    </script> -->
-
     <script type="text/template" id="simulation-properties-view-template">
       <div class="modal-dialog sbgn-modal-dialog modal-lg">
         <div class="modal-content">
@@ -3452,7 +3432,33 @@
                     <p>Event configurations go here.</p>
                   </div>
                   <div class="tab-pane" id="parameters">
-                    <p>Parameter definitions go here.</p>
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-parameters-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 28.875%;">
+                          <col style="width: 28.875%;">
+                          <col style="width: 22.5%;">
+                          <col style="width: 15%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Units</th>
+                            <th>Constant</th>
+                          </tr>
+                        </thead>
+                        <tbody id="parameters-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 parameter-buttons">
+                      <button id="add-parameter-btn" class="btn btn-default">Add Parameter</button>
+                      <button id="delete-parameter-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
                   </div>
                   <div class="tab-pane" id="initial-assignments">
                     <p>Initial assignment settings go here.</p>

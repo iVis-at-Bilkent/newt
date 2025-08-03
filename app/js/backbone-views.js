@@ -2290,66 +2290,66 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
     this.$el.empty();
     this.$el.html(this.template());
 
-    var width = $("#sbgn-inspector").width() * 0.45;
-    $("#sbml-param-table-row").html("");
-    var paramHTML = "<td class='header' style='padding-right:5px;'>" 
-                        + "<span style='text-align: right;' class='add-on layout-text' title='SBML global parameters'> Parameters </span>"
-                      + "</td><td id='sbml-parameters' style='padding-left: 5px;'></td>";
-    $("#sbml-param-table-row").append(paramHTML);
+    // var width = $("#sbgn-inspector").width() * 0.45;
+    // $("#sbml-param-table-row").html("");
+    // var paramHTML = "<td class='header' style='padding-right:5px;'>" 
+    //                     + "<span style='text-align: right;' class='add-on layout-text' title='SBML global parameters'> Parameters </span>"
+    //                   + "</td><td id='sbml-parameters' style='padding-left: 5px;'></td>";
+    // $("#sbml-param-table-row").append(paramHTML);
 
-    var addParameters = function() {
-      var parameters = chise.getParameters();
-      var labelIdx = 0;
-      $("#sbml-parameters").html(""); // clear the field before populating
-      for (var param of parameters) {
-          var param_ = '<div style="display: flex; flex-direction: row; align-items: center; margin-bottom:5px;">'
-          + '<table><tbody><tr><td>'
-          + '<textarea id="inspector-param-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + param.name + '</textarea></td>'
-          + '</tr><tr><td>'
-          + '<input id="inspector-param-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + param.value + '" style="width: ' + (width-1) / 2.51 + 'px;">'
-          + '<select id="inspector-param-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + (width-1) / 2.51 + 'px !important; margin-left: 1px;">'
-          + '<option value="litre" selected>litre</option>'
-          + '<option value="m3">m³</option>'
-          + '</select></td></tr></tbody></table>'
-          + '<img id="inspector-param-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
-          + '</div>';
+    // var addParameters = function() {
+    //   var parameters = chise.getParameters();
+    //   var labelIdx = 0;
+    //   $("#sbml-parameters").html(""); // clear the field before populating
+    //   for (var param of parameters) {
+    //       var param_ = '<div style="display: flex; flex-direction: row; align-items: center; margin-bottom:5px;">'
+    //       + '<table><tbody><tr><td>'
+    //       + '<textarea id="inspector-param-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + param.name + '</textarea></td>'
+    //       + '</tr><tr><td>'
+    //       + '<input id="inspector-param-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + param.value + '" style="width: ' + (width-1) / 2.51 + 'px;">'
+    //       + '<select id="inspector-param-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + (width-1) / 2.51 + 'px !important; margin-left: 1px;">'
+    //       + '<option value="litre" selected>litre</option>'
+    //       + '<option value="m3">m³</option>'
+    //       + '</select></td></tr></tbody></table>'
+    //       + '<img id="inspector-param-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
+    //       + '</div>';
           
-          $("#sbml-parameters").append(param_);
+    //       $("#sbml-parameters").append(param_);
 
-          (function (labelIdx){
-            $('#inspector-param-delete' + labelIdx).off('click').on('click', function() {
-              var deleteId = chise.getParameters()[labelIdx].id;
-              chise.removeParameter(deleteId);
-              addParameters();
-          })})(labelIdx);
+    //       (function (labelIdx){
+    //         $('#inspector-param-delete' + labelIdx).off('click').on('click', function() {
+    //           var deleteId = chise.getParameters()[labelIdx].id;
+    //           chise.removeParameter(deleteId);
+    //           addParameters();
+    //       })})(labelIdx);
 
-          (function (labelIdx){
-            $('#inspector-param-name' + labelIdx).off('change').on('change', function() {
-              var name = document.getElementById("inspector-param-name" + labelIdx).value;
-              var modifyId = chise.getParameters()[labelIdx].id;
-              chise.setParameter(modifyId, "name", name);
-          })})(labelIdx);
+    //       (function (labelIdx){
+    //         $('#inspector-param-name' + labelIdx).off('change').on('change', function() {
+    //           var name = document.getElementById("inspector-param-name" + labelIdx).value;
+    //           var modifyId = chise.getParameters()[labelIdx].id;
+    //           chise.setParameter(modifyId, "name", name);
+    //       })})(labelIdx);
 
-          (function (labelIdx){
-            $('#inspector-param-value' + labelIdx).off('change').on('change', function() {
-              var value = parseFloat(document.getElementById("inspector-param-value" + labelIdx).value);
-              var modifyId = chise.getParameters()[labelIdx].id;
-              chise.setParameter(modifyId, "value", value);
-          })})(labelIdx);
+    //       (function (labelIdx){
+    //         $('#inspector-param-value' + labelIdx).off('change').on('change', function() {
+    //           var value = parseFloat(document.getElementById("inspector-param-value" + labelIdx).value);
+    //           var modifyId = chise.getParameters()[labelIdx].id;
+    //           chise.setParameter(modifyId, "value", value);
+    //       })})(labelIdx);
   
-          labelIdx += 1;
-      }
-      param_ = '<img width="16px" height="16px" id="inspector-add-param" src="app/img/add.svg" class="pointer-button">';
-      $("#sbml-parameters").append(param_);
-      $("#inspector-add-param").off('click').on('click', function() {
-          chise.addParameter("", 0, "", true);
-          addParameters(); // Re-render after adding a new parameter
-      });
+    //       labelIdx += 1;
+    //   }
+    //   param_ = '<img width="16px" height="16px" id="inspector-add-param" src="app/img/add.svg" class="pointer-button">';
+    //   $("#sbml-parameters").append(param_);
+    //   $("#inspector-add-param").off('click').on('click', function() {
+    //       chise.addParameter("", 0, "", true);
+    //       addParameters(); // Re-render after adding a new parameter
+    //   });
 
-      return this;
-    }
+    //   return this;
+    // }
 
-    addParameters();
+    // addParameters();
   }
 });
 
@@ -2358,14 +2358,87 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     var self = this;
     self.template = _.template($("#simulation-properties-view-template").html());
   },
-  render: function () {
-    console.log("HERE!!");
 
+  render: function () {
     var self = this;
     self.template = _.template($("#simulation-properties-view-template").html());
     $(self.el).html(self.template);
 
+    var chise = appUtilities.getActiveChiseInstance();
+    self.$("#add-parameter-btn").on("click", function () {
+      chise.addParameter("", 0, "", true);
+      self.renderParameters();
+    });
+
+    self.$("#delete-parameter-btn").on("click", function () {
+      if (typeof self.selectedParamIndex === "number") {
+        var paramIdx = self.params[self.selectedParamIndex].id
+        chise.removeParameter(paramIdx);
+        self.selectedParamIndex = null;
+        self.renderParameters();
+      }
+    });
+
+    self.renderParameters();
     $(self.el).modal("show");
+  },
+
+  renderParameters: function () {
+    var self = this;
+    var $tbody = self.$("#parameters-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.params = chise.getParameters();
+    self.params.forEach(function (param, index) {
+      var $row = $(`
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control param-name" value="${param.name != null ? param.name : ''}"></td>
+          <td><input type="number" class="form-control param-value" value="${param.value != null ? param.value : ''}"></td>
+          <td>
+            <select class="form-control param-units">
+              <option value="">Select unit</option>
+              <option value="second">second</option>
+              <option value="mole">mole</option>
+              <option value="liter">liter</option>
+              <option value="mole_per_liter">mole/liter</option>
+              <option value="1_per_second">1/second</option>
+            </select>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" class="param-constant" ${param.constant ? "checked" : ""}>
+          </td>
+        </tr>
+      `);
+
+      $row.find(".param-units").val(param.units || "");
+
+      $row.find(".param-name").on("input", function () {
+        chise.setParameter(param.id, "name", $(this).val());
+        param.name = $(this).val();
+      });
+      $row.find(".param-value").on("input", function () {
+        chise.setParameter(param.id, "value", $(this).val());
+        param.value = parseFloat($(this).val());
+      });
+      $row.find(".param-units").on("change", function () {
+        chise.setParameter(param.id, "unit", $(this).val());
+        param.units = $(this).val();
+      });
+      $row.find(".param-constant").on("change", function () {
+        chise.setParameter(param.id, "constant", $(this).is(":checked"));
+        param.constant = $(this).is(":checked");
+      });
+
+      $row.on("click", function () {
+        $tbody.find("tr").removeClass("selected");  // single-select mode
+        $row.addClass("selected");
+        self.selectedParamIndex = index;
+      });
+
+      $tbody.append($row);
+    });
   }
 })
 
