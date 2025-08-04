@@ -524,15 +524,12 @@ module.exports = function() {
           var layoutBy = function() {
             appUtilities.triggerLayout( cy, true );
           };
-          var success = function(data){
-            chiseInstance.loadSBMLText(data.message, false, file.name, cy);
-          }; 
           var error = function(data){
             promptFileConversionErrorView.render();          
             document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";         
           },
           caller = chiseInstance.loadSbmlForSBML; 
-          params = [success, error, layoutBy];
+          params = [error, layoutBy];
         }
         else if(fileExtension == 'xml'){
           appUtilities.setFileContent(file.name); 
@@ -741,13 +738,11 @@ module.exports = function() {
           var layoutBy = function() {
             appUtilities.triggerLayout( cy, true );
           };
-          chiseInstance.loadSbmlForSBML(file,  success = function(data){
-              chiseInstance.loadSBMLText(data.message, false, file.name, cy);
-          },  error = function(data){
-            promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
-            
-          }, layoutBy)
+          chiseInstance.loadSbmlForSBML(file,  
+            error = function(data){
+              promptFileConversionErrorView.render();          
+              document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
+            }, layoutBy);
         };
         if( cy.elements().length != 0)
           promptConfirmationView.render( loadFcn );
