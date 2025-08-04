@@ -2318,7 +2318,22 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
+    self.$("#add-fd-btn").on("click", function () {
+      chise.addFunctionDefinition("", [], "");
+      self.renderFunctionDefinitions();
+    });
+
+    self.$("#delete-fd-btn").on("click", function () {
+      if (typeof self.selectedFDIndex === "number") {
+        var fdIdx = self.functionDefinitions[self.selectedFDIndex].id
+        chise.removeFunctionDefinition(fdIdx);
+        self.selectedFDIndex = null;
+        self.renderFunctionDefinitions();
+      }
+    });
+
     self.renderParameters();
+    self.renderFunctionDefinitions();
     $(self.el).modal("show");
   },
 
@@ -2378,7 +2393,42 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
 
       $tbody.append($row);
     });
-  }
+  },
+
+  renderFunctionDefinitions: function () {
+    var self = this;
+    var $tbody = self.$("#function-definitions-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.functionDefinitions = chise.getFunctionDefinitions();
+    self.functionDefinitions.forEach(function (fd, index) {
+      var $row = $(`
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control fd-name" value="${fd.name != null ? fd.name : ''}"></td>
+          <td><button class="btn btn-default fd-math">Edit Function</button></td>
+        </tr>
+      `);
+
+      $row.find(".fd-name").on("input", function () {
+        chise.setFunctionDefinition(fd.id, "name", $(this).val());
+        param.name = $(this).val();
+      });
+
+      $row.find(".fd-math").on("input", function () {
+        // Open Modal.
+      });
+
+      $row.on("click", function () {
+        $tbody.find("tr").removeClass("selected");  // single-select mode
+        $row.addClass("selected");
+        self.selectedFDIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
 })
 
 /**

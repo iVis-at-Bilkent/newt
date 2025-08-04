@@ -3423,7 +3423,29 @@
               <div class="col-sm-9 simulation-tab-content">
                 <div class="tab-content">
                   <div class="tab-pane active" id="functions">
-                    <p>Function definitions go here.</p>
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 75%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Math</th>
+                          </tr>
+                        </thead>
+                        <tbody id="function-definitions-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-fd-btn" class="btn btn-default">Add Function</button>
+                      <button id="delete-fd-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
                   </div>
                   <div class="tab-pane" id="custom-units">
                     <p>Custom unit definitions go here.</p>
@@ -3433,7 +3455,7 @@
                   </div>
                   <div class="tab-pane" id="parameters">
                     <div class="simulation-table-wrapper" >
-                      <table class="table table-bordered table-sm simulation-parameters-table">
+                      <table class="table table-bordered table-sm simulation-table">
                         <colgroup>
                           <col style="width: 5%;">
                           <col style="width: 28.875%;">
@@ -3450,12 +3472,12 @@
                             <th>Constant</th>
                           </tr>
                         </thead>
-                        <tbody id="parameters-table-body">
+                        <tbody id="parameters-table-body" class="simulation-table-body">
                           <!-- rows are added dynamically -->
                         </tbody>
                       </table>
                     </div>
-                    <div class="text-center mt-3 parameter-buttons">
+                    <div class="text-center mt-3 simulation-bottom-buttons">
                       <button id="add-parameter-btn" class="btn btn-default">Add Parameter</button>
                       <button id="delete-parameter-btn" class="btn btn-default">Delete Selected</button>
                     </div>

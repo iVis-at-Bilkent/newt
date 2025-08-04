@@ -1129,6 +1129,9 @@ img#template-reversible-output-add-button:hover {
     font-size: 12px !important;
 }
 
+
+
+
 .simulation-tabs-container {
   display: flex;
   height: 600px;
@@ -1154,14 +1157,14 @@ img#template-reversible-output-add-button:hover {
   border-color: #bbb;
 }
 
-.simulation-parameters-table th,
-.simulation-parameters-table td {
+.simulation-table th,
+.simulation-table td {
   vertical-align: middle !important;
   text-align: center;
 }
 
-.simulation-parameters-table input,
-.simulation-parameters-table select {
+.simulation-table input,
+.simulation-table select {
   width: 100%;
 }
 
@@ -1172,20 +1175,20 @@ img#template-reversible-output-add-button:hover {
     overflow-y: auto;
 }
 
-.simulation-parameters-table {
+.simulation-table {
     table-layout: fixed;
     margin-bottom: 0px !important;
 }
 
-.parameter-buttons {
+.simulation-bottom-buttons {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-#parameters-table-body tr {
+.simulation-table-body tr {
   cursor: pointer;
 }
 
-#parameters-table-body tr.selected {
+.simulation-table-body tr.selected {
   background-color: #e3f2fd;
 }
