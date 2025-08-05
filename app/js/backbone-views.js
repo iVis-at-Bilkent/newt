@@ -2417,8 +2417,8 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         param.name = $(this).val();
       });
 
-      $row.find(".fd-math").on("input", function () {
-        // Open Modal.
+      $row.find(".fd-math").on("click", function () {
+        new FunctionDefinitionMathModalView({ el: "#function-definition-math-div"}).render(fd);
       });
 
       $row.on("click", function () {
@@ -2430,51 +2430,48 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       $tbody.append($row);
     });
   },
-})
+});
 
-/**
- * SBGN Properties view for the Sample Application.
- */
-/*var GeneralPropertiesView = Backbone.View.extend({
+var FunctionDefinitionMathModalView = Backbone.View.extend({
   initialize: function () {
-    var self = this;
+    this.template = _.template($("#function-definition-modal-template").html());
+  },
 
-    $(document).on("click", "#default-sbgn", function (evt) {
-      self.setPropertiesToDefault();
-      self.applyUpdate();
-      self.render();
+  render: function (fd) {
+    var self = this;
+    this.fd = fd;
+    self.template = _.template($("#function-definition-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    // Set initial values
+    $modal.find("#function-args-field").val(self.fd.args ? self.fd.args.join(", ") : "");
+    $modal.find("#function-body-field").val(self.fd.body || "");
+
+    // Save handler
+    $modal.find("#save-function-definition").on("click", function () {
+      var newArgs = $modal.find("#function-args-field").val().split(",").map(s => s.trim()).filter(Boolean);
+      var newBody = $modal.find("#function-body-field").val();
+
+      self.fd.args = newArgs;
+      self.fd.body = newBody;
+
+      chise.setFunctionDefinition(self.fd.id, "args", newArgs);
+      chise.setFunctionDefinition(self.fd.id, "body", newBody);
+
+      $(self.el).modal("hide");
     });
 
-  },
-  // Apply the properties as they are set
-  applyUpdate: function() {
-    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
-    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+    $modal.find("#cancel-function-definition").on("click", function () {
+      $(self.el).modal("hide");
+    });
 
-    if (appUtilities.currentGeneralProperties.enablePorts) {
-      chise.enablePorts();
-    }
-    else {
-      chise.disablePorts();
-    }
-
-    cy.style().update();
-
-    $(document).trigger('saveGeneralProperties');
-  },
-  setPropertiesToDefault: function () {
-    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
-  },
-  render: function () {
-    console.log("render general", appUtilities.currentGeneralProperties);
-    this.template = _.template($("#general-properties-template").html());
-    this.$el.empty();
-    this.$el.html(this.template(appUtilities.currentGeneralProperties));
-
-    return this;
+    $(self.el).modal("show");
   }
-});*/
+});
+
 
 String.prototype.replaceAll = function (search, replace) {
   //if replace is not sent, return original string otherwise it will
