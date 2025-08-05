@@ -1047,12 +1047,12 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         0,
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness,
         },
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness / 2.0,
         }
       );
@@ -1070,17 +1070,18 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.highlightColor.value = $("#highlight-color").val();
       var extraHighlightThickness = self.params.extraHighlightThickness.value;
       var highlightColor = self.params.highlightColor.value;
+      highlightColor = appUtilities.makeNeonHSL(highlightColor);
 
       viewUtilities.changeHighlightStyle(
         0,
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness,
         },
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness / 2.0,
         }
       );
