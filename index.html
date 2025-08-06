@@ -1466,9 +1466,9 @@
       <!-- neighborhood query table will be shown here-->
     </div>
 
-    <div id="function-definition-math-div" tabindex="-1" class="modal fade" role="dialog">
-      <!-- neighborhood query table will be shown here-->
-    </div>
+    <div id="function-definition-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
+
+    <div id="initial-assignment-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
 
     <div id="network-tabs-list-container" class="read-mode-off">
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
@@ -3431,7 +3431,7 @@
                       <table class="table table-bordered table-sm simulation-table">
                         <colgroup>
                           <col style="width: 5%;">
-                          <col style="width: 75%;">
+                          <col style="width: 70%;">
                           <col style="width: 25%;">
                         </colgroup>
                         <thead>
@@ -3462,8 +3462,8 @@
                       <table class="table table-bordered table-sm simulation-table">
                         <colgroup>
                           <col style="width: 5%;">
-                          <col style="width: 28.875%;">
-                          <col style="width: 28.875%;">
+                          <col style="width: 28.75%;">
+                          <col style="width: 28.75%;">
                           <col style="width: 22.5%;">
                           <col style="width: 15%;">
                         </colgroup>
@@ -3487,7 +3487,29 @@
                     </div>
                   </div>
                   <div class="tab-pane" id="initial-assignments">
-                    <p>Initial assignment settings go here.</p>
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 70%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Target</th>
+                            <th>Math</th>
+                          </tr>
+                        </thead>
+                        <tbody id="initial-assignments-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-ia-btn" class="btn btn-default">Add Assignment</button>
+                      <button id="delete-ia-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
                   </div>
                   <div class="tab-pane" id="rules">
                     <p>Rule definitions go here.</p>
@@ -3579,6 +3601,35 @@
           <div class="modal-footer" style="text-align: center;">
             <button id="save-function-definition" class="btn btn-default">OK</button>
             <button id="cancel-function-definition" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="initial-assignment-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 510px;" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Initial Assignment</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><span class="caption-style-text">Initial Assignment Math</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="initial-assignment-math-field" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-initial-assignment" class="btn btn-default">OK</button>
+            <button id="cancel-initial-assignment" class="btn btn-default">Cancel</button>
           </div>
         </div>
       </div>

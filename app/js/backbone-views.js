@@ -2333,8 +2333,23 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
+    self.$("#add-ia-btn").on("click", function () {
+      chise.addInitialAssignment("", "");
+      self.renderInitialAssignments();
+    });
+
+    self.$("#delete-ia-btn").on("click", function () {
+      if (typeof self.selectedIAIndex === "number") {
+        var iaIdx = self.initialAssignments[self.selectedIAIndex].id
+        chise.removeInitialAssignment(iaIdx);
+        self.selectedIAIndex = null;
+        self.renderInitialAssignments();
+      }
+    });
+
     self.renderParameters();
     self.renderFunctionDefinitions();
+    self.renderInitialAssignments();
     $(self.el).modal("show");
   },
 
@@ -2430,6 +2445,41 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       $tbody.append($row);
     });
   },
+
+  renderInitialAssignments: function () {
+    var self = this;
+    var $tbody = self.$("#initial-assignments-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.initialAssignments = chise.getInitialAssignments();
+    self.initialAssignments.forEach(function (ia, index) {
+      var $row = $(`
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control ia-symbol" value="${ia.symbol != null ? ia.symbol : ''}"></td>
+          <td><button class="btn btn-default ia-math">Edit Function</button></td>
+        </tr>
+      `);
+
+      $row.find(".fd-name").on("input", function () {
+        chise.setInitialAssignment(ia.id, "symbol", $(this).val());
+        param.name = $(this).val();
+      });
+
+      $row.find(".ia-math").on("click", function () {
+        new InitialAssignmentMathModalView({ el: "#initial-assignment-math-div"}).render(ia);
+      });
+
+      $row.on("click", function () {
+        $tbody.find("tr").removeClass("selected");  // single-select mode
+        $row.addClass("selected");
+        self.selectedIAIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
 });
 
 var FunctionDefinitionMathModalView = Backbone.View.extend({
@@ -2446,18 +2496,14 @@ var FunctionDefinitionMathModalView = Backbone.View.extend({
 
     var chise = appUtilities.getActiveChiseInstance();
 
-    // Set initial values
     $modal.find("#function-args-field").val(self.fd.args ? self.fd.args.join(", ") : "");
     $modal.find("#function-body-field").val(self.fd.body || "");
 
-    // Save handler
     $modal.find("#save-function-definition").on("click", function () {
       var newArgs = $modal.find("#function-args-field").val().split(",").map(s => s.trim()).filter(Boolean);
       var newBody = $modal.find("#function-body-field").val();
-
       self.fd.args = newArgs;
       self.fd.body = newBody;
-
       chise.setFunctionDefinition(self.fd.id, "args", newArgs);
       chise.setFunctionDefinition(self.fd.id, "body", newBody);
 
@@ -2465,6 +2511,37 @@ var FunctionDefinitionMathModalView = Backbone.View.extend({
     });
 
     $modal.find("#cancel-function-definition").on("click", function () {
+      $(self.el).modal("hide");
+    });
+
+    $(self.el).modal("show");
+  }
+});
+
+var InitialAssignmentMathModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#initial-assignment-modal-template").html());
+  },
+
+  render: function (ia) {
+    var self = this;
+    this.ia = ia;
+    self.template = _.template($("#initial-assignment-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    $modal.find("#initial-assignment-math-field").val(self.ia.math || "");
+
+    $modal.find("#save-initial-assignment").on("click", function () {
+      var newMath = $modal.find("#initial-assignment-math-field").val();
+      self.ia.math = newMath;
+      chise.setInitialAssignment(self.ia.id, "math", newMath);
+
+      $(self.el).modal("hide");
+    });
+
+    $modal.find("#cancel-initial-assignment").on("click", function () {
       $(self.el).modal("hide");
     });
 
