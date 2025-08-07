@@ -5232,19 +5232,40 @@ appUtilities.performPanzoomReset = function (cy) {
     annotationItems = window.annotationLayers.getAllAnnotationItems();
   }
   
+  // Recreate the animateOnFit logic from the original panzoom options
+  var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+  var animateOnFit = currentGeneralProperties ? currentGeneralProperties.animateOnDrawingChanges : true;
+  var fitPadding = 20; // Same as in panProps
+  var fitAnimationDuration = 1000;
+  
   // If no visible elements, just reset to default view
   if (visibleElements.length === 0) {
     cy.reset();
     return;
   }
   
+  // If no annotation items, use the original plugin behavior
+  if (annotationItems.length === 0) {
+    if (animateOnFit) {
+      cy.animate({
+        fit: {
+          eles: visibleElements,
+          padding: fitPadding
+        }
+      }, {
+        duration: fitAnimationDuration
+      });
+    } else {
+      cy.fit(visibleElements, fitPadding);
+    }
+    return;
+  }
+  
+  // Custom logic for when annotation items exist
   var graphBbox = visibleElements.boundingBox();
   
   // Calculate bounding box for annotation items
-  var annotationBbox = null;
-  if (annotationItems.length > 0) {
-    annotationBbox = appUtilities.calculateAnnotationBoundingBox(annotationItems, cy);
-  }
+  var annotationBbox = appUtilities.calculateAnnotationBoundingBox(annotationItems, cy);
   
   // Create combined bounding box
   var combinedBbox = {
@@ -5268,7 +5289,7 @@ appUtilities.performPanzoomReset = function (cy) {
   var width = combinedBbox.x2 - combinedBbox.x1;
   var height = combinedBbox.y2 - combinedBbox.y1;
   
-  var padding = 50;
+  var padding = fitPadding;
   width += padding * 2;
   height += padding * 2;
   
@@ -5282,13 +5303,22 @@ appUtilities.performPanzoomReset = function (cy) {
   var panX = (cyWidth / 2) - (centerX * zoom);
   var panY = (cyHeight / 2) - (centerY * zoom);
   
-  cy.animate({
-    zoom: zoom,
-    pan: {x: panX, y: panY}
-  }, {
-    duration: 1000,
-    easing: 'ease-in-out'
-  });
+  // Respect the animateOnFit setting
+  if (animateOnFit) {
+    cy.animate({
+      zoom: zoom,
+      pan: {x: panX, y: panY}
+    }, {
+      duration: fitAnimationDuration,
+      easing: 'ease-in-out'
+    });
+  } else {
+    // No animation, just set the viewport directly
+    cy.viewport({
+      zoom: zoom,
+      pan: {x: panX, y: panY}
+    });
+  }
 };
 
 // Boosts saturation and adjusts lightness for neon effect for highlighting colors
