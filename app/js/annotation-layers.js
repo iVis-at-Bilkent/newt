@@ -1651,13 +1651,6 @@ self.setCytoscapeActiveStyle = function(enabled) {
         '<input id="annotation-textbox-fillalpha-input" class="inspector-input-box" type="range" min="0" max="100" step="1" value="'+((1-a)*100)+'" style="width:80px; vertical-align:middle; margin-left:2px;">'+
         '<span id="annotation-textbox-fillalpha-value" style="margin-left:8px; min-width:24px; display:inline-block; text-align:right;">'+Math.round((1-a)*100)+'</span></span></td>');
       table.append(transparencyRow);
-      // Font size
-      // var fontSize = (selectedElement.styles && selectedElement.styles.fontSize) ? selectedElement.styles.fontSize : 14;
-      // var fontRow = $('<tr></tr>');
-      // fontRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font Size</td>');
-      // fontRow.append('<td style="padding-left: 5px; text-align:left;">'+
-      //   '<input id="annotation-font-size-input" class="inspector-input-box" type="number" min="6" max="100" step="1" value="'+fontSize+'" style="width:60px;"> px</td>');
-      // table.append(fontRow);
       // Font settings row (three-dot label, inspector style)
       var fontSettingsRow = $('<tr></tr>');
       fontSettingsRow.append('<td style="width: '+width+'px; text-align:right; padding-right: 5px;">Font</td>');
@@ -2639,6 +2632,15 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var parser = new DOMParser();
     var cySvgDoc = parser.parseFromString(cySvgStr, 'image/svg+xml');
     var cySvgRoot = cySvgDoc.documentElement;
+    
+    // Detect pixel ratio scaling by comparing expected vs actual SVG dimensions
+    var actualSvgWidth = parseFloat(cySvgRoot.getAttribute('width')) || cyWidth;
+    var actualSvgHeight = parseFloat(cySvgRoot.getAttribute('height')) || cyHeight;
+    var detectedScaleX = actualSvgWidth / cyWidth;
+    var detectedScaleY = actualSvgHeight / cyHeight;
+    // Use the average scale factor (they should be the same for uniform scaling)
+    var detectedScale = (detectedScaleX + detectedScaleY) / 2;
+    
     var svgNS = 'http://www.w3.org/2000/svg';
     var exportSvg = document.createElementNS(svgNS, 'svg');
     exportSvg.setAttribute('width', combinedWidth);
@@ -2647,7 +2649,20 @@ self.setCytoscapeActiveStyle = function(enabled) {
     var cyOffsetX = cyBBox.x1 - combinedBBox.x1;
     var cyOffsetY = cyBBox.y1 - combinedBBox.y1;
     var cyGroup = document.createElementNS(svgNS, 'g');
-    cyGroup.setAttribute('transform', `translate(${cyOffsetX},${cyOffsetY})`);
+    
+    // Adjust the transform to account for detected scaling
+    // If Cytoscape applied pixel ratio scaling, we need to counteract it
+    if (Math.abs(detectedScale - 1) > 0.01) {
+      // Cytoscape applied scaling, so we need to scale down and adjust offset
+      var inverseScale = 1 / detectedScale;
+      var scaledOffsetX = cyOffsetX;
+      var scaledOffsetY = cyOffsetY;
+      cyGroup.setAttribute('transform', `translate(${scaledOffsetX},${scaledOffsetY}) scale(${inverseScale})`);
+    } else {
+      // No scaling detected, use normal transform
+      cyGroup.setAttribute('transform', `translate(${cyOffsetX},${cyOffsetY})`);
+    }
+    
     var cyChildren = Array.from(cySvgRoot.childNodes);
     cyChildren.forEach(function(child) {
       cyGroup.appendChild(child.cloneNode(true));
