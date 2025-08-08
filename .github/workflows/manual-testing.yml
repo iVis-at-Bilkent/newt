@@ -1,0 +1,30 @@
+name: Chrome Headless Manual
+
+on: 
+  workflow_dispatch:
+  # push:
+  #  branches: [unstable]
+
+jobs:
+  chrome-headless:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node14.19.0-chrome100-ff99-edge
+    environment: test0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Headless Chrome
+        uses: cypress-io/github-action@v6
+        timeout-minutes: 10
+        with:
+          build: npm run release-build
+          start: node server.js
+          browser: chrome
+          headless: true
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.dashboardRecordKey }} 
