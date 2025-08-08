@@ -2347,9 +2347,26 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
+    // Rules
+    self.$("#add-rule-btn").on("click", function () {
+      // default to assignment rule with empty target and math
+      chise.addRule("assignment", "", "");
+      self.renderRules();
+    });
+
+    self.$("#delete-rule-btn").on("click", function () {
+      if (typeof self.selectedRuleIndex === "number") {
+        var ruleIdx = self.rules[self.selectedRuleIndex].id;
+        chise.removeRule(ruleIdx);
+        self.selectedRuleIndex = null;
+        self.renderRules();
+      }
+    });
+
     self.renderParameters();
     self.renderFunctionDefinitions();
     self.renderInitialAssignments();
+    self.renderRules();
     $(self.el).modal("show");
   },
 
@@ -2367,7 +2384,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
           <td><input type="text" class="form-control param-name" value="${param.name != null ? param.name : ''}"></td>
           <td><input type="number" class="form-control param-value" value="${param.value != null ? param.value : ''}"></td>
           <td>
-            <select class="form-control param-units">
+            <select class="layout-text form-control param-units">
               <option value="">Select unit</option>
               <option value="second">second</option>
               <option value="mole">mole</option>
@@ -2458,7 +2475,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         <tr>
           <td>${index + 1}</td>
           <td><input type="text" class="form-control ia-symbol" value="${ia.symbol != null ? ia.symbol : ''}"></td>
-          <td><button class="btn btn-default ia-math">Edit Function</button></td>
+          <td><button class="btn btn-default ia-math">Edit Assignment</button></td>
         </tr>
       `);
 
@@ -2475,6 +2492,59 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         $tbody.find("tr").removeClass("selected");  // single-select mode
         $row.addClass("selected");
         self.selectedIAIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderRules: function () {
+    var self = this;
+    var $tbody = self.$("#rules-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    // Expected API: getRules() returns [{ id, type: 'assignment'|'rate', target, math }]
+    self.rules = chise.getRules ? chise.getRules() : [];
+    self.rules.forEach(function (rule, index) {
+      var $row = $(
+        `
+        <tr>
+          <td>${index + 1}</td>
+          <td>
+            <select class="layout-text form-control rule-type">
+              <option value="assignment">Assignment</option>
+              <option value="rate">Rate</option>
+            </select>
+          </td>
+          <td><input type="text" class="form-control rule-target" value="${rule.target != null ? rule.target : ''}"></td>
+          <td><button class="btn btn-default rule-math">Edit Rule</button></td>
+        </tr>
+        `
+      );
+
+      $row.find(".rule-type").val(rule.type || "assignment");
+
+      $row.find(".rule-type").on("change", function () {
+        var newType = $(this).val();
+        chise.setRule(rule.id, "type", newType);
+        rule.type = newType;
+      });
+
+      $row.find(".rule-target").on("input", function () {
+        var newTarget = $(this).val();
+        chise.setRule(rule.id, "target", newTarget);
+        rule.target = newTarget;
+      });
+
+      $row.find(".rule-math").on("click", function () {
+        new RuleMathModalView({ el: "#rule-math-div" }).render(rule);
+      });
+
+      $row.on("click", function () {
+        $tbody.find("tr").removeClass("selected");
+        $row.addClass("selected");
+        self.selectedRuleIndex = index;
       });
 
       $tbody.append($row);
@@ -2542,6 +2612,40 @@ var InitialAssignmentMathModalView = Backbone.View.extend({
     });
 
     $modal.find("#cancel-initial-assignment").on("click", function () {
+      $(self.el).modal("hide");
+    });
+
+    $(self.el).modal("show");
+  }
+});
+
+var RuleMathModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#rule-modal-template").html());
+  },
+
+  render: function (rule) {
+    var self = this;
+    this.rule = rule;
+    self.template = _.template($("#rule-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    $modal.find("#rule-math-field").val(self.rule.math || "");
+
+    $modal.find("#save-rule").on("click", function () {
+      var newMath = $modal.find("#rule-math-field").val();
+
+      self.rule.math = newMath;
+
+      chise.setRule(self.rule.id, "math", newMath);
+
+      $(self.el).modal("hide");
+    });
+
+    $modal.find("#cancel-rule").on("click", function () {
       $(self.el).modal("hide");
     });
 

@@ -1470,6 +1470,8 @@
 
     <div id="initial-assignment-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
 
+    <div id="rule-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
+
     <div id="network-tabs-list-container" class="read-mode-off">
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
     </div>
@@ -3512,7 +3514,31 @@
                     </div>
                   </div>
                   <div class="tab-pane" id="rules">
-                    <p>Rule definitions go here.</p>
+                    <div class="simulation-table-wrapper">
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 25%;">
+                          <col style="width: 45%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Type</th>
+                            <th>Target</th>
+                            <th>Math</th>
+                          </tr>
+                        </thead>
+                        <tbody id="rules-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-rule-btn" class="btn btn-default">Add Rule</button>
+                      <button id="delete-rule-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3630,6 +3656,37 @@
           <div class="modal-footer" style="text-align: center;">
             <button id="save-initial-assignment" class="btn btn-default">OK</button>
             <button id="cancel-initial-assignment" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="rule-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 560px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Rule</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="caption-style-text">Expression</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="rule-math-field" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-rule" class="btn btn-default">OK</button>
+            <button id="cancel-rule" class="btn btn-default">Cancel</button>
           </div>
         </div>
       </div>
