@@ -2347,9 +2347,44 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
+    // Rules
+    self.$("#add-rule-btn").on("click", function () {
+      // default to assignment rule with empty target and math
+      chise.addRule("assignment", "", "");
+      self.renderRules();
+    });
+
+    self.$("#delete-rule-btn").on("click", function () {
+      if (typeof self.selectedRuleIndex === "number") {
+        var ruleIdx = self.rules[self.selectedRuleIndex].id;
+        chise.removeRule(ruleIdx);
+        self.selectedRuleIndex = null;
+        self.renderRules();
+      }
+    });
+
     self.renderParameters();
     self.renderFunctionDefinitions();
     self.renderInitialAssignments();
+    self.renderRules();
+
+    // Events
+    self.$("#add-event-btn").on("click", function () {
+      // defaults: useValuesFromTriggerTime=false, trigger initial=false persistent=false math="", priority="", delay="", assignments=[]
+      chise.addEvent(false, false, false, "", "", "", []);
+      self.renderEvents();
+    });
+
+    self.$("#delete-event-btn").on("click", function () {
+      if (typeof self.selectedEventIndex === "number") {
+        var eventId = self.events[self.selectedEventIndex].id;
+        chise.removeEvent(eventId);
+        self.selectedEventIndex = null;
+        self.renderEvents();
+      }
+    });
+
+    self.renderEvents();
     $(self.el).modal("show");
   },
 
@@ -2367,7 +2402,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
           <td><input type="text" class="form-control param-name" value="${param.name != null ? param.name : ''}"></td>
           <td><input type="number" class="form-control param-value" value="${param.value != null ? param.value : ''}"></td>
           <td>
-            <select class="form-control param-units">
+            <select class="layout-text form-control param-units">
               <option value="">Select unit</option>
               <option value="second">second</option>
               <option value="mole">mole</option>
@@ -2458,7 +2493,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         <tr>
           <td>${index + 1}</td>
           <td><input type="text" class="form-control ia-symbol" value="${ia.symbol != null ? ia.symbol : ''}"></td>
-          <td><button class="btn btn-default ia-math">Edit Function</button></td>
+          <td><button class="btn btn-default ia-math">Edit Assignment</button></td>
         </tr>
       `);
 
@@ -2475,6 +2510,112 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         $tbody.find("tr").removeClass("selected");  // single-select mode
         $row.addClass("selected");
         self.selectedIAIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderRules: function () {
+    var self = this;
+    var $tbody = self.$("#rules-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    // Expected API: getRules() returns [{ id, type: 'assignment'|'rate', target, math }]
+    self.rules = chise.getRules ? chise.getRules() : [];
+    self.rules.forEach(function (rule, index) {
+      var $row = $(
+        `
+        <tr>
+          <td>${index + 1}</td>
+          <td>
+            <select class="layout-text form-control rule-type">
+              <option value="assignment">Assignment</option>
+              <option value="rate">Rate</option>
+            </select>
+          </td>
+          <td><input type="text" class="form-control rule-target" value="${rule.target != null ? rule.target : ''}"></td>
+          <td><button class="btn btn-default rule-math">Edit Rule</button></td>
+        </tr>
+        `
+      );
+
+      $row.find(".rule-type").val(rule.type || "assignment");
+
+      $row.find(".rule-type").on("change", function () {
+        var newType = $(this).val();
+        chise.setRule(rule.id, "type", newType);
+        rule.type = newType;
+      });
+
+      $row.find(".rule-target").on("input", function () {
+        var newTarget = $(this).val();
+        chise.setRule(rule.id, "target", newTarget);
+        rule.target = newTarget;
+      });
+
+      $row.find(".rule-math").on("click", function () {
+        new RuleMathModalView({ el: "#rule-math-div" }).render(rule);
+      });
+
+      $row.on("click", function () {
+        $tbody.find("tr").removeClass("selected");
+        $row.addClass("selected");
+        self.selectedRuleIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderEvents: function () {
+    var self = this;
+    var $tbody = self.$("#events-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.events = chise.getEvents ? chise.getEvents() : [];
+    self.events.forEach(function (ev, index) {
+      var $row = $(
+        `
+        <tr>
+          <td>${index + 1}</td>
+          <td class="text-center"><input type="checkbox" class="event-use-trigger-values" ${ev.useValuesFromTriggerTime ? "checked" : ""}></td>
+          <td><button class="btn btn-default event-trigger">Edit Trigger</button></td>
+          <td><button class="btn btn-default event-priority">Edit Priority</button></td>
+          <td><button class="btn btn-default event-delay">Edit Delay</button></td>
+          <td><button class="btn btn-default event-assignments">Edit Actions</button></td>
+        </tr>
+        `
+      );
+
+      $row.find('.event-use-trigger-values').on('change', function(){
+        var val = $(this).is(':checked');
+        chise.setEvent(ev.id, 'useValuesFromTriggerTime', val);
+        ev.useValuesFromTriggerTime = val;
+      });
+
+      $row.find('.event-trigger').on('click', function(){
+        new EventTriggerModalView({ el: '#event-trigger-div' }).render(ev);
+      });
+
+      $row.find('.event-priority').on('click', function(){
+        new EventPriorityModalView({ el: '#event-priority-div' }).render(ev);
+      });
+
+      $row.find('.event-delay').on('click', function(){
+        new EventDelayModalView({ el: '#event-delay-div' }).render(ev);
+      });
+
+      $row.find('.event-assignments').on('click', function(){
+        new EventActionsModalView({ el: '#event-assignments-div' }).render(ev);
+      });
+
+      $row.on('click', function(){
+        $tbody.find('tr').removeClass('selected');
+        $row.addClass('selected');
+        self.selectedEventIndex = index;
       });
 
       $tbody.append($row);
@@ -2546,6 +2687,233 @@ var InitialAssignmentMathModalView = Backbone.View.extend({
     });
 
     $(self.el).modal("show");
+  }
+});
+
+var RuleMathModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#rule-modal-template").html());
+  },
+
+  render: function (rule) {
+    var self = this;
+    this.rule = rule;
+    self.template = _.template($("#rule-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    $modal.find("#rule-math-field").val(self.rule.math || "");
+
+    $modal.find("#save-rule").on("click", function () {
+      var newMath = $modal.find("#rule-math-field").val();
+
+      self.rule.math = newMath;
+
+      chise.setRule(self.rule.id, "math", newMath);
+
+      $(self.el).modal("hide");
+    });
+
+    $modal.find("#cancel-rule").on("click", function () {
+      $(self.el).modal("hide");
+    });
+
+    $(self.el).modal("show");
+  }
+});
+
+var EventTriggerModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-trigger-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-trigger-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    $modal.find('#event-trigger-initial-value').prop('checked', !!(self.ev.trigger && self.ev.trigger.initialValue));
+    $modal.find('#event-trigger-persistent').prop('checked', !!(self.ev.trigger && self.ev.trigger.persistent));
+    $modal.find('#event-trigger-math').val(self.ev.trigger && self.ev.trigger.math ? self.ev.trigger.math : '');
+
+    $modal.find('#save-event-trigger').on('click', function(){
+      var initial = $modal.find('#event-trigger-initial-value').is(':checked');
+      var persistent = $modal.find('#event-trigger-persistent').is(':checked');
+      var math = $modal.find('#event-trigger-math').val();
+
+      self.ev.trigger = self.ev.trigger || {};
+      self.ev.trigger.initialValue = initial;
+      self.ev.trigger.persistent = persistent;
+      self.ev.trigger.math = math;
+
+      chise.setEventTrigger(self.ev.id, 'initialValue', initial);
+      chise.setEventTrigger(self.ev.id, 'persistent', persistent);
+      chise.setEventTrigger(self.ev.id, 'math', math);
+
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-trigger').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    $(self.el).modal('show');
+  }
+});
+
+var EventPriorityModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-priority-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-priority-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    $modal.find('#event-priority-math').val(self.ev.priority || '');
+
+    $modal.find('#save-event-priority').on('click', function(){
+      var math = $modal.find('#event-priority-math').val();
+      self.ev.priority = math;
+      chise.setEvent(self.ev.id, 'priority', math);
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-priority').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    $(self.el).modal('show');
+  }
+});
+
+var EventDelayModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-delay-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-delay-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    $modal.find('#event-delay-math').val(self.ev.delay || '');
+
+    $modal.find('#save-event-delay').on('click', function(){
+      var math = $modal.find('#event-delay-math').val();
+      self.ev.delay = math;
+      chise.setEvent(self.ev.id, 'delay', math);
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-delay').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    $(self.el).modal('show');
+  }
+});
+
+var EventActionsModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-assignments-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-assignments-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    // simple in-memory selection index
+    var assignments = Array.isArray(self.ev.assignments) ? self.ev.assignments : [];
+    var selectedIdx = 0;
+
+    function renderTargets() {
+      var $tbody = $modal.find('#event-assignment-targets-body');
+      $tbody.empty();
+      assignments.forEach(function(a, i){
+        var $tr = $('<tr></tr>');
+        var $td = $('<td style="padding: 6px 8px; border-bottom: 1px solid #e5e5e5;"></td>');
+        var $input = $('<input type="text" class="form-control layout-text" />').val(a.target || '');
+        $input.on('input', function(){
+          assignments[i].target = $(this).val();
+          chise.setEvent(self.ev.id, 'assignments', assignments);
+        });
+        $tr.on('click', function(){
+          $tbody.find('tr').removeClass('selected');
+          $tr.addClass('selected');
+          selectedIdx = i;
+          $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
+        });
+        // selected styling if current
+        if(i === selectedIdx) $tr.addClass('selected');
+        $td.append($input);
+        $tr.append($td);
+        $tbody.append($tr);
+      });
+
+      if(assignments.length === 0){
+        selectedIdx = -1;
+        $modal.find('#event-assignment-math').val('');
+      } else if(selectedIdx < 0){
+        selectedIdx = 0;
+        $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
+        $tbody.find('tr').eq(selectedIdx).addClass('selected');
+      }
+    }
+
+    $modal.on('click', '#add-event-assignment', function(){
+      chise.addEventAssignment(self.ev.id, '', '');
+      assignments.push({ target: '', math: '' });
+      selectedIdx = assignments.length - 1;
+      renderTargets();
+    });
+
+    $modal.on('click', '#remove-event-assignment', function(){
+      if(selectedIdx >= 0){
+        chise.removeEventAssignment(self.ev.id, selectedIdx);
+        assignments.splice(selectedIdx, 1);
+        selectedIdx = Math.min(selectedIdx, assignments.length - 1);
+        renderTargets();
+      }
+    });
+
+    $modal.on('input', '#event-assignment-math', function(){
+      if(selectedIdx >= 0 && assignments[selectedIdx]){
+        var newMath = $(this).val();
+        assignments[selectedIdx].math = newMath;
+        chise.setEvent(self.ev.id, 'assignments', assignments);
+      }
+    });
+
+    $modal.find('#save-event-assignments').on('click', function(){
+      if(selectedIdx >= 0 && assignments[selectedIdx]){
+        chise.setEvent(self.ev.id, 'assignments', assignments);
+      }
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-assignments').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    renderTargets();
+    $(self.el).modal('show');
   }
 });
 

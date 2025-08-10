@@ -1192,3 +1192,7 @@ img#template-reversible-output-add-button:hover {
 .simulation-table-body tr.selected {
   background-color: #e3f2fd;
 }
+
+.simulation-table tr {
+    height: 52px !important;
+}
