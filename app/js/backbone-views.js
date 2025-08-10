@@ -2428,7 +2428,26 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         </tr>
       `);
 
-      $row.find(".param-units").val(param.units || "");
+      // populate parameter units with base kinds + custom unit definitions (value=id, text=name)
+      (function populateParamUnits(){
+        var $sel = $row.find('.param-units');
+        $sel.empty();
+        $sel.append($('<option value=""></option>').text('Select unit'));
+        try {
+          var baseKinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
+          var customDefs = (chise.getUnitDefinitions && chise.getUnitDefinitions()) || [];
+          baseKinds.forEach(function(k){ $sel.append($('<option></option>').attr('value', k).text(k)); });
+          customDefs.forEach(function(def){
+            var text = (def.name && def.name.length) ? def.name : def.id;
+            $sel.append($('<option></option>').attr('value', def.id).text(text));
+          });
+        } catch(e) {}
+        var current = param.units || "";
+        if (current && $sel.find('option[value="'+current.replace(/"/g,'\\"')+'"]').length === 0){
+          $sel.append($('<option></option>').attr('value', current).text(current));
+        }
+        $sel.val(current);
+      })();
 
       $row.find(".param-name").off("input").on("input", function () {
         chise.setParameter(param.id, "name", $(this).val());
@@ -2439,7 +2458,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         param.value = parseFloat($(this).val());
       });
       $row.find(".param-units").off("change").on("change", function () {
-        chise.setParameter(param.id, "unit", $(this).val());
+        chise.setParameter(param.id, "units", $(this).val());
         param.units = $(this).val();
       });
       $row.find(".param-constant").off("change").on("change", function () {

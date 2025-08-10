@@ -1456,9 +1456,11 @@ inspectorUtilities.handleSBGNInspector = function () {
         var baseKinds = (chise && chise.getBaseUnitKinds) ? chise.getBaseUnitKinds() : [];
         var customDefs = (chise && chise.getUnitDefinitions) ? chise.getUnitDefinitions() : [];
 
-        function populateUnitsSelect($sel, currentVal, defaultVal){
+        function populateUnitsSelect($sel, currentVal){
           if (!$sel || $sel.length === 0) return;
           $sel.empty();
+          $sel.append($('<option value=""></option>').text('Select unit'));
+        
           (baseKinds || []).forEach(function(k){
             $sel.append($('<option></option>').attr('value', k).text(k));
           });
@@ -1466,12 +1468,17 @@ inspectorUtilities.handleSBGNInspector = function () {
             var text = def.name && def.name.length ? def.name : def.id;
             $sel.append($('<option></option>').attr('value', def.id).text(text));
           });
-          var selectVal = (typeof currentVal !== 'undefined' && currentVal !== null && currentVal !== '') ? currentVal : defaultVal;
-          if (selectVal) $sel.val(selectVal);
+        
+          var val = (typeof currentVal !== 'undefined' && currentVal !== null && currentVal !== '') ? currentVal : '';
+          // If value isn't in the list, append it
+          if (val && $sel.find('option[value="'+val.replace(/"/g,'\\"')+'"]').length === 0) {
+            $sel.append($('<option></option>').attr('value', val).text(val));
+          }
+          $sel.val(val);
         }
-
-        populateUnitsSelect($("#inspector-initial-unit"), selectedEles[0].data('simulation') && selectedEles[0].data('simulation')['substanceUnits'], 'mole');
-        populateUnitsSelect($("#inspector-compartment-size-units"), selectedEles[0].data('simulation') && selectedEles[0].data('simulation')['units'], 'litre');
+        
+        populateUnitsSelect($("#inspector-initial-unit"), selectedEles[0].data('simulation').substanceUnits);
+        populateUnitsSelect($("#inspector-compartment-size-units"), selectedEles[0].data('simulation').units);
       } catch (e) { }
       if(isSBMLProcess(selectedEles[0]))
         addLocalParameters(selectedEles[0]);
