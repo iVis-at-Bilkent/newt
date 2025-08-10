@@ -2305,12 +2305,12 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     $(self.el).html(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
-    self.$("#add-parameter-btn").on("click", function () {
+    self.$("#add-parameter-btn").off("click").on("click", function () {
       chise.addParameter("", 0, "", true);
       self.renderParameters();
     });
 
-    self.$("#delete-parameter-btn").on("click", function () {
+    self.$("#delete-parameter-btn").off("click").on("click", function () {
       if (typeof self.selectedParamIndex === "number") {
         var paramIdx = self.params[self.selectedParamIndex].id
         chise.removeParameter(paramIdx);
@@ -2319,12 +2319,12 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
-    self.$("#add-fd-btn").on("click", function () {
+    self.$("#add-fd-btn").off("click").on("click", function () {
       chise.addFunctionDefinition("", [], "");
       self.renderFunctionDefinitions();
     });
 
-    self.$("#delete-fd-btn").on("click", function () {
+    self.$("#delete-fd-btn").off("click").on("click", function () {
       if (typeof self.selectedFDIndex === "number") {
         var fdIdx = self.functionDefinitions[self.selectedFDIndex].id
         chise.removeFunctionDefinition(fdIdx);
@@ -2333,12 +2333,12 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
-    self.$("#add-ia-btn").on("click", function () {
+    self.$("#add-ia-btn").off("click").on("click", function () {
       chise.addInitialAssignment("", "");
       self.renderInitialAssignments();
     });
 
-    self.$("#delete-ia-btn").on("click", function () {
+    self.$("#delete-ia-btn").off("click").on("click", function () {
       if (typeof self.selectedIAIndex === "number") {
         var iaIdx = self.initialAssignments[self.selectedIAIndex].id
         chise.removeInitialAssignment(iaIdx);
@@ -2347,14 +2347,12 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
-    // Rules
-    self.$("#add-rule-btn").on("click", function () {
-      // default to assignment rule with empty target and math
+    self.$("#add-rule-btn").off("click").on("click", function () {
       chise.addRule("assignment", "", "");
       self.renderRules();
     });
 
-    self.$("#delete-rule-btn").on("click", function () {
+    self.$("#delete-rule-btn").off("click").on("click", function () {
       if (typeof self.selectedRuleIndex === "number") {
         var ruleIdx = self.rules[self.selectedRuleIndex].id;
         chise.removeRule(ruleIdx);
@@ -2363,19 +2361,12 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
-    self.renderParameters();
-    self.renderFunctionDefinitions();
-    self.renderInitialAssignments();
-    self.renderRules();
-
-    // Events
-    self.$("#add-event-btn").on("click", function () {
-      // defaults: useValuesFromTriggerTime=false, trigger initial=false persistent=false math="", priority="", delay="", assignments=[]
+    self.$("#add-event-btn").off("click").on("click", function () {
       chise.addEvent(false, false, false, "", "", "", []);
       self.renderEvents();
     });
 
-    self.$("#delete-event-btn").on("click", function () {
+    self.$("#delete-event-btn").off("click").on("click", function () {
       if (typeof self.selectedEventIndex === "number") {
         var eventId = self.events[self.selectedEventIndex].id;
         chise.removeEvent(eventId);
@@ -2384,16 +2375,12 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
-    self.renderEvents();
-
-    // Custom Units
-    self.$('#add-custom-unit-btn').on('click', function(){
-      // API: addUnitDefinition(name, units)
+    self.$('#add-custom-unit-btn').off("click").on('click', function(){
       chise.addUnitDefinition("", []);
       self.renderCustomUnits();
     });
 
-    self.$('#delete-custom-unit-btn').on('click', function(){
+    self.$('#delete-custom-unit-btn').off("click").on('click', function(){
       if (typeof self.selectedCustomUnitIndex === 'number') {
         var id = self.customUnits[self.selectedCustomUnitIndex].id;
         chise.removeUnitDefinition(id);
@@ -2402,7 +2389,13 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
+    self.renderParameters();
+    self.renderFunctionDefinitions();
+    self.renderInitialAssignments();
+    self.renderRules();
+    self.renderEvents();
     self.renderCustomUnits();
+
     $(self.el).modal("show");
   },
 
@@ -2437,19 +2430,19 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
 
       $row.find(".param-units").val(param.units || "");
 
-      $row.find(".param-name").on("input", function () {
+      $row.find(".param-name").off("input").on("input", function () {
         chise.setParameter(param.id, "name", $(this).val());
         param.name = $(this).val();
       });
-      $row.find(".param-value").on("input", function () {
+      $row.find(".param-value").off("input").on("input", function () {
         chise.setParameter(param.id, "value", $(this).val());
         param.value = parseFloat($(this).val());
       });
-      $row.find(".param-units").on("change", function () {
+      $row.find(".param-units").off("change").on("change", function () {
         chise.setParameter(param.id, "unit", $(this).val());
         param.units = $(this).val();
       });
-      $row.find(".param-constant").on("change", function () {
+      $row.find(".param-constant").off("change").on("change", function () {
         chise.setParameter(param.id, "constant", $(this).is(":checked"));
         param.constant = $(this).is(":checked");
       });
@@ -2480,16 +2473,16 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         </tr>
       `);
 
-      $row.find(".fd-name").on("input", function () {
+      $row.find(".fd-name").off("input").on("input", function () {
         chise.setFunctionDefinition(fd.id, "name", $(this).val());
         param.name = $(this).val();
       });
 
-      $row.find(".fd-math").on("click", function () {
+      $row.find(".fd-math").off("input").on("click", function () {
         new FunctionDefinitionMathModalView({ el: "#function-definition-math-div"}).render(fd);
       });
 
-      $row.on("click", function () {
+      $row.off("click").on("click", function () {
         $tbody.find("tr").removeClass("selected");  // single-select mode
         $row.addClass("selected");
         self.selectedFDIndex = index;
@@ -2516,18 +2509,17 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         </tr>
       `);
 
-      $row.find('.unit-name').on('input', function(){
+      $row.find('.unit-name').off("input").on('input', function(){
         var newName = $(this).val();
-        // API: setUnitDefinition(id, 'name', value)
         chise.setUnitDefinition(ud.id, 'name', newName);
         ud.name = newName;
       });
 
-      $row.find('.unit-set').on('click', function(){
+      $row.find('.unit-set').off("click").on('click', function(){
         new UnitDefinitionModalView({ el: '#unit-definition-div' }).render(ud);
       });
 
-      $row.on('click', function(){
+      $row.off("click").on('click', function(){
         $tbody.find('tr').removeClass('selected');
         $row.addClass('selected');
         self.selectedCustomUnitIndex = index;
@@ -2553,16 +2545,16 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         </tr>
       `);
 
-      $row.find(".fd-name").on("input", function () {
+      $row.find(".fd-name").off("input").on("input", function () {
         chise.setInitialAssignment(ia.id, "symbol", $(this).val());
         param.name = $(this).val();
       });
 
-      $row.find(".ia-math").on("click", function () {
+      $row.find(".ia-math").off("click").on("click", function () {
         new InitialAssignmentMathModalView({ el: "#initial-assignment-math-div"}).render(ia);
       });
 
-      $row.on("click", function () {
+      $row.off("click").on("click", function () {
         $tbody.find("tr").removeClass("selected");  // single-select mode
         $row.addClass("selected");
         self.selectedIAIndex = index;
@@ -2578,7 +2570,6 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     $tbody.empty();
 
     var chise = appUtilities.getActiveChiseInstance();
-    // Expected API: getRules() returns [{ id, type: 'assignment'|'rate', target, math }]
     self.rules = chise.getRules ? chise.getRules() : [];
     self.rules.forEach(function (rule, index) {
       var $row = $(
@@ -2599,23 +2590,23 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
 
       $row.find(".rule-type").val(rule.type || "assignment");
 
-      $row.find(".rule-type").on("change", function () {
+      $row.find(".rule-type").off("change").on("change", function () {
         var newType = $(this).val();
         chise.setRule(rule.id, "type", newType);
         rule.type = newType;
       });
 
-      $row.find(".rule-target").on("input", function () {
+      $row.find(".rule-target").off("input").on("input", function () {
         var newTarget = $(this).val();
         chise.setRule(rule.id, "target", newTarget);
         rule.target = newTarget;
       });
 
-      $row.find(".rule-math").on("click", function () {
+      $row.find(".rule-math").off("click").on("click", function () {
         new RuleMathModalView({ el: "#rule-math-div" }).render(rule);
       });
 
-      $row.on("click", function () {
+      $row.off("click").on("click", function () {
         $tbody.find("tr").removeClass("selected");
         $row.addClass("selected");
         self.selectedRuleIndex = index;
@@ -2646,29 +2637,29 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         `
       );
 
-      $row.find('.event-use-trigger-values').on('change', function(){
+      $row.find('.event-use-trigger-values').off("change").on('change', function(){
         var val = $(this).is(':checked');
         chise.setEvent(ev.id, 'useValuesFromTriggerTime', val);
         ev.useValuesFromTriggerTime = val;
       });
 
-      $row.find('.event-trigger').on('click', function(){
+      $row.find('.event-trigger').off("click").on('click', function(){
         new EventTriggerModalView({ el: '#event-trigger-div' }).render(ev);
       });
 
-      $row.find('.event-priority').on('click', function(){
+      $row.find('.event-priority').off("click").on('click', function(){
         new EventPriorityModalView({ el: '#event-priority-div' }).render(ev);
       });
 
-      $row.find('.event-delay').on('click', function(){
+      $row.find('.event-delay').off("click").on('click', function(){
         new EventDelayModalView({ el: '#event-delay-div' }).render(ev);
       });
 
-      $row.find('.event-assignments').on('click', function(){
+      $row.find('.event-assignments').off("click").on('click', function(){
         new EventActionsModalView({ el: '#event-assignments-div' }).render(ev);
       });
 
-      $row.on('click', function(){
+      $row.off("click").on('click', function(){
         $tbody.find('tr').removeClass('selected');
         $row.addClass('selected');
         self.selectedEventIndex = index;
@@ -2985,14 +2976,15 @@ var UnitDefinitionModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
+    var original_components = ud.units.slice();
 
-    var components = Array.isArray(self.ud.units) ? self.ud.units : [];
     var selectedIdx = -1;
 
     function renderComponents(){
       var $tbody = $modal.find('#unit-components-body');
       $tbody.empty();
       var kinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
+      var components = chise.getUnitDefinitionById(ud.id).units;
       components.forEach(function(c, i){
         var $tr = $('<tr></tr>');
         var $tdMult = $('<td></td>');
@@ -3016,12 +3008,12 @@ var UnitDefinitionModalView = Backbone.View.extend({
         }
         var $exp = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.exponent === 'number' ? c.exponent : 1);
 
-        $mult.on('input', function(){ components[i].multiplier = parseFloat($(this).val()); chise.setUnitDefinition(self.ud.id, 'units', components); });
-        $scale.on('input', function(){ components[i].scale = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
-        $kind.on('input change', function(){ components[i].kind = $(this).val(); chise.setUnitDefinition(self.ud.id, 'units', components); });
-        $exp.on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $mult.off("input").on('input', function(){ components[i].multiplier = parseFloat($(this).val()); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $scale.off("input").on('input', function(){ components[i].scale = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $kind.off("input change").on('input change', function(){ components[i].kind = $(this).val(); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $exp.off("input").on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
 
-        $tr.on('click', function(){
+        $tr.off("click").on('click', function(){
           $tbody.find('tr').removeClass('selected');
           $tr.addClass('selected');
           selectedIdx = i;
@@ -3033,27 +3025,25 @@ var UnitDefinitionModalView = Backbone.View.extend({
       });
     }
 
-    $modal.on('click', '#add-unit-component', function(){
+    $modal.off('click', '#add-unit-component').on('click', '#add-unit-component', function(){
       chise.addUnitToDefinition(self.ud.id, '', 1, 0, 1);
-      components.push({ kind: '', exponent: 1, scale: 0, multiplier: 1 });
       renderComponents();
     });
 
-    $modal.on('click', '#remove-unit-component', function(){
+    $modal.off('click', '#remove-unit-component').on('click', '#remove-unit-component', function(){
       if(selectedIdx >= 0){
         chise.removeUnitFromDefinition(self.ud.id, selectedIdx);
-        components.splice(selectedIdx, 1);
         selectedIdx = -1;
         renderComponents();
       }
     });
 
-    $modal.find('#save-unit-definition').on('click', function(){
-      chise.setUnitDefinition(self.ud.id, 'units', components);
+    $modal.off('click', '#save-unit-definition').on('click', '#save-unit-definition', function(){
       $(self.el).modal('hide');
     });
 
-    $modal.find('#cancel-unit-definition').on('click', function(){
+    $modal.off('click', '#cancel-unit-definition').on('click', '#cancel-unit-definition', function(){
+      chise.setUnitDefinition(self.ud.id, 'units', original_components);
       $(self.el).modal('hide');
     });
 
