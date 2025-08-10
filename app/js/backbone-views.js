@@ -2385,6 +2385,24 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     });
 
     self.renderEvents();
+
+    // Custom Units
+    self.$('#add-custom-unit-btn').on('click', function(){
+      // API: addUnitDefinition(name, units)
+      chise.addUnitDefinition("", []);
+      self.renderCustomUnits();
+    });
+
+    self.$('#delete-custom-unit-btn').on('click', function(){
+      if (typeof self.selectedCustomUnitIndex === 'number') {
+        var id = self.customUnits[self.selectedCustomUnitIndex].id;
+        chise.removeUnitDefinition(id);
+        self.selectedCustomUnitIndex = null;
+        self.renderCustomUnits();
+      }
+    });
+
+    self.renderCustomUnits();
     $(self.el).modal("show");
   },
 
@@ -2475,6 +2493,44 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
         $tbody.find("tr").removeClass("selected");  // single-select mode
         $row.addClass("selected");
         self.selectedFDIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderCustomUnits: function(){
+    var self = this;
+    var $tbody = self.$('#custom-units-table-body');
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.customUnits = chise.getUnitDefinitions ? chise.getUnitDefinitions() : [];
+
+    self.customUnits.forEach(function(ud, index){
+      var $row = $(`
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type=\"text\" class=\"form-control unit-name\" value=\"${ud.name != null ? ud.name : ''}\"></td>
+          <td><button class="btn btn-default unit-set">Set Unit</button></td>
+        </tr>
+      `);
+
+      $row.find('.unit-name').on('input', function(){
+        var newName = $(this).val();
+        // API: setUnitDefinition(id, 'name', value)
+        chise.setUnitDefinition(ud.id, 'name', newName);
+        ud.name = newName;
+      });
+
+      $row.find('.unit-set').on('click', function(){
+        new UnitDefinitionModalView({ el: '#unit-definition-div' }).render(ud);
+      });
+
+      $row.on('click', function(){
+        $tbody.find('tr').removeClass('selected');
+        $row.addClass('selected');
+        self.selectedCustomUnitIndex = index;
       });
 
       $tbody.append($row);
@@ -2913,6 +2969,95 @@ var EventActionsModalView = Backbone.View.extend({
     });
 
     renderTargets();
+    $(self.el).modal('show');
+  }
+});
+
+var UnitDefinitionModalView = Backbone.View.extend({
+  initialize: function(){
+    this.template = _.template($('#unit-definition-modal-template').html());
+  },
+  render: function(ud){
+    var self = this;
+    this.ud = ud;
+    self.template = _.template($('#unit-definition-modal-template').html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    var components = Array.isArray(self.ud.units) ? self.ud.units : [];
+    var selectedIdx = -1;
+
+    function renderComponents(){
+      var $tbody = $modal.find('#unit-components-body');
+      $tbody.empty();
+      var kinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
+      components.forEach(function(c, i){
+        var $tr = $('<tr></tr>');
+        var $tdMult = $('<td></td>');
+        var $tdScale = $('<td></td>');
+        var $tdKind = $('<td></td>');
+        var $tdExp = $('<td></td>');
+
+        var $mult = $('<input type="number" step="any" class="form-control layout-text" />').val(typeof c.multiplier === 'number' ? c.multiplier : 1);
+        var $scale = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.scale === 'number' ? c.scale : 0);
+        var $kind;
+        if (Array.isArray(kinds) && kinds.length > 0){
+          $kind = $('<select class="form-control layout-text"></select>');
+          $kind.append($('<option value=""></option>').text(''));
+          kinds.forEach(function(k){
+            var $opt = $('<option></option>').attr('value', k).text(k);
+            $kind.append($opt);
+          });
+          $kind.val(c.kind || '');
+        } else {
+          $kind = $('<input type="text" class="form-control layout-text" />').val(c.kind || '');
+        }
+        var $exp = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.exponent === 'number' ? c.exponent : 1);
+
+        $mult.on('input', function(){ components[i].multiplier = parseFloat($(this).val()); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $scale.on('input', function(){ components[i].scale = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $kind.on('input change', function(){ components[i].kind = $(this).val(); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $exp.on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
+
+        $tr.on('click', function(){
+          $tbody.find('tr').removeClass('selected');
+          $tr.addClass('selected');
+          selectedIdx = i;
+        });
+
+        $tdMult.append($mult); $tdScale.append($scale); $tdKind.append($kind); $tdExp.append($exp);
+        $tr.append($tdMult, $tdScale, $tdKind, $tdExp);
+        $tbody.append($tr);
+      });
+    }
+
+    $modal.on('click', '#add-unit-component', function(){
+      chise.addUnitToDefinition(self.ud.id, '', 1, 0, 1);
+      components.push({ kind: '', exponent: 1, scale: 0, multiplier: 1 });
+      renderComponents();
+    });
+
+    $modal.on('click', '#remove-unit-component', function(){
+      if(selectedIdx >= 0){
+        chise.removeUnitFromDefinition(self.ud.id, selectedIdx);
+        components.splice(selectedIdx, 1);
+        selectedIdx = -1;
+        renderComponents();
+      }
+    });
+
+    $modal.find('#save-unit-definition').on('click', function(){
+      chise.setUnitDefinition(self.ud.id, 'units', components);
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-unit-definition').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    renderComponents();
     $(self.el).modal('show');
   }
 });

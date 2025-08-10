@@ -1475,6 +1475,7 @@
     <div id="event-priority-div" tabindex="-1" class="modal fade" role="dialog"></div>
     <div id="event-delay-div" tabindex="-1" class="modal fade" role="dialog"></div>
     <div id="event-assignments-div" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="unit-definition-div" tabindex="-1" class="modal fade" role="dialog"></div>
 
     <div id="network-tabs-list-container" class="read-mode-off">
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
@@ -2024,6 +2025,55 @@
     <script type="text/template" id="loading-small-template">
       <p class="sbgn-text"> <%= name %> </p>
       <img class="centered" src="app/img/loading-small.gif" height="auto" width="auto" align="middle">
+    </script>
+
+    <script type="text/template" id="unit-definition-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 700px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Set Unit</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="row" style="margin-bottom: 6px;">
+                      <div class="col-sm-6">
+                        <span class="caption-style-text">Unit Components</span>
+                      </div>
+                      <div class="col-sm-6" style="text-align: right;">
+                        <button id="add-unit-component" class="btn btn-default">Add Component</button>
+                        <button id="remove-unit-component" class="btn btn-default">Delete Selected</button>
+                      </div>
+                    </div>
+                    <div id="unit-components-container" style="height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+                      <table class="table table-bordered table-sm simulation-table" style="margin-bottom: 0;">
+                        <thead>
+                          <tr>
+                            <th style="width: 20%;">Multiplier</th>
+                            <th style="width: 20%;">Scale</th>
+                            <th style="width: 40%;">Kind</th>
+                            <th style="width: 20%;">Exponent</th>
+                          </tr>
+                        </thead>
+                        <tbody id="unit-components-body" class="simulation-table-body">
+                          <!-- rows added dynamically; each row contains inputs for a component -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-unit-definition" class="btn btn-default">OK</button>
+            <button id="cancel-unit-definition" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
     </script>
 
     <script type="text/template" id="layout-settings-template">
@@ -3458,7 +3508,29 @@
                     </div>
                   </div>
                   <div class="tab-pane" id="custom-units">
-                    <p>Custom unit definitions go here.</p>
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 70%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Unit</th>
+                          </tr>
+                        </thead>
+                        <tbody id="custom-units-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-custom-unit-btn" class="btn btn-default">Add Custom Unit</button>
+                      <button id="delete-custom-unit-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
                   </div>
                   <div class="tab-pane" id="events">
                     <div class="simulation-table-wrapper">
