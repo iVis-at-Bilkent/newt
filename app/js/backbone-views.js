@@ -2687,7 +2687,7 @@ var FunctionDefinitionMathModalView = Backbone.View.extend({
     $modal.find("#function-args-field").val(self.fd.args ? self.fd.args.join(", ") : "");
     $modal.find("#function-body-field").val(self.fd.body || "");
 
-    $modal.find("#save-function-definition").on("click", function () {
+    $modal.find("#save-function-definition").off('click').on("click", function () {
       var newArgs = $modal.find("#function-args-field").val().split(",").map(s => s.trim()).filter(Boolean);
       var newBody = $modal.find("#function-body-field").val();
       self.fd.args = newArgs;
@@ -2698,7 +2698,7 @@ var FunctionDefinitionMathModalView = Backbone.View.extend({
       $(self.el).modal("hide");
     });
 
-    $modal.find("#cancel-function-definition").on("click", function () {
+    $modal.find("#cancel-function-definition").off('click').on("click", function () {
       $(self.el).modal("hide");
     });
 
@@ -2721,7 +2721,7 @@ var InitialAssignmentMathModalView = Backbone.View.extend({
     var chise = appUtilities.getActiveChiseInstance();
     $modal.find("#initial-assignment-math-field").val(self.ia.math || "");
 
-    $modal.find("#save-initial-assignment").on("click", function () {
+    $modal.find("#save-initial-assignment").off('click').on("click", function () {
       var newMath = $modal.find("#initial-assignment-math-field").val();
       self.ia.math = newMath;
       chise.setInitialAssignment(self.ia.id, "math", newMath);
@@ -2729,7 +2729,7 @@ var InitialAssignmentMathModalView = Backbone.View.extend({
       $(self.el).modal("hide");
     });
 
-    $modal.find("#cancel-initial-assignment").on("click", function () {
+    $modal.find("#cancel-initial-assignment").off('click').on("click", function () {
       $(self.el).modal("hide");
     });
 
@@ -2753,7 +2753,7 @@ var RuleMathModalView = Backbone.View.extend({
 
     $modal.find("#rule-math-field").val(self.rule.math || "");
 
-    $modal.find("#save-rule").on("click", function () {
+    $modal.find("#save-rule").off('click').on("click", function () {
       var newMath = $modal.find("#rule-math-field").val();
 
       self.rule.math = newMath;
@@ -2763,7 +2763,7 @@ var RuleMathModalView = Backbone.View.extend({
       $(self.el).modal("hide");
     });
 
-    $modal.find("#cancel-rule").on("click", function () {
+    $modal.find("#cancel-rule").off('click').on("click", function () {
       $(self.el).modal("hide");
     });
 
@@ -2788,7 +2788,7 @@ var EventTriggerModalView = Backbone.View.extend({
     $modal.find('#event-trigger-persistent').prop('checked', !!(self.ev.trigger && self.ev.trigger.persistent));
     $modal.find('#event-trigger-math').val(self.ev.trigger && self.ev.trigger.math ? self.ev.trigger.math : '');
 
-    $modal.find('#save-event-trigger').on('click', function(){
+    $modal.find('#save-event-trigger').off('click').on('click', function(){
       var initial = $modal.find('#event-trigger-initial-value').is(':checked');
       var persistent = $modal.find('#event-trigger-persistent').is(':checked');
       var math = $modal.find('#event-trigger-math').val();
@@ -2828,14 +2828,14 @@ var EventPriorityModalView = Backbone.View.extend({
 
     $modal.find('#event-priority-math').val(self.ev.priority || '');
 
-    $modal.find('#save-event-priority').on('click', function(){
+    $modal.find('#save-event-priority').off('click').on('click', function(){
       var math = $modal.find('#event-priority-math').val();
       self.ev.priority = math;
       chise.setEvent(self.ev.id, 'priority', math);
       $(self.el).modal('hide');
     });
 
-    $modal.find('#cancel-event-priority').on('click', function(){
+    $modal.find('#cancel-event-priority').off('click').on('click', function(){
       $(self.el).modal('hide');
     });
 
@@ -2858,14 +2858,14 @@ var EventDelayModalView = Backbone.View.extend({
 
     $modal.find('#event-delay-math').val(self.ev.delay || '');
 
-    $modal.find('#save-event-delay').on('click', function(){
+    $modal.find('#save-event-delay').off('click').on('click', function(){
       var math = $modal.find('#event-delay-math').val();
       self.ev.delay = math;
       chise.setEvent(self.ev.id, 'delay', math);
       $(self.el).modal('hide');
     });
 
-    $modal.find('#cancel-event-delay').on('click', function(){
+    $modal.find('#cancel-event-delay').off('click').on('click', function(){
       $(self.el).modal('hide');
     });
 
@@ -2897,11 +2897,10 @@ var EventActionsModalView = Backbone.View.extend({
         var $tr = $('<tr></tr>');
         var $td = $('<td style="padding: 6px 8px; border-bottom: 1px solid #e5e5e5;"></td>');
         var $input = $('<input type="text" class="form-control layout-text" />').val(a.target || '');
-        $input.on('input', function(){
+        $input.off('input').on('input', function(){
           assignments[i].target = $(this).val();
-          chise.setEvent(self.ev.id, 'assignments', assignments);
         });
-        $tr.on('click', function(){
+        $tr.off('click').on('click', function(){
           $tbody.find('tr').removeClass('selected');
           $tr.addClass('selected');
           selectedIdx = i;
@@ -2924,14 +2923,14 @@ var EventActionsModalView = Backbone.View.extend({
       }
     }
 
-    $modal.on('click', '#add-event-assignment', function(){
+    $modal.off('click', '#add-event-assignment').on('click', '#add-event-assignment', function(){
       chise.addEventAssignment(self.ev.id, '', '');
       assignments.push({ target: '', math: '' });
       selectedIdx = assignments.length - 1;
       renderTargets();
     });
 
-    $modal.on('click', '#remove-event-assignment', function(){
+    $modal.off('click', '#remove-event-assignment').on('click', '#remove-event-assignment', function(){
       if(selectedIdx >= 0){
         chise.removeEventAssignment(self.ev.id, selectedIdx);
         assignments.splice(selectedIdx, 1);
@@ -2940,22 +2939,19 @@ var EventActionsModalView = Backbone.View.extend({
       }
     });
 
-    $modal.on('input', '#event-assignment-math', function(){
+    $modal.off('input', '#event-assignment-math').on('input', '#event-assignment-math', function(){
       if(selectedIdx >= 0 && assignments[selectedIdx]){
         var newMath = $(this).val();
         assignments[selectedIdx].math = newMath;
-        chise.setEvent(self.ev.id, 'assignments', assignments);
       }
     });
 
-    $modal.find('#save-event-assignments').on('click', function(){
-      if(selectedIdx >= 0 && assignments[selectedIdx]){
-        chise.setEvent(self.ev.id, 'assignments', assignments);
-      }
+    $modal.find('#save-event-assignments').off('click').on('click', function(){
+      chise.setEvent(self.ev.id, 'assignments', assignments);
       $(self.el).modal('hide');
     });
 
-    $modal.find('#cancel-event-assignments').on('click', function(){
+    $modal.find('#cancel-event-assignments').off('click').on('click', function(){
       $(self.el).modal('hide');
     });
 
@@ -2976,7 +2972,7 @@ var UnitDefinitionModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
-    var original_components = ud.units.slice();
+    var components = Array.isArray(self.ud.units) ? self.ud.units : [];
 
     var selectedIdx = -1;
 
@@ -2984,7 +2980,6 @@ var UnitDefinitionModalView = Backbone.View.extend({
       var $tbody = $modal.find('#unit-components-body');
       $tbody.empty();
       var kinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
-      var components = chise.getUnitDefinitionById(ud.id).units;
       components.forEach(function(c, i){
         var $tr = $('<tr></tr>');
         var $tdMult = $('<td></td>');
@@ -3008,10 +3003,10 @@ var UnitDefinitionModalView = Backbone.View.extend({
         }
         var $exp = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.exponent === 'number' ? c.exponent : 1);
 
-        $mult.off("input").on('input', function(){ components[i].multiplier = parseFloat($(this).val()); chise.setUnitDefinition(self.ud.id, 'units', components); });
-        $scale.off("input").on('input', function(){ components[i].scale = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
-        $kind.off("input change").on('input change', function(){ components[i].kind = $(this).val(); chise.setUnitDefinition(self.ud.id, 'units', components); });
-        $exp.off("input").on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); chise.setUnitDefinition(self.ud.id, 'units', components); });
+        $mult.off("input").on('input', function(){ components[i].multiplier = parseFloat($(this).val()); });
+        $scale.off("input").on('input', function(){ components[i].scale = parseInt($(this).val(), 10); });
+        $kind.off("input change").on('input change', function(){ components[i].kind = $(this).val(); });
+        $exp.off("input").on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); });
 
         $tr.off("click").on('click', function(){
           $tbody.find('tr').removeClass('selected');
@@ -3026,24 +3021,24 @@ var UnitDefinitionModalView = Backbone.View.extend({
     }
 
     $modal.off('click', '#add-unit-component').on('click', '#add-unit-component', function(){
-      chise.addUnitToDefinition(self.ud.id, '', 1, 0, 1);
+      components.push({ kind: '', exponent: 1, scale: 0, multiplier: 1 });
       renderComponents();
     });
 
     $modal.off('click', '#remove-unit-component').on('click', '#remove-unit-component', function(){
       if(selectedIdx >= 0){
-        chise.removeUnitFromDefinition(self.ud.id, selectedIdx);
+        components.splice(selectedIdx, 1);
         selectedIdx = -1;
         renderComponents();
       }
     });
 
     $modal.off('click', '#save-unit-definition').on('click', '#save-unit-definition', function(){
+      chise.setUnitDefinition(self.ud.id, 'units', components);
       $(self.el).modal('hide');
     });
 
     $modal.off('click', '#cancel-unit-definition').on('click', '#cancel-unit-definition', function(){
-      chise.setUnitDefinition(self.ud.id, 'units', original_components);
       $(self.el).modal('hide');
     });
 
