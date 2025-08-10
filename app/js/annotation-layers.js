@@ -2926,9 +2926,8 @@ function showAnnotationFontModal(element) {
       self.redrawLayer(self.getCurrentLayer().id);
     }
   });
-} 
+}
 
-// ... existing code ...
   /**
    * Pad a bounding box to match a target aspect ratio (centered)
    * @param {Object} bbox - {x1, y1, x2, y2}
@@ -2961,4 +2960,3 @@ function showAnnotationFontModal(element) {
       };
     }
   }
-// ... existing code ...

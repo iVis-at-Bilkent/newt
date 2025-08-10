@@ -13,6 +13,28 @@ require('dotenv').config();
 
 var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
 
+// Helper function to detect if a file is a NWT file
+function isNwtFile(filename) {
+  if (!filename || typeof filename !== 'string') {
+    return false;
+  }
+  
+  return filename.endsWith('.nwt') || filename.includes('.nwt.');
+}
+
+// Helper function to get the actual file type for NWT files with additional extensions
+function getFileType(filename) {
+  if (!filename || typeof filename !== 'string') {
+    return null;
+  }
+  
+  if (isNwtFile(filename)) {
+    return 'nwt';
+  }
+  
+  return filename.split('.').pop();
+}
+
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
@@ -319,8 +341,10 @@ module.exports = function() {
       updatePalette(chiseInstance.elementUtilities.mapType)
 
       // Reset annotation layers when a file is loaded or when a sample is loaded
-      if (window.annotationLayers && (!filename.endsWith('.nwt') || event.type === 'sbgnvizLoadSampleEnd')) {
+      if (window.annotationLayers && (!isNwtFile(filename) || event.type === 'sbgnvizLoadSampleEnd')) {
         window.annotationLayers.resetAnnotationLayers();
+      } else {
+        console.log('ANNOTATION DEBUG: Not resetting annotation layers for file:', filename);
       }
 
     }
@@ -466,7 +490,7 @@ module.exports = function() {
         return;
       }
       var file = this.files[0] || fileObject;
-      var fileExtension = file.name.split('.').pop();
+      var fileExtension = getFileType(file.name);
       var loadCallbackInvalidityWarning=()=>{promptInvalidFileView.render()};
       
       if(fileExtension==='nwt'){
@@ -507,7 +531,9 @@ module.exports = function() {
         var file = this.files[0] || fileObject;
         console.log('file:',file);
         var params, caller;
-        var fileExtension = file.name.split('.').pop();
+        // Using the new helper function to properly 
+        // detect file types including .nwt.txt files
+        var fileExtension = getFileType(file.name);
 
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
