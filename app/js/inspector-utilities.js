@@ -1450,6 +1450,29 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
       $('#sbgn-inspector-style-panel-group').append('<div id="sbgn-inspector-style-simulation-panel" class="panel" ></div>');
       $("#sbgn-inspector-style-simulation-panel").html(SBMLHtml);
+
+      try {
+        var chise = appUtilities.getActiveChiseInstance();
+        var baseKinds = (chise && chise.getBaseUnitKinds) ? chise.getBaseUnitKinds() : [];
+        var customDefs = (chise && chise.getUnitDefinitions) ? chise.getUnitDefinitions() : [];
+
+        function populateUnitsSelect($sel, currentVal, defaultVal){
+          if (!$sel || $sel.length === 0) return;
+          $sel.empty();
+          (baseKinds || []).forEach(function(k){
+            $sel.append($('<option></option>').attr('value', k).text(k));
+          });
+          (customDefs || []).forEach(function(def){
+            var text = def.name && def.name.length ? def.name : def.id;
+            $sel.append($('<option></option>').attr('value', def.id).text(text));
+          });
+          var selectVal = (typeof currentVal !== 'undefined' && currentVal !== null && currentVal !== '') ? currentVal : defaultVal;
+          if (selectVal) $sel.val(selectVal);
+        }
+
+        populateUnitsSelect($("#inspector-initial-unit"), selectedEles[0].data('simulation') && selectedEles[0].data('simulation')['substanceUnits'], 'mole');
+        populateUnitsSelect($("#inspector-compartment-size-units"), selectedEles[0].data('simulation') && selectedEles[0].data('simulation')['units'], 'litre');
+      } catch (e) { }
       if(isSBMLProcess(selectedEles[0]))
         addLocalParameters(selectedEles[0]);
     }
@@ -1472,9 +1495,10 @@ inspectorUtilities.handleSBGNInspector = function () {
         selectedEles[0].data('simulation')['initialConcentration'] = parseFloat(element.value);
     });
 
-    // TODO: Fill this after units are implemented.
-    $('#inspector-initial-unit').on('change', function(){
-
+    // Use selected unit value (base kinds are literal, custom units use ID)
+    $('#inspector-initial-unit').off('change').on('change', function(){
+      var unitVal = $(this).val();
+      selectedEles[0].data('simulation')['units'] = unitVal;
     });
 
     $('#inspector-boundary-condition-species').on('change', function(){
@@ -1520,9 +1544,9 @@ inspectorUtilities.handleSBGNInspector = function () {
       selectedEles[0].data('simulation')['size'] = parseFloat(element.value);
     });
 
-    // TODO: Fill this after units are implemented.
-    $('#inspector-compartment-size-units').on('change', function(){
-
+    $('#inspector-compartment-size-units').off('change').on('change', function(){
+      var unitVal = $(this).val();
+      selectedEles[0].data('simulation')['units'] = unitVal;
     });
 
     $('#inspector-compartment-constant').on('change', function(){
