@@ -1269,14 +1269,14 @@ inspectorUtilities.handleSBGNInspector = function () {
           + '<textarea id="inspector-localparam-name' + labelIdx + '" cols="8" rows="1" style="min-width: ' + width / 1.25 + 'px;" class="inspector-input-box" placeholder="Name">' + localparam.name + '</textarea></td>'
           + '</tr><tr><td>'
           + '<input id="inspector-localparam-value' + labelIdx + '" class="inspector-input-box" type="number" value="' + localparam.quantity + '" style="width: ' + width / 2.5 + 'px;">'
-          + '<select id="inspector-localparam-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + width / 2.5 + 'px !important; margin-left: 1px;">'
-          + '<option value="litre" selected>litre</option>'
-          + '<option value="m3">m³</option>'
-          + '</select></td></tr></tbody></table>'
+          + '<select id="inspector-localparam-unit' + labelIdx + '" class="inspector-input-box sbgn-input-medium layout-text" style="width: ' + width / 2.5 + 'px !important; margin-left: 1px;"></select></td></tr></tbody></table>'
           + '<img id="inspector-localparam-delete' + labelIdx + '" width="16px" height="16px" class="pointer-button" style="margin-left: 3px;" src="app/img/toolbar/delete-simple.svg">'
           + '</div>';
           
           $("#localparam-field").append(localParam_);
+
+          // Populate the unit select with available units
+          populateUnitsSelect($("#inspector-localparam-unit" + labelIdx), localparam.units);
 
           (function (labelIdx){
             $('#inspector-localparam-delete' + labelIdx).off('click').on('click', function() {
@@ -1297,16 +1297,24 @@ inspectorUtilities.handleSBGNInspector = function () {
               var quantity = parseFloat(document.getElementById("inspector-localparam-value" + labelIdx).value);
               node.data('simulation').localParameters[labelIdx].quantity = quantity;
           })})(labelIdx);
+
+          (function (labelIdx){
+            $('#inspector-localparam-unit' + labelIdx).off('change').on('change', function() {
+              var unit = document.getElementById("inspector-localparam-unit" + labelIdx).value;
+              node.data('simulation').localParameters[labelIdx].units = unit;
+          })})(labelIdx);
   
           labelIdx += 1;
       }
       localParam_ = '<img width="16px" height="16px" id="inspector-add-localparam" src="app/img/add.svg" class="pointer-button">';
       $("#localparam-field").append(localParam_);
+      // I think moving local parameters also to sbgnviz makes sense. This works for now though.
       $("#inspector-add-localparam").off('click').on('click', function() {
           node.data('simulation').localParameters.push({
+              "id": chise.generateSpecializedID("localparam"),
               "name": "",
               "quantity": 0,
-              "unit": ""
+              "units": ""
           });
           addLocalParameters(node); // Re-render after adding a new parameter
       });

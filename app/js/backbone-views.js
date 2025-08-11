@@ -2494,7 +2494,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
 
       $row.find(".fd-name").off("input").on("input", function () {
         chise.setFunctionDefinition(fd.id, "name", $(this).val());
-        param.name = $(this).val();
+        fd.name = $(this).val();
       });
 
       $row.find(".fd-math").off("input").on("click", function () {
@@ -2559,14 +2559,14 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       var $row = $(`
         <tr>
           <td>${index + 1}</td>
-          <td><input type="text" class="form-control ia-symbol" value="${ia.symbol != null ? ia.symbol : ''}"></td>
+          <td><input type="text" class="form-control ia-symbol" value="${ia.symbol != null ? chise.convertIdsToNamesInFormula(ia.symbol) : ''}"></td>
           <td><button class="btn btn-default ia-math">Edit Assignment</button></td>
         </tr>
       `);
 
-      $row.find(".fd-name").off("input").on("input", function () {
-        chise.setInitialAssignment(ia.id, "symbol", $(this).val());
-        param.name = $(this).val();
+      $row.find(".ia-symbol").off("input").on("input", function () {
+        ia.symbol = $(this).val();
+        chise.setInitialAssignment(ia.id, "symbol", chise.convertNamesToIdsInFormula($(this).val()));
       });
 
       $row.find(".ia-math").off("click").on("click", function () {
@@ -2601,7 +2601,7 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
               <option value="rate">Rate</option>
             </select>
           </td>
-          <td><input type="text" class="form-control rule-target" value="${rule.target != null ? rule.target : ''}"></td>
+          <td><input type="text" class="form-control rule-target" value="${rule.target != null ? chise.convertIdsToNamesInFormula(rule.target) : ''}"></td>
           <td><button class="btn btn-default rule-math">Edit Rule</button></td>
         </tr>
         `
@@ -2617,8 +2617,8 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
 
       $row.find(".rule-target").off("input").on("input", function () {
         var newTarget = $(this).val();
-        chise.setRule(rule.id, "target", newTarget);
         rule.target = newTarget;
+        chise.setRule(rule.id, "target", chise.convertNamesToIdsInFormula(newTarget));
       });
 
       $row.find(".rule-math").off("click").on("click", function () {
@@ -2704,13 +2704,14 @@ var FunctionDefinitionMathModalView = Backbone.View.extend({
     var chise = appUtilities.getActiveChiseInstance();
 
     $modal.find("#function-args-field").val(self.fd.args ? self.fd.args.join(", ") : "");
-    $modal.find("#function-body-field").val(self.fd.body || "");
+    $modal.find("#function-body-field").val(chise.convertIdsToNamesInFormula(self.fd.body) || "");
 
     $modal.find("#save-function-definition").off('click').on("click", function () {
       var newArgs = $modal.find("#function-args-field").val().split(",").map(s => s.trim()).filter(Boolean);
       var newBody = $modal.find("#function-body-field").val();
       self.fd.args = newArgs;
       self.fd.body = newBody;
+      newBody = chise.convertNamesToIdsInFormula(newBody);
       chise.setFunctionDefinition(self.fd.id, "args", newArgs);
       chise.setFunctionDefinition(self.fd.id, "body", newBody);
 
@@ -2738,13 +2739,14 @@ var InitialAssignmentMathModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
-    $modal.find("#initial-assignment-math-field").val(self.ia.math || "");
+    self.ia.math = chise.convertIdsToNamesInFormula(self.ia.math);
+    $modal.find("#initial-assignment-math-field").val(self.ia.math);
 
     $modal.find("#save-initial-assignment").off('click').on("click", function () {
       var newMath = $modal.find("#initial-assignment-math-field").val();
       self.ia.math = newMath;
+      newMath = chise.convertNamesToIdsInFormula(newMath);
       chise.setInitialAssignment(self.ia.id, "math", newMath);
-
       $(self.el).modal("hide");
     });
 
@@ -2769,16 +2771,14 @@ var RuleMathModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
-
-    $modal.find("#rule-math-field").val(self.rule.math || "");
+    self.rule.math = chise.convertIdsToNamesInFormula(self.rule.math);
+    $modal.find("#rule-math-field").val(self.rule.math);
 
     $modal.find("#save-rule").off('click').on("click", function () {
       var newMath = $modal.find("#rule-math-field").val();
-
       self.rule.math = newMath;
-
+      newMath = chise.convertNamesToIdsInFormula(newMath);
       chise.setRule(self.rule.id, "math", newMath);
-
       $(self.el).modal("hide");
     });
 
@@ -2802,6 +2802,7 @@ var EventTriggerModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
+    self.ev.trigger.math = chise.convertIdsToNamesInFormula(self.ev.trigger.math);
 
     $modal.find('#event-trigger-initial-value').prop('checked', !!(self.ev.trigger && self.ev.trigger.initialValue));
     $modal.find('#event-trigger-persistent').prop('checked', !!(self.ev.trigger && self.ev.trigger.persistent));
@@ -2811,12 +2812,11 @@ var EventTriggerModalView = Backbone.View.extend({
       var initial = $modal.find('#event-trigger-initial-value').is(':checked');
       var persistent = $modal.find('#event-trigger-persistent').is(':checked');
       var math = $modal.find('#event-trigger-math').val();
-
-      self.ev.trigger = self.ev.trigger || {};
       self.ev.trigger.initialValue = initial;
       self.ev.trigger.persistent = persistent;
       self.ev.trigger.math = math;
 
+      math = chise.convertNamesToIdsInFormula(math);
       chise.setEventTrigger(self.ev.id, 'initialValue', initial);
       chise.setEventTrigger(self.ev.id, 'persistent', persistent);
       chise.setEventTrigger(self.ev.id, 'math', math);
@@ -2844,12 +2844,14 @@ var EventPriorityModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
+    self.ev.priority = chise.convertIdsToNamesInFormula(self.ev.priority);
 
-    $modal.find('#event-priority-math').val(self.ev.priority || '');
+    $modal.find('#event-priority-math').val(self.ev.priority);
 
     $modal.find('#save-event-priority').off('click').on('click', function(){
       var math = $modal.find('#event-priority-math').val();
       self.ev.priority = math;
+      math = chise.convertNamesToIdsInFormula(math);
       chise.setEvent(self.ev.id, 'priority', math);
       $(self.el).modal('hide');
     });
@@ -2874,12 +2876,14 @@ var EventDelayModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
+    self.ev.delay = chise.convertIdsToNamesInFormula(self.ev.delay);
 
-    $modal.find('#event-delay-math').val(self.ev.delay || '');
+    $modal.find('#event-delay-math').val(self.ev.delay);
 
     $modal.find('#save-event-delay').off('click').on('click', function(){
       var math = $modal.find('#event-delay-math').val();
       self.ev.delay = math;
+      math = chise.convertNamesToIdsInFormula(math);
       chise.setEvent(self.ev.id, 'delay', math);
       $(self.el).modal('hide');
     });
@@ -2904,6 +2908,10 @@ var EventActionsModalView = Backbone.View.extend({
     var $modal = $(self.template);
 
     var chise = appUtilities.getActiveChiseInstance();
+    self.ev.assignments = self.ev.assignments.map(a => ({
+      target: chise.convertIdsToNamesInFormula(a.target),
+      math: chise.convertIdsToNamesInFormula(a.math)
+    }));
 
     // simple in-memory selection index
     var assignments = Array.isArray(self.ev.assignments) ? self.ev.assignments : [];
@@ -2925,8 +2933,10 @@ var EventActionsModalView = Backbone.View.extend({
           selectedIdx = i;
           $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
         });
-        // selected styling if current
-        if(i === selectedIdx) $tr.addClass('selected');
+        if(i === selectedIdx){
+          $tr.addClass('selected');
+          $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
+        }
         $td.append($input);
         $tr.append($td);
         $tbody.append($tr);
@@ -2966,6 +2976,10 @@ var EventActionsModalView = Backbone.View.extend({
     });
 
     $modal.find('#save-event-assignments').off('click').on('click', function(){
+      assignments = assignments.map(a => ({
+        target: chise.convertNamesToIdsInFormula(a.target),
+        math: chise.convertNamesToIdsInFormula(a.math)
+      }));
       chise.setEvent(self.ev.id, 'assignments', assignments);
       $(self.el).modal('hide');
     });
@@ -5653,14 +5667,12 @@ var sbmlKineticLawView = Backbone.View.extend({
     self.template = _.template($("#sbml-kinetic-law-template").html());
     $(self.el).html(self.template);
     var nodeRow = document.getElementById("kinetic-law-nodes");
-    var idArray = []
     node.connectedEdges().connectedNodes().difference(node).forEach((iterNode, idx) => {
       if(iterNode.same(node)){
         return;
       }
       var element = '<button id="kinetic-law-node-ele' + idx + '" class="btn btn-default" style="width:90px; margin-left:5px; margin-right:5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' 
         + (iterNode.data('label') || iterNode.data('id')) + '</button>';
-      idArray.push(iterNode.data('id'));
       nodeRow.innerHTML += element;
       $(document).off("click", "#save-kinetic-law").on("click", "#kinetic-law-node-ele" + idx, function(evt) {
         var cursorStart = kineticLaw.selectionStart;
@@ -5668,7 +5680,7 @@ var sbmlKineticLawView = Backbone.View.extend({
         var currentText = kineticLaw.value;
         var textBefore = currentText.substring(0, cursorStart);
         var textAfter  = currentText.substring(cursorEnd, currentText.length);
-        var newText = '[' + (iterNode.data('label') || iterNode.data('id')) + '_' + idx + ']';
+        var newText = (iterNode.data('label') || iterNode.data('id'));
         kineticLaw.value = (textBefore + newText + textAfter);
         kineticLaw.selectionStart = kineticLaw.selectionEnd = cursorStart + newText.length;
         kineticLaw.focus();
@@ -5679,33 +5691,30 @@ var sbmlKineticLawView = Backbone.View.extend({
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var cy = chiseInstance.getCy();
 
+    // Set up local parameters for conversion
+    var localparams_n_to_id = null;
+    var localparams_id_to_n = null;
+    if (node.data('simulation') && node.data('simulation').localParameters) {
+      localparams_n_to_id = {};
+      localparams_id_to_n = {};
+      node.data('simulation').localParameters.forEach(function(param) {
+        if (param.name && param.id) {
+          localparams_n_to_id[param.name] = param.id;
+          localparams_id_to_n[param.id] = param.name;
+        }
+      });
+    }
+
     var kineticLaw = document.getElementById('kinetic-law-field'); 
     var kineticLawRawText = node.data('simulation')['kineticLaw'] || "";
-    let idSorted = idArray.map((value, index) => ({ value, index }));
-    idSorted.sort((a, b) => b.value.length - a.value.length);
-    let replacementMap = new Map(
-      idSorted.map(function (id, i) { 
-        var node = cy.getElementById(id.value);
-        return [id.value, '[' + (node.data('label') || node.data('id')) + '_' + id.index + ']'];
-      }
-    ));
-    function escapeRegExp(text) {
-      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-    }
-    let regex = new RegExp(idSorted.map((id) => (escapeRegExp(id.value))).join("|"), "g");
-    kineticLawRawText = kineticLawRawText.replace(regex, match => replacementMap.get(match));
-    kineticLaw.value = kineticLawRawText;
+    kineticLaw.value = chiseInstance.convertIdsToNamesInFormula(kineticLawRawText, localparams_id_to_n);
     
     $(document)
     .off("click", "#save-kinetic-law")
     .on("click", "#save-kinetic-law", function(evt) {
-      // Convert labels to ids
       var kineticLawText = kineticLaw.value;
-      const result = kineticLawText.replace(/\[(.+?)_(\d+)]/g, (match, prefix, intStr) => {
-        const intValue = parseInt(intStr, 10);
-        return `${idArray[intValue]}`;
-      });
-      node.data('simulation')['kineticLaw'] = result;
+      console.log(localparams_n_to_id)
+      node.data('simulation')['kineticLaw'] = chiseInstance.convertNamesToIdsInFormula(kineticLawText, localparams_n_to_id);
       $(self.el).modal("toggle");
     });
 
