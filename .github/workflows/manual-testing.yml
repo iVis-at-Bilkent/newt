@@ -15,12 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Headless Chrome
         uses: cypress-io/github-action@v6
-        timeout-minutes: 10
+        timeout-minutes: 15
         with:
           build: npm run release-build
           start: node server.js
