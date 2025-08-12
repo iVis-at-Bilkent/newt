@@ -2,8 +2,9 @@ name: Chrome Headless Manual
 
 on: 
   workflow_dispatch:
-  # push:
-  #  branches: [unstable]
+  push:
+    branches:
+      - unstable
 
 jobs:
   chrome-headless:
