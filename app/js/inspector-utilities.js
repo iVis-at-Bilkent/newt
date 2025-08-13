@@ -1356,10 +1356,8 @@ inspectorUtilities.handleSBGNInspector = function () {
           || selectedEles.parent()[0].data('class') != 'complex sbml')) { // Add html body for an SBML Species
         var hasOnlySubstanceUnits = selectedEles[0].data('simulation')['hasOnlySubstanceUnits'];
         var value = 0.0;
-        if(hasOnlySubstanceUnits)
-          value = selectedEles[0].data('simulation')['initialAmount'];
-        else
-          value = selectedEles[0].data('simulation')['initialConcentration'];
+        value = selectedEles[0].data('simulation')['initial'];
+        var valueType = selectedEles[0].data('simulation')['initialType'];
         var constant = selectedEles[0].data('simulation')['constant'];
         var bc = selectedEles[0].data('simulation')['boundaryCondition'];
         
@@ -1367,11 +1365,11 @@ inspectorUtilities.handleSBGNInspector = function () {
                     + "<font class='sbgn-label-font' style='margin-right: 3px;'>Initial </font>"
                     + "<select id='hasOnlySubstanceUnits' style='width: " + width / 1.7 + "px; font-size: 11px !important;'>"
                       + "<option value='amount'"; 
-        if(hasOnlySubstanceUnits) 
+        if(valueType === "amount") 
           SBMLHtml += " selected";
         SBMLHtml      += ">Amount</option>"
                       + "<option value='concentration'" 
-        if(!hasOnlySubstanceUnits) 
+        if(valueType === "concentration")
           SBMLHtml += " selected";
         SBMLHtml += ">Concentration</option>"
                     + "</select>" 
@@ -1495,11 +1493,14 @@ inspectorUtilities.handleSBGNInspector = function () {
     // SPECIES EVENTS
     $('#hasOnlySubstanceUnits').on('change', function(){
       var element = document.getElementById('hasOnlySubstanceUnits');
-      if(element.options[element.selectedIndex].text == 'Amount')
-        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = true;
-      else
-        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = false;
-      $('#inspector-initial-value').trigger('change');
+      if(element.options[element.selectedIndex].text == 'Amount'){
+        selectedEles[0].data('simulation')['initialType'] = "amount";
+        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = true;   // Tentative, might change
+      }
+      else{
+        selectedEles[0].data('simulation')['initialType'] = "concentration";
+        selectedEles[0].data('simulation')['hasOnlySubstanceUnits'] = false;  // Tentative, might change
+      }
     });
 
     $('#inspector-initial-value').on('change', function(){
