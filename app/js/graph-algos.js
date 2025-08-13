@@ -107,7 +107,7 @@ var graphAlgos = {
     console.log(idList);
     idList = idList.map(id => `'${id}'`).join(',');
     var pageSize = 100000;
-    var query = `CALL commonStream([${idList}], ['belongs_to_compartment','belongs_to_complex','belongs_to_submap'], ${lengthLimit}, -1,
+    var query = `CALL commonStream([${idList}], ['belongs_to_compartment','belongs_to_submap'], ${lengthLimit}, -1,
             ${pageSize}, 1, '', true, '', 2,{}, 0, 0, 0, 100000, null)`;
     // var query = `CALL commonStream([${idList}], [], ${lengthLimit}, -1,
     //         ${pageSize}, 1, '', true, '', 0,{}, 0, 0, 0, 100000, [])`;

@@ -1432,9 +1432,15 @@ var databaseUtilities = {
       };
       return errMessage;
     }
-    query = graphALgos.pathsFromTo(limit,allowCloning?cloningThreshold:1000000);
+    // query = graphALgos.pathsFromTo(limit,allowCloning?cloningThreshold:1000000);
+    query = `
+    CALL pathsFromTo($idList, $limit, $simpleChemicalDegreeThreshold)
+    YIELD nodes, relationships, language
+    RETURN nodes, relationships, language
+    `;
     var idList =  [...new Set([...sourceId, ...targetId])];
-    var queryData = { idList: idList };
+    var queryData = { idList: idList, limit: limit, simpleChemicalDegreeThreshold: allowCloning?cloningThreshold:1000000 };
+    console.log("queryData:",queryData);
     var data = { query: query, queryData: queryData };
     var result = null 
     try{
@@ -1525,8 +1531,14 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    var query = graphALgos.pathsBetween(lengthLimit,allowCloning?cloningThreshold:1000000);
-    var queryData = { idList: idOfNodes };
+    // var query = graphALgos.pathsBetween(lengthLimit,allowCloning?cloningThreshold:1000000);
+
+    var query = `
+    CALL pathsBetween($idList, $lengthLimit, $simpleChemDegreeThreshold)
+    YIELD nodes, relationships, language
+    RETURN nodes, relationships, language
+    `;
+    var queryData = { idList: idOfNodes,lengthLimit: lengthLimit, simpleChemDegreeThreshold: allowCloning?cloningThreshold:1000000 }; 
 
     var data = { query: query, queryData: queryData };
     console.log("data being sent:", data);
@@ -1621,8 +1633,13 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    var query = graphALgos.neighborhood(lengthLimit,allowCloning?cloningThreshold:1000000);
-    var queryData = { idList: idList };
+    // var query = graphALgos.neighborhood(lengthLimit,allowCloning?cloningThreshold:1000000);
+    var query = `
+    CALL neighborhoodFromIds($idList, $limit, $simpleChemicalDegreeThreshold)
+    YIELD nodes, relationships, language
+    RETURN nodes, relationships, language
+    `;
+    var queryData = { idList: idList, limit: lengthLimit, simpleChemicalDegreeThreshold: allowCloning?cloningThreshold:1000000 };
 
     var data = { query: query, queryData: queryData };
     var result = {};

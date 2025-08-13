@@ -4573,10 +4573,11 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
               console.log("targetSymbolsArray", targetSymbolsArray);
               const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
               const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+              var lengthLimit = self.currentQueryParameters.lengthLimit;
               var result = await databaseUtilities.runPathsFromTo(
                 sourceSymbolsArray,
                 targetSymbols,
-                2,
+                lengthLimit,
                 allowCloning,
                 cloningThreshold
               );
@@ -4585,7 +4586,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
                 $(self.el).modal("toggle");
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
-                }).render();
+                }).render(result.err, result.message);
                 return;
               }
               $(self.el).modal("toggle");
