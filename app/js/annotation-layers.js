@@ -2020,6 +2020,39 @@ self.setCytoscapeActiveStyle = function(enabled) {
         layer.zIndex = layerData.zIndex || layerData.id;
         layer.isAnnotationLayer = true;
         
+        // Reinitialize image elements with proper callbacks
+        layer.elements.forEach(function(element) {
+          if (element.type === 'image') {
+            if (element.imageData && typeof element.imageData === 'string') {
+              if (!element.imageData.startsWith('data:image/')) {
+                console.error('Invalid image data URL format for element:', element.id, element.imageData.substring(0, 50) + '...');
+                if (element.imageData.startsWith('data:')) {
+                  console.log('Attempting to fix data URL format');
+                } else {
+                  console.error('Cannot fix image data URL, skipping element:', element.id);
+                  return;
+                }
+              }
+              if (element.imageData.length < 100) {
+                console.error('Image data URL appears to be truncated for element:', element.id, 'length:', element.imageData.length);
+                return;
+              }
+              if (element.imageData.includes('undefined') || element.imageData.includes('null')) {
+                console.error('Image data URL contains invalid values for element:', element.id);
+                return;
+              }
+            } else {
+              console.error('Missing or invalid imageData for element:', element.id);
+              return;
+            }
+            element._redrawCallback = function() {
+              console.log('Redrawing layer', layer.id, 'due to image load');
+              self.redrawLayer(layer.id);
+            };
+            element._imageElement = null;
+          }
+        });
+        
         layers.push(layer);
                 
         self.createAnnotationCanvas(layer.id);

@@ -730,6 +730,21 @@ var AnnotationUtil = function() {
             }
           }
         };
+        data._imageElement.onerror = function(e) {
+          console.error('Error loading image for element:', data.id, e);
+          if (!data._retryCount) {
+            data._retryCount = 1;
+            setTimeout(function() {
+              console.log('Retrying image load for element:', data.id);
+              data._imageElement = null; // Force recreation
+              if (data._redrawCallback) {
+                data._redrawCallback();
+              }
+            }, 1000);
+          } else {
+            console.error('Image failed to load after retry for element:', data.id);
+          }
+        };
         data._imageElement.src = imageData;
       }
       
