@@ -1091,12 +1091,29 @@ var AnnotationUtil = function() {
         tempSvg.setAttribute('font-style', textStyles.fontStyle || 'normal');
         tempSvg.setAttribute('dominant-baseline', 'hanging');
         
+        // Helper function to measure text width reliably
+        function measureTextWidth(text) {
+          tempSvg.textContent = text;
+          group.appendChild(tempSvg);
+          var svgWidth = tempSvg.getComputedTextLength ? tempSvg.getComputedTextLength() : 0;
+          group.removeChild(tempSvg);
+          
+          if (svgWidth <= 0) {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            ctx.font = (textStyles.fontStyle || 'normal') + ' ' +
+                      (textStyles.fontWeight || 'normal') + ' ' +
+                      scaledFontSize + 'px ' +
+                      textStyles.fontFamily;
+            return ctx.measureText(text).width;
+          }
+          
+          return svgWidth;
+        }
+        
         for (var i = 0; i < words.length; i++) {
           var testLine = currentLine + (currentLine ? ' ' : '') + words[i];
-          tempSvg.textContent = testLine;
-          group.appendChild(tempSvg);
-          var testWidth = tempSvg.getComputedTextLength ? tempSvg.getComputedTextLength() : 0;
-          group.removeChild(tempSvg);
+          var testWidth = measureTextWidth(testLine);
           if (testWidth > maxWidth && currentLine) {
             lines.push(currentLine);
             currentLine = words[i];
