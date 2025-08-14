@@ -2,9 +2,9 @@ name: Chrome Headless Manual
 
 on: 
   workflow_dispatch:
-  # push:
-  #  branches:
-  #    - unstable
+  push:
+    branches:
+      - workflow-testing
 
 jobs:
   chrome-headless:
@@ -22,7 +22,6 @@ jobs:
           build: npm run release-build
           start: node server.js
           browser: chrome
-          headless: true
           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.dashboardRecordKey }} 
