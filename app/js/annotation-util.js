@@ -286,8 +286,9 @@ var AnnotationUtil = function() {
    * @param {CanvasRenderingContext2D} ctx - The canvas context
    * @param {Object} data - Text box data
    * @param {Object} [styles] - Custom styles for the text box
+   * @param {number} [exportScale] - Optional export scale override (for PNG/JPG exports)
    */
-  self.drawTextBox = function(ctx, data, styles) {
+  self.drawTextBox = function(ctx, data, styles, exportScale) {
     if (!ctx || !data) {
       console.error('Invalid canvas context or data for text box drawing');
       return false;
@@ -311,16 +312,19 @@ var AnnotationUtil = function() {
       ctx.strokeStyle = borderColor;
       
       var lineWidth = 1;
-      var zoom = 1;
+      var scale = 1;
       
-      if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
+      // Use exportScale if provided (for PNG/JPG exports), otherwise use viewport zoom
+      if (exportScale !== undefined) {
+        scale = exportScale;
+      } else if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.getViewportState) {
         var viewportState = window.annotationLayers.getViewportState();
         if (viewportState && viewportState.zoom) {
-          zoom = viewportState.zoom;
+          scale = viewportState.zoom;
         }
       }
       
-      var scaledLineWidth = lineWidth * zoom;
+      var scaledLineWidth = lineWidth * scale;
       ctx.lineWidth = scaledLineWidth;
       ctx.setLineDash([5, 5]);
       ctx.strokeRect(x, y, width, height);
@@ -328,7 +332,7 @@ var AnnotationUtil = function() {
         ctx.fillStyle = textBoxStyles.color;
         
         var fontSize = textBoxStyles.fontSize || 12;
-        var scaledFontSize = fontSize * zoom;
+        var scaledFontSize = fontSize * scale;
         
         ctx.font = (textBoxStyles.fontStyle || 'normal') + ' ' +
                    (textBoxStyles.fontWeight || 'normal') + ' ' +

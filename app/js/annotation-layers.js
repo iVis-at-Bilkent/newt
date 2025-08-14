@@ -2252,7 +2252,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
           annotationUtil.drawRectangle(ctx, element, element.styles);
           break;
         case 'textbox':
-          annotationUtil.drawTextBox(ctx, element, element.styles);
+          annotationUtil.drawTextBox(ctx, element, element.styles, 1.0);
           break;
         case 'arrow':
           annotationUtil.drawArrow(ctx, element, element.styles);
@@ -2508,7 +2508,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
                 annotationUtil.drawRectangle(tempCtx, element, element.styles);
                 break;
               case 'textbox':
-                annotationUtil.drawTextBox(tempCtx, element, element.styles);
+                annotationUtil.drawTextBox(tempCtx, element, element.styles, 1.0);
                 break;
               case 'arrow':
                 annotationUtil.drawArrow(tempCtx, element, element.styles);
@@ -2609,7 +2609,7 @@ self.setCytoscapeActiveStyle = function(enabled) {
                 annotationUtil.drawRectangle(tempCtx, element, element.styles);
                 break;
               case 'textbox':
-                annotationUtil.drawTextBox(tempCtx, element, element.styles);
+                annotationUtil.drawTextBox(tempCtx, element, element.styles, 1.0);
                 break;
               case 'arrow':
                 annotationUtil.drawArrow(tempCtx, element, element.styles);
