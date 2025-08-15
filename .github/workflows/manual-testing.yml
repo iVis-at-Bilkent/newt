@@ -14,14 +14,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Upgrade npm
+        run: npm install -g npm@8
+      
+      - name: Install dependencies
+        run: npm ci
 
       - name: Headless Chrome
         uses: cypress-io/github-action@v6
-        timeout-minutes: 15
+        timeout-minutes: 20
         with:
           build: npm run release-build
           start: node server.js
           browser: chrome
           record: true
+          install: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.dashboardRecordKey }} 
