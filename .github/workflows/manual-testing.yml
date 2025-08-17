@@ -27,9 +27,10 @@ jobs:
         timeout-minutes: 20
         with:
           build: npm run release-build
-          start: PORT=3000 node server.js
+          start: node server.js
           browser: chrome
           record: true
           install: false
         env:
+          PORT: 3000
           CYPRESS_RECORD_KEY: ${{ secrets.dashboardRecordKey }} 
