@@ -27,7 +27,7 @@ jobs:
         timeout-minutes: 20
         with:
           build: npm run release-build
-          start: node server.js
+          start: PORT=3000 node server.js
           browser: chrome
           record: true
           install: false
