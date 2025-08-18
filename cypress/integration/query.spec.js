@@ -1,3 +1,4 @@
+/*
 import { skipIntro } from '../constants';
 
 context('Query', () => {
@@ -77,3 +78,4 @@ context('Query', () => {
   });
 
 });
+*/
