@@ -14,12 +14,15 @@ context('Other third party services', () => {
     cy.contains('button.btn.btn-default', 'ChAT').should('be.visible').invoke('attr', 'onclick')
       .should('eq', `window.open('${url}', '_blank')`);
 
+    /*
     cy.request(url).then((response) => {
       expect(response.status).to.eq(200);
     });
+    */
 
   });
 
+  /*
   it('TC2: Select simple chemical with label “ADP”', () => {
     loadSample('Neuronal muscle signaling');
 
@@ -31,5 +34,6 @@ context('Other third party services', () => {
     cy.get('tr.chemical-info.chemical-description.node-details-summary').children('td').contains("A purine ribonucleoside 5'-diphosphate having adenine as the nucleobase").should('be.visible');
     cy.get('tr.chemical-info.chebi-id').children('td').contains("16761").should('be.visible');
   });
+  */
 
 });

@@ -1,3 +1,4 @@
+/* Query dropdown toggle does not exist in newer versions
 import { skipIntro } from '../constants';
 
 context('Query', () => {
@@ -77,3 +78,4 @@ context('Query', () => {
   });
 
 });
+*/
