@@ -10,6 +10,7 @@ jobs:
   chrome-headless:
     runs-on: ubuntu-latest
     environment: test0
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +25,6 @@ jobs:
       
       - name: Headless Chrome
         uses: cypress-io/github-action@v6
-        timeout-minutes: 20
         with:
           build: npm run release-build
           start: node server.js
