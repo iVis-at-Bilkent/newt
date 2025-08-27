@@ -349,23 +349,34 @@
                   </li>
 
                   <li class="dropdown-submenu">
-                    <a href="#" id="add-node-menu-option" class="dropdown-toggle" data-toggle="dropdown">
-                      Align
+                    <a href="#" id="align-distribute-menu-option" class="dropdown-toggle" data-toggle="dropdown">
+                      Align/Distribute
                       <!--<b class="right-caret"></b>-->
                     </a>
-                    <ul class="dropdown-menu" id="add-node-submenu">
+                    <ul class="dropdown-menu" id="align-distribute-submenu">
                       <li class="dropdown-submenu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           Horizontal
                           <!--<b class="right-caret"></b>-->
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a href="#" id="align-horizontal-top">Top</a></li>
+                          <li><a href="#" id="align-horizontal-top">Align Top</a></li>
                           <li>
-                            <a href="#" id="align-horizontal-middle">Middle</a>
+                            <a href="#" id="align-horizontal-middle">Align Middle</a>
                           </li>
                           <li>
-                            <a href="#" id="align-horizontal-bottom">Bottom</a>
+                            <a href="#" id="align-horizontal-bottom">Align Bottom</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#" id="distribute-horizontal-left">Distribute Left</a></li>
+                          <li>
+                            <a href="#" id="distribute-horizontal-center">Distribute Center</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-horizontal-right">Distribute Right</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-horizontal-even">Distribute Even Gaps</a>
                           </li>
                         </ul>
                       </li>
@@ -375,12 +386,23 @@
                           <!--<b class="right-caret"></b>-->
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a href="#" id="align-vertical-left">Left</a></li>
+                          <li><a href="#" id="align-vertical-left">Align Left</a></li>
                           <li>
-                            <a href="#" id="align-vertical-center">Center</a>
+                            <a href="#" id="align-vertical-center">Align Center</a>
                           </li>
                           <li>
-                            <a href="#" id="align-vertical-right">Right</a>
+                            <a href="#" id="align-vertical-right">Align Right</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#" id="distribute-vertical-top">Distribute Top</a></li>
+                          <li>
+                            <a href="#" id="distribute-vertical-center">Distribute Center</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-vertical-bottom">Distribute Bottom</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-vertical-even">Distribute Even Gaps</a>
                           </li>
                         </ul>
                       </li>
@@ -649,7 +671,7 @@
           </div>
 
           <div class="btn-group sbgn-toolbar-element sbgn-dd-list" role="group" id="align-list">
-            <button id="align-button" style="padding: 3px" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
+            <button id="align-button" style="padding: 3px" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node&#10;Distribute Selected: Distribute positions of selected nodes evenly" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
               <div style="height: 16px">
                 <img style="height: 16px; width: auto" id="sbgn-align-img" src="app/img/align/align.svg">
                 <!--<span style="float: right;" class="caret"></span>-->
@@ -671,6 +693,7 @@
               <li>
                 <a class="dd-list-href" href="#" id="align-horizontal-bottom-icon">&nbsp;<img src="app/img/align/align-horizontal-bottom.svg">&nbsp;&nbsp;Align Horizontal Bottom</a>
               </li>
+              <li class="divider"></li>
               <li>
                 <a class="dd-list-href" href="#" id="align-vertical-left-icon">&nbsp;<img src="app/img/align/align-vertical-left.svg">&nbsp;&nbsp;Align Vertical Left</a>
               </li>
@@ -679,6 +702,32 @@
               </li>
               <li>
                 <a class="dd-list-href" href="#" id="align-vertical-right-icon">&nbsp;<img src="app/img/align/align-vertical-right.svg">&nbsp;&nbsp;Align Vertical Right</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-left-icon">&nbsp;Distribute Horizontal Left</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-center-icon">&nbsp;Distribute Horizontal Center</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-right-icon">&nbsp;Distribute Horizontal Right</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-even-icon">&nbsp;Distribute Horizontal With Even Gaps</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-top-icon">&nbsp;Distribute Vertical Top</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-center-icon">&nbsp;Distribute Vertical Center</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-bottom-icon">&nbsp;Distribute Vertical Bottom</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-even-icon">&nbsp;Distribute Vertical With Even Gaps</a>
               </li>
             </ul>
           </div>

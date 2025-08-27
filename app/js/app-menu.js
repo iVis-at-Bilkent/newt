@@ -2009,6 +2009,101 @@ module.exports = function() {
      * Align selected nodes w.r.t the first selected node end
      */
 
+    /*
+     * Distribute selected nodes start
+     */
+    $('#distribute-horizontal-left,#distribute-horizontal-left-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "horizontal", "left", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-horizontal-center,#distribute-horizontal-center-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "horizontal", "center", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-horizontal-right,#distribute-horizontal-right-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "horizontal", "right", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-horizontal-even,#distribute-horizontal-even-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "horizontal", "gap", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-vertical-top,#distribute-vertical-top-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "vertical", "top", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-vertical-center,#distribute-vertical-center-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "vertical", "center", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-vertical-bottom,#distribute-vertical-bottom-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "vertical", "bottom", appUtilities.firstSelectedNode);
+    });
+
+    $('#distribute-vertical-even,#distribute-vertical-even-icon').click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      chiseInstance.distribute(cy.nodes(":selected"), "vertical", "gap", appUtilities.firstSelectedNode);
+    });
+
+    /*
+     * Distribute selected nodes end
+     */
+
     // Mode handler related menu items
 
     var dragAndDropPlacement = false;
