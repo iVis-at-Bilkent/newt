@@ -1,11 +1,10 @@
-/*
 import { skipIntro } from '../constants';
 
 context('Query', () => {
   beforeEach(skipIntro);
 
   function pathwaycommons(btnSelector, btnTxt, waitMs = 750) {
-    cy.get('a.dropdown-toggle').contains('Query').click();
+    cy.get('a.dropdown-toggle').contains('Database').click();
     cy.get('a#query-pathwaycommons').realHover();
     cy.contains(btnSelector, btnTxt).should('be.visible').click();
     cy.wait(waitMs);
@@ -18,8 +17,8 @@ context('Query', () => {
     cy.get('button#save-query-pathsbetween').click();
     cy.wait(7000);
     cy.window().then((win) => {
-      expect(win.cy.nodes().length == 445).to.eq(true);
-      expect(win.cy.edges().length == 142).to.eq(true);
+      expect(win.cy.nodes().length == 421).to.eq(true);
+      expect(win.cy.edges().length == 176).to.eq(true);
     });
   });
 
@@ -32,8 +31,8 @@ context('Query', () => {
     cy.wait(6000);
 
     cy.window().then((win) => {
-      expect(win.cy.nodes().length == 445).to.eq(true);
-      expect(win.cy.edges().length == 142).to.eq(true);
+      expect(win.cy.nodes().length == 421).to.eq(true);
+      expect(win.cy.edges().length == 176).to.eq(true);
     });
   });
 
@@ -45,12 +44,11 @@ context('Query', () => {
     cy.wait(6000);
 
     cy.window().then((win) => {
-      expect(win.cy.nodes().length == 683).to.eq(true);
-      expect(win.cy.edges().length == 221).to.eq(true);
+      expect(win.cy.nodes().length == 619).to.eq(true);
+      expect(win.cy.edges().length == 291).to.eq(true);
     });
   });
 
-  // // this doesn't work because it takes longer than 30 seconds
   it('TC4: Query -> Pathway Commons -> Neighborhood...', () => {
     pathwaycommons('a#query-neighborhood', 'Neighborhood...');
 
@@ -59,11 +57,12 @@ context('Query', () => {
     cy.wait(30000);
 
     cy.window().then((win) => {
-      expect(win.cy.nodes().length == 4701).to.eq(true);
-      expect(win.cy.edges().length == 8817).to.eq(true);
+      expect(win.cy.nodes().length == 7156).to.eq(true);
+      expect(win.cy.edges().length == 15178).to.eq(true);
     });
   });
 
+  /* No results for query
   it('TC5: Query -> Pathway Commons -> By URI...', () => {
     pathwaycommons('a#query-pathsbyURI', 'By URI...');
 
@@ -76,6 +75,6 @@ context('Query', () => {
       expect(win.cy.edges().length == 27).to.eq(true);
     });
   });
+  */
 
 });
-*/
