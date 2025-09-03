@@ -2333,6 +2333,22 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
       }
     });
 
+    $(document).off('fd-update').on('fd-update', function() {
+      self.renderFunctionDefinitions();
+    });
+
+    $(document).off('ev-update').on('ev-update', function() {
+      self.renderEvents();
+    });
+
+    $(document).off('ia-update').on('ia-update', function() {
+      self.renderInitialAssignments();
+    });
+
+    $(document).off('rules-update').on('rules-update', function() {
+      self.renderRules();
+    });
+
     self.$("#add-ia-btn").off("click").on("click", function () {
       chise.addInitialAssignment("", "");
       self.renderInitialAssignments();
@@ -2485,11 +2501,27 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     self.functionDefinitions = chise.getFunctionDefinitions();
     self.functionDefinitions.forEach(function (fd, index) {
       var $row = $(`
-        <tr>
-          <td>${index + 1}</td>
-          <td><input type="text" class="form-control fd-name" value="${fd.name != null ? fd.name : ''}"></td>
-          <td><button class="btn btn-default fd-math">Edit Function</button></td>
-        </tr>
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <input type="text"
+                class="form-control fd-name"
+                value="${fd.name != null ? fd.name : ''}">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control fd-function-preview"
+                  value="${fd.body != null ? fd.body : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Function"
+                class="fd-math"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+      </tr>
       `);
 
       $row.find(".fd-name").off("input").on("input", function () {
@@ -2557,11 +2589,27 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     self.initialAssignments = chise.getInitialAssignments();
     self.initialAssignments.forEach(function (ia, index) {
       var $row = $(`
-        <tr>
-          <td>${index + 1}</td>
-          <td><input type="text" class="form-control ia-symbol" value="${ia.symbol != null ? chise.convertIdsToNamesInFormula(ia.symbol) : ''}"></td>
-          <td><button class="btn btn-default ia-math">Edit Assignment</button></td>
-        </tr>
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <input type="text"
+                class="form-control ia-symbol"
+                value="${ia.symbol != null ? chise.convertIdsToNamesInFormula(ia.symbol) : ''}">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control fd-function-preview"
+                  value="${ia.math != null ? chise.convertIdsToNamesInFormula(ia.math) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Assignment"
+                class="ia-math"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+      </tr>
       `);
 
       $row.find(".ia-symbol").off("input").on("input", function () {
@@ -2591,21 +2639,36 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     var chise = appUtilities.getActiveChiseInstance();
     self.rules = chise.getRules ? chise.getRules() : [];
     self.rules.forEach(function (rule, index) {
-      var $row = $(
-        `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            <select class="layout-text form-control rule-type">
-              <option value="assignment">Assignment</option>
-              <option value="rate">Rate</option>
-            </select>
-          </td>
-          <td><input type="text" class="form-control rule-target" value="${rule.target != null ? chise.convertIdsToNamesInFormula(rule.target) : ''}"></td>
-          <td><button class="btn btn-default rule-math">Edit Rule</button></td>
-        </tr>
-        `
-      );
+      var $row = $(`
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <select class="layout-text form-control rule-type">
+            <option value="assignment">Assignment</option>
+            <option value="rate">Rate</option>
+          </select>
+        </td>
+        <td>
+          <input type="text"
+                class="form-control rule-target"
+                value="${rule.target != null ? chise.convertIdsToNamesInFormula(rule.target) : ''}"
+                style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control rule-math-preview"
+                  value="${rule.math != null ? chise.convertIdsToNamesInFormula(rule.math) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Rule"
+                class="rule-math"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+      </tr>
+      `);
 
       $row.find(".rule-type").val(rule.type || "assignment");
 
@@ -2643,18 +2706,56 @@ var SimulationPropertiesView = GeneralPropertiesParentView.extend({
     var chise = appUtilities.getActiveChiseInstance();
     self.events = chise.getEvents ? chise.getEvents() : [];
     self.events.forEach(function (ev, index) {
-      var $row = $(
-        `
-        <tr>
-          <td>${index + 1}</td>
-          <td class="text-center"><input type="checkbox" class="event-use-trigger-values" ${ev.useValuesFromTriggerTime ? "checked" : ""}></td>
-          <td><button class="btn btn-default event-trigger">Edit Trigger</button></td>
-          <td><button class="btn btn-default event-priority">Edit Priority</button></td>
-          <td><button class="btn btn-default event-delay">Edit Delay</button></td>
-          <td><button class="btn btn-default event-assignments">Edit Actions</button></td>
-        </tr>
-        `
-      );
+      var $row = $(`
+      <tr>
+        <td>${index + 1}</td>
+        <td class="text-center">
+          <input type="checkbox" class="event-use-trigger-values" ${ev.useValuesFromTriggerTime ? "checked" : ""}>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control event-trigger-preview"
+                  value="${ev.trigger.math != null ? chise.convertIdsToNamesInFormula(ev.trigger.math) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Trigger"
+                class="event-trigger"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control event-priority-preview"
+                  value="${ev.priority != null ? chise.convertIdsToNamesInFormula(ev.priority) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Priority"
+                class="event-priority"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control event-delay-preview"
+                  value="${ev.delay != null ? chise.convertIdsToNamesInFormula(ev.delay) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Delay"
+                class="event-delay"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-default event-assignments">Edit Actions</button>
+        </td>
+      </tr>
+      `);
 
       $row.find('.event-use-trigger-values').off("change").on('change', function(){
         var val = $(this).is(':checked');
@@ -2715,6 +2816,7 @@ var FunctionDefinitionMathModalView = Backbone.View.extend({
       chise.setFunctionDefinition(self.fd.id, "args", newArgs);
       chise.setFunctionDefinition(self.fd.id, "body", newBody);
 
+      $(document).trigger("fd-update");
       $(self.el).modal("hide");
     });
 
@@ -2747,6 +2849,7 @@ var InitialAssignmentMathModalView = Backbone.View.extend({
       self.ia.math = newMath;
       newMath = chise.convertNamesToIdsInFormula(newMath);
       chise.setInitialAssignment(self.ia.id, "math", newMath);
+      $(document).trigger("ia-update");
       $(self.el).modal("hide");
     });
 
@@ -2779,6 +2882,7 @@ var RuleMathModalView = Backbone.View.extend({
       self.rule.math = newMath;
       newMath = chise.convertNamesToIdsInFormula(newMath);
       chise.setRule(self.rule.id, "math", newMath);
+      $(document).trigger("rules-update");
       $(self.el).modal("hide");
     });
 
@@ -2821,6 +2925,7 @@ var EventTriggerModalView = Backbone.View.extend({
       chise.setEventTrigger(self.ev.id, 'persistent', persistent);
       chise.setEventTrigger(self.ev.id, 'math', math);
 
+      $(document).trigger("ev-update");
       $(self.el).modal('hide');
     });
 
@@ -2853,6 +2958,7 @@ var EventPriorityModalView = Backbone.View.extend({
       self.ev.priority = math;
       math = chise.convertNamesToIdsInFormula(math);
       chise.setEvent(self.ev.id, 'priority', math);
+      $(document).trigger("ev-update");
       $(self.el).modal('hide');
     });
 
@@ -2885,6 +2991,7 @@ var EventDelayModalView = Backbone.View.extend({
       self.ev.delay = math;
       math = chise.convertNamesToIdsInFormula(math);
       chise.setEvent(self.ev.id, 'delay', math);
+      $(document).trigger("ev-update");
       $(self.el).modal('hide');
     });
 
