@@ -62,19 +62,17 @@ context('Query', () => {
     });
   });
 
-  /* No results for query
   it('TC5: Query -> Pathway Commons -> By URI...', () => {
     pathwaycommons('a#query-pathsbyURI', 'By URI...');
 
-    cy.get('input#query-pathsbyURI-URI').type('http://identifiers.org/reactome/R-HSA-6803211');
+    cy.get('input#query-pathsbyURI-URI').type('http://bioregistry.io/reactome:R-HSA-6803211');
     cy.get('button#save-query-pathsbyURI').click();
     cy.wait(5000);
 
     cy.window().then((win) => {
-      expect(win.cy.nodes().length == 47).to.eq(true);
+      expect(win.cy.nodes().length == 44).to.eq(true);
       expect(win.cy.edges().length == 27).to.eq(true);
     });
   });
-  */
 
 });
