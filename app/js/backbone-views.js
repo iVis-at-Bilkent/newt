@@ -5821,8 +5821,8 @@ var sbmlKineticLawView = Backbone.View.extend({
     .off("click", "#save-kinetic-law")
     .on("click", "#save-kinetic-law", function(evt) {
       var kineticLawText = kineticLaw.value;
-      console.log(localparams_n_to_id)
       node.data('simulation')['kineticLaw'] = chiseInstance.convertNamesToIdsInFormula(kineticLawText, localparams_n_to_id);
+      $(document).trigger("kinetic-law-updated", [node]);
       $(self.el).modal("toggle");
     });
 
