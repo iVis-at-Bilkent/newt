@@ -1318,7 +1318,24 @@ inspectorUtilities.handleSBGNInspector = function () {
           });
           addLocalParameters(node); // Re-render after adding a new parameter
       });
-  };
+    };
+
+    var parseKineticLawForDisplay = function(node){
+      var localparams_id_to_n = null;
+      if (node.data('simulation') && node.data('simulation').localParameters) {
+        localparams_id_to_n = {};
+        node.data('simulation').localParameters.forEach(function(param) {
+          if (param.name && param.id) {
+            localparams_id_to_n[param.id] = param.name;
+          }
+        });
+      }
+
+      return chiseInstance.convertIdsToNamesInFormula(
+        node.data('simulation')['kineticLaw'], 
+        localparams_id_to_n
+      );
+    }
 
     // Add SBML specific simulation tab.
     var mapType = appUtilities.getActiveChiseInstance().getMapType();
@@ -1350,7 +1367,6 @@ inspectorUtilities.handleSBGNInspector = function () {
       // Add body
       SBMLHtml += "<div id='inspector-simulation-properties-toggle' class='panel-collapse collapse'>";
       SBMLHtml += "<div class='panel-body'>";
-      SBMLHtml += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
 
       if( isSBMLSpecies(selectedEles[0]) && (selectedEles.parent().length == 0 
           || selectedEles.parent()[0].data('class') != 'complex sbml')) { // Add html body for an SBML Species
@@ -1360,7 +1376,8 @@ inspectorUtilities.handleSBGNInspector = function () {
         var valueType = selectedEles[0].data('simulation')['initialType'];
         var constant = selectedEles[0].data('simulation')['constant'];
         var bc = selectedEles[0].data('simulation')['boundaryCondition'];
-        
+
+        SBMLHtml += "<table cellpadding='0' cellspacing='0' width='100%' align= 'center'>";
         SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
                     + "<font class='sbgn-label-font' style='margin-right: 3px;'>Initial </font>"
                     + "<select id='hasOnlySubstanceUnits' style='width: " + width / 1.7 + "px; font-size: 11px !important;'>"
@@ -1399,11 +1416,39 @@ inspectorUtilities.handleSBGNInspector = function () {
         SBMLHtml += "></input>"
                 + "</td></tr></table></div>";
       } else if( isSBMLProcess(selectedEles[0]) ) { // Add html body for an SBML Process
-        SBMLHtml += "<tr><td style='width: " + width + "px; text-align:right; padding-right: 5px;'>" 
-                        + "<font class='sbgn-label-font'>Local Parameters</font>" 
-                      + "</td><td id='localparam-field' style='padding-left: 5px;'></td></tr></table><div>"
-                      + '<div style="text-align: center; margin-top: 5px;">'
-                      + '<button class="btn btn-default" style="align: center;" id="inspector-kinetic-law-button">Set Kinetic Law</button></div>';
+        var corrected_kinetic_law_text = parseKineticLawForDisplay(selectedEles[0]);
+        
+        SBMLHtml += `
+        <table cellpadding='0' cellspacing='0' width='100%' align='center' style="table-layout: fixed;">
+          <tr>
+            <td style="width: ${width}px; text-align: right; padding-right: 5px; white-space: nowrap;">
+              <font class='sbgn-label-font'>Kinetic Law</font>
+            </td>
+            <td style="padding-left: 5px; overflow: hidden;">
+              <div style="display: flex; align-items: center; gap: 5px; width: 100%; padding-right: 5px;">
+                <input type="text"
+                      id="inspector-kinetic-law-preview"
+                      class="inspector-input-box"
+                      value="${corrected_kinetic_law_text}"
+                      readonly
+                      style="flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background-color: #eee;">
+                <img src="app/img/toolbar/edit.svg"
+                    alt="Edit Kinetic Law"
+                    id="inspector-kinetic-law-button"
+                    class="pointer-button"
+                    style="width: 16px; height: 16px; flex: 0 0 auto;">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: ${width}px; text-align:right; padding-right: 5px; white-space: nowrap;">
+              <font class='sbgn-label-font'>Local Parameters</font>
+            </td>
+            <td id='localparam-field' style='padding-left: 5px;'>
+            </td>
+          </tr>
+        </table>
+        `;
                       
       } else if( selectedEles[0].data('class') == "compartment" ){ // Add html body for an SBML Compartment
         var spatialDimensions = selectedEles[0].data('simulation')['spatialDimensions'];
@@ -1489,6 +1534,12 @@ inspectorUtilities.handleSBGNInspector = function () {
       if(isSBMLProcess(selectedEles[0]))
         addLocalParameters(selectedEles[0]);
     }
+
+    $(document).off("kinetic-law-updated").on("kinetic-law-updated", function(event, node){
+      console.log()
+      var kineticLawText = parseKineticLawForDisplay(node);
+      $("#inspector-kinetic-law-preview").val(kineticLawText);
+    });
 
     // SPECIES EVENTS
     $('#hasOnlySubstanceUnits').on('change', function(){
