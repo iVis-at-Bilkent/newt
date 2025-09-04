@@ -532,8 +532,8 @@
     </glyph>
     <glyph id="nwtN_6c50ce74-9069-bb8d-131c-69b833b3b347" class="process">
       <bbox x="610.2863885100159" y="677.4863596312454" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_6c50ce74-9069-bb8d-131c-69b833b3b347.1" x="607.429245652873" y="684.6292167741025"/>
-      <port id="nwtN_6c50ce74-9069-bb8d-131c-69b833b3b347.2" x="627.429245652873" y="684.6292167741025"/>
+      <port id="nwtN_6c50ce74-9069-bb8d-131c-69b833b3b347.1" x="617.429245652873" y="694.6292167741025"/>
+      <port id="nwtN_6c50ce74-9069-bb8d-131c-69b833b3b347.2" x="617.429245652873" y="674.6292167741025"/>
     </glyph>
     <glyph id="nwtN_59356946-0c6a-6d20-c096-c80b697d07b0" class="simple molecule">
       <label text="LABEL"/>
@@ -541,8 +541,8 @@
     </glyph>
     <glyph id="nwtN_433588ac-2ac5-2b21-bd0a-49f1ba128952" class="process">
       <bbox x="610.2863885100159" y="733.9364174506494" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_433588ac-2ac5-2b21-bd0a-49f1ba128952.1" x="607.429245652873" y="741.0792745935065"/>
-      <port id="nwtN_433588ac-2ac5-2b21-bd0a-49f1ba128952.2" x="627.429245652873" y="741.0792745935065"/>
+      <port id="nwtN_433588ac-2ac5-2b21-bd0a-49f1ba128952.1" x="617.429245652873" y="751.0792745935065"/>
+      <port id="nwtN_433588ac-2ac5-2b21-bd0a-49f1ba128952.2" x="617.429245652873" y="731.0792745935065"/>
     </glyph>
     <glyph id="nwtN_167ae9d9-294d-db32-4e1c-c665a53635f1" class="simple molecule">
       <label text="LABEL"/>
@@ -550,8 +550,8 @@
     </glyph>
     <glyph id="nwtN_4182d456-9486-cc4a-89b1-beee667dacba" class="process">
       <bbox x="610.2863885100159" y="790.3864752700536" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_4182d456-9486-cc4a-89b1-beee667dacba.1" x="607.429245652873" y="797.5293324129107"/>
-      <port id="nwtN_4182d456-9486-cc4a-89b1-beee667dacba.2" x="627.429245652873" y="797.5293324129107"/>
+      <port id="nwtN_4182d456-9486-cc4a-89b1-beee667dacba.1" x="617.429245652873" y="807.5293324129107"/>
+      <port id="nwtN_4182d456-9486-cc4a-89b1-beee667dacba.2" x="617.429245652873" y="787.5293324129107"/>
     </glyph>
     <glyph id="nwtN_596fefd5-0439-747c-0286-0ed7ec8e98a8" class="simple molecule">
       <label text="LABEL"/>
@@ -559,8 +559,8 @@
     </glyph>
     <glyph id="nwtN_900b493e-ce43-fcd0-8c0a-46f6777c6f94" class="process">
       <bbox x="610.2863885100159" y="846.8365330894576" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_900b493e-ce43-fcd0-8c0a-46f6777c6f94.1" x="607.429245652873" y="853.9793902323147"/>
-      <port id="nwtN_900b493e-ce43-fcd0-8c0a-46f6777c6f94.2" x="627.429245652873" y="853.9793902323147"/>
+      <port id="nwtN_900b493e-ce43-fcd0-8c0a-46f6777c6f94.1" x="617.429245652873" y="863.9793902323147"/>
+      <port id="nwtN_900b493e-ce43-fcd0-8c0a-46f6777c6f94.2" x="617.429245652873" y="843.9793902323147"/>
     </glyph>
     <glyph id="nwtN_4fc0369e-d9a1-a97b-0644-dfb325dd4577" class="simple molecule">
       <label text="LABEL"/>
@@ -568,8 +568,8 @@
     </glyph>
     <glyph id="nwtN_6001b0d4-63bf-dc0a-6cad-b178e72fdb6c" class="process">
       <bbox x="610.2863885100159" y="903.2865909088616" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_6001b0d4-63bf-dc0a-6cad-b178e72fdb6c.1" x="607.429245652873" y="910.4294480517187"/>
-      <port id="nwtN_6001b0d4-63bf-dc0a-6cad-b178e72fdb6c.2" x="627.429245652873" y="910.4294480517187"/>
+      <port id="nwtN_6001b0d4-63bf-dc0a-6cad-b178e72fdb6c.1" x="617.429245652873" y="920.4294480517187"/>
+      <port id="nwtN_6001b0d4-63bf-dc0a-6cad-b178e72fdb6c.2" x="617.429245652873" y="900.4294480517187"/>
     </glyph>
     <glyph id="nwtN_903c1011_2b24_4f50_87d5_9783b9fa6487" class="protein">
       <label text="LABEL"/>
@@ -577,8 +577,8 @@
     </glyph>
     <glyph id="nwtN_9981ee01-50c7-e68c-21ca-530635c6c6bf" class="process">
       <bbox x="610.2863885100159" y="959.7366487282658" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_9981ee01-50c7-e68c-21ca-530635c6c6bf.1" x="607.429245652873" y="966.8795058711229"/>
-      <port id="nwtN_9981ee01-50c7-e68c-21ca-530635c6c6bf.2" x="627.429245652873" y="966.8795058711229"/>
+      <port id="nwtN_9981ee01-50c7-e68c-21ca-530635c6c6bf.1" x="617.429245652873" y="976.8795058711229"/>
+      <port id="nwtN_9981ee01-50c7-e68c-21ca-530635c6c6bf.2" x="617.429245652873" y="956.8795058711229"/>
     </glyph>
     <glyph id="nwtN_8254d545-bbd4-7313-bb10-401bb39a0ed0" class="gene">
       <label text="Unknown Catalysis"/>
@@ -698,8 +698,8 @@
     </glyph>
     <glyph id="nwtN_bad350c3-ba8f-3aec-4a55-fa17306fd5e6" class="process">
       <bbox x="212.1933947268293" y="1129.086822186478" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="nwtN_bad350c3-ba8f-3aec-4a55-fa17306fd5e6.1" x="209.33625186968644" y="1136.229679329335"/>
-      <port id="nwtN_bad350c3-ba8f-3aec-4a55-fa17306fd5e6.2" x="229.33625186968644" y="1136.229679329335"/>
+      <port id="nwtN_bad350c3-ba8f-3aec-4a55-fa17306fd5e6.1" x="219.33625186968644" y="1146.229679329335"/>
+      <port id="nwtN_bad350c3-ba8f-3aec-4a55-fa17306fd5e6.2" x="219.33625186968644" y="1126.229679329335"/>
     </glyph>
     <glyph id="nwtN_ebee1786_b308_464c_b321_0fc260500704" class="simple molecule">
       <label text="LABEL"/>
