@@ -7,6 +7,7 @@ var jquery = ($ = require("jquery"));
 var chroma = require("chroma-js");
 var chise = require("chise");
 var tutorial = require("./tutorial");
+var FileSaver = require("file-saver");
 
 var appUtilities = {};
 
@@ -870,6 +871,7 @@ appUtilities.defaultGeneralProperties = {
   enablePorts: true,
   enableEntityStateSynchronization: true,
   enableSIFTopologyGrouping: false,
+  rememberDirectoryToPersist: false,
   allowCompoundNodeResize: true,
   mapColorScheme: "black_white",
   mapColorSchemeStyle: "solid",
@@ -5389,5 +5391,95 @@ appUtilities.hslToHex = function (h, s, l) {
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 };
+
+// Flag to determine if the file save dialog should remember last chosen directory handle
+appUtilities.rememberDirectoryToPersist = false;
+appUtilities.workingDirHandle = null;
+
+// File System Access integration for saving files with a chosen working directory
+appUtilities.initializeFileSystemAccess = function () {
+  const hasFsAccess = typeof window !== "undefined" && typeof window.showSaveFilePicker === "function";
+  const originalSaveAs = FileSaver && FileSaver.saveAs ? FileSaver.saveAs : null;
+  
+  // Derive type from file extension
+  function getFileTypeDescriptor(fileName) {
+    var lower = (fileName || "").toLowerCase();
+    if (lower.endsWith(".png")) return { description: "PNG image", accept: { "image/png": [".png"] } };
+    if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return { description: "JPEG image", accept: { "image/jpeg": [".jpg", ".jpeg"] } };
+    if (lower.endsWith(".svg")) return { description: "SVG image", accept: { "image/svg+xml": [".svg"] } };
+    if (lower.endsWith(".sbgn") || lower.endsWith(".sbgnml")) return { description: "SBGN-ML", accept: { "application/xml": [".sbgn", ".sbgnml"] } };
+    if (lower.endsWith(".sbml") || lower.endsWith(".xml")) return { description: "SBML/XML", accept: { "application/xml": [".sbml", ".xml"] } };
+    if (lower.endsWith(".sif")) return { description: "SIF", accept: { "text/plain": [".sif"] } };
+    if (lower.endsWith(".nwt") || lower.endsWith(".newt") || lower.endsWith(".newtp")) return { description: "Newt", accept: { "application/json": [".nwt", ".newt", ".newtp"] } };
+    if (lower.endsWith(".gpml")) return { description: "GPML", accept: { "application/xml": [".gpml"] } };
+    if (lower.endsWith(".json")) return { description: "JSON", accept: { "application/json": [".json"] } };
+    if (lower.endsWith(".txt")) return { description: "Text", accept: { "text/plain": [".txt"] } };
+    return null;
+  }
+
+  async function writeBlobToHandle(fileHandle, blob) {
+    var writable = await fileHandle.createWritable();
+    try {
+      await writable.write(blob);
+    } finally {
+      await writable.close();
+    }
+  }
+
+  if (hasFsAccess && originalSaveAs) {
+    FileSaver.saveAs = async function (data, fileName) {
+      try {
+        var blob = null;
+        if (data instanceof Blob) {
+          blob = data;
+        } else if (typeof data === "string") {
+          try {
+            var res = await fetch(data, { mode: "cors" });
+            if (res.ok) {
+              blob = await res.blob();
+            }
+          } catch (e) {}
+          if (!blob) {
+            blob = new Blob([data]);
+          }
+        } else {
+          try {
+            blob = new Blob([data]);
+          } catch (e) {
+            return originalSaveAs.apply(this, arguments);
+          }
+        }
+
+        var typeDesc = getFileTypeDescriptor(fileName);
+        var pickerOpts = {
+          suggestedName: fileName || "untitled",
+          startIn: appUtilities.rememberDirectoryToPersist && appUtilities.workingDirHandle ? appUtilities.workingDirHandle : "downloads"
+        };  
+        if (typeDesc) pickerOpts.types = [typeDesc];
+        
+        const fileHandle = await window.showSaveFilePicker(pickerOpts);
+        if (appUtilities.rememberDirectoryToPersist) {
+          appUtilities.workingDirHandle = fileHandle
+        };
+
+        await writeBlobToHandle(fileHandle, blob);
+      } catch (err) {
+        if (err.name === "AbortError") {
+          return;
+        }
+        return originalSaveAs.apply(this, arguments);
+      }
+    };
+  }
+}; appUtilities.initializeFileSystemAccess();
+
+// Sets whether the app should remember the last chosen directory
+appUtilities.setRememberDirectoryToPersist = function (state) {
+  appUtilities.rememberDirectoryToPersist = state;
+  if (!state) {
+    appUtilities.workingDirHandle = null;
+  }
+}
+
 
 module.exports = appUtilities;

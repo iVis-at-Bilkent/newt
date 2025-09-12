@@ -608,6 +608,12 @@ var GeneralPropertiesParentView = Backbone.View.extend({
       appUtilities.synchronizeStates();
     } 
 
+    if (currentGeneralProperties.rememberDirectoryToPersist) {
+      appUtilities.setRememberDirectoryToPersist(true);
+    } else {
+      appUtilities.setRememberDirectoryToPersist(false);
+    }
+
     if (currentGeneralProperties.allowCompoundNodeResize) {
       chiseInstance.considerCompoundSizes();
     } else {
@@ -678,6 +684,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       id: "enable-sif-topology-grouping",
       type: "checkbox",
       property: "currentGeneralProperties.enableSIFTopologyGrouping",
+      update: self.applyUpdate,
+    };
+
+    self.params.rememberDirectoryToPersist = {
+      id: "remember-directory-to-persist",
+      type: "checkbox",
+      property: "currentGeneralProperties.rememberDirectoryToPersist",
       update: self.applyUpdate,
     };
 
@@ -1033,6 +1046,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $("#enable-sif-topology-grouping").blur();
     });
 
+    $(document).on("change", "#remember-directory-to-persist", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.rememberDirectoryToPersist.value = $("#remember-directory-to-persist").prop("checked");
+      cy.undoRedo().do("changeMenu", self.params.rememberDirectoryToPersist);
+      $("#remember-directory-to-persist").blur();
+    });
+
     $(document).on("change", "#highlight-thickness", function (evt) {
       var cy = appUtilities.getActiveCy();
       var viewUtilities = cy.viewUtilities("get");
@@ -1119,6 +1141,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.enableEntityStateSynchronization;
       self.params.enableSIFTopologyGrouping.value =
         appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
+      self.params.rememberDirectoryToPersist.value =
+        appUtilities.defaultGeneralProperties.rememberDirectoryToPersist;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value =
@@ -1141,6 +1165,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         name: "changeMenu",
         param: self.params.enableSIFTopologyGrouping,
       });
+      actions.push({ name: "changeMenu", param: self.params.rememberDirectoryToPersist });
       actions.push({
         name: "applySIFTopologyGrouping",
         param: { apply: self.params.enableSIFTopologyGrouping.value },

@@ -948,6 +948,10 @@ module.exports = function() {
         mapProperties.enableEntityStateSynchronization = ['false'];
       }
 
+      if (!mapProperties.hasOwnProperty('rememberDirectoryToPersist')) {
+        mapProperties.rememberDirectoryToPersist = ['false'];
+      }
+
       var urlParams = appUtilities.getScratch(cy, 'urlParams');
 
       if (urlParams) {
