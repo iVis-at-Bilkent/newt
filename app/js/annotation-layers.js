@@ -39,10 +39,9 @@ var AnnotationLayers = function () {
     height: 0,
   };
 
-  var LayerModel = function (id, name, visible = true, customLayerName = "") {
+  var LayerModel = function (id, visible = true, customLayerName = "") {
     return {
       id: id,
-      name: name,
       visible: visible,
       elements: [], // Will store rectangles, arrows, text, images
       createdAt: new Date(),
@@ -64,7 +63,7 @@ var AnnotationLayers = function () {
       var activeCy = appUtilities.getActiveCy();
       if (activeCy && activeCy.container()) {
         // Create default layer (Layer 0)
-        self.addLayer("Layer 0", true, "Map");
+        self.addLayer(true, "Map");
 
         self.bindEvents();
         self.updateAnnotationToolStates();
@@ -105,8 +104,7 @@ var AnnotationLayers = function () {
     // Add layer button
     $(document).on("click", ".add-layer-section button", function (e) {
       e.preventDefault();
-      var layerName = "Layer " + layers.length;
-      self.addLayer(layerName);
+      self.addLayer();
     });
 
     // Layer visibility toggle
@@ -259,17 +257,16 @@ var AnnotationLayers = function () {
 
   /**
    * Add a new layer
-   * @param {string} name - The name of the layer
    * @param {boolean} isDefaultLayer - Whether this is the default Layer 0
+   * @param {string} customLayerName - Optional user-defined label
    * @returns {number} The ID of the created layer
    */
   self.addLayer = function (
-    name,
     isDefaultLayer = false,
     customLayerName = "",
   ) {
     var layerId = isDefaultLayer ? 0 : nextLayerId;
-    var layer = LayerModel(layerId, name, true, customLayerName);
+    var layer = LayerModel(layerId, true, customLayerName);
     layer.isDefaultLayer = isDefaultLayer;
 
     layers.push(layer);
@@ -460,7 +457,7 @@ var AnnotationLayers = function () {
     var isDefaultLayer = layer.isDefaultLayer;
 
     // Compose display name
-    var displayName = layer.name;
+    var displayName = "Layer " + layer.id;
     if (layer.customLayerName && layer.customLayerName.trim() !== "") {
       displayName += " (" + layer.customLayerName + ")";
     }
@@ -2243,7 +2240,6 @@ var AnnotationLayers = function () {
       if (layer.isAnnotationLayer) {
         layersData.push({
           id: layer.id,
-          name: layer.name,
           visible: layer.visible,
           elements: layer.elements,
           createdAt: layer.createdAt,
@@ -2306,7 +2302,6 @@ var AnnotationLayers = function () {
       annotationLayersData.layers.forEach(function (layerData) {
         var layer = LayerModel(
           layerData.id,
-          layerData.name,
           layerData.visible,
           layerData.customLayerName || "",
         );
