@@ -10,7 +10,7 @@ var AnnotationUtil = function() {
    */
   var defaultStyles = {
     rectangle: {
-      strokeColor: '#800080',
+      strokeColor: 'rgba(128,0,128,1)',
       fillColor: 'rgba(255,255,255,0.6)',
       lineWidth: 2,
       lineDash: []
@@ -18,16 +18,16 @@ var AnnotationUtil = function() {
     text: {
       fontSize: 14,
       fontFamily: 'Arial, sans-serif',
-      color: '#000000',
+      color: 'rgba(0,0,0,1)',
       fillColor: 'rgba(255,255,255,0.6)'
     },
     arrow: {
-      strokeColor: '#ff0000',
+      strokeColor: 'rgba(255,0,0,1)',
       lineWidth: 7,
       headSize: 20,
     },
     image: {
-      strokeColor: '#0066cc',
+      strokeColor: 'rgba(0,102,204,1)',
       lineWidth: 2,
       lineDash: [5, 5]
     }
@@ -103,8 +103,8 @@ var AnnotationUtil = function() {
     var halfHandle = handleSize / 2;
     
     ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#0066cc';
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.strokeStyle = 'rgba(0,102,204,1)';
     
     // Scale line width by zoom level if available
     var lineWidth = 2;
@@ -303,7 +303,7 @@ var AnnotationUtil = function() {
     }
 
     var fillColor = textBoxStyles.fillColor || 'rgba(255,255,255,0.6)';
-    var borderColor = textBoxStyles.strokeColor || '#800080';
+    var borderColor = textBoxStyles.strokeColor || 'rgba(128,0,128,1)';
 
     try {
       ctx.save();
@@ -388,8 +388,8 @@ var AnnotationUtil = function() {
     var halfHandle = handleSize / 2;
     
     ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#0066cc';
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.strokeStyle = 'rgba(0,102,204,1)';
     
     // Scale line width by zoom level if available
     var lineWidth = 2;
@@ -465,7 +465,7 @@ var AnnotationUtil = function() {
       width: width,
       height: height,
       text: 'Double-click to edit',
-      styles: { fillColor: 'rgba(255,255,255,0.6)', strokeColor: '#0099FF' },
+      styles: { fillColor: 'rgba(255,255,255,0.6)', strokeColor: 'rgba(0,153,255,1)' },
       id: 'textbox_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
@@ -564,8 +564,8 @@ var AnnotationUtil = function() {
     var halfHandle = handleSize / 2;
     
     ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#0066cc';
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.strokeStyle = 'rgba(0,102,204,1)';
     
     var lineWidth = 2;
     var zoom = 1;
@@ -775,7 +775,7 @@ var AnnotationUtil = function() {
         ctx.setLineDash(imageStyles.lineDash);
         ctx.strokeRect(x, y, width, height);
         
-        ctx.fillStyle = '#666666';
+        ctx.fillStyle = 'rgba(102,102,102,1)'; 
         ctx.font = '12px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('Loading...', x + width/2, y + height/2);
@@ -803,8 +803,8 @@ var AnnotationUtil = function() {
     var halfHandle = handleSize / 2;
     
     ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#0066cc';
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.strokeStyle = 'rgba(0,102,204,1)';
     
     var lineWidth = 2;
     var zoom = 1;
@@ -1044,7 +1044,7 @@ var AnnotationUtil = function() {
       rect.setAttribute('width', element.width);
       rect.setAttribute('height', element.height);
       var styles = Object.assign({}, defaultStyles.rectangle, element.styles || {});
-      setSvgColor(rect, 'stroke', styles.strokeColor || '#800080');
+      setSvgColor(rect, 'stroke', styles.strokeColor || 'rgba(128,0,128,1)');
       rect.setAttribute('stroke-width', styles.lineWidth || 2);
       if (styles.lineDash && styles.lineDash.length > 0) {
         rect.setAttribute('stroke-dasharray', styles.lineDash.join(','));
@@ -1054,7 +1054,7 @@ var AnnotationUtil = function() {
     } else if (element.type === 'textbox') {
       var group = svgDoc.createElementNS(svgNS, 'g');
       var boxStyles = element.styles || {};
-      var borderColor = boxStyles.strokeColor || '#0099FF';
+      var borderColor = boxStyles.strokeColor || 'rgba(0,153,255,1)';
       var fillColor = boxStyles.fillColor || 'rgba(255,255,255,0)';
       var rect = svgDoc.createElementNS(svgNS, 'rect');
       rect.setAttribute('x', element.x);
@@ -1077,7 +1077,7 @@ var AnnotationUtil = function() {
         textElem.setAttribute('font-family', textStyles.fontFamily);
         textElem.setAttribute('font-weight', textStyles.fontWeight || 'normal');
         textElem.setAttribute('font-style', textStyles.fontStyle || 'normal');
-        setSvgColor(textElem, 'fill', textStyles.color || '#000000');
+        setSvgColor(textElem, 'fill', textStyles.color || 'rgba(0,0,0,1)');
         // Set dominant-baseline to 'hanging' to match canvas textBaseline='top'
         textElem.setAttribute('dominant-baseline', 'hanging');
         
@@ -1153,7 +1153,7 @@ var AnnotationUtil = function() {
       line.setAttribute('y1', element.startY);
       line.setAttribute('x2', element.endX);
       line.setAttribute('y2', element.endY);
-      setSvgColor(line, 'stroke', styles.strokeColor || '#ff0000');
+      setSvgColor(line, 'stroke', styles.strokeColor || 'rgba(255,0,0,1)');
       line.setAttribute('stroke-width', styles.lineWidth || 7);
       line.setAttribute('stroke-linecap', 'round');
       line.setAttribute('stroke-linejoin', 'round');
@@ -1166,7 +1166,7 @@ var AnnotationUtil = function() {
       arrowhead1.setAttribute('y1', element.endY);
       arrowhead1.setAttribute('x2', element.endX - headSize * Math.cos(angle - Math.PI / 6));
       arrowhead1.setAttribute('y2', element.endY - headSize * Math.sin(angle - Math.PI / 6));
-      setSvgColor(arrowhead1, 'stroke', styles.strokeColor || '#ff0000');
+      setSvgColor(arrowhead1, 'stroke', styles.strokeColor || 'rgba(255,0,0,1)');
       arrowhead1.setAttribute('stroke-width', styles.lineWidth || 7);
       arrowhead1.setAttribute('stroke-linecap', 'round');
       group.appendChild(arrowhead1);
@@ -1175,7 +1175,7 @@ var AnnotationUtil = function() {
       arrowhead2.setAttribute('y1', element.endY);
       arrowhead2.setAttribute('x2', element.endX - headSize * Math.cos(angle + Math.PI / 6));
       arrowhead2.setAttribute('y2', element.endY - headSize * Math.sin(angle + Math.PI / 6));
-      setSvgColor(arrowhead2, 'stroke', styles.strokeColor || '#ff0000');
+      setSvgColor(arrowhead2, 'stroke', styles.strokeColor || 'rgba(255,0,0,1)');
       arrowhead2.setAttribute('stroke-width', styles.lineWidth || 7);
       arrowhead2.setAttribute('stroke-linecap', 'round');
       group.appendChild(arrowhead2);

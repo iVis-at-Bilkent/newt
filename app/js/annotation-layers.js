@@ -1663,7 +1663,7 @@ var AnnotationLayers = function () {
 
     var transformedPreview = self.transformElementToCanvas(previewData);
     var previewStyles = {
-      strokeColor: "#0066cc",
+      strokeColor: "rgba(0, 102, 204, 1)",
       fillColor: "rgba(0, 102, 204, 0.2)",
       lineDash: [5, 5],
     };
@@ -1800,7 +1800,7 @@ var AnnotationLayers = function () {
       var borderColor =
         selectedElement.styles && selectedElement.styles.strokeColor
           ? selectedElement.styles.strokeColor
-          : "#0099FF";
+          : "rgba(0,153,255,1)";
       var borderRow = $("<tr></tr>");
       borderRow.append(
         '<td style="width: ' +
@@ -1950,8 +1950,13 @@ var AnnotationLayers = function () {
       "#annotation-rect-bordercolor-input",
       function () {
         var hex = $("#annotation-rect-bordercolor-input").val();
+        var bigint = parseInt(hex.slice(1), 16);
+        var r = (bigint >> 16) & 255;
+        var g = (bigint >> 8) & 255;
+        var b = bigint & 255;
         if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.strokeColor = hex;
+        selectedElement.styles.strokeColor =
+          "rgba(" + r + "," + g + "," + b + ",1)";
         self.redrawLayer(currentLayerId);
       },
     );
@@ -1991,8 +1996,13 @@ var AnnotationLayers = function () {
       "#annotation-textbox-bordercolor-input",
       function () {
         var hex = $("#annotation-textbox-bordercolor-input").val();
+        var bigint = parseInt(hex.slice(1), 16);
+        var r = (bigint >> 16) & 255;
+        var g = (bigint >> 8) & 255;
+        var b = bigint & 255;
         if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.strokeColor = hex;
+        selectedElement.styles.strokeColor =
+          "rgba(" + r + "," + g + "," + b + ",1)";
         self.redrawLayer(currentLayerId);
       },
     );
@@ -2032,8 +2042,13 @@ var AnnotationLayers = function () {
       "#annotation-arrow-color-input",
       function () {
         var hex = $("#annotation-arrow-color-input").val();
+        var bigint = parseInt(hex.slice(1), 16);
+        var r = (bigint >> 16) & 255;
+        var g = (bigint >> 8) & 255;
+        var b = bigint & 255;
         if (!selectedElement.styles) selectedElement.styles = {};
-        selectedElement.styles.strokeColor = hex;
+        selectedElement.styles.strokeColor =
+          "rgba(" + r + "," + g + "," + b + ",1)";
         self.redrawLayer(currentLayerId);
       },
     );
