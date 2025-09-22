@@ -694,6 +694,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       update: self.applyUpdate,
     };
 
+    self.params.storeUserProfile = {
+      id: "store-user-profile",
+      type: "checkbox",
+      property: "currentGeneralProperties.storeUserProfile",
+      update: self.applyUpdate,
+    };
+
     self.params.mapName = {
       id: "map-name",
       type: "text",
@@ -932,6 +939,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.compoundPadding.value = Number(newValue);
+      appUtilities.setUserProfileProperty("compoundPadding", self.params.compoundPadding.value);
       // var ur = cy.undoRedo();
       //var actions = [];
       //actions.push({name:"changeMenu", param:self.params.compoundPadding});
@@ -958,6 +966,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           valueMap: self.params.arrowScale.value,
         },
       });
+      appUtilities.setUserProfileProperty("arrowScale", self.params.arrowScale.value);
       ur.do("batch", actions);
       $("#arrow-scale").blur();
     });
@@ -969,6 +978,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.allowCompoundNodeResize.value = $(
         "#allow-compound-node-resize"
       ).prop("checked");
+      appUtilities.setUserProfileProperty("allowCompoundNodeResize", self.params.allowCompoundNodeResize.value);
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
       $("#allow-compound-node-resize").blur();
     });
@@ -980,6 +990,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.inferNestingOnLoad.value = $("#infer-nesting-on-load").prop(
         "checked"
       );
+      appUtilities.setUserProfileProperty("inferNestingOnLoad", self.params.inferNestingOnLoad.value);
       cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
       $("#infer-nesting-on-load").blur();
     });
@@ -989,6 +1000,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.enablePorts.value = $("#enable-ports").prop("checked");
+      appUtilities.setUserProfileProperty("enablePorts", self.params.enablePorts.value);
       cy.undoRedo().do("changeMenu", self.params.enablePorts);
       $("#enable-ports").blur();
     });
@@ -998,6 +1010,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.enableEntityStateSynchronization.value = $("#enable-entity-state-synchronization").prop("checked");
+      appUtilities.setUserProfileProperty("enableEntityStateSynchronization", self.params.enableEntityStateSynchronization.value);
       cy.undoRedo().do("changeMenu", self.params.enableEntityStateSynchronization);
       $("#enable-entity-state-synchronization").blur();
     });
@@ -1040,7 +1053,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           actions.push({ name: "layout", param: layoutParam });
         }
       }
-
+      appUtilities.setUserProfileProperty("enableSIFTopologyGrouping", self.params.enableSIFTopologyGrouping.value);      
       cy.undoRedo().do("batch", actions);
       // cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
       $("#enable-sif-topology-grouping").blur();
@@ -1051,8 +1064,26 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.rememberDirectoryToPersist.value = $("#remember-directory-to-persist").prop("checked");
+      appUtilities.setUserProfileProperty("rememberDirectoryToPersist", self.params.rememberDirectoryToPersist.value);      
       cy.undoRedo().do("changeMenu", self.params.rememberDirectoryToPersist);
       $("#remember-directory-to-persist").blur();
+    });
+
+    $(document).on("change", "#store-user-profile", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.storeUserProfile.value = $("#store-user-profile").prop("checked");
+
+      // if storeUserProfile is checked save user profile else delete current user profile
+      if (self.params.storeUserProfile.value) {
+        appUtilities.setUserProfile();
+      } else {
+        appUtilities.removeUserProfile();
+      }
+
+      cy.undoRedo().do("changeMenu", self.params.storeUserProfile);
+      $("#store-user-profile").blur();
     });
 
     $(document).on("change", "#highlight-thickness", function (evt) {
@@ -1078,7 +1109,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           "overlay-padding": 3 + extraHighlightThickness / 2.0,
         }
       );
-
+      appUtilities.setUserProfileProperty("extraHighlightThickness", self.params.extraHighlightThickness.value);      
       cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
       $("#highlight-thickness").blur();
     });
@@ -1107,7 +1138,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           "overlay-padding": 3 + extraHighlightThickness / 2.0,
         }
       );
-
+      appUtilities.setUserProfileProperty("highlightColor", self.params.highlightColor.value);      
       cy.undoRedo().do("changeMenu", self.params.highlightColor);
       $("#highlight-color").blur();
     });
@@ -1128,6 +1159,11 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
+      // delete user profile if exists
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.removeUserProfile();
+      }
+
       var ur = cy.undoRedo();
       var actions = [];
 
@@ -1143,6 +1179,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
       self.params.rememberDirectoryToPersist.value =
         appUtilities.defaultGeneralProperties.rememberDirectoryToPersist;
+      self.params.storeUserProfile.value =
+        appUtilities.defaultGeneralProperties.storeUserProfile;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value =
@@ -1166,6 +1204,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         param: self.params.enableSIFTopologyGrouping,
       });
       actions.push({ name: "changeMenu", param: self.params.rememberDirectoryToPersist });
+      actions.push({ name: "changeMenu", param: self.params.storeUserProfile });
       actions.push({
         name: "applySIFTopologyGrouping",
         param: { apply: self.params.enableSIFTopologyGrouping.value },
@@ -1197,6 +1236,18 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy,
       "currentGeneralProperties"
     );
+    
+    // get user profile if it exists
+    if (appUtilities.hasUserProfile()) {
+      currentGeneralProperties = appUtilities.getUserProfile(currentGeneralProperties);  
+      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties); 
+      cy.viewUtilities("get").changeHighlightStyle(
+        0,
+        { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness },
+        { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness/2.0}
+      );
+    } 
+       
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));

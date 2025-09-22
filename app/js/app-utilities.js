@@ -872,6 +872,7 @@ appUtilities.defaultGeneralProperties = {
   enableEntityStateSynchronization: true,
   enableSIFTopologyGrouping: false,
   rememberDirectoryToPersist: false,
+  storeUserProfile: false,
   allowCompoundNodeResize: true,
   mapColorScheme: "black_white",
   mapColorSchemeStyle: "solid",
@@ -5481,5 +5482,59 @@ appUtilities.setRememberDirectoryToPersist = function (state) {
   }
 }
 
+// Save selected properties into user profile
+appUtilities.setUserProfile = function () {
+  const cy = appUtilities.getActiveCy();
+  const currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+  
+  const userProfile = {
+    compoundPadding: currentGeneralProperties.compoundPadding,
+    arrowScale: currentGeneralProperties.arrowScale,
+    allowCompoundNodeResize: currentGeneralProperties.allowCompoundNodeResize,
+    inferNestingOnLoad: currentGeneralProperties.inferNestingOnLoad,
+    enablePorts: currentGeneralProperties.enablePorts,
+    enableEntityStateSynchronization: currentGeneralProperties.enableEntityStateSynchronization,
+    enableSIFTopologyGrouping: currentGeneralProperties.enableSIFTopologyGrouping,
+    rememberDirectoryToPersist: currentGeneralProperties.rememberDirectoryToPersist,
+    storeUserProfile: true,
+    extraHighlightThickness: currentGeneralProperties.extraHighlightThickness,
+    highlightColor: currentGeneralProperties.highlightColor
+  };
+
+  localStorage.setItem("userProfile", JSON.stringify(userProfile));
+};
+
+// Update a specific property in the user profile
+appUtilities.setUserProfileProperty = function (propertyName, propertyValue) {
+  let userProfile = localStorage.getItem("userProfile");
+
+  if (userProfile) {
+    userProfile = JSON.parse(userProfile);
+    userProfile[propertyName] = propertyValue;
+    localStorage.setItem("userProfile", JSON.stringify(userProfile));
+  }
+};
+
+// Get user profile and merge current general properties with stored user profile
+appUtilities.getUserProfile = function (currentGeneralProperties) {
+  let userProfile = localStorage.getItem("userProfile");
+
+  if (userProfile) {
+    userProfile = JSON.parse(userProfile);
+    return Object.assign({}, currentGeneralProperties, userProfile);
+  }
+
+  return currentGeneralProperties;
+};
+
+// Remove user profile
+appUtilities.removeUserProfile = function () {
+  localStorage.removeItem("userProfile");
+};
+
+// Check if user profile exists
+appUtilities.hasUserProfile = function () {
+  return localStorage.getItem("userProfile") !== null;
+};
 
 module.exports = appUtilities;
