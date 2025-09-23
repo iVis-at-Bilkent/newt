@@ -5498,7 +5498,17 @@ appUtilities.setUserProfile = function () {
     rememberDirectoryToPersist: currentGeneralProperties.rememberDirectoryToPersist,
     storeUserProfile: true,
     extraHighlightThickness: currentGeneralProperties.extraHighlightThickness,
-    highlightColor: currentGeneralProperties.highlightColor
+    highlightColor: currentGeneralProperties.highlightColor,
+    showComplexName: currentGeneralProperties.showComplexName,
+    adjustNodeLabelFontSizeAutomatically: currentGeneralProperties.adjustNodeLabelFontSizeAutomatically,
+    fitLabelsToNodes: currentGeneralProperties.fitLabelsToNodes,
+    fitLabelsToInfoboxes: currentGeneralProperties.fitLabelsToInfoboxes,
+    dynamicLabelSize: currentGeneralProperties.dynamicLabelSize,
+    recalculateLayoutOnComplexityManagement: currentGeneralProperties.recalculateLayoutOnComplexityManagement,
+    rearrangeOnComplexityManagement: currentGeneralProperties.rearrangeOnComplexityManagement,
+    animateOnDrawingChanges: currentGeneralProperties.animateOnDrawingChanges,
+    mapColorScheme: currentGeneralProperties.mapColorScheme,
+    mapColorSchemeStyle: currentGeneralProperties.mapColorSchemeStyle
   };
 
   localStorage.setItem("userProfile", JSON.stringify(userProfile));

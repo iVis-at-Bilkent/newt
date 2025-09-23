@@ -480,6 +480,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       ).mapColorSchemeStyle;
       var raw_id = $(this).attr("id");
       var scheme_id = raw_id.replace("map-color-scheme_", "");
+      // set property if user profile exists
+      appUtilities.setUserProfileProperty("mapColorScheme", scheme_id);
       appUtilities.applyMapColorScheme(scheme_id, scheme_type, self);
       updateCloneMarkers();
     });
@@ -495,6 +497,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         ).mapColorScheme;
         //change the currently displayed html element
         var selected_style = $("#color-scheme-inspector-style-select").val();
+        // set property if user profile exists
+        appUtilities.setUserProfileProperty("mapColorSchemeStyle", selected_style);
         //change to the color scheme choice to match current style
         appUtilities.applyMapColorScheme(
           current_scheme_id,
@@ -514,6 +518,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       ).mapColorSchemeStyle;
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
+      // set property if user profile exists
+      appUtilities.setUserProfileProperty("mapColorScheme", inverted_id);
       appUtilities.applyMapColorScheme(inverted_id, scheme_type, self);
       updateCloneMarkers();
     });
@@ -524,6 +530,10 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle =
         appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.setUserProfileProperty("mapColorScheme", defaultColorScheme);
+        appUtilities.setUserProfileProperty("mapColorSchemeStyle", defaultColorSchemeStyle);
+      }
       appUtilities.applyMapColorScheme(
         defaultColorScheme,
         defaultColorSchemeStyle,
@@ -1241,11 +1251,18 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
     if (appUtilities.hasUserProfile()) {
       currentGeneralProperties = appUtilities.getUserProfile(currentGeneralProperties);  
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties); 
+      
       cy.viewUtilities("get").changeHighlightStyle(
         0,
         { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness },
         { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness/2.0}
       );
+        
+      appUtilities.applyMapColorScheme(
+        currentGeneralProperties.mapColorScheme,
+        currentGeneralProperties.mapColorSchemeStyle, 
+        appUtilities.colorSchemeInspectorView
+      ); 
     } 
        
     this.template = _.template($("#map-tab-general-template").html());
@@ -1459,9 +1476,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         // use active cy instance
         var cy = appUtilities.getActiveCy();
 
-        self.params.dynamicLabelSize.value = $(
-          "#dynamic-label-size-select option:selected"
-        ).val();
+        self.params.dynamicLabelSize.value = $("#dynamic-label-size-select option:selected").val();
+        appUtilities.setUserProfileProperty("dynamicLabelSize", self.params.dynamicLabelSize.value);        
         cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
         $("#dynamic-label-size-select").blur();
         self.applyUpdate();
@@ -1472,8 +1488,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.showComplexName.value =
-        $("#show-complex-name").prop("checked");
+      self.params.showComplexName.value = $("#show-complex-name").prop("checked");
+      appUtilities.setUserProfileProperty("showComplexName", self.params.showComplexName.value);        
       cy.undoRedo().do("changeMenu", self.params.showComplexName);
       $("#show-complex-name").blur();
     });
@@ -1485,9 +1501,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         // use active cy instance
         var cy = appUtilities.getActiveCy();
 
-        self.params.adjustNodeLabelFontSizeAutomatically.value = $(
-          "#adjust-node-label-font-size-automatically"
-        ).prop("checked");
+        self.params.adjustNodeLabelFontSizeAutomatically.value = $("#adjust-node-label-font-size-automatically").prop("checked");
+        appUtilities.setUserProfileProperty("adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.adjustNodeLabelFontSizeAutomatically
@@ -1501,9 +1516,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.fitLabelsToNodes.value = $("#fit-labels-to-nodes").prop(
-        "checked"
-      );
+      self.params.fitLabelsToNodes.value = $("#fit-labels-to-nodes").prop("checked");
+      appUtilities.setUserProfileProperty("fitLabelsToNodes", self.params.fitLabelsToNodes.value);        
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
       $("#fit-labels-to-nodes").blur();
       self.applyUpdate();
@@ -1513,9 +1527,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.fitLabelsToInfoboxes.value = $(
-        "#fit-labels-to-infoboxes"
-      ).prop("checked");
+      self.params.fitLabelsToInfoboxes.value = $("#fit-labels-to-infoboxes").prop("checked");
+      appUtilities.setUserProfileProperty("fitLabelsToInfoboxes", self.params.fitLabelsToInfoboxes.value);        
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
       $("#fit-labels-to-infoboxes").blur();
       self.applyUpdate();
@@ -1536,6 +1549,14 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
       self.params.showComplexName.value =
         appUtilities.defaultGeneralProperties.showComplexName;
+      
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.setUserProfileProperty("dynamicLabelSize", self.params.dynamicLabelSize.value);
+        appUtilities.setUserProfileProperty("adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);
+        appUtilities.setUserProfileProperty("fitLabelsToNodes", self.params.fitLabelsToNodes.value);
+        appUtilities.setUserProfileProperty("fitLabelsToInfoboxes", self.params.fitLabelsToInfoboxes.value);
+        appUtilities.setUserProfileProperty("showComplexName", self.params.showComplexName.value);
+      }
 
       actions.push({ name: "changeMenu", param: self.params.dynamicLabelSize });
       actions.push({
@@ -1603,6 +1624,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.recalculateLayoutOnComplexityManagement.value = $(
           "#recalculate-layout-on-complexity-management"
         ).prop("checked");
+        appUtilities.setUserProfileProperty("recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.recalculateLayoutOnComplexityManagement
@@ -1621,6 +1643,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.rearrangeOnComplexityManagement.value = $(
           "#rearrange-on-complexity-management"
         ).prop("checked");
+        appUtilities.setUserProfileProperty("rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.rearrangeOnComplexityManagement
@@ -1636,6 +1659,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       self.params.animateOnDrawingChanges.value = $(
         "#animate-on-drawing-changes"
       ).prop("checked");
+      appUtilities.setUserProfileProperty("animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);        
       cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
       $("#animate-on-drawing-changes").blur();
     });
@@ -1655,6 +1679,13 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
           appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
         self.params.animateOnDrawingChanges.value =
           appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
+        
+        if (appUtilities.hasUserProfile()) {
+          appUtilities.setUserProfileProperty("recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);
+        }
+
         actions.push({
           name: "changeMenu",
           param: self.params.recalculateLayoutOnComplexityManagement,
