@@ -5488,53 +5488,70 @@ appUtilities.setUserProfile = function () {
   const currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
   
   const userProfile = {
-    compoundPadding: currentGeneralProperties.compoundPadding,
-    arrowScale: currentGeneralProperties.arrowScale,
-    allowCompoundNodeResize: currentGeneralProperties.allowCompoundNodeResize,
-    inferNestingOnLoad: currentGeneralProperties.inferNestingOnLoad,
-    enablePorts: currentGeneralProperties.enablePorts,
-    enableEntityStateSynchronization: currentGeneralProperties.enableEntityStateSynchronization,
-    enableSIFTopologyGrouping: currentGeneralProperties.enableSIFTopologyGrouping,
-    rememberDirectoryToPersist: currentGeneralProperties.rememberDirectoryToPersist,
-    storeUserProfile: true,
-    extraHighlightThickness: currentGeneralProperties.extraHighlightThickness,
-    highlightColor: currentGeneralProperties.highlightColor,
-    showComplexName: currentGeneralProperties.showComplexName,
-    adjustNodeLabelFontSizeAutomatically: currentGeneralProperties.adjustNodeLabelFontSizeAutomatically,
-    fitLabelsToNodes: currentGeneralProperties.fitLabelsToNodes,
-    fitLabelsToInfoboxes: currentGeneralProperties.fitLabelsToInfoboxes,
-    dynamicLabelSize: currentGeneralProperties.dynamicLabelSize,
-    recalculateLayoutOnComplexityManagement: currentGeneralProperties.recalculateLayoutOnComplexityManagement,
-    rearrangeOnComplexityManagement: currentGeneralProperties.rearrangeOnComplexityManagement,
-    animateOnDrawingChanges: currentGeneralProperties.animateOnDrawingChanges,
-    mapColorScheme: currentGeneralProperties.mapColorScheme,
-    mapColorSchemeStyle: currentGeneralProperties.mapColorSchemeStyle
+    generalProperties: {
+      compoundPadding: currentGeneralProperties.compoundPadding,
+      arrowScale: currentGeneralProperties.arrowScale,
+      allowCompoundNodeResize: currentGeneralProperties.allowCompoundNodeResize,
+      inferNestingOnLoad: currentGeneralProperties.inferNestingOnLoad,
+      enablePorts: currentGeneralProperties.enablePorts,
+      enableEntityStateSynchronization: currentGeneralProperties.enableEntityStateSynchronization,
+      enableSIFTopologyGrouping: currentGeneralProperties.enableSIFTopologyGrouping,
+      rememberDirectoryToPersist: currentGeneralProperties.rememberDirectoryToPersist,
+      storeUserProfile: true,
+      extraHighlightThickness: currentGeneralProperties.extraHighlightThickness,
+      highlightColor: currentGeneralProperties.highlightColor,
+      showComplexName: currentGeneralProperties.showComplexName,
+      adjustNodeLabelFontSizeAutomatically: currentGeneralProperties.adjustNodeLabelFontSizeAutomatically,
+      fitLabelsToNodes: currentGeneralProperties.fitLabelsToNodes,
+      fitLabelsToInfoboxes: currentGeneralProperties.fitLabelsToInfoboxes,
+      dynamicLabelSize: currentGeneralProperties.dynamicLabelSize,
+      recalculateLayoutOnComplexityManagement: currentGeneralProperties.recalculateLayoutOnComplexityManagement,
+      rearrangeOnComplexityManagement: currentGeneralProperties.rearrangeOnComplexityManagement,
+      animateOnDrawingChanges: currentGeneralProperties.animateOnDrawingChanges,
+      mapColorScheme: currentGeneralProperties.mapColorScheme,
+      mapColorSchemeStyle: currentGeneralProperties.mapColorSchemeStyle
+    },
+    simulationProperties: {
+      simulationStart: $("#inspector-simulation-start").val(),
+      simulationEnd: $("#inspector-simulation-end").val(),
+      simulationStep: $("#inspector-simulation-step").val()
+    }
   };
 
   localStorage.setItem("userProfile", JSON.stringify(userProfile));
 };
 
 // Update a specific property in the user profile
-appUtilities.setUserProfileProperty = function (propertyName, propertyValue) {
+appUtilities.setUserProfileProperty = function (propertySection, propertyName, propertyValue) {
   let userProfile = localStorage.getItem("userProfile");
 
   if (userProfile) {
     userProfile = JSON.parse(userProfile);
-    userProfile[propertyName] = propertyValue;
+
+    if (!userProfile[propertySection]) {
+      userProfile[propertySection] = {};
+    }
+
+    userProfile[propertySection][propertyName] = propertyValue;
     localStorage.setItem("userProfile", JSON.stringify(userProfile));
   }
 };
 
-// Get user profile and merge current general properties with stored user profile
-appUtilities.getUserProfile = function (currentGeneralProperties) {
+// Get user profile
+// If a section is provided returns only that part else returns entire profile
+appUtilities.getUserProfile = function (propertySection) {
   let userProfile = localStorage.getItem("userProfile");
 
-  if (userProfile) {
-    userProfile = JSON.parse(userProfile);
-    return Object.assign({}, currentGeneralProperties, userProfile);
+  if (!userProfile) {
+    return {}; 
   }
 
-  return currentGeneralProperties;
+  userProfile = JSON.parse(userProfile);
+
+  if (!propertySection) {
+    return userProfile;
+  } 
+  return userProfile[propertySection] || {};
 };
 
 // Remove user profile
