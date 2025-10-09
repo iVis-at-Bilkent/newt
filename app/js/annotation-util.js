@@ -275,7 +275,7 @@ var AnnotationUtil = function() {
       y: y,
       width: width,
       height: height,
-      styles: { fillColor: 'rgba(255,255,255,0.6)' },
+      styles: Object.assign({}, defaultStyles.rectangle),
       id: 'rect_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
@@ -465,7 +465,7 @@ var AnnotationUtil = function() {
       width: width,
       height: height,
       text: 'Double-click to edit',
-      styles: { fillColor: 'rgba(255,255,255,0.6)', strokeColor: 'rgba(0,153,255,1)' },
+      styles: Object.assign({}, defaultStyles.text, { fillColor: 'rgba(255,255,255,0.6)', strokeColor: 'rgba(0,153,255,1)' }),
       id: 'textbox_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
@@ -684,6 +684,7 @@ var AnnotationUtil = function() {
       startY: startY,
       endX: endX,
       endY: endY,
+      styles: Object.assign({}, defaultStyles.arrow),
       id: 'arrow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };
@@ -874,6 +875,7 @@ var AnnotationUtil = function() {
       height: 100, // Default height
       imageData: null, // Will be set when file is processed
       originalFile: file,
+      styles: Object.assign({}, defaultStyles.image),
       id: 'image_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
       createdAt: new Date()
     };

@@ -2320,7 +2320,28 @@ var AnnotationLayers = function () {
           layerData.visible,
           layerData.customLayerName || "",
         );
-        layer.elements = layerData.elements || [];
+        layer.elements = (layerData.elements || []).map(function(element){
+          if (!element) return element;
+          if (!element.styles || typeof element.styles !== 'object') {
+            element.styles = {};
+          }
+          if (element.type === 'rectangle') {
+            element.styles = Object.assign({}, annotationUtil.defaultStyles.rectangle, element.styles);
+          } else if (element.type === 'textbox') {
+            element.styles = Object.assign({}, annotationUtil.defaultStyles.text, element.styles);
+            if (element.styles.fillColor == null) {
+              element.styles.fillColor = 'rgba(255,255,255,0.6)';
+            }
+            if (element.styles.strokeColor == null) {
+              element.styles.strokeColor = 'rgba(0,153,255,1)';
+            }
+          } else if (element.type === 'arrow') {
+            element.styles = Object.assign({}, annotationUtil.defaultStyles.arrow, element.styles);
+          } else if (element.type === 'image') {
+            element.styles = Object.assign({}, annotationUtil.defaultStyles.image, element.styles);
+          }
+          return element;
+        });
         layer.createdAt = new Date(layerData.createdAt);
         layer.zIndex = layerData.zIndex || layerData.id;
         layer.isAnnotationLayer = true;
