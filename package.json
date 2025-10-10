@@ -4,6 +4,7 @@
     "cypress": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-bundle-js": "browserify app/main.js -o app/bundle.js --debug",
+    "build-min": "npm run build-bundle-js && npx terser app/bundle.js -o app/bundle.min.js --compress --mangle",
     "watch-js": "nodemon -e js --watch app --ignore app/bundle.js -x \"npm run build-bundle-js\"",
     "watch-server": "nodemon server.js",
     "release-build": "npm run build-bundle-js",
@@ -57,9 +58,10 @@
     "natives": "^1.1.6",
     "neo4j-driver": "^4.4.11",
     "nodemailer": "6.4.5",
-    "request": "^2.81.0",
     "plotly.js-dist": "2.34.0",
+    "request": "^2.81.0",
     "sbgnviz": "github:iVis-at-Bilkent/sbgnviz.js#unstable",
+    "terser": "^5.44.0",
     "tippy.js": "^3.4.0"
   },
   "devDependencies": {
