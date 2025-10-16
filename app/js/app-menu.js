@@ -158,6 +158,8 @@ module.exports = function() {
 
   dynamicResize();
   databasePropertiesView = appUtilities.databasePropertiesView = new BackboneViews.DatabasePropertiesView({el: '#database-properties-table'});
+  mergeNodesView = appUtilities.mergeNodesView = new BackboneViews.MergeNodesView({el: '#merge-nodes-table'});
+  mergeNodesErrorView = appUtilities.mergeNodesErrorView = new BackboneViews.MergeNodesErrorView({el: '#merge-nodes-error-table'});
   pushActiveTabsView = appUtilities.pushActiveTabsView = new BackboneViews.PushActiveTabsView({el: '#push-active-tabs-table'});
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
@@ -1087,6 +1089,44 @@ module.exports = function() {
       const nodeCount = await databaseUtilities.getAllNodeCount();
       console.log("nodeCount", nodeCount);
       databasePropertiesView.render(nodeCount);
+    });
+    
+    $("#merge-nodes").click(async function (e) {
+      e.preventDefault();
+      console.log("Merge Nodes clicked");
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+
+      const selectedElements = cy.elements(':selected');
+      var nodes = selectedElements.nodes();
+      var edges = selectedElements.edges();
+      if(nodes.length < 2 || nodes.length > 2) {
+        // alert("Please select at least two nodes to merge.");
+        mergeNodesErrorView.render("Please select exactly two nodes to merge.");
+        return;
+      }
+      
+      if(edges.length===0){
+        // Get connected edges for both the nodes
+        edges = nodes.connectedEdges();
+      }
+      const firstNode = selectedElements[0].data();
+      const secondNode = selectedElements[1].data();
+      if(firstNode.class !== secondNode.class){
+        mergeNodesErrorView.render("Selected nodes must be of the same class to merge.");
+        return;
+      }
+      if(firstNode.parent !== secondNode.parent){
+        mergeNodesErrorView.render("Selected nodes must have the same parent to merge.");
+        return;
+      }
+      mergeNodesView.render({
+        nodes: nodes,
+        edges: edges,
+      });
     });
 
     $("#about, #about-icon").click(function (e) {

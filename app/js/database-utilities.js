@@ -450,6 +450,48 @@ var databaseUtilities = {
       },
     });
   },
+
+    pushMergedNodeToDatabase: async function (mergedPayload) {
+      console.log("Pushing merged node to database:", mergedPayload);
+
+      const integrationQuery = `
+        CALL custom.mergeNodes($payload)
+        YIELD result
+        RETURN result
+      `;
+
+      const data = {
+        query: integrationQuery,
+        queryData: {
+          payload: mergedPayload
+        }
+      };
+
+      try {
+        const response = await $.ajax({
+          type: "post",
+          url: "/utilities/runDatabaseQuery",
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(data)
+        });
+
+        console.log("Merge result:", response);
+
+        // Unpack the response
+        if (!response.records || response.records.length === 0) {
+          console.warn("No merge result returned.");
+          return null;
+        }
+
+        const map = response.records[0]._fields[0];
+        console.log("Parsed merge result:", map);
+        return map; // contains mergedNodeId, deletedNodes, rewiredEdges
+      } catch (err) {
+        console.error("Error running custom.mergeNodes:", err);
+        return null;
+      }
+    },
+
     
 
 

@@ -3234,6 +3234,353 @@ var PathsFromToQueryView = Backbone.View.extend({
   },
 });
 
+
+var MergeNodesErrorView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#merge-nodes-error-template").html());
+  },
+  render: function (message) {
+    var self = this;
+    self.template = _.template($("#merge-nodes-error-template").html());
+
+    var param = {};
+    param.message = message;
+    self.template = self.template(param);
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#merge-nodes-error-confirm")
+      .on("click", "#merge-nodes-error-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
+var MergeNodesView = Backbone.View.extend({
+  events: {
+    'change .label-radio': 'onLabelChoice',
+    'change .multimer-node-radio': 'onMultimerNodeChoice',
+    'change .state-var-check': 'onStateVarToggle',
+    'change .unit-check': 'onUnitToggle',
+    'click  .confirm-merge-btn': 'onConfirmMerge'
+  },
+
+  initialize: function () {
+    // Keep template as a function; render with { modalId } in render()
+    this.templateFn = _.template($("#merge-nodes-template").html());
+    // Unique namespace per view instance
+    this.modalNs = this.cid;
+  },
+
+  render: function (data) {
+    // Render template with namespaced ids/names
+    const html = this.templateFn({ modalId: this.modalNs });
+    this.$el.html(html);
+    this.$el.modal("show");
+    PCdialog = "MergeNodes";
+
+    // Normalize incoming nodes (expect array length 2)
+    this.nodes = data.nodes ? data.nodes.map((node) => node.data()) : [];
+    this.edges = data.edges ? data.edges.map((edge) => edge.data()) : [];
+    console.log(this.nodes,this.edges);
+    // console.log('MergeNodesView input:',data, this.nodes, this.edges);
+    if (this.nodes.length !== 2) {
+      console.warn('MergeNodesView expected two nodes as input.');
+      this.nodes = [
+        { id: null, label: '', multimer: false, stateVariables: [], unitsOfInformation: [] },
+        { id: null, label: '', multimer: false, stateVariables: [], unitsOfInformation: [] }
+      ];
+    }
+
+    // Compute state/units arrays from statesandinfos (project-specific helpers)
+    this.nodes.forEach((node) => {
+      console.log(node);
+      node.stateVariables     = databaseUtilities.calculateState(node.statesandinfos) || [];
+      node.unitsOfInformation = databaseUtilities.calculateInfo(node.statesandinfos) || [];
+      node.units              = node.unitsOfInformation; // keep backward-compat if `units` is used
+    });
+
+    // Build aux id maps for provenance (state variables / units)
+    this.auxMaps = [
+      this.buildAuxMaps(this.nodes[0]),
+      this.buildAuxMaps(this.nodes[1])
+    ];
+
+    // Cache container (now that DOM exists)
+    this.$container = this.$("#merge-modal-" + this.modalNs);
+
+    // Prefill labels
+    this.$("#label-input-" + this.modalNs + "-0").val(this.nodes[0].label || '');
+    this.$("#label-input-" + this.modalNs + "-1").val(this.nodes[1].label || '');
+
+    // Prefill multimer radio values (still disabled until a multimer source is chosen)
+    this.$("input[name='multimer-value-" + this.modalNs + "-0'][value='" + String(!!this.nodes[0].multimer) + "']").prop('checked', true);
+    this.$("input[name='multimer-value-" + this.modalNs + "-1'][value='" + String(!!this.nodes[1].multimer) + "']").prop('checked', true);
+
+    // Render lists
+    this.renderStateVars(0, this.nodes[0].stateVariables);
+    this.renderStateVars(1, this.nodes[1].stateVariables);
+    this.renderUnits(0, this.nodes[0].units);
+    this.renderUnits(1, this.nodes[1].units);
+
+    // Tag confirm button so delegated event catches it
+    this.$("#confirm-merge-" + this.modalNs).addClass("confirm-merge-btn");
+
+    // ===== DEFAULT SELECTIONS =====
+    // Label: prefer non-empty label, fallback to Node 0
+    var defaultLabelIdx = this.nodes[0].label ? 0 : (this.nodes[1].label ? 1 : 0);
+    this.$("input[name='label-choice-" + this.modalNs + "'][value='" + defaultLabelIdx + "']").prop('checked', true);
+    this.onLabelChoice({ currentTarget: this.$("input[name='label-choice-" + this.modalNs + "'][value='" + defaultLabelIdx + "']")[0] });
+
+    // Multimer: default to Node 0
+    this.$("input[name='multimer-node-" + this.modalNs + "'][value='0']").prop('checked', true);
+    this.onMultimerNodeChoice({ currentTarget: this.$("input[name='multimer-node-" + this.modalNs + "'][value='0']")[0] });
+
+    // State variables: default check ALL and enable inputs
+    [0,1].forEach(idx => {
+      const $items = this.$('#state-vars-' + this.modalNs + '-' + idx + ' .list-group-item');
+      $items.each((_, el) => {
+        const $el = $(el);
+        $el.find('.state-var-check').prop('checked', true);
+        $el.find('.sv-left, .sv-right').prop('disabled', false);
+      });
+    });
+
+    // Units: default check ALL and enable inputs
+    [0,1].forEach(idx => {
+      const $items = this.$('#units-' + this.modalNs + '-' + idx + ' .list-group-item');
+      $items.each((_, el) => {
+        const $el = $(el);
+        $el.find('.unit-check').prop('checked', true);
+        $el.find('.unit-input').prop('disabled', false);
+      });
+    });
+
+    console.log('Merging nodes:', this.nodes);
+    return this;
+  },
+
+  /* ---------------- Helpers ---------------- */
+
+  // Build maps from raw values -> aux ids for provenance
+  buildAuxMaps: function(node) {
+    const maps = { stateByKey: new Map(), unitByText: new Map() };
+    (node.statesandinfos || []).forEach(aux => {
+      if (aux.clazz === 'state variable') {
+        const left  = (aux.state && aux.state.value)    || aux.value    || '';
+        const right = (aux.state && aux.state.variable) || aux.variable || '';
+        const key = (left + '@' + right);
+        maps.stateByKey.set(key, { id: aux.id || null, left, right, raw: key });
+      } else if (aux.clazz === 'unit of information') {
+        const text = (aux.label && aux.label.text) || '';
+        maps.unitByText.set(text, { id: aux.id || null, text });
+      }
+    });
+    return maps;
+  },
+
+  renderStateVars: function (nodeIdx, arr) {
+    const container = this.$("#state-vars-" + this.modalNs + "-" + nodeIdx);
+    container.empty();
+
+    arr.forEach((raw, i) => {
+      const parts = this.splitStateVar(raw);
+      const base  = "sv-" + this.modalNs + "-" + nodeIdx + "-" + i;
+
+      // original aux id for provenance
+      const hit = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].stateByKey.get(raw);
+      const auxId = hit ? hit.id : null;
+
+      const html =
+        '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
+          '<div class="checkbox">' +
+            '<label><input type="checkbox" class="state-var-check" id="'+base+'"> ' +
+              _.escape(raw) +
+            '</label>' +
+          '</div>' +
+          '<div class="row" style="margin-top:6px;">' +
+            '<div class="col-xs-6">' +
+              '<input type="text" class="form-control sv-left" placeholder="xyz" value="'+_.escape(parts.left)+'" disabled>' +
+            '</div>' +
+            '<div class="col-xs-6">' +
+              '<input type="text" class="form-control sv-right" placeholder="abc" value="'+_.escape(parts.right)+'" disabled>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      container.append(html);
+    });
+
+    if (arr.length === 0) {
+      container.append('<div class="list-group-item text-muted">No state variables</div>');
+    }
+  },
+
+  renderUnits: function (nodeIdx, arr) {
+    const container = this.$("#units-" + this.modalNs + "-" + nodeIdx);
+    container.empty();
+
+    arr.forEach((raw, i) => {
+      const idAttr = "unit-" + this.modalNs + "-" + nodeIdx + "-" + i;
+
+      // original aux id for provenance
+      const hit = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].unitByText.get(raw);
+      const auxId = hit ? hit.id : null;
+
+      const html =
+        '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
+          '<div class="checkbox">' +
+            '<label><input type="checkbox" class="unit-check" id="'+idAttr+'"> ' +
+              _.escape(raw) +
+            '</label>' +
+          '</div>' +
+          '<input type="text" class="form-control unit-input" style="margin-top:6px;" value="'+_.escape(raw)+'" disabled>' +
+        '</div>';
+      container.append(html);
+    });
+
+    if (arr.length === 0) {
+      container.append('<div class="list-group-item text-muted">No units of information</div>');
+    }
+  },
+
+  splitStateVar: function (s) {
+    const str = s || '';
+    const idx = str.indexOf('@');
+    if (idx < 0) return { left: str, right: '' };
+    return { left: str.slice(0, idx), right: str.slice(idx + 1) };
+  },
+
+  /* ---------------- UI Handlers ---------------- */
+
+  onLabelChoice: function (e) {
+    const chosen = String($(e.currentTarget).val()); // "0" | "1"
+    this.$('.label-input').prop('disabled', true);
+    this.$('#label-input-' + this.modalNs + '-' + chosen).prop('disabled', false).focus();
+  },
+
+  onMultimerNodeChoice: function (e) {
+    const chosen = String($(e.currentTarget).val()); // "0" | "1"
+    this.$("input[name='multimer-value-" + this.modalNs + "-0']").prop('disabled', true);
+    this.$("input[name='multimer-value-" + this.modalNs + "-1']").prop('disabled', true);
+    this.$("input[name='multimer-value-" + this.modalNs + "-" + chosen + "']").prop('disabled', false);
+  },
+
+  onStateVarToggle: function (e) {
+    const $item = $(e.currentTarget).closest('.list-group-item');
+    const enabled = $(e.currentTarget).is(':checked');
+    $('.sv-left, .sv-right', $item).prop('disabled', !enabled);
+  },
+
+  onUnitToggle: function (e) {
+    const $item = $(e.currentTarget).closest('.list-group-item');
+    const enabled = $(e.currentTarget).is(':checked');
+    $('.unit-input', $item).prop('disabled', !enabled);
+  },
+
+  /* ---------------- Confirm Merge ---------------- */
+
+  onConfirmMerge: async function () {
+    // SOURCE NODE IDS (for Neo4j MERGE)
+    const sourceNodeIds = [ this.nodes[0].id, this.nodes[1].id ];
+    const nodeClass = this.nodes[0].class;
+    // LABEL
+    const labelChoice = this.$("input[name='label-choice-" + this.modalNs + "']:checked").val();
+    const labelFrom   = (labelChoice === '0' || labelChoice === '1') ? Number(labelChoice) : 0;
+    const labelVal    = (labelChoice === '0' || labelChoice === '1')
+      ? this.$('#label-input-' + this.modalNs + '-' + labelChoice).val()
+      : (this.nodes[0].label || '');
+
+    // MULTIMER
+    const multimerNode = this.$("input[name='multimer-node-" + this.modalNs + "']:checked").val();
+    const multimerFrom = (multimerNode === '0' || multimerNode === '1') ? Number(multimerNode) : 0;
+    const mv = this.$("input[name='multimer-value-" + this.modalNs + "-" + multimerFrom + "']:checked").val();
+    const multimerVal = (mv === 'true'); // default false if none checked
+
+    // STATE VARS with ids + provenance
+    const chosenStateVars = [];
+    [0,1].forEach(nodeIdx => {
+      const $items = this.$('#state-vars-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
+      $items.each((_, el) => {
+        const $el = $(el);
+        if (!$el.find('.state-var-check').is(':checked')) return;
+        const left  = ($el.find('.sv-left').val()  || '').trim();
+        const right = ($el.find('.sv-right').val() || '').trim();
+        const auxId = $el.attr('data-aux-id') || null;
+        chosenStateVars.push({
+          id: auxId,      // original aux id (may be null if not found)
+          from: nodeIdx,  // 0 or 1
+          value: left + '@' + right,
+          left, right
+        });
+      });
+    });
+
+    // UNITS with ids + provenance
+    const chosenUnits = [];
+    [0,1].forEach(nodeIdx => {
+      const $items = this.$('#units-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
+      $items.each((_, el) => {
+        const $el = $(el);
+        if (!$el.find('.unit-check').is(':checked')) return;
+        const text = ($el.find('.unit-input').val() || '').trim();
+        const auxId = $el.attr('data-aux-id') || null;
+        if (text) {
+          chosenUnits.push({
+            id: auxId,     // original aux id (may be null)
+            from: nodeIdx, // 0 or 1
+            value: text
+          });
+        }
+      });
+    });
+
+    // --- include edges as chosen by click handler policy ---
+    // We do NOT rewrite endpoints here (no merged id yet).
+    // We include source/target and relation flags so the server can rewire to the new merged node.
+    const keptEdges = (this.edges || []).map(e => {
+      console.log('Edge for merge:', e);
+      return {
+        id: e.id,
+        source: e.source,
+        target: e.target,
+        classes: e.class || '',
+        data: e.data || {}
+      }
+    });
+
+    const merged = {
+      source: { nodeIds: sourceNodeIds }, // for Neo4j MERGE logic
+      class: nodeClass || 'unspecified',
+      selection: {
+        label:    { value: labelVal,    from: labelFrom },
+        multimer: { value: multimerVal, from: multimerFrom }
+      },
+      stateVariables:     chosenStateVars,  // [{id,from,value,left,right}]
+      unitsOfInformation: chosenUnits,       // [{id,from,value}]
+      edges: keptEdges
+    };
+
+    console.log('Merged (provenance):', merged);
+    this.trigger('merge:confirm', merged, { sourceNodes: this.nodes });
+    const mergeResult = await databaseUtilities.pushMergedNodeToDatabase(merged);
+
+    if (mergeResult) {
+      console.log("✅ Merge complete:", mergeResult);
+      console.log("Merge completed successfully!");
+    } else {
+      console.error("Merge failed. See console for details.");
+    }
+
+    this.$el.modal('hide');
+  }
+});
+
+
 var DatabasePropertiesView = Backbone.View.extend({
   defaultQueryParameters: {
     geneSymbols: "",
@@ -8765,7 +9112,9 @@ async function handleGeneDoesNotExist(geneSymbolsArray) {
 
 module.exports = {
   //  BioGeneView: BioGeneView,
+  MergeNodesErrorView: MergeNodesErrorView,
   DatabasePropertiesView: DatabasePropertiesView,
+  MergeNodesView: MergeNodesView,
   PushActiveTabsView:PushActiveTabsView,
   ChemicalView: ChemicalView,
   LayoutPropertiesView: LayoutPropertiesView,

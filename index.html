@@ -507,6 +507,10 @@
                       </li>
                       <li class="divider"></li>
                       <li>
+                        <a href="#" id="merge-nodes">Merge Nodes...</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li>
                         <a href="#" id="query-pathsbetween-localdatabase">Paths Between...</a>
                       </li>
                       <li>
@@ -1418,6 +1422,7 @@
       <!-- push active tabs to local database table will be shown here-->
     </div>
     <div id="database-properties-table" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="merge-nodes-table" tabindex="-1" class="modal fade" role="dialog"></div>
     <div id="push-active-tabs-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- neighborhood query table will be shown here-->
     </div>
@@ -1485,6 +1490,9 @@
     </div>
 
     <div id="active-tab-push-error-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- confirmation dialog will be shown here-->
+    </div>
+    <div id="merge-nodes-error-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- confirmation dialog will be shown here-->
     </div>
 
@@ -1734,45 +1742,217 @@
       </div>
     </div>
 
-    <script type="text/template" id="database-properties-template">
-      <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
-        <div class="modal-content">
+    <script type="text/template" id="merge-nodes-template">
+      <div id="merge-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 800px; max-width: 95vw;">
+        <div class="modal-content" data-modal-id="<%= modalId %>">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Local Database Properties</h4>
+            <h4 class="modal-title">Merge Nodes</h4>
           </div>
+
           <div class="modal-body">
-            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto; width: 100%;">
-              <thead>
-                <tr>
-                  <th style="text-align: left; width: 70%;">Node Type</th>
-                  <th style="text-align: left; width: 30%;">Count</th>
-                </tr>
-              </thead>
-              <tbody id="database-node-count-table">
-                <!-- dynamically filled rows go here -->
-              </tbody>
-            </table>
-            <br />
-            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto; width: 100%;">
-              <thead>
-                <tr>
-                  <th style="text-align: left; width: 70%;">Edge Type</th>
-                  <th style="text-align: left; width: 30%;">Count</th>
-                </tr>
-              </thead>
-              <tbody id="database-edge-count-table">
-                <!-- dynamically filled rows go here -->
-              </tbody>
-            </table>
+            <!-- Labels -->
+            <h5 style="margin-top:0;">Label</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" class="label-radio"
+                        name="label-choice-<%= modalId %>" value="0"> Use Node 1
+                </label>
+                <input id="label-input-<%= modalId %>-0"
+                      type="text" class="form-control label-input"
+                      data-node="0" placeholder="Node 1 label" disabled>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" class="label-radio"
+                        name="label-choice-<%= modalId %>" value="1"> Use Node 2
+                </label>
+                <input id="label-input-<%= modalId %>-1"
+                      type="text" class="form-control label-input"
+                      data-node="1" placeholder="Node 2 label" disabled>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Multimer -->
+            <h5>Multimer</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-node-radio"
+                        name="multimer-node-<%= modalId %>" value="0"> Take from Node 1
+                </label>
+                <div style="margin-top:6px;">
+                  <label class="radio-inline">
+                    <input type="radio" class="multimer-value-radio"
+                          name="multimer-value-<%= modalId %>-0" value="true" disabled> True
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" class="multimer-value-radio"
+                          name="multimer-value-<%= modalId %>-0" value="false" disabled> False
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-node-radio"
+                        name="multimer-node-<%= modalId %>" value="1"> Take from Node 2
+                </label>
+                <div style="margin-top:6px;">
+                  <label class="radio-inline">
+                    <input type="radio" class="multimer-value-radio"
+                          name="multimer-value-<%= modalId %>-1" value="true" disabled> True
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" class="multimer-value-radio"
+                          name="multimer-value-<%= modalId %>-1" value="false" disabled> False
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- State Variables -->
+            <h5>State Variables</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6>Node 1</h6>
+                <div id="state-vars-<%= modalId %>-0" class="list-group"></div>
+              </div>
+              <div class="col-sm-6">
+                <h6>Node 2</h6>
+                <div id="state-vars-<%= modalId %>-1" class="list-group"></div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Units of Information -->
+            <h5>Units of Information</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6>Node 1</h6>
+                <div id="units-<%= modalId %>-0" class="list-group"></div>
+              </div>
+              <div class="col-sm-6">
+                <h6>Node 2</h6>
+                <div id="units-<%= modalId %>-1" class="list-group"></div>
+              </div>
+            </div>
           </div>
-          <div class="modal-footer" style="text-align: center;">
+
+          <div class="modal-footer" style="text-align:center;">
             <button class="btn btn-default" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" id="confirm-merge-<%= modalId %>">Merge</button>
           </div>
         </div>
       </div>
     </script>
-    
+
+
+
+    <!-- Merge Nodes -->
+
+    <script type="text/template" id="merge-nodes-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 800px; max-width: 95vw;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Merge Nodes</h4>
+          </div>
+
+          <div class="modal-body">
+            <!-- Labels -->
+            <h5 style="margin-top:0;">Label</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="label-choice" value="0"> Use Node 1
+                </label>
+                <input type="text" class="form-control label-input" data-node="0" placeholder="Node 1 label" disabled>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="label-choice" value="1"> Use Node 2
+                </label>
+                <input type="text" class="form-control label-input" data-node="1" placeholder="Node 2 label" disabled>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Multimer -->
+            <h5>Multimer</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="multimer-node" value="0"> Take from Node 1
+                </label>
+                <div style="margin-top:6px;">
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-0" value="true" disabled> True
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-0" value="false" disabled> False
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="multimer-node" value="1"> Take from Node 2
+                </label>
+                <div style="margin-top:6px;">
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-1" value="true" disabled> True
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-1" value="false" disabled> False
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- State Variables -->
+            <h5>State Variables</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6>Node 1</h6>
+                <div id="state-vars-0" class="list-group"></div>
+              </div>
+              <div class="col-sm-6">
+                <h6>Node 2</h6>
+                <div id="state-vars-1" class="list-group"></div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Units of Information -->
+            <h5>Units of Information</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6>Node 1</h6>
+                <div id="units-0" class="list-group"></div>
+              </div>
+              <div class="col-sm-6">
+                <h6>Node 2</h6>
+                <div id="units-1" class="list-group"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="text-align:center;">
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" id="confirm-merge">Merge</button>
+          </div>
+        </div>
+      </div>
+    </script>
     
     
 
@@ -3733,6 +3913,37 @@
       </div>
       <div class="modal-footer" style="text-align: center">
       <button id="active-tab-push-error-confirm" class="btn btn-default">OK</button>
+      </div>
+      </div>
+      </div>
+    </script>
+   
+    <!-- Merge Nodes error result -->
+    <script type="text/template" id="merge-nodes-error-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+      <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Error</h4>
+      </div>
+      <div class="modal-body">
+      <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+      <tbody>
+      <tr>
+      <th style="padding-left: 0px;" align="left">
+      <span class="add-on layout-text"><%= message %></span>
+      </th>
+      </tr>
+
+      <tr id="merge-nodes-error-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+      <td>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+      <button id="merge-nodes-error-confirm" class="btn btn-default">OK</button>
       </div>
       </div>
       </div>
