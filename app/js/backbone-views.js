@@ -5,6 +5,7 @@ var chroma = require("chroma-js");
 var FileSaver = require("file-saver");
 var cytoscape = require("cytoscape");
 var chise = require("chise");
+var Plotly = require('plotly.js-dist');
 
 var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
@@ -479,6 +480,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       ).mapColorSchemeStyle;
       var raw_id = $(this).attr("id");
       var scheme_id = raw_id.replace("map-color-scheme_", "");
+      // set property if user profile exists
+      appUtilities.setUserProfileProperty("generalProperties", "mapColorScheme", scheme_id);
       appUtilities.applyMapColorScheme(scheme_id, scheme_type, self);
       updateCloneMarkers();
     });
@@ -494,6 +497,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         ).mapColorScheme;
         //change the currently displayed html element
         var selected_style = $("#color-scheme-inspector-style-select").val();
+        // set property if user profile exists
+        appUtilities.setUserProfileProperty("generalProperties", "mapColorSchemeStyle", selected_style);
         //change to the color scheme choice to match current style
         appUtilities.applyMapColorScheme(
           current_scheme_id,
@@ -513,6 +518,8 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       ).mapColorSchemeStyle;
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
+      // set property if user profile exists
+      appUtilities.setUserProfileProperty("generalProperties", "mapColorScheme", inverted_id);
       appUtilities.applyMapColorScheme(inverted_id, scheme_type, self);
       updateCloneMarkers();
     });
@@ -523,6 +530,10 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle =
         appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.setUserProfileProperty("generalProperties", "mapColorScheme", defaultColorScheme);
+        appUtilities.setUserProfileProperty("generalProperties", "mapColorSchemeStyle", defaultColorSchemeStyle);
+      }
       appUtilities.applyMapColorScheme(
         defaultColorScheme,
         defaultColorSchemeStyle,
@@ -603,6 +614,16 @@ var GeneralPropertiesParentView = Backbone.View.extend({
       chiseInstance.disablePorts();
     }
 
+    if (currentGeneralProperties.enableEntityStateSynchronization) {
+      appUtilities.synchronizeStates();
+    } 
+
+    if (currentGeneralProperties.rememberDirectoryToPersist) {
+      appUtilities.setRememberDirectoryToPersist(true);
+    } else {
+      appUtilities.setRememberDirectoryToPersist(false);
+    }
+
     if (currentGeneralProperties.allowCompoundNodeResize) {
       chiseInstance.considerCompoundSizes();
     } else {
@@ -662,10 +683,31 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       update: self.applyUpdate,
     };
 
+    self.params.enableEntityStateSynchronization = {
+      id: "enable-entity-state-synchronization",
+      type: "checkbox",
+      property: "currentGeneralProperties.enableEntityStateSynchronization",
+      update: self.applyUpdate,
+    };
+
     self.params.enableSIFTopologyGrouping = {
       id: "enable-sif-topology-grouping",
       type: "checkbox",
       property: "currentGeneralProperties.enableSIFTopologyGrouping",
+      update: self.applyUpdate,
+    };
+
+    self.params.rememberDirectoryToPersist = {
+      id: "remember-directory-to-persist",
+      type: "checkbox",
+      property: "currentGeneralProperties.rememberDirectoryToPersist",
+      update: self.applyUpdate,
+    };
+
+    self.params.storeUserProfile = {
+      id: "store-user-profile",
+      type: "checkbox",
+      property: "currentGeneralProperties.storeUserProfile",
       update: self.applyUpdate,
     };
 
@@ -837,6 +879,20 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           }
 
           validChange = checkType;
+        } else if (newMapType == "SIF") {
+          //check no PD, AF or SBML elements in network
+          var checkType = true;
+          for (var i = 0; i < elements.length && checkType; i++) {
+            if (
+              elements[i].data("language") == "PD" ||
+              elements[i].data("language") == "AF" ||
+              elements[i].data("language") == "SBML" ||
+              elements[i].data("class").includes("compartment")
+            ) {
+              checkType = false;
+            }
+          }
+          validChange = checkType;
         } else if (newMapType == "SBML") {
           //check no PD  AF or SIF elements in netwrok
           var checkType = true;
@@ -874,9 +930,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       } else {
         $("#map-type").val(currentMapType);
         appUtilities.promptMapTypeView.render(
-          "You cannot change map type " +
+          "You cannot change a map with " +
             appUtilities.mapTypesToViewableText[currentMapType] +
-            " to a map of type " +
+            " content to a map of type " +
             appUtilities.mapTypesToViewableText[newMapType] +
             "!"
         );
@@ -893,6 +949,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.compoundPadding.value = Number(newValue);
+      appUtilities.setUserProfileProperty("generalProperties", "compoundPadding", self.params.compoundPadding.value);
       // var ur = cy.undoRedo();
       //var actions = [];
       //actions.push({name:"changeMenu", param:self.params.compoundPadding});
@@ -919,6 +976,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           valueMap: self.params.arrowScale.value,
         },
       });
+      appUtilities.setUserProfileProperty("generalProperties", "arrowScale", self.params.arrowScale.value);
       ur.do("batch", actions);
       $("#arrow-scale").blur();
     });
@@ -930,6 +988,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.allowCompoundNodeResize.value = $(
         "#allow-compound-node-resize"
       ).prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "allowCompoundNodeResize", self.params.allowCompoundNodeResize.value);
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
       $("#allow-compound-node-resize").blur();
     });
@@ -941,6 +1000,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.inferNestingOnLoad.value = $("#infer-nesting-on-load").prop(
         "checked"
       );
+      appUtilities.setUserProfileProperty("generalProperties", "inferNestingOnLoad", self.params.inferNestingOnLoad.value);
       cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
       $("#infer-nesting-on-load").blur();
     });
@@ -950,8 +1010,19 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.enablePorts.value = $("#enable-ports").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "enablePorts", self.params.enablePorts.value);
       cy.undoRedo().do("changeMenu", self.params.enablePorts);
       $("#enable-ports").blur();
+    });
+
+    $(document).on("change", "#enable-entity-state-synchronization", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.enableEntityStateSynchronization.value = $("#enable-entity-state-synchronization").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "enableEntityStateSynchronization", self.params.enableEntityStateSynchronization.value);
+      cy.undoRedo().do("changeMenu", self.params.enableEntityStateSynchronization);
+      $("#enable-entity-state-synchronization").blur();
     });
 
     $(document).on("change", "#enable-sif-topology-grouping", function (evt) {
@@ -992,10 +1063,37 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           actions.push({ name: "layout", param: layoutParam });
         }
       }
-
+      appUtilities.setUserProfileProperty("generalProperties", "enableSIFTopologyGrouping", self.params.enableSIFTopologyGrouping.value);      
       cy.undoRedo().do("batch", actions);
       // cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
       $("#enable-sif-topology-grouping").blur();
+    });
+
+    $(document).on("change", "#remember-directory-to-persist", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.rememberDirectoryToPersist.value = $("#remember-directory-to-persist").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "rememberDirectoryToPersist", self.params.rememberDirectoryToPersist.value);      
+      cy.undoRedo().do("changeMenu", self.params.rememberDirectoryToPersist);
+      $("#remember-directory-to-persist").blur();
+    });
+
+    $(document).on("change", "#store-user-profile", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.storeUserProfile.value = $("#store-user-profile").prop("checked");
+
+      // if storeUserProfile is checked save user profile else delete current user profile
+      if (self.params.storeUserProfile.value) {
+        appUtilities.setUserProfile();
+      } else {
+        appUtilities.removeUserProfile();
+      }
+
+      cy.undoRedo().do("changeMenu", self.params.storeUserProfile);
+      $("#store-user-profile").blur();
     });
 
     $(document).on("change", "#highlight-thickness", function (evt) {
@@ -1012,16 +1110,16 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         0,
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness,
         },
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness / 2.0,
         }
       );
-
+      appUtilities.setUserProfileProperty("generalProperties", "extraHighlightThickness", self.params.extraHighlightThickness.value);      
       cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
       $("#highlight-thickness").blur();
     });
@@ -1035,21 +1133,22 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.highlightColor.value = $("#highlight-color").val();
       var extraHighlightThickness = self.params.extraHighlightThickness.value;
       var highlightColor = self.params.highlightColor.value;
+      highlightColor = appUtilities.makeNeonHSL(highlightColor);
 
       viewUtilities.changeHighlightStyle(
         0,
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness,
         },
         {
           "overlay-color": highlightColor,
-          "overlay-opacity": 0.2,
+          "overlay-opacity": 0.4,
           "overlay-padding": 3 + extraHighlightThickness / 2.0,
         }
       );
-
+      appUtilities.setUserProfileProperty("generalProperties", "highlightColor", self.params.highlightColor.value);      
       cy.undoRedo().do("changeMenu", self.params.highlightColor);
       $("#highlight-color").blur();
     });
@@ -1070,6 +1169,11 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
+      // delete user profile if exists
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.removeUserProfile();
+      }
+
       var ur = cy.undoRedo();
       var actions = [];
 
@@ -1079,8 +1183,14 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value =
         appUtilities.defaultGeneralProperties.enablePorts;
+      self.params.enableEntityStateSynchronization.value =
+        appUtilities.defaultGeneralProperties.enableEntityStateSynchronization;
       self.params.enableSIFTopologyGrouping.value =
         appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
+      self.params.rememberDirectoryToPersist.value =
+        appUtilities.defaultGeneralProperties.rememberDirectoryToPersist;
+      self.params.storeUserProfile.value =
+        appUtilities.defaultGeneralProperties.storeUserProfile;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value =
@@ -1098,10 +1208,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         param: self.params.inferNestingOnLoad,
       });
       actions.push({ name: "changeMenu", param: self.params.enablePorts });
+      actions.push({ name: "changeMenu", param: self.params.enableEntityStateSynchronization });
       actions.push({
         name: "changeMenu",
         param: self.params.enableSIFTopologyGrouping,
       });
+      actions.push({ name: "changeMenu", param: self.params.rememberDirectoryToPersist });
+      actions.push({ name: "changeMenu", param: self.params.storeUserProfile });
       actions.push({
         name: "applySIFTopologyGrouping",
         param: { apply: self.params.enableSIFTopologyGrouping.value },
@@ -1133,6 +1246,37 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy,
       "currentGeneralProperties"
     );
+    
+    // get user profile if it exists
+    if (appUtilities.hasUserProfile()) {
+      const userProfile = appUtilities.getUserProfile();
+
+      currentGeneralProperties = Object.assign({}, currentGeneralProperties, userProfile.generalProperties);
+      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties); 
+      
+      cy.viewUtilities("get").changeHighlightStyle(
+        0,
+        { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness },
+        { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness/2.0}
+      );
+
+      appUtilities.applyMapColorScheme(
+        currentGeneralProperties.mapColorScheme,
+        currentGeneralProperties.mapColorSchemeStyle, 
+        appUtilities.colorSchemeInspectorView
+      ); 
+
+      $(document).ready(function() {
+        $("#inspector-simulation-start").val(Number(userProfile.simulationProperties.simulationStart));
+        $("#inspector-simulation-end").val(Number(userProfile.simulationProperties.simulationEnd));
+        $("#inspector-simulation-step").val(Number(userProfile.simulationProperties.simulationStep));
+      });
+    
+    } else if (currentGeneralProperties.storeUserProfile) {
+      currentGeneralProperties.storeUserProfile = false;
+      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties); 
+    }
+       
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
@@ -1344,9 +1488,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         // use active cy instance
         var cy = appUtilities.getActiveCy();
 
-        self.params.dynamicLabelSize.value = $(
-          "#dynamic-label-size-select option:selected"
-        ).val();
+        self.params.dynamicLabelSize.value = $("#dynamic-label-size-select option:selected").val();
+        appUtilities.setUserProfileProperty("generalProperties", "dynamicLabelSize", self.params.dynamicLabelSize.value);        
         cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
         $("#dynamic-label-size-select").blur();
         self.applyUpdate();
@@ -1357,8 +1500,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.showComplexName.value =
-        $("#show-complex-name").prop("checked");
+      self.params.showComplexName.value = $("#show-complex-name").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "showComplexName", self.params.showComplexName.value);        
       cy.undoRedo().do("changeMenu", self.params.showComplexName);
       $("#show-complex-name").blur();
     });
@@ -1370,9 +1513,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         // use active cy instance
         var cy = appUtilities.getActiveCy();
 
-        self.params.adjustNodeLabelFontSizeAutomatically.value = $(
-          "#adjust-node-label-font-size-automatically"
-        ).prop("checked");
+        self.params.adjustNodeLabelFontSizeAutomatically.value = $("#adjust-node-label-font-size-automatically").prop("checked");
+        appUtilities.setUserProfileProperty("generalProperties", "adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.adjustNodeLabelFontSizeAutomatically
@@ -1386,9 +1528,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.fitLabelsToNodes.value = $("#fit-labels-to-nodes").prop(
-        "checked"
-      );
+      self.params.fitLabelsToNodes.value = $("#fit-labels-to-nodes").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToNodes", self.params.fitLabelsToNodes.value);        
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
       $("#fit-labels-to-nodes").blur();
       self.applyUpdate();
@@ -1398,9 +1539,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.fitLabelsToInfoboxes.value = $(
-        "#fit-labels-to-infoboxes"
-      ).prop("checked");
+      self.params.fitLabelsToInfoboxes.value = $("#fit-labels-to-infoboxes").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToInfoboxes", self.params.fitLabelsToInfoboxes.value);        
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
       $("#fit-labels-to-infoboxes").blur();
       self.applyUpdate();
@@ -1421,6 +1561,14 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
       self.params.showComplexName.value =
         appUtilities.defaultGeneralProperties.showComplexName;
+      
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.setUserProfileProperty("generalProperties", "dynamicLabelSize", self.params.dynamicLabelSize.value);
+        appUtilities.setUserProfileProperty("generalProperties", "adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);
+        appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToNodes", self.params.fitLabelsToNodes.value);
+        appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToInfoboxes", self.params.fitLabelsToInfoboxes.value);
+        appUtilities.setUserProfileProperty("generalProperties", "showComplexName", self.params.showComplexName.value);
+      }
 
       actions.push({ name: "changeMenu", param: self.params.dynamicLabelSize });
       actions.push({
@@ -1488,6 +1636,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.recalculateLayoutOnComplexityManagement.value = $(
           "#recalculate-layout-on-complexity-management"
         ).prop("checked");
+        appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.recalculateLayoutOnComplexityManagement
@@ -1506,6 +1655,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.rearrangeOnComplexityManagement.value = $(
           "#rearrange-on-complexity-management"
         ).prop("checked");
+        appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.rearrangeOnComplexityManagement
@@ -1521,6 +1671,7 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       self.params.animateOnDrawingChanges.value = $(
         "#animate-on-drawing-changes"
       ).prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);        
       cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
       $("#animate-on-drawing-changes").blur();
     });
@@ -1540,6 +1691,13 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
           appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
         self.params.animateOnDrawingChanges.value =
           appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
+        
+        if (appUtilities.hasUserProfile()) {
+          appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);
+        }
+
         actions.push({
           name: "changeMenu",
           param: self.params.recalculateLayoutOnComplexityManagement,
@@ -2131,49 +2289,1040 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
   },
 });
 
-/**
- * SBGN Properties view for the Sample Application.
- */
-/*var GeneralPropertiesView = Backbone.View.extend({
+var SimulationPanelView = Backbone.View.extend({
   initialize: function () {
     var self = this;
+    self.template = _.template($("#simulation-view-template").html());
+  },
+  render: function (simulationData) {
+    var self = this;
+    self.template = _.template($("#simulation-view-template").html());
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
 
-    $(document).on("click", "#default-sbgn", function (evt) {
-      self.setPropertiesToDefault();
-      self.applyUpdate();
-      self.render();
+    var plotElement = document.getElementById("simulation-plot");
+    var layout = {
+      margin: {
+        pad: 15
+      },
+      showlegend: true,
+      legend: {
+        font: {
+          size: 10
+        },
+        x: 1,
+        xanchor: 'right',
+        y: 1,
+        bgcolor: 'rgba(255, 255, 255, 0.1)'
+      },
+      xaxis: {
+        title: {
+          text: "Time (s)",
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Quantity",
+          standoff: 30
+        }
+      }
+    }
+    Plotly.newPlot(plotElement, simulationData, layout).then(() => {
+      Plotly.relayout('simulation-plot', { 'showlegend': false });
+    });
+    const plotWrapper = document.getElementById('simulation-plot');
+    plotWrapper.addEventListener('mouseenter', () => {
+      Plotly.relayout('simulation-plot', { 'showlegend': true });
+    });
+    plotWrapper.addEventListener('mouseleave', () => {
+      Plotly.relayout('simulation-plot', { 'showlegend': false });
+    });
+    return this;
+  },
+});
+
+var simulationTabPanel = GeneralPropertiesParentView.extend({
+  initialize: function() {
+    $(document).on('click', "#map-simulation-properties-button", function (evt) {
+      new SimulationPropertiesView({el: "#simulation_properties_table"}).render();
     });
 
-  },
-  // Apply the properties as they are set
-  applyUpdate: function() {
-    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
-    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
-    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+    $(document).on("change", "#inspector-simulation-start, #inspector-simulation-end, #inspector-simulation-step", function (evt) {
+      if (appUtilities.hasUserProfile()) {
+        let inspectorId = this.id;
+        const inspectorValue = this.value;
+        
+        inspectorId = inspectorId.replace(/^inspector-/, '').replace(/-([a-z])/, (_, c) => c.toUpperCase());
+                
+        appUtilities.setUserProfileProperty("simulationProperties", inspectorId, inspectorValue); 
+      }
+    })
 
-    if (appUtilities.currentGeneralProperties.enablePorts) {
-      chise.enablePorts();
-    }
-    else {
-      chise.disablePorts();
-    }
+    $(document).on("click", "#map-simulation-default-button", function (evt) {
+      $("#inspector-simulation-start").val(appUtilities.defaultSimulationProperties.startTime);
+      $("#inspector-simulation-end").val(appUtilities.defaultSimulationProperties.stopTime);
+      $("#inspector-simulation-step").val(appUtilities.defaultSimulationProperties.stepCount);
 
-    cy.style().update();
+      if (appUtilities.hasUserProfile()) {
+        appUtilities.setUserProfileProperty("simulationProperties", "simulationStart", appUtilities.defaultSimulationProperties.startTime); 
+        appUtilities.setUserProfileProperty("simulationProperties", "simulationEnd", appUtilities.defaultSimulationProperties.stopTime); 
+        appUtilities.setUserProfileProperty("simulationProperties", "simulationStep", appUtilities.defaultSimulationProperties.stepCount); 
+      }
+    })
 
-    $(document).trigger('saveGeneralProperties');
+    $(document).on("click", "#map-simulate-button", function (evt) {
+      if(appUtilities.getActiveChiseInstance().elementUtilities.mapType !== "SBML"){
+        new ExportErrorView({el: "#exportError-table"}).render();
+        document.getElementById("export-error-message").innerText = "Simulation is applicable to the SBML map type!";
+        return;
+      }
+      var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
+      var startTime = $("#inspector-simulation-start").val();
+      var endTime = $("#inspector-simulation-end").val();
+      var stepCount = $("#inspector-simulation-step").val();
+
+      var simulationDataParser = function(rawJsonData) {
+        // Process Data
+        data = []
+        for (const [key, value] of Object.entries(rawJsonData)) {
+            if(key === "time")
+              continue;
+            var trace = {
+                x: rawJsonData.time,
+                y: value,
+                mode: "lines",
+                name: key
+            };
+            data.push(trace);
+        }
+        return data;
+      }
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+      chiseInstance.startSpinner("simulation-spinner");
+      $.ajax({
+        url: "/simulate",
+        type: "POST",
+        data: {file: sbmlContent, start: startTime, stop: endTime, step: stepCount},
+        success: function(data){
+          chiseInstance.endSpinner("simulation-spinner");
+          var parsedData = simulationDataParser(data) || "";
+          new SimulationPanelView({el: '#simulation-view'}).render(parsedData);
+        },
+        error: function(err) {
+          chiseInstance.endSpinner("simulation-spinner");
+          new ExportErrorView({el: "#exportError-table"}).render();
+          document.getElementById("export-error-message").innerText = "Simulation failed!";
+          console.log(err);
+        }
+      });
+    });
   },
-  setPropertiesToDefault: function () {
-    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
-  },
-  render: function () {
-    console.log("render general", appUtilities.currentGeneralProperties);
-    this.template = _.template($("#general-properties-template").html());
+
+  render: function() {
+    // use the active cy instance
+    var cy = appUtilities.getActiveCy();
+    var chise = appUtilities.getActiveChiseInstance();
+
+    this.template = _.template($("#map-tab-simulation-template").html());
     this.$el.empty();
-    this.$el.html(this.template(appUtilities.currentGeneralProperties));
-
-    return this;
+    this.$el.html(this.template());
   }
-});*/
+});
+
+var SimulationPropertiesView = GeneralPropertiesParentView.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#simulation-properties-view-template").html());
+  },
+
+  render: function () {
+    var self = this;
+    self.template = _.template($("#simulation-properties-view-template").html());
+    $(self.el).html(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.$("#add-parameter-btn").off("click").on("click", function () {
+      chise.addParameter("", 0, "", true);
+      self.renderParameters();
+    });
+
+    self.$("#delete-parameter-btn").off("click").on("click", function () {
+      if (typeof self.selectedParamIndex === "number") {
+        var paramIdx = self.params[self.selectedParamIndex].id
+        chise.removeParameter(paramIdx);
+        self.selectedParamIndex = null;
+        self.renderParameters();
+      }
+    });
+
+    self.$("#add-fd-btn").off("click").on("click", function () {
+      chise.addFunctionDefinition("", [], "");
+      self.renderFunctionDefinitions();
+    });
+
+    self.$("#delete-fd-btn").off("click").on("click", function () {
+      if (typeof self.selectedFDIndex === "number") {
+        var fdIdx = self.functionDefinitions[self.selectedFDIndex].id
+        chise.removeFunctionDefinition(fdIdx);
+        self.selectedFDIndex = null;
+        self.renderFunctionDefinitions();
+      }
+    });
+
+    $(document).off('fd-update').on('fd-update', function() {
+      self.renderFunctionDefinitions();
+    });
+
+    $(document).off('ev-update').on('ev-update', function() {
+      self.renderEvents();
+    });
+
+    $(document).off('ia-update').on('ia-update', function() {
+      self.renderInitialAssignments();
+    });
+
+    $(document).off('rules-update').on('rules-update', function() {
+      self.renderRules();
+    });
+
+    self.$("#add-ia-btn").off("click").on("click", function () {
+      chise.addInitialAssignment("", "");
+      self.renderInitialAssignments();
+    });
+
+    self.$("#delete-ia-btn").off("click").on("click", function () {
+      if (typeof self.selectedIAIndex === "number") {
+        var iaIdx = self.initialAssignments[self.selectedIAIndex].id
+        chise.removeInitialAssignment(iaIdx);
+        self.selectedIAIndex = null;
+        self.renderInitialAssignments();
+      }
+    });
+
+    self.$("#add-rule-btn").off("click").on("click", function () {
+      chise.addRule("assignment", "", "");
+      self.renderRules();
+    });
+
+    self.$("#delete-rule-btn").off("click").on("click", function () {
+      if (typeof self.selectedRuleIndex === "number") {
+        var ruleIdx = self.rules[self.selectedRuleIndex].id;
+        chise.removeRule(ruleIdx);
+        self.selectedRuleIndex = null;
+        self.renderRules();
+      }
+    });
+
+    self.$("#add-event-btn").off("click").on("click", function () {
+      chise.addEvent(false, false, false, "", "", "", []);
+      self.renderEvents();
+    });
+
+    self.$("#delete-event-btn").off("click").on("click", function () {
+      if (typeof self.selectedEventIndex === "number") {
+        var eventId = self.events[self.selectedEventIndex].id;
+        chise.removeEvent(eventId);
+        self.selectedEventIndex = null;
+        self.renderEvents();
+      }
+    });
+
+    self.$('#add-custom-unit-btn').off("click").on('click', function(){
+      chise.addUnitDefinition("", []);
+      self.renderCustomUnits();
+    });
+
+    self.$('#delete-custom-unit-btn').off("click").on('click', function(){
+      if (typeof self.selectedCustomUnitIndex === 'number') {
+        var id = self.customUnits[self.selectedCustomUnitIndex].id;
+        chise.removeUnitDefinition(id);
+        self.selectedCustomUnitIndex = null;
+        self.renderCustomUnits();
+      }
+    });
+
+    self.renderParameters();
+    self.renderFunctionDefinitions();
+    self.renderInitialAssignments();
+    self.renderRules();
+    self.renderEvents();
+    self.renderCustomUnits();
+
+    $(self.el).modal("show");
+  },
+
+  renderParameters: function () {
+    var self = this;
+    var $tbody = self.$("#parameters-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.params = chise.getParameters();
+    self.params.forEach(function (param, index) {
+      var $row = $(`
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control param-name" value="${param.name != null ? param.name : ''}"></td>
+          <td><input type="number" class="form-control param-value" value="${param.value != null ? param.value : ''}"></td>
+          <td>
+            <select class="layout-text form-control param-units">
+              <option value="">Select unit</option>
+              <option value="second">second</option>
+              <option value="mole">mole</option>
+              <option value="liter">liter</option>
+              <option value="mole_per_liter">mole/liter</option>
+              <option value="1_per_second">1/second</option>
+            </select>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" class="param-constant" ${param.constant ? "checked" : ""}>
+          </td>
+        </tr>
+      `);
+
+      // populate parameter units with base kinds + custom unit definitions (value=id, text=name)
+      (function populateParamUnits(){
+        var $sel = $row.find('.param-units');
+        $sel.empty();
+        $sel.append($('<option value=""></option>').text('Select unit'));
+        try {
+          var baseKinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
+          var customDefs = (chise.getUnitDefinitions && chise.getUnitDefinitions()) || [];
+          baseKinds.forEach(function(k){ $sel.append($('<option></option>').attr('value', k).text(k)); });
+          customDefs.forEach(function(def){
+            var text = (def.name && def.name.length) ? def.name : def.id;
+            $sel.append($('<option></option>').attr('value', def.id).text(text));
+          });
+        } catch(e) {}
+        var current = param.units || "";
+        if (current && $sel.find('option[value="'+current.replace(/"/g,'\\"')+'"]').length === 0){
+          $sel.append($('<option></option>').attr('value', current).text(current));
+        }
+        $sel.val(current);
+      })();
+
+      $row.find(".param-name").off("input").on("input", function () {
+        chise.setParameter(param.id, "name", $(this).val());
+        param.name = $(this).val();
+      });
+      $row.find(".param-value").off("input").on("input", function () {
+        chise.setParameter(param.id, "value", $(this).val());
+        param.value = parseFloat($(this).val());
+      });
+      $row.find(".param-units").off("change").on("change", function () {
+        chise.setParameter(param.id, "units", $(this).val());
+        param.units = $(this).val();
+      });
+      $row.find(".param-constant").off("change").on("change", function () {
+        chise.setParameter(param.id, "constant", $(this).is(":checked"));
+        param.constant = $(this).is(":checked");
+      });
+
+      $row.on("click", function () {
+        $tbody.find("tr").removeClass("selected");  // single-select mode
+        $row.addClass("selected");
+        self.selectedParamIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderFunctionDefinitions: function () {
+    var self = this;
+    var $tbody = self.$("#function-definitions-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.functionDefinitions = chise.getFunctionDefinitions();
+    self.functionDefinitions.forEach(function (fd, index) {
+      var $row = $(`
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <input type="text"
+                class="form-control fd-name"
+                value="${fd.name != null ? fd.name : ''}">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control fd-function-preview"
+                  value="${fd.body != null ? fd.body : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Function"
+                class="fd-math"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+      </tr>
+      `);
+
+      $row.find(".fd-name").off("input").on("input", function () {
+        chise.setFunctionDefinition(fd.id, "name", $(this).val());
+        fd.name = $(this).val();
+      });
+
+      $row.find(".fd-math").off("input").on("click", function () {
+        new FunctionDefinitionMathModalView({ el: "#function-definition-math-div"}).render(fd);
+      });
+
+      $row.off("click").on("click", function () {
+        $tbody.find("tr").removeClass("selected");  // single-select mode
+        $row.addClass("selected");
+        self.selectedFDIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderCustomUnits: function(){
+    var self = this;
+    var $tbody = self.$('#custom-units-table-body');
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.customUnits = chise.getUnitDefinitions ? chise.getUnitDefinitions() : [];
+
+    self.customUnits.forEach(function(ud, index){
+      var $row = $(`
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type=\"text\" class=\"form-control unit-name\" value=\"${ud.name != null ? ud.name : ''}\"></td>
+          <td><button class="btn btn-default unit-set">Set Unit</button></td>
+        </tr>
+      `);
+
+      $row.find('.unit-name').off("input").on('input', function(){
+        var newName = $(this).val();
+        chise.setUnitDefinition(ud.id, 'name', newName);
+        ud.name = newName;
+      });
+
+      $row.find('.unit-set').off("click").on('click', function(){
+        new UnitDefinitionModalView({ el: '#unit-definition-div' }).render(ud);
+      });
+
+      $row.off("click").on('click', function(){
+        $tbody.find('tr').removeClass('selected');
+        $row.addClass('selected');
+        self.selectedCustomUnitIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderInitialAssignments: function () {
+    var self = this;
+    var $tbody = self.$("#initial-assignments-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.initialAssignments = chise.getInitialAssignments();
+    self.initialAssignments.forEach(function (ia, index) {
+      var $row = $(`
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <input type="text"
+                class="form-control ia-symbol"
+                value="${ia.symbol != null ? chise.convertIdsToNamesInFormula(ia.symbol) : ''}">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control fd-function-preview"
+                  value="${ia.math != null ? chise.convertIdsToNamesInFormula(ia.math) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Assignment"
+                class="ia-math"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+      </tr>
+      `);
+
+      $row.find(".ia-symbol").off("input").on("input", function () {
+        ia.symbol = $(this).val();
+        chise.setInitialAssignment(ia.id, "symbol", chise.convertNamesToIdsInFormula($(this).val()));
+      });
+
+      $row.find(".ia-math").off("click").on("click", function () {
+        new InitialAssignmentMathModalView({ el: "#initial-assignment-math-div"}).render(ia);
+      });
+
+      $row.off("click").on("click", function () {
+        $tbody.find("tr").removeClass("selected");  // single-select mode
+        $row.addClass("selected");
+        self.selectedIAIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderRules: function () {
+    var self = this;
+    var $tbody = self.$("#rules-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.rules = chise.getRules ? chise.getRules() : [];
+    self.rules.forEach(function (rule, index) {
+      var $row = $(`
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <select class="layout-text form-control rule-type">
+            <option value="assignment">Assignment</option>
+            <option value="rate">Rate</option>
+          </select>
+        </td>
+        <td>
+          <input type="text"
+                class="form-control rule-target"
+                value="${rule.target != null ? chise.convertIdsToNamesInFormula(rule.target) : ''}"
+                style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control rule-math-preview"
+                  value="${rule.math != null ? chise.convertIdsToNamesInFormula(rule.math) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Rule"
+                class="rule-math"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+      </tr>
+      `);
+
+      $row.find(".rule-type").val(rule.type || "assignment");
+
+      $row.find(".rule-type").off("change").on("change", function () {
+        var newType = $(this).val();
+        chise.setRule(rule.id, "type", newType);
+        rule.type = newType;
+      });
+
+      $row.find(".rule-target").off("input").on("input", function () {
+        var newTarget = $(this).val();
+        rule.target = newTarget;
+        chise.setRule(rule.id, "target", chise.convertNamesToIdsInFormula(newTarget));
+      });
+
+      $row.find(".rule-math").off("click").on("click", function () {
+        new RuleMathModalView({ el: "#rule-math-div" }).render(rule);
+      });
+
+      $row.off("click").on("click", function () {
+        $tbody.find("tr").removeClass("selected");
+        $row.addClass("selected");
+        self.selectedRuleIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+
+  renderEvents: function () {
+    var self = this;
+    var $tbody = self.$("#events-table-body");
+    $tbody.empty();
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.events = chise.getEvents ? chise.getEvents() : [];
+    self.events.forEach(function (ev, index) {
+      var $row = $(`
+      <tr>
+        <td>${index + 1}</td>
+        <td class="text-center">
+          <input type="checkbox" class="event-use-trigger-values" ${ev.useValuesFromTriggerTime ? "checked" : ""}>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control event-trigger-preview"
+                  value="${ev.trigger.math != null ? chise.convertIdsToNamesInFormula(ev.trigger.math) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Trigger"
+                class="event-trigger"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control event-priority-preview"
+                  value="${ev.priority != null ? chise.convertIdsToNamesInFormula(ev.priority) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Priority"
+                class="event-priority"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="text"
+                  class="form-control event-delay-preview"
+                  value="${ev.delay != null ? chise.convertIdsToNamesInFormula(ev.delay) : ''}"
+                  readonly
+                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <img src="app/img/toolbar/edit.svg"
+                alt="Edit Delay"
+                class="event-delay"
+                style="width: 16px; height: 16px; flex: 0 0 auto;">
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-default event-assignments">Edit Actions</button>
+        </td>
+      </tr>
+      `);
+
+      $row.find('.event-use-trigger-values').off("change").on('change', function(){
+        var val = $(this).is(':checked');
+        chise.setEvent(ev.id, 'useValuesFromTriggerTime', val);
+        ev.useValuesFromTriggerTime = val;
+      });
+
+      $row.find('.event-trigger').off("click").on('click', function(){
+        new EventTriggerModalView({ el: '#event-trigger-div' }).render(ev);
+      });
+
+      $row.find('.event-priority').off("click").on('click', function(){
+        new EventPriorityModalView({ el: '#event-priority-div' }).render(ev);
+      });
+
+      $row.find('.event-delay').off("click").on('click', function(){
+        new EventDelayModalView({ el: '#event-delay-div' }).render(ev);
+      });
+
+      $row.find('.event-assignments').off("click").on('click', function(){
+        new EventActionsModalView({ el: '#event-assignments-div' }).render(ev);
+      });
+
+      $row.off("click").on('click', function(){
+        $tbody.find('tr').removeClass('selected');
+        $row.addClass('selected');
+        self.selectedEventIndex = index;
+      });
+
+      $tbody.append($row);
+    });
+  },
+});
+
+var FunctionDefinitionMathModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#function-definition-modal-template").html());
+  },
+
+  render: function (fd) {
+    var self = this;
+    this.fd = fd;
+    self.template = _.template($("#function-definition-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+
+    $modal.find("#function-args-field").val(self.fd.args ? self.fd.args.join(", ") : "");
+    $modal.find("#function-body-field").val(chise.convertIdsToNamesInFormula(self.fd.body) || "");
+
+    $modal.find("#save-function-definition").off('click').on("click", function () {
+      var newArgs = $modal.find("#function-args-field").val().split(",").map(s => s.trim()).filter(Boolean);
+      var newBody = $modal.find("#function-body-field").val();
+      self.fd.args = newArgs;
+      self.fd.body = newBody;
+      newBody = chise.convertNamesToIdsInFormula(newBody);
+      chise.setFunctionDefinition(self.fd.id, "args", newArgs);
+      chise.setFunctionDefinition(self.fd.id, "body", newBody);
+
+      $(document).trigger("fd-update");
+      $(self.el).modal("hide");
+    });
+
+    $modal.find("#cancel-function-definition").off('click').on("click", function () {
+      $(self.el).modal("hide");
+    });
+
+    $(self.el).modal("show");
+  }
+});
+
+var InitialAssignmentMathModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#initial-assignment-modal-template").html());
+  },
+
+  render: function (ia) {
+    var self = this;
+    this.ia = ia;
+    self.template = _.template($("#initial-assignment-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.ia.math = chise.convertIdsToNamesInFormula(self.ia.math);
+    $modal.find("#initial-assignment-math-field").val(self.ia.math);
+
+    $modal.find("#save-initial-assignment").off('click').on("click", function () {
+      var newMath = $modal.find("#initial-assignment-math-field").val();
+      self.ia.math = newMath;
+      newMath = chise.convertNamesToIdsInFormula(newMath);
+      chise.setInitialAssignment(self.ia.id, "math", newMath);
+      $(document).trigger("ia-update");
+      $(self.el).modal("hide");
+    });
+
+    $modal.find("#cancel-initial-assignment").off('click').on("click", function () {
+      $(self.el).modal("hide");
+    });
+
+    $(self.el).modal("show");
+  }
+});
+
+var RuleMathModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#rule-modal-template").html());
+  },
+
+  render: function (rule) {
+    var self = this;
+    this.rule = rule;
+    self.template = _.template($("#rule-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.rule.math = chise.convertIdsToNamesInFormula(self.rule.math);
+    $modal.find("#rule-math-field").val(self.rule.math);
+
+    $modal.find("#save-rule").off('click').on("click", function () {
+      var newMath = $modal.find("#rule-math-field").val();
+      self.rule.math = newMath;
+      newMath = chise.convertNamesToIdsInFormula(newMath);
+      chise.setRule(self.rule.id, "math", newMath);
+      $(document).trigger("rules-update");
+      $(self.el).modal("hide");
+    });
+
+    $modal.find("#cancel-rule").off('click').on("click", function () {
+      $(self.el).modal("hide");
+    });
+
+    $(self.el).modal("show");
+  }
+});
+
+var EventTriggerModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-trigger-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-trigger-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.ev.trigger.math = chise.convertIdsToNamesInFormula(self.ev.trigger.math);
+
+    $modal.find('#event-trigger-initial-value').prop('checked', !!(self.ev.trigger && self.ev.trigger.initialValue));
+    $modal.find('#event-trigger-persistent').prop('checked', !!(self.ev.trigger && self.ev.trigger.persistent));
+    $modal.find('#event-trigger-math').val(self.ev.trigger && self.ev.trigger.math ? self.ev.trigger.math : '');
+
+    $modal.find('#save-event-trigger').off('click').on('click', function(){
+      var initial = $modal.find('#event-trigger-initial-value').is(':checked');
+      var persistent = $modal.find('#event-trigger-persistent').is(':checked');
+      var math = $modal.find('#event-trigger-math').val();
+      self.ev.trigger.initialValue = initial;
+      self.ev.trigger.persistent = persistent;
+      self.ev.trigger.math = math;
+
+      math = chise.convertNamesToIdsInFormula(math);
+      chise.setEventTrigger(self.ev.id, 'initialValue', initial);
+      chise.setEventTrigger(self.ev.id, 'persistent', persistent);
+      chise.setEventTrigger(self.ev.id, 'math', math);
+
+      $(document).trigger("ev-update");
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-trigger').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    $(self.el).modal('show');
+  }
+});
+
+var EventPriorityModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-priority-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-priority-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.ev.priority = chise.convertIdsToNamesInFormula(self.ev.priority);
+
+    $modal.find('#event-priority-math').val(self.ev.priority);
+
+    $modal.find('#save-event-priority').off('click').on('click', function(){
+      var math = $modal.find('#event-priority-math').val();
+      self.ev.priority = math;
+      math = chise.convertNamesToIdsInFormula(math);
+      chise.setEvent(self.ev.id, 'priority', math);
+      $(document).trigger("ev-update");
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-priority').off('click').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    $(self.el).modal('show');
+  }
+});
+
+var EventDelayModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-delay-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-delay-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.ev.delay = chise.convertIdsToNamesInFormula(self.ev.delay);
+
+    $modal.find('#event-delay-math').val(self.ev.delay);
+
+    $modal.find('#save-event-delay').off('click').on('click', function(){
+      var math = $modal.find('#event-delay-math').val();
+      self.ev.delay = math;
+      math = chise.convertNamesToIdsInFormula(math);
+      chise.setEvent(self.ev.id, 'delay', math);
+      $(document).trigger("ev-update");
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-delay').off('click').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    $(self.el).modal('show');
+  }
+});
+
+var EventActionsModalView = Backbone.View.extend({
+  initialize: function () {
+    this.template = _.template($("#event-assignments-modal-template").html());
+  },
+  render: function (ev) {
+    var self = this;
+    this.ev = ev;
+    self.template = _.template($("#event-assignments-modal-template").html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    self.ev.assignments = self.ev.assignments.map(a => ({
+      target: chise.convertIdsToNamesInFormula(a.target),
+      math: chise.convertIdsToNamesInFormula(a.math)
+    }));
+
+    // simple in-memory selection index
+    var assignments = Array.isArray(self.ev.assignments) ? self.ev.assignments : [];
+    var selectedIdx = 0;
+
+    function renderTargets() {
+      var $tbody = $modal.find('#event-assignment-targets-body');
+      $tbody.empty();
+      assignments.forEach(function(a, i){
+        var $tr = $('<tr></tr>');
+        var $td = $('<td style="padding: 6px 8px; border-bottom: 1px solid #e5e5e5;"></td>');
+        var $input = $('<input type="text" class="form-control layout-text" />').val(a.target || '');
+        $input.off('input').on('input', function(){
+          assignments[i].target = $(this).val();
+        });
+        $tr.off('click').on('click', function(){
+          $tbody.find('tr').removeClass('selected');
+          $tr.addClass('selected');
+          selectedIdx = i;
+          $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
+        });
+        if(i === selectedIdx){
+          $tr.addClass('selected');
+          $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
+        }
+        $td.append($input);
+        $tr.append($td);
+        $tbody.append($tr);
+      });
+
+      if(assignments.length === 0){
+        selectedIdx = -1;
+        $modal.find('#event-assignment-math').val('');
+      } else if(selectedIdx < 0){
+        selectedIdx = 0;
+        $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
+        $tbody.find('tr').eq(selectedIdx).addClass('selected');
+      }
+    }
+
+    $modal.off('click', '#add-event-assignment').on('click', '#add-event-assignment', function(){
+      chise.addEventAssignment(self.ev.id, '', '');
+      assignments.push({ target: '', math: '' });
+      selectedIdx = assignments.length - 1;
+      renderTargets();
+    });
+
+    $modal.off('click', '#remove-event-assignment').on('click', '#remove-event-assignment', function(){
+      if(selectedIdx >= 0){
+        chise.removeEventAssignment(self.ev.id, selectedIdx);
+        assignments.splice(selectedIdx, 1);
+        selectedIdx = Math.min(selectedIdx, assignments.length - 1);
+        renderTargets();
+      }
+    });
+
+    $modal.off('input', '#event-assignment-math').on('input', '#event-assignment-math', function(){
+      if(selectedIdx >= 0 && assignments[selectedIdx]){
+        var newMath = $(this).val();
+        assignments[selectedIdx].math = newMath;
+      }
+    });
+
+    $modal.find('#save-event-assignments').off('click').on('click', function(){
+      assignments = assignments.map(a => ({
+        target: chise.convertNamesToIdsInFormula(a.target),
+        math: chise.convertNamesToIdsInFormula(a.math)
+      }));
+      chise.setEvent(self.ev.id, 'assignments', assignments);
+      $(self.el).modal('hide');
+    });
+
+    $modal.find('#cancel-event-assignments').off('click').on('click', function(){
+      $(self.el).modal('hide');
+    });
+
+    renderTargets();
+    $(self.el).modal('show');
+  }
+});
+
+var UnitDefinitionModalView = Backbone.View.extend({
+  initialize: function(){
+    this.template = _.template($('#unit-definition-modal-template').html());
+  },
+  render: function(ud){
+    var self = this;
+    this.ud = ud;
+    self.template = _.template($('#unit-definition-modal-template').html());
+    $(self.el).html(self.template);
+    var $modal = $(self.template);
+
+    var chise = appUtilities.getActiveChiseInstance();
+    var components = Array.isArray(self.ud.units) ? self.ud.units : [];
+
+    var selectedIdx = -1;
+
+    function renderComponents(){
+      var $tbody = $modal.find('#unit-components-body');
+      $tbody.empty();
+      var kinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
+      components.forEach(function(c, i){
+        var $tr = $('<tr></tr>');
+        var $tdMult = $('<td></td>');
+        var $tdScale = $('<td></td>');
+        var $tdKind = $('<td></td>');
+        var $tdExp = $('<td></td>');
+
+        var $mult = $('<input type="number" step="any" class="form-control layout-text" />').val(typeof c.multiplier === 'number' ? c.multiplier : 1);
+        var $scale = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.scale === 'number' ? c.scale : 0);
+        var $kind;
+        if (Array.isArray(kinds) && kinds.length > 0){
+          $kind = $('<select class="form-control layout-text"></select>');
+          $kind.append($('<option value=""></option>').text(''));
+          kinds.forEach(function(k){
+            var $opt = $('<option></option>').attr('value', k).text(k);
+            $kind.append($opt);
+          });
+          $kind.val(c.kind || '');
+        } else {
+          $kind = $('<input type="text" class="form-control layout-text" />').val(c.kind || '');
+        }
+        var $exp = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.exponent === 'number' ? c.exponent : 1);
+
+        $mult.off("input").on('input', function(){ components[i].multiplier = parseFloat($(this).val()); });
+        $scale.off("input").on('input', function(){ components[i].scale = parseInt($(this).val(), 10); });
+        $kind.off("input change").on('input change', function(){ components[i].kind = $(this).val(); });
+        $exp.off("input").on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); });
+
+        $tr.off("click").on('click', function(){
+          $tbody.find('tr').removeClass('selected');
+          $tr.addClass('selected');
+          selectedIdx = i;
+        });
+
+        $tdMult.append($mult); $tdScale.append($scale); $tdKind.append($kind); $tdExp.append($exp);
+        $tr.append($tdMult, $tdScale, $tdKind, $tdExp);
+        $tbody.append($tr);
+      });
+    }
+
+    $modal.off('click', '#add-unit-component').on('click', '#add-unit-component', function(){
+      components.push({ kind: '', exponent: 1, scale: 0, multiplier: 1 });
+      renderComponents();
+    });
+
+    $modal.off('click', '#remove-unit-component').on('click', '#remove-unit-component', function(){
+      if(selectedIdx >= 0){
+        components.splice(selectedIdx, 1);
+        selectedIdx = -1;
+        renderComponents();
+      }
+    });
+
+    $modal.off('click', '#save-unit-definition').on('click', '#save-unit-definition', function(){
+      chise.setUnitDefinition(self.ud.id, 'units', components);
+      $(self.el).modal('hide');
+    });
+
+    $modal.off('click', '#cancel-unit-definition').on('click', '#cancel-unit-definition', function(){
+      $(self.el).modal('hide');
+    });
+
+    renderComponents();
+    $(self.el).modal('show');
+  }
+});
+
 
 String.prototype.replaceAll = function (search, replace) {
   //if replace is not sent, return original string otherwise it will
@@ -2459,7 +3608,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "Neighborhood";
+    PCdialog = "Neighborhood in localDB";
 
     $(document)
       .off("click", "#save-query-neighborhood-localdatabase")
@@ -2469,72 +3618,81 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
         async function (evt) {
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
+          const sendNeighborhoodQuery = async function () {
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          //  cy.elements().remove();
-          //  databaseUtilities.cleanNodesAndEdgesInDB();
+            self.currentQueryParameters.geneSymbols = document.getElementById(
+              "query-neighborhood-localdatabase-gene-symbols"
+            ).value;
+            self.currentQueryParameters.lengthLimit = Number(
+              document.getElementById(
+                "query-neighborhood-localdatabase-length-limit"
+              ).value
+            );
 
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-neighborhood-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-neighborhood-localdatabase-length-limit"
-            ).value
-          );
+            var removeDisconnected = document.getElementById(
+              "query-neighborhood-localdatabase-checkbox"
+            ).checked;
+            var removeRedundant = document.getElementById(
+              "query-neighborhood-localdatabase-redundant-checkbox"
+            ).checked;
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+              document
+                .getElementById("query-neighborhood-localdatabase-gene-symbols")
+                .focus();
+              return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 2) {
+              $(self.el).modal("toggle");
+              new PromptInvalidLengthLimitView({
+                el: "#prompt-invalidLengthLimit-table",
+              }).render();
+              document
+                .getElementById("query-neighborhood-localdatabase-length-limit")
+                .focus();
+              return;
+            }
+            var geneSymbolsArray = geneSymbols
+              .replaceAll("\n", " ")
+              .replaceAll("\t", " ")
+              .split(" ");
+            var lengthLimit = self.currentQueryParameters.lengthLimit;
+            console.log("geneSymbolsArray", geneSymbolsArray);
+            console.log("lengthLimit", lengthLimit);
+            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            var result = await databaseUtilities.runNeighborhood(
+              geneSymbolsArray,
+              lengthLimit,
+              allowCloning,
+              cloningThreshold
+            );
+            if (result && result.err) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            $(self.el).modal("toggle");
+          }
 
-          var removeDisconnected = document.getElementById(
-            "query-neighborhood-localdatabase-checkbox"
-          ).checked;
-          var removeRedundant = document.getElementById(
-            "query-neighborhood-localdatabase-redundant-checkbox"
-          ).checked;
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-neighborhood-localdatabase-gene-symbols")
-              .focus();
-            return;
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendNeighborhoodQuery);
+          } else {
+            sendNeighborhoodQuery();
           }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 2) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-neighborhood-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-          var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          var lengthLimit = self.currentQueryParameters.lengthLimit;
-          console.log("geneSymbolsArray", geneSymbolsArray);
-          console.log("lengthLimit", lengthLimit);
-          var result = await databaseUtilities.runNeighborhood(
-            geneSymbolsArray,
-            lengthLimit
-          );
-          if (result && result.err) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          $(self.el).modal("toggle");
         }
       );
 
@@ -2820,7 +3978,7 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "PathsBetween";
+    PCdialog = "PathsBetween in localDB";
 
     $(document)
       .off("click", "#save-query-pathsbetween-localdatabase")
@@ -2832,96 +3990,72 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
           // use the associated cy instance
+          const sendPathsBetweenQuery = async function () {
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          databaseUtilities.cleanNodesAndEdgesInDB();
+            self.currentQueryParameters.geneSymbols = document.getElementById(
+              "query-pathsbetween-localdatabase-gene-symbols"
+            ).value;
+            self.currentQueryParameters.lengthLimit = Number(
+              document.getElementById(
+                "query-pathsbetween-localdatabase-length-limit"
+              ).value
+            );
+            console.log(self.currentQueryParameters.lengthLimit);
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+              document
+                .getElementById("query-pathsbetween-localdatabase-gene-symbols")
+                .focus();
+              return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 5) {
+              $(self.el).modal("toggle");
+              new PromptInvalidLengthLimitView({
+                el: "#prompt-invalidLengthLimit-table",
+              }).render();
+              document
+                .getElementById("query-pathsbetween-localdatabase-length-limit")
+                .focus();
+              return;
+            }
 
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-pathsbetween-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-pathsbetween-localdatabase-length-limit"
-            ).value
-          );
-          console.log(self.currentQueryParameters.lengthLimit);
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-pathsbetween-localdatabase-gene-symbols")
-              .focus();
-            return;
-          }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 5) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-pathsbetween-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-
-          var geneSymbolsArray = geneSymbols
+            var geneSymbolsArray = geneSymbols
             .replaceAll("\n", " ")
             .replaceAll("\t", " ")
             .split(" ");
-
-          // // Check if duplicate symbols are given or not
-          // if (handleDuplicateGenes(geneSymbolsArray)) {
-          //   return;
-          // }
-
-          // const sendPathsBetweenLocalQuery=()=>{
-
-          // };
-
-          // const sendQueries = async () => {
-          //   $(self.el).modal("toggle");
-          //   chiseInstance.startSpinner("paths-between-spinner");
-          //   // Check if the gene symbols that are added even exist in the database or not
-          //   // if (await handleGeneDoesNotExist(geneSymbolsArray)) {
-          //   //   chiseInstance.endSpinner("paths-between-spinner");
-          //   //   return;
-          //   // }
-          //   // else{
-          //     sendPathsBetweenLocalQuery();
-          //   // }
-          // };
-
-          // if (cy.nodes().length != 0) {
-          //   new PromptConfirmationView({
-          //     el: "#prompt-confirmation-table",
-          //   }).render(sendQueries);
-          // } else {
-          //   sendQueries();
-          // }
-
-          var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
-          var lengthLimit =  self.currentQueryParameters.lengthLimit
-          console.log("geneSymbolsArray", geneSymbolsArray)
-          console.log("lengthLimit", lengthLimit)
-          var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit)
-          console.log("resultFromDb",result)
-          if (result && result.err)
-          {
+            
+            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+            var lengthLimit =  self.currentQueryParameters.lengthLimit
+            console.log("geneSymbolsArray", geneSymbolsArray)
+            console.log("lengthLimit", lengthLimit);
+            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowCloning,cloningThreshold);
+            if (result && result.err)
+            {
+              $(self.el).modal('toggle');
+              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render(result.err,result.message);
+              return;
+            }
             $(self.el).modal('toggle');
-            new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render();
-            return;
           }
-          $(self.el).modal('toggle');
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendPathsBetweenQuery);
+          } else {
+            sendPathsBetweenQuery();
+          }
+          
         }
       );
 
@@ -3946,7 +5080,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "PathsFromTo";
+    PCdialog = "PathsFromTo in localDB";
     $(document)
       .off("click", "#save-query-pathsfromto-localdatabase")
       .on(
@@ -3955,93 +5089,106 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
         async function (evt) {
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          //  databaseUtilities.cleanNodesAndEdgesInDB();
+          
+          const sendPathsFromToLocalDBQuery=async()=>{
 
-          self.currentQueryParameters.sourceSymbols = document.getElementById(
-            "query-pathsfromto-source-symbols-localdatabase"
-          ).value;
-          self.currentQueryParameters.targetSymbols = document.getElementById(
-            "query-pathsfromto-target-symbols-localdatabase"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-pathsfromto-length-limit-localdatabase"
-            ).value
-          );
+              self.currentQueryParameters.sourceSymbols = document.getElementById(
+                "query-pathsfromto-source-symbols-localdatabase"
+              ).value;
+              self.currentQueryParameters.targetSymbols = document.getElementById(
+                "query-pathsfromto-target-symbols-localdatabase"
+              ).value;
+              self.currentQueryParameters.lengthLimit = Number(
+                document.getElementById(
+                  "query-pathsfromto-length-limit-localdatabase"
+                ).value
+              );
 
-          var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
-          if (sourceSymbols.length === 0) {
-            document
-              .getElementById("query-pathsfromto-source-symbols-localdatabase")
-              .focus();
-            return;
-          }
-          // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          sourceSymbols = sourceSymbols
-            .replace(/[^a-zA-Z0-9\n\t ]/g, "")
-            .trim();
-          if (sourceSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
+              var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
+              if (sourceSymbols.length === 0) {
+                document
+                  .getElementById("query-pathsfromto-source-symbols-localdatabase")
+                  .focus();
+                return;
+              }
+              // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+              sourceSymbols = sourceSymbols
+                .replace(/[^a-zA-Z0-9\n\t ]/g, "")
+                .trim();
+              if (sourceSymbols.length === 0) {
+                $(self.el).modal("toggle");
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render();
+                return;
+              }
+
+              var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
+              if (targetSymbols.length === 0) {
+                document
+                  .getElementById("query-pathsfromto-target-symbols-localdatabase")
+                  .focus();
+                return;
+              }
+              // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+              targetSymbols = targetSymbols
+                .replace(/[^a-zA-Z0-9\n\t ]/g, "")
+                .trim();
+              if (targetSymbols.length === 0) {
+                $(self.el).modal("toggle");
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render();
+                return;
+              }
+
+              if (self.currentQueryParameters.lengthLimit > 3) {
+                $(self.el).modal("toggle");
+                new PromptInvalidLengthLimitView({
+                  el: "#prompt-invalidLengthLimit-table",
+                }).render();
+                document.getElementById("query-pathsfromto-length-limit").focus();
+                return;
+              }
+
+              var sourceSymbolsArray = sourceSymbols
+                .replaceAll("\n", " ")
+                .replaceAll("\t", " ")
+                .split(" ");
+              var targetSymbolsArray = targetSymbols
+                .replaceAll("\n", " ")
+                .replaceAll("\t", " ")
+                .split(" ");
+              console.log("sourceSymbolsArray", sourceSymbolsArray);
+              console.log("targetSymbolsArray", targetSymbolsArray);
+              const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+              const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+              var lengthLimit = self.currentQueryParameters.lengthLimit;
+              var result = await databaseUtilities.runPathsFromTo(
+                sourceSymbolsArray,
+                targetSymbols,
+                lengthLimit,
+                allowCloning,
+                cloningThreshold
+              );
+              console.log("resultFromDb", result);
+              if (result && result.err) {
+                $(self.el).modal("toggle");
+                new PromptInvalidQueryView({
+                  el: "#prompt-invalidQuery-table",
+                }).render(result.err, result.message);
+                return;
+              }
+              $(self.el).modal("toggle");
           }
 
-          var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
-          if (targetSymbols.length === 0) {
-            document
-              .getElementById("query-pathsfromto-target-symbols-localdatabase")
-              .focus();
-            return;
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendPathsFromToLocalDBQuery);
+          } else {
+            sendPathsFromToLocalDBQuery();
           }
-          // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          targetSymbols = targetSymbols
-            .replace(/[^a-zA-Z0-9\n\t ]/g, "")
-            .trim();
-          if (targetSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-
-          if (self.currentQueryParameters.lengthLimit > 3) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document.getElementById("query-pathsfromto-length-limit").focus();
-            return;
-          }
-
-          var sourceSymbolsArray = sourceSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          var targetSymbolsArray = targetSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          console.log("sourceSymbolsArray", sourceSymbolsArray);
-          console.log("targetSymbolsArray", targetSymbolsArray);
-          var result = await databaseUtilities.runPathsFromTo(
-            sourceSymbolsArray,
-            targetSymbols,
-            2
-          );
-          if (result && result.err) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          $(self.el).modal("toggle");
         }
       );
 
@@ -4322,7 +5469,7 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
     $(self.el).html(self.template);
 
     $(self.el).modal("show");
-    PCdialog = "CommonStream";
+    PCdialog = "CommonStream in localDB";
 
     $(document)
       .off("click", "#save-query-commonstream-localdatabase")
@@ -4333,69 +5480,76 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
 
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          databaseUtilities.cleanNodesAndEdgesInDB();
 
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-commonstream-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-commonstream-localdatabase-length-limit"
-            ).value
-          );
+          const sendCommonStreamLocalDBQuery = async () => {
 
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-commonstream-localdatabase-gene-symbols")
-              .focus();
-            return;
-          }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 3) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-commonstream-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-          var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          //$(self.el).modal('toggle');
+            self.currentQueryParameters.geneSymbols = document.getElementById(
+              "query-commonstream-localdatabase-gene-symbols"
+            ).value;
+            self.currentQueryParameters.lengthLimit = Number(
+              document.getElementById(
+                "query-commonstream-localdatabase-length-limit"
+              ).value
+            );
 
-          var lengthLimit = self.currentQueryParameters.lengthLimit;
-          console.log("geneSymbolsArray", geneSymbolsArray);
-          console.log("lengthLimit", lengthLimit);
-          var result = await databaseUtilities.runCommonStream(
-            geneSymbolsArray,
-            lengthLimit,
-            -1
-          );
-          if (result && result.err) {
+            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
+            if (geneSymbols.length === 0) {
+              document
+                .getElementById("query-commonstream-localdatabase-gene-symbols")
+                .focus();
+              return;
+            }
+            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            if (geneSymbols.length === 0) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render();
+              return;
+            }
+            if (self.currentQueryParameters.lengthLimit > 3) {
+              $(self.el).modal("toggle");
+              new PromptInvalidLengthLimitView({
+                el: "#prompt-invalidLengthLimit-table",
+              }).render();
+              document
+                .getElementById("query-commonstream-localdatabase-length-limit")
+                .focus();
+              return;
+            }
+            var geneSymbolsArray = geneSymbols
+              .replaceAll("\n", " ")
+              .replaceAll("\t", " ")
+              .split(" ");
+            //$(self.el).modal('toggle');
+
+            var lengthLimit = self.currentQueryParameters.lengthLimit;
+            console.log("geneSymbolsArray", geneSymbolsArray);
+            console.log("lengthLimit", lengthLimit);
+            var result = await databaseUtilities.runCommonStream(
+              geneSymbolsArray,
+              lengthLimit,
+              -1
+            );
+            console.log("resultFromDb", result);
+            if (result && result.err) {
+              $(self.el).modal("toggle");
+              new PromptInvalidQueryView({
+                el: "#prompt-invalidQuery-table",
+              }).render(result.err,result.message);
+              return;
+            }
             $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
           }
-          console.log("resultFromDb", resultFromDb);
-          $(self.el).modal("toggle");
+
+          if (cy.nodes().length != 0) {
+            new PromptConfirmationView({
+              el: "#prompt-confirmation-table",
+            }).render(sendCommonStreamLocalDBQuery);
+          } else {
+            sendCommonStreamLocalDBQuery();
+          }
         }
       );
 
@@ -4445,11 +5599,6 @@ var UpStreamQueryViewLocalDB = Backbone.View.extend({
       .on("click", "#save-query-upstream-localdatabase", async function (evt) {
         // use active chise instance
         var chiseInstance = appUtilities.getActiveChiseInstance();
-
-        //Clean the canvas
-        var cy = chiseInstance.getCy();
-        cy.elements().remove();
-        databaseUtilities.cleanNodesAndEdgesInDB();
 
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-upstream-localdatabase-gene-symbols"
@@ -4558,11 +5707,6 @@ var DownStreamQueryViewLocalDB = Backbone.View.extend({
         async function (evt) {
           // use active chise instance
           var chiseInstance = appUtilities.getActiveChiseInstance();
-
-          //Clean the canvas
-          var cy = chiseInstance.getCy();
-          cy.elements().remove();
-          databaseUtilities.cleanNodesAndEdgesInDB();
 
           self.currentQueryParameters.geneSymbols = document.getElementById(
             "query-downstream-localdatabase-gene-symbols"
@@ -5102,6 +6246,77 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
   },
 });
 
+var sbmlKineticLawView = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.localparams = null;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    // self.template = self.template(self.currentQueryParameters);
+  },
+  render: function (node) {
+    var self = this;
+    self.template = _.template($("#sbml-kinetic-law-template").html());
+    $(self.el).html(self.template);
+    var nodeRow = document.getElementById("kinetic-law-nodes");
+    node.connectedEdges().connectedNodes().difference(node).forEach((iterNode, idx) => {
+      if(iterNode.same(node)){
+        return;
+      }
+      var element = '<button id="kinetic-law-node-ele' + idx + '" class="btn btn-default" style="width:90px; margin-left:5px; margin-right:5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' 
+        + (iterNode.data('label') || iterNode.data('id')) + '</button>';
+      nodeRow.innerHTML += element;
+      $(document).off("click", "#save-kinetic-law").on("click", "#kinetic-law-node-ele" + idx, function(evt) {
+        var cursorStart = kineticLaw.selectionStart;
+        var cursorEnd = kineticLaw.selectionEnd;
+        var currentText = kineticLaw.value;
+        var textBefore = currentText.substring(0, cursorStart);
+        var textAfter  = currentText.substring(cursorEnd, currentText.length);
+        var newText = (iterNode.data('label') || iterNode.data('id'));
+        kineticLaw.value = (textBefore + newText + textAfter);
+        kineticLaw.selectionStart = kineticLaw.selectionEnd = cursorStart + newText.length;
+        kineticLaw.focus();
+      });
+    })
+    $(self.el).modal("show");
+
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    var cy = chiseInstance.getCy();
+
+    // Set up local parameters for conversion
+    var localparams_n_to_id = null;
+    var localparams_id_to_n = null;
+    if (node.data('simulation') && node.data('simulation').localParameters) {
+      localparams_n_to_id = {};
+      localparams_id_to_n = {};
+      node.data('simulation').localParameters.forEach(function(param) {
+        if (param.name && param.id) {
+          localparams_n_to_id[param.name] = param.id;
+          localparams_id_to_n[param.id] = param.name;
+        }
+      });
+    }
+
+    var kineticLaw = document.getElementById('kinetic-law-field'); 
+    var kineticLawRawText = node.data('simulation')['kineticLaw'] || "";
+    kineticLaw.value = chiseInstance.convertIdsToNamesInFormula(kineticLawRawText, localparams_id_to_n);
+    
+    $(document)
+    .off("click", "#save-kinetic-law")
+    .on("click", "#save-kinetic-law", function(evt) {
+      var kineticLawText = kineticLaw.value;
+      node.data('simulation')['kineticLaw'] = chiseInstance.convertNamesToIdsInFormula(kineticLawText, localparams_n_to_id);
+      $(document).trigger("kinetic-law-updated", [node]);
+      $(self.el).modal("toggle");
+    });
+
+    $(document)
+      .off("click", "#cancel-kinetic-law")
+      .on("click", "#cancel-kinetic-law", function (evt) {
+        $(self.el).modal("toggle");
+      });
+  }
+});
+
 /*
   There was a side effect of using this modal prompt when clicking on New.
   If the user would click on save, then the save box asking for the filename (FileSaveView) would appear
@@ -5338,11 +6553,17 @@ var FileSaveView = Backbone.View.extend({
           else if (version === "plain3") {
             saveAsFcn(filename, version, renderInfo, undefined, nodes, edges);
           } else {
-            saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
+            // Get annotation layers data for saving
+            var annotationLayersData = null;
+            if (window.annotationLayers) {
+              annotationLayersData = window.annotationLayers.getAnnotationLayersData();
+            }
+            
+            saveAsFcn(filename, version, renderInfo, properties, nodes, edges, annotationLayersData);
           }
         } else if (fileformat === "celldesigner") {
           if (mapType == "SBML") {
-            chiseInstance.saveSbmlForSBML(
+            chiseInstance.saveAsCellDesignerFromSbml(
               filename,
               function (data, errorMessage) {
                 var exportError = new ExportErrorView({
@@ -5400,11 +6621,14 @@ var FileSaveView = Backbone.View.extend({
         } else if (fileformat === "sifLayout") {
           chiseInstance.exportLayoutData(filename, true);
         } else if (fileformat === "png") {
-          chiseInstance.saveAsPng(filename);
+          var annotationLayers = require('./annotation-layers');
+          annotationLayers.exportCompositePng(filename);
         } else if (fileformat === "jpg") {
-          chiseInstance.saveAsJpg(filename);
+          var annotationLayers = require('./annotation-layers');
+          annotationLayers.exportCompositeJpg(filename)
         } else if (fileformat === "svg") {
-          chiseInstance.saveAsSvg(filename);
+          var annotationLayers = require('./annotation-layers');
+          annotationLayers.exportCompositeSvg(filename);
         } else {
           // invalid file format provided
           console.error(
@@ -6065,6 +7289,25 @@ var PromptMapTypeView = Backbone.View.extend({
   },
 });
 
+var PromptSIFTopologyGroupingWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-sifTopologyGrouping-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-sifTopologyGrouping-template").html());
+    $(self.el).html(self.template());
+    $(self.el).modal("show");
+    $(document)
+      .off("click", "#prompt-sifTopologyGrouping-confirm")
+      .on("click", "#prompt-sifTopologyGrouping-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+    return this;
+  },
+});
+
 var InternalServerError = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -6099,9 +7342,16 @@ var PromptInvalidQueryView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-invalidQuery-template").html());
   },
-  render: function () {
+  render: function (title,message) {
     var self = this;
     self.template = _.template($("#prompt-invalidQuery-template").html());
+    console.log(title, message);
+
+    var param = {};
+    param.title = title || "Invalid Query";
+    param.message = message || "The query you have entered is invalid. Please check the query parameters and try again.";
+    self.template = self.template(param);
+
 
     $(self.el).html(self.template);
     $(self.el).modal("show");
@@ -9124,6 +10374,8 @@ module.exports = {
   MapTabLocalDBSettings: MapTabLocalDBSettings,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   experimentTabPanel: experimentTabPanel,
+  simulationTabPanel: simulationTabPanel,
+  SimulationPanelView: SimulationPanelView,
   //GeneralPropertiesView: GeneralPropertiesView,
   // ActiveTabPushSuccessView: ActiveTabPushSuccessView,
   NeighborhoodQueryView: NeighborhoodQueryView,
@@ -9145,6 +10397,7 @@ module.exports = {
   LoadUserPreferencesView: LoadUserPreferencesView,
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
+  PromptSIFTopologyGroupingWarning: PromptSIFTopologyGroupingWarning,
   PromptInvalidFileView: PromptInvalidFileView,
   PromptInvalidTypeWarning: PromptInvalidTypeWarning,
   SifMapWarning: SifMapWarning,
@@ -9167,4 +10420,6 @@ module.exports = {
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
+  sbmlKineticLawView: sbmlKineticLawView,
+  SimulationPropertiesView: SimulationPropertiesView,
 };

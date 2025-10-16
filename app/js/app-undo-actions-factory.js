@@ -361,10 +361,12 @@ module.exports = function (cy) {
     var highlightColor = $('#highlight-color').val();
     var extraHighlightThickness = Number($('#highlight-thickness').val());
 
+    highlightColor = appUtilities.makeNeonHSL(highlightColor);
+
     viewUtilities.changeHighlightStyle(
       0,
-      { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
-      { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
+      { 'overlay-color': highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+extraHighlightThickness },
+      { 'overlay-color': highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+extraHighlightThickness/2.0}
     );
    }
 

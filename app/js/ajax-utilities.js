@@ -13,7 +13,22 @@ dotenv.config()
 	The only cases where res.send doesn't need to be used is in case of errors.
 	Then it is possible to throw the error and let it be handled by the server.js call.
 */
-const driver = neo4j.driver(process.env.NEO4j_DB_URI, neo4j.auth.basic(process.env.NEO4j_DB_NAME, process.env.NEO4J_DB_PASSWORD));
+let driver = null;
+
+const {
+	NEO4J_DB_URI,
+	NEO4J_DB_NAME,
+	NEO4J_DB_PASSWORD
+} = process.env;
+
+if (NEO4J_DB_URI && NEO4J_DB_NAME && NEO4J_DB_PASSWORD) {
+	driver = neo4j.driver(
+		NEO4J_DB_URI,
+		neo4j.auth.basic(NEO4J_DB_NAME, NEO4J_DB_PASSWORD)
+	);
+} else {
+	console.warn('Neo4j environment variables are not fully set. Database features will be disabled.');
+}
 
 exports.validateSBGNML = function (req, res) {
 	var sbgnml;

@@ -2,8 +2,15 @@
 
 node_modules/
 
-package-lock.json
+# package-lock.json
 
 app/bundle.js
 
+app/bundle.min.js
+
+env
+
 .env
+
+.DS_Store
+

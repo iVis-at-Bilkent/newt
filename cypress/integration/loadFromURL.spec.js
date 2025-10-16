@@ -2,8 +2,8 @@ import { URL } from '../constants';
 
 context('Load from URI/URL', () => {
 
-  it('TC1: URI=http://identifiers.org/reactome/R-HSA-6803211', () => {
-    cy.visit(URL + '?URI=http://identifiers.org/reactome/R-HSA-6803211');
+  it('TC1: URI=http://bioregistry.io/reactome:R-HSA-6803211', () => {
+    cy.visit(URL + '?URI=http://bioregistry.io/reactome:R-HSA-6803211');
     cy.wait(2000);
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 47).to.eq(true);

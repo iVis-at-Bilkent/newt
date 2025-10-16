@@ -109,6 +109,8 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentMapType = chiseInstance.getMapType();
           let eles = event.target || event.cyTarget;
           let connections = eles.connectedEdges();
           for (let i = 0; i < connections.length; i++) {
@@ -124,6 +126,14 @@ module.exports = function (chiseInstance) {
             ];
             // console.log("source:",source.id(), "target:", target.id(), "className:", className);
           }
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping
+          ) {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
+          }
+      
           delete databaseUtilities.nodesInDB[eles.id()];
 
           chiseInstance.deleteElesSimple(eles);
@@ -137,6 +147,15 @@ module.exports = function (chiseInstance) {
         content: 'Delete Selected',
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentMapType = chiseInstance.getMapType();
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping
+          ) {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
+          }
           $("#delete-selected-simple").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
@@ -311,7 +330,8 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"],'
+        +'[class="gene"],[class="protein"],[class="rna"],[class="antisense rna"],[class="truncated protein"],[class="ion channel"],[class="ion"],[class="receptor"],[class="simple molecule"],[class="unknown molecule"],[class="degradation"],[class="drug"],[class="phenotype sbml"],[class="complex sbml"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -331,7 +351,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
@@ -344,7 +364,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-get-database-neighbors',
         content: 'Get Neighbors from Database',
         selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             databaseUtilities.getNeighboringNodes(cyTarget.id());
@@ -399,6 +419,8 @@ module.exports = function (chiseInstance) {
 
     cy.clipboard({
       clipboardSize: 5, // Size of clipboard. 0 means unlimited. If size is exceeded, first added item in clipboard will be removed.
+      nodePrefix: "nwtN_", // Prefix to add to the IDs of pasted nodes 
+      edgePrefix: "nwtE_", // Prefix to add to the IDs of pasted edges 
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
         undoable: appUtilities.undoable // and if undoRedo extension exists
@@ -488,8 +510,8 @@ module.exports = function (chiseInstance) {
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
-          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          node: { 'overlay-color': '#0b9bcd', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#0b9bcd', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
         },
         {
           node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
@@ -623,7 +645,7 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "antisense rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 
@@ -647,6 +669,7 @@ module.exports = function (chiseInstance) {
         }
 
         var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
         // We need to remove interactively added entities because we should add the edge with the chise api
         addedEntities.remove();
@@ -685,6 +708,14 @@ module.exports = function (chiseInstance) {
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             }); */
+          }
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          else if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping 
+          ) 
+          {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
           }
           else{
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
@@ -756,6 +787,9 @@ module.exports = function (chiseInstance) {
     };
 
     cy.panzoom(panProps);
+    
+    // Override panzoom reset functionality to include annotation items
+    appUtilities.overridePanzoomReset(cy);
   }
 
   function bindCyEvents() {
@@ -1035,7 +1069,7 @@ module.exports = function (chiseInstance) {
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
-      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isSBMLNode(node)) && !convenientProcessSource) {
         convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
@@ -1061,6 +1095,7 @@ module.exports = function (chiseInstance) {
 
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+      var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
 
       if (relPos){ // drag and drop case
         var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
@@ -1088,10 +1123,10 @@ module.exports = function (chiseInstance) {
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
-                && chiseInstance.elementUtilities.isEPNClass(cyTarget)
-                && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)
-                && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) ||
-                  convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
+                && nodeType !== "phenotype"
+                && ((chiseInstance.elementUtilities.isEPNClass(cyTarget) && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)) || (chiseInstance.elementUtilities.isSBMLNode(cyTarget) && chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource)))
+                && !(cyTarget.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(cyTarget.parent()[0])) ||
+                  convenientProcessSource.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource.parent()[0]))))
         {
           chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeParams);
           //Update arrow scale of the newly added edge
@@ -1144,21 +1179,30 @@ module.exports = function (chiseInstance) {
             var currentMapType = chiseInstance.getMapType();
             if(currentMapType == "HybridAny"){
               isMapTypeValid = true;
-            }else if(currentMapType == "HybridSbgn"){
-                if(nodeParams.language == "PD" || nodeParams.language =="AF"){
-                  isMapTypeValid = true;
-                }
+            }else if(currentMapType == "HybridSbgn" &&
+              (nodeParams.language == "PD" || nodeParams.language =="AF")){
+              isMapTypeValid = true;
             }else if(currentMapType == nodeParams.language){
               isMapTypeValid = true;
+            }else if(cy.elements().length == 0){ // if canvas is empty, change the map type and add node
+                chiseInstance.elementUtilities.setMapType(nodeParams.language);
+                $(document).trigger("changeMapTypeFromMenu", [nodeParams.language]);
+                currentMapType = nodeParams.language;
+                isMapTypeValid = true;
             }
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && !isMapTypeValid){
 
               appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
             }
+            // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+            else if (currentMapType === "SIF" && 
+              currentGeneralProperties.enableSIFTopologyGrouping){
+                appUtilities.promptSIFTopologyGroupingWarning.render()
+            }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not' || nodeType === 'delay')
                 {
                     var newEle = cy.nodes()[cy.nodes().length - 1];
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
@@ -1227,7 +1271,10 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on('doubleTap', 'node', function (event) {
-
+      // Prevent double click on nodes to edit label if in annotation layer (layer 1+)
+      if (window.annotationLayers && window.annotationLayers.getCurrentLayer && window.annotationLayers.getCurrentLayer().isAnnotationLayer) {
+        return;
+      }
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 

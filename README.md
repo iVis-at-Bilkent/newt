@@ -53,8 +53,9 @@ Icons made by [Freepik](http://www.freepik.com),
 [Catalin Fertu](http://www.flaticon.com/authors/catalin-fertu),
 [Yannick](http://www.flaticon.com/authors/yannick),
 [Icon Works](http://www.flaticon.com/authors/icon-works),
-[Flaticon](http://www.flaticon.com) and licensed with 
-[Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+[Flaticon](http://www.flaticon.com) (licensed with 
+[Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)) and 
+[Font Awesome](https://github.com/FortAwesome/Font-Awesome) (licensed with [Font Awesome Free License](https://github.com/FortAwesome/Font-Awesome/blob/7.x/LICENSE.txt))
 
 Third-party libraries:
 [Cytoscape.js](https://github.com/cytoscape/cytoscape.js),
@@ -87,8 +88,8 @@ We refer the user to [GeneCards](https://www.genecards.org/) for detailed proper
 
 ## Team
 
-  * [Hasan Balci](https://github.com/hasanbalci), [Selbi Ereshova](https://github.com/SelbiEreshova), [Umut Utku Ersahince](https://github.com/umut-er), [Noor Muhammad](https://github.com/NoorMuhammad1) and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Ozgun Babur](https://github.com/ozgunbabur) of University of Massachusetts at Boston, and [Emek Demir](https://github.com/emekdemir) of the Demir Lab at [OHSU](http://www.ohsu.edu/)
+  * [Hasan Balci](https://github.com/hasanbalci), [Umut Utku Ersahince](https://github.com/umut-er), [Noor Muhammad](https://github.com/NoorMuhammad1), [M. Mahdi Khosravi](https://github.com/mmk-1), [Sinan Havus](https://github.com/sinanhavus), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis), [Ozgun Babur](https://github.com/ozgunbabur) of [University of Massachusetts at Boston](https://www.umb.edu/), and  [Adrien Rougny](adrienrougny) of [LCSB](https://www.uni.lu/lcsb-en/)
 
 #### Alumni
 
-  * [Metin Can Siper](https://github.com/metincansiper), [Muhammed Salih Altun](https://github.com/msalihaltun), [Nasim Saleh](https://github.com/nasimsaleh), [Merve Kilicarslan](https://github.com/mervekilicarslan5), [Rumeysa Ozaydin](https://github.com/rumeysaozaydin), [Ilkin Safarli](https://github.com/kinimesi), [Ahmet Candiroglu](https://github.com/ahmetcandiroglu), [Kaan Sancak](https://github.com/kaansancak), [Ludovic Roy](https://github.com/royludo), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), [Alper Karacelik](https://github.com/alperkaracelik), [Alexander Mazein](https://github.com/amazein)
+  * [Selbi Ereshova](https://github.com/SelbiEreshova), [Metin Can Siper](https://github.com/metincansiper), [Emek Demir](https://github.com/emekdemir), [Muhammed Salih Altun](https://github.com/msalihaltun), [Nasim Saleh](https://github.com/nasimsaleh), [Merve Kilicarslan](https://github.com/mervekilicarslan5), [Rumeysa Ozaydin](https://github.com/rumeysaozaydin), [Ilkin Safarli](https://github.com/kinimesi), [Ahmet Candiroglu](https://github.com/ahmetcandiroglu), [Kaan Sancak](https://github.com/kaansancak), [Ludovic Roy](https://github.com/royludo), [Leonard Dervishi](https://github.com/leonarddrv), [Istemi Bahceci](https://github.com/istemi-bahceci), [Alper Karacelik](https://github.com/alperkaracelik), [Alexander Mazein](https://github.com/amazein)
