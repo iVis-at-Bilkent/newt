@@ -1150,6 +1150,8 @@ module.exports = function() {
         mergeNodesErrorView.render("Selected nodes must have the same parent to merge.");
         return;
       }
+
+   
       mergeNodesView.render({
         nodes: nodes,
         edges: edges,

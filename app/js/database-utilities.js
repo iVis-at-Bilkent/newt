@@ -628,6 +628,27 @@ var databaseUtilities = {
     });
   },
 
+  mergeCompartmentsToDatabase: async function (payload) {
+    const integrationQuery = `
+      CALL custom.mergeCompartments($payload)
+      YIELD result
+      RETURN result
+    `;
+    const data = { query: integrationQuery, queryData: { payload } };
+
+    const response = await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data)
+    });
+
+    if (!response.records || response.records.length === 0) return null;
+    const map = response.records[0]._fields[0];
+    return { result: map };
+  },
+
+
     pushMergedNodeToDatabase: async function (mergedPayload) {
       console.log("Pushing merged node to database:", mergedPayload);
 
@@ -662,7 +683,7 @@ var databaseUtilities = {
 
         const map = response.records[0]._fields[0];
         console.log("Parsed merge result:", map);
-        return map; // contains mergedNodeId, deletedNodes, rewiredEdges
+        return { result: map }; // contains mergedNodeId, deletedNodes, rewiredEdges
       } catch (err) {
         console.error("Error running custom.mergeNodes:", err);
         return null;
@@ -1217,7 +1238,7 @@ var databaseUtilities = {
     });
   },
 
-  pushNode: function (new_node) {
+  pushNode: function (new_node,x=0,y=0) {
     console.log("new_node:",new_node);
     return new Promise((resolve) => {
       if (!(new_node.properties.newtId in databaseUtilities.nodesInDB)) {
@@ -1230,8 +1251,8 @@ var databaseUtilities = {
           label: "smth",
         };
         var node = chiseInstance.addNode(
-          0,
-          0,
+          x,
+          y,
           nodeParams,
           new_node.properties.newtId,
           new_node.properties.parent
@@ -1265,10 +1286,10 @@ var databaseUtilities = {
           }
         }
 
-        databaseUtilities.nodesInDB[new_node.properties.newtId] =
-          new_node.identity.low;
-        var el = cy.getElementById(new_node.properties.newtId);
-        var vu = cy.viewUtilities("get");
+        // databaseUtilities.nodesInDB[new_node.properties.newtId] =
+        //   new_node.identity.low;
+        // var el = cy.getElementById(new_node.properties.newtId);
+        // var vu = cy.viewUtilities("get");
         // vu.highlight(el, 3);
       }
       resolve();

@@ -11,6 +11,7 @@ var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
 const colorPickerUtils = require("./color-picker-utils");
 const databaseUtilities = require("./database-utilities");
+const { data } = require("jquery");
 //var annotationsHandler = require('./annotations-handler');
 
 // since biogene service from PC is not available any more, we now give link to gene properties in My Cancer Genome organization
@@ -4419,10 +4420,11 @@ var MergeNodesView = Backbone.View.extend({
     PCdialog = "MergeNodes";
 
     // Normalize incoming nodes (expect array length 2)
+    this.data = data;
     this.nodes = data.nodes ? data.nodes.map((node) => node.data()) : [];
     this.edges = data.edges ? data.edges.map((edge) => edge.data()) : [];
-    console.log(this.nodes,this.edges);
-    // console.log('MergeNodesView input:',data, this.nodes, this.edges);
+    console.log(this.nodes, this.edges);
+
     if (this.nodes.length !== 2) {
       console.warn('MergeNodesView expected two nodes as input.');
       this.nodes = [
@@ -4431,15 +4433,14 @@ var MergeNodesView = Backbone.View.extend({
       ];
     }
 
-    // Compute state/units arrays from statesandinfos (project-specific helpers)
+    // Precompute (project helpers)
     this.nodes.forEach((node) => {
-      console.log(node);
       node.stateVariables     = databaseUtilities.calculateState(node.statesandinfos) || [];
       node.unitsOfInformation = databaseUtilities.calculateInfo(node.statesandinfos) || [];
-      node.units              = node.unitsOfInformation; // keep backward-compat if `units` is used
+      node.units              = node.unitsOfInformation;
     });
 
-    // Build aux id maps for provenance (state variables / units)
+    // Build aux id maps
     this.auxMaps = [
       this.buildAuxMaps(this.nodes[0]),
       this.buildAuxMaps(this.nodes[1])
@@ -4452,7 +4453,7 @@ var MergeNodesView = Backbone.View.extend({
     this.$("#label-input-" + this.modalNs + "-0").val(this.nodes[0].label || '');
     this.$("#label-input-" + this.modalNs + "-1").val(this.nodes[1].label || '');
 
-    // Prefill multimer radio values (still disabled until a multimer source is chosen)
+    // Prefill multimer radio values (disabled until a multimer source is chosen)
     this.$("input[name='multimer-value-" + this.modalNs + "-0'][value='" + String(!!this.nodes[0].multimer) + "']").prop('checked', true);
     this.$("input[name='multimer-value-" + this.modalNs + "-1'][value='" + String(!!this.nodes[1].multimer) + "']").prop('checked', true);
 
@@ -4495,11 +4496,45 @@ var MergeNodesView = Backbone.View.extend({
       });
     });
 
+    // ---- COMPARTMENT UI: hide multimer + state vars ----
+    this.isCompartment = (this.nodes[0].class === 'compartment'); // menu already enforces same class
+    this.applyCompartmentUIRules();
+
     console.log('Merging nodes:', this.nodes);
     return this;
   },
 
   /* ---------------- Helpers ---------------- */
+
+
+  applyCompartmentUIRules: function () {
+    if (!this.isCompartment) return;
+    const ns = this.modalNs;
+
+    // Helper: hide the nearest reasonable wrapper around a selector
+    const hideGroupOf = (selector) => {
+      this.$(selector).each((_, el) => {
+        const $el = $(el);
+        const $grp = $el.closest('.form-group, .panel, .card, fieldset, .row, .col, .list-group, .form-section').first();
+        if ($grp.length) $grp.hide(); else $el.hide();
+      });
+    };
+
+    // 1) Hide MULTIMER section (chooser + radios)
+    hideGroupOf("[name='multimer-node-" + ns + "']");
+    hideGroupOf("[name^='multimer-value-" + ns + "-']");
+
+    // 2) Hide STATE VARIABLES sections (lists)
+    ["#state-vars-" + ns + "-0", "#state-vars-" + ns + "-1"].forEach((sel) => {
+      const $box = this.$(sel);
+      if ($box.length) $box.empty();
+      hideGroupOf(sel);
+    });
+
+    // Safety: disable any lingering SV inputs
+    this.$('.state-var-check, .sv-left, .sv-right').prop('disabled', true);
+  },
+
 
   // Build maps from raw values -> aux ids for provenance
   buildAuxMaps: function(node) {
@@ -4616,12 +4651,30 @@ var MergeNodesView = Backbone.View.extend({
     $('.unit-input', $item).prop('disabled', !enabled);
   },
 
-  /* ---------------- Confirm Merge ---------------- */
+  onMultimerNodeChoice: function (e) {
+    if (this.isCompartment) return;
+    const chosen = String($(e.currentTarget).val()); // "0" | "1"
+    this.$("input[name='multimer-value-" + this.modalNs + "-0']").prop('disabled', true);
+    this.$("input[name='multimer-value-" + this.modalNs + "-1']").prop('disabled', true);
+    this.$("input[name='multimer-value-" + this.modalNs + "-" + chosen + "']").prop('disabled', false);
+  },
 
+  onStateVarToggle: function (e) {
+    if (this.isCompartment) return;
+    const $item = $(e.currentTarget).closest('.list-group-item');
+    const enabled = $(e.currentTarget).is(':checked');
+    $('.sv-left, .sv-right', $item).prop('disabled', !enabled);
+  },
+
+
+
+  /* ---------------- Confirm Merge ---------------- */
   onConfirmMerge: async function () {
     // SOURCE NODE IDS (for Neo4j MERGE)
     const sourceNodeIds = [ this.nodes[0].id, this.nodes[1].id ];
     const nodeClass = this.nodes[0].class;
+    this.isCompartment = (nodeClass === 'compartment');
+
     // LABEL
     const labelChoice = this.$("input[name='label-choice-" + this.modalNs + "']:checked").val();
     const labelFrom   = (labelChoice === '0' || labelChoice === '1') ? Number(labelChoice) : 0;
@@ -4629,32 +4682,32 @@ var MergeNodesView = Backbone.View.extend({
       ? this.$('#label-input-' + this.modalNs + '-' + labelChoice).val()
       : (this.nodes[0].label || '');
 
-    // MULTIMER
-    const multimerNode = this.$("input[name='multimer-node-" + this.modalNs + "']:checked").val();
-    const multimerFrom = (multimerNode === '0' || multimerNode === '1') ? Number(multimerNode) : 0;
-    const mv = this.$("input[name='multimer-value-" + this.modalNs + "-" + multimerFrom + "']:checked").val();
-    const multimerVal = (mv === 'true'); // default false if none checked
+    // MULTIMER (ignored for compartments)
+    let multimerVal = false;
+    if (!this.isCompartment) {
+      const multimerNode = this.$("input[name='multimer-node-" + this.modalNs + "']:checked").val();
+      const multimerFrom = (multimerNode === '0' || multimerNode === '1') ? Number(multimerNode) : 0;
+      const mv = this.$("input[name='multimer-value-" + this.modalNs + "-" + multimerFrom + "']:checked").val();
+      multimerVal = (mv === 'true'); // default false if none checked
+    }
 
-    // STATE VARS with ids + provenance
+    // STATE VARS (disabled for compartments)
     const chosenStateVars = [];
-    [0,1].forEach(nodeIdx => {
-      const $items = this.$('#state-vars-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
-      $items.each((_, el) => {
-        const $el = $(el);
-        if (!$el.find('.state-var-check').is(':checked')) return;
-        const left  = ($el.find('.sv-left').val()  || '').trim();
-        const right = ($el.find('.sv-right').val() || '').trim();
-        const auxId = $el.attr('data-aux-id') || null;
-        chosenStateVars.push({
-          id: auxId,      // original aux id (may be null if not found)
-          from: nodeIdx,  // 0 or 1
-          value: left + '@' + right,
-          left, right
+    if (!this.isCompartment) {
+      [0,1].forEach(nodeIdx => {
+        const $items = this.$('#state-vars-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
+        $items.each((_, el) => {
+          const $el = $(el);
+          if (!$el.find('.state-var-check').is(':checked')) return;
+          const left  = ($el.find('.sv-left').val()  || '').trim();
+          const right = ($el.find('.sv-right').val() || '').trim();
+          const auxId = $el.attr('data-aux-id') || null;
+          chosenStateVars.push({ id: auxId, from: nodeIdx, value: left + '@' + right, left, right });
         });
       });
-    });
+    }
 
-    // UNITS with ids + provenance
+    // UNITS
     const chosenUnits = [];
     [0,1].forEach(nodeIdx => {
       const $items = this.$('#units-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
@@ -4663,55 +4716,102 @@ var MergeNodesView = Backbone.View.extend({
         if (!$el.find('.unit-check').is(':checked')) return;
         const text = ($el.find('.unit-input').val() || '').trim();
         const auxId = $el.attr('data-aux-id') || null;
-        if (text) {
-          chosenUnits.push({
-            id: auxId,     // original aux id (may be null)
-            from: nodeIdx, // 0 or 1
-            value: text
-          });
-        }
+        if (text) chosenUnits.push({ id: auxId, from: nodeIdx, value: text });
       });
     });
 
-    // --- include edges as chosen by click handler policy ---
-    // We do NOT rewrite endpoints here (no merged id yet).
-    // We include source/target and relation flags so the server can rewire to the new merged node.
-    const keptEdges = (this.edges || []).map(e => {
-      console.log('Edge for merge:', e);
-      return {
-        id: e.id,
-        source: e.source,
-        target: e.target,
-        classes: e.class || '',
-        data: e.data || {}
-      }
-    });
+    // Edges: compartments ignore; EPNs include selected/all
+    const keptEdges = this.isCompartment ? [] : (this.edges || []).map(e => ({
+      id: e.id, source: e.source, target: e.target, classes: e.class || '', data: e.data || {}
+    }));
 
-    const merged = {
-      source: { nodeIds: sourceNodeIds }, // for Neo4j MERGE logic
+    const mergedPayload = {
+      source: { nodeIds: sourceNodeIds },
       class: nodeClass || 'unspecified',
       selection: {
-        label:    { value: labelVal,    from: labelFrom },
-        multimer: { value: multimerVal, from: multimerFrom }
+        label:    { value: labelVal, from: labelFrom },
+        multimer: { value: multimerVal, from: 0 } // ignored by backend for compartments
       },
-      stateVariables:     chosenStateVars,  // [{id,from,value,left,right}]
-      unitsOfInformation: chosenUnits,       // [{id,from,value}]
+      stateVariables:     this.isCompartment ? [] : chosenStateVars,
+      unitsOfInformation: chosenUnits,
       edges: keptEdges
     };
 
-    console.log('Merged (provenance):', merged);
-    this.trigger('merge:confirm', merged, { sourceNodes: this.nodes });
-    const mergeResult = await databaseUtilities.pushMergedNodeToDatabase(merged);
+    // Choose correct backend
+    const runMerge = this.isCompartment
+      ? databaseUtilities.mergeCompartmentsToDatabase   // CALL custom.mergeCompartments
+      : databaseUtilities.pushMergedNodeToDatabase;     // CALL custom.mergeNodes
 
-    if (mergeResult) {
-      console.log("✅ Merge complete:", mergeResult);
-      console.log("Merge completed successfully!");
-    } else {
-      console.error("Merge failed. See console for details.");
+    const mergeResult = await runMerge(mergedPayload);
+    this.$el.modal('hide');
+
+    if (!mergeResult || !mergeResult.result) {
+      console.error("Merge failed or returned no result.", mergeResult);
+      return;
     }
 
-    this.$el.modal('hide');
+    const { mergedNode } = mergeResult.result;
+    const mergedId = mergedNode && mergedNode.properties && mergedNode.properties.newtId;
+
+    const nodeA = this.data.nodes[0];
+    const nodeB = this.data.nodes[1];
+    const posA = nodeA.position();
+    const posB = nodeB.position();
+    const midX = (posA.x + posB.x) / 2;
+    const midY = (posA.y + posB.y) / 2;
+
+    // Little animation
+    const animatePromise = (ele, aniParams, opts) =>
+      new Promise((resolve) => ele.animate(aniParams, Object.assign({}, opts || {}, { complete: resolve })));
+
+    nodeA.style({ "border-color": "#ff6600", "border-width": 4 });
+    nodeB.style({ "border-color": "#ff6600", "border-width": 4 });
+
+    await Promise.all([
+      animatePromise(nodeA, { position: { x: midX - 15, y: midY } }, { duration: 700, easing: "ease-in-out" }),
+      animatePromise(nodeB, { position: { x: midX + 15, y: midY } }, { duration: 700, easing: "ease-in-out" })
+    ]);
+
+    await Promise.all([
+      animatePromise(nodeA, { style: { opacity: 0.2 } }, { duration: 400 }),
+      animatePromise(nodeB, { style: { opacity: 0.2 } }, { duration: 400 })
+    ]);
+
+    // Add the merged node to the canvas BEFORE removing old parents
+    await databaseUtilities.pushNode(mergedNode, midX, midY);
+
+    // If this is a compartment merge, re-parent children FIRST, then remove old compartments
+    if (this.isCompartment) {
+      const chiseInstance = appUtilities.getActiveChiseInstance();
+      const cy = chiseInstance.getCy();
+
+      const adopted = (mergeResult.result.adoptedChildren || []);
+      if (adopted.length) {
+        adopted.forEach(childId => {
+          const child = cy.getElementById(childId);
+          if (child && child.length) {
+            // Move into the new compartment (prevents deletion when old parent is removed)
+            child.move({ parent: mergedId });
+            // Keep data in sync (optional but tidy)
+            child.data('parent', mergedId);
+          }
+        });
+      }
+    }
+
+    // Now it's safe to remove the old nodes
+    nodeA.remove();
+    nodeB.remove();
+
+    // For EPN merges we may have rewiredEdges to draw
+    if (!this.isCompartment && mergeResult.result.rewiredEdges && mergeResult.result.rewiredEdges.length > 0) {
+      await databaseUtilities.pushEdges(mergeResult.result.rewiredEdges);
+    }
+
+    console.log("✅ Merge complete:", mergeResult);
   }
+
+
 });
 
 
