@@ -690,7 +690,26 @@ var databaseUtilities = {
       }
     },
 
-    
+  mergeComplexesToDatabase: async function (payload) {
+    const integrationQuery = `
+      CALL custom.mergeComplexes($payload)
+      YIELD result
+      RETURN result
+    `;
+    const data = { query: integrationQuery, queryData: { payload } };
+
+    const response = await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data)
+    });
+
+    if (!response.records || response.records.length === 0) return null;
+    const map = response.records[0]._fields[0];
+    return { result: map };
+  },
+
 
 
   pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage) {

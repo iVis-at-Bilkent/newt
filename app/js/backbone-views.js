@@ -4402,36 +4402,36 @@ var MergeNodesView = Backbone.View.extend({
     'change .multimer-node-radio': 'onMultimerNodeChoice',
     'change .state-var-check': 'onStateVarToggle',
     'change .unit-check': 'onUnitToggle',
+    'change .child-check': 'onChildToggle',
     'click  .confirm-merge-btn': 'onConfirmMerge'
   },
 
   initialize: function () {
-    // Keep template as a function; render with { modalId } in render()
     this.templateFn = _.template($("#merge-nodes-template").html());
-    // Unique namespace per view instance
     this.modalNs = this.cid;
   },
 
   render: function (data) {
-    // Render template with namespaced ids/names
     const html = this.templateFn({ modalId: this.modalNs });
     this.$el.html(html);
     this.$el.modal("show");
     PCdialog = "MergeNodes";
 
-    // Normalize incoming nodes (expect array length 2)
-    this.data = data;
-    this.nodes = data.nodes ? data.nodes.map((node) => node.data()) : [];
-    this.edges = data.edges ? data.edges.map((edge) => edge.data()) : [];
-    console.log(this.nodes, this.edges);
+    // Normalize incoming
+    this.data  = data;
+    this.nodes = data.nodes ? data.nodes.map((n) => n.data()) : [];
+    this.edges = data.edges ? data.edges.map((e) => e.data()) : [];
 
     if (this.nodes.length !== 2) {
-      console.warn('MergeNodesView expected two nodes as input.');
       this.nodes = [
-        { id: null, label: '', multimer: false, stateVariables: [], unitsOfInformation: [] },
-        { id: null, label: '', multimer: false, stateVariables: [], unitsOfInformation: [] }
+        { id: null, label: '', class: '', multimer: false, stateVariables: [], unitsOfInformation: [] },
+        { id: null, label: '', class: '', multimer: false, stateVariables: [], unitsOfInformation: [] }
       ];
     }
+
+    // Type flags
+    this.isCompartment = (this.nodes[0].class === 'compartment');
+    this.isComplex     = (this.nodes[0].class === 'complex');
 
     // Precompute (project helpers)
     this.nodes.forEach((node) => {
@@ -4441,19 +4441,14 @@ var MergeNodesView = Backbone.View.extend({
     });
 
     // Build aux id maps
-    this.auxMaps = [
-      this.buildAuxMaps(this.nodes[0]),
-      this.buildAuxMaps(this.nodes[1])
-    ];
+    this.auxMaps = [ this.buildAuxMaps(this.nodes[0]), this.buildAuxMaps(this.nodes[1]) ];
 
-    // Cache container (now that DOM exists)
+    // Cache container
     this.$container = this.$("#merge-modal-" + this.modalNs);
 
-    // Prefill labels
+    // Prefill labels + multimer value radios (disabled until source chosen)
     this.$("#label-input-" + this.modalNs + "-0").val(this.nodes[0].label || '');
     this.$("#label-input-" + this.modalNs + "-1").val(this.nodes[1].label || '');
-
-    // Prefill multimer radio values (disabled until a multimer source is chosen)
     this.$("input[name='multimer-value-" + this.modalNs + "-0'][value='" + String(!!this.nodes[0].multimer) + "']").prop('checked', true);
     this.$("input[name='multimer-value-" + this.modalNs + "-1'][value='" + String(!!this.nodes[1].multimer) + "']").prop('checked', true);
 
@@ -4463,55 +4458,52 @@ var MergeNodesView = Backbone.View.extend({
     this.renderUnits(0, this.nodes[0].units);
     this.renderUnits(1, this.nodes[1].units);
 
-    // Tag confirm button so delegated event catches it
-    this.$("#confirm-merge-" + this.modalNs).addClass("confirm-merge-btn");
-
-    // ===== DEFAULT SELECTIONS =====
-    // Label: prefer non-empty label, fallback to Node 0
+    // Default selections
     var defaultLabelIdx = this.nodes[0].label ? 0 : (this.nodes[1].label ? 1 : 0);
     this.$("input[name='label-choice-" + this.modalNs + "'][value='" + defaultLabelIdx + "']").prop('checked', true);
     this.onLabelChoice({ currentTarget: this.$("input[name='label-choice-" + this.modalNs + "'][value='" + defaultLabelIdx + "']")[0] });
 
-    // Multimer: default to Node 0
     this.$("input[name='multimer-node-" + this.modalNs + "'][value='0']").prop('checked', true);
     this.onMultimerNodeChoice({ currentTarget: this.$("input[name='multimer-node-" + this.modalNs + "'][value='0']")[0] });
 
-    // State variables: default check ALL and enable inputs
+    // Enable all item inputs by default
     [0,1].forEach(idx => {
-      const $items = this.$('#state-vars-' + this.modalNs + '-' + idx + ' .list-group-item');
-      $items.each((_, el) => {
-        const $el = $(el);
-        $el.find('.state-var-check').prop('checked', true);
+      this.$('#state-vars-' + this.modalNs + '-' + idx + ' .list-group-item').each((_, el) => {
+        const $el = $(el); $el.find('.state-var-check').prop('checked', true);
         $el.find('.sv-left, .sv-right').prop('disabled', false);
       });
-    });
-
-    // Units: default check ALL and enable inputs
-    [0,1].forEach(idx => {
-      const $items = this.$('#units-' + this.modalNs + '-' + idx + ' .list-group-item');
-      $items.each((_, el) => {
-        const $el = $(el);
-        $el.find('.unit-check').prop('checked', true);
+      this.$('#units-' + this.modalNs + '-' + idx + ' .list-group-item').each((_, el) => {
+        const $el = $(el); $el.find('.unit-check').prop('checked', true);
         $el.find('.unit-input').prop('disabled', false);
       });
     });
 
-    // ---- COMPARTMENT UI: hide multimer + state vars ----
-    this.isCompartment = (this.nodes[0].class === 'compartment'); // menu already enforces same class
+    // Compartment UI: hide multimer + state vars
     this.applyCompartmentUIRules();
 
-    console.log('Merging nodes:', this.nodes);
+    // Complex UI: show side-by-side child pickers
+    if (this.isComplex) {
+      this.ensureChildrenSection(); // creates a 2-column “Label 1 | Label 2” block
+      this.childrenLists = [
+        this.getChildrenForNode(this.nodes[0].id),
+        this.getChildrenForNode(this.nodes[1].id)
+      ];
+      this.renderChildren(0, this.childrenLists[0]);
+      this.renderChildren(1, this.childrenLists[1]);
+    }
+
+    // Tag confirm button so delegated event catches it
+    this.$("#confirm-merge-" + this.modalNs).addClass("confirm-merge-btn");
+
     return this;
   },
 
   /* ---------------- Helpers ---------------- */
 
-
   applyCompartmentUIRules: function () {
     if (!this.isCompartment) return;
     const ns = this.modalNs;
 
-    // Helper: hide the nearest reasonable wrapper around a selector
     const hideGroupOf = (selector) => {
       this.$(selector).each((_, el) => {
         const $el = $(el);
@@ -4520,21 +4512,47 @@ var MergeNodesView = Backbone.View.extend({
       });
     };
 
-    // 1) Hide MULTIMER section (chooser + radios)
+    // Hide MULTIMER
     hideGroupOf("[name='multimer-node-" + ns + "']");
     hideGroupOf("[name^='multimer-value-" + ns + "-']");
 
-    // 2) Hide STATE VARIABLES sections (lists)
+    // Hide STATE VARS
     ["#state-vars-" + ns + "-0", "#state-vars-" + ns + "-1"].forEach((sel) => {
       const $box = this.$(sel);
       if ($box.length) $box.empty();
       hideGroupOf(sel);
     });
 
-    // Safety: disable any lingering SV inputs
     this.$('.state-var-check, .sv-left, .sv-right').prop('disabled', true);
   },
 
+  // Add a "Children" two-column section (Label 1 | Label 2) under units
+  ensureChildrenSection: function () {
+    const ns = this.modalNs;
+    const id = `children-section-${ns}`;
+    if (this.$('#' + id).length) return;
+
+    const html = `
+      <div id="${id}" class="children-section" style="margin-top:14px;">
+        <div class="row" style="border-top:1px solid #eee; padding-top:10px;">
+          <div class="col-xs-12">
+            <strong>Children</strong>
+          </div>
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <div class="col-xs-6">
+            <div class="small text-muted" style="margin-bottom:4px;">Label 1</div>
+            <div id="children-${ns}-0" class="list-group"></div>
+          </div>
+          <div class="col-xs-6" style="border-left:1px solid #e5e5e5;">
+            <div class="small text-muted" style="margin-bottom:4px;">Label 2</div>
+            <div id="children-${ns}-1" class="list-group"></div>
+          </div>
+        </div>
+      </div>`;
+    // Insert after the units block
+    this.$container.append(html);
+  },
 
   // Build maps from raw values -> aux ids for provenance
   buildAuxMaps: function(node) {
@@ -4553,68 +4571,82 @@ var MergeNodesView = Backbone.View.extend({
     return maps;
   },
 
+  // Children of a complex from Cy graph
+  getChildrenForNode: function (nodeId) {
+    try {
+      const cy = appUtilities.getActiveChiseInstance().getCy();
+      const parent = cy.getElementById(nodeId);
+      if (!parent || !parent.length) return [];
+      return parent.children('node').map(n => ({
+        id: n.id(),
+        label: n.data('label') || n.data('entityName') || n.id(),
+        class: n.data('class') || ''
+      }));
+    } catch (e) {
+      console.warn('getChildrenForNode failed:', e);
+      return [];
+    }
+  },
+
   renderStateVars: function (nodeIdx, arr) {
     const container = this.$("#state-vars-" + this.modalNs + "-" + nodeIdx);
     container.empty();
-
     arr.forEach((raw, i) => {
       const parts = this.splitStateVar(raw);
       const base  = "sv-" + this.modalNs + "-" + nodeIdx + "-" + i;
-
-      // original aux id for provenance
-      const hit = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].stateByKey.get(raw);
+      const hit   = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].stateByKey.get(raw);
       const auxId = hit ? hit.id : null;
-
       const html =
         '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
           '<div class="checkbox">' +
-            '<label><input type="checkbox" class="state-var-check" id="'+base+'"> ' +
-              _.escape(raw) +
-            '</label>' +
+            '<label><input type="checkbox" class="state-var-check" id="'+base+'"> ' + _.escape(raw) + '</label>' +
           '</div>' +
           '<div class="row" style="margin-top:6px;">' +
-            '<div class="col-xs-6">' +
-              '<input type="text" class="form-control sv-left" placeholder="xyz" value="'+_.escape(parts.left)+'" disabled>' +
-            '</div>' +
-            '<div class="col-xs-6">' +
-              '<input type="text" class="form-control sv-right" placeholder="abc" value="'+_.escape(parts.right)+'" disabled>' +
-            '</div>' +
+            '<div class="col-xs-6"><input type="text" class="form-control sv-left"  value="'+_.escape(parts.left)+'"  disabled></div>' +
+            '<div class="col-xs-6"><input type="text" class="form-control sv-right" value="'+_.escape(parts.right)+'" disabled></div>' +
           '</div>' +
         '</div>';
       container.append(html);
     });
-
-    if (arr.length === 0) {
-      container.append('<div class="list-group-item text-muted">No state variables</div>');
-    }
+    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No state variables</div>');
   },
 
   renderUnits: function (nodeIdx, arr) {
     const container = this.$("#units-" + this.modalNs + "-" + nodeIdx);
     container.empty();
-
     arr.forEach((raw, i) => {
       const idAttr = "unit-" + this.modalNs + "-" + nodeIdx + "-" + i;
-
-      // original aux id for provenance
       const hit = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].unitByText.get(raw);
       const auxId = hit ? hit.id : null;
-
       const html =
         '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
           '<div class="checkbox">' +
-            '<label><input type="checkbox" class="unit-check" id="'+idAttr+'"> ' +
-              _.escape(raw) +
-            '</label>' +
+            '<label><input type="checkbox" class="unit-check" id="'+idAttr+'"> ' + _.escape(raw) + '</label>' +
           '</div>' +
           '<input type="text" class="form-control unit-input" style="margin-top:6px;" value="'+_.escape(raw)+'" disabled>' +
         '</div>';
       container.append(html);
     });
+    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No units of information</div>');
+  },
 
-    if (arr.length === 0) {
-      container.append('<div class="list-group-item text-muted">No units of information</div>');
-    }
+  // Children UI
+  renderChildren: function (nodeIdx, arr) {
+    const container = this.$("#children-" + this.modalNs + "-" + nodeIdx);
+    container.empty();
+    arr.forEach((child, i) => {
+      const idAttr = "child-" + this.modalNs + "-" + nodeIdx + "-" + i;
+      const html =
+        '<div class="list-group-item" data-from="'+nodeIdx+'" data-child-id="'+_.escape(child.id)+'" data-index="'+i+'">' +
+          '<div class="checkbox">' +
+            '<label><input type="checkbox" class="child-check" id="'+idAttr+'" checked> ' +
+              _.escape(child.label) + ' <span class="text-muted small">(' + _.escape(child.class || 'node') + ')</span>' +
+            '</label>' +
+          '</div>' +
+        '</div>';
+      container.append(html);
+    });
+    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No children</div>');
   },
 
   splitStateVar: function (s) {
@@ -4633,6 +4665,7 @@ var MergeNodesView = Backbone.View.extend({
   },
 
   onMultimerNodeChoice: function (e) {
+    if (this.isCompartment) return;
     const chosen = String($(e.currentTarget).val()); // "0" | "1"
     this.$("input[name='multimer-value-" + this.modalNs + "-0']").prop('disabled', true);
     this.$("input[name='multimer-value-" + this.modalNs + "-1']").prop('disabled', true);
@@ -4640,6 +4673,7 @@ var MergeNodesView = Backbone.View.extend({
   },
 
   onStateVarToggle: function (e) {
+    if (this.isCompartment) return;
     const $item = $(e.currentTarget).closest('.list-group-item');
     const enabled = $(e.currentTarget).is(':checked');
     $('.sv-left, .sv-right', $item).prop('disabled', !enabled);
@@ -4651,29 +4685,17 @@ var MergeNodesView = Backbone.View.extend({
     $('.unit-input', $item).prop('disabled', !enabled);
   },
 
-  onMultimerNodeChoice: function (e) {
-    if (this.isCompartment) return;
-    const chosen = String($(e.currentTarget).val()); // "0" | "1"
-    this.$("input[name='multimer-value-" + this.modalNs + "-0']").prop('disabled', true);
-    this.$("input[name='multimer-value-" + this.modalNs + "-1']").prop('disabled', true);
-    this.$("input[name='multimer-value-" + this.modalNs + "-" + chosen + "']").prop('disabled', false);
+  onChildToggle: function (/* e */) {
+    // Nothing special; read state in onConfirmMerge
   },
-
-  onStateVarToggle: function (e) {
-    if (this.isCompartment) return;
-    const $item = $(e.currentTarget).closest('.list-group-item');
-    const enabled = $(e.currentTarget).is(':checked');
-    $('.sv-left, .sv-right', $item).prop('disabled', !enabled);
-  },
-
-
 
   /* ---------------- Confirm Merge ---------------- */
+
   onConfirmMerge: async function () {
-    // SOURCE NODE IDS (for Neo4j MERGE)
     const sourceNodeIds = [ this.nodes[0].id, this.nodes[1].id ];
-    const nodeClass = this.nodes[0].class;
-    this.isCompartment = (nodeClass === 'compartment');
+    const nodeClass     = this.nodes[0].class;
+    this.isCompartment  = (nodeClass === 'compartment');
+    this.isComplex      = (nodeClass === 'complex');
 
     // LABEL
     const labelChoice = this.$("input[name='label-choice-" + this.modalNs + "']:checked").val();
@@ -4682,21 +4704,20 @@ var MergeNodesView = Backbone.View.extend({
       ? this.$('#label-input-' + this.modalNs + '-' + labelChoice).val()
       : (this.nodes[0].label || '');
 
-    // MULTIMER (ignored for compartments)
+    // MULTIMER (ignored by compartments)
     let multimerVal = false;
     if (!this.isCompartment) {
       const multimerNode = this.$("input[name='multimer-node-" + this.modalNs + "']:checked").val();
       const multimerFrom = (multimerNode === '0' || multimerNode === '1') ? Number(multimerNode) : 0;
       const mv = this.$("input[name='multimer-value-" + this.modalNs + "-" + multimerFrom + "']:checked").val();
-      multimerVal = (mv === 'true'); // default false if none checked
+      multimerVal = (mv === 'true');
     }
 
-    // STATE VARS (disabled for compartments)
+    // STATE VARS (not for compartments)
     const chosenStateVars = [];
     if (!this.isCompartment) {
       [0,1].forEach(nodeIdx => {
-        const $items = this.$('#state-vars-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
-        $items.each((_, el) => {
+        this.$('#state-vars-' + this.modalNs + '-' + nodeIdx + ' .list-group-item').each((_, el) => {
           const $el = $(el);
           if (!$el.find('.state-var-check').is(':checked')) return;
           const left  = ($el.find('.sv-left').val()  || '').trim();
@@ -4710,8 +4731,7 @@ var MergeNodesView = Backbone.View.extend({
     // UNITS
     const chosenUnits = [];
     [0,1].forEach(nodeIdx => {
-      const $items = this.$('#units-' + this.modalNs + '-' + nodeIdx + ' .list-group-item');
-      $items.each((_, el) => {
+      this.$('#units-' + this.modalNs + '-' + nodeIdx + ' .list-group-item').each((_, el) => {
         const $el = $(el);
         if (!$el.find('.unit-check').is(':checked')) return;
         const text = ($el.find('.unit-input').val() || '').trim();
@@ -4720,8 +4740,23 @@ var MergeNodesView = Backbone.View.extend({
       });
     });
 
-    // Edges: compartments ignore; EPNs include selected/all
-    const keptEdges = this.isCompartment ? [] : (this.edges || []).map(e => ({
+    // Complex-only: which children to keep
+    let keepChildren = [];
+    if (this.isComplex) {
+      [0,1].forEach(nodeIdx => {
+        this.$('#children-' + this.modalNs + '-' + nodeIdx + ' .list-group-item').each((_, el) => {
+          const $el = $(el);
+          if (!$el.find('.child-check').is(':checked')) return;
+          const childId = $el.attr('data-child-id');
+          if (childId) keepChildren.push(childId);
+        });
+      });
+      // de-dupe
+      keepChildren = Array.from(new Set(keepChildren));
+    }
+
+    // Edges: not used for compartments; used for EPN
+    const keptEdges = (this.isCompartment || this.isComplex) ? [] : (this.edges || []).map(e => ({
       id: e.id, source: e.source, target: e.target, classes: e.class || '', data: e.data || {}
     }));
 
@@ -4730,17 +4765,21 @@ var MergeNodesView = Backbone.View.extend({
       class: nodeClass || 'unspecified',
       selection: {
         label:    { value: labelVal, from: labelFrom },
-        multimer: { value: multimerVal, from: 0 } // ignored by backend for compartments
+        multimer: { value: multimerVal, from: 0 }
       },
       stateVariables:     this.isCompartment ? [] : chosenStateVars,
       unitsOfInformation: chosenUnits,
-      edges: keptEdges
+      edges: keptEdges,
+      // NEW for complexes:
+      keepChildren: this.isComplex ? keepChildren : []
     };
 
-    // Choose correct backend
+    // Choose backend
     const runMerge = this.isCompartment
-      ? databaseUtilities.mergeCompartmentsToDatabase   // CALL custom.mergeCompartments
-      : databaseUtilities.pushMergedNodeToDatabase;     // CALL custom.mergeNodes
+      ? databaseUtilities.mergeCompartmentsToDatabase       // CALL custom.mergeCompartments
+      : (this.isComplex
+          ? databaseUtilities.mergeComplexesToDatabase      // CALL custom.mergeComplexes (you’ll add below)
+          : databaseUtilities.pushMergedNodeToDatabase);    // CALL custom.mergeNodes
 
     const mergeResult = await runMerge(mergedPayload);
     this.$el.modal('hide');
@@ -4760,7 +4799,6 @@ var MergeNodesView = Backbone.View.extend({
     const midX = (posA.x + posB.x) / 2;
     const midY = (posA.y + posB.y) / 2;
 
-    // Little animation
     const animatePromise = (ele, aniParams, opts) =>
       new Promise((resolve) => ele.animate(aniParams, Object.assign({}, opts || {}, { complete: resolve })));
 
@@ -4777,42 +4815,41 @@ var MergeNodesView = Backbone.View.extend({
       animatePromise(nodeB, { style: { opacity: 0.2 } }, { duration: 400 })
     ]);
 
-    // Add the merged node to the canvas BEFORE removing old parents
+    // Add merged node first
     await databaseUtilities.pushNode(mergedNode, midX, midY);
 
-    // If this is a compartment merge, re-parent children FIRST, then remove old compartments
-    if (this.isCompartment) {
+    // Re-parent (compartment or complex)
+    if (this.isCompartment || this.isComplex) {
       const chiseInstance = appUtilities.getActiveChiseInstance();
       const cy = chiseInstance.getCy();
 
-      const adopted = (mergeResult.result.adoptedChildren || []);
-      if (adopted.length) {
-        adopted.forEach(childId => {
-          const child = cy.getElementById(childId);
-          if (child && child.length) {
-            // Move into the new compartment (prevents deletion when old parent is removed)
-            child.move({ parent: mergedId });
-            // Keep data in sync (optional but tidy)
-            child.data('parent', mergedId);
-          }
-        });
-      }
+      // Prefer server’s list (adoptedChildren). Fallback to local keepChildren for complexes.
+      const adopted = (mergeResult.result.adoptedChildren && mergeResult.result.adoptedChildren.length)
+        ? mergeResult.result.adoptedChildren
+        : (this.isComplex ? keepChildren : []);
+
+      adopted.forEach(childId => {
+        const child = cy.getElementById(childId);
+        if (child && child.length) {
+          child.move({ parent: mergedId });
+          child.data('parent', mergedId);
+        }
+      });
     }
 
-    // Now it's safe to remove the old nodes
+    // Remove old parents last
     nodeA.remove();
     nodeB.remove();
 
-    // For EPN merges we may have rewiredEdges to draw
-    if (!this.isCompartment && mergeResult.result.rewiredEdges && mergeResult.result.rewiredEdges.length > 0) {
+    // EPN: draw rewired edges
+    if (!this.isCompartment && !this.isComplex && mergeResult.result.rewiredEdges && mergeResult.result.rewiredEdges.length > 0) {
       await databaseUtilities.pushEdges(mergeResult.result.rewiredEdges);
     }
 
     console.log("✅ Merge complete:", mergeResult);
   }
-
-
 });
+
 
 
 var DatabasePropertiesView = Backbone.View.extend({
