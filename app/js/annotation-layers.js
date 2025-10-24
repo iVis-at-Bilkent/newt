@@ -3298,10 +3298,31 @@ function rgbToHex(color) {
   return "#ff0000"; // fallback
 }
 
+// Helper function to convert hex color to rgba
+function hexToRgb(color, alpha = 1) {
+  // If already rgba, return as is
+  if (typeof color === "string" && color.trim().startsWith("rgb")) {
+    return color;
+  }
+  
+  let hex = color.replace(/^#/, "");
+  if (hex.length === 3) {
+    hex = hex.split("").map(c => c + c).join("");
+  }
+
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 // Custom modal for annotation text box font settings
 function showAnnotationFontModal(element) {
   $("#annotation-font-modal").remove();
 
+  if (element.styles.color.startsWith('rgb')) {
+    element.styles.color = rgbToHex(element.styles.color);
+  }
   const styles = Object.assign(
     {
       fontFamily: "Arial, sans-serif",
@@ -3393,7 +3414,7 @@ function showAnnotationFontModal(element) {
       );
       element.styles.fontWeight = $("#annotation-font-weight-input").val();
       element.styles.fontStyle = $("#annotation-font-style-input").val();
-      element.styles.color = $("#annotation-font-color-input").val();
+      element.styles.color = hexToRgb($("#annotation-font-color-input").val());
       $("#annotation-font-modal").modal("hide");
       if (
         typeof window.annotationLayers !== "undefined" &&
