@@ -50,7 +50,10 @@ var AnnotationUtil = function() {
     }
 
     var rectStyles = Object.assign({}, defaultStyles.rectangle, styles || {});
-    
+    // Patch for github issue #867
+    if (data.styles) {
+      ['lineDash', 'lineWidth'].forEach(key => delete data.styles[key]);
+    }
     var { x, y, width, height } = data;
     if (x === undefined || y === undefined || width === undefined || height === undefined) {
       console.error('Missing required rectangle properties:', data);
