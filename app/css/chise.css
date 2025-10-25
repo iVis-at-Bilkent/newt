@@ -1196,3 +1196,92 @@ img#template-reversible-output-add-button:hover {
 .simulation-table tr {
     height: 52px !important;
 }
+
+
+/*  */
+/* 
+.merge-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.merge-row {
+  display: flex;
+  align-items: flex-start;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.merge-label {
+  width: 150px;
+  min-width: 150px;
+  font-weight: 600;
+  padding-top: 8px;
+}
+
+.merge-columns {
+  flex: 1;
+}
+
+.merge-node-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.merge-node-title {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.list-group {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.list-group-item {
+  padding: 6px 8px;
+} */
+
+
+
+.merge-section-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 15px;
+  background: #fafafa;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.merge-section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 4px;
+}
+
+.merge-node-title {
+  font-weight: 600;
+  color: #444;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.merge-row {
+  margin-top: 5px;
+}
+
+.list-group-item {
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+}
+
+.list-group-item.text-muted {
+  background-color: #f9f9f9;
+  color: #888;
+}

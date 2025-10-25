@@ -4429,9 +4429,17 @@ var MergeNodesView = Backbone.View.extend({
       ];
     }
 
+    console.log("MergeNodesView render", this.nodes, this.nodes[0], this.nodes[0].label);
+    // --- Dynamic node header labels ---
+    const leftLabel  = this.nodes[0].label || "Node 1";
+    const rightLabel = this.nodes[1].label || "Node 2";
+    this.$("#merge-node-header-left").text(leftLabel);
+    this.$("#merge-node-header-right").text(rightLabel);
+
     // Type flags
     this.isCompartment = (this.nodes[0].class === 'compartment');
     this.isComplex     = (this.nodes[0].class === 'complex');
+    this.showChildrenSection = this.isComplex;
 
     // Precompute (project helpers)
     this.nodes.forEach((node) => {
@@ -4439,6 +4447,11 @@ var MergeNodesView = Backbone.View.extend({
       node.unitsOfInformation = databaseUtilities.calculateInfo(node.statesandinfos) || [];
       node.units              = node.unitsOfInformation;
     });
+    this.showMultimerSection = this.nodes.every(n => !n.multimer);
+    this.showStateVarsSection = this.nodes.some(n => (n.stateVariables || []).length > 0);
+    this.showUnitsSection = this.nodes.some(n => (n.units || []).length > 0);
+
+    
 
     // Build aux id maps
     this.auxMaps = [ this.buildAuxMaps(this.nodes[0]), this.buildAuxMaps(this.nodes[1]) ];
@@ -4446,7 +4459,7 @@ var MergeNodesView = Backbone.View.extend({
     // Cache container
     this.$container = this.$("#merge-modal-" + this.modalNs);
 
-    // Prefill labels + multimer value radios (disabled until source chosen)
+    // Prefill labels + multimer value radios
     this.$("#label-input-" + this.modalNs + "-0").val(this.nodes[0].label || '');
     this.$("#label-input-" + this.modalNs + "-1").val(this.nodes[1].label || '');
     this.$("input[name='multimer-value-" + this.modalNs + "-0'][value='" + String(!!this.nodes[0].multimer) + "']").prop('checked', true);
@@ -4481,9 +4494,9 @@ var MergeNodesView = Backbone.View.extend({
     // Compartment UI: hide multimer + state vars
     this.applyCompartmentUIRules();
 
-    // Complex UI: show side-by-side child pickers
+    // Complex UI: show children pickers
     if (this.isComplex) {
-      this.ensureChildrenSection(); // creates a 2-column “Label 1 | Label 2” block
+      this.ensureChildrenSection();
       this.childrenLists = [
         this.getChildrenForNode(this.nodes[0].id),
         this.getChildrenForNode(this.nodes[1].id)
@@ -4492,9 +4505,26 @@ var MergeNodesView = Backbone.View.extend({
       this.renderChildren(1, this.childrenLists[1]);
     }
 
-    // Tag confirm button so delegated event catches it
-    this.$("#confirm-merge-" + this.modalNs).addClass("confirm-merge-btn");
 
+
+    // Tag confirm button
+    this.$("#confirm-merge-" + this.modalNs).addClass("confirm-merge-btn");
+    if (!this.isComplex) this.$('#children-section-' + this.modalNs).hide();
+
+
+    console.log("childrenLists:", this.childrenLists, this.showMultimerSection, this.showStateVarsSection, this.showUnitsSection);
+    if(this.childrenLists.length==0) {
+      this.$('#children-section-' + this.modalNs).hide();
+    }
+    if(!this.showMultimerSection) {
+      this.$('#multimer-section-' + this.modalNs).hide();
+    }
+    if(!this.showStateVarsSection) {
+      this.$('#state-vars-section').hide();
+    }
+    if(!this.showUnitsSection) {
+      this.$('#units-section').hide();
+    }
     return this;
   },
 

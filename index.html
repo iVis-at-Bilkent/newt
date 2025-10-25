@@ -1878,115 +1878,134 @@
       </div>
     </div>
 
-    <script type="text/template" id="merge-nodes-template">
-      <div id="merge-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 800px; max-width: 95vw;">
-        <div class="modal-content" data-modal-id="<%= modalId %>">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Merge Nodes</h4>
-          </div>
+ <script type="text/template" id="merge-nodes-template">
+  <div id="merge-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 900px; max-width: 95vw;">
+    <div class="modal-content" data-modal-id="<%= modalId %>">
+      <div class="modal-header" style="background: #0099cc; color: white;">
+        <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 0.8;">&times;</button>
+        <h4 class="modal-title">Merge Nodes</h4>
+      </div>
 
-          <div class="modal-body">
-            <!-- Labels -->
-            <h5 style="margin-top:0;">Label</h5>
-            <div class="row">
-              <div class="col-sm-6">
-                <label class="radio-inline">
-                  <input type="radio" class="label-radio"
-                        name="label-choice-<%= modalId %>" value="0"> Use Node 1
-                </label>
-                <input id="label-input-<%= modalId %>-0"
-                      type="text" class="form-control label-input"
-                      data-node="0" placeholder="Node 1 label" disabled>
-              </div>
-              <div class="col-sm-6">
-                <label class="radio-inline">
-                  <input type="radio" class="label-radio"
-                        name="label-choice-<%= modalId %>" value="1"> Use Node 2
-                </label>
-                <input id="label-input-<%= modalId %>-1"
-                      type="text" class="form-control label-input"
-                      data-node="1" placeholder="Node 2 label" disabled>
-              </div>
+      <div class="modal-body">
+
+        <!-- Node Titles -->
+        <div class="row text-center" style="margin-bottom: 15px;">
+          <div class="col-xs-6"><h4 id="merge-node-header-left" class="merge-node-title"></h4></div>
+          <div class="col-xs-6"><h4 id="merge-node-header-right" class="merge-node-title"></h4></div>
+        </div>
+
+        <!-- === LABEL SECTION === -->
+        <div class="merge-section-card">
+          <div class="merge-section-title">Label</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" class="label-radio" name="label-choice-<%= modalId %>" value="0"> Use Node 1
+              </label>
+              <input id="label-input-<%= modalId %>-0"
+                    type="text" class="form-control label-input"
+                    data-node="0" placeholder="Node 1 label" disabled>
             </div>
-
-            <hr>
-
-            <!-- Multimer -->
-            <h5>Multimer</h5>
-            <div class="row">
-              <div class="col-sm-6">
-                <label class="radio-inline">
-                  <input type="radio" class="multimer-node-radio"
-                        name="multimer-node-<%= modalId %>" value="0"> Take from Node 1
-                </label>
-                <div style="margin-top:6px;">
-                  <label class="radio-inline">
-                    <input type="radio" class="multimer-value-radio"
-                          name="multimer-value-<%= modalId %>-0" value="true" disabled> True
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" class="multimer-value-radio"
-                          name="multimer-value-<%= modalId %>-0" value="false" disabled> False
-                  </label>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <label class="radio-inline">
-                  <input type="radio" class="multimer-node-radio"
-                        name="multimer-node-<%= modalId %>" value="1"> Take from Node 2
-                </label>
-                <div style="margin-top:6px;">
-                  <label class="radio-inline">
-                    <input type="radio" class="multimer-value-radio"
-                          name="multimer-value-<%= modalId %>-1" value="true" disabled> True
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" class="multimer-value-radio"
-                          name="multimer-value-<%= modalId %>-1" value="false" disabled> False
-                  </label>
-                </div>
-              </div>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" class="label-radio" name="label-choice-<%= modalId %>" value="1"> Use Node 2
+              </label>
+              <input id="label-input-<%= modalId %>-1"
+                    type="text" class="form-control label-input"
+                    data-node="1" placeholder="Node 2 label" disabled>
             </div>
-
-            <hr>
-
-            <!-- State Variables -->
-            <h5>State Variables</h5>
-            <div class="row">
-              <div class="col-sm-6">
-                <h6>Node 1</h6>
-                <div id="state-vars-<%= modalId %>-0" class="list-group"></div>
-              </div>
-              <div class="col-sm-6">
-                <h6>Node 2</h6>
-                <div id="state-vars-<%= modalId %>-1" class="list-group"></div>
-              </div>
-            </div>
-
-            <hr>
-
-            <!-- Units of Information -->
-            <h5>Units of Information</h5>
-            <div class="row">
-              <div class="col-sm-6">
-                <h6>Node 1</h6>
-                <div id="units-<%= modalId %>-0" class="list-group"></div>
-              </div>
-              <div class="col-sm-6">
-                <h6>Node 2</h6>
-                <div id="units-<%= modalId %>-1" class="list-group"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="modal-footer" style="text-align:center;">
-            <button class="btn btn-default" data-dismiss="modal">Close</button>
-            <button class="btn btn-primary" id="confirm-merge-<%= modalId %>">Merge</button>
           </div>
         </div>
+
+        <!-- === MULTIMER SECTION === -->
+        <div class="merge-section-card" id="multimer-section">
+          <div class="merge-section-title">Multimer</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" class="multimer-node-radio"
+                      name="multimer-node-<%= modalId %>" value="0"> Take from Node 1
+              </label>
+              <div style="margin-top:6px;">
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-0" value="true" disabled> True
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-0" value="false" disabled> False
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" class="multimer-node-radio"
+                      name="multimer-node-<%= modalId %>" value="1"> Take from Node 2
+              </label>
+              <div style="margin-top:6px;">
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-1" value="true" disabled> True
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-1" value="false" disabled> False
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === STATE VARIABLES SECTION === -->
+        <div class="merge-section-card" id="state-vars-section">
+          <div class="merge-section-title">State Variables</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <div id="state-vars-<%= modalId %>-0" class="list-group"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="state-vars-<%= modalId %>-1" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === UNITS SECTION === -->
+        <div class="merge-section-card" id="units-section">
+          <div class="merge-section-title">Units of Information</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <div id="units-<%= modalId %>-0" class="list-group"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="units-<%= modalId %>-1" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === CHILDREN SECTION (for complexes) === -->
+        <div id="children-section-<%= modalId %>" class="merge-section-card">
+          <div class="merge-section-title">Children</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <div id="children-<%= modalId %>-0" class="list-group"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="children-<%= modalId %>-1" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </script>
+
+      <div class="modal-footer" style="text-align:center;">
+        <button class="btn btn-default" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id="confirm-merge-<%= modalId %>">Merge</button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
 
 
 
