@@ -2384,7 +2384,7 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
 
       var simulationDataParser = function(rawJsonData) {
         // Process Data
-        data = []
+        var sim_data = []
         for (const [key, value] of Object.entries(rawJsonData)) {
             if(key === "time")
               continue;
@@ -2394,9 +2394,9 @@ var simulationTabPanel = GeneralPropertiesParentView.extend({
                 mode: "lines",
                 name: key
             };
-            data.push(trace);
+            sim_data.push(trace);
         }
-        return data;
+        return sim_data;
       }
       var chiseInstance = appUtilities.getActiveChiseInstance();
       chiseInstance.startSpinner("simulation-spinner");
