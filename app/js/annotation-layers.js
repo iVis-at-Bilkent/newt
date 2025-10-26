@@ -2392,11 +2392,8 @@ var AnnotationLayers = function () {
               );
               return;
             }
-            element._redrawCallback = function () {
-              console.log("Redrawing layer", layer.id, "due to image load");
-              self.redrawLayer(layer.id);
-            };
-            element._imageElement = null;
+            // Initialize image loaded flag to prevent infinite loop
+            element._imageLoaded = false;
           }
         });
 

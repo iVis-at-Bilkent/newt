@@ -721,22 +721,19 @@ var AnnotationUtil = function() {
     try {
       ctx.save();
       
+      // If image is already loaded and ready, just draw it
+      if (data._imageElement && data._imageElement.complete && data._imageElement.naturalWidth > 0) {
+        ctx.drawImage(data._imageElement, x, y, width, height);
+        ctx.restore();
+        return true;
+      }
+      
       // Create image element if not already created
       if (!data._imageElement) {
         data._imageElement = new Image();
         data._imageElement.onload = function() {
-          // Redraw the layer when image loads
-          if (data._redrawCallback) {
-            data._redrawCallback();
-          } else {
-            var canvas = ctx.canvas;
-            if (canvas) {
-              var layerId = canvas.id.match(/annotation-canvas-layer-(\d+)/);
-              if (layerId && window.annotationLayers) {
-                window.annotationLayers.redrawLayer(parseInt(layerId[1]));
-              }
-            }
-          }
+          data._imageLoaded = true;
+          console.log("Image loaded for element:", data.id);
         };
         data._imageElement.onerror = function(e) {
           console.error('Error loading image for element:', data.id, e);
@@ -744,10 +741,7 @@ var AnnotationUtil = function() {
             data._retryCount = 1;
             setTimeout(function() {
               console.log('Retrying image load for element:', data.id);
-              data._imageElement = null; // Force recreation
-              if (data._redrawCallback) {
-                data._redrawCallback();
-              }
+              data._imageElement = null;
             }, 1000);
           } else {
             console.error('Image failed to load after retry for element:', data.id);
