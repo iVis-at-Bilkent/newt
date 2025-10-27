@@ -4513,7 +4513,7 @@ var MergeNodesView = Backbone.View.extend({
 
 
     console.log("childrenLists:", this.childrenLists, this.showMultimerSection, this.showStateVarsSection, this.showUnitsSection);
-    if(this.childrenLists.length==0) {
+    if(this.childrenLists && this.childrenLists.length==0) {
       this.$('#children-section-' + this.modalNs).hide();
     }
     if(!this.showMultimerSection) {
