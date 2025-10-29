@@ -4871,9 +4871,10 @@ var MergeNodesView = Backbone.View.extend({
     nodeA.remove();
     nodeB.remove();
 
-    // EPN: draw rewired edges
-    if (!this.isCompartment && !this.isComplex && mergeResult.result.rewiredEdges && mergeResult.result.rewiredEdges.length > 0) {
-      await databaseUtilities.pushEdges(mergeResult.result.rewiredEdges);
+    // Draw any rewired edges returned by the backend (EPN or COMPLEX)
+    const rewired = (mergeResult.result && mergeResult.result.rewiredEdges) || [];
+    if (rewired.length) {
+      await databaseUtilities.pushEdges(rewired);
     }
 
     console.log("✅ Merge complete:", mergeResult);
