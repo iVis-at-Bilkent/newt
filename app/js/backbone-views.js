@@ -4437,8 +4437,8 @@ var MergeNodesView = Backbone.View.extend({
     this.$("#merge-node-header-right").text(rightLabel);
 
     // Type flags
-    this.isCompartment = (this.nodes[0].class === 'compartment');
-    this.isComplex     = (this.nodes[0].class === 'complex');
+    this.isCompartment = (this.nodes[0].class.split(' ')[0] === 'compartment');
+    this.isComplex     = (this.nodes[0].class.split(' ')[0] === 'complex');
     this.showChildrenSection = this.isComplex;
 
     // Precompute (project helpers)
@@ -4447,9 +4447,14 @@ var MergeNodesView = Backbone.View.extend({
       node.unitsOfInformation = databaseUtilities.calculateInfo(node.statesandinfos) || [];
       node.units              = node.unitsOfInformation;
     });
-    this.showMultimerSection = this.nodes.every(n => !n.multimer);
-    this.showStateVarsSection = this.nodes.some(n => (n.stateVariables || []).length > 0);
-    this.showUnitsSection = this.nodes.some(n => (n.units || []).length > 0);
+    // this.showMultimerSection = this.nodes.every(n => !n.multimer);
+    console.log(this.nodes[0],this.nodes[1]);
+    this.nodeOneMultimer = this.nodes[0].class.split(' ').includes('multimer');
+    this.nodeTwoMultimer = this.nodes[1].class.split(' ').includes('multimer');
+    this.hideMultimerSection = this.nodeOneMultimer == this.nodeTwoMultimer;
+    this.hideStateVarsSection = this.arraysEqualIgnoreOrder(this.nodes[0].stateVariables, this.nodes[1].stateVariables) || (this.nodes[0].stateVariables.length === 0 && this.nodes[1].stateVariables.length===0);
+    console.log(this.arraysEqualIgnoreOrder(this.nodes[0].unitsOfInformation, this.nodes[1].unitsOfInformation),this.nodes[0].unitsOfInformation.length === 0,this.nodes[1].unitsOfInformation.length===0);
+    this.hideUnitsSection = this.arraysEqualIgnoreOrder(this.nodes[0].unitsOfInformation, this.nodes[1].unitsOfInformation) || (this.nodes[0].unitsOfInformation.length === 0 && this.nodes[1].unitsOfInformation.length===0);
 
     
 
@@ -4492,7 +4497,7 @@ var MergeNodesView = Backbone.View.extend({
     });
 
     // Compartment UI: hide multimer + state vars
-    this.applyCompartmentUIRules();
+    // this.applyCompartmentUIRules();
 
     // Complex UI: show children pickers
     if (this.isComplex) {
@@ -4501,6 +4506,7 @@ var MergeNodesView = Backbone.View.extend({
         this.getChildrenForNode(this.nodes[0].id),
         this.getChildrenForNode(this.nodes[1].id)
       ];
+      console.log("childrenLists:", this.childrenLists);
       this.renderChildren(0, this.childrenLists[0]);
       this.renderChildren(1, this.childrenLists[1]);
     }
@@ -4512,20 +4518,28 @@ var MergeNodesView = Backbone.View.extend({
     if (!this.isComplex) this.$('#children-section-' + this.modalNs).hide();
 
 
-    console.log("childrenLists:", this.childrenLists, this.showMultimerSection, this.showStateVarsSection, this.showUnitsSection);
+    console.log("childrenLists:", this.childrenLists, this.hideMultimerSection, this.hideStateVarsSection, this.showUnitsSection);
     if(this.childrenLists && this.childrenLists.length==0) {
       this.$('#children-section-' + this.modalNs).hide();
     }
-    if(!this.showMultimerSection) {
-      this.$('#multimer-section-' + this.modalNs).hide();
+    if(this.hideMultimerSection) {
+      console.log('hiding the multimer section');
+      this.$('#multimer-section').hide();
     }
-    if(!this.showStateVarsSection) {
+    if(this.hideStateVarsSection) {
       this.$('#state-vars-section').hide();
     }
-    if(!this.showUnitsSection) {
+    if(this.hideUnitsSection) {
       this.$('#units-section').hide();
     }
     return this;
+  },
+
+  arraysEqualIgnoreOrder:function(a, b) {
+    if (a.length !== b.length) return false;
+    const sortedA = [...a].sort();
+    const sortedB = [...b].sort();
+    return sortedA.every((val, i) => val === sortedB[i]);
   },
 
   /* ---------------- Helpers ---------------- */
@@ -4629,16 +4643,18 @@ var MergeNodesView = Backbone.View.extend({
       const html =
         '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
           '<div class="checkbox">' +
-            '<label><input type="checkbox" class="state-var-check" id="'+base+'"> ' + _.escape(raw) + '</label>' +
-          '</div>' +
-          '<div class="row" style="margin-top:6px;">' +
+            '<label><input type="checkbox" class="state-var-check" id="'+base+'">' +
             '<div class="col-xs-6"><input type="text" class="form-control sv-left"  value="'+_.escape(parts.left)+'"  disabled></div>' +
             '<div class="col-xs-6"><input type="text" class="form-control sv-right" value="'+_.escape(parts.right)+'" disabled></div>' +
+            '</label>' +
+          '</div>' +
+          '<div style="margin-top:6px;">' +
+            
           '</div>' +
         '</div>';
       container.append(html);
     });
-    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No state variables</div>');
+    if (arr.length === 0) container.append('<div class="list-group-item text-muted">None</div>');
   },
 
   renderUnits: function (nodeIdx, arr) {
@@ -4651,13 +4667,17 @@ var MergeNodesView = Backbone.View.extend({
       const html =
         '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
           '<div class="checkbox">' +
-            '<label><input type="checkbox" class="unit-check" id="'+idAttr+'"> ' + _.escape(raw) + '</label>' +
+            '<label class="value-label"><input type="checkbox" class="unit-check" id="'+idAttr+'">' +
+            '<div class="col-xs-12">'+
+              '<input type="text" class="form-control unit-input sv-left"  value="'+_.escape(raw)+'" disabled>' +
+            '</div>'+
+            '</label>' + 
           '</div>' +
-          '<input type="text" class="form-control unit-input" style="margin-top:6px;" value="'+_.escape(raw)+'" disabled>' +
         '</div>';
+        // '<label><input type="checkbox" class="unit-check" id="'+idAttr+'"> ' + _.escape(raw) + '</label>' +
       container.append(html);
     });
-    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No units of information</div>');
+    if (arr.length === 0) container.append('<div class="list-group-item text-muted">None</div>');
   },
 
   // Children UI
@@ -4670,13 +4690,13 @@ var MergeNodesView = Backbone.View.extend({
         '<div class="list-group-item" data-from="'+nodeIdx+'" data-child-id="'+_.escape(child.id)+'" data-index="'+i+'">' +
           '<div class="checkbox">' +
             '<label><input type="checkbox" class="child-check" id="'+idAttr+'" checked> ' +
-              _.escape(child.label) + ' <span class="text-muted small">(' + _.escape(child.class || 'node') + ')</span>' +
+               ' <span class="text-muted small col-xs-12">'+ _.escape(child.label) +' (' + _.escape(child.class || 'node')[0].toUpperCase() + _.escape(child.class || 'node').substring(1).toLowerCase() + ')</span>' +
             '</label>' +
           '</div>' +
         '</div>';
       container.append(html);
     });
-    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No children</div>');
+    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No Members</div>');
   },
 
   splitStateVar: function (s) {
@@ -5529,6 +5549,7 @@ var CommonStreamQueryView = Backbone.View.extend({
                   var xml = $.parseXML(data.response.body);
                   $(document).trigger("sbgnvizLoadFile", [filename, cy]);
                   currentGeneralProperties.inferNestingOnLoad = false;
+                  console.log(chiseInstance.convertSbgnmlToJson(xml));
                   chiseInstance.updateGraph(
                     chiseInstance.convertSbgnmlToJson(xml),
                     undefined,

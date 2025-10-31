@@ -1142,7 +1142,9 @@ module.exports = function() {
       }
       const firstNode = selectedElements[0].data();
       const secondNode = selectedElements[1].data();
-      if(firstNode.class !== secondNode.class){
+      console.log("firstNode", firstNode);
+      console.log("secondNode", secondNode);
+      if(firstNode.class.split(' ')[0] !== secondNode.class.split(' ')[0]){
         mergeNodesErrorView.render("Selected nodes must be of the same class to merge.");
         return;
       }

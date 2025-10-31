@@ -1260,28 +1260,60 @@ img#template-reversible-output-add-button:hover {
 
 .merge-section-title {
   font-weight: 600;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 4px;
+  /* margin-bottom: 10px;
+  padding-bottom: 4px; */
 }
 
 .merge-node-title {
   font-weight: 600;
   color: #444;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 4px;
+  /* padding-bottom: 4px; */
 }
 
-.merge-row {
-  margin-top: 5px;
-}
+/* .merge-row {
+  margin-top: 3px;
+} */
 
 .list-group-item {
   background-color: #fff;
   border: 1px solid #eaeaea;
+  padding:0;
 }
 
 .list-group-item.text-muted {
   background-color: #f9f9f9;
   color: #888;
 }
+
+.inline-box{
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type="text"]{
+    margin-left: 4px;
+}
+
+.row {
+  align-items: flex-start;
+}
+
+.list-group{
+    margin-bottom: 0px;
+}
+
+.checkbox{
+    padding-left:5px;
+}
+.checkbox label{
+    display: flex;
+    align-items: center;
+}
+
+.value-label{
+    /* padding:0px 15px; */
+}
+
+/* .unit-input{
+    padding-left:30px;
+} */
