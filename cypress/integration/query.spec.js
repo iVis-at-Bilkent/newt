@@ -45,7 +45,7 @@ context('Query', () => {
 
     cy.window().then((win) => {
       expect(win.cy.nodes().length == 860).to.eq(true);
-      expect(win.cy.edges().length == 291).to.eq(true);
+      expect(win.cy.edges().length == 284).to.eq(true);
     });
   });
 
