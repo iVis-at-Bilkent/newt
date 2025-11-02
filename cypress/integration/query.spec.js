@@ -42,8 +42,9 @@ context('Query', () => {
     cy.get('textarea#query-commonstream-gene-symbols').type('BRCA1 BRCA2');
     cy.get('button#save-query-commonstream').click();
     cy.wait(6000);
-
     cy.window().then((win) => {
+      console.log(win.cy.nodes().length);
+      console.log(win.cy.edges().length);
       expect(win.cy.nodes().length == 860).to.eq(true);
       expect(win.cy.edges().length == 284).to.eq(true);
     });
