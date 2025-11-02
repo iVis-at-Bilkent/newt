@@ -498,21 +498,50 @@ module.exports = function() {
       if(fileExtension==='nwt'){
         var loadCallbackSBGNMLValidity = function (text) {
           //validateSBGNML(text);
-        }
+        };
+
+        // Add callback to handle annotation layers data after file is loaded
+          var loadCallbackAnnotationLayers = function(annotationLayersData) {
+          // This callback will be called after the file is loaded
+          // The annotation layers data will be available in the graph data
+          var cy = appUtilities.getActiveCy();
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          var networkId = chiseInstance && chiseInstance.getCy() && chiseInstance.getCy().container().id;
+          
+          if (annotationLayersData && window.annotationLayers) {
+            window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+            if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+              window.networkIdToAnnotationLayersData[networkId] = annotationLayersData;
+            }
+          } else if (window.annotationLayers) {
+            window.annotationLayers.resetAnnotationLayers();
+            if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+              window.networkIdToAnnotationLayersData[networkId] = undefined;
+            }
+          } else {
+            console.log('Annotation layers system not available');
+            console.log('window.annotationLayers:', window.annotationLayers);
+          }
+        };
         params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, (e)=>{
+          console.log('File loaded');
+          console.log('e:',e);
+          console.log('pushActiveTabsView:',pushActiveTabsView);
           pushActiveTabsView.render(e,"Push From File");
         }, loadCallbackAnnotationLayers];
         caller = chiseInstance.loadNwtFile;
       }
 
-      if(cy.elements().length != 0) {
-        promptConfirmationView.render(() => {
-          setTimeout(() => caller(file, ...params), 150);
-        });
-      }
-      else {
-        caller(file, ...params);
-      }
+      // if(cy.elements().length != 0) {
+      //   promptConfirmationView.render(() => {
+      //     setTimeout(() => caller(file, ...params), 150);
+      //   });
+      // }
+      // else {
+      console.log('caller:',caller);
+      console.log('params:',params);
+      caller(file, ...params);
+      // }
       $(this).val("");
     });
 
