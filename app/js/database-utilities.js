@@ -96,18 +96,10 @@ var epnCriterias= {
     },
   },
   unspecified_entity:{
-    multimer:{
-      contribution:0.0,
-      type:"boolean"
-    },
-    stateVariables:{
-      contribution:0,
-      type:"array"
-    },
-    unitsOfInformation:{
-      contribution:0,
-      type:"array"
-    },
+    entityName:{
+      contribution:1,
+      type:"string"
+    }
   },
   nucleic_acid_feature:{
     multimer:{
@@ -715,6 +707,7 @@ var databaseUtilities = {
   pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage) {
     // console.log(ids,list,mergeflag,epnMatchingPercentage/100);
     list = list.map((epn) => {
+      console.log(epn.class,epnCriterias[epn.class]);
       var newEPN = Object.assign({}, epn);
       newEPN.parent = ids[epn.parent] || epn.parent;
       return newEPN;
