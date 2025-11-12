@@ -180,6 +180,7 @@ module.exports = function() {
 
   dynamicResize();
   databasePropertiesView = appUtilities.databasePropertiesView = new BackboneViews.DatabasePropertiesView({el: '#database-properties-table'});
+  searchNodesView = appUtilities.searchNodesView = new BackboneViews.SearchNodesView({ el: '#search-nodes-modal' });
   mergeNodesView = appUtilities.mergeNodesView = new BackboneViews.MergeNodesView({el: '#merge-nodes-table'});
   mergeNodesErrorView = appUtilities.mergeNodesErrorView = new BackboneViews.MergeNodesErrorView({el: '#merge-nodes-error-table'});
   pushActiveTabsView = appUtilities.pushActiveTabsView = new BackboneViews.PushActiveTabsView({el: '#push-active-tabs-table'});
@@ -1146,6 +1147,13 @@ module.exports = function() {
       console.log("nodeCount", nodeCount);
       databasePropertiesView.render(nodeCount);
     });
+
+    $("#search-nodes").click(function (e) {
+      e.preventDefault();
+      console.log("Search Nodes clicked");
+      searchNodesView.render(); // open the modal
+    });
+
     
     $("#merge-nodes").click(async function (e) {
       e.preventDefault();

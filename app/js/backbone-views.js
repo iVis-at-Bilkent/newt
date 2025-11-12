@@ -4396,6 +4396,99 @@ var MergeNodesErrorView = Backbone.View.extend({
   },
 });
 
+
+var SearchNodesView = Backbone.View.extend({
+  events: {
+    'click #sn-run': 'onRun'
+  },
+
+  // Edit this list as you like:
+  classTypes: [
+    { label: 'Simple Molecule', value: 'simple_molecule' },
+    { label: 'Simple Chemical', value: 'simple_chemical' },
+    { label: 'Macromolecule',   value: 'macromolecule' },
+    { label: 'Complex',         value: 'complex' },
+    { label: 'Compartment',     value: 'compartment' },
+    { label: 'Phenotype',       value: 'phenotype' },
+    { label: 'Unspecified Entity',       value: 'unspecified_entity' },
+    { label: 'Nucleic Acid Feature',       value: 'nucleic_acid_feature' },
+    { label: 'Perturbing Agent',       value: 'perturbing_agent' }
+  ],
+
+  initialize: function () {
+    this.templateFn = _.template($("#search-nodes-template").html());
+    this.modalNs = this.cid;
+  },
+
+  render: function () {
+    var html = this.templateFn({ modalId: this.modalNs });
+    this.$el.html(html);
+    this.$el.modal("show");
+    PCdialog = "SearchNodes";
+
+    // fill the class select from local list
+    this.populateClassSelect();
+    return this;
+  },
+
+  populateClassSelect: function () {
+    var $sel = this.$('#sn-class');
+    if (!$sel.length) return;
+
+    // Reset and add the "Any" default
+    $sel.empty().append(
+      $('<option/>', { value: 'any', text: 'Any', selected: true })
+    );
+
+    // Add options from local array
+    this.classTypes.forEach(function (ct) {
+      if (!ct || !ct.value) return;
+      $sel.append($('<option/>', { value: String(ct.value), text: String(ct.label || ct.value) }));
+    });
+  },
+
+  // minimal inputs: class, label, mode
+  getParams: function () {
+    var classType = (this.$('#sn-class').val() || 'any').trim();
+    var label     = (this.$('#sn-label').val() || '').trim() || 'any';
+    var matchMode = (this.$('#sn-mode').val() || 'contains').trim();
+    return { classType: classType, label: label, matchMode: matchMode, options: {} };
+  },
+
+  onRun: async function (e) {
+    if (cy.nodes().length != 0) {
+      new PromptConfirmationView({
+        el: "#prompt-confirmation-table",
+      }).render(this.onRun);
+      return;
+    }
+    e.preventDefault();
+    var $btn = this.$('#sn-run').prop('disabled', true).text('Finding…');
+
+    try {
+      var p = this.getParams();
+      console.log(p);
+
+      // keep your existing call here:
+      await databaseUtilities.runSearchNodesWithPaths({
+        classType: p.classType,
+        label:     p.label,
+        matchMode: p.matchMode,
+        options:   {}
+      });
+
+      this.$el.modal("hide");
+    } catch (err) {
+      console.error('search failed:', err);
+    } finally {
+      $btn.prop('disabled', false).text('Find');
+    }
+  }
+});
+
+
+
+
 var MergeNodesView = Backbone.View.extend({
   events: {
     'change .label-radio': 'onLabelChoice',
@@ -10554,6 +10647,7 @@ module.exports = {
   MergeNodesErrorView: MergeNodesErrorView,
   DatabasePropertiesView: DatabasePropertiesView,
   MergeNodesView: MergeNodesView,
+  SearchNodesView: SearchNodesView,
   PushActiveTabsView:PushActiveTabsView,
   ChemicalView: ChemicalView,
   LayoutPropertiesView: LayoutPropertiesView,

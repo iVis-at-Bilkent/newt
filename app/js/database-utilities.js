@@ -640,6 +640,52 @@ var databaseUtilities = {
     return { result: map };
   },
 
+  runSearchNodesWithPaths: async function (payload) {
+    const integrationQuery = `
+      CALL custom.searchNodesWithPaths($classType, $label, $matchMode, $options)
+      YIELD result
+      RETURN result
+    `;
+    const data = {
+      query: integrationQuery,
+      queryData: {
+        classType: payload.classType,
+        label: payload.label,
+        matchMode: payload.matchMode,
+        options: payload.options || {}
+      }
+    };
+    console.log("Running searchNodesWithPaths with data:", data);
+    try {
+      const response = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data)
+      });
+
+      if (!response.records || !response.records.length) {
+        console.warn("No result from custom.searchNodesWithPaths");
+        return null;
+      }
+
+      // The proc returns a single 'result' map with { nodes, edges, stats, ... }
+      var map = response.records[0]._fields[0] || {};
+      var nodesArray = map.nodes || [];
+      var edgesArray = map.edges || [];
+
+      console.log("Normalized searchNodesWithPaths result:", { nodes: nodesArray, edges: edgesArray });
+      // Render into Cytoscape (same pattern as your other util)
+      var cy = appUtilities.getActiveCy();
+      cy.elements().remove();
+      databaseUtilities.cleanNodesAndEdgesInDB();
+      await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
+    } catch (err) {
+      console.error("Error running custom.searchNodesWithPaths:", err);
+      return null;
+    }
+  },
+
 
     pushMergedNodeToDatabase: async function (mergedPayload) {
       console.log("Pushing merged node to database:", mergedPayload);

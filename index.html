@@ -525,6 +525,9 @@
                         <a href="#" id="get-all-data">Load Entire Content</a>
                       </li>
                       <li>
+                        <a href="#" id="search-nodes">Find by Label</a>
+                      </li>
+                      <li>
                         <a href="#" id="push-active-tab-contents">Push Active Tab Content</a>
                       </li>
                       <li>
@@ -1547,6 +1550,7 @@
     </div>
     <div id="database-properties-table" tabindex="-1" class="modal fade" role="dialog"></div>
     <div id="merge-nodes-table" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="search-nodes-modal" tabindex="-1" class="modal fade" role="dialog"></div>
     <div id="push-active-tabs-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- neighborhood query table will be shown here-->
     </div>
@@ -1877,6 +1881,52 @@
         </div>
       </div>
     </div>
+
+
+    <script type="text/template" id="search-nodes-template">
+      <div id="search-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 760px; max-width: 95vw;">
+        <div class="modal-content" data-modal-id="<%= modalId %>">
+          <div class="modal-header" style="background:#5a6; color:#fff;">
+            <button type="button" class="close" data-dismiss="modal" style="color:white;opacity:.8;">&times;</button>
+            <h4 class="modal-title">Find by Label</h4>
+          </div>
+
+          <div class="modal-body">
+            <!-- Row 1: Class & Label -->
+            <div class="row" style="margin-bottom:10px;">
+              <div class="col-sm-5">
+                <label>Class type</label>
+                <select class="form-control" id="sn-class">
+                  <option value="any" selected>Any</option>
+                  <!-- dynamically filled with listClassTypes -->
+                </select>
+              </div>
+              <div class="col-sm-5">
+                <label>Label</label>
+                <input type="text" class="form-control" id="sn-label" placeholder="Any">
+              </div>
+              <div class="col-sm-2">
+                <label>Match</label>
+                <select class="form-control" id="sn-mode">
+                  <option value="contains" selected>contains</option>
+                  <option value="equals">equals</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="alert alert-info" id="sn-hint" style="margin-bottom:0;">
+              <strong>Tip:</strong> Set both Class and Label to <em>Any</em> to return the whole graph (capped). Use Advanced to tune limits.
+            </div>
+          </div>
+
+          <div class="modal-footer" style="text-align:center;">
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" id="sn-run">Find</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
 
  <script type="text/template" id="merge-nodes-template">
   <div id="merge-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 900px; max-width: 95vw;">
