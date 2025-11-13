@@ -6,6 +6,12 @@ var AnnotationUtil = function() {
   var self = this;
   
   /**
+   * Persistent image cache - survives data object recreations during pan/zoom
+   * Keyed by annotation ID to prevent repeated image loading
+   */
+  var imageCache = {};
+  
+  /**
    * Default styles for annotation elements
    */
   var defaultStyles = {
@@ -695,13 +701,15 @@ var AnnotationUtil = function() {
 
   /**
    * Draw an image on the canvas
+   * Uses persistent cache to prevent repeated loading during pan/zoom
    * @param {CanvasRenderingContext2D} ctx - The canvas context
    * @param {Object} data - Image data
    * @param {number} data.x - X coordinate of top-left corner
    * @param {number} data.y - Y coordinate of top-left corner
    * @param {number} data.width - Width of the image
    * @param {number} data.height - Height of the image
-   * @param {string} data.imageData - Image data path
+   * @param {string} data.imageData - Image data path or data URL
+   * @param {string} data.id - Unique identifier for the image annotation
    * @param {Object} [styles] - Custom styles for the image
    */
   self.drawImage = function(ctx, data, styles) {
@@ -721,38 +729,48 @@ var AnnotationUtil = function() {
     try {
       ctx.save();
       
+      // Use persistent cache instead of data._imageElement
+      // This prevents repeated loading when data objects are recreated during pan/zoom
+      var cachedImage = imageCache[data.id];
+      
       // If image is already loaded and ready, just draw it
-      if (data._imageElement && data._imageElement.complete && data._imageElement.naturalWidth > 0) {
-        ctx.drawImage(data._imageElement, x, y, width, height);
+      if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+        // Position (x, y) comes from current data object, updated on viewport changes
+        ctx.drawImage(cachedImage, x, y, width, height);
         ctx.restore();
         return true;
       }
       
-      // Create image element if not already created
-      if (!data._imageElement) {
-        data._imageElement = new Image();
-        data._imageElement.onload = function() {
-          data._imageLoaded = true;
-          console.log("Image loaded for element:", data.id);
+      // Create image element if not already cached
+      if (!cachedImage) {
+        cachedImage = new Image();
+        imageCache[data.id] = cachedImage;
+        
+        cachedImage.onload = function() {
+          if (typeof window.annotationLayers !== 'undefined' && window.annotationLayers.redraw) {
+            window.annotationLayers.redraw();
+          }
         };
-        data._imageElement.onerror = function(e) {
+        
+        cachedImage.onerror = function(e) {
           console.error('Error loading image for element:', data.id, e);
-          if (!data._retryCount) {
-            data._retryCount = 1;
+          if (!cachedImage._retryCount) {
+            cachedImage._retryCount = 1;
             setTimeout(function() {
               console.log('Retrying image load for element:', data.id);
-              data._imageElement = null;
+              delete imageCache[data.id];
             }, 1000);
           } else {
             console.error('Image failed to load after retry for element:', data.id);
           }
         };
-        data._imageElement.src = imageData;
+        
+        cachedImage.src = imageData;
       }
       
-      // Draw the image
-      if (data._imageElement.complete && data._imageElement.naturalWidth > 0) {
-        ctx.drawImage(data._imageElement, x, y, width, height);
+      // Draw the image if it's ready
+      if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+        ctx.drawImage(cachedImage, x, y, width, height);
       } else {
         // Draw placeholder while image is loading
         ctx.strokeStyle = imageStyles.strokeColor;
@@ -1191,6 +1209,29 @@ var AnnotationUtil = function() {
     return null;
   };
 
+  /**
+   * Clear image from cache (call when annotation is deleted)
+   * @param {string} imageId - ID of image to clear, or undefined to clear all
+   */
+  self.clearImageCache = function(imageId) {
+    if (imageId) {
+      delete imageCache[imageId];
+    } else {
+      imageCache = {}; // Clear all cached images
+    }
+  };
+
+  /**
+   * Get cache statistics for debugging
+   * @returns {Object} Object containing count and array of cached image IDs
+   */
+  self.getImageCacheStats = function() {
+    return {
+      count: Object.keys(imageCache).length,
+      ids: Object.keys(imageCache)
+    };
+  };
+
   return {
     drawRectangle: self.drawRectangle,
     drawTextBox: self.drawTextBox,
@@ -1217,6 +1258,8 @@ var AnnotationUtil = function() {
     getArrowHandleAtPoint: self.getArrowHandleAtPoint,
     calculateResizedRectangle: self.calculateResizedRectangle,
     updateArrowPosition: self.updateArrowPosition,
+    clearImageCache: self.clearImageCache,
+    getImageCacheStats: self.getImageCacheStats,
     defaultStyles: defaultStyles,
     elementToSvg: self.elementToSvg
   };

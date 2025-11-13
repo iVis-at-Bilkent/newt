@@ -935,6 +935,14 @@ var AnnotationLayers = function () {
     var elementIndex = layer.elements.findIndex((el) => el.id === elementId);
     if (elementIndex === -1) return false;
 
+    // Get the element before removing it to check if it's an image
+    var element = layer.elements[elementIndex];
+    
+    // If it's an image element, clear it from the image cache
+    if (element && element.type === 'image' && annotationUtil.clearImageCache) {
+      annotationUtil.clearImageCache(element.id);
+    }
+
     layer.elements.splice(elementIndex, 1);
     self.redrawLayer(layerId);
 

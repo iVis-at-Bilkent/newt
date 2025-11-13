@@ -347,7 +347,7 @@ module.exports = function() {
       if (window.annotationLayers && (!isNwtFile(filename) || event.type === 'sbgnvizLoadSampleEnd')) {
         window.annotationLayers.resetAnnotationLayers();
       } else {
-        console.log('ANNOTATION DEBUG: Not resetting annotation layers for file:', filename);
+        // console.log('ANNOTATION DEBUG: Not resetting annotation layers for file:', filename);
       }
 
     }
