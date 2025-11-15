@@ -17,7 +17,7 @@ var AnnotationLayers = function () {
   var self = this;
 
   var layers = [];
-  var currentLayerId = 0;
+  var currentLayerId = null;
   var nextLayerId = 1;
   var layerListContainer = null;
   var currentTool = null;
@@ -39,15 +39,19 @@ var AnnotationLayers = function () {
     height: 0,
   };
 
-  var LayerModel = function (id, visible = true, customLayerName = "") {
+  var LayerModel = function (layerNumber, visible = true, customLayerName = "") {
+    // Generate UUID for the layer
+    var uuid = 'layer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
     return {
-      id: id,
+      id: uuid,                      // UUID identifier
+      layerNumber: layerNumber,      // Numeric identifier (for display and backwards compatibility)
       visible: visible,
       elements: [], // Will store rectangles, arrows, text, images
       createdAt: new Date(),
-      zIndex: 500 + id,
-      isCytoscapeLayer: id === 0, // Layer 0 = Cytoscape canvas
-      isAnnotationLayer: id > 0, // Layers 1+ = HTML canvas
+      zIndex: 500 + layerNumber,
+      isCytoscapeLayer: layerNumber === 0, // Layer 0 = Cytoscape canvas
+      isAnnotationLayer: layerNumber > 0, // Layers 1+ = HTML canvas
       customLayerName: customLayerName,
     };
   };
@@ -111,7 +115,7 @@ var AnnotationLayers = function () {
     $(document).on("click", ".layer-visibility-btn", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      var layerId = parseInt($(this).data("layer-id"));
+      var layerId = $(this).data("layer-id");
       self.toggleLayerVisibility(layerId);
     });
 
@@ -119,14 +123,14 @@ var AnnotationLayers = function () {
     $(document).on("click", ".layer-delete-btn", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      var layerId = parseInt($(this).data("layer-id"));
+      var layerId = $(this).data("layer-id");
       self.deleteLayer(layerId);
     });
 
     // Layer selection
     $(document).on("click", ".layer-item", function (e) {
       if (!$(e.target).hasClass("btn")) {
-        var layerId = parseInt($(this).data("layer-id"));
+        var layerId = $(this).data("layer-id");
         self.selectLayer(layerId);
       }
     });
@@ -259,25 +263,25 @@ var AnnotationLayers = function () {
    * Add a new layer
    * @param {boolean} isDefaultLayer - Whether this is the default Layer 0
    * @param {string} customLayerName - Optional user-defined label
-   * @returns {number} The ID of the created layer
+   * @returns {string} The UUID of the created layer
    */
   self.addLayer = function (
     isDefaultLayer = false,
     customLayerName = "",
   ) {
-    var layerId = isDefaultLayer ? 0 : nextLayerId;
-    var layer = LayerModel(layerId, true, customLayerName);
+    var layerNumber = isDefaultLayer ? 0 : nextLayerId;
+    var layer = LayerModel(layerNumber, true, customLayerName);
     layer.isDefaultLayer = isDefaultLayer;
 
     layers.push(layer);
 
     // Create HTML canvas for annotation layers only
     if (layer.isAnnotationLayer) {
-      self.createAnnotationCanvas(layer.id);
+      self.createAnnotationCanvas(layer.layerNumber);
     }
 
     self.renderLayerList();
-    self.selectLayer(layerId);
+    self.selectLayer(layer.id);
 
     if (!isDefaultLayer) {
       nextLayerId++;
@@ -288,7 +292,7 @@ var AnnotationLayers = function () {
 
   /**
    * Delete a layer
-   * @param {number} layerId - The ID of the layer to delete
+   * @param {string} layerId - The UUID of the layer to delete
    */
   self.deleteLayer = function (layerId) {
     var layer = self.getLayer(layerId);
@@ -310,14 +314,19 @@ var AnnotationLayers = function () {
     }
 
     var deletedLayer = layers[layerIndex];
+    
+    // Get the canvas BEFORE removing the layer from the array
+    var canvas = null;
+    if (deletedLayer.isAnnotationLayer) {
+      canvas = self.getAnnotationCanvas(layerId);
+    }
+    
+    // Now remove the layer from the array
     layers.splice(layerIndex, 1);
 
-    // Remove the canvas element
-    if (deletedLayer.isAnnotationLayer) {
-      var canvas = self.getAnnotationCanvas(layerId);
-      if (canvas) {
-        canvas.remove();
-      }
+    // Remove the canvas element from DOM
+    if (canvas) {
+      canvas.remove();
     }
 
     // If the deleted layer was selected, select Layer 0
@@ -349,7 +358,7 @@ var AnnotationLayers = function () {
 
   /**
    * Select a layer as the current active layer
-   * @param {number} layerId - The ID of the layer to select
+   * @param {string} layerId - The UUID of the layer to select
    */
   self.selectLayer = function (layerId) {
     var layer = self.getLayer(layerId);
@@ -365,7 +374,8 @@ var AnnotationLayers = function () {
 
     // If switching from Cytoscape layer (layer 0) to an annotation layer,
     //  clear Cytoscape selection
-    var wasCytoscapeLayer = currentLayerId === 0;
+    var currentLayer = self.getLayer(currentLayerId);
+    var wasCytoscapeLayer = currentLayer && currentLayer.layerNumber === 0;
     var isNowAnnotationLayer = layer.isAnnotationLayer;
     if (wasCytoscapeLayer && isNowAnnotationLayer) {
       var activeCy = appUtilities.getActiveCy && appUtilities.getActiveCy();
@@ -384,7 +394,7 @@ var AnnotationLayers = function () {
 
   /**
    * Toggle layer visibility
-   * @param {number} layerId - The ID of the layer
+   * @param {string} layerId - The UUID of the layer
    */
   self.toggleLayerVisibility = function (layerId) {
     var layer = self.getLayer(layerId);
@@ -406,7 +416,7 @@ var AnnotationLayers = function () {
 
   /**
    * Get a layer by ID
-   * @param {number} layerId - The ID of the layer
+   * @param {string} layerId - The UUID of the layer
    * @returns {Object|null} The layer object or null if not found
    */
   self.getLayer = function (layerId) {
@@ -456,8 +466,8 @@ var AnnotationLayers = function () {
     var visibilityIcon = layer.visible ? "fa-eye" : "fa-eye-slash";
     var isDefaultLayer = layer.isDefaultLayer;
 
-    // Compose display name
-    var displayName = "Layer " + layer.id;
+    // Compose display name using layerNumber for display
+    var displayName = "Layer " + layer.layerNumber;
     if (layer.customLayerName && layer.customLayerName.trim() !== "") {
       displayName += " (" + layer.customLayerName + ")";
     }
@@ -534,18 +544,18 @@ var AnnotationLayers = function () {
 
   /**
    * Create a canvas element for a specific annotation layer
-   * @param {number} layerId - The ID of the annotation layer
+   * @param {number} layerNumber - The numeric layer number of the annotation layer
    */
-  self.createAnnotationCanvas = function (layerId) {
+  self.createAnnotationCanvas = function (layerNumber) {
     var canvas = document.createElement("canvas");
-    canvas.id = "annotation-canvas-layer-" + layerId;
+    canvas.id = "annotation-canvas-layer-" + layerNumber;
     canvas.style.position = "absolute";
     canvas.style.top = "0";
     canvas.style.left = "0";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.pointerEvents = "none"; // Disable pointer events by default
-    canvas.style.zIndex = (1000 + layerId).toString();
+    canvas.style.zIndex = (1000 + layerNumber).toString();
 
     // Find the active cytoscape container
     var activeCy = appUtilities.getActiveCy();
@@ -565,10 +575,14 @@ var AnnotationLayers = function () {
     // Resize canvas to match container
     var resizeSuccess = annotationUtil.resizeCanvas(canvas);
 
-    // Handle window resize
+    // Handle window resize - need to find layer by layerNumber to get its id
     $(window).on("resize", function () {
       annotationUtil.resizeCanvas(canvas);
-      self.redrawLayer(layerId);
+      // Find the layer with this layerNumber to get its UUID id
+      var layer = layers.find(l => l.layerNumber === layerNumber);
+      if (layer) {
+        self.redrawLayer(layer.id);
+      }
     });
 
     return canvas;
@@ -843,7 +857,7 @@ var AnnotationLayers = function () {
 
   /**
    * Add an annotation element to a specific layer
-   * @param {number} layerId - The ID of the annotation layer
+   * @param {string} layerId - The UUID of the annotation layer
    * @param {string} elementType - Type of element ('rectangle', 'arrow', 'text', 'image')
    * @param {Object} elementData - Data for the element (e.g., { x: 100, y: 100, width: 50, height: 50 })
    */
@@ -871,7 +885,7 @@ var AnnotationLayers = function () {
 
   /**
    * Redraw all elements in a specific layer
-   * @param {number} layerId - The ID of the layer to redraw
+   * @param {string} layerId - The UUID of the layer to redraw
    */
   self.redrawLayer = function (layerId) {
     var layer = self.getLayer(layerId);
@@ -925,7 +939,7 @@ var AnnotationLayers = function () {
 
   /**
    * Remove an annotation element from a layer
-   * @param {number} layerId - The ID of the layer
+   * @param {string} layerId - The UUID of the layer
    * @param {string} elementId - The ID of the element to remove
    */
   self.removeAnnotationElement = function (layerId, elementId) {
@@ -1212,7 +1226,13 @@ var AnnotationLayers = function () {
   self.handleCanvasMouseDown = function (event, canvas) {
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
-    var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
+    var layerNumber = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
+    
+    // Find the layer with this layerNumber
+    var layer = layers.find(l => l.layerNumber === layerNumber);
+    if (!layer) {
+      return;
+    }
 
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
@@ -1378,7 +1398,13 @@ var AnnotationLayers = function () {
   self.handleCanvasMouseMove = function (event, canvas) {
     var canvasCoords = annotationUtil.getCanvasCoordinates(canvas, event);
     var modelCoords = self.canvasToModel(canvasCoords.x, canvasCoords.y);
-    var layerId = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
+    var layerNumber = parseInt(canvas.id.match(/annotation-canvas-layer-(\d+)/)[1]);
+    
+    // Find the layer with this layerNumber
+    var layer = layers.find(l => l.layerNumber === layerNumber);
+    if (!layer) {
+      return;
+    }
 
     var currentLayer = self.getCurrentLayer();
     var isOnAnnotationLayer = currentLayer && currentLayer.isAnnotationLayer;
@@ -1689,9 +1715,14 @@ var AnnotationLayers = function () {
 
   /**
    * Get annotation canvas for a specific layer
+   * @param {string} layerId - The UUID of the layer
    */
   self.getAnnotationCanvas = function (layerId) {
-    return document.getElementById("annotation-canvas-layer-" + layerId);
+    var layer = self.getLayer(layerId);
+    if (!layer) {
+      return null;
+    }
+    return document.getElementById("annotation-canvas-layer-" + layer.layerNumber);
   };
 
   /**
@@ -2262,7 +2293,8 @@ var AnnotationLayers = function () {
       // Only save annotation layers (not the default cytoscape layer)
       if (layer.isAnnotationLayer) {
         layersData.push({
-          id: layer.id,
+          id: layer.id,                        // UUID identifier
+          layerNumber: layer.layerNumber,      // Numeric identifier for backwards compatibility
           visible: layer.visible,
           elements: layer.elements,
           createdAt: layer.createdAt,
@@ -2298,7 +2330,11 @@ var AnnotationLayers = function () {
 
     self.deselectTool();
 
-    self.selectLayer(0);
+    // Select the default layer (layer 0)
+    var defaultLayer = layers.find(l => l.layerNumber === 0);
+    if (defaultLayer) {
+      self.selectLayer(defaultLayer.id);
+    }
 
     self.renderLayerList();
     self.updateAnnotationToolStates();
@@ -2323,11 +2359,29 @@ var AnnotationLayers = function () {
       Array.isArray(annotationLayersData.layers)
     ) {
       annotationLayersData.layers.forEach(function (layerData) {
+        // Migration logic: handle old format (numeric id only) vs new format (UUID id + layerNumber)
+        var layerNumber, layerId;
+        
+        if (!layerData.layerNumber && typeof layerData.id === 'number') {
+          // Old format: numeric id only - migrate it
+          layerNumber = layerData.id;
+          layerId = 'layer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          console.log('Migrating layer from old format: numeric id', layerData.id, 'to UUID', layerId);
+        } else {
+          // New format: has UUID id and layerNumber
+          layerNumber = layerData.layerNumber;
+          layerId = layerData.id;
+        }
+        
         var layer = LayerModel(
-          layerData.id,
+          layerNumber,
           layerData.visible,
           layerData.customLayerName || "",
         );
+        
+        // Override the generated UUID with the one from the file
+        layer.id = layerId;
+        
         layer.elements = (layerData.elements || []).map(function(element){
           if (!element) return element;
           if (!element.styles || typeof element.styles !== 'object') {
@@ -2351,7 +2405,7 @@ var AnnotationLayers = function () {
           return element;
         });
         layer.createdAt = new Date(layerData.createdAt);
-        layer.zIndex = layerData.zIndex || layerData.id;
+        layer.zIndex = layerData.zIndex || (500 + layerNumber);
         layer.isAnnotationLayer = true;
 
         // Reinitialize image elements with proper callbacks
@@ -2407,15 +2461,20 @@ var AnnotationLayers = function () {
 
         layers.push(layer);
 
-        self.createAnnotationCanvas(layer.id);
+        self.createAnnotationCanvas(layer.layerNumber);
 
-        if (layerData.id >= nextLayerId) {
-          nextLayerId = layerData.id + 1;
+        // Update nextLayerId based on layerNumber (not id which is now a UUID)
+        if (layerNumber >= nextLayerId) {
+          nextLayerId = layerNumber + 1;
         }
       });
     }
 
-    self.selectLayer(0);
+    // Select the default layer (layer 0)
+    var defaultLayer = layers.find(l => l.layerNumber === 0);
+    if (defaultLayer) {
+      self.selectLayer(defaultLayer.id);
+    }
 
     self.renderLayerList();
 
@@ -3229,7 +3288,7 @@ var AnnotationLayers = function () {
 
   /**
    * Get annotation items from a specific layer
-   * @param {number} layerId - The layer ID
+   * @param {string} layerId - The UUID of the layer
    * @returns {Array} Array of annotation items from the layer
    */
   self.getAnnotationItemsFromLayer = function (layerId) {
