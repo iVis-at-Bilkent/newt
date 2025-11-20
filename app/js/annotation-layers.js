@@ -784,6 +784,23 @@ var AnnotationLayers = function () {
   };
 
   /**
+   * Redraw only layers that contain image elements
+   */
+  self.redrawImages = function () {
+    layers.forEach(function(layer) {
+      if (layer.isAnnotationLayer && layer.elements) {
+        // Only redraw if this layer has image elements
+        var hasImages = layer.elements.some(function(el) {
+          return el.type === 'image';
+        });
+        if (hasImages) {
+          self.redrawLayer(layer.id);
+        }
+      }
+    });
+  };
+
+  /**
    * Set up layer isolation based on current layer
    * This function handles disabling/enabling interacting with
    * cytoscape nodes and edges.
@@ -2482,6 +2499,14 @@ var AnnotationLayers = function () {
     self.setupViewportSynchronization();
     self.updateViewportState();
     self.redrawAllAnnotationLayers();
+    
+    // Add a delayed redraw for images 
+    // to catch images that finish loading asynchronously
+    // This ensures images are displayed immediately when 
+    // loading a file, not just after pan/zoom
+    setTimeout(function() {
+      self.redrawImages();
+    }, 100);
   };
 
   /**
@@ -3324,6 +3349,7 @@ var AnnotationLayers = function () {
     canvasToModel: self.canvasToModel,
     transformElementToCanvas: self.transformElementToCanvas,
     redrawAllAnnotationLayers: self.redrawAllAnnotationLayers,
+    redrawImages: self.redrawImages,
     startTextEditing: self.startTextEditing,
     getAnnotationLayersData: self.getAnnotationLayersData,
     loadAnnotationLayersData: self.loadAnnotationLayersData,
