@@ -4404,7 +4404,6 @@ var SearchNodesView = Backbone.View.extend({
 
   // Edit this list as you like:
   classTypes: [
-    { label: 'Simple Molecule', value: 'simple_molecule' },
     { label: 'Simple Chemical', value: 'simple_chemical' },
     { label: 'Macromolecule',   value: 'macromolecule' },
     { label: 'Complex',         value: 'complex' },
@@ -4456,34 +4455,39 @@ var SearchNodesView = Backbone.View.extend({
   },
 
   onRun: async function (e) {
+
+    var runSearch = async () => {
+      console.log("Checking run search");
+      // e.preventDefault();
+      var $btn = this.$('#sn-run').prop('disabled', true).text('Finding…');
+
+      try {
+        var p = this.getParams();
+        // keep your existing call here:
+        await databaseUtilities.runSearchNodesWithPaths({
+          classType: p.classType,
+          label:     p.label,
+          matchMode: p.matchMode,
+          options:   {}
+        });
+
+        this.$el.modal("hide");
+      } catch (err) {
+        console.error('search failed:', err);
+      } finally {
+        $btn.prop('disabled', false).text('Find');
+      }
+    }
     if (cy.nodes().length != 0) {
       new PromptConfirmationView({
         el: "#prompt-confirmation-table",
-      }).render(this.onRun);
+      }).render(runSearch);
       return;
     }
-    e.preventDefault();
-    var $btn = this.$('#sn-run').prop('disabled', true).text('Finding…');
+    runSearch();  
+  },
 
-    try {
-      var p = this.getParams();
-      console.log(p);
-
-      // keep your existing call here:
-      await databaseUtilities.runSearchNodesWithPaths({
-        classType: p.classType,
-        label:     p.label,
-        matchMode: p.matchMode,
-        options:   {}
-      });
-
-      this.$el.modal("hide");
-    } catch (err) {
-      console.error('search failed:', err);
-    } finally {
-      $btn.prop('disabled', false).text('Find');
-    }
-  }
+ 
 });
 
 
@@ -7513,7 +7517,7 @@ var PromptConfirmationView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
   },
-  render: function (afterFunction) {
+  render: function (afterFunction,param) {
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
 
@@ -7524,7 +7528,7 @@ var PromptConfirmationView = Backbone.View.extend({
       .off("click", "#prompt-confirmation-accept")
       .on("click", "#prompt-confirmation-accept", function (evt) {
         $(self.el).modal("toggle");
-        afterFunction();
+        afterFunction(param);
       });
 
     $(document)
