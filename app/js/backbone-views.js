@@ -5103,7 +5103,9 @@ var PushActiveTabsView = Backbone.View.extend({
     .on("click","#replace-push-active-tabs",async function (evt){
       var chiseInstance = appUtilities.getActiveChiseInstance();
       var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
+      chiseInstance.startSpinner("push-active-tab-spinner");
       var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
+      chiseInstance.endSpinner("push-active-tab-spinner");
       $(self.el).modal("toggle");
       if(result!==null && result!==undefined){
         new PromptActiveTabPushError({
@@ -5116,7 +5118,9 @@ var PushActiveTabsView = Backbone.View.extend({
       .on("click", "#merge-push-active-tabs", async function (evt) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
+        chiseInstance.startSpinner("push-active-tab-spinner");
         var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
+        chiseInstance.endSpinner("push-active-tab-spinner");
         if(result!==null && result!==undefined){
           new PromptActiveTabPushError({
           el: "#active-tab-push-error-table",

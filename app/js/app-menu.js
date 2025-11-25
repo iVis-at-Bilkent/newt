@@ -496,7 +496,35 @@ module.exports = function() {
       var fileExtension = getFileType(file.name);
       var loadCallbackInvalidityWarning=()=>{promptInvalidFileView.render()};
       
-      if(fileExtension==='nwt'){
+      if(fileExtension == 'sif'){
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          params = [layoutBy, loadCallbackInvalidityWarning, (e)=>{
+          console.log('File loaded');
+          console.log('e:',e);
+          console.log('pushActiveTabsView:',pushActiveTabsView);
+          pushActiveTabsView.render(e,"Push From File");
+        }];
+          caller = chiseInstance.loadSIFFile;
+      }
+      else if(fileExtension == 'sbml'){
+          var layoutBy = function() {
+            appUtilities.triggerLayout( cy, true );
+          };
+          var error = function(data){
+            promptFileConversionErrorView.render();          
+            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";         
+          },
+          caller = chiseInstance.loadSbmlForSBML; 
+          params = [error, layoutBy, (e)=>{
+          console.log('File loaded');
+          console.log('e:',e);
+          console.log('pushActiveTabsView:',pushActiveTabsView);
+          pushActiveTabsView.render(e,"Push From File");
+        }];
+      }
+      else if(fileExtension==='nwt' || fileExtension==='sbgn'){
         var loadCallbackSBGNMLValidity = function (text) {
           //validateSBGNML(text);
         };
@@ -532,7 +560,41 @@ module.exports = function() {
         }, loadCallbackAnnotationLayers];
         caller = chiseInstance.loadNwtFile;
       }
-
+      else if(fileExtension == 'xml'){
+        appUtilities.setFileContent(file.name); 
+        var success = function(data){
+          chiseInstance.loadSBGNMLText(data, true, file.name, cy);
+        };
+        var error = function(data){
+          promptFileConversionErrorView.render();          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";  
+        };
+        caller = chiseInstance.loadCellDesigner;
+        params = [success, error,(e)=>{
+          console.log('File loaded');
+          console.log('e:',e);
+          console.log('pushActiveTabsView:',pushActiveTabsView);
+          pushActiveTabsView.render(e,"Push From File");
+        }];
+      }
+      else if(fileExtension == 'gpml'){
+        appUtilities.setFileContent(file.name);
+        var success = function(data){
+          chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
+        };
+        var error = function(data){
+          promptFileConversionErrorView.render();          
+          document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
+          
+        };
+        caller = chiseInstance.loadGpml;
+        params = [success, error,(e)=>{
+          console.log('File loaded');
+          console.log('e:',e);
+          console.log('pushActiveTabsView:',pushActiveTabsView);
+          pushActiveTabsView.render(e,"Push From File");
+        }];
+      }
       // if(cy.elements().length != 0) {
       //   promptConfirmationView.render(() => {
       //     setTimeout(() => caller(file, ...params), 150);
@@ -566,7 +628,7 @@ module.exports = function() {
         // Using the new helper function to properly 
         // detect file types including .nwt.txt files
         var fileExtension = getFileType(file.name);
-
+        console.log("came here to load the file with extension:", fileExtension);
         var loadCallbackInvalidityWarning  = function () {
           promptInvalidFileView.render();
         }
@@ -615,6 +677,7 @@ module.exports = function() {
           params = [success, error];
         }
         else{
+          console.log("came here to load the file");
           var loadCallbackSBGNMLValidity = function (text) {
             //validateSBGNML(text);
           }
