@@ -679,6 +679,12 @@ var databaseUtilities = {
       var cy = appUtilities.getActiveCy();
       cy.elements().remove();
       databaseUtilities.cleanNodesAndEdgesInDB();
+      edgesArray.forEach(edge=>{
+        const source = edge.properties.source;
+        const target = edge.properties.target;
+        const edgeClass = edge.properties.class;
+        databaseUtilities.edgesInDB[[source, target, edgeClass].join("|")] = 1;
+      });
       await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
     } catch (err) {
       console.error("Error running custom.searchNodesWithPaths:", err);
@@ -1201,20 +1207,21 @@ var databaseUtilities = {
     );
   },
   getNeighboringNodes: async function(nodeId) {
+        
     const query = `
       CALL custom.getNeighbors($id)
         YIELD node, rel
       RETURN node, rel
     `;
     const data = { query, queryData: { id: nodeId } };
-  
+    console.log(data);
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: async function(response) {
-        
+        console.log(response);
         const recs      = response.records;
         let nodesArr = [];
         let edgesArr = [];
@@ -1224,6 +1231,7 @@ var databaseUtilities = {
           nodesArr.push(node);
           edgesArr.push(rel);
           });
+        edgesArr = edgesArr.filter(edge=>edge!=null);
         await databaseUtilities.addNodesEdgesToCy(nodesArr, edgesArr);
         databaseUtilities.performLayout();
       },
@@ -1393,6 +1401,7 @@ var databaseUtilities = {
 
   addNodesEdgesToCy: async function (nodes, edges=[], source, target) {
     console.log("Edges in here:",edges);
+    
     return new Promise((resolve) => {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       let nodesToHighlight = [];
@@ -1400,7 +1409,7 @@ var databaseUtilities = {
       let edgesToAdd = [];
       let nodesToAdd = [];
       databaseUtilities.nodesInDB = {};
-      databaseUtilities.edgesInDB = {};
+      // databaseUtilities.edgesInDB = {};
       for (let i = 0; i < nodes.length; i++) {
         if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
           nodesToAdd.push(nodes[i]);
@@ -1417,7 +1426,7 @@ var databaseUtilities = {
               edges[j].properties.source,
               edges[j].properties.target,
               edges[j].properties.class,
-            ]
+            ].join("|")
           ]
         ) {
           edgesToAdd.push(edges[j]);
@@ -1426,7 +1435,7 @@ var databaseUtilities = {
               edges[j].properties.source,
               edges[j].properties.target,
               edges[j].properties.class,
-            ]
+            ].join("|")
           ] = edges[j].identity.low;
         }
         edgesToHighlight.push(edges[j]);
@@ -1831,7 +1840,7 @@ var databaseUtilities = {
         appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
         var cy = appUtilities.getActiveCy();
         cy.elements().remove();
-        databaseUtilities.cleanNodesAndEdgesInDB();
+        // databaseUtilities.cleanNodesAndEdgesInDB();
         await databaseUtilities.addNodesEdgesToCy(
           nodes,
           edges,
