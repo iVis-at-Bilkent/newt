@@ -86,7 +86,7 @@
         <nwt:extraInfo 
           xmlns:nwt="https://newteditor.org/">
           <w>340.9077575977633</w>
-          <h>181.31795863479405</h>
+          <h>181.31795863479417</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -96,7 +96,7 @@
         </nwt:extraInfo>
       </extension>
       <label text="nucleoplasm"/>
-      <bbox x="452.1320153099605" y="55.5662620246663" w="368.9077575977633" h="209.31795863479405"/>
+      <bbox x="440.96532555227634" y="-9.800947567723938" w="368.9077575977633" h="209.31795863479417"/>
     </glyph>
     <glyph id="species_5" class="complex sbml" compartmentRef="comp_0">
       <extension>
@@ -113,18 +113,18 @@
         </nwt:extraInfo>
       </extension>
       <label text="2x(p-Y705-STAT3)"/>
-      <bbox x="529.440314741008" y="71.19126202466629" w="93.25" h="63.25"/>
+      <bbox x="518.2736249833239" y="5.824052432276062" w="93.25" h="63.25"/>
     </glyph>
     <glyph id="species_2" class="protein" compartmentRef="species_5">
       <label text="STAT3"/>
-      <bbox x="541.065314741008" y="82.81626202466629" w="70" h="40"/>
+      <bbox x="529.8986249833239" y="17.449052432276062" w="70" h="40"/>
     </glyph>
     <glyph id="species_9" class="complex sbml" compartmentRef="comp_0">
       <extension>
         <nwt:extraInfo 
           xmlns:nwt="https://newteditor.org/">
           <w>73.25</w>
-          <h>96.50000000000011</h>
+          <h>96.5000000000002</h>
           <minW>0</minW>
           <minH>0</minH>
           <WLBias>0</WLBias>
@@ -134,40 +134,40 @@
         </nwt:extraInfo>
       </extension>
       <label text="p-Y705-STAT3 dimer:SOCS3 Gene"/>
-      <bbox x="712.1647729077238" y="98.54218544229636" w="93.25" h="116.50000000000011"/>
+      <bbox x="700.9980831500396" y="33.17497584990619" w="93.25" h="116.5000000000002"/>
     </glyph>
     <glyph id="species_11" class="protein" compartmentRef="species_9">
       <label text="STAT3"/>
-      <bbox x="723.7897729077238" y="110.16718544229636" w="70" h="40"/>
+      <bbox x="712.6230831500396" y="44.79997584990619" w="70" h="40"/>
     </glyph>
     <glyph id="species_19" class="gene" compartmentRef="species_9">
       <label text="SOCS3"/>
-      <bbox x="723.7897729077238" y="163.41718544229647" w="70" h="40"/>
+      <bbox x="712.6230831500396" y="98.0499758499064" w="70" h="40"/>
     </glyph>
     <glyph id="species_23" class="gene" compartmentRef="comp_0">
       <label text="SOCS3"/>
-      <bbox x="618.401248122801" y="155.0015104445628" w="70" h="40"/>
+      <bbox x="607.2345583651169" y="89.63430085217271" w="70" h="40"/>
     </glyph>
     <glyph id="SbmlReactionExporter_3" class="process" compartmentRef="comp_0">
-      <bbox x="663.6058131459308" y="106.05541361167434" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_3.1" x="680.7486702887879" y="113.19827075453148"/>
-      <port id="SbmlReactionExporter_3.2" x="660.7486702887879" y="113.19827075453148"/>
+      <bbox x="652.4391233882467" y="40.688204019284136" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_3.1" x="669.5819805311038" y="47.83106116214128"/>
+      <port id="SbmlReactionExporter_3.2" x="649.5819805311038" y="47.83106116214128"/>
     </glyph>
     <glyph id="SbmlReactionExporter_5" class="process" compartmentRef="comp_0">
-      <bbox x="687.191958004887" y="232.1163635166032" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_5.1" x="694.3348151477442" y="249.25922065946034"/>
-      <port id="SbmlReactionExporter_5.2" x="694.3348151477442" y="229.25922065946034"/>
+      <bbox x="676.0252682472029" y="166.7491539242131" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_5.1" x="683.16812539006" y="183.89201106707023"/>
+      <port id="SbmlReactionExporter_5.2" x="683.16812539006" y="163.89201106707023"/>
     </glyph>
     <glyph id="SbmlReactionExporter_8" class="process" compartmentRef="comp_0">
-      <bbox x="470.6141581671033" y="148.5291607911979" w="14.285714285714295" h="14.28571428571429"/>
-      <port id="SbmlReactionExporter_8.1" x="487.7570153099605" y="155.67201793405505"/>
-      <port id="SbmlReactionExporter_8.2" x="467.7570153099605" y="155.67201793405505"/>
+      <bbox x="459.4474684094192" y="83.16195119880783" w="14.285714285714295" h="14.28571428571429"/>
+      <port id="SbmlReactionExporter_8.1" x="476.59032555227634" y="90.30480834166497"/>
+      <port id="SbmlReactionExporter_8.2" x="456.59032555227634" y="90.30480834166497"/>
     </glyph>
     <glyph id="comp_1" class="compartment">
       <extension>
         <nwt:extraInfo 
           xmlns:nwt="https://newteditor.org/">
-          <w>758.238933085001</w>
+          <w>758.2389330850011</w>
           <h>383.95044206415577</h>
           <minW>0</minW>
           <minH>0</minH>
@@ -178,15 +178,15 @@
         </nwt:extraInfo>
       </extension>
       <label text="cytosol"/>
-      <bbox x="-91.27199198891151" y="280.95805783452033" w="786.238933085001" h="411.95044206415577"/>
+      <bbox x="-89.2416847602417" y="230.2003771177739" w="786.2389330850011" h="411.95044206415577"/>
     </glyph>
     <glyph id="species_3" class="protein" compartmentRef="comp_1">
       <label text="STAT3"/>
-      <bbox x="173.13345847616046" y="406.8517758631336" w="70" h="40"/>
+      <bbox x="175.1637657048303" y="356.09409514638713" w="70" h="40"/>
     </glyph>
     <glyph id="species_4" class="simple molecule" compartmentRef="comp_1">
       <label text="ATP"/>
-      <bbox x="192.92240347958676" y="501.3149537562217" w="40" h="40"/>
+      <bbox x="183.73441324651253" y="462.89740024739376" w="40" h="40"/>
     </glyph>
     <glyph id="species_6" class="complex sbml" compartmentRef="comp_1">
       <extension>
@@ -203,19 +203,19 @@
         </nwt:extraInfo>
       </extension>
       <label text="p-Y342-BRK:p-Y250-STAP2:STAT3"/>
-      <bbox x="-58.936556928065386" y="414.403376958216" w="176.5" h="116.50000000000011"/>
+      <bbox x="-56.906249699395545" y="363.6456962414695" w="176.5" h="116.50000000000011"/>
     </glyph>
     <glyph id="species_10" class="protein" compartmentRef="species_6">
       <label text="PTK6"/>
-      <bbox x="-47.311556928065386" y="426.028376958216" w="70" h="40"/>
+      <bbox x="-45.281249699395545" y="375.2706962414695" w="70" h="40"/>
     </glyph>
     <glyph id="species_20" class="protein" compartmentRef="species_6">
       <label text="STAP2"/>
-      <bbox x="-47.311556928065386" y="479.2783769582161" w="70" h="40"/>
+      <bbox x="-45.281249699395545" y="428.52069624146964" w="70" h="40"/>
     </glyph>
     <glyph id="species_22" class="protein" compartmentRef="species_6">
       <label text="STAT3"/>
-      <bbox x="35.938443071934614" y="426.028376958216" w="70" h="40"/>
+      <bbox x="37.968750300604455" y="375.2706962414695" w="70" h="40"/>
     </glyph>
     <glyph id="species_8" class="complex sbml" compartmentRef="comp_1">
       <extension>
@@ -232,15 +232,15 @@
         </nwt:extraInfo>
       </extension>
       <label text="2x(p-Y705-STAT3)"/>
-      <bbox x="338.2213583352144" y="296.5830578345204" w="93.25" h="63.25"/>
+      <bbox x="340.2516655638842" y="245.82537711777394" w="93.25" h="63.25"/>
     </glyph>
     <glyph id="species_0" class="protein" compartmentRef="species_8">
       <label text="STAT3"/>
-      <bbox x="349.8463583352144" y="308.2080578345204" w="70" h="40"/>
+      <bbox x="351.8766655638842" y="257.45037711777394" w="70" h="40"/>
     </glyph>
     <glyph id="species_12" class="protein" compartmentRef="comp_1">
       <label text="STAT3"/>
-      <bbox x="-75.64699198891154" y="597.5625569344381" w="70" h="40"/>
+      <bbox x="-73.6166847602417" y="546.8048762176917" w="70" h="40"/>
     </glyph>
     <glyph id="species_13" class="complex sbml" compartmentRef="comp_1">
       <extension>
@@ -257,31 +257,31 @@
         </nwt:extraInfo>
       </extension>
       <label text="p-Y342-BRK:p-Y250-STAP2"/>
-      <bbox x="70.66019850472281" y="560.7834998986762" w="93.25" h="116.5"/>
+      <bbox x="72.69050573339265" y="510.0258191819297" w="93.25" h="116.5"/>
     </glyph>
     <glyph id="species_1" class="protein" compartmentRef="species_13">
       <label text="STAP2"/>
-      <bbox x="82.28519850472281" y="572.4084998986762" w="70" h="40"/>
+      <bbox x="84.31550573339265" y="521.6508191819297" w="70" h="40"/>
     </glyph>
     <glyph id="species_15" class="protein" compartmentRef="species_13">
       <label text="PTK6"/>
-      <bbox x="82.28519850472281" y="625.6584998986762" w="70" h="40"/>
+      <bbox x="84.31550573339265" y="574.9008191819297" w="70" h="40"/>
     </glyph>
     <glyph id="species_14" class="protein" compartmentRef="comp_1">
       <label text="STAP2"/>
-      <bbox x="448.6437289724157" y="588.8676201116486" w="70" h="40"/>
+      <bbox x="450.6740362010855" y="538.1099393949022" w="70" h="40"/>
     </glyph>
     <glyph id="species_17" class="protein" compartmentRef="comp_1">
       <label text="SOCS3"/>
-      <bbox x="609.3419410960895" y="411.5573070390209" w="70" h="40"/>
+      <bbox x="611.3722483247594" y="360.79962632227443" w="70" h="40"/>
     </glyph>
     <glyph id="species_18" class="simple molecule" compartmentRef="comp_1">
       <label text="ADP"/>
-      <bbox x="313.9181983071927" y="385.8697583537383" w="40" h="40"/>
+      <bbox x="226.20212584191012" y="430.4676060618163" w="40" h="40"/>
     </glyph>
     <glyph id="species_25" class="protein" compartmentRef="comp_1">
       <label text="PTK6"/>
-      <bbox x="447.09004607455563" y="496.87824066837857" w="70" h="40"/>
+      <bbox x="449.12035330322544" y="446.1205599516321" w="70" h="40"/>
     </glyph>
     <glyph id="species_26" class="complex sbml" compartmentRef="comp_1">
       <extension>
@@ -298,15 +298,15 @@
         </nwt:extraInfo>
       </extension>
       <label text="p-Y342-BRK:SOCS3"/>
-      <bbox x="483.6724898951135" y="311.94018032019267" w="93.25" h="116.49999999999994"/>
+      <bbox x="485.7027971237834" y="261.1824996034462" w="93.25" h="116.49999999999994"/>
     </glyph>
     <glyph id="species_16" class="protein" compartmentRef="species_26">
       <label text="PTK6"/>
-      <bbox x="495.2974898951135" y="323.5651803201927" w="70" h="40"/>
+      <bbox x="497.3277971237834" y="272.8074996034463" w="70" h="40"/>
     </glyph>
     <glyph id="species_21" class="protein" compartmentRef="species_26">
       <label text="SOCS3"/>
-      <bbox x="495.2974898951135" y="376.81518032019267" w="70" h="40"/>
+      <bbox x="497.3277971237834" y="326.0574996034462" w="70" h="40"/>
     </glyph>
     <glyph id="species_27" class="complex sbml" compartmentRef="comp_1">
       <extension>
@@ -323,241 +323,241 @@
         </nwt:extraInfo>
       </extension>
       <label text="p-Y342-PTK6:STAP2"/>
-      <bbox x="268.9553119623049" y="544.6182259516811" w="93.25" h="116.5"/>
+      <bbox x="270.9856191909747" y="493.86054523493465" w="93.25" h="116.5"/>
     </glyph>
     <glyph id="species_7" class="protein" compartmentRef="species_27">
       <label text="PTK6"/>
-      <bbox x="280.5803119623049" y="556.2432259516811" w="70" h="40"/>
+      <bbox x="282.6106191909747" y="505.48554523493465" w="70" h="40"/>
     </glyph>
     <glyph id="species_24" class="protein" compartmentRef="species_27">
       <label text="STAP2"/>
-      <bbox x="280.5803119623049" y="609.4932259516811" w="70" h="40"/>
+      <bbox x="282.6106191909747" y="558.7355452349346" w="70" h="40"/>
     </glyph>
     <glyph id="SbmlReactionExporter_0" class="process" compartmentRef="comp_1">
-      <bbox x="159.16213471072464" y="487.80100938144204" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_0.1" x="156.30499185358178" y="494.9438665242992"/>
-      <port id="SbmlReactionExporter_0.2" x="176.30499185358178" y="494.9438665242992"/>
+      <bbox x="161.19244193939448" y="437.0433286646956" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_0.1" x="158.33529908225162" y="444.18618580755276"/>
+      <port id="SbmlReactionExporter_0.2" x="178.33529908225162" y="444.18618580755276"/>
     </glyph>
     <glyph id="SbmlReactionExporter_1" class="process" compartmentRef="comp_1">
-      <bbox x="398.6813214551168" y="557.6089709691471" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_1.1" x="395.82417859797397" y="564.7518281120042"/>
-      <port id="SbmlReactionExporter_1.2" x="415.82417859797397" y="564.7518281120042"/>
+      <bbox x="400.7116286837866" y="506.8512902524006" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_1.1" x="397.8544858266438" y="513.9941473952578"/>
+      <port id="SbmlReactionExporter_1.2" x="417.8544858266438" y="513.9941473952578"/>
     </glyph>
     <glyph id="SbmlReactionExporter_2" class="process" compartmentRef="comp_1">
-      <bbox x="219.5076282147315" y="575.0043165897621" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_2.1" x="216.65048535758865" y="582.1471737326192"/>
-      <port id="SbmlReactionExporter_2.2" x="236.65048535758865" y="582.1471737326192"/>
+      <bbox x="221.53793544340135" y="524.2466358730156" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_2.1" x="218.6807925862585" y="531.3894930158727"/>
+      <port id="SbmlReactionExporter_2.2" x="238.6807925862585" y="531.3894930158727"/>
     </glyph>
     <glyph id="SbmlReactionExporter_4" class="process" compartmentRef="comp_1">
-      <bbox x="284.59046884321907" y="376.6254856433568" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_4.1" x="301.73332598607624" y="383.76834278621396"/>
-      <port id="SbmlReactionExporter_4.2" x="281.73332598607624" y="383.76834278621396"/>
+      <bbox x="286.6207760718889" y="325.86780492661035" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_4.1" x="303.76363321474605" y="333.0106620694675"/>
+      <port id="SbmlReactionExporter_4.2" x="283.76363321474605" y="333.0106620694675"/>
     </glyph>
     <glyph id="SbmlReactionExporter_6" class="process" compartmentRef="comp_1">
-      <bbox x="22.135605815953536" y="564.688630808917" w="14.285714285714286" h="14.285714285714286"/>
-      <port id="SbmlReactionExporter_6.1" x="29.278462958810678" y="561.8314879517741"/>
-      <port id="SbmlReactionExporter_6.2" x="29.278462958810678" y="581.8314879517741"/>
+      <bbox x="24.165913044623377" y="513.9309500921705" w="14.285714285714286" h="14.285714285714286"/>
+      <port id="SbmlReactionExporter_6.1" x="31.30877018748052" y="511.07380723502763"/>
+      <port id="SbmlReactionExporter_6.2" x="31.30877018748052" y="531.0738072350276"/>
     </glyph>
     <glyph id="SbmlReactionExporter_7" class="process" compartmentRef="comp_1">
-      <bbox x="552.8058926463397" y="461.38188294744344" w="14.285714285714295" h="14.28571428571429"/>
-      <port id="SbmlReactionExporter_7.1" x="549.9487497891968" y="468.5247400903006"/>
-      <port id="SbmlReactionExporter_7.2" x="569.9487497891968" y="468.5247400903006"/>
+      <bbox x="554.8361998750096" y="410.624202230697" w="14.285714285714295" h="14.28571428571429"/>
+      <port id="SbmlReactionExporter_7.1" x="551.9790570178667" y="417.76705937355416"/>
+      <port id="SbmlReactionExporter_7.2" x="571.9790570178667" y="417.76705937355416"/>
     </glyph>
     <arc id="species_6_SbmlReactionExporter_0" class="consumption" source="species_6" target="SbmlReactionExporter_0.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="118.18844307193461" y="487.1146140038917"/>
-      <end x="176.92999185358178" y="494.9438665242992"/>
+      <start x="120.21875030060446" y="436.35693328714524"/>
+      <end x="178.96029908225162" y="444.18618580755276"/>
     </arc>
     <arc id="species_4_SbmlReactionExporter_0" class="consumption" source="species_4" target="SbmlReactionExporter_0.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="194.97069421062758" y="511.1598191277313"/>
-      <end x="176.92999185358178" y="494.9438665242992"/>
+      <start x="189.81601276219249" y="467.67673163665"/>
+      <end x="178.96029908225162" y="444.18618580755276"/>
     </arc>
     <arc id="species_18_SbmlReactionExporter_0" class="consumption" source="species_18" target="SbmlReactionExporter_0.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="315.70526900952467" y="415.54859254997007"/>
-      <end x="176.92999185358178" y="494.9438665242992"/>
+      <start x="225.64390814518927" y="448.8092001602849"/>
+      <end x="178.96029908225162" y="444.18618580755276"/>
     </arc>
     <arc id="species_3_SbmlReactionExporter_0" class="consumption" source="species_3" target="SbmlReactionExporter_0.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="195.4636738401791" y="447.4767758631336"/>
-      <end x="176.92999185358178" y="494.9438665242992"/>
+      <start x="197.49398106884894" y="396.71909514638713"/>
+      <end x="178.96029908225162" y="444.18618580755276"/>
     </arc>
     <arc id="SbmlReactionExporter_0_species_13" class="production" source="SbmlReactionExporter_0.1" target="species_13">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="155.67999185358178" y="494.9438665242992"/>
-      <end x="141.6910515423675" y="557.2520612443504"/>
+      <start x="157.71029908225162" y="444.18618580755276"/>
+      <end x="143.72135877103733" y="506.494380527604"/>
     </arc>
     <arc id="species_14_SbmlReactionExporter_1" class="consumption" source="species_14" target="SbmlReactionExporter_1.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="450.98848788296027" y="590.3554105618772"/>
-      <end x="416.44917859797397" y="564.7518281120042"/>
+      <start x="453.0187951116301" y="539.5977298451307"/>
+      <end x="418.4794858266438" y="513.9941473952578"/>
     </arc>
     <arc id="species_25_SbmlReactionExporter_1" class="consumption" source="species_25" target="SbmlReactionExporter_1.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="450.9336815488449" y="536.435704457866"/>
-      <end x="416.44917859797397" y="564.7518281120042"/>
+      <start x="452.9639887775147" y="485.6780237411195"/>
+      <end x="418.4794858266438" y="513.9941473952578"/>
     </arc>
     <arc id="SbmlReactionExporter_1_species_27" class="production" source="SbmlReactionExporter_1.1" target="species_27">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="395.19917859797397" y="564.7518281120042"/>
-      <end x="365.70906327913355" y="581.6952919936048"/>
+      <start x="397.2294858266438" y="513.9941473952578"/>
+      <end x="367.73937050780336" y="530.9376112768583"/>
     </arc>
     <arc id="species_27_SbmlReactionExporter_2" class="consumption" source="species_27" target="SbmlReactionExporter_2.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="268.3303119623049" y="591.858762032421"/>
-      <end x="237.27548535758865" y="582.1471737326192"/>
+      <start x="270.3606191909747" y="541.1010813156746"/>
+      <end x="239.3057925862585" y="531.3894930158727"/>
     </arc>
     <arc id="species_4_SbmlReactionExporter_2" class="consumption" source="species_4" target="SbmlReactionExporter_2.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="217.4626953616973" y="541.4340087694484"/>
-      <end x="237.27548535758865" y="582.1471737326192"/>
+      <start x="213.16948576786496" y="501.23779368692556"/>
+      <end x="239.3057925862585" y="531.3894930158727"/>
     </arc>
     <arc id="species_18_SbmlReactionExporter_2" class="consumption" source="species_18" target="SbmlReactionExporter_2.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="323.19659600541655" y="423.48900547393464"/>
-      <end x="237.27548535758865" y="582.1471737326192"/>
+      <start x="241.83750697641017" y="470.6255009707328"/>
+      <end x="239.3057925862585" y="531.3894930158727"/>
     </arc>
     <arc id="SbmlReactionExporter_2_species_13" class="production" source="SbmlReactionExporter_2.1" target="species_13">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="216.02548535758865" y="582.1471737326192"/>
-      <end x="167.49631246001204" y="602.0984780118175"/>
+      <start x="218.0557925862585" y="531.3894930158727"/>
+      <end x="169.52661968868188" y="551.3407972950711"/>
     </arc>
     <arc id="species_5_SbmlReactionExporter_3" class="consumption" source="species_5" target="SbmlReactionExporter_3.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="623.315314741008" y="107.99721394222465"/>
-      <end x="660.1236702887879" y="113.19827075453148"/>
+      <start x="612.1486249833239" y="42.63000434983444"/>
+      <end x="648.9569805311038" y="47.83106116214128"/>
     </arc>
     <arc id="species_23_SbmlReactionExporter_3" class="consumption" source="species_23" target="SbmlReactionExporter_3.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="659.1904362619333" y="154.3765104445628"/>
-      <end x="660.1236702887879" y="113.19827075453148"/>
+      <start x="648.0237465042492" y="89.00930085217271"/>
+      <end x="648.9569805311038" y="47.83106116214128"/>
     </arc>
     <arc id="SbmlReactionExporter_3_species_9" class="production" source="SbmlReactionExporter_3.1" target="species_9">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="681.3736702887879" y="113.19827075453148"/>
-      <end x="708.7392806809548" y="132.0094780100848"/>
+      <start x="670.2069805311038" y="47.83106116214128"/>
+      <end x="697.5725909232707" y="66.64226841769464"/>
     </arc>
     <arc id="species_3_SbmlReactionExporter_4" class="consumption" source="species_3" target="SbmlReactionExporter_4.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="241.8699066226023" y="409.46559991258204"/>
-      <end x="281.10832598607624" y="383.76834278621396"/>
+      <start x="243.90021385127216" y="358.70791919583553"/>
+      <end x="283.13863321474605" y="333.0106620694675"/>
     </arc>
     <arc id="SbmlReactionExporter_4_species_8" class="production" source="SbmlReactionExporter_4.1" target="species_8">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="302.35832598607624" y="383.76834278621396"/>
-      <end x="340.1173208431634" y="354.8977489118655"/>
+      <start x="304.38863321474605" y="333.0106620694675"/>
+      <end x="342.1476280718332" y="304.14006819511906"/>
     </arc>
     <arc id="species_23_SbmlReactionExporter_5" class="consumption" source="species_23" target="SbmlReactionExporter_5.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="666.5398242884628" y="195.6265104445628"/>
-      <end x="694.3348151477442" y="228.63422065946034"/>
+      <start x="655.3731345307787" y="130.25930085217271"/>
+      <end x="683.16812539006" y="163.26701106707023"/>
     </arc>
     <arc id="SbmlReactionExporter_5_species_17" class="production" source="SbmlReactionExporter_5.1" target="species_17">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="694.3348151477442" y="249.88422065946034"/>
-      <end x="650.4902322750336" y="407.90784397767175"/>
+      <start x="683.16812539006" y="184.51701106707023"/>
+      <end x="650.5872976666701" y="357.09790001282914"/>
     </arc>
     <arc id="species_9_SbmlReactionExporter_5" class="stimulation" source="species_9" target="SbmlReactionExporter_5">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="717.6575724002088" y="209.41886841126464"/>
-      <end x="702.1908823984604" y="229.2077584112686"/>
+      <start x="706.4908826425246" y="144.05165881887453"/>
+      <end x="691.0241926407763" y="163.8405488188785"/>
     </arc>
     <arc id="species_12_SbmlReactionExporter_6" class="consumption" source="species_12" target="SbmlReactionExporter_6.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="-10.205506613293515" y="597.6539032304626"/>
-      <end x="29.278462958810678" y="582.4564879517741"/>
+      <start x="-8.175199384623674" y="546.8962225137161"/>
+      <end x="31.30877018748052" y="531.6988072350276"/>
     </arc>
     <arc id="species_13_SbmlReactionExporter_6" class="consumption" source="species_13" target="SbmlReactionExporter_6.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="70.03519850472281" y="593.6911775110038"/>
-      <end x="29.278462958810678" y="582.4564879517741"/>
+      <start x="72.06550573339265" y="542.9334967942574"/>
+      <end x="31.30877018748052" y="531.6988072350276"/>
     </arc>
     <arc id="SbmlReactionExporter_6_species_6" class="production" source="SbmlReactionExporter_6.1" target="species_6">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="29.278462958810678" y="561.2064879517741"/>
-      <end x="29.291575676143765" y="534.6533767638454"/>
+      <start x="31.30877018748052" y="510.44880723502763"/>
+      <end x="31.321882904813606" y="483.89569604709897"/>
     </arc>
     <arc id="species_25_SbmlReactionExporter_7" class="consumption" source="species_25" target="SbmlReactionExporter_7.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="513.4217953802131" y="497.41991827303144"/>
-      <end x="570.5737497891968" y="468.5247400903006"/>
+      <start x="515.4521026088829" y="446.662237556285"/>
+      <end x="572.6040570178667" y="417.76705937355416"/>
     </arc>
     <arc id="species_17_SbmlReactionExporter_7" class="consumption" source="species_17" target="SbmlReactionExporter_7.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="609.3794086892456" y="446.8722282552735"/>
-      <end x="570.5737497891968" y="468.5247400903006"/>
+      <start x="611.4097159179155" y="396.11454753852706"/>
+      <end x="572.6040570178667" y="417.76705937355416"/>
     </arc>
     <arc id="SbmlReactionExporter_7_species_26" class="production" source="SbmlReactionExporter_7.1" target="species_26">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="549.3237497891968" y="468.5247400903006"/>
-      <end x="548.9525053686411" y="432.05712090371713"/>
+      <start x="551.3540570178667" y="417.76705937355416"/>
+      <end x="550.9828125973111" y="381.2994401869707"/>
     </arc>
     <arc id="species_8_SbmlReactionExporter_8" class="consumption" source="species_8" target="SbmlReactionExporter_8.2">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="402.2129832395772" y="295.9580578345204"/>
-      <end x="467.1320153099605" y="155.67201793405505"/>
+      <start x="400.61338159428715" y="245.20037711777394"/>
+      <end x="455.96532555227634" y="90.30480834166497"/>
     </arc>
     <arc id="SbmlReactionExporter_8_species_5" class="production" source="SbmlReactionExporter_8.1" target="species_5">
       <extension>
         <curveStyle>bezier</curveStyle>
       </extension>
-      <start x="488.3820153099605" y="155.67201793405505"/>
-      <end x="529.6529455178652" y="127.77001336643869"/>
+      <start x="477.21532555227634" y="90.30480834166497"/>
+      <end x="518.486255760181" y="62.40280377404851"/>
     </arc>
   </map>
 </sbgn>
