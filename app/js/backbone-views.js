@@ -4404,14 +4404,16 @@ var SearchNodesView = Backbone.View.extend({
 
   // Edit this list as you like:
   classTypes: [
-    { label: 'Simple Chemical', value: 'simple_chemical' },
     { label: 'Macromolecule',   value: 'macromolecule' },
-    { label: 'Complex',         value: 'complex' },
-    { label: 'Compartment',     value: 'compartment' },
-    { label: 'Phenotype',       value: 'phenotype' },
+    { label: 'Simple Chemical', value: 'simple_chemical' },
     { label: 'Unspecified Entity',       value: 'unspecified_entity' },
     { label: 'Nucleic Acid Feature',       value: 'nucleic_acid_feature' },
-    { label: 'Perturbing Agent',       value: 'perturbing_agent' }
+    { label: 'Perturbing Agent',       value: 'perturbing_agent' },
+    { label: 'Complex',         value: 'complex' },
+    { label: 'Phenotype',       value: 'phenotype' },
+    { label: 'Compartment',     value: 'compartment' },
+    { label: 'Submap',         value: 'submap' },
+    { label: 'Tag',         value: 'tag' }
   ],
 
   initialize: function () {
