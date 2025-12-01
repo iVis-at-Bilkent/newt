@@ -5,6 +5,7 @@ var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
 const databaseUtilities = require('./database-utilities');
+var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -88,8 +89,7 @@ module.exports = function (chiseInstance) {
       zIndex: 999,
       enableMultipleAnchorRemovalOption: true,
     });
-
-    contextMenus.appendMenuItems([
+    const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
         content: 'Properties...',
@@ -361,16 +361,6 @@ module.exports = function (chiseInstance) {
         }
       },
       {
-        id: 'ctx-menu-get-database-neighbors',
-        content: 'Get Neighbors from Database',
-        selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
-        onClickFunction: function (event) {
-            var cyTarget = event.target || event.cyTarget;
-            databaseUtilities.getNeighboringNodes(cyTarget.id());
-        }
-      },
-      {
         id: 'ctx-menu-query-pcids',
         content: 'Query PC IDs',
         selector: 'edge',
@@ -415,7 +405,20 @@ module.exports = function (chiseInstance) {
             }
         }
       }
-    ]);
+    ];
+    if(IS_LOCAL_DATABASE){
+      contextMenuItems.push({
+        id: 'ctx-menu-get-database-neighbors',
+        content: 'Get Neighbors from Local Database',
+        selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            databaseUtilities.getNeighboringNodes(cyTarget.id());
+        }
+      });
+    }
+    contextMenus.appendMenuItems(contextMenuItems);
 
     cy.clipboard({
       clipboardSize: 5, // Size of clipboard. 0 means unlimited. If size is exceeded, first added item in clipboard will be removed.

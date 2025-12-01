@@ -1396,6 +1396,9 @@ var databaseUtilities = {
       $("#color-scheme-inspector-style-select").val("3D");
       $("#color-scheme-inspector-style-select").change();
     });
+    const instance = cy.layoutUtilities('get');
+    console.log("layout instance:",instance);
+    // instance.placeNewNodes();
     databaseUtilities.performLayout();
   },
 
