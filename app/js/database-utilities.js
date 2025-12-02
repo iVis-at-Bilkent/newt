@@ -675,16 +675,8 @@ var databaseUtilities = {
       var edgesArray = map.edges || [];
 
       console.log("Normalized searchNodesWithPaths result:", { nodes: nodesArray, edges: edgesArray });
-      // Render into Cytoscape (same pattern as your other util)
-      var cy = appUtilities.getActiveCy();
-      // cy.elements().remove();
-      // databaseUtilities.cleanNodesAndEdgesInDB();
-      edgesArray.forEach(edge=>{
-        const source = edge.properties.source;
-        const target = edge.properties.target;
-        const edgeClass = edge.properties.class;
-        databaseUtilities.edgesInDB[[source, target, edgeClass].join("|")] = 1;
-      });
+      nodesArray = await databaseUtilities.deduplicateExistingNodes(nodesArray);
+      edgesArray = await databaseUtilities.deduplicateExistingEdges(edgesArray);
       await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
     } catch (err) {
       console.error("Error running custom.searchNodesWithPaths:", err);
@@ -2110,17 +2102,55 @@ var databaseUtilities = {
         console.log(response.records);
         const [ nodesArray, edgesArray,language ] = response.records[0]._fields;
         const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
-  
         // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
         let chiseInstance = appUtilities.getActiveChiseInstance();
         chiseInstance.elementUtilities.setMapType(language);
+        nodes = await databaseUtilities.deduplicateExistingNodes(edges);
+        edges = await databaseUtilities.deduplicateExistingEdges(edges);
         await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
       },
       error: (req, status, err) => {
         console.error("Error fetching nodes/edges:", status, err);
       }
     });
-  },  
+  },
+
+  deduplicateExistingNodes:async function(nodes) {
+    const filteredNodes = [];
+    for(let i=0;i<nodes.length;i++){
+      let node = nodes[i];
+      if(!databaseUtilities.nodesInDB[node.properties.newtId]){
+        databaseUtilities.nodesInDB[node.properties.newtId] = node;
+        filteredNodes.push(node);
+      }
+    }
+    return filteredNodes;
+  },
+  deduplicateExistingEdges :async function(edges) {
+    const filteredEdges = [];
+    for(let i=0;i<edges.length;i++){
+      let edge = edges[i];
+       if (
+          !databaseUtilities.edgesInDB[
+            [
+              edge.properties.source,
+              edge.properties.target,
+              edge.properties.class,
+            ].join("|")
+          ]
+        ) {
+          filteredEdges.push(edge);
+          databaseUtilities.edgesInDB[
+            [
+              edge.properties.source,
+              edge.properties.target,
+              edge.properties.class,
+            ].join("|")
+          ] = edge.properties.id;
+        }
+    }
+    return filteredEdges;
+  }
 };
 module.exports = databaseUtilities;
