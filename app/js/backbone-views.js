@@ -4480,12 +4480,12 @@ var SearchNodesView = Backbone.View.extend({
         $btn.prop('disabled', false).text('Find');
       }
     }
-    if (cy.nodes().length != 0) {
-      new PromptConfirmationView({
-        el: "#prompt-confirmation-table",
-      }).render(runSearch);
-      return;
-    }
+    // if (cy.nodes().length != 0) {
+    //   new PromptConfirmationView({
+    //     el: "#prompt-confirmation-table",
+    //   }).render(runSearch);
+    //   return;
+    // }
     runSearch();  
   },
 

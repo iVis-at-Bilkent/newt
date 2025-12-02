@@ -677,8 +677,8 @@ var databaseUtilities = {
       console.log("Normalized searchNodesWithPaths result:", { nodes: nodesArray, edges: edgesArray });
       // Render into Cytoscape (same pattern as your other util)
       var cy = appUtilities.getActiveCy();
-      cy.elements().remove();
-      databaseUtilities.cleanNodesAndEdgesInDB();
+      // cy.elements().remove();
+      // databaseUtilities.cleanNodesAndEdgesInDB();
       edgesArray.forEach(edge=>{
         const source = edge.properties.source;
         const target = edge.properties.target;
@@ -1396,9 +1396,6 @@ var databaseUtilities = {
       $("#color-scheme-inspector-style-select").val("3D");
       $("#color-scheme-inspector-style-select").change();
     });
-    const instance = cy.layoutUtilities('get');
-    console.log("layout instance:",instance);
-    // instance.placeNewNodes();
     databaseUtilities.performLayout();
   },
 
@@ -1521,7 +1518,7 @@ var databaseUtilities = {
   },
 
   performLayout: function () {
-    appUtilities.triggerLayout(cy, true,true);
+    appUtilities.triggerLayout(cy, false,true);
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit,allowCloning,cloningThreshold) {
