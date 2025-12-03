@@ -1896,7 +1896,7 @@
         <div class="row" style="margin-bottom:10px;">
           <div class="col-sm-4">
             <label>Class type</label>
-            <select class="form-control" id="sn-class">
+            <select class="form-control" id="sn-class" style="font-size:12px !important">
               <option value="any" selected>Any</option>
               <!-- dynamically filled with listClassTypes -->
             </select>
@@ -1904,12 +1904,12 @@
 
           <div class="col-sm-4">
             <label>Label</label>
-            <input type="text" class="form-control" id="sn-label" placeholder="Any">
+            <input type="text" class="form-control" id="sn-label" placeholder="Any" style="font-size:12px !important">
           </div>
 
           <div class="col-sm-2">
             <label>Match</label>
-            <select class="form-control" id="sn-mode" style="width:110px">
+            <select class="form-control" id="sn-mode" style="padding-right:0px;font-size:12px !important">
               <option value="contains" selected>contains</option>
               <option value="equals">equals</option>
             </select>
@@ -1923,7 +1923,7 @@
                 data-placement="left"
                 title="Checking this keeps the current map content and merges the results, as opposed to replacing it."
               >
-                <input type="checkbox" id="sn-merge" checked>
+                <input type="checkbox" id="sn-merge" checked style="font-size:12px !important">
                 Merge
               </label>
             </div>
@@ -1932,7 +1932,7 @@
 
         <div class="alert alert-info" id="sn-hint" style="margin-bottom:0;">
           <strong>Tips:</strong>
-          <ul style="padding-left:10px; margin-top:5px;">
+          <ul style="padding-left:10px; margin-top:5px;font-size:12px">
             <li>Set both Class and Label to <em>Any</em> to return the whole graph.</li>
             <li>Label matching is case-insensitive.</li>
             <li>
