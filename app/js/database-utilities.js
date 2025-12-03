@@ -2149,7 +2149,7 @@ var databaseUtilities = {
           let canvasEdge = canvasEdges[j].data();
           const canvasEdgekey = [canvasEdge.source,
                   canvasEdge.target,
-                  canvasEdge.class,
+                  canvasEdge.class.split(' ').join('_'),
                 ].join("|");
           if(edgeKey===canvasEdgekey){
             exists=true;
