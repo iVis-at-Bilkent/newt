@@ -4453,11 +4453,11 @@ var SearchNodesView = Backbone.View.extend({
     var classType = (this.$('#sn-class').val() || 'any').trim();
     var label     = (this.$('#sn-label').val() || '').trim() || 'any';
     var matchMode = (this.$('#sn-mode').val() || 'contains').trim();
-    return { classType: classType, label: label, matchMode: matchMode, options: {} };
+    var mergeMode = this.$('#sn-merge')[0].checked;
+    return { classType: classType, label: label, matchMode: matchMode, options: {},mergeMode:mergeMode };
   },
 
   onRun: async function (e) {
-
     var runSearch = async () => {
       console.log("Checking run search");
       // e.preventDefault();
@@ -4470,7 +4470,8 @@ var SearchNodesView = Backbone.View.extend({
           classType: p.classType,
           label:     p.label,
           matchMode: p.matchMode,
-          options:   {}
+          options:   {},
+          mergeMode: p.mergeMode
         });
 
         this.$el.modal("hide");

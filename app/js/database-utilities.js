@@ -646,6 +646,7 @@ var databaseUtilities = {
       YIELD result
       RETURN result
     `;
+
     const data = {
       query: integrationQuery,
       queryData: {
@@ -667,6 +668,12 @@ var databaseUtilities = {
       if (!response.records || !response.records.length) {
         console.warn("No result from custom.searchNodesWithPaths");
         return null;
+      }
+      console.log('payload',payload);
+      if(!payload.mergeMode){
+        var cy = appUtilities.getActiveCy();
+        cy.elements().remove();
+        databaseUtilities.cleanNodesAndEdgesInDB();
       }
 
       // The proc returns a single 'result' map with { nodes, edges, stats, ... }
@@ -2106,9 +2113,9 @@ var databaseUtilities = {
         await appUtilities.createNewNetwork();
         let chiseInstance = appUtilities.getActiveChiseInstance();
         chiseInstance.elementUtilities.setMapType(language);
-        nodes = await databaseUtilities.deduplicateExistingNodes(edges);
-        edges = await databaseUtilities.deduplicateExistingEdges(edges);
-        await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
+        const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodes);
+        const deduplicatedEdges = await databaseUtilities.deduplicateExistingEdges(edges);
+        await databaseUtilities.batchAddNodesEdgesToCy(deduplicatedNodes, deduplicatedEdges);
       },
       error: (req, status, err) => {
         console.error("Error fetching nodes/edges:", status, err);
@@ -2120,35 +2127,40 @@ var databaseUtilities = {
     const filteredNodes = [];
     for(let i=0;i<nodes.length;i++){
       let node = nodes[i];
-      if(!databaseUtilities.nodesInDB[node.properties.newtId]){
-        databaseUtilities.nodesInDB[node.properties.newtId] = node;
-        filteredNodes.push(node);
-      }
+      filteredNodes.push(node);
     }
     return filteredNodes;
   },
   deduplicateExistingEdges :async function(edges) {
+    const cyInstance = appUtilities.getActiveCy();
+    const canvasEdges = cyInstance.edges();
+    if(canvasEdges.length===0)return edges;
     const filteredEdges = [];
-    for(let i=0;i<edges.length;i++){
-      let edge = edges[i];
-       if (
-          !databaseUtilities.edgesInDB[
-            [
+    
+    if(canvasEdges.length>0){
+      for(let i=0;i<edges.length;i++){
+        let exists=false;
+        let edge = edges[i];
+        let edgeKey =  [
               edge.properties.source,
               edge.properties.target,
               edge.properties.class,
-            ].join("|")
-          ]
-        ) {
-          filteredEdges.push(edge);
-          databaseUtilities.edgesInDB[
-            [
-              edge.properties.source,
-              edge.properties.target,
-              edge.properties.class,
-            ].join("|")
-          ] = edge.properties.id;
+            ].join("|");
+        for(let j=0;j<canvasEdges.length;j++){
+          let canvasEdge = canvasEdges[j].data();
+          const canvasEdgekey = [canvasEdge.source,
+                  canvasEdge.target,
+                  canvasEdge.class,
+                ].join("|");
+          if(edgeKey===canvasEdgekey){
+            exists=true;
+            break;
+          }
         }
+        if(!exists){
+          filteredEdges.push(edge);
+        }
+      }
     }
     return filteredEdges;
   }

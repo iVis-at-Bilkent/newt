@@ -1883,54 +1883,76 @@
     </div>
 
 
-    <script type="text/template" id="search-nodes-template">
-      <div id="search-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 760px; max-width: 95vw;">
-        <div class="modal-content" data-modal-id="<%= modalId %>">
-          <div class="modal-header" style="background:#5a6; color:#fff;">
-            <button type="button" class="close" data-dismiss="modal" style="color:white;opacity:.8;">&times;</button>
-            <h4 class="modal-title">Find by Label</h4>
+  <script type="text/template" id="search-nodes-template">
+  <div id="search-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 760px; max-width: 95vw;">
+    <div class="modal-content" data-modal-id="<%= modalId %>">
+      <div class="modal-header" style="background:#5a6; color:#fff;">
+        <button type="button" class="close" data-dismiss="modal" style="color:white;opacity:.8;">&times;</button>
+        <h4 class="modal-title">Find by Label</h4>
+      </div>
+
+      <div class="modal-body">
+        <!-- Row: Class, Label, Match, Merge -->
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-sm-4">
+            <label>Class type</label>
+            <select class="form-control" id="sn-class">
+              <option value="any" selected>Any</option>
+              <!-- dynamically filled with listClassTypes -->
+            </select>
           </div>
 
-          <div class="modal-body">
-            <!-- Row 1: Class & Label -->
-            <div class="row" style="margin-bottom:10px;">
-              <div class="col-sm-5">
-                <label>Class type</label>
-                <select class="form-control" id="sn-class">
-                  <option value="any" selected>Any</option>
-                  <!-- dynamically filled with listClassTypes -->
-                </select>
-              </div>
-              <div class="col-sm-4">
-                <label>Label</label>
-                <input type="text" class="form-control" id="sn-label" placeholder="Any">
-              </div>
-              <div class="col-sm-3">
-                <label>Match</label>
-                <select class="form-control" id="sn-mode">
-                  <option value="contains" selected>contains</option>
-                  <option value="equals">equals</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="alert alert-info" id="sn-hint" style="margin-bottom:0;">
-              <strong>Tips:</strong>
-              <ul style="padding-left:10px; margin-top:5px;">
-                <li>Set both Class and Label to <em>Any</em> to return the whole graph. </li>
-                <li>Label matching is case-insensitive.</li>
-                <li>Retrieved map will be merged into the existing map on canvas. This merge is only effective if the existing map is already from the local database.</li>
-              </ul>
-            </div>
+          <div class="col-sm-4">
+            <label>Label</label>
+            <input type="text" class="form-control" id="sn-label" placeholder="Any">
           </div>
 
-          <div class="modal-footer" style="text-align:center;">
-            <button class="btn btn-default" data-dismiss="modal">Close</button>
-            <button class="btn btn-primary" id="sn-run">Find</button>
+          <div class="col-sm-2">
+            <label>Match</label>
+            <select class="form-control" id="sn-mode">
+              <option value="contains" selected>contains</option>
+              <option value="equals">equals</option>
+            </select>
+          </div>
+
+          <div class="col-sm-2" style="margin-top:30px;">
+            <div class="checkbox" style="margin:0;">
+              <label
+                for="sn-merge"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Checking this keeps the current map content and merges the results, as opposed to replacing it."
+              >
+                <input type="checkbox" id="sn-merge" checked>
+                Merge
+              </label>
+            </div>
           </div>
         </div>
+
+        <div class="alert alert-info" id="sn-hint" style="margin-bottom:0;">
+          <strong>Tips:</strong>
+          <ul style="padding-left:10px; margin-top:5px;">
+            <li>Set both Class and Label to <em>Any</em> to return the whole graph.</li>
+            <li>Label matching is case-insensitive.</li>
+            <li>
+              If <strong>Merge</strong> is unchecked, the current map
+              will be cleared and replaced by the result.
+            </li>
+          </ul>
+        </div>
       </div>
-    </script>
+
+      <div class="modal-footer" style="text-align:center;">
+        <button class="btn btn-default" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id="sn-run">Find</button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+
 
 
  <script type="text/template" id="merge-nodes-template">
