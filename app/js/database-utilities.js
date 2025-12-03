@@ -1231,7 +1231,9 @@ var databaseUtilities = {
           edgesArr.push(rel);
           });
         edgesArr = edgesArr.filter(edge=>edge!=null);
-        await databaseUtilities.addNodesEdgesToCy(nodesArr, edgesArr);
+        edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArr);
+        console.log(edgesArr);
+        await databaseUtilities.batchAddNodesEdgesToCy(nodesArr, edgesArr);
         databaseUtilities.performLayout();
       },
       error: (req, status, err) =>
