@@ -669,14 +669,11 @@ var databaseUtilities = {
         console.warn("No result from custom.searchNodesWithPaths");
         return null;
       }
-      console.log('payload',payload);
       if(!payload.mergeMode){
         var cy = appUtilities.getActiveCy();
         cy.elements().remove();
         databaseUtilities.cleanNodesAndEdgesInDB();
       }
-
-      // The proc returns a single 'result' map with { nodes, edges, stats, ... }
       var map = response.records[0]._fields[0] || {};
       var nodesArray = map.nodes || [];
       var edgesArray = map.edges || [];
