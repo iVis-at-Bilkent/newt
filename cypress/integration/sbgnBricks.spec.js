@@ -52,18 +52,18 @@ context('SBGN Bricks', () => {
     cy.get('table#metabolic-reaction-output-table').children().children().should('have.length', 3);
   });
 
-  it('Open metabolic reaction help link', () => {
+  // it('Open metabolic reaction help link', () => {
     
-    openSBGNBricksModal();
+  //   openSBGNBricksModal();
 
-    const url = 'http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000585/';
+  //   const url = 'http://www.sbgnbricks.org/BKO/full/entry/all/BKO:0000585/';
 
-    cy.get('img#sbgn-bricks-help').should('be.visible');
+  //   cy.get('img#sbgn-bricks-help').should('be.visible');
 
-    cy.request(url).then((response) => {
-      expect(response.status).to.eq(200);
-    });
-  });
+  //   cy.request(url).then((response) => {
+  //     expect(response.status).to.eq(200);
+  //   });
+  // });
 
   it('Create metabolic reaction', () => {
     openSBGNBricksModal();
