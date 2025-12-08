@@ -689,6 +689,43 @@ var databaseUtilities = {
   },
 
 
+  getCompartmentMembers: async function (compartmentNewtId) {
+    const integrationQuery = `
+      CALL custom.getCompartmentMembers($compartmentNewtId)
+      YIELD node, rel
+      RETURN node, rel
+    `;
+    const data = {
+      query: integrationQuery,
+      queryData: { compartmentNewtId }
+    };
+    const response = await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data)
+    });
+    console.log("Compartment members response:", response);
+    
+    if (!response.records || response.records.length === 0){
+      // new EmptyMemberContentView({ el: "#empty-local-database-output-table" }).render();
+      return null;
+    }
+
+    const recs      = response.records;
+    let nodesArr = [];
+    let edgesArr = [];
+    recs.forEach(r => {
+      const node = r._fields[0];
+      const rel  = r._fields[1];
+      nodesArr.push(node);
+      edgesArr.push(rel);
+      });
+    edgesArr = edgesArr.filter(edge=>edge!=null);
+    edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArr);
+    console.log(edgesArr);
+    await databaseUtilities.batchAddNodesEdgesToCy(nodesArr, edgesArr);
+  },
     pushMergedNodeToDatabase: async function (mergedPayload) {
       console.log("Pushing merged node to database:", mergedPayload);
 

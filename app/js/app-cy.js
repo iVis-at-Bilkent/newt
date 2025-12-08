@@ -416,7 +416,19 @@ module.exports = function (chiseInstance) {
             var cyTarget = event.target || event.cyTarget;
             databaseUtilities.getNeighboringNodes(cyTarget.id());
         }
-      });
+      },
+      {
+        id: 'ctx-menu-get-database-member-contents',
+        content: 'Get Contents from Local Database',
+        selector: 'node[class^="compartment"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            console.log("Getting contents for compartment:", cyTarget.id());
+            databaseUtilities.getCompartmentMembers(cyTarget.id());
+            // databaseUtilities.getNeighboringNodes(cyTarget.id());
+        }
+      }
+    );
     }
     contextMenus.appendMenuItems(contextMenuItems);
 
