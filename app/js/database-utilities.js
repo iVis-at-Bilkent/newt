@@ -1267,8 +1267,9 @@ var databaseUtilities = {
         edgesArr = edgesArr.filter(edge=>edge!=null);
         edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArr);
         console.log(edgesArr);
+        const emptyCanvas = await databaseUtilities.canvasEmpty();
         await databaseUtilities.batchAddNodesEdgesToCy(nodesArr, edgesArr);
-        databaseUtilities.performLayout();
+        databaseUtilities.performLayout(emptyCanvas);
       },
       error: (req, status, err) =>
         console.error("Error running getNeighbors", status, err)
@@ -1426,12 +1427,13 @@ var databaseUtilities = {
 
   batchAddNodesEdgesToCy: async function (nodes, edges) {
     var chiseInstance = appUtilities.getActiveChiseInstance();
-    await chiseInstance.addNodesEdges(nodes,edges,true).then(async function(){
+    const emptyCanvas = await databaseUtilities.canvasEmpty();
+    await chiseInstance.addNodesEdges(nodes,edges,false).then(async function(){
       $("#map-color-scheme_opposed_red_blue").click();
       $("#color-scheme-inspector-style-select").val("3D");
       $("#color-scheme-inspector-style-select").change();
     });
-    databaseUtilities.performLayout();
+    databaseUtilities.performLayout  (emptyCanvas);
   },
 
   addNodesEdgesToCy: async function (nodes, edges=[], source, target) {
@@ -1444,6 +1446,7 @@ var databaseUtilities = {
       let edgesToAdd = [];
       let nodesToAdd = [];
       databaseUtilities.nodesInDB = {};
+      const emptyCanvas = databaseUtilities.canvasEmpty();
       // databaseUtilities.edgesInDB = {};
       for (let i = 0; i < nodes.length; i++) {
         if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
@@ -1507,7 +1510,7 @@ var databaseUtilities = {
             }
           }
           var cy = appUtilities.getActiveCy();
-          databaseUtilities.performLayout();
+          databaseUtilities.performLayout(emptyCanvas);
 
           resolve({
             nodesToHighlight: nodesToHighlight,
@@ -1552,8 +1555,8 @@ var databaseUtilities = {
     });
   },
 
-  performLayout: function () {
-    appUtilities.triggerLayout(cy, false,true);
+  performLayout: function (static=false) {
+    appUtilities.triggerLayout(cy, false,true,static);
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit,allowCloning,cloningThreshold) {
@@ -2199,6 +2202,11 @@ var databaseUtilities = {
       }
     }
     return filteredEdges;
-  }
+  },
+
+  canvasEmpty: async function() {
+    const cyInstance = appUtilities.getActiveCy();
+    return cyInstance.nodes().length === 0;
+  },
 };
 module.exports = databaseUtilities;

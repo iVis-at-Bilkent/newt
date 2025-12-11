@@ -918,7 +918,7 @@ appUtilities.setFileContent = function (fileName) {
   span.style.display = "none";
 };
 
-appUtilities.triggerLayout = function (_cy, randomize, fit = undefined) {
+appUtilities.triggerLayout = function (_cy, randomize, fit = undefined,static=false) {
   // use parametrized cy if exists. Otherwise use the recently active cy
   var cy = _cy || this.getActiveCy();
 
@@ -945,6 +945,12 @@ appUtilities.triggerLayout = function (_cy, randomize, fit = undefined) {
   if (randomize !== undefined) {
     preferences.randomize = randomize;
     preferences.fit = fit === undefined ? randomize : fit;
+  }
+
+  if(static){
+    preferences.quality = (cy.nodes().length > 3000 || cy.edges().length > 3000) ? "draft" : "default";
+    preferences.animate = (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges;
+    preferences.randomize = true;
   }
 
   // access chise instance related to cy
