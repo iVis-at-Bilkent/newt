@@ -917,32 +917,41 @@ var databaseUtilities = {
   },
 
   pushEdgesToLocalDatabase: async function (list, ids) {
-    // var filtered_list = await databaseUtilities.validateEdges(list);
-    var filtered_list = list;
-    filtered_list = await Promise.all(filtered_list.map((edge) => {
-      edge.source = ids[edge.source];
-      edge.target = ids[edge.target];
+    // 1) rewrite endpoints with fallback
+    let filtered_list = list.map(e => {
+      const edge = Object.assign({}, e);
+      edge.source = ids[edge.source] || edge.source;
+      edge.target = ids[edge.target] || edge.target;
       return edge;
-    }));
+    });
 
-    
-    console.log("list after",filtered_list);
+    // 2) drop invalid + self-loop edges (self-loop can appear after merges)
+    filtered_list = filtered_list.filter(e =>
+      e.source && e.target &&
+      e.source !== "none" && e.target !== "none" &&
+      e.source !== e.target
+    );
+
+    // 3) IMPORTANT: dedupe AFTER mapping
+    filtered_list = databaseUtilities._dedupeEdgesByTriple(filtered_list);
+
     const query = `
-    UNWIND $edges AS edge
-    MATCH (sourceNode {newtId: edge.source}), (targetNode {newtId: edge.target})
-    CALL apoc.do.when(
-      EXISTS {
-        MATCH (sourceNode)-[r]->(targetNode)
-        WHERE type(r) = edge.class
-      },
-      'RETURN null',
-      'CALL apoc.create.relationship(sourceNode, edge.class, edge, targetNode) YIELD rel RETURN rel',
-      {sourceNode: sourceNode, targetNode: targetNode, edge: edge}
-    ) YIELD value
-    RETURN value;
+      UNWIND $edges AS edge
+      MATCH (sourceNode {newtId: edge.source}), (targetNode {newtId: edge.target})
+      CALL apoc.do.when(
+        EXISTS {
+          MATCH (sourceNode)-[r]->(targetNode)
+          WHERE type(r) = edge.class
+        },
+        'RETURN null',
+        'CALL apoc.create.relationship(sourceNode, edge.class, edge, targetNode) YIELD rel RETURN rel',
+        {sourceNode: sourceNode, targetNode: targetNode, edge: edge}
+      ) YIELD value
+      RETURN value;
     `;
-   
-    var data = { query, queryData: { edges: filtered_list } };
+
+    const data = { query, queryData: { edges: filtered_list } };
+
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -950,18 +959,14 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         console.log(response);
-        const {records}=response;
-        for(let record of records){
-          const map = record._fields[0];
-          ids[map.incoming]=map.existing;
-        }
       },
       error: function (req, status, err) {
-        errorCheck = {status,err}
+        errorCheck = { status, err };
         console.error("Error running query", status, err);
       },
     });
   },
+
 
   pushCompartmentsToDatabase: async function(compartments){
     console.log('pushing compartments',compartments);
@@ -1118,52 +1123,22 @@ var databaseUtilities = {
     }
   },
 
-  pushLogicalsToLocalDatabase: async function (list, ids,edges) {
-    let logicals = {};
-    list = list.map((logical)=>{
-      logical.parent = ids[logical.parent] || logicals[logical.parent] || logical.parent;
-      logical.source=[];
-      logical.target=[];
-      for(let edge of edges){
-        if(edge.source===logical.newtId){
-          logical.target.push(edge.target);
-        }
-        if(edge.target===logical.newtId){
-          logical.source.push(edge.source);
-        }
-      }
-      return logical;
+  pushLogicalNodesToDatabase: async function (logicals, ids) {
+    // map parent first so matching is consistent
+    const payload = logicals.map(l => {
+      const n =Object.assign({}, l);
+      n.parent = ids[n.parent] || n.parent || "none";
+      return n;
     });
 
-    var integrationQuery=`
-      UNWIND $logicals as logical
-      CALL apoc.do.when(
-      EXISTS {
-        MATCH (p:logical)
-        WHERE p.category = 'logical'
-          AND p.class = logical.class
-          AND size(p.source) = size(logical.source)
-          AND all(sourceId IN logical.source WHERE sourceId IN p.source)
-          AND size(p.target) = size(logical.target)
-          AND all(targetId IN logical.target WHERE targetId IN p.target)
-      },
-          "MATCH (p:logical)
-      WHERE p.category = 'logical'
-        AND p.class = data.class
-        AND size(p.source) = size(data.source)
-        AND all(sourceId IN data.source WHERE sourceId IN p.source)
-        AND size(p.target) = size(data.target)
-        AND all(targetId IN data.target WHERE targetId IN p.target)
-      RETURN {incoming: data.newtId, existing: p.newtId} AS result",
-      'CALL apoc.cypher.doIt(
-          "CALL apoc.create.node([data.category], data) YIELD node SET node.processed = 0 RETURN {incoming: data.newtId, existing: node.newtId} AS result",
-          {data: data}
-        ) YIELD value RETURN value.result AS result',
-      {data: logical}
-    ) YIELD value
-    RETURN value.result as result;
+    const integrationQuery = `
+      CALL custom.pushLogicalNodes($logicalNodes)
+      YIELD result
+      RETURN result
     `;
-    var data = { query: integrationQuery, queryData: { logicals: list } };
+
+    const data = { query: integrationQuery, queryData: { logicalNodes: payload } };
+
     await $.ajax({
       type: "post",
       url: "/utilities/runDatabaseQuery",
@@ -1171,16 +1146,15 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         const { records } = response;
-        for (let record of records) {
-          console.log(record);
-          const map = record._fields[0];
-          ids[map.incoming] = map.existing;
+        for (const record of records) {
+          const map = record._fields[0]; // {incoming, existing}
+          ids[map.incoming] = map.existing || map.incoming;
         }
       },
       error: function (req, status, err) {
-        errorCheck = {status,err}
+        errorCheck = { status, err };
         console.error("Error running query", status, err);
-      },
+      }
     });
 
     return ids;
@@ -1227,17 +1201,26 @@ var databaseUtilities = {
       overallProcessPercentage
     );
     if(errorCheck!==null)return errorCheck;
-    const logical_ids = await databaseUtilities.pushLogicalsToLocalDatabase(
-      logicals,
-      node_ids,
-      edgesData
-    );
+    const logical_ids = await databaseUtilities.pushLogicalNodesToDatabase(logicals, node_ids);
+
     if(errorCheck!==null)return errorCheck;
     await databaseUtilities.pushEdgesToLocalDatabase(
       edgesData,
       logical_ids,
-      false,
+      false
     );
+  },
+
+  _dedupeEdgesByTriple: function(edges) {
+    const seen = new Set();
+    const out = [];
+    for (const e of edges) {
+      const key = `${e.source}|${e.class}|${e.target}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(e);
+    }
+    return out;
   },
   getNeighboringNodes: async function(nodeId) {
         
