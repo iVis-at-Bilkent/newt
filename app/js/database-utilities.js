@@ -640,7 +640,7 @@ var databaseUtilities = {
     return { result: map };
   },
 
-  runSearchNodesWithPaths: async function (payload) {
+  runSearchNodesWithPaths: async function (payload, enableCloning, cloneThreshold) {
     const integrationQuery = `
       CALL custom.searchNodesWithPaths($classType, $label, $matchMode, $options)
       YIELD result
@@ -681,7 +681,8 @@ var databaseUtilities = {
       console.log("Normalized searchNodesWithPaths result:", { nodes: nodesArray, edges: edgesArray });
       nodesArray = await databaseUtilities.deduplicateExistingNodes(nodesArray);
       edgesArray = await databaseUtilities.deduplicateExistingEdges(edgesArray);
-      await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
+      const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
+      await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
     } catch (err) {
       console.error("Error running custom.searchNodesWithPaths:", err);
       return null;
@@ -689,7 +690,7 @@ var databaseUtilities = {
   },
 
 
-  getCompartmentMembers: async function (compartmentNewtId) {
+  getCompartmentMembers: async function (compartmentNewtId, enableCloning, cloneThreshold) {
     const integrationQuery = `
       CALL custom.getCompartmentMembers($compartmentNewtId)
       YIELD node, rel
@@ -723,8 +724,9 @@ var databaseUtilities = {
       });
     edgesArr = edgesArr.filter(edge=>edge!=null);
     edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArr);
-    console.log(edgesArr);
-    await databaseUtilities.batchAddNodesEdgesToCy(nodesArr, edgesArr);
+    const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodesArr, edgesArr, enableCloning, cloneThreshold);
+    console.log(edgesArray);
+    await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
   },
     pushMergedNodeToDatabase: async function (mergedPayload) {
       console.log("Pushing merged node to database:", mergedPayload);
@@ -1222,7 +1224,7 @@ var databaseUtilities = {
     }
     return out;
   },
-  getNeighboringNodes: async function(nodeId) {
+  getNeighboringNodes: async function(nodeId, enableCloning, cloneThreshold) {
         
     const query = `
       CALL custom.getNeighbors($id)
@@ -1249,9 +1251,11 @@ var databaseUtilities = {
           });
         edgesArr = edgesArr.filter(edge=>edge!=null);
         edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArr);
+        const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodesArr, edgesArr, enableCloning, cloneThreshold);
         console.log(edgesArr);
         const emptyCanvas = await databaseUtilities.canvasEmpty();
-        await databaseUtilities.batchAddNodesEdgesToCy(nodesArr, edgesArr);
+        
+        await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
         databaseUtilities.performLayout(emptyCanvas);
       },
       error: (req, status, err) =>
@@ -1543,7 +1547,7 @@ var databaseUtilities = {
     appUtilities.triggerLayout(cy, false,true,static);
   },
 
-  runPathsFromTo: async function (sourceArray, targetArray, limit,allowCloning,cloningThreshold) {
+  runPathsFromTo: async function (sourceArray, targetArray, limit,enableCloning,cloneThreshold) {
     var sourceId = [];
     var sourceNewt = [];
     await databaseUtilities.getIdOfLabeledNodes(
@@ -1584,14 +1588,14 @@ var databaseUtilities = {
       };
       return errMessage;
     }
-    // query = graphALgos.pathsFromTo(limit,allowCloning?cloningThreshold:1000000);
+    // query = graphALgos.pathsFromTo(limit,enableCloning?cloneThreshold:1000000);
     query = `
     CALL pathsFromTo($idList, $limit, $simpleChemicalDegreeThreshold)
     YIELD nodes, relationships, language
     RETURN nodes, relationships, language
     `;
     var idList =  [...new Set([...sourceId, ...targetId])];
-    var queryData = { idList: idList, limit: limit, simpleChemicalDegreeThreshold: allowCloning?cloningThreshold:1000000 };
+    var queryData = { idList: idList, limit: limit, simpleChemicalDegreeThreshold: enableCloning?cloneThreshold:1000000 };
     console.log("queryData:",queryData);
     var data = { query: query, queryData: queryData };
     var result = null 
@@ -1652,19 +1656,20 @@ var databaseUtilities = {
         }
       }
     }
+    const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
     var cy = appUtilities.getActiveCy();
     cy.elements().remove();
     databaseUtilities.cleanNodesAndEdgesInDB();
     databaseUtilities.addNodesEdgesToCy(
-      nodes,
-      edges,
+      nodesArray,
+      edgesArray,
       sourceNewt,
       targetNewt
     );
   },
 
-  runPathBetween: async function (labelOfNodes, lengthLimit,allowCloning,cloningThreshold) {
+  runPathBetween: async function (labelOfNodes, lengthLimit,enableCloning,cloneThreshold) {
     var idOfNodes = [],newtIdOfNodes = [];
     await databaseUtilities.getIdOfLabeledNodes(
       labelOfNodes,
@@ -1683,14 +1688,14 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    // var query = graphALgos.pathsBetween(lengthLimit,allowCloning?cloningThreshold:1000000);
+    // var query = graphALgos.pathsBetween(lengthLimit,enableCloning?cloneThreshold:1000000);
 
     var query = `
     CALL pathsBetween($idList, $lengthLimit, $simpleChemDegreeThreshold)
     YIELD nodes, relationships, language
     RETURN nodes, relationships, language
     `;
-    var queryData = { idList: idOfNodes,lengthLimit: lengthLimit, simpleChemDegreeThreshold: allowCloning?cloningThreshold:1000000 }; 
+    var queryData = { idList: idOfNodes,lengthLimit: lengthLimit, simpleChemDegreeThreshold: enableCloning?cloneThreshold:1000000 }; 
 
     var data = { query: query, queryData: queryData };
     console.log("data being sent:", data);
@@ -1759,14 +1764,15 @@ var databaseUtilities = {
       }
     }
     console.log("data:", nodes, edges, newtIdOfNodes,language);
+    const {nodes: nodesArray, edges: edgesArray}= databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
     var cy = appUtilities.getActiveCy();
     cy.elements().remove();
     databaseUtilities.cleanNodesAndEdgesInDB();
-    const abc = await databaseUtilities.addNodesEdgesToCy(nodes, edges, newtIdOfNodes);
+    const abc = await databaseUtilities.addNodesEdgesToCy(nodesArray, edgesArray, newtIdOfNodes);
     console.log("abc:", abc);
     return null;
   },
-  runNeighborhood: async function (labelOfNodes, lengthLimit,allowCloning,cloningThreshold) {
+  runNeighborhood: async function (labelOfNodes, lengthLimit,enableCloning,cloneThreshold) {
     var idList = [];
     var newtIdList = [];
     await databaseUtilities.getIdOfLabeledNodes(
@@ -1785,13 +1791,13 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    // var query = graphALgos.neighborhood(lengthLimit,allowCloning?cloningThreshold:1000000);
+    // var query = graphALgos.neighborhood(lengthLimit,enableCloning?cloneThreshold:1000000);
     var query = `
     CALL neighborhoodFromIds($idList, $limit, $simpleChemicalDegreeThreshold)
     YIELD nodes, relationships, language
     RETURN nodes, relationships, language
     `;
-    var queryData = { idList: idList, limit: lengthLimit, simpleChemicalDegreeThreshold: allowCloning?cloningThreshold:1000000 };
+    var queryData = { idList: idList, limit: lengthLimit, simpleChemicalDegreeThreshold: enableCloning?cloneThreshold:1000000 };
 
     var data = { query: query, queryData: queryData };
     var result = {};
@@ -1859,13 +1865,14 @@ var databaseUtilities = {
           }
         }
         console.log(nodes, edges, newtIdList, targetNodes);
+        const { nodes: nodesArray, edges: edgesArray } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);        
         appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
         var cy = appUtilities.getActiveCy();
         cy.elements().remove();
         // databaseUtilities.cleanNodesAndEdgesInDB();
         await databaseUtilities.addNodesEdgesToCy(
-          nodes,
-          edges,
+          nodesArray,
+          edgesArray,
           newtIdList,
           targetNodes
         );
@@ -1877,7 +1884,7 @@ var databaseUtilities = {
     return result;
   },
 
-  runCommonStream: async function (labelOfNodes, lengthLimit, direction) {
+  runCommonStream: async function (labelOfNodes, lengthLimit, direction,enableCloning,cloneThreshold) {
     var idOfNodes = [];
     console.log("labelOfNodes:", labelOfNodes, "lengthLimit:", lengthLimit, "direction:", direction);
     await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
@@ -1940,13 +1947,15 @@ var databaseUtilities = {
         edges.push(edge);
       }
     }
-    appUtilities.getActiveChiseInstance().elementUtilities.setMapType(await databaseUtilities.getLanguage(output));
     console.log("nodes:", nodes, "edges:", edges);
+    const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+    console.log("nodes:", nodesArray, "edges:", edgesArray);
+    appUtilities.getActiveChiseInstance().elementUtilities.setMapType(await databaseUtilities.getLanguage(output));
     // Clean the canvas
     var cy = appUtilities.getActiveCy();
     cy.elements().remove();
     databaseUtilities.cleanNodesAndEdgesInDB();
-    await databaseUtilities.addNodesEdgesToCy(nodes,edges);
+    await databaseUtilities.addNodesEdgesToCy(nodesArray,edgesArray);
     return result;
   },
 
@@ -2022,12 +2031,16 @@ var databaseUtilities = {
   },
 
 
-  cloneSimpleChemicals: function(nodesArray, edgesArray, enableCloning = false, cloneThreshold = 0) {
+  cloneSimpleChemicals: function(nodesArray=[], edgesArray=[], enableCloning = false, cloneThreshold = 0) {
+    if(nodesArray===undefined && edgesArray===undefined){
+      return {nodes:[], edges:[]};
+    }
     const nodes = [], edges = [];
     const nodesSet = new Set();
     const edgesMap = new Map();
     const simpleChemMap = new Map();
-
+    console.log("Incoming nodes:", nodesArray);
+    console.log("Incoming edges:", edgesArray);
     // 1. Separate out simple_chemical nodes
     for (let n of nodesArray) {
       if (n.properties.class === "simple_chemical") {
@@ -2040,7 +2053,7 @@ var databaseUtilities = {
         }
       }
     }
-
+    console.log('nodes', nodes,'edges', edges);
     // 2. Pre-count arcs
     const arcCounts = {};
     if (enableCloning) {
@@ -2053,6 +2066,7 @@ var databaseUtilities = {
         }
       }
     }
+    console.log('nodes', nodes,'edges', edges);
 
     // 3. Re-add originals for which we're NOT cloning (or cloning is off)
     for (let [id, orig] of simpleChemMap.entries()) {
@@ -2063,6 +2077,7 @@ var databaseUtilities = {
         }
       }
     }
+    console.log('nodes', nodes,'edges', edges);
 
     // 4. Clone nodes per-edge as needed
     for (let i = 0; i < edgesArray.length; i++) {
@@ -2087,11 +2102,12 @@ var databaseUtilities = {
           target: raw.target,
           class:  raw.class
         },
-        identity: { low: edgesArray[i].identity.low }
+        // identity: { low: edgesArray[i].identity.low || 0 }
       });
       if (!edgesMap.has(raw.source)) edgesMap.set(raw.source, new Set());
       edgesMap.get(raw.source).add(raw.target);
     }
+    console.log('nodes', nodes,'edges', edges);
 
     // Return
     return { nodes, edges };
@@ -2132,6 +2148,7 @@ var databaseUtilities = {
         console.log(response.records);
         const [ nodesArray, edgesArray,language ] = response.records[0]._fields;
         const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
+        console.log("Unpacked nodes and edges:", nodes, edges);
         // 7) Render in Cytoscape
         await appUtilities.createNewNetwork();
         let chiseInstance = appUtilities.getActiveChiseInstance();

@@ -414,7 +414,9 @@ module.exports = function (chiseInstance) {
         '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
-            databaseUtilities.getNeighboringNodes(cyTarget.id());
+            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            databaseUtilities.getNeighboringNodes(cyTarget.id(), allowCloning, cloningThreshold);
         }
       },
       {
@@ -424,7 +426,9 @@ module.exports = function (chiseInstance) {
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             console.log("Getting contents for compartment:", cyTarget.id());
-            databaseUtilities.getCompartmentMembers(cyTarget.id());
+            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            databaseUtilities.getCompartmentMembers(cyTarget.id(), allowCloning, cloningThreshold);
             // databaseUtilities.getNeighboringNodes(cyTarget.id());
         }
       }
