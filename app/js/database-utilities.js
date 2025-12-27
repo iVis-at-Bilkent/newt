@@ -1544,7 +1544,7 @@ var databaseUtilities = {
 
   performLayout: async function (static=false) {
     await appUtilities.waitForCyReady(cy);
-    appUtilities.triggerLayout(cy, false,true,static);
+    appUtilities.triggerLayout(cy, false,static,static);
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit,enableCloning,cloneThreshold) {
