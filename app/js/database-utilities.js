@@ -1415,8 +1415,8 @@ var databaseUtilities = {
       $("#map-color-scheme_opposed_red_blue").click();
       $("#color-scheme-inspector-style-select").val("3D");
       $("#color-scheme-inspector-style-select").change();
+      databaseUtilities.performLayout  (emptyCanvas);
     });
-    databaseUtilities.performLayout  (emptyCanvas);
   },
 
   addNodesEdgesToCy: async function (nodes, edges=[], source, target) {
@@ -1538,7 +1538,8 @@ var databaseUtilities = {
     });
   },
 
-  performLayout: function (static=false) {
+  performLayout: async function (static=false) {
+    await appUtilities.waitForCyReady(cy);
     appUtilities.triggerLayout(cy, false,true,static);
   },
 

@@ -959,6 +959,16 @@ appUtilities.triggerLayout = function (_cy, randomize, fit = undefined,static=fa
   this.layoutPropertiesView.applyLayout(preferences, true, chiseInstance);
 };
 
+appUtilities.waitForCyReady = function (cy) {
+  return new Promise((resolve) => {
+    const check = () => {
+      cy.resize(); // updates cy.width()/height() from DOM
+      if (cy.width() > 0 && cy.height() > 0) return resolve();
+      requestAnimationFrame(check);
+    };
+    check();
+  });
+};
 appUtilities.getExpandCollapseOptions = function (_cy) {
   var self = this;
 
