@@ -161,6 +161,35 @@ var databaseUtilities = {
   nodesInDB: {},
   edgesInDB: {},
 
+  _isDBEmpty:  function() {
+      return this.nodesInDB.length === 0 && this.edgesInDB.length === 0;
+  },
+  
+  storeGraph:async function (nodes=[],edges=[]) {
+    let tempNodesInDB = Object.assign({}, databaseUtilities.nodesInDB);
+    let tempEdgesInDB = Object.assign({}, databaseUtilities.edgesInDB);
+    for(let i=0;i<nodes.length;i++){
+      if(!tempNodesInDB[nodes[i].properties.newtId]){
+        tempNodesInDB[nodes[i].properties.newtId] = nodes[i];
+      }
+    }
+    for(let j=0;j<edges.length;j++){
+      tempEdgesInDB[
+        [
+          edges[j].properties.source,
+          edges[j].properties.target,
+          edges[j].properties.class,
+        ].join("|")
+      ] = edges[j];
+    };
+    return {nodes: tempNodesInDB, edges: tempEdgesInDB};
+  },
+
+  updateDBMaps: function (nodesInDB, edgesInDB) {
+    databaseUtilities.nodesInDB = nodesInDB;
+    databaseUtilities.edgesInDB = edgesInDB;
+  },
+
   cleanNodesAndEdgesInDB: function () {
     databaseUtilities.nodesInDB = {};
     databaseUtilities.edgesInDB = {};
@@ -679,10 +708,12 @@ var databaseUtilities = {
       var edgesArray = map.edges || [];
 
       console.log("Normalized searchNodesWithPaths result:", { nodes: nodesArray, edges: edgesArray });
-      nodesArray = await databaseUtilities.deduplicateExistingNodes(nodesArray);
-      edgesArray = await databaseUtilities.deduplicateExistingEdges(edgesArray);
-      const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
-      await databaseUtilities.batchAddNodesEdgesToCy(nodes, edges);
+      const {nodes:nodesArr,edges:edgesArr} = await databaseUtilities.storeGraph(nodesArray, edgesArray);
+      const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(Object.values(nodesArr), Object.values(edgesArr), enableCloning, cloneThreshold);
+      nodesArray = await databaseUtilities.deduplicateExistingNodes(nodes);
+      edgesArray = await databaseUtilities.deduplicateExistingEdges(edges);
+      await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
+      databaseUtilities.updateDBMaps(nodesArr, edgesArr);
     } catch (err) {
       console.error("Error running custom.searchNodesWithPaths:", err);
       return null;
@@ -1250,13 +1281,14 @@ var databaseUtilities = {
           edgesArr.push(rel);
           });
         edgesArr = edgesArr.filter(edge=>edge!=null);
-        edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArr);
-        const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodesArr, edgesArr, enableCloning, cloneThreshold);
-        console.log(edgesArr);
+        const {nodes,edges} = await databaseUtilities.storeGraph(nodesArr, edgesArr);
+        const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(Object.values(nodes), Object.values(edges), enableCloning, cloneThreshold);
+        nodesArr = await databaseUtilities.deduplicateExistingNodes(nodesArray);
+        edgesArr = await databaseUtilities.deduplicateExistingEdges(edgesArray);
+        await databaseUtilities.batchAddNodesEdgesToCy(nodesArr, edgesArr);
         const emptyCanvas = await databaseUtilities.canvasEmpty();
-        
-        await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
         databaseUtilities.performLayout(emptyCanvas);
+        databaseUtilities.updateDBMaps(nodes, edges);
       },
       error: (req, status, err) =>
         console.error("Error running getNeighbors", status, err)
@@ -2039,8 +2071,6 @@ var databaseUtilities = {
     const nodesSet = new Set();
     const edgesMap = new Map();
     const simpleChemMap = new Map();
-    console.log("Incoming nodes:", nodesArray);
-    console.log("Incoming edges:", edgesArray);
     // 1. Separate out simple_chemical nodes
     for (let n of nodesArray) {
       if (n.properties.class === "simple_chemical") {
@@ -2053,7 +2083,6 @@ var databaseUtilities = {
         }
       }
     }
-    console.log('nodes', nodes,'edges', edges);
     // 2. Pre-count arcs
     const arcCounts = {};
     if (enableCloning) {
@@ -2066,7 +2095,6 @@ var databaseUtilities = {
         }
       }
     }
-    console.log('nodes', nodes,'edges', edges);
 
     // 3. Re-add originals for which we're NOT cloning (or cloning is off)
     for (let [id, orig] of simpleChemMap.entries()) {
@@ -2077,7 +2105,6 @@ var databaseUtilities = {
         }
       }
     }
-    console.log('nodes', nodes,'edges', edges);
 
     // 4. Clone nodes per-edge as needed
     for (let i = 0; i < edgesArray.length; i++) {
