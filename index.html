@@ -2766,7 +2766,7 @@
               <input id="epn-match" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= epnMatchingPercentage %> >
           </td>
           <td>
-              <span id="epn-match-value" class="add on layout-text" title="Epn percentage">100</span>
+              <span id="epn-match-value" class="add on layout-text" title="Epn percentage"><%= epnMatchingPercentage %></span>
           </td>
         </tr>
 
@@ -2779,7 +2779,7 @@
               <input id="process-incoming" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processIncomingContribution %> >
           </td>
           <td>
-              <span id="process-incoming-contribution" class="add on layout-text" title="Process Incoming Percentage">33</span>
+              <span id="process-incoming-contribution" class="add on layout-text" title="Process Incoming Percentage"><%= processIncomingContribution %></span>
           </td>
         </tr>
 
@@ -2792,7 +2792,7 @@
               <input id="process-outgoing" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processOutgoingContribution %> >
           </td>
           <td>
-              <span id="process-outgoing-contribution" class="add on layout-text" title="Process Outgoing Percentage">33</span>
+              <span id="process-outgoing-contribution" class="add on layout-text" title="Process Outgoing Percentage"><%= processOutgoingContribution %> </span>
           </td>
         </tr>
 
@@ -2805,7 +2805,7 @@
               <input id="process-agent" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processAgentContribution %> >
           </td>
           <td>
-              <span id="process-agent-contribution" class="add on layout-text" title="Process Agent Percentage">33</span>
+              <span id="process-agent-contribution" class="add on layout-text" title="Process Agent Percentage"> <%= processAgentContribution %></span>
           </td>
         </tr>
         
@@ -2818,7 +2818,7 @@
               <input id="process-overall" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= overallProcessPercentage %> >
           </td>
           <td>
-              <span id="process-match-value" class="add on layout-text" title="Process Percentage">100</span>
+              <span id="process-match-value" class="add on layout-text" title="Process Percentage"><%= overallProcessPercentage %></span>
           </td>
         </tr>
         
@@ -2831,7 +2831,7 @@
               <input id="complex-match" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= complexMatchPercentage %> >
           </td>
           <td>
-              <span id="complex-match-value" class="add on layout-text" title="Complex Percentage">100</span>
+              <span id="complex-match-value" class="add on layout-text" title="Complex Percentage"><%= complexMatchPercentage %></span>
           </td>
         </tr>
 
@@ -2841,9 +2841,9 @@
           </td>
           <td>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <input id="simple_chemical_allow" type="checkbox" class="layout-text">
+              <input id="simple_chemical_allow" type="checkbox" class="layout-text" <% if (allowSimpleChemicalCloning){ %> checked<%}%>>
               <span class="add-on layout-text" title="Simple Chemical Cloning Threshold">Threshold</span>
-              <input id="simple_chemical_cloning" type="number" class="sbgn-input-small" disabled step="1" min="1" value="3" style="width: 60px;">
+              <input id="simple_chemical_cloning" type="number" class="sbgn-input-small" disabled step="1" min="1" value="<%= simpleChemicalCloningThreshold %>" style="width: 60px;">
             </div>
           </td>
         </tr>

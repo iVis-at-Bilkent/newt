@@ -84,7 +84,6 @@ appUtilities.adjustUIComponents = function (_cy) {
     cy,
     "currentGeneralProperties"
   );
-
   // refresh color schema menu
   appUndoActions.refreshColorSchemeMenu({
     value: generalProperties.mapColorScheme,
@@ -103,7 +102,6 @@ appUtilities.adjustUIComponents = function (_cy) {
 
   // access the mode properties of cy
   var modeProperties = appUtilities.getScratch(cy, "modeProperties");
-
   // html values to select
   var nodeVal = modeProperties.selectedNodeType.replace(/ /gi, "-"); // Html values includes '-' instead of ' '
   var edgeVal = modeProperties.selectedEdgeType.replace(/ /gi, "-"); // Html values includes '-' instead of ' '
@@ -408,7 +406,6 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
     {},
     appUtilities.defaultGeneralProperties
   );
-
   // update the map name with the default map name specific for network id
   currentGeneralProperties.mapName = mapName;
   if (networkDescription)
@@ -448,6 +445,25 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
       );
       return currentGeneralProperties.inferNestingOnLoad;
     },
+
+    //simple cloning allow option
+    simpleChemicalCloningAllow: function(){
+      var currentGeneralProperties = appUtilities.getScratch(
+        newInst.getCy(),
+        "currentGeneralProperties"
+      );
+      return currentGeneralProperties.allowSimpleChemicalCloning;
+    },
+
+    //simple cloning threshold
+    simpleChemicalCloningAllow: function(){
+      var currentGeneralProperties = appUtilities.getScratch(
+        newInst.getCy(),
+        "currentGeneralProperties"
+      );
+      return currentGeneralProperties.simpleChemicalCloningThreshold;
+    },
+
     // percentage used to calculate compound paddings
     compoundPadding: currentGeneralProperties.compoundPadding,
 
@@ -952,7 +968,6 @@ appUtilities.triggerLayout = function (_cy, randomize, fit = undefined,static=fa
     preferences.animate = (cy.nodes().length > 3000 || cy.edges().length > 3000) ? false : currentGeneralProperties.animateOnDrawingChanges;
     preferences.randomize = true;
   }
-
   // access chise instance related to cy
   var chiseInstance = appUtilities.getChiseInstance(cy);
   // layout must not be undoable

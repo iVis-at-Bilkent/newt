@@ -162,12 +162,35 @@ var databaseUtilities = {
   edgesInDB: {},
 
   _isDBEmpty:  function() {
-      return this.nodesInDB.length === 0 && this.edgesInDB.length === 0;
+      const tabKey = databaseUtilities._currentActiveNetworkID();
+      return this.nodesInDB[tabKey].length === 0 && this.edgesInDB[tabKey].length === 0;
+  },
+
+  _currentActiveNetworkID: function(){
+    var chiseInstance = appUtilities.getActiveChiseInstance();
+    return chiseInstance && chiseInstance.getCy() && chiseInstance.getCy().container().id;
+  },
+
+  _getCurrentTabLocalDBMatchingOptions: function (params) {
+    var generalProperties = appUtilities.getScratch(
+      cy,
+      "currentGeneralProperties"
+    );
+
+    return {
+      epnMatchingPercentage:generalProperties.epnMatchingPercentage,
+      processIncomingContribution:generalProperties.processIncomingContribution,
+      processOutgoingContribution:generalProperties.processOutgoingContribution,
+      processAgentContribution:generalProperties.processAgentContribution,
+      overallProcessPercentage:generalProperties.overallProcessPercentage,
+      complexMatchPercentage:generalProperties.complexMatchPercentage,
+    }
   },
   
   storeGraph:async function (nodes=[],edges=[]) {
-    let tempNodesInDB = Object.assign({}, databaseUtilities.nodesInDB);
-    let tempEdgesInDB = Object.assign({}, databaseUtilities.edgesInDB);
+    const tabKey = databaseUtilities._currentActiveNetworkID();
+    let tempNodesInDB = Object.assign({}, databaseUtilities.nodesInDB[tabKey]);
+    let tempEdgesInDB = Object.assign({}, databaseUtilities.edgesInDB[tabKey]);
     for(let i=0;i<nodes.length;i++){
       if(!tempNodesInDB[nodes[i].properties.newtId]){
         tempNodesInDB[nodes[i].properties.newtId] = nodes[i];
@@ -186,8 +209,9 @@ var databaseUtilities = {
   },
 
   updateDBMaps: function (nodesInDB, edgesInDB) {
-    databaseUtilities.nodesInDB = nodesInDB;
-    databaseUtilities.edgesInDB = edgesInDB;
+    const tabKey = databaseUtilities._currentActiveNetworkID();
+    databaseUtilities.nodesInDB[tabKey] = nodesInDB;
+    databaseUtilities.edgesInDB[tabKey] = edgesInDB;
   },
 
   cleanNodesAndEdgesInDB: function () {
@@ -202,7 +226,7 @@ var databaseUtilities = {
     return finalClass;
   },
   getMapValue: function (val) {
-    return databaseUtilities.nodesInDB[val] || null;
+    return databaseUtilities.nodesInDB[tabKey][val] || null;
   },
   checkIfMultimer: function (entitysClass) {
     return entitysClass.includes("multimer");
@@ -405,6 +429,7 @@ var databaseUtilities = {
     var nodesMap = {};
     var specialNodes = {};
     var topologyGroups = {};
+    var tabKey = databaseUtilities._currentActiveNetworkID();
     // specialNodes map with be in this format (newtId or process Node): [[sourceClass, sourceCloneLab, sourceCloneMarker, sourceEntityName,
     //sourceMultimer, sourceParent, sourceStateVariable1,.., sourceStateVariableN, sourceUnitInformation1,..sourceUnitInformationN],
     //[targetClass, targetCloneLab, targetCloneMarker, targetEntityName, targeteMultimer, targetParent, targetStateVariable1,..,targetStateVariableN, targetUnitInformation1,...targetUnitInformationN],
@@ -414,9 +439,9 @@ var databaseUtilities = {
 
     for (let i = 0; i < nodesData.length; i++) {
       nodesData[i].inDb = false;
-      if (databaseUtilities.nodesInDB[nodesData[i].newtId]) {
+      if (databaseUtilities.nodesInDB[tabKey] && databaseUtilities.nodesInDB[tabKey][nodesData[i].newtId]) {
         nodesData[i].inDb = true;
-        nodesData[i].idInDb = databaseUtilities.nodesInDB[nodesData[i].newtId];
+        nodesData[i].idInDb = databaseUtilities.nodesInDB[tabKey][nodesData[i].newtId];
       }
       //And keep track of complex, compartment, submap
       if (
@@ -497,14 +522,15 @@ var databaseUtilities = {
     for (let i = 0; i < edgesData.length; i++) {
       edgesData[i].inDb = false;
       if (
-        databaseUtilities.edgesInDB[
+        databaseUtilities.edgesInDB[tabKey] && 
+        databaseUtilities.edgesInDB[tabKey][
           [edgesData[i].source, edgesData[i].target, edgesData[i].class]
         ]
       ) {
         edgesData[i].inDb = true;
         edgesData[i].idInDb =
-          databaseUtilities.edgesInDB[
-            databaseUtilities.edgesInDB[
+          databaseUtilities.edgesInDB[tabKey][
+            databaseUtilities.edgesInDB[tabKey][
               (edgesData[i].source, edgesData[i].target, edgesData[i].class)
             ]
           ];
@@ -713,6 +739,7 @@ var databaseUtilities = {
       nodesArray = await databaseUtilities.deduplicateExistingNodes(nodes);
       edgesArray = await databaseUtilities.deduplicateExistingEdges(edges);
       await databaseUtilities.batchAddNodesEdgesToCy(nodesArray, edgesArray);
+      console.log('DB nodes after runSearch:',databaseUtilities.nodesInDB);
       databaseUtilities.updateDBMaps(nodesArr, edgesArr);
     } catch (err) {
       console.error("Error running custom.searchNodesWithPaths:", err);
@@ -1197,7 +1224,8 @@ var databaseUtilities = {
     if(flag === "REPLACE"){
       await this.cleanDatabase();
     }
-    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage} = appUtilities.localDbSettings;
+    const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage} =databaseUtilities._getCurrentTabLocalDBMatchingOptions();
+    console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage);
     console.log(nodesData, edgesData, flag);
     var epns = nodesData.filter((node) => node.category === "EPN" && node.class!=='complex' && node.class!=='complex_sbml');
     var complexes = nodesData.filter((node)=>node.class==='complex' || node.class==='complex_sbml');
@@ -1256,7 +1284,7 @@ var databaseUtilities = {
     return out;
   },
   getNeighboringNodes: async function(nodeId, enableCloning, cloneThreshold) {
-        
+    console.log("DB nodes are:",databaseUtilities.nodesInDB);
     const query = `
       CALL custom.getNeighbors($id)
         YIELD node, rel
@@ -1362,7 +1390,8 @@ var databaseUtilities = {
   pushNode: function (new_node,x=0,y=0) {
     console.log("new_node:",new_node);
     return new Promise((resolve) => {
-      if (!(new_node.properties.newtId in databaseUtilities.nodesInDB)) {
+      const tabKey = databaseUtilities._currentActiveNetworkID();
+      if (!(new_node.properties.newtId in databaseUtilities.nodesInDB[tabKey])) {
         var chiseInstance = appUtilities.getActiveChiseInstance();
         var nodeParams = {
           class: databaseUtilities.convertLabelToClass(
@@ -1467,8 +1496,9 @@ var databaseUtilities = {
       databaseUtilities.nodesInDB = {};
       const emptyCanvas = databaseUtilities.canvasEmpty();
       // databaseUtilities.edgesInDB = {};
+      const tabKey = databaseUtilities._currentActiveNetworkID();
       for (let i = 0; i < nodes.length; i++) {
-        if (!databaseUtilities.nodesInDB[nodes[i].properties.newtId]) {
+        if (!databaseUtilities.nodesInDB[tabKey][nodes[i].properties.newtId]) {
           nodesToAdd.push(nodes[i]);
         }
         nodesToHighlight.push(nodes[i]);
@@ -1478,7 +1508,7 @@ var databaseUtilities = {
       for (let j = 0; j < edges.length; j++) {
         //Check if edge already exists in map
         if (
-          !databaseUtilities.edgesInDB[
+          !databaseUtilities.edgesInDB[tabKey][
             [
               edges[j].properties.source,
               edges[j].properties.target,
@@ -1487,7 +1517,7 @@ var databaseUtilities = {
           ]
         ) {
           edgesToAdd.push(edges[j]);
-          databaseUtilities.edgesInDB[
+          databaseUtilities.edgesInDB[tabKey][
             [
               edges[j].properties.source,
               edges[j].properties.target,
@@ -1575,6 +1605,7 @@ var databaseUtilities = {
   },
 
   performLayout: async function (static=false) {
+    const cy = appUtilities.getActiveCy();
     await appUtilities.waitForCyReady(cy);
     appUtilities.triggerLayout(cy, false,static,static);
   },
@@ -2063,81 +2094,126 @@ var databaseUtilities = {
   },
 
 
-  cloneSimpleChemicals: function(nodesArray=[], edgesArray=[], enableCloning = false, cloneThreshold = 0) {
-    if(nodesArray===undefined && edgesArray===undefined){
-      return {nodes:[], edges:[]};
+  cloneSimpleChemicals: function(nodesArray, edgesArray, enableCloning, cloneThreshold) {
+    if (nodesArray === undefined || edgesArray === undefined || nodesArray === null || edgesArray === null) {
+      return { nodes: [], edges: [] };
     }
-    const nodes = [], edges = [];
-    const nodesSet = new Set();
-    const edgesMap = new Map();
-    const simpleChemMap = new Map();
-    // 1. Separate out simple_chemical nodes
-    for (let n of nodesArray) {
-      if (n.properties.class === "simple_chemical") {
+
+    // defaults
+    nodesArray = nodesArray || [];
+    edgesArray = edgesArray || [];
+    enableCloning = !!enableCloning;
+    cloneThreshold = cloneThreshold || 0;
+
+    var nodes = [];
+    var edges = [];
+    var nodesSet = new Set();
+    var edgesMap = new Map(); // kept because you had it; not used for return here
+    var simpleChemMap = new Map();
+
+    // 1) Separate out simple_chemical nodes
+    for (var i = 0; i < nodesArray.length; i++) {
+      var n = nodesArray[i];
+      if (n && n.properties && n.properties.class === "simple_chemical") {
         simpleChemMap.set(n.properties.newtId, n);
-        n.properties.cloned = true;
       } else {
-        if (!nodesSet.has(n.properties.newtId)) {
+        if (n && n.properties && n.properties.newtId && !nodesSet.has(n.properties.newtId)) {
           nodes.push(n);
           nodesSet.add(n.properties.newtId);
         }
       }
     }
-    // 2. Pre-count arcs
-    const arcCounts = {};
+
+    // 2) Pre-count arcs for simple chemicals
+    var arcCounts = {};
     if (enableCloning) {
-      for (let e of edgesArray) {
-        for (let end of ["source", "target"]) {
-          const id = e.properties[end];
-          if (simpleChemMap.has(id)) {
-            arcCounts[id] = (arcCounts[id] || 0) + 1;
-          }
-        }
+      for (var ei = 0; ei < edgesArray.length; ei++) {
+        var e = edgesArray[ei];
+        var p = e && e.properties ? e.properties : null;
+        if (!p) continue;
+
+        var sId = p.source;
+        var tId = p.target;
+
+        if (simpleChemMap.has(sId)) arcCounts[sId] = (arcCounts[sId] || 0) + 1;
+        if (simpleChemMap.has(tId)) arcCounts[tId] = (arcCounts[tId] || 0) + 1;
       }
     }
 
-    // 3. Re-add originals for which we're NOT cloning (or cloning is off)
-    for (let [id, orig] of simpleChemMap.entries()) {
-      if (!enableCloning || arcCounts[id] <= cloneThreshold) {
-        if (!nodesSet.has(id)) {
-          nodes.push(orig);
-          nodesSet.add(id);
+    // 3) Always add originals exactly once (so original is part of final count)
+    simpleChemMap.forEach(function(orig, id) {
+      if (!nodesSet.has(id)) {
+        // marker info (optional)
+        if (orig && orig.properties) {
+          orig.properties.cloneEligible = enableCloning && ((arcCounts[id] || 0) >= cloneThreshold);
+          orig.properties.cloneMarker = false;
         }
+        nodes.push(orig);
+        nodesSet.add(id);
       }
-    }
+    });
 
-    // 4. Clone nodes per-edge as needed
-    for (let i = 0; i < edgesArray.length; i++) {
-      const raw = edgesArray[i].properties;
+    // 4) Clone per-usage: first usage keeps original, later usages get clones
+    var useCount = {}; // id -> number of times used across endpoints
+
+    for (var j = 0; j < edgesArray.length; j++) {
+      var e2 = edgesArray[j];
+      var p0 = e2 && e2.properties ? e2.properties : null;
+      if (!p0) continue;
+
+      // copy properties WITHOUT object spread
+      var raw = {};
+      for (var k in p0) {
+        if (Object.prototype.hasOwnProperty.call(p0, k)) raw[k] = p0[k];
+      }
+
       if (enableCloning) {
-        for (let end of ["source", "target"]) {
-          const id = raw[end];
-          if (simpleChemMap.has(id) && arcCounts[id] > cloneThreshold) {
-            const orig = simpleChemMap.get(id);
-            const clone = JSON.parse(JSON.stringify(orig));
-            clone.properties.newtId = `${orig.properties.newtId}_${i}_${end}`;
-            clone.properties.cloneMarker = true;
+        var ends = ["source", "target"];
+        for (var ei2 = 0; ei2 < ends.length; ei2++) {
+          var end = ends[ei2];
+          var id2 = raw[end];
+
+          var degree = arcCounts[id2] || 0;
+          var shouldClone = simpleChemMap.has(id2) && (degree >= cloneThreshold);
+
+          if (!shouldClone) continue;
+
+          useCount[id2] = (useCount[id2] || 0) + 1;
+
+          // First time: keep original id
+          if (useCount[id2] === 1) continue;
+
+          // Next times: clone
+          var orig2 = simpleChemMap.get(id2);
+          var clone = JSON.parse(JSON.stringify(orig2));
+
+          if (!clone.properties) clone.properties = {};
+          clone.properties.newtId = orig2.properties.newtId + "_clone_" + (useCount[id2] - 1) + "_" + j + "_" + end;
+          clone.properties.cloneMarker = true;
+          clone.properties.cloneEligible = true;
+
+          if (!nodesSet.has(clone.properties.newtId)) {
             nodes.push(clone);
             nodesSet.add(clone.properties.newtId);
-            raw[end] = clone.properties.newtId;
           }
+
+          raw[end] = clone.properties.newtId;
         }
       }
+
       edges.push({
         properties: {
           source: raw.source,
           target: raw.target,
-          class:  raw.class
-        },
-        // identity: { low: edgesArray[i].identity.low || 0 }
+          class: raw.class
+        }
       });
+
       if (!edgesMap.has(raw.source)) edgesMap.set(raw.source, new Set());
       edgesMap.get(raw.source).add(raw.target);
     }
-    console.log('nodes', nodes,'edges', edges);
 
-    // Return
-    return { nodes, edges };
+    return { nodes: nodes, edges: edges };
   },
     
 

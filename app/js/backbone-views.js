@@ -1380,53 +1380,110 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
     });
 
     $(document).on("change", "#simple_chemical_allow", function (evt) {
+      // $("#simple-chemical-threshold-row").toggle(isChecked);
+      var cy = appUtilities.getActiveCy();
       const isChecked = $(this).prop("checked");
       $("#simple_chemical_cloning").prop("disabled", !isChecked);
-      // $("#simple-chemical-threshold-row").toggle(isChecked);
       self.params.allowSimpleChemicalCloning.value = isChecked;
+      appUtilities.setUserProfileProperty("generalProperties", "allowSimpleChemicalCloning", self.params.allowSimpleChemicalCloning.value);
       appUtilities.localDbSettings.allowSimpleChemicalCloning = isChecked;
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.allowSimpleChemicalCloning
+      );
+      self.applyUpdate();
     });
 
+
     $(document).on("change", "#epn-match", function (evt) {
+      var cy = appUtilities.getActiveCy();
       self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
-      appUtilities.localDbSettings.epnMatchingPercentage = self.params.epnMatchingPercentage.value
+      appUtilities.localDbSettings.epnMatchingPercentage = self.params.epnMatchingPercentage.value;
+      appUtilities.setUserProfileProperty("generalProperties", "epnMatchingPercentage", self.params.epnMatchingPercentage.value);
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.epnMatchingPercentage
+      );
+      self.applyUpdate();
     });
     $(document).on("change", "#process-incoming", function (evt) {
+      var cy = appUtilities.getActiveCy();
       self.params.processIncomingContribution.value = Number($("#process-incoming").val());
       document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
-      appUtilities.localDbSettings.processIncomingContribution = self.params.processIncomingContribution.value
+      appUtilities.localDbSettings.processIncomingContribution = self.params.processIncomingContribution.value;
+      appUtilities.setUserProfileProperty("generalProperties", "processIncomingContribution", self.params.processIncomingContribution.value);
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.processIncomingContribution
+      );
+      self.applyUpdate();
     });
     $(document).on("change", "#process-outgoing", function (evt) {
+      var cy = appUtilities.getActiveCy();
       self.params.processOutgoingContribution.value = Number($("#process-outgoing").val());
       document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
-      appUtilities.localDbSettings.processOutgoingContribution = self.params.processOutgoingContribution.value
+      appUtilities.localDbSettings.processOutgoingContribution = self.params.processOutgoingContribution.value;
+      appUtilities.setUserProfileProperty("generalProperties", "processOutgoingContribution", self.params.processOutgoingContribution.value);
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.processOutgoingContribution
+      );
+      self.applyUpdate();
     });
     $(document).on("change", "#process-agent", function (evt) {
+      var cy = appUtilities.getActiveCy();
       self.params.processAgentContribution.value = Number($("#process-agent").val());
       document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
-      appUtilities.localDbSettings.processAgentContribution = self.params.processAgentContribution.value
+      appUtilities.localDbSettings.processAgentContribution = self.params.processAgentContribution.value;
+      appUtilities.setUserProfileProperty("generalProperties", "processAgentContribution", self.params.processAgentContribution.value);
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.processAgentContribution
+      );
+      self.applyUpdate();
     });
     $(document).on("change", "#process-overall", function (evt) {
+      var cy = appUtilities.getActiveCy();
       self.params.overallProcessPercentage.value = Number($("#process-overall").val());
       document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
-      appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value
+      appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value;
+      appUtilities.setUserProfileProperty("generalProperties", "overallProcessPercentage", self.params.overallProcessPercentage.value);
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.overallProcessPercentage
+      );
+      self.applyUpdate();
     });
     $(document).on("change", "#complex-match", function (evt) {
+      var cy = appUtilities.getActiveCy();
       self.params.complexMatchPercentage.value = Number($("#complex-match").val());
+      appUtilities.setUserProfileProperty("generalProperties", "complexMatchPercentage", self.params.complexMatchPercentage.value);
       document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
       appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.complexMatchPercentage
+      );
+      self.applyUpdate();
     });
 
     $(document).on("change", "#simple_chemical_cloning", function (evt) {
+      var cy = appUtilities.getActiveCy();
       let value = Number(evt.target.value);
       if(value < 1){
         value = 1;
       }
       self.params.simpleChemicalCloningThreshold.value = value;
+      appUtilities.setUserProfileProperty("generalProperties", "simpleChemicalCloningThreshold", self.params.simpleChemicalCloningThreshold.value);
       document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
       appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
-    });
+      cy.undoRedo().do(
+          "changeMenu",
+          self.params.simpleChemicalCloningThreshold
+      );
+      self.applyUpdate();
+    });      
   },
 
   render: function () {
@@ -1438,6 +1495,7 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       cy,
       "currentGeneralProperties"
     );
+
     this.template = _.template($("#map-tab-local-db-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
@@ -1511,11 +1569,20 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       "change",
       "#adjust-node-label-font-size-automatically",
       function (evt) {
+        
         // use active cy instance
         var cy = appUtilities.getActiveCy();
-
+        // get current general properties of cy
+        var currentGeneralProperties = appUtilities.getScratch(
+          cy,
+          "currentGeneralProperties"
+        );
         self.params.adjustNodeLabelFontSizeAutomatically.value = $("#adjust-node-label-font-size-automatically").prop("checked");
         appUtilities.setUserProfileProperty("generalProperties", "adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);        
+        currentGeneralProperties = appUtilities.getScratch(
+          cy,
+          "currentGeneralProperties"
+        );
         cy.undoRedo().do(
           "changeMenu",
           self.params.adjustNodeLabelFontSizeAutomatically
@@ -4457,13 +4524,27 @@ var SearchNodesView = Backbone.View.extend({
     return { classType: classType, label: label, matchMode: matchMode, options: {},mergeMode:mergeMode };
   },
 
+  _getCurrentTabCloningOptions: function () {
+    var generalProperties = appUtilities.getScratch(
+      cy,
+      "currentGeneralProperties"
+    );
+    return {
+      allowSimpleChemicalCloning:generalProperties.allowSimpleChemicalCloning,
+      simpleChemicalCloningThreshold: generalProperties.simpleChemicalCloningThreshold
+    }
+  },
+
   onRun: async function (e) {
     var runSearch = async () => {
       console.log("Checking run search");
       // e.preventDefault();
       var $btn = this.$('#sn-run').prop('disabled', true).text('Finding…');
-      const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-      const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+      const {allowSimpleChemicalCloning:allowCloning,simpleChemicalCloningThreshold:cloningThreshold}
+        = this._getCurrentTabCloningOptions();
+      console.log("the options are:",allowCloning,cloningThreshold);
+      // const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
+      // const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
       try {
         var p = this.getParams();
         // keep your existing call here:

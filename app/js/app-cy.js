@@ -414,8 +414,12 @@ module.exports = function (chiseInstance) {
         '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
-            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            var generalProperties = appUtilities.getScratch(
+              cy,
+              "currentGeneralProperties"
+            );
+            const allowCloning = generalProperties.allowSimpleChemicalCloning;
+            const cloningThreshold = generalProperties.simpleChemicalCloningThreshold;
             databaseUtilities.getNeighboringNodes(cyTarget.id(), allowCloning, cloningThreshold);
         }
       },
