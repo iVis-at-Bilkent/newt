@@ -613,8 +613,6 @@ module.exports = function() {
     });
 
     $("#file-input").change(function (e, fileObject) {
-      
-
       // use the active chise instance
       var chiseInstance = appUtilities.getActiveChiseInstance();
 
@@ -623,101 +621,35 @@ module.exports = function() {
 
       if ($(this).val() != "" || fileObject) {
         var file = this.files[0] || fileObject;
-        console.log('file:',file);
-        var params, caller;
-        // Using the new helper function to properly 
-        // detect file types including .nwt.txt files
         var fileExtension = getFileType(file.name);
-        console.log("came here to load the file with extension:", fileExtension);
-        var loadCallbackInvalidityWarning  = function () {
-          promptInvalidFileView.render();
+        var loadCallbackSBGNMLValidity = function (text) {
+          //validateSBGNML(text);
         }
-
-        if(fileExtension == 'sif'){
-          var layoutBy = function() {
-            appUtilities.triggerLayout( cy, true );
-          };
-          params = [layoutBy, loadCallbackInvalidityWarning];
-          caller = chiseInstance.loadSIFFile;
-        }
-        else if(fileExtension == 'sbml'){
-          var layoutBy = function() {
-            appUtilities.triggerLayout( cy, true );
-          };
-          var error = function(data){
-            promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";         
-          },
-          caller = chiseInstance.loadSbmlForSBML; 
-          params = [error, layoutBy];
-        }
-        else if(fileExtension == 'xml'){
-          appUtilities.setFileContent(file.name); 
-          var success = function(data){
-            chiseInstance.loadSBGNMLText(data, true, file.name, cy);
-          };
-          var error = function(data){
-            promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";  
-          };
-          caller = chiseInstance.loadCellDesigner;
-          params = [success, error];
-        }
-        else if(fileExtension == 'gpml'){
-          appUtilities.setFileContent(file.name);
-          var success = function(data){
-            chiseInstance.loadSBGNMLText(data.message, false, file.name, cy);
-          };
-          var error = function(data){
-            promptFileConversionErrorView.render();          
-            document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
-            
-          };
-          caller = chiseInstance.loadGpml;
-          params = [success, error];
-        }
-        else{
-          console.log("came here to load the file");
-          var loadCallbackSBGNMLValidity = function (text) {
-            //validateSBGNML(text);
-          }
+        // Add callback to handle annotation layers data after file is loaded
+        var loadCallbackAnnotationLayers = function(annotationLayersData) {
+          // This callback will be called after the file is loaded
+          // The annotation layers data will be available in the graph data
+          var cy = appUtilities.getActiveCy();
+          var chiseInstance = appUtilities.getActiveChiseInstance();
+          var networkId = chiseInstance && chiseInstance.getCy() && chiseInstance.getCy().container().id;
           
-          // Add callback to handle annotation layers data after file is loaded
-          var loadCallbackAnnotationLayers = function(annotationLayersData) {
-            // This callback will be called after the file is loaded
-            // The annotation layers data will be available in the graph data
-            var cy = appUtilities.getActiveCy();
-            var chiseInstance = appUtilities.getActiveChiseInstance();
-            var networkId = chiseInstance && chiseInstance.getCy() && chiseInstance.getCy().container().id;
-            
-            if (annotationLayersData && window.annotationLayers) {
-              window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
-              if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
-                window.networkIdToAnnotationLayersData[networkId] = annotationLayersData;
-              }
-            } else if (window.annotationLayers) {
-              window.annotationLayers.resetAnnotationLayers();
-              if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
-                window.networkIdToAnnotationLayersData[networkId] = undefined;
-              }
-            } else {
-              console.log('Annotation layers system not available');
-              console.log('window.annotationLayers:', window.annotationLayers);
+          if (annotationLayersData && window.annotationLayers) {
+            window.annotationLayers.loadAnnotationLayersData(annotationLayersData);
+            if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+              window.networkIdToAnnotationLayersData[networkId] = annotationLayersData;
             }
-          };
-          
-          params = [loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, undefined, loadCallbackAnnotationLayers];
-          caller = chiseInstance.loadNwtFile;
-        }
-
-        if(cy.elements().length != 0) {
-          promptConfirmationView.render(() => {
-            setTimeout(() => caller(file, ...params), 150);
-          });
-        }
-        else {
-          caller(file, ...params);
-        }
+          } else if (window.annotationLayers) {
+            window.annotationLayers.resetAnnotationLayers();
+            if (window.networkIdToAnnotationLayersData && networkId !== undefined) {
+              window.networkIdToAnnotationLayersData[networkId] = undefined;
+            }
+          } else {
+            console.log('Annotation layers system not available');
+            console.log('window.annotationLayers:', window.annotationLayers);
+          }
+        };
+        appUtilities.processFileInput(file, fileExtension, chiseInstance, cy, undefined, undefined, promptInvalidFileView, "drag&drop", loadCallbackSBGNMLValidity, loadCallbackAnnotationLayers);
+        chiseInstance.endSpinner("paths-byURL-spinner");
         $(this).val("");
       }
     });
