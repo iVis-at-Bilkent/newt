@@ -1473,14 +1473,26 @@ var databaseUtilities = {
     });
   },
 
-  batchAddNodesEdgesToCy: async function (nodes, edges) {
+  batchAddNodesEdgesToCy: async function (nodes, edges, originalsToMark=[]) {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     const emptyCanvas = await databaseUtilities.canvasEmpty();
     await chiseInstance.addNodesEdges(nodes,edges,false).then(async function(){
-      $("#map-color-scheme_opposed_red_blue").click();
+      $("#map-color-scheme_opposed_red_blue").click();  
       $("#color-scheme-inspector-style-select").val("3D");
       $("#color-scheme-inspector-style-select").change();
       databaseUtilities.performLayout  (emptyCanvas);
+
+      //Mark originals elements as cloned
+      var cy = appUtilities.getActiveCy();
+      for (var mi = 0; mi < originalsToMark.length; mi++) {
+        var id = originalsToMark[mi];
+        // This only works if cytoscape node id == newtId
+        var col = cy.getElementById(id);
+        if (col && col.length) {
+          chiseInstance.setCloneMarkerStatus(col[0], true);
+        }
+      }
+
     });
   },
 
@@ -2096,7 +2108,7 @@ var databaseUtilities = {
 
   cloneSimpleChemicals: function(nodesArray, edgesArray, enableCloning, cloneThreshold) {
     if (nodesArray === undefined || edgesArray === undefined || nodesArray === null || edgesArray === null) {
-      return { nodes: [], edges: [] };
+      return { nodes: [], edges: [], originalsToMark: [] }; // CHANGED
     }
 
     // defaults
@@ -2108,8 +2120,10 @@ var databaseUtilities = {
     var nodes = [];
     var edges = [];
     var nodesSet = new Set();
-    var edgesMap = new Map(); // kept because you had it; not used for return here
+    var edgesMap = new Map();
     var simpleChemMap = new Map();
+
+    var originalsToMark = [];
 
     // 1) Separate out simple_chemical nodes
     for (var i = 0; i < nodesArray.length; i++) {
@@ -2143,25 +2157,30 @@ var databaseUtilities = {
     // 3) Always add originals exactly once (so original is part of final count)
     simpleChemMap.forEach(function(orig, id) {
       if (!nodesSet.has(id)) {
-        // marker info (optional)
+
+        var eligible = enableCloning && ((arcCounts[id] || 0) >= cloneThreshold);
+
+        // keep your optional info
         if (orig && orig.properties) {
-          orig.properties.cloneEligible = enableCloning && ((arcCounts[id] || 0) >= cloneThreshold);
+          orig.properties.cloneEligible = eligible;
           orig.properties.cloneMarker = false;
         }
+
+        if (eligible) originalsToMark.push(id);
+
         nodes.push(orig);
         nodesSet.add(id);
       }
     });
 
     // 4) Clone per-usage: first usage keeps original, later usages get clones
-    var useCount = {}; // id -> number of times used across endpoints
+    var useCount = {};
 
     for (var j = 0; j < edgesArray.length; j++) {
       var e2 = edgesArray[j];
       var p0 = e2 && e2.properties ? e2.properties : null;
       if (!p0) continue;
 
-      // copy properties WITHOUT object spread
       var raw = {};
       for (var k in p0) {
         if (Object.prototype.hasOwnProperty.call(p0, k)) raw[k] = p0[k];
@@ -2175,7 +2194,6 @@ var databaseUtilities = {
 
           var degree = arcCounts[id2] || 0;
           var shouldClone = simpleChemMap.has(id2) && (degree >= cloneThreshold);
-
           if (!shouldClone) continue;
 
           useCount[id2] = (useCount[id2] || 0) + 1;
@@ -2213,8 +2231,9 @@ var databaseUtilities = {
       edgesMap.get(raw.source).add(raw.target);
     }
 
-    return { nodes: nodes, edges: edges };
+    return { nodes: nodes, edges: edges, originalsToMark: originalsToMark };
   },
+
     
 
   getAllNodesAndEdgesFromDatabase: async function(enableCloning = false, cloneThreshold = 0) {
@@ -2250,15 +2269,15 @@ var databaseUtilities = {
         // 2) Unpack
         console.log(response.records);
         const [ nodesArray, edgesArray,language ] = response.records[0]._fields;
-        const {nodes, edges} = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
+        const {nodes, edges, originalsToMark } = databaseUtilities.cloneSimpleChemicals(nodesArray, edgesArray, enableCloning, cloneThreshold);
         console.log("Unpacked nodes and edges:", nodes, edges);
         // 7) Render in Cytoscape
-        await appUtilities.createNewNetwork();
-        let chiseInstance = appUtilities.getActiveChiseInstance();
-        chiseInstance.elementUtilities.setMapType(language);
+        // await appUtilities.createNewNetwork();
+        // let chiseInstance = appUtilities.getActiveChiseInstance();
+        // chiseInstance.elementUtilities.setMapType(language);
         const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodes);
         const deduplicatedEdges = await databaseUtilities.deduplicateExistingEdges(edges);
-        await databaseUtilities.batchAddNodesEdgesToCy(deduplicatedNodes, deduplicatedEdges);
+        await databaseUtilities.batchAddNodesEdgesToCy(deduplicatedNodes, deduplicatedEdges, originalsToMark);
       },
       error: (req, status, err) => {
         console.error("Error fetching nodes/edges:", status, err);

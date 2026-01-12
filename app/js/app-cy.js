@@ -430,8 +430,12 @@ module.exports = function (chiseInstance) {
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             console.log("Getting contents for compartment:", cyTarget.id());
-            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            var generalProperties = appUtilities.getScratch(
+              cy,
+              "currentGeneralProperties"
+            );
+            const allowCloning = generalProperties.allowSimpleChemicalCloning;
+            const cloningThreshold = generalProperties.simpleChemicalCloningThreshold;
             databaseUtilities.getCompartmentMembers(cyTarget.id(), allowCloning, cloningThreshold);
             // databaseUtilities.getNeighboringNodes(cyTarget.id());
         }

@@ -2465,8 +2465,12 @@ module.exports = function() {
     });
 
     $('#get-all-data').click(async function (e) {
-      const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-      const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+      var generalProperties = appUtilities.getScratch(
+        cy,
+        "currentGeneralProperties"
+      );
+      const allowCloning = generalProperties.allowSimpleChemicalCloning;
+      const cloningThreshold = generalProperties.simpleChemicalCloningThreshold;
       await databaseUtilities.getAllNodesAndEdgesFromDatabase(allowCloning, cloningThreshold);
       cy.undoRedo().do("changeMenu", {
         id: "fit-labels-to-nodes",

@@ -3736,13 +3736,12 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
             var lengthLimit = self.currentQueryParameters.lengthLimit;
             console.log("geneSymbolsArray", geneSymbolsArray);
             console.log("lengthLimit", lengthLimit);
-            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
             var result = await databaseUtilities.runNeighborhood(
               geneSymbolsArray,
               lengthLimit,
-              allowCloning,
-              cloningThreshold
+              allowSimpleChemicalCloning,
+              simpleChemicalCloningThreshold
             );
             if (result && result.err) {
               $(self.el).modal("toggle");
@@ -4105,9 +4104,8 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
             var lengthLimit =  self.currentQueryParameters.lengthLimit
             console.log("geneSymbolsArray", geneSymbolsArray)
             console.log("lengthLimit", lengthLimit);
-            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
-            var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowCloning,cloningThreshold);
+            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
+            var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowSimpleChemicalCloning,simpleChemicalCloningThreshold);
             if (result && result.err)
             {
               $(self.el).modal('toggle');
@@ -5535,15 +5533,14 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
                 .split(" ");
               console.log("sourceSymbolsArray", sourceSymbolsArray);
               console.log("targetSymbolsArray", targetSymbolsArray);
-              const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-              const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+              const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
               var lengthLimit = self.currentQueryParameters.lengthLimit;
               var result = await databaseUtilities.runPathsFromTo(
                 sourceSymbolsArray,
                 targetSymbols,
                 lengthLimit,
-                allowCloning,
-                cloningThreshold
+                allowSimpleChemicalCloning,
+                simpleChemicalCloningThreshold
               );
               console.log("resultFromDb", result);
               if (result && result.err) {
@@ -5902,14 +5899,13 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
             var lengthLimit = self.currentQueryParameters.lengthLimit;
             console.log("geneSymbolsArray", geneSymbolsArray);
             console.log("lengthLimit", lengthLimit);
-            const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-            const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
             var result = await databaseUtilities.runCommonStream(
               geneSymbolsArray,
               lengthLimit,
               -1,
-              allowCloning,
-              cloningThreshold
+              allowSimpleChemicalCloning,
+              simpleChemicalCloningThreshold
             );
             console.log("resultFromDb", result);
             if (result && result.err) {
@@ -6021,14 +6017,13 @@ var UpStreamQueryViewLocalDB = Backbone.View.extend({
         var lengthLimit = self.currentQueryParameters.lengthLimit;
         console.log("geneSymbolsArray", geneSymbolsArray);
         console.log("lengthLimit", lengthLimit);
-        const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-        const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+        const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
         var result = await databaseUtilities.runCommonStream(
           geneSymbolsArray,
           lengthLimit,
           1,
-          allowCloning,
-          cloningThreshold
+          allowSimpleChemicalCloning,
+          simpleChemicalCloningThreshold
         );
         if (result && result.err) {
           $(self.el).modal("toggle");
@@ -6134,14 +6129,13 @@ var DownStreamQueryViewLocalDB = Backbone.View.extend({
           var lengthLimit = self.currentQueryParameters.lengthLimit;
           console.log("geneSymbolsArray", geneSymbolsArray);
           console.log("lengthLimit", lengthLimit);
-          const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-          const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
+          const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
           var result = await databaseUtilities.runCommonStream(
             geneSymbolsArray,
             lengthLimit,
             1,
-            allowCloning,
-            cloningThreshold
+            allowSimpleChemicalCloning,
+            simpleChemicalCloningThreshold
           );
           if (result && result.err) {
             $(self.el).modal("toggle");
