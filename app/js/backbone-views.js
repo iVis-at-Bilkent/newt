@@ -4523,6 +4523,8 @@ var SearchNodesView = Backbone.View.extend({
   },
 
   _getCurrentTabCloningOptions: function () {
+    // console.log("current tab id is:",cy.container().id);
+    var cy = appUtilities.getActiveCy();
     var generalProperties = appUtilities.getScratch(
       cy,
       "currentGeneralProperties"

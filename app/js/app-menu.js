@@ -2365,10 +2365,7 @@ module.exports = function() {
           window.networkIdToAnnotationLayersData[currentActiveNetworkId] = savedData;
         }
       }
-      console.log("changing the active networ tab",JSON.parse(JSON.stringify(appUtilities.getScratch(cy,
-          "currentGeneralProperties"))));
       var target = $(e.target).attr("href");
-      console.log("target network panel id:", target);
       appUtilities.setActiveNetwork(target);
       
 
