@@ -1554,6 +1554,7 @@
     <div id="push-active-tabs-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- neighborhood query table will be shown here-->
     </div>
+    <div id="load-entire-content-table" class="modal fade" role="dialog" aria-hidden="true"></div>
       <!-- neighborhood query table will be shown here-->
     
     <div id="query-neighborhood-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
@@ -3756,6 +3757,31 @@
           </div>
       </div>
     </script>
+
+
+    <script type="text/template" id="load-entire-content-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 540px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><%= title %></h4>
+          </div>
+
+          <div class="modal-body">
+            <span class="add-on layout-text">
+              Canvas already has content. Replace it or merge database contents into it?
+            </span>
+          </div>
+
+          <div class="modal-footer" style="text-align: center">
+            <button id="replace-load-entire-content" class="btn btn-default">Replace</button>
+            <button id="merge-load-entire-content" class="btn btn-default">Merge</button>
+            <button id="cancel-load-entire-content" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
 
 
 

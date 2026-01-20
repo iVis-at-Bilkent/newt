@@ -183,6 +183,7 @@ module.exports = function() {
   searchNodesView = appUtilities.searchNodesView = new BackboneViews.SearchNodesView({ el: '#search-nodes-modal' });
   mergeNodesView = appUtilities.mergeNodesView = new BackboneViews.MergeNodesView({el: '#merge-nodes-table'});
   mergeNodesErrorView = appUtilities.mergeNodesErrorView = new BackboneViews.MergeNodesErrorView({el: '#merge-nodes-error-table'});
+  loadEntireContentView = appUtilities.LoadEntireContentView = new BackboneViews.LoadEntireContentView({el: '#load-entire-content-table'});
   pushActiveTabsView = appUtilities.pushActiveTabsView = new BackboneViews.PushActiveTabsView({el: '#push-active-tabs-table'});
   layoutPropertiesView = appUtilities.layoutPropertiesView = new BackboneViews.LayoutPropertiesView({el: '#layout-properties-table'});
   colorSchemeInspectorView = appUtilities.colorSchemeInspectorView = new BackboneViews.ColorSchemeInspectorView({el: '#color-scheme-template-container'});
@@ -2355,6 +2356,8 @@ module.exports = function() {
 
     // on active network tab change
     $(document).on('shown.bs.tab', '#network-tabs-list  a[data-toggle="tab"]', function (e) {
+      var cy = appUtilities.getActiveCy();
+      
       if (!window.supressLoadAnnotationLayers) {
         var currentActiveNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
         if (window.annotationLayers && window.networkIdToAnnotationLayersData) {
@@ -2362,9 +2365,12 @@ module.exports = function() {
           window.networkIdToAnnotationLayersData[currentActiveNetworkId] = savedData;
         }
       }
-
+      console.log("changing the active networ tab",JSON.parse(JSON.stringify(appUtilities.getScratch(cy,
+          "currentGeneralProperties"))));
       var target = $(e.target).attr("href");
+      console.log("target network panel id:", target);
       appUtilities.setActiveNetwork(target);
+      
 
       // Load annotation layers for the new (current) network
       var newNetworkId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
@@ -2403,13 +2409,14 @@ module.exports = function() {
       );
       const allowCloning = generalProperties.allowSimpleChemicalCloning;
       const cloningThreshold = generalProperties.simpleChemicalCloningThreshold;
-      await databaseUtilities.getAllNodesAndEdgesFromDatabase(allowCloning, cloningThreshold);
-      cy.undoRedo().do("changeMenu", {
-        id: "fit-labels-to-nodes",
-        type: "checkbox",
-        property: "currentGeneralProperties.fitLabelsToNodes",
-        value: true
-      });
+      loadEntireContentView.render(allowCloning, cloningThreshold);
+      // await databaseUtilities.getAllNodesAndEdgesFromDatabase(allowCloning, cloningThreshold);
+      // cy.undoRedo().do("changeMenu", {
+      //   id: "fit-labels-to-nodes",
+      //   type: "checkbox",
+      //   property: "currentGeneralProperties.fitLabelsToNodes",
+      //   value: true
+      // });
     });
 
 

@@ -960,7 +960,8 @@ appUtilities.triggerLayout = function (_cy, randomize, fit = undefined,static=fa
   // in that case
   if (randomize !== undefined) {
     preferences.randomize = randomize;
-    preferences.fit = fit === undefined ? randomize : fit;
+    preferences.fit = true;
+    // preferences.fit = fit === undefined ? randomize : fit;
   }
 
   if(static){
