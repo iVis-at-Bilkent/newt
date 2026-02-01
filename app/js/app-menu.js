@@ -292,13 +292,13 @@ module.exports = function() {
       var mapPropsFromUrl = appUtilities.filterMapProperties(urlParams);
 
       var sbgnORsbml = appUtilities.filterMapTypeProperty(urlParams);
-      if(sbgnORsbml == "true")
-      {
+      if(sbgnORsbml == "true") {
         sbmlProperty.sbmlMap = true
-      }
-      else
-      {
+      } else if (sbgnORsbml == "false") {
         sbmlProperty.sbmlMap = false
+      } else {
+        // Default to SBML
+        sbmlProperty.sbmlMap = true
       }
       
       
