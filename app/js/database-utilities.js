@@ -156,14 +156,21 @@ var epnCriterias= {
     },
   },
 };
+
+function neoInt(x) {
+  return (x && typeof x === "object" && x.low != null) ? x.low : x;
+}
 var databaseUtilities = {
   enableDatabase: true,
   nodesInDB: {},
   edgesInDB: {},
 
-  _isDBEmpty:  function() {
-      const tabKey = databaseUtilities._currentActiveNetworkID();
-      return this.nodesInDB[tabKey].length === 0 && this.edgesInDB[tabKey].length === 0;
+
+  _isDBEmpty: function() {
+    const tabKey = databaseUtilities._currentActiveNetworkID();
+    const nodes = this.nodesInDB[tabKey] || {};
+    const edges = this.edgesInDB[tabKey] || {};
+    return Object.keys(nodes).length === 0 && Object.keys(edges).length === 0;
   },
 
   _currentActiveNetworkID: function(){
@@ -172,6 +179,7 @@ var databaseUtilities = {
   },
 
   _getCurrentTabLocalDBMatchingOptions: function (params) {
+    var cy = appUtilities.getActiveCy();
     var generalProperties = appUtilities.getScratch(
       cy,
       "currentGeneralProperties"
@@ -184,6 +192,8 @@ var databaseUtilities = {
       processAgentContribution:generalProperties.processAgentContribution,
       overallProcessPercentage:generalProperties.overallProcessPercentage,
       complexMatchPercentage:generalProperties.complexMatchPercentage,
+      allowSimpleChemicalCloning: generalProperties.allowSimpleChemicalCloning,
+      simpleChemicalCloningThreshold: generalProperties.simpleChemicalCloningThreshold,
     }
   },
   
@@ -240,6 +250,7 @@ var databaseUtilities = {
     for (let i = 0; i < states.length; i++) {
       var value = states[i].state.value || "";
       var variable = states[i].state.variable || "";
+      if(value === "" && variable === "") continue;
       refinedStates.push(value + "@" + variable);
     }
     return refinedStates.sort();
@@ -407,7 +418,7 @@ var databaseUtilities = {
     }
   },
 
-  pushActiveContentToDatabase: async function (activeTabContent, flag) {
+  pushActiveContentToDatabase: async function (activeTabContent, flag) {    
     var nodes = [];
     var edges = [];
     console.log('UnProcessed data:',activeTabContent);    
@@ -852,7 +863,6 @@ var databaseUtilities = {
   pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage) {
     // console.log(ids,list,mergeflag,epnMatchingPercentage/100);
     list = list.map((epn) => {
-      console.log(epn.class,epnCriterias[epn.class]);
       var newEPN = Object.assign({}, epn);
       newEPN.parent = ids[epn.parent] || epn.parent;
       return newEPN;
@@ -997,14 +1007,12 @@ var databaseUtilities = {
 
     const query = `
       UNWIND $edges AS edge
-      MATCH (sourceNode {newtId: edge.source}), (targetNode {newtId: edge.target})
+      MATCH (sourceNode {newtId: edge.source})
+      MATCH (targetNode {newtId: edge.target})
       CALL apoc.do.when(
-        EXISTS {
-          MATCH (sourceNode)-[r]->(targetNode)
-          WHERE type(r) = edge.class
-        },
-        'RETURN null',
-        'CALL apoc.create.relationship(sourceNode, edge.class, edge, targetNode) YIELD rel RETURN rel',
+        EXISTS { MATCH (sourceNode)-[r]->(targetNode) WHERE type(r) = edge.class },
+        'RETURN false AS created, null AS rel',
+        'CALL apoc.create.relationship(sourceNode, edge.class, edge, targetNode) YIELD rel RETURN true AS created, rel AS rel',
         {sourceNode: sourceNode, targetNode: targetNode, edge: edge}
       ) YIELD value
       RETURN value;
@@ -1019,6 +1027,12 @@ var databaseUtilities = {
       data: JSON.stringify(data),
       success: function (response) {
         console.log(response);
+        // Count inserted vs existed: value is null when relation already existed
+        let inserted = 0;
+        for (const rec of response.records || []) {
+          const v = rec._fields[0]; // "value"
+          if (v && v.rel!=null) inserted++;      // depends on APOC shape
+        }
       },
       error: function (req, status, err) {
         errorCheck = { status, err };
@@ -1122,14 +1136,14 @@ var databaseUtilities = {
   
     // Associate each complex with its children and parent (stripped)
     let complexIds = {};
-    console.log("epns:",JSON.parse(JSON.stringify(epns)));
+    // console.log("epns:",JSON.parse(JSON.stringify(epns)));
     for (let complex of complexes) {
       let children = [];
       complex.parent = ids[complex.parent] || complexIds[complex.parent] || complex.parent;
-      console.log("Complex parent", complex.newtId);
+      // console.log("Complex parent", complex.newtId);
       for (let i = 0; i < epns.length; i++) {
         let epn = epns[i];
-        console.log("Epn", epn);
+        // console.log("Epn", epn);
         if (epn.parent === complex.newtId) {
           children.push(stripComplexProps(epn));
           epns.splice(i, 1);
@@ -1143,11 +1157,12 @@ var databaseUtilities = {
   
     // Build the query to call our stored procedure
     const data = {
-      query: "CALL custom.pushComplexes($complexes, $epnCriteria, $threshold) YIELD result RETURN result",
+      query: "CALL custom.pushComplexes($complexes, $epnCriteria, $complexThreshold, $epnThreshold) YIELD result RETURN result",
       queryData: {
         complexes: complexes,
         epnCriteria: epnCriterias,
-        threshold: threshold,
+        complexThreshold: complexThreshold/100,
+        epnThreshold: epnThreshold/100,
       }
     };
   
@@ -1418,6 +1433,7 @@ var databaseUtilities = {
         if(new_node.properties.stateVariables && new_node.properties.stateVariables.length>0){
           for(let i=0;i<new_node.properties.stateVariables.length;i++){
             var obj = appUtilities.getDefaultEmptyInfoboxObj( 'state variable' );
+            // console.log("adding state variable:",new_node.properties.stateVariables[i]);
             chiseInstance.addStateOrInfoBox(node, obj);
             const [value, variable] = new_node.properties.stateVariables[i].split("@");
             chiseInstance.changeStateOrInfoBox(node, i, value,"value");
@@ -1428,7 +1444,7 @@ var databaseUtilities = {
         // ✅ Set unitsOfInformation as a Cytoscape data field
         if (new_node.properties.unitsOfInformation && new_node.properties.unitsOfInformation.length > 0) {
           for(let i=0;i<new_node.properties.unitsOfInformation.length;i++){
-            console.log("unit of information",new_node.properties.unitsOfInformation[i]);
+            // console.log("unit of information",new_node.properties.unitsOfInformation[i]);
             var uoi_obj = appUtilities.getDefaultEmptyInfoboxObj( 'unit of information' );
             chiseInstance.addStateOrInfoBox(node, uoi_obj);
         //     console.log("unit of information:",new_node.properties.unitsOfInformation[i]);
@@ -1506,7 +1522,8 @@ var databaseUtilities = {
       let edgesToHighlight = [];
       let edgesToAdd = [];
       let nodesToAdd = [];
-      databaseUtilities.nodesInDB = {};
+      databaseUtilities.updateDBMaps([],[]);
+      // databaseUtilities.nodesInDB = {};
       const emptyCanvas = databaseUtilities.canvasEmpty();
       // databaseUtilities.edgesInDB = {};
       const tabKey = databaseUtilities._currentActiveNetworkID();
@@ -1536,7 +1553,11 @@ var databaseUtilities = {
               edges[j].properties.target,
               edges[j].properties.class,
             ].join("|")
-          ] = edges[j].identity.low;
+          ] = [
+              edges[j].properties.source,
+              edges[j].properties.target,
+              edges[j].properties.class,
+            ].join("|");
         }
         edgesToHighlight.push(edges[j]);
       }
@@ -1603,7 +1624,8 @@ var databaseUtilities = {
           edgesToAdd[i].properties.class === "belongs_to_submap" || 
           edgesToAdd[i].properties.class === "belongs_to_compartment" ||
           edgesToAdd[i].properties.class === "belongs_to_complex";
-        if (!notAllowedEdges){            
+        if (!notAllowedEdges && edgesToAdd[i].properties.source && edgesToAdd[i].properties.target && edgesToAdd[i].properties.class) {            
+          // console.log(edgesToAdd[i],edgesToAdd[i].properties,edgesToAdd[i].properties.class)
           var new_edge = chiseInstance.addEdge(
             edgesToAdd[i].properties.source,
             edgesToAdd[i].properties.target,
@@ -1650,14 +1672,14 @@ var databaseUtilities = {
       };
       return errMessage;
     }
-    if (sourceId.length > 0 && targetId == 0) {
+    if (sourceId.length > 0 && targetId.length == 0) {
       var errMessage = {
         err: "Invalid input",
         message: "No such target nodes",
       };
       return errMessage;
     }
-    if (sourceId.length == 0 && targetId == 0) {
+    if (sourceId.length == 0 && targetId.length == 0) {
       var errMessage = {
         err: "Invalid input",
         message: "No such source and target nodes",
@@ -1666,13 +1688,15 @@ var databaseUtilities = {
     }
     // query = graphALgos.pathsFromTo(limit,enableCloning?cloneThreshold:1000000);
     query = `
-    CALL pathsFromTo($idList, $limit, $simpleChemicalDegreeThreshold)
-    YIELD nodes, relationships, language
-    RETURN nodes, relationships, language
+      CALL pathsFromTo($idList, $limit, $simpleChemicalDegreeThreshold)
+      YIELD nodes, relationships, language
+      RETURN nodes, relationships, language
     `;
-    var idList =  [...new Set([...sourceId, ...targetId])];
-    var queryData = { idList: idList, limit: limit, simpleChemicalDegreeThreshold: enableCloning?cloneThreshold:1000000 };
-    console.log("queryData:",queryData);
+
+    var idList = [...new Set([...sourceId, ...targetId])];
+    var queryData = { idList: idList, limit: limit, simpleChemicalDegreeThreshold: 1000000 };
+
+    console.log("queryData:", queryData);
     var data = { query: query, queryData: queryData };
     var result = null 
     try{
@@ -1688,6 +1712,7 @@ var databaseUtilities = {
     }
 
     if (!result || !result.records || result.records.length == 0 || result.records[0]._fields[0].length == 0) {
+      result = result || {};
       result.err = { err: "Invalid input", message: "No data returned" };
       err = result.err;
       return err;
@@ -1710,9 +1735,7 @@ var databaseUtilities = {
       for (let j = 0; j < fields[1].length; j++) {
         if (
           !edgesMap.get(fields[1][j].properties.source) ||
-          !edgesMap
-            .get(fields[1][j].properties.source)
-            .has(fields[1][j].properties.target)
+          !edgesMap.get(fields[1][j].properties.source).has(fields[1][j].properties.target)
         ) {
           var edge = {};
           edge.properties = {};
@@ -1726,9 +1749,7 @@ var databaseUtilities = {
             var newSet = new Set();
             edgesMap.set(fields[1][j].properties.source, newSet);
           }
-          edgesMap
-            .get(fields[1][j].properties.source)
-            .add(fields[1][j].properties.target);
+          edgesMap.get(fields[1][j].properties.source).add(fields[1][j].properties.target);
         }
       }
     }
@@ -1764,14 +1785,12 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    // var query = graphALgos.pathsBetween(lengthLimit,enableCloning?cloneThreshold:1000000);
-
     var query = `
-    CALL pathsBetween($idList, $lengthLimit, $simpleChemDegreeThreshold)
-    YIELD nodes, relationships, language
-    RETURN nodes, relationships, language
+      CALL pathsBetween($idList, $lengthLimit, $simpleChemDegreeThreshold)
+      YIELD nodes, relationships, language
+      RETURN nodes, relationships, language
     `;
-    var queryData = { idList: idOfNodes,lengthLimit: lengthLimit, simpleChemDegreeThreshold: enableCloning?cloneThreshold:1000000 }; 
+    var queryData = { idList: idOfNodes, lengthLimit: lengthLimit, simpleChemDegreeThreshold:  1000000 };
 
     var data = { query: query, queryData: queryData };
     console.log("data being sent:", data);
@@ -1867,98 +1886,106 @@ var databaseUtilities = {
       return errMessage;
     }
 
-    // var query = graphALgos.neighborhood(lengthLimit,enableCloning?cloneThreshold:1000000);
-    var query = `
+  var query = `
     CALL neighborhoodFromIds($idList, $limit, $simpleChemicalDegreeThreshold)
     YIELD nodes, relationships, language
     RETURN nodes, relationships, language
-    `;
-    var queryData = { idList: idList, limit: lengthLimit, simpleChemicalDegreeThreshold: enableCloning?cloneThreshold:1000000 };
+  `;
+  var queryData = { idList: idList, limit: lengthLimit, simpleChemicalDegreeThreshold: 1000000 };
 
-    var data = { query: query, queryData: queryData };
-    var result = {};
-    result.highlight = {};
-    result.add = {};
-    await $.ajax({
-      type: "post",
-      url: "/utilities/runDatabaseQuery",
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(data),
-      success: async function (data) {
-        console.log("data:", data);
-        if (data.records.length == 0) {
-          result.err = {
-            err: "Invalid input",
-            message: "No such nodes with given symbol",
-          };
-          return;
-        }
-        var nodes = [];
-        var edges = [];
-        var targetNodes = [];
-        var nodesSet = new Set();
-        var edgesMap = new Map();
-        var records = data.records;
-        var language = records[0]._fields[2];
-        for (let i = 0; i < records.length; i++) {
-          var fields = records[i]._fields;
-          for (let j = 0; j < fields[0].length; j++) {
-            if (!nodesSet.has(fields[0][j].properties.newtId)) {
-              nodes.push(fields[0][j]);
-              nodesSet.add(fields[0][j].properties.newtId);
-              if (
-                !setOfSources.has(fields[0][j].properties.newtId) &&
-                !fields[0][j].properties.class.startsWith("process")
-              ) {
-                targetNodes.push(fields[0][j].properties.newtId);
-              }
-            }
-          }
+  var data = { query: query, queryData: queryData };
+  var result = {};
+  result.highlight = {};
+  result.add = {};
 
-          for (let j = 0; j < fields[1].length; j++) {
+  await $.ajax({
+    type: "post",
+    url: "/utilities/runDatabaseQuery",
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify(data),
+    success: async function (data) {
+      console.log("data being returned:", data);
+      console.log("data:", data);
+      if (data.records.length == 0) {
+        result.err = {
+          err: "Invalid input",
+          message: "No such nodes with given symbol",
+        };
+        return;
+      }
+
+      var nodes = [];
+      var edges = [];
+      var targetNodes = [];
+      var nodesSet = new Set();
+      var edgesMap = new Map();
+      var records = data.records;
+      var language = records[0]._fields[2];
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.meta = report.meta || {};
+        report.meta.language = language;
+      }
+      // -----------------------------------------------------------
+
+      for (let i = 0; i < records.length; i++) {
+        var fields = records[i]._fields;
+        for (let j = 0; j < fields[0].length; j++) {
+          if (!nodesSet.has(fields[0][j].properties.newtId)) {
+            nodes.push(fields[0][j]);
+            nodesSet.add(fields[0][j].properties.newtId);
             if (
-              !edgesMap.get(fields[1][j].properties.source) ||
-              !edgesMap
-                .get(fields[1][j].properties.source)
-                .has(fields[1][j].properties.target)
+              !setOfSources.has(fields[0][j].properties.newtId) &&
+              !fields[0][j].properties.class.startsWith("process")
             ) {
-              var edge = {};
-              edge.properties = {};
-              edge.identity = {};
-              edge.properties.source = fields[1][j].properties.source;
-              edge.properties.target = fields[1][j].properties.target;
-              edge.properties.class = fields[1][j].properties.class;
-              edge.identity.low = fields[1][j].identity.low;
-              edges.push(edge);
-              if (!edgesMap.get(fields[1][j].properties.source)) {
-                var newSet = new Set();
-                edgesMap.set(fields[1][j].properties.source, newSet);
-              }
-              edgesMap
-                .get(fields[1][j].properties.source)
-                .add(fields[1][j].properties.target);
+              targetNodes.push(fields[0][j].properties.newtId);
             }
           }
         }
-        console.log(nodes, edges, newtIdList, targetNodes);
-        const { nodes: nodesArray, edges: edgesArray } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);        
-        appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
-        var cy = appUtilities.getActiveCy();
-        cy.elements().remove();
-        // databaseUtilities.cleanNodesAndEdgesInDB();
-        await databaseUtilities.addNodesEdgesToCy(
-          nodesArray,
-          edgesArray,
-          newtIdList,
-          targetNodes
-        );
-      },
-      error: function (req, status, err) {
-        console.error("Error running query", status, err);
-      },
-    });
-    return result;
-  },
+
+        for (let j = 0; j < fields[1].length; j++) {
+          if (
+            !edgesMap.get(fields[1][j].properties.source) ||
+            !edgesMap
+              .get(fields[1][j].properties.source)
+              .has(fields[1][j].properties.target)
+          ) {
+            if(fields[1][j].type.startsWith("belongs_to"))continue;
+            var edge = {};
+            edge.properties = {};
+            edge.identity = {};
+            edge.properties.source = fields[1][j].properties.source;
+            edge.properties.target = fields[1][j].properties.target;
+            edge.properties.class = fields[1][j].properties.class;
+            edge.identity.low = fields[1][j].identity.low;
+            edges.push(edge);
+            if (!edgesMap.get(fields[1][j].properties.source)) {
+              var newSet = new Set();
+              edgesMap.set(fields[1][j].properties.source, newSet);
+            }
+            edgesMap
+              .get(fields[1][j].properties.source)
+              .add(fields[1][j].properties.target);
+          }
+        }
+      }
+
+      const { nodes: nodesArray, edges: edgesArray, originalsToMark } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+      const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodesArray);
+      const deduplicatedEdges = await databaseUtilities.deduplicateExistingEdges(edgesArray);
+      appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+      var cy = appUtilities.getActiveCy();
+      cy.elements().remove();
+      await databaseUtilities.batchAddNodesEdgesToCy(deduplicatedNodes, deduplicatedEdges, originalsToMark);
+    },
+    error: function (req, status, err) {
+      console.error("Error running query", status, err);
+    },
+  });
+
+  return result;
+},
 
   runCommonStream: async function (labelOfNodes, lengthLimit, direction,enableCloning,cloneThreshold) {
     var idOfNodes = [];
@@ -1996,7 +2023,7 @@ var databaseUtilities = {
       console.error("Error running query",err);
     }
     console.log("data:", output);
-    if (output.records.length == 0) {
+    if (!output || !output.records || output.records.length == 0) {
       result.err = { err: "Warning", message: "No results found!" };
       return;
     }
@@ -2024,7 +2051,9 @@ var databaseUtilities = {
       }
     }
     console.log("nodes:", nodes, "edges:", edges);
-    const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+    const { nodes: nodesArray, edges: edgesArray,originalsToMark } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+    const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodesArray);
+    const deduplicateEdges = await databaseUtilities.deduplicateExistingEdges(edgesArray);
     console.log("nodes:", nodesArray, "edges:", edgesArray);
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(await databaseUtilities.getLanguage(output));
     // Clean the canvas
@@ -2067,7 +2096,7 @@ var databaseUtilities = {
         });
       });
     });
-    if(languages.size===1)return mapType = [...languages][0]; // single language
+    if (languages.size === 1) return Array.from(languages)[0]; // single language
     return "HybridAny"; // mixed languages or no languages found
   },
 
