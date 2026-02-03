@@ -1921,14 +1921,6 @@ var databaseUtilities = {
       var edgesMap = new Map();
       var records = data.records;
       var language = records[0]._fields[2];
-
-      // -------------------- REPORTING (added) --------------------
-      if (report) {
-        report.meta = report.meta || {};
-        report.meta.language = language;
-      }
-      // -----------------------------------------------------------
-
       for (let i = 0; i < records.length; i++) {
         var fields = records[i]._fields;
         for (let j = 0; j < fields[0].length; j++) {
