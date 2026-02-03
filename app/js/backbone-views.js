@@ -3719,7 +3719,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
               }).render();
               return;
             }
-            if (self.currentQueryParameters.lengthLimit > 2) {
+            if (self.currentQueryParameters.lengthLimit > 4) {
               $(self.el).modal("toggle");
               new PromptInvalidLengthLimitView({
                 el: "#prompt-invalidLengthLimit-table",
@@ -4084,7 +4084,7 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
               }).render();
               return;
             }
-            if (self.currentQueryParameters.lengthLimit > 5) {
+            if (self.currentQueryParameters.lengthLimit >= 12) {
               $(self.el).modal("toggle");
               new PromptInvalidLengthLimitView({
                 el: "#prompt-invalidLengthLimit-table",
@@ -5396,7 +5396,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
                 return;
               }
 
-              if (self.currentQueryParameters.lengthLimit > 3) {
+              if (self.currentQueryParameters.lengthLimit > 21) {
                 $(self.el).modal("toggle");
                 new PromptInvalidLengthLimitView({
                   el: "#prompt-invalidLengthLimit-table",
@@ -5762,7 +5762,7 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
               }).render();
               return;
             }
-            if (self.currentQueryParameters.lengthLimit > 3) {
+            if (self.currentQueryParameters.lengthLimit > 15) {
               $(self.el).modal("toggle");
               new PromptInvalidLengthLimitView({
                 el: "#prompt-invalidLengthLimit-table",
