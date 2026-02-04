@@ -165,6 +165,20 @@ var databaseUtilities = {
   nodesInDB: {},
   edgesInDB: {},
 
+  _nextReportContext: null,
+
+    _consumeNextReportContext: function() {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return null;
+      const raw = window.localStorage.getItem("NEXT_REPORT_CONTEXT");
+      if (!raw) return null;
+      window.localStorage.removeItem("NEXT_REPORT_CONTEXT"); // consume once
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  },
+
 
   _isDBEmpty: function() {
     const tabKey = databaseUtilities._currentActiveNetworkID();
@@ -253,6 +267,7 @@ var databaseUtilities = {
       if(value === "" && variable === "") continue;
       refinedStates.push(value + "@" + variable);
     }
+    // console.log('refinedStates:',refinedStates);
     return refinedStates.sort();
   },
 
@@ -418,23 +433,76 @@ var databaseUtilities = {
     }
   },
 
-  pushActiveContentToDatabase: async function (activeTabContent, flag) {    
+  pushActiveContentToDatabase: async function (activeTabContent, flag) {
+    const ctx = databaseUtilities._consumeNextReportContext() || {
+      workload: "W1",
+      mapName: "sample-caspaces.sbgn"
+    };
+
+    const report = databaseUtilities._makeEmptyReport(
+      ctx.workload,
+      ctx.mapName,
+      flag,
+      this._getCurrentTabLocalDBMatchingOptions()
+    );
+    databaseUtilities._nextReportContext = null; // auto-reset after use
+    const t0 = databaseUtilities._now();
+
+    // DB snapshot BEFORE
+    report.dbSnapshot.before = await databaseUtilities._getDbCounts();
+    
     var nodes = [];
     var edges = [];
+      // Parse counts
+    report.counts.incomingNodes = activeTabContent.nodes.length;
+    report.counts.incomingEdges = activeTabContent.edges.length;
     console.log('UnProcessed data:',activeTabContent);    
     await databaseUtilities.processNodesData(nodes, activeTabContent);
     await databaseUtilities.processEdgesData(edges, activeTabContent);
+    const t1 = databaseUtilities._now();
     console.log('UnProcessed data 2:',nodes,edges);
-    let {nodesData,edgesData} = await databaseUtilities.processData(nodes, edges);
+    let {nodesData,edgesData,_metrics} = await databaseUtilities.processData(nodes, edges,report);
+    report.timingMs.preprocessing = Math.round(databaseUtilities._now() - t1);
+    report.counts.processedNodes = nodesData.length;
+    report.counts.processedEdges = edgesData.length;
+
+    // Push to DB (this will update report further)
+    const t2 = databaseUtilities._now();
     console.log('Processed data:',nodesData,edgesData);
-    return await databaseUtilities.pushActiveNodesEdgesToDatabase(
+    const output =  await databaseUtilities.pushActiveNodesEdgesToDatabase(
       nodesData,
       edgesData,
-      flag
+      flag,
+      report
     );
+    report.timingMs.pushToDb = Math.round(databaseUtilities._now() - t2);
+
+    // DB snapshot AFTER + sanity checks
+    report.dbSnapshot.after = await databaseUtilities._getDbCounts();
+    report.sanity.selfLoopsAfter = await databaseUtilities._countSelfLoops();
+    report.sanity.duplicateTriplesAfter = await databaseUtilities._countDuplicateTriples();
+
+    report.timingMs.total = Math.round(databaseUtilities._now() - t0);
+
+    console.log(`${ctx.workload}_REPORT`, JSON.stringify(report, null, 2));
+    return output;
   },
 
-  processData: async function (nodesData, edgesData) {
+  _countSelfLoops: async function() {
+    const query = `MATCH (n)-[r]->(n) RETURN count(r) AS c`;
+    const data = { query, queryData: {} };
+    const res = await $.ajax({
+      type: "post",
+      url: "/utilities/runDatabaseQuery",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data)
+    });
+    const c = res.records[0]._fields[0];
+    // return c.low ?? c; // cannot use optional chaining
+    return (c && typeof c === "object" && c.low != null) ? c.low : c;
+  },
+
+  processData: async function (nodesData, edgesData,report) {
     var parentChildRelationship = {};
     var parentNodes = {};
     var nodesMap = {};
@@ -487,10 +555,10 @@ var databaseUtilities = {
         specialNodes[nodesData[i].newtId] = [[], [], []];
       }
       nodesMap[nodesData[i].newtId] = nodesData[i];
-    }
+    };
+    let containmentAdded=0;
     //Add child parent relationships if any
     for (let i = 0; i < nodesData.length; i++) {
-      console.log("Node parent", nodesData[i].newtId, nodesData[i].parent);
       if (nodesData[i].parent != "none" && parentNodes[nodesData[i].parent]!=='complex_sbml') {
         var newEdge = {
           source: nodesData[i].newtId,
@@ -498,9 +566,11 @@ var databaseUtilities = {
           class: "belongs_to_" + parentNodes[nodesData[i].parent],
         };
         edgesData.push(newEdge);
+        containmentAdded++;
       }
     }
-
+    if (report) report.counts.addedContainmentEdges += containmentAdded;
+    let topoExpanded =0;
     // extending relationships from topology groups node's children to other nodes that are connected to the topology group
     for(let i=0;i<edgesData.length;i++){
       let edge = edgesData[i];
@@ -519,9 +589,11 @@ var databaseUtilities = {
             class: edgeClass
           };
           edgesData.push(newEdge);
+          topoExpanded++;
         }
       }
     }
+    if (report) report.counts.expandedTopologyEdges += topoExpanded;
     edgesData = edgesData.filter((edge)=>{
       let source = edge.source;
       let target = edge.target
@@ -860,9 +932,10 @@ var databaseUtilities = {
 
 
 
-  pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage) {
+  pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage,report) {
     // console.log(ids,list,mergeflag,epnMatchingPercentage/100);
     list = list.map((epn) => {
+      // console.log(epn.class,epnCriterias[epn.class]);
       var newEPN = Object.assign({}, epn);
       newEPN.parent = ids[epn.parent] || epn.parent;
       return newEPN;
@@ -900,6 +973,10 @@ var databaseUtilities = {
           else{
             ids[map.incoming] = map.existing;
           }
+          if(report){
+            if(map.created===true || map.existing==null)report.created.epn++;
+            else report.reused.epn++;
+          }
         }
         return ids;
       },
@@ -911,7 +988,7 @@ var databaseUtilities = {
 
     return ids;
   },
-  pushProcessToLocalDatabase: async function (list, ids, processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage) {
+  pushProcessToLocalDatabase: async function (list, ids, processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,report) {
     // console.log(list,ids);
     list = list.map((pr) => {
       const sourceNewtIds = Object.keys(pr)
@@ -975,6 +1052,10 @@ var databaseUtilities = {
         for (let record of records) {
           const map = record._fields[0];
           ids[map.incoming] = map.existing;
+          if(report){
+            if(map.created)report.created.process++;
+            else report.reused.process++;
+          }
         }
       },
       error: function (req, status, err) {
@@ -986,7 +1067,11 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushEdgesToLocalDatabase: async function (list, ids) {
+  pushEdgesToLocalDatabase: async function (list, ids, report) {
+    console.log("Pushing edges to local database:", list, ids);
+    if (report) {
+      report.edges.beforeRewrite = list.length;
+    }
     // 1) rewrite endpoints with fallback
     let filtered_list = list.map(e => {
       const edge = Object.assign({}, e);
@@ -994,17 +1079,30 @@ var databaseUtilities = {
       edge.target = ids[edge.target] || edge.target;
       return edge;
     });
-
+    if (report) report.edges.afterRewrite = filtered_list.length;
     // 2) drop invalid + self-loop edges (self-loop can appear after merges)
-    filtered_list = filtered_list.filter(e =>
-      e.source && e.target &&
-      e.source !== "none" && e.target !== "none" &&
-      e.source !== e.target
-    );
+    const beforeFilter = filtered_list.length;
+    let invalidOrMissing = 0;
+    let selfLoop = 0;
+    
+    filtered_list = filtered_list.filter(e => {
+      const bad = !(e.source && e.target) || e.source === "none" || e.target === "none";
+      if (bad) { invalidOrMissing++; return false; }
+      if (e.source === e.target) { selfLoop++; return false; }
+      return true;
+  });
 
+    if (report) {
+      report.edges.droppedInvalidOrMissing += invalidOrMissing;
+      report.edges.droppedSelfLoop += selfLoop;
+    }
+    const beforeDedupe = filtered_list.length;
     // 3) IMPORTANT: dedupe AFTER mapping
     filtered_list = databaseUtilities._dedupeEdgesByTriple(filtered_list);
+    const dedupeDropped = beforeDedupe - filtered_list.length;
 
+    if (report) report.edges.droppedDedupe += dedupeDropped;
+    if (report) report.edges.sentToDb = filtered_list.length;
     const query = `
       UNWIND $edges AS edge
       MATCH (sourceNode {newtId: edge.source})
@@ -1033,6 +1131,10 @@ var databaseUtilities = {
           const v = rec._fields[0]; // "value"
           if (v && v.rel!=null) inserted++;      // depends on APOC shape
         }
+        if (report) {
+          report.edges.inserted = inserted;
+          report.edges.alreadyExisted = filtered_list.length - inserted;
+        }
       },
       error: function (req, status, err) {
         errorCheck = { status, err };
@@ -1042,7 +1144,7 @@ var databaseUtilities = {
   },
 
 
-  pushCompartmentsToDatabase: async function(compartments){
+  pushCompartmentsToDatabase: async function(compartments,report){
     console.log('pushing compartments',compartments);
     var integrationQuery = `    
         CALL custom.pushCompartments($nodesData)
@@ -1064,6 +1166,10 @@ var databaseUtilities = {
         for (let record of records) {
           const map = record._fields[0];
           ids[map.incoming] = map.existing;
+          if(report){
+            if(map.created)report.created.compartments++;
+            else report.reused.compartments++;
+          }
         }
         return ids;
       },
@@ -1075,7 +1181,7 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushSubmapsToDatabase: async function(ids,submaps){
+  pushSubmapsToDatabase: async function(ids,submaps,report){
     var chiseInstance = appUtilities.getActiveChiseInstance();
     submaps = submaps.map((submap) => {
       var newSubmap = Object.assign({}, submap);
@@ -1110,6 +1216,10 @@ var databaseUtilities = {
         for (let record of records) {
           const map = record._fields[0];
           ids[map.incoming] = map.existing;
+          if(report){
+            if(map.created)report.created.submaps++;
+            else report.reused.submaps++;
+          }
         }
         return ids;
       },
@@ -1121,7 +1231,7 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushComplexesToDatabase: async function (ids,complexes, epns, threshold) {
+  pushComplexesToDatabase: async function (ids,complexes, epns, complexThreshold, epnThreshold, report) {
     // Helper to sanitize EPNs by removing nested object properties
     function stripComplexProps(obj) {
       const result = {};
@@ -1176,17 +1286,38 @@ var databaseUtilities = {
       });
   
       const { records } = response;
-      console.log(records);
+      // console.log(records);
       for (let record of records) {
         const map = record._fields[0];
         ids[map.incoming] = map.existing.complex;
-  
-        if (Array.isArray(map.existing.children)) {
-          for (let child of map.existing.children) {
-            if (typeof child === "object") {
-              ids[child.incoming] = child.existing;
-            } else {
+        if(report){
+          if(map.created)report.created.complexes++;
+          else report.reused.complexes++;
+        }
+        if (Array.isArray(map.existing && map.existing.children)) {
+          for (const child of map.existing.children) {
+            // console.log("Child of complex:", child);
+            // New format (recommended): { incoming, existing, created }
+            if (child && typeof child === "object") {
+              ids[child.incoming] = child.existing || child.incoming;
+
+              if (report) {
+                if (child.created === true || child.existing == null){
+                  // console.log("Child created:", child);
+                  report.created.epn++;
+                }
+                else report.reused.epn++;
+              }
+              continue;
+            }
+
+            // Backward compatibility: child might be just an id (no created info)
+            if (typeof child === "string") {
               ids[child] = child;
+
+              // We cannot know created vs reused from a bare string.
+              // If you want, you can omit counting here instead of assuming reused.
+              if (report) report.reused.epn++;
             }
           }
         }
@@ -1200,6 +1331,7 @@ var databaseUtilities = {
 
   pushLogicalNodesToDatabase: async function (logicals, ids) {
     // map parent first so matching is consistent
+    console.log("Pushing logical nodes:", logicals, ids);
     const payload = logicals.map(l => {
       const n =Object.assign({}, l);
       n.parent = ids[n.parent] || n.parent || "none";
@@ -1235,9 +1367,20 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag) {
+  pushActiveNodesEdgesToDatabase: async function (nodesData, edgesData, flag,report) {
     if(flag === "REPLACE"){
       await this.cleanDatabase();
+    }
+    if (report) {
+      report.counts.split = {
+        epns: nodesData.filter(n => n.category==="EPN" && n.class!=='complex' && n.class!=='complex_sbml').length,
+        complexes: nodesData.filter(n => n.class==='complex' || n.class==='complex_sbml').length,
+        tags: nodesData.filter(n => n.class==='tag').length,
+        compartments: nodesData.filter(n => n.class==='compartment').length,
+        submaps: nodesData.filter(n => n.class==='submap').length,
+        processes: nodesData.filter(n => n.category==="process").length,
+        logicals: nodesData.filter(n => n.category==="logical").length,
+      };
     }
     const {epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage} =databaseUtilities._getCurrentTabLocalDBMatchingOptions();
     console.log(epnMatchingPercentage,processIncomingContribution,processOutgoingContribution,processAgentContribution,overallProcessPercentage,complexMatchPercentage);
@@ -1247,24 +1390,26 @@ var databaseUtilities = {
   
     var tags = nodesData.filter((node)=>node.class==='tag');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
-    var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
-    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
+    var compartmentIds = await this.pushCompartmentsToDatabase(compartments,report);
+    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage,epnMatchingPercentage,report);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
-    const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
+    const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps,report);
     if(errorCheck!==null)return errorCheck;
     var processes = nodesData.filter((node) => node.category === "process");
     var logicals = nodesData.filter((node)=>node.category==='logical');
     const tag_ids = await databaseUtilities.pushEPNToLocalDatabase(
       submapIds,
       tags,
-      epnMatchingPercentage
+      epnMatchingPercentage,
+      report
     );
     console.log("Pushing EPNs:", epns);
     const epn_ids = await databaseUtilities.pushEPNToLocalDatabase(
       tag_ids,
       epns,
-      epnMatchingPercentage
+      epnMatchingPercentage,
+      report
     );
 
     if(errorCheck!==null)return errorCheck;
@@ -1274,16 +1419,17 @@ var databaseUtilities = {
       processIncomingContribution,
       processOutgoingContribution,
       processAgentContribution,
-      overallProcessPercentage
+      overallProcessPercentage,
+      report
     );
     if(errorCheck!==null)return errorCheck;
-    const logical_ids = await databaseUtilities.pushLogicalNodesToDatabase(logicals, node_ids);
-
+    const logical_ids = await databaseUtilities.pushLogicalNodesToDatabase(logicals, node_ids,report);
+    
     if(errorCheck!==null)return errorCheck;
     await databaseUtilities.pushEdgesToLocalDatabase(
       edgesData,
       logical_ids,
-      false
+      report
     );
   },
 
@@ -1403,7 +1549,6 @@ var databaseUtilities = {
   },
 
   pushNode: function (new_node,x=0,y=0) {
-    console.log("new_node:",new_node);
     return new Promise((resolve) => {
       const tabKey = databaseUtilities._currentActiveNetworkID();
       if (!(new_node.properties.newtId in databaseUtilities.nodesInDB[tabKey])) {
@@ -1492,6 +1637,7 @@ var databaseUtilities = {
   batchAddNodesEdgesToCy: async function (nodes, edges, originalsToMark=[]) {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     const emptyCanvas = await databaseUtilities.canvasEmpty();
+    console.log(edges);
     await chiseInstance.addNodesEdges(nodes,edges,false).then(async function(){
       $("#map-color-scheme_opposed_red_blue").click();  
       $("#color-scheme-inspector-style-select").val("3D");
@@ -1645,48 +1791,105 @@ var databaseUtilities = {
     appUtilities.triggerLayout(cy, false,static,static);
   },
 
-  runPathsFromTo: async function (sourceArray, targetArray, limit,enableCloning,cloneThreshold) {
+  runPathsFromTo: async function (sourceArray, targetArray, limit, enableCloning, cloneThreshold) {
+
+    // -------------------- REPORTING (added) --------------------
+    const ctx = (databaseUtilities._consumeNextQueryReportContext && databaseUtilities._consumeNextQueryReportContext()) || {
+      workload: "W3",
+      mapName: "D4",
+      queryName: "PathsFromTo",
+      runId: `LL${limit}`
+    };
+
+    const report = databaseUtilities._makeEmptyQueryReport
+      ? databaseUtilities._makeEmptyQueryReport(
+          ctx.workload,
+          ctx.mapName,
+          ctx.queryName,
+          { limit },
+          { enableCloning: !!enableCloning, cloneThreshold: (cloneThreshold == null ? null : cloneThreshold)
+, runId: ctx.runId }
+        )
+      : null;
+
+    const t0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
+    // -------------------- REPORTING (added) --------------------
+    const tLookup0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     var sourceId = [];
     var sourceNewt = [];
-    await databaseUtilities.getIdOfLabeledNodes(
-      sourceArray,
-      sourceId,
-      sourceNewt
-    );
+    await databaseUtilities.getIdOfLabeledNodes(sourceArray, sourceId, sourceNewt);
 
     var targetId = [];
     var targetNewt = [];
-    await databaseUtilities.getIdOfLabeledNodes(
-      targetArray,
-      targetId,
-      targetNewt
-    );
+    await databaseUtilities.getIdOfLabeledNodes(targetArray, targetId, targetNewt);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.timingMs.seedLookup = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tLookup0);
+      report.seeds = report.seeds || {};
+      report.seeds.sourceLabels = sourceArray;
+      report.seeds.targetLabels = targetArray;
+      report.seeds.sourceNewtIds = sourceNewt;
+      report.seeds.targetNewtIds = targetNewt;
+    }
+    // -----------------------------------------------------------
+
     sourceId = sourceId.map((id) => parseInt(id.split(":")[2]));
     targetId = targetId.map((id) => parseInt(id.split(":")[2]));
     console.log("sourceId:", sourceId, "targetId:", targetId);
-    var err=null;
-    if (sourceId.length == 0 && targetId > 0) {
-      var errMessage = {
-        err: "Invalid input",
-        message: "No such source nodes",
-      };
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.seeds.sourceIds = sourceId;
+      report.seeds.targetIds = targetId;
+    }
+    // -----------------------------------------------------------
+
+    var err = null;
+    if (sourceId.length == 0 && targetId.length > 0) {
+      var errMessage = { err: "Invalid input", message: "No such source nodes" };
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = errMessage;
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return errMessage;
     }
     if (sourceId.length > 0 && targetId.length == 0) {
-      var errMessage = {
-        err: "Invalid input",
-        message: "No such target nodes",
-      };
+      var errMessage = { err: "Invalid input", message: "No such target nodes" };
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = errMessage;
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return errMessage;
     }
     if (sourceId.length == 0 && targetId.length == 0) {
-      var errMessage = {
-        err: "Invalid input",
-        message: "No such source and target nodes",
-      };
+      var errMessage = { err: "Invalid input", message: "No such source and target nodes" };
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = errMessage;
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return errMessage;
     }
-    // query = graphALgos.pathsFromTo(limit,enableCloning?cloneThreshold:1000000);
+
     query = `
       CALL pathsFromTo($idList, $limit, $simpleChemicalDegreeThreshold)
       YIELD nodes, relationships, language
@@ -1698,31 +1901,72 @@ var databaseUtilities = {
 
     console.log("queryData:", queryData);
     var data = { query: query, queryData: queryData };
-    var result = null 
-    try{
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.params = report.params || {};
+      report.params.idListSize = idList.length;
+    }
+    const tQ0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
+    var result = null;
+    try {
       result = await $.ajax({
         type: "post",
         url: "/utilities/runDatabaseQuery",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
       });
+    } catch (err) {
+      console.error("Error running query", err);
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = { err: "DB query failed", detail: err };
+        report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
     }
-    catch (err) {
-      console.error("Error running query",err);
-    }
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+    const tP0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
 
     if (!result || !result.records || result.records.length == 0 || result.records[0]._fields[0].length == 0) {
       result = result || {};
       result.err = { err: "Invalid input", message: "No data returned" };
       err = result.err;
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = err;
+        report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return err;
     }
+
     var nodes = [];
     var edges = [];
     var nodesSet = new Set();
     var edgesMap = new Map();
     var records = result.records;
     var language = records[0]._fields[2];
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.meta = report.meta || {};
+      report.meta.language = language;
+    }
+    // -----------------------------------------------------------
+
     for (let i = 0; i < records.length; i++) {
       var fields = records[i]._fields;
       for (let j = 0; j < fields[0].length; j++) {
@@ -1753,35 +1997,136 @@ var databaseUtilities = {
         }
       }
     }
-    const {nodes: nodesArray, edges: edgesArray} = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.output = report.output || {};
+      report.output.rawUniqueNodes = nodes.length;
+      report.output.rawUniqueRels  = edges.length;
+    }
+    // -----------------------------------------------------------
+
+    const { nodes: nodesArray, edges: edgesArray } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.output.afterCloningNodes = nodesArray.length;
+      report.output.afterCloningRels  = edgesArray.length;
+      report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+    }
+    // -----------------------------------------------------------
+
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+
     var cy = appUtilities.getActiveCy();
     cy.elements().remove();
     databaseUtilities.cleanNodesAndEdgesInDB();
-    databaseUtilities.addNodesEdgesToCy(
-      nodesArray,
-      edgesArray,
-      sourceNewt,
-      targetNewt
-    );
+
+    // -------------------- REPORTING (added) --------------------
+    const tR0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
+    // keep original behavior (no await)
+    const p = databaseUtilities.addNodesEdgesToCy(nodesArray, edgesArray, sourceNewt, targetNewt);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report && p && typeof p.then === "function") {
+      p.then(function () {
+        report.timingMs.render = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tR0);
+        report.timingMs.total  = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      });
+    } else if (report) {
+      // fallback if addNodesEdgesToCy doesn't return a promise
+      report.timingMs.render = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tR0);
+      report.timingMs.total  = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+      console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+    }
+    // -----------------------------------------------------------
   },
 
-  runPathBetween: async function (labelOfNodes, lengthLimit,enableCloning,cloneThreshold) {
-    var idOfNodes = [],newtIdOfNodes = [];
-    await databaseUtilities.getIdOfLabeledNodes(
-      labelOfNodes,
-      idOfNodes,
-      newtIdOfNodes
-    );
+
+  getInternalIdOfLabeledNodes: async function (labelOfNodes, idOfNodes, newtIdOfNodes) {
+  const query = `
+    UNWIND $labels AS label
+    MATCH (u)
+    WHERE u.entityName = label
+    RETURN id(u) AS internalId, u.newtId AS newtId
+  `;
+  const data = { query, queryData: { labels: labelOfNodes } };
+
+  const res = await $.ajax({
+    type: "post",
+    url: "/utilities/runDatabaseQuery",
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify(data)
+  });
+
+  for (const r of res.records || []) {
+    idOfNodes.push(neoInt(r._fields[0]));
+    if (newtIdOfNodes) newtIdOfNodes.push(r._fields[1]);
+  }
+},
+
+
+  runPathBetween: async function (labelOfNodes, lengthLimit, enableCloning, cloneThreshold) {
+
+    // -------------------- REPORTING (added) --------------------
+    const ctx = (databaseUtilities._consumeNextQueryReportContext && databaseUtilities._consumeNextQueryReportContext()) || {
+      workload: "W3",
+      mapName: "D4",
+      queryName: "PathBetween",
+      runId: `LL${lengthLimit}`
+    };
+
+    const report = databaseUtilities._makeEmptyQueryReport
+      ? databaseUtilities._makeEmptyQueryReport(
+          ctx.workload,
+          ctx.mapName,
+          ctx.queryName,
+          { lengthLimit },
+          { enableCloning: !!enableCloning, cloneThreshold: (cloneThreshold == null ? null : cloneThreshold)
+, runId: ctx.runId }
+        )
+      : null;
+
+    const t0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
+    // -------------------- REPORTING (added) --------------------
+    const tLookup0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
+    var idOfNodes = [], newtIdOfNodes = [];
+    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes, newtIdOfNodes);
     idOfNodes = idOfNodes.map((id) => parseInt(id.split(":")[2]));
 
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.timingMs.seedLookup = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tLookup0);
+      report.seeds.labels = labelOfNodes;
+      report.seeds.ids = idOfNodes;
+      report.seeds.newtIds = newtIdOfNodes;
+    }
+    // -----------------------------------------------------------
+
     console.log("idOfNodes:", idOfNodes);
+
     //Check if label of nodes are valid
     if (idOfNodes.length == 0) {
       var errMessage = {
         err: "Invalid input",
         message: "No such nodes with given symbol",
       };
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = errMessage;
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return errMessage;
     }
 
@@ -1795,9 +2140,15 @@ var databaseUtilities = {
     var data = { query: query, queryData: queryData };
     console.log("data being sent:", data);
     console.log(query);
+
     var result = {};
     result.highlight = {};
     result.add = {};
+
+    // -------------------- REPORTING (added) --------------------
+    const tQ0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     var output = null;
     try {
       output = await $.ajax({
@@ -1808,11 +2159,36 @@ var databaseUtilities = {
       });
     } catch (error) {
       console.error("Error running query", error);
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = { err: "DB query failed", detail: error };
+        report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
     }
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+    const tP0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     console.log("output:", output);
     if (!output || !output.records || output.records[0].length == 0 || output.records[0]._fields[0].length == 0) {
       result.err = { err: "Invalid input", message: "No data returned" };
       err = result.err;
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = result.err;
+        report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return err;
     }
 
@@ -1824,6 +2200,14 @@ var databaseUtilities = {
     var records = output.records;
     var language = records[0]._fields[2];
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.meta = report.meta || {};
+      report.meta.language = language;
+    }
+    // -----------------------------------------------------------
+
     for (let i = 0; i < records.length; i++) {
       var fields = records[i]._fields;
       for (let j = 0; j < fields[0].length; j++) {
@@ -1858,33 +2242,117 @@ var databaseUtilities = {
         }
       }
     }
-    console.log("data:", nodes, edges, newtIdOfNodes,language);
-    const {nodes: nodesArray, edges: edgesArray}= databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.output = report.output || {};
+      report.output.rawUniqueNodes = nodes.length;
+      report.output.rawUniqueRels  = edges.length;
+    }
+    // -----------------------------------------------------------
+
+    console.log("data:", nodes, edges, newtIdOfNodes, language);
+    const { nodes: nodesArray, edges: edgesArray } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.output.afterCloningNodes = nodesArray.length;
+      report.output.afterCloningRels  = edgesArray.length;
+    }
+    // -----------------------------------------------------------
+
     var cy = appUtilities.getActiveCy();
     cy.elements().remove();
     databaseUtilities.cleanNodesAndEdgesInDB();
+
+    // -------------------- REPORTING (added) --------------------
+    const tR0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     const abc = await databaseUtilities.addNodesEdgesToCy(nodesArray, edgesArray, newtIdOfNodes);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.timingMs.render = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tR0);
+      report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+      report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+      console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+    }
+    // -----------------------------------------------------------
+
     console.log("abc:", abc);
     return null;
   },
-  runNeighborhood: async function (labelOfNodes, lengthLimit,enableCloning,cloneThreshold) {
-    var idList = [];
-    var newtIdList = [];
-    await databaseUtilities.getIdOfLabeledNodes(
-      labelOfNodes,
-      idList,
-      newtIdList
-    );
-    idList = idList.map((id)=>Number.parseInt(id.split(":")[2]));
-    var setOfSources = new Set(newtIdList);
-    console.log("idList:", idList, "newtIdList:", newtIdList);
-    if (idList.length == 0) {
-      var errMessage = {
-        err: "Invalid input",
-        message: "No such nodes with given symbol",
-      };
-      return errMessage;
+
+  runNeighborhood: async function (labelOfNodes, lengthLimit, enableCloning, cloneThreshold) {
+
+  // -------------------- REPORTING (added) --------------------
+  const ctx = (databaseUtilities._consumeNextQueryReportContext && databaseUtilities._consumeNextQueryReportContext()) || {
+    workload: "W3",
+    mapName: "D4",
+    queryName: "Neighborhood",
+    runId: `LL${lengthLimit}`
+  };
+
+  const report = databaseUtilities._makeEmptyQueryReport
+    ? databaseUtilities._makeEmptyQueryReport(
+        ctx.workload,
+        ctx.mapName,
+        ctx.queryName,
+        { lengthLimit },
+        { enableCloning: enableCloning, cloneThreshold: (cloneThreshold == null ? null : cloneThreshold)
+, runId: ctx.runId }
+      )
+    : null;
+
+  const t0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+  // -----------------------------------------------------------
+
+  var idList = [];
+  var newtIdList = [];
+
+  // -------------------- REPORTING (added) --------------------
+  const tLookup0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+  // -----------------------------------------------------------
+
+  await databaseUtilities.getIdOfLabeledNodes(
+    labelOfNodes,
+    idList,
+    newtIdList
+  );
+
+  // -------------------- REPORTING (added) --------------------
+  if (report) {
+    report.timingMs.seedLookup = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tLookup0);
+    report.seeds.labels = labelOfNodes;
+    report.seeds.newtIds = newtIdList;
+  }
+  // -----------------------------------------------------------
+
+  idList = idList.map((id)=>Number.parseInt(id.split(":")[2]));
+
+  // -------------------- REPORTING (added) --------------------
+  if (report) report.seeds.ids = idList;
+  // -----------------------------------------------------------
+
+  var setOfSources = new Set(newtIdList);
+  console.log("idList:", idList, "newtIdList:", newtIdList);
+  if (idList.length == 0) {
+    var errMessage = {
+      err: "Invalid input",
+      message: "No such nodes with given symbol",
+    };
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.error = errMessage;
+      report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+      console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
     }
+    // -----------------------------------------------------------
+
+    return errMessage;
+  }
 
   var query = `
     CALL neighborhoodFromIds($idList, $limit, $simpleChemicalDegreeThreshold)
@@ -1898,6 +2366,10 @@ var databaseUtilities = {
   result.highlight = {};
   result.add = {};
 
+  // -------------------- REPORTING (added) --------------------
+  const tQ0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+  // -----------------------------------------------------------
+
   await $.ajax({
     type: "post",
     url: "/utilities/runDatabaseQuery",
@@ -1905,12 +2377,31 @@ var databaseUtilities = {
     data: JSON.stringify(data),
     success: async function (data) {
       console.log("data being returned:", data);
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+        report.meta = report.meta || {};
+        report.meta.records = (data && data.records) ? data.records.length : 0;
+      }
+      const tP0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+      // -----------------------------------------------------------
+
       console.log("data:", data);
       if (data.records.length == 0) {
         result.err = {
           err: "Invalid input",
           message: "No such nodes with given symbol",
         };
+
+        // -------------------- REPORTING (added) --------------------
+        if (report) {
+          report.error = result.err;
+          report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+          report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+          console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+        }
+        // -----------------------------------------------------------
+
         return;
       }
 
@@ -1921,6 +2412,14 @@ var databaseUtilities = {
       var edgesMap = new Map();
       var records = data.records;
       var language = records[0]._fields[2];
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.meta = report.meta || {};
+        report.meta.language = language;
+      }
+      // -----------------------------------------------------------
+
       for (let i = 0; i < records.length; i++) {
         var fields = records[i]._fields;
         for (let j = 0; j < fields[0].length; j++) {
@@ -1963,33 +2462,128 @@ var databaseUtilities = {
         }
       }
 
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.output = report.output || {};
+        report.output.rawUniqueNodes = nodes.length;
+        report.output.rawUniqueRels = edges.length;
+        report.output.targetNodes = targetNodes.length;
+      }
+      // -----------------------------------------------------------
+
       const { nodes: nodesArray, edges: edgesArray, originalsToMark } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
       const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodesArray);
       const deduplicatedEdges = await databaseUtilities.deduplicateExistingEdges(edgesArray);
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.output.afterCloningNodes = deduplicatedNodes.length;
+        report.output.afterCloningRels = deduplicatedEdges.length;
+      }
+      // -----------------------------------------------------------
+
       appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
       var cy = appUtilities.getActiveCy();
       cy.elements().remove();
+
+      // -------------------- REPORTING (added) --------------------
+      const tR0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+      // -----------------------------------------------------------
+
+      // databaseUtilities.cleanNodesAndEdgesInDB();
       await databaseUtilities.batchAddNodesEdgesToCy(deduplicatedNodes, deduplicatedEdges, originalsToMark);
+      // await databaseUtilities.addNodesEdgesToCy(
+      //   nodesArray,
+      //   edgesArray,
+      //   newtIdList,
+      //   targetNodes
+      // );
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.timingMs.render = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tR0);
+        report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
     },
     error: function (req, status, err) {
       console.error("Error running query", status, err);
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = { status, err };
+        report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
     },
   });
 
   return result;
 },
 
-  runCommonStream: async function (labelOfNodes, lengthLimit, direction,enableCloning,cloneThreshold) {
+ runCommonStream: async function (labelOfNodes, lengthLimit, direction, enableCloning, cloneThreshold) {
+
+    // -------------------- REPORTING (added) --------------------
+    const ctx = (databaseUtilities._consumeNextQueryReportContext && databaseUtilities._consumeNextQueryReportContext()) || {
+      workload: "W3",
+      mapName: "D4",
+      queryName: "CommonStream",
+      runId: `LL${lengthLimit}_DIR${direction}`
+    };
+
+    const report = databaseUtilities._makeEmptyQueryReport
+      ? databaseUtilities._makeEmptyQueryReport(
+          ctx.workload,
+          ctx.mapName,
+          ctx.queryName,
+          { lengthLimit, direction },
+          { enableCloning: !!enableCloning, cloneThreshold: (cloneThreshold == null ? null : cloneThreshold)
+, runId: ctx.runId }
+        )
+      : null;
+
+    const t0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     var idOfNodes = [];
+    var newtIdOfNodes = []; // REPORTING (added) (optional but useful)
     console.log("labelOfNodes:", labelOfNodes, "lengthLimit:", lengthLimit, "direction:", direction);
-    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes);
+
+    // -------------------- REPORTING (added) --------------------
+    const tLookup0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
+    await databaseUtilities.getIdOfLabeledNodes(labelOfNodes, idOfNodes, newtIdOfNodes);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.timingMs.seedLookup = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tLookup0);
+      report.seeds.labels = labelOfNodes;
+      report.seeds.ids = idOfNodes;       // elementId(u) strings (kept as-is)
+      report.seeds.newtIds = newtIdOfNodes;
+    }
+    // -----------------------------------------------------------
+
     if (idOfNodes.length == 0) {
       var errMessage = {
         err: "Invalid input",
         message: "No such nodes with given symbol",
       };
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = errMessage;
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return errMessage;
     }
+
     var query = "";
     if (direction == -1) {
       query = graphALgos.commonStream(idOfNodes, lengthLimit);
@@ -1999,10 +2593,16 @@ var databaseUtilities = {
       query = graphALgos.downstream(idOfNodes, lengthLimit);
     }
     console.log("query:", query);
+
     var data = { query: query, queryData: null };
     var result = {};
     result.highlight = {};
     result.add = {};
+
+    // -------------------- REPORTING (added) --------------------
+    const tQ0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     var output = null;
     try {
       output = await $.ajax({
@@ -2012,16 +2612,45 @@ var databaseUtilities = {
         data: JSON.stringify(data),
       });
     } catch (err) {
-      console.error("Error running query",err);
+      console.error("Error running query", err);
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = { err: "DB query failed", detail: err };
+        report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
     }
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.timingMs.dbQuery = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tQ0);
+    }
+    const tP0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+
     console.log("data:", output);
     if (!output || !output.records || output.records.length == 0) {
       result.err = { err: "Warning", message: "No results found!" };
+
+      // -------------------- REPORTING (added) --------------------
+      if (report) {
+        report.error = result.err;
+        report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+        report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+        console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+      }
+      // -----------------------------------------------------------
+
       return;
     }
+
     var nodes = [];
     var edges = [];
     var records = output.records;
+
     for (let i = 0; i < records.length; i++) {
       var fields = records[i]._fields;
       for (let j = 0; j < fields[1].length; j++) {
@@ -2029,7 +2658,7 @@ var databaseUtilities = {
       }
       for (let j = 0; j < fields[5].length; j++) {
         const edgeClass = fields[5][j].properties.class;
-        if(!edgeClass || edgeClass.startsWith("belongs_to_")){
+        if (!edgeClass || edgeClass.startsWith("belongs_to_")) {
           continue; // Skip edges that are not relevant
         }
         var edge = {};
@@ -2042,19 +2671,58 @@ var databaseUtilities = {
         edges.push(edge);
       }
     }
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.output = report.output || {};
+      report.output.rawReturnedNodes = nodes.length;
+      report.output.rawReturnedRels = edges.length;
+
+      const nodeUniq = new Set(nodes.map(n => n && n.properties && n.properties.newtId).filter(Boolean));
+      const relUniq  = new Set(edges.map(e => `${e.properties.source}|${e.properties.class}|${e.properties.target}`));
+      report.output.rawUniqueNodes = nodeUniq.size;
+      report.output.rawUniqueRels = relUniq.size;
+    }
+    // -----------------------------------------------------------
+
     console.log("nodes:", nodes, "edges:", edges);
     const { nodes: nodesArray, edges: edgesArray,originalsToMark } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
     const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodesArray);
     const deduplicateEdges = await databaseUtilities.deduplicateExistingEdges(edgesArray);
     console.log("nodes:", nodesArray, "edges:", edgesArray);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.output.afterCloningNodes = deduplicatedNodes.length;
+      report.output.afterCloningRels  = deduplicateEdges.length;
+    }
+    // -----------------------------------------------------------
+
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(await databaseUtilities.getLanguage(output));
+
     // Clean the canvas
     var cy = appUtilities.getActiveCy();
     cy.elements().remove();
     databaseUtilities.cleanNodesAndEdgesInDB();
-    await databaseUtilities.addNodesEdgesToCy(nodesArray,edgesArray);
+
+    // -------------------- REPORTING (added) --------------------
+    const tR0 = databaseUtilities._now ? databaseUtilities._now() : Date.now();
+    // -----------------------------------------------------------
+    await databaseUtilities.batchAddNodesEdgesToCy(deduplicatedNodes, deduplicateEdges, originalsToMark);
+    // await databaseUtilities.addNodesEdgesToCy(nodesArray, edgesArray);
+
+    // -------------------- REPORTING (added) --------------------
+    if (report) {
+      report.timingMs.render = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tR0);
+      report.timingMs.postprocess = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - tP0);
+      report.timingMs.total = Math.round((databaseUtilities._now ? databaseUtilities._now() : Date.now()) - t0);
+      console.log(`${ctx.workload}_${ctx.queryName}_${ctx.runId}_REPORT`, JSON.stringify(report, null, 2));
+    }
+    // -----------------------------------------------------------
+
     return result;
   },
+
 
   getLanguage: async function (output) {
     const nodes      = [];
@@ -2319,11 +2987,13 @@ var databaseUtilities = {
     const canvasEdges = cyInstance.edges();
     if(canvasEdges.length===0)return edges;
     const filteredEdges = [];
+
     
     if(canvasEdges.length>0){
       for(let i=0;i<edges.length;i++){
         let exists=false;
         let edge = edges[i];
+        // console.log(edge);
         let edgeKey =  [
               edge.properties.source,
               edge.properties.target,
@@ -2352,5 +3022,182 @@ var databaseUtilities = {
     const cyInstance = appUtilities.getActiveCy();
     return cyInstance.nodes().length === 0;
   },
+
+
+  _makeEmptyReport: function(workload, mapName, flag, options) {
+    return {
+      workload,
+      mapName,
+      flag,
+      options: options || {},
+      timingMs: {},
+      counts: {
+        incomingNodes: 0,
+        incomingEdges: 0,
+        processedNodes: 0,
+        processedEdges: 0,
+        addedContainmentEdges: 0,
+        expandedTopologyEdges: 0,
+      },
+      dbSnapshot: { before: null, after: null },
+      created: { compartments: 0, submaps: 0, complexes: 0, epn: 0, process: 0, logical: 0 },
+      reused:  { compartments: 0, submaps: 0, complexes: 0, epn: 0, process: 0, logical: 0 },
+      edges: {
+        beforeRewrite: 0,
+        afterRewrite: 0,
+        droppedInvalidOrMissing: 0,
+        droppedSelfLoop: 0,
+        droppedDedupe: 0,
+        sentToDb: 0,
+        inserted: 0,
+        alreadyExisted: 0
+      },
+      sanity: { selfLoopsAfter: null, duplicateTriplesAfter: null }
+    };
+  },
+
+  _now: function() {
+    return (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+  },
+
+ _getDbCounts: async function() {
+    const query = `
+      OPTIONAL MATCH (n)
+      WITH count(n) AS nodes
+      OPTIONAL MATCH ()-[r]->()
+      RETURN nodes, count(r) AS rels
+    `;
+
+    const data = { query, queryData: {} };
+
+    let res;
+    try {
+      res = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data)
+      });
+    } catch (e) {
+      console.error("DB counts query failed:", e);
+      return { nodes: 0, rels: 0 };
+    }
+    // const rec =  res?.records?.[0]; cannot use optional chaining
+    const rec =  (res && res.records && res.records[0]) ? res.records[0] : null;
+    if (!rec) return { nodes: 0, rels: 0 };
+
+    const [nodes, rels] = rec._fields;
+    return { nodes: neoInt(nodes), rels: neoInt(rels) };
+  },
+
+  _countDuplicateTriples: async function() {
+      const query = `
+        MATCH (a)-[r]->(b)
+        WITH a.newtId AS s, type(r) AS t, b.newtId AS d, count(*) AS c
+        WHERE c > 1
+        RETURN count(*) AS dupGroups
+      `;
+      const data = { query, queryData: {} };
+      const res = await $.ajax({
+        type: "post",
+        url: "/utilities/runDatabaseQuery",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data)
+      });
+      const x = res.records[0]._fields[0];
+      return neoInt(x);
+    },
+
+    // Add near your other report helpers
+  _consumeNextQueryReportContext: function () {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return null;
+      const raw = window.localStorage.getItem("NEXT_QUERY_REPORT_CONTEXT");
+      if (!raw) return null;
+      window.localStorage.removeItem("NEXT_QUERY_REPORT_CONTEXT");
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  },
+
+  _setNextQueryReportContext: function (ctx) {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return;
+      window.localStorage.setItem("NEXT_QUERY_REPORT_CONTEXT", JSON.stringify(ctx));
+    } catch (e) {}
+  },
+
+
+  _makeEmptyQueryReport: function (workload, mapName, queryName, params, options) {
+    return {
+      workload,
+      mapName,
+      queryName,
+      params: params || {},
+      options: options || {},
+      timingMs: {
+        seedLookup: 0,
+        dbQuery: 0,
+        postprocess: 0,
+        render: 0,
+        total: 0
+      },
+      seeds: {
+        labels: [],
+        ids: [],
+        newtIds: []
+      },
+      output: {
+        // “raw” = as returned by DB (after our local uniqueness filtering)
+        rawUniqueNodes: 0,
+        rawUniqueRels: 0,
+
+        // after cloning (if enabled)
+        afterCloningNodes: 0,
+        afterCloningRels: 0,
+
+        // optional: after any client-side filtering
+        filteredOutContainmentRels: 0,
+        filteredOutSelfLoops: 0
+      }
+    };
+  },
+
+  _uniqueNodesByNewtId: function (nodes) {
+    const seen = new Set();
+    const out = [];
+    nodes = nodes || [];
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      const id = (n && n.properties && n.properties.newtId) ? n.properties.newtId : null;
+      if (!id) continue;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      out.push(n);
+    }
+    return out;
+  },
+
+  _edgeKey: function (e) {
+    const p = (e && e.properties) ? e.properties : (e || {});
+    const s = p.source;
+    const t = p.target;
+    const c = p.class;
+    return `${s}|${c}|${t}`;
+  },
+
+  _uniqueEdgesByTriple: function (edges) {
+    const seen = new Set();
+    const out = [];
+    for (const e of edges || []) {
+      const key = databaseUtilities._edgeKey(e);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(e);
+    }
+    return out;
+  },
 };
 module.exports = databaseUtilities;
+
