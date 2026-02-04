@@ -3711,7 +3711,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
               $(self.el).modal("toggle");
               new PromptInvalidQueryView({
@@ -3731,7 +3731,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
             }
             var geneSymbolsArray = geneSymbols
               .replaceAll("\n", " ")
-              .replaceAll("\t", " ")
+              // .replaceAll("\t", " ")
               .split(" ");
             var lengthLimit = self.currentQueryParameters.lengthLimit;
             console.log("geneSymbolsArray", geneSymbolsArray);
@@ -4076,7 +4076,7 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
               $(self.el).modal("toggle");
               new PromptInvalidQueryView({
@@ -4096,15 +4096,15 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
             }
 
             var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
+            .split(/[\n\t]+/)
+                  .map(s => s.trim())
+                  .filter(Boolean);
             
-            var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
+            // var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
             var lengthLimit =  self.currentQueryParameters.lengthLimit
             console.log("geneSymbolsArray", geneSymbolsArray)
             console.log("lengthLimit", lengthLimit);
-            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
+            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
             var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowSimpleChemicalCloning,simpleChemicalCloningThreshold);
             if (result && result.err)
             {
@@ -4522,7 +4522,7 @@ var SearchNodesView = Backbone.View.extend({
     return { classType: classType, label: label, matchMode: matchMode, options: {},mergeMode:mergeMode };
   },
 
-  _getCurrentTabCloningOptions: function () {
+  _getCurrentTabLocalDBMatchingOptions: function () {
     // console.log("current tab id is:",cy.container().id);
     var cy = appUtilities.getActiveCy();
     var generalProperties = appUtilities.getScratch(
@@ -4541,7 +4541,7 @@ var SearchNodesView = Backbone.View.extend({
       // e.preventDefault();
       var $btn = this.$('#sn-run').prop('disabled', true).text('Finding…');
       const {allowSimpleChemicalCloning:allowCloning,simpleChemicalCloningThreshold:cloningThreshold}
-        = this._getCurrentTabCloningOptions();
+        = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
       console.log("the options are:",allowCloning,cloningThreshold);
       // const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
       // const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
@@ -5366,8 +5366,9 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
               }
               // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
               sourceSymbols = sourceSymbols
-                .replace(/[^a-zA-Z0-9\n\t ]/g, "")
+                .replace(/[^a-zA-Z0-9_\n\t ]/g, "")
                 .trim();
+                console.log("cleaned sourceSymbols:", sourceSymbols);
               if (sourceSymbols.length === 0) {
                 $(self.el).modal("toggle");
                 new PromptInvalidQueryView({
@@ -5385,7 +5386,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
               }
               // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
               targetSymbols = targetSymbols
-                .replace(/[^a-zA-Z0-9\n\t ]/g, "")
+                .replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "")
                 .trim();
               if (targetSymbols.length === 0) {
                 $(self.el).modal("toggle");
@@ -5405,16 +5406,16 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
               }
 
               var sourceSymbolsArray = sourceSymbols
-                .replaceAll("\n", " ")
-                .replaceAll("\t", " ")
-                .split(" ");
+                  .split(/[\n\t]+/)
+                  .map(s => s.trim())
+                  .filter(Boolean);
               var targetSymbolsArray = targetSymbols
-                .replaceAll("\n", " ")
-                .replaceAll("\t", " ")
-                .split(" ");
+                  .split(/[\n\t]+/)
+                  .map(s => s.trim())
+                  .filter(Boolean);
               console.log("sourceSymbolsArray", sourceSymbolsArray);
               console.log("targetSymbolsArray", targetSymbolsArray);
-              const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
+              const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
               var lengthLimit = self.currentQueryParameters.lengthLimit;
               var result = await databaseUtilities.runPathsFromTo(
                 sourceSymbolsArray,
@@ -5753,7 +5754,7 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
               $(self.el).modal("toggle");
               new PromptInvalidQueryView({
@@ -5772,15 +5773,15 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             var geneSymbolsArray = geneSymbols
-              .replaceAll("\n", " ")
-              .replaceAll("\t", " ")
-              .split(" ");
+              .split(/[\n\t]+/)
+                  .map(s => s.trim())
+                  .filter(Boolean);
             //$(self.el).modal('toggle');
 
             var lengthLimit = self.currentQueryParameters.lengthLimit;
             console.log("geneSymbolsArray", geneSymbolsArray);
             console.log("lengthLimit", lengthLimit);
-            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
+            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
             var result = await databaseUtilities.runCommonStream(
               geneSymbolsArray,
               lengthLimit,
@@ -5898,7 +5899,7 @@ var UpStreamQueryViewLocalDB = Backbone.View.extend({
         var lengthLimit = self.currentQueryParameters.lengthLimit;
         console.log("geneSymbolsArray", geneSymbolsArray);
         console.log("lengthLimit", lengthLimit);
-        const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
+        const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
         var result = await databaseUtilities.runCommonStream(
           geneSymbolsArray,
           lengthLimit,
@@ -6010,7 +6011,7 @@ var DownStreamQueryViewLocalDB = Backbone.View.extend({
           var lengthLimit = self.currentQueryParameters.lengthLimit;
           console.log("geneSymbolsArray", geneSymbolsArray);
           console.log("lengthLimit", lengthLimit);
-          const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
+          const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
           var result = await databaseUtilities.runCommonStream(
             geneSymbolsArray,
             lengthLimit,
