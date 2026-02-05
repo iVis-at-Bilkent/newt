@@ -4049,7 +4049,7 @@ appUtilities.processFileInput = function (file, fileExtension, chiseInstance, cy
   }
 
   var errorConversion = function (data) {
-    appUtilities.promptFileConversionErrorView().render();
+    appUtilities.promptFileConversionErrorView.render();
     document.getElementById("file-conversion-error-message").innerText = "Conversion failed.";
     stopSpinner();
   }
