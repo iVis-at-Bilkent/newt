@@ -4092,7 +4092,7 @@ appUtilities.processFileInput = function (file, fileExtension, chiseInstance, cy
     caller = chiseInstance.loadCellDesigner;
   } else if (fileExtension === 'sbml' || (!isCellDesigner && (fileExtension === 'xml' || fileExtension === 'sbml'))) {
     var sbmlProperty = appUtilities.getScratch(cy, "sbmlProperty");
-    var sbgnOrSbml = sbmlProperty ? sbmlProperty.sbmlMap : true; 
+    var sbgnOrSbml = sbmlProperty ? sbmlProperty.sbmlMap : false; 
 
     if (sbgnOrSbml) {
       var success = function(data) {

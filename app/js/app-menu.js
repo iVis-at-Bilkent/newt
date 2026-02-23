@@ -297,8 +297,7 @@ module.exports = function() {
       } else if (sbgnORsbml == "false") {
         sbmlProperty.sbmlMap = false
       } else {
-        // Default to SBML
-        sbmlProperty.sbmlMap = true
+        sbmlProperty.sbmlMap = false
       }
       
       
