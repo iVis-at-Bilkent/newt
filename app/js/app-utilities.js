@@ -889,6 +889,7 @@ appUtilities.defaultGeneralProperties = {
   enableSIFTopologyGrouping: false,
   rememberDirectoryToPersist: false,
   storeUserProfile: false,
+  boundarySnapThreshold: 40,
   allowCompoundNodeResize: true,
   mapColorScheme: "black_white",
   mapColorSchemeStyle: "solid",
@@ -4111,7 +4112,17 @@ appUtilities.processFileInput = function (file, fileExtension, chiseInstance, cy
       caller = chiseInstance.loadSbml;
     }
   } else {
-    params = [file, loadCallbackSBGNMLValidity, loadCallbackInvalidityWarning, paramObj, loadCallbackAnnotationLayers];
+
+    var nwtSuccess = function (data) {
+      if (loadCallbackSBGNMLValidity) {
+        loadCallbackSBGNMLValidity(data);
+      }
+      setTimeout(function () {
+        appUtilities.restoreBoundaryNodes();
+      }, 500);
+    };
+
+    params = [file, nwtSuccess, loadCallbackInvalidityWarning, paramObj, loadCallbackAnnotationLayers];
     caller = chiseInstance.loadNwtFile;
   }
 
@@ -4664,6 +4675,23 @@ appUtilities.resizeNodesToContent = function (nodes) {
     cy.$(":selected").trigger("select");
   }
 };
+
+appUtilities.restoreBoundaryNodes = function () {
+  
+  var activeChiseInstance = appUtilities.getActiveChiseInstance();  
+  var cy = appUtilities.getActiveChiseInstance().getCy();
+  var nodes = cy.nodes();
+
+  nodes.each(function (node) {
+    if (node.isNode() && node.data('boundaryParentId') && node.data('boundaryParentId').length > 0) {
+      var boundartParentId = node.data('boundaryParentId');
+      var boundaryParent = cy.getElementById(boundartParentId);
+      if (boundaryParent.nonempty()) {
+        activeChiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, node);
+      }
+    }
+  });
+}
 
 appUtilities.transformClassInfo = function (classInfo) {
   var res = classInfo
@@ -5459,6 +5487,7 @@ appUtilities.setUserProfile = function () {
       enableSIFTopologyGrouping: currentGeneralProperties.enableSIFTopologyGrouping,
       rememberDirectoryToPersist: currentGeneralProperties.rememberDirectoryToPersist,
       storeUserProfile: true,
+      boundarySnapThreshold: currentGeneralProperties.boundarySnapThreshold,
       extraHighlightThickness: currentGeneralProperties.extraHighlightThickness,
       highlightColor: currentGeneralProperties.highlightColor,
       showComplexName: currentGeneralProperties.showComplexName,

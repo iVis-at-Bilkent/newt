@@ -712,6 +712,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       update: self.applyUpdate,
     };
 
+    self.params.boundarySnapThreshold = {
+      id: "boundary-snap-threshold",
+      type: "text",
+      property: "currentGeneralProperties.boundarySnapThreshold",
+      update: self.applyUpdate,
+    };
+
     self.params.mapName = {
       id: "map-name",
       type: "text",
@@ -1097,6 +1104,17 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $("#store-user-profile").blur();
     });
 
+    $(document).on("change", "#boundary-snap-threshold", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.boundarySnapThreshold.value = Math.max(0, Number($("#boundary-snap-threshold").val()));
+      appUtilities.setUserProfileProperty("generalProperties", "boundarySnapThreshold", self.params.boundarySnapThreshold.value);
+      
+      cy.undoRedo().do("changeMenu", self.params.boundarySnapThreshold);
+      $("#boundary-snap-threshold").blur();
+    });
+
     $(document).on("change", "#highlight-thickness", function (evt) {
       var cy = appUtilities.getActiveCy();
       var viewUtilities = cy.viewUtilities("get");
@@ -1192,6 +1210,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.rememberDirectoryToPersist;
       self.params.storeUserProfile.value =
         appUtilities.defaultGeneralProperties.storeUserProfile;
+      self.params.boundarySnapThreshold.value =
+        appUtilities.defaultGeneralProperties.boundarySnapThreshold;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value =
@@ -1216,6 +1236,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       });
       actions.push({ name: "changeMenu", param: self.params.rememberDirectoryToPersist });
       actions.push({ name: "changeMenu", param: self.params.storeUserProfile });
+      actions.push({ name: "changeMenu", param: self.params.boundarySnapThreshold });
       actions.push({
         name: "applySIFTopologyGrouping",
         param: { apply: self.params.enableSIFTopologyGrouping.value },

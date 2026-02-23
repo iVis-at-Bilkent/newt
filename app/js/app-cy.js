@@ -453,6 +453,33 @@ module.exports = function (chiseInstance) {
         undoable: appUtilities.undoable // and if undoRedo extension exists
       },
       afterPaste: function(eles) {
+
+        // Boundary node handling part can be handled in the loop below, 
+        // but it is implemented separately for now, for potential debugging purposes.
+        var activeChiseInstance = appUtilities.getActiveChiseInstance();
+        var mapType = activeChiseInstance.getMapType();
+        if (mapType === 'PD' || mapType === 'AF') {
+          var boundaryCandidates = eles.filter(function (ele) {
+            return ele.isNode() && ele.data('boundaryParentId');
+          });
+
+          var parentCandidates = eles.filter(function (ele) {
+            return ele.isNode() && ele.data('class') === 'compartment';
+          });
+
+          if (boundaryCandidates.nonempty() && parentCandidates.nonempty()) {
+            var snapThreshold = appUtilities.getScratch(cy, 'currentGeneralProperties').boundarySnapThreshold;
+            boundaryCandidates.forEach(function (boundaryCandidate) {
+              parentCandidates.forEach(function (parentCandidate) {
+                if (activeChiseInstance.elementUtilities.isNearBoundary(parentCandidate, boundaryCandidate.position(), snapThreshold)) {
+                  activeChiseInstance.elementUtilities.addNodeOnBoundary(parentCandidate, boundaryCandidate);
+                }
+              });
+            });
+
+          }
+        }
+
         eles.nodes().forEach(function(ele){
           // skip nodes without any auxiliary units
           if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
@@ -998,29 +1025,83 @@ module.exports = function (chiseInstance) {
       // get chise instance for cy
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
-      if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
+      if (appUtilities.getScratch(cy, 'dragAndDropModeEnabled')) {
 
         var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
+
         if (appUtilities.ctrlKeyDown ) {
-          var newParent;
-          if( self != cy) {
-            newParent = self;
-            nodes = nodes.difference(newParent);
-            if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
-                && newParent.data("class") != "submap") {
-              newParent = newParent.parent()[0];
+
+          var handledBoundaryAction = false;
+          var mousePos = event.position || event.cyPosition;
+          var activeChiseInstance = appUtilities.getActiveChiseInstance();
+          var mapType = activeChiseInstance.getMapType();
+
+          if (mapType === 'PD' || mapType === 'AF') {
+            appUtilities.disableDragAndDropMode(cy);
+
+            if (self !== cy && self.isNode() && self.data('class') === 'compartment') {
+
+              var snapThreshold = appUtilities.getScratch(cy, 'currentGeneralProperties').boundarySnapThreshold;
+
+              if (activeChiseInstance.elementUtilities.isNearBoundary(self, mousePos, snapThreshold)) {
+                nodes.each(function (node) {
+                  if (node.id() !== self.id() && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isPNClass(node))) {
+
+                    if (node.data('boundaryParentId')) {
+                      var parentId = node.data('boundaryParentId');
+                      var parent = cy.getElementById(parentId);
+                      if (parent.nonempty()) {
+                        activeChiseInstance.elementUtilities.freeNodeFromBoundary(parent, node);
+                      }
+                    }
+
+                    if (node.parent().nonempty()) {
+                      activeChiseInstance.elementUtilities.addNodeOnBoundary(self, node.move({ parent: null }).position(mousePos));
+                    } else {
+                      node.position(mousePos);
+                      activeChiseInstance.elementUtilities.addNodeOnBoundary(self, node);
+                    }
+
+                  }
+                });
+                handledBoundaryAction = true;
+              }
+            }
+
+            if (!handledBoundaryAction) {
+              nodes.each(function (node) {
+                if (node.data('boundaryParentId')) {
+                  var parentId = node.data('boundaryParentId');
+                  var parent = cy.getElementById(parentId);
+
+                  if (parent.nonempty()) {
+                    activeChiseInstance.elementUtilities.freeNodeFromBoundary(parent, node);
+                    node.position(mousePos);
+                  }
+                }
+              })
             }
           }
 
-          appUtilities.disableDragAndDropMode(cy);
+          if (!handledBoundaryAction) {
+            var newParent;
+            if( self != cy) {
+              newParent = self;
+              nodes = nodes.difference(newParent);
+              if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment" && newParent.data("class") != "submap") {
+                newParent = newParent.parent()[0];
+              }
+            }
 
-          var mouseDownNode = appUtilities.getScratch(cy, 'mouseDownNode');
-          var pos = event.position || event.cyPosition;
-          var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+            appUtilities.disableDragAndDropMode(cy);
 
-          if( self == cy ||(self != cy && mouseDownNode != self)){
-            chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
-                                  pos.y - dragAndDropStartPosition.y);
+            var mouseDownNode = appUtilities.getScratch(cy, 'mouseDownNode');
+            var pos = event.position || event.cyPosition;
+            var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+
+            if(self == cy ||(self != cy && mouseDownNode != self)) {
+              chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x, pos.y - dragAndDropStartPosition.y);
+            }
           }
 
           appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
