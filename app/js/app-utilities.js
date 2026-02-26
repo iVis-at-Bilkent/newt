@@ -833,6 +833,14 @@ appUtilities.defaultLayoutProperties = {
   initialEnergyOnIncremental: 0.3,
   improveFlow: true,
   packComponents: true,
+  boundaryMaxIteration: 5,
+  boundaryNodeConstraint: function (node) {
+    var boundaryParentId = node.data('boundaryParentId');
+    if (boundaryParentId && boundaryParentId.length > 0) {
+      return node.cy().getElementById(boundaryParentId);
+    }
+    return undefined;
+  }
 };
 
 appUtilities.defaultGridProperties = {
