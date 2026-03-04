@@ -231,12 +231,13 @@ var databaseUtilities = {
 
   calculateClass: function (entitysClass) {
     var classArray = entitysClass.split(" ");
-    var classArray = classArray.filter((string) => string !== "multimer");
+    classArray = classArray.filter((string) => string !== "multimer");
     var finalClass = classArray.join("_");
     return finalClass;
   },
   getMapValue: function (val) {
-    return databaseUtilities.nodesInDB[tabKey][val] || null;
+    const tabKey = databaseUtilities._currentActiveNetworkID();
+    return (databaseUtilities.nodesInDB[tabKey] || {})[val] || null;
   },
   checkIfMultimer: function (entitysClass) {
     return entitysClass.includes("multimer");
@@ -541,13 +542,11 @@ var databaseUtilities = {
         edgesData[i].inDb = true;
         edgesData[i].idInDb =
           databaseUtilities.edgesInDB[tabKey][
-            databaseUtilities.edgesInDB[tabKey][
-              (edgesData[i].source, edgesData[i].target, edgesData[i].class)
-            ]
+            [edgesData[i].source, edgesData[i].target, edgesData[i].class].join("|")
           ];
       }
-      edgesData[i].sourceClass = nodesMap[edgesData[i].source].class;
-      edgesData[i].targetClass = nodesMap[edgesData[i].target].class;
+      edgesData[i].sourceClass = nodesMap[edgesData[i].source] ? nodesMap[edgesData[i].source].class : undefined;
+      edgesData[i].targetClass = nodesMap[edgesData[i].target] ? nodesMap[edgesData[i].target].class : undefined;
 
       //Process process nodes
       if (
@@ -863,6 +862,7 @@ var databaseUtilities = {
   pushEPNToLocalDatabase: async function (ids,list,epnMatchingPercentage) {
     // console.log(ids,list,mergeflag,epnMatchingPercentage/100);
     list = list.map((epn) => {
+      // console.log(epn.class,epnCriterias[epn.class]);
       var newEPN = Object.assign({}, epn);
       newEPN.parent = ids[epn.parent] || epn.parent;
       return newEPN;
@@ -1082,15 +1082,6 @@ var databaseUtilities = {
       newSubmap.parent = ids[submap.parent] || submap.parent;
       return newSubmap;
     });
-    // var integrationQuery = `
-    // unwind $nodesData as data
-    // call apoc.do.when(
-    //   exists{match (n) where n.class="submap" and n.entityName=data.entityName return n},
-    //   "match (n) where n.entityName=data.entityName return {incoming:data.newtId,existing:n.newtId} as result",
-    //   'call apoc.cypher.doIt("CALL apoc.create.node([data.class],data)yield node set node.processed=0 return {incoming:data.newtId,existing:node.newtId} as result",{data:data}) yield value return value.result as result',
-    //   {data:data}
-    // ) yield value return value.result as result;
-    // `;
     var integrationQuery = `
       CALL custom.pushSubmaps($nodesData)
       YIELD result
@@ -1121,7 +1112,7 @@ var databaseUtilities = {
     return ids;
   },
 
-  pushComplexesToDatabase: async function (ids,complexes, epns, threshold) {
+  pushComplexesToDatabase: async function (ids,complexes, epns, complexThreshold, epnThreshold) {
     // Helper to sanitize EPNs by removing nested object properties
     function stripComplexProps(obj) {
       const result = {};
@@ -1176,7 +1167,7 @@ var databaseUtilities = {
       });
   
       const { records } = response;
-      console.log(records);
+      // console.log(records);
       for (let record of records) {
         const map = record._fields[0];
         ids[map.incoming] = map.existing.complex;
@@ -1248,7 +1239,7 @@ var databaseUtilities = {
     var tags = nodesData.filter((node)=>node.class==='tag');
     const compartments = nodesData.filter((node)=>node.class==='compartment');
     var compartmentIds = await this.pushCompartmentsToDatabase(compartments);
-    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage/100);
+    var createdComplexesIds = await databaseUtilities.pushComplexesToDatabase(compartmentIds,complexes,epns,complexMatchPercentage,epnMatchingPercentage);
     if(errorCheck!==null)return errorCheck;
     const submaps = nodesData.filter((node)=>node.class==='submap');
     const submapIds = await this.pushSubmapsToDatabase(createdComplexesIds,submaps);
@@ -1282,8 +1273,7 @@ var databaseUtilities = {
     if(errorCheck!==null)return errorCheck;
     await databaseUtilities.pushEdgesToLocalDatabase(
       edgesData,
-      logical_ids,
-      false
+      logical_ids
     );
   },
 
@@ -1403,7 +1393,6 @@ var databaseUtilities = {
   },
 
   pushNode: function (new_node,x=0,y=0) {
-    console.log("new_node:",new_node);
     return new Promise((resolve) => {
       const tabKey = databaseUtilities._currentActiveNetworkID();
       if (!(new_node.properties.newtId in databaseUtilities.nodesInDB[tabKey])) {
@@ -1522,7 +1511,7 @@ var databaseUtilities = {
       let edgesToHighlight = [];
       let edgesToAdd = [];
       let nodesToAdd = [];
-      databaseUtilities.updateDBMaps([],[]);
+      databaseUtilities.updateDBMaps({},{});
       // databaseUtilities.nodesInDB = {};
       const emptyCanvas = databaseUtilities.canvasEmpty();
       // databaseUtilities.edgesInDB = {};
@@ -1639,20 +1628,16 @@ var databaseUtilities = {
     });
   },
 
-  performLayout: async function (static=false) {
+  performLayout: async function (isStatic=false) {
     const cy = appUtilities.getActiveCy();
     await appUtilities.waitForCyReady(cy);
-    appUtilities.triggerLayout(cy, false,static,static);
+    appUtilities.triggerLayout(cy, false,isStatic,isStatic);
   },
 
   runPathsFromTo: async function (sourceArray, targetArray, limit,enableCloning,cloneThreshold) {
     var sourceId = [];
     var sourceNewt = [];
-    await databaseUtilities.getIdOfLabeledNodes(
-      sourceArray,
-      sourceId,
-      sourceNewt
-    );
+    await databaseUtilities.getIdOfLabeledNodes(sourceArray, sourceId, sourceNewt);
 
     var targetId = [];
     var targetNewt = [];
@@ -1665,7 +1650,7 @@ var databaseUtilities = {
     targetId = targetId.map((id) => parseInt(id.split(":")[2]));
     console.log("sourceId:", sourceId, "targetId:", targetId);
     var err=null;
-    if (sourceId.length == 0 && targetId > 0) {
+    if (sourceId.length == 0 && targetId.length > 0) {
       var errMessage = {
         err: "Invalid input",
         message: "No such source nodes",
@@ -1687,7 +1672,7 @@ var databaseUtilities = {
       return errMessage;
     }
     // query = graphALgos.pathsFromTo(limit,enableCloning?cloneThreshold:1000000);
-    query = `
+    var query = `
       CALL pathsFromTo($idList, $limit, $simpleChemicalDegreeThreshold)
       YIELD nodes, relationships, language
       RETURN nodes, relationships, language
@@ -1812,7 +1797,7 @@ var databaseUtilities = {
     console.log("output:", output);
     if (!output || !output.records || output.records[0].length == 0 || output.records[0]._fields[0].length == 0) {
       result.err = { err: "Invalid input", message: "No data returned" };
-      err = result.err;
+      var err = result.err;
       return err;
     }
 
@@ -1824,6 +1809,7 @@ var databaseUtilities = {
     var records = output.records;
     var language = records[0]._fields[2];
     appUtilities.getActiveChiseInstance().elementUtilities.setMapType(language);
+
     for (let i = 0; i < records.length; i++) {
       var fields = records[i]._fields;
       for (let j = 0; j < fields[0].length; j++) {
@@ -2029,7 +2015,7 @@ var databaseUtilities = {
       }
       for (let j = 0; j < fields[5].length; j++) {
         const edgeClass = fields[5][j].properties.class;
-        if(!edgeClass || edgeClass.startsWith("belongs_to_")){
+        if (!edgeClass || edgeClass.startsWith("belongs_to_")) {
           continue; // Skip edges that are not relevant
         }
         var edge = {};
@@ -2042,6 +2028,7 @@ var databaseUtilities = {
         edges.push(edge);
       }
     }
+
     console.log("nodes:", nodes, "edges:", edges);
     const { nodes: nodesArray, edges: edgesArray,originalsToMark } = databaseUtilities.cloneSimpleChemicals(nodes, edges, enableCloning, cloneThreshold);
     const deduplicatedNodes = await databaseUtilities.deduplicateExistingNodes(nodesArray);
