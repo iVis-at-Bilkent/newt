@@ -243,6 +243,10 @@ body {
     cursor: url(../../app/img/target-cursor.svg), pointer!important;
 }
 
+.select-target-cursor {
+    cursor: url(../../app/img/select-target-cursor.svg), pointer!important;
+}
+
 .inside-menu {
     border: 1px solid #ddd;
     border-radius: 0.25em;

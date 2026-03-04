@@ -1166,7 +1166,7 @@ appUtilities.enableDragAndDropMode = function (_cy) {
 
   appUtilities.setScratch(cy, "dragAndDropModeEnabled", true);
 
-  $(cy.container()).find("canvas").addClass("target-cursor");
+  $(cy.container()).find("canvas").addClass("select-target-cursor");
 
   cy.autolock(true);
   cy.autounselectify(true);
@@ -1181,7 +1181,7 @@ appUtilities.disableDragAndDropMode = function (_cy) {
   appUtilities.setScratch(cy, "dragAndDropModeEnabled", null);
   appUtilities.setScratch(cy, "nodesToDragAndDrop", null);
 
-  $(cy.container()).find("canvas").removeClass("target-cursor");
+  $(cy.container()).find("canvas").removeClass("select-target-cursor");
 
   cy.autolock(false);
   cy.autounselectify(false);
