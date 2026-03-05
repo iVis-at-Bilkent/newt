@@ -1056,7 +1056,9 @@ module.exports = function (chiseInstance) {
                     }
 
                     if (node.parent().nonempty()) {
-                      activeChiseInstance.elementUtilities.addNodeOnBoundary(self, node.move({ parent: null }).position(mousePos));
+                      var movedNodes = activeChiseInstance.elementUtilities.changeParent(node, null, undefined, undefined);
+                      movedNodes[0].position(mousePos);
+                      activeChiseInstance.elementUtilities.addNodeOnBoundary(self, movedNodes[0]);
                     } else {
                       node.position(mousePos);
                       activeChiseInstance.elementUtilities.addNodeOnBoundary(self, node);
@@ -1076,7 +1078,9 @@ module.exports = function (chiseInstance) {
 
                   if (parent.nonempty()) {
                     activeChiseInstance.elementUtilities.freeNodeFromBoundary(parent, node);
-                    node.position(mousePos);
+                    if (self == cy) {
+                      node.position(mousePos);
+                    }
                   }
                 }
               })
