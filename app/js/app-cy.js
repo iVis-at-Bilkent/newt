@@ -880,9 +880,41 @@ module.exports = function (chiseInstance) {
       cy.style().update();
     }); */
 
+    cy.on("expandcollapse.beforecollapse", function (e, type, node) {
+      var targetNode = node || e.target;
+      if (!targetNode) return;
+      var activeChiseInstance = appUtilities.getActiveChiseInstance();
+      var bNodes = cy.nodes().filter(function (ele) {
+        return ele.data('boundaryParentId') === targetNode.id();
+      });
+      if (bNodes.length > 0) {
+        bNodes.each(function (bNode) {
+          activeChiseInstance.elementUtilities.freeNodeFromBoundary(targetNode, bNode);
+          bNode.data("boundaryParentId", targetNode.id());
+          activeChiseInstance.elementUtilities.changeParent(bNode, targetNode, undefined, undefined);
+        });
+      }
+    });
+
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeEditing('get').refreshGrapples();
+    });
+
+    // Restore boundary nodes
+    cy.on("expandcollapse.afterexpand", function (e, type, node) {
+      var targetNode = node || e.target;
+      if (!targetNode) return;
+      var activeChiseInstance = appUtilities.getActiveChiseInstance();
+      var bNodes = cy.nodes().filter(function (ele) {
+        return ele.data('boundaryParentId') === targetNode.id();
+      });
+      if (bNodes.length > 0) {
+        bNodes.each(function (bNode) {
+          var changedNodes = activeChiseInstance.elementUtilities.changeParent(bNode, null, undefined, undefined);
+          activeChiseInstance.elementUtilities.addNodeOnBoundary(targetNode, changedNodes[0]);
+        });
+      }
     });
 
     cy.on("expandcollapse.beforeexpand",function(event){
