@@ -448,6 +448,7 @@ module.exports = function() {
         lines = lines.join("\n")
       }
       chiseInstance.changeNodeLabel(node, lines);
+      var cy = chiseInstance.getCy();
       var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
       if (currentGeneralProperties.enableEntityStateSynchronization) {
         appUtilities.synchronizeStatesNewLabel(node);
@@ -2399,6 +2400,7 @@ module.exports = function() {
     });
 
     $('#get-all-data').click(async function (e) {
+      var cy = appUtilities.getActiveCy();
       var generalProperties = appUtilities.getScratch(
         cy,
         "currentGeneralProperties"

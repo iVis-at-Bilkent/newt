@@ -1269,13 +1269,15 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       "currentGeneralProperties"
     );
     
-    // get user profile if it exists
-    if (appUtilities.hasUserProfile()) {
+    // Apply user profile only on FIRST render of this tab (new tab creation),
+    // not on every tab switch. This preserves per-tab settings independence.
+    if (appUtilities.hasUserProfile() && !appUtilities.getScratch(cy, 'profileApplied')) {
       const userProfile = appUtilities.getUserProfile();
 
       currentGeneralProperties = Object.assign({}, currentGeneralProperties, userProfile.generalProperties);
-      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties); 
-      
+      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+      appUtilities.setScratch(cy, 'profileApplied', true);
+
       cy.viewUtilities("get").changeHighlightStyle(
         0,
         { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness },
@@ -1284,21 +1286,29 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       appUtilities.applyMapColorScheme(
         currentGeneralProperties.mapColorScheme,
-        currentGeneralProperties.mapColorSchemeStyle, 
+        currentGeneralProperties.mapColorSchemeStyle,
         appUtilities.colorSchemeInspectorView
-      ); 
+      );
 
       $(document).ready(function() {
-        $("#inspector-simulation-start").val(Number(userProfile.simulationProperties.simulationStart));
-        $("#inspector-simulation-end").val(Number(userProfile.simulationProperties.simulationEnd));
-        $("#inspector-simulation-step").val(Number(userProfile.simulationProperties.simulationStep));
+        if (userProfile.simulationProperties) {
+          $("#inspector-simulation-start").val(Number(userProfile.simulationProperties.simulationStart));
+          $("#inspector-simulation-end").val(Number(userProfile.simulationProperties.simulationEnd));
+          $("#inspector-simulation-step").val(Number(userProfile.simulationProperties.simulationStep));
+        }
       });
-    
-    } else if (currentGeneralProperties.storeUserProfile) {
+
+    } else if (currentGeneralProperties.storeUserProfile && !appUtilities.hasUserProfile()) {
       currentGeneralProperties.storeUserProfile = false;
-      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties); 
+      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
     }
-       
+
+    // Mark this tab as initialized so the profile won't be re-applied on future renders.
+    // This covers tabs created before "Store user profile" was checked.
+    if (!appUtilities.getScratch(cy, 'profileApplied')) {
+      appUtilities.setScratch(cy, 'profileApplied', true);
+    }
+
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
@@ -1374,15 +1384,6 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       self.params.simpleChemicalCloningThreshold.value = 3;
       self.params.allowSimpleChemicalCloning.value =false;
 
-      appUtilities.localDbSettings.epnMatchingPercentage = self.params.epnMatchingPercentage.value;
-      appUtilities.localDbSettings.processIncomingContribution = self.params.processIncomingContribution.value;
-      appUtilities.localDbSettings.processOutgoingContribution = self.params.processOutgoingContribution.value;
-      appUtilities.localDbSettings.processAgentContribution = self.params.processAgentContribution.value;
-      appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value;
-      appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value;
-      appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
-      appUtilities.localDbSettings.allowSimpleChemicalCloning = self.params.allowSimpleChemicalCloning.value;
-
       // Update the UI
       $("#epn-match").val(self.params.epnMatchingPercentage.value);
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
@@ -1401,13 +1402,14 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
     });
 
     $(document).on("change", "#simple_chemical_allow", function (evt) {
-      // $("#simple-chemical-threshold-row").toggle(isChecked);
       var cy = appUtilities.getActiveCy();
       const isChecked = $(this).prop("checked");
       $("#simple_chemical_cloning").prop("disabled", !isChecked);
       self.params.allowSimpleChemicalCloning.value = isChecked;
-      appUtilities.setUserProfileProperty("generalProperties", "allowSimpleChemicalCloning", self.params.allowSimpleChemicalCloning.value);
-      appUtilities.localDbSettings.allowSimpleChemicalCloning = isChecked;
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "allowSimpleChemicalCloning", self.params.allowSimpleChemicalCloning.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.allowSimpleChemicalCloning
@@ -1420,8 +1422,10 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
       document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
-      appUtilities.localDbSettings.epnMatchingPercentage = self.params.epnMatchingPercentage.value;
-      appUtilities.setUserProfileProperty("generalProperties", "epnMatchingPercentage", self.params.epnMatchingPercentage.value);
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "epnMatchingPercentage", self.params.epnMatchingPercentage.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.epnMatchingPercentage
@@ -1432,8 +1436,10 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       self.params.processIncomingContribution.value = Number($("#process-incoming").val());
       document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
-      appUtilities.localDbSettings.processIncomingContribution = self.params.processIncomingContribution.value;
-      appUtilities.setUserProfileProperty("generalProperties", "processIncomingContribution", self.params.processIncomingContribution.value);
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "processIncomingContribution", self.params.processIncomingContribution.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.processIncomingContribution
@@ -1444,8 +1450,10 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       self.params.processOutgoingContribution.value = Number($("#process-outgoing").val());
       document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
-      appUtilities.localDbSettings.processOutgoingContribution = self.params.processOutgoingContribution.value;
-      appUtilities.setUserProfileProperty("generalProperties", "processOutgoingContribution", self.params.processOutgoingContribution.value);
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "processOutgoingContribution", self.params.processOutgoingContribution.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.processOutgoingContribution
@@ -1456,8 +1464,10 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       self.params.processAgentContribution.value = Number($("#process-agent").val());
       document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
-      appUtilities.localDbSettings.processAgentContribution = self.params.processAgentContribution.value;
-      appUtilities.setUserProfileProperty("generalProperties", "processAgentContribution", self.params.processAgentContribution.value);
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "processAgentContribution", self.params.processAgentContribution.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.processAgentContribution
@@ -1468,8 +1478,10 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
       self.params.overallProcessPercentage.value = Number($("#process-overall").val());
       document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
-      appUtilities.localDbSettings.overallProcessPercentage = self.params.overallProcessPercentage.value;
-      appUtilities.setUserProfileProperty("generalProperties", "overallProcessPercentage", self.params.overallProcessPercentage.value);
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "overallProcessPercentage", self.params.overallProcessPercentage.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.overallProcessPercentage
@@ -1479,9 +1491,11 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
     $(document).on("change", "#complex-match", function (evt) {
       var cy = appUtilities.getActiveCy();
       self.params.complexMatchPercentage.value = Number($("#complex-match").val());
-      appUtilities.setUserProfileProperty("generalProperties", "complexMatchPercentage", self.params.complexMatchPercentage.value);
       document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
-      appUtilities.localDbSettings.complexMatchPercentage = self.params.complexMatchPercentage.value
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "complexMatchPercentage", self.params.complexMatchPercentage.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.complexMatchPercentage
@@ -1496,9 +1510,11 @@ var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
         value = 1;
       }
       self.params.simpleChemicalCloningThreshold.value = value;
-      appUtilities.setUserProfileProperty("generalProperties", "simpleChemicalCloningThreshold", self.params.simpleChemicalCloningThreshold.value);
-      document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value ;
-      appUtilities.localDbSettings.simpleChemicalCloningThreshold = self.params.simpleChemicalCloningThreshold.value;
+      document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value;
+      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
+      if (currentGP.storeUserProfile) {
+        appUtilities.setUserProfileProperty("generalProperties", "simpleChemicalCloningThreshold", self.params.simpleChemicalCloningThreshold.value);
+      }
       cy.undoRedo().do(
           "changeMenu",
           self.params.simpleChemicalCloningThreshold

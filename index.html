@@ -2848,7 +2848,7 @@
             <div style="display: flex; align-items: center; gap: 10px;">
               <input id="simple_chemical_allow" type="checkbox" class="layout-text" <% if (allowSimpleChemicalCloning){ %> checked<%}%>>
               <span class="add-on layout-text" title="Simple Chemical Cloning Threshold">Threshold</span>
-              <input id="simple_chemical_cloning" type="number" class="sbgn-input-small" disabled step="1" min="1" value="<%= simpleChemicalCloningThreshold %>" style="width: 60px;">
+              <input id="simple_chemical_cloning" type="number" class="sbgn-input-small" <% if (!allowSimpleChemicalCloning){ %> disabled<%}%> step="1" min="1" value="<%= simpleChemicalCloningThreshold %>" style="width: 60px;">
             </div>
           </td>
         </tr>

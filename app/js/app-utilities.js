@@ -456,7 +456,7 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
     },
 
     //simple cloning threshold
-    simpleChemicalCloningAllow: function(){
+    simpleChemicalCloningThreshold: function(){
       var currentGeneralProperties = appUtilities.getScratch(
         newInst.getCy(),
         "currentGeneralProperties"
@@ -5507,7 +5507,15 @@ appUtilities.setUserProfile = function () {
       rearrangeOnComplexityManagement: currentGeneralProperties.rearrangeOnComplexityManagement,
       animateOnDrawingChanges: currentGeneralProperties.animateOnDrawingChanges,
       mapColorScheme: currentGeneralProperties.mapColorScheme,
-      mapColorSchemeStyle: currentGeneralProperties.mapColorSchemeStyle
+      mapColorSchemeStyle: currentGeneralProperties.mapColorSchemeStyle,
+      allowSimpleChemicalCloning: currentGeneralProperties.allowSimpleChemicalCloning,
+      simpleChemicalCloningThreshold: currentGeneralProperties.simpleChemicalCloningThreshold,
+      epnMatchingPercentage: currentGeneralProperties.epnMatchingPercentage,
+      processIncomingContribution: currentGeneralProperties.processIncomingContribution,
+      processOutgoingContribution: currentGeneralProperties.processOutgoingContribution,
+      processAgentContribution: currentGeneralProperties.processAgentContribution,
+      overallProcessPercentage: currentGeneralProperties.overallProcessPercentage,
+      complexMatchPercentage: currentGeneralProperties.complexMatchPercentage
     },
     simulationProperties: {
       simulationStart: $("#inspector-simulation-start").val(),
