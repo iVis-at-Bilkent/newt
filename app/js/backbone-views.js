@@ -3482,7 +3482,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -3732,7 +3732,7 @@ var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
               $(self.el).modal("toggle");
               new PromptInvalidQueryView({
@@ -3849,7 +3849,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -4097,7 +4097,7 @@ var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
               $(self.el).modal("toggle");
               new PromptInvalidQueryView({
@@ -4215,7 +4215,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           return;
         }
         // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
         if (sourceSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -4230,7 +4230,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           return;
         }
         // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
         if (targetSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -5387,7 +5387,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
               }
               // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
               sourceSymbols = sourceSymbols
-                .replace(/[^a-zA-Z0-9_\n\t ]/g, "")
+                .replace(/[^a-zA-Z0-9_\-\n\t ]/g, "")
                 .trim();
                 console.log("cleaned sourceSymbols:", sourceSymbols);
               if (sourceSymbols.length === 0) {
@@ -5407,7 +5407,7 @@ var PathsFromToQueryViewLocalDB = Backbone.View.extend({
               }
               // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
               targetSymbols = targetSymbols
-                .replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "")
+                .replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "")
                 .trim();
               if (targetSymbols.length === 0) {
                 $(self.el).modal("toggle");
@@ -5531,7 +5531,7 @@ var CommonStreamQueryView = Backbone.View.extend({
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -5775,7 +5775,7 @@ var CommonStreamQueryViewLocalDB = Backbone.View.extend({
               return;
             }
             // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\n\t ]/g, "").trim();
+            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "").trim();
             if (geneSymbols.length === 0) {
               $(self.el).modal("toggle");
               new PromptInvalidQueryView({
@@ -5894,7 +5894,7 @@ var UpStreamQueryViewLocalDB = Backbone.View.extend({
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -6006,7 +6006,7 @@ var DownStreamQueryViewLocalDB = Backbone.View.extend({
             return;
           }
           // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
+          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
           if (geneSymbols.length === 0) {
             $(self.el).modal("toggle");
             new PromptInvalidQueryView({
