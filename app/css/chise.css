@@ -872,6 +872,14 @@ img#template-reversible-output-add-button:hover {
     text-align: right;
 }
 
+#map-tab-local-db-container .map-panel-table td.header {
+    width: 50%;
+}
+
+#map-tab-local-db-container .map-panel-table td:not(.header) {
+    width: auto;
+}
+
 .object-panel-table {
     margin-bottom: 0px;
 }

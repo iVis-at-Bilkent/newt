@@ -2770,79 +2770,73 @@
       <tbody>
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="EPN Matching Percentage"> EPN Matching Percentage </span>
+              <span class="add-on layout-text" title="EPN matching threshold (%)"> EPNs </span>
           </td>
-    
           <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
               <input id="epn-match" type='range' class="sbgn-input-small" min='0' max='100' value= <%= epnMatchingPercentage %> >
-          </td>
-          <td>
-              <span id="epn-match-value" class="add on layout-text" title="Epn percentage"><%= epnMatchingPercentage %></span>
+              <span id="epn-match-value" class="add on layout-text" title="EPN matching threshold (%)"><%= epnMatchingPercentage %></span>
+            </div>
           </td>
         </tr>
 
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="Process Incoming Percentage"> Process Incoming Percentage </span>
+              <span class="add-on layout-text" title="Process substrates matching threshold (%)"> Process Substrates </span>
           </td>
-    
           <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
               <input id="process-incoming" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processIncomingContribution %> >
-          </td>
-          <td>
-              <span id="process-incoming-contribution" class="add on layout-text" title="Process Incoming Percentage"><%= processIncomingContribution %></span>
+              <span id="process-incoming-contribution" class="add on layout-text" title="Process substrates matching threshold (%)"><%= processIncomingContribution %></span>
+            </div>
           </td>
         </tr>
 
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="Process Outgoing Percentage"> Process Outgoing Percentage </span>
+              <span class="add-on layout-text" title="Process products matching threshold (%)"> Process Products </span>
           </td>
-    
           <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
               <input id="process-outgoing" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processOutgoingContribution %> >
-          </td>
-          <td>
-              <span id="process-outgoing-contribution" class="add on layout-text" title="Process Outgoing Percentage"><%= processOutgoingContribution %> </span>
+              <span id="process-outgoing-contribution" class="add on layout-text" title="Process products matching threshold (%)"><%= processOutgoingContribution %></span>
+            </div>
           </td>
         </tr>
 
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="Process Agent Percentage"> Process Agent Percentage </span>
+              <span class="add-on layout-text" title="Process effectors matching threshold (%)"> Process Effectors </span>
           </td>
-    
           <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
               <input id="process-agent" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processAgentContribution %> >
-          </td>
-          <td>
-              <span id="process-agent-contribution" class="add on layout-text" title="Process Agent Percentage"> <%= processAgentContribution %></span>
+              <span id="process-agent-contribution" class="add on layout-text" title="Process effectors matching threshold (%)"><%= processAgentContribution %></span>
+            </div>
           </td>
         </tr>
-        
+
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="Overall Process Matching Percentage">Overall Process Matching Percentage</span>
+              <span class="add-on layout-text" title="Process overall matching threshold (%)"> Process Overall </span>
           </td>
-    
           <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
               <input id="process-overall" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= overallProcessPercentage %> >
-          </td>
-          <td>
-              <span id="process-match-value" class="add on layout-text" title="Process Percentage"><%= overallProcessPercentage %></span>
+              <span id="process-match-value" class="add on layout-text" title="Process overall matching threshold (%)"><%= overallProcessPercentage %></span>
+            </div>
           </td>
         </tr>
-        
+
         <tr>
           <td class="header">
-              <span class="add-on layout-text" title="Complex Matching Percentage">Complex Matching Percentage</span>
+              <span class="add-on layout-text" title="Complex matching threshold (%)"> Complexes </span>
           </td>
-    
           <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
               <input id="complex-match" type='range' class="sbgn-input-small" min='0' max='100' value= <%= complexMatchPercentage %> >
-          </td>
-          <td>
-              <span id="complex-match-value" class="add on layout-text" title="Complex Percentage"><%= complexMatchPercentage %></span>
+              <span id="complex-match-value" class="add on layout-text" title="Complex matching threshold (%)"><%= complexMatchPercentage %></span>
+            </div>
           </td>
         </tr>
 
@@ -3778,8 +3772,8 @@
           </div>
 
           <div class="modal-body">
-            <span class="add-on layout-text">
-              Canvas already has content. Replace it or merge database contents into it?
+            <span class="add-on layout-text" style="font-weight: bold;">
+              All unsaved changes will be lost. If you want to continue, replace it or merge database contents into it?
             </span>
           </div>
 
