@@ -2134,39 +2134,37 @@ var databaseUtilities = {
 
     var originalsToMark = [];
 
-    // 1) Separate out simple_chemical nodes
+    // 1) Separate out simple_chemical and empty_set nodes
     for (var i = 0; i < nodesArray.length; i++) {
       var n = nodesArray[i];
-      if (n && n.properties && n.properties.class === "simple_chemical") {
+      if (n && n.properties && (n.properties.class === "simple_chemical" || n.properties.class === "empty_set")) {
         simpleChemMap.set(n.properties.newtId, n);
       } else {
         if (n && n.properties && n.properties.newtId && !nodesSet.has(n.properties.newtId)) {
-          nodes.push(n);
+          nodes.push(JSON.parse(JSON.stringify(n)));
           nodesSet.add(n.properties.newtId);
         }
       }
     }
 
-    // 2) Pre-count arcs for simple chemicals
+    // 2) Pre-count arcs for simple chemicals and empty_set nodes
     var arcCounts = {};
-    if (enableCloning) {
-      for (var ei = 0; ei < edgesArray.length; ei++) {
-        var e = edgesArray[ei];
-        var p = e && e.properties ? e.properties : null;
-        if (!p) continue;
+    for (var ei = 0; ei < edgesArray.length; ei++) {
+      var e = edgesArray[ei];
+      var p = e && e.properties ? e.properties : null;
+      if (!p) continue;
 
-        var sId = p.source;
-        var tId = p.target;
+      var sId = p.source;
+      var tId = p.target;
 
-        if (simpleChemMap.has(sId)) arcCounts[sId] = (arcCounts[sId] || 0) + 1;
-        if (simpleChemMap.has(tId)) arcCounts[tId] = (arcCounts[tId] || 0) + 1;
-      }
+      if (simpleChemMap.has(sId)) arcCounts[sId] = (arcCounts[sId] || 0) + 1;
+      if (simpleChemMap.has(tId)) arcCounts[tId] = (arcCounts[tId] || 0) + 1;
     }
     // 3) Always add originals exactly once (so original is part of final count)
     simpleChemMap.forEach(function(orig, id) {
       if (!nodesSet.has(id)) {
-        
-        var eligible = enableCloning && ((arcCounts[id] || 0) >= cloneThreshold);
+        var isEmptySet = orig && orig.properties && orig.properties.class === "empty_set";
+        var eligible = isEmptySet || (enableCloning && ((arcCounts[id] || 0) >= cloneThreshold));
         // keep your optional info
         if (orig && orig.properties) {
           orig.properties.cloneEligible = eligible;
@@ -2176,7 +2174,7 @@ var databaseUtilities = {
         if (eligible) {
           originalsToMark.push(id);
         }
-        nodes.push(orig);
+        nodes.push(JSON.parse(JSON.stringify(orig)));
         nodesSet.add(id);
       }
     });
@@ -2194,14 +2192,15 @@ var databaseUtilities = {
         if (Object.prototype.hasOwnProperty.call(p0, k)) raw[k] = p0[k];
       }
 
-      if (enableCloning) {
+      {
         var ends = ["source", "target"];
         for (var ei2 = 0; ei2 < ends.length; ei2++) {
           var end = ends[ei2];
           var id2 = raw[end];
 
           var degree = arcCounts[id2] || 0;
-          var shouldClone = simpleChemMap.has(id2) && (degree >= cloneThreshold);
+          var isEmptySetNode = simpleChemMap.has(id2) && simpleChemMap.get(id2).properties && simpleChemMap.get(id2).properties.class === "empty_set";
+          var shouldClone = simpleChemMap.has(id2) && (isEmptySetNode || (enableCloning && degree >= cloneThreshold));
           if (!shouldClone) continue;
 
           useCount[id2] = (useCount[id2] || 0) + 1;
