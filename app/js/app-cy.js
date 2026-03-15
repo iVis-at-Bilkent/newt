@@ -1078,24 +1078,13 @@ module.exports = function (chiseInstance) {
               if (activeChiseInstance.elementUtilities.isNearBoundary(self, mousePos, snapThreshold)) {
                 nodes.each(function (node) {
                   if (node.id() !== self.id() && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isPNClass(node))) {
-
-                    if (node.data('boundaryParentId')) {
-                      var parentId = node.data('boundaryParentId');
-                      var parent = cy.getElementById(parentId);
-                      if (parent.nonempty()) {
-                        activeChiseInstance.elementUtilities.freeNodeFromBoundary(parent, node);
-                      }
-                    }
-
-                    if (node.parent().nonempty()) {
-                      var movedNodes = activeChiseInstance.elementUtilities.changeParent(node, null, undefined, undefined);
-                      movedNodes[0].position(mousePos);
-                      activeChiseInstance.elementUtilities.addNodeOnBoundary(self, movedNodes[0]);
-                    } else {
-                      node.position(mousePos);
-                      activeChiseInstance.elementUtilities.addNodeOnBoundary(self, node);
-                    }
-
+                    var boundaryNode = node;
+                    var currentBoundaryParent = node.data('boundaryParentId') ? cy.getElementById(node.data('boundaryParentId')) : null;
+                    var nextBoundaryParent = self;
+                    var parentNode = node.parent().nonempty() ? node.parent() : null;
+                    var currentPosition = { x: node.position().x, y: node.position().y };
+                    var nextPosition = { x: mousePos.x, y: mousePos.y };
+                    activeChiseInstance.addNodeOnBoundary(boundaryNode, currentBoundaryParent, nextBoundaryParent, parentNode, currentPosition, nextPosition);
                   }
                 });
                 handledBoundaryAction = true;
@@ -1105,15 +1094,14 @@ module.exports = function (chiseInstance) {
             if (!handledBoundaryAction) {
               nodes.each(function (node) {
                 if (node.data('boundaryParentId')) {
-                  var parentId = node.data('boundaryParentId');
-                  var parent = cy.getElementById(parentId);
-
-                  if (parent.nonempty()) {
-                    activeChiseInstance.elementUtilities.freeNodeFromBoundary(parent, node);
-                    if (self == cy) {
-                      node.position(mousePos);
-                    }
-                  }
+                  var boundaryNode = node;
+                  var currentBoundaryParent = node.data('boundaryParentId') ? cy.getElementById(node.data('boundaryParentId')) : null;
+                  var nextBoundaryParent = null;
+                  var parentNode = self != cy ? self : null;
+                  var currentPosition = { x: node.position().x, y: node.position().y };
+                  var nextPosition = { x: mousePos.x, y: mousePos.y };
+                  activeChiseInstance.freeNodeFromBoundary(boundaryNode, currentBoundaryParent, nextBoundaryParent, parentNode, currentPosition, nextPosition);
+                  handledBoundaryAction = true;
                 }
               })
             }
