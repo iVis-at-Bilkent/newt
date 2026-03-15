@@ -458,7 +458,7 @@ module.exports = function (chiseInstance) {
         // but it is implemented separately for now, for potential debugging purposes.
         var activeChiseInstance = appUtilities.getActiveChiseInstance();
         var mapType = activeChiseInstance.getMapType();
-        if (mapType === 'PD' || mapType === 'AF') {
+        if (mapType === 'PD' || mapType === 'AF' || mapType === 'HybridSbgn' || mapType === 'SBML') {
           var boundaryCandidates = eles.filter(function (ele) {
             return ele.isNode() && ele.data('boundaryParentId');
           });
@@ -1068,7 +1068,7 @@ module.exports = function (chiseInstance) {
           var activeChiseInstance = appUtilities.getActiveChiseInstance();
           var mapType = activeChiseInstance.getMapType();
 
-          if (mapType === 'PD' || mapType === 'AF') {
+          if (mapType === 'PD' || mapType === 'AF' || mapType === 'HybridSbgn' || mapType === 'SBML') {
             appUtilities.disableDragAndDropMode(cy);
 
             if (self !== cy && self.isNode() && self.data('class') === 'compartment') {
