@@ -1077,7 +1077,7 @@ module.exports = function (chiseInstance) {
 
               if (activeChiseInstance.elementUtilities.isNearBoundary(self, mousePos, snapThreshold)) {
                 nodes.each(function (node) {
-                  if (node.id() !== self.id() && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isPNClass(node))) {
+                  if (node.id() !== self.id() && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isPNClass(node)) || cy.scratch('_sbgnviz').sbgnvizParams.jsonToSbmlConverter.isSpecies(node.data('class'))) {
                     var boundaryNode = node;
                     var currentBoundaryParent = node.data('boundaryParentId') ? cy.getElementById(node.data('boundaryParentId')) : null;
                     var nextBoundaryParent = self;
