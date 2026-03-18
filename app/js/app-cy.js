@@ -1051,6 +1051,73 @@ module.exports = function (chiseInstance) {
       }
     });
 
+    let _panStartPosition = null;
+    cy.on('tapstart', 'node', function (event) {
+      var node = this;
+      if (node.isParent()) {
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        var defaultPadding = currentGeneralProperties.compoundPadding;
+        if (node.data('class').includes('compartment'))
+          defaultPadding += currentGeneralProperties.extraCompartmentPadding;
+        if (node.data('class').includes('complex'))
+          defaultPadding += currentGeneralProperties.extraComplexPadding;
+
+        var p = event.position || event.cyPosition;
+        var bb = node.boundingBox({ includeLabels: false, includeOverlays: false });
+
+        var pLeft = parseFloat(node.style('padding-left')) || defaultPadding;
+        var pRight = parseFloat(node.style('padding-right')) || defaultPadding;
+        var pTop = parseFloat(node.style('padding-top')) || defaultPadding;
+        var pBottom = parseFloat(node.style('padding-bottom')) || defaultPadding;
+
+        var grabTolerance = 5;
+
+        const isInsideCenter = (
+          p.x > bb.x1 + pLeft + grabTolerance &&
+          p.x < bb.x2 - pRight - grabTolerance &&
+          p.y > bb.y1 + pTop + grabTolerance &&
+          p.y < bb.y2 - pBottom - grabTolerance
+        );
+
+        var ctrlKeyDown = (event.originalEvent && (event.originalEvent.ctrlKey || event.originalEvent.metaKey)) || appUtilities.ctrlKeyDown;
+
+        if (isInsideCenter && !ctrlKeyDown) {
+          node.unselect();
+          node.ungrabify();
+          node.scratch('_wasHollowClicked', true);
+          _panStartPosition = {
+            x: event.renderedPosition.x,
+            y: event.renderedPosition.y
+          }
+        }
+      }
+    });
+
+    cy.on('tapdrag', 'node', function (event) {
+      var node = this;
+      if (node.scratch('_wasHollowClicked') && _panStartPosition) {
+        var rx = event.renderedPosition.x;
+        var ry = event.renderedPosition.y;
+        var dx = rx - _panStartPosition.x;
+        var dy = ry - _panStartPosition.y;
+
+        var currentPan = cy.pan();
+        cy.pan({
+          x: currentPan.x + dx,
+          y: currentPan.y + dy
+        });
+        _panStartPosition = { x: rx, y: ry };
+      }
+    });
+
+    cy.on('tapend', 'node', function (event) {
+      if (this.isNode() && this.scratch('_wasHollowClicked')) {
+        this.grabify();
+        this.removeScratch('_wasHollowClicked');
+        _panStartPosition = null;
+      }
+    });
+
     cy.on("mouseup", function (event) {
       var self = event.target || event.cyTarget;
 
