@@ -1052,6 +1052,7 @@ module.exports = function (chiseInstance) {
     });
 
     let _panStartPosition = null;
+    let _hollowClickedNode = null;
     cy.on('tapstart', 'node', function (event) {
       var node = this;
       if (node.isParent()) {
@@ -1085,6 +1086,7 @@ module.exports = function (chiseInstance) {
           node.unselect();
           node.ungrabify();
           node.scratch('_wasHollowClicked', true);
+          _hollowClickedNode = node;
           _panStartPosition = {
             x: event.renderedPosition.x,
             y: event.renderedPosition.y
@@ -1093,9 +1095,8 @@ module.exports = function (chiseInstance) {
       }
     });
 
-    cy.on('tapdrag', 'node', function (event) {
-      var node = this;
-      if (node.scratch('_wasHollowClicked') && _panStartPosition) {
+    cy.on('tapdrag', function (event) {
+      if (_hollowClickedNode && _panStartPosition) {
         var rx = event.renderedPosition.x;
         var ry = event.renderedPosition.y;
         var dx = rx - _panStartPosition.x;
@@ -1110,12 +1111,13 @@ module.exports = function (chiseInstance) {
       }
     });
 
-    cy.on('tapend', 'node', function (event) {
-      if (this.isNode() && this.scratch('_wasHollowClicked')) {
-        this.grabify();
-        this.removeScratch('_wasHollowClicked');
-        _panStartPosition = null;
+    cy.on('tapend', function (event) {
+      if (_hollowClickedNode && _hollowClickedNode.scratch('_wasHollowClicked')) {
+        _hollowClickedNode.grabify();
+        _hollowClickedNode.removeScratch('_wasHollowClicked');
       }
+      _hollowClickedNode = null;
+      _panStartPosition = null;
     });
 
     cy.on("mouseup", function (event) {
