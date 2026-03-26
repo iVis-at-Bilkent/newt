@@ -1053,6 +1053,20 @@ module.exports = function (chiseInstance) {
 
     let _panStartPosition = null;
     let _hollowClickedNode = null;
+    let _isGrabbing = false;
+    let _isBackgroundPanning = false;
+
+    cy.on('tapstart', function (event) {
+      if (event.target === cy) {
+        var isModifierDown = event.originalEvent && (event.originalEvent.shiftKey || event.originalEvent.ctrlKey || event.originalEvent.metaKey || event.originalEvent.altKey);
+        var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+        var isBoxMode = modeProperties && (modeProperties.mode === "marquee-zoom-mode" || modeProperties.mode === "lasso-mode");
+        if (!isModifierDown && !isBoxMode) {
+          _isBackgroundPanning = true;
+        }
+      }
+    });
+
     cy.on('tapstart', 'node', function (event) {
       var node = this;
       if (node.isParent()) {
@@ -1081,8 +1095,10 @@ module.exports = function (chiseInstance) {
         );
 
         var ctrlKeyDown = (event.originalEvent && (event.originalEvent.ctrlKey || event.originalEvent.metaKey)) || appUtilities.ctrlKeyDown;
+        var modeProperties = appUtilities.getScratch(cy, 'modeProperties'); 
+        var isAddEdgeMode = modeProperties && modeProperties.mode === "add-edge-mode";
 
-        if (isInsideCenter && !ctrlKeyDown) {
+        if (isInsideCenter && !ctrlKeyDown && !isAddEdgeMode) {
           node.unselect();
           node.ungrabify();
           node.scratch('_wasHollowClicked', true);
@@ -1096,6 +1112,13 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on('tapdrag', function (event) {
+      if (_hollowClickedNode || _isBackgroundPanning) {
+        if (!_isGrabbing) {
+          $(cy.container()).find('canvas').addClass('grabbing-cursor');
+          _isGrabbing = true;
+        }
+      }
+
       if (_hollowClickedNode && _panStartPosition) {
         var rx = event.renderedPosition.x;
         var ry = event.renderedPosition.y;
@@ -1112,6 +1135,11 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on('tapend', function (event) {
+      if (_isGrabbing) {
+        $(cy.container()).find('canvas').removeClass('grabbing-cursor');
+        _isGrabbing = false;
+      }
+      _isBackgroundPanning = false;
       if (_hollowClickedNode && _hollowClickedNode.scratch('_wasHollowClicked')) {
         _hollowClickedNode.grabify();
         _hollowClickedNode.removeScratch('_wasHollowClicked');

@@ -211,6 +211,10 @@ body {
     cursor: url(../../app/img/zoom-cursor.svg), pointer!important;
 }
 
+.grabbing-cursor {
+    cursor: grabbing !important;
+}
+
 #network-tabs-list-container {
   width: 1000px;
   margin: auto;
