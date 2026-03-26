@@ -1457,7 +1457,7 @@ module.exports = function() {
       $.ajax({
         // After deploying Bridge Server (pd2af-webservice) write the bridge server's URL but leave the /convert
         // url: "https://pd2afwebservice.herokuapp.com/convert",
-        url: "http://139.179.114.163:4000/convert", //public server url
+        url: "http://139.179.114.162:4000/convert", //public server url
         type: "POST",
         ContentType: 'multipart/form-data; boundary=----WebKitFormBoundaryQzlzmdgbQfbawnvk',
         data: {
