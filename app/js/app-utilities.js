@@ -897,7 +897,7 @@ appUtilities.defaultGeneralProperties = {
   enableSIFTopologyGrouping: false,
   rememberDirectoryToPersist: false,
   storeUserProfile: false,
-  boundarySnapThreshold: 40,
+  boundarySnapThreshold: 20,
   allowCompoundNodeResize: true,
   mapColorScheme: "black_white",
   mapColorSchemeStyle: "solid",

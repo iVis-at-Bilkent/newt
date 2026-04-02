@@ -1173,6 +1173,7 @@ module.exports = function (chiseInstance) {
               var snapThreshold = appUtilities.getScratch(cy, 'currentGeneralProperties').boundarySnapThreshold;
 
               if (activeChiseInstance.elementUtilities.isNearBoundary(self, mousePos, snapThreshold)) {
+                var actions = [];
                 nodes.each(function (node) {
                   if (node.id() !== self.id() && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isPNClass(node)) || cy.scratch('_sbgnviz').sbgnvizParams.jsonToSbmlConverter.isSpecies(node.data('class'))) {
                     var boundaryNode = node;
@@ -1181,14 +1182,23 @@ module.exports = function (chiseInstance) {
                     var parentNode = node.parent().nonempty() ? node.parent() : null;
                     var currentPosition = { x: node.position().x, y: node.position().y };
                     var nextPosition = { x: mousePos.x, y: mousePos.y };
-                    activeChiseInstance.addNodeOnBoundary(boundaryNode, currentBoundaryParent, nextBoundaryParent, parentNode, currentPosition, nextPosition);
+                    actions.push({
+                      name: "addNodeOnBoundary", 
+                      param: { boundaryNode: boundaryNode, currentBoundaryParent: currentBoundaryParent, nextBoundaryParent: nextBoundaryParent, parentNode: parentNode, currentPosition: currentPosition, nextPosition: nextPosition}
+                    });
                   }
                 });
+                if (actions.length > 1) {
+                  cy.undoRedo().do("batch", actions);
+                } else if (actions.length === 1) {
+                  activeChiseInstance.addNodeOnBoundary(actions[0].param.boundaryNode, actions[0].param.currentBoundaryParent, actions[0].param.nextBoundaryParent, actions[0].param.parentNode, actions[0].param.currentPosition, actions[0].param.nextPosition);
+                } 
                 handledBoundaryAction = true;
               }
             }
 
             if (!handledBoundaryAction) {
+              var actions = [];
               nodes.each(function (node) {
                 if (node.data('boundaryParentId')) {
                   var boundaryNode = node;
@@ -1197,10 +1207,19 @@ module.exports = function (chiseInstance) {
                   var parentNode = self != cy ? self : null;
                   var currentPosition = { x: node.position().x, y: node.position().y };
                   var nextPosition = { x: mousePos.x, y: mousePos.y };
-                  activeChiseInstance.freeNodeFromBoundary(boundaryNode, currentBoundaryParent, nextBoundaryParent, parentNode, currentPosition, nextPosition);
-                  handledBoundaryAction = true;
+                  actions.push({
+                    name: "freeNodeFromBoundary", 
+                    param: { boundaryNode: boundaryNode, currentBoundaryParent: currentBoundaryParent, nextBoundaryParent: nextBoundaryParent, parentNode: parentNode, currentPosition: currentPosition, nextPosition: nextPosition}
+                  });
                 }
-              })
+              });
+              if (actions.length > 1) {
+                cy.undoRedo().do("batch", actions);
+                handledBoundaryAction = true;
+              } else if (actions.length === 1) {
+                activeChiseInstance.freeNodeFromBoundary(actions[0].param.boundaryNode, actions[0].param.currentBoundaryParent, actions[0].param.nextBoundaryParent, actions[0].param.parentNode, actions[0].param.currentPosition, actions[0].param.nextPosition);
+                handledBoundaryAction = true;
+              }
             }
           }
 
@@ -1223,6 +1242,19 @@ module.exports = function (chiseInstance) {
             if(self == cy ||(self != cy && mouseDownNode != self)) {
               chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x, pos.y - dragAndDropStartPosition.y);
             }
+          }
+
+          if (handledBoundaryAction) {
+            cy.one('free', 'node', function () {
+              setTimeout(function () {
+                var ur = cy.undoRedo();
+                var stack = ur.getUndoStack();
+                if (stack.length > 0 && stack[stack.length - 1].name === "drag") {
+                  stack.pop();
+                  appUtilities.refreshUndoRedoButtonsStatus(cy);
+                }
+              }, 0);
+            });
           }
 
           appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
