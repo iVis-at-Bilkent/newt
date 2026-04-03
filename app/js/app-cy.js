@@ -1095,10 +1095,12 @@ module.exports = function (chiseInstance) {
         );
 
         var ctrlKeyDown = (event.originalEvent && (event.originalEvent.ctrlKey || event.originalEvent.metaKey)) || appUtilities.ctrlKeyDown;
+        var shiftKeyDown = event.originalEvent && event.originalEvent.shiftKey;
         var modeProperties = appUtilities.getScratch(cy, 'modeProperties'); 
         var isAddEdgeMode = modeProperties && modeProperties.mode === "add-edge-mode";
+        var isBoxMode = modeProperties && (modeProperties.mode === "marquee-zoom-mode" || modeProperties.mode === "lasso-mode");
 
-        if (isInsideCenter && !ctrlKeyDown && !isAddEdgeMode) {
+        if (isInsideCenter && !ctrlKeyDown && !shiftKeyDown && !isAddEdgeMode && !isBoxMode) {
           node.unselect();
           node.ungrabify();
           node.scratch('_wasHollowClicked', true);
