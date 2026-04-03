@@ -1135,7 +1135,7 @@ inspectorUtilities.handleSBGNInspector = function () {
           "px; text-align:right; padding-right: 5px;'>" +
           "<font class='sbgn-label-font'>Cardinality</font>" +
           "</td><td style='padding-left: 5px;'>" +
-          "<input id='inspector-cardinality' class='inspector-input-box integer-input' type='text' min='0' style='width: " +
+          "<input id='inspector-cardinality' class='inspector-input-box' type='text' min='0' style='width: " +
           buttonwidth +
           "px;'";
 
@@ -2419,14 +2419,20 @@ inspectorUtilities.handleSBGNInspector = function () {
       });
 
       $("#inspector-cardinality").change(function () {
-        var data = Math.round($("#inspector-cardinality").val());
+        var val = $("#inspector-cardinality").val();
+        var data;
 
-        if (data < 0) {
-          if (commonSBGNCardinality == 0) {
-            inspectorUtilities.handleSBGNInspector();
-            return;
+        if (val === "?") {
+          data = "?";
+        } else {
+          data = Math.round(val);
+          if (isNaN(data) || data < 0) {
+            if (commonSBGNCardinality == 0 || commonSBGNCardinality === undefined) {
+              inspectorUtilities.handleSBGNInspector();
+              return;
+            }
+            data = 0;
           }
-          data = 0;
         }
 
         chiseInstance.changeData(selectedEles, "cardinality", data);
