@@ -2736,21 +2736,31 @@
 
       <tr>
         <td class="header">  
-        <span class="add-on layout-text" title="Whether or not to store user profile"> Store User Profile </span>
-        </td>
-  
-        <td>
-        <input id="store-user-profile" type="checkbox" class="layout-text" <% if (storeUserProfile){ %> checked<%}%>>
-        </td>
-      </tr>
-
-      <tr>
-        <td class="header">  
         <span class="add-on layout-text" title="Defines how close a node must be to a boundary to snap to it automatically.">Boundary Snap Threshold</span>
         </td>
   
         <td>
         <input id="boundary-snap-threshold" type="number" class="layout-text" min="0" max="200" step="1" value= <%= boundarySnapThreshold %>>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="header">  
+        <span class="add-on layout-text" title="Whether or not to calculate boundary padding for boundary nodes.">Recalculate Margins for Boundary Nodes</span>
+        </td>
+  
+        <td>
+        <input id="calculate-boundary-padding" type="checkbox" class="layout-text" <% if (calculateBoundaryPadding){ %> checked<%}%>>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="header">  
+        <span class="add-on layout-text" title="Whether or not to store user profile"> Store User Profile </span>
+        </td>
+  
+        <td>
+        <input id="store-user-profile" type="checkbox" class="layout-text" <% if (storeUserProfile){ %> checked<%}%>>
         </td>
       </tr>
 

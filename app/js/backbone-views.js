@@ -607,6 +607,9 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     var topologyGrouping = chiseInstance.sifTopologyGrouping;
 
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
+    if (chiseInstance.getSbgnvizInstance().setCalculateBoundaryPadding) {
+      chiseInstance.getSbgnvizInstance().setCalculateBoundaryPadding(currentGeneralProperties.calculateBoundaryPadding);
+    }
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
     if (currentGeneralProperties.enablePorts) {
@@ -716,6 +719,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       id: "boundary-snap-threshold",
       type: "text",
       property: "currentGeneralProperties.boundarySnapThreshold",
+      update: self.applyUpdate,
+    };
+
+    self.params.calculateBoundaryPadding = {
+      id: "calculate-boundary-padding",
+      type: "checkbox",
+      property: "currentGeneralProperties.calculateBoundaryPadding",
       update: self.applyUpdate,
     };
 
@@ -1115,6 +1125,17 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $("#boundary-snap-threshold").blur();
     });
 
+    $(document).on("change", "#calculate-boundary-padding", function (evt) {
+      // use active cy instance
+      var cy = appUtilities.getActiveCy();
+
+      self.params.calculateBoundaryPadding.value = $("#calculate-boundary-padding").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "calculateBoundaryPadding", self.params.calculateBoundaryPadding.value);
+
+      cy.undoRedo().do("changeMenu", self.params.calculateBoundaryPadding);
+      $("#calculate-boundary-padding").blur();
+    });
+
     $(document).on("change", "#highlight-thickness", function (evt) {
       var cy = appUtilities.getActiveCy();
       var viewUtilities = cy.viewUtilities("get");
@@ -1212,6 +1233,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.storeUserProfile;
       self.params.boundarySnapThreshold.value =
         appUtilities.defaultGeneralProperties.boundarySnapThreshold;
+      self.params.calculateBoundaryPadding.value =
+        appUtilities.defaultGeneralProperties.calculateBoundaryPadding;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value =
@@ -1237,6 +1260,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       actions.push({ name: "changeMenu", param: self.params.rememberDirectoryToPersist });
       actions.push({ name: "changeMenu", param: self.params.storeUserProfile });
       actions.push({ name: "changeMenu", param: self.params.boundarySnapThreshold });
+      actions.push({ name: "changeMenu", param: self.params.calculateBoundaryPadding });
       actions.push({
         name: "applySIFTopologyGrouping",
         param: { apply: self.params.enableSIFTopologyGrouping.value },
@@ -1297,7 +1321,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           $("#inspector-simulation-step").val(Number(userProfile.simulationProperties.simulationStep));
         }
       });
-
+      this.applyUpdate();
     } else if (currentGeneralProperties.storeUserProfile && !appUtilities.hasUserProfile()) {
       currentGeneralProperties.storeUserProfile = false;
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
