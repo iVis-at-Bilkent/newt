@@ -1471,7 +1471,13 @@ module.exports = function (chiseInstance) {
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
                     chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
                 }
-
+              
+                if (nodeType === 'tag') {
+                  var newEle = cy.nodes()[cy.nodes().length - 1];
+                  if (!newEle.data('orientation')) {
+                    newEle.data('orientation', 'right');
+                  }
+                }
                 // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
                 // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
                 if (parent) {
