@@ -38,7 +38,7 @@ appUtilities.mapTypesToViewableText = {
   AF: "AF",
   SIF: "SIF",
   SBML: "SBML",
-  HybridSbgn: "PD+AF",
+  HybridPDAF: "PD-AF",
   HybridAny: "PD+AF+SIF+SBML",
 };
 // Set a single property on scratchpad of an element or the core
@@ -2469,6 +2469,152 @@ appUtilities.mapColorSchemes = mapColorSchemes = {
       "SIF simple chemical": "#f4a582",
       //SBML
       "unknown molecule": "#ffffff",
+    },
+  },
+  hybrid_pd_af: {
+    name: "Hybrid PD-AF",
+    preview: ["#f4a582", "#fee0b6", "#f7f7f7", "#d1e5f0", "#9ecae1"],
+    invert: "hybrid_pd_af2",
+    values: {
+      "unspecified entity": "#cccccc",
+      "simple chemical": "#d1e5f0",
+      macromolecule: "#92c5de",
+      "nucleic acid feature": "#9ecae1",
+      "perturbing agent": "#f7f7f7",
+      "empty set": "#ffffff",
+      complex: "#d1e5f0",
+      process: "#ffffff",
+      "omitted process": "#ffffff",
+      "uncertain process": "#ffffff",
+      association: "#ffffff",
+      dissociation: "#ffffff",
+      phenotype: "#bdbdbd",
+      tag: "#bdbdbd",
+      consumption: "#ffffff",
+      production: "#ffffff",
+      modulation: "#ffffff",
+      stimulation: "#ffffff",
+      catalysis: "#ffffff",
+      inhibition: "#ffffff",
+      "necessary stimulation": "#ffffff",
+      "logic arc": "#ffffff",
+      "equivalence arc": "#ffffff",
+      and: "#ffffff",
+      or: "#ffffff",
+      not: "#ffffff",
+      compartment: "#f7f7f7",
+      submap: "#e5f5f9",
+      //SBML
+      gene: "#f4a582",
+      rna: "#f4a582",
+      "antisense rna": "#f4a582",
+      "simple molecule": "#fddbc7",
+      "unknown molecule": "#707070",
+      "phenotype sbml": "#bdbdbd",
+      drug: "#f4a582",
+      protein: "#92c5de",
+      "truncated protein": "#92c5de",
+      "ion channel": "#92c5de",
+      receptor: "#92c5de",
+      ion: "#fddbc7",
+      process: "#ffffff",
+      "omitted process": "#ffffff",
+      "uncertain process": "#ffffff",
+      "truncated process": "#ffffff",
+      dissociation: "#ffffff",
+      degradation: "#ffffff",
+      and: "#ffffff",
+      or: "#ffffff",
+      not: "#ffffff",
+      association: "#707070",
+      "unknown logical operator": "#ffffff",
+      "complex sbml": "#d1e5f0",
+      compartment: "#f7f7f7",
+      // AF
+      "BA plain": "#fddbc7",
+      "BA unspecified entity": "#fddbc7",
+      "BA simple chemical": "#fddbc7",
+      "BA macromolecule": "#f4a582",
+      "BA nucleic acid feature": "#f4a582",
+      "BA perturbing agent": "#fddbc7",
+      "BA complex": "#f4a582",
+      delay: "#ffffff",
+      // SIF
+      "SIF macromolecule": "#92c5de",
+      "SIF simple chemical": "#9ecae1",
+    },
+  },
+  hybrid_pd_af2: {
+    name: "Hybrid PD-AF 2",
+    preview: ["#9ecae1", "#d1e5f0", "#f7f7f7", "#fee0b6", "#f4a582"],
+    invert: "hybrid_pd_af",
+    values: {
+      "unspecified entity": "#cccccc",
+      "simple chemical": "#fddbc7",
+      macromolecule: "#f4a582",
+      "nucleic acid feature": "#f4a582",
+      "perturbing agent": "#f7f7f7",
+      "empty set": "#ffffff",
+      complex: "#fee0b6",
+      process: "#ffffff",
+      "omitted process": "#ffffff",
+      "uncertain process": "#ffffff",
+      association: "#ffffff",
+      dissociation: "#ffffff",
+      phenotype: "#bdbdbd",
+      tag: "#bdbdbd",
+      consumption: "#ffffff",
+      production: "#ffffff",
+      modulation: "#ffffff",
+      stimulation: "#ffffff",
+      catalysis: "#ffffff",
+      inhibition: "#ffffff",
+      "necessary stimulation": "#ffffff",
+      "logic arc": "#ffffff",
+      "equivalence arc": "#ffffff",
+      and: "#ffffff",
+      or: "#ffffff",
+      not: "#ffffff",
+      compartment: "#f7f7f7",
+      submap: "#e5f5f9",
+      //SBML
+      gene: "#9ecae1",
+      rna: "#9ecae1",
+      "antisense rna": "#9ecae1",
+      "simple molecule": "#fddbc7",
+      "unknown molecule": "#bdbdbd",
+      "phenotype sbml": "#bdbdbd",
+      drug: "#9ecae1",
+      protein: "#f4a582",
+      "truncated protein": "#f4a582",
+      "ion channel": "#f4a582",
+      receptor: "#f4a582",
+      ion: "#fddbc7",
+      process: "#ffffff",
+      "omitted process": "#ffffff",
+      "uncertain process": "#ffffff",
+      "truncated process": "#ffffff",
+      dissociation: "#ffffff",
+      degradation: "#ffffff",
+      and: "#ffffff",
+      or: "#ffffff",
+      not: "#ffffff",
+      association: "#707070",
+      "unknown logical operator": "#ffffff",
+      "complex sbml": "#fee0b6",
+      compartment: "#f7f7f7",
+      // AF
+      "BA plain": "#d1e5f0",
+      "BA unspecified entity": "#d1e5f0",
+      "BA simple chemical": "#d1e5f0",
+      "BA macromolecule": "#92c5de",
+      "BA nucleic acid feature": "#9ecae1",
+      "BA perturbing agent": "#d1e5f0",
+      "BA complex": "#92c5de",
+      delay: "#ffffff",
+      // SIF
+      "SIF macromolecule": "#f4a582",
+      "SIF simple chemical": "#fddbc7",
     },
   },
   cell_designer: {
@@ -5154,20 +5300,20 @@ appUtilities.overridePanzoomReset = function (cy) {
   setTimeout(function() {
     var $container = $(cy.container());
     var $resetButton = $container.find('.cy-panzoom-reset');
-    console.log($resetButton);
+    //console.log($resetButton);
     
     if ($resetButton.length > 0) {
-      console.log('reset button found');
+      //console.log('reset button found');
       $resetButton.off('mousedown');
       
       $resetButton.on('mousedown', function(e) {
-        console.log('reset button clicked');
+        //console.log('reset button clicked');
         
         if (e.button != 0) {
           return;
         }
 
-        console.log('reset button clicked');
+        //console.log('reset button clicked');
         
         // Call the actual reset function
         appUtilities.performPanzoomReset(cy);

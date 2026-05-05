@@ -92,6 +92,9 @@ module.exports = function() {
       if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
         $("#PD-palette-heading").click();
       }
+      if(! $("#Hybrid-PD-AF-palette-heading").hasClass("collapsed")) { // expand Hybrid PD-AF
+        $("#Hybrid-PD-AF-palette-heading").click();
+      }
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
       }  
@@ -105,6 +108,9 @@ module.exports = function() {
       }
       if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
         $("#AF-palette-heading").click();
+      }
+      if(! $("#Hybrid-PD-AF-palette-heading").hasClass("collapsed")) { // expand Hybrid PD-AF
+        $("#Hybrid-PD-AF-palette-heading").click();
       }
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
@@ -123,16 +129,22 @@ module.exports = function() {
       if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
         $("#AF-palette-heading").click();
       }
+      if(! $("#Hybrid-PD-AF-palette-heading").hasClass("collapsed")) { // collapse Hybrid PD-AF
+        $("#Hybrid-PD-AF-palette-heading").click();
+      }
       if(! $("#SBML-palette-heading").hasClass("collapsed")) { // collapse SBML
         $("#SBML-palette-heading").click();
       } 
     }
-    else if (mapType === "HybridSbgn") {
+    else if (mapType === "HybridPDAF") {
       if($("#PD-palette-heading").hasClass("collapsed")) { // expand PD
         $("#PD-palette-heading").click();
       }
       if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
         $("#AF-palette-heading").click();
+      }
+      if($("#Hybrid-PD-AF-palette-heading").hasClass("collapsed")) { // expand Hybrid PD-AF
+        $("#Hybrid-PD-AF-palette-heading").click();
       }
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
@@ -142,11 +154,14 @@ module.exports = function() {
       } 
     }
     else if (mapType === "SBML"){
-      if(!$("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
+      if(! $("#PD-palette-heading").hasClass("collapsed")) { // collapse PD
         $("#PD-palette-heading").click();
       }
-      if(!$("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
+      if(! $("#AF-palette-heading").hasClass("collapsed")) { // collapse AF
         $("#AF-palette-heading").click();
+      }
+      if(! $("#Hybrid-PD-AF-palette-heading").hasClass("collapsed")) { // collapse Hybrid PD-AF
+        $("#Hybrid-PD-AF-palette-heading").click();
       }
       if(! $("#SIF-palette-heading").hasClass("collapsed")) { // collapse SIF
         $("#SIF-palette-heading").click();
@@ -161,6 +176,9 @@ module.exports = function() {
       }
       if($("#AF-palette-heading").hasClass("collapsed")) { // expand AF
         $("#AF-palette-heading").click();
+      }
+      if($("#Hybrid-PD-AF-palette-heading").hasClass("collapsed")) { // expand Hybrid PD-AF
+        $("#Hybrid-PD-AF-palette-heading").click();
       }
       if($("#SIF-palette-heading").hasClass("collapsed")) { // expand SIF
         $("#SIF-palette-heading").click();
@@ -1996,7 +2014,7 @@ module.exports = function() {
 
       var mapType = chiseInstance.getMapType();
 
-      if(mapType != 'PD' && mapType != 'HybridSbgn' && mapType != 'HybridAny' ){
+      if(mapType != 'PD' && mapType != 'HybridPDAF' && mapType != 'HybridAny' ){
         exportErrorView.render();          
         document.getElementById("export-error-message").innerText = "SBGN Bricks can only be used with PD maps!";
       }
