@@ -823,23 +823,23 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         //ok
       } else if (
         (currentMapType == "PD" || currentMapType == "AF") &&
-        (newMapType == "HybridAny" || newMapType == "HybridSbgn") &&
+        (newMapType == "HybridAny" || newMapType == "HybridPDAF") &&
         !validChange
       ) {
         validChange = true;
         //ok
       } else if (
-        currentMapType == "HybridSbgn" &&
-        newMapType == "HybridAny" &&
+        (currentMapType == "HybridPDAF") &&
+        (newMapType == "HybridAny" || newMapType == "HybridPDAF") &&
         !validChange
       ) {
         validChange = true;
       } else if (
-        currentMapType == "HybridSbgn" &&
+        (currentMapType == "HybridPDAF") &&
         (newMapType == "PD" || newMapType == "AF")
       ) {
         if (newMapType == "PD") {
-          //check no AF elements in netwrok
+          //check no AF elements in network
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (elements[i].data("language") == "AF") {
@@ -848,7 +848,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           }
           validChange = checkType;
         } else {
-          //check no PD elements in netwrok
+          //check no PD elements in network
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (elements[i].data("language") == "PD") {
@@ -858,8 +858,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           validChange = checkType;
         }
       } else if (currentMapType == "HybridAny" && !validChange) {
-        if (newMapType == "HybridSbgn") {
-          //check no SIF elements in netwrok
+        if (newMapType == "HybridPDAF") {
+          //check no SIF and SBML elements in network
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (
@@ -871,7 +871,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           }
           validChange = checkType;
         } else if (newMapType == "PD") {
-          //check no AF  OR SIF elements in netwrok
+          //check no AF  OR SIF elements in network
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (
@@ -6707,7 +6707,7 @@ var FileSaveView = Backbone.View.extend({
     var unsupportedConversions = {
       PD: ["sif", "sifLayout"],
       AF: ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
-      HybridSbgn: ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      HybridPDAF: ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
       SIF: ["sbgn", "sbml", "celldesigner", "gpml"],
       SBML: ["sif", "sifLayout", "gpml"],
       HybridAny: ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"],

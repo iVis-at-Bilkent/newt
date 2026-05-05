@@ -744,8 +744,8 @@ module.exports = function (chiseInstance) {
           var currentMapType = chiseInstance.getMapType();
           if(currentMapType == "HybridAny"){
             isMapTypeValid = true;
-          }else if(currentMapType == "HybridSbgn"){
-              if(edgeParams.language == "PD" || edgeParams.language =="AF"){
+          }else if(currentMapType == "HybridPDAF"){
+              if(edgeParams.language == "PD" || edgeParams.language =="AF" || edgeParams.language =="HybridPDAF"){
                 isMapTypeValid = true;
               }
           }else if(currentMapType == edgeParams.language){
@@ -1442,7 +1442,7 @@ module.exports = function (chiseInstance) {
             var currentMapType = chiseInstance.getMapType();
             if(currentMapType == "HybridAny"){
               isMapTypeValid = true;
-            }else if(currentMapType == "HybridSbgn" &&
+            }else if((currentMapType == "HybridPDAF") &&
               (nodeParams.language == "PD" || nodeParams.language =="AF")){
               isMapTypeValid = true;
             }else if(currentMapType == nodeParams.language){
