@@ -124,7 +124,10 @@ var AnnotationLayers = function () {
       e.preventDefault();
       e.stopPropagation();
       var layerId = $(this).data("layer-id");
-      self.deleteLayer(layerId);
+      appUtilities.promptConfirmationView.render(
+        self.deleteLayer.bind(self),
+        layerId
+      );
     });
 
     // Layer selection
