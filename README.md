@@ -33,6 +33,13 @@ cd newt
 npm install 
 ```
 
+> [!WARNING]
+> If you are using a newer environment, Newt is compatible with up to **Node.js v22.22.3** and **npm 10.8.2**. Dependencies on these versions can be installed using:
+> ```
+> npm install --legacy-peer-deps
+> ```
+> If installation fails due to old lockfile metadata or dependency resolution issues, try removing `package-lock.json`, `node_modules` and clearing the npm cache before reinstalling.
+
 - Running the tool (Windows)
 ```
 npm run debug-build
