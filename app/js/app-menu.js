@@ -1130,6 +1130,11 @@ module.exports = function() {
       $("#AF_legend_modal").modal('show');
     });
 
+    $("#PD-AF-legend").click(function (e) {
+      e.preventDefault();
+      $("#PD-AF_legend_modal").modal('show');
+    });
+
     $("#SIF-legend").click(function (e) {
       e.preventDefault();
       $("#SIF_legend_modal").modal('show');
@@ -1246,7 +1251,8 @@ module.exports = function() {
       "#load-sample23" : 'pharmacokinetics_of_PFOA_and_PFOS_in_the_monkey.nwt',
       "#load-sample24" : 'interaction_topologies_of_MAPK_cascade.nwt',
       "#load-sample25" : 'sif_learners_card.nwt',
-      "#load-sample26" : 'sbml_learners_card.nwt'
+      "#load-sample26" : 'sbml_learners_card.nwt',
+      "#load-sample27" : 'EGFR–PI3K_AKT-MAPK_signaling.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {
