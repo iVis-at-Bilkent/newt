@@ -2,6 +2,7 @@ var jquery = $ = require('jquery');
 var lo_get = require('lodash.get');
 var lo_set = require('lodash.set');
 var appUtilities = require('./app-utilities');
+var annotationLayers = require('./annotation-layers');
 
 module.exports = function (cy) {
   var appUndoActions = {};
@@ -471,6 +472,14 @@ module.exports = function (cy) {
 
     return result;
   }
+
+  appUndoActions.annotationSetElement = function (param) {
+    return annotationLayers.undoSetElement(param);
+  };
+
+  appUndoActions.annotationSetLayer = function (param) {
+    return annotationLayers.undoSetLayer(param);
+  };
 
   return appUndoActions;
 };

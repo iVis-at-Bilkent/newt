@@ -5,6 +5,7 @@ var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
 const databaseUtilities = require('./database-utilities');
+var annotationLayers = require('./annotation-layers');
 var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
 
 module.exports = function (chiseInstance) {
@@ -54,6 +55,8 @@ module.exports = function (chiseInstance) {
     ur.action("unhideAll", appUndoActions.unhideAllUI, appUndoActions.unhideAllUIUndo);
     ur.action("loadExperiment", appUndoActions.loadExperimentData, appUndoActions.undoLoadExperiment);
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
+    ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
+    ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -993,6 +996,9 @@ module.exports = function (chiseInstance) {
         }
 
       }
+      else if (actionName === "annotationSetElement" || actionName === "annotationSetLayer") {
+        annotationLayers.syncUIAfterUndoRedo();
+      }
     });
 
     cy.on("afterRedo", function (event, actionName, args, res) {
@@ -1025,6 +1031,9 @@ module.exports = function (chiseInstance) {
 
         }
 
+      }
+      else if (actionName === "annotationSetElement" || actionName === "annotationSetLayer") {
+        annotationLayers.syncUIAfterUndoRedo();
       }
     });
 

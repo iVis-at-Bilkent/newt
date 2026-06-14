@@ -39,6 +39,299 @@ var AnnotationLayers = function () {
     height: 0,
   };
 
+  function cloneElementData(element) {
+    if (!element) {
+      return null;
+    }
+    return JSON.parse(JSON.stringify(element));
+  }
+
+  function cloneElementById(layerId, elementId) {
+    var layer = self.getLayer(layerId);
+    if (!layer) {
+      return null;
+    }
+    var element = layer.elements.find(function (el) {
+      return el.id === elementId;
+    });
+    return cloneElementData(element);
+  }
+
+  function cloneLayerData(layer) {
+    if (!layer) {
+      return null;
+    }
+    return {
+      id: layer.id,
+      layerNumber: layer.layerNumber,
+      visible: layer.visible,
+      elements: layer.elements.map(cloneElementData),
+      createdAt: layer.createdAt,
+      zIndex: layer.zIndex,
+      customLayerName: layer.customLayerName,
+      isDefaultLayer: layer.isDefaultLayer,
+      isCytoscapeLayer: layer.isCytoscapeLayer,
+      isAnnotationLayer: layer.isAnnotationLayer,
+    };
+  }
+
+  function elementsEqual(a, b) {
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+
+  function canRecordUndo() {
+    if (!appUtilities.undoable) {
+      return false;
+    }
+    var cy = appUtilities.getActiveCy();
+    return cy && cy.undoRedo;
+  }
+
+  function syncSelectionAfterElementApply(layerId, elementId, afterElement) {
+    if (!selectedElement || selectedElement.id !== elementId) {
+      return;
+    }
+    if (!afterElement) {
+      self.deselectElement();
+      return;
+    }
+    var layer = self.getLayer(layerId);
+    if (!layer) {
+      self.deselectElement();
+      return;
+    }
+    var el = layer.elements.find(function (e) {
+      return e.id === elementId;
+    });
+    if (el) {
+      selectedElement = el;
+    } else {
+      self.deselectElement();
+    }
+  }
+
+  function _applyElementState(layerId, elementId, afterElement) {
+    var layer = self.getLayer(layerId);
+    if (!layer || !layer.isAnnotationLayer) {
+      return false;
+    }
+
+    var elementIndex = layer.elements.findIndex(function (el) {
+      return el.id === elementId;
+    });
+
+    if (afterElement === null) {
+      if (elementIndex === -1) {
+        return false;
+      }
+      var removed = layer.elements[elementIndex];
+      if (removed && removed.type === "image" && annotationUtil.clearImageCache) {
+        annotationUtil.clearImageCache(removed.id);
+      }
+      layer.elements.splice(elementIndex, 1);
+      syncSelectionAfterElementApply(layerId, elementId, null);
+      self.redrawLayer(layerId);
+      return true;
+    }
+
+    var elementData = cloneElementData(afterElement);
+    elementData.id = elementId;
+
+    if (elementIndex === -1) {
+      layer.elements.push(elementData);
+    } else {
+      layer.elements[elementIndex] = elementData;
+    }
+
+    syncSelectionAfterElementApply(layerId, elementId, elementData);
+    self.redrawLayer(layerId);
+    return true;
+  }
+
+  function _applyLayerState(layerId, afterLayer) {
+    if (afterLayer === null) {
+      var layer = self.getLayer(layerId);
+      if (!layer || layer.isDefaultLayer) {
+        return false;
+      }
+
+      var canvas = null;
+      if (layer.isAnnotationLayer) {
+        canvas = self.getAnnotationCanvas(layerId);
+      }
+
+      if (selectedElement) {
+        var selectedLayer = self.getCurrentLayer();
+        if (selectedLayer && selectedLayer.id === layerId) {
+          self.deselectElement();
+        }
+      }
+
+      var layerIndex = layers.findIndex(function (l) {
+        return l.id === layerId;
+      });
+      if (layerIndex === -1) {
+        return false;
+      }
+
+      layers.splice(layerIndex, 1);
+
+      if (canvas) {
+        canvas.remove();
+      }
+
+      if (currentLayerId === layerId) {
+        var defaultLayer = layers.find(function (l) {
+          return l.isDefaultLayer;
+        });
+        if (defaultLayer) {
+          self.selectLayer(defaultLayer.id);
+        }
+      }
+
+      self.renderLayerList();
+      return true;
+    }
+
+    var existing = self.getLayer(layerId);
+    if (!existing) {
+      var restored = cloneLayerData(afterLayer);
+      layers.push(restored);
+      if (restored.isAnnotationLayer) {
+        self.createAnnotationCanvas(restored.layerNumber);
+        self.redrawLayer(restored.id);
+      }
+      if (restored.layerNumber >= nextLayerId) {
+        nextLayerId = restored.layerNumber + 1;
+      }
+      self.renderLayerList();
+      return true;
+    }
+
+    existing.visible = afterLayer.visible;
+    existing.customLayerName = afterLayer.customLayerName;
+    if (existing.isAnnotationLayer) {
+      var canvasEl = self.getAnnotationCanvas(layerId);
+      if (canvasEl) {
+        canvasEl.style.display = existing.visible ? "block" : "none";
+      }
+    }
+    self.renderLayerList();
+    return true;
+  }
+
+  self.undoSetElement = function (param) {
+    if (param.explicit) {
+      _applyElementState(param.layerId, param.elementId, param.after);
+      return {
+        layerId: param.layerId,
+        elementId: param.elementId,
+        before: param.after,
+        after: param.before,
+        explicit: true,
+      };
+    }
+
+    var previous = cloneElementById(param.layerId, param.elementId);
+    _applyElementState(param.layerId, param.elementId, param.after);
+    return {
+      layerId: param.layerId,
+      elementId: param.elementId,
+      after: previous,
+    };
+  };
+
+  self.undoSetLayer = function (param) {
+    if (param.explicit) {
+      _applyLayerState(param.layerId, param.after);
+      return {
+        layerId: param.layerId,
+        before: param.after,
+        after: param.before,
+        explicit: true,
+      };
+    }
+
+    var previous = cloneLayerData(self.getLayer(param.layerId));
+    _applyLayerState(param.layerId, param.after);
+    return {
+      layerId: param.layerId,
+      after: previous,
+    };
+  };
+
+  self.recordElementUndo = function (layerId, elementId, afterElement) {
+    if (!canRecordUndo()) {
+      _applyElementState(layerId, elementId, afterElement);
+      return;
+    }
+    appUtilities.getActiveCy().undoRedo().do("annotationSetElement", {
+      layerId: layerId,
+      elementId: elementId,
+      after: afterElement,
+    });
+  };
+
+  self.recordElementUndoExplicit = function (layerId, elementId, before, after) {
+    if (!canRecordUndo()) {
+      _applyElementState(layerId, elementId, after);
+      return;
+    }
+    appUtilities.getActiveCy().undoRedo().do("annotationSetElement", {
+      layerId: layerId,
+      elementId: elementId,
+      before: before,
+      after: after,
+      explicit: true,
+    });
+  };
+
+  self.recordLayerUndo = function (layerId, afterLayer) {
+    if (!canRecordUndo()) {
+      _applyLayerState(layerId, afterLayer);
+      return;
+    }
+    appUtilities.getActiveCy().undoRedo().do("annotationSetLayer", {
+      layerId: layerId,
+      after: afterLayer,
+    });
+  };
+
+  self.recordLayerUndoExplicit = function (layerId, before, after) {
+    if (!canRecordUndo()) {
+      _applyLayerState(layerId, after);
+      return;
+    }
+    appUtilities.getActiveCy().undoRedo().do("annotationSetLayer", {
+      layerId: layerId,
+      before: before,
+      after: after,
+      explicit: true,
+    });
+  };
+
+  self.syncUIAfterUndoRedo = function () {
+    var selectedId = selectedElement ? selectedElement.id : null;
+    var selectedLayerId = currentLayerId;
+    self.redrawAllAnnotationLayers();
+    self.renderLayerList();
+    if (selectedId && selectedLayerId) {
+      var layer = self.getLayer(selectedLayerId);
+      if (layer) {
+        var el = layer.elements.find(function (e) {
+          return e.id === selectedId;
+        });
+        if (el) {
+          self.selectElement(el);
+          return;
+        }
+      }
+    }
+    if (selectedElement) {
+      self.deselectElement();
+    }
+  };
+
   var LayerModel = function (layerNumber, visible = true, customLayerName = "") {
     // Generate UUID for the layer
     var uuid = 'layer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -276,19 +569,26 @@ var AnnotationLayers = function () {
     var layer = LayerModel(layerNumber, true, customLayerName);
     layer.isDefaultLayer = isDefaultLayer;
 
-    layers.push(layer);
+    if (isDefaultLayer || !canRecordUndo()) {
+      layers.push(layer);
 
-    // Create HTML canvas for annotation layers only
-    if (layer.isAnnotationLayer) {
-      self.createAnnotationCanvas(layer.layerNumber);
+      if (layer.isAnnotationLayer) {
+        self.createAnnotationCanvas(layer.layerNumber);
+      }
+
+      self.renderLayerList();
+      self.selectLayer(layer.id);
+
+      if (!isDefaultLayer) {
+        nextLayerId++;
+      }
+
+      return layer.id;
     }
 
-    self.renderLayerList();
+    var snapshot = cloneLayerData(layer);
+    self.recordLayerUndo(layer.id, snapshot);
     self.selectLayer(layer.id);
-
-    if (!isDefaultLayer) {
-      nextLayerId++;
-    }
 
     return layer.id;
   };
@@ -304,43 +604,16 @@ var AnnotationLayers = function () {
       return false;
     }
 
-    // Prevent deletion of the default Layer 0
     if (layer.isDefaultLayer) {
       alert("Layer 0 cannot be deleted. It is the default layer.");
       return false;
     }
 
-    var layerIndex = layers.findIndex((l) => l.id === layerId);
-    if (layerIndex === -1) {
-      console.error("Layer not found:", layerId);
-      return false;
+    if (canRecordUndo()) {
+      self.recordLayerUndo(layerId, null);
+    } else {
+      _applyLayerState(layerId, null);
     }
-
-    var deletedLayer = layers[layerIndex];
-    
-    // Get the canvas BEFORE removing the layer from the array
-    var canvas = null;
-    if (deletedLayer.isAnnotationLayer) {
-      canvas = self.getAnnotationCanvas(layerId);
-    }
-    
-    // Now remove the layer from the array
-    layers.splice(layerIndex, 1);
-
-    // Remove the canvas element from DOM
-    if (canvas) {
-      canvas.remove();
-    }
-
-    // If the deleted layer was selected, select Layer 0
-    if (currentLayerId === layerId) {
-      var defaultLayer = layers.find((l) => l.isDefaultLayer);
-      if (defaultLayer) {
-        self.selectLayer(defaultLayer.id);
-      }
-    }
-
-    self.renderLayerList();
 
     return true;
   };
@@ -403,18 +676,17 @@ var AnnotationLayers = function () {
     var layer = self.getLayer(layerId);
     if (!layer) return false;
 
-    layer.visible = !layer.visible;
-    self.renderLayerList();
+    var before = cloneLayerData(layer);
+    var after = cloneLayerData(layer);
+    after.visible = !before.visible;
 
-    // Show/hide the canvas element for annotation layers
-    if (layer.isAnnotationLayer) {
-      var canvas = self.getAnnotationCanvas(layerId);
-      if (canvas) {
-        canvas.style.display = layer.visible ? "block" : "none";
-      }
+    if (canRecordUndo()) {
+      self.recordLayerUndoExplicit(layerId, before, after);
+    } else {
+      _applyLayerState(layerId, after);
     }
 
-    return layer.visible;
+    return after.visible;
   };
 
   /**
@@ -530,8 +802,19 @@ var AnnotationLayers = function () {
       $input.select();
       var saveName = function () {
         var newName = $input.val().trim();
-        layer.customLayerName = newName;
-        self.renderLayerList();
+        if ((layer.customLayerName || "") === newName) {
+          self.renderLayerList();
+          return;
+        }
+        var before = cloneLayerData(layer);
+        var after = cloneLayerData(layer);
+        after.customLayerName = newName;
+        if (canRecordUndo()) {
+          self.recordLayerUndoExplicit(layer.id, before, after);
+        } else {
+          layer.customLayerName = newName;
+          self.renderLayerList();
+        }
       };
       $input.on("blur", saveName);
       $input.on("keydown", function (ev) {
@@ -894,11 +1177,7 @@ var AnnotationLayers = function () {
       return false;
     }
 
-    // Add element to layer data
-    layer.elements.push(elementData);
-
-    // Redraw the entire layer
-    self.redrawLayer(layerId);
+    self.recordElementUndo(layerId, elementData.id, cloneElementData(elementData));
 
     return elementData.id;
   };
@@ -969,16 +1248,7 @@ var AnnotationLayers = function () {
     var elementIndex = layer.elements.findIndex((el) => el.id === elementId);
     if (elementIndex === -1) return false;
 
-    // Get the element before removing it to check if it's an image
-    var element = layer.elements[elementIndex];
-    
-    // If it's an image element, clear it from the image cache
-    if (element && element.type === 'image' && annotationUtil.clearImageCache) {
-      annotationUtil.clearImageCache(element.id);
-    }
-
-    layer.elements.splice(elementIndex, 1);
-    self.redrawLayer(layerId);
+    self.recordElementUndo(layerId, elementId, null);
 
     return true;
   };
@@ -1277,7 +1547,7 @@ var AnnotationLayers = function () {
         if (handleType) {
           isResizing = true;
           resizeHandle = handleType;
-          originalElementData = Object.assign({}, selectedElement);
+          originalElementData = cloneElementData(selectedElement);
           return;
         } else {
           var isInside = false;
@@ -1298,7 +1568,7 @@ var AnnotationLayers = function () {
           if (isInside) {
             isMoving = true;
             moveStartCoords = modelCoords;
-            originalElementData = Object.assign({}, selectedElement);
+            originalElementData = cloneElementData(selectedElement);
             return;
           }
         }
@@ -1313,7 +1583,7 @@ var AnnotationLayers = function () {
         if (handleType) {
           isResizing = true;
           resizeHandle = handleType;
-          originalElementData = Object.assign({}, selectedElement);
+          originalElementData = cloneElementData(selectedElement);
           return;
         } else {
           var isOnArrow = annotationUtil.isPointOnArrow(
@@ -1324,7 +1594,7 @@ var AnnotationLayers = function () {
           if (isOnArrow) {
             isMoving = true;
             moveStartCoords = modelCoords;
-            originalElementData = Object.assign({}, selectedElement);
+            originalElementData = cloneElementData(selectedElement);
             return;
           }
         }
@@ -1339,7 +1609,7 @@ var AnnotationLayers = function () {
         if (handleType) {
           isResizing = true;
           resizeHandle = handleType;
-          originalElementData = Object.assign({}, selectedElement);
+          originalElementData = cloneElementData(selectedElement);
           return;
         } else {
           var isInside = annotationUtil.isPointInImage(
@@ -1350,7 +1620,7 @@ var AnnotationLayers = function () {
           if (isInside) {
             isMoving = true;
             moveStartCoords = modelCoords;
-            originalElementData = Object.assign({}, selectedElement);
+            originalElementData = cloneElementData(selectedElement);
             return;
           }
         }
@@ -1363,7 +1633,7 @@ var AnnotationLayers = function () {
         }
         isMoving = true;
         moveStartCoords = modelCoords;
-        originalElementData = Object.assign({}, element);
+        originalElementData = cloneElementData(element);
         return;
       } else {
         self.deselectElement();
@@ -1568,14 +1838,29 @@ var AnnotationLayers = function () {
 
     // Handle resizing completion
     if (isResizing && selectedElement && resizeHandle) {
+      var layerId = currentLayer.id;
+      var elementId = selectedElement.id;
+      var beforeState = cloneElementData(originalElementData);
+      var afterState = cloneElementData(selectedElement);
+      if (!elementsEqual(beforeState, afterState)) {
+        _applyElementState(layerId, elementId, beforeState);
+        self.recordElementUndoExplicit(layerId, elementId, beforeState, afterState);
+      }
       isResizing = false;
       resizeHandle = null;
       originalElementData = null;
       return;
     }
 
-    // Handle moving completion
     if (isMoving && selectedElement && moveStartCoords) {
+      var moveLayerId = currentLayer.id;
+      var moveElementId = selectedElement.id;
+      var moveBefore = cloneElementData(originalElementData);
+      var moveAfter = cloneElementData(selectedElement);
+      if (!elementsEqual(moveBefore, moveAfter)) {
+        _applyElementState(moveLayerId, moveElementId, moveBefore);
+        self.recordElementUndoExplicit(moveLayerId, moveElementId, moveBefore, moveAfter);
+      }
       isMoving = false;
       moveStartCoords = null;
       originalElementData = null;
@@ -2004,10 +2289,22 @@ var AnnotationLayers = function () {
     $(".annotation-layers-controls").after(table);
     // Hide old delete button
     $(".annotation-element-delete").hide();
-    // Bind events
+    var commitElementChange = function (before) {
+      if (!selectedElement) {
+        return;
+      }
+      self.recordElementUndoExplicit(
+        currentLayerId,
+        selectedElement.id,
+        before,
+        cloneElementData(selectedElement),
+      );
+    };
+
     colorPickerUtils.bindPicker2Input(
       "#annotation-rect-bordercolor-input",
       function () {
+        var before = cloneElementData(selectedElement);
         var hex = $("#annotation-rect-bordercolor-input").val();
         var bigint = parseInt(hex.slice(1), 16);
         var r = (bigint >> 16) & 255;
@@ -2017,11 +2314,13 @@ var AnnotationLayers = function () {
         selectedElement.styles.strokeColor =
           "rgba(" + r + "," + g + "," + b + ",1)";
         self.redrawLayer(currentLayerId);
+        commitElementChange(before);
       },
     );
     colorPickerUtils.bindPicker2Input(
       "#annotation-rect-fillcolor-input",
       function () {
+        var before = cloneElementData(selectedElement);
         var hex = $("#annotation-rect-fillcolor-input").val();
         var alpha =
           1 - parseFloat($("#annotation-rect-fillalpha-input").val()) / 100;
@@ -2033,9 +2332,11 @@ var AnnotationLayers = function () {
         selectedElement.styles.fillColor =
           "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
         self.redrawLayer(currentLayerId);
+        commitElementChange(before);
       },
     );
     $("#annotation-rect-fillalpha-input").on("input", function () {
+      var before = cloneElementData(selectedElement);
       var hex = $("#annotation-rect-fillcolor-input").val();
       var alpha =
         1 - parseFloat($("#annotation-rect-fillalpha-input").val()) / 100;
@@ -2050,10 +2351,12 @@ var AnnotationLayers = function () {
         $("#annotation-rect-fillalpha-input").val(),
       );
       self.redrawLayer(currentLayerId);
+      commitElementChange(before);
     });
     colorPickerUtils.bindPicker2Input(
       "#annotation-textbox-bordercolor-input",
       function () {
+        var before = cloneElementData(selectedElement);
         var hex = $("#annotation-textbox-bordercolor-input").val();
         var bigint = parseInt(hex.slice(1), 16);
         var r = (bigint >> 16) & 255;
@@ -2063,11 +2366,13 @@ var AnnotationLayers = function () {
         selectedElement.styles.strokeColor =
           "rgba(" + r + "," + g + "," + b + ",1)";
         self.redrawLayer(currentLayerId);
+        commitElementChange(before);
       },
     );
     colorPickerUtils.bindPicker2Input(
       "#annotation-textbox-fillcolor-input",
       function () {
+        var before = cloneElementData(selectedElement);
         var hex = $("#annotation-textbox-fillcolor-input").val();
         var alpha =
           1 - parseFloat($("#annotation-textbox-fillalpha-input").val()) / 100;
@@ -2079,9 +2384,11 @@ var AnnotationLayers = function () {
         selectedElement.styles.fillColor =
           "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
         self.redrawLayer(currentLayerId);
+        commitElementChange(before);
       },
     );
     $("#annotation-textbox-fillalpha-input").on("input", function () {
+      var before = cloneElementData(selectedElement);
       var hex = $("#annotation-textbox-fillcolor-input").val();
       var alpha =
         1 - parseFloat($("#annotation-textbox-fillalpha-input").val()) / 100;
@@ -2096,10 +2403,12 @@ var AnnotationLayers = function () {
         $("#annotation-textbox-fillalpha-input").val(),
       );
       self.redrawLayer(currentLayerId);
+      commitElementChange(before);
     });
     colorPickerUtils.bindPicker2Input(
       "#annotation-arrow-color-input",
       function () {
+        var before = cloneElementData(selectedElement);
         var hex = $("#annotation-arrow-color-input").val();
         var bigint = parseInt(hex.slice(1), 16);
         var r = (bigint >> 16) & 255;
@@ -2109,14 +2418,17 @@ var AnnotationLayers = function () {
         selectedElement.styles.strokeColor =
           "rgba(" + r + "," + g + "," + b + ",1)";
         self.redrawLayer(currentLayerId);
+        commitElementChange(before);
       },
     );
     $("#annotation-arrow-width-input").on("input", function () {
       var val = parseInt($(this).val());
       if (!isNaN(val) && val > 0) {
+        var before = cloneElementData(selectedElement);
         if (!selectedElement.styles) selectedElement.styles = {};
         selectedElement.styles.lineWidth = val;
         self.redrawLayer(currentLayerId);
+        commitElementChange(before);
       }
     });
     $("#delete-selected-element").on("click", function (e) {
@@ -2208,11 +2520,12 @@ var AnnotationLayers = function () {
     );
     if (elementIndex === -1) return false;
 
+    var before = cloneElementData(currentLayer.elements[elementIndex]);
     newData.id = elementId;
     newData.type = currentLayer.elements[elementIndex].type;
+    var after = cloneElementData(newData);
 
-    currentLayer.elements[elementIndex] = newData;
-    self.redrawLayer(currentLayer.id);
+    self.recordElementUndoExplicit(currentLayer.id, elementId, before, after);
 
     return true;
   };
@@ -2267,8 +2580,22 @@ var AnnotationLayers = function () {
     input.focus();
     input.select();
 
+    var originalText = textBoxElement.text || "";
+
     var handleInputComplete = function () {
-      textBoxElement.text = input.value;
+      var newText = input.value;
+      if (newText !== originalText) {
+        var before = cloneElementData(textBoxElement);
+        before.text = originalText;
+        var after = cloneElementData(textBoxElement);
+        after.text = newText;
+        self.recordElementUndoExplicit(
+          currentLayerId,
+          textBoxElement.id,
+          before,
+          after,
+        );
+      }
       input.remove();
       self.redrawLayer(currentLayerId);
       input.removeEventListener("blur", handleInputComplete);
@@ -3369,6 +3696,10 @@ var AnnotationLayers = function () {
     exportCompositeSvg: self.exportCompositeSvg,
     getAllAnnotationItems: self.getAllAnnotationItems,
     getAnnotationItemsFromLayer: self.getAnnotationItemsFromLayer,
+    undoSetElement: self.undoSetElement,
+    undoSetLayer: self.undoSetLayer,
+    syncUIAfterUndoRedo: self.syncUIAfterUndoRedo,
+    recordElementUndoExplicit: self.recordElementUndoExplicit,
     getViewportState: self.getViewportState,
   };
 };
@@ -3412,6 +3743,8 @@ function hexToRgb(color, alpha = 1) {
 // Custom modal for annotation text box font settings
 function showAnnotationFontModal(element) {
   $("#annotation-font-modal").remove();
+
+  var beforeState = JSON.parse(JSON.stringify(element));
 
   if (element.styles.color.startsWith('rgb')) {
     element.styles.color = rgbToHex(element.styles.color);
@@ -3511,10 +3844,15 @@ function showAnnotationFontModal(element) {
       $("#annotation-font-modal").modal("hide");
       if (
         typeof window.annotationLayers !== "undefined" &&
-        window.annotationLayers.redrawLayer
+        window.annotationLayers.getCurrentLayer
       ) {
-        window.annotationLayers.redrawLayer(
-          window.annotationLayers.getCurrentLayer().id,
+        var currentLayer = window.annotationLayers.getCurrentLayer();
+        var afterState = JSON.parse(JSON.stringify(element));
+        window.annotationLayers.recordElementUndoExplicit(
+          currentLayer.id,
+          element.id,
+          beforeState,
+          afterState,
         );
       } else if (typeof self !== "undefined" && self.redrawLayer) {
         self.redrawLayer(self.getCurrentLayer().id);
