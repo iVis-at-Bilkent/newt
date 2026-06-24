@@ -1252,7 +1252,8 @@ module.exports = function() {
       "#load-sample24" : 'interaction_topologies_of_MAPK_cascade.nwt',
       "#load-sample25" : 'sif_learners_card.nwt',
       "#load-sample26" : 'sbml_learners_card.nwt',
-      "#load-sample27" : 'EGFR–PI3K_AKT-MAPK_signaling.nwt'
+      "#load-sample27" : 'EGFR–PI3K_AKT-MAPK_signaling.nwt',
+      "#load-sample28" : 'insulin_receptor_signaling.nwt'
     };
 
     for ( var selector in selectorToSampleFileName ) {
