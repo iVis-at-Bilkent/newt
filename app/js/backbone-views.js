@@ -8312,6 +8312,28 @@ var PromptInvalidEdgeWarning = Backbone.View.extend({
   },
 });
 
+var PromptReversedEdgeWarning = Backbone.View.extend({
+  initialize: function () {
+    var self = this;
+    self.template = _.template($("#prompt-reversedEdge-template").html());
+  },
+  render: function () {
+    var self = this;
+    self.template = _.template($("#prompt-reversedEdge-template").html());
+
+    $(self.el).html(self.template);
+    $(self.el).modal("show");
+
+    $(document)
+      .off("click", "#prompt-reversedEdge-confirm")
+      .on("click", "#prompt-reversedEdge-confirm", function (evt) {
+        $(self.el).modal("toggle");
+      });
+
+    return this;
+  },
+});
+
 var ReactionTemplateView = Backbone.View.extend({
   updatePreview: function () {
     let self = this;
@@ -10745,6 +10767,7 @@ module.exports = {
   PromptInvalidURLWarning: PromptInvalidURLWarning,
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
+  PromptReversedEdgeWarning: PromptReversedEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
   sbmlKineticLawView: sbmlKineticLawView,
   SimulationPropertiesView: SimulationPropertiesView,

@@ -251,6 +251,7 @@ module.exports = function() {
   promptInvalidURLWarning = appUtilities.promptInvalidURLWarning = new BackboneViews.PromptInvalidURLWarning({el: '#prompt-invalidURL-table'});
   promptInvalidImageWarning = appUtilities.promptInvalidImageWarning = new BackboneViews.PromptInvalidImageWarning({el: '#prompt-invalidImage-table'});
   promptInvalidEdgeWarning = appUtilities.promptInvalidEdgeWarning = new BackboneViews.PromptInvalidEdgeWarning({el: '#prompt-invalidEdge-table'});
+  promptReversedEdgeWarning = appUtilities.promptReversedEdgeWarning = new BackboneViews.PromptReversedEdgeWarning({el: '#prompt-reversedEdge-table'});
   exportErrorView = appUtilities.ExportErrorView = new BackboneViews.ExportErrorView({el: "#exportError-table",});
   sbmlKineticLawView = appUtilities.sbmlKineticLawView = new BackboneViews.sbmlKineticLawView({el: "#sbml-kineticLaw-table"});
   toolbarButtonsAndMenu();

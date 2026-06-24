@@ -742,6 +742,9 @@ module.exports = function (chiseInstance) {
           var promptInvalidEdge = function(){
             appUtilities.promptInvalidEdgeWarning.render();
           }
+          var promptReversedEdge = function(){
+            appUtilities.promptReversedEdgeWarning.render();
+          }
 
           var isMapTypeValid = false;
           var currentMapType = chiseInstance.getMapType();
@@ -775,7 +778,7 @@ module.exports = function (chiseInstance) {
             appUtilities.promptSIFTopologyGroupingWarning.render();
           }
           else{
-              chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
+              chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge, undefined, undefined, promptReversedEdge);
               var addedEdge = cy.elements()[cy.elements().length - 1];
               var currentArrowScale = Number($('#arrow-scale').val());
               addedEdge.style('arrow-scale', currentArrowScale);
