@@ -15,7 +15,7 @@ H. Balci, M.C. Siper, N. Saleh, I. Safarli, L. Roy, M. Kilicarslan, R. Ozaydin, 
 **A deployment of this sample application along with detailed documentation on its usage** can be found [here](http://newteditor.org/). ChiSE and Newt work on every platform that have JavaScript support including mobile devices.
 
 #### Running a Local Instance
-In order to deploy and run a local instance of the tool, please follow the steps below (we recommend the use of version 14.19.3 of node.js):
+In order to deploy and run a local instance of the tool, please follow the steps below. Newt supports up to Node.js v22.22.3 (npm 10.8.2).
 
 - Local Neo4j Database
 If you want to use the local instance of Newt with a local Neo4j database, then follow these additional steps **before** running `npm install`:
@@ -30,14 +30,10 @@ Replace the `NEO4J_PLUGIN_PATH` value with the absolute path of your neo4j datab
 ```
 git clone https://github.com/iVis-at-Bilkent/newt.git
 cd newt
-npm install 
+npm install --legacy-peer-deps
 ```
 
 > [!WARNING]
-> If you are using a newer environment, Newt is compatible with up to **Node.js v22.22.3** and **npm 10.8.2**. Dependencies on these versions can be installed using:
-> ```
-> npm install --legacy-peer-deps
-> ```
 > If installation fails due to old lockfile metadata or dependency resolution issues, try removing `package-lock.json`, `node_modules` and clearing the npm cache before reinstalling.
 
 - Running the tool (Windows)
