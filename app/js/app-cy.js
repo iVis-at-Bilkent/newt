@@ -17,6 +17,29 @@ module.exports = function (chiseInstance) {
   var cy = chiseInstance.getCy();
   //("here");
   window.cy = cy;
+
+  function logEdgeSnapshot(label, edge) {
+    if (!edge || !edge.length) {
+      console.log(label, null);
+      return;
+    }
+
+    var source = edge.data("source");
+    var target = edge.data("target");
+    console.log(label, {
+      id: edge.data("id"),
+      source: source,
+      target: target,
+      class: edge.data("class"),
+      language: edge.data("language"),
+      width: edge.data("width"),
+      cardinality: edge.data("cardinality"),
+      lineColor: edge.data("line-color"),
+      portsource: edge.data("portsource"),
+      porttarget: edge.data("porttarget")
+    });
+  }
+
   // register extensions and bind events when cy is ready
   cy.ready(function () {
     cytoscapeExtensionsAndContextMenu();
@@ -320,19 +343,34 @@ module.exports = function (chiseInstance) {
 
               var source = cyTarget.data("source");
               var target = cyTarget.data("target");
+              var edgeData = {
+                source: source,
+                target: target,
+                language: cyTarget.data("language"),
+                width: cyTarget.data("width"),
+                cardinality: cyTarget.data("cardinality"),
+                lineColor: cyTarget.data("line-color")
+              };
+              var edgeParams = {
+                class: "production",
+                language: edgeData.language,
+                width: edgeData.width,
+                cardinality: edgeData.cardinality,
+                lineColor: edgeData.lineColor
+              };
 
               if (!source || !target) return;
+              chiseInstance.deleteElesSimple(cyTarget);
 
-              var newEdge = chiseInstance.addEdge(source, target, "production");
+              var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
 
               if (newEdge && !newEdge.empty()) {
-                ["width", "language", "line-color", "cardinality"].forEach(function (name) {
-                  var value = cyTarget.data(name);
-                  chiseInstance.changeData(newEdge, name, value);
-                });
+                newEdge.data("width", edgeData.width);
+                newEdge.data("language", edgeData.language);
+                newEdge.data("line-color", edgeData.lineColor);
+                newEdge.data("cardinality", edgeData.cardinality);
               }
 
-              chiseInstance.deleteElesSimple(cyTarget);
             }
           }
         ]
@@ -355,19 +393,35 @@ module.exports = function (chiseInstance) {
 
               var source = cyTarget.data("source");
               var target = cyTarget.data("target");
+              var edgeData = {
+                source: source,
+                target: target,
+                language: cyTarget.data("language"),
+                width: cyTarget.data("width"),
+                cardinality: cyTarget.data("cardinality"),
+                lineColor: cyTarget.data("line-color")
+              };
+              var edgeParams = {
+                class: "consumption",
+                language: edgeData.language,
+                width: edgeData.width,
+                cardinality: edgeData.cardinality,
+                lineColor: edgeData.lineColor
+              };
 
               if (!source || !target) return;
 
-              var newEdge = chiseInstance.addEdge(source, target, "consumption");
+              chiseInstance.deleteElesSimple(cyTarget);
+
+              var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
 
               if (newEdge && !newEdge.empty()) {
-                ["width", "language", "line-color", "cardinality"].forEach(function (name) {
-                  var value = cyTarget.data(name);
-                  chiseInstance.changeData(newEdge, name, value);
-                });
+                newEdge.data("width", edgeData.width);
+                newEdge.data("language", edgeData.language);
+                newEdge.data("line-color", edgeData.lineColor);
+                newEdge.data("cardinality", edgeData.cardinality);
               }
 
-              chiseInstance.deleteElesSimple(cyTarget);
             }
           }
         ]
