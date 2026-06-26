@@ -315,7 +315,24 @@ module.exports = function (chiseInstance) {
             onClickFunction: function (event) {
               var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
               var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Production Edge");
+
+              if (!cyTarget) return;
+
+              var source = cyTarget.data("source");
+              var target = cyTarget.data("target");
+
+              if (!source || !target) return;
+
+              var newEdge = chiseInstance.addEdge(source, target, "production");
+
+              if (newEdge && !newEdge.empty()) {
+                ["width", "language", "line-color", "cardinality"].forEach(function (name) {
+                  var value = cyTarget.data(name);
+                  chiseInstance.changeData(newEdge, name, value);
+                });
+              }
+
+              chiseInstance.deleteElesSimple(cyTarget);
             }
           }
         ]
@@ -333,7 +350,24 @@ module.exports = function (chiseInstance) {
             onClickFunction: function (event) {
               var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
               var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Consumption Edge");
+
+              if (!cyTarget) return;
+
+              var source = cyTarget.data("source");
+              var target = cyTarget.data("target");
+
+              if (!source || !target) return;
+
+              var newEdge = chiseInstance.addEdge(source, target, "consumption");
+
+              if (newEdge && !newEdge.empty()) {
+                ["width", "language", "line-color", "cardinality"].forEach(function (name) {
+                  var value = cyTarget.data(name);
+                  chiseInstance.changeData(newEdge, name, value);
+                });
+              }
+
+              chiseInstance.deleteElesSimple(cyTarget);
             }
           }
         ]
