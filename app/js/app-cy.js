@@ -40,6 +40,140 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function convertPdEdgeType(event, toClass, mode) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+
+    if (!cyTarget) return;
+
+    var source = cyTarget.data("source");
+    var target = cyTarget.data("target");
+    var edgeData = {
+      source: source,
+      target: target,
+      language: cyTarget.data("language"),
+      width: cyTarget.data("width"),
+      lineColor: cyTarget.data("line-color")
+    };
+    if (mode === "IO") {
+      edgeData.cardinality = cyTarget.data("cardinality");
+    }
+    var edgeParams = {
+      class: toClass,
+      language: edgeData.language,
+      width: edgeData.width,
+      lineColor: edgeData.lineColor
+    };
+    if (mode === "IO") {
+      edgeParams.cardinality = edgeData.cardinality;
+    }
+
+    if (!source || !target) return;
+
+    logEdgeSnapshot("Old edge before conversion:", cyTarget);
+    chiseInstance.deleteElesSimple(cyTarget);
+
+    var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
+    logEdgeSnapshot("New edge after creation:", newEdge);
+
+    if (newEdge && !newEdge.empty()) {
+      newEdge.data("width", edgeData.width);
+      newEdge.data("language", edgeData.language);
+      newEdge.data("line-color", edgeData.lineColor);
+      if (mode === "IO") {
+        newEdge.data("cardinality", edgeData.cardinality);
+      }
+    }
+  }
+
+  function createPdEdgeTypeIOMenu(fromClass, toClass) {
+    return {
+      id: 'ctx-menu-change-edge-type-pd-' + fromClass,
+      content: 'Change Edge Type',
+      selector: 'edge[language="PD"][class="' + fromClass + '"]',
+      submenu: [
+        {
+          id: 'ctx-submenu-change-edge-type-pd-' + fromClass + '-' + toClass,
+          content: 'Change to ' + toClass.charAt(0).toUpperCase() + toClass.slice(1) + ' Edge',
+          onClickFunction: function (event) {
+            convertPdEdgeType(event, toClass, "IO");
+          }
+        }
+      ]
+    };
+  }
+
+  function createPdEdgeTypeModulatorsMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-pd-' + edgeClass,
+      content: 'Change Edge Type',
+      selector: 'edge[language="PD"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-pd-' + edgeClass + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            convertPdEdgeType(event, item.toClass, "Modulators");
+          }
+        };
+      })
+    };
+  }
+
+  function createPdEdgeTypeModulatorsMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'modulation',
+        submenuItems: [
+          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'stimulation',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'catalysis',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'inhibition',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'necessary stimulation',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createPdEdgeTypeModulatorsMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
   // register extensions and bind events when cy is ready
   cy.ready(function () {
     cytoscapeExtensionsAndContextMenu();
@@ -115,6 +249,7 @@ module.exports = function (chiseInstance) {
       zIndex: 999,
       enableMultipleAnchorRemovalOption: true,
     });
+    var pdEdgeTypeModulatorsMenuItems = createPdEdgeTypeModulatorsMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -326,331 +461,13 @@ module.exports = function (chiseInstance) {
 
       // Change Edge Type Starts
       //// PD
-      ///// PD-Consumption
-      {
-        id: 'ctx-menu-change-edge-type-pd-consumption',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="consumption"]',       
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-consumption-production',
-            content: 'Change to Production Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-
-              if (!cyTarget) return;
-
-              var source = cyTarget.data("source");
-              var target = cyTarget.data("target");
-              var edgeData = {
-                source: source,
-                target: target,
-                language: cyTarget.data("language"),
-                width: cyTarget.data("width"),
-                cardinality: cyTarget.data("cardinality"),
-                lineColor: cyTarget.data("line-color")
-              };
-              var edgeParams = {
-                class: "production",
-                language: edgeData.language,
-                width: edgeData.width,
-                cardinality: edgeData.cardinality,
-                lineColor: edgeData.lineColor
-              };
-
-              if (!source || !target) return;
-              chiseInstance.deleteElesSimple(cyTarget);
-
-              var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
-
-              if (newEdge && !newEdge.empty()) {
-                newEdge.data("width", edgeData.width);
-                newEdge.data("language", edgeData.language);
-                newEdge.data("line-color", edgeData.lineColor);
-                newEdge.data("cardinality", edgeData.cardinality);
-              }
-
-            }
-          }
-        ]
-      },
-
-      ///// PD-Production
-      {
-        id: 'ctx-menu-change-edge-type-pd-production',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="production"]',       
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-production-consumption',
-            content: 'Change to Consumption Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-
-              if (!cyTarget) return;
-
-              var source = cyTarget.data("source");
-              var target = cyTarget.data("target");
-              var edgeData = {
-                source: source,
-                target: target,
-                language: cyTarget.data("language"),
-                width: cyTarget.data("width"),
-                cardinality: cyTarget.data("cardinality"),
-                lineColor: cyTarget.data("line-color")
-              };
-              var edgeParams = {
-                class: "consumption",
-                language: edgeData.language,
-                width: edgeData.width,
-                cardinality: edgeData.cardinality,
-                lineColor: edgeData.lineColor
-              };
-
-              if (!source || !target) return;
-
-              chiseInstance.deleteElesSimple(cyTarget);
-
-              var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
-
-              if (newEdge && !newEdge.empty()) {
-                newEdge.data("width", edgeData.width);
-                newEdge.data("language", edgeData.language);
-                newEdge.data("line-color", edgeData.lineColor);
-                newEdge.data("cardinality", edgeData.cardinality);
-              }
-
-            }
-          }
-        ]
-      },
-
-      ///// PD-Modulation
-      {
-        id: 'ctx-menu-change-edge-type-pd-modulation',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="modulation"]',       
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-modulation-stimulation',
-            content: 'Change to Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Stimulation Edge");
-            }
-          }, 
-          {
-            id: 'ctx-submenu-change-edge-type-pd-modulation-catalysis',
-            content: 'Change to Catalysis Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Catalysis Edge");
-            }
-          }, 
-          {
-            id: 'ctx-submenu-change-edge-type-pd-modulation-inhibition',
-            content: 'Change to Inhibition Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Inhibition Edge");
-            }
-          }, 
-          {
-            id: 'ctx-submenu-change-edge-type-pd-modulation-necessary-stimulation',
-            content: 'Change to Necessary Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Necessary Stimulation Edge");
-            }
-          }
-        ]
-      },
-
-      ///// PD-Stimulation
-      {
-        id: 'ctx-menu-change-edge-type-pd-stimulation',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="stimulation"]',
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-stimulation-modulation',
-            content: 'Change to Modulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Modulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-stimulation-catalysis',
-            content: 'Change to Catalysis Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Catalysis Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-stimulation-inhibition',
-            content: 'Change to Inhibition Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Inhibition Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-stimulation-necessary-stimulation',
-            content: 'Change to Necessary Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Necessary Stimulation Edge");
-            }
-          }
-        ]
-      },
-
-      ///// PD-Catalysis
-      {
-        id: 'ctx-menu-change-edge-type-pd-catalysis',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="catalysis"]',
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-catalysis-modulation',
-            content: 'Change to Modulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Modulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-catalysis-stimulation',
-            content: 'Change to Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Stimulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-catalysis-inhibition',
-            content: 'Change to Inhibition Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Inhibition Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-catalysis-necessary-stimulation',
-            content: 'Change to Necessary Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Necessary Stimulation Edge");
-            }
-          }
-        ]
-      },
-
-      ///// PD-Inhibition
-      {
-        id: 'ctx-menu-change-edge-type-pd-inhibition',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="inhibition"]',
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-inhibition-modulation',
-            content: 'Change to Modulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Modulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-inhibition-stimulation',
-            content: 'Change to Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Stimulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-inhibition-catalysis',
-            content: 'Change to Catalysis Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Catalysis Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-inhibition-necessary-stimulation',
-            content: 'Change to Necessary Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Necessary Stimulation Edge");
-            }
-          }
-        ]
-      },
-
-      ///// PD-NecessaryStimulation
-      {
-        id: 'ctx-menu-change-edge-type-pd-necessary-stimulation',
-        content: 'Change Edge Type',
-        selector: 'edge[language="PD"][class="necessary stimulation"]',
-        submenu: [
-          {
-            id: 'ctx-submenu-change-edge-type-pd-necessary-stimulation-modulation',
-            content: 'Change to Modulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Modulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-necessary-stimulation-stimulation',
-            content: 'Change to Stimulation Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Stimulation Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-necessary-stimulation-catalysis',
-            content: 'Change to Catalysis Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Catalysis Edge");
-            }
-          },
-          {
-            id: 'ctx-submenu-change-edge-type-pd-necessary-stimulation-inhibition',
-            content: 'Change to Inhibition Edge',
-            onClickFunction: function (event) {
-              var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-              var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-              console.log("Changed to Inhibition Edge");
-            }
-          }
-        ]
-      },
+      createPdEdgeTypeIOMenu("consumption", "production"),
+      createPdEdgeTypeIOMenu("production", "consumption"),
+      pdEdgeTypeModulatorsMenuItems[0],
+      pdEdgeTypeModulatorsMenuItems[1],
+      pdEdgeTypeModulatorsMenuItems[2],
+      pdEdgeTypeModulatorsMenuItems[3],
+      pdEdgeTypeModulatorsMenuItems[4],
 
       // Change Edge Type Ends
 
@@ -2160,3 +1977,5 @@ module.exports = function (chiseInstance) {
     }
   }
 };
+
+
