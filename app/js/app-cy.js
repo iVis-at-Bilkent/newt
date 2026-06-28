@@ -40,6 +40,55 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function logNodeSnapshot(label, node) {
+    if (!node || !node.length) {
+      console.log(label, null);
+      return;
+    }
+
+    var data = node.data();
+    var bbox = data.bbox || {};
+    var style = node.style ? node.style() : {};
+    var statesAndInfos = data.statesandinfos || [];
+    var auxUnitLayouts = data.auxunitlayouts || {};
+
+    console.log(label + " id:", data.id);
+    console.log(label + " class:", data.class);
+    console.log(label + " language:", data.language);
+    console.log(label + " label:", data.label);
+    console.log(label + " parent:", data.parent);
+    console.log(label + " multimer:", data.multimer);
+    console.log(label + " clonemarker:", data.clonemarker);
+    console.log(label + " bbox:", {
+      x: bbox.x,
+      y: bbox.y,
+      w: bbox.w,
+      h: bbox.h
+    });
+    console.log(label + " position:", node.position());
+    console.log(label + " renderedPosition:", node.renderedPosition());
+    console.log(label + " size:", {
+      width: node.width(),
+      height: node.height()
+    });
+    console.log(label + " style:", {
+      backgroundColor: style["background-color"],
+      backgroundOpacity: style["background-opacity"],
+      borderColor: style["border-color"],
+      borderWidth: style["border-width"],
+      color: style["color"],
+      fontFamily: style["font-family"],
+      fontSize: style["font-size"],
+      fontStyle: style["font-style"],
+      fontWeight: style["font-weight"],
+      shape: style["shape"]
+    });
+    console.log(label + " statesandinfos count:", statesAndInfos.length);
+    console.log(label + " statesandinfos:", statesAndInfos);
+    console.log(label + " auxunitlayouts keys:", Object.keys(auxUnitLayouts));
+    console.log(label + " raw data:", data);
+  }
+
   function convertPdEdgeType(event, toClass, mode) {
     var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
     var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
@@ -223,6 +272,55 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function convertPdNodeType(event, toClass) {
+    var cyTarget = event.target || event.cyTarget;
+    if (!cyTarget) {
+      return;
+    }
+
+    console.log("Changed node type from", cyTarget.data("class"), "to", toClass);
+    logNodeSnapshot("Selected node snapshot:", cyTarget);
+  }
+
+  function createPdNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-pd-' + nodeClass,
+      content: 'Change Node Type',
+      selector: 'node[class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-pd-' + nodeClass + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            convertPdNodeType(event, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createPdNodeTypeMenuItems() {
+    var nodeTypes = [
+      'macromolecule',
+      'simple chemical',
+      'unspecified entity',
+      'nucleic acid feature',
+      'perturbing agent'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createPdNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: 'Change to ' + candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Node',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
   function createAfEdgeTypeMenu(edgeClass, submenuItems) {
     return {
       id: 'ctx-menu-change-edge-type-af-' + edgeClass,
@@ -358,6 +456,7 @@ module.exports = function (chiseInstance) {
     });
     var pdEdgeTypeModulatorsMenuItems = createPdEdgeTypeModulatorsMenuItems();
     var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
+    var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -545,18 +644,6 @@ module.exports = function (chiseInstance) {
 
       // This needs to be removed later one, this is only for the reference
       {
-        id: 'ctx-menu-change-node-type',
-        content: 'Change Node Type',
-        selector: 'node',
-        onClickFunction: function (event) {
-          var cyTarget = event.target || event.cyTarget;
-          // appUtilities.selectAllElementsOfSameType(cyTarget);
-          console.log("Change node type for selected objects of this type:", cyTarget.data('class'));
-        } 
-      },
-
-      // This needs to be removed later one, this is only for the reference
-      {
         id: 'ctx-menu-change-edge-type',
         content: 'Change Edge Type',
         selector: 'edge',
@@ -582,6 +669,13 @@ module.exports = function (chiseInstance) {
       afEdgeTypeMenuItems[1],
       afEdgeTypeMenuItems[2],
       afEdgeTypeMenuItems[3],
+
+      //// PD Nodes
+      pdNodeTypeMenuItems[0],
+      pdNodeTypeMenuItems[1],
+      pdNodeTypeMenuItems[2],
+      pdNodeTypeMenuItems[3],
+      pdNodeTypeMenuItems[4],
 
       // Change Edge Type Ends
 
