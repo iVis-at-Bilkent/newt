@@ -86,6 +86,55 @@ module.exports = function (chiseInstance) {
     }
   }
 
+  function convertAfEdgeType(event, toClass) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+
+    if (!cyTarget) {
+      return;
+    }
+
+    var source = cyTarget.data("source");
+    var target = cyTarget.data("target");
+    var edgeData = {
+      source: source,
+      target: target,
+      language: cyTarget.data("language"),
+      width: cyTarget.data("width"),
+      lineColor: cyTarget.data("line-color"),
+      portsource: cyTarget.data("portsource"),
+      porttarget: cyTarget.data("porttarget")
+    };
+    var edgeParams = {
+      class: toClass,
+      language: edgeData.language,
+      width: edgeData.width,
+      lineColor: edgeData.lineColor
+    };
+
+    if (!source || !target) {
+      return;
+    }
+
+    logEdgeSnapshot("Old AF edge before conversion:", cyTarget);
+    chiseInstance.deleteElesSimple(cyTarget);
+
+    var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
+    logEdgeSnapshot("New AF edge after creation:", newEdge);
+
+    if (newEdge && !newEdge.empty()) {
+      newEdge.data("width", edgeData.width);
+      newEdge.data("language", edgeData.language);
+      newEdge.data("line-color", edgeData.lineColor);
+      if (edgeData.portsource !== undefined) {
+        newEdge.data("portsource", edgeData.portsource);
+      }
+      if (edgeData.porttarget !== undefined) {
+        newEdge.data("porttarget", edgeData.porttarget);
+      }
+    }
+  }
+
   function createPdEdgeTypeIOMenu(fromClass, toClass) {
     return {
       id: 'ctx-menu-change-edge-type-pd-' + fromClass,
@@ -174,6 +223,64 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function createAfEdgeTypeMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-af-' + edgeClass,
+      content: 'Change Edge Type',
+      selector: 'edge[language="AF"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-af-' + edgeClass + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            convertAfEdgeType(event, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createAfEdgeTypeMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'necessary stimulation',
+        submenuItems: [
+          { idSuffix: 'unknown-influence', content: 'Change to Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Change to Negative Influence Edge', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Change to Positive Influence Edge', toClass: 'positive influence' }
+        ]
+      },
+      {
+        edgeClass: 'unknown influence',
+        submenuItems: [
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'negative-influence', content: 'Change to Negative Influence Edge', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Change to Positive Influence Edge', toClass: 'positive influence' }
+        ]
+      },
+      {
+        edgeClass: 'negative influence',
+        submenuItems: [
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Change to Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'positive-influence', content: 'Change to Positive Influence Edge', toClass: 'positive influence' }
+        ]
+      },
+      {
+        edgeClass: 'positive influence',
+        submenuItems: [
+          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Change to Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Change to Negative Influence Edge', toClass: 'negative influence' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createAfEdgeTypeMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
   // register extensions and bind events when cy is ready
   cy.ready(function () {
     cytoscapeExtensionsAndContextMenu();
@@ -250,6 +357,7 @@ module.exports = function (chiseInstance) {
       enableMultipleAnchorRemovalOption: true,
     });
     var pdEdgeTypeModulatorsMenuItems = createPdEdgeTypeModulatorsMenuItems();
+    var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -468,6 +576,12 @@ module.exports = function (chiseInstance) {
       pdEdgeTypeModulatorsMenuItems[2],
       pdEdgeTypeModulatorsMenuItems[3],
       pdEdgeTypeModulatorsMenuItems[4],
+
+      //// AF
+      afEdgeTypeMenuItems[0],
+      afEdgeTypeMenuItems[1],
+      afEdgeTypeMenuItems[2],
+      afEdgeTypeMenuItems[3],
 
       // Change Edge Type Ends
 
