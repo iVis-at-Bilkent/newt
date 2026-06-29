@@ -1749,6 +1749,12 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.rearrangeOnComplexityManagement",
     };
 
+    self.params.keepBendPointPositionsFixed = {
+      id: "keep-bend-point-positions-fixed",
+      type: "checkbox",
+      property: "currentGeneralProperties.keepBendPointPositionsFixed",
+    };
+
     self.params.animateOnDrawingChanges = {
       id: "animate-on-drawing-changes",
       type: "checkbox",
@@ -1793,6 +1799,25 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       }
     );
 
+    $(document).on(
+      "change",
+      "#keep-bend-point-positions-fixed",
+      function (evt) {
+        // use active cy instance
+        var cy = appUtilities.getActiveCy();
+
+        self.params.keepBendPointPositionsFixed.value = $(
+          "#keep-bend-point-positions-fixed"
+        ).prop("checked");
+        appUtilities.setUserProfileProperty("generalProperties", "keepBendPointPositionsFixed", self.params.keepBendPointPositionsFixed.value);
+        cy.undoRedo().do(
+          "changeMenu",
+          self.params.keepBendPointPositionsFixed
+        );
+        $("#keep-bend-point-positions-fixed").blur();
+      }
+    );
+
     $(document).on("change", "#animate-on-drawing-changes", function (evt) {
       // use active cy instance
       var cy = appUtilities.getActiveCy();
@@ -1818,12 +1843,15 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
           appUtilities.defaultGeneralProperties.recalculateLayoutOnComplexityManagement;
         self.params.rearrangeOnComplexityManagement.value =
           appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
+        self.params.keepBendPointPositionsFixed.value =
+          appUtilities.defaultGeneralProperties.keepBendPointPositionsFixed;
         self.params.animateOnDrawingChanges.value =
           appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
         
         if (appUtilities.hasUserProfile()) {
           appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);
           appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("generalProperties", "keepBendPointPositionsFixed", self.params.keepBendPointPositionsFixed.value);
           appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);
         }
 
@@ -1834,6 +1862,10 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         actions.push({
           name: "changeMenu",
           param: self.params.rearrangeOnComplexityManagement,
+        });
+        actions.push({
+          name: "changeMenu",
+          param: self.params.keepBendPointPositionsFixed,
         });
         actions.push({
           name: "changeMenu",

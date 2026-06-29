@@ -73,10 +73,23 @@ module.exports = function (chiseInstance) {
       bendPositionsFunction: function (ele) {
         return ele.data('bendPointPositions');
       },
+      snapAnchorPositionFunction: function (position, edge, type, index, phase) {
+        if (type !== 'bend') {
+          return position;
+        }
+
+        var gridGuide = cy.gridGuide('get');
+        return gridGuide ? gridGuide.snapPosition(position, phase) : position;
+      },
       // whether the bend editing operations are undoable (requires cytoscape-undo-redo.js)
       undoable: appUtilities.undoable,
       // whether to initilize bend points on creation of this extension automatically
       initAnchorsAutomatically: false,
+      // keep bend point positions fixed while connected nodes are dragged
+      keepBendPointsFixedOnNodeDrag: function () {
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        return currentGeneralProperties && currentGeneralProperties.keepBendPointPositionsFixed;
+      },
       // function to validate edge source and target on reconnection
       validateEdge: function (edge, newSource, newTarget) {
         return chiseInstance.elementUtilities.validateArrowEnds(edge, newSource, newTarget, true);
