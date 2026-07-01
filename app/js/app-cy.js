@@ -194,7 +194,43 @@ module.exports = function (chiseInstance) {
           id: 'ctx-submenu-change-edge-type-pd-' + fromClass + '-' + toClass,
           content: 'Change to ' + toClass.charAt(0).toUpperCase() + toClass.slice(1) + ' Edge',
           onClickFunction: function (event) {
-            convertPdEdgeType(event, toClass, "IO");
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logEdgeSnapshot("Change edge type", cyTarget);
+            var source = cyTarget.data("source");
+            var target = cyTarget.data("target");
+            var ur = cy.undoRedo();
+            var newEdgeExtraData = {
+              width: cyTarget.data("width"),
+              language: cyTarget.data("language"),
+              lineColor: cyTarget.data("line-color")
+            };
+
+            if (fromClass === "consumption" && toClass === "production") {
+              newEdgeExtraData.portsource = target + ".2";
+              newEdgeExtraData.porttarget = source;
+            }
+            else if (fromClass === "production" && toClass === "consumption") {
+              newEdgeExtraData.portsource = target;
+              newEdgeExtraData.porttarget = source + ".1";
+            }
+
+            ur.do("convertEdgeType", {
+              currentEdgeId: cyTarget.id(),
+              newEdgeSource: target,
+              newEdgeTarget: source,
+              newEdgeParams: {
+                class: toClass,
+                language: cyTarget.data("language"),
+                width: cyTarget.data("width"),
+                lineColor: cyTarget.data("line-color")
+              },
+              newEdgeExtraData: newEdgeExtraData
+            });
           }
         }
       ]
@@ -419,6 +455,7 @@ module.exports = function (chiseInstance) {
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
     ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
     ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
+    ur.action("convertEdgeType", appUndoActions.convertEdgeType, appUndoActions.convertEdgeType);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -650,7 +687,44 @@ module.exports = function (chiseInstance) {
         onClickFunction: function (event) {
           var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
           var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-          console.log("Change edge type for selected objects of this type:", cyTarget && cyTarget.data('class'), " map type: ", cyTarget && cyTarget.data('language'));
+          if (!cyTarget) {
+            return;
+          }
+
+          logEdgeSnapshot("Change edge type", cyTarget);
+          var source = cyTarget.data("source");
+          var target = cyTarget.data("target");
+
+          chiseInstance.changeData(cyTarget, "class", 'production');
+          cyTarget = cyTarget.move({
+              source: target,
+              target: source
+          });
+
+          cyTarget.data("portsource", target + ".2");
+          cyTarget.data("porttarget", source);
+
+          logEdgeSnapshot("Change edge type after", cyTarget);
+
+          // var ur = cy.undoRedo();
+
+          // ur.do("convertEdgeType", {
+          //   currentEdgeId: cyTarget.id(),
+          //   newEdgeSource: target,
+          //   newEdgeTarget: source,
+          //   newEdgeParams: {
+          //     class: 'production',
+          //     language: cyTarget.data("language"),
+          //     width: cyTarget.data("width"),
+          //     lineColor: cyTarget.data("line-color")
+          //   },
+          //   newEdgeExtraData: {
+          //     width: cyTarget.data("width"),
+          //     language: cyTarget.data("language"),
+          //     lineColor: cyTarget.data("line-color"),
+          //     cardinality: cyTarget.data("cardinality")
+          //   }
+          // });
         }
       },
 

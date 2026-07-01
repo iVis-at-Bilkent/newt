@@ -481,5 +481,54 @@ module.exports = function (cy) {
     return annotationLayers.undoSetLayer(param);
   };
 
+  appUndoActions.convertEdgeType = function (param) {
+    var currentEdge = cy.getElementById(param.currentEdgeId);
+
+    if (!currentEdge || currentEdge.empty()) {
+      return param;
+    }
+
+    var currentEdgeData = currentEdge.data();
+
+    currentEdge = currentEdge.move({
+      source: param.newEdgeSource,
+      target: param.newEdgeTarget
+    });
+
+    currentEdge.data("class", param.newEdgeParams.class);
+    currentEdge.data("language", param.newEdgeParams.language);
+    currentEdge.data("width", param.newEdgeParams.width);
+    currentEdge.data("line-color", param.newEdgeParams.lineColor);
+
+    if (param.newEdgeExtraData) {
+      if (param.newEdgeExtraData.portsource !== undefined) {
+        currentEdge.data("portsource", param.newEdgeExtraData.portsource);
+      }
+      if (param.newEdgeExtraData.porttarget !== undefined) {
+        currentEdge.data("porttarget", param.newEdgeExtraData.porttarget);
+      }
+      if (param.newEdgeExtraData.cardinality !== undefined) {
+        currentEdge.data("cardinality", param.newEdgeExtraData.cardinality);
+      }
+    }
+
+    return {
+      currentEdgeId: currentEdgeData.id,
+      newEdgeSource: currentEdgeData.source,
+      newEdgeTarget: currentEdgeData.target,
+      newEdgeParams: {
+        class: currentEdgeData.class,
+        language: currentEdgeData.language,
+        width: currentEdgeData.width,
+        lineColor: currentEdgeData["line-color"]
+      },
+      newEdgeExtraData: {
+        portsource: currentEdgeData.portsource,
+        porttarget: currentEdgeData.porttarget,
+        cardinality: currentEdgeData.cardinality
+      }
+    };
+  };
+
   return appUndoActions;
 };
