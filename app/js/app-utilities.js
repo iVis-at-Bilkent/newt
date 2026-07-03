@@ -2922,6 +2922,69 @@ for (var scheme in mapColorSchemes) {
   ] = mapColorSchemes[scheme]["values"]["complex sbml"];
 }
 
+appUtilities.getCompartmentBorderColorForScheme = function (schemeId) {
+  schemeId = Array.isArray(schemeId) ? schemeId[0] : schemeId;
+
+  var defaultBorderColor = "#555555";
+  var cellDesignerBorderColor = "#cccc00";
+
+  if (schemeId === "cell_designer") {
+    return cellDesignerBorderColor;
+  }
+
+  if (
+    schemeId === "black_white" ||
+    schemeId === "greyscale" ||
+    schemeId === "inverse_greyscale"
+  ) {
+    return defaultBorderColor;
+  }
+
+  var scheme = mapColorSchemes[schemeId];
+  if (!scheme || !scheme.preview || scheme.preview.length === 0) {
+    return defaultBorderColor;
+  }
+
+  var compartmentColor =
+    scheme.values && scheme.values.compartment
+      ? scheme.values.compartment
+      : "#ffffff";
+  var candidateColors = scheme.preview.slice();
+
+  if (scheme.values) {
+    for (var nodeClass in scheme.values) {
+      candidateColors.push(scheme.values[nodeClass]);
+    }
+  }
+
+  candidateColors = candidateColors.filter(function(color, index) {
+    return color && candidateColors.indexOf(color) === index;
+  });
+
+  var compartmentRgb = chroma(compartmentColor).rgb();
+  var accentColor = candidateColors[0];
+  var accentDistance = 0;
+
+  for (var i = 0; i < candidateColors.length; i++) {
+    var candidateRgb = chroma(candidateColors[i]).rgb();
+    var distance =
+      Math.pow(candidateRgb[0] - compartmentRgb[0], 2) +
+      Math.pow(candidateRgb[1] - compartmentRgb[1], 2) +
+      Math.pow(candidateRgb[2] - compartmentRgb[2], 2);
+
+    if (distance > accentDistance) {
+      accentDistance = distance;
+      accentColor = candidateColors[i];
+    }
+  }
+
+  if (accentDistance === 0) {
+    return defaultBorderColor;
+  }
+
+  return chroma.mix(compartmentColor, accentColor, 0.45).hex();
+};
+
 // go through eles, mapping the id of these elements to values that were mapped to their data().class
 // classMap is of the form: {ele.data().class: value}
 // return object of the form: {ele.id: value}
@@ -3086,35 +3149,22 @@ appUtilities.getActionsToApplyMapColorScheme = function (
       param: { eles: eles, name: "background-color", valueMap: idMap },
     });
 
-    // Render correct border colors of compartment nodes when switching to/from CD colors
-    if (newColorScheme === "cell_designer") {
-      var compartmentEles = eles.filter(function(ele) {
-        return ele.data && ele.data("class") === "compartment";
+    // Render scheme-compatible border colors for compartment nodes.
+    var compartmentEles = eles.filter(function(ele) {
+      return ele.data && ele.data("class") === "compartment";
+    });
+    if (compartmentEles.length > 0) {
+      actions.push({
+        name: "changeData",
+        param: {
+          eles: compartmentEles,
+          name: "border-color",
+          valueMap: mapIdToValue(
+            compartmentEles,
+            appUtilities.getCompartmentBorderColorForScheme(newColorScheme)
+          ),
+        },
       });
-      if (compartmentEles.length > 0) {
-        var borderColorMap = {};
-        compartmentEles.forEach(function(ele) {
-          borderColorMap[ele.id()] = "#CCCC00";
-        });
-        actions.push({
-          name: "changeData",
-          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
-        });
-      }
-    } else {
-      var compartmentEles = eles.filter(function(ele) {
-        return ele.data && ele.data("class") === "compartment";
-      });
-      if (compartmentEles.length > 0) {
-        var borderColorMap = {};
-        compartmentEles.forEach(function(ele) {
-          borderColorMap[ele.id()] = "#555555";
-        });
-        actions.push({
-          name: "changeData",
-          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
-        });
-      }
     }
 
     // collapsed nodes' style should also be changed, special edge case
@@ -3214,19 +3264,15 @@ appUtilities.getActionsToApplyMapColorScheme = function (
           },
         });
 
-        // since we change border color of compartments in CD color scheme, 
-        // we need this to fallback to default color for other color schemes
         if (nodeClass === "compartment") {
-          let borderColor = "#555555";
-          if (newColorScheme === "cell_designer") {
-            borderColor = "#cccc00";
-          }
           actions.push({
             name: "setDefaultProperty",
             param: {
               class: nodeClass,
               name: "border-color",
-              value: borderColor,
+              value: appUtilities.getCompartmentBorderColorForScheme(
+                newColorScheme
+              ),
             },
           });
         }
@@ -3376,35 +3422,22 @@ appUtilities.getActionsToApplyMapColorScheme = function (
       },
     });
 
-    // Render correct border colors of compartment nodes when switching to/from CD colors for gradient and 3D schemes
-    if (newColorScheme === "cell_designer") {
-      var compartmentEles = eles.filter(function(ele) {
-        return ele.data && ele.data("class") === "compartment";
+    // Render scheme-compatible border colors for compartment nodes.
+    var compartmentEles = eles.filter(function(ele) {
+      return ele.data && ele.data("class") === "compartment";
+    });
+    if (compartmentEles.length > 0) {
+      actions.push({
+        name: "changeData",
+        param: {
+          eles: compartmentEles,
+          name: "border-color",
+          valueMap: mapIdToValue(
+            compartmentEles,
+            appUtilities.getCompartmentBorderColorForScheme(newColorScheme)
+          ),
+        },
       });
-      if (compartmentEles.length > 0) {
-        var borderColorMap = {};
-        compartmentEles.forEach(function(ele) {
-          borderColorMap[ele.id()] = "#CCCC00";
-        });
-        actions.push({
-          name: "changeData",
-          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
-        });
-      }
-    } else {
-      var compartmentEles = eles.filter(function(ele) {
-        return ele.data && ele.data("class") === "compartment";
-      });
-      if (compartmentEles.length > 0) {
-        var borderColorMap = {};
-        compartmentEles.forEach(function(ele) {
-          borderColorMap[ele.id()] = "#555555";
-        });
-        actions.push({
-          name: "changeData",
-          param: { eles: compartmentEles, name: "border-color", valueMap: borderColorMap },
-        });
-      }
     }
 
     // collapsed nodes' style should also be changed, special edge case
@@ -3558,19 +3591,15 @@ appUtilities.getActionsToApplyMapColorScheme = function (
           },
         });
 
-        // since we change border color of compartments in CD color scheme, 
-        // we need this to fallback to default color for other color schemes in gradient and 3D modes too
         if (nodeClass === "compartment") {
-          let borderColor = "#555555";
-          if (newColorScheme === "cell_designer") {
-            borderColor = "#cccc00";
-          }
           actions.push({
             name: "setDefaultProperty",
             param: {
               class: nodeClass,
               name: "border-color",
-              value: borderColor,
+              value: appUtilities.getCompartmentBorderColorForScheme(
+                newColorScheme
+              ),
             },
           });
         }

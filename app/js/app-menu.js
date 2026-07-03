@@ -1075,6 +1075,31 @@ module.exports = function() {
 
       if (mapPropertiesExist) {
 
+        var compartmentBorderColor =
+          appUtilities.getCompartmentBorderColorForScheme(
+            currentGeneralProperties.mapColorScheme
+          );
+        var legacyCompartmentBorderColors = {
+          "#555555": true,
+          "#bfbfbf": true
+        };
+
+        cy.nodes().filter(function(ele) {
+          return ele.data && ele.data("class") === "compartment";
+        }).forEach(function(ele) {
+          var borderColor = ele.data("border-color");
+          var normalizedBorderColor =
+            typeof borderColor === "string"
+              ? borderColor.toLowerCase().substring(0, 7)
+              : borderColor;
+          if (
+            !borderColor ||
+            legacyCompartmentBorderColors[normalizedBorderColor]
+          ) {
+            ele.data("border-color", compartmentBorderColor);
+          }
+        });
+
         // set default colors(or background images) according to the specified color scheme style
         if(currentGeneralProperties.mapColorSchemeStyle == 'solid'){
           for(var nodeClass in appUtilities.mapColorSchemes[currentGeneralProperties.mapColorScheme]['values']){
@@ -1086,6 +1111,9 @@ module.exports = function() {
             if(nodeClass in chiseInstance.elementUtilities.getDefaultProperties()){
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: ''});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-color', value: classBgColor});
+              if(nodeClass === "compartment"){
+                chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'border-color', value: compartmentBorderColor});
+              }
             }
           }
         }
@@ -1106,6 +1134,9 @@ module.exports = function() {
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-image', value: classBgImg});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-width', value: '100%'});
               chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'background-height', value: '100%'});
+              if(nodeClass === "compartment"){
+                chiseInstance.undoRedoActionFunctions.setDefaultProperty({class: nodeClass, name: 'border-color', value: compartmentBorderColor});
+              }
             }
           }
         }
