@@ -506,6 +506,136 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function createSbmlEdgeTypeModulatorsMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-'),
+      content: 'Change Edge Type To',
+      selector: 'edge[language="SBML"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            var actionPayload = {
+              removeEdgeJson: cyTarget.json(),
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                cyTarget.data("source"),
+                cyTarget.data("target"),
+                {
+                  class: item.toClass,
+                  language: cyTarget.data("language"),
+                  width: cyTarget.data("width"),
+                  lineColor: cyTarget.data("line-color")
+                },
+                {
+                  portsource: cyTarget.data("portsource"),
+                  porttarget: cyTarget.data("porttarget")
+                }
+              )
+            };
+
+            logUndoRedoPayload("SBML modulator swap payload", actionPayload);
+            cy.undoRedo().do("swapEdgeWithRecreate", actionPayload);
+            logEdgeSnapshot("SBML modulator after recreate swap", cy.getElementById(cyTarget.id()));
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlEdgeTypeModulatorsMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'catalysis',
+        submenuItems: [
+          { idSuffix: 'unknown-catalysis', content: 'Unknown Catalysis Edge', toClass: 'unknown catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'unknown-inhibition', content: 'Unknown Inhibition Edge', toClass: 'unknown inhibition' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'trigger', content: 'Trigger Edge', toClass: 'trigger' }
+        ]
+      },
+      {
+        edgeClass: 'unknown catalysis',
+        submenuItems: [
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'unknown-inhibition', content: 'Unknown Inhibition Edge', toClass: 'unknown inhibition' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'trigger', content: 'Trigger Edge', toClass: 'trigger' }
+        ]
+      },
+      {
+        edgeClass: 'inhibition',
+        submenuItems: [
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'unknown-catalysis', content: 'Unknown Catalysis Edge', toClass: 'unknown catalysis' },
+          { idSuffix: 'unknown-inhibition', content: 'Unknown Inhibition Edge', toClass: 'unknown inhibition' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'trigger', content: 'Trigger Edge', toClass: 'trigger' }
+        ]
+      },
+      {
+        edgeClass: 'unknown inhibition',
+        submenuItems: [
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'unknown-catalysis', content: 'Unknown Catalysis Edge', toClass: 'unknown catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'trigger', content: 'Trigger Edge', toClass: 'trigger' }
+        ]
+      },
+      {
+        edgeClass: 'stimulation',
+        submenuItems: [
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'unknown-catalysis', content: 'Unknown Catalysis Edge', toClass: 'unknown catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'unknown-inhibition', content: 'Unknown Inhibition Edge', toClass: 'unknown inhibition' },
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'trigger', content: 'Trigger Edge', toClass: 'trigger' }
+        ]
+      },
+      {
+        edgeClass: 'modulation',
+        submenuItems: [
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'unknown-catalysis', content: 'Unknown Catalysis Edge', toClass: 'unknown catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'unknown-inhibition', content: 'Unknown Inhibition Edge', toClass: 'unknown inhibition' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'trigger', content: 'Trigger Edge', toClass: 'trigger' }
+        ]
+      },
+      {
+        edgeClass: 'trigger',
+        submenuItems: [
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'unknown-catalysis', content: 'Unknown Catalysis Edge', toClass: 'unknown catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'unknown-inhibition', content: 'Unknown Inhibition Edge', toClass: 'unknown inhibition' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createSbmlEdgeTypeModulatorsMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
   function convertPdNodeType(event, toClass) {
     var cyTarget = event.target || event.cyTarget;
     if (!cyTarget) {
@@ -695,6 +825,7 @@ module.exports = function (chiseInstance) {
     var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
     var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
     var sbmlEdgeTypeIOMenuItems = createSbmlEdgeTypeIOMenuItems();
+    var sbmlEdgeTypeModulatorsMenuItems = createSbmlEdgeTypeModulatorsMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -920,6 +1051,13 @@ module.exports = function (chiseInstance) {
       sbmlEdgeTypeIOMenuItems[4],
       sbmlEdgeTypeIOMenuItems[5],
       sbmlEdgeTypeIOMenuItems[6],
+      sbmlEdgeTypeModulatorsMenuItems[0],
+      sbmlEdgeTypeModulatorsMenuItems[1],
+      sbmlEdgeTypeModulatorsMenuItems[2],
+      sbmlEdgeTypeModulatorsMenuItems[3],
+      sbmlEdgeTypeModulatorsMenuItems[4],
+      sbmlEdgeTypeModulatorsMenuItems[5],
+      sbmlEdgeTypeModulatorsMenuItems[6],
 
       //// PD Nodes
       pdNodeTypeMenuItems[0],
