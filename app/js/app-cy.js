@@ -398,6 +398,53 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function createSbmlEdgeTypeIOMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-'),
+      content: 'Change Edge Type To',
+      selector: 'edge[language="SBML"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logEdgeSnapshot("Change edge type", cyTarget);
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlEdgeTypeIOMenuItems() {
+    var edgeTypes = [
+      'consumption',
+      'production',
+      'transcription consumption',
+      'transcription production',
+      'translation consumption',
+      'translation production',
+      'transport'
+    ];
+
+    return edgeTypes.map(function (edgeType) {
+      return createSbmlEdgeTypeIOMenu(edgeType, edgeTypes.filter(function (candidate) {
+        return candidate !== edgeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Edge',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
   function convertPdNodeType(event, toClass) {
     var cyTarget = event.target || event.cyTarget;
     if (!cyTarget) {
@@ -586,6 +633,7 @@ module.exports = function (chiseInstance) {
     var pdEdgeTypeModulatorsMenuItems = createPdEdgeTypeModulatorsMenuItems();
     var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
     var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
+    var sbmlEdgeTypeIOMenuItems = createSbmlEdgeTypeIOMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -802,6 +850,15 @@ module.exports = function (chiseInstance) {
       afEdgeTypeMenuItems[1],
       afEdgeTypeMenuItems[2],
       afEdgeTypeMenuItems[3],
+
+      //// SBML
+      sbmlEdgeTypeIOMenuItems[0],
+      sbmlEdgeTypeIOMenuItems[1],
+      sbmlEdgeTypeIOMenuItems[2],
+      sbmlEdgeTypeIOMenuItems[3],
+      sbmlEdgeTypeIOMenuItems[4],
+      sbmlEdgeTypeIOMenuItems[5],
+      sbmlEdgeTypeIOMenuItems[6],
 
       //// PD Nodes
       pdNodeTypeMenuItems[0],
