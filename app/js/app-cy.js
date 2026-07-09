@@ -64,6 +64,9 @@ module.exports = function (chiseInstance) {
       if (edgeExtraData.cardinality !== undefined) {
         edgeJson.data.cardinality = edgeExtraData.cardinality;
       }
+      if (edgeExtraData.simulation !== undefined) {
+        edgeJson.data.simulation = edgeExtraData.simulation;
+      }
     }
 
     return edgeJson;
@@ -414,11 +417,69 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logEdgeSnapshot("Change edge type", cyTarget);
+            var source = cyTarget.data("source");
+            var target = cyTarget.data("target");
+            var currentClass = cyTarget.data("class");
+            var nextClass = item.toClass;
+            var shouldReverse = isSbmlConsumptionLikeEdge(currentClass) !== isSbmlConsumptionLikeEdge(nextClass);
+            var newEdgeSource = shouldReverse ? target : source;
+            var newEdgeTarget = shouldReverse ? source : target;
+            var newEdgeExtraData = {
+              width: cyTarget.data("width"),
+              language: cyTarget.data("language"),
+              lineColor: cyTarget.data("line-color"),
+              simulation: cyTarget.data("simulation")
+            };
+
+            if (isSbmlConsumptionLikeEdge(nextClass)) {
+              newEdgeExtraData.portsource = newEdgeSource;
+              newEdgeExtraData.porttarget = newEdgeTarget + ".1";
+            }
+            else if (isSbmlProductionLikeEdge(nextClass)) {
+              newEdgeExtraData.portsource = newEdgeSource + ".2";
+              newEdgeExtraData.porttarget = newEdgeTarget;
+            }
+
+            if (nextClass === "production" || nextClass === "consumption") {
+              newEdgeExtraData.cardinality = cyTarget.data("cardinality");
+            }
+
+            var actionPayload = {
+              removeEdgeJson: cyTarget.json(),
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                newEdgeSource,
+                newEdgeTarget,
+                {
+                  class: nextClass,
+                  language: cyTarget.data("language"),
+                  width: cyTarget.data("width"),
+                  lineColor: cyTarget.data("line-color")
+                },
+                newEdgeExtraData
+              )
+            };
+
+            logUndoRedoPayload("SBML IO swap payload", actionPayload);
+            cy.undoRedo().do("swapEdgeWithRecreate", actionPayload);
+            logEdgeSnapshot("SBML IO after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
       })
     };
+  }
+
+  function isSbmlConsumptionLikeEdge(edgeClass) {
+    return edgeClass === "consumption" ||
+      edgeClass === "translation consumption" ||
+      edgeClass === "transcription consumption";
+  }
+
+  function isSbmlProductionLikeEdge(edgeClass) {
+    return edgeClass === "production" ||
+      edgeClass === "transport" ||
+      edgeClass === "translation production" ||
+      edgeClass === "transcription production";
   }
 
   function createSbmlEdgeTypeIOMenuItems() {
