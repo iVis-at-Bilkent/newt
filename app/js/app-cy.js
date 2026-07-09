@@ -237,12 +237,12 @@ module.exports = function (chiseInstance) {
   function createPdEdgeTypeIOMenu(fromClass, toClass) {
     return {
       id: 'ctx-menu-change-edge-type-pd-' + fromClass,
-      content: 'Change Edge Type',
+      content: 'Change Edge Type To',
       selector: 'edge[language="PD"][class="' + fromClass + '"]',
       submenu: [
         {
           id: 'ctx-submenu-change-edge-type-pd-' + fromClass + '-' + toClass,
-          content: 'Change to ' + toClass.charAt(0).toUpperCase() + toClass.slice(1) + ' Edge',
+          content: toClass.charAt(0).toUpperCase() + toClass.slice(1) + ' Edge',
           onClickFunction: function (event) {
             var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
             var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
@@ -257,7 +257,8 @@ module.exports = function (chiseInstance) {
             var newEdgeExtraData = {
               width: cyTarget.data("width"),
               language: cyTarget.data("language"),
-              lineColor: cyTarget.data("line-color")
+              lineColor: cyTarget.data("line-color"),
+              cardinality: cyTarget.data("cardinality")
             };
 
             if (fromClass === "consumption" && toClass === "production") {
@@ -297,7 +298,7 @@ module.exports = function (chiseInstance) {
   function createPdEdgeTypeModulatorsMenu(edgeClass, submenuItems) {
     return {
       id: 'ctx-menu-change-edge-type-pd-' + edgeClass,
-      content: 'Change Edge Type',
+      content: 'Change Edge Type To',
       selector: 'edge[language="PD"][class="' + edgeClass + '"]',
       submenu: submenuItems.map(function (item) {
         return {
@@ -348,46 +349,46 @@ module.exports = function (chiseInstance) {
       {
         edgeClass: 'modulation',
         submenuItems: [
-          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' },
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'stimulation',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' },
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'catalysis',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' },
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'inhibition',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'necessary stimulation',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Change to Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'stimulation', content: 'Change to Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'catalysis', content: 'Change to Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'inhibition', content: 'Change to Inhibition Edge', toClass: 'inhibition' }
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' }
         ]
       }
     ];
@@ -449,7 +450,7 @@ module.exports = function (chiseInstance) {
   function createAfEdgeTypeMenu(edgeClass, submenuItems) {
     return {
       id: 'ctx-menu-change-edge-type-af-' + edgeClass,
-      content: 'Change Edge Type',
+      content: 'Change Edge Type To',
       selector: 'edge[language="AF"][class="' + edgeClass + '"]',
       submenu: submenuItems.map(function (item) {
         return {
@@ -468,33 +469,33 @@ module.exports = function (chiseInstance) {
       {
         edgeClass: 'necessary stimulation',
         submenuItems: [
-          { idSuffix: 'unknown-influence', content: 'Change to Unknown Influence Edge', toClass: 'unknown influence' },
-          { idSuffix: 'negative-influence', content: 'Change to Negative Influence Edge', toClass: 'negative influence' },
-          { idSuffix: 'positive-influence', content: 'Change to Positive Influence Edge', toClass: 'positive influence' }
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
         ]
       },
       {
         edgeClass: 'unknown influence',
         submenuItems: [
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' },
-          { idSuffix: 'negative-influence', content: 'Change to Negative Influence Edge', toClass: 'negative influence' },
-          { idSuffix: 'positive-influence', content: 'Change to Positive Influence Edge', toClass: 'positive influence' }
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
         ]
       },
       {
         edgeClass: 'negative influence',
         submenuItems: [
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' },
-          { idSuffix: 'unknown-influence', content: 'Change to Unknown Influence Edge', toClass: 'unknown influence' },
-          { idSuffix: 'positive-influence', content: 'Change to Positive Influence Edge', toClass: 'positive influence' }
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
         ]
       },
       {
         edgeClass: 'positive influence',
         submenuItems: [
-          { idSuffix: 'necessary-stimulation', content: 'Change to Necessary Stimulation Edge', toClass: 'necessary stimulation' },
-          { idSuffix: 'unknown-influence', content: 'Change to Unknown Influence Edge', toClass: 'unknown influence' },
-          { idSuffix: 'negative-influence', content: 'Change to Negative Influence Edge', toClass: 'negative influence' }
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' }
         ]
       }
     ];
@@ -773,7 +774,7 @@ module.exports = function (chiseInstance) {
       // This needs to be removed later one, this is only for the reference
       {
         id: 'ctx-menu-change-edge-type',
-        content: 'Change Edge Type',
+        content: 'Change Edge Type To',
         selector: 'edge',
         onClickFunction: function (event) {
           var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
