@@ -40,6 +40,51 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function buildEdgeJson(edgeId, source, target, edgeParams, edgeExtraData) {
+    var edgeJson = {
+      group: "edges",
+      data: {
+        id: edgeId,
+        source: source,
+        target: target,
+        class: edgeParams.class,
+        language: edgeParams.language,
+        width: edgeParams.width,
+        "line-color": edgeParams.lineColor
+      }
+    };
+
+    if (edgeExtraData) {
+      if (edgeExtraData.portsource !== undefined) {
+        edgeJson.data.portsource = edgeExtraData.portsource;
+      }
+      if (edgeExtraData.porttarget !== undefined) {
+        edgeJson.data.porttarget = edgeExtraData.porttarget;
+      }
+      if (edgeExtraData.cardinality !== undefined) {
+        edgeJson.data.cardinality = edgeExtraData.cardinality;
+      }
+    }
+
+    return edgeJson;
+  }
+
+  function logUndoRedoPayload(label, payload) {
+    if (!payload) {
+      console.log(label, payload);
+      return;
+    }
+
+    console.log(label, {
+      removeEdgeId: payload.removeEdge && payload.removeEdge.length ? payload.removeEdge.id() : null,
+      addEdgeId: payload.addEdge && payload.addEdge.length ? payload.addEdge.id() : null,
+      removeEdgeJsonId: payload.removeEdgeJson && payload.removeEdgeJson.data ? payload.removeEdgeJson.data.id : null,
+      addEdgeJsonId: payload.addEdgeJson && payload.addEdgeJson.data ? payload.addEdgeJson.data.id : null,
+      removeEdgeRemoved: payload.removeEdge && payload.removeEdge.length ? payload.removeEdge.removed() : null,
+      addEdgeRemoved: payload.addEdge && payload.addEdge.length ? payload.addEdge.removed() : null
+    });
+  }
+
   function logNodeSnapshot(label, node) {
     if (!node || !node.length) {
       console.log(label, null);
@@ -247,7 +292,39 @@ module.exports = function (chiseInstance) {
           id: 'ctx-submenu-change-edge-type-pd-' + edgeClass + '-' + item.idSuffix,
           content: item.content,
           onClickFunction: function (event) {
-            convertPdEdgeType(event, item.toClass, "Modulators");
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) return;
+
+            var ur = cy.undoRedo();
+            var currentEdgeJson = cyTarget.json();
+            var actionPayload = {
+              removeEdgeJson: currentEdgeJson,
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                cyTarget.data("source"),
+                cyTarget.data("target"),
+                {
+                  class: item.toClass,
+                  language: cyTarget.data("language"),
+                  width: cyTarget.data("width"),
+                  lineColor: cyTarget.data("line-color")
+                },
+                {
+                  portsource: cyTarget.data("portsource"),
+                  porttarget: cyTarget.data("porttarget"),
+                  cardinality: cyTarget.data("cardinality")
+                }
+              )
+            };
+
+            logEdgeSnapshot("PD modulator before recreate swap", cyTarget);
+            logUndoRedoPayload("PD modulator swap payload", actionPayload);
+
+            var result = ur.do("swapEdgeWithRecreate", actionPayload);
+
+            logUndoRedoPayload("PD modulator swap inverse payload", result);
+            logEdgeSnapshot("PD modulator after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -456,6 +533,8 @@ module.exports = function (chiseInstance) {
     ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
     ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
     ur.action("convertEdgeType", appUndoActions.convertEdgeType, appUndoActions.convertEdgeType);
+    ur.action("convertEdgeTypeByRecreate", appUndoActions.convertEdgeTypeByRecreate, appUndoActions.convertEdgeTypeByRecreate);
+    ur.action("swapEdgeWithRecreate", appUndoActions.swapEdgeWithRecreate, appUndoActions.swapEdgeWithRecreate);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -692,39 +771,6 @@ module.exports = function (chiseInstance) {
           }
 
           logEdgeSnapshot("Change edge type", cyTarget);
-          var source = cyTarget.data("source");
-          var target = cyTarget.data("target");
-
-          chiseInstance.changeData(cyTarget, "class", 'production');
-          cyTarget = cyTarget.move({
-              source: target,
-              target: source
-          });
-
-          cyTarget.data("portsource", target + ".2");
-          cyTarget.data("porttarget", source);
-
-          logEdgeSnapshot("Change edge type after", cyTarget);
-
-          // var ur = cy.undoRedo();
-
-          // ur.do("convertEdgeType", {
-          //   currentEdgeId: cyTarget.id(),
-          //   newEdgeSource: target,
-          //   newEdgeTarget: source,
-          //   newEdgeParams: {
-          //     class: 'production',
-          //     language: cyTarget.data("language"),
-          //     width: cyTarget.data("width"),
-          //     lineColor: cyTarget.data("line-color")
-          //   },
-          //   newEdgeExtraData: {
-          //     width: cyTarget.data("width"),
-          //     language: cyTarget.data("language"),
-          //     lineColor: cyTarget.data("line-color"),
-          //     cardinality: cyTarget.data("cardinality")
-          //   }
-          // });
         }
       },
 

@@ -7,6 +7,21 @@ var annotationLayers = require('./annotation-layers');
 module.exports = function (cy) {
   var appUndoActions = {};
 
+  function describeEdgeRef(edge) {
+    if (!edge || !edge.length) {
+      return null;
+    }
+
+    return {
+      id: edge.id(),
+      removed: edge.removed(),
+      inside: edge.inside(),
+      class: edge.data("class"),
+      source: edge.data("source"),
+      target: edge.data("target")
+    };
+  }
+
   appUndoActions.changeDataDirty = function (param) {
     var result = {};
     var eles = param.eles; // a pure array of nodes, not a cy collection
@@ -490,10 +505,12 @@ module.exports = function (cy) {
 
     var currentEdgeData = currentEdge.data();
 
+    console.log('before move, edge obj:', currentEdge, currentEdge.id());
     currentEdge = currentEdge.move({
       source: param.newEdgeSource,
       target: param.newEdgeTarget
     });
+    console.log('after move, edge obj:', currentEdge, currentEdge.id());
 
     currentEdge.data("class", param.newEdgeParams.class);
     currentEdge.data("language", param.newEdgeParams.language);
@@ -528,6 +545,174 @@ module.exports = function (cy) {
         cardinality: currentEdgeData.cardinality
       }
     };
+  };
+
+  // appUndoActions.convertEdgeTypeByRecreate = function (param) {
+  //   var currentEdge = cy.getElementById(param.currentEdgeId);
+
+  //   if (!currentEdge || currentEdge.empty()) {
+  //     return param;
+  //   }
+
+  //   var currentEdgeData = currentEdge.data();
+
+  //   var oldState = {
+  //     currentEdgeId: currentEdgeData.id,
+  //     source: currentEdgeData.source,
+  //     target: currentEdgeData.target,
+  //     edgeParams: {
+  //       class: currentEdgeData.class,
+  //       language: currentEdgeData.language,
+  //       width: currentEdgeData.width,
+  //       lineColor: currentEdgeData["line-color"]
+  //     },
+  //     extraData: {
+  //       portsource: currentEdgeData.portsource,
+  //       porttarget: currentEdgeData.porttarget,
+  //       cardinality: currentEdgeData.cardinality
+  //     }
+  //   };
+
+  //   var chiseInstance = appUtilities.getActiveChiseInstance();
+  //   chiseInstance.deleteElesSimple(currentEdge);
+
+  //   // recreate with new source/target and new class/params
+  //   var newEdge = chiseInstance.addEdge(
+  //     param.newEdgeSource,
+  //     param.newEdgeTarget,
+  //     param.newEdgeParams
+  //   );
+
+  //   if (newEdge && !newEdge.empty()) {
+  //     if (param.newEdgeExtraData) {
+  //       if (param.newEdgeExtraData.portsource !== undefined) {
+  //         newEdge.data("portsource", param.newEdgeExtraData.portsource);
+  //       }
+  //       if (param.newEdgeExtraData.porttarget !== undefined) {
+  //         newEdge.data("porttarget", param.newEdgeExtraData.porttarget);
+  //       }
+  //       if (param.newEdgeExtraData.cardinality !== undefined) {
+  //         newEdge.data("cardinality", param.newEdgeExtraData.cardinality);
+  //       }
+  //     }
+  //   }
+
+  //   return {
+  //     currentEdgeId: oldState.currentEdgeId,
+  //     newEdgeSource: oldState.source,
+  //     newEdgeTarget: oldState.target,
+  //     newEdgeParams: oldState.edgeParams,
+  //     newEdgeExtraData: oldState.extraData
+  //   };
+  // };
+
+  appUndoActions.convertEdgeTypeByRecreate = function (param) {
+    var currentEdge = cy.getElementById(param.currentEdgeId);
+    if (!currentEdge || currentEdge.empty()) return param;
+
+    var currentEdgeData = currentEdge.data();
+    var oldState = {
+      currentEdgeId: currentEdgeData.id,
+      source: currentEdgeData.source,
+      target: currentEdgeData.target,
+      edgeParams: {
+        class: currentEdgeData.class,
+        language: currentEdgeData.language,
+        width: currentEdgeData.width,
+        lineColor: currentEdgeData["line-color"]   
+      },
+      extraData: {
+        portsource: currentEdgeData.portsource,
+        porttarget: currentEdgeData.porttarget,
+        cardinality: currentEdgeData.cardinality
+      }
+    };
+
+    cy.remove(currentEdge);
+
+    var newEdge = cy.add({
+      group: "edges",
+      data: {
+        id: param.currentEdgeId,
+        source: param.newEdgeSource,
+        target: param.newEdgeTarget,
+        class: param.newEdgeParams.class,
+        language: param.newEdgeParams.language,
+        width: param.newEdgeParams.width,
+        "line-color": param.newEdgeParams.lineColor   
+      }
+    });
+
+    if (param.newEdgeExtraData) {
+      if (param.newEdgeExtraData.portsource !== undefined) newEdge.data("portsource", param.newEdgeExtraData.portsource);
+      if (param.newEdgeExtraData.porttarget !== undefined) newEdge.data("porttarget", param.newEdgeExtraData.porttarget);
+      if (param.newEdgeExtraData.cardinality !== undefined) newEdge.data("cardinality", param.newEdgeExtraData.cardinality);
+    }
+
+    return {
+      currentEdgeId: oldState.currentEdgeId,
+      newEdgeSource: oldState.source,
+      newEdgeTarget: oldState.target,
+      newEdgeParams: oldState.edgeParams,
+      newEdgeExtraData: oldState.extraData
+    };
+  };
+
+  appUndoActions.swapEdgeWithRecreate = function (param) {
+    if (!param) {
+      return param;
+    }
+
+    console.log("[swapEdgeWithRecreate] start", {
+      param: {
+        removeEdge: describeEdgeRef(param.removeEdge),
+        addEdge: describeEdgeRef(param.addEdge),
+        removeEdgeJsonId: lo_get(param, "removeEdgeJson.data.id"),
+        addEdgeJsonId: lo_get(param, "addEdgeJson.data.id")
+      }
+    });
+
+    var edgeToRemove = null;
+    if (param.removeEdge && param.removeEdge.length) {
+      edgeToRemove = param.removeEdge;
+    }
+    else {
+      var edgeIdToRemove = lo_get(param, "removeEdgeJson.data.id");
+      if (edgeIdToRemove) {
+        edgeToRemove = cy.getElementById(edgeIdToRemove);
+      }
+    }
+
+    console.log("[swapEdgeWithRecreate] edgeToRemove resolved", describeEdgeRef(edgeToRemove));
+    var removedEdge = edgeToRemove && !edgeToRemove.empty() ? cy.remove(edgeToRemove) : edgeToRemove;
+    console.log("[swapEdgeWithRecreate] removedEdge result", describeEdgeRef(removedEdge));
+
+    var addedEdge = null;
+    if (param.addEdge && param.addEdge.length) {
+      addedEdge = param.addEdge.removed() ? param.addEdge.restore() : param.addEdge;
+      console.log("[swapEdgeWithRecreate] restored existing addEdge", describeEdgeRef(addedEdge));
+    }
+    else if (param.addEdgeJson) {
+      var edgeIdToAdd = lo_get(param, "addEdgeJson.data.id");
+      if (edgeIdToAdd && cy.getElementById(edgeIdToAdd).empty()) {
+        addedEdge = cy.add(param.addEdgeJson);
+        console.log("[swapEdgeWithRecreate] added edge from json", describeEdgeRef(addedEdge));
+      }
+    }
+
+    console.log("[swapEdgeWithRecreate] live edge after add/remove", describeEdgeRef(cy.getElementById(lo_get(param, "addEdgeJson.data.id") || lo_get(param, "removeEdgeJson.data.id"))));
+
+    var inverse = {
+      removeEdge: addedEdge,
+      addEdge: removedEdge
+    };
+
+    console.log("[swapEdgeWithRecreate] inverse", {
+      removeEdge: describeEdgeRef(inverse.removeEdge),
+      addEdge: describeEdgeRef(inverse.addEdge)
+    });
+
+    return inverse;
   };
 
   return appUndoActions;
