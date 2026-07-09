@@ -210,23 +210,28 @@ module.exports = function (chiseInstance) {
       return;
     }
 
-    logEdgeSnapshot("Old AF edge before conversion:", cyTarget);
-    chiseInstance.deleteElesSimple(cyTarget);
+    var ur = cy.undoRedo();
+    var actionPayload = {
+      removeEdgeJson: cyTarget.json(),
+      addEdgeJson: buildEdgeJson(
+        cyTarget.id(),
+        edgeData.source,
+        edgeData.target,
+        edgeParams,
+        {
+          portsource: edgeData.portsource,
+          porttarget: edgeData.porttarget
+        }
+      )
+    };
 
-    var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
-    logEdgeSnapshot("New AF edge after creation:", newEdge);
+    logEdgeSnapshot("Old AF edge before recreate swap:", cyTarget);
+    logUndoRedoPayload("AF swap payload", actionPayload);
 
-    if (newEdge && !newEdge.empty()) {
-      newEdge.data("width", edgeData.width);
-      newEdge.data("language", edgeData.language);
-      newEdge.data("line-color", edgeData.lineColor);
-      if (edgeData.portsource !== undefined) {
-        newEdge.data("portsource", edgeData.portsource);
-      }
-      if (edgeData.porttarget !== undefined) {
-        newEdge.data("porttarget", edgeData.porttarget);
-      }
-    }
+    var result = ur.do("swapEdgeWithRecreate", actionPayload);
+
+    logUndoRedoPayload("AF swap inverse payload", result);
+    logEdgeSnapshot("New AF edge after recreate swap:", cy.getElementById(cyTarget.id()));
   }
 
   function createPdEdgeTypeIOMenu(fromClass, toClass) {
@@ -264,18 +269,25 @@ module.exports = function (chiseInstance) {
               newEdgeExtraData.porttarget = source + ".1";
             }
 
-            ur.do("convertEdgeType", {
-              currentEdgeId: cyTarget.id(),
-              newEdgeSource: target,
-              newEdgeTarget: source,
-              newEdgeParams: {
+            var actionPayload = {
+              removeEdgeJson: cyTarget.json(),
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                target,
+                source,
+                {
                 class: toClass,
                 language: cyTarget.data("language"),
                 width: cyTarget.data("width"),
                 lineColor: cyTarget.data("line-color")
-              },
-              newEdgeExtraData: newEdgeExtraData
-            });
+                },
+                newEdgeExtraData
+              )
+            };
+
+            logUndoRedoPayload("PD IO swap payload", actionPayload);
+            ur.do("swapEdgeWithRecreate", actionPayload);
+            logEdgeSnapshot("PD IO after recreate swap", cy.getElementById(cyTarget.id()));
           }
         }
       ]
