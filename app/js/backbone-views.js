@@ -280,6 +280,24 @@ var LayoutPropertiesView = Backbone.View.extend({
 
     return options;
   },
+  updateLayoutStyleInputs: function () {
+    var selectedStyle = $(this.el).find("input[name='layout-style']:checked").val();
+    var isOrthogonal = selectedStyle === "orthogonal";
+
+    // force-directed layout parameters
+    $(this.el)
+    .find(".force-directed-layout-setting")
+    .toggle(!isOrthogonal)
+    .find("input, select, textarea")
+    .prop("disabled", isOrthogonal);
+
+    // orthogonal layout parameters
+    $(this.el)
+      .find(".orthogonal-layout-setting")
+      .toggle(isOrthogonal)
+      .find("input, select, textarea")
+      .prop("disabled", !isOrthogonal);
+  },
   applyLayout: function (preferences, notUndoable, _chiseInstance) {
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
@@ -302,6 +320,14 @@ var LayoutPropertiesView = Backbone.View.extend({
     self.template = self.template(currentLayoutProperties);
     $(self.el).html(self.template);
 
+    self.updateLayoutStyleInputs();
+
+    $(document)
+      .off("change", "input[name='layout-style']")
+      .on("change", "input[name='layout-style']", function () {
+        self.updateLayoutStyleInputs();
+      });
+
     $(self.el).modal("show");
 
     $(document)
@@ -315,6 +341,9 @@ var LayoutPropertiesView = Backbone.View.extend({
           cy,
           "currentLayoutProperties"
         );
+
+        currentLayoutProperties.layoutStyle =
+          $(self.el).find("input[name='layout-style']:checked").val();
 
         currentLayoutProperties.nodeRepulsion = Number(
           document.getElementById("node-repulsion").value
@@ -382,6 +411,8 @@ var LayoutPropertiesView = Backbone.View.extend({
         self.template = _.template($("#layout-settings-template").html());
         self.template = self.template(currentLayoutProperties);
         $(self.el).html(self.template);
+
+        self.updateLayoutStyleInputs();
       });
 
     return this;

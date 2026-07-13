@@ -2499,7 +2499,19 @@
       <div class="modal-body">
       <table class="table-condensed layout-table dialog-table">
       <tbody>
-      <tr>
+
+        <tr>
+          <td>
+            <input type="radio" name="layout-style" value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> checked<%}%> > Force-Directed
+          </td>
+
+          <td>
+            <input type="radio" name="layout-style" value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> checked<%}%>> Orthogonal
+          </td>
+        </tr>
+
+      <!-- Force-directed layout settings -->
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Node repulsion (non overlapping) multiplier"> Node Repulsion </span>
       </td>
@@ -2508,7 +2520,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Ideal (intra-graph) edge length"> Ideal Edge Length </span>
       </td>
@@ -2517,7 +2529,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Divisor to compute edge forces"> Edge Elasticity </span>
       </td>
@@ -2526,7 +2538,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Nesting factor (multiplier) to compute ideal edge length for inter-graph edges"> Nesting Factor </span>
       </td>
@@ -2535,7 +2547,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Gravity force (constant)"> Gravity </span>
       </td>
@@ -2544,7 +2556,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Gravity range (constant)"> Gravity Range   </span>
       </td>
@@ -2553,7 +2565,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Gravity force (constant) for compounds"> Compound Gravity  </span>
       </td>
@@ -2562,7 +2574,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Gravity range (constant) for compounds"> Compound Gravity Range </span>
       </td>
@@ -2571,7 +2583,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Maximum number of iterations to perform"> Number of Iterations </span>
       </td>
@@ -2580,7 +2592,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Amount of vertical space to put between degree zero nodes during tiling"> Tiling Vertical Padding </span>
       </td>
@@ -2589,7 +2601,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Amount of horizontal space to put between degree zero nodes during tiling"> Tiling Horizontal Padding </span>
       </td>
@@ -2598,7 +2610,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Whether to tile disconnected nodes"> Tile Disconnected </span>
       </td>
@@ -2608,7 +2620,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
         <td>
           <span class="add-on layout-text" title="Whether to pack components"> Pack Components </span>
         </td>
@@ -2618,7 +2630,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Whether to enable incremental mode"> Incremental </span>
       </td>
@@ -2628,7 +2640,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Initial cooling factor for incremental layout"> Incremental Cooling Factor </span>
       </td>
@@ -2637,7 +2649,7 @@
       </td>
       </tr>
 
-      <tr>
+      <tr class="force-directed-layout-setting">
       <td>
       <span class="add-on layout-text" title="Whether to improve flow by swapping degree one nodes"> Improve Flow </span>
       </td>
@@ -2645,6 +2657,8 @@
       <input id="improve-flow" type="checkbox" class="layout-text" <% if (improveFlow){ %> checked<%}%>>
       </td>
       </tr>
+
+      <!-- Orthogonal layout settings -->
 
       </tbody>
       </table>
