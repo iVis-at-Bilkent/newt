@@ -2499,14 +2499,20 @@
       <div class="modal-body">
       <table class="table-condensed layout-table dialog-table">
       <tbody>
-
         <tr>
           <td>
-            <input type="radio" name="layout-style" value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> checked<%}%> > Force-Directed
+            <span class="add-on layout-text">Layout Style</span>
           </td>
 
           <td>
-            <input type="radio" name="layout-style" value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> checked<%}%>> Orthogonal
+            <select id="layout-style" name="layout-style" class="layout-text">
+              <option value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> selected<%}%>>
+                Force Directed
+              </option>
+              <option value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> selected<%}%>>
+                Orthogonal
+              </option>
+            </select>
           </td>
         </tr>
 

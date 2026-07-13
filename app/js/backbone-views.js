@@ -281,7 +281,7 @@ var LayoutPropertiesView = Backbone.View.extend({
     return options;
   },
   updateLayoutStyleInputs: function () {
-    var selectedStyle = $(this.el).find("input[name='layout-style']:checked").val();
+    var selectedStyle = $(this.el).find("#layout-style").val();
     var isOrthogonal = selectedStyle === "orthogonal";
 
     // force-directed layout parameters
@@ -323,8 +323,8 @@ var LayoutPropertiesView = Backbone.View.extend({
     self.updateLayoutStyleInputs();
 
     $(document)
-      .off("change", "input[name='layout-style']")
-      .on("change", "input[name='layout-style']", function () {
+      .off("change", "#layout-style")
+      .on("change", "#layout-style", function () {
         self.updateLayoutStyleInputs();
       });
 
@@ -343,7 +343,7 @@ var LayoutPropertiesView = Backbone.View.extend({
         );
 
         currentLayoutProperties.layoutStyle =
-          $(self.el).find("input[name='layout-style']:checked").val();
+          $(self.el).find("#layout-style").val();
 
         currentLayoutProperties.nodeRepulsion = Number(
           document.getElementById("node-repulsion").value
