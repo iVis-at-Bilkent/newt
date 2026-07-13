@@ -2509,13 +2509,7 @@
               <option value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> selected<%}%>>
                 Force Directed
               </option>
-              <option value="orthogonal" disabled>
-                <!-- 
-                 Later set 
-                 <% if (layoutStyle === "orthogonal"){ %> selected<%}%>
-                 instead of
-                 disabled
-                 -->
+              <option value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> selected<%}%>>
                 Orthogonal
               </option>
             </select>
@@ -2672,7 +2666,85 @@
 
       <!-- Orthogonal layout settings -->
        <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Maximum Iterations </span>
+        </td>
+        <td>
+          <input id="max-iterations" type="number" min="1" class="sbgn-input-small layout-text" value= <%= maxIterations %> >
+        </td>
        </tr>
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Cooling Factor </span>
+        </td>
+        <td>
+          <input id="cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= coolingFactor %> >
+        </td>
+       </tr>
+
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Orthogonal Threshold </span>
+        </td>
+        <td>
+          <input id="orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orthThreshold %> >
+        </td>
+       </tr>
+
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Orthogonal Increment (deg) </span>
+        </td>
+        <td>
+          <input id="orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orthIncrement %> >
+        </td>
+       </tr>
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Orthogonal Interval (iter) </span>
+        </td>
+        <td>
+          <input id="orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orthInterval %> >
+        </td>
+       </tr>
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Ideal Edge Length </span>
+        </td>
+        <td>
+          <input id="orth-ideal-edge-length" type="number" min="10" class="sbgn-input-small layout-text" value= <%= idealEdgeLength %> >
+        </td>
+       </tr>  
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Edge Seperation </span>
+        </td>
+        <td>
+          <input id="edge-seperation" type="number" min="0" max="50" class="sbgn-input-small layout-text" value= <%= edgeSeparation %> >
+        </td>
+       </tr>         
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Quasi-Orthogonal </span>
+        </td>
+        <td>
+          <input id="quasi-orthogonal" type="checkbox" class="layout-text" <% if (quasiOrthogonal){ %> checked<%}%>>
+        </td>
+      </tr>
+
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Show Unit Polygons </span>
+        </td>
+        <td>
+          <input id="unit-polygons" type="checkbox" class="layout-text" <% if (unitPolygons){ %> checked<%}%>>
+        </td>
+      </tr>
 
       </tbody>
       </table>

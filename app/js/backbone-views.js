@@ -403,6 +403,31 @@ var LayoutPropertiesView = Backbone.View.extend({
 
         if (currentLayoutProperties.layoutStyle === "orthogonal") {
           // ortogonal layout settings
+          currentLayoutProperties.maxIterations = Number(
+            document.getElementById("max-iterations").value
+          );
+          currentLayoutProperties.coolingFactor = Number(
+            document.getElementById("cooling-factor").value
+          );
+          currentLayoutProperties.orthThreshold = Number(
+            document.getElementById("orth-threshold").value
+          );
+          currentLayoutProperties.orthIncrement = Number(
+            document.getElementById("orth-increment").value
+          );
+          currentLayoutProperties.orthInterval = Number(
+            document.getElementById("orth-interval").value
+          );
+          currentLayoutProperties.idealEdgeLength = Number(
+            document.getElementById("orth-ideal-edge-length").value
+          );
+          currentLayoutProperties.edgeSeparation = Number(
+            document.getElementById("edge-seperation").value
+          );
+          currentLayoutProperties.quasiOrthogonal =
+            document.getElementById("quasi-orthogonal").checked;
+          currentLayoutProperties.unitPolygons =
+            document.getElementById("unit-polygons").checked;
         }
 
         // reset currentLayoutProperties in scratch pad
