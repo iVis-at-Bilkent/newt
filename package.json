@@ -39,6 +39,7 @@
     "cytoscape-grid-guide": "github:iVis-at-Bilkent/cytoscape.js-grid-guide#unstable",
     "cytoscape-layout-utilities": "github:iVis-at-Bilkent/cytoscape.js-layout-utilities#unstable",
     "cytoscape-node-editing": "github:iVis-at-Bilkent/cytoscape.js-node-editing#unstable",
+    "cytoscape-orse": "github:iVis-at-Bilkent/cytoscape.js-orse#master",
     "cytoscape-panzoom": "~2.5.2",
     "cytoscape-popper": "^1.0.2",
     "cytoscape-undo-redo": "github:iVis-at-Bilkent/cytoscape.js-undo-redo#unstable",
