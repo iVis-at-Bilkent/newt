@@ -807,6 +807,7 @@ appUtilities.getActiveNetworkPanel = function () {
 appUtilities.defaultLayoutProperties = {
   layoutStyle: "force-directed",
   name: "fcose",
+  orse : {},
   quality: "default",
   samplingType: true,
   sampleSize: 25,

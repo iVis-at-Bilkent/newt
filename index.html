@@ -2509,7 +2509,13 @@
               <option value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> selected<%}%>>
                 Force Directed
               </option>
-              <option value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> selected<%}%>>
+              <option value="orthogonal" disabled>
+                <!-- 
+                 Later set 
+                 <% if (layoutStyle === "orthogonal"){ %> selected<%}%>
+                 instead of
+                 disabled
+                 -->
                 Orthogonal
               </option>
             </select>
@@ -2665,6 +2671,8 @@
       </tr>
 
       <!-- Orthogonal layout settings -->
+       <tr class="orthogonal-layout-setting">
+       </tr>
 
       </tbody>
       </table>

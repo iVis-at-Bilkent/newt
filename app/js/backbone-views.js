@@ -298,6 +298,9 @@ var LayoutPropertiesView = Backbone.View.extend({
       .find("input, select, textarea")
       .prop("disabled", !isOrthogonal);
   },
+  getLayoutNameForStyle: function (layoutStyle) {
+    return layoutStyle === "orthogonal" ? "orse" : "fcose";
+  },
   applyLayout: function (preferences, notUndoable, _chiseInstance) {
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
@@ -345,52 +348,63 @@ var LayoutPropertiesView = Backbone.View.extend({
         currentLayoutProperties.layoutStyle =
           $(self.el).find("#layout-style").val();
 
-        currentLayoutProperties.nodeRepulsion = Number(
-          document.getElementById("node-repulsion").value
-        );
-        currentLayoutProperties.idealEdgeLength = Number(
-          document.getElementById("ideal-edge-length").value
-        );
-        currentLayoutProperties.edgeElasticity = Number(
-          document.getElementById("edge-elasticity").value
-        );
-        currentLayoutProperties.nestingFactor = Number(
-          document.getElementById("nesting-factor").value
-        );
-        currentLayoutProperties.gravity = Number(
-          document.getElementById("gravity").value
-        );
-        currentLayoutProperties.numIter = Number(
-          document.getElementById("num-iter").value
-        );
-        currentLayoutProperties.tile = document.getElementById("tile").checked;
-        currentLayoutProperties.packComponents = document.getElementById(
-          "pack-components"
-        ).checked
-          ? true
-          : false;
-        currentLayoutProperties.randomize =
-          !document.getElementById("incremental").checked;
-        currentLayoutProperties.gravityRangeCompound = Number(
-          document.getElementById("gravity-range-compound").value
-        );
-        currentLayoutProperties.gravityCompound = Number(
-          document.getElementById("gravity-compound").value
-        );
-        currentLayoutProperties.gravityRange = Number(
-          document.getElementById("gravity-range").value
-        );
-        currentLayoutProperties.tilingPaddingVertical = Number(
-          document.getElementById("tiling-padding-vertical").value
-        );
-        currentLayoutProperties.tilingPaddingHorizontal = Number(
-          document.getElementById("tiling-padding-horizontal").value
-        );
-        currentLayoutProperties.initialEnergyOnIncremental = Number(
-          document.getElementById("incremental-cooling-factor").value
-        );
-        currentLayoutProperties.improveFlow =
-          document.getElementById("improve-flow").checked;
+        currentLayoutProperties.name =
+          self.getLayoutNameForStyle(currentLayoutProperties.layoutStyle);
+
+        // force-directed layout settings
+        if (currentLayoutProperties.layoutStyle === "force-directed") {
+          currentLayoutProperties.nodeRepulsion = Number(
+            document.getElementById("node-repulsion").value
+          );
+          currentLayoutProperties.idealEdgeLength = Number(
+            document.getElementById("ideal-edge-length").value
+          );
+          currentLayoutProperties.edgeElasticity = Number(
+            document.getElementById("edge-elasticity").value
+          );
+          currentLayoutProperties.nestingFactor = Number(
+            document.getElementById("nesting-factor").value
+          );
+          currentLayoutProperties.gravity = Number(
+            document.getElementById("gravity").value
+          );
+          currentLayoutProperties.numIter = Number(
+            document.getElementById("num-iter").value
+          );
+          currentLayoutProperties.tile = document.getElementById("tile").checked;
+          currentLayoutProperties.packComponents = document.getElementById(
+            "pack-components"
+          ).checked
+            ? true
+            : false;
+          currentLayoutProperties.randomize =
+            !document.getElementById("incremental").checked;
+          currentLayoutProperties.gravityRangeCompound = Number(
+            document.getElementById("gravity-range-compound").value
+          );
+          currentLayoutProperties.gravityCompound = Number(
+            document.getElementById("gravity-compound").value
+          );
+          currentLayoutProperties.gravityRange = Number(
+            document.getElementById("gravity-range").value
+          );
+          currentLayoutProperties.tilingPaddingVertical = Number(
+            document.getElementById("tiling-padding-vertical").value
+          );
+          currentLayoutProperties.tilingPaddingHorizontal = Number(
+            document.getElementById("tiling-padding-horizontal").value
+          );
+          currentLayoutProperties.initialEnergyOnIncremental = Number(
+            document.getElementById("incremental-cooling-factor").value
+          );
+          currentLayoutProperties.improveFlow =
+            document.getElementById("improve-flow").checked;
+        }
+
+        if (currentLayoutProperties.layoutStyle === "orthogonal") {
+          // ortogonal layout settings
+        }
+
         // reset currentLayoutProperties in scratch pad
         appUtilities.setScratch(
           cy,
