@@ -138,6 +138,17 @@ module.exports = function (chiseInstance) {
     console.log(label + " raw data:", data);
   }
 
+  function replaceEdgeWithBatch(cyTarget, newEdgeJson) {
+    if (!cyTarget || !newEdgeJson) {
+      return;
+    }
+
+    cy.undoRedo().do("batch", [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: newEdgeJson }
+    ]);
+  }
+
   function convertPdEdgeType(event, toClass, mode) {
     var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
     var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
@@ -214,7 +225,6 @@ module.exports = function (chiseInstance) {
       return;
     }
 
-    var ur = cy.undoRedo();
     var actionPayload = {
       removeEdgeJson: cyTarget.json(),
       addEdgeJson: buildEdgeJson(
@@ -231,10 +241,7 @@ module.exports = function (chiseInstance) {
 
     logEdgeSnapshot("Old AF edge before recreate swap:", cyTarget);
     logUndoRedoPayload("AF swap payload", actionPayload);
-
-    var result = ur.do("swapEdgeWithRecreate", actionPayload);
-
-    logUndoRedoPayload("AF swap inverse payload", result);
+    replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
     logEdgeSnapshot("New AF edge after recreate swap:", cy.getElementById(cyTarget.id()));
   }
 
@@ -257,7 +264,6 @@ module.exports = function (chiseInstance) {
             logEdgeSnapshot("Change edge type", cyTarget);
             var source = cyTarget.data("source");
             var target = cyTarget.data("target");
-            var ur = cy.undoRedo();
             var newEdgeExtraData = {
               width: cyTarget.data("width"),
               language: cyTarget.data("language"),
@@ -291,7 +297,7 @@ module.exports = function (chiseInstance) {
             };
 
             logUndoRedoPayload("PD IO swap payload", actionPayload);
-            ur.do("swapEdgeWithRecreate", actionPayload);
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
             logEdgeSnapshot("PD IO after recreate swap", cy.getElementById(cyTarget.id()));
           }
         }
@@ -313,7 +319,6 @@ module.exports = function (chiseInstance) {
             var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
             if (!cyTarget) return;
 
-            var ur = cy.undoRedo();
             var currentEdgeJson = cyTarget.json();
             var actionPayload = {
               removeEdgeJson: currentEdgeJson,
@@ -337,10 +342,7 @@ module.exports = function (chiseInstance) {
 
             logEdgeSnapshot("PD modulator before recreate swap", cyTarget);
             logUndoRedoPayload("PD modulator swap payload", actionPayload);
-
-            var result = ur.do("swapEdgeWithRecreate", actionPayload);
-
-            logUndoRedoPayload("PD modulator swap inverse payload", result);
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
             logEdgeSnapshot("PD modulator after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
@@ -462,7 +464,7 @@ module.exports = function (chiseInstance) {
             };
 
             logUndoRedoPayload("SBML IO swap payload", actionPayload);
-            cy.undoRedo().do("swapEdgeWithRecreate", actionPayload);
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
             logEdgeSnapshot("SBML IO after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
@@ -543,7 +545,7 @@ module.exports = function (chiseInstance) {
             };
 
             logUndoRedoPayload("SBML modulator swap payload", actionPayload);
-            cy.undoRedo().do("swapEdgeWithRecreate", actionPayload);
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
             logEdgeSnapshot("SBML modulator after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
@@ -954,8 +956,6 @@ module.exports = function (chiseInstance) {
     ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
     ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
     ur.action("convertEdgeType", appUndoActions.convertEdgeType, appUndoActions.convertEdgeType);
-    ur.action("convertEdgeTypeByRecreate", appUndoActions.convertEdgeTypeByRecreate, appUndoActions.convertEdgeTypeByRecreate);
-    ur.action("swapEdgeWithRecreate", appUndoActions.swapEdgeWithRecreate, appUndoActions.swapEdgeWithRecreate);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
