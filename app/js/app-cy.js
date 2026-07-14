@@ -685,6 +685,175 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function replaceSifEdgeType(event, toClass) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+    if (!cyTarget) {
+      return;
+    }
+
+    var source = cyTarget.data("source");
+    var target = cyTarget.data("target");
+    if (!source || !target) {
+      return;
+    }
+
+    function isSifChemicalToMacromolecule(edgeClass) {
+      return edgeClass === "chemical-affects" || edgeClass === "consumption-controled-by";
+    }
+
+    function isSifMacromoleculeToChemical(edgeClass) {
+      return edgeClass === "controls-production-of" || edgeClass === "controls-transport-of-chemical";
+    }
+
+    logEdgeSnapshot("SIF edge before change:", cyTarget);
+
+    var newEdgeJson = cyTarget.json();
+    var shouldSwapEnds =
+      isSifChemicalToMacromolecule(cyTarget.data("class")) !== isSifChemicalToMacromolecule(toClass) &&
+      (isSifChemicalToMacromolecule(cyTarget.data("class")) || isSifMacromoleculeToChemical(cyTarget.data("class"))) &&
+      (isSifChemicalToMacromolecule(toClass) || isSifMacromoleculeToChemical(toClass));
+
+    if (shouldSwapEnds) {
+      newEdgeJson.data.source = target;
+      newEdgeJson.data.target = source;
+      if (newEdgeJson.data.portsource !== undefined) {
+        newEdgeJson.data.portsource = target;
+      }
+      if (newEdgeJson.data.porttarget !== undefined) {
+        newEdgeJson.data.porttarget = source;
+      }
+    }
+
+    newEdgeJson.data.class = toClass;
+    var defaultEdgeProps = chiseInstance.elementUtilities.getDefaultProperties(toClass);
+    newEdgeJson.data["line-color"] = defaultEdgeProps["line-color"];
+
+    var ur = cy.undoRedo();
+    ur.do("batch", [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: newEdgeJson }
+    ]);
+
+    logEdgeSnapshot("SIF edge after change:", cy.getElementById(cyTarget.id()));
+  }
+
+  function createSifEdgeTypeMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-sif-' + edgeClass.replace(/\s+/g, '-'),
+      content: 'Change Edge Type To',
+      selector: 'edge[language="SIF"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-sif-' + edgeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            replaceSifEdgeType(event, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createSifChemicalChemicalEdgeTypeMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'reacts-with',
+        submenuItems: [
+          { idSuffix: 'used-to-produce', content: 'Used-to-produce Edge', toClass: 'used-to-produce' }
+        ]
+      },
+      {
+        edgeClass: 'used-to-produce',
+        submenuItems: [
+          { idSuffix: 'reacts-with', content: 'Reacts-with Edge', toClass: 'reacts-with' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createSifEdgeTypeMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function createSifChemicalMacromoleculeEdgeTypeMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'controls-production-of',
+        submenuItems: [
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+        ]
+      },
+      {
+        edgeClass: 'controls-transport-of-chemical',
+        submenuItems: [
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+        ]
+      },
+      {
+        edgeClass: 'chemical-affects',
+        submenuItems: [
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+        ]
+      },
+      {
+        edgeClass: 'consumption-controled-by',
+        submenuItems: [
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createSifEdgeTypeMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function createSifMacromoleculeMacromoleculeEdgeTypeMenuItems() {
+    var edgeTypes = [
+      'controls-state-change-of',
+      'controls-transport-of',
+      'controls-phosphorylation-of',
+      'controls-expression-of',
+      'catalysis-precedes',
+      'in-complex-with',
+      'interacts-with',
+      'neighbor-of',
+      'activates',
+      'inhibits',
+      'phosphorylates',
+      'dephosphorylates',
+      'upregulates-expression',
+      'downregulates-expression',
+      'acetylates',
+      'deacetylates',
+      'methylates',
+      'demethylates',
+      'activates-gtpase',
+      'inhibits-gtpase'
+    ];
+
+    return edgeTypes.map(function (edgeType) {
+      return createSifEdgeTypeMenu(edgeType, edgeTypes.filter(function (candidate) {
+        return candidate !== edgeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Edge',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
   function createAfEdgeTypeMenu(edgeClass, submenuItems) {
     return {
       id: 'ctx-menu-change-edge-type-af-' + edgeClass,
@@ -826,6 +995,9 @@ module.exports = function (chiseInstance) {
     var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
     var sbmlEdgeTypeIOMenuItems = createSbmlEdgeTypeIOMenuItems();
     var sbmlEdgeTypeModulatorsMenuItems = createSbmlEdgeTypeModulatorsMenuItems();
+    var sifChemicalChemicalEdgeTypeMenuItems = createSifChemicalChemicalEdgeTypeMenuItems();
+    var sifChemicalMacromoleculeEdgeTypeMenuItems = createSifChemicalMacromoleculeEdgeTypeMenuItems();
+    var sifMacromoleculeMacromoleculeEdgeTypeMenuItems = createSifMacromoleculeMacromoleculeEdgeTypeMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -1058,6 +1230,34 @@ module.exports = function (chiseInstance) {
       sbmlEdgeTypeModulatorsMenuItems[4],
       sbmlEdgeTypeModulatorsMenuItems[5],
       sbmlEdgeTypeModulatorsMenuItems[6],
+
+      //// SIF
+      sifChemicalChemicalEdgeTypeMenuItems[0],
+      sifChemicalChemicalEdgeTypeMenuItems[1],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[0],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[1],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[2],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[3],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[0],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[1],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[2],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[3],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[4],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[5],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[6],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[7],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[8],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[9],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[10],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[11],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[12],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[13],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[14],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[15],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[16],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[17],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[18],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[19],
 
       //// PD Nodes
       pdNodeTypeMenuItems[0],
