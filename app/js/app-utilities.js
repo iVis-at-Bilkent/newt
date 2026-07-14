@@ -841,7 +841,7 @@ appUtilities.defaultLayoutProperties = {
   orthogonalityThresholdDeg: 10,
   thresholdIncrementDeg: 5,
   orthogonalizationInterval: 10,
-  idealEdgeLength: 50,
+  orthogonalIdealEdgeLength: 50,
   edgeSeparation: 3,
   quasiOrthogonal: false,
   unitBoundingMode: "box",

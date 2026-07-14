@@ -276,7 +276,67 @@ var LayoutPropertiesView = Backbone.View.extend({
       preferences = {};
     }
 
-    var options = $.extend({}, currentLayoutProperties, preferences);
+    var layoutStyle = currentLayoutProperties.layoutStyle || "force-directed";
+    var options;
+
+    if (layoutStyle === "orthogonal") {
+      options = {
+        layoutStyle: layoutStyle,
+        name: "orse",
+        fit: currentLayoutProperties.fit,
+        padding: currentLayoutProperties.padding,
+        animate: currentLayoutProperties.animate,
+        idealEdgeLength: currentLayoutProperties.orthogonalIdealEdgeLength,
+        maxIterations: currentLayoutProperties.maxIterations,
+        initialCoolingFactor: currentLayoutProperties.initialCoolingFactor,
+        orthogonalityThresholdDeg:
+          currentLayoutProperties.orthogonalityThresholdDeg,
+        thresholdIncrementDeg: currentLayoutProperties.thresholdIncrementDeg,
+        orthogonalizationInterval:
+          currentLayoutProperties.orthogonalizationInterval,
+        edgeSeparation: currentLayoutProperties.edgeSeparation,
+        quasiOrthogonal: currentLayoutProperties.quasiOrthogonal,
+        unitBoundingMode: currentLayoutProperties.unitBoundingMode,
+      };
+    } else {
+      options = {
+        layoutStyle: layoutStyle,
+        name: "fcose",
+        quality: currentLayoutProperties.quality,
+        samplingType: currentLayoutProperties.samplingType,
+        sampleSize: currentLayoutProperties.sampleSize,
+        nodeSeparation: currentLayoutProperties.nodeSeparation,
+        piTol: currentLayoutProperties.piTol,
+        nodeDimensionsIncludeLabels:
+          currentLayoutProperties.nodeDimensionsIncludeLabels,
+        nodeRepulsion: currentLayoutProperties.nodeRepulsion,
+        idealEdgeLength: currentLayoutProperties.idealEdgeLength,
+        edgeElasticity: currentLayoutProperties.edgeElasticity,
+        nestingFactor: currentLayoutProperties.nestingFactor,
+        gravity: currentLayoutProperties.gravity,
+        numIter: currentLayoutProperties.numIter,
+        fit: currentLayoutProperties.fit,
+        padding: currentLayoutProperties.padding,
+        animationEasing: currentLayoutProperties.animationEasing,
+        animate: currentLayoutProperties.animate,
+        animationDuration: currentLayoutProperties.animationDuration,
+        randomize: currentLayoutProperties.randomize,
+        tile: currentLayoutProperties.tile,
+        tilingPaddingVertical: currentLayoutProperties.tilingPaddingVertical,
+        tilingPaddingHorizontal: currentLayoutProperties.tilingPaddingHorizontal,
+        gravityRangeCompound: currentLayoutProperties.gravityRangeCompound,
+        gravityCompound: currentLayoutProperties.gravityCompound,
+        gravityRange: currentLayoutProperties.gravityRange,
+        initialEnergyOnIncremental:
+          currentLayoutProperties.initialEnergyOnIncremental,
+        improveFlow: currentLayoutProperties.improveFlow,
+        packComponents: currentLayoutProperties.packComponents,
+        parentSideAdhesion: currentLayoutProperties.parentSideAdhesion,
+        boundaryNodeConstraint: currentLayoutProperties.boundaryNodeConstraint,
+      };
+    }
+
+    options = $.extend({}, options, preferences);
 
     return options;
   },
@@ -418,7 +478,7 @@ var LayoutPropertiesView = Backbone.View.extend({
           currentLayoutProperties.orthogonalizationInterval = Number(
             document.getElementById("orth-interval").value
           );
-          currentLayoutProperties.idealEdgeLength = Number(
+          currentLayoutProperties.orthogonalIdealEdgeLength = Number(
             document.getElementById("orth-ideal-edge-length").value
           );
           currentLayoutProperties.edgeSeparation = Number(
