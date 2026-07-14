@@ -2679,7 +2679,7 @@
           <span class="add-on layout-text"> Cooling Factor </span>
         </td>
         <td>
-          <input id="cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= coolingFactor %> >
+          <input id="cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= initialCoolingFactor %> >
         </td>
        </tr>
 
@@ -2688,7 +2688,7 @@
           <span class="add-on layout-text"> Orthogonal Threshold </span>
         </td>
         <td>
-          <input id="orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orthThreshold %> >
+          <input id="orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orthogonalityThresholdDeg %> >
         </td>
        </tr>
 
@@ -2697,7 +2697,7 @@
           <span class="add-on layout-text"> Orthogonal Increment (deg) </span>
         </td>
         <td>
-          <input id="orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orthIncrement %> >
+          <input id="orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= thresholdIncrementDeg %> >
         </td>
        </tr>
        
@@ -2706,7 +2706,7 @@
           <span class="add-on layout-text"> Orthogonal Interval (iter) </span>
         </td>
         <td>
-          <input id="orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orthInterval %> >
+          <input id="orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orthogonalizationInterval %> >
         </td>
        </tr>
        
@@ -2742,7 +2742,7 @@
           <span class="add-on layout-text"> Show Unit Polygons </span>
         </td>
         <td>
-          <input id="unit-polygons" type="checkbox" class="layout-text" <% if (unitPolygons){ %> checked<%}%>>
+          <input id="unit-polygons" type="checkbox" class="layout-text" <% if (unitBoundingMode === "polygon"){ %> checked<%}%>>
         </td>
       </tr>
 

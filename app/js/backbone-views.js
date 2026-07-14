@@ -406,16 +406,16 @@ var LayoutPropertiesView = Backbone.View.extend({
           currentLayoutProperties.maxIterations = Number(
             document.getElementById("max-iterations").value
           );
-          currentLayoutProperties.coolingFactor = Number(
+          currentLayoutProperties.initialCoolingFactor = Number(
             document.getElementById("cooling-factor").value
           );
-          currentLayoutProperties.orthThreshold = Number(
+          currentLayoutProperties.orthogonalityThresholdDeg = Number(
             document.getElementById("orth-threshold").value
           );
-          currentLayoutProperties.orthIncrement = Number(
+          currentLayoutProperties.thresholdIncrementDeg = Number(
             document.getElementById("orth-increment").value
           );
-          currentLayoutProperties.orthInterval = Number(
+          currentLayoutProperties.orthogonalizationInterval = Number(
             document.getElementById("orth-interval").value
           );
           currentLayoutProperties.idealEdgeLength = Number(
@@ -426,8 +426,11 @@ var LayoutPropertiesView = Backbone.View.extend({
           );
           currentLayoutProperties.quasiOrthogonal =
             document.getElementById("quasi-orthogonal").checked;
-          currentLayoutProperties.unitPolygons =
-            document.getElementById("unit-polygons").checked;
+          currentLayoutProperties.unitBoundingMode = document.getElementById(
+            "unit-polygons"
+          ).checked
+            ? "polygon"
+            : "box";
         }
 
         // reset currentLayoutProperties in scratch pad

@@ -837,14 +837,14 @@ appUtilities.defaultLayoutProperties = {
   packComponents: true,
   parentSideAdhesion: 5,
   maxIterations: 1000,
-  coolingFactor: 0.30,
-  orthThreshold: 10,
-  orthIncrement: 5,
-  orthInterval: 10,
+  initialCoolingFactor: 0.30,
+  orthogonalityThresholdDeg: 10,
+  thresholdIncrementDeg: 5,
+  orthogonalizationInterval: 10,
   idealEdgeLength: 50,
   edgeSeparation: 3,
   quasiOrthogonal: false,
-  unitPolygons: false,
+  unitBoundingMode: "box",
   boundaryNodeConstraint: function (node) {
     var boundaryParentId = node.data('boundaryParentId');
     if (boundaryParentId && boundaryParentId.length > 0) {
