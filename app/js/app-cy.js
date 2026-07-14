@@ -7,6 +7,7 @@ var _ = require('underscore');
 const databaseUtilities = require('./database-utilities');
 var annotationLayers = require('./annotation-layers');
 var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
+var submenuIcon = 'app/img/submenu-indicator-default.svg';
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -961,6 +962,11 @@ module.exports = function (chiseInstance) {
     cy.expandCollapse(getExpandCollapseOptions(cy));
 
     var contextMenus = cy.contextMenus({
+      submenuIndicator: {
+        src: submenuIcon,
+        width: 12,
+        height: 12
+      },
       menuItemClasses: ['custom-menu-item'],
     });
 
