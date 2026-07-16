@@ -138,6 +138,74 @@ module.exports = function (chiseInstance) {
     console.log(label + " raw data:", data);
   }
 
+  function logLogicalNodeDebug(label, node) {
+    if (!node || !node.length) {
+      console.log(label, null);
+      return;
+    }
+
+    var nodeClass = node.data("class");
+    var defaultProps = chiseInstance.elementUtilities.getDefaultProperties(nodeClass);
+    var connectedEdges = node.connectedEdges().map(function (edge) {
+      return {
+        id: edge.id(),
+        class: edge.data("class"),
+        language: edge.data("language"),
+        source: edge.data("source"),
+        target: edge.data("target"),
+        portsource: edge.data("portsource"),
+        porttarget: edge.data("porttarget"),
+        width: edge.data("width"),
+        lineColor: edge.data("line-color")
+      };
+    });
+    var style = node.style ? node.style() : {};
+
+    console.log(label, {
+      node: {
+        id: node.id(),
+        class: nodeClass,
+        language: node.data("language"),
+        parent: node.data("parent"),
+        label: node.data("label"),
+        position: node.position(),
+        renderedPosition: node.renderedPosition(),
+        bbox: node.data("bbox"),
+        width: node.width(),
+        height: node.height(),
+        orientation: node.data("orientation"),
+        ports: node.data("ports"),
+        portOrdering: defaultProps["ports-ordering"],
+        statesandinfos: node.data("statesandinfos"),
+        auxunitlayouts: node.data("auxunitlayouts"),
+        image: node.data("background-image"),
+        clonemarker: node.data("clonemarker"),
+        multimer: node.data("multimer")
+      },
+      visual: {
+        borderColor: style["border-color"],
+        borderWidth: style["border-width"],
+        backgroundColor: style["background-color"],
+        backgroundOpacity: style["background-opacity"],
+        shape: style["shape"],
+        width: style["width"],
+        height: style["height"]
+      },
+      defaults: {
+        width: defaultProps.width,
+        height: defaultProps.height,
+        borderColor: defaultProps["border-color"],
+        borderWidth: defaultProps["border-width"],
+        fillColor: defaultProps["background-color"],
+        fillOpacity: defaultProps["background-opacity"],
+        portsOrdering: defaultProps["ports-ordering"],
+        shape: defaultProps.shape
+      },
+      connectedEdges: connectedEdges,
+      rawData: node.data()
+    });
+  }
+
   function replaceEdgeWithBatch(cyTarget, newEdgeJson) {
     if (!cyTarget || !newEdgeJson) {
       return;
@@ -147,6 +215,30 @@ module.exports = function (chiseInstance) {
       { name: "remove", param: cyTarget },
       { name: "add", param: newEdgeJson }
     ]);
+  }
+
+  function replaceLogicalNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var nodeJson = cyTarget.json();
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+
+    nodeJson.data.class = toClass;
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
   }
 
   function convertPdEdgeType(event, toClass, mode) {
@@ -553,7 +645,42 @@ module.exports = function (chiseInstance) {
     };
   }
 
-  function createSbmlEdgeTypeModulatorsMenuItems() {
+  function createSbmlEdgeTypeModulatorsMenuItems(edgeTypes) {
+    var configs = edgeTypes.map(function (edgeType) {
+      return {
+        edgeClass: edgeType,
+        submenuItems: edgeTypes.filter(function (candidate) {
+          return candidate !== edgeType;
+        }).map(function (candidate) {
+          return {
+            idSuffix: candidate.replace(/\s+/g, '-'),
+            content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Edge',
+            toClass: candidate
+          };
+        })
+      };
+    });
+
+    return configs.map(function (config) {
+      return createSbmlEdgeTypeModulatorsMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function createSbmlEdgeTypeModulators1MenuItems() {
+    var edgeTypes = [
+      'catalysis',
+      'unknown catalysis',
+      'inhibition',
+      'unknown inhibition',
+      'stimulation',
+      'modulation',
+      'trigger'
+    ];
+
+    return createSbmlEdgeTypeModulatorsMenuItems(edgeTypes);
+  }
+
+  function createSbmlEdgeTypeModulatorsLegacyMenuItems() {
     var configs = [
       {
         edgeClass: 'catalysis',
@@ -681,7 +808,78 @@ module.exports = function (chiseInstance) {
       }).map(function (candidate) {
         return {
           idSuffix: candidate.replace(/\s+/g, '-'),
-          content: 'Change to ' + candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Node',
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Node',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createLogicalNodeTypeMenu(language, nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-logical-node-type-' + language.toLowerCase() + '-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Logical Node Type',
+      selector: 'node[language="' + language + '"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-logical-node-type-' + language.toLowerCase() + '-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceLogicalNodeWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createPdLogicalNodeTypeMenuItems() {
+    var nodeTypes = ['and', 'or', 'not'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createLogicalNodeTypeMenu('PD', nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.toUpperCase(),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createAfLogicalNodeTypeMenuItems() {
+    var nodeTypes = ['and', 'or', 'not', 'delay'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createLogicalNodeTypeMenu('AF', nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.toUpperCase(),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlLogicalNodeTypeMenuItems() {
+    var nodeTypes = ['and', 'or', 'not', 'unknown logical operator'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createLogicalNodeTypeMenu('SBML', nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'unknown logical operator' ? 'Unknown Logical Operator' : candidate.toUpperCase(),
           toClass: candidate
         };
       }));
@@ -1000,10 +1198,13 @@ module.exports = function (chiseInstance) {
     var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
     var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
     var sbmlEdgeTypeIOMenuItems = createSbmlEdgeTypeIOMenuItems();
-    var sbmlEdgeTypeModulatorsMenuItems = createSbmlEdgeTypeModulatorsMenuItems();
+    var sbmlEdgeTypeModulators1MenuItems = createSbmlEdgeTypeModulators1MenuItems();
     var sifChemicalChemicalEdgeTypeMenuItems = createSifChemicalChemicalEdgeTypeMenuItems();
     var sifChemicalMacromoleculeEdgeTypeMenuItems = createSifChemicalMacromoleculeEdgeTypeMenuItems();
     var sifMacromoleculeMacromoleculeEdgeTypeMenuItems = createSifMacromoleculeMacromoleculeEdgeTypeMenuItems();
+    var pdLogicalNodeTypeMenuItems = createPdLogicalNodeTypeMenuItems();
+    var afLogicalNodeTypeMenuItems = createAfLogicalNodeTypeMenuItems();
+    var sbmlLogicalNodeTypeMenuItems = createSbmlLogicalNodeTypeMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -1204,6 +1405,20 @@ module.exports = function (chiseInstance) {
           logEdgeSnapshot("Change edge type", cyTarget);
         }
       },
+      {
+        id: 'ctx-menu-change-logical-operator-type',
+        content: 'Change Logical Node Type',
+        selector: 'node[language="PD"][class="and"], node[language="PD"][class="or"], node[language="PD"][class="not"]',
+        onClickFunction: function (event) {
+          var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+          var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+          if (!cyTarget) {
+            return;
+          }
+
+          logLogicalNodeDebug("Change logical node type", cyTarget);
+        }
+      },
 
       // Change Edge Type Starts
       //// PD
@@ -1229,13 +1444,14 @@ module.exports = function (chiseInstance) {
       sbmlEdgeTypeIOMenuItems[4],
       sbmlEdgeTypeIOMenuItems[5],
       sbmlEdgeTypeIOMenuItems[6],
-      sbmlEdgeTypeModulatorsMenuItems[0],
-      sbmlEdgeTypeModulatorsMenuItems[1],
-      sbmlEdgeTypeModulatorsMenuItems[2],
-      sbmlEdgeTypeModulatorsMenuItems[3],
-      sbmlEdgeTypeModulatorsMenuItems[4],
-      sbmlEdgeTypeModulatorsMenuItems[5],
-      sbmlEdgeTypeModulatorsMenuItems[6],
+      //// SBML Modulators 1
+      sbmlEdgeTypeModulators1MenuItems[0],
+      sbmlEdgeTypeModulators1MenuItems[1],
+      sbmlEdgeTypeModulators1MenuItems[2],
+      sbmlEdgeTypeModulators1MenuItems[3],
+      sbmlEdgeTypeModulators1MenuItems[4],
+      sbmlEdgeTypeModulators1MenuItems[5],
+      sbmlEdgeTypeModulators1MenuItems[6],
 
       //// SIF
       sifChemicalChemicalEdgeTypeMenuItems[0],
@@ -1264,7 +1480,25 @@ module.exports = function (chiseInstance) {
       sifMacromoleculeMacromoleculeEdgeTypeMenuItems[17],
       sifMacromoleculeMacromoleculeEdgeTypeMenuItems[18],
       sifMacromoleculeMacromoleculeEdgeTypeMenuItems[19],
+      // Change Edge Type Ends
 
+      // Change Logical Node Type Starts
+      //// PD Logical Operators
+      pdLogicalNodeTypeMenuItems[0],
+      pdLogicalNodeTypeMenuItems[1],
+      pdLogicalNodeTypeMenuItems[2],
+      //// AF Logical Operators
+      afLogicalNodeTypeMenuItems[0],
+      afLogicalNodeTypeMenuItems[1],
+      afLogicalNodeTypeMenuItems[2],
+      afLogicalNodeTypeMenuItems[3],
+      //// SBML Logical Operators
+      sbmlLogicalNodeTypeMenuItems[0],
+      sbmlLogicalNodeTypeMenuItems[1],
+      sbmlLogicalNodeTypeMenuItems[2],
+      sbmlLogicalNodeTypeMenuItems[3],
+      // Change Logical Node Type Ends
+   
       //// PD Nodes
       pdNodeTypeMenuItems[0],
       pdNodeTypeMenuItems[1],
@@ -1272,7 +1506,6 @@ module.exports = function (chiseInstance) {
       pdNodeTypeMenuItems[3],
       pdNodeTypeMenuItems[4],
 
-      // Change Edge Type Ends
 
       {
         id: 'ctx-menu-show-hidden-neighbors',
