@@ -645,42 +645,7 @@ module.exports = function (chiseInstance) {
     };
   }
 
-  function createSbmlEdgeTypeModulatorsMenuItems(edgeTypes) {
-    var configs = edgeTypes.map(function (edgeType) {
-      return {
-        edgeClass: edgeType,
-        submenuItems: edgeTypes.filter(function (candidate) {
-          return candidate !== edgeType;
-        }).map(function (candidate) {
-          return {
-            idSuffix: candidate.replace(/\s+/g, '-'),
-            content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Edge',
-            toClass: candidate
-          };
-        })
-      };
-    });
-
-    return configs.map(function (config) {
-      return createSbmlEdgeTypeModulatorsMenu(config.edgeClass, config.submenuItems);
-    });
-  }
-
-  function createSbmlEdgeTypeModulators1MenuItems() {
-    var edgeTypes = [
-      'catalysis',
-      'unknown catalysis',
-      'inhibition',
-      'unknown inhibition',
-      'stimulation',
-      'modulation',
-      'trigger'
-    ];
-
-    return createSbmlEdgeTypeModulatorsMenuItems(edgeTypes);
-  }
-
-  function createSbmlEdgeTypeModulatorsLegacyMenuItems() {
+  function createSbmlEdgeTypeModulatorsMenuItems() {
     var configs = [
       {
         edgeClass: 'catalysis',
@@ -1198,7 +1163,7 @@ module.exports = function (chiseInstance) {
     var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
     var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
     var sbmlEdgeTypeIOMenuItems = createSbmlEdgeTypeIOMenuItems();
-    var sbmlEdgeTypeModulators1MenuItems = createSbmlEdgeTypeModulators1MenuItems();
+    var sbmlEdgeTypeModulatorsMenuItems = createSbmlEdgeTypeModulatorsMenuItems();
     var sifChemicalChemicalEdgeTypeMenuItems = createSifChemicalChemicalEdgeTypeMenuItems();
     var sifChemicalMacromoleculeEdgeTypeMenuItems = createSifChemicalMacromoleculeEdgeTypeMenuItems();
     var sifMacromoleculeMacromoleculeEdgeTypeMenuItems = createSifMacromoleculeMacromoleculeEdgeTypeMenuItems();
@@ -1444,14 +1409,14 @@ module.exports = function (chiseInstance) {
       sbmlEdgeTypeIOMenuItems[4],
       sbmlEdgeTypeIOMenuItems[5],
       sbmlEdgeTypeIOMenuItems[6],
-      //// SBML Modulators 1
-      sbmlEdgeTypeModulators1MenuItems[0],
-      sbmlEdgeTypeModulators1MenuItems[1],
-      sbmlEdgeTypeModulators1MenuItems[2],
-      sbmlEdgeTypeModulators1MenuItems[3],
-      sbmlEdgeTypeModulators1MenuItems[4],
-      sbmlEdgeTypeModulators1MenuItems[5],
-      sbmlEdgeTypeModulators1MenuItems[6],
+      //// SBML Modulators
+      sbmlEdgeTypeModulatorsMenuItems[0],
+      sbmlEdgeTypeModulatorsMenuItems[1],
+      sbmlEdgeTypeModulatorsMenuItems[2],
+      sbmlEdgeTypeModulatorsMenuItems[3],
+      sbmlEdgeTypeModulatorsMenuItems[4],
+      sbmlEdgeTypeModulatorsMenuItems[5],
+      sbmlEdgeTypeModulatorsMenuItems[6],
 
       //// SIF
       sifChemicalChemicalEdgeTypeMenuItems[0],
