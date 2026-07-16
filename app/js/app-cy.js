@@ -217,7 +217,7 @@ module.exports = function (chiseInstance) {
     ]);
   }
 
-  function replaceLogicalNodeWithBatch(cyTarget, toClass) {
+  function replaceNodeWithBatch(cyTarget, toClass) {
     if (!cyTarget || !toClass) {
       return;
     }
@@ -772,11 +772,106 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            replaceLogicalNodeWithBatch(cyTarget, item.toClass);
+            replaceNodeWithBatch(cyTarget, item.toClass);
           }
         };
       })
     };
+  }
+
+  function createPdProcessNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-process-node-type-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Process Node Type',
+      selector: 'node[language="PD"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-process-node-type-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logLogicalNodeDebug('Change process node type before', cyTarget);
+            replaceNodeWithBatch(cyTarget, item.toClass);
+            logLogicalNodeDebug('Change process node type after', cy.getElementById(cyTarget.id()));
+          }
+        };
+      })
+    };
+  }
+
+  function createPdProcessNodeTypeMenuItems() {
+    var nodeTypes = [
+      'process',
+      'omitted process',
+      'uncertain process',
+      'association',
+      'dissociation'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createPdProcessNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlProcessNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-process-node-type-sbml-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Process Node Type',
+      selector: 'node[language="SBML"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-process-node-type-sbml-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logLogicalNodeDebug('Change process node type before', cyTarget);
+            replaceNodeWithBatch(cyTarget, item.toClass);
+            logLogicalNodeDebug('Change process node type after', cy.getElementById(cyTarget.id()));
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlProcessNodeTypeMenuItems() {
+    var nodeTypes = [
+      'process',
+      'omitted process',
+      'uncertain process',
+      'truncated process',
+      'association',
+      'dissociation'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createSbmlProcessNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
   }
 
   function createPdLogicalNodeTypeMenuItems() {
@@ -1145,8 +1240,10 @@ module.exports = function (chiseInstance) {
     var sifChemicalMacromoleculeEdgeTypeMenuItems = createSifChemicalMacromoleculeEdgeTypeMenuItems();
     var sifMacromoleculeMacromoleculeEdgeTypeMenuItems = createSifMacromoleculeMacromoleculeEdgeTypeMenuItems();
     var pdLogicalNodeTypeMenuItems = createPdLogicalNodeTypeMenuItems();
+    var pdProcessNodeTypeMenuItems = createPdProcessNodeTypeMenuItems();
     var afLogicalNodeTypeMenuItems = createAfLogicalNodeTypeMenuItems();
     var sbmlLogicalNodeTypeMenuItems = createSbmlLogicalNodeTypeMenuItems();
+    var sbmlProcessNodeTypeMenuItems = createSbmlProcessNodeTypeMenuItems();
     const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
@@ -1452,6 +1549,22 @@ module.exports = function (chiseInstance) {
       sbmlLogicalNodeTypeMenuItems[2],
       sbmlLogicalNodeTypeMenuItems[3],
       // Change Logical Node Type Ends
+
+      // Change Process Node Type Starts
+      //// PD Process Nodes
+      pdProcessNodeTypeMenuItems[0],
+      pdProcessNodeTypeMenuItems[1],
+      pdProcessNodeTypeMenuItems[2],
+      pdProcessNodeTypeMenuItems[3],
+      pdProcessNodeTypeMenuItems[4],
+      //// SBML Process Nodes
+      sbmlProcessNodeTypeMenuItems[0],
+      sbmlProcessNodeTypeMenuItems[1],
+      sbmlProcessNodeTypeMenuItems[2],
+      sbmlProcessNodeTypeMenuItems[3],
+      sbmlProcessNodeTypeMenuItems[4],
+      sbmlProcessNodeTypeMenuItems[5],
+      // Change Process Node Type Ends
    
       //// PD Nodes
       pdNodeTypeMenuItems[0],
