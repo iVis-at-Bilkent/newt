@@ -241,6 +241,71 @@ module.exports = function (chiseInstance) {
     cy.undoRedo().do("batch", actions);
   }
 
+  function replaceAfAuxiliaryUnitWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var auxUnitShapeNames = {
+      'BA macromolecule': 'roundrectangle',
+      'BA simple chemical': 'stadium',
+      'BA nucleic acid feature': 'bottomroundrectangle',
+      'BA unspecified entity': 'ellipse',
+      'BA complex': 'complex',
+      'BA perturbing agent': 'perturbing agent'
+    };
+    var nodeJson = {
+      group: currentJson.group,
+      data: $.extend(true, {}, currentJson.data),
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+    var statesAndInfos = nodeJson.data.statesandinfos || [];
+    var auxUnitLayouts = nodeJson.data.auxunitlayouts || {};
+
+    nodeJson.data.class = toClass;
+
+    statesAndInfos.forEach(function (unit) {
+      if (unit && unit.style) {
+        unit.style['shape-name'] = auxUnitShapeNames[toClass];
+      }
+    });
+
+    Object.keys(auxUnitLayouts).forEach(function (side) {
+      var layout = auxUnitLayouts[side];
+      if (!layout || !layout.units) {
+        return;
+      }
+
+      layout.units.forEach(function (unit) {
+        if (unit && unit.style) {
+          unit.style['shape-name'] = auxUnitShapeNames[toClass];
+        }
+      });
+    });
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+  }
+
   function convertPdEdgeType(event, toClass, mode) {
     var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
     var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
@@ -874,6 +939,56 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function createAfAuxiliaryUnitTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-af-auxiliary-unit-type-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change AF Auxiliary Unit Type',
+      selector: 'node[language="AF"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-af-auxiliary-unit-type-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logLogicalNodeDebug('Change AF auxiliary unit type before', cyTarget);
+            replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
+            logLogicalNodeDebug('Change AF auxiliary unit type after', cy.getElementById(cyTarget.id()));
+          }
+        };
+      })
+    };
+  }
+
+  function createAfAuxiliaryUnitTypeMenuItems() {
+    var nodeTypes = [
+      'BA macromolecule',
+      'BA simple chemical',
+      'BA nucleic acid feature',
+      'BA unspecified entity',
+      'BA complex',
+      'BA perturbing agent'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createAfAuxiliaryUnitTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.replace(/^BA\s+/, '').replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+          }),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
   function createPdLogicalNodeTypeMenuItems() {
     var nodeTypes = ['and', 'or', 'not'];
 
@@ -1242,6 +1357,7 @@ module.exports = function (chiseInstance) {
     var pdLogicalNodeTypeMenuItems = createPdLogicalNodeTypeMenuItems();
     var pdProcessNodeTypeMenuItems = createPdProcessNodeTypeMenuItems();
     var afLogicalNodeTypeMenuItems = createAfLogicalNodeTypeMenuItems();
+    var afAuxiliaryUnitTypeMenuItems = createAfAuxiliaryUnitTypeMenuItems();
     var sbmlLogicalNodeTypeMenuItems = createSbmlLogicalNodeTypeMenuItems();
     var sbmlProcessNodeTypeMenuItems = createSbmlProcessNodeTypeMenuItems();
     const contextMenuItems = [
@@ -1458,7 +1574,6 @@ module.exports = function (chiseInstance) {
           logLogicalNodeDebug("Change logical node type", cyTarget);
         }
       },
-
       // Change Edge Type Starts
       //// PD
       createPdEdgeTypeIOMenu("consumption", "production"),
@@ -1565,6 +1680,15 @@ module.exports = function (chiseInstance) {
       sbmlProcessNodeTypeMenuItems[4],
       sbmlProcessNodeTypeMenuItems[5],
       // Change Process Node Type Ends
+
+      // Change AF Auxiliary Unit Type Starts
+      afAuxiliaryUnitTypeMenuItems[0],
+      afAuxiliaryUnitTypeMenuItems[1],
+      afAuxiliaryUnitTypeMenuItems[2],
+      afAuxiliaryUnitTypeMenuItems[3],
+      afAuxiliaryUnitTypeMenuItems[4],
+      afAuxiliaryUnitTypeMenuItems[5],
+      // Change AF Auxiliary Unit Type Ends
    
       //// PD Nodes
       pdNodeTypeMenuItems[0],
