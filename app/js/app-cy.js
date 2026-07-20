@@ -263,6 +263,16 @@ module.exports = function (chiseInstance) {
     });
 
     cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
   }
 
   function replaceAfAuxiliaryUnitWithBatch(cyTarget, toClass) {
@@ -328,6 +338,16 @@ module.exports = function (chiseInstance) {
     });
 
     cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
   }
 
   function replacePdNodeWithBatch(cyTarget, toClass) {
@@ -1119,6 +1139,47 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function createAfNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-af-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Node Type',
+      selector: 'node[language="AF"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-af-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logLogicalNodeDebug('Change AF node type before', cyTarget);
+            replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
+            logLogicalNodeDebug('Change AF node type after', cy.getElementById(cyTarget.id()));
+          }
+        };
+      })
+    };
+  }
+
+  function createAfNodeTypeMenuItems() {
+    var nodeTypes = ['BA plain', 'phenotype'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createAfNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'BA plain' ? 'Biological Activity' : 'Phenotype',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
   function createPdLogicalNodeTypeMenuItems() {
     var nodeTypes = ['and', 'or', 'not'];
 
@@ -1488,6 +1549,7 @@ module.exports = function (chiseInstance) {
     var pdProcessNodeTypeMenuItems = createPdProcessNodeTypeMenuItems();
     var afLogicalNodeTypeMenuItems = createAfLogicalNodeTypeMenuItems();
     var afAuxiliaryUnitTypeMenuItems = createAfAuxiliaryUnitTypeMenuItems();
+    var afNodeTypeMenuItems = createAfNodeTypeMenuItems();
     var sbmlLogicalNodeTypeMenuItems = createSbmlLogicalNodeTypeMenuItems();
     var sbmlProcessNodeTypeMenuItems = createSbmlProcessNodeTypeMenuItems();
     const contextMenuItems = [
@@ -1819,6 +1881,11 @@ module.exports = function (chiseInstance) {
       afAuxiliaryUnitTypeMenuItems[4],
       afAuxiliaryUnitTypeMenuItems[5],
       // Change AF Auxiliary Unit Type Ends
+
+      // Change AF Node Type Starts
+      afNodeTypeMenuItems[0],
+      afNodeTypeMenuItems[1],
+      // Change AF Node Type Ends
    
       //// PD Nodes
       pdNodeTypeMenuItems[0],
