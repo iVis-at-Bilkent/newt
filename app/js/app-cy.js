@@ -100,6 +100,19 @@ module.exports = function (chiseInstance) {
     var style = node.style ? node.style() : {};
     var statesAndInfos = data.statesandinfos || [];
     var auxUnitLayouts = data.auxunitlayouts || {};
+    var connectedEdges = node.connectedEdges().map(function (edge) {
+      return {
+        id: edge.id(),
+        class: edge.data("class"),
+        language: edge.data("language"),
+        source: edge.data("source"),
+        target: edge.data("target"),
+        portsource: edge.data("portsource"),
+        porttarget: edge.data("porttarget"),
+        width: edge.data("width"),
+        lineColor: edge.data("line-color")
+      };
+    });
 
     console.log(label + " id:", data.id);
     console.log(label + " class:", data.class);
@@ -108,6 +121,9 @@ module.exports = function (chiseInstance) {
     console.log(label + " parent:", data.parent);
     console.log(label + " multimer:", data.multimer);
     console.log(label + " clonemarker:", data.clonemarker);
+    console.log(label + " orientation:", data.orientation);
+    console.log(label + " ports:", data.ports);
+    console.log(label + " portOrdering:", data.portOrdering);
     console.log(label + " bbox:", {
       x: bbox.x,
       y: bbox.y,
@@ -125,16 +141,23 @@ module.exports = function (chiseInstance) {
       backgroundOpacity: style["background-opacity"],
       borderColor: style["border-color"],
       borderWidth: style["border-width"],
+      borderStyle: style["border-style"],
       color: style["color"],
+      textWrap: style["text-wrap"],
       fontFamily: style["font-family"],
       fontSize: style["font-size"],
       fontStyle: style["font-style"],
       fontWeight: style["font-weight"],
-      shape: style["shape"]
+      shape: style["shape"],
+      backgroundImage: style["background-image"],
+      backgroundImageOpacity: style["background-image-opacity"]
     });
     console.log(label + " statesandinfos count:", statesAndInfos.length);
     console.log(label + " statesandinfos:", statesAndInfos);
     console.log(label + " auxunitlayouts keys:", Object.keys(auxUnitLayouts));
+    console.log(label + " auxunitlayouts:", auxUnitLayouts);
+    console.log(label + " connectedEdges count:", connectedEdges.length);
+    console.log(label + " connectedEdges:", connectedEdges);
     console.log(label + " raw data:", data);
   }
 
@@ -204,6 +227,7 @@ module.exports = function (chiseInstance) {
       connectedEdges: connectedEdges,
       rawData: node.data()
     });
+    console.log(label + " full json", node.json());
   }
 
   function replaceEdgeWithBatch(cyTarget, newEdgeJson) {
@@ -304,6 +328,106 @@ module.exports = function (chiseInstance) {
     });
 
     cy.undoRedo().do("batch", actions);
+  }
+
+  function replacePdNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var nodeJson = {
+      group: currentJson.group,
+      data: {
+        id: currentJson.data.id,
+        class: toClass,
+        language: currentJson.data.language
+      },
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+    var keysToCopy = [
+      'label',
+      'parent',
+      'boundaryParentId',
+      'minHeight',
+      'minHeightBiasTop',
+      'minHeightBiasBottom',
+      'minWidth',
+      'minWidthBiasLeft',
+      'minWidthBiasRight',
+      'complexCalculatedPadding',
+      'bbox',
+      'width',
+      'height',
+      'orientation',
+      'portOrdering',
+      'border-color',
+      'border-style',
+      'background-color',
+      'border-width',
+      'background-opacity',
+      'background-image-opacity',
+      'color',
+      'text-wrap',
+      'font-family',
+      'font-size',
+      'font-style',
+      'font-weight',
+      'background-image',
+      'image',
+      'annotationsView'
+    ];
+
+    keysToCopy.forEach(function (key) {
+      if (currentJson.data[key] !== undefined) {
+        if (key === 'annotationsView') {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+        else if (currentJson.data[key] && typeof currentJson.data[key] === 'object') {
+          nodeJson.data[key] = $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key]);
+        }
+        else {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+      }
+    });
+
+    nodeJson.data.statesandinfos = currentJson.data.statesandinfos || [];
+    if (currentJson.data.auxunitlayouts !== undefined) {
+      nodeJson.data.auxunitlayouts = currentJson.data.auxunitlayouts;
+    }
+    nodeJson.data.ports = currentJson.data.ports || [];
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
   }
 
   function convertPdEdgeType(event, toClass, mode) {
@@ -773,13 +897,19 @@ module.exports = function (chiseInstance) {
   }
 
   function convertPdNodeType(event, toClass) {
-    var cyTarget = event.target || event.cyTarget;
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
     if (!cyTarget) {
       return;
     }
 
-    console.log("Changed node type from", cyTarget.data("class"), "to", toClass);
-    logNodeSnapshot("Selected node snapshot:", cyTarget);
+    console.log("Change PD node type", {
+      fromClass: cyTarget.data("class"),
+      toClass: toClass
+    });
+    logLogicalNodeDebug("Change PD node type before", cyTarget);
+    replacePdNodeWithBatch(cyTarget, toClass);
+    logLogicalNodeDebug("Change PD node type after", cy.getElementById(cyTarget.id()));
   }
 
   function createPdNodeTypeMenu(nodeClass, submenuItems) {
