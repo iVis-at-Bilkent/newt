@@ -450,6 +450,110 @@ module.exports = function (chiseInstance) {
     }
   }
 
+  function replaceSbmlNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var defaultProps = chiseInstance.elementUtilities.getDefaultProperties(toClass);
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var nodeJson = {
+      group: currentJson.group,
+      data: {
+        id: currentJson.data.id,
+        class: toClass,
+        language: currentJson.data.language
+      },
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+
+    nodeJson.data['background-color'] = defaultProps['background-color'];
+    nodeJson.data['border-color'] = defaultProps['border-color'];
+
+    var keysToCopy = [
+      'label',
+      'parent',
+      'boundaryParentId',
+      'simulation',
+      'minHeight',
+      'minHeightBiasTop',
+      'minHeightBiasBottom',
+      'minWidth',
+      'minWidthBiasLeft',
+      'minWidthBiasRight',
+      'complexCalculatedPadding',
+      'bbox',
+      'width',
+      'height',
+      'orientation',
+      'portOrdering',
+      'border-style',
+      'border-width',
+      'background-opacity',
+      'background-image-opacity',
+      'color',
+      'text-wrap',
+      'font-family',
+      'font-size',
+      'font-style',
+      'font-weight',
+      'background-image',
+      'image',
+      'annotationsView'
+    ];
+
+    keysToCopy.forEach(function (key) {
+      if (currentJson.data[key] !== undefined) {
+        if (key === 'annotationsView') {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+        else if (currentJson.data[key] && typeof currentJson.data[key] === 'object') {
+          nodeJson.data[key] = $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key]);
+        }
+        else {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+      }
+    });
+
+    nodeJson.data.statesandinfos = currentJson.data.statesandinfos || [];
+    if (currentJson.data.auxunitlayouts !== undefined) {
+      nodeJson.data.auxunitlayouts = currentJson.data.auxunitlayouts;
+    }
+    nodeJson.data.ports = currentJson.data.ports || [];
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
+  }
+
   function convertPdEdgeType(event, toClass, mode) {
     var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
     var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
@@ -1089,6 +1193,63 @@ module.exports = function (chiseInstance) {
     });
   }
 
+  function createSbmlNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-sbml-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Node Type',
+      selector: 'node[language="SBML"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-sbml-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            logLogicalNodeDebug('Change SBML node type before', cyTarget);
+            replaceSbmlNodeWithBatch(cyTarget, item.toClass);
+            logLogicalNodeDebug('Change SBML node type after', cy.getElementById(cyTarget.id()));
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlNodeTypeMenuItems() {
+    var nodeTypes = [
+      'gene',
+      'rna',
+      'antisense rna',
+      'protein',
+      'truncated protein',
+      'ion channel',
+      'receptor',
+      'ion',
+      'simple molecule',
+      'unknown molecule',
+      'degradation',
+      'drug',
+      'phenotype sbml'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createSbmlNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'phenotype sbml' ? 'Phenotype' : candidate.replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+          }),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
   function createAfAuxiliaryUnitTypeMenu(nodeClass, submenuItems) {
     return {
       id: 'ctx-menu-change-af-auxiliary-unit-type-' + nodeClass.replace(/\s+/g, '-'),
@@ -1621,6 +1782,7 @@ module.exports = function (chiseInstance) {
     var afAuxiliaryUnitTypeMenuItems = createAfAuxiliaryUnitTypeMenuItems();
     var afNodeTypeMenuItems = createAfNodeTypeMenuItems();
     var sifNodeTypeMenuItems = createSifNodeTypeMenuItems();
+    var sbmlNodeTypeMenuItems = createSbmlNodeTypeMenuItems();
     var sbmlLogicalNodeTypeMenuItems = createSbmlLogicalNodeTypeMenuItems();
     var sbmlProcessNodeTypeMenuItems = createSbmlProcessNodeTypeMenuItems();
     const contextMenuItems = [
@@ -1943,6 +2105,22 @@ module.exports = function (chiseInstance) {
       sbmlProcessNodeTypeMenuItems[4],
       sbmlProcessNodeTypeMenuItems[5],
       // Change Process Node Type Ends
+
+      // Change SBML Node Type Starts
+      sbmlNodeTypeMenuItems[0],
+      sbmlNodeTypeMenuItems[1],
+      sbmlNodeTypeMenuItems[2],
+      sbmlNodeTypeMenuItems[3],
+      sbmlNodeTypeMenuItems[4],
+      sbmlNodeTypeMenuItems[5],
+      sbmlNodeTypeMenuItems[6],
+      sbmlNodeTypeMenuItems[7],
+      sbmlNodeTypeMenuItems[8],
+      sbmlNodeTypeMenuItems[9],
+      sbmlNodeTypeMenuItems[10],
+      sbmlNodeTypeMenuItems[11],
+      sbmlNodeTypeMenuItems[12],
+      // Change SBML Node Type Ends
 
       // Change AF Auxiliary Unit Type Starts
       afAuxiliaryUnitTypeMenuItems[0],
