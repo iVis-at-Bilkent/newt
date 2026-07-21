@@ -277,6 +277,7 @@ var LayoutPropertiesView = Backbone.View.extend({
     }
 
     var layoutStyle = currentLayoutProperties.layoutStyle || "force-directed";
+    var fcosePreferences = preferences || {};
     var options;
 
     if (layoutStyle === "orthogonal") {
@@ -285,7 +286,7 @@ var LayoutPropertiesView = Backbone.View.extend({
         name: "orse",
         fit: currentLayoutProperties.fit,
         padding: currentLayoutProperties.padding,
-        animate: currentLayoutProperties.animate,
+        animate: "end",
         idealEdgeLength: currentLayoutProperties.orthogonalIdealEdgeLength,
         maxIterations: currentLayoutProperties.maxIterations,
         initialCoolingFactor: currentLayoutProperties.initialCoolingFactor,
@@ -333,9 +334,8 @@ var LayoutPropertiesView = Backbone.View.extend({
         parentSideAdhesion: currentLayoutProperties.parentSideAdhesion,
         boundaryNodeConstraint: currentLayoutProperties.boundaryNodeConstraint,
       };
+      options = $.extend({}, options, fcosePreferences);
     }
-
-    options = $.extend({}, options, preferences);
 
     return options;
   },
