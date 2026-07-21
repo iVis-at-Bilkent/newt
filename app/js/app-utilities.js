@@ -844,7 +844,6 @@ appUtilities.defaultLayoutProperties = {
   orthogonalIdealEdgeLength: 50,
   edgeSeparation: 3,
   quasiOrthogonal: false,
-  unitBoundingMode: "box",
   boundaryNodeConstraint: function (node) {
     var boundaryParentId = node.data('boundaryParentId');
     if (boundaryParentId && boundaryParentId.length > 0) {

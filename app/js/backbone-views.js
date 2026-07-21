@@ -296,7 +296,6 @@ var LayoutPropertiesView = Backbone.View.extend({
           currentLayoutProperties.orthogonalizationInterval,
         edgeSeparation: currentLayoutProperties.edgeSeparation,
         quasiOrthogonal: currentLayoutProperties.quasiOrthogonal,
-        unitBoundingMode: currentLayoutProperties.unitBoundingMode,
       };
     } else {
       options = {
@@ -486,18 +485,13 @@ var LayoutPropertiesView = Backbone.View.extend({
           );
           currentLayoutProperties.quasiOrthogonal =
             document.getElementById("quasi-orthogonal").checked;
-          currentLayoutProperties.unitBoundingMode = document.getElementById(
-            "unit-polygons"
-          ).checked
-            ? "polygon"
-            : "box";
         }
 
         // reset currentLayoutProperties in scratch pad
         appUtilities.setScratch(
           cy,
-          currentLayoutProperties,
-          "currentLayoutProperties"
+          "currentLayoutProperties",
+          currentLayoutProperties
         );
 
         $(self.el).modal("toggle");
