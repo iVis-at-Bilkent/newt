@@ -2667,46 +2667,10 @@
       <!-- Orthogonal layout settings -->
        <tr class="orthogonal-layout-setting">
         <td>
-          <span class="add-on layout-text"> Maximum Iterations </span>
+          <span class="add-on layout-text"> Node Repulsion </span>
         </td>
         <td>
-          <input id="max-iterations" type="number" min="1" class="sbgn-input-small layout-text" value= <%= maxIterations %> >
-        </td>
-       </tr>
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Cooling Factor </span>
-        </td>
-        <td>
-          <input id="cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= initialCoolingFactor %> >
-        </td>
-       </tr>
-
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Orthogonal Threshold </span>
-        </td>
-        <td>
-          <input id="orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orthogonalityThresholdDeg %> >
-        </td>
-       </tr>
-
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Orthogonal Increment (deg) </span>
-        </td>
-        <td>
-          <input id="orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= thresholdIncrementDeg %> >
-        </td>
-       </tr>
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Orthogonal Interval (iter) </span>
-        </td>
-        <td>
-          <input id="orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orthogonalizationInterval %> >
+          <input id="orse-node-repulsion" type="number" min="0" class="sbgn-input-small layout-text" value= <%= orse.nodeRepulsion %> >
         </td>
        </tr>
        
@@ -2715,16 +2679,79 @@
           <span class="add-on layout-text"> Ideal Edge Length </span>
         </td>
         <td>
-          <input id="orth-ideal-edge-length" type="number" min="10" class="sbgn-input-small layout-text" value= <%= orthogonalIdealEdgeLength %> >
+          <input id="orse-ideal-edge-length" type="number" min="10" class="sbgn-input-small layout-text" value= <%= orse.idealEdgeLength %> >
         </td>
        </tr>  
        
        <tr class="orthogonal-layout-setting">
         <td>
+          <span class="add-on layout-text"> Edge Elasticity </span>
+        </td>
+        <td>
+          <input id="orse-edge-elasticity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= orse.edgeElasticity %> >
+        </td>
+       </tr>  
+
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Maximum Iterations </span>
+        </td>
+        <td>
+          <input id="orse-max-iterations" type="number" min="1" class="sbgn-input-small layout-text" value= <%= orse.maxIterations %> >
+        </td>
+       </tr>
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Initial Cooling Factor </span>
+        </td>
+        <td>
+          <input id="orse-initial-cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= orse.initialCoolingFactor %> >
+        </td>
+       </tr>
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Orthogonalization Interval</span>
+        </td>
+        <td>
+          <input id="orse-orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orse.orthogonalizationInterval %> >
+        </td>
+       </tr>
+
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Orthogonality Threshold </span>
+        </td>
+        <td>
+          <input id="orse-orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orse.orthogonalityThresholdDeg %> >
+        </td>
+       </tr>
+       
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Relax Amount </span>
+        </td>
+        <td>
+          <input id="orse-relax-amount" type="number" min="0" step="1" class="sbgn-input-small layout-text" value= <%= orse.relaxAmountDeg %> >
+        </td>
+       </tr>
+
+       <tr class="orthogonal-layout-setting">
+        <td>
+          <span class="add-on layout-text"> Orthogonal Increment (deg) </span>
+        </td>
+        <td>
+          <input id="orse-orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orse.thresholdIncrementDeg %> >
+        </td>
+       </tr>      
+
+       <tr class="orthogonal-layout-setting">
+        <td>
           <span class="add-on layout-text"> Edge Seperation </span>
         </td>
         <td>
-          <input id="edge-seperation" type="number" min="0" max="50" class="sbgn-input-small layout-text" value= <%= edgeSeparation %> >
+          <input id="orse-edge-separation" type="number" min="0" max="50" class="sbgn-input-small layout-text" value= <%= orse.edgeSeparation %> >
         </td>
        </tr>         
        
@@ -2733,7 +2760,7 @@
           <span class="add-on layout-text"> Quasi-Orthogonal </span>
         </td>
         <td>
-          <input id="quasi-orthogonal" type="checkbox" class="layout-text" <% if (quasiOrthogonal){ %> checked<%}%>>
+          <input id="orse-quasi-orthogonal" type="checkbox" class="layout-text" <% if (orse.quasiOrthogonal){ %> checked<%}%>>
         </td>
       </tr>
 

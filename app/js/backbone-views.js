@@ -284,19 +284,20 @@ var LayoutPropertiesView = Backbone.View.extend({
       options = {
         layoutStyle: layoutStyle,
         name: "orse",
+        animate: "end",
         fit: currentLayoutProperties.fit,
         padding: currentLayoutProperties.padding,
-        animate: "end",
-        idealEdgeLength: currentLayoutProperties.orthogonalIdealEdgeLength,
-        maxIterations: currentLayoutProperties.maxIterations,
-        initialCoolingFactor: currentLayoutProperties.initialCoolingFactor,
-        orthogonalityThresholdDeg:
-          currentLayoutProperties.orthogonalityThresholdDeg,
-        thresholdIncrementDeg: currentLayoutProperties.thresholdIncrementDeg,
-        orthogonalizationInterval:
-          currentLayoutProperties.orthogonalizationInterval,
-        edgeSeparation: currentLayoutProperties.edgeSeparation,
-        quasiOrthogonal: currentLayoutProperties.quasiOrthogonal,
+        nodeRepulsion: currentLayoutProperties.orse.nodeRepulsion,
+        idealEdgeLength: currentLayoutProperties.orse.idealEdgeLength,
+        edgeElasticity: currentLayoutProperties.orse.edgeElasticity,
+        maxIterations: currentLayoutProperties.orse.maxIterations,
+        initialCoolingFactor: currentLayoutProperties.orse.initialCoolingFactor,
+        orthogonalizationInterval: currentLayoutProperties.orse.orthogonalizationInterval,
+        orthogonalityThresholdDeg: currentLayoutProperties.orse.orthogonalityThresholdDeg,
+        relaxAmountDeg: currentLayoutProperties.orse.relaxAmountDeg,
+        thresholdIncrementDeg: currentLayoutProperties.orse.thresholdIncrementDeg,
+        edgeSeparation: currentLayoutProperties.orse.edgeSeparation,
+        quasiOrthogonal: currentLayoutProperties.orse.quasiOrthogonal,
       };
     } else {
       options = {
@@ -462,29 +463,38 @@ var LayoutPropertiesView = Backbone.View.extend({
 
         if (currentLayoutProperties.layoutStyle === "orthogonal") {
           // ortogonal layout settings
-          currentLayoutProperties.maxIterations = Number(
-            document.getElementById("max-iterations").value
+          currentLayoutProperties.orse.nodeRepulsion = Number(
+            document.getElementById("orse-node-repulsion").value
           );
-          currentLayoutProperties.initialCoolingFactor = Number(
-            document.getElementById("cooling-factor").value
+          currentLayoutProperties.orse.idealEdgeLength = Number(
+            document.getElementById("orse-ideal-edge-length").value
           );
-          currentLayoutProperties.orthogonalityThresholdDeg = Number(
-            document.getElementById("orth-threshold").value
+          currentLayoutProperties.orse.edgeElasticity = Number(
+            document.getElementById("orse-edge-elasticity").value
           );
-          currentLayoutProperties.thresholdIncrementDeg = Number(
-            document.getElementById("orth-increment").value
+          currentLayoutProperties.orse.maxIterations = Number(
+            document.getElementById("orse-max-iterations").value
           );
-          currentLayoutProperties.orthogonalizationInterval = Number(
-            document.getElementById("orth-interval").value
+          currentLayoutProperties.orse.initialCoolingFactor = Number(
+            document.getElementById("orse-initial-cooling-factor").value
           );
-          currentLayoutProperties.orthogonalIdealEdgeLength = Number(
-            document.getElementById("orth-ideal-edge-length").value
+          currentLayoutProperties.orse.orthogonalizationInterval = Number(
+            document.getElementById("orse-orth-interval").value
           );
-          currentLayoutProperties.edgeSeparation = Number(
-            document.getElementById("edge-seperation").value
+          currentLayoutProperties.orse.orthogonalityThresholdDeg = Number(
+            document.getElementById("orse-orth-threshold").value
           );
-          currentLayoutProperties.quasiOrthogonal =
-            document.getElementById("quasi-orthogonal").checked;
+          currentLayoutProperties.orse.relaxAmountDeg = Number(
+            document.getElementById("orse-relax-amount").value
+          );
+          currentLayoutProperties.orse.thresholdIncrementDeg = Number(
+            document.getElementById("orse-orth-increment").value
+          );
+          currentLayoutProperties.orse.edgeSeparation = Number(
+            document.getElementById("orse-edge-separation").value
+          );
+          currentLayoutProperties.orse.quasiOrthogonal =
+            document.getElementById("orse-quasi-orthogonal").checked;
         }
 
         // reset currentLayoutProperties in scratch pad
