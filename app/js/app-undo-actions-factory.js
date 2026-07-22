@@ -2,25 +2,9 @@ var jquery = $ = require('jquery');
 var lo_get = require('lodash.get');
 var lo_set = require('lodash.set');
 var appUtilities = require('./app-utilities');
-var annotationLayers = require('./annotation-layers');
 
 module.exports = function (cy) {
   var appUndoActions = {};
-
-  function describeEdgeRef(edge) {
-    if (!edge || !edge.length) {
-      return null;
-    }
-
-    return {
-      id: edge.id(),
-      removed: edge.removed(),
-      inside: edge.inside(),
-      class: edge.data("class"),
-      source: edge.data("source"),
-      target: edge.data("target")
-    };
-  }
 
   appUndoActions.changeDataDirty = function (param) {
     var result = {};
@@ -377,12 +361,10 @@ module.exports = function (cy) {
     var highlightColor = $('#highlight-color').val();
     var extraHighlightThickness = Number($('#highlight-thickness').val());
 
-    highlightColor = appUtilities.makeNeonHSL(highlightColor);
-
     viewUtilities.changeHighlightStyle(
       0,
-      { 'overlay-color': highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+extraHighlightThickness },
-      { 'overlay-color': highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+extraHighlightThickness/2.0}
+      { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+      { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
     );
    }
 
@@ -487,65 +469,6 @@ module.exports = function (cy) {
 
     return result;
   }
-
-  appUndoActions.annotationSetElement = function (param) {
-    return annotationLayers.undoSetElement(param);
-  };
-
-  appUndoActions.annotationSetLayer = function (param) {
-    return annotationLayers.undoSetLayer(param);
-  };
-
-  appUndoActions.convertEdgeType = function (param) {
-    var currentEdge = cy.getElementById(param.currentEdgeId);
-
-    if (!currentEdge || currentEdge.empty()) {
-      return param;
-    }
-
-    var currentEdgeData = currentEdge.data();
-
-    console.log('before move, edge obj:', currentEdge, currentEdge.id());
-    currentEdge = currentEdge.move({
-      source: param.newEdgeSource,
-      target: param.newEdgeTarget
-    });
-    console.log('after move, edge obj:', currentEdge, currentEdge.id());
-
-    currentEdge.data("class", param.newEdgeParams.class);
-    currentEdge.data("language", param.newEdgeParams.language);
-    currentEdge.data("width", param.newEdgeParams.width);
-    currentEdge.data("line-color", param.newEdgeParams.lineColor);
-
-    if (param.newEdgeExtraData) {
-      if (param.newEdgeExtraData.portsource !== undefined) {
-        currentEdge.data("portsource", param.newEdgeExtraData.portsource);
-      }
-      if (param.newEdgeExtraData.porttarget !== undefined) {
-        currentEdge.data("porttarget", param.newEdgeExtraData.porttarget);
-      }
-      if (param.newEdgeExtraData.cardinality !== undefined) {
-        currentEdge.data("cardinality", param.newEdgeExtraData.cardinality);
-      }
-    }
-
-    return {
-      currentEdgeId: currentEdgeData.id,
-      newEdgeSource: currentEdgeData.source,
-      newEdgeTarget: currentEdgeData.target,
-      newEdgeParams: {
-        class: currentEdgeData.class,
-        language: currentEdgeData.language,
-        width: currentEdgeData.width,
-        lineColor: currentEdgeData["line-color"]
-      },
-      newEdgeExtraData: {
-        portsource: currentEdgeData.portsource,
-        porttarget: currentEdgeData.porttarget,
-        cardinality: currentEdgeData.cardinality
-      }
-    };
-  };
 
   return appUndoActions;
 };

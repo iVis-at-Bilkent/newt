@@ -26,8 +26,7 @@ var fillBioGeneContainer = function (node) {
   if (geneClass != 'macromolecule' && geneClass != 'nucleic acid feature' &&
           geneClass != 'unspecified entity' && geneClass != 'BA plain' && 
           geneClass != 'BA macromolecule' && geneClass != 'BA nucleic acid feature' &&
-          geneClass != 'BA unspecified entity' && geneClass != 'SIF macromolecule'&& 
-          geneClass != 'protein'&& geneClass != 'gene') {
+          geneClass != 'BA unspecified entity' && geneClass != 'SIF macromolecule') {
     $("#biogene-container").html("");
     return;
   }

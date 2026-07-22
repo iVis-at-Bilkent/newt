@@ -5,13 +5,10 @@ var chroma = require("chroma-js");
 var FileSaver = require("file-saver");
 var cytoscape = require("cytoscape");
 var chise = require("chise");
-var Plotly = require('plotly.js-dist');
 
 var appUtilities = require("./app-utilities");
 var setFileContent = appUtilities.setFileContent.bind(appUtilities);
 const colorPickerUtils = require("./color-picker-utils");
-const databaseUtilities = require("./database-utilities");
-const { data } = require("jquery");
 //var annotationsHandler = require('./annotations-handler');
 
 // since biogene service from PC is not available any more, we now give link to gene properties in My Cancer Genome organization
@@ -481,8 +478,6 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       ).mapColorSchemeStyle;
       var raw_id = $(this).attr("id");
       var scheme_id = raw_id.replace("map-color-scheme_", "");
-      // set property if user profile exists
-      appUtilities.setUserProfileProperty("generalProperties", "mapColorScheme", scheme_id);
       appUtilities.applyMapColorScheme(scheme_id, scheme_type, self);
       updateCloneMarkers();
     });
@@ -498,8 +493,6 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         ).mapColorScheme;
         //change the currently displayed html element
         var selected_style = $("#color-scheme-inspector-style-select").val();
-        // set property if user profile exists
-        appUtilities.setUserProfileProperty("generalProperties", "mapColorSchemeStyle", selected_style);
         //change to the color scheme choice to match current style
         appUtilities.applyMapColorScheme(
           current_scheme_id,
@@ -519,8 +512,6 @@ var ColorSchemeInspectorView = Backbone.View.extend({
       ).mapColorSchemeStyle;
       var scheme_id = raw_id.replace("map-color-scheme_invert_", "");
       var inverted_id = schemes[scheme_id].invert;
-      // set property if user profile exists
-      appUtilities.setUserProfileProperty("generalProperties", "mapColorScheme", inverted_id);
       appUtilities.applyMapColorScheme(inverted_id, scheme_type, self);
       updateCloneMarkers();
     });
@@ -531,10 +522,6 @@ var ColorSchemeInspectorView = Backbone.View.extend({
         appUtilities.defaultGeneralProperties.mapColorScheme;
       var defaultColorSchemeStyle =
         appUtilities.defaultGeneralProperties.mapColorSchemeStyle;
-      if (appUtilities.hasUserProfile()) {
-        appUtilities.setUserProfileProperty("generalProperties", "mapColorScheme", defaultColorScheme);
-        appUtilities.setUserProfileProperty("generalProperties", "mapColorSchemeStyle", defaultColorSchemeStyle);
-      }
       appUtilities.applyMapColorScheme(
         defaultColorScheme,
         defaultColorSchemeStyle,
@@ -607,25 +594,12 @@ var GeneralPropertiesParentView = Backbone.View.extend({
     var topologyGrouping = chiseInstance.sifTopologyGrouping;
 
     chiseInstance.setShowComplexName(currentGeneralProperties.showComplexName);
-    if (chiseInstance.getSbgnvizInstance().setCalculateBoundaryPadding) {
-      chiseInstance.getSbgnvizInstance().setCalculateBoundaryPadding(currentGeneralProperties.calculateBoundaryPadding);
-    }
     chiseInstance.refreshPaddings(); // Refresh/recalculate paddings
 
     if (currentGeneralProperties.enablePorts) {
       chiseInstance.enablePorts();
     } else {
       chiseInstance.disablePorts();
-    }
-
-    if (currentGeneralProperties.enableEntityStateSynchronization) {
-      appUtilities.synchronizeStates();
-    } 
-
-    if (currentGeneralProperties.rememberDirectoryToPersist) {
-      appUtilities.setRememberDirectoryToPersist(true);
-    } else {
-      appUtilities.setRememberDirectoryToPersist(false);
     }
 
     if (currentGeneralProperties.allowCompoundNodeResize) {
@@ -687,45 +661,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       update: self.applyUpdate,
     };
 
-    self.params.enableEntityStateSynchronization = {
-      id: "enable-entity-state-synchronization",
-      type: "checkbox",
-      property: "currentGeneralProperties.enableEntityStateSynchronization",
-      update: self.applyUpdate,
-    };
-
     self.params.enableSIFTopologyGrouping = {
       id: "enable-sif-topology-grouping",
       type: "checkbox",
       property: "currentGeneralProperties.enableSIFTopologyGrouping",
-      update: self.applyUpdate,
-    };
-
-    self.params.rememberDirectoryToPersist = {
-      id: "remember-directory-to-persist",
-      type: "checkbox",
-      property: "currentGeneralProperties.rememberDirectoryToPersist",
-      update: self.applyUpdate,
-    };
-
-    self.params.storeUserProfile = {
-      id: "store-user-profile",
-      type: "checkbox",
-      property: "currentGeneralProperties.storeUserProfile",
-      update: self.applyUpdate,
-    };
-
-    self.params.boundarySnapThreshold = {
-      id: "boundary-snap-threshold",
-      type: "text",
-      property: "currentGeneralProperties.boundarySnapThreshold",
-      update: self.applyUpdate,
-    };
-
-    self.params.calculateBoundaryPadding = {
-      id: "calculate-boundary-padding",
-      type: "checkbox",
-      property: "currentGeneralProperties.calculateBoundaryPadding",
       update: self.applyUpdate,
     };
 
@@ -787,11 +726,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       var callback = function () {
         $("#map-type").val(chiseInstance.getMapType());
-        var activeChiseId =
-          appUtilities.networkIdsStack[appUtilities.networkIdsStack.length - 1];
-        $("#" + appUtilities.getMapTypeDivId(activeChiseId)).text(
-          appUtilities.getTabLabelName(chiseInstance.getMapType())
-        );
+        var activeChiseId = appUtilities.networkIdsStack[appUtilities.networkIdsStack.length-1];
+        $('#' + appUtilities.getMapTypeDivId(activeChiseId)).text(appUtilities.getTabLabelName(chiseInstance.getMapType()));
       };
       // use active cy instance
       var cy = appUtilities.getActiveCy();
@@ -823,23 +759,23 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         //ok
       } else if (
         (currentMapType == "PD" || currentMapType == "AF") &&
-        (newMapType == "HybridAny" || newMapType == "HybridPDAF") &&
+        (newMapType == "HybridAny" || newMapType == "HybridSbgn") &&
         !validChange
       ) {
         validChange = true;
         //ok
       } else if (
-        (currentMapType == "HybridPDAF") &&
-        (newMapType == "HybridAny" || newMapType == "HybridPDAF") &&
+        currentMapType == "HybridSbgn" &&
+        newMapType == "HybridAny" &&
         !validChange
       ) {
         validChange = true;
       } else if (
-        (currentMapType == "HybridPDAF") &&
+        currentMapType == "HybridSbgn" &&
         (newMapType == "PD" || newMapType == "AF")
       ) {
         if (newMapType == "PD") {
-          //check no AF elements in network
+          //check no AF elements in netwrok
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (elements[i].data("language") == "AF") {
@@ -848,7 +784,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           }
           validChange = checkType;
         } else {
-          //check no PD elements in network
+          //check no PD elements in netwrok
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (elements[i].data("language") == "PD") {
@@ -858,8 +794,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           validChange = checkType;
         }
       } else if (currentMapType == "HybridAny" && !validChange) {
-        if (newMapType == "HybridPDAF") {
-          //check no SIF and SBML elements in network
+        if (newMapType == "HybridSbgn") {
+          //check no SIF elements in netwrok
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (
@@ -871,7 +807,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           }
           validChange = checkType;
         } else if (newMapType == "PD") {
-          //check no AF  OR SIF elements in network
+          //check no AF  OR SIF elements in netwrok
           var checkType = true;
           for (var i = 0; i < elements.length && checkType; i++) {
             if (
@@ -896,20 +832,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
             }
           }
 
-          validChange = checkType;
-        } else if (newMapType == "SIF") {
-          //check no PD, AF or SBML elements in network
-          var checkType = true;
-          for (var i = 0; i < elements.length && checkType; i++) {
-            if (
-              elements[i].data("language") == "PD" ||
-              elements[i].data("language") == "AF" ||
-              elements[i].data("language") == "SBML" ||
-              elements[i].data("class").includes("compartment")
-            ) {
-              checkType = false;
-            }
-          }
           validChange = checkType;
         } else if (newMapType == "SBML") {
           //check no PD  AF or SIF elements in netwrok
@@ -948,9 +870,9 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       } else {
         $("#map-type").val(currentMapType);
         appUtilities.promptMapTypeView.render(
-          "You cannot change a map with " +
+          "You cannot change map type " +
             appUtilities.mapTypesToViewableText[currentMapType] +
-            " content to a map of type " +
+            " to a map of type " +
             appUtilities.mapTypesToViewableText[newMapType] +
             "!"
         );
@@ -967,7 +889,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.compoundPadding.value = Number(newValue);
-      appUtilities.setUserProfileProperty("generalProperties", "compoundPadding", self.params.compoundPadding.value);
       // var ur = cy.undoRedo();
       //var actions = [];
       //actions.push({name:"changeMenu", param:self.params.compoundPadding});
@@ -994,7 +915,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           valueMap: self.params.arrowScale.value,
         },
       });
-      appUtilities.setUserProfileProperty("generalProperties", "arrowScale", self.params.arrowScale.value);
       ur.do("batch", actions);
       $("#arrow-scale").blur();
     });
@@ -1006,7 +926,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.allowCompoundNodeResize.value = $(
         "#allow-compound-node-resize"
       ).prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "allowCompoundNodeResize", self.params.allowCompoundNodeResize.value);
       cy.undoRedo().do("changeMenu", self.params.allowCompoundNodeResize);
       $("#allow-compound-node-resize").blur();
     });
@@ -1018,7 +937,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.inferNestingOnLoad.value = $("#infer-nesting-on-load").prop(
         "checked"
       );
-      appUtilities.setUserProfileProperty("generalProperties", "inferNestingOnLoad", self.params.inferNestingOnLoad.value);
       cy.undoRedo().do("changeMenu", self.params.inferNestingOnLoad);
       $("#infer-nesting-on-load").blur();
     });
@@ -1028,19 +946,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       var cy = appUtilities.getActiveCy();
 
       self.params.enablePorts.value = $("#enable-ports").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "enablePorts", self.params.enablePorts.value);
       cy.undoRedo().do("changeMenu", self.params.enablePorts);
       $("#enable-ports").blur();
-    });
-
-    $(document).on("change", "#enable-entity-state-synchronization", function (evt) {
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.enableEntityStateSynchronization.value = $("#enable-entity-state-synchronization").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "enableEntityStateSynchronization", self.params.enableEntityStateSynchronization.value);
-      cy.undoRedo().do("changeMenu", self.params.enableEntityStateSynchronization);
-      $("#enable-entity-state-synchronization").blur();
     });
 
     $(document).on("change", "#enable-sif-topology-grouping", function (evt) {
@@ -1081,59 +988,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
           actions.push({ name: "layout", param: layoutParam });
         }
       }
-      appUtilities.setUserProfileProperty("generalProperties", "enableSIFTopologyGrouping", self.params.enableSIFTopologyGrouping.value);      
+
       cy.undoRedo().do("batch", actions);
       // cy.undoRedo().do("changeMenu", self.params.enableSIFTopologyGrouping);
       $("#enable-sif-topology-grouping").blur();
-    });
-
-    $(document).on("change", "#remember-directory-to-persist", function (evt) {
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.rememberDirectoryToPersist.value = $("#remember-directory-to-persist").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "rememberDirectoryToPersist", self.params.rememberDirectoryToPersist.value);      
-      cy.undoRedo().do("changeMenu", self.params.rememberDirectoryToPersist);
-      $("#remember-directory-to-persist").blur();
-    });
-
-    $(document).on("change", "#store-user-profile", function (evt) {
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.storeUserProfile.value = $("#store-user-profile").prop("checked");
-
-      // if storeUserProfile is checked save user profile else delete current user profile
-      if (self.params.storeUserProfile.value) {
-        appUtilities.setUserProfile();
-      } else {
-        appUtilities.removeUserProfile();
-      }
-
-      cy.undoRedo().do("changeMenu", self.params.storeUserProfile);
-      $("#store-user-profile").blur();
-    });
-
-    $(document).on("change", "#boundary-snap-threshold", function (evt) {
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.boundarySnapThreshold.value = Math.max(0, Number($("#boundary-snap-threshold").val()));
-      appUtilities.setUserProfileProperty("generalProperties", "boundarySnapThreshold", self.params.boundarySnapThreshold.value);
-      
-      cy.undoRedo().do("changeMenu", self.params.boundarySnapThreshold);
-      $("#boundary-snap-threshold").blur();
-    });
-
-    $(document).on("change", "#calculate-boundary-padding", function (evt) {
-      // use active cy instance
-      var cy = appUtilities.getActiveCy();
-
-      self.params.calculateBoundaryPadding.value = $("#calculate-boundary-padding").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "calculateBoundaryPadding", self.params.calculateBoundaryPadding.value);
-
-      cy.undoRedo().do("changeMenu", self.params.calculateBoundaryPadding);
-      $("#calculate-boundary-padding").blur();
     });
 
     $(document).on("change", "#highlight-thickness", function (evt) {
@@ -1148,18 +1006,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       viewUtilities.changeHighlightStyle(
         0,
-        {
-          "overlay-color": highlightColor,
-          "overlay-opacity": 0.4,
-          "overlay-padding": 3 + extraHighlightThickness,
-        },
-        {
-          "overlay-color": highlightColor,
-          "overlay-opacity": 0.4,
-          "overlay-padding": 3 + extraHighlightThickness / 2.0,
-        }
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
       );
-      appUtilities.setUserProfileProperty("generalProperties", "extraHighlightThickness", self.params.extraHighlightThickness.value);      
+
       cy.undoRedo().do("changeMenu", self.params.extraHighlightThickness);
       $("#highlight-thickness").blur();
     });
@@ -1173,22 +1023,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       self.params.highlightColor.value = $("#highlight-color").val();
       var extraHighlightThickness = self.params.extraHighlightThickness.value;
       var highlightColor = self.params.highlightColor.value;
-      highlightColor = appUtilities.makeNeonHSL(highlightColor);
 
       viewUtilities.changeHighlightStyle(
         0,
-        {
-          "overlay-color": highlightColor,
-          "overlay-opacity": 0.4,
-          "overlay-padding": 3 + extraHighlightThickness,
-        },
-        {
-          "overlay-color": highlightColor,
-          "overlay-opacity": 0.4,
-          "overlay-padding": 3 + extraHighlightThickness / 2.0,
-        }
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness },
+        { 'overlay-color': highlightColor, 'overlay-opacity': 0.2, 'overlay-padding': 3+extraHighlightThickness/2.0}
       );
-      appUtilities.setUserProfileProperty("generalProperties", "highlightColor", self.params.highlightColor.value);      
+
       cy.undoRedo().do("changeMenu", self.params.highlightColor);
       $("#highlight-color").blur();
     });
@@ -1209,11 +1050,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      // delete user profile if exists
-      if (appUtilities.hasUserProfile()) {
-        appUtilities.removeUserProfile();
-      }
-
       var ur = cy.undoRedo();
       var actions = [];
 
@@ -1223,18 +1059,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.inferNestingOnLoad;
       self.params.enablePorts.value =
         appUtilities.defaultGeneralProperties.enablePorts;
-      self.params.enableEntityStateSynchronization.value =
-        appUtilities.defaultGeneralProperties.enableEntityStateSynchronization;
       self.params.enableSIFTopologyGrouping.value =
         appUtilities.defaultGeneralProperties.enableSIFTopologyGrouping;
-      self.params.rememberDirectoryToPersist.value =
-        appUtilities.defaultGeneralProperties.rememberDirectoryToPersist;
-      self.params.storeUserProfile.value =
-        appUtilities.defaultGeneralProperties.storeUserProfile;
-      self.params.boundarySnapThreshold.value =
-        appUtilities.defaultGeneralProperties.boundarySnapThreshold;
-      self.params.calculateBoundaryPadding.value =
-        appUtilities.defaultGeneralProperties.calculateBoundaryPadding;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
       self.params.arrowScale.value =
@@ -1252,15 +1078,10 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         param: self.params.inferNestingOnLoad,
       });
       actions.push({ name: "changeMenu", param: self.params.enablePorts });
-      actions.push({ name: "changeMenu", param: self.params.enableEntityStateSynchronization });
       actions.push({
         name: "changeMenu",
         param: self.params.enableSIFTopologyGrouping,
       });
-      actions.push({ name: "changeMenu", param: self.params.rememberDirectoryToPersist });
-      actions.push({ name: "changeMenu", param: self.params.storeUserProfile });
-      actions.push({ name: "changeMenu", param: self.params.boundarySnapThreshold });
-      actions.push({ name: "changeMenu", param: self.params.calculateBoundaryPadding });
       actions.push({
         name: "applySIFTopologyGrouping",
         param: { apply: self.params.enableSIFTopologyGrouping.value },
@@ -1292,47 +1113,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       cy,
       "currentGeneralProperties"
     );
-    
-    // Apply user profile only on FIRST render of this tab (new tab creation),
-    // not on every tab switch. This preserves per-tab settings independence.
-    if (appUtilities.hasUserProfile() && !appUtilities.getScratch(cy, 'profileApplied')) {
-      const userProfile = appUtilities.getUserProfile();
-
-      currentGeneralProperties = Object.assign({}, currentGeneralProperties, userProfile.generalProperties);
-      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
-      appUtilities.setScratch(cy, 'profileApplied', true);
-
-      cy.viewUtilities("get").changeHighlightStyle(
-        0,
-        { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness },
-        { 'overlay-color': currentGeneralProperties.highlightColor, 'overlay-opacity': 0.4, 'overlay-padding': 3+currentGeneralProperties.extraHighlightThickness/2.0}
-      );
-
-      appUtilities.applyMapColorScheme(
-        currentGeneralProperties.mapColorScheme,
-        currentGeneralProperties.mapColorSchemeStyle,
-        appUtilities.colorSchemeInspectorView
-      );
-
-      $(document).ready(function() {
-        if (userProfile.simulationProperties) {
-          $("#inspector-simulation-start").val(Number(userProfile.simulationProperties.simulationStart));
-          $("#inspector-simulation-end").val(Number(userProfile.simulationProperties.simulationEnd));
-          $("#inspector-simulation-step").val(Number(userProfile.simulationProperties.simulationStep));
-        }
-      });
-      this.applyUpdate();
-    } else if (currentGeneralProperties.storeUserProfile && !appUtilities.hasUserProfile()) {
-      currentGeneralProperties.storeUserProfile = false;
-      appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
-    }
-
-    // Mark this tab as initialized so the profile won't be re-applied on future renders.
-    // This covers tabs created before "Store user profile" was checked.
-    if (!appUtilities.getScratch(cy, 'profileApplied')) {
-      appUtilities.setScratch(cy, 'profileApplied', true);
-    }
-
     this.template = _.template($("#map-tab-general-template").html());
     this.$el.empty();
     this.$el.html(this.template(currentGeneralProperties));
@@ -1340,226 +1120,6 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $("#highlight-color").trigger("change");
     });
     $("#map-type").val(chiseInstance.elementUtilities.getMapType());
-    return this;
-  },
-});
-
-
-var MapTabLocalDBSettings = GeneralPropertiesParentView.extend({
-  initialize: function(){
-    var self = this;
-    self.params = {};
-    self.params.epnMatchingPercentage = {
-      id: "epn-match",
-      type: "range",
-      property: "currentGeneralProperties.epnMatchingPercentage",
-      update: self.applyUpdate,
-    };
-    self.params.processIncomingContribution = {
-      id: "process-incoming",
-      type: "range",
-      property: "currentGeneralProperties.processIncomingContribution",
-      update: self.applyUpdate,
-    };
-    self.params.processOutgoingContribution = {
-      id: "process-outgoing",
-      type: "range",
-      property: "currentGeneralProperties.processOutgoingContribution",
-      update: self.applyUpdate,
-    };
-    self.params.processAgentContribution = {
-      id: "process-agent",
-      type: "range",
-      property: "currentGeneralProperties.processAgentContribution",
-      update: self.applyUpdate,
-    };
-    self.params.overallProcessPercentage = {
-      id: "process-agent",
-      type: "range",
-      property: "currentGeneralProperties.overallProcessPercentage",
-      update: self.applyUpdate,
-    };
-    self.params.complexMatchPercentage = {
-      id: "complex-match",
-      type: "range",
-      property: "currentGeneralProperties.complexMatchPercentage",
-      update: self.applyUpdate,
-    };
-    self.params.simpleChemicalCloningThreshold={
-      id: "simple_chemical_cloning",
-      type: "number",
-      property: "currentGeneralProperties.simpleChemicalCloningThreshold",
-      update: self.applyUpdate,
-    }
-    self.params.allowSimpleChemicalCloning = {
-      id: "simple_chemical_allow",
-      type: "checkbox",
-      property: "currentGeneralProperties.allowSimpleChemicalCloning",
-      update: self.applyUpdate,
-    };
-
-    $(document).on("click", "#local-database-default-button", function (evt) {
-      self.params.epnMatchingPercentage.value = 100;
-      self.params.processIncomingContribution.value = 33;
-      self.params.processOutgoingContribution.value = 33;
-      self.params.processAgentContribution.value = 33;
-      self.params.overallProcessPercentage.value = 100;
-      self.params.complexMatchPercentage.value = 100;
-      self.params.simpleChemicalCloningThreshold.value = 3;
-      self.params.allowSimpleChemicalCloning.value =false;
-
-      // Update the UI
-      $("#epn-match").val(self.params.epnMatchingPercentage.value);
-      document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
-      $("#process-incoming").val(self.params.processIncomingContribution.value);
-      document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
-      $("#process-outgoing").val(self.params.processOutgoingContribution.value);
-      document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
-      $("#process-agent").val(self.params.processAgentContribution.value);
-      document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
-      $("#process-overall").val(self.params.overallProcessPercentage.value);
-      document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
-      $("#complex-match").val(self.params.complexMatchPercentage.value);
-      document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
-      $("#simple_chemical_cloning").val(self.params.simpleChemicalCloningThreshold.value);
-      $("#simple_chemical_allow").prop("checked", self.params.allowSimpleChemicalCloning.value);
-    });
-
-    $(document).on("change", "#simple_chemical_allow", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      const isChecked = $(this).prop("checked");
-      $("#simple_chemical_cloning").prop("disabled", !isChecked);
-      self.params.allowSimpleChemicalCloning.value = isChecked;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "allowSimpleChemicalCloning", self.params.allowSimpleChemicalCloning.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.allowSimpleChemicalCloning
-      );
-      self.applyUpdate();
-    });
-
-
-    $(document).on("change", "#epn-match", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      self.params.epnMatchingPercentage.value = Number($("#epn-match").val());
-      document.getElementById('epn-match-value').innerHTML=self.params.epnMatchingPercentage.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "epnMatchingPercentage", self.params.epnMatchingPercentage.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.epnMatchingPercentage
-      );
-      self.applyUpdate();
-    });
-    $(document).on("change", "#process-incoming", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      self.params.processIncomingContribution.value = Number($("#process-incoming").val());
-      document.getElementById('process-incoming-contribution').innerHTML=self.params.processIncomingContribution.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "processIncomingContribution", self.params.processIncomingContribution.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.processIncomingContribution
-      );
-      self.applyUpdate();
-    });
-    $(document).on("change", "#process-outgoing", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      self.params.processOutgoingContribution.value = Number($("#process-outgoing").val());
-      document.getElementById('process-outgoing-contribution').innerHTML=self.params.processOutgoingContribution.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "processOutgoingContribution", self.params.processOutgoingContribution.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.processOutgoingContribution
-      );
-      self.applyUpdate();
-    });
-    $(document).on("change", "#process-agent", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      self.params.processAgentContribution.value = Number($("#process-agent").val());
-      document.getElementById('process-agent-contribution').innerHTML=self.params.processAgentContribution.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "processAgentContribution", self.params.processAgentContribution.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.processAgentContribution
-      );
-      self.applyUpdate();
-    });
-    $(document).on("change", "#process-overall", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      self.params.overallProcessPercentage.value = Number($("#process-overall").val());
-      document.getElementById('process-match-value').innerHTML=self.params.overallProcessPercentage.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "overallProcessPercentage", self.params.overallProcessPercentage.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.overallProcessPercentage
-      );
-      self.applyUpdate();
-    });
-    $(document).on("change", "#complex-match", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      self.params.complexMatchPercentage.value = Number($("#complex-match").val());
-      document.getElementById('complex-match-value').innerHTML=self.params.complexMatchPercentage.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "complexMatchPercentage", self.params.complexMatchPercentage.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.complexMatchPercentage
-      );
-      self.applyUpdate();
-    });
-
-    $(document).on("change", "#simple_chemical_cloning", function (evt) {
-      var cy = appUtilities.getActiveCy();
-      let value = Number(evt.target.value);
-      if(value < 1){
-        value = 1;
-      }
-      self.params.simpleChemicalCloningThreshold.value = value;
-      document.getElementById('simple_chemical_cloning').value = self.params.simpleChemicalCloningThreshold.value;
-      var currentGP = appUtilities.getScratch(cy, 'currentGeneralProperties');
-      if (currentGP.storeUserProfile) {
-        appUtilities.setUserProfileProperty("generalProperties", "simpleChemicalCloningThreshold", self.params.simpleChemicalCloningThreshold.value);
-      }
-      cy.undoRedo().do(
-          "changeMenu",
-          self.params.simpleChemicalCloningThreshold
-      );
-      self.applyUpdate();
-    });      
-  },
-
-  render: function () {
-    // use the active cy instance
-    var cy = appUtilities.getActiveCy();
-
-    // get current general properties of cy
-    var currentGeneralProperties = appUtilities.getScratch(
-      cy,
-      "currentGeneralProperties"
-    );
-
-    this.template = _.template($("#map-tab-local-db-template").html());
-    this.$el.empty();
-    this.$el.html(this.template(currentGeneralProperties));
     return this;
   },
 });
@@ -1608,8 +1168,9 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         // use active cy instance
         var cy = appUtilities.getActiveCy();
 
-        self.params.dynamicLabelSize.value = $("#dynamic-label-size-select option:selected").val();
-        appUtilities.setUserProfileProperty("generalProperties", "dynamicLabelSize", self.params.dynamicLabelSize.value);        
+        self.params.dynamicLabelSize.value = $(
+          "#dynamic-label-size-select option:selected"
+        ).val();
         cy.undoRedo().do("changeMenu", self.params.dynamicLabelSize);
         $("#dynamic-label-size-select").blur();
         self.applyUpdate();
@@ -1620,8 +1181,8 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.showComplexName.value = $("#show-complex-name").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "showComplexName", self.params.showComplexName.value);        
+      self.params.showComplexName.value =
+        $("#show-complex-name").prop("checked");
       cy.undoRedo().do("changeMenu", self.params.showComplexName);
       $("#show-complex-name").blur();
     });
@@ -1630,20 +1191,12 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       "change",
       "#adjust-node-label-font-size-automatically",
       function (evt) {
-        
         // use active cy instance
         var cy = appUtilities.getActiveCy();
-        // get current general properties of cy
-        var currentGeneralProperties = appUtilities.getScratch(
-          cy,
-          "currentGeneralProperties"
-        );
-        self.params.adjustNodeLabelFontSizeAutomatically.value = $("#adjust-node-label-font-size-automatically").prop("checked");
-        appUtilities.setUserProfileProperty("generalProperties", "adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);        
-        currentGeneralProperties = appUtilities.getScratch(
-          cy,
-          "currentGeneralProperties"
-        );
+
+        self.params.adjustNodeLabelFontSizeAutomatically.value = $(
+          "#adjust-node-label-font-size-automatically"
+        ).prop("checked");
         cy.undoRedo().do(
           "changeMenu",
           self.params.adjustNodeLabelFontSizeAutomatically
@@ -1657,8 +1210,9 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.fitLabelsToNodes.value = $("#fit-labels-to-nodes").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToNodes", self.params.fitLabelsToNodes.value);        
+      self.params.fitLabelsToNodes.value = $("#fit-labels-to-nodes").prop(
+        "checked"
+      );
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToNodes);
       $("#fit-labels-to-nodes").blur();
       self.applyUpdate();
@@ -1668,8 +1222,9 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
       // use active cy instance
       var cy = appUtilities.getActiveCy();
 
-      self.params.fitLabelsToInfoboxes.value = $("#fit-labels-to-infoboxes").prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToInfoboxes", self.params.fitLabelsToInfoboxes.value);        
+      self.params.fitLabelsToInfoboxes.value = $(
+        "#fit-labels-to-infoboxes"
+      ).prop("checked");
       cy.undoRedo().do("changeMenu", self.params.fitLabelsToInfoboxes);
       $("#fit-labels-to-infoboxes").blur();
       self.applyUpdate();
@@ -1690,14 +1245,6 @@ var MapTabLabelPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.fitLabelsToInfoboxes;
       self.params.showComplexName.value =
         appUtilities.defaultGeneralProperties.showComplexName;
-      
-      if (appUtilities.hasUserProfile()) {
-        appUtilities.setUserProfileProperty("generalProperties", "dynamicLabelSize", self.params.dynamicLabelSize.value);
-        appUtilities.setUserProfileProperty("generalProperties", "adjustNodeLabelFontSizeAutomatically", self.params.adjustNodeLabelFontSizeAutomatically.value);
-        appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToNodes", self.params.fitLabelsToNodes.value);
-        appUtilities.setUserProfileProperty("generalProperties", "fitLabelsToInfoboxes", self.params.fitLabelsToInfoboxes.value);
-        appUtilities.setUserProfileProperty("generalProperties", "showComplexName", self.params.showComplexName.value);
-      }
 
       actions.push({ name: "changeMenu", param: self.params.dynamicLabelSize });
       actions.push({
@@ -1765,7 +1312,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.recalculateLayoutOnComplexityManagement.value = $(
           "#recalculate-layout-on-complexity-management"
         ).prop("checked");
-        appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.recalculateLayoutOnComplexityManagement
@@ -1784,7 +1330,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.rearrangeOnComplexityManagement.value = $(
           "#rearrange-on-complexity-management"
         ).prop("checked");
-        appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);        
         cy.undoRedo().do(
           "changeMenu",
           self.params.rearrangeOnComplexityManagement
@@ -1800,7 +1345,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       self.params.animateOnDrawingChanges.value = $(
         "#animate-on-drawing-changes"
       ).prop("checked");
-      appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);        
       cy.undoRedo().do("changeMenu", self.params.animateOnDrawingChanges);
       $("#animate-on-drawing-changes").blur();
     });
@@ -1820,13 +1364,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
           appUtilities.defaultGeneralProperties.rearrangeOnComplexityManagement;
         self.params.animateOnDrawingChanges.value =
           appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
-        
-        if (appUtilities.hasUserProfile()) {
-          appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);
-          appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);
-          appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);
-        }
-
         actions.push({
           name: "changeMenu",
           param: self.params.recalculateLayoutOnComplexityManagement,
@@ -2418,1040 +1955,49 @@ var experimentTabPanel = GeneralPropertiesParentView.extend({
   },
 });
 
-var SimulationPanelView = Backbone.View.extend({
+/**
+ * SBGN Properties view for the Sample Application.
+ */
+/*var GeneralPropertiesView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.template = _.template($("#simulation-view-template").html());
-  },
-  render: function (simulationData) {
-    var self = this;
-    self.template = _.template($("#simulation-view-template").html());
-    $(self.el).html(self.template);
-    $(self.el).modal("show");
 
-    var plotElement = document.getElementById("simulation-plot");
-    var layout = {
-      margin: {
-        pad: 15
-      },
-      showlegend: true,
-      legend: {
-        font: {
-          size: 10
-        },
-        x: 1,
-        xanchor: 'right',
-        y: 1,
-        bgcolor: 'rgba(255, 255, 255, 0.1)'
-      },
-      xaxis: {
-        title: {
-          text: "Time (s)",
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Quantity",
-          standoff: 30
-        }
-      }
+    $(document).on("click", "#default-sbgn", function (evt) {
+      self.setPropertiesToDefault();
+      self.applyUpdate();
+      self.render();
+    });
+
+  },
+  // Apply the properties as they are set
+  applyUpdate: function() {
+    chise.setShowComplexName(appUtilities.currentGeneralProperties.showComplexName);
+    var compoundPaddingValue = chise.refreshPaddings(); // Refresh/recalculate paddings
+    appUtilities.currentLayoutProperties.paddingCompound = appUtilities.defaultLayoutProperties.paddingCompound + (compoundPaddingValue - 5);
+
+    if (appUtilities.currentGeneralProperties.enablePorts) {
+      chise.enablePorts();
     }
-    Plotly.newPlot(plotElement, simulationData, layout).then(() => {
-      Plotly.relayout('simulation-plot', { 'showlegend': false });
-    });
-    const plotWrapper = document.getElementById('simulation-plot');
-    plotWrapper.addEventListener('mouseenter', () => {
-      Plotly.relayout('simulation-plot', { 'showlegend': true });
-    });
-    plotWrapper.addEventListener('mouseleave', () => {
-      Plotly.relayout('simulation-plot', { 'showlegend': false });
-    });
-    return this;
+    else {
+      chise.disablePorts();
+    }
+
+    cy.style().update();
+
+    $(document).trigger('saveGeneralProperties');
   },
-});
-
-var simulationTabPanel = GeneralPropertiesParentView.extend({
-  initialize: function() {
-    $(document).on('click', "#map-simulation-properties-button", function (evt) {
-      new SimulationPropertiesView({el: "#simulation_properties_table"}).render();
-    });
-
-    $(document).on("change", "#inspector-simulation-start, #inspector-simulation-end, #inspector-simulation-step", function (evt) {
-      if (appUtilities.hasUserProfile()) {
-        let inspectorId = this.id;
-        const inspectorValue = this.value;
-        
-        inspectorId = inspectorId.replace(/^inspector-/, '').replace(/-([a-z])/, (_, c) => c.toUpperCase());
-                
-        appUtilities.setUserProfileProperty("simulationProperties", inspectorId, inspectorValue); 
-      }
-    })
-
-    $(document).on("click", "#map-simulation-default-button", function (evt) {
-      $("#inspector-simulation-start").val(appUtilities.defaultSimulationProperties.startTime);
-      $("#inspector-simulation-end").val(appUtilities.defaultSimulationProperties.stopTime);
-      $("#inspector-simulation-step").val(appUtilities.defaultSimulationProperties.stepCount);
-
-      if (appUtilities.hasUserProfile()) {
-        appUtilities.setUserProfileProperty("simulationProperties", "simulationStart", appUtilities.defaultSimulationProperties.startTime); 
-        appUtilities.setUserProfileProperty("simulationProperties", "simulationEnd", appUtilities.defaultSimulationProperties.stopTime); 
-        appUtilities.setUserProfileProperty("simulationProperties", "simulationStep", appUtilities.defaultSimulationProperties.stepCount); 
-      }
-    })
-
-    $(document).on("click", "#map-simulate-button", function (evt) {
-      if(appUtilities.getActiveChiseInstance().elementUtilities.mapType !== "SBML"){
-        new ExportErrorView({el: "#exportError-table"}).render();
-        document.getElementById("export-error-message").innerText = "Simulation is applicable to the SBML map type!";
-        return;
-      }
-      var sbmlContent = appUtilities.getActiveChiseInstance().createSbml("");
-      var startTime = $("#inspector-simulation-start").val();
-      var endTime = $("#inspector-simulation-end").val();
-      var stepCount = $("#inspector-simulation-step").val();
-
-      var simulationDataParser = function(rawJsonData) {
-        // Process Data
-        var sim_data = []
-        for (const [key, value] of Object.entries(rawJsonData)) {
-            if(key === "time")
-              continue;
-            var trace = {
-                x: rawJsonData.time,
-                y: value,
-                mode: "lines",
-                name: key
-            };
-            sim_data.push(trace);
-        }
-        return sim_data;
-      }
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      chiseInstance.startSpinner("simulation-spinner");
-      $.ajax({
-        url: "/simulate",
-        type: "POST",
-        data: {file: sbmlContent, start: startTime, stop: endTime, step: stepCount},
-        success: function(data){
-          chiseInstance.endSpinner("simulation-spinner");
-          var parsedData = simulationDataParser(data) || "";
-          new SimulationPanelView({el: '#simulation-view'}).render(parsedData);
-        },
-        error: function(err) {
-          chiseInstance.endSpinner("simulation-spinner");
-          new ExportErrorView({el: "#exportError-table"}).render();
-          document.getElementById("export-error-message").innerText = "Simulation failed!";
-          console.log(err);
-        }
-      });
-    });
+  setPropertiesToDefault: function () {
+    appUtilities.currentGeneralProperties = _.clone(appUtilities.defaultGeneralProperties);
   },
-
-  render: function() {
-    // use the active cy instance
-    var cy = appUtilities.getActiveCy();
-    var chise = appUtilities.getActiveChiseInstance();
-
-    this.template = _.template($("#map-tab-simulation-template").html());
-    this.$el.empty();
-    this.$el.html(this.template());
-  }
-});
-
-var SimulationPropertiesView = GeneralPropertiesParentView.extend({
-  initialize: function () {
-    var self = this;
-    self.template = _.template($("#simulation-properties-view-template").html());
-  },
-
   render: function () {
-    var self = this;
-    self.template = _.template($("#simulation-properties-view-template").html());
-    $(self.el).html(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.$("#add-parameter-btn").off("click").on("click", function () {
-      chise.addParameter("", 0, "", true);
-      self.renderParameters();
-    });
-
-    self.$("#delete-parameter-btn").off("click").on("click", function () {
-      if (typeof self.selectedParamIndex === "number") {
-        var paramIdx = self.params[self.selectedParamIndex].id
-        chise.removeParameter(paramIdx);
-        self.selectedParamIndex = null;
-        self.renderParameters();
-      }
-    });
-
-    self.$("#add-fd-btn").off("click").on("click", function () {
-      chise.addFunctionDefinition("", [], "");
-      self.renderFunctionDefinitions();
-    });
-
-    self.$("#delete-fd-btn").off("click").on("click", function () {
-      if (typeof self.selectedFDIndex === "number") {
-        var fdIdx = self.functionDefinitions[self.selectedFDIndex].id
-        chise.removeFunctionDefinition(fdIdx);
-        self.selectedFDIndex = null;
-        self.renderFunctionDefinitions();
-      }
-    });
-
-    $(document).off('fd-update').on('fd-update', function() {
-      self.renderFunctionDefinitions();
-    });
-
-    $(document).off('ev-update').on('ev-update', function() {
-      self.renderEvents();
-    });
-
-    $(document).off('ia-update').on('ia-update', function() {
-      self.renderInitialAssignments();
-    });
-
-    $(document).off('rules-update').on('rules-update', function() {
-      self.renderRules();
-    });
-
-    self.$("#add-ia-btn").off("click").on("click", function () {
-      chise.addInitialAssignment("", "");
-      self.renderInitialAssignments();
-    });
-
-    self.$("#delete-ia-btn").off("click").on("click", function () {
-      if (typeof self.selectedIAIndex === "number") {
-        var iaIdx = self.initialAssignments[self.selectedIAIndex].id
-        chise.removeInitialAssignment(iaIdx);
-        self.selectedIAIndex = null;
-        self.renderInitialAssignments();
-      }
-    });
-
-    self.$("#add-rule-btn").off("click").on("click", function () {
-      chise.addRule("assignment", "", "");
-      self.renderRules();
-    });
-
-    self.$("#delete-rule-btn").off("click").on("click", function () {
-      if (typeof self.selectedRuleIndex === "number") {
-        var ruleIdx = self.rules[self.selectedRuleIndex].id;
-        chise.removeRule(ruleIdx);
-        self.selectedRuleIndex = null;
-        self.renderRules();
-      }
-    });
-
-    self.$("#add-event-btn").off("click").on("click", function () {
-      chise.addEvent(false, false, false, "", "", "", []);
-      self.renderEvents();
-    });
-
-    self.$("#delete-event-btn").off("click").on("click", function () {
-      if (typeof self.selectedEventIndex === "number") {
-        var eventId = self.events[self.selectedEventIndex].id;
-        chise.removeEvent(eventId);
-        self.selectedEventIndex = null;
-        self.renderEvents();
-      }
-    });
-
-    self.$('#add-custom-unit-btn').off("click").on('click', function(){
-      chise.addUnitDefinition("", []);
-      self.renderCustomUnits();
-    });
-
-    self.$('#delete-custom-unit-btn').off("click").on('click', function(){
-      if (typeof self.selectedCustomUnitIndex === 'number') {
-        var id = self.customUnits[self.selectedCustomUnitIndex].id;
-        chise.removeUnitDefinition(id);
-        self.selectedCustomUnitIndex = null;
-        self.renderCustomUnits();
-      }
-    });
-
-    self.renderParameters();
-    self.renderFunctionDefinitions();
-    self.renderInitialAssignments();
-    self.renderRules();
-    self.renderEvents();
-    self.renderCustomUnits();
-
-    $(self.el).modal("show");
-  },
-
-  renderParameters: function () {
-    var self = this;
-    var $tbody = self.$("#parameters-table-body");
-    $tbody.empty();
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.params = chise.getParameters();
-    self.params.forEach(function (param, index) {
-      var $row = $(`
-        <tr>
-          <td>${index + 1}</td>
-          <td><input type="text" class="form-control param-name" value="${param.name != null ? param.name : ''}"></td>
-          <td><input type="number" class="form-control param-value" value="${param.value != null ? param.value : ''}"></td>
-          <td>
-            <select class="layout-text form-control param-units">
-              <option value="">Select unit</option>
-              <option value="second">second</option>
-              <option value="mole">mole</option>
-              <option value="liter">liter</option>
-              <option value="mole_per_liter">mole/liter</option>
-              <option value="1_per_second">1/second</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <input type="checkbox" class="param-constant" ${param.constant ? "checked" : ""}>
-          </td>
-        </tr>
-      `);
-
-      // populate parameter units with base kinds + custom unit definitions (value=id, text=name)
-      (function populateParamUnits(){
-        var $sel = $row.find('.param-units');
-        $sel.empty();
-        $sel.append($('<option value=""></option>').text('Select unit'));
-        try {
-          var baseKinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
-          var customDefs = (chise.getUnitDefinitions && chise.getUnitDefinitions()) || [];
-          baseKinds.forEach(function(k){ $sel.append($('<option></option>').attr('value', k).text(k)); });
-          customDefs.forEach(function(def){
-            var text = (def.name && def.name.length) ? def.name : def.id;
-            $sel.append($('<option></option>').attr('value', def.id).text(text));
-          });
-        } catch(e) {}
-        var current = param.units || "";
-        if (current && $sel.find('option[value="'+current.replace(/"/g,'\\"')+'"]').length === 0){
-          $sel.append($('<option></option>').attr('value', current).text(current));
-        }
-        $sel.val(current);
-      })();
-
-      $row.find(".param-name").off("input").on("input", function () {
-        chise.setParameter(param.id, "name", $(this).val());
-        param.name = $(this).val();
-      });
-      $row.find(".param-value").off("input").on("input", function () {
-        chise.setParameter(param.id, "value", $(this).val());
-        param.value = parseFloat($(this).val());
-      });
-      $row.find(".param-units").off("change").on("change", function () {
-        chise.setParameter(param.id, "units", $(this).val());
-        param.units = $(this).val();
-      });
-      $row.find(".param-constant").off("change").on("change", function () {
-        chise.setParameter(param.id, "constant", $(this).is(":checked"));
-        param.constant = $(this).is(":checked");
-      });
-
-      $row.on("click", function () {
-        $tbody.find("tr").removeClass("selected");  // single-select mode
-        $row.addClass("selected");
-        self.selectedParamIndex = index;
-      });
-
-      $tbody.append($row);
-    });
-  },
-
-  renderFunctionDefinitions: function () {
-    var self = this;
-    var $tbody = self.$("#function-definitions-table-body");
-    $tbody.empty();
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.functionDefinitions = chise.getFunctionDefinitions();
-    self.functionDefinitions.forEach(function (fd, index) {
-      var $row = $(`
-      <tr>
-        <td>${index + 1}</td>
-        <td>
-          <input type="text"
-                class="form-control fd-name"
-                value="${fd.name != null ? fd.name : ''}">
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="text"
-                  class="form-control fd-function-preview"
-                  value="${fd.body != null ? fd.body : ''}"
-                  readonly
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <img src="app/img/toolbar/edit.svg"
-                alt="Edit Function"
-                class="fd-math"
-                style="width: 16px; height: 16px; flex: 0 0 auto;">
-          </div>
-        </td>
-      </tr>
-      `);
-
-      $row.find(".fd-name").off("input").on("input", function () {
-        chise.setFunctionDefinition(fd.id, "name", $(this).val());
-        fd.name = $(this).val();
-      });
-
-      $row.find(".fd-math").off("input").on("click", function () {
-        new FunctionDefinitionMathModalView({ el: "#function-definition-math-div"}).render(fd);
-      });
-
-      $row.off("click").on("click", function () {
-        $tbody.find("tr").removeClass("selected");  // single-select mode
-        $row.addClass("selected");
-        self.selectedFDIndex = index;
-      });
-
-      $tbody.append($row);
-    });
-  },
-
-  renderCustomUnits: function(){
-    var self = this;
-    var $tbody = self.$('#custom-units-table-body');
-    $tbody.empty();
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.customUnits = chise.getUnitDefinitions ? chise.getUnitDefinitions() : [];
-
-    self.customUnits.forEach(function(ud, index){
-      var $row = $(`
-        <tr>
-          <td>${index + 1}</td>
-          <td><input type=\"text\" class=\"form-control unit-name\" value=\"${ud.name != null ? ud.name : ''}\"></td>
-          <td><button class="btn btn-default unit-set">Set Unit</button></td>
-        </tr>
-      `);
-
-      $row.find('.unit-name').off("input").on('input', function(){
-        var newName = $(this).val();
-        chise.setUnitDefinition(ud.id, 'name', newName);
-        ud.name = newName;
-      });
-
-      $row.find('.unit-set').off("click").on('click', function(){
-        new UnitDefinitionModalView({ el: '#unit-definition-div' }).render(ud);
-      });
-
-      $row.off("click").on('click', function(){
-        $tbody.find('tr').removeClass('selected');
-        $row.addClass('selected');
-        self.selectedCustomUnitIndex = index;
-      });
-
-      $tbody.append($row);
-    });
-  },
-
-  renderInitialAssignments: function () {
-    var self = this;
-    var $tbody = self.$("#initial-assignments-table-body");
-    $tbody.empty();
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.initialAssignments = chise.getInitialAssignments();
-    self.initialAssignments.forEach(function (ia, index) {
-      var $row = $(`
-      <tr>
-        <td>${index + 1}</td>
-        <td>
-          <input type="text"
-                class="form-control ia-symbol"
-                value="${ia.symbol != null ? chise.convertIdsToNamesInFormula(ia.symbol) : ''}">
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="text"
-                  class="form-control fd-function-preview"
-                  value="${ia.math != null ? chise.convertIdsToNamesInFormula(ia.math) : ''}"
-                  readonly
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <img src="app/img/toolbar/edit.svg"
-                alt="Edit Assignment"
-                class="ia-math"
-                style="width: 16px; height: 16px; flex: 0 0 auto;">
-          </div>
-        </td>
-      </tr>
-      `);
-
-      $row.find(".ia-symbol").off("input").on("input", function () {
-        ia.symbol = $(this).val();
-        chise.setInitialAssignment(ia.id, "symbol", chise.convertNamesToIdsInFormula($(this).val()));
-      });
-
-      $row.find(".ia-math").off("click").on("click", function () {
-        new InitialAssignmentMathModalView({ el: "#initial-assignment-math-div"}).render(ia);
-      });
-
-      $row.off("click").on("click", function () {
-        $tbody.find("tr").removeClass("selected");  // single-select mode
-        $row.addClass("selected");
-        self.selectedIAIndex = index;
-      });
-
-      $tbody.append($row);
-    });
-  },
-
-  renderRules: function () {
-    var self = this;
-    var $tbody = self.$("#rules-table-body");
-    $tbody.empty();
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.rules = chise.getRules ? chise.getRules() : [];
-    self.rules.forEach(function (rule, index) {
-      var $row = $(`
-      <tr>
-        <td>${index + 1}</td>
-        <td>
-          <select class="layout-text form-control rule-type">
-            <option value="assignment">Assignment</option>
-            <option value="rate">Rate</option>
-          </select>
-        </td>
-        <td>
-          <input type="text"
-                class="form-control rule-target"
-                value="${rule.target != null ? chise.convertIdsToNamesInFormula(rule.target) : ''}"
-                style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="text"
-                  class="form-control rule-math-preview"
-                  value="${rule.math != null ? chise.convertIdsToNamesInFormula(rule.math) : ''}"
-                  readonly
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <img src="app/img/toolbar/edit.svg"
-                alt="Edit Rule"
-                class="rule-math"
-                style="width: 16px; height: 16px; flex: 0 0 auto;">
-          </div>
-        </td>
-      </tr>
-      `);
-
-      $row.find(".rule-type").val(rule.type || "assignment");
-
-      $row.find(".rule-type").off("change").on("change", function () {
-        var newType = $(this).val();
-        chise.setRule(rule.id, "type", newType);
-        rule.type = newType;
-      });
-
-      $row.find(".rule-target").off("input").on("input", function () {
-        var newTarget = $(this).val();
-        rule.target = newTarget;
-        chise.setRule(rule.id, "target", chise.convertNamesToIdsInFormula(newTarget));
-      });
-
-      $row.find(".rule-math").off("click").on("click", function () {
-        new RuleMathModalView({ el: "#rule-math-div" }).render(rule);
-      });
-
-      $row.off("click").on("click", function () {
-        $tbody.find("tr").removeClass("selected");
-        $row.addClass("selected");
-        self.selectedRuleIndex = index;
-      });
-
-      $tbody.append($row);
-    });
-  },
-
-  renderEvents: function () {
-    var self = this;
-    var $tbody = self.$("#events-table-body");
-    $tbody.empty();
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.events = chise.getEvents ? chise.getEvents() : [];
-    self.events.forEach(function (ev, index) {
-      var $row = $(`
-      <tr>
-        <td>${index + 1}</td>
-        <td class="text-center">
-          <input type="checkbox" class="event-use-trigger-values" ${ev.useValuesFromTriggerTime ? "checked" : ""}>
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="text"
-                  class="form-control event-trigger-preview"
-                  value="${ev.trigger.math != null ? chise.convertIdsToNamesInFormula(ev.trigger.math) : ''}"
-                  readonly
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <img src="app/img/toolbar/edit.svg"
-                alt="Edit Trigger"
-                class="event-trigger"
-                style="width: 16px; height: 16px; flex: 0 0 auto;">
-          </div>
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="text"
-                  class="form-control event-priority-preview"
-                  value="${ev.priority != null ? chise.convertIdsToNamesInFormula(ev.priority) : ''}"
-                  readonly
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <img src="app/img/toolbar/edit.svg"
-                alt="Edit Priority"
-                class="event-priority"
-                style="width: 16px; height: 16px; flex: 0 0 auto;">
-          </div>
-        </td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 5px;">
-            <input type="text"
-                  class="form-control event-delay-preview"
-                  value="${ev.delay != null ? chise.convertIdsToNamesInFormula(ev.delay) : ''}"
-                  readonly
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <img src="app/img/toolbar/edit.svg"
-                alt="Edit Delay"
-                class="event-delay"
-                style="width: 16px; height: 16px; flex: 0 0 auto;">
-          </div>
-        </td>
-        <td>
-          <button class="btn btn-default event-assignments">Edit Actions</button>
-        </td>
-      </tr>
-      `);
-
-      $row.find('.event-use-trigger-values').off("change").on('change', function(){
-        var val = $(this).is(':checked');
-        chise.setEvent(ev.id, 'useValuesFromTriggerTime', val);
-        ev.useValuesFromTriggerTime = val;
-      });
-
-      $row.find('.event-trigger').off("click").on('click', function(){
-        new EventTriggerModalView({ el: '#event-trigger-div' }).render(ev);
-      });
-
-      $row.find('.event-priority').off("click").on('click', function(){
-        new EventPriorityModalView({ el: '#event-priority-div' }).render(ev);
-      });
-
-      $row.find('.event-delay').off("click").on('click', function(){
-        new EventDelayModalView({ el: '#event-delay-div' }).render(ev);
-      });
-
-      $row.find('.event-assignments').off("click").on('click', function(){
-        new EventActionsModalView({ el: '#event-assignments-div' }).render(ev);
-      });
-
-      $row.off("click").on('click', function(){
-        $tbody.find('tr').removeClass('selected');
-        $row.addClass('selected');
-        self.selectedEventIndex = index;
-      });
-
-      $tbody.append($row);
-    });
-  },
-});
-
-var FunctionDefinitionMathModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#function-definition-modal-template").html());
-  },
-
-  render: function (fd) {
-    var self = this;
-    this.fd = fd;
-    self.template = _.template($("#function-definition-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-
-    $modal.find("#function-args-field").val(self.fd.args ? self.fd.args.join(", ") : "");
-    $modal.find("#function-body-field").val(chise.convertIdsToNamesInFormula(self.fd.body) || "");
-
-    $modal.find("#save-function-definition").off('click').on("click", function () {
-      var newArgs = $modal.find("#function-args-field").val().split(",").map(s => s.trim()).filter(Boolean);
-      var newBody = $modal.find("#function-body-field").val();
-      self.fd.args = newArgs;
-      self.fd.body = newBody;
-      newBody = chise.convertNamesToIdsInFormula(newBody);
-      chise.setFunctionDefinition(self.fd.id, "args", newArgs);
-      chise.setFunctionDefinition(self.fd.id, "body", newBody);
-
-      $(document).trigger("fd-update");
-      $(self.el).modal("hide");
-    });
-
-    $modal.find("#cancel-function-definition").off('click').on("click", function () {
-      $(self.el).modal("hide");
-    });
-
-    $(self.el).modal("show");
+    console.log("render general", appUtilities.currentGeneralProperties);
+    this.template = _.template($("#general-properties-template").html());
+    this.$el.empty();
+    this.$el.html(this.template(appUtilities.currentGeneralProperties));
+
+    return this;
   }
-});
-
-var InitialAssignmentMathModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#initial-assignment-modal-template").html());
-  },
-
-  render: function (ia) {
-    var self = this;
-    this.ia = ia;
-    self.template = _.template($("#initial-assignment-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.ia.math = chise.convertIdsToNamesInFormula(self.ia.math);
-    $modal.find("#initial-assignment-math-field").val(self.ia.math);
-
-    $modal.find("#save-initial-assignment").off('click').on("click", function () {
-      var newMath = $modal.find("#initial-assignment-math-field").val();
-      self.ia.math = newMath;
-      newMath = chise.convertNamesToIdsInFormula(newMath);
-      chise.setInitialAssignment(self.ia.id, "math", newMath);
-      $(document).trigger("ia-update");
-      $(self.el).modal("hide");
-    });
-
-    $modal.find("#cancel-initial-assignment").off('click').on("click", function () {
-      $(self.el).modal("hide");
-    });
-
-    $(self.el).modal("show");
-  }
-});
-
-var RuleMathModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#rule-modal-template").html());
-  },
-
-  render: function (rule) {
-    var self = this;
-    this.rule = rule;
-    self.template = _.template($("#rule-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.rule.math = chise.convertIdsToNamesInFormula(self.rule.math);
-    $modal.find("#rule-math-field").val(self.rule.math);
-
-    $modal.find("#save-rule").off('click').on("click", function () {
-      var newMath = $modal.find("#rule-math-field").val();
-      self.rule.math = newMath;
-      newMath = chise.convertNamesToIdsInFormula(newMath);
-      chise.setRule(self.rule.id, "math", newMath);
-      $(document).trigger("rules-update");
-      $(self.el).modal("hide");
-    });
-
-    $modal.find("#cancel-rule").off('click').on("click", function () {
-      $(self.el).modal("hide");
-    });
-
-    $(self.el).modal("show");
-  }
-});
-
-var EventTriggerModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#event-trigger-modal-template").html());
-  },
-  render: function (ev) {
-    var self = this;
-    this.ev = ev;
-    self.template = _.template($("#event-trigger-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.ev.trigger.math = chise.convertIdsToNamesInFormula(self.ev.trigger.math);
-
-    $modal.find('#event-trigger-initial-value').prop('checked', !!(self.ev.trigger && self.ev.trigger.initialValue));
-    $modal.find('#event-trigger-persistent').prop('checked', !!(self.ev.trigger && self.ev.trigger.persistent));
-    $modal.find('#event-trigger-math').val(self.ev.trigger && self.ev.trigger.math ? self.ev.trigger.math : '');
-
-    $modal.find('#save-event-trigger').off('click').on('click', function(){
-      var initial = $modal.find('#event-trigger-initial-value').is(':checked');
-      var persistent = $modal.find('#event-trigger-persistent').is(':checked');
-      var math = $modal.find('#event-trigger-math').val();
-      self.ev.trigger.initialValue = initial;
-      self.ev.trigger.persistent = persistent;
-      self.ev.trigger.math = math;
-
-      math = chise.convertNamesToIdsInFormula(math);
-      chise.setEventTrigger(self.ev.id, 'initialValue', initial);
-      chise.setEventTrigger(self.ev.id, 'persistent', persistent);
-      chise.setEventTrigger(self.ev.id, 'math', math);
-
-      $(document).trigger("ev-update");
-      $(self.el).modal('hide');
-    });
-
-    $modal.find('#cancel-event-trigger').on('click', function(){
-      $(self.el).modal('hide');
-    });
-
-    $(self.el).modal('show');
-  }
-});
-
-var EventPriorityModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#event-priority-modal-template").html());
-  },
-  render: function (ev) {
-    var self = this;
-    this.ev = ev;
-    self.template = _.template($("#event-priority-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.ev.priority = chise.convertIdsToNamesInFormula(self.ev.priority);
-
-    $modal.find('#event-priority-math').val(self.ev.priority);
-
-    $modal.find('#save-event-priority').off('click').on('click', function(){
-      var math = $modal.find('#event-priority-math').val();
-      self.ev.priority = math;
-      math = chise.convertNamesToIdsInFormula(math);
-      chise.setEvent(self.ev.id, 'priority', math);
-      $(document).trigger("ev-update");
-      $(self.el).modal('hide');
-    });
-
-    $modal.find('#cancel-event-priority').off('click').on('click', function(){
-      $(self.el).modal('hide');
-    });
-
-    $(self.el).modal('show');
-  }
-});
-
-var EventDelayModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#event-delay-modal-template").html());
-  },
-  render: function (ev) {
-    var self = this;
-    this.ev = ev;
-    self.template = _.template($("#event-delay-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.ev.delay = chise.convertIdsToNamesInFormula(self.ev.delay);
-
-    $modal.find('#event-delay-math').val(self.ev.delay);
-
-    $modal.find('#save-event-delay').off('click').on('click', function(){
-      var math = $modal.find('#event-delay-math').val();
-      self.ev.delay = math;
-      math = chise.convertNamesToIdsInFormula(math);
-      chise.setEvent(self.ev.id, 'delay', math);
-      $(document).trigger("ev-update");
-      $(self.el).modal('hide');
-    });
-
-    $modal.find('#cancel-event-delay').off('click').on('click', function(){
-      $(self.el).modal('hide');
-    });
-
-    $(self.el).modal('show');
-  }
-});
-
-var EventActionsModalView = Backbone.View.extend({
-  initialize: function () {
-    this.template = _.template($("#event-assignments-modal-template").html());
-  },
-  render: function (ev) {
-    var self = this;
-    this.ev = ev;
-    self.template = _.template($("#event-assignments-modal-template").html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    self.ev.assignments = self.ev.assignments.map(a => ({
-      target: chise.convertIdsToNamesInFormula(a.target),
-      math: chise.convertIdsToNamesInFormula(a.math)
-    }));
-
-    // simple in-memory selection index
-    var assignments = Array.isArray(self.ev.assignments) ? self.ev.assignments : [];
-    var selectedIdx = 0;
-
-    function renderTargets() {
-      var $tbody = $modal.find('#event-assignment-targets-body');
-      $tbody.empty();
-      assignments.forEach(function(a, i){
-        var $tr = $('<tr></tr>');
-        var $td = $('<td style="padding: 6px 8px; border-bottom: 1px solid #e5e5e5;"></td>');
-        var $input = $('<input type="text" class="form-control layout-text" />').val(a.target || '');
-        $input.off('input').on('input', function(){
-          assignments[i].target = $(this).val();
-        });
-        $tr.off('click').on('click', function(){
-          $tbody.find('tr').removeClass('selected');
-          $tr.addClass('selected');
-          selectedIdx = i;
-          $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
-        });
-        if(i === selectedIdx){
-          $tr.addClass('selected');
-          $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
-        }
-        $td.append($input);
-        $tr.append($td);
-        $tbody.append($tr);
-      });
-
-      if(assignments.length === 0){
-        selectedIdx = -1;
-        $modal.find('#event-assignment-math').val('');
-      } else if(selectedIdx < 0){
-        selectedIdx = 0;
-        $modal.find('#event-assignment-math').val(assignments[selectedIdx].math || '');
-        $tbody.find('tr').eq(selectedIdx).addClass('selected');
-      }
-    }
-
-    $modal.off('click', '#add-event-assignment').on('click', '#add-event-assignment', function(){
-      chise.addEventAssignment(self.ev.id, '', '');
-      assignments.push({ target: '', math: '' });
-      selectedIdx = assignments.length - 1;
-      renderTargets();
-    });
-
-    $modal.off('click', '#remove-event-assignment').on('click', '#remove-event-assignment', function(){
-      if(selectedIdx >= 0){
-        chise.removeEventAssignment(self.ev.id, selectedIdx);
-        assignments.splice(selectedIdx, 1);
-        selectedIdx = Math.min(selectedIdx, assignments.length - 1);
-        renderTargets();
-      }
-    });
-
-    $modal.off('input', '#event-assignment-math').on('input', '#event-assignment-math', function(){
-      if(selectedIdx >= 0 && assignments[selectedIdx]){
-        var newMath = $(this).val();
-        assignments[selectedIdx].math = newMath;
-      }
-    });
-
-    $modal.find('#save-event-assignments').off('click').on('click', function(){
-      assignments = assignments.map(a => ({
-        target: chise.convertNamesToIdsInFormula(a.target),
-        math: chise.convertNamesToIdsInFormula(a.math)
-      }));
-      chise.setEvent(self.ev.id, 'assignments', assignments);
-      $(self.el).modal('hide');
-    });
-
-    $modal.find('#cancel-event-assignments').off('click').on('click', function(){
-      $(self.el).modal('hide');
-    });
-
-    renderTargets();
-    $(self.el).modal('show');
-  }
-});
-
-var UnitDefinitionModalView = Backbone.View.extend({
-  initialize: function(){
-    this.template = _.template($('#unit-definition-modal-template').html());
-  },
-  render: function(ud){
-    var self = this;
-    this.ud = ud;
-    self.template = _.template($('#unit-definition-modal-template').html());
-    $(self.el).html(self.template);
-    var $modal = $(self.template);
-
-    var chise = appUtilities.getActiveChiseInstance();
-    var components = Array.isArray(self.ud.units) ? self.ud.units : [];
-
-    var selectedIdx = -1;
-
-    function renderComponents(){
-      var $tbody = $modal.find('#unit-components-body');
-      $tbody.empty();
-      var kinds = (chise.getBaseUnitKinds && chise.getBaseUnitKinds()) || [];
-      components.forEach(function(c, i){
-        var $tr = $('<tr></tr>');
-        var $tdMult = $('<td></td>');
-        var $tdScale = $('<td></td>');
-        var $tdKind = $('<td></td>');
-        var $tdExp = $('<td></td>');
-
-        var $mult = $('<input type="number" step="any" class="form-control layout-text" />').val(typeof c.multiplier === 'number' ? c.multiplier : 1);
-        var $scale = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.scale === 'number' ? c.scale : 0);
-        var $kind;
-        if (Array.isArray(kinds) && kinds.length > 0){
-          $kind = $('<select class="form-control layout-text"></select>');
-          $kind.append($('<option value=""></option>').text(''));
-          kinds.forEach(function(k){
-            var $opt = $('<option></option>').attr('value', k).text(k);
-            $kind.append($opt);
-          });
-          $kind.val(c.kind || '');
-        } else {
-          $kind = $('<input type="text" class="form-control layout-text" />').val(c.kind || '');
-        }
-        var $exp = $('<input type="number" step="1" class="form-control layout-text" />').val(typeof c.exponent === 'number' ? c.exponent : 1);
-
-        $mult.off("input").on('input', function(){ components[i].multiplier = parseFloat($(this).val()); });
-        $scale.off("input").on('input', function(){ components[i].scale = parseInt($(this).val(), 10); });
-        $kind.off("input change").on('input change', function(){ components[i].kind = $(this).val(); });
-        $exp.off("input").on('input', function(){ components[i].exponent = parseInt($(this).val(), 10); });
-
-        $tr.off("click").on('click', function(){
-          $tbody.find('tr').removeClass('selected');
-          $tr.addClass('selected');
-          selectedIdx = i;
-        });
-
-        $tdMult.append($mult); $tdScale.append($scale); $tdKind.append($kind); $tdExp.append($exp);
-        $tr.append($tdMult, $tdScale, $tdKind, $tdExp);
-        $tbody.append($tr);
-      });
-    }
-
-    $modal.off('click', '#add-unit-component').on('click', '#add-unit-component', function(){
-      components.push({ kind: '', exponent: 1, scale: 0, multiplier: 1 });
-      renderComponents();
-    });
-
-    $modal.off('click', '#remove-unit-component').on('click', '#remove-unit-component', function(){
-      if(selectedIdx >= 0){
-        components.splice(selectedIdx, 1);
-        selectedIdx = -1;
-        renderComponents();
-      }
-    });
-
-    $modal.off('click', '#save-unit-definition').on('click', '#save-unit-definition', function(){
-      chise.setUnitDefinition(self.ud.id, 'units', components);
-      $(self.el).modal('hide');
-    });
-
-    $modal.off('click', '#cancel-unit-definition').on('click', '#cancel-unit-definition', function(){
-      $(self.el).modal('hide');
-    });
-
-    renderComponents();
-    $(self.el).modal('show');
-  }
-});
-
+});*/
 
 String.prototype.replaceAll = function (search, replace) {
   //if replace is not sent, return original string otherwise it will
@@ -3502,27 +2048,27 @@ var NeighborhoodQueryView = Backbone.View.extend({
 
         // use the associated cy instance
         var cy = chiseInstance.getCy();
-
+        
         self.currentQueryParameters.geneSymbols = document.getElementById(
           "query-neighborhood-gene-symbols"
         ).value;
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-neighborhood-length-limit").value
         );
-        var removeDisconnected = document.getElementById(
+        var removeDisconnected =  document.getElementById(
           "query-neighborhood-checkbox"
         ).checked;
-        var removeRedundant = document.getElementById(
+        var removeRedundant =  document.getElementById(
           "query-neighborhood-redundant-checkbox"
         ).checked;
-
+        
         var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
         if (geneSymbols.length === 0) {
           document.getElementById("query-neighborhood-gene-symbols").focus();
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -3538,20 +2084,20 @@ var NeighborhoodQueryView = Backbone.View.extend({
           document.getElementById("query-neighborhood-length-limit").focus();
           return;
         }
-
+        
         var geneSymbolsArray = geneSymbols
-          .replaceAll("\n", " ")
-          .replaceAll("\t", " ")
-          .split(" ");
+        .replaceAll("\n", " ")
+        .replaceAll("\t", " ")
+        .split(" ");
         // Check if duplicate symbols are given or not
         if (handleDuplicateGenes(geneSymbolsArray)) {
           return;
         }
-
+        
         var queryURL =
-          "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
-          self.currentQueryParameters.lengthLimit;
-
+        "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=NEIGHBORHOOD&limit=" +
+        self.currentQueryParameters.lengthLimit;
+        
         var filename = "";
         var sources = "";
         for (var i = 0; i < geneSymbolsArray.length; i++) {
@@ -3565,7 +2111,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
             continue;
           }
           sources = sources + "&source=" + currentGeneSymbol;
-
+          
           if (filename == "") {
             filename = currentGeneSymbol;
           } else {
@@ -3574,7 +2120,8 @@ var NeighborhoodQueryView = Backbone.View.extend({
         }
         filename = filename + "_NEIGHBORHOOD.nwt";
         queryURL = queryURL + sources;
-
+        
+        
         var neighborhoodQueryHighlighting = function () {
           eles = cy.collection();
           geneSymbolsArray.forEach(function (gene) {
@@ -3582,8 +2129,10 @@ var NeighborhoodQueryView = Backbone.View.extend({
               cy.nodes().filter(function (ele) {
                 if (
                   ele.data("label") &&
-                  ele.data("label").toLowerCase().indexOf(gene.toLowerCase()) >=
-                    0
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
                 ) {
                   return true;
                 }
@@ -3601,21 +2150,21 @@ var NeighborhoodQueryView = Backbone.View.extend({
           cy.viewUtilities("get").highlight(x.neighborNodes, 2);
           cy.viewUtilities("get").highlight(x.neighborEdges, 2);
           cy.viewUtilities("get").highlight(eles, 3);
-        };
+        }
 
         // Define this after the queryURL to make sure.
         var sendNeighborhoodQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
-          );
+            );
           var currentInferNestingOnLoad =
-            currentGeneralProperties.inferNestingOnLoad;
+          currentGeneralProperties.inferNestingOnLoad;
           var currentLayoutProperties = appUtilities.getScratch(
             cy,
             "currentLayoutProperties"
           );
-
+              
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -3637,12 +2186,10 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 currentGeneralProperties.inferNestingOnLoad =
                   currentInferNestingOnLoad;
 
-                if (removeRedundant)
+                if(removeRedundant)
                   appUtilities.removeDuplicateProcessesAfterQuery();
-                if (removeDisconnected)
-                  appUtilities.removeDisconnectedNodesAfterQuery(
-                    geneSymbolsArray
-                  );
+                if(removeDisconnected) 
+                  appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
                 neighborhoodQueryHighlighting();
 
                 $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -3657,11 +2204,13 @@ var NeighborhoodQueryView = Backbone.View.extend({
                 new PromptEmptyQueryResultView({
                   el: "#prompt-emptyQueryResult-table",
                 }).render();
-              } else if (!data.error && data.response.statusCode == 500) {
+              }
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
-              } else {
+              }
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
@@ -3675,7 +2224,7 @@ var NeighborhoodQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("neighborhood-spinner");
             },
           });
-        };
+        }
 
         var sendQueries = async function () {
           $(self.el).modal("toggle");
@@ -3686,147 +2235,22 @@ var NeighborhoodQueryView = Backbone.View.extend({
             return;
           }
           sendNeighborhoodQuery();
-        };
+        }
 
         // Ask for permission
-        if (cy.nodes().length != 0) {
+        if(cy.nodes().length != 0){
           new PromptConfirmationView({
             el: "#prompt-confirmation-table",
           }).render(sendQueries);
-        } else {
+        }
+        else{
           sendQueries();
         }
-      });
+    });
 
     $(document)
       .off("click", "#cancel-query-neighborhood")
       .on("click", "#cancel-query-neighborhood", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-/**
- * Neighborhood Query view for querying local database.
- */
-var NeighborhoodQueryViewLocalDB = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template(
-      $("#query-neighborhood-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template(
-      $("#query-neighborhood-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "Neighborhood in localDB";
-
-    $(document)
-      .off("click", "#save-query-neighborhood-localdatabase")
-      .on(
-        "click",
-        "#save-query-neighborhood-localdatabase",
-        async function (evt) {
-          // use active chise instance
-          var chiseInstance = appUtilities.getActiveChiseInstance();
-          const sendNeighborhoodQuery = async function () {
-
-            self.currentQueryParameters.geneSymbols = document.getElementById(
-              "query-neighborhood-localdatabase-gene-symbols"
-            ).value;
-            self.currentQueryParameters.lengthLimit = Number(
-              document.getElementById(
-                "query-neighborhood-localdatabase-length-limit"
-              ).value
-            );
-
-            var removeDisconnected = document.getElementById(
-              "query-neighborhood-localdatabase-checkbox"
-            ).checked;
-            var removeRedundant = document.getElementById(
-              "query-neighborhood-localdatabase-redundant-checkbox"
-            ).checked;
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-              document
-                .getElementById("query-neighborhood-localdatabase-gene-symbols")
-                .focus();
-              return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-              $(self.el).modal("toggle");
-              new PromptInvalidQueryView({
-                el: "#prompt-invalidQuery-table",
-              }).render();
-              return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 2) {
-              $(self.el).modal("toggle");
-              new PromptInvalidLengthLimitView({
-                el: "#prompt-invalidLengthLimit-table",
-              }).render();
-              document
-                .getElementById("query-neighborhood-localdatabase-length-limit")
-                .focus();
-              return;
-            }
-            var geneSymbolsArray = geneSymbols
-              .replaceAll("\n", " ")
-              // .replaceAll("\t", " ")
-              .split(" ");
-            var lengthLimit = self.currentQueryParameters.lengthLimit;
-            console.log("geneSymbolsArray", geneSymbolsArray);
-            console.log("lengthLimit", lengthLimit);
-            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = this._getCurrentTabCloningOptions();
-            var result = await databaseUtilities.runNeighborhood(
-              geneSymbolsArray,
-              lengthLimit,
-              allowSimpleChemicalCloning,
-              simpleChemicalCloningThreshold
-            );
-            if (result && result.err) {
-              $(self.el).modal("toggle");
-              new PromptInvalidQueryView({
-                el: "#prompt-invalidQuery-table",
-              }).render();
-              return;
-            }
-            $(self.el).modal("toggle");
-          }
-
-          if (cy.nodes().length != 0) {
-            new PromptConfirmationView({
-              el: "#prompt-confirmation-table",
-            }).render(sendNeighborhoodQuery);
-          } else {
-            sendNeighborhoodQuery();
-          }
-        }
-      );
-
-    $(document)
-      .off("click", "#cancel-query-neighborhood-localdatabase")
-      .on("click", "#cancel-query-neighborhood-localdatabase", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -3876,10 +2300,10 @@ var PathsBetweenQueryView = Backbone.View.extend({
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-pathsbetween-length-limit").value
         );
-        var removeDisconnected = document.getElementById(
+        var removeDisconnected =  document.getElementById(
           "query-pathsbetween-checkbox"
         ).checked;
-        var removeRedundant = document.getElementById(
+        var removeRedundant =  document.getElementById(
           "query-pathsbetween-redundant-checkbox"
         ).checked;
 
@@ -3889,7 +2313,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -3912,7 +2336,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           .split(" ");
 
         // Check if duplicate symbols are given or not
-        if (handleDuplicateGenes(geneSymbolsArray)) {
+        if (handleDuplicateGenes(geneSymbolsArray)) {     
           return;
         }
 
@@ -3953,8 +2377,10 @@ var PathsBetweenQueryView = Backbone.View.extend({
               cy.nodes().filter(function (ele) {
                 if (
                   ele.data("label") &&
-                  ele.data("label").toLowerCase().indexOf(gene.toLowerCase()) >=
-                    0
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
                 ) {
                   return true;
                 }
@@ -3972,20 +2398,20 @@ var PathsBetweenQueryView = Backbone.View.extend({
           cy.viewUtilities("get").highlight(x.resultEdges, 2);
           cy.viewUtilities("get").highlight(x.resultNodes, 2);
           cy.viewUtilities("get").highlight(eles, 3);
-        };
+        }
 
         var sendPathsBetweenQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
             cy,
             "currentGeneralProperties"
-          );
+            );
           var currentInferNestingOnLoad =
             currentGeneralProperties.inferNestingOnLoad;
           var currentLayoutProperties = appUtilities.getScratch(
             cy,
             "currentLayoutProperties"
-          );
-
+            );
+            
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -3994,7 +2420,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
               if (!data.error && data.response.statusCode == 200) {
                 if (data.response.body !== "") {
                   var xml = $.parseXML(data.response.body);
-                  console.log(chiseInstance.convertSbgnmlToJson(xml));
                   $(document).trigger("sbgnvizLoadFile", [filename, cy]);
                   currentGeneralProperties.inferNestingOnLoad = false;
                   chiseInstance.updateGraph(
@@ -4004,13 +2429,11 @@ var PathsBetweenQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-
-                  if (removeRedundant)
+                  
+                  if(removeRedundant)
                     appUtilities.removeDuplicateProcessesAfterQuery();
-                  if (removeDisconnected)
-                    appUtilities.removeDisconnectedNodesAfterQuery(
-                      geneSymbolsArray
-                    );
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
                   pathsBetweenQueryHighlighting();
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -4026,15 +2449,17 @@ var PathsBetweenQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else if (!data.error && data.response.statusCode == 500) {
+              } 
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
-              } else {
+              }
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
-              }
+                }
               chiseInstance.endSpinner("paths-between-spinner");
             },
             error: function (xhr, options, err) {
@@ -4044,9 +2469,9 @@ var PathsBetweenQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("paths-between-spinner");
             },
           });
-        };
+        }
 
-        var sendQueries = async function () {
+        var sendQueries = async function() {
           $(self.el).modal("toggle");
           chiseInstance.startSpinner("paths-between-spinner");
           // Check if the gene symbols that are added even exist in the database or not
@@ -4056,7 +2481,7 @@ var PathsBetweenQueryView = Backbone.View.extend({
           }
 
           sendPathsBetweenQuery();
-        };
+        }
 
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
@@ -4070,125 +2495,6 @@ var PathsBetweenQueryView = Backbone.View.extend({
     $(document)
       .off("click", "#cancel-query-pathsbetween")
       .on("click", "#cancel-query-pathsbetween", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-/**
- * Paths Between Query view for the Sample Application.
- */
-var PathsBetweenQueryViewLocalDB = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template(
-      $("#query-pathsbetween-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template(
-      $("#query-pathsbetween-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "PathsBetween in localDB";
-
-    $(document)
-      .off("click", "#save-query-pathsbetween-localdatabase")
-      .on(
-        "click",
-        "#save-query-pathsbetween-localdatabase",
-        async function (evt) {
-          // use active chise instance
-          var chiseInstance = appUtilities.getActiveChiseInstance();
-
-          // use the associated cy instance
-          const sendPathsBetweenQuery = async function () {
-
-            self.currentQueryParameters.geneSymbols = document.getElementById(
-              "query-pathsbetween-localdatabase-gene-symbols"
-            ).value;
-            self.currentQueryParameters.lengthLimit = Number(
-              document.getElementById(
-                "query-pathsbetween-localdatabase-length-limit"
-              ).value
-            );
-            console.log(self.currentQueryParameters.lengthLimit);
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-              document
-                .getElementById("query-pathsbetween-localdatabase-gene-symbols")
-                .focus();
-              return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-              $(self.el).modal("toggle");
-              new PromptInvalidQueryView({
-                el: "#prompt-invalidQuery-table",
-              }).render();
-              return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 5) {
-              $(self.el).modal("toggle");
-              new PromptInvalidLengthLimitView({
-                el: "#prompt-invalidLengthLimit-table",
-              }).render();
-              document
-                .getElementById("query-pathsbetween-localdatabase-length-limit")
-                .focus();
-              return;
-            }
-
-            var geneSymbolsArray = geneSymbols
-            .split(/[\n\t]+/)
-                  .map(s => s.trim())
-                  .filter(Boolean);
-            
-            // var geneSymbolsArray = geneSymbols.replaceAll("\n", " ").replaceAll("\t", " ").split(" ");
-            var lengthLimit =  self.currentQueryParameters.lengthLimit
-            console.log("geneSymbolsArray", geneSymbolsArray)
-            console.log("lengthLimit", lengthLimit);
-            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
-            var result = await databaseUtilities.runPathBetween(geneSymbolsArray,lengthLimit,allowSimpleChemicalCloning,simpleChemicalCloningThreshold);
-            if (result && result.err)
-            {
-              $(self.el).modal('toggle');
-              new PromptInvalidQueryView({el: '#prompt-invalidQuery-table'}).render(result.err,result.message);
-              return;
-            }
-            $(self.el).modal('toggle');
-          }
-          if (cy.nodes().length != 0) {
-            new PromptConfirmationView({
-              el: "#prompt-confirmation-table",
-            }).render(sendPathsBetweenQuery);
-          } else {
-            sendPathsBetweenQuery();
-          }
-          
-        }
-      );
-
-    $(document)
-      .off("click", "#cancel-query-pathsbetween-localdatabase")
-      .on("click", "#cancel-query-pathsbetween-localdatabase", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -4242,10 +2548,10 @@ var PathsFromToQueryView = Backbone.View.extend({
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-pathsfromto-length-limit").value
         );
-        var removeDisconnected = document.getElementById(
+        var removeDisconnected =  document.getElementById(
           "query-pathsfromto-checkbox"
         ).checked;
-        var removeRedundant = document.getElementById(
+        var removeRedundant =  document.getElementById(
           "query-pathsfromto-redundant-checkbox"
         ).checked;
 
@@ -4255,7 +2561,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           return;
         }
         // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
+        sourceSymbols = sourceSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
         if (sourceSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -4270,7 +2576,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           return;
         }
         // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
+        targetSymbols = targetSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
         if (targetSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -4278,7 +2584,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           }).render();
           return;
         }
-
+        
         if (self.currentQueryParameters.lengthLimit > 3) {
           $(self.el).modal("toggle");
           new PromptInvalidLengthLimitView({
@@ -4287,7 +2593,7 @@ var PathsFromToQueryView = Backbone.View.extend({
           document.getElementById("query-pathsfromto-length-limit").focus();
           return;
         }
-
+        
         var sourceSymbolsArray = sourceSymbols
           .replaceAll("\n", " ")
           .replaceAll("\t", " ")
@@ -4320,8 +2626,8 @@ var PathsFromToQueryView = Backbone.View.extend({
           ) {
             continue;
           }
-          sources = sources + "&source=" + currentGeneSymbol;
-
+          sources = sources + "&source=" + currentGeneSymbol;           
+          
           if (filename == "") {
             filename = currentGeneSymbol;
           } else {
@@ -4355,8 +2661,10 @@ var PathsFromToQueryView = Backbone.View.extend({
               cy.nodes().filter(function (ele) {
                 if (
                   ele.data("label") &&
-                  ele.data("label").toLowerCase().indexOf(gene.toLowerCase()) >=
-                    0
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
                 ) {
                   return true;
                 }
@@ -4370,8 +2678,10 @@ var PathsFromToQueryView = Backbone.View.extend({
               cy.nodes().filter(function (ele) {
                 if (
                   ele.data("label") &&
-                  ele.data("label").toLowerCase().indexOf(gene.toLowerCase()) >=
-                    0
+                  ele
+                    .data("label")
+                    .toLowerCase()
+                    .indexOf(gene.toLowerCase()) >= 0
                 ) {
                   return true;
                 }
@@ -4390,9 +2700,9 @@ var PathsFromToQueryView = Backbone.View.extend({
             );
           cy.viewUtilities("get").highlight(x.edgesOnThePaths, 2);
           // cy.viewUtilities('get').highlight(x.nodesOnThePaths, 2);
-          cy.viewUtilities("get").highlight(source_eles, 3);
-          cy.viewUtilities("get").highlight(target_eles, 1);
-        };
+          cy.viewUtilities('get').highlight(source_eles, 3);
+          cy.viewUtilities('get').highlight(target_eles, 1);
+        }
 
         var sendPathsFromToQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
@@ -4405,7 +2715,7 @@ var PathsFromToQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-
+    
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -4423,13 +2733,11 @@ var PathsFromToQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-
-                  if (removeRedundant)
+                  
+                  if(removeRedundant)
                     appUtilities.removeDuplicateProcessesAfterQuery();
-                  if (removeDisconnected)
-                    appUtilities.removeDisconnectedNodesAfterQuery(
-                      sourceSymbolsArray.concat(targetSymbolsArray)
-                    );
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery(sourceSymbolsArray.concat(targetSymbolsArray));
                   pathsFromToQueryHighlighting();
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -4445,11 +2753,13 @@ var PathsFromToQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else if (!data.error && data.response.statusCode == 500) {
+              }
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
-              } else {
+              } 
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
@@ -4463,7 +2773,7 @@ var PathsFromToQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("paths-fromto-spinner");
             },
           });
-        };
+        }
 
         var sendQueries = async function () {
           $(self.el).modal("toggle");
@@ -4474,7 +2784,7 @@ var PathsFromToQueryView = Backbone.View.extend({
             return;
           }
           sendPathsFromToQuery();
-        };
+        }
 
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
@@ -4488,1027 +2798,6 @@ var PathsFromToQueryView = Backbone.View.extend({
     $(document)
       .off("click", "#cancel-query-pathsfromto")
       .on("click", "#cancel-query-pathsfromto", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-
-var MergeNodesErrorView = Backbone.View.extend({
-  initialize: function () {
-    var self = this;
-    self.template = _.template($("#merge-nodes-error-template").html());
-  },
-  render: function (message) {
-    var self = this;
-    self.template = _.template($("#merge-nodes-error-template").html());
-
-    var param = {};
-    param.message = message;
-    self.template = self.template(param);
-
-    $(self.el).html(self.template);
-    $(self.el).modal("show");
-
-    $(document)
-      .off("click", "#merge-nodes-error-confirm")
-      .on("click", "#merge-nodes-error-confirm", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-
-var SearchNodesView = Backbone.View.extend({
-  events: {
-    'click #sn-run': 'onRun'
-  },
-
-  // Edit this list as you like:
-  classTypes: [
-    { label: 'Macromolecule',   value: 'macromolecule' },
-    { label: 'Simple Chemical', value: 'simple_chemical' },
-    { label: 'Unspecified Entity',       value: 'unspecified_entity' },
-    { label: 'Nucleic Acid Feature',       value: 'nucleic_acid_feature' },
-    { label: 'Perturbing Agent',       value: 'perturbing_agent' },
-    { label: 'Complex',         value: 'complex' },
-    { label: 'Phenotype',       value: 'phenotype' },
-    { label: 'Compartment',     value: 'compartment' },
-    { label: 'Submap',         value: 'submap' },
-    { label: 'Tag',         value: 'tag' }
-  ],
-
-  initialize: function () {
-    this.templateFn = _.template($("#search-nodes-template").html());
-    this.modalNs = this.cid;
-  },
-
-  render: function () {
-    var html = this.templateFn({ modalId: this.modalNs });
-    this.$el.html(html);
-    this.$el.modal("show");
-    PCdialog = "SearchNodes";
-
-    // fill the class select from local list
-    this.populateClassSelect();
-    return this;
-  },
-
-  populateClassSelect: function () {
-    var $sel = this.$('#sn-class');
-    if (!$sel.length) return;
-
-    // Reset and add the "Any" default
-    $sel.empty().append(
-      $('<option/>', { value: 'any', text: 'Any', selected: true })
-    );
-
-    // Add options from local array
-    this.classTypes.forEach(function (ct) {
-      if (!ct || !ct.value) return;
-      $sel.append($('<option/>', { value: String(ct.value), text: String(ct.label || ct.value) }));
-    });
-  },
-
-  // minimal inputs: class, label, mode
-  getParams: function () {
-    var classType = (this.$('#sn-class').val() || 'any').trim();
-    var label     = (this.$('#sn-label').val() || '').trim() || 'any';
-    var matchMode = (this.$('#sn-mode').val() || 'contains').trim();
-    var mergeMode = this.$('#sn-merge')[0].checked;
-    return { classType: classType, label: label, matchMode: matchMode, options: {},mergeMode:mergeMode };
-  },
-
-  _getCurrentTabLocalDBMatchingOptions: function () {
-    // console.log("current tab id is:",cy.container().id);
-    var cy = appUtilities.getActiveCy();
-    var generalProperties = appUtilities.getScratch(
-      cy,
-      "currentGeneralProperties"
-    );
-    return {
-      allowSimpleChemicalCloning:generalProperties.allowSimpleChemicalCloning,
-      simpleChemicalCloningThreshold: generalProperties.simpleChemicalCloningThreshold
-    }
-  },
-
-  onRun: async function (e) {
-    var runSearch = async () => {
-      console.log("Checking run search");
-      // e.preventDefault();
-      var $btn = this.$('#sn-run').prop('disabled', true).text('Finding…');
-      const {allowSimpleChemicalCloning:allowCloning,simpleChemicalCloningThreshold:cloningThreshold}
-        = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
-      console.log("the options are:",allowCloning,cloningThreshold);
-      // const allowCloning = appUtilities.localDbSettings.allowSimpleChemicalCloning;
-      // const cloningThreshold = appUtilities.localDbSettings.simpleChemicalCloningThreshold;
-      try {
-        var p = this.getParams();
-        // keep your existing call here:
-        await databaseUtilities.runSearchNodesWithPaths({
-          classType: p.classType,
-          label:     p.label,
-          matchMode: p.matchMode,
-          options:   {},
-          mergeMode: p.mergeMode
-        },allowCloning,cloningThreshold);
-
-        this.$el.modal("hide");
-      } catch (err) {
-        console.error('search failed:', err);
-      } finally {
-        $btn.prop('disabled', false).text('Find');
-      }
-    }
-    // if (cy.nodes().length != 0) {
-    //   new PromptConfirmationView({
-    //     el: "#prompt-confirmation-table",
-    //   }).render(runSearch);
-    //   return;
-    // }
-    runSearch();  
-  },
-
- 
-});
-
-
-
-
-var MergeNodesView = Backbone.View.extend({
-  events: {
-    'change .label-radio': 'onLabelChoice',
-    'change .multimer-node-radio': 'onMultimerNodeChoice',
-    'change .state-var-check': 'onStateVarToggle',
-    'change .unit-check': 'onUnitToggle',
-    'change .child-check': 'onChildToggle',
-    'click  .confirm-merge-btn': 'onConfirmMerge'
-  },
-
-  initialize: function () {
-    this.templateFn = _.template($("#merge-nodes-template").html());
-    this.modalNs = this.cid;
-  },
-
-  render: function (data) {
-    const html = this.templateFn({ modalId: this.modalNs });
-    this.$el.html(html);
-    this.$el.modal("show");
-    PCdialog = "MergeNodes";
-
-    // Normalize incoming
-    this.data  = data;
-    this.nodes = data.nodes ? data.nodes.map((n) => n.data()) : [];
-    this.edges = data.edges ? data.edges.map((e) => e.data()) : [];
-
-    if (this.nodes.length !== 2) {
-      this.nodes = [
-        { id: null, label: '', class: '', multimer: false, stateVariables: [], unitsOfInformation: [] },
-        { id: null, label: '', class: '', multimer: false, stateVariables: [], unitsOfInformation: [] }
-      ];
-    }
-
-    console.log("MergeNodesView render", this.nodes, this.nodes[0], this.nodes[0].label);
-    // --- Dynamic node header labels ---
-    const leftLabel  = this.nodes[0].label || "Node 1";
-    const rightLabel = this.nodes[1].label || "Node 2";
-    this.$("#merge-node-header-left").text(leftLabel);
-    this.$("#merge-node-header-right").text(rightLabel);
-
-    // Type flags
-    this.isCompartment = (this.nodes[0].class.split(' ')[0] === 'compartment');
-    this.isComplex     = (this.nodes[0].class.split(' ')[0] === 'complex');
-    this.showChildrenSection = this.isComplex;
-
-    // Precompute (project helpers)
-    this.nodes.forEach((node) => {
-      node.stateVariables     = databaseUtilities.calculateState(node.statesandinfos) || [];
-      node.unitsOfInformation = databaseUtilities.calculateInfo(node.statesandinfos) || [];
-      node.units              = node.unitsOfInformation;
-    });
-    // this.showMultimerSection = this.nodes.every(n => !n.multimer);
-    console.log(this.nodes[0],this.nodes[1]);
-    this.nodeOneMultimer = this.nodes[0].class.split(' ').includes('multimer');
-    this.nodeTwoMultimer = this.nodes[1].class.split(' ').includes('multimer');
-    this.hideMultimerSection = this.nodeOneMultimer == this.nodeTwoMultimer;
-    this.hideStateVarsSection = this.arraysEqualIgnoreOrder(this.nodes[0].stateVariables, this.nodes[1].stateVariables) || (this.nodes[0].stateVariables.length === 0 && this.nodes[1].stateVariables.length===0);
-    console.log(this.arraysEqualIgnoreOrder(this.nodes[0].unitsOfInformation, this.nodes[1].unitsOfInformation),this.nodes[0].unitsOfInformation.length === 0,this.nodes[1].unitsOfInformation.length===0);
-    this.hideUnitsSection = this.arraysEqualIgnoreOrder(this.nodes[0].unitsOfInformation, this.nodes[1].unitsOfInformation) || (this.nodes[0].unitsOfInformation.length === 0 && this.nodes[1].unitsOfInformation.length===0);
-
-    
-
-    // Build aux id maps
-    this.auxMaps = [ this.buildAuxMaps(this.nodes[0]), this.buildAuxMaps(this.nodes[1]) ];
-
-    // Cache container
-    this.$container = this.$("#merge-modal-" + this.modalNs);
-
-    // Prefill labels + multimer value radios
-    this.$("#label-input-" + this.modalNs + "-0").val(this.nodes[0].label || '');
-    this.$("#label-input-" + this.modalNs + "-1").val(this.nodes[1].label || '');
-    this.$("input[name='multimer-value-" + this.modalNs + "-0'][value='" + String(!!this.nodes[0].multimer) + "']").prop('checked', true);
-    this.$("input[name='multimer-value-" + this.modalNs + "-1'][value='" + String(!!this.nodes[1].multimer) + "']").prop('checked', true);
-
-    // Render lists
-    this.renderStateVars(0, this.nodes[0].stateVariables);
-    this.renderStateVars(1, this.nodes[1].stateVariables);
-    this.renderUnits(0, this.nodes[0].units);
-    this.renderUnits(1, this.nodes[1].units);
-
-    // Default selections
-    var defaultLabelIdx = this.nodes[0].label ? 0 : (this.nodes[1].label ? 1 : 0);
-    this.$("input[name='label-choice-" + this.modalNs + "'][value='" + defaultLabelIdx + "']").prop('checked', true);
-    this.onLabelChoice({ currentTarget: this.$("input[name='label-choice-" + this.modalNs + "'][value='" + defaultLabelIdx + "']")[0] });
-
-    this.$("input[name='multimer-node-" + this.modalNs + "'][value='0']").prop('checked', true);
-    this.onMultimerNodeChoice({ currentTarget: this.$("input[name='multimer-node-" + this.modalNs + "'][value='0']")[0] });
-
-    // Enable all item inputs by default
-    [0,1].forEach(idx => {
-      this.$('#state-vars-' + this.modalNs + '-' + idx + ' .list-group-item').each((_, el) => {
-        const $el = $(el); $el.find('.state-var-check').prop('checked', true);
-        $el.find('.sv-left, .sv-right').prop('disabled', false);
-      });
-      this.$('#units-' + this.modalNs + '-' + idx + ' .list-group-item').each((_, el) => {
-        const $el = $(el); $el.find('.unit-check').prop('checked', true);
-        $el.find('.unit-input').prop('disabled', false);
-      });
-    });
-
-    // Compartment UI: hide multimer + state vars
-    // this.applyCompartmentUIRules();
-
-    // Complex UI: show children pickers
-    if (this.isComplex) {
-      this.ensureChildrenSection();
-      this.childrenLists = [
-        this.getChildrenForNode(this.nodes[0].id),
-        this.getChildrenForNode(this.nodes[1].id)
-      ];
-      console.log("childrenLists:", this.childrenLists);
-      this.renderChildren(0, this.childrenLists[0]);
-      this.renderChildren(1, this.childrenLists[1]);
-    }
-
-
-
-    // Tag confirm button
-    this.$("#confirm-merge-" + this.modalNs).addClass("confirm-merge-btn");
-    if (!this.isComplex) this.$('#children-section-' + this.modalNs).hide();
-
-
-    console.log("childrenLists:", this.childrenLists, this.hideMultimerSection, this.hideStateVarsSection, this.showUnitsSection);
-    if(this.childrenLists && this.childrenLists.length==0) {
-      this.$('#children-section-' + this.modalNs).hide();
-    }
-    if(this.hideMultimerSection) {
-      console.log('hiding the multimer section');
-      this.$('#multimer-section').hide();
-    }
-    if(this.hideStateVarsSection) {
-      this.$('#state-vars-section').hide();
-    }
-    if(this.hideUnitsSection) {
-      this.$('#units-section').hide();
-    }
-    return this;
-  },
-
-  arraysEqualIgnoreOrder:function(a, b) {
-    if (a.length !== b.length) return false;
-    const sortedA = [...a].sort();
-    const sortedB = [...b].sort();
-    return sortedA.every((val, i) => val === sortedB[i]);
-  },
-
-  /* ---------------- Helpers ---------------- */
-
-  applyCompartmentUIRules: function () {
-    if (!this.isCompartment) return;
-    const ns = this.modalNs;
-
-    const hideGroupOf = (selector) => {
-      this.$(selector).each((_, el) => {
-        const $el = $(el);
-        const $grp = $el.closest('.form-group, .panel, .card, fieldset, .row, .col, .list-group, .form-section').first();
-        if ($grp.length) $grp.hide(); else $el.hide();
-      });
-    };
-
-    // Hide MULTIMER
-    hideGroupOf("[name='multimer-node-" + ns + "']");
-    hideGroupOf("[name^='multimer-value-" + ns + "-']");
-
-    // Hide STATE VARS
-    ["#state-vars-" + ns + "-0", "#state-vars-" + ns + "-1"].forEach((sel) => {
-      const $box = this.$(sel);
-      if ($box.length) $box.empty();
-      hideGroupOf(sel);
-    });
-
-    this.$('.state-var-check, .sv-left, .sv-right').prop('disabled', true);
-  },
-
-  // Add a "Children" two-column section (Label 1 | Label 2) under units
-  ensureChildrenSection: function () {
-    const ns = this.modalNs;
-    const id = `children-section-${ns}`;
-    if (this.$('#' + id).length) return;
-
-    const html = `
-      <div id="${id}" class="children-section" style="margin-top:14px;">
-        <div class="row" style="border-top:1px solid #eee; padding-top:10px;">
-          <div class="col-xs-12">
-            <strong>Children</strong>
-          </div>
-        </div>
-        <div class="row" style="margin-top:6px;">
-          <div class="col-xs-6">
-            <div class="small text-muted" style="margin-bottom:4px;">Label 1</div>
-            <div id="children-${ns}-0" class="list-group"></div>
-          </div>
-          <div class="col-xs-6" style="border-left:1px solid #e5e5e5;">
-            <div class="small text-muted" style="margin-bottom:4px;">Label 2</div>
-            <div id="children-${ns}-1" class="list-group"></div>
-          </div>
-        </div>
-      </div>`;
-    // Insert after the units block
-    this.$container.append(html);
-  },
-
-  // Build maps from raw values -> aux ids for provenance
-  buildAuxMaps: function(node) {
-    const maps = { stateByKey: new Map(), unitByText: new Map() };
-    (node.statesandinfos || []).forEach(aux => {
-      if (aux.clazz === 'state variable') {
-        const left  = (aux.state && aux.state.value)    || aux.value    || '';
-        const right = (aux.state && aux.state.variable) || aux.variable || '';
-        const key = (left + '@' + right);
-        maps.stateByKey.set(key, { id: aux.id || null, left, right, raw: key });
-      } else if (aux.clazz === 'unit of information') {
-        const text = (aux.label && aux.label.text) || '';
-        maps.unitByText.set(text, { id: aux.id || null, text });
-      }
-    });
-    return maps;
-  },
-
-  // Children of a complex from Cy graph
-  getChildrenForNode: function (nodeId) {
-    try {
-      const cy = appUtilities.getActiveChiseInstance().getCy();
-      const parent = cy.getElementById(nodeId);
-      if (!parent || !parent.length) return [];
-      return parent.children('node').map(n => ({
-        id: n.id(),
-        label: n.data('label') || n.data('entityName') || n.id(),
-        class: n.data('class') || ''
-      }));
-    } catch (e) {
-      console.warn('getChildrenForNode failed:', e);
-      return [];
-    }
-  },
-
-  renderStateVars: function (nodeIdx, arr) {
-    const container = this.$("#state-vars-" + this.modalNs + "-" + nodeIdx);
-    container.empty();
-    arr.forEach((raw, i) => {
-      const parts = this.splitStateVar(raw);
-      const base  = "sv-" + this.modalNs + "-" + nodeIdx + "-" + i;
-      const hit   = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].stateByKey.get(raw);
-      const auxId = hit ? hit.id : null;
-      const html =
-        '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
-          '<div class="checkbox">' +
-            '<label><input type="checkbox" class="state-var-check" id="'+base+'">' +
-            '<div class="col-xs-6"><input type="text" class="form-control sv-left"  value="'+_.escape(parts.left)+'"  disabled></div>' +
-            '<div class="col-xs-6"><input type="text" class="form-control sv-right" value="'+_.escape(parts.right)+'" disabled></div>' +
-            '</label>' +
-          '</div>' +
-          '<div style="margin-top:6px;">' +
-            
-          '</div>' +
-        '</div>';
-      container.append(html);
-    });
-    if (arr.length === 0) container.append('<div class="list-group-item text-muted">None</div>');
-  },
-
-  renderUnits: function (nodeIdx, arr) {
-    const container = this.$("#units-" + this.modalNs + "-" + nodeIdx);
-    container.empty();
-    arr.forEach((raw, i) => {
-      const idAttr = "unit-" + this.modalNs + "-" + nodeIdx + "-" + i;
-      const hit = this.auxMaps && this.auxMaps[nodeIdx] && this.auxMaps[nodeIdx].unitByText.get(raw);
-      const auxId = hit ? hit.id : null;
-      const html =
-        '<div class="list-group-item" data-from="'+nodeIdx+'" data-aux-id="'+_.escape(auxId || '')+'" data-index="'+i+'">' +
-          '<div class="checkbox">' +
-            '<label class="value-label"><input type="checkbox" class="unit-check" id="'+idAttr+'">' +
-            '<div class="col-xs-12">'+
-              '<input type="text" class="form-control unit-input sv-left"  value="'+_.escape(raw)+'" disabled>' +
-            '</div>'+
-            '</label>' + 
-          '</div>' +
-        '</div>';
-        // '<label><input type="checkbox" class="unit-check" id="'+idAttr+'"> ' + _.escape(raw) + '</label>' +
-      container.append(html);
-    });
-    if (arr.length === 0) container.append('<div class="list-group-item text-muted">None</div>');
-  },
-
-  // Children UI
-  renderChildren: function (nodeIdx, arr) {
-    const container = this.$("#children-" + this.modalNs + "-" + nodeIdx);
-    container.empty();
-    arr.forEach((child, i) => {
-      const idAttr = "child-" + this.modalNs + "-" + nodeIdx + "-" + i;
-      const html =
-        '<div class="list-group-item" data-from="'+nodeIdx+'" data-child-id="'+_.escape(child.id)+'" data-index="'+i+'">' +
-          '<div class="checkbox">' +
-            '<label><input type="checkbox" class="child-check" id="'+idAttr+'" checked> ' +
-               ' <span class="text-muted small col-xs-12">'+ _.escape(child.label) +' (' + _.escape(child.class || 'node')[0].toUpperCase() + _.escape(child.class || 'node').substring(1).toLowerCase() + ')</span>' +
-            '</label>' +
-          '</div>' +
-        '</div>';
-      container.append(html);
-    });
-    if (arr.length === 0) container.append('<div class="list-group-item text-muted">No Members</div>');
-  },
-
-  splitStateVar: function (s) {
-    const str = s || '';
-    const idx = str.indexOf('@');
-    if (idx < 0) return { left: str, right: '' };
-    return { left: str.slice(0, idx), right: str.slice(idx + 1) };
-  },
-
-  /* ---------------- UI Handlers ---------------- */
-
-  onLabelChoice: function (e) {
-    const chosen = String($(e.currentTarget).val()); // "0" | "1"
-    this.$('.label-input').prop('disabled', true);
-    this.$('#label-input-' + this.modalNs + '-' + chosen).prop('disabled', false).focus();
-  },
-
-  onMultimerNodeChoice: function (e) {
-    if (this.isCompartment) return;
-    const chosen = String($(e.currentTarget).val()); // "0" | "1"
-    this.$("input[name='multimer-value-" + this.modalNs + "-0']").prop('disabled', true);
-    this.$("input[name='multimer-value-" + this.modalNs + "-1']").prop('disabled', true);
-    this.$("input[name='multimer-value-" + this.modalNs + "-" + chosen + "']").prop('disabled', false);
-  },
-
-  onStateVarToggle: function (e) {
-    if (this.isCompartment) return;
-    const $item = $(e.currentTarget).closest('.list-group-item');
-    const enabled = $(e.currentTarget).is(':checked');
-    $('.sv-left, .sv-right', $item).prop('disabled', !enabled);
-  },
-
-  onUnitToggle: function (e) {
-    const $item = $(e.currentTarget).closest('.list-group-item');
-    const enabled = $(e.currentTarget).is(':checked');
-    $('.unit-input', $item).prop('disabled', !enabled);
-  },
-
-  onChildToggle: function (/* e */) {
-    // Nothing special; read state in onConfirmMerge
-  },
-
-  /* ---------------- Confirm Merge ---------------- */
-
-  onConfirmMerge: async function () {
-    const sourceNodeIds = [ this.nodes[0].id, this.nodes[1].id ];
-    const nodeClass     = this.nodes[0].class;
-    this.isCompartment  = (nodeClass === 'compartment');
-    this.isComplex      = (nodeClass === 'complex');
-
-    // LABEL
-    const labelChoice = this.$("input[name='label-choice-" + this.modalNs + "']:checked").val();
-    const labelFrom   = (labelChoice === '0' || labelChoice === '1') ? Number(labelChoice) : 0;
-    const labelVal    = (labelChoice === '0' || labelChoice === '1')
-      ? this.$('#label-input-' + this.modalNs + '-' + labelChoice).val()
-      : (this.nodes[0].label || '');
-
-    // MULTIMER (ignored by compartments)
-    let multimerVal = false;
-    if (!this.isCompartment) {
-      const multimerNode = this.$("input[name='multimer-node-" + this.modalNs + "']:checked").val();
-      const multimerFrom = (multimerNode === '0' || multimerNode === '1') ? Number(multimerNode) : 0;
-      const mv = this.$("input[name='multimer-value-" + this.modalNs + "-" + multimerFrom + "']:checked").val();
-      multimerVal = (mv === 'true');
-    }
-
-    // STATE VARS (not for compartments)
-    const chosenStateVars = [];
-    if (!this.isCompartment) {
-      [0,1].forEach(nodeIdx => {
-        this.$('#state-vars-' + this.modalNs + '-' + nodeIdx + ' .list-group-item').each((_, el) => {
-          const $el = $(el);
-          if (!$el.find('.state-var-check').is(':checked')) return;
-          const left  = ($el.find('.sv-left').val()  || '').trim();
-          const right = ($el.find('.sv-right').val() || '').trim();
-          const auxId = $el.attr('data-aux-id') || null;
-          chosenStateVars.push({ id: auxId, from: nodeIdx, value: left + '@' + right, left, right });
-        });
-      });
-    }
-
-    // UNITS
-    const chosenUnits = [];
-    [0,1].forEach(nodeIdx => {
-      this.$('#units-' + this.modalNs + '-' + nodeIdx + ' .list-group-item').each((_, el) => {
-        const $el = $(el);
-        if (!$el.find('.unit-check').is(':checked')) return;
-        const text = ($el.find('.unit-input').val() || '').trim();
-        const auxId = $el.attr('data-aux-id') || null;
-        if (text) chosenUnits.push({ id: auxId, from: nodeIdx, value: text });
-      });
-    });
-
-    // Complex-only: which children to keep
-    let keepChildren = [];
-    if (this.isComplex) {
-      [0,1].forEach(nodeIdx => {
-        this.$('#children-' + this.modalNs + '-' + nodeIdx + ' .list-group-item').each((_, el) => {
-          const $el = $(el);
-          if (!$el.find('.child-check').is(':checked')) return;
-          const childId = $el.attr('data-child-id');
-          if (childId) keepChildren.push(childId);
-        });
-      });
-      // de-dupe
-      keepChildren = Array.from(new Set(keepChildren));
-    }
-
-    // Edges: not used for compartments; used for EPN
-    const keptEdges = (this.isCompartment || this.isComplex) ? [] : (this.edges || []).map(e => ({
-      id: e.id, source: e.source, target: e.target, classes: e.class || '', data: e.data || {}
-    }));
-
-    const mergedPayload = {
-      source: { nodeIds: sourceNodeIds },
-      class: nodeClass || 'unspecified',
-      selection: {
-        label:    { value: labelVal, from: labelFrom },
-        multimer: { value: multimerVal, from: 0 }
-      },
-      stateVariables:     this.isCompartment ? [] : chosenStateVars,
-      unitsOfInformation: chosenUnits,
-      edges: keptEdges,
-      // NEW for complexes:
-      keepChildren: this.isComplex ? keepChildren : []
-    };
-
-    // Choose backend
-    const runMerge = this.isCompartment
-      ? databaseUtilities.mergeCompartmentsToDatabase       // CALL custom.mergeCompartments
-      : (this.isComplex
-          ? databaseUtilities.mergeComplexesToDatabase      // CALL custom.mergeComplexes (you’ll add below)
-          : databaseUtilities.pushMergedNodeToDatabase);    // CALL custom.mergeNodes
-
-    const mergeResult = await runMerge(mergedPayload,);
-    this.$el.modal('hide');
-
-    if (!mergeResult || !mergeResult.result) {
-      console.error("Merge failed or returned no result.", mergeResult);
-      return;
-    }
-
-    const { mergedNode } = mergeResult.result;
-    const mergedId = mergedNode && mergedNode.properties && mergedNode.properties.newtId;
-
-    const nodeA = this.data.nodes[0];
-    const nodeB = this.data.nodes[1];
-    const posA = nodeA.position();
-    const posB = nodeB.position();
-    const midX = (posA.x + posB.x) / 2;
-    const midY = (posA.y + posB.y) / 2;
-
-    const animatePromise = (ele, aniParams, opts) =>
-      new Promise((resolve) => ele.animate(aniParams, Object.assign({}, opts || {}, { complete: resolve })));
-
-    nodeA.style({ "border-color": "#ff6600", "border-width": 4 });
-    nodeB.style({ "border-color": "#ff6600", "border-width": 4 });
-
-    await Promise.all([
-      animatePromise(nodeA, { position: { x: midX - 15, y: midY } }, { duration: 700, easing: "ease-in-out" }),
-      animatePromise(nodeB, { position: { x: midX + 15, y: midY } }, { duration: 700, easing: "ease-in-out" })
-    ]);
-
-    await Promise.all([
-      animatePromise(nodeA, { style: { opacity: 0.2 } }, { duration: 400 }),
-      animatePromise(nodeB, { style: { opacity: 0.2 } }, { duration: 400 })
-    ]);
-
-    // Add merged node first
-    await databaseUtilities.pushNode(mergedNode, midX, midY);
-
-    // Re-parent (compartment or complex)
-    if (this.isCompartment || this.isComplex) {
-      const chiseInstance = appUtilities.getActiveChiseInstance();
-      const cy = chiseInstance.getCy();
-
-      // Prefer server’s list (adoptedChildren). Fallback to local keepChildren for complexes.
-      const adopted = (mergeResult.result.adoptedChildren && mergeResult.result.adoptedChildren.length)
-        ? mergeResult.result.adoptedChildren
-        : (this.isComplex ? keepChildren : []);
-
-      adopted.forEach(childId => {
-        const child = cy.getElementById(childId);
-        if (child && child.length) {
-          child.move({ parent: mergedId });
-          child.data('parent', mergedId);
-        }
-      });
-    }
-
-    // Remove old parents last
-    nodeA.remove();
-    nodeB.remove();
-
-    // Draw any rewired edges returned by the backend (EPN or COMPLEX)
-    const rewired = (mergeResult.result && mergeResult.result.rewiredEdges) || [];
-    if (rewired.length) {
-      await databaseUtilities.pushEdges(rewired);
-    }
-
-    console.log("✅ Merge complete:", mergeResult);
-  }
-});
-
-
-
-var DatabasePropertiesView = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-    title: "",
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template($("#push-active-tabs-template").html());
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: async function (data) {
-    var self = this;
-    var params = {
-      title: "",
-      geneSymbols: self.currentQueryParameters.geneSymbols,
-      lengthLimit: self.currentQueryParameters.lengthLimit,
-    };
-    self.template = _.template($("#database-properties-template").html());
-    self.template = self.template(params);
-    $(self.el).html(self.template);
-
-    function toTitleCase(str) {
-      return str
-        .split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-    }
-
-    var $nodeTableBody = this.$el.find("#database-node-count-table");
-    var $edgeTableBody = this.$el.find("#database-edge-count-table");
-    $nodeTableBody.empty();
-    $edgeTableBody.empty();
-
-    data.forEach(entry => {
-      const formattedClass = toTitleCase(entry.class);
-      const content = `<tr>
-          <td><span class="add-on layout-text">${formattedClass}</span></td>
-          <td><span class="add-on layout-text">${entry.count}</span></td>
-        </tr>`
-      if(entry.type==="node"){
-        $nodeTableBody.append(content);
-      }
-      else{
-        $edgeTableBody.append(content);
-      }
-    })
-    $(self.el).modal("show");
-
-    $(document)
-      .off("click", "#cancel-push-active-tabs")
-      .on("click", "#cancel-push-active-tabs", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-
-var LoadEntireContentView = Backbone.View.extend({
-    defaultQueryParameters: { title: "Load Entire Content" },
-
-    initialize: function () {
-      this.template = _.template($("#load-entire-content-template").html());
-    },
-
-    render: async function (enableCloning, cloneThreshold) {
-      var self = this;
-      var cy = appUtilities.getActiveCy();
-
-      const canvasHasContent = cy && cy.elements().length > 0;
-      console.log('canvas:',canvasHasContent);
-      // 2) Canvas empty? Direct load (replace implicit)
-      if (!canvasHasContent) {
-        await databaseUtilities.getAllNodesAndEdgesFromDatabase(enableCloning, cloneThreshold);
-        cy.undoRedo().do("changeMenu", {
-          id: "fit-labels-to-nodes",
-          type: "checkbox",
-          property: "currentGeneralProperties.fitLabelsToNodes",
-          value: true
-        });
-        return this;
-      }
-
-      // 3) Canvas has content → show modal
-      $(self.el).html(self.template({ title: self.defaultQueryParameters.title }));
-      $(self.el).modal("show");
-
-      const doLoad = async function (mode) {
-        try {
-          if (mode === "REPLACE") {
-            cy.startBatch();
-            databaseUtilities.updateDBMaps([],[]);
-            cy.elements().remove();
-            cy.endBatch();
-          }
-
-          await databaseUtilities.getAllNodesAndEdgesFromDatabase(enableCloning, cloneThreshold);
-
-          cy.undoRedo().do("changeMenu", {
-            id: "fit-labels-to-nodes",
-            type: "checkbox",
-            property: "currentGeneralProperties.fitLabelsToNodes",
-            value: true
-          });
-        } finally {
-          $(self.el).modal("toggle");
-        }
-      };
-
-      $(document)
-        .off("click.loadAll", "#replace-load-entire-content")
-        .on("click.loadAll", "#replace-load-entire-content", function () {
-          doLoad("REPLACE");
-        });
-
-      $(document)
-        .off("click.loadAll", "#merge-load-entire-content")
-        .on("click.loadAll", "#merge-load-entire-content", function () {
-          doLoad("MERGE");
-        });
-
-      $(document)
-        .off("click.loadAll", "#cancel-load-entire-content")
-        .on("click.loadAll", "#cancel-load-entire-content", function () {
-          $(self.el).modal("toggle");
-        });
-
-      // Cleanup handlers when modal closes
-      $(self.el)
-        .off("hidden.bs.modal.loadAll")
-        .on("hidden.bs.modal.loadAll", function () {
-          $(document).off("click.loadAll");
-        });
-
-      return this;
-    }
-  });
-
-
-// Local Databse push nodes
-/**
- * Paths Between Query view for the Sample Application.
- */
-var PushActiveTabsView = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-    title: "Push Active Tab Content",
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template($("#push-active-tabs-template").html());
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function (fileContent,title="Push Active Tab Content") {
-    var self = this;
-    var params = {
-      title: title,
-      geneSymbols: self.currentQueryParameters.geneSymbols,
-      lengthLimit: self.currentQueryParameters.lengthLimit,
-    };
-    self.template = _.template($("#push-active-tabs-template").html());
-    self.template = self.template(params);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "PathsBetween";
-    $(document).off("click","#replace-push-active-tabs")
-    .on("click","#replace-push-active-tabs",async function (evt){
-      var chiseInstance = appUtilities.getActiveChiseInstance();
-      var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
-      chiseInstance.startSpinner("push-active-tab-spinner");
-      var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"REPLACE");
-      chiseInstance.endSpinner("push-active-tab-spinner");
-      $(self.el).modal("toggle");
-      if(result!==null && result!==undefined){
-        new PromptActiveTabPushError({
-        el: "#active-tab-push-error-table",
-        }).render(JSON.stringify(result));
-      }
-    });
-    $(document)
-      .off("click", "#merge-push-active-tabs")
-      .on("click", "#merge-push-active-tabs", async function (evt) {
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-        var activeTabContent = fileContent!==undefined?fileContent:chiseInstance.createJsonFromSBGN();
-        chiseInstance.startSpinner("push-active-tab-spinner");
-        var result = await databaseUtilities.pushActiveContentToDatabase(activeTabContent,"MERGE");
-        chiseInstance.endSpinner("push-active-tab-spinner");
-        if(result!==null && result!==undefined){
-          new PromptActiveTabPushError({
-          el: "#active-tab-push-error-table",
-          }).render(JSON.stringify(result));
-        }
-        else{
-          $(self.el).modal("toggle");
-        }
-      });
-
-    $(document)
-      .off("click", "#cancel-push-active-tabs")
-      .on("click", "#cancel-push-active-tabs", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-var PathsFromToQueryViewLocalDB = Backbone.View.extend({
-  defaultQueryParameters: {
-    sourceSymbols: "",
-    targetSymbols: "",
-    lengthLimit: 1,
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template(
-      $("#query-pathsfromto-template-localdatabase").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template(
-      $("#query-pathsfromto-template-localdatabase").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "PathsFromTo in localDB";
-    $(document)
-      .off("click", "#save-query-pathsfromto-localdatabase")
-      .on(
-        "click",
-        "#save-query-pathsfromto-localdatabase",
-        async function (evt) {
-          var chiseInstance = appUtilities.getActiveChiseInstance();
-
-          
-          const sendPathsFromToLocalDBQuery=async()=>{
-
-              self.currentQueryParameters.sourceSymbols = document.getElementById(
-                "query-pathsfromto-source-symbols-localdatabase"
-              ).value;
-              self.currentQueryParameters.targetSymbols = document.getElementById(
-                "query-pathsfromto-target-symbols-localdatabase"
-              ).value;
-              self.currentQueryParameters.lengthLimit = Number(
-                document.getElementById(
-                  "query-pathsfromto-length-limit-localdatabase"
-                ).value
-              );
-
-              var sourceSymbols = self.currentQueryParameters.sourceSymbols.trim();
-              if (sourceSymbols.length === 0) {
-                document
-                  .getElementById("query-pathsfromto-source-symbols-localdatabase")
-                  .focus();
-                return;
-              }
-              // sourceSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-              sourceSymbols = sourceSymbols
-                .replace(/[^a-zA-Z0-9_\-\n\t ]/g, "")
-                .trim();
-                console.log("cleaned sourceSymbols:", sourceSymbols);
-              if (sourceSymbols.length === 0) {
-                $(self.el).modal("toggle");
-                new PromptInvalidQueryView({
-                  el: "#prompt-invalidQuery-table",
-                }).render();
-                return;
-              }
-
-              var targetSymbols = self.currentQueryParameters.targetSymbols.trim();
-              if (targetSymbols.length === 0) {
-                document
-                  .getElementById("query-pathsfromto-target-symbols-localdatabase")
-                  .focus();
-                return;
-              }
-              // targetSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-              targetSymbols = targetSymbols
-                .replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "")
-                .trim();
-              if (targetSymbols.length === 0) {
-                $(self.el).modal("toggle");
-                new PromptInvalidQueryView({
-                  el: "#prompt-invalidQuery-table",
-                }).render();
-                return;
-              }
-
-              if (self.currentQueryParameters.lengthLimit > 3) {
-                $(self.el).modal("toggle");
-                new PromptInvalidLengthLimitView({
-                  el: "#prompt-invalidLengthLimit-table",
-                }).render();
-                document.getElementById("query-pathsfromto-length-limit").focus();
-                return;
-              }
-
-              var sourceSymbolsArray = sourceSymbols
-                  .split(/[\n\t]+/)
-                  .map(s => s.trim())
-                  .filter(Boolean);
-              var targetSymbolsArray = targetSymbols
-                  .split(/[\n\t]+/)
-                  .map(s => s.trim())
-                  .filter(Boolean);
-              console.log("sourceSymbolsArray", sourceSymbolsArray);
-              console.log("targetSymbolsArray", targetSymbolsArray);
-              const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
-              var lengthLimit = self.currentQueryParameters.lengthLimit;
-              var result = await databaseUtilities.runPathsFromTo(
-                sourceSymbolsArray,
-                targetSymbols,
-                lengthLimit,
-                allowSimpleChemicalCloning,
-                simpleChemicalCloningThreshold
-              );
-              console.log("resultFromDb", result);
-              if (result && result.err) {
-                $(self.el).modal("toggle");
-                new PromptInvalidQueryView({
-                  el: "#prompt-invalidQuery-table",
-                }).render(result.err, result.message);
-                return;
-              }
-              $(self.el).modal("toggle");
-          }
-
-          if (cy.nodes().length != 0) {
-            new PromptConfirmationView({
-              el: "#prompt-confirmation-table",
-            }).render(sendPathsFromToLocalDBQuery);
-          } else {
-            sendPathsFromToLocalDBQuery();
-          }
-        }
-      );
-
-    $(document)
-      .off("click", "#cancel-query-pathsfromto-localdatabase")
-      .on("click", "#cancel-query-pathsfromto-localdatabase", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -5558,10 +2847,10 @@ var CommonStreamQueryView = Backbone.View.extend({
         self.currentQueryParameters.lengthLimit = Number(
           document.getElementById("query-commonstream-length-limit").value
         );
-        var removeDisconnected = document.getElementById(
+        var removeDisconnected =  document.getElementById(
           "query-commonstream-checkbox"
         ).checked;
-        var removeRedundant = document.getElementById(
+        var removeRedundant =  document.getElementById(
           "query-commonstream-redundant-checkbox"
         ).checked;
 
@@ -5571,7 +2860,7 @@ var CommonStreamQueryView = Backbone.View.extend({
           return;
         }
         // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
+        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\n\t ]/g, "").trim();
         if (geneSymbols.length === 0) {
           $(self.el).modal("toggle");
           new PromptInvalidQueryView({
@@ -5589,15 +2878,15 @@ var CommonStreamQueryView = Backbone.View.extend({
         }
 
         var geneSymbolsArray = geneSymbols
-          .replaceAll("\n", " ")
-          .replaceAll("\t", " ")
-          .split(" ");
-
+        .replaceAll("\n", " ")
+        .replaceAll("\t", " ")
+        .split(" ");
+        
         // Check if duplicate symbols are given or not
         if (handleDuplicateGenes(geneSymbolsArray)) {
           return;
         }
-
+        
         var queryURL =
           "http://www.pathwaycommons.org/pc2/graph?format=SBGN&kind=COMMONSTREAM&limit=" +
           self.currentQueryParameters.lengthLimit;
@@ -5627,31 +2916,19 @@ var CommonStreamQueryView = Backbone.View.extend({
         var commonStreamHighlighting = function () {
           eles = cy.collection();
           geneSymbolsArray.forEach(function (gene) {
-            eles.merge(
-              cy.nodes().filter(function (ele) {
-                if (
-                  ele.data("label") &&
-                  ele.data("label").toLowerCase().indexOf(gene.toLowerCase()) >=
-                    0
-                ) {
-                  return true;
-                }
-                return false;
-              })
-            );
-          });
-          var x = cy
-            .elements()
-            .commonStream(
-              eles,
-              self.currentQueryParameters.lengthLimit,
-              "BOTHSTREAM"
-            );
-          cy.viewUtilities("get").highlight(x.nodesOnPath, 2);
-          cy.viewUtilities("get").highlight(x.edgesOnPath, 2);
-          cy.viewUtilities("get").highlight(x.commonNodes, 1);
-          cy.viewUtilities("get").highlight(eles, 3);
-        };
+            eles.merge(cy.nodes().filter(function (ele) {
+              if(ele.data('label') && ele.data('label').toLowerCase().indexOf(gene.toLowerCase()) >= 0){
+                return true;
+              }
+              return false;
+            }))
+          })
+          var x = cy.elements().commonStream(eles, self.currentQueryParameters.lengthLimit, 'BOTHSTREAM');
+          cy.viewUtilities('get').highlight(x.nodesOnPath, 2);
+          cy.viewUtilities('get').highlight(x.edgesOnPath, 2);
+          cy.viewUtilities('get').highlight(x.commonNodes, 1);
+          cy.viewUtilities('get').highlight(eles, 3);
+        }
 
         var sendCommonStreamQuery = function () {
           var currentGeneralProperties = appUtilities.getScratch(
@@ -5664,7 +2941,7 @@ var CommonStreamQueryView = Backbone.View.extend({
             cy,
             "currentLayoutProperties"
           );
-
+          
           $.ajax({
             type: "get",
             url: "/utilities/testURL",
@@ -5675,7 +2952,6 @@ var CommonStreamQueryView = Backbone.View.extend({
                   var xml = $.parseXML(data.response.body);
                   $(document).trigger("sbgnvizLoadFile", [filename, cy]);
                   currentGeneralProperties.inferNestingOnLoad = false;
-                  console.log(chiseInstance.convertSbgnmlToJson(xml));
                   chiseInstance.updateGraph(
                     chiseInstance.convertSbgnmlToJson(xml),
                     undefined,
@@ -5683,13 +2959,11 @@ var CommonStreamQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-
-                  if (removeRedundant)
+                  
+                  if(removeRedundant)
                     appUtilities.removeDuplicateProcessesAfterQuery();
-                  if (removeDisconnected)
-                    appUtilities.removeDisconnectedNodesAfterQuery(
-                      geneSymbolsArray
-                    );
+                  if(removeDisconnected)
+                    appUtilities.removeDisconnectedNodesAfterQuery(geneSymbolsArray);
                   commonStreamHighlighting();
 
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
@@ -5705,11 +2979,13 @@ var CommonStreamQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else if (!data.error && data.response.statusCode == 500) {
+              }
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
-              } else {
+              }
+              else {
                 new PromptInvalidQueryView({
                   el: "#prompt-invalidQuery-table",
                 }).render();
@@ -5723,7 +2999,7 @@ var CommonStreamQueryView = Backbone.View.extend({
               chiseInstance.endSpinner("common-stream-spinner");
             },
           });
-        };
+        }
 
         var sendQueries = async function () {
           $(self.el).modal("toggle");
@@ -5734,7 +3010,7 @@ var CommonStreamQueryView = Backbone.View.extend({
             return;
           }
           sendCommonStreamQuery();
-        };
+        }
 
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
@@ -5748,353 +3024,6 @@ var CommonStreamQueryView = Backbone.View.extend({
     $(document)
       .off("click", "#cancel-query-commonstream")
       .on("click", "#cancel-query-commonstream", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-/**
- * Common Stream Query view for the querying local database.
- */
-var CommonStreamQueryViewLocalDB = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template(
-      $("#query-commonstream-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template(
-      $("#query-commonstream-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "CommonStream in localDB";
-
-    $(document)
-      .off("click", "#save-query-commonstream-localdatabase")
-      .on(
-        "click",
-        "#save-query-commonstream-localdatabase",
-        async function (evt) {
-          // use active chise instance
-          var chiseInstance = appUtilities.getActiveChiseInstance();
-
-
-          const sendCommonStreamLocalDBQuery = async () => {
-
-            self.currentQueryParameters.geneSymbols = document.getElementById(
-              "query-commonstream-localdatabase-gene-symbols"
-            ).value;
-            self.currentQueryParameters.lengthLimit = Number(
-              document.getElementById(
-                "query-commonstream-localdatabase-length-limit"
-              ).value
-            );
-
-            var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-            if (geneSymbols.length === 0) {
-              document
-                .getElementById("query-commonstream-localdatabase-gene-symbols")
-                .focus();
-              return;
-            }
-            // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-            geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9_\[\]\-\n\t ]/g, "").trim();
-            if (geneSymbols.length === 0) {
-              $(self.el).modal("toggle");
-              new PromptInvalidQueryView({
-                el: "#prompt-invalidQuery-table",
-              }).render();
-              return;
-            }
-            if (self.currentQueryParameters.lengthLimit > 3) {
-              $(self.el).modal("toggle");
-              new PromptInvalidLengthLimitView({
-                el: "#prompt-invalidLengthLimit-table",
-              }).render();
-              document
-                .getElementById("query-commonstream-localdatabase-length-limit")
-                .focus();
-              return;
-            }
-            var geneSymbolsArray = geneSymbols
-              .split(/[\n\t]+/)
-                  .map(s => s.trim())
-                  .filter(Boolean);
-            //$(self.el).modal('toggle');
-
-            var lengthLimit = self.currentQueryParameters.lengthLimit;
-            console.log("geneSymbolsArray", geneSymbolsArray);
-            console.log("lengthLimit", lengthLimit);
-            const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
-            var result = await databaseUtilities.runCommonStream(
-              geneSymbolsArray,
-              lengthLimit,
-              -1,
-              allowSimpleChemicalCloning,
-              simpleChemicalCloningThreshold
-            );
-            console.log("resultFromDb", result);
-            if (result && result.err) {
-              $(self.el).modal("toggle");
-              new PromptInvalidQueryView({
-                el: "#prompt-invalidQuery-table",
-              }).render(result.err,result.message);
-              return;
-            }
-            $(self.el).modal("toggle");
-          }
-
-          if (cy.nodes().length != 0) {
-            new PromptConfirmationView({
-              el: "#prompt-confirmation-table",
-            }).render(sendCommonStreamLocalDBQuery);
-          } else {
-            sendCommonStreamLocalDBQuery();
-          }
-        }
-      );
-
-    $(document)
-      .off("click", "#cancel-query-commonstream-localdatabase")
-      .on("click", "#cancel-query-commonstream-localdatabase", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-/**
- * Up Stream Query view for the querying local database.
- */
-var UpStreamQueryViewLocalDB = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template(
-      $("#query-upstream-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template(
-      $("#query-upstream-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "CommonStream";
-
-    $(document)
-      .off("click", "#save-query-upstream-localdatabase")
-      .on("click", "#save-query-upstream-localdatabase", async function (evt) {
-        // use active chise instance
-        var chiseInstance = appUtilities.getActiveChiseInstance();
-
-        self.currentQueryParameters.geneSymbols = document.getElementById(
-          "query-upstream-localdatabase-gene-symbols"
-        ).value;
-        self.currentQueryParameters.lengthLimit = Number(
-          document.getElementById("query-upstream-localdatabase-length-limit")
-            .value
-        );
-
-        var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-        if (geneSymbols.length === 0) {
-          document
-            .getElementById("query-upstream-localdatabase-gene-symbols")
-            .focus();
-          return;
-        }
-        // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-        geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
-        if (geneSymbols.length === 0) {
-          $(self.el).modal("toggle");
-          new PromptInvalidQueryView({
-            el: "#prompt-invalidQuery-table",
-          }).render();
-          return;
-        }
-        if (self.currentQueryParameters.lengthLimit > 3) {
-          $(self.el).modal("toggle");
-          new PromptInvalidLengthLimitView({
-            el: "#prompt-invalidLengthLimit-table",
-          }).render();
-          document
-            .getElementById("query-upstream-localdatabase-length-limit")
-            .focus();
-          return;
-        }
-
-        var geneSymbolsArray = geneSymbols
-          .replaceAll("\n", " ")
-          .replaceAll("\t", " ")
-          .split(" ");
-        var lengthLimit = self.currentQueryParameters.lengthLimit;
-        console.log("geneSymbolsArray", geneSymbolsArray);
-        console.log("lengthLimit", lengthLimit);
-        const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
-        var result = await databaseUtilities.runCommonStream(
-          geneSymbolsArray,
-          lengthLimit,
-          1,
-          allowSimpleChemicalCloning,
-          simpleChemicalCloningThreshold
-        );
-        if (result && result.err) {
-          $(self.el).modal("toggle");
-          new PromptInvalidQueryView({
-            el: "#prompt-invalidQuery-table",
-          }).render();
-          return;
-        }
-        console.log("resultFromDb", resultFromDb);
-        $(self.el).modal("toggle");
-      });
-
-    $(document)
-      .off("click", "#cancel-query-upstream-localdatabase")
-      .on("click", "#cancel-query-upstream-localdatabase", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
-/**
- * Down Stream Query view for the querying local database.
- */
-var DownStreamQueryViewLocalDB = Backbone.View.extend({
-  defaultQueryParameters: {
-    geneSymbols: "",
-    lengthLimit: 1,
-  },
-  currentQueryParameters: null,
-  initialize: function () {
-    var self = this;
-    self.copyProperties();
-    self.template = _.template(
-      $("#query-downstream-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-  },
-  copyProperties: function () {
-    this.currentQueryParameters = _.clone(this.defaultQueryParameters);
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template(
-      $("#query-downstream-localdatabase-template").html()
-    );
-    self.template = self.template(self.currentQueryParameters);
-    $(self.el).html(self.template);
-
-    $(self.el).modal("show");
-    PCdialog = "CommonStream";
-
-    $(document)
-      .off("click", "#save-query-downstream-localdatabase")
-      .on(
-        "click",
-        "#save-query-downstream-localdatabase",
-        async function (evt) {
-          // use active chise instance
-          var chiseInstance = appUtilities.getActiveChiseInstance();
-
-          self.currentQueryParameters.geneSymbols = document.getElementById(
-            "query-downstream-localdatabase-gene-symbols"
-          ).value;
-          self.currentQueryParameters.lengthLimit = Number(
-            document.getElementById(
-              "query-downstream-localdatabase-length-limit"
-            ).value
-          );
-
-          var geneSymbols = self.currentQueryParameters.geneSymbols.trim();
-          if (geneSymbols.length === 0) {
-            document
-              .getElementById("query-downstream-localdatabase-gene-symbols")
-              .focus();
-            return;
-          }
-          // geneSymbols is cleaned up from undesired characters such as #,$,! etc. and spaces put before and after the string
-          geneSymbols = geneSymbols.replace(/[^a-zA-Z0-9\-\n\t ]/g, "").trim();
-          if (geneSymbols.length === 0) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          if (self.currentQueryParameters.lengthLimit > 3) {
-            $(self.el).modal("toggle");
-            new PromptInvalidLengthLimitView({
-              el: "#prompt-invalidLengthLimit-table",
-            }).render();
-            document
-              .getElementById("query-downstream-localdatabase-length-limit")
-              .focus();
-            return;
-          }
-
-          var geneSymbolsArray = geneSymbols
-            .replaceAll("\n", " ")
-            .replaceAll("\t", " ")
-            .split(" ");
-          var lengthLimit = self.currentQueryParameters.lengthLimit;
-          console.log("geneSymbolsArray", geneSymbolsArray);
-          console.log("lengthLimit", lengthLimit);
-          const {allowSimpleChemicalCloning, simpleChemicalCloningThreshold } = databaseUtilities._getCurrentTabLocalDBMatchingOptions();
-          var result = await databaseUtilities.runCommonStream(
-            geneSymbolsArray,
-            lengthLimit,
-            1,
-            allowSimpleChemicalCloning,
-            simpleChemicalCloningThreshold
-          );
-          if (result && result.err) {
-            $(self.el).modal("toggle");
-            new PromptInvalidQueryView({
-              el: "#prompt-invalidQuery-table",
-            }).render();
-            return;
-          }
-          console.log("resultFromDb", resultFromDb);
-          $(self.el).modal("toggle");
-        }
-      );
-
-    $(document)
-      .off("click", "#cancel-query-downstream-localdatabase")
-      .on("click", "#cancel-query-downstream-localdatabase", function (evt) {
         $(self.el).modal("toggle");
       });
 
@@ -6140,10 +3069,10 @@ var PathsByURIQueryView = Backbone.View.extend({
           "query-pathsbyURI-URI"
         ).value;
         var uri = self.currentQueryParameters.URI.trim();
-        var removeDisconnected = document.getElementById(
+        var removeDisconnected =  document.getElementById(
           "query-pathsbyURI-checkbox"
         ).checked;
-        var removeRedundant = document.getElementById(
+        var removeRedundant =  document.getElementById(
           "query-pathsbyURI-redundant-checkbox"
         ).checked;
 
@@ -6176,12 +3105,8 @@ var PathsByURIQueryView = Backbone.View.extend({
             cy,
             "currentGeneralProperties"
           );
-          var currentInferNestingOnLoad =
-            currentGeneralProperties.inferNestingOnLoad;
-          var currentLayoutProperties = appUtilities.getScratch(
-            cy,
-            "currentLayoutProperties"
-          );
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+          var currentLayoutProperties = appUtilities.getScratch(cy, "currentLayoutProperties");
 
           chiseInstance.startSpinner("paths-byURI-spinner");
           $.ajax({
@@ -6201,9 +3126,9 @@ var PathsByURIQueryView = Backbone.View.extend({
                   );
                   currentGeneralProperties.inferNestingOnLoad =
                     currentInferNestingOnLoad;
-                  if (removeRedundant)
+                  if(removeRedundant)
                     appUtilities.removeDuplicateProcessesAfterQuery();
-                  if (removeDisconnected)
+                  if(removeDisconnected)
                     appUtilities.removeDisconnectedNodesAfterQuery([]);
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
@@ -6218,14 +3143,17 @@ var PathsByURIQueryView = Backbone.View.extend({
                     el: "#prompt-requestTimedOut-table",
                   }).render();
                 }
-              } else if (!data.error && data.response.statusCode == 500) {
+              } 
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
-              } else {
+              }
+              else {
                 new PromptInvalidURIView({
                   el: "#prompt-invalidURI-table",
                 }).render();
+                
               }
               chiseInstance.endSpinner("paths-byURI-spinner");
             },
@@ -6237,8 +3165,8 @@ var PathsByURIQueryView = Backbone.View.extend({
             },
           });
 
-          $(self.el).modal("toggle");
-        };
+          $(self.el).modal("toggle");          
+        }
 
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
@@ -6247,6 +3175,7 @@ var PathsByURIQueryView = Backbone.View.extend({
         } else {
           sendPathsByURIQuery();
         }
+        
       });
 
     $(document)
@@ -6306,18 +3235,11 @@ var MapByWPIDQueryView = Backbone.View.extend({
         wpid = wpid.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
         if (wpid.length === 0) {
           $(self.el).modal("toggle");
-          new PromptInvalidWPIDView({
-            el: "#prompt-invalidWPID-table",
-          }).render();
+          new PromptInvalidWPIDView({ el: "#prompt-invalidWPID-table" }).render();
           return;
         }
 
-        var queryURL =
-          "https://www.wikipathways.org/wikipathways-assets/pathways/" +
-          wpid +
-          "/" +
-          wpid +
-          ".gpml";
+        var queryURL = "https://www.wikipathways.org/wikipathways-assets/pathways/" + wpid + "/" + wpid + ".gpml";
 
         var filename = "";
 
@@ -6329,12 +3251,8 @@ var MapByWPIDQueryView = Backbone.View.extend({
         filename = filename + ".nwt";
 
         var sendMapByWPIDQuery = function () {
-          var currentGeneralProperties = appUtilities.getScratch(
-            cy,
-            "currentGeneralProperties"
-          );
-          var currentInferNestingOnLoad =
-            currentGeneralProperties.inferNestingOnLoad;
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
 
           chiseInstance.startSpinner("map-byWPID-spinner");
           $.ajax({
@@ -6346,20 +3264,11 @@ var MapByWPIDQueryView = Backbone.View.extend({
                 if (data.response.body !== "") {
                   $(document).trigger("sbgnvizLoadFile", [filename, cy]);
                   currentGeneralProperties.inferNestingOnLoad = false;
-                  chiseInstance.convertGpmlToSbgnml(
-                    data.response.body,
-                    async function (data) {
-                      chiseInstance.loadSBGNMLText(
-                        data.message,
-                        false,
-                        filename,
-                        cy
-                      );
-                      chiseInstance.endSpinner("map-byWPID-spinner");
-                    }
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
+                  chiseInstance.convertGpmlToSbgnml(data.response.body, async function (data) {
+                    chiseInstance.loadSBGNMLText(data.message, false, filename, cy);
+                    chiseInstance.endSpinner("map-byWPID-spinner");
+                  });
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                 } else {
                   new PromptEmptyQueryResultView({
@@ -6374,15 +3283,17 @@ var MapByWPIDQueryView = Backbone.View.extend({
                   }).render();
                 }
                 chiseInstance.endSpinner("map-byWPID-spinner");
-              } else if (!data.error && data.response.statusCode == 500) {
+              } 
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
                 chiseInstance.endSpinner("map-byWPID-spinner");
-              } else {
+              }
+              else {
                 new PromptInvalidWPIDView({
                   el: "#prompt-invalidWPID-table",
-                }).render();
+                }).render(); 
                 chiseInstance.endSpinner("map-byWPID-spinner");
               }
             },
@@ -6394,8 +3305,8 @@ var MapByWPIDQueryView = Backbone.View.extend({
             },
           });
 
-          $(self.el).modal("toggle");
-        };
+          $(self.el).modal("toggle");          
+        }
 
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
@@ -6404,6 +3315,7 @@ var MapByWPIDQueryView = Backbone.View.extend({
         } else {
           sendMapByWPIDQuery();
         }
+        
       });
 
     $(document)
@@ -6463,16 +3375,11 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
         reactomeid = reactomeid.replace(/[^a-zA-Z0-9:/.\-\n\t ]/g, "").trim();
         if (reactomeid.length === 0) {
           $(self.el).modal("toggle");
-          new PromptInvalidReactomeIDView({
-            el: "#prompt-invalidReactomeID-table",
-          }).render();
+          new PromptInvalidReactomeIDView({ el: "#prompt-invalidReactomeID-table" }).render();
           return;
         }
 
-        var queryURL =
-          "https://reactome.org/ContentService/exporter/event/" +
-          reactomeid +
-          ".sbgn";
+        var queryURL = "https://reactome.org/ContentService/exporter/event/" + reactomeid + ".sbgn";
 
         var filename = "";
 
@@ -6484,16 +3391,9 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
         filename = filename + ".nwt";
 
         var sendMapByReactomeIDQuery = function () {
-          var currentGeneralProperties = appUtilities.getScratch(
-            cy,
-            "currentGeneralProperties"
-          );
-          var currentInferNestingOnLoad =
-            currentGeneralProperties.inferNestingOnLoad;
-          var currentLayoutProperties = appUtilities.getScratch(
-            cy,
-            "currentLayoutProperties"
-          );
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentInferNestingOnLoad = currentGeneralProperties.inferNestingOnLoad;
+          var currentLayoutProperties = appUtilities.getScratch(cy, "currentLayoutProperties");
 
           chiseInstance.startSpinner("map-byReactomeID-spinner");
           $.ajax({
@@ -6506,13 +3406,8 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
                   var xml = $.parseXML(data.response.body);
                   $(document).trigger("sbgnvizLoadFile", [filename, cy]);
                   currentGeneralProperties.inferNestingOnLoad = true;
-                  chiseInstance.updateGraph(
-                    chiseInstance.convertSbgnmlToJson(xml),
-                    undefined,
-                    undefined
-                  );
-                  currentGeneralProperties.inferNestingOnLoad =
-                    currentInferNestingOnLoad;
+                  chiseInstance.updateGraph(chiseInstance.convertSbgnmlToJson(xml), undefined, undefined);
+                  currentGeneralProperties.inferNestingOnLoad = currentInferNestingOnLoad;
                   $(document).trigger("sbgnvizLoadFileEnd", [filename, cy]);
                   chiseInstance.endSpinner("map-byReactomeID-spinner");
                 } else {
@@ -6528,15 +3423,17 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
                   }).render();
                 }
                 chiseInstance.endSpinner("map-byReactomeID-spinner");
-              } else if (!data.error && data.response.statusCode == 500) {
+              } 
+              else if (!data.error && data.response.statusCode == 500){
                 new InternalServerError({
                   el: "#prompt-internal-server-table",
                 }).render();
                 chiseInstance.endSpinner("map-byReactomeID-spinner");
-              } else {
+              }
+              else {
                 new PromptInvalidReactomeIDView({
                   el: "#prompt-invalidReactomeID-table",
-                }).render();
+                }).render(); 
                 chiseInstance.endSpinner("map-byReactomeID-spinner");
               }
             },
@@ -6548,8 +3445,8 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
             },
           });
 
-          $(self.el).modal("toggle");
-        };
+          $(self.el).modal("toggle");          
+        }
 
         if (cy.nodes().length != 0) {
           new PromptConfirmationView({
@@ -6558,6 +3455,7 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
         } else {
           sendMapByReactomeIDQuery();
         }
+        
       });
 
     $(document)
@@ -6568,77 +3466,6 @@ var MapByReactomeIDQueryView = Backbone.View.extend({
 
     return this;
   },
-});
-
-var sbmlKineticLawView = Backbone.View.extend({
-  initialize: function () {
-    var self = this;
-    self.localparams = null;
-    self.template = _.template($("#sbml-kinetic-law-template").html());
-    // self.template = self.template(self.currentQueryParameters);
-  },
-  render: function (node) {
-    var self = this;
-    self.template = _.template($("#sbml-kinetic-law-template").html());
-    $(self.el).html(self.template);
-    var nodeRow = document.getElementById("kinetic-law-nodes");
-    node.connectedEdges().connectedNodes().difference(node).forEach((iterNode, idx) => {
-      if(iterNode.same(node)){
-        return;
-      }
-      var element = '<button id="kinetic-law-node-ele' + idx + '" class="btn btn-default" style="width:90px; margin-left:5px; margin-right:5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' 
-        + (iterNode.data('label') || iterNode.data('id')) + '</button>';
-      nodeRow.innerHTML += element;
-      $(document).off("click", "#save-kinetic-law").on("click", "#kinetic-law-node-ele" + idx, function(evt) {
-        var cursorStart = kineticLaw.selectionStart;
-        var cursorEnd = kineticLaw.selectionEnd;
-        var currentText = kineticLaw.value;
-        var textBefore = currentText.substring(0, cursorStart);
-        var textAfter  = currentText.substring(cursorEnd, currentText.length);
-        var newText = (iterNode.data('label') || iterNode.data('id'));
-        kineticLaw.value = (textBefore + newText + textAfter);
-        kineticLaw.selectionStart = kineticLaw.selectionEnd = cursorStart + newText.length;
-        kineticLaw.focus();
-      });
-    })
-    $(self.el).modal("show");
-
-    var chiseInstance = appUtilities.getActiveChiseInstance();
-    var cy = chiseInstance.getCy();
-
-    // Set up local parameters for conversion
-    var localparams_n_to_id = null;
-    var localparams_id_to_n = null;
-    if (node.data('simulation') && node.data('simulation').localParameters) {
-      localparams_n_to_id = {};
-      localparams_id_to_n = {};
-      node.data('simulation').localParameters.forEach(function(param) {
-        if (param.name && param.id) {
-          localparams_n_to_id[param.name] = param.id;
-          localparams_id_to_n[param.id] = param.name;
-        }
-      });
-    }
-
-    var kineticLaw = document.getElementById('kinetic-law-field'); 
-    var kineticLawRawText = node.data('simulation')['kineticLaw'] || "";
-    kineticLaw.value = chiseInstance.convertIdsToNamesInFormula(kineticLawRawText, localparams_id_to_n);
-    
-    $(document)
-    .off("click", "#save-kinetic-law")
-    .on("click", "#save-kinetic-law", function(evt) {
-      var kineticLawText = kineticLaw.value;
-      node.data('simulation')['kineticLaw'] = chiseInstance.convertNamesToIdsInFormula(kineticLawText, localparams_n_to_id);
-      $(document).trigger("kinetic-law-updated", [node]);
-      $(self.el).modal("toggle");
-    });
-
-    $(document)
-      .off("click", "#cancel-kinetic-law")
-      .on("click", "#cancel-kinetic-law", function (evt) {
-        $(self.el).modal("toggle");
-      });
-  }
 });
 
 /*
@@ -6705,23 +3532,19 @@ var FileSaveView = Backbone.View.extend({
     // Check for unsupported conversions
     mapType = appUtilities.getActiveChiseInstance().elementUtilities.mapType;
     var unsupportedConversions = {
-      PD: ["sif", "sifLayout"],
-      AF: ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
-      HybridPDAF: ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
-      SIF: ["sbgn", "sbml", "celldesigner", "gpml"],
-      SBML: ["sif", "sifLayout", "gpml"],
-      HybridAny: ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      "PD": ["sif", "sifLayout"],
+      "AF": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      "HybridSbgn": ["sif", "sifLayout", "sbml", "celldesigner", "gpml"],
+      "SIF": ["sbgn", "sbml", "celldesigner", "gpml"],
+      "SBML": ["sif", "sifLayout", "gpml"],
+      "HybridAny": ["sbgn", "sif", "sifLayout", "sbml", "celldesigner", "gpml"]
     };
 
-    if (
-      unsupportedConversions[mapType] &&
-      unsupportedConversions[mapType].includes(fileformat)
-    ) {
-      var exportErrorView = new ExportErrorView({ el: "#exportError-table" });
-      exportErrorView.render();
-      document.getElementById("export-error-message").innerText =
-        "Not applicable for the current map type!";
-      return;
+    if (unsupportedConversions[mapType] && unsupportedConversions[mapType].includes(fileformat)) {
+        var exportErrorView = new ExportErrorView({el: "#exportError-table",});
+        exportErrorView.render();          
+        document.getElementById("export-error-message").innerText = "Not applicable for the current map type!";
+        return;
     }
 
     $(self.el).html(self.template);
@@ -6820,9 +3643,8 @@ var FileSaveView = Backbone.View.extend({
                     el: "#prompt-sbmlConversionError-table",
                   });
                 promptSbmlConversionErrorView.render();
-                document.getElementById(
-                  "file-conversion-error-message"
-                ).innerText = "Conversion failed!";
+                document.getElementById("file-conversion-error-message").innerText =
+                  "Conversion failed!";
               });
               $(self.el).modal("toggle");
               return;
@@ -6877,40 +3699,29 @@ var FileSaveView = Backbone.View.extend({
           else if (version === "plain3") {
             saveAsFcn(filename, version, renderInfo, undefined, nodes, edges);
           } else {
-            // Get annotation layers data for saving
-            var annotationLayersData = null;
-            if (window.annotationLayers) {
-              annotationLayersData = window.annotationLayers.getAnnotationLayersData();
-            }
-            
-            saveAsFcn(filename, version, renderInfo, properties, nodes, edges, annotationLayersData);
+            saveAsFcn(filename, version, renderInfo, properties, nodes, edges);
           }
         } else if (fileformat === "celldesigner") {
-          if (mapType == "SBML") {
-            chiseInstance.saveAsCellDesignerFromSbml(
-              filename,
-              function (data, errorMessage) {
-                var exportError = new ExportErrorView({
-                  el: "#exportError-table",
-                });
-                exportError.render();
-                document.getElementById("export-error-message").innerText =
-                  "SBML export failed. Please check if the map is valid!";
-              }
-            );
-          } else if (mapType == "PD") {
-            chiseInstance.saveAsCellDesigner(filename, function () {
+          if(mapType == "SBML"){
+            chiseInstance.saveSbmlForSBML(filename, function (data, errorMessage) {
+              var exportError = new ExportErrorView({el: "#exportError-table"});
+              exportError.render();
+              document.getElementById("export-error-message").innerText 
+                = "SBML export failed. Please check if the map is valid!";
+            });
+          } else if(mapType == "PD"){
+          chiseInstance.saveAsCellDesigner(filename, function () {
               var promptFileConversionErrorView =
                 new PromptFileConversionErrorView({
                   el: "#prompt-fileConversionError-table",
                 });
               promptFileConversionErrorView.render();
-              document.getElementById(
-                "file-conversion-error-message"
-              ).innerText = "Conversion failed.";
+              document.getElementById("file-conversion-error-message").innerText =
+                "Conversion failed.";
             });
           }
         } else if (fileformat === "sbml") {
+
           if (mapType === "PD") {
             chiseInstance.saveAsSbml(filename, function (data, errorMessage) {
               var promptSbmlConversionErrorView =
@@ -6920,18 +3731,14 @@ var FileSaveView = Backbone.View.extend({
               promptSbmlConversionErrorView.render(data, errorMessage);
             });
           } else if (mapType === "SBML") {
-            chiseInstance.saveSbmlForSBML(
-              filename,
-              function (data, errorMessage) {
-                var exportError = new ExportErrorView({
-                  el: "#exportError-table",
-                });
-                exportError.render();
-                document.getElementById("export-error-message").innerText =
-                  "SBML export failed. Please check if the map is valid!";
-              }
-            );
+            chiseInstance.saveSbmlForSBML(filename, function (data, errorMessage) {
+              var exportError = new ExportErrorView({el: "#exportError-table"});
+              exportError.render();
+              document.getElementById("export-error-message").innerText 
+                = "SBML export failed. Please check if the map is valid!";
+            });
           }
+
         } else if (fileformat === "gpml") {
           chiseInstance.saveAsGpml(filename, function (data, errorMessage) {
             var promptSbmlConversionErrorView =
@@ -6945,14 +3752,11 @@ var FileSaveView = Backbone.View.extend({
         } else if (fileformat === "sifLayout") {
           chiseInstance.exportLayoutData(filename, true);
         } else if (fileformat === "png") {
-          var annotationLayers = require('./annotation-layers');
-          annotationLayers.exportCompositePng(filename);
+          chiseInstance.saveAsPng(filename);
         } else if (fileformat === "jpg") {
-          var annotationLayers = require('./annotation-layers');
-          annotationLayers.exportCompositeJpg(filename)
+          chiseInstance.saveAsJpg(filename);
         } else if (fileformat === "svg") {
-          var annotationLayers = require('./annotation-layers');
-          annotationLayers.exportCompositeSvg(filename);
+          chiseInstance.saveAsSvg(filename);
         } else {
           // invalid file format provided
           console.error(
@@ -7274,19 +4078,6 @@ var LoadUserPreferencesView = Backbone.View.extend({
               }
             });
 
-            Object.keys(mapTabLocalDBSettings.params).forEach(function (key, index) {
-              if (
-                typeof preferences.currentGeneralProperties[key] !== "undefined"
-              ) {
-                mapTabLocalDBSettings.params[key].value =
-                  preferences.currentGeneralProperties[key];
-                actions.push({
-                  name: "changeMenu",
-                  param: mapTabLocalDBSettings.params[key],
-                });
-              }
-            });
-
             Object.keys(mapTabRearrangementPanel.params).forEach(function (
               key,
               index
@@ -7555,7 +4346,7 @@ var PromptConfirmationView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
   },
-  render: function (afterFunction,param) {
+  render: function (afterFunction) {
     var self = this;
     self.template = _.template($("#prompt-confirmation-template").html());
 
@@ -7566,7 +4357,7 @@ var PromptConfirmationView = Backbone.View.extend({
       .off("click", "#prompt-confirmation-accept")
       .on("click", "#prompt-confirmation-accept", function (evt) {
         $(self.el).modal("toggle");
-        afterFunction(param);
+        afterFunction();
       });
 
     $(document)
@@ -7613,25 +4404,6 @@ var PromptMapTypeView = Backbone.View.extend({
   },
 });
 
-var PromptSIFTopologyGroupingWarning = Backbone.View.extend({
-  initialize: function () {
-    var self = this;
-    self.template = _.template($("#prompt-sifTopologyGrouping-template").html());
-  },
-  render: function () {
-    var self = this;
-    self.template = _.template($("#prompt-sifTopologyGrouping-template").html());
-    $(self.el).html(self.template());
-    $(self.el).modal("show");
-    $(document)
-      .off("click", "#prompt-sifTopologyGrouping-confirm")
-      .on("click", "#prompt-sifTopologyGrouping-confirm", function (evt) {
-        $(self.el).modal("toggle");
-      });
-    return this;
-  },
-});
-
 var InternalServerError = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -7666,16 +4438,9 @@ var PromptInvalidQueryView = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-invalidQuery-template").html());
   },
-  render: function (title,message) {
+  render: function () {
     var self = this;
     self.template = _.template($("#prompt-invalidQuery-template").html());
-    console.log(title, message);
-
-    var param = {};
-    param.title = title || "Invalid Query";
-    param.message = message || "The query you have entered is invalid. Please check the query parameters and try again.";
-    self.template = self.template(param);
-
 
     $(self.el).html(self.template);
     $(self.el).modal("show");
@@ -7688,19 +4453,10 @@ var PromptInvalidQueryView = Backbone.View.extend({
           appUtilities.neighborhoodQueryView.render();
         else if (PCdialog == "PathsBetween")
           appUtilities.pathsBetweenQueryView.render();
-        else if (PCdialog == "PathsBetween in localDB")
-          appUtilities.pathsBetweenQueryViewLocalDB.render();
         else if (PCdialog == "PathsFromTo")
           appUtilities.pathsFromToQueryView.render();
         else if (PCdialog == "CommonStream")
           appUtilities.commonStreamQueryView.render();
-        else if (PCdialog == "PathsBetween in localDB") {
-          appUtilities.pathsFromToQueryViewLocalDb.render();
-        } else if (PCdialog == "CommonStream in localDB") {
-          appUtilities.commonStreamQueryViewLocalDB.render();
-        } else if (PCdialog == "Neighborhood in localDB") {
-          appUtilities.NeighborhoodQueryViewLocalDB.render();
-        }
       });
 
     return this;
@@ -7798,6 +4554,7 @@ var DuplicateGeneGiven = Backbone.View.extend({
   },
 });
 
+
 var GeneNotExist = Backbone.View.extend({
   initialize: function (options) {
     var self = this;
@@ -7838,21 +4595,6 @@ var PromptInvalidLengthLimitView = Backbone.View.extend({
         "Length limit can be at most 3.";
     $(self.el).modal("show");
 
-    $(document)
-      .off("click", "#prompt-invalidLengthLimit-confirm")
-      .on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
-        $(self.el).modal("toggle");
-        if (PCdialog == "Neighborhood")
-          appUtilities.neighborhoodQueryView.render();
-        else if (PCdialog == "PathsBetween")
-          appUtilities.pathsBetweenQueryView.render();
-        else if (PCdialog == "PathsFromTo")
-          appUtilities.pathsFromToQueryView.render();
-        else if (PCdialog == "CommonStream")
-          appUtilities.commonStreamQueryView.render();
-        else if (PCdialog == "PathsFromTo in Local DB")
-          appUtilities.PathsFromToQueryViewLocalDB.render();
-      });
     $(document)
       .off("click", "#prompt-invalidLengthLimit-confirm")
       .on("click", "#prompt-invalidLengthLimit-confirm", function (evt) {
@@ -8049,33 +4791,6 @@ var PromptInvalidTypeWarning = Backbone.View.extend({
   },
 });
 
-
-var PromptActiveTabPushError = Backbone.View.extend({
-  initialize: function () {
-    var self = this;
-    self.template = _.template($("#active-tab-push-error-template").html());
-  },
-  render: function (message) {
-    var self = this;
-    self.template = _.template($("#active-tab-push-error-template").html());
-
-    var param = {};
-    param.message = message;
-    self.template = self.template(param);
-
-    $(self.el).html(self.template);
-    $(self.el).modal("show");
-
-    $(document)
-      .off("click", "#active-tab-push-error-confirm")
-      .on("click", "#active-tab-push-error-confirm", function (evt) {
-        $(self.el).modal("toggle");
-      });
-
-    return this;
-  },
-});
-
 var SifMapWarning = Backbone.View.extend({
   initialize: function () {
     var self = this;
@@ -8097,6 +4812,7 @@ var SifMapWarning = Backbone.View.extend({
     return this;
   },
 });
+
 
 var PromtErrorPD2AF = Backbone.View.extend({
   initialize: function () {
@@ -8151,7 +4867,9 @@ var PromptFileConversionErrorView = Backbone.View.extend({
 var ExportErrorView = Backbone.View.extend({
   initialize: function () {
     var self = this;
-    self.template = _.template($("#export-Error-template").html());
+    self.template = _.template(
+      $("#export-Error-template").html()
+    );
   },
   render: function () {
     var self = this;
@@ -10440,9 +7158,6 @@ var InfoboxPropertiesView = Backbone.View.extend({
   },
 });
 
-// var AnnotationListView = Backbone.View.extend({
-// });
-
 var AnnotationListView = Backbone.View.extend({
   elements: [],
   el: "#annotations-container",
@@ -10657,7 +7372,7 @@ async function handleGeneDoesNotExist(geneSymbolsArray) {
   for (gene of geneSymbolsArray) {
     try {
       let q = `https://www.pathwaycommons.org/pc2/search?q=${gene}`;
-
+  
       const data = await $.ajax({
         type: "get",
         url: "/utilities/testURL",
@@ -10673,7 +7388,7 @@ async function handleGeneDoesNotExist(geneSymbolsArray) {
       }
     } catch (error) {
       new PromptRequestTimedOutView({
-        el: "#prompt-requestTimedOut-table",
+        el:'#prompt-requestTimedOut-table',
       }).render();
       return true;
     }
@@ -10681,39 +7396,20 @@ async function handleGeneDoesNotExist(geneSymbolsArray) {
   return false;
 }
 
-
-
-
 module.exports = {
   //  BioGeneView: BioGeneView,
-  MergeNodesErrorView: MergeNodesErrorView,
-  DatabasePropertiesView: DatabasePropertiesView,
-  MergeNodesView: MergeNodesView,
-  SearchNodesView: SearchNodesView,
-  LoadEntireContentView:LoadEntireContentView,
-  PushActiveTabsView:PushActiveTabsView,
   ChemicalView: ChemicalView,
   LayoutPropertiesView: LayoutPropertiesView,
   ColorSchemeInspectorView: ColorSchemeInspectorView,
   MapTabGeneralPanel: MapTabGeneralPanel,
   MapTabLabelPanel: MapTabLabelPanel,
-  MapTabLocalDBSettings: MapTabLocalDBSettings,
   MapTabRearrangementPanel: MapTabRearrangementPanel,
   experimentTabPanel: experimentTabPanel,
-  simulationTabPanel: simulationTabPanel,
-  SimulationPanelView: SimulationPanelView,
   //GeneralPropertiesView: GeneralPropertiesView,
-  // ActiveTabPushSuccessView: ActiveTabPushSuccessView,
   NeighborhoodQueryView: NeighborhoodQueryView,
-  NeighborhoodQueryViewLocalDB: NeighborhoodQueryViewLocalDB,
   PathsBetweenQueryView: PathsBetweenQueryView,
-  PathsBetweenQueryViewLocalDB: PathsBetweenQueryViewLocalDB,
   PathsFromToQueryView: PathsFromToQueryView,
-  PathsFromToQueryViewLocalDB: PathsFromToQueryViewLocalDB,
   CommonStreamQueryView: CommonStreamQueryView,
-  CommonStreamQueryViewLocalDB: CommonStreamQueryViewLocalDB,
-  UpStreamQueryViewLocalDB: UpStreamQueryViewLocalDB,
-  DownStreamQueryViewLocalDB: DownStreamQueryViewLocalDB,
   PathsByURIQueryView: PathsByURIQueryView,
   MapByWPIDQueryView: MapByWPIDQueryView,
   MapByReactomeIDQueryView: MapByReactomeIDQueryView,
@@ -10723,7 +7419,6 @@ module.exports = {
   LoadUserPreferencesView: LoadUserPreferencesView,
   PromptConfirmationView: PromptConfirmationView,
   PromptMapTypeView: PromptMapTypeView,
-  PromptSIFTopologyGroupingWarning: PromptSIFTopologyGroupingWarning,
   PromptInvalidFileView: PromptInvalidFileView,
   PromptInvalidTypeWarning: PromptInvalidTypeWarning,
   SifMapWarning: SifMapWarning,
@@ -10746,6 +7441,4 @@ module.exports = {
   PromptInvalidImageWarning: PromptInvalidImageWarning,
   PromptInvalidEdgeWarning: PromptInvalidEdgeWarning,
   PromptSbmlConversionErrorView: PromptSbmlConversionErrorView,
-  sbmlKineticLawView: sbmlKineticLawView,
-  SimulationPropertiesView: SimulationPropertiesView,
 };
