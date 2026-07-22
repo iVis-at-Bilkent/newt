@@ -1,6 +1,5 @@
 var jquery = $ = require('jquery');
 var _ = require('underscore');
-var ChemicalView = require('./backbone-views').ChemicalView;
 
 
 var fillChemicalContainer = function (node, dataFetchSuccessCallback) {
@@ -36,6 +35,7 @@ var fillChemicalContainer = function (node, dataFetchSuccessCallback) {
       if (!data.error && data.response.statusCode == 200 && data.response.body) {
         var json = JSON.parse(data.response.body);
         if(json.response.numFound > 0){
+          var ChemicalView = require('./backbone-views').ChemicalView;
           new ChemicalView({
             el: '#chemical-container',
             model: json.response.docs[0]
