@@ -19,28 +19,6 @@ module.exports = function (chiseInstance) {
   //("here");
   window.cy = cy;
 
-  function logEdgeSnapshot(label, edge) {
-    if (!edge || !edge.length) {
-      console.log(label, null);
-      return;
-    }
-
-    var source = edge.data("source");
-    var target = edge.data("target");
-    console.log(label, {
-      id: edge.data("id"),
-      source: source,
-      target: target,
-      class: edge.data("class"),
-      language: edge.data("language"),
-      width: edge.data("width"),
-      cardinality: edge.data("cardinality"),
-      lineColor: edge.data("line-color"),
-      portsource: edge.data("portsource"),
-      porttarget: edge.data("porttarget")
-    });
-  }
-
   function buildEdgeJson(edgeId, source, target, edgeParams, edgeExtraData) {
     var edgeJson = {
       group: "edges",
@@ -71,163 +49,6 @@ module.exports = function (chiseInstance) {
     }
 
     return edgeJson;
-  }
-
-  function logUndoRedoPayload(label, payload) {
-    if (!payload) {
-      console.log(label, payload);
-      return;
-    }
-
-    console.log(label, {
-      removeEdgeId: payload.removeEdge && payload.removeEdge.length ? payload.removeEdge.id() : null,
-      addEdgeId: payload.addEdge && payload.addEdge.length ? payload.addEdge.id() : null,
-      removeEdgeJsonId: payload.removeEdgeJson && payload.removeEdgeJson.data ? payload.removeEdgeJson.data.id : null,
-      addEdgeJsonId: payload.addEdgeJson && payload.addEdgeJson.data ? payload.addEdgeJson.data.id : null,
-      removeEdgeRemoved: payload.removeEdge && payload.removeEdge.length ? payload.removeEdge.removed() : null,
-      addEdgeRemoved: payload.addEdge && payload.addEdge.length ? payload.addEdge.removed() : null
-    });
-  }
-
-  function logNodeSnapshot(label, node) {
-    if (!node || !node.length) {
-      console.log(label, null);
-      return;
-    }
-
-    var data = node.data();
-    var bbox = data.bbox || {};
-    var style = node.style ? node.style() : {};
-    var statesAndInfos = data.statesandinfos || [];
-    var auxUnitLayouts = data.auxunitlayouts || {};
-    var connectedEdges = node.connectedEdges().map(function (edge) {
-      return {
-        id: edge.id(),
-        class: edge.data("class"),
-        language: edge.data("language"),
-        source: edge.data("source"),
-        target: edge.data("target"),
-        portsource: edge.data("portsource"),
-        porttarget: edge.data("porttarget"),
-        width: edge.data("width"),
-        lineColor: edge.data("line-color")
-      };
-    });
-
-    console.log(label + " id:", data.id);
-    console.log(label + " class:", data.class);
-    console.log(label + " language:", data.language);
-    console.log(label + " label:", data.label);
-    console.log(label + " parent:", data.parent);
-    console.log(label + " multimer:", data.multimer);
-    console.log(label + " clonemarker:", data.clonemarker);
-    console.log(label + " orientation:", data.orientation);
-    console.log(label + " ports:", data.ports);
-    console.log(label + " portOrdering:", data.portOrdering);
-    console.log(label + " bbox:", {
-      x: bbox.x,
-      y: bbox.y,
-      w: bbox.w,
-      h: bbox.h
-    });
-    console.log(label + " position:", node.position());
-    console.log(label + " renderedPosition:", node.renderedPosition());
-    console.log(label + " size:", {
-      width: node.width(),
-      height: node.height()
-    });
-    console.log(label + " style:", {
-      backgroundColor: style["background-color"],
-      backgroundOpacity: style["background-opacity"],
-      borderColor: style["border-color"],
-      borderWidth: style["border-width"],
-      borderStyle: style["border-style"],
-      color: style["color"],
-      textWrap: style["text-wrap"],
-      fontFamily: style["font-family"],
-      fontSize: style["font-size"],
-      fontStyle: style["font-style"],
-      fontWeight: style["font-weight"],
-      shape: style["shape"],
-      backgroundImage: style["background-image"],
-      backgroundImageOpacity: style["background-image-opacity"]
-    });
-    console.log(label + " statesandinfos count:", statesAndInfos.length);
-    console.log(label + " statesandinfos:", statesAndInfos);
-    console.log(label + " auxunitlayouts keys:", Object.keys(auxUnitLayouts));
-    console.log(label + " auxunitlayouts:", auxUnitLayouts);
-    console.log(label + " connectedEdges count:", connectedEdges.length);
-    console.log(label + " connectedEdges:", connectedEdges);
-    console.log(label + " raw data:", data);
-  }
-
-  function logLogicalNodeDebug(label, node) {
-    if (!node || !node.length) {
-      console.log(label, null);
-      return;
-    }
-
-    var nodeClass = node.data("class");
-    var defaultProps = chiseInstance.elementUtilities.getDefaultProperties(nodeClass);
-    var connectedEdges = node.connectedEdges().map(function (edge) {
-      return {
-        id: edge.id(),
-        class: edge.data("class"),
-        language: edge.data("language"),
-        source: edge.data("source"),
-        target: edge.data("target"),
-        portsource: edge.data("portsource"),
-        porttarget: edge.data("porttarget"),
-        width: edge.data("width"),
-        lineColor: edge.data("line-color")
-      };
-    });
-    var style = node.style ? node.style() : {};
-
-    console.log(label, {
-      node: {
-        id: node.id(),
-        class: nodeClass,
-        language: node.data("language"),
-        parent: node.data("parent"),
-        label: node.data("label"),
-        position: node.position(),
-        renderedPosition: node.renderedPosition(),
-        bbox: node.data("bbox"),
-        width: node.width(),
-        height: node.height(),
-        orientation: node.data("orientation"),
-        ports: node.data("ports"),
-        portOrdering: defaultProps["ports-ordering"],
-        statesandinfos: node.data("statesandinfos"),
-        auxunitlayouts: node.data("auxunitlayouts"),
-        image: node.data("background-image"),
-        clonemarker: node.data("clonemarker"),
-        multimer: node.data("multimer")
-      },
-      visual: {
-        borderColor: style["border-color"],
-        borderWidth: style["border-width"],
-        backgroundColor: style["background-color"],
-        backgroundOpacity: style["background-opacity"],
-        shape: style["shape"],
-        width: style["width"],
-        height: style["height"]
-      },
-      defaults: {
-        width: defaultProps.width,
-        height: defaultProps.height,
-        borderColor: defaultProps["border-color"],
-        borderWidth: defaultProps["border-width"],
-        fillColor: defaultProps["background-color"],
-        fillOpacity: defaultProps["background-opacity"],
-        portsOrdering: defaultProps["ports-ordering"],
-        shape: defaultProps.shape
-      },
-      connectedEdges: connectedEdges,
-      rawData: node.data()
-    });
-    console.log(label + " full json", node.json());
   }
 
   function replaceEdgeWithBatch(cyTarget, newEdgeJson) {
@@ -584,11 +405,9 @@ module.exports = function (chiseInstance) {
 
     if (!source || !target) return;
 
-    logEdgeSnapshot("Old edge before conversion:", cyTarget);
     chiseInstance.deleteElesSimple(cyTarget);
 
     var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
-    logEdgeSnapshot("New edge after creation:", newEdge);
 
     if (newEdge && !newEdge.empty()) {
       newEdge.data("width", edgeData.width);
@@ -644,10 +463,7 @@ module.exports = function (chiseInstance) {
       )
     };
 
-    logEdgeSnapshot("Old AF edge before recreate swap:", cyTarget);
-    logUndoRedoPayload("AF swap payload", actionPayload);
     replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
-    logEdgeSnapshot("New AF edge after recreate swap:", cy.getElementById(cyTarget.id()));
   }
 
   function createPdEdgeTypeIOMenu(fromClass, toClass) {
@@ -666,7 +482,6 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logEdgeSnapshot("Change edge type", cyTarget);
             var source = cyTarget.data("source");
             var target = cyTarget.data("target");
             var newEdgeExtraData = {
@@ -701,9 +516,7 @@ module.exports = function (chiseInstance) {
               )
             };
 
-            logUndoRedoPayload("PD IO swap payload", actionPayload);
             replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
-            logEdgeSnapshot("PD IO after recreate swap", cy.getElementById(cyTarget.id()));
           }
         }
       ]
@@ -745,10 +558,7 @@ module.exports = function (chiseInstance) {
               )
             };
 
-            logEdgeSnapshot("PD modulator before recreate swap", cyTarget);
-            logUndoRedoPayload("PD modulator swap payload", actionPayload);
             replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
-            logEdgeSnapshot("PD modulator after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -868,9 +678,7 @@ module.exports = function (chiseInstance) {
               )
             };
 
-            logUndoRedoPayload("SBML IO swap payload", actionPayload);
             replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
-            logEdgeSnapshot("SBML IO after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -949,9 +757,7 @@ module.exports = function (chiseInstance) {
               )
             };
 
-            logUndoRedoPayload("SBML modulator swap payload", actionPayload);
             replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
-            logEdgeSnapshot("SBML modulator after recreate swap", cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1027,13 +833,7 @@ module.exports = function (chiseInstance) {
       return;
     }
 
-    console.log("Change PD node type", {
-      fromClass: cyTarget.data("class"),
-      toClass: toClass
-    });
-    logLogicalNodeDebug("Change PD node type before", cyTarget);
     replacePdNodeWithBatch(cyTarget, toClass);
-    logLogicalNodeDebug("Change PD node type after", cy.getElementById(cyTarget.id()));
   }
 
   function createPdNodeTypeMenu(nodeClass, submenuItems) {
@@ -1114,9 +914,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logLogicalNodeDebug('Change process node type before', cyTarget);
             replaceNodeWithBatch(cyTarget, item.toClass);
-            logLogicalNodeDebug('Change process node type after', cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1161,9 +959,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logLogicalNodeDebug('Change process node type before', cyTarget);
             replaceNodeWithBatch(cyTarget, item.toClass);
-            logLogicalNodeDebug('Change process node type after', cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1209,9 +1005,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logLogicalNodeDebug('Change SBML node type before', cyTarget);
             replaceSbmlNodeWithBatch(cyTarget, item.toClass);
-            logLogicalNodeDebug('Change SBML node type after', cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1266,9 +1060,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logLogicalNodeDebug('Change AF auxiliary unit type before', cyTarget);
             replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
-            logLogicalNodeDebug('Change AF auxiliary unit type after', cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1345,9 +1137,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logLogicalNodeDebug('Change AF node type before', cyTarget);
             replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
-            logLogicalNodeDebug('Change AF node type after', cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1386,9 +1176,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            logLogicalNodeDebug('Change SIF node type before', cyTarget);
             replaceSifNodeWithBatch(cyTarget, item.toClass);
-            logLogicalNodeDebug('Change SIF node type after', cy.getElementById(cyTarget.id()));
           }
         };
       })
@@ -1480,8 +1268,6 @@ module.exports = function (chiseInstance) {
       return edgeClass === "controls-production-of" || edgeClass === "controls-transport-of-chemical";
     }
 
-    logEdgeSnapshot("SIF edge before change:", cyTarget);
-
     var newEdgeJson = cyTarget.json();
     var shouldSwapEnds =
       isSifChemicalToMacromolecule(cyTarget.data("class")) !== isSifChemicalToMacromolecule(toClass) &&
@@ -1509,7 +1295,6 @@ module.exports = function (chiseInstance) {
       { name: "add", param: newEdgeJson }
     ]);
 
-    logEdgeSnapshot("SIF edge after change:", cy.getElementById(cyTarget.id()));
   }
 
   function createSifEdgeTypeMenu(edgeClass, submenuItems) {
@@ -1970,35 +1755,6 @@ module.exports = function (chiseInstance) {
         }
       },
 
-      // This needs to be removed later one, this is only for the reference
-      {
-        id: 'ctx-menu-change-edge-type',
-        content: 'Change Edge Type To',
-        selector: 'edge',
-        onClickFunction: function (event) {
-          var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-          var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-          if (!cyTarget) {
-            return;
-          }
-
-          logEdgeSnapshot("Change edge type", cyTarget);
-        }
-      },
-      {
-        id: 'ctx-menu-change-logical-operator-type',
-        content: 'Change Logical Node Type',
-        selector: 'node[language="PD"][class="and"], node[language="PD"][class="or"], node[language="PD"][class="not"]',
-        onClickFunction: function (event) {
-          var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
-          var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
-          if (!cyTarget) {
-            return;
-          }
-
-          logLogicalNodeDebug("Change logical node type", cyTarget);
-        }
-      },
       // Change Edge Type Starts
       //// PD
       createPdEdgeTypeIOMenu("consumption", "production"),
